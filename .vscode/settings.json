@@ -30,6 +30,9 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
+  "json.schemaDownload.trustedDomains": {
+    "https://ui.shadcn.com": true
+  },
   "editor.formatOnSaveMode": "file",
   "js/ts.tsdk.path": "node_modules/typescript/lib",
   "js/ts.tsdk.promptToUseWorkspaceVersion": true,
