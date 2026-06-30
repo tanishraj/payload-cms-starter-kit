@@ -33,23 +33,34 @@ export const FeatureGridBlock: Block = {
         {
           name: 'icon',
           type: 'select',
-          defaultValue: 'sparkles',
+          defaultValue: 'boxes',
           options: [
             {
-              label: 'Sparkles',
-              value: 'sparkles',
-            },
-            {
-              label: 'Layers',
-              value: 'layers',
+              label: 'Boxes',
+              value: 'boxes',
             },
             {
               label: 'Shield Check',
               value: 'shield-check',
             },
             {
-              label: 'Blocks',
-              value: 'blocks',
+              label: 'Puzzle',
+              value: 'puzzle',
+            },
+            {
+              label: 'Headphones',
+              value: 'headphones',
+            },
+          ],
+        },
+        {
+          name: 'features',
+          type: 'array',
+          fields: [
+            {
+              name: 'text',
+              type: 'text',
+              required: true,
             },
           ],
         },

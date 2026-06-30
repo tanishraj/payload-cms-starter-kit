@@ -1,10 +1,11 @@
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { CheckCircle2, Globe, Lock, Star, Zap } from 'lucide-react'
 
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 export type HeroBlockViewProps = {
+  className?: string
   description?: string | null
   eyebrow?: string | null
   primaryActionHref?: string | null
@@ -15,6 +16,7 @@ export type HeroBlockViewProps = {
 }
 
 export function HeroBlockView({
+  className,
   description,
   eyebrow,
   primaryActionHref,
@@ -24,55 +26,63 @@ export function HeroBlockView({
   title,
 }: HeroBlockViewProps) {
   return (
-    <section className="relative overflow-hidden px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-      <div className="absolute inset-x-0 top-0 -z-10 h-72 bg-[radial-gradient(circle_at_top,_rgba(234,88,12,0.18),_transparent_55%)]" />
-      <div className="mx-auto max-w-6xl">
-        <div className="grid gap-12 lg:grid-cols-[1.3fr_0.7fr] lg:items-end">
-          <div className="space-y-8">
-            {eyebrow ? <Badge>{eyebrow}</Badge> : null}
-            <div className="space-y-5">
-              <h1 className="max-w-4xl text-5xl font-semibold tracking-[-0.04em] text-balance sm:text-6xl lg:text-7xl">
-                {title}
-              </h1>
-              {description ? (
-                <p className="max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">{description}</p>
-              ) : null}
-            </div>
-            <div className="flex flex-wrap items-center gap-3">
-              {primaryActionHref && primaryActionLabel ? (
-                <Button asChild size="lg">
-                  <Link href={primaryActionHref}>
-                    {primaryActionLabel}
-                    <ArrowRight />
-                  </Link>
-                </Button>
-              ) : null}
-              {secondaryActionHref && secondaryActionLabel ? (
-                <Button asChild size="lg" variant="outline">
-                  <Link href={secondaryActionHref}>{secondaryActionLabel}</Link>
-                </Button>
-              ) : null}
-            </div>
+    <section className={cn('relative overflow-hidden py-32', className)}>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 z-0 mx-auto h-[600px] max-h-[600px] w-full opacity-10"
+        style={{
+          backgroundImage:
+            "url('https://deifkwefumgah.cloudfront.net/shadcnblocks/block/patterns/grid3.svg')",
+          backgroundRepeat: 'repeat',
+          maskImage: 'radial-gradient(ellipse 80% 100% at 50% 30%, #000 40%, transparent 75%)',
+          WebkitMaskImage:
+            'radial-gradient(ellipse 80% 100% at 50% 30%, #000 40%, transparent 75%)',
+        }}
+      />
+      <div className="relative z-10 container px-4 sm:px-6 lg:px-8">
+        {eyebrow ? (
+          <p className="mb-6 text-center text-sm font-medium tracking-[0.24em] text-muted-foreground uppercase">
+            {eyebrow}
+          </p>
+        ) : null}
+        <h1 className="relative mx-auto mb-8 max-w-4xl flex-wrap text-center text-4xl font-semibold text-balance md:mb-10 md:text-6xl md:leading-snug">
+          <span>
+            {title}
+            <Globe className="mx-2 mb-1 inline-block h-auto w-8 md:mx-4 md:mb-3 md:w-14" />
+          </span>
+          <div className="absolute -top-10 -left-20 hidden w-fit -rotate-12 gap-1 border-b border-dashed border-muted-foreground text-sm font-normal text-muted-foreground underline-offset-3 lg:flex">
+            <Zap className="h-auto w-3" />
+            Fast
           </div>
-          <div className="rounded-[2rem] border border-border/60 bg-gradient-to-br from-background via-secondary/40 to-accent/50 p-8 shadow-[0_30px_100px_-45px_rgba(15,23,42,0.55)]">
-            <div className="space-y-6">
-              <p className="text-sm font-medium uppercase tracking-[0.28em] text-muted-foreground">
-                Pro block ready
-              </p>
-              <div className="grid gap-4">
-                <div className="rounded-2xl border border-border/60 bg-background/90 p-5">
-                  <p className="text-sm text-muted-foreground">Drop future shadcnblocks sections into</p>
-                  <code className="mt-2 block font-mono text-sm text-foreground">
-                    src/components/blocks/&lt;BlockName&gt;.tsx
-                  </code>
-                </div>
-                <div className="rounded-2xl border border-dashed border-primary/30 bg-primary/5 p-5">
-                  <p className="text-sm text-muted-foreground">Map each Payload block schema in</p>
-                  <code className="mt-2 block font-mono text-sm text-foreground">src/blocks/RenderBlocks.tsx</code>
-                </div>
-              </div>
-            </div>
+          <div className="absolute top-14 -left-24 hidden w-fit -rotate-12 gap-1 border-b border-dashed border-muted-foreground text-sm font-normal text-muted-foreground underline-offset-3 lg:flex">
+            <Lock className="h-auto w-3" />
+            Secure
           </div>
+          <div className="absolute -top-10 -right-24 hidden w-fit rotate-12 gap-1 border-b border-dashed border-muted-foreground text-sm font-normal text-muted-foreground underline-offset-3 lg:flex">
+            Professional
+            <Star className="h-auto w-3" />
+          </div>
+          <div className="absolute top-14 -right-28 hidden w-fit rotate-12 gap-1 border-b border-dashed border-muted-foreground text-sm font-normal text-muted-foreground underline-offset-3 lg:flex">
+            Optimized
+            <CheckCircle2 className="h-auto w-3" />
+          </div>
+        </h1>
+        {description ? (
+          <p className="mx-auto mb-10 max-w-3xl text-center font-medium text-muted-foreground md:text-xl">
+            {description}
+          </p>
+        ) : null}
+        <div className="flex flex-col items-center justify-center gap-3 pt-3 pb-12">
+          {primaryActionHref && primaryActionLabel ? (
+            <Button asChild size="lg">
+              <Link href={primaryActionHref}>{primaryActionLabel}</Link>
+            </Button>
+          ) : null}
+          {secondaryActionHref && secondaryActionLabel ? (
+            <Button asChild size="lg" variant="link">
+              <Link href={secondaryActionHref}>{secondaryActionLabel}</Link>
+            </Button>
+          ) : null}
         </div>
       </div>
     </section>

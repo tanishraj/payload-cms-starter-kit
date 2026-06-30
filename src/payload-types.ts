@@ -196,7 +196,13 @@ export interface Page {
           | {
               title: string;
               description?: string | null;
-              icon?: ('sparkles' | 'layers' | 'shield-check' | 'blocks') | null;
+              icon?: ('boxes' | 'shield-check' | 'puzzle' | 'headphones') | null;
+              features?:
+                | {
+                    text: string;
+                    id?: string | null;
+                  }[]
+                | null;
               id?: string | null;
             }[]
           | null;
@@ -375,6 +381,12 @@ export interface PagesSelect<T extends boolean = true> {
                     title?: T;
                     description?: T;
                     icon?: T;
+                    features?:
+                      | T
+                      | {
+                          text?: T;
+                          id?: T;
+                        };
                     id?: T;
                   };
               id?: T;
