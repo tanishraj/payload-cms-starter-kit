@@ -1,14 +1,10 @@
 import type { Page } from '@/payload-types'
 
-import { FeatureGridBlockComponent } from '@/blocks/FeatureGrid/Component'
 import { Hero174BlockComponent } from '@/blocks/Hero174/Component'
-import { HeroBlockComponent } from '@/blocks/Hero/Component'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
 
 const blockComponents = {
-  featureGrid: FeatureGridBlockComponent,
-  hero: HeroBlockComponent,
   hero174: Hero174BlockComponent,
 } as const
 

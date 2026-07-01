@@ -177,54 +177,18 @@ export interface Page {
    */
   slug: string;
   intro?: string | null;
-  layout: (
-    | {
-        eyebrow?: string | null;
-        title: string;
-        description?: string | null;
-        primaryActionLabel?: string | null;
-        primaryActionHref?: string | null;
-        secondaryActionLabel?: string | null;
-        secondaryActionHref?: string | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'hero';
-      }
-    | {
-        eyebrow?: string | null;
-        title: string;
-        description?: string | null;
-        items?:
-          | {
-              title: string;
-              description?: string | null;
-              icon?: ('boxes' | 'shield-check' | 'puzzle' | 'headphones') | null;
-              features?:
-                | {
-                    text: string;
-                    id?: string | null;
-                  }[]
-                | null;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'featureGrid';
-      }
-    | {
-        title: string;
-        description?: string | null;
-        ctaLabel?: string | null;
-        ctaHref?: string | null;
-        backgroundImageUrl?: string | null;
-        locationLabel?: string | null;
-        locationValue?: string | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'hero174';
-      }
-  )[];
+  layout: {
+    title: string;
+    description?: string | null;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+    backgroundImageUrl?: string | null;
+    locationLabel?: string | null;
+    locationValue?: string | null;
+    id?: string | null;
+    blockName?: string | null;
+    blockType: 'hero174';
+  }[];
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -361,42 +325,6 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        hero?:
-          | T
-          | {
-              eyebrow?: T;
-              title?: T;
-              description?: T;
-              primaryActionLabel?: T;
-              primaryActionHref?: T;
-              secondaryActionLabel?: T;
-              secondaryActionHref?: T;
-              id?: T;
-              blockName?: T;
-            };
-        featureGrid?:
-          | T
-          | {
-              eyebrow?: T;
-              title?: T;
-              description?: T;
-              items?:
-                | T
-                | {
-                    title?: T;
-                    description?: T;
-                    icon?: T;
-                    features?:
-                      | T
-                      | {
-                          text?: T;
-                          id?: T;
-                        };
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
         hero174?:
           | T
           | {
