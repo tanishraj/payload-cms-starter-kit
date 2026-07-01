@@ -25,7 +25,7 @@ export default async function HomePage() {
           <div className="space-y-8">
             <Badge>Payload + Tailwind + shadcn-ready</Badge>
             <div className="space-y-5">
-              <h1 className="max-w-4xl text-5xl font-semibold tracking-[-0.05em] text-balance sm:text-6xl lg:text-7xl">
+              <h1 className="max-w-4xl text-5xl font-semibold tracking-tighter text-balance sm:text-6xl lg:text-7xl">
                 Your CMS is ready for shadcnblocks-backed page building.
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
