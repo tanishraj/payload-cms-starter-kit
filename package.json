@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "3.85.1",
-    "@payloadcms/email-resend": "^3.85.1",
+    "@payloadcms/db-vercel-postgres": "3.85.1",
+    "@payloadcms/email-resend": "3.85.1",
     "@payloadcms/live-preview-react": "3.85.1",
     "@payloadcms/next": "3.85.1",
     "@payloadcms/richtext-lexical": "3.85.1",
@@ -63,13 +64,6 @@
   },
   "engines": {
     "node": "^18.20.2 || >=20.9.0",
-    "pnpm": "^9 || ^10"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp",
-      "esbuild",
-      "unrs-resolver"
-    ]
+    "pnpm": "^9 || ^10 || ^11"
   }
 }

@@ -27,7 +27,7 @@ const dirname = path.dirname(filename)
 const runtimeConfig = getRuntimeConfig()
 const email = createEmailAdapter(runtimeConfig)
 
-if (process.env.NODE_ENV === 'production' && !email) {
+if (runtimeConfig.deployment.isProduction && !email && runtimeConfig.email.provider === 'resend') {
   throw new Error('Missing production email configuration.')
 }
 
