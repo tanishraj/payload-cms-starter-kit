@@ -2,6 +2,10 @@
 
 ## Executive Summary
 
+This repo is already a credible marketing-site CMS foundation rather than a blank Payload install. It has real content primitives, centralized frontend resolution, managed system pages, SEO defaults, redirects, and a safer-than-basic forms pipeline. The main weakness is not missing core CMS concepts, but the gap between a capable internal starter and a productized client-copyable starter.
+
+The highest-priority work is to harden platform portability, clarify starter versus client-specific boundaries, raise the test baseline around actual CMS behaviors, and tighten editorial and operational guardrails. Block expansion should wait until the foundation is easier to clone, safer to operate, and better documented for client handoff.
+
 ## Audit Scope
 
 ### In Scope
@@ -28,15 +32,8 @@
 - `src/collections/NavigationLinks.ts` already separates reusable destinations from page layout content, which is the right direction for menus, CTAs, and synced page links.
 - Page publishing, live preview, redirect generation, and navigation synchronization already exist in the core page model, which means the starter is solving real CMS integrity problems rather than only rendering static pages.
 - The repo has an automated test entry point under `tests/int/api.int.spec.ts`, which gives the starter at least a foothold for future behavioral coverage.
+
 ## Prioritized Gap Audit
-
-Use this exact structure for every finding:
-
-- **Critical** — Short finding statement.
-  - Category: Platform Foundation
-  - Evidence: `exact/file.ts` plus the concrete behavior it demonstrates
-  - Why it matters: one sentence tying the problem to starter reliability, editor safety, or client reuse
-  - Recommended direction: one sentence describing the correction without implementation detail
 
 ### Platform Foundation
 
