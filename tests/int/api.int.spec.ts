@@ -11,10 +11,26 @@ describe('API', () => {
     payload = await getPayload({ config: payloadConfig })
   })
 
-  it('fetches users', async () => {
-    const users = await payload.find({
-      collection: 'users',
-    })
+  it('loads configured collections', async () => {
+    const [users, pages, forms] = await Promise.all([
+      payload.find({
+        collection: 'users',
+      }),
+      payload.find({
+        collection: 'pages',
+        limit: 1,
+      }),
+      payload.find({
+        collection: 'forms',
+        limit: 1,
+      }),
+    ])
+
     expect(users).toBeDefined()
+    expect(Array.isArray(users.docs)).toBe(true)
+    expect(pages).toBeDefined()
+    expect(Array.isArray(pages.docs)).toBe(true)
+    expect(forms).toBeDefined()
+    expect(Array.isArray(forms.docs)).toBe(true)
   })
 })
