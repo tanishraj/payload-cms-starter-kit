@@ -14,15 +14,17 @@ export const FormSubmissions: CollectionConfig = {
   admin: {
     group: 'Forms',
     hidden: hideFromUsersWithoutCapability('manage_form_submissions'),
-    useAsTitle: 'id',
-    defaultColumns: ['form', 'createdAt'],
-    description: 'Stored form submissions. These records are read-only after creation.',
+    useAsTitle: 'email',
+    defaultColumns: ['email', 'status', 'form', 'submittedAt'],
+    description:
+      'Stored form submissions. Submission payload fields stay read-only after creation, while operators can update workflow status.',
+    listSearchableFields: ['email'],
   },
   access: {
     create: () => false,
     delete: requireCapability('manage_form_submissions'),
     read: requireCapability('manage_form_submissions'),
-    update: () => false,
+    update: requireCapability('manage_form_submissions'),
   },
   timestamps: true,
   fields: [
@@ -31,6 +33,43 @@ export const FormSubmissions: CollectionConfig = {
       type: 'relationship',
       relationTo: 'forms',
       required: true,
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'status',
+      type: 'select',
+      defaultValue: 'new',
+      options: [
+        {
+          label: 'New',
+          value: 'new',
+        },
+        {
+          label: 'Reviewed',
+          value: 'reviewed',
+        },
+        {
+          label: 'Archived',
+          value: 'archived',
+        },
+      ],
+    },
+    {
+      name: 'email',
+      type: 'email',
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'submittedAt',
+      type: 'date',
+      required: true,
+      admin: {
+        readOnly: true,
+      },
     },
     {
       name: 'data',

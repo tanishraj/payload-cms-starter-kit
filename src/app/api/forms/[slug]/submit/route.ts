@@ -12,6 +12,7 @@ import {
   buildFormNotificationEmail,
   getNotificationRecipients,
 } from '@/lib/formNotifications'
+import { emitFormSubmissionEvent } from '@/lib/formSubmissionEvents'
 import { validateFormSubmission, type FormSubmissionValues, type SimpleFormField } from '@/lib/forms'
 import type { Form } from '@/payload-types'
 
@@ -123,19 +124,35 @@ export async function POST(
     )
   }
 
+  const submittedAt = new Date()
   const submission = await payload.create({
     collection: 'form-submissions',
     data: {
       data: normalizedData,
+      email: typeof normalizedData.email === 'string' ? normalizedData.email : undefined,
       form: form.id,
+      submittedAt: submittedAt.toISOString(),
     },
     overrideAccess: true,
   })
 
+  try {
+    await emitFormSubmissionEvent({
+      formId: form.id,
+      formSlug: form.slug,
+      submissionId: submission.id,
+      values: normalizedData,
+    })
+  } catch (error) {
+    payload.logger.error({
+      err: error,
+      msg: `Failed to emit form submission event for form "${form.slug}".`,
+    })
+  }
+
   const notificationRecipients = getNotificationRecipients(form)
 
   if (notificationRecipients.length > 0) {
-    const submittedAt = submission.createdAt ? new Date(submission.createdAt) : new Date()
     const emailContent = buildFormNotificationEmail({
       form,
       submittedAt,
