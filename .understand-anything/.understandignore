@@ -1,0 +1,25 @@
+# Dependencies and build output
+node_modules/
+.next/
+dist/
+build/
+coverage/
+out/
+
+# VCS and editor noise
+.git/
+.DS_Store
+.vscode/
+.agents/
+.codex/
+
+# Generated artifacts and lockfiles
+tsconfig.tsbuildinfo
+package-lock.json
+skills-lock.json
+src/payload-generated-schema.ts
+src/payload-types.ts
+
+# Local runtime data and binary assets
+*.db
+media/

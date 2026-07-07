@@ -1,0 +1,5727 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "payload-cms-next-tailwind-shadcn-starter-kit",
+    "languages": [
+      "typescript",
+      "css",
+      "markdown",
+      "json",
+      "yaml"
+    ],
+    "frameworks": [
+      "Next.js",
+      "Payload CMS",
+      "React",
+      "Tailwind CSS",
+      "shadcn/ui",
+      "SQLite",
+      "Vitest",
+      "Playwright"
+    ],
+    "description": "A blank template to get started with Payload 3.0",
+    "analyzedAt": "2026-07-07T09:43:25.948Z",
+    "gitCommitHash": "10be06be6dc44fc670400b012636a3eb87e68707"
+  },
+  "nodes": [
+    {
+      "id": "config:.env.example",
+      "type": "config",
+      "name": ".env",
+      "filePath": ".env.example",
+      "summary": ".env configuration file used by the application build, runtime, or developer tooling.",
+      "tags": [
+        "config"
+      ]
+    },
+    {
+      "id": "file:.gitignore",
+      "type": "file",
+      "name": ".gitignore",
+      "filePath": ".gitignore",
+      "summary": " source file in the application codebase.",
+      "tags": [
+        "code"
+      ]
+    },
+    {
+      "id": "config:.npmrc",
+      "type": "config",
+      "name": ".npmrc",
+      "filePath": ".npmrc",
+      "summary": " configuration file used by the application build, runtime, or developer tooling.",
+      "tags": [
+        "config"
+      ]
+    },
+    {
+      "id": "config:.prettierrc.json",
+      "type": "config",
+      "name": ".prettierrc",
+      "filePath": ".prettierrc.json",
+      "summary": ".prettierrc configuration file used by the application build, runtime, or developer tooling.",
+      "tags": [
+        "config"
+      ]
+    },
+    {
+      "id": "config:.yarnrc",
+      "type": "config",
+      "name": ".yarnrc",
+      "filePath": ".yarnrc",
+      "summary": " configuration file used by the application build, runtime, or developer tooling.",
+      "tags": [
+        "config"
+      ]
+    },
+    {
+      "id": "document:AGENTS.md",
+      "type": "document",
+      "name": "AGENTS",
+      "filePath": "AGENTS.md",
+      "summary": "AGENTS documentation file for the project.",
+      "tags": [
+        "docs"
+      ]
+    },
+    {
+      "id": "service:Dockerfile",
+      "type": "service",
+      "name": "Dockerfile",
+      "filePath": "Dockerfile",
+      "summary": "Container build definition for running the application in Dockerized environments.",
+      "tags": [
+        "infra"
+      ]
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README",
+      "filePath": "README.md",
+      "summary": "Primary project overview with local setup and deployment guidance for the Payload starter.",
+      "tags": [
+        "docs"
+      ]
+    },
+    {
+      "id": "document:SKILL.md",
+      "type": "document",
+      "name": "SKILL",
+      "filePath": "SKILL.md",
+      "summary": "SKILL documentation file for the project.",
+      "tags": [
+        "docs"
+      ]
+    },
+    {
+      "id": "config:components.json",
+      "type": "config",
+      "name": "Components",
+      "filePath": "components.json",
+      "summary": "Components configuration file used by the application build, runtime, or developer tooling.",
+      "tags": [
+        "config"
+      ]
+    },
+    {
+      "id": "service:docker-compose.yml",
+      "type": "service",
+      "name": "Docker Compose",
+      "filePath": "docker-compose.yml",
+      "summary": "Local orchestration file for running the application with supporting services in Docker.",
+      "tags": [
+        "infra"
+      ]
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md",
+      "type": "document",
+      "name": "2026 07 04 Headers Collection Active Global Design",
+      "filePath": "docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md",
+      "summary": "2026 07 04 Headers Collection Active Global Design documentation file for the project.",
+      "tags": [
+        "docs",
+        "superpowers",
+        "specs"
+      ]
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-04-navigation-links-and-menus-design.md",
+      "type": "document",
+      "name": "2026 07 04 Navigation Links And Menus Design",
+      "filePath": "docs/superpowers/specs/2026-07-04-navigation-links-and-menus-design.md",
+      "summary": "2026 07 04 Navigation Links And Menus Design documentation file for the project.",
+      "tags": [
+        "docs",
+        "superpowers",
+        "specs"
+      ]
+    },
+    {
+      "id": "config:eslint.config.mjs",
+      "type": "config",
+      "name": "Eslint.config",
+      "filePath": "eslint.config.mjs",
+      "summary": "Eslint.config configuration file used by the application build, runtime, or developer tooling.",
+      "tags": [
+        "config"
+      ]
+    },
+    {
+      "id": "config:next.config.ts",
+      "type": "config",
+      "name": "Next.config",
+      "filePath": "next.config.ts",
+      "summary": "Next.config configuration file used by the application build, runtime, or developer tooling.",
+      "tags": [
+        "config"
+      ]
+    },
+    {
+      "id": "config:package.json",
+      "type": "config",
+      "name": "Package",
+      "filePath": "package.json",
+      "summary": "Node package manifest describing the Next.js, Payload, React, and tooling dependencies.",
+      "tags": [
+        "config"
+      ]
+    },
+    {
+      "id": "config:playwright.config.ts",
+      "type": "config",
+      "name": "Playwright.config",
+      "filePath": "playwright.config.ts",
+      "summary": "Playwright.config configuration file used by the application build, runtime, or developer tooling.",
+      "tags": [
+        "config"
+      ]
+    },
+    {
+      "id": "config:postcss.config.mjs",
+      "type": "config",
+      "name": "Postcss.config",
+      "filePath": "postcss.config.mjs",
+      "summary": "Postcss.config configuration file used by the application build, runtime, or developer tooling.",
+      "tags": [
+        "config"
+      ]
+    },
+    {
+      "id": "file:src/access/adminCapabilities.ts",
+      "type": "file",
+      "name": "Admin Capabilities",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Admin Capabilities source file in the application codebase.",
+      "tags": [
+        "code",
+        "src",
+        "access"
+      ]
+    },
+    {
+      "id": "file:src/app/(frontend)/PageContent.tsx",
+      "type": "file",
+      "name": "Page Content",
+      "filePath": "src/app/(frontend)/PageContent.tsx",
+      "summary": "Thin frontend bridge that turns a Payload page document into rendered blocks.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "nextjs"
+      ]
+    },
+    {
+      "id": "file:src/app/(frontend)/SystemFallbackPage.tsx",
+      "type": "file",
+      "name": "System Fallback Page",
+      "filePath": "src/app/(frontend)/SystemFallbackPage.tsx",
+      "summary": "System Fallback Page Next.js app router module for frontend, admin, or API delivery.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "nextjs"
+      ]
+    },
+    {
+      "id": "file:src/app/(frontend)/[...slug]/page.tsx",
+      "type": "file",
+      "name": "Page",
+      "filePath": "src/app/(frontend)/[...slug]/page.tsx",
+      "summary": "Catch-all frontend route that resolves published pages by slug path.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "nextjs"
+      ]
+    },
+    {
+      "id": "file:src/app/(frontend)/layout.tsx",
+      "type": "file",
+      "name": "Layout",
+      "filePath": "src/app/(frontend)/layout.tsx",
+      "summary": "Layout Next.js app router module for frontend, admin, or API delivery.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "nextjs"
+      ]
+    },
+    {
+      "id": "file:src/app/(frontend)/not-found.tsx",
+      "type": "file",
+      "name": "Not Found",
+      "filePath": "src/app/(frontend)/not-found.tsx",
+      "summary": "Not Found Next.js app router module for frontend, admin, or API delivery.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "nextjs"
+      ]
+    },
+    {
+      "id": "file:src/app/(frontend)/page.tsx",
+      "type": "file",
+      "name": "Page",
+      "filePath": "src/app/(frontend)/page.tsx",
+      "summary": "Homepage entry that resolves system-mode fallbacks and renders CMS-managed page content.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "nextjs"
+      ]
+    },
+    {
+      "id": "file:src/app/(frontend)/pageData.ts",
+      "type": "file",
+      "name": "Page Data",
+      "filePath": "src/app/(frontend)/pageData.ts",
+      "summary": "Server-side page data layer for fetching pages, SEO state, and system fallback behavior.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "nextjs"
+      ]
+    },
+    {
+      "id": "file:src/app/(frontend)/preview/page/[id]/page.tsx",
+      "type": "file",
+      "name": "Page",
+      "filePath": "src/app/(frontend)/preview/page/[id]/page.tsx",
+      "summary": "Page Next.js app router module for frontend, admin, or API delivery.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "preview",
+        "page",
+        "nextjs"
+      ]
+    },
+    {
+      "id": "file:src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "type": "file",
+      "name": "Not Found",
+      "filePath": "src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "summary": "Not Found Next.js app router module for frontend, admin, or API delivery.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "admin",
+        "nextjs"
+      ]
+    },
+    {
+      "id": "file:src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "type": "file",
+      "name": "Page",
+      "filePath": "src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "summary": "Page Next.js app router module for frontend, admin, or API delivery.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "admin",
+        "nextjs"
+      ]
+    },
+    {
+      "id": "file:src/app/(payload)/admin/importMap.js",
+      "type": "file",
+      "name": "Import Map",
+      "filePath": "src/app/(payload)/admin/importMap.js",
+      "summary": "Import Map Next.js app router module for frontend, admin, or API delivery.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "admin",
+        "nextjs"
+      ]
+    },
+    {
+      "id": "endpoint:src/app/(payload)/api/[...slug]/route.ts",
+      "type": "endpoint",
+      "name": "Route",
+      "filePath": "src/app/(payload)/api/[...slug]/route.ts",
+      "summary": "Route Next.js app router module for frontend, admin, or API delivery.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "api",
+        "nextjs",
+        "route"
+      ]
+    },
+    {
+      "id": "endpoint:src/app/(payload)/api/graphql-playground/route.ts",
+      "type": "endpoint",
+      "name": "Route",
+      "filePath": "src/app/(payload)/api/graphql-playground/route.ts",
+      "summary": "Route Next.js app router module for frontend, admin, or API delivery.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "api",
+        "graphql-playground",
+        "nextjs",
+        "route"
+      ]
+    },
+    {
+      "id": "endpoint:src/app/(payload)/api/graphql/route.ts",
+      "type": "endpoint",
+      "name": "Route",
+      "filePath": "src/app/(payload)/api/graphql/route.ts",
+      "summary": "Route Next.js app router module for frontend, admin, or API delivery.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "api",
+        "graphql",
+        "nextjs",
+        "route"
+      ]
+    },
+    {
+      "id": "file:src/app/(payload)/custom.scss",
+      "type": "file",
+      "name": "Custom",
+      "filePath": "src/app/(payload)/custom.scss",
+      "summary": "Custom Next.js app router module for frontend, admin, or API delivery.",
+      "tags": [
+        "markup",
+        "src",
+        "app",
+        "nextjs"
+      ]
+    },
+    {
+      "id": "file:src/app/(payload)/layout.tsx",
+      "type": "file",
+      "name": "Layout",
+      "filePath": "src/app/(payload)/layout.tsx",
+      "summary": "Layout Next.js app router module for frontend, admin, or API delivery.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "nextjs"
+      ]
+    },
+    {
+      "id": "endpoint:src/app/api/forms/[slug]/submit/route.ts",
+      "type": "endpoint",
+      "name": "Route",
+      "filePath": "src/app/api/forms/[slug]/submit/route.ts",
+      "summary": "Public form submission endpoint with spam checks, validation, persistence, and notification email delivery.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "api",
+        "forms",
+        "submit",
+        "nextjs",
+        "route"
+      ]
+    },
+    {
+      "id": "endpoint:src/app/my-route/route.ts",
+      "type": "endpoint",
+      "name": "Route",
+      "filePath": "src/app/my-route/route.ts",
+      "summary": "Route Next.js app router module for frontend, admin, or API delivery.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "my-route",
+        "nextjs",
+        "route"
+      ]
+    },
+    {
+      "id": "endpoint:src/app/robots.ts",
+      "type": "endpoint",
+      "name": "Robots",
+      "filePath": "src/app/robots.ts",
+      "summary": "Robots Next.js app router module for frontend, admin, or API delivery.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "nextjs",
+        "route"
+      ]
+    },
+    {
+      "id": "endpoint:src/app/sitemap.ts",
+      "type": "endpoint",
+      "name": "Sitemap",
+      "filePath": "src/app/sitemap.ts",
+      "summary": "Sitemap Next.js app router module for frontend, admin, or API delivery.",
+      "tags": [
+        "code",
+        "src",
+        "app",
+        "nextjs",
+        "route"
+      ]
+    },
+    {
+      "id": "file:src/blocks/Footer2/Component.tsx",
+      "type": "file",
+      "name": "Component",
+      "filePath": "src/blocks/Footer2/Component.tsx",
+      "summary": "Component React renderer for a CMS-managed block.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "Footer2",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/Footer2/config.ts",
+      "type": "file",
+      "name": "Config",
+      "filePath": "src/blocks/Footer2/config.ts",
+      "summary": "Config Payload block schema used to configure reusable page sections.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "Footer2",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/Form/ClientForm.tsx",
+      "type": "file",
+      "name": "Client Form",
+      "filePath": "src/blocks/Form/ClientForm.tsx",
+      "summary": "Client Form source file in the application codebase.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "Form",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/Form/Component.tsx",
+      "type": "file",
+      "name": "Component",
+      "filePath": "src/blocks/Form/Component.tsx",
+      "summary": "Component React renderer for a CMS-managed block.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "Form",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/Form/config.ts",
+      "type": "file",
+      "name": "Config",
+      "filePath": "src/blocks/Form/config.ts",
+      "summary": "Config Payload block schema used to configure reusable page sections.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "Form",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "type": "file",
+      "name": "Component",
+      "filePath": "src/blocks/HeaderNavbar12/Component.tsx",
+      "summary": "Component React renderer for a CMS-managed block.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "HeaderNavbar12",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/HeaderNavbar12/config.ts",
+      "type": "file",
+      "name": "Config",
+      "filePath": "src/blocks/HeaderNavbar12/config.ts",
+      "summary": "Config Payload block schema used to configure reusable page sections.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "HeaderNavbar12",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/Hero36/Component.tsx",
+      "type": "file",
+      "name": "Component",
+      "filePath": "src/blocks/Hero36/Component.tsx",
+      "summary": "Component React renderer for a CMS-managed block.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "Hero36",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/Hero36/config.ts",
+      "type": "file",
+      "name": "Config",
+      "filePath": "src/blocks/Hero36/config.ts",
+      "summary": "Config Payload block schema used to configure reusable page sections.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "Hero36",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/RenderBlocks.tsx",
+      "type": "file",
+      "name": "Render Blocks",
+      "filePath": "src/blocks/RenderBlocks.tsx",
+      "summary": "Render Blocks source file in the application codebase.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/System404/Component.tsx",
+      "type": "file",
+      "name": "Component",
+      "filePath": "src/blocks/System404/Component.tsx",
+      "summary": "Component React renderer for a CMS-managed block.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "System404",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/System404/config.ts",
+      "type": "file",
+      "name": "Config",
+      "filePath": "src/blocks/System404/config.ts",
+      "summary": "Config Payload block schema used to configure reusable page sections.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "System404",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/SystemComingSoon/Component.tsx",
+      "type": "file",
+      "name": "Component",
+      "filePath": "src/blocks/SystemComingSoon/Component.tsx",
+      "summary": "Component React renderer for a CMS-managed block.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "SystemComingSoon",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/SystemComingSoon/config.ts",
+      "type": "file",
+      "name": "Config",
+      "filePath": "src/blocks/SystemComingSoon/config.ts",
+      "summary": "Config Payload block schema used to configure reusable page sections.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "SystemComingSoon",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/SystemMaintenance/Component.tsx",
+      "type": "file",
+      "name": "Component",
+      "filePath": "src/blocks/SystemMaintenance/Component.tsx",
+      "summary": "Component React renderer for a CMS-managed block.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "SystemMaintenance",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/SystemMaintenance/config.ts",
+      "type": "file",
+      "name": "Config",
+      "filePath": "src/blocks/SystemMaintenance/config.ts",
+      "summary": "Config Payload block schema used to configure reusable page sections.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "SystemMaintenance",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/renderFooter.tsx",
+      "type": "file",
+      "name": "Render Footer",
+      "filePath": "src/blocks/renderFooter.tsx",
+      "summary": "Render Footer helper that resolves CMS-managed navigation content into frontend components.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/renderHeader.tsx",
+      "type": "file",
+      "name": "Render Header",
+      "filePath": "src/blocks/renderHeader.tsx",
+      "summary": "Render Header helper that resolves CMS-managed navigation content into frontend components.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/blocks/systemPageFields.ts",
+      "type": "file",
+      "name": "System Page Fields",
+      "filePath": "src/blocks/systemPageFields.ts",
+      "summary": "System Page Fields source file in the application codebase.",
+      "tags": [
+        "code",
+        "src",
+        "blocks",
+        "block"
+      ]
+    },
+    {
+      "id": "file:src/collections/Footers.ts",
+      "type": "file",
+      "name": "Footers",
+      "filePath": "src/collections/Footers.ts",
+      "summary": "Footers Payload collection definition for content modeling, admin behavior, and access rules.",
+      "tags": [
+        "code",
+        "src",
+        "collections",
+        "payload"
+      ]
+    },
+    {
+      "id": "file:src/collections/FormSubmissions.ts",
+      "type": "file",
+      "name": "Form Submissions",
+      "filePath": "src/collections/FormSubmissions.ts",
+      "summary": "Form Submissions Payload collection definition for content modeling, admin behavior, and access rules.",
+      "tags": [
+        "code",
+        "src",
+        "collections",
+        "payload"
+      ]
+    },
+    {
+      "id": "file:src/collections/Forms.ts",
+      "type": "file",
+      "name": "Forms",
+      "filePath": "src/collections/Forms.ts",
+      "summary": "Forms Payload collection definition for content modeling, admin behavior, and access rules.",
+      "tags": [
+        "code",
+        "src",
+        "collections",
+        "payload"
+      ]
+    },
+    {
+      "id": "file:src/collections/Headers.ts",
+      "type": "file",
+      "name": "Headers",
+      "filePath": "src/collections/Headers.ts",
+      "summary": "Headers Payload collection definition for content modeling, admin behavior, and access rules.",
+      "tags": [
+        "code",
+        "src",
+        "collections",
+        "payload"
+      ]
+    },
+    {
+      "id": "file:src/collections/Media.ts",
+      "type": "file",
+      "name": "Media",
+      "filePath": "src/collections/Media.ts",
+      "summary": "Media Payload collection definition for content modeling, admin behavior, and access rules.",
+      "tags": [
+        "code",
+        "src",
+        "collections",
+        "payload"
+      ]
+    },
+    {
+      "id": "file:src/collections/NavigationLinks.ts",
+      "type": "file",
+      "name": "Navigation Links",
+      "filePath": "src/collections/NavigationLinks.ts",
+      "summary": "Navigation Links Payload collection definition for content modeling, admin behavior, and access rules.",
+      "tags": [
+        "code",
+        "src",
+        "collections",
+        "payload"
+      ]
+    },
+    {
+      "id": "file:src/collections/Pages.ts",
+      "type": "file",
+      "name": "Pages",
+      "filePath": "src/collections/Pages.ts",
+      "summary": "Pages Payload collection definition for content modeling, admin behavior, and access rules.",
+      "tags": [
+        "code",
+        "src",
+        "collections",
+        "payload"
+      ]
+    },
+    {
+      "id": "file:src/collections/Redirects.ts",
+      "type": "file",
+      "name": "Redirects",
+      "filePath": "src/collections/Redirects.ts",
+      "summary": "Redirects Payload collection definition for content modeling, admin behavior, and access rules.",
+      "tags": [
+        "code",
+        "src",
+        "collections",
+        "payload"
+      ]
+    },
+    {
+      "id": "file:src/collections/SystemPages.ts",
+      "type": "file",
+      "name": "System Pages",
+      "filePath": "src/collections/SystemPages.ts",
+      "summary": "System Pages Payload collection definition for content modeling, admin behavior, and access rules.",
+      "tags": [
+        "code",
+        "src",
+        "collections",
+        "payload"
+      ]
+    },
+    {
+      "id": "file:src/collections/Users.ts",
+      "type": "file",
+      "name": "Users",
+      "filePath": "src/collections/Users.ts",
+      "summary": "Users Payload collection definition for content modeling, admin behavior, and access rules.",
+      "tags": [
+        "code",
+        "src",
+        "collections",
+        "payload"
+      ]
+    },
+    {
+      "id": "file:src/components/footer2.tsx",
+      "type": "file",
+      "name": "Footer2",
+      "filePath": "src/components/footer2.tsx",
+      "summary": "Footer2 reusable React component used by blocks, layouts, or system pages.",
+      "tags": [
+        "code",
+        "src",
+        "components"
+      ]
+    },
+    {
+      "id": "file:src/components/hero36.tsx",
+      "type": "file",
+      "name": "Hero36",
+      "filePath": "src/components/hero36.tsx",
+      "summary": "Hero36 reusable React component used by blocks, layouts, or system pages.",
+      "tags": [
+        "code",
+        "src",
+        "components"
+      ]
+    },
+    {
+      "id": "file:src/components/live-preview/PageLivePreview.tsx",
+      "type": "file",
+      "name": "Page Live Preview",
+      "filePath": "src/components/live-preview/PageLivePreview.tsx",
+      "summary": "Page Live Preview reusable React component used by blocks, layouts, or system pages.",
+      "tags": [
+        "code",
+        "src",
+        "components",
+        "live-preview"
+      ]
+    },
+    {
+      "id": "file:src/components/navbar12.tsx",
+      "type": "file",
+      "name": "Navbar12",
+      "filePath": "src/components/navbar12.tsx",
+      "summary": "Navbar12 reusable React component used by blocks, layouts, or system pages.",
+      "tags": [
+        "code",
+        "src",
+        "components"
+      ]
+    },
+    {
+      "id": "file:src/components/shadcnblocks/logo.tsx",
+      "type": "file",
+      "name": "Logo",
+      "filePath": "src/components/shadcnblocks/logo.tsx",
+      "summary": "Logo reusable React component used by blocks, layouts, or system pages.",
+      "tags": [
+        "code",
+        "src",
+        "components",
+        "shadcnblocks"
+      ]
+    },
+    {
+      "id": "file:src/components/system-page-hero.tsx",
+      "type": "file",
+      "name": "System Page Hero",
+      "filePath": "src/components/system-page-hero.tsx",
+      "summary": "System Page Hero reusable React component used by blocks, layouts, or system pages.",
+      "tags": [
+        "code",
+        "src",
+        "components"
+      ]
+    },
+    {
+      "id": "file:src/components/ui/accordion.tsx",
+      "type": "file",
+      "name": "Accordion",
+      "filePath": "src/components/ui/accordion.tsx",
+      "summary": "Accordion reusable UI primitive in the local design system layer.",
+      "tags": [
+        "code",
+        "src",
+        "components",
+        "ui"
+      ]
+    },
+    {
+      "id": "file:src/components/ui/badge.tsx",
+      "type": "file",
+      "name": "Badge",
+      "filePath": "src/components/ui/badge.tsx",
+      "summary": "Badge reusable UI primitive in the local design system layer.",
+      "tags": [
+        "code",
+        "src",
+        "components",
+        "ui"
+      ]
+    },
+    {
+      "id": "file:src/components/ui/button.tsx",
+      "type": "file",
+      "name": "Button",
+      "filePath": "src/components/ui/button.tsx",
+      "summary": "Button reusable UI primitive in the local design system layer.",
+      "tags": [
+        "code",
+        "src",
+        "components",
+        "ui"
+      ]
+    },
+    {
+      "id": "file:src/components/ui/context-menu.tsx",
+      "type": "file",
+      "name": "Context Menu",
+      "filePath": "src/components/ui/context-menu.tsx",
+      "summary": "Context Menu reusable UI primitive in the local design system layer.",
+      "tags": [
+        "code",
+        "src",
+        "components",
+        "ui"
+      ]
+    },
+    {
+      "id": "file:src/components/ui/navigation-menu.tsx",
+      "type": "file",
+      "name": "Navigation Menu",
+      "filePath": "src/components/ui/navigation-menu.tsx",
+      "summary": "Navigation Menu reusable UI primitive in the local design system layer.",
+      "tags": [
+        "code",
+        "src",
+        "components",
+        "ui"
+      ]
+    },
+    {
+      "id": "file:src/components/ui/separator.tsx",
+      "type": "file",
+      "name": "Separator",
+      "filePath": "src/components/ui/separator.tsx",
+      "summary": "Separator reusable UI primitive in the local design system layer.",
+      "tags": [
+        "code",
+        "src",
+        "components",
+        "ui"
+      ]
+    },
+    {
+      "id": "file:src/components/ui/sheet.tsx",
+      "type": "file",
+      "name": "Sheet",
+      "filePath": "src/components/ui/sheet.tsx",
+      "summary": "Sheet reusable UI primitive in the local design system layer.",
+      "tags": [
+        "code",
+        "src",
+        "components",
+        "ui"
+      ]
+    },
+    {
+      "id": "file:src/fields/cmsLinkFields.ts",
+      "type": "file",
+      "name": "Cms Link Fields",
+      "filePath": "src/fields/cmsLinkFields.ts",
+      "summary": "Cms Link Fields shared field configuration reused across Payload collections or globals.",
+      "tags": [
+        "code",
+        "src",
+        "fields"
+      ]
+    },
+    {
+      "id": "file:src/globals/PageSettings.ts",
+      "type": "file",
+      "name": "Page Settings",
+      "filePath": "src/globals/PageSettings.ts",
+      "summary": "Page Settings Payload global configuration for site-wide settings managed through the CMS.",
+      "tags": [
+        "code",
+        "src",
+        "globals",
+        "payload"
+      ]
+    },
+    {
+      "id": "file:src/globals/SEOSettings.ts",
+      "type": "file",
+      "name": "SEOSettings",
+      "filePath": "src/globals/SEOSettings.ts",
+      "summary": "SEOSettings Payload global configuration for site-wide settings managed through the CMS.",
+      "tags": [
+        "code",
+        "src",
+        "globals",
+        "payload"
+      ]
+    },
+    {
+      "id": "file:src/globals/SiteSettings.ts",
+      "type": "file",
+      "name": "Site Settings",
+      "filePath": "src/globals/SiteSettings.ts",
+      "summary": "Site Settings Payload global configuration for site-wide settings managed through the CMS.",
+      "tags": [
+        "code",
+        "src",
+        "globals",
+        "payload"
+      ]
+    },
+    {
+      "id": "file:src/globals/ThemeSettings.ts",
+      "type": "file",
+      "name": "Theme Settings",
+      "filePath": "src/globals/ThemeSettings.ts",
+      "summary": "Theme Settings Payload global configuration for site-wide settings managed through the CMS.",
+      "tags": [
+        "code",
+        "src",
+        "globals",
+        "payload"
+      ]
+    },
+    {
+      "id": "file:src/hooks/createRedirectsForChangedPagePath.ts",
+      "type": "file",
+      "name": "Create Redirects For Changed Page Path",
+      "filePath": "src/hooks/createRedirectsForChangedPagePath.ts",
+      "summary": "Create Redirects For Changed Page Path hook that coordinates CMS side effects and publication rules.",
+      "tags": [
+        "code",
+        "src",
+        "hooks",
+        "hook"
+      ]
+    },
+    {
+      "id": "file:src/hooks/migrateLegacyReusableLinks.ts",
+      "type": "file",
+      "name": "Migrate Legacy Reusable Links",
+      "filePath": "src/hooks/migrateLegacyReusableLinks.ts",
+      "summary": "Migrate Legacy Reusable Links hook that coordinates CMS side effects and publication rules.",
+      "tags": [
+        "code",
+        "src",
+        "hooks",
+        "hook"
+      ]
+    },
+    {
+      "id": "file:src/hooks/populatePageUrlPreview.ts",
+      "type": "file",
+      "name": "Populate Page Url Preview",
+      "filePath": "src/hooks/populatePageUrlPreview.ts",
+      "summary": "Populate Page Url Preview hook that coordinates CMS side effects and publication rules.",
+      "tags": [
+        "code",
+        "src",
+        "hooks",
+        "hook"
+      ]
+    },
+    {
+      "id": "file:src/hooks/preventReferencedPageUnpublish.ts",
+      "type": "file",
+      "name": "Prevent Referenced Page Unpublish",
+      "filePath": "src/hooks/preventReferencedPageUnpublish.ts",
+      "summary": "Prevent Referenced Page Unpublish hook that coordinates CMS side effects and publication rules.",
+      "tags": [
+        "code",
+        "src",
+        "hooks",
+        "hook"
+      ]
+    },
+    {
+      "id": "file:src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "type": "file",
+      "name": "Prevent Referenced System Page Invalidation",
+      "filePath": "src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "summary": "Prevent Referenced System Page Invalidation hook that coordinates CMS side effects and publication rules.",
+      "tags": [
+        "code",
+        "src",
+        "hooks",
+        "hook"
+      ]
+    },
+    {
+      "id": "file:src/hooks/syncNavigationLinkForPage.ts",
+      "type": "file",
+      "name": "Sync Navigation Link For Page",
+      "filePath": "src/hooks/syncNavigationLinkForPage.ts",
+      "summary": "Sync Navigation Link For Page hook that coordinates CMS side effects and publication rules.",
+      "tags": [
+        "code",
+        "src",
+        "hooks",
+        "hook"
+      ]
+    },
+    {
+      "id": "file:src/lib/cmsLinks.ts",
+      "type": "file",
+      "name": "Cms Links",
+      "filePath": "src/lib/cmsLinks.ts",
+      "summary": "Cms Links shared domain utility used by collections, routes, or frontend rendering.",
+      "tags": [
+        "code",
+        "src",
+        "lib",
+        "utility"
+      ]
+    },
+    {
+      "id": "file:src/lib/formNotifications.ts",
+      "type": "file",
+      "name": "Form Notifications",
+      "filePath": "src/lib/formNotifications.ts",
+      "summary": "Form Notifications shared domain utility used by collections, routes, or frontend rendering.",
+      "tags": [
+        "code",
+        "src",
+        "lib",
+        "utility"
+      ]
+    },
+    {
+      "id": "file:src/lib/formSpamProtection.ts",
+      "type": "file",
+      "name": "Form Spam Protection",
+      "filePath": "src/lib/formSpamProtection.ts",
+      "summary": "Form Spam Protection shared domain utility used by collections, routes, or frontend rendering.",
+      "tags": [
+        "code",
+        "src",
+        "lib",
+        "utility"
+      ]
+    },
+    {
+      "id": "file:src/lib/forms.ts",
+      "type": "file",
+      "name": "Forms",
+      "filePath": "src/lib/forms.ts",
+      "summary": "Forms shared domain utility used by collections, routes, or frontend rendering.",
+      "tags": [
+        "code",
+        "src",
+        "lib",
+        "utility"
+      ]
+    },
+    {
+      "id": "file:src/lib/media.ts",
+      "type": "file",
+      "name": "Media",
+      "filePath": "src/lib/media.ts",
+      "summary": "Media shared domain utility used by collections, routes, or frontend rendering.",
+      "tags": [
+        "code",
+        "src",
+        "lib",
+        "utility"
+      ]
+    },
+    {
+      "id": "file:src/lib/navigationLinkSync.ts",
+      "type": "file",
+      "name": "Navigation Link Sync",
+      "filePath": "src/lib/navigationLinkSync.ts",
+      "summary": "Navigation Link Sync shared domain utility used by collections, routes, or frontend rendering.",
+      "tags": [
+        "code",
+        "src",
+        "lib",
+        "utility"
+      ]
+    },
+    {
+      "id": "file:src/lib/navigationLinks.ts",
+      "type": "file",
+      "name": "Navigation Links",
+      "filePath": "src/lib/navigationLinks.ts",
+      "summary": "Navigation Links shared domain utility used by collections, routes, or frontend rendering.",
+      "tags": [
+        "code",
+        "src",
+        "lib",
+        "utility"
+      ]
+    },
+    {
+      "id": "file:src/lib/navigationStructures.ts",
+      "type": "file",
+      "name": "Navigation Structures",
+      "filePath": "src/lib/navigationStructures.ts",
+      "summary": "Navigation Structures shared domain utility used by collections, routes, or frontend rendering.",
+      "tags": [
+        "code",
+        "src",
+        "lib",
+        "utility"
+      ]
+    },
+    {
+      "id": "file:src/lib/pagePaths.ts",
+      "type": "file",
+      "name": "Page Paths",
+      "filePath": "src/lib/pagePaths.ts",
+      "summary": "Page Paths shared domain utility used by collections, routes, or frontend rendering.",
+      "tags": [
+        "code",
+        "src",
+        "lib",
+        "utility"
+      ]
+    },
+    {
+      "id": "file:src/lib/redirects.ts",
+      "type": "file",
+      "name": "Redirects",
+      "filePath": "src/lib/redirects.ts",
+      "summary": "Redirects shared domain utility used by collections, routes, or frontend rendering.",
+      "tags": [
+        "code",
+        "src",
+        "lib",
+        "utility"
+      ]
+    },
+    {
+      "id": "file:src/lib/seo.ts",
+      "type": "file",
+      "name": "Seo",
+      "filePath": "src/lib/seo.ts",
+      "summary": "Seo shared domain utility used by collections, routes, or frontend rendering.",
+      "tags": [
+        "code",
+        "src",
+        "lib",
+        "utility"
+      ]
+    },
+    {
+      "id": "file:src/lib/siteUrl.ts",
+      "type": "file",
+      "name": "Site Url",
+      "filePath": "src/lib/siteUrl.ts",
+      "summary": "Site Url shared domain utility used by collections, routes, or frontend rendering.",
+      "tags": [
+        "code",
+        "src",
+        "lib",
+        "utility"
+      ]
+    },
+    {
+      "id": "file:src/lib/systemPageTypes.ts",
+      "type": "file",
+      "name": "System Page Types",
+      "filePath": "src/lib/systemPageTypes.ts",
+      "summary": "System Page Types shared domain utility used by collections, routes, or frontend rendering.",
+      "tags": [
+        "code",
+        "src",
+        "lib",
+        "utility"
+      ]
+    },
+    {
+      "id": "file:src/lib/utils.ts",
+      "type": "file",
+      "name": "Utils",
+      "filePath": "src/lib/utils.ts",
+      "summary": "Utils shared domain utility used by collections, routes, or frontend rendering.",
+      "tags": [
+        "code",
+        "src",
+        "lib",
+        "utility"
+      ]
+    },
+    {
+      "id": "file:src/payload.config.ts",
+      "type": "file",
+      "name": "Payload.config",
+      "filePath": "src/payload.config.ts",
+      "summary": "Central Payload configuration wiring collections, globals, SQLite storage, email delivery, the rich text editor, and plugins.",
+      "tags": [
+        "code",
+        "src",
+        "entry"
+      ]
+    },
+    {
+      "id": "file:src/plugins/withTrash.ts",
+      "type": "file",
+      "name": "With Trash",
+      "filePath": "src/plugins/withTrash.ts",
+      "summary": "With Trash custom Payload plugin extension.",
+      "tags": [
+        "code",
+        "src",
+        "plugins"
+      ]
+    },
+    {
+      "id": "file:src/styles/globals.css",
+      "type": "file",
+      "name": "Globals",
+      "filePath": "src/styles/globals.css",
+      "summary": "Globals shared stylesheet for the frontend shell.",
+      "tags": [
+        "markup",
+        "src",
+        "styles"
+      ]
+    },
+    {
+      "id": "file:src/styles/themes/theme-blue.css",
+      "type": "file",
+      "name": "Theme Blue",
+      "filePath": "src/styles/themes/theme-blue.css",
+      "summary": "Theme Blue theme stylesheet defining one of the available presentation variants.",
+      "tags": [
+        "markup",
+        "src",
+        "styles",
+        "themes"
+      ]
+    },
+    {
+      "id": "file:src/styles/themes/theme-default.css",
+      "type": "file",
+      "name": "Theme Default",
+      "filePath": "src/styles/themes/theme-default.css",
+      "summary": "Theme Default theme stylesheet defining one of the available presentation variants.",
+      "tags": [
+        "markup",
+        "src",
+        "styles",
+        "themes"
+      ]
+    },
+    {
+      "id": "file:src/styles/themes/theme-sera.css",
+      "type": "file",
+      "name": "Theme Sera",
+      "filePath": "src/styles/themes/theme-sera.css",
+      "summary": "Theme Sera theme stylesheet defining one of the available presentation variants.",
+      "tags": [
+        "markup",
+        "src",
+        "styles",
+        "themes"
+      ]
+    },
+    {
+      "id": "config:test.env",
+      "type": "config",
+      "name": "Test",
+      "filePath": "test.env",
+      "summary": "Test configuration file used by the application build, runtime, or developer tooling.",
+      "tags": [
+        "config",
+        "test"
+      ]
+    },
+    {
+      "id": "file:tests/e2e/admin.e2e.spec.ts",
+      "type": "file",
+      "name": "Admin.e2e.spec",
+      "filePath": "tests/e2e/admin.e2e.spec.ts",
+      "summary": "Admin.e2e.spec source file in the application codebase.",
+      "tags": [
+        "code",
+        "tests",
+        "e2e",
+        "test"
+      ]
+    },
+    {
+      "id": "file:tests/e2e/frontend.e2e.spec.ts",
+      "type": "file",
+      "name": "Frontend.e2e.spec",
+      "filePath": "tests/e2e/frontend.e2e.spec.ts",
+      "summary": "Frontend.e2e.spec source file in the application codebase.",
+      "tags": [
+        "code",
+        "tests",
+        "e2e",
+        "test"
+      ]
+    },
+    {
+      "id": "file:tests/helpers/login.ts",
+      "type": "file",
+      "name": "Login",
+      "filePath": "tests/helpers/login.ts",
+      "summary": "Login source file in the application codebase.",
+      "tags": [
+        "code",
+        "tests",
+        "helpers"
+      ]
+    },
+    {
+      "id": "file:tests/helpers/seedUser.ts",
+      "type": "file",
+      "name": "Seed User",
+      "filePath": "tests/helpers/seedUser.ts",
+      "summary": "Seed User source file in the application codebase.",
+      "tags": [
+        "code",
+        "tests",
+        "helpers"
+      ]
+    },
+    {
+      "id": "file:tests/int/adminCapabilities.int.spec.ts",
+      "type": "file",
+      "name": "Admin Capabilities.int.spec",
+      "filePath": "tests/int/adminCapabilities.int.spec.ts",
+      "summary": "Admin Capabilities.int.spec source file in the application codebase.",
+      "tags": [
+        "code",
+        "tests",
+        "int",
+        "test"
+      ]
+    },
+    {
+      "id": "file:tests/int/api.int.spec.ts",
+      "type": "file",
+      "name": "Api.int.spec",
+      "filePath": "tests/int/api.int.spec.ts",
+      "summary": "Api.int.spec source file in the application codebase.",
+      "tags": [
+        "code",
+        "tests",
+        "int",
+        "test"
+      ]
+    },
+    {
+      "id": "file:tests/int/redirects.int.spec.ts",
+      "type": "file",
+      "name": "Redirects.int.spec",
+      "filePath": "tests/int/redirects.int.spec.ts",
+      "summary": "Redirects.int.spec source file in the application codebase.",
+      "tags": [
+        "code",
+        "tests",
+        "int",
+        "test"
+      ]
+    },
+    {
+      "id": "config:tsconfig.json",
+      "type": "config",
+      "name": "Tsconfig",
+      "filePath": "tsconfig.json",
+      "summary": "Tsconfig configuration file used by the application build, runtime, or developer tooling.",
+      "tags": [
+        "config"
+      ]
+    },
+    {
+      "id": "config:vitest.config.mts",
+      "type": "config",
+      "name": "Vitest.config",
+      "filePath": "vitest.config.mts",
+      "summary": "Vitest.config configuration file used by the application build, runtime, or developer tooling.",
+      "tags": [
+        "config",
+        "test"
+      ]
+    },
+    {
+      "id": "config:vitest.setup.ts",
+      "type": "config",
+      "name": "Vitest.setup",
+      "filePath": "vitest.setup.ts",
+      "summary": "Vitest.setup configuration file used by the application build, runtime, or developer tooling.",
+      "tags": [
+        "config",
+        "test"
+      ]
+    },
+    {
+      "id": "function:eslint.config.mjs:default",
+      "type": "function",
+      "name": "default",
+      "filePath": "eslint.config.mjs",
+      "summary": "Default export.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:next.config.ts:default",
+      "type": "function",
+      "name": "default",
+      "filePath": "next.config.ts",
+      "summary": "Default export.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:playwright.config.ts:default",
+      "type": "function",
+      "name": "default",
+      "filePath": "playwright.config.ts",
+      "summary": "Default export.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:postcss.config.mjs:default",
+      "type": "function",
+      "name": "default",
+      "filePath": "postcss.config.mjs",
+      "summary": "Default export.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/access/adminCapabilities.ts:adminRoleOptions",
+      "type": "class",
+      "name": "adminRoleOptions",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Exported value adminRoleOptions.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/access/adminCapabilities.ts:adminCapabilityFieldOptions",
+      "type": "class",
+      "name": "adminCapabilityFieldOptions",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Exported value adminCapabilityFieldOptions.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/access/adminCapabilities.ts:allAdminCapabilities",
+      "type": "class",
+      "name": "allAdminCapabilities",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Exported value allAdminCapabilities.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/access/adminCapabilities.ts:adminCapabilityCheckboxFields",
+      "type": "class",
+      "name": "adminCapabilityCheckboxFields",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Exported value adminCapabilityCheckboxFields.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:isAdminRole",
+      "type": "function",
+      "name": "isAdminRole",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Exported function isAdminRole.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:normalizeAdminRole",
+      "type": "function",
+      "name": "normalizeAdminRole",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Exported function normalizeAdminRole.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:sanitizeAdminCapabilities",
+      "type": "function",
+      "name": "sanitizeAdminCapabilities",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Exported function sanitizeAdminCapabilities.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:toAdminCapabilitiesMap",
+      "type": "function",
+      "name": "toAdminCapabilitiesMap",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Exported function toAdminCapabilitiesMap.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:isAdminUser",
+      "type": "function",
+      "name": "isAdminUser",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Exported function isAdminUser.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:hasAdminCapability",
+      "type": "function",
+      "name": "hasAdminCapability",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Exported function hasAdminCapability.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:adminOnlyAccess",
+      "type": "function",
+      "name": "adminOnlyAccess",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Exported function adminOnlyAccess.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:adminOrFirstUserAccess",
+      "type": "function",
+      "name": "adminOrFirstUserAccess",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Exported function adminOrFirstUserAccess.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:requireCapability",
+      "type": "function",
+      "name": "requireCapability",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Exported function requireCapability.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:allowPublicReadOrCapability",
+      "type": "function",
+      "name": "allowPublicReadOrCapability",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Exported function allowPublicReadOrCapability.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:hideFromNonAdmin",
+      "type": "function",
+      "name": "hideFromNonAdmin",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Exported function hideFromNonAdmin.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:hideFromUsersWithoutCapability",
+      "type": "function",
+      "name": "hideFromUsersWithoutCapability",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Exported function hideFromUsersWithoutCapability.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/PageContent.tsx:PageContent",
+      "type": "function",
+      "name": "PageContent",
+      "filePath": "src/app/(frontend)/PageContent.tsx",
+      "summary": "Exported function PageContent.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/SystemFallbackPage.tsx:SystemModeFallbackPage",
+      "type": "function",
+      "name": "SystemModeFallbackPage",
+      "filePath": "src/app/(frontend)/SystemFallbackPage.tsx",
+      "summary": "Exported function SystemModeFallbackPage.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/SystemFallbackPage.tsx:DefaultNotFoundPage",
+      "type": "function",
+      "name": "DefaultNotFoundPage",
+      "filePath": "src/app/(frontend)/SystemFallbackPage.tsx",
+      "summary": "Exported function DefaultNotFoundPage.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/[...slug]/page.tsx:generateMetadata",
+      "type": "function",
+      "name": "generateMetadata",
+      "filePath": "src/app/(frontend)/[...slug]/page.tsx",
+      "summary": "Exported function generateMetadata.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/[...slug]/page.tsx:CmsPage",
+      "type": "function",
+      "name": "CmsPage",
+      "filePath": "src/app/(frontend)/[...slug]/page.tsx",
+      "summary": "Exported function CmsPage.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "class:src/app/(frontend)/layout.tsx:dynamic",
+      "type": "class",
+      "name": "dynamic",
+      "filePath": "src/app/(frontend)/layout.tsx",
+      "summary": "Exported value dynamic.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/layout.tsx:generateMetadata",
+      "type": "function",
+      "name": "generateMetadata",
+      "filePath": "src/app/(frontend)/layout.tsx",
+      "summary": "Exported function generateMetadata.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/layout.tsx:RootLayout",
+      "type": "function",
+      "name": "RootLayout",
+      "filePath": "src/app/(frontend)/layout.tsx",
+      "summary": "Exported function RootLayout.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/not-found.tsx:NotFoundPage",
+      "type": "function",
+      "name": "NotFoundPage",
+      "filePath": "src/app/(frontend)/not-found.tsx",
+      "summary": "Exported function NotFoundPage.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/page.tsx:generateMetadata",
+      "type": "function",
+      "name": "generateMetadata",
+      "filePath": "src/app/(frontend)/page.tsx",
+      "summary": "Exported function generateMetadata.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/page.tsx:HomePage",
+      "type": "function",
+      "name": "HomePage",
+      "filePath": "src/app/(frontend)/page.tsx",
+      "summary": "Exported function HomePage.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "class:src/app/(frontend)/pageData.ts:getPageBySlug",
+      "type": "class",
+      "name": "getPageBySlug",
+      "filePath": "src/app/(frontend)/pageData.ts",
+      "summary": "Exported value getPageBySlug.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/pageData.ts:getPageByPath",
+      "type": "function",
+      "name": "getPageByPath",
+      "filePath": "src/app/(frontend)/pageData.ts",
+      "summary": "Exported function getPageByPath.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "class:src/app/(frontend)/pageData.ts:getHomepagePage",
+      "type": "class",
+      "name": "getHomepagePage",
+      "filePath": "src/app/(frontend)/pageData.ts",
+      "summary": "Exported value getHomepagePage.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/pageData.ts:getHomepagePath",
+      "type": "function",
+      "name": "getHomepagePath",
+      "filePath": "src/app/(frontend)/pageData.ts",
+      "summary": "Exported function getHomepagePath.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/pageData.ts:getSystemPageRenderState",
+      "type": "function",
+      "name": "getSystemPageRenderState",
+      "filePath": "src/app/(frontend)/pageData.ts",
+      "summary": "Exported function getSystemPageRenderState.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/pageData.ts:getManagedNotFoundPage",
+      "type": "function",
+      "name": "getManagedNotFoundPage",
+      "filePath": "src/app/(frontend)/pageData.ts",
+      "summary": "Exported function getManagedNotFoundPage.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/pageData.ts:getPageMetadataBySlug",
+      "type": "function",
+      "name": "getPageMetadataBySlug",
+      "filePath": "src/app/(frontend)/pageData.ts",
+      "summary": "Exported function getPageMetadataBySlug.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/pageData.ts:getPageMetadataByPath",
+      "type": "function",
+      "name": "getPageMetadataByPath",
+      "filePath": "src/app/(frontend)/pageData.ts",
+      "summary": "Exported function getPageMetadataByPath.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/pageData.ts:getHomepageMetadata",
+      "type": "function",
+      "name": "getHomepageMetadata",
+      "filePath": "src/app/(frontend)/pageData.ts",
+      "summary": "Exported function getHomepageMetadata.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(frontend)/preview/page/[id]/page.tsx:AdminPreviewPage",
+      "type": "function",
+      "name": "AdminPreviewPage",
+      "filePath": "src/app/(frontend)/preview/page/[id]/page.tsx",
+      "summary": "Exported function AdminPreviewPage.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(payload)/admin/[[...segments]]/not-found.tsx:generateMetadata",
+      "type": "function",
+      "name": "generateMetadata",
+      "filePath": "src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "summary": "Exported function generateMetadata.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(payload)/admin/[[...segments]]/not-found.tsx:default",
+      "type": "function",
+      "name": "default",
+      "filePath": "src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "summary": "Default export.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(payload)/admin/[[...segments]]/page.tsx:generateMetadata",
+      "type": "function",
+      "name": "generateMetadata",
+      "filePath": "src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "summary": "Exported function generateMetadata.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(payload)/admin/[[...segments]]/page.tsx:default",
+      "type": "function",
+      "name": "default",
+      "filePath": "src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "summary": "Default export.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "class:src/app/(payload)/admin/importMap.js:importMap",
+      "type": "class",
+      "name": "importMap",
+      "filePath": "src/app/(payload)/admin/importMap.js",
+      "summary": "Exported value importMap.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "class:src/app/(payload)/api/[...slug]/route.ts:GET",
+      "type": "class",
+      "name": "GET",
+      "filePath": "src/app/(payload)/api/[...slug]/route.ts",
+      "summary": "Exported value GET.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "class:src/app/(payload)/api/[...slug]/route.ts:POST",
+      "type": "class",
+      "name": "POST",
+      "filePath": "src/app/(payload)/api/[...slug]/route.ts",
+      "summary": "Exported value POST.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "class:src/app/(payload)/api/[...slug]/route.ts:DELETE",
+      "type": "class",
+      "name": "DELETE",
+      "filePath": "src/app/(payload)/api/[...slug]/route.ts",
+      "summary": "Exported value DELETE.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "class:src/app/(payload)/api/[...slug]/route.ts:PATCH",
+      "type": "class",
+      "name": "PATCH",
+      "filePath": "src/app/(payload)/api/[...slug]/route.ts",
+      "summary": "Exported value PATCH.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "class:src/app/(payload)/api/[...slug]/route.ts:PUT",
+      "type": "class",
+      "name": "PUT",
+      "filePath": "src/app/(payload)/api/[...slug]/route.ts",
+      "summary": "Exported value PUT.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "class:src/app/(payload)/api/[...slug]/route.ts:OPTIONS",
+      "type": "class",
+      "name": "OPTIONS",
+      "filePath": "src/app/(payload)/api/[...slug]/route.ts",
+      "summary": "Exported value OPTIONS.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "class:src/app/(payload)/api/graphql-playground/route.ts:GET",
+      "type": "class",
+      "name": "GET",
+      "filePath": "src/app/(payload)/api/graphql-playground/route.ts",
+      "summary": "Exported value GET.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "class:src/app/(payload)/api/graphql/route.ts:POST",
+      "type": "class",
+      "name": "POST",
+      "filePath": "src/app/(payload)/api/graphql/route.ts",
+      "summary": "Exported value POST.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "class:src/app/(payload)/api/graphql/route.ts:OPTIONS",
+      "type": "class",
+      "name": "OPTIONS",
+      "filePath": "src/app/(payload)/api/graphql/route.ts",
+      "summary": "Exported value OPTIONS.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/(payload)/layout.tsx:default",
+      "type": "function",
+      "name": "default",
+      "filePath": "src/app/(payload)/layout.tsx",
+      "summary": "Default export.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/api/forms/[slug]/submit/route.ts:POST",
+      "type": "function",
+      "name": "POST",
+      "filePath": "src/app/api/forms/[slug]/submit/route.ts",
+      "summary": "Exported function POST.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/my-route/route.ts:GET",
+      "type": "function",
+      "name": "GET",
+      "filePath": "src/app/my-route/route.ts",
+      "summary": "Exported function GET.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "class:src/app/robots.ts:revalidate",
+      "type": "class",
+      "name": "revalidate",
+      "filePath": "src/app/robots.ts",
+      "summary": "Exported value revalidate.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/robots.ts:robots",
+      "type": "function",
+      "name": "robots",
+      "filePath": "src/app/robots.ts",
+      "summary": "Exported function robots.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "class:src/app/sitemap.ts:revalidate",
+      "type": "class",
+      "name": "revalidate",
+      "filePath": "src/app/sitemap.ts",
+      "summary": "Exported value revalidate.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/app/sitemap.ts:sitemap",
+      "type": "function",
+      "name": "sitemap",
+      "filePath": "src/app/sitemap.ts",
+      "summary": "Exported function sitemap.",
+      "tags": [
+        "exported",
+        "runtime"
+      ]
+    },
+    {
+      "id": "function:src/blocks/Footer2/Component.tsx:Footer2BlockComponent",
+      "type": "function",
+      "name": "Footer2BlockComponent",
+      "filePath": "src/blocks/Footer2/Component.tsx",
+      "summary": "Exported function Footer2BlockComponent.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/blocks/Footer2/config.ts:Footer2Block",
+      "type": "class",
+      "name": "Footer2Block",
+      "filePath": "src/blocks/Footer2/config.ts",
+      "summary": "Exported value Footer2Block.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/blocks/Form/ClientForm.tsx:ClientForm",
+      "type": "function",
+      "name": "ClientForm",
+      "filePath": "src/blocks/Form/ClientForm.tsx",
+      "summary": "Exported function ClientForm.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/blocks/Form/Component.tsx:FormBlockComponent",
+      "type": "function",
+      "name": "FormBlockComponent",
+      "filePath": "src/blocks/Form/Component.tsx",
+      "summary": "Exported function FormBlockComponent.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/blocks/Form/config.ts:FormBlock",
+      "type": "class",
+      "name": "FormBlock",
+      "filePath": "src/blocks/Form/config.ts",
+      "summary": "Exported value FormBlock.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/blocks/HeaderNavbar12/Component.tsx:HeaderNavbar12BlockComponent",
+      "type": "function",
+      "name": "HeaderNavbar12BlockComponent",
+      "filePath": "src/blocks/HeaderNavbar12/Component.tsx",
+      "summary": "Exported function HeaderNavbar12BlockComponent.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/blocks/HeaderNavbar12/config.ts:HeaderNavbar12Block",
+      "type": "class",
+      "name": "HeaderNavbar12Block",
+      "filePath": "src/blocks/HeaderNavbar12/config.ts",
+      "summary": "Exported value HeaderNavbar12Block.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/blocks/Hero36/Component.tsx:Hero36BlockComponent",
+      "type": "function",
+      "name": "Hero36BlockComponent",
+      "filePath": "src/blocks/Hero36/Component.tsx",
+      "summary": "Exported function Hero36BlockComponent.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/blocks/Hero36/config.ts:Hero36Block",
+      "type": "class",
+      "name": "Hero36Block",
+      "filePath": "src/blocks/Hero36/config.ts",
+      "summary": "Exported value Hero36Block.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/blocks/RenderBlocks.tsx:getRenderableBlocks",
+      "type": "function",
+      "name": "getRenderableBlocks",
+      "filePath": "src/blocks/RenderBlocks.tsx",
+      "summary": "Exported function getRenderableBlocks.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/blocks/RenderBlocks.tsx:RenderBlocks",
+      "type": "function",
+      "name": "RenderBlocks",
+      "filePath": "src/blocks/RenderBlocks.tsx",
+      "summary": "Exported function RenderBlocks.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/blocks/System404/Component.tsx:System404BlockComponent",
+      "type": "function",
+      "name": "System404BlockComponent",
+      "filePath": "src/blocks/System404/Component.tsx",
+      "summary": "Exported function System404BlockComponent.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/blocks/System404/config.ts:System404Block",
+      "type": "class",
+      "name": "System404Block",
+      "filePath": "src/blocks/System404/config.ts",
+      "summary": "Exported value System404Block.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/blocks/SystemComingSoon/Component.tsx:SystemComingSoonBlockComponent",
+      "type": "function",
+      "name": "SystemComingSoonBlockComponent",
+      "filePath": "src/blocks/SystemComingSoon/Component.tsx",
+      "summary": "Exported function SystemComingSoonBlockComponent.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/blocks/SystemComingSoon/config.ts:SystemComingSoonBlock",
+      "type": "class",
+      "name": "SystemComingSoonBlock",
+      "filePath": "src/blocks/SystemComingSoon/config.ts",
+      "summary": "Exported value SystemComingSoonBlock.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/blocks/SystemMaintenance/Component.tsx:SystemMaintenanceBlockComponent",
+      "type": "function",
+      "name": "SystemMaintenanceBlockComponent",
+      "filePath": "src/blocks/SystemMaintenance/Component.tsx",
+      "summary": "Exported function SystemMaintenanceBlockComponent.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/blocks/SystemMaintenance/config.ts:SystemMaintenanceBlock",
+      "type": "class",
+      "name": "SystemMaintenanceBlock",
+      "filePath": "src/blocks/SystemMaintenance/config.ts",
+      "summary": "Exported value SystemMaintenanceBlock.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/blocks/renderFooter.tsx:RenderFooter",
+      "type": "function",
+      "name": "RenderFooter",
+      "filePath": "src/blocks/renderFooter.tsx",
+      "summary": "Exported function RenderFooter.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/blocks/renderHeader.tsx:RenderHeader",
+      "type": "function",
+      "name": "RenderHeader",
+      "filePath": "src/blocks/renderHeader.tsx",
+      "summary": "Exported function RenderHeader.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/blocks/systemPageFields.ts:createSystemPageBlock",
+      "type": "function",
+      "name": "createSystemPageBlock",
+      "filePath": "src/blocks/systemPageFields.ts",
+      "summary": "Exported function createSystemPageBlock.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/collections/Footers.ts:Footers",
+      "type": "class",
+      "name": "Footers",
+      "filePath": "src/collections/Footers.ts",
+      "summary": "Exported value Footers.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/collections/FormSubmissions.ts:FormSubmissions",
+      "type": "class",
+      "name": "FormSubmissions",
+      "filePath": "src/collections/FormSubmissions.ts",
+      "summary": "Exported value FormSubmissions.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/collections/Forms.ts:Forms",
+      "type": "class",
+      "name": "Forms",
+      "filePath": "src/collections/Forms.ts",
+      "summary": "Exported value Forms.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/collections/Headers.ts:Headers",
+      "type": "class",
+      "name": "Headers",
+      "filePath": "src/collections/Headers.ts",
+      "summary": "Exported value Headers.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/collections/Media.ts:Media",
+      "type": "class",
+      "name": "Media",
+      "filePath": "src/collections/Media.ts",
+      "summary": "Exported value Media.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/collections/NavigationLinks.ts:NavigationLinks",
+      "type": "class",
+      "name": "NavigationLinks",
+      "filePath": "src/collections/NavigationLinks.ts",
+      "summary": "Exported value NavigationLinks.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/collections/Pages.ts:Pages",
+      "type": "class",
+      "name": "Pages",
+      "filePath": "src/collections/Pages.ts",
+      "summary": "Exported value Pages.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/collections/Redirects.ts:Redirects",
+      "type": "class",
+      "name": "Redirects",
+      "filePath": "src/collections/Redirects.ts",
+      "summary": "Exported value Redirects.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/collections/SystemPages.ts:SystemPages",
+      "type": "class",
+      "name": "SystemPages",
+      "filePath": "src/collections/SystemPages.ts",
+      "summary": "Exported value SystemPages.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/collections/Users.ts:Users",
+      "type": "class",
+      "name": "Users",
+      "filePath": "src/collections/Users.ts",
+      "summary": "Exported value Users.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/components/live-preview/PageLivePreview.tsx:PageLivePreview",
+      "type": "function",
+      "name": "PageLivePreview",
+      "filePath": "src/components/live-preview/PageLivePreview.tsx",
+      "summary": "Exported function PageLivePreview.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/components/system-page-hero.tsx:SystemPageHero",
+      "type": "function",
+      "name": "SystemPageHero",
+      "filePath": "src/components/system-page-hero.tsx",
+      "summary": "Exported function SystemPageHero.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/fields/cmsLinkFields.ts:createCmsLinkFields",
+      "type": "function",
+      "name": "createCmsLinkFields",
+      "filePath": "src/fields/cmsLinkFields.ts",
+      "summary": "Exported function createCmsLinkFields.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/globals/PageSettings.ts:PageSettings",
+      "type": "class",
+      "name": "PageSettings",
+      "filePath": "src/globals/PageSettings.ts",
+      "summary": "Exported value PageSettings.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/globals/SEOSettings.ts:SEOSettings",
+      "type": "class",
+      "name": "SEOSettings",
+      "filePath": "src/globals/SEOSettings.ts",
+      "summary": "Exported value SEOSettings.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/globals/SiteSettings.ts:SiteSettings",
+      "type": "class",
+      "name": "SiteSettings",
+      "filePath": "src/globals/SiteSettings.ts",
+      "summary": "Exported value SiteSettings.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/globals/ThemeSettings.ts:ThemeSettings",
+      "type": "class",
+      "name": "ThemeSettings",
+      "filePath": "src/globals/ThemeSettings.ts",
+      "summary": "Exported value ThemeSettings.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/hooks/createRedirectsForChangedPagePath.ts:createRedirectsForChangedPagePath",
+      "type": "function",
+      "name": "createRedirectsForChangedPagePath",
+      "filePath": "src/hooks/createRedirectsForChangedPagePath.ts",
+      "summary": "Exported function createRedirectsForChangedPagePath.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/hooks/migrateLegacyReusableLinks.ts:migrateLegacyPageLinksBeforeChange",
+      "type": "function",
+      "name": "migrateLegacyPageLinksBeforeChange",
+      "filePath": "src/hooks/migrateLegacyReusableLinks.ts",
+      "summary": "Exported function migrateLegacyPageLinksBeforeChange.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/hooks/migrateLegacyReusableLinks.ts:migrateLegacySystemPageLinksBeforeChange",
+      "type": "function",
+      "name": "migrateLegacySystemPageLinksBeforeChange",
+      "filePath": "src/hooks/migrateLegacyReusableLinks.ts",
+      "summary": "Exported function migrateLegacySystemPageLinksBeforeChange.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/hooks/populatePageUrlPreview.ts:populatePageUrlPreview",
+      "type": "function",
+      "name": "populatePageUrlPreview",
+      "filePath": "src/hooks/populatePageUrlPreview.ts",
+      "summary": "Exported function populatePageUrlPreview.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/hooks/preventReferencedPageUnpublish.ts:preventReferencedPageUnpublish",
+      "type": "function",
+      "name": "preventReferencedPageUnpublish",
+      "filePath": "src/hooks/preventReferencedPageUnpublish.ts",
+      "summary": "Exported function preventReferencedPageUnpublish.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/hooks/preventReferencedSystemPageInvalidation.ts:preventReferencedSystemPageInvalidation",
+      "type": "function",
+      "name": "preventReferencedSystemPageInvalidation",
+      "filePath": "src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "summary": "Exported function preventReferencedSystemPageInvalidation.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/hooks/syncNavigationLinkForPage.ts:syncNavigationLinkAfterChange",
+      "type": "function",
+      "name": "syncNavigationLinkAfterChange",
+      "filePath": "src/hooks/syncNavigationLinkForPage.ts",
+      "summary": "Exported function syncNavigationLinkAfterChange.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/hooks/syncNavigationLinkForPage.ts:syncNavigationLinkAfterDelete",
+      "type": "function",
+      "name": "syncNavigationLinkAfterDelete",
+      "filePath": "src/hooks/syncNavigationLinkForPage.ts",
+      "summary": "Exported function syncNavigationLinkAfterDelete.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/cmsLinks.ts:resolveCmsLink",
+      "type": "function",
+      "name": "resolveCmsLink",
+      "filePath": "src/lib/cmsLinks.ts",
+      "summary": "Exported function resolveCmsLink.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/formNotifications.ts:getNotificationRecipients",
+      "type": "function",
+      "name": "getNotificationRecipients",
+      "filePath": "src/lib/formNotifications.ts",
+      "summary": "Exported function getNotificationRecipients.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/formNotifications.ts:buildFormNotificationEmail",
+      "type": "function",
+      "name": "buildFormNotificationEmail",
+      "filePath": "src/lib/formNotifications.ts",
+      "summary": "Exported function buildFormNotificationEmail.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/formSpamProtection.ts:getClientIPAddress",
+      "type": "function",
+      "name": "getClientIPAddress",
+      "filePath": "src/lib/formSpamProtection.ts",
+      "summary": "Exported function getClientIPAddress.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/formSpamProtection.ts:isSpamHoneypotTriggered",
+      "type": "function",
+      "name": "isSpamHoneypotTriggered",
+      "filePath": "src/lib/formSpamProtection.ts",
+      "summary": "Exported function isSpamHoneypotTriggered.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/formSpamProtection.ts:isRateLimited",
+      "type": "function",
+      "name": "isRateLimited",
+      "filePath": "src/lib/formSpamProtection.ts",
+      "summary": "Exported function isRateLimited.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/formSpamProtection.ts:recordSubmissionAttempt",
+      "type": "function",
+      "name": "recordSubmissionAttempt",
+      "filePath": "src/lib/formSpamProtection.ts",
+      "summary": "Exported function recordSubmissionAttempt.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/lib/forms.ts:formFieldTypeOptions",
+      "type": "class",
+      "name": "formFieldTypeOptions",
+      "filePath": "src/lib/forms.ts",
+      "summary": "Exported value formFieldTypeOptions.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/lib/forms.ts:FORM_HONEYPOT_FIELD_NAME",
+      "type": "class",
+      "name": "FORM_HONEYPOT_FIELD_NAME",
+      "filePath": "src/lib/forms.ts",
+      "summary": "Exported value FORM_HONEYPOT_FIELD_NAME.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/lib/forms.ts:FORM_RATE_LIMIT_MAX_SUBMISSIONS",
+      "type": "class",
+      "name": "FORM_RATE_LIMIT_MAX_SUBMISSIONS",
+      "filePath": "src/lib/forms.ts",
+      "summary": "Exported value FORM_RATE_LIMIT_MAX_SUBMISSIONS.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/lib/forms.ts:FORM_RATE_LIMIT_WINDOW_MS",
+      "type": "class",
+      "name": "FORM_RATE_LIMIT_WINDOW_MS",
+      "filePath": "src/lib/forms.ts",
+      "summary": "Exported value FORM_RATE_LIMIT_WINDOW_MS.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/forms.ts:isTextLikeFormFieldType",
+      "type": "function",
+      "name": "isTextLikeFormFieldType",
+      "filePath": "src/lib/forms.ts",
+      "summary": "Exported function isTextLikeFormFieldType.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/forms.ts:isSelectFormFieldType",
+      "type": "function",
+      "name": "isSelectFormFieldType",
+      "filePath": "src/lib/forms.ts",
+      "summary": "Exported function isSelectFormFieldType.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/forms.ts:normalizeFormFieldName",
+      "type": "function",
+      "name": "normalizeFormFieldName",
+      "filePath": "src/lib/forms.ts",
+      "summary": "Exported function normalizeFormFieldName.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/forms.ts:isValidFormFieldName",
+      "type": "function",
+      "name": "isValidFormFieldName",
+      "filePath": "src/lib/forms.ts",
+      "summary": "Exported function isValidFormFieldName.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/forms.ts:validateFormFieldDefinitions",
+      "type": "function",
+      "name": "validateFormFieldDefinitions",
+      "filePath": "src/lib/forms.ts",
+      "summary": "Exported function validateFormFieldDefinitions.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/forms.ts:validateFormSubmission",
+      "type": "function",
+      "name": "validateFormSubmission",
+      "filePath": "src/lib/forms.ts",
+      "summary": "Exported function validateFormSubmission.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/media.ts:isMediaDoc",
+      "type": "function",
+      "name": "isMediaDoc",
+      "filePath": "src/lib/media.ts",
+      "summary": "Exported function isMediaDoc.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/media.ts:getMediaAbsoluteUrl",
+      "type": "function",
+      "name": "getMediaAbsoluteUrl",
+      "filePath": "src/lib/media.ts",
+      "summary": "Exported function getMediaAbsoluteUrl.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/media.ts:getMediaImageProps",
+      "type": "function",
+      "name": "getMediaImageProps",
+      "filePath": "src/lib/media.ts",
+      "summary": "Exported function getMediaImageProps.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/navigationLinkSync.ts:findSyncedNavigationLink",
+      "type": "function",
+      "name": "findSyncedNavigationLink",
+      "filePath": "src/lib/navigationLinkSync.ts",
+      "summary": "Exported function findSyncedNavigationLink.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/navigationLinkSync.ts:findReusablePageLink",
+      "type": "function",
+      "name": "findReusablePageLink",
+      "filePath": "src/lib/navigationLinkSync.ts",
+      "summary": "Exported function findReusablePageLink.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/navigationLinkSync.ts:findNavigationLinkByURL",
+      "type": "function",
+      "name": "findNavigationLinkByURL",
+      "filePath": "src/lib/navigationLinkSync.ts",
+      "summary": "Exported function findNavigationLinkByURL.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/navigationLinkSync.ts:ensureSyncedNavigationLinkForPage",
+      "type": "function",
+      "name": "ensureSyncedNavigationLinkForPage",
+      "filePath": "src/lib/navigationLinkSync.ts",
+      "summary": "Exported function ensureSyncedNavigationLinkForPage.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/navigationLinkSync.ts:ensureManualNavigationLinkForURL",
+      "type": "function",
+      "name": "ensureManualNavigationLinkForURL",
+      "filePath": "src/lib/navigationLinkSync.ts",
+      "summary": "Exported function ensureManualNavigationLinkForURL.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/navigationLinks.ts:isNavigationLinkDoc",
+      "type": "function",
+      "name": "isNavigationLinkDoc",
+      "filePath": "src/lib/navigationLinks.ts",
+      "summary": "Exported function isNavigationLinkDoc.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/navigationLinks.ts:resolveNavigationLink",
+      "type": "function",
+      "name": "resolveNavigationLink",
+      "filePath": "src/lib/navigationLinks.ts",
+      "summary": "Exported function resolveNavigationLink.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/navigationStructures.ts:resolveHeaderNavigationItems",
+      "type": "function",
+      "name": "resolveHeaderNavigationItems",
+      "filePath": "src/lib/navigationStructures.ts",
+      "summary": "Exported function resolveHeaderNavigationItems.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/navigationStructures.ts:resolveFooterSections",
+      "type": "function",
+      "name": "resolveFooterSections",
+      "filePath": "src/lib/navigationStructures.ts",
+      "summary": "Exported function resolveFooterSections.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/pagePaths.ts:isPageDoc",
+      "type": "function",
+      "name": "isPageDoc",
+      "filePath": "src/lib/pagePaths.ts",
+      "summary": "Exported function isPageDoc.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/pagePaths.ts:getPageID",
+      "type": "function",
+      "name": "getPageID",
+      "filePath": "src/lib/pagePaths.ts",
+      "summary": "Exported function getPageID.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/pagePaths.ts:getPageSlugSegments",
+      "type": "function",
+      "name": "getPageSlugSegments",
+      "filePath": "src/lib/pagePaths.ts",
+      "summary": "Exported function getPageSlugSegments.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/pagePaths.ts:getPageHref",
+      "type": "function",
+      "name": "getPageHref",
+      "filePath": "src/lib/pagePaths.ts",
+      "summary": "Exported function getPageHref.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/pagePaths.ts:getPageHrefFromSource",
+      "type": "function",
+      "name": "getPageHrefFromSource",
+      "filePath": "src/lib/pagePaths.ts",
+      "summary": "Exported function getPageHrefFromSource.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/pagePaths.ts:getPageHrefFromSourceWithResolver",
+      "type": "function",
+      "name": "getPageHrefFromSourceWithResolver",
+      "filePath": "src/lib/pagePaths.ts",
+      "summary": "Exported function getPageHrefFromSourceWithResolver.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/redirects.ts:normalizeRedirectPath",
+      "type": "function",
+      "name": "normalizeRedirectPath",
+      "filePath": "src/lib/redirects.ts",
+      "summary": "Exported function normalizeRedirectPath.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/lib/redirects.ts:getRedirectByPath",
+      "type": "class",
+      "name": "getRedirectByPath",
+      "filePath": "src/lib/redirects.ts",
+      "summary": "Exported value getRedirectByPath.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/lib/seo.ts:robotsFieldOptions",
+      "type": "class",
+      "name": "robotsFieldOptions",
+      "filePath": "src/lib/seo.ts",
+      "summary": "Exported value robotsFieldOptions.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/seo.ts:getRobotsMetadata",
+      "type": "function",
+      "name": "getRobotsMetadata",
+      "filePath": "src/lib/seo.ts",
+      "summary": "Exported function getRobotsMetadata.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/siteUrl.ts:getSiteURL",
+      "type": "function",
+      "name": "getSiteURL",
+      "filePath": "src/lib/siteUrl.ts",
+      "summary": "Exported function getSiteURL.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/siteUrl.ts:toAbsoluteSiteUrl",
+      "type": "function",
+      "name": "toAbsoluteSiteUrl",
+      "filePath": "src/lib/siteUrl.ts",
+      "summary": "Exported function toAbsoluteSiteUrl.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:src/lib/systemPageTypes.ts:systemPageTypeOptions",
+      "type": "class",
+      "name": "systemPageTypeOptions",
+      "filePath": "src/lib/systemPageTypes.ts",
+      "summary": "Exported value systemPageTypeOptions.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/lib/utils.ts:cn",
+      "type": "function",
+      "name": "cn",
+      "filePath": "src/lib/utils.ts",
+      "summary": "Exported function cn.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/payload.config.ts:default",
+      "type": "function",
+      "name": "default",
+      "filePath": "src/payload.config.ts",
+      "summary": "Default export.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:src/plugins/withTrash.ts:withTrash",
+      "type": "function",
+      "name": "withTrash",
+      "filePath": "src/plugins/withTrash.ts",
+      "summary": "Exported function withTrash.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:tests/helpers/login.ts:login",
+      "type": "function",
+      "name": "login",
+      "filePath": "tests/helpers/login.ts",
+      "summary": "Exported function login.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "class:tests/helpers/seedUser.ts:testUser",
+      "type": "class",
+      "name": "testUser",
+      "filePath": "tests/helpers/seedUser.ts",
+      "summary": "Exported value testUser.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:tests/helpers/seedUser.ts:seedTestUser",
+      "type": "function",
+      "name": "seedTestUser",
+      "filePath": "tests/helpers/seedUser.ts",
+      "summary": "Exported function seedTestUser.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    },
+    {
+      "id": "function:tests/helpers/seedUser.ts:cleanupTestUser",
+      "type": "function",
+      "name": "cleanupTestUser",
+      "filePath": "tests/helpers/seedUser.ts",
+      "summary": "Exported function cleanupTestUser.",
+      "tags": [
+        "exported",
+        "application"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:eslint.config.mjs",
+      "target": "function:eslint.config.mjs:default",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "config:next.config.ts",
+      "target": "function:next.config.ts:default",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "config:playwright.config.ts",
+      "target": "function:playwright.config.ts:default",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "config:postcss.config.mjs",
+      "target": "function:postcss.config.mjs:default",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "class:src/access/adminCapabilities.ts:adminRoleOptions",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "class:src/access/adminCapabilities.ts:adminCapabilityFieldOptions",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "class:src/access/adminCapabilities.ts:allAdminCapabilities",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "class:src/access/adminCapabilities.ts:adminCapabilityCheckboxFields",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:isAdminRole",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:normalizeAdminRole",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:sanitizeAdminCapabilities",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:toAdminCapabilitiesMap",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:isAdminUser",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:hasAdminCapability",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:adminOnlyAccess",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:adminOrFirstUserAccess",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:requireCapability",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:allowPublicReadOrCapability",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:hideFromNonAdmin",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:hideFromUsersWithoutCapability",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/PageContent.tsx",
+      "target": "function:src/app/(frontend)/PageContent.tsx:PageContent",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/SystemFallbackPage.tsx",
+      "target": "file:src/components/system-page-hero.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/SystemFallbackPage.tsx",
+      "target": "function:src/app/(frontend)/SystemFallbackPage.tsx:SystemModeFallbackPage",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/SystemFallbackPage.tsx",
+      "target": "function:src/app/(frontend)/SystemFallbackPage.tsx:DefaultNotFoundPage",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/[...slug]/page.tsx",
+      "target": "file:src/app/(frontend)/PageContent.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/[...slug]/page.tsx",
+      "target": "file:src/app/(frontend)/SystemFallbackPage.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/[...slug]/page.tsx",
+      "target": "file:src/app/(frontend)/pageData.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/[...slug]/page.tsx",
+      "target": "file:src/lib/redirects.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/[...slug]/page.tsx",
+      "target": "function:src/app/(frontend)/[...slug]/page.tsx:generateMetadata",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/[...slug]/page.tsx",
+      "target": "function:src/app/(frontend)/[...slug]/page.tsx:CmsPage",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/styles/globals.css",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/blocks/renderFooter.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/blocks/renderHeader.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/lib/seo.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/lib/siteUrl.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "class:src/app/(frontend)/layout.tsx:dynamic",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "function:src/app/(frontend)/layout.tsx:generateMetadata",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "function:src/app/(frontend)/layout.tsx:RootLayout",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/not-found.tsx",
+      "target": "file:src/app/(frontend)/PageContent.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/not-found.tsx",
+      "target": "file:src/app/(frontend)/SystemFallbackPage.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/not-found.tsx",
+      "target": "file:src/app/(frontend)/pageData.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/not-found.tsx",
+      "target": "function:src/app/(frontend)/not-found.tsx:NotFoundPage",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/page.tsx",
+      "target": "file:src/styles/globals.css",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/page.tsx",
+      "target": "file:src/app/(frontend)/PageContent.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/page.tsx",
+      "target": "file:src/app/(frontend)/SystemFallbackPage.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/page.tsx",
+      "target": "file:src/app/(frontend)/pageData.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/page.tsx",
+      "target": "function:src/app/(frontend)/page.tsx:generateMetadata",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/page.tsx",
+      "target": "function:src/app/(frontend)/page.tsx:HomePage",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/pageData.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/pageData.ts",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/pageData.ts",
+      "target": "file:src/lib/seo.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/pageData.ts",
+      "target": "file:src/lib/siteUrl.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/pageData.ts",
+      "target": "file:src/lib/pagePaths.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/pageData.ts",
+      "target": "file:src/lib/systemPageTypes.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/pageData.ts",
+      "target": "class:src/app/(frontend)/pageData.ts:getPageBySlug",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/pageData.ts",
+      "target": "function:src/app/(frontend)/pageData.ts:getPageByPath",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/pageData.ts",
+      "target": "class:src/app/(frontend)/pageData.ts:getHomepagePage",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/pageData.ts",
+      "target": "function:src/app/(frontend)/pageData.ts:getHomepagePath",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/pageData.ts",
+      "target": "function:src/app/(frontend)/pageData.ts:getSystemPageRenderState",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/pageData.ts",
+      "target": "function:src/app/(frontend)/pageData.ts:getManagedNotFoundPage",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/pageData.ts",
+      "target": "function:src/app/(frontend)/pageData.ts:getPageMetadataBySlug",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/pageData.ts",
+      "target": "function:src/app/(frontend)/pageData.ts:getPageMetadataByPath",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/pageData.ts",
+      "target": "function:src/app/(frontend)/pageData.ts:getHomepageMetadata",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/preview/page/[id]/page.tsx",
+      "target": "file:src/components/live-preview/PageLivePreview.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/preview/page/[id]/page.tsx",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/preview/page/[id]/page.tsx",
+      "target": "function:src/app/(frontend)/preview/page/[id]/page.tsx:AdminPreviewPage",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "target": "file:src/app/(payload)/admin/importMap.js",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "target": "function:src/app/(payload)/admin/[[...segments]]/not-found.tsx:generateMetadata",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "target": "function:src/app/(payload)/admin/[[...segments]]/not-found.tsx:default",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "target": "file:src/app/(payload)/admin/importMap.js",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "target": "function:src/app/(payload)/admin/[[...segments]]/page.tsx:generateMetadata",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "target": "function:src/app/(payload)/admin/[[...segments]]/page.tsx:default",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(payload)/admin/importMap.js",
+      "target": "class:src/app/(payload)/admin/importMap.js:importMap",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "endpoint:src/app/(payload)/api/[...slug]/route.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "endpoint:src/app/(payload)/api/[...slug]/route.ts",
+      "target": "class:src/app/(payload)/api/[...slug]/route.ts:GET",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "endpoint:src/app/(payload)/api/[...slug]/route.ts",
+      "target": "class:src/app/(payload)/api/[...slug]/route.ts:POST",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "endpoint:src/app/(payload)/api/[...slug]/route.ts",
+      "target": "class:src/app/(payload)/api/[...slug]/route.ts:DELETE",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "endpoint:src/app/(payload)/api/[...slug]/route.ts",
+      "target": "class:src/app/(payload)/api/[...slug]/route.ts:PATCH",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "endpoint:src/app/(payload)/api/[...slug]/route.ts",
+      "target": "class:src/app/(payload)/api/[...slug]/route.ts:PUT",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "endpoint:src/app/(payload)/api/[...slug]/route.ts",
+      "target": "class:src/app/(payload)/api/[...slug]/route.ts:OPTIONS",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "endpoint:src/app/(payload)/api/graphql-playground/route.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "endpoint:src/app/(payload)/api/graphql-playground/route.ts",
+      "target": "class:src/app/(payload)/api/graphql-playground/route.ts:GET",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "endpoint:src/app/(payload)/api/graphql/route.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "endpoint:src/app/(payload)/api/graphql/route.ts",
+      "target": "class:src/app/(payload)/api/graphql/route.ts:POST",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "endpoint:src/app/(payload)/api/graphql/route.ts",
+      "target": "class:src/app/(payload)/api/graphql/route.ts:OPTIONS",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(payload)/layout.tsx",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/layout.tsx",
+      "target": "file:src/app/(payload)/admin/importMap.js",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/layout.tsx",
+      "target": "file:src/app/(payload)/custom.scss",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/layout.tsx",
+      "target": "function:src/app/(payload)/layout.tsx:default",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "endpoint:src/app/api/forms/[slug]/submit/route.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "endpoint:src/app/api/forms/[slug]/submit/route.ts",
+      "target": "file:src/lib/formSpamProtection.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "endpoint:src/app/api/forms/[slug]/submit/route.ts",
+      "target": "file:src/lib/formNotifications.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "endpoint:src/app/api/forms/[slug]/submit/route.ts",
+      "target": "file:src/lib/forms.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "endpoint:src/app/api/forms/[slug]/submit/route.ts",
+      "target": "function:src/app/api/forms/[slug]/submit/route.ts:POST",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "endpoint:src/app/my-route/route.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "endpoint:src/app/my-route/route.ts",
+      "target": "function:src/app/my-route/route.ts:GET",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "endpoint:src/app/robots.ts",
+      "target": "file:src/lib/siteUrl.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "endpoint:src/app/robots.ts",
+      "target": "class:src/app/robots.ts:revalidate",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "endpoint:src/app/robots.ts",
+      "target": "function:src/app/robots.ts:robots",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "endpoint:src/app/sitemap.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "endpoint:src/app/sitemap.ts",
+      "target": "file:src/lib/pagePaths.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "endpoint:src/app/sitemap.ts",
+      "target": "file:src/lib/siteUrl.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "endpoint:src/app/sitemap.ts",
+      "target": "class:src/app/sitemap.ts:revalidate",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "endpoint:src/app/sitemap.ts",
+      "target": "function:src/app/sitemap.ts:sitemap",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/Footer2/Component.tsx",
+      "target": "file:src/components/footer2.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Footer2/Component.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Footer2/Component.tsx",
+      "target": "file:src/lib/navigationLinks.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Footer2/Component.tsx",
+      "target": "file:src/lib/navigationStructures.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Footer2/Component.tsx",
+      "target": "function:src/blocks/Footer2/Component.tsx:Footer2BlockComponent",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/Footer2/config.ts",
+      "target": "class:src/blocks/Footer2/config.ts:Footer2Block",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/Form/ClientForm.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Form/ClientForm.tsx",
+      "target": "file:src/lib/forms.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Form/ClientForm.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Form/ClientForm.tsx",
+      "target": "function:src/blocks/Form/ClientForm.tsx:ClientForm",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/Form/Component.tsx",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Form/Component.tsx",
+      "target": "file:src/blocks/Form/ClientForm.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Form/Component.tsx",
+      "target": "file:src/lib/forms.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Form/Component.tsx",
+      "target": "function:src/blocks/Form/Component.tsx:FormBlockComponent",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/Form/config.ts",
+      "target": "class:src/blocks/Form/config.ts:FormBlock",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "target": "file:src/components/navbar12.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "target": "file:src/lib/navigationLinks.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "target": "file:src/lib/navigationStructures.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "target": "function:src/blocks/HeaderNavbar12/Component.tsx:HeaderNavbar12BlockComponent",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/config.ts",
+      "target": "class:src/blocks/HeaderNavbar12/config.ts:HeaderNavbar12Block",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/Hero36/Component.tsx",
+      "target": "file:src/components/hero36.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Hero36/Component.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Hero36/Component.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Hero36/Component.tsx",
+      "target": "function:src/blocks/Hero36/Component.tsx:Hero36BlockComponent",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/Hero36/config.ts",
+      "target": "file:src/components/hero36.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Hero36/config.ts",
+      "target": "file:src/fields/cmsLinkFields.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Hero36/config.ts",
+      "target": "class:src/blocks/Hero36/config.ts:Hero36Block",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/RenderBlocks.tsx",
+      "target": "file:src/blocks/Form/Component.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RenderBlocks.tsx",
+      "target": "file:src/blocks/Hero36/Component.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RenderBlocks.tsx",
+      "target": "file:src/blocks/System404/Component.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RenderBlocks.tsx",
+      "target": "file:src/blocks/SystemComingSoon/Component.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RenderBlocks.tsx",
+      "target": "file:src/blocks/SystemMaintenance/Component.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RenderBlocks.tsx",
+      "target": "function:src/blocks/RenderBlocks.tsx:getRenderableBlocks",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/RenderBlocks.tsx",
+      "target": "function:src/blocks/RenderBlocks.tsx:RenderBlocks",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/System404/Component.tsx",
+      "target": "file:src/components/system-page-hero.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/System404/Component.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/System404/Component.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/System404/Component.tsx",
+      "target": "function:src/blocks/System404/Component.tsx:System404BlockComponent",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/System404/config.ts",
+      "target": "file:src/blocks/systemPageFields.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/System404/config.ts",
+      "target": "class:src/blocks/System404/config.ts:System404Block",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/SystemComingSoon/Component.tsx",
+      "target": "file:src/components/system-page-hero.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/SystemComingSoon/Component.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/SystemComingSoon/Component.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/SystemComingSoon/Component.tsx",
+      "target": "function:src/blocks/SystemComingSoon/Component.tsx:SystemComingSoonBlockComponent",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/SystemComingSoon/config.ts",
+      "target": "file:src/blocks/systemPageFields.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/SystemComingSoon/config.ts",
+      "target": "class:src/blocks/SystemComingSoon/config.ts:SystemComingSoonBlock",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/SystemMaintenance/Component.tsx",
+      "target": "file:src/components/system-page-hero.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/SystemMaintenance/Component.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/SystemMaintenance/Component.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/SystemMaintenance/Component.tsx",
+      "target": "function:src/blocks/SystemMaintenance/Component.tsx:SystemMaintenanceBlockComponent",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/SystemMaintenance/config.ts",
+      "target": "file:src/blocks/systemPageFields.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/SystemMaintenance/config.ts",
+      "target": "class:src/blocks/SystemMaintenance/config.ts:SystemMaintenanceBlock",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/renderFooter.tsx",
+      "target": "file:src/blocks/Footer2/Component.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderFooter.tsx",
+      "target": "function:src/blocks/renderFooter.tsx:RenderFooter",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/renderHeader.tsx",
+      "target": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderHeader.tsx",
+      "target": "function:src/blocks/renderHeader.tsx:RenderHeader",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/systemPageFields.ts",
+      "target": "file:src/fields/cmsLinkFields.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/systemPageFields.ts",
+      "target": "function:src/blocks/systemPageFields.ts:createSystemPageBlock",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/Footers.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Footers.ts",
+      "target": "file:src/blocks/Footer2/config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Footers.ts",
+      "target": "class:src/collections/Footers.ts:Footers",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/FormSubmissions.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/FormSubmissions.ts",
+      "target": "class:src/collections/FormSubmissions.ts:FormSubmissions",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/Forms.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Forms.ts",
+      "target": "file:src/lib/forms.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Forms.ts",
+      "target": "class:src/collections/Forms.ts:Forms",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/Headers.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Headers.ts",
+      "target": "file:src/blocks/HeaderNavbar12/config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Headers.ts",
+      "target": "class:src/collections/Headers.ts:Headers",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/Media.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Media.ts",
+      "target": "class:src/collections/Media.ts:Media",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/NavigationLinks.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/NavigationLinks.ts",
+      "target": "class:src/collections/NavigationLinks.ts:NavigationLinks",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/lib/seo.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/Form/config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/Hero36/config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/hooks/createRedirectsForChangedPagePath.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/hooks/migrateLegacyReusableLinks.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/hooks/populatePageUrlPreview.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/hooks/preventReferencedPageUnpublish.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/hooks/syncNavigationLinkForPage.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "class:src/collections/Pages.ts:Pages",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/Redirects.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Redirects.ts",
+      "target": "class:src/collections/Redirects.ts:Redirects",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/lib/systemPageTypes.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/blocks/System404/config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/blocks/SystemComingSoon/config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/blocks/SystemMaintenance/config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/hooks/migrateLegacyReusableLinks.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "class:src/collections/SystemPages.ts:SystemPages",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/Users.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Users.ts",
+      "target": "class:src/collections/Users.ts:Users",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/footer2.tsx",
+      "target": "file:src/components/shadcnblocks/logo.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/footer2.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/hero36.tsx",
+      "target": "file:src/components/ui/badge.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/hero36.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/live-preview/PageLivePreview.tsx",
+      "target": "file:src/blocks/Form/ClientForm.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/live-preview/PageLivePreview.tsx",
+      "target": "file:src/components/hero36.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/live-preview/PageLivePreview.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/live-preview/PageLivePreview.tsx",
+      "target": "file:src/lib/forms.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/live-preview/PageLivePreview.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/live-preview/PageLivePreview.tsx",
+      "target": "function:src/components/live-preview/PageLivePreview.tsx:PageLivePreview",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/navbar12.tsx",
+      "target": "file:src/components/ui/accordion.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/navbar12.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/navbar12.tsx",
+      "target": "file:src/components/ui/navigation-menu.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/navbar12.tsx",
+      "target": "file:src/components/ui/separator.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/navbar12.tsx",
+      "target": "file:src/components/ui/sheet.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/navbar12.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/shadcnblocks/logo.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/shadcnblocks/logo.tsx",
+      "target": "file:src/components/ui/context-menu.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/system-page-hero.tsx",
+      "target": "file:src/components/ui/badge.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/system-page-hero.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/system-page-hero.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/system-page-hero.tsx",
+      "target": "function:src/components/system-page-hero.tsx:SystemPageHero",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/accordion.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/badge.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/button.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/context-menu.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/separator.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/fields/cmsLinkFields.ts",
+      "target": "function:src/fields/cmsLinkFields.ts:createCmsLinkFields",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/globals/PageSettings.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/PageSettings.ts",
+      "target": "file:src/lib/systemPageTypes.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/PageSettings.ts",
+      "target": "class:src/globals/PageSettings.ts:PageSettings",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/globals/SEOSettings.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/SEOSettings.ts",
+      "target": "file:src/lib/seo.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/SEOSettings.ts",
+      "target": "class:src/globals/SEOSettings.ts:SEOSettings",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/globals/SiteSettings.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/SiteSettings.ts",
+      "target": "class:src/globals/SiteSettings.ts:SiteSettings",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/globals/ThemeSettings.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/ThemeSettings.ts",
+      "target": "class:src/globals/ThemeSettings.ts:ThemeSettings",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/createRedirectsForChangedPagePath.ts",
+      "target": "file:src/lib/redirects.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/createRedirectsForChangedPagePath.ts",
+      "target": "file:src/lib/pagePaths.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/createRedirectsForChangedPagePath.ts",
+      "target": "function:src/hooks/createRedirectsForChangedPagePath.ts:createRedirectsForChangedPagePath",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/migrateLegacyReusableLinks.ts",
+      "target": "file:src/lib/navigationLinkSync.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/migrateLegacyReusableLinks.ts",
+      "target": "function:src/hooks/migrateLegacyReusableLinks.ts:migrateLegacyPageLinksBeforeChange",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/migrateLegacyReusableLinks.ts",
+      "target": "function:src/hooks/migrateLegacyReusableLinks.ts:migrateLegacySystemPageLinksBeforeChange",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/populatePageUrlPreview.ts",
+      "target": "file:src/lib/pagePaths.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/populatePageUrlPreview.ts",
+      "target": "function:src/hooks/populatePageUrlPreview.ts:populatePageUrlPreview",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/preventReferencedPageUnpublish.ts",
+      "target": "file:src/lib/pagePaths.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/preventReferencedPageUnpublish.ts",
+      "target": "function:src/hooks/preventReferencedPageUnpublish.ts:preventReferencedPageUnpublish",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "target": "file:src/lib/systemPageTypes.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "target": "function:src/hooks/preventReferencedSystemPageInvalidation.ts:preventReferencedSystemPageInvalidation",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/syncNavigationLinkForPage.ts",
+      "target": "file:src/lib/navigationLinkSync.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/syncNavigationLinkForPage.ts",
+      "target": "function:src/hooks/syncNavigationLinkForPage.ts:syncNavigationLinkAfterChange",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/syncNavigationLinkForPage.ts",
+      "target": "function:src/hooks/syncNavigationLinkForPage.ts:syncNavigationLinkAfterDelete",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/cmsLinks.ts",
+      "target": "file:src/lib/navigationLinks.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/cmsLinks.ts",
+      "target": "file:src/lib/pagePaths.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/cmsLinks.ts",
+      "target": "function:src/lib/cmsLinks.ts:resolveCmsLink",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/formNotifications.ts",
+      "target": "function:src/lib/formNotifications.ts:getNotificationRecipients",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/formNotifications.ts",
+      "target": "function:src/lib/formNotifications.ts:buildFormNotificationEmail",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/formSpamProtection.ts",
+      "target": "file:src/lib/forms.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/formSpamProtection.ts",
+      "target": "function:src/lib/formSpamProtection.ts:getClientIPAddress",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/formSpamProtection.ts",
+      "target": "function:src/lib/formSpamProtection.ts:isSpamHoneypotTriggered",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/formSpamProtection.ts",
+      "target": "function:src/lib/formSpamProtection.ts:isRateLimited",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/formSpamProtection.ts",
+      "target": "function:src/lib/formSpamProtection.ts:recordSubmissionAttempt",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "class:src/lib/forms.ts:formFieldTypeOptions",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "class:src/lib/forms.ts:FORM_HONEYPOT_FIELD_NAME",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "class:src/lib/forms.ts:FORM_RATE_LIMIT_MAX_SUBMISSIONS",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "class:src/lib/forms.ts:FORM_RATE_LIMIT_WINDOW_MS",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:isTextLikeFormFieldType",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:isSelectFormFieldType",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:normalizeFormFieldName",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:isValidFormFieldName",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:validateFormFieldDefinitions",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:validateFormSubmission",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/media.ts",
+      "target": "file:src/lib/siteUrl.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/media.ts",
+      "target": "function:src/lib/media.ts:isMediaDoc",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/media.ts",
+      "target": "function:src/lib/media.ts:getMediaAbsoluteUrl",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/media.ts",
+      "target": "function:src/lib/media.ts:getMediaImageProps",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:findSyncedNavigationLink",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:findReusablePageLink",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:findNavigationLinkByURL",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:ensureSyncedNavigationLinkForPage",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:ensureManualNavigationLinkForURL",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/navigationLinks.ts",
+      "target": "file:src/lib/pagePaths.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/navigationLinks.ts",
+      "target": "function:src/lib/navigationLinks.ts:isNavigationLinkDoc",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/navigationLinks.ts",
+      "target": "function:src/lib/navigationLinks.ts:resolveNavigationLink",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/navigationStructures.ts",
+      "target": "file:src/lib/navigationLinks.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/navigationStructures.ts",
+      "target": "function:src/lib/navigationStructures.ts:resolveHeaderNavigationItems",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/navigationStructures.ts",
+      "target": "function:src/lib/navigationStructures.ts:resolveFooterSections",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/pagePaths.ts",
+      "target": "function:src/lib/pagePaths.ts:isPageDoc",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/pagePaths.ts",
+      "target": "function:src/lib/pagePaths.ts:getPageID",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/pagePaths.ts",
+      "target": "function:src/lib/pagePaths.ts:getPageSlugSegments",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/pagePaths.ts",
+      "target": "function:src/lib/pagePaths.ts:getPageHref",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/pagePaths.ts",
+      "target": "function:src/lib/pagePaths.ts:getPageHrefFromSource",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/pagePaths.ts",
+      "target": "function:src/lib/pagePaths.ts:getPageHrefFromSourceWithResolver",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/redirects.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/redirects.ts",
+      "target": "file:src/lib/pagePaths.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/redirects.ts",
+      "target": "function:src/lib/redirects.ts:normalizeRedirectPath",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/redirects.ts",
+      "target": "class:src/lib/redirects.ts:getRedirectByPath",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/seo.ts",
+      "target": "class:src/lib/seo.ts:robotsFieldOptions",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/seo.ts",
+      "target": "function:src/lib/seo.ts:getRobotsMetadata",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/siteUrl.ts",
+      "target": "function:src/lib/siteUrl.ts:getSiteURL",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/siteUrl.ts",
+      "target": "function:src/lib/siteUrl.ts:toAbsoluteSiteUrl",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/systemPageTypes.ts",
+      "target": "class:src/lib/systemPageTypes.ts:systemPageTypeOptions",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/utils.ts",
+      "target": "function:src/lib/utils.ts:cn",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Users.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Footers.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/FormSubmissions.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Forms.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Media.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/NavigationLinks.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Pages.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Redirects.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Headers.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/SystemPages.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/globals/PageSettings.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/globals/SEOSettings.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/globals/SiteSettings.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/globals/ThemeSettings.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/plugins/withTrash.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "function:src/payload.config.ts:default",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:src/plugins/withTrash.ts",
+      "target": "function:src/plugins/withTrash.ts:withTrash",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/e2e/admin.e2e.spec.ts",
+      "target": "file:tests/helpers/login.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/e2e/admin.e2e.spec.ts",
+      "target": "file:tests/helpers/seedUser.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/helpers/login.ts",
+      "target": "function:tests/helpers/login.ts:login",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/helpers/seedUser.ts",
+      "target": "class:tests/helpers/seedUser.ts:testUser",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/helpers/seedUser.ts",
+      "target": "function:tests/helpers/seedUser.ts:seedTestUser",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/helpers/seedUser.ts",
+      "target": "function:tests/helpers/seedUser.ts:cleanupTestUser",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/int/adminCapabilities.int.spec.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/adminCapabilities.int.spec.ts",
+      "target": "file:src/collections/Media.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/adminCapabilities.int.spec.ts",
+      "target": "file:src/collections/Users.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/adminCapabilities.int.spec.ts",
+      "target": "file:src/globals/PageSettings.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/api.int.spec.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/redirects.int.spec.ts",
+      "target": "file:src/hooks/createRedirectsForChangedPagePath.ts",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Footers.ts",
+      "type": "configures",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/FormSubmissions.ts",
+      "type": "configures",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Forms.ts",
+      "type": "configures",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Headers.ts",
+      "type": "configures",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Media.ts",
+      "type": "configures",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/NavigationLinks.ts",
+      "type": "configures",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Pages.ts",
+      "type": "configures",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Redirects.ts",
+      "type": "configures",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/SystemPages.ts",
+      "type": "configures",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Users.ts",
+      "type": "configures",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/globals/PageSettings.ts",
+      "type": "configures",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/globals/SEOSettings.ts",
+      "type": "configures",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/globals/SiteSettings.ts",
+      "type": "configures",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/globals/ThemeSettings.ts",
+      "type": "configures",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/plugins/withTrash.ts",
+      "type": "configures",
+      "weight": 0.6
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:src/payload.config.ts",
+      "type": "documents",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/app/(frontend)/preview/page/[id]/page.tsx",
+      "target": "file:src/collections/Pages.ts",
+      "type": "depends_on",
+      "weight": 0.6
+    },
+    {
+      "source": "endpoint:src/app/(payload)/api/[...slug]/route.ts",
+      "target": "file:src/collections/FormSubmissions.ts",
+      "type": "routes",
+      "weight": 0.5
+    },
+    {
+      "source": "endpoint:src/app/(payload)/api/graphql-playground/route.ts",
+      "target": "file:src/collections/FormSubmissions.ts",
+      "type": "routes",
+      "weight": 0.5
+    },
+    {
+      "source": "endpoint:src/app/(payload)/api/graphql/route.ts",
+      "target": "file:src/collections/FormSubmissions.ts",
+      "type": "routes",
+      "weight": 0.5
+    },
+    {
+      "source": "endpoint:src/app/api/forms/[slug]/submit/route.ts",
+      "target": "file:src/collections/FormSubmissions.ts",
+      "type": "routes",
+      "weight": 0.5
+    },
+    {
+      "source": "endpoint:src/app/my-route/route.ts",
+      "target": "file:src/collections/FormSubmissions.ts",
+      "type": "routes",
+      "weight": 0.5
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:platform-tooling",
+      "name": "Platform & Tooling",
+      "description": "Project-level documentation, build tooling, Docker assets, and editor configuration.",
+      "nodeIds": [
+        "config:.env.example",
+        "file:.gitignore",
+        "config:.npmrc",
+        "config:.prettierrc.json",
+        "config:.yarnrc",
+        "document:AGENTS.md",
+        "service:Dockerfile",
+        "document:README.md",
+        "document:SKILL.md",
+        "config:components.json",
+        "service:docker-compose.yml",
+        "document:docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md",
+        "document:docs/superpowers/specs/2026-07-04-navigation-links-and-menus-design.md",
+        "config:eslint.config.mjs",
+        "config:next.config.ts",
+        "config:package.json",
+        "config:playwright.config.ts",
+        "config:postcss.config.mjs",
+        "config:test.env",
+        "file:tests/e2e/admin.e2e.spec.ts",
+        "file:tests/e2e/frontend.e2e.spec.ts",
+        "file:tests/helpers/login.ts",
+        "file:tests/helpers/seedUser.ts",
+        "file:tests/int/adminCapabilities.int.spec.ts",
+        "file:tests/int/api.int.spec.ts",
+        "file:tests/int/redirects.int.spec.ts",
+        "config:tsconfig.json",
+        "config:vitest.config.mts",
+        "config:vitest.setup.ts"
+      ]
+    },
+    {
+      "id": "layer:payload-core",
+      "name": "Payload Core",
+      "description": "Payload configuration, collections, globals, access control, hooks, and CMS plugins.",
+      "nodeIds": [
+        "file:src/access/adminCapabilities.ts",
+        "file:src/collections/Footers.ts",
+        "file:src/collections/FormSubmissions.ts",
+        "file:src/collections/Forms.ts",
+        "file:src/collections/Headers.ts",
+        "file:src/collections/Media.ts",
+        "file:src/collections/NavigationLinks.ts",
+        "file:src/collections/Pages.ts",
+        "file:src/collections/Redirects.ts",
+        "file:src/collections/SystemPages.ts",
+        "file:src/collections/Users.ts",
+        "file:src/fields/cmsLinkFields.ts",
+        "file:src/globals/PageSettings.ts",
+        "file:src/globals/SEOSettings.ts",
+        "file:src/globals/SiteSettings.ts",
+        "file:src/globals/ThemeSettings.ts",
+        "file:src/hooks/createRedirectsForChangedPagePath.ts",
+        "file:src/hooks/migrateLegacyReusableLinks.ts",
+        "file:src/hooks/populatePageUrlPreview.ts",
+        "file:src/hooks/preventReferencedPageUnpublish.ts",
+        "file:src/hooks/preventReferencedSystemPageInvalidation.ts",
+        "file:src/hooks/syncNavigationLinkForPage.ts",
+        "file:src/payload.config.ts",
+        "file:src/plugins/withTrash.ts"
+      ]
+    },
+    {
+      "id": "layer:shared-domain",
+      "name": "Shared Domain Utilities",
+      "description": "Reusable domain logic for SEO, navigation, forms, media, and URL handling.",
+      "nodeIds": [
+        "file:src/lib/cmsLinks.ts",
+        "file:src/lib/formNotifications.ts",
+        "file:src/lib/formSpamProtection.ts",
+        "file:src/lib/forms.ts",
+        "file:src/lib/media.ts",
+        "file:src/lib/navigationLinkSync.ts",
+        "file:src/lib/navigationLinks.ts",
+        "file:src/lib/navigationStructures.ts",
+        "file:src/lib/pagePaths.ts",
+        "file:src/lib/redirects.ts",
+        "file:src/lib/seo.ts",
+        "file:src/lib/siteUrl.ts",
+        "file:src/lib/systemPageTypes.ts",
+        "file:src/lib/utils.ts"
+      ]
+    },
+    {
+      "id": "layer:content-rendering",
+      "name": "Content Rendering",
+      "description": "Reusable blocks, presentational components, and styles that turn CMS data into UI.",
+      "nodeIds": [
+        "file:src/blocks/Footer2/Component.tsx",
+        "file:src/blocks/Footer2/config.ts",
+        "file:src/blocks/Form/ClientForm.tsx",
+        "file:src/blocks/Form/Component.tsx",
+        "file:src/blocks/Form/config.ts",
+        "file:src/blocks/HeaderNavbar12/Component.tsx",
+        "file:src/blocks/HeaderNavbar12/config.ts",
+        "file:src/blocks/Hero36/Component.tsx",
+        "file:src/blocks/Hero36/config.ts",
+        "file:src/blocks/RenderBlocks.tsx",
+        "file:src/blocks/System404/Component.tsx",
+        "file:src/blocks/System404/config.ts",
+        "file:src/blocks/SystemComingSoon/Component.tsx",
+        "file:src/blocks/SystemComingSoon/config.ts",
+        "file:src/blocks/SystemMaintenance/Component.tsx",
+        "file:src/blocks/SystemMaintenance/config.ts",
+        "file:src/blocks/renderFooter.tsx",
+        "file:src/blocks/renderHeader.tsx",
+        "file:src/blocks/systemPageFields.ts",
+        "file:src/components/footer2.tsx",
+        "file:src/components/hero36.tsx",
+        "file:src/components/live-preview/PageLivePreview.tsx",
+        "file:src/components/navbar12.tsx",
+        "file:src/components/shadcnblocks/logo.tsx",
+        "file:src/components/system-page-hero.tsx",
+        "file:src/components/ui/accordion.tsx",
+        "file:src/components/ui/badge.tsx",
+        "file:src/components/ui/button.tsx",
+        "file:src/components/ui/context-menu.tsx",
+        "file:src/components/ui/navigation-menu.tsx",
+        "file:src/components/ui/separator.tsx",
+        "file:src/components/ui/sheet.tsx",
+        "file:src/styles/globals.css",
+        "file:src/styles/themes/theme-blue.css",
+        "file:src/styles/themes/theme-default.css",
+        "file:src/styles/themes/theme-sera.css"
+      ]
+    },
+    {
+      "id": "layer:application-delivery",
+      "name": "Application Delivery",
+      "description": "Next.js app-router pages, API routes, admin entry points, and route-level server logic.",
+      "nodeIds": [
+        "file:src/app/(frontend)/PageContent.tsx",
+        "file:src/app/(frontend)/SystemFallbackPage.tsx",
+        "file:src/app/(frontend)/[...slug]/page.tsx",
+        "file:src/app/(frontend)/layout.tsx",
+        "file:src/app/(frontend)/not-found.tsx",
+        "file:src/app/(frontend)/page.tsx",
+        "file:src/app/(frontend)/pageData.ts",
+        "file:src/app/(frontend)/preview/page/[id]/page.tsx",
+        "file:src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+        "file:src/app/(payload)/admin/[[...segments]]/page.tsx",
+        "file:src/app/(payload)/admin/importMap.js",
+        "endpoint:src/app/(payload)/api/[...slug]/route.ts",
+        "endpoint:src/app/(payload)/api/graphql-playground/route.ts",
+        "endpoint:src/app/(payload)/api/graphql/route.ts",
+        "file:src/app/(payload)/custom.scss",
+        "file:src/app/(payload)/layout.tsx",
+        "endpoint:src/app/api/forms/[slug]/submit/route.ts",
+        "endpoint:src/app/my-route/route.ts",
+        "endpoint:src/app/robots.ts",
+        "endpoint:src/app/sitemap.ts"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Project Overview",
+      "description": "Start with the project README and package manifest to understand the application stack and local workflow.",
+      "nodeIds": [
+        "document:README.md",
+        "config:package.json"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Payload Bootstrap",
+      "description": "The Payload config is the operational center that registers collections, globals, storage, email, and plugins.",
+      "nodeIds": [
+        "file:src/payload.config.ts"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Content Model",
+      "description": "Collections and globals define the editable site structure, publishing rules, and reusable settings.",
+      "nodeIds": [
+        "file:src/collections/Pages.ts",
+        "file:src/collections/Forms.ts",
+        "file:src/globals/PageSettings.ts",
+        "file:src/globals/SEOSettings.ts"
+      ]
+    },
+    {
+      "order": 4,
+      "title": "Editorial Rules & Side Effects",
+      "description": "Access checks, hooks, and shared utilities enforce business rules around page hierarchy, redirects, and navigation synchronization.",
+      "nodeIds": [
+        "file:src/access/adminCapabilities.ts",
+        "file:src/hooks/createRedirectsForChangedPagePath.ts",
+        "file:src/hooks/syncNavigationLinkForPage.ts",
+        "file:src/lib/navigationLinkSync.ts"
+      ]
+    },
+    {
+      "order": 5,
+      "title": "Frontend Data Flow",
+      "description": "The frontend app router fetches CMS data, handles fallback modes, and turns page documents into renderable blocks.",
+      "nodeIds": [
+        "file:src/app/(frontend)/page.tsx",
+        "file:src/app/(frontend)/pageData.ts",
+        "file:src/app/(frontend)/PageContent.tsx",
+        "file:src/app/(frontend)/[...slug]/page.tsx"
+      ]
+    },
+    {
+      "order": 6,
+      "title": "Block Rendering",
+      "description": "Blocks and shared components define how CMS-managed layouts become concrete React UI.",
+      "nodeIds": [
+        "file:src/blocks/Hero36/Component.tsx",
+        "file:src/blocks/Form/Component.tsx",
+        "file:src/components/navbar12.tsx"
+      ]
+    },
+    {
+      "order": 7,
+      "title": "Form Submission Pipeline",
+      "description": "The public forms route validates submissions, stores them through Payload, and sends notifications when configured.",
+      "nodeIds": [
+        "endpoint:src/app/api/forms/[slug]/submit/route.ts",
+        "file:src/lib/forms.ts",
+        "file:src/lib/formSpamProtection.ts",
+        "file:src/lib/formNotifications.ts"
+      ]
+    },
+    {
+      "order": 8,
+      "title": "Presentation & Runtime",
+      "description": "Styles, themes, and Docker assets shape how the application is delivered and themed across environments.",
+      "nodeIds": [
+        "file:src/styles/globals.css",
+        "file:src/styles/themes/theme-default.css",
+        "service:Dockerfile",
+        "service:docker-compose.yml"
+      ]
+    }
+  ]
+}

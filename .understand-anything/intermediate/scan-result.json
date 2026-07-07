@@ -1,0 +1,1160 @@
+{
+  "projectName": "payload-cms-next-tailwind-shadcn-starter-kit",
+  "description": "A blank template to get started with Payload 3.0",
+  "languages": [
+    "typescript",
+    "css",
+    "markdown",
+    "json",
+    "yaml"
+  ],
+  "frameworks": [
+    "Next.js",
+    "Payload CMS",
+    "React",
+    "Tailwind CSS",
+    "shadcn/ui",
+    "SQLite",
+    "Vitest",
+    "Playwright"
+  ],
+  "files": [
+    {
+      "path": ".env.example",
+      "language": "example",
+      "sizeLines": 8,
+      "fileCategory": "config"
+    },
+    {
+      "path": ".gitignore",
+      "language": "unknown",
+      "sizeLines": 51,
+      "fileCategory": "code"
+    },
+    {
+      "path": ".npmrc",
+      "language": "unknown",
+      "sizeLines": 1,
+      "fileCategory": "config"
+    },
+    {
+      "path": ".prettierrc.json",
+      "language": "json",
+      "sizeLines": 7,
+      "fileCategory": "config"
+    },
+    {
+      "path": ".yarnrc",
+      "language": "unknown",
+      "sizeLines": 2,
+      "fileCategory": "config"
+    },
+    {
+      "path": "AGENTS.md",
+      "language": "markdown",
+      "sizeLines": 5,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "Dockerfile",
+      "language": "dockerfile",
+      "sizeLines": 72,
+      "fileCategory": "infra"
+    },
+    {
+      "path": "README.md",
+      "language": "markdown",
+      "sizeLines": 68,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "SKILL.md",
+      "language": "markdown",
+      "sizeLines": 19,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "components.json",
+      "language": "json",
+      "sizeLines": 33,
+      "fileCategory": "config"
+    },
+    {
+      "path": "docker-compose.yml",
+      "language": "yaml",
+      "sizeLines": 44,
+      "fileCategory": "infra"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md",
+      "language": "markdown",
+      "sizeLines": 264,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-04-navigation-links-and-menus-design.md",
+      "language": "markdown",
+      "sizeLines": 412,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "eslint.config.mjs",
+      "language": "javascript",
+      "sizeLines": 39,
+      "fileCategory": "config"
+    },
+    {
+      "path": "next.config.ts",
+      "language": "typescript",
+      "sizeLines": 32,
+      "fileCategory": "config"
+    },
+    {
+      "path": "package.json",
+      "language": "json",
+      "sizeLines": 76,
+      "fileCategory": "config"
+    },
+    {
+      "path": "playwright.config.ts",
+      "language": "typescript",
+      "sizeLines": 42,
+      "fileCategory": "config"
+    },
+    {
+      "path": "postcss.config.mjs",
+      "language": "javascript",
+      "sizeLines": 6,
+      "fileCategory": "config"
+    },
+    {
+      "path": "src/access/adminCapabilities.ts",
+      "language": "typescript",
+      "sizeLines": 239,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/PageContent.tsx",
+      "language": "typescript",
+      "sizeLines": 7,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/SystemFallbackPage.tsx",
+      "language": "typescript",
+      "sizeLines": 45,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/[...slug]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 62,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/layout.tsx",
+      "language": "typescript",
+      "sizeLines": 193,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/not-found.tsx",
+      "language": "typescript",
+      "sizeLines": 14,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/page.tsx",
+      "language": "typescript",
+      "sizeLines": 33,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/pageData.ts",
+      "language": "typescript",
+      "sizeLines": 450,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/preview/page/[id]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 47,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "language": "typescript",
+      "sizeLines": 25,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 25,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(payload)/admin/importMap.js",
+      "language": "javascript",
+      "sizeLines": 9,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(payload)/api/[...slug]/route.ts",
+      "language": "typescript",
+      "sizeLines": 20,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(payload)/api/graphql-playground/route.ts",
+      "language": "typescript",
+      "sizeLines": 8,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(payload)/api/graphql/route.ts",
+      "language": "typescript",
+      "sizeLines": 9,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(payload)/custom.scss",
+      "language": "css",
+      "sizeLines": 0,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "src/app/(payload)/layout.tsx",
+      "language": "typescript",
+      "sizeLines": 32,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/api/forms/[slug]/submit/route.ts",
+      "language": "typescript",
+      "sizeLines": 164,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/my-route/route.ts",
+      "language": "typescript",
+      "sizeLines": 13,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/robots.ts",
+      "language": "typescript",
+      "sizeLines": 19,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/sitemap.ts",
+      "language": "typescript",
+      "sizeLines": 70,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/Footer2/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 61,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/Footer2/config.ts",
+      "language": "typescript",
+      "sizeLines": 126,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/Form/ClientForm.tsx",
+      "language": "typescript",
+      "sizeLines": 282,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/Form/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 79,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/Form/config.ts",
+      "language": "typescript",
+      "sizeLines": 22,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/HeaderNavbar12/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 86,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/HeaderNavbar12/config.ts",
+      "language": "typescript",
+      "sizeLines": 161,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/Hero36/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 36,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/Hero36/config.ts",
+      "language": "typescript",
+      "sizeLines": 125,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/RenderBlocks.tsx",
+      "language": "typescript",
+      "sizeLines": 63,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/System404/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 41,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/System404/config.ts",
+      "language": "typescript",
+      "sizeLines": 8,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/SystemComingSoon/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 41,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/SystemComingSoon/config.ts",
+      "language": "typescript",
+      "sizeLines": 8,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/SystemMaintenance/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 41,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/SystemMaintenance/config.ts",
+      "language": "typescript",
+      "sizeLines": 8,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/renderFooter.tsx",
+      "language": "typescript",
+      "sizeLines": 32,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/renderHeader.tsx",
+      "language": "typescript",
+      "sizeLines": 32,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/systemPageFields.ts",
+      "language": "typescript",
+      "sizeLines": 78,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Footers.ts",
+      "language": "typescript",
+      "sizeLines": 58,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/FormSubmissions.ts",
+      "language": "typescript",
+      "sizeLines": 46,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Forms.ts",
+      "language": "typescript",
+      "sizeLines": 218,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Headers.ts",
+      "language": "typescript",
+      "sizeLines": 58,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Media.ts",
+      "language": "typescript",
+      "sizeLines": 140,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/NavigationLinks.ts",
+      "language": "typescript",
+      "sizeLines": 135,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Pages.ts",
+      "language": "typescript",
+      "sizeLines": 283,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Redirects.ts",
+      "language": "typescript",
+      "sizeLines": 172,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/SystemPages.ts",
+      "language": "typescript",
+      "sizeLines": 147,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Users.ts",
+      "language": "typescript",
+      "sizeLines": 109,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/footer2.tsx",
+      "language": "typescript",
+      "sizeLines": 161,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/hero36.tsx",
+      "language": "typescript",
+      "sizeLines": 181,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/live-preview/PageLivePreview.tsx",
+      "language": "typescript",
+      "sizeLines": 128,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/navbar12.tsx",
+      "language": "typescript",
+      "sizeLines": 596,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/shadcnblocks/logo.tsx",
+      "language": "typescript",
+      "sizeLines": 168,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/system-page-hero.tsx",
+      "language": "typescript",
+      "sizeLines": 164,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/accordion.tsx",
+      "language": "typescript",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/badge.tsx",
+      "language": "typescript",
+      "sizeLines": 50,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/button.tsx",
+      "language": "typescript",
+      "sizeLines": 66,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/context-menu.tsx",
+      "language": "typescript",
+      "sizeLines": 264,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/navigation-menu.tsx",
+      "language": "typescript",
+      "sizeLines": 165,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/separator.tsx",
+      "language": "typescript",
+      "sizeLines": 29,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/sheet.tsx",
+      "language": "typescript",
+      "sizeLines": 148,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/fields/cmsLinkFields.ts",
+      "language": "typescript",
+      "sizeLines": 21,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/globals/PageSettings.ts",
+      "language": "typescript",
+      "sizeLines": 250,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/globals/SEOSettings.ts",
+      "language": "typescript",
+      "sizeLines": 59,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/globals/SiteSettings.ts",
+      "language": "typescript",
+      "sizeLines": 131,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/globals/ThemeSettings.ts",
+      "language": "typescript",
+      "sizeLines": 75,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/createRedirectsForChangedPagePath.ts",
+      "language": "typescript",
+      "sizeLines": 320,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/migrateLegacyReusableLinks.ts",
+      "language": "typescript",
+      "sizeLines": 146,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/populatePageUrlPreview.ts",
+      "language": "typescript",
+      "sizeLines": 24,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/preventReferencedPageUnpublish.ts",
+      "language": "typescript",
+      "sizeLines": 128,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "language": "typescript",
+      "sizeLines": 101,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/syncNavigationLinkForPage.ts",
+      "language": "typescript",
+      "sizeLines": 53,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/cmsLinks.ts",
+      "language": "typescript",
+      "sizeLines": 31,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/formNotifications.ts",
+      "language": "typescript",
+      "sizeLines": 76,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/formSpamProtection.ts",
+      "language": "typescript",
+      "sizeLines": 86,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/forms.ts",
+      "language": "typescript",
+      "sizeLines": 185,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/media.ts",
+      "language": "typescript",
+      "sizeLines": 67,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/navigationLinkSync.ts",
+      "language": "typescript",
+      "sizeLines": 189,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/navigationLinks.ts",
+      "language": "typescript",
+      "sizeLines": 39,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/navigationStructures.ts",
+      "language": "typescript",
+      "sizeLines": 131,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/pagePaths.ts",
+      "language": "typescript",
+      "sizeLines": 88,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/redirects.ts",
+      "language": "typescript",
+      "sizeLines": 138,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/seo.ts",
+      "language": "typescript",
+      "sizeLines": 37,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/siteUrl.ts",
+      "language": "typescript",
+      "sizeLines": 20,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/systemPageTypes.ts",
+      "language": "typescript",
+      "sizeLines": 17,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/utils.ts",
+      "language": "typescript",
+      "sizeLines": 7,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/payload.config.ts",
+      "language": "typescript",
+      "sizeLines": 82,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/plugins/withTrash.ts",
+      "language": "typescript",
+      "sizeLines": 26,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/styles/globals.css",
+      "language": "css",
+      "sizeLines": 858,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "src/styles/themes/theme-blue.css",
+      "language": "css",
+      "sizeLines": 69,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "src/styles/themes/theme-default.css",
+      "language": "css",
+      "sizeLines": 71,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "src/styles/themes/theme-sera.css",
+      "language": "css",
+      "sizeLines": 69,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "test.env",
+      "language": "config",
+      "sizeLines": 2,
+      "fileCategory": "config"
+    },
+    {
+      "path": "tests/e2e/admin.e2e.spec.ts",
+      "language": "typescript",
+      "sizeLines": 42,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/e2e/frontend.e2e.spec.ts",
+      "language": "typescript",
+      "sizeLines": 21,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/helpers/login.ts",
+      "language": "typescript",
+      "sizeLines": 32,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/helpers/seedUser.ts",
+      "language": "typescript",
+      "sizeLines": 48,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/adminCapabilities.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 290,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/api.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 21,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/redirects.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 321,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tsconfig.json",
+      "language": "json",
+      "sizeLines": 45,
+      "fileCategory": "config"
+    },
+    {
+      "path": "vitest.config.mts",
+      "language": "mts",
+      "sizeLines": 13,
+      "fileCategory": "config"
+    },
+    {
+      "path": "vitest.setup.ts",
+      "language": "typescript",
+      "sizeLines": 5,
+      "fileCategory": "config"
+    }
+  ],
+  "totalFiles": 123,
+  "filteredByIgnore": 175,
+  "estimatedComplexity": "small",
+  "importMap": {
+    ".env.example": [],
+    ".gitignore": [],
+    ".npmrc": [],
+    ".prettierrc.json": [],
+    ".yarnrc": [],
+    "AGENTS.md": [],
+    "Dockerfile": [],
+    "README.md": [],
+    "SKILL.md": [],
+    "components.json": [],
+    "docker-compose.yml": [],
+    "docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md": [],
+    "docs/superpowers/specs/2026-07-04-navigation-links-and-menus-design.md": [],
+    "eslint.config.mjs": [],
+    "next.config.ts": [],
+    "package.json": [],
+    "playwright.config.ts": [],
+    "postcss.config.mjs": [],
+    "src/access/adminCapabilities.ts": [],
+    "src/app/(frontend)/PageContent.tsx": [],
+    "src/app/(frontend)/SystemFallbackPage.tsx": [
+      "src/components/system-page-hero.tsx"
+    ],
+    "src/app/(frontend)/[...slug]/page.tsx": [
+      "src/app/(frontend)/PageContent.tsx",
+      "src/app/(frontend)/SystemFallbackPage.tsx",
+      "src/app/(frontend)/pageData.ts",
+      "src/lib/redirects.ts"
+    ],
+    "src/app/(frontend)/layout.tsx": [
+      "src/payload.config.ts",
+      "src/styles/globals.css",
+      "src/blocks/renderFooter.tsx",
+      "src/blocks/renderHeader.tsx",
+      "src/lib/media.ts",
+      "src/lib/seo.ts",
+      "src/lib/siteUrl.ts"
+    ],
+    "src/app/(frontend)/not-found.tsx": [
+      "src/app/(frontend)/PageContent.tsx",
+      "src/app/(frontend)/SystemFallbackPage.tsx",
+      "src/app/(frontend)/pageData.ts"
+    ],
+    "src/app/(frontend)/page.tsx": [
+      "src/styles/globals.css",
+      "src/app/(frontend)/PageContent.tsx",
+      "src/app/(frontend)/SystemFallbackPage.tsx",
+      "src/app/(frontend)/pageData.ts"
+    ],
+    "src/app/(frontend)/pageData.ts": [
+      "src/payload.config.ts",
+      "src/lib/media.ts",
+      "src/lib/seo.ts",
+      "src/lib/siteUrl.ts",
+      "src/lib/pagePaths.ts",
+      "src/lib/systemPageTypes.ts"
+    ],
+    "src/app/(frontend)/preview/page/[id]/page.tsx": [
+      "src/components/live-preview/PageLivePreview.tsx",
+      "src/payload.config.ts"
+    ],
+    "src/app/(payload)/admin/[[...segments]]/not-found.tsx": [
+      "src/payload.config.ts",
+      "src/app/(payload)/admin/importMap.js"
+    ],
+    "src/app/(payload)/admin/[[...segments]]/page.tsx": [
+      "src/payload.config.ts",
+      "src/app/(payload)/admin/importMap.js"
+    ],
+    "src/app/(payload)/admin/importMap.js": [],
+    "src/app/(payload)/api/[...slug]/route.ts": [
+      "src/payload.config.ts"
+    ],
+    "src/app/(payload)/api/graphql-playground/route.ts": [
+      "src/payload.config.ts"
+    ],
+    "src/app/(payload)/api/graphql/route.ts": [
+      "src/payload.config.ts"
+    ],
+    "src/app/(payload)/custom.scss": [],
+    "src/app/(payload)/layout.tsx": [
+      "src/payload.config.ts",
+      "src/app/(payload)/admin/importMap.js",
+      "src/app/(payload)/custom.scss"
+    ],
+    "src/app/api/forms/[slug]/submit/route.ts": [
+      "src/payload.config.ts",
+      "src/lib/formSpamProtection.ts",
+      "src/lib/formNotifications.ts",
+      "src/lib/forms.ts"
+    ],
+    "src/app/my-route/route.ts": [
+      "src/payload.config.ts"
+    ],
+    "src/app/robots.ts": [
+      "src/lib/siteUrl.ts"
+    ],
+    "src/app/sitemap.ts": [
+      "src/payload.config.ts",
+      "src/lib/pagePaths.ts",
+      "src/lib/siteUrl.ts"
+    ],
+    "src/blocks/Footer2/Component.tsx": [
+      "src/components/footer2.tsx",
+      "src/lib/media.ts",
+      "src/lib/navigationLinks.ts",
+      "src/lib/navigationStructures.ts"
+    ],
+    "src/blocks/Footer2/config.ts": [],
+    "src/blocks/Form/ClientForm.tsx": [
+      "src/components/ui/button.tsx",
+      "src/lib/forms.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/blocks/Form/Component.tsx": [
+      "src/payload.config.ts",
+      "src/blocks/Form/ClientForm.tsx",
+      "src/lib/forms.ts"
+    ],
+    "src/blocks/Form/config.ts": [],
+    "src/blocks/HeaderNavbar12/Component.tsx": [
+      "src/components/navbar12.tsx",
+      "src/lib/media.ts",
+      "src/lib/navigationLinks.ts",
+      "src/lib/navigationStructures.ts"
+    ],
+    "src/blocks/HeaderNavbar12/config.ts": [],
+    "src/blocks/Hero36/Component.tsx": [
+      "src/components/hero36.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts"
+    ],
+    "src/blocks/Hero36/config.ts": [
+      "src/components/hero36.tsx",
+      "src/fields/cmsLinkFields.ts"
+    ],
+    "src/blocks/RenderBlocks.tsx": [
+      "src/blocks/Form/Component.tsx",
+      "src/blocks/Hero36/Component.tsx",
+      "src/blocks/System404/Component.tsx",
+      "src/blocks/SystemComingSoon/Component.tsx",
+      "src/blocks/SystemMaintenance/Component.tsx"
+    ],
+    "src/blocks/System404/Component.tsx": [
+      "src/components/system-page-hero.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts"
+    ],
+    "src/blocks/System404/config.ts": [
+      "src/blocks/systemPageFields.ts"
+    ],
+    "src/blocks/SystemComingSoon/Component.tsx": [
+      "src/components/system-page-hero.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts"
+    ],
+    "src/blocks/SystemComingSoon/config.ts": [
+      "src/blocks/systemPageFields.ts"
+    ],
+    "src/blocks/SystemMaintenance/Component.tsx": [
+      "src/components/system-page-hero.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts"
+    ],
+    "src/blocks/SystemMaintenance/config.ts": [
+      "src/blocks/systemPageFields.ts"
+    ],
+    "src/blocks/renderFooter.tsx": [
+      "src/blocks/Footer2/Component.tsx"
+    ],
+    "src/blocks/renderHeader.tsx": [
+      "src/blocks/HeaderNavbar12/Component.tsx"
+    ],
+    "src/blocks/systemPageFields.ts": [
+      "src/fields/cmsLinkFields.ts"
+    ],
+    "src/collections/Footers.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/blocks/Footer2/config.ts"
+    ],
+    "src/collections/FormSubmissions.ts": [
+      "src/access/adminCapabilities.ts"
+    ],
+    "src/collections/Forms.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/lib/forms.ts"
+    ],
+    "src/collections/Headers.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/blocks/HeaderNavbar12/config.ts"
+    ],
+    "src/collections/Media.ts": [
+      "src/access/adminCapabilities.ts"
+    ],
+    "src/collections/NavigationLinks.ts": [
+      "src/access/adminCapabilities.ts"
+    ],
+    "src/collections/Pages.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/lib/seo.ts",
+      "src/blocks/Form/config.ts",
+      "src/blocks/Hero36/config.ts",
+      "src/hooks/createRedirectsForChangedPagePath.ts",
+      "src/hooks/migrateLegacyReusableLinks.ts",
+      "src/hooks/populatePageUrlPreview.ts",
+      "src/hooks/preventReferencedPageUnpublish.ts",
+      "src/hooks/syncNavigationLinkForPage.ts"
+    ],
+    "src/collections/Redirects.ts": [
+      "src/access/adminCapabilities.ts"
+    ],
+    "src/collections/SystemPages.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/lib/systemPageTypes.ts",
+      "src/blocks/System404/config.ts",
+      "src/blocks/SystemComingSoon/config.ts",
+      "src/blocks/SystemMaintenance/config.ts",
+      "src/hooks/migrateLegacyReusableLinks.ts",
+      "src/hooks/preventReferencedSystemPageInvalidation.ts"
+    ],
+    "src/collections/Users.ts": [
+      "src/access/adminCapabilities.ts"
+    ],
+    "src/components/footer2.tsx": [
+      "src/components/shadcnblocks/logo.tsx",
+      "src/lib/utils.ts"
+    ],
+    "src/components/hero36.tsx": [
+      "src/components/ui/badge.tsx",
+      "src/lib/utils.ts"
+    ],
+    "src/components/live-preview/PageLivePreview.tsx": [
+      "src/blocks/Form/ClientForm.tsx",
+      "src/components/hero36.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/forms.ts",
+      "src/lib/media.ts"
+    ],
+    "src/components/navbar12.tsx": [
+      "src/components/ui/accordion.tsx",
+      "src/components/ui/button.tsx",
+      "src/components/ui/navigation-menu.tsx",
+      "src/components/ui/separator.tsx",
+      "src/components/ui/sheet.tsx",
+      "src/lib/utils.ts"
+    ],
+    "src/components/shadcnblocks/logo.tsx": [
+      "src/lib/utils.ts",
+      "src/components/ui/context-menu.tsx"
+    ],
+    "src/components/system-page-hero.tsx": [
+      "src/components/ui/badge.tsx",
+      "src/components/ui/button.tsx",
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/accordion.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/badge.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/button.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/context-menu.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/navigation-menu.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/separator.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/sheet.tsx": [
+      "src/lib/utils.ts",
+      "src/components/ui/button.tsx"
+    ],
+    "src/fields/cmsLinkFields.ts": [],
+    "src/globals/PageSettings.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/lib/systemPageTypes.ts"
+    ],
+    "src/globals/SEOSettings.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/lib/seo.ts"
+    ],
+    "src/globals/SiteSettings.ts": [
+      "src/access/adminCapabilities.ts"
+    ],
+    "src/globals/ThemeSettings.ts": [
+      "src/access/adminCapabilities.ts"
+    ],
+    "src/hooks/createRedirectsForChangedPagePath.ts": [
+      "src/lib/redirects.ts",
+      "src/lib/pagePaths.ts"
+    ],
+    "src/hooks/migrateLegacyReusableLinks.ts": [
+      "src/lib/navigationLinkSync.ts"
+    ],
+    "src/hooks/populatePageUrlPreview.ts": [
+      "src/lib/pagePaths.ts"
+    ],
+    "src/hooks/preventReferencedPageUnpublish.ts": [
+      "src/lib/pagePaths.ts"
+    ],
+    "src/hooks/preventReferencedSystemPageInvalidation.ts": [
+      "src/lib/systemPageTypes.ts"
+    ],
+    "src/hooks/syncNavigationLinkForPage.ts": [
+      "src/lib/navigationLinkSync.ts"
+    ],
+    "src/lib/cmsLinks.ts": [
+      "src/lib/navigationLinks.ts",
+      "src/lib/pagePaths.ts"
+    ],
+    "src/lib/formNotifications.ts": [],
+    "src/lib/formSpamProtection.ts": [
+      "src/lib/forms.ts"
+    ],
+    "src/lib/forms.ts": [],
+    "src/lib/media.ts": [
+      "src/lib/siteUrl.ts"
+    ],
+    "src/lib/navigationLinkSync.ts": [],
+    "src/lib/navigationLinks.ts": [
+      "src/lib/pagePaths.ts"
+    ],
+    "src/lib/navigationStructures.ts": [
+      "src/lib/navigationLinks.ts"
+    ],
+    "src/lib/pagePaths.ts": [],
+    "src/lib/redirects.ts": [
+      "src/payload.config.ts",
+      "src/lib/pagePaths.ts"
+    ],
+    "src/lib/seo.ts": [],
+    "src/lib/siteUrl.ts": [],
+    "src/lib/systemPageTypes.ts": [],
+    "src/lib/utils.ts": [],
+    "src/payload.config.ts": [
+      "src/collections/Users.ts",
+      "src/collections/Footers.ts",
+      "src/collections/FormSubmissions.ts",
+      "src/collections/Forms.ts",
+      "src/collections/Media.ts",
+      "src/collections/NavigationLinks.ts",
+      "src/collections/Pages.ts",
+      "src/collections/Redirects.ts",
+      "src/collections/Headers.ts",
+      "src/collections/SystemPages.ts",
+      "src/globals/PageSettings.ts",
+      "src/globals/SEOSettings.ts",
+      "src/globals/SiteSettings.ts",
+      "src/globals/ThemeSettings.ts",
+      "src/plugins/withTrash.ts"
+    ],
+    "src/plugins/withTrash.ts": [],
+    "src/styles/globals.css": [],
+    "src/styles/themes/theme-blue.css": [],
+    "src/styles/themes/theme-default.css": [],
+    "src/styles/themes/theme-sera.css": [],
+    "test.env": [],
+    "tests/e2e/admin.e2e.spec.ts": [
+      "tests/helpers/login.ts",
+      "tests/helpers/seedUser.ts"
+    ],
+    "tests/e2e/frontend.e2e.spec.ts": [],
+    "tests/helpers/login.ts": [],
+    "tests/helpers/seedUser.ts": [],
+    "tests/int/adminCapabilities.int.spec.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/collections/Media.ts",
+      "src/collections/Users.ts",
+      "src/globals/PageSettings.ts"
+    ],
+    "tests/int/api.int.spec.ts": [
+      "src/payload.config.ts"
+    ],
+    "tests/int/redirects.int.spec.ts": [
+      "src/hooks/createRedirectsForChangedPagePath.ts"
+    ],
+    "tsconfig.json": [],
+    "vitest.config.mts": [],
+    "vitest.setup.ts": []
+  },
+  "stats": {
+    "filesScanned": 123,
+    "byCategory": {
+      "config": 14,
+      "code": 97,
+      "docs": 5,
+      "infra": 2,
+      "markup": 5
+    }
+  }
+}

@@ -1,0 +1,622 @@
+{
+  "version": "fallback-1",
+  "gitCommitHash": "10be06be6dc44fc670400b012636a3eb87e68707",
+  "generatedAt": "2026-07-07T09:43:25.948Z",
+  "fingerprints": [
+    {
+      "path": ".env.example",
+      "sha1": "0e501ef691658af535fdcf63076546c9b7f58354",
+      "sizeLines": 8
+    },
+    {
+      "path": ".gitignore",
+      "sha1": "83d39bd9466ea70e4619983fd4636ca015de80c3",
+      "sizeLines": 51
+    },
+    {
+      "path": ".npmrc",
+      "sha1": "b5d86627cf7d529d70da198c4d9b6ef5f5dcdda8",
+      "sizeLines": 1
+    },
+    {
+      "path": ".prettierrc.json",
+      "sha1": "333399069834126e21a3e90f78381e1c01238659",
+      "sizeLines": 7
+    },
+    {
+      "path": ".yarnrc",
+      "sha1": "a6dcb422fdd945680fb2531b5606b46391390edf",
+      "sizeLines": 2
+    },
+    {
+      "path": "AGENTS.md",
+      "sha1": "26b2502f93177d0674bbce491d167210ebd82275",
+      "sizeLines": 5
+    },
+    {
+      "path": "Dockerfile",
+      "sha1": "12a92bb88510f85dd9ee26666a935d0186d9e3ee",
+      "sizeLines": 72
+    },
+    {
+      "path": "README.md",
+      "sha1": "971fa857c67fbadf17c952bc5c96acc0142829c1",
+      "sizeLines": 68
+    },
+    {
+      "path": "SKILL.md",
+      "sha1": "4767ec61eb03e2f910837194a921d12124ad047b",
+      "sizeLines": 19
+    },
+    {
+      "path": "components.json",
+      "sha1": "9ff8c59249823a7f1d3234ec32c0e59f17122710",
+      "sizeLines": 33
+    },
+    {
+      "path": "docker-compose.yml",
+      "sha1": "83440bf4ac41704b46b56b5e0a54a0251a71bce7",
+      "sizeLines": 44
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md",
+      "sha1": "9e0b18ae5cb457d2c95e808c1715ef41934fbdeb",
+      "sizeLines": 264
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-04-navigation-links-and-menus-design.md",
+      "sha1": "8bee936ae6d826d854b84e062c0b1b9f9eec6e81",
+      "sizeLines": 412
+    },
+    {
+      "path": "eslint.config.mjs",
+      "sha1": "fdd812591e5362b7c3577f69b8cff9b2cb202016",
+      "sizeLines": 39
+    },
+    {
+      "path": "next.config.ts",
+      "sha1": "0e7c9417142b15eb0462f3b7c557d8e3dcb45d67",
+      "sizeLines": 32
+    },
+    {
+      "path": "package.json",
+      "sha1": "b54d34c0ee93ebdeaa47a657324a12c7e4a2039d",
+      "sizeLines": 76
+    },
+    {
+      "path": "playwright.config.ts",
+      "sha1": "9c905b1866c1f8f925209078d4ce45d6328a5701",
+      "sizeLines": 42
+    },
+    {
+      "path": "postcss.config.mjs",
+      "sha1": "8c6c79e3dc40e145722798a60e21308251c5e1ef",
+      "sizeLines": 6
+    },
+    {
+      "path": "src/access/adminCapabilities.ts",
+      "sha1": "b34be332e0d098d2991bf865fa8539d30aa01ea9",
+      "sizeLines": 239
+    },
+    {
+      "path": "src/app/(frontend)/PageContent.tsx",
+      "sha1": "64a0775a18fb4976a942a9d20a660d5376da46bf",
+      "sizeLines": 7
+    },
+    {
+      "path": "src/app/(frontend)/SystemFallbackPage.tsx",
+      "sha1": "191fe16b8214d5b734822eb8233f428713749960",
+      "sizeLines": 45
+    },
+    {
+      "path": "src/app/(frontend)/[...slug]/page.tsx",
+      "sha1": "b1d5887d555d070a7cd55250f033d82f6020dc50",
+      "sizeLines": 62
+    },
+    {
+      "path": "src/app/(frontend)/layout.tsx",
+      "sha1": "fa2452172387ebc58e34994c0a85a5878eac8784",
+      "sizeLines": 193
+    },
+    {
+      "path": "src/app/(frontend)/not-found.tsx",
+      "sha1": "fdbaaee39e3d5357579aa05feadc0febbf9ce762",
+      "sizeLines": 14
+    },
+    {
+      "path": "src/app/(frontend)/page.tsx",
+      "sha1": "8375782e0a72e5f550e8df1061b3e8aafbe25363",
+      "sizeLines": 33
+    },
+    {
+      "path": "src/app/(frontend)/pageData.ts",
+      "sha1": "7a30a33ec3068a0352d1a10f3ae6ed359fee4a2e",
+      "sizeLines": 450
+    },
+    {
+      "path": "src/app/(frontend)/preview/page/[id]/page.tsx",
+      "sha1": "526ca50d8805b2e4a9accbda80e3feb4df8a1012",
+      "sizeLines": 47
+    },
+    {
+      "path": "src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "sha1": "6aede4b06c92bfb1b563b902d9f1c5eef6a01f89",
+      "sizeLines": 25
+    },
+    {
+      "path": "src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "sha1": "0d1d15d35f538208a3fa5add683f7c4e7bd2c277",
+      "sizeLines": 25
+    },
+    {
+      "path": "src/app/(payload)/admin/importMap.js",
+      "sha1": "c4ff3c56f9d9a4a8558c5621481171c48fbc0b55",
+      "sizeLines": 9
+    },
+    {
+      "path": "src/app/(payload)/api/[...slug]/route.ts",
+      "sha1": "71174e41d12213219d32b876639f8aaa043b5cde",
+      "sizeLines": 20
+    },
+    {
+      "path": "src/app/(payload)/api/graphql-playground/route.ts",
+      "sha1": "7190be6a5f7aaac62896fce36825d16846f6cfc9",
+      "sizeLines": 8
+    },
+    {
+      "path": "src/app/(payload)/api/graphql/route.ts",
+      "sha1": "e290352b95bcb032b9f22e77402aaa8ea1df51b5",
+      "sizeLines": 9
+    },
+    {
+      "path": "src/app/(payload)/custom.scss",
+      "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+      "sizeLines": 0
+    },
+    {
+      "path": "src/app/(payload)/layout.tsx",
+      "sha1": "65192f99d5856c6656efcda705abe803f71e6ee3",
+      "sizeLines": 32
+    },
+    {
+      "path": "src/app/api/forms/[slug]/submit/route.ts",
+      "sha1": "ca9a31756fc6bf0da347f71e59ee4e7f514ad484",
+      "sizeLines": 164
+    },
+    {
+      "path": "src/app/my-route/route.ts",
+      "sha1": "05bd1b1faaea70d24aecd926521a76087cf132bd",
+      "sizeLines": 13
+    },
+    {
+      "path": "src/app/robots.ts",
+      "sha1": "3bc18e2e2e9ad91588c111caba73ede658ddbcf6",
+      "sizeLines": 19
+    },
+    {
+      "path": "src/app/sitemap.ts",
+      "sha1": "a8795280b8f51431580299488e919cc5c6383f76",
+      "sizeLines": 70
+    },
+    {
+      "path": "src/blocks/Footer2/Component.tsx",
+      "sha1": "4b293e9a10a63b3d8ac3237a125cf209087b4d57",
+      "sizeLines": 61
+    },
+    {
+      "path": "src/blocks/Footer2/config.ts",
+      "sha1": "fbc9346ddfe70017b5262c2dd348a57a460824ef",
+      "sizeLines": 126
+    },
+    {
+      "path": "src/blocks/Form/ClientForm.tsx",
+      "sha1": "90c1cddd0872e89314a6dfbbb83b5358d56cd384",
+      "sizeLines": 282
+    },
+    {
+      "path": "src/blocks/Form/Component.tsx",
+      "sha1": "7d0e101b39fc23f22f3695e3977301e9f5b08df7",
+      "sizeLines": 79
+    },
+    {
+      "path": "src/blocks/Form/config.ts",
+      "sha1": "768d7d3578aaefa353f334bcdf492a5e61641349",
+      "sizeLines": 22
+    },
+    {
+      "path": "src/blocks/HeaderNavbar12/Component.tsx",
+      "sha1": "6415f8f0bf2a31b8c4e7a2c1c76e8f971dd37b97",
+      "sizeLines": 86
+    },
+    {
+      "path": "src/blocks/HeaderNavbar12/config.ts",
+      "sha1": "e2acffc8b22f712ce463316ce9ca693d8a201a40",
+      "sizeLines": 161
+    },
+    {
+      "path": "src/blocks/Hero36/Component.tsx",
+      "sha1": "99d01a2b60aa8e2253ffe5f51d4d581030d49a2b",
+      "sizeLines": 36
+    },
+    {
+      "path": "src/blocks/Hero36/config.ts",
+      "sha1": "023b90211253cd2b2f9038f762a8ceb7cc3afa2c",
+      "sizeLines": 125
+    },
+    {
+      "path": "src/blocks/RenderBlocks.tsx",
+      "sha1": "fff2afebc57b8e5670b326ee8efdaa2c63b0287b",
+      "sizeLines": 63
+    },
+    {
+      "path": "src/blocks/System404/Component.tsx",
+      "sha1": "fa6b774d1fb1a03d97b36e0f8bcf9f0d9f840dbe",
+      "sizeLines": 41
+    },
+    {
+      "path": "src/blocks/System404/config.ts",
+      "sha1": "ddab99e6c7f7f8fe733e2ede37e823e9e332273a",
+      "sizeLines": 8
+    },
+    {
+      "path": "src/blocks/SystemComingSoon/Component.tsx",
+      "sha1": "31fc4d6beb74d8056cb4e530db188036a804b5b9",
+      "sizeLines": 41
+    },
+    {
+      "path": "src/blocks/SystemComingSoon/config.ts",
+      "sha1": "daf1fd9f4401391e29d28dd8207c31bd45a10c9f",
+      "sizeLines": 8
+    },
+    {
+      "path": "src/blocks/SystemMaintenance/Component.tsx",
+      "sha1": "558a124765ce1c6123490575d717080ccab7e60d",
+      "sizeLines": 41
+    },
+    {
+      "path": "src/blocks/SystemMaintenance/config.ts",
+      "sha1": "04d6ee170fa79a15e28ef6f2dc76bf053d7ca3e5",
+      "sizeLines": 8
+    },
+    {
+      "path": "src/blocks/renderFooter.tsx",
+      "sha1": "185222c02d8a5b3ffffd7c9e177d9a92898f6b79",
+      "sizeLines": 32
+    },
+    {
+      "path": "src/blocks/renderHeader.tsx",
+      "sha1": "a8895663418d93f684bd82bde297cd73a7cf9296",
+      "sizeLines": 32
+    },
+    {
+      "path": "src/blocks/systemPageFields.ts",
+      "sha1": "9b6b0402d52bc94fd5bd1165ed04e56eb2d4c841",
+      "sizeLines": 78
+    },
+    {
+      "path": "src/collections/Footers.ts",
+      "sha1": "236f8192538b36b0feaa8e664b7ad8dd1ee2da2e",
+      "sizeLines": 58
+    },
+    {
+      "path": "src/collections/FormSubmissions.ts",
+      "sha1": "2f5101deb04149c2b06148a775421aaedcb84301",
+      "sizeLines": 46
+    },
+    {
+      "path": "src/collections/Forms.ts",
+      "sha1": "a42c65e6d6c9ff7478b1af2e3ccf61e282c94d22",
+      "sizeLines": 218
+    },
+    {
+      "path": "src/collections/Headers.ts",
+      "sha1": "a9376516eadb6ea1df3667104002538154700023",
+      "sizeLines": 58
+    },
+    {
+      "path": "src/collections/Media.ts",
+      "sha1": "91711b9d15acfd5901dd468aacfa68454c76f50a",
+      "sizeLines": 140
+    },
+    {
+      "path": "src/collections/NavigationLinks.ts",
+      "sha1": "90515e5a72615ef00b3bce04402a1b30c29f20e8",
+      "sizeLines": 135
+    },
+    {
+      "path": "src/collections/Pages.ts",
+      "sha1": "ee49801ac74b899eb093b20a9f683cb33120c070",
+      "sizeLines": 283
+    },
+    {
+      "path": "src/collections/Redirects.ts",
+      "sha1": "24b57a65ec86c065c4c9e095327e39f6b548ec6c",
+      "sizeLines": 172
+    },
+    {
+      "path": "src/collections/SystemPages.ts",
+      "sha1": "a8a6499fcf649e85ba0348ff677d6fcf1e5c858d",
+      "sizeLines": 147
+    },
+    {
+      "path": "src/collections/Users.ts",
+      "sha1": "44824edf70496d1569d5e74d9eeda07e720af36a",
+      "sizeLines": 109
+    },
+    {
+      "path": "src/components/footer2.tsx",
+      "sha1": "cd33b930fdaca22356e315d95be358082431d7fc",
+      "sizeLines": 161
+    },
+    {
+      "path": "src/components/hero36.tsx",
+      "sha1": "88b3d16040f712b0ba765926f3380cee48471ba4",
+      "sizeLines": 181
+    },
+    {
+      "path": "src/components/live-preview/PageLivePreview.tsx",
+      "sha1": "db7dd0e7f6b9c6e50c43554a6e0a257033e151b0",
+      "sizeLines": 128
+    },
+    {
+      "path": "src/components/navbar12.tsx",
+      "sha1": "1fd340bef2d5141c6b5b5e2f2780e2ac93aac1e0",
+      "sizeLines": 596
+    },
+    {
+      "path": "src/components/shadcnblocks/logo.tsx",
+      "sha1": "e33c421f2fa1e85fa5de2176f1ba5d127a925ea6",
+      "sizeLines": 168
+    },
+    {
+      "path": "src/components/system-page-hero.tsx",
+      "sha1": "23f7695dd1e76f086c6d9955240932a645fe46af",
+      "sizeLines": 164
+    },
+    {
+      "path": "src/components/ui/accordion.tsx",
+      "sha1": "11b168d13126d8043f2e4f530e644c95c10f7953",
+      "sizeLines": 85
+    },
+    {
+      "path": "src/components/ui/badge.tsx",
+      "sha1": "73d3601ff9d8dcab807bb64ca2716b3987b375de",
+      "sizeLines": 50
+    },
+    {
+      "path": "src/components/ui/button.tsx",
+      "sha1": "5f1614a708844f8a65dca3cdabcbc60c66c4153b",
+      "sizeLines": 66
+    },
+    {
+      "path": "src/components/ui/context-menu.tsx",
+      "sha1": "be7d62f20d7941194721a7e65ca4a35075ae6ddd",
+      "sizeLines": 264
+    },
+    {
+      "path": "src/components/ui/navigation-menu.tsx",
+      "sha1": "e0ed716b76ef5732aeef8013637d8b86b3f93e7a",
+      "sizeLines": 165
+    },
+    {
+      "path": "src/components/ui/separator.tsx",
+      "sha1": "0ef5cd4b3a37f667f62b6d4597531f57ea130a6a",
+      "sizeLines": 29
+    },
+    {
+      "path": "src/components/ui/sheet.tsx",
+      "sha1": "7088ff7c4d0ae39a7f5bb289b133ab9a670c43aa",
+      "sizeLines": 148
+    },
+    {
+      "path": "src/fields/cmsLinkFields.ts",
+      "sha1": "c8e0e0ec70cd8079aaeb0ae7bd5377483e42d75b",
+      "sizeLines": 21
+    },
+    {
+      "path": "src/globals/PageSettings.ts",
+      "sha1": "36b14ea4d2dd393e7e3d1374c021d76ad801ad5c",
+      "sizeLines": 250
+    },
+    {
+      "path": "src/globals/SEOSettings.ts",
+      "sha1": "cf200f87e9aea872bbaba343e3c32a4f8dbe92c1",
+      "sizeLines": 59
+    },
+    {
+      "path": "src/globals/SiteSettings.ts",
+      "sha1": "9e9f0383507d2729f60caa56387170db7f54a9bd",
+      "sizeLines": 131
+    },
+    {
+      "path": "src/globals/ThemeSettings.ts",
+      "sha1": "a58a6c7fe6a639136301e7f8e6daabeb6c52a3e8",
+      "sizeLines": 75
+    },
+    {
+      "path": "src/hooks/createRedirectsForChangedPagePath.ts",
+      "sha1": "e1908b5cc807aa264c9d8f3f2923c28e314384d5",
+      "sizeLines": 320
+    },
+    {
+      "path": "src/hooks/migrateLegacyReusableLinks.ts",
+      "sha1": "f916b86f79b1b6dd608a28ba333e73c9d7acc695",
+      "sizeLines": 146
+    },
+    {
+      "path": "src/hooks/populatePageUrlPreview.ts",
+      "sha1": "92f31c5238112532d140ef9daca363a9f3a13e86",
+      "sizeLines": 24
+    },
+    {
+      "path": "src/hooks/preventReferencedPageUnpublish.ts",
+      "sha1": "0216a1170f508438092ece34facfbcac51f07ba8",
+      "sizeLines": 128
+    },
+    {
+      "path": "src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "sha1": "976af1d48dbce34ff88af85f494cc1973429fa1c",
+      "sizeLines": 101
+    },
+    {
+      "path": "src/hooks/syncNavigationLinkForPage.ts",
+      "sha1": "3f722d9009946b69659d726b3bc16b61b7f2a99b",
+      "sizeLines": 53
+    },
+    {
+      "path": "src/lib/cmsLinks.ts",
+      "sha1": "1c8ad3156066e33d15690969090c169198d09dc6",
+      "sizeLines": 31
+    },
+    {
+      "path": "src/lib/formNotifications.ts",
+      "sha1": "066dd3c06472ec169ca0433f26e2049fe7bd7dd6",
+      "sizeLines": 76
+    },
+    {
+      "path": "src/lib/formSpamProtection.ts",
+      "sha1": "4d261edb11d446c0361ad3a7675f3cd7d9f12b8d",
+      "sizeLines": 86
+    },
+    {
+      "path": "src/lib/forms.ts",
+      "sha1": "68e026ece7efdf44243f73ae97b15e2bf09e3195",
+      "sizeLines": 185
+    },
+    {
+      "path": "src/lib/media.ts",
+      "sha1": "66240c9923ae5555a053969adeea4811402f7763",
+      "sizeLines": 67
+    },
+    {
+      "path": "src/lib/navigationLinkSync.ts",
+      "sha1": "8b107ec36f929b98aa0425c5e510aa131ade0ec7",
+      "sizeLines": 189
+    },
+    {
+      "path": "src/lib/navigationLinks.ts",
+      "sha1": "2b4f971b647e3038d3773804706ba90abd22ddbf",
+      "sizeLines": 39
+    },
+    {
+      "path": "src/lib/navigationStructures.ts",
+      "sha1": "c3fa0902ed6cf5e4d0f5106cc98cc8d5ae79afa2",
+      "sizeLines": 131
+    },
+    {
+      "path": "src/lib/pagePaths.ts",
+      "sha1": "1ef64432446874db55aad4045938c4da71ca38b5",
+      "sizeLines": 88
+    },
+    {
+      "path": "src/lib/redirects.ts",
+      "sha1": "0c77b1e055c7497f485a70b3391800c431f84d45",
+      "sizeLines": 138
+    },
+    {
+      "path": "src/lib/seo.ts",
+      "sha1": "d3e6a1e2e4504605617a8859fbee9c6444a48ddb",
+      "sizeLines": 37
+    },
+    {
+      "path": "src/lib/siteUrl.ts",
+      "sha1": "1e5f79f94d7f11b1b7438580b7d8b4cdc307f66b",
+      "sizeLines": 20
+    },
+    {
+      "path": "src/lib/systemPageTypes.ts",
+      "sha1": "f2a0e9ef273e5846cb8035698469ad05afd73f74",
+      "sizeLines": 17
+    },
+    {
+      "path": "src/lib/utils.ts",
+      "sha1": "03edf7b44c7cf1d3f48be4f72866007dbb63b8c6",
+      "sizeLines": 7
+    },
+    {
+      "path": "src/payload.config.ts",
+      "sha1": "28da441adab854f59cdc7b6694ee948323591979",
+      "sizeLines": 82
+    },
+    {
+      "path": "src/plugins/withTrash.ts",
+      "sha1": "4f58fc59d4888540fb745c8c1f3cf2fdde5cbbad",
+      "sizeLines": 26
+    },
+    {
+      "path": "src/styles/globals.css",
+      "sha1": "c80e8e9d9c46ae4fca29306bb465444234eadb53",
+      "sizeLines": 858
+    },
+    {
+      "path": "src/styles/themes/theme-blue.css",
+      "sha1": "f2815a5f3a9fc161f532766e9019ad7f9dc1bd26",
+      "sizeLines": 69
+    },
+    {
+      "path": "src/styles/themes/theme-default.css",
+      "sha1": "c0024fa1b75821e80ad7e8a56aeee4a59d647f36",
+      "sizeLines": 71
+    },
+    {
+      "path": "src/styles/themes/theme-sera.css",
+      "sha1": "bd8b29aa313996473104bb390d16bfbd68159509",
+      "sizeLines": 69
+    },
+    {
+      "path": "test.env",
+      "sha1": "059a2a6fcf9a91c3b07cf02727c98a7e0a659578",
+      "sizeLines": 2
+    },
+    {
+      "path": "tests/e2e/admin.e2e.spec.ts",
+      "sha1": "037a65db774b52af95b2bb1437e2b85dee3fdf44",
+      "sizeLines": 42
+    },
+    {
+      "path": "tests/e2e/frontend.e2e.spec.ts",
+      "sha1": "361f9aaa8b4b369ea7b9cb5e56b415837bf01271",
+      "sizeLines": 21
+    },
+    {
+      "path": "tests/helpers/login.ts",
+      "sha1": "3d8be8596f8eba6e79bc9e62e4c56c311ee389a2",
+      "sizeLines": 32
+    },
+    {
+      "path": "tests/helpers/seedUser.ts",
+      "sha1": "ec40ec12e5e7d181e60adba9508d5b656875699e",
+      "sizeLines": 48
+    },
+    {
+      "path": "tests/int/adminCapabilities.int.spec.ts",
+      "sha1": "26f7237d50da0f3ae150321872e61ceaa23fc3fd",
+      "sizeLines": 290
+    },
+    {
+      "path": "tests/int/api.int.spec.ts",
+      "sha1": "3ace6db572685538c4374967c5902f6aa66c37e5",
+      "sizeLines": 21
+    },
+    {
+      "path": "tests/int/redirects.int.spec.ts",
+      "sha1": "04637b6ab60a4d1af767b7d1122bc64b5ce40e91",
+      "sizeLines": 321
+    },
+    {
+      "path": "tsconfig.json",
+      "sha1": "80ee7afe67aa8becaa4700c65a7c3f4b849cec07",
+      "sizeLines": 45
+    },
+    {
+      "path": "vitest.config.mts",
+      "sha1": "37f9b3098a52f6e3a029c12414c049d4693a431e",
+      "sizeLines": 13
+    },
+    {
+      "path": "vitest.setup.ts",
+      "sha1": "7dce6498e4108140daa420cf4e60980382e78d23",
+      "sizeLines": 5
+    }
+  ]
+}

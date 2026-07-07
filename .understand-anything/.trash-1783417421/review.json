@@ -1,0 +1,29 @@
+{
+  "issues": [],
+  "warnings": [
+    "Official understand-anything plugin checkout was not installed; graph generated via local fallback analyzer."
+  ],
+  "stats": {
+    "totalNodes": 279,
+    "totalEdges": 362,
+    "totalLayers": 5,
+    "tourSteps": 8,
+    "nodeTypes": {
+      "config": 14,
+      "file": 95,
+      "document": 5,
+      "service": 2,
+      "endpoint": 7,
+      "function": 108,
+      "class": 48
+    },
+    "edgeTypes": {
+      "contains": 156,
+      "imports": 184,
+      "configures": 15,
+      "documents": 1,
+      "depends_on": 1,
+      "routes": 5
+    }
+  }
+}

@@ -31,6 +31,18 @@
       "skillPath": "understand-anything-plugin/skills/understand/SKILL.md",
       "computedHash": "bf0d1c69abff0258ecb1c4c6a660c8260dcb45252ff21b92c4412894d3369f8e"
     },
+    "understand-explain": {
+      "source": "lum1104/understand-anything",
+      "sourceType": "github",
+      "skillPath": "understand-anything-plugin/skills/understand-explain/SKILL.md",
+      "computedHash": "efc9e1ed806e364a587b664d99b48e1ceaacabef9503891812032c2ee7070a8f"
+    },
+    "understand-knowledge": {
+      "source": "lum1104/understand-anything",
+      "sourceType": "github",
+      "skillPath": "understand-anything-plugin/skills/understand-knowledge/SKILL.md",
+      "computedHash": "abc83333526848d306ff712095f7758e6c46c8440d0c5ce48fcf5bb5bcb10571"
+    },
     "vercel-react-best-practices": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
