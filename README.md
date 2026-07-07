@@ -69,6 +69,9 @@ Use integration tests to verify CMS behaviors and route resolution before clonin
 ## Starter Conventions
 
 - Treat this repo as one deployment and one dataset per client site.
+- Keep `Pages`, `SystemPages`, `NavigationLinks`, and site globals as the core starter primitives.
+- Extend behavior through dedicated `src/lib` or `src/config` seams before editing core collection logic.
+- Treat provider configuration as runtime configuration, not content-model logic.
 - Keep core content ownership in the existing collections and globals unless a change solves a real CMS gap.
 - Add new blocks only after the CMS foundation, guardrails, and operational seams are stable.
 - Prefer documented extension points over editing core config ad hoc in every clone.

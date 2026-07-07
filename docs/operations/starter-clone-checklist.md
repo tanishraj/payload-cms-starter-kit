@@ -38,3 +38,9 @@ Use this checklist when copying the starter into a new client repository. The go
 - Run `pnpm test:e2e`.
 - Start the app with `pnpm dev` and confirm the public site, admin login, and preview routes load.
 - Review [docs/architecture/content-model-map.md](../architecture/content-model-map.md) before adding client-specific content types.
+
+## Safe Customization Boundaries
+
+- Replace branding, contact details, and presentation defaults in globals before changing collection structure.
+- Replace provider environment configuration through `src/config/runtime.ts` and `src/config/providers.ts`.
+- Extend form routing or downstream lead handling through `src/lib/formSubmissionEvents.ts` instead of editing submission persistence rules in every clone.

@@ -29,3 +29,9 @@ This starter already has clear ownership boundaries for marketing-site content. 
 ## Theme Settings
 
 `theme-settings` owns presentation defaults that apply site-wide, including the chosen theme preset and color-scheme behavior. Treat it as the place for client-wide visual defaults, not page-specific design decisions.
+
+## Extension Rules
+
+- Add client-specific collections beside the core starter collections instead of overloading `pages`, `system-pages`, or `navigation-links`.
+- Prefer hooks and `src/lib` helpers for cross-cutting behavior such as notifications, automations, or publishing side effects.
+- Keep global ownership explicit so branding, routing defaults, SEO defaults, and theme defaults do not drift across multiple globals.
