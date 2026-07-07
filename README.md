@@ -1,67 +1,74 @@
-# Payload Blank Template
+# Payload CMS Marketing Starter
 
-This template comes configured with the bare minimum to get started on anything you need.
+This repository is a single-site marketing CMS starter built with Payload, Next.js, and TypeScript. It is meant to be copied for new client projects once the brand, providers, and site defaults are replaced.
 
-## Quick start
+## Quick Start
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+1. Install dependencies with `pnpm install`.
+2. Copy `.env.example` to `.env`.
+3. Set the required environment variables for your database, Payload secret, and email provider.
+4. Start the app with `pnpm dev`.
+5. Open `http://localhost:3000` and create the first admin user.
 
-## Quick Start - local setup
+## Features
 
-To spin up this template locally, follow these steps:
+- Pages with hierarchy, preview, redirects, and SEO controls
+- Navigation links, headers, footers, and site defaults
+- System pages for 404, maintenance, and coming soon
+- Forms with validation, throttling, persistence, and notifications
+- Media uploads plus capability-based admin access for CMS operators
 
-### Clone
+## Clone For A New Client
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+1. Copy `.env.example` to `.env`.
+2. Replace branding and contact defaults in `site-settings`.
+3. Choose runtime providers for database and email.
+4. Review theme presets and starter conventions.
+5. Follow [docs/operations/starter-clone-checklist.md](docs/operations/starter-clone-checklist.md).
 
-### Development
+## Content Model
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+The starter already separates page content, reusable site structure, and site-wide defaults:
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+- `pages` owns hierarchical marketing pages, live preview, redirects, and page-level SEO.
+- `navigation-links` stores reusable destinations for menus, CTAs, and synced page links.
+- `system-pages` stores managed 404, maintenance, and coming-soon experiences.
+- `page-settings` chooses the active homepage, header, footer, and site mode behavior.
+- `site-settings`, `seo-settings`, and `theme-settings` hold brand, SEO, and presentation defaults.
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+See [docs/architecture/content-model-map.md](docs/architecture/content-model-map.md) for the full ownership map.
 
-#### Docker (Optional)
+## Environment
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+Required variables:
 
-To do so, follow these steps:
+- `DATABASE_URL`
+- `PAYLOAD_SECRET`
+- `RESEND_API_KEY`
+- `RESEND_FROM_EMAIL`
 
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+Optional but currently supported:
 
-## How it works
+- `RESEND_FROM_NAME`
+- `RESEND_OVERRIDE_TO_EMAIL`
+- `NEXT_PUBLIC_SERVER_URL`
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+Current provider assumptions:
 
-### Collections
+- database: SQLite via `@payloadcms/db-sqlite`
+- email: Resend via `@payloadcms/email-resend`
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+## Testing
 
-- #### Users (Authentication)
+- `pnpm test:int`
+- `pnpm test:e2e`
+- `pnpm test`
 
-  Users are auth-enabled collections that have access to the admin panel.
+Use integration tests to verify CMS behaviors and route resolution before cloning or handing off a client project.
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/3.x/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+## Starter Conventions
 
-- #### Media
-
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
-
-### Docker
-
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
-
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
-
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
-
-## Questions
-
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+- Treat this repo as one deployment and one dataset per client site.
+- Keep core content ownership in the existing collections and globals unless a change solves a real CMS gap.
+- Add new blocks only after the CMS foundation, guardrails, and operational seams are stable.
+- Prefer documented extension points over editing core config ad hoc in every clone.
