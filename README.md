@@ -40,23 +40,40 @@ See [docs/architecture/content-model-map.md](docs/architecture/content-model-map
 
 ## Environment
 
-Required variables:
+Local development defaults:
 
-- `DATABASE_URL`
+- `DATABASE_PROVIDER=sqlite`
+- `DATABASE_URL=file:./payload-cms-next-tailwind-shadcn-starter-kit.db`
 - `PAYLOAD_SECRET`
+
+Vercel deployments:
+
+- `DATABASE_PROVIDER=postgres`
+- `POSTGRES_URL`
+- `PAYLOAD_SECRET`
+
+Email:
+
+- `EMAIL_PROVIDER=none | resend`
 - `RESEND_API_KEY`
 - `RESEND_FROM_EMAIL`
+- `RESEND_FROM_NAME`
 
 Optional but currently supported:
 
-- `RESEND_FROM_NAME`
 - `RESEND_OVERRIDE_TO_EMAIL`
 - `NEXT_PUBLIC_SERVER_URL`
 
-Current provider assumptions:
+## Tooling
 
-- database: SQLite via `@payloadcms/db-sqlite`
-- email: Resend via `@payloadcms/email-resend`
+- `Node.js`: `^18.20.2 || >=20.9.0`
+- `pnpm`: `^9 || ^10 || ^11`
+
+## Deployment
+
+- local/dev uses `SQLite`
+- Vercel preview and production use `Postgres`
+- see [docs/operations/vercel-postgres-deployment.md](docs/operations/vercel-postgres-deployment.md)
 
 ## Testing
 
