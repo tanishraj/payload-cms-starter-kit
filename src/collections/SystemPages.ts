@@ -8,6 +8,8 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
+import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 import { systemPageTypeOptions, type SystemPageType } from '@/lib/systemPageTypes'
 
 import { System404Block } from '../blocks/System404/config'
@@ -74,6 +76,7 @@ export const SystemPages: CollectionConfig = {
   },
   hooks: {
     beforeChange: [
+      enforceEditorialWorkflow('publish_system_pages'),
       preventReferencedSystemPageInvalidation,
       migrateLegacySystemPageLinksBeforeChange,
     ],
@@ -137,6 +140,59 @@ export const SystemPages: CollectionConfig = {
               name: 'metaDescription',
               type: 'textarea',
               required: true,
+            },
+          ],
+        },
+        {
+          label: 'Workflow',
+          fields: [
+            {
+              name: 'workflowState',
+              type: 'select',
+              defaultValue: 'draft',
+              options: [...editorialWorkflowStateOptions],
+              required: true,
+            },
+            {
+              name: 'scheduledPublishAt',
+              type: 'date',
+              admin: {
+                condition: (_, siblingData) => siblingData?.workflowState === 'scheduled',
+              },
+            },
+            {
+              name: 'changeSummary',
+              type: 'textarea',
+            },
+            {
+              name: 'lastReviewedAt',
+              type: 'date',
+              admin: {
+                readOnly: true,
+              },
+            },
+            {
+              name: 'lastReviewedBy',
+              type: 'relationship',
+              relationTo: 'users',
+              admin: {
+                readOnly: true,
+              },
+            },
+            {
+              name: 'publishedAt',
+              type: 'date',
+              admin: {
+                readOnly: true,
+              },
+            },
+            {
+              name: 'publishedBy',
+              type: 'relationship',
+              relationTo: 'users',
+              admin: {
+                readOnly: true,
+              },
             },
           ],
         },

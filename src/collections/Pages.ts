@@ -10,6 +10,8 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
+import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 import { robotsFieldOptions } from '@/lib/seo'
 
 import { FormBlock } from '../blocks/Form/config'
@@ -133,7 +135,11 @@ export const Pages: CollectionConfig = {
     afterRead: [populatePageUrlPreview],
     afterChange: [syncNavigationLinkAfterChange, createRedirectsForChangedPagePath],
     afterDelete: [syncNavigationLinkAfterDelete],
-    beforeChange: [preventReferencedPageUnpublish, migrateLegacyPageLinksBeforeChange],
+    beforeChange: [
+      enforceEditorialWorkflow('publish_pages'),
+      preventReferencedPageUnpublish,
+      migrateLegacyPageLinksBeforeChange,
+    ],
   },
   versions: {
     drafts: true,
@@ -272,6 +278,62 @@ export const Pages: CollectionConfig = {
               validate: validateParentRelationship,
               admin: {
                 description: 'Use this for nested page hierarchies like /services/web-development.',
+              },
+            },
+          ],
+        },
+        {
+          label: 'Workflow',
+          fields: [
+            {
+              name: 'workflowState',
+              type: 'select',
+              defaultValue: 'draft',
+              options: [...editorialWorkflowStateOptions],
+              required: true,
+            },
+            {
+              name: 'scheduledPublishAt',
+              type: 'date',
+              admin: {
+                condition: (_, siblingData) => siblingData?.workflowState === 'scheduled',
+              },
+            },
+            {
+              name: 'changeSummary',
+              type: 'textarea',
+              admin: {
+                description: 'Short operator-facing note explaining why this change exists.',
+              },
+            },
+            {
+              name: 'lastReviewedAt',
+              type: 'date',
+              admin: {
+                readOnly: true,
+              },
+            },
+            {
+              name: 'lastReviewedBy',
+              type: 'relationship',
+              relationTo: 'users',
+              admin: {
+                readOnly: true,
+              },
+            },
+            {
+              name: 'publishedAt',
+              type: 'date',
+              admin: {
+                readOnly: true,
+              },
+            },
+            {
+              name: 'publishedBy',
+              type: 'relationship',
+              relationTo: 'users',
+              admin: {
+                readOnly: true,
               },
             },
           ],
