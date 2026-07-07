@@ -112,17 +112,50 @@ Use this exact structure for every finding:
 
 ### Starter-Kit Reusability
 
+- **Critical** — The starter still needs a sharper boundary between reusable CMS core and client-specific assumptions.
+  - Category: Starter-Kit Reusability
+  - Evidence: setup docs, provider configuration, and operational assumptions currently span `README.md`, `src/payload.config.ts`, `src/globals/SiteSettings.ts`, and `src/globals/ThemeSettings.ts`.
+  - Why it matters: cloning should create leverage, not a hidden-assumption cleanup project.
+  - Recommended direction: document and then tighten the seams between starter core, provider choices, and client-specific customization.
+- **Important** — Brand and presentation defaults are modeled as first-class globals, but the starter does not yet separate portable CMS structure from example client choices cleanly enough.
+  - Category: Starter-Kit Reusability
+  - Evidence: `src/globals/SiteSettings.ts` stores contact, branding, and social details directly in the starter, while `src/globals/ThemeSettings.ts` ships opinionated presets such as `default`, `blue`, and `sera`.
+  - Why it matters: copied starters should let developers replace client identity quickly without first auditing which settings are universal starter primitives versus sample project assumptions.
+  - Recommended direction: define which settings are part of the reusable CMS contract and which are example starter defaults intended to be replaced per client.
+- **Important** — The repo exposes strong site-structure primitives, but extension seams for future client customization are still implicit rather than documented as starter conventions.
+  - Category: Starter-Kit Reusability
+  - Evidence: `src/payload.config.ts` wires concrete collections and globals directly, and `README.md` does not explain which content models, settings surfaces, or integrations are safe to extend versus foundational to the starter.
+  - Why it matters: without explicit extension rules, each cloned project is likely to fork core patterns inconsistently and increase upgrade cost.
+  - Recommended direction: publish starter conventions for extending collections, globals, integrations, and site-level settings without rewriting core CMS behavior.
+
 ## Target State
+
+The target state is a single-site Payload starter that a developer can clone for a new client project without reverse-engineering the platform. Editors should be able to manage pages, system states, navigation, redirects, SEO defaults, and forms safely through the admin. Operational integrations such as storage, email, and deployment should be portable and documented. The repo should include enough verification and handoff guidance that future client-specific customization starts from a stable CMS core instead of a fragile template fork.
 
 ## Phased Roadmap
 
 ### Phase 1: Foundation And Safety
 
+- strengthen setup, environment, and provider documentation
+- define explicit portability boundaries for database, storage, and email
+- raise the test baseline around content resolution, permissions, forms, and publishing behavior
+- remove hidden assumptions that make cloning fragile
+
 ### Phase 2: Operational CMS Gaps
+
+- tighten editor workflows around permissions, preview, publishing, and system modes
+- close gaps in SEO and lead-handling operations
+- improve admin clarity where workflows depend too much on developer knowledge
 
 ### Phase 3: Reusability And Handoff
 
+- formalize extension seams for future client-specific content types and integrations
+- document starter conventions and client customization boundaries
+- make handoff quality part of the starter standard rather than an afterthought
+
 ### Phase 4: Block Expansion Readiness
+
+- expand block inventory only after the CMS foundation is safe, documented, and operationally complete
 
 ## Appendix: Evidence Base
 
@@ -141,3 +174,5 @@ Use this exact structure for every finding:
 - `src/app/api/forms/[slug]/submit/route.ts` — shows the public submission flow, validation, throttling, persistence, and notification dispatch.
 - `src/lib/forms.ts` — shows field-definition validation and submission normalization rules.
 - `tests/int/api.int.spec.ts` — shows the current minimal test baseline.
+- `src/globals/SiteSettings.ts` — shows that brand, contact, and social configuration already live in the starter as reusable but client-sensitive globals.
+- `src/globals/ThemeSettings.ts` — shows the current theme preset surface and where presentation assumptions are still baked into the starter.
