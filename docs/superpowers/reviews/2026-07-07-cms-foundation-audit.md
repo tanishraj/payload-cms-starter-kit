@@ -76,7 +76,39 @@ Use this exact structure for every finding:
 
 ### Editorial Workflows
 
+- **Important** — Capability-based access is a strong start, but the starter still needs validation that the current role and capability model is sufficient for real client editorial teams.
+  - Category: Editorial Workflows
+  - Evidence: `src/access/adminCapabilities.ts` and `src/collections/Users.ts` implement capability-driven access, per-area admin visibility, role normalization, and automatic full-access handling for admin users.
+  - Why it matters: a starter intended for client reuse needs roles that map cleanly to administrators, marketers, and content editors rather than only a developer-admin workflow.
+  - Recommended direction: assess whether the current role and capability split is enough for common client team structures without requiring custom authorization code on every project.
+- **Important** — System-mode bypass behavior is broader than the admin-facing language suggests.
+  - Category: Editorial Workflows
+  - Evidence: `src/globals/PageSettings.ts` labels `bypassForLoggedInAdmins` as an admin-only bypass, but `src/app/(frontend)/pageData.ts` bypasses maintenance and coming-soon modes for any authenticated user returned by `payload.auth`, not only users with the `admin` role.
+  - Why it matters: public-site safety is weakened if lower-privilege CMS users can see the normal site while operators believe the bypass is restricted to administrators.
+  - Recommended direction: align the bypass rule with an explicit admin role or dedicated capability and make the CMS wording match the actual access behavior.
+- **Important** — The permission model is surface-based, but it does not yet separate lower-risk editing from higher-risk publishing and system-control actions.
+  - Category: Editorial Workflows
+  - Evidence: `src/access/adminCapabilities.ts` defines area capabilities such as `manage_pages`, `manage_system_pages`, and `manage_page_settings`, while `src/collections/Users.ts` stores those capabilities without introducing distinct approval, publish, or system-override workflow roles.
+  - Why it matters: reusable client starters often need cleaner separation of duties so content editors can work safely without inheriting every operational responsibility.
+  - Recommended direction: decide whether the starter intentionally targets small teams only or should add workflow-sensitive capability boundaries for publishing, system modes, and lead-data access.
+
 ### Marketing Operations
+
+- **Important** — SEO ownership exists across page content, global defaults, and frontend metadata assembly, but the starter still needs an operator-level completeness review.
+  - Category: Marketing Operations
+  - Evidence: `src/globals/SEOSettings.ts` defines default SEO values, while `src/app/(frontend)/pageData.ts` composes canonical URLs, Open Graph data, robots rules, and metadata fallbacks from page and global settings.
+  - Why it matters: a marketing CMS starter must support SEO operations as a first-class workflow, not only as a developer-maintained schema.
+  - Recommended direction: judge the SEO surface from a marketer perspective, especially around default clarity, override rules, and integration expectations.
+- **Important** — The form pipeline is operationally safer than a basic contact form starter, but lead handling is still too thin for a reusable marketing CMS foundation.
+  - Category: Marketing Operations
+  - Evidence: `src/collections/Forms.ts` supports reusable published form definitions, `src/app/api/forms/[slug]/submit/route.ts` validates payloads, applies honeypot and rate limiting, stores submissions, and sends notifications, while `src/collections/FormSubmissions.ts` persists only a form reference and raw submitted JSON.
+  - Why it matters: client teams need more than successful submission capture; they need lead records that are understandable, reviewable, and extensible without redesigning the starter.
+  - Recommended direction: define a starter-level lead handling model that keeps the current safe submission pipeline but adds clearer operational structure for follow-up and reporting.
+- **Important** — Submission processing is portable at the validation layer, but downstream marketing integrations are still effectively email-only.
+  - Category: Marketing Operations
+  - Evidence: `src/lib/forms.ts` normalizes and validates field definitions and submission values, while `src/app/api/forms/[slug]/submit/route.ts` ends the workflow by storing data and calling `payload.sendEmail` for internal notifications.
+  - Why it matters: copied starters should expose a clear post-submission extension seam for CRM, automation, or analytics workflows instead of forcing every client project to rework the same endpoint.
+  - Recommended direction: formalize the submission handoff boundary so email notifications remain supported but are not the only operational path.
 
 ### Starter-Kit Reusability
 
@@ -101,4 +133,11 @@ Use this exact structure for every finding:
 - `src/collections/NavigationLinks.ts` — shows the reusable link model and the page-sync design direction for shared destinations.
 - `src/globals/PageSettings.ts` — shows how site-wide defaults, published-reference validation, and system behaviors are currently owned.
 - `src/app/(frontend)/pageData.ts` — shows centralized frontend content resolution for homepage lookup, published pages, metadata, and system-mode behavior.
+- `src/access/adminCapabilities.ts` — shows the current capability map, area-based access helpers, and admin visibility rules.
+- `src/collections/Users.ts` — shows the admin user model, role normalization, and capability storage strategy.
+- `src/globals/SEOSettings.ts` — shows the current global SEO defaults available to operators.
+- `src/collections/Forms.ts` — shows the reusable form-definition model and editor-facing lead-capture configuration.
+- `src/collections/FormSubmissions.ts` — shows how lead data is currently stored and exposed to admins.
+- `src/app/api/forms/[slug]/submit/route.ts` — shows the public submission flow, validation, throttling, persistence, and notification dispatch.
+- `src/lib/forms.ts` — shows field-definition validation and submission normalization rules.
 - `tests/int/api.int.spec.ts` — shows the current minimal test baseline.
