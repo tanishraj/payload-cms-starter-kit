@@ -213,7 +213,8 @@ export const PageSettings: GlobalConfig = {
               type: 'checkbox',
               defaultValue: true,
               admin: {
-                description: 'Allow logged-in admins to continue seeing the normal site when a mode is active.',
+                description:
+                  'Allow logged-in admin users to continue seeing the normal site when a mode is active.',
               },
             },
             {

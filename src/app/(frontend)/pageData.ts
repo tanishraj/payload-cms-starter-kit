@@ -4,6 +4,7 @@ import { getPayload, type Where } from 'payload'
 import { cache } from 'react'
 
 import type { Metadata } from 'next'
+import { isAdminUser } from '@/access/adminCapabilities'
 import { getMediaAbsoluteUrl } from '@/lib/media'
 import { getRobotsMetadata } from '@/lib/seo'
 import { toAbsoluteSiteUrl } from '@/lib/siteUrl'
@@ -63,7 +64,7 @@ const canCurrentRequestBypassSystemModes = cache(async (): Promise<boolean> => {
     headers: new Headers(await headers()),
   })
 
-  return Boolean(authResult.user)
+  return isAdminUser(authResult.user as { role?: string } | null | undefined)
 })
 
 const getPublishedPageByID = cache(
