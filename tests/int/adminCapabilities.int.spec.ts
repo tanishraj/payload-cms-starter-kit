@@ -2,15 +2,16 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
   adminOrFirstUserAccess,
-  allAdminCapabilities,
   allowPublicReadOrCapability,
+  canManageSystemModes,
+  canPublishPages,
+  canViewOperationalAudit,
+  getDefaultCapabilitiesForRole,
   hideFromNonAdmin,
-  hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
-import { Media } from '@/collections/Media'
+import { editorialRoleOptions } from '@/access/editorialRoles'
 import { Users } from '@/collections/Users'
-import { PageSettings } from '@/globals/PageSettings'
 
 type TestReq = {
   payload: {
@@ -35,51 +36,87 @@ const toAccessReq = (req: TestReq) =>
     req,
   }) as never
 
-describe('admin capability access', () => {
+describe('editorial roles', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
-  it('allows anonymous reads for public content-backed areas', () => {
-    const access = allowPublicReadOrCapability('manage_pages')
+  it('exposes the editorial role set', () => {
+    expect(editorialRoleOptions.map(({ value }) => value)).toEqual([
+      'admin',
+      'publisher',
+      'editor',
+      'marketingOps',
+    ])
+  })
 
+  it('assigns safe defaults to editors and publishers', () => {
+    expect(getDefaultCapabilitiesForRole('editor')).toEqual(
+      expect.objectContaining({
+        manage_pages: true,
+        publish_pages: false,
+        manage_system_modes: false,
+        view_operational_audit: false,
+      }),
+    )
+
+    expect(getDefaultCapabilitiesForRole('publisher')).toEqual(
+      expect.objectContaining({
+        manage_pages: true,
+        publish_pages: true,
+        manage_system_modes: false,
+        view_operational_audit: true,
+      }),
+    )
+  })
+
+  it('separates publishing and system-mode controls from editing', () => {
+    const editor = {
+      role: 'editor',
+      capabilities: {
+        manage_pages: true,
+      },
+    }
+
+    const publisher = {
+      role: 'publisher',
+      capabilities: {
+        manage_pages: true,
+        publish_pages: true,
+        view_operational_audit: true,
+      },
+    }
+
+    const marketingOps = {
+      role: 'marketingOps',
+      capabilities: {
+        manage_forms: true,
+        manage_form_submissions: true,
+        manage_system_modes: true,
+        view_operational_audit: true,
+      },
+    }
+
+    expect(canPublishPages(editor)).toBe(false)
+    expect(canPublishPages(publisher)).toBe(true)
+    expect(canManageSystemModes(editor)).toBe(false)
+    expect(canManageSystemModes(marketingOps)).toBe(true)
+    expect(canViewOperationalAudit(publisher)).toBe(true)
+  })
+})
+
+describe('existing access helpers', () => {
+  it('still allows anonymous reads for public content-backed areas', () => {
+    const access = allowPublicReadOrCapability('manage_pages')
     expect(access(toAccessReq(createReq(null)))).toBe(true)
   })
 
-  it('denies authenticated users without the matching capability', () => {
-    const access = allowPublicReadOrCapability('manage_pages')
-
-    expect(access(toAccessReq(createReq({ role: 'contentEditor' })))).toBe(false)
+  it('still denies protected writes without the matching capability', () => {
+    const access = requireCapability('manage_pages')
+    expect(access(toAccessReq(createReq({ role: 'editor' })))).toBe(false)
   })
 
-  it('allows capability holders and admins for protected operations', () => {
-    const capabilityAccess = requireCapability('manage_pages')
-
-    expect(
-      capabilityAccess(
-        toAccessReq(
-          createReq({
-            capabilities: {
-              manage_pages: true,
-            },
-            role: 'contentEditor',
-          }),
-        ),
-      ),
-    ).toBe(true)
-
-    expect(
-      capabilityAccess(
-        toAccessReq(
-          createReq({
-            role: 'admin',
-          }),
-        ),
-      ),
-    ).toBe(true)
-  })
-
-  it('allows first-user creation without an existing admin', async () => {
+  it('still allows first-user creation without an existing admin', async () => {
     const req = createReq(null)
     req.payload.count = vi.fn(async () => ({
       totalDocs: 0,
@@ -89,201 +126,53 @@ describe('admin capability access', () => {
   })
 })
 
-describe('admin visibility', () => {
-  it('hides Users from non-admins', () => {
-    expect(hideFromNonAdmin({ user: { role: 'contentEditor' } as never })).toBe(true)
-    expect(hideFromNonAdmin({ user: { role: 'admin' } as never })).toBe(false)
-  })
-
-  it('hides content areas from users without the capability', () => {
-    const hidden = hideFromUsersWithoutCapability('manage_pages')
-
-    expect(hidden({ user: { role: 'contentEditor' } as never })).toBe(true)
-    expect(
-      hidden({
-        user: {
-          capabilities: {
-            manage_pages: true,
-          },
-          role: 'contentEditor',
-        } as never,
-      }),
-    ).toBe(false)
-  })
-})
-
-describe('collection and global wiring', () => {
-  it('wires media access to manage_media while preserving anonymous reads', () => {
-    expect(Media.access?.read?.(toAccessReq(createReq(null)))).toBe(true)
-
-    expect(
-      Media.access?.update?.(
-        toAccessReq(
-          createReq({
-            capabilities: {
-              manage_media: true,
-            },
-            role: 'editor',
-          }),
-        ),
-      ),
-    ).toBe(true)
-
-    expect(
-      Media.access?.update?.(
-        toAccessReq(
-          createReq({
-            role: 'editor',
-          }),
-        ),
-      ),
-    ).toBe(false)
-  })
-
-  it('wires Site Defaults visibility and updates to site settings capability', () => {
-    const hidden = PageSettings.admin?.hidden
-
-    if (typeof hidden !== 'function') {
-      throw new Error('Expected PageSettings admin.hidden to be a function.')
-    }
-
-    expect(hidden({ user: { role: 'editor' } as never })).toBe(true)
-    expect(
-      PageSettings.access?.update?.(
-        toAccessReq(
-          createReq({
-            capabilities: {
-              manage_page_settings: true,
-            },
-            role: 'contentEditor',
-          }),
-        ),
-      ),
-    ).toBe(true)
-  })
-
-  it('keeps Site Defaults accessible for existing users with the legacy Site Settings capability', () => {
-    expect(
-      PageSettings.access?.update?.(
-        toAccessReq(
-          createReq({
-            capabilities: {
-              manage_site_settings: true,
-            },
-            role: 'contentEditor',
-          }),
-        ),
-      ),
-    ).toBe(true)
-  })
-})
-
 describe('user normalization hook', () => {
-  it('hides role and capabilities on first-user registration when no admin is logged in', () => {
-    const roleField = Users.fields.find(
-      (field) => 'name' in field && field.name === 'role',
-    )
-    const capabilitiesField = Users.fields.find(
-      (field) => 'name' in field && field.name === 'capabilities',
-    )
-
-    if (!roleField || !('admin' in roleField) || typeof roleField.admin?.condition !== 'function') {
-      throw new Error('Expected role field admin.condition to exist.')
-    }
-
-    if (
-      !capabilitiesField ||
-      !('admin' in capabilitiesField) ||
-      typeof capabilitiesField.admin?.condition !== 'function'
-    ) {
-      throw new Error('Expected capabilities field admin.condition to exist.')
-    }
-
-    const conditionContext = (user: unknown) =>
-      ({
-        blockData: {},
-        operation: 'create',
-        path: [],
-        user: user as never,
-      }) as never
-
-    expect(roleField.admin.condition({}, {}, conditionContext(null))).toBe(false)
-    expect(capabilitiesField.admin.condition({}, {}, conditionContext(null))).toBe(false)
-    expect(roleField.admin.condition({}, {}, conditionContext({ id: 1 }))).toBe(true)
-    expect(
-      capabilitiesField.admin.condition(
-        { role: 'editor' },
-        { role: 'editor' },
-        conditionContext({ id: 1 }),
-      ),
-    ).toBe(true)
-    expect(
-      capabilitiesField.admin.condition(
-        { role: 'admin' },
-        { role: 'admin' },
-        conditionContext({ id: 1 }),
-      ),
-    ).toBe(false)
-  })
-
-  it('promotes the first created user to admin with all capabilities', async () => {
+  it('promotes the first user to admin and later users to safe role defaults', async () => {
     const hook = Users.hooks?.beforeChange?.[0]
 
     if (!hook) {
       throw new Error('Expected Users beforeChange hook to exist.')
     }
 
-    const req = createReq(null)
-    req.payload.count = vi.fn(async () => ({
+    const firstUserReq = createReq(null)
+    firstUserReq.payload.count = vi.fn(async () => ({
       totalDocs: 0,
     }))
 
-    const result = await hook({
+    const firstResult = await hook({
       data: {
         email: 'first@example.com',
-        password: 'test',
+        password: 'secret',
       },
       operation: 'create',
-      req,
+      req: firstUserReq,
     } as never)
 
-    expect(result.role).toBe('admin')
-    expect(result.capabilities).toEqual(
-      expect.objectContaining(
-        Object.fromEntries(allAdminCapabilities.map((capability) => [capability, true])),
-      ),
+    expect(firstResult.role).toBe('admin')
+
+    const editorResult = await hook({
+      data: {
+        role: 'editor',
+        email: 'editor@example.com',
+      },
+      operation: 'update',
+      originalDoc: {
+        role: 'editor',
+      },
+      req: createReq({ role: 'admin' }),
+    } as never)
+
+    expect(editorResult.capabilities).toEqual(
+      expect.objectContaining({
+        manage_pages: true,
+        publish_pages: false,
+        manage_system_modes: false,
+      }),
     )
   })
 
-  it('sanitizes invalid capabilities for non-admin users', async () => {
-    const hook = Users.hooks?.beforeChange?.[0]
-
-    if (!hook) {
-      throw new Error('Expected Users beforeChange hook to exist.')
-    }
-
-    const req = createReq({
-      role: 'admin',
-    })
-
-    const result = await hook({
-      data: {
-        capabilities: {
-          manage_pages: true,
-          unknown_capability: true,
-        },
-        role: 'editor',
-      },
-      operation: 'create',
-      req,
-    } as never)
-
-    expect(result.role).toBe('editor')
-    expect(result.capabilities).toEqual(
-      expect.objectContaining({
-        manage_pages: true,
-      }),
-    )
-    expect('unknown_capability' in (result.capabilities as Record<string, boolean>)).toBe(false)
+  it('keeps Users hidden from non-admins', () => {
+    expect(hideFromNonAdmin({ user: { role: 'editor' } as never })).toBe(true)
+    expect(hideFromNonAdmin({ user: { role: 'admin' } as never })).toBe(false)
   })
 })

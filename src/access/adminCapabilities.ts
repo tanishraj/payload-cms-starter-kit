@@ -1,21 +1,17 @@
 import type { Access } from 'payload'
 
-export const adminRoleOptions = [
-  {
-    label: 'Admin',
-    value: 'admin',
-  },
-  {
-    label: 'Editor',
-    value: 'editor',
-  },
-  {
-    label: 'Content Editor',
-    value: 'contentEditor',
-  },
-] as const
+import {
+  editorialRoleOptions,
+  getDefaultCapabilitiesForRole,
+  normalizeEditorialRole,
+  type EditorialRole,
+} from '@/access/editorialRoles'
 
-export type AdminRole = (typeof adminRoleOptions)[number]['value']
+export { getDefaultCapabilitiesForRole } from '@/access/editorialRoles'
+
+export const adminRoleOptions = editorialRoleOptions
+
+export type AdminRole = EditorialRole
 
 export const adminCapabilityFieldOptions = [
   {
@@ -41,6 +37,18 @@ export const adminCapabilityFieldOptions = [
   {
     label: 'System Pages',
     value: 'manage_system_pages',
+  },
+  {
+    label: 'Publish Pages',
+    value: 'publish_pages',
+  },
+  {
+    label: 'Publish System Pages',
+    value: 'publish_system_pages',
+  },
+  {
+    label: 'System Modes',
+    value: 'manage_system_modes',
   },
   {
     label: 'Forms',
@@ -70,18 +78,21 @@ export const adminCapabilityFieldOptions = [
     label: 'SEO Settings',
     value: 'manage_seo_settings',
   },
+  {
+    label: 'Operational Audit',
+    value: 'view_operational_audit',
+  },
 ] as const
 
 export type AdminCapability = (typeof adminCapabilityFieldOptions)[number]['value']
 
 export type AdminCapabilitiesMap = Partial<Record<AdminCapability, boolean | null>>
 
-type AdminUserLike = {
+export type AdminUserLike = {
   capabilities?: AdminCapabilitiesMap | null | string[]
   role?: AdminRole | null | string
 }
 
-const validRoles = new Set<AdminRole>(adminRoleOptions.map(({ value }) => value))
 const validCapabilities = new Set<AdminCapability>(
   adminCapabilityFieldOptions.map(({ value }) => value),
 )
@@ -122,14 +133,14 @@ export const adminCapabilityCheckboxFields = adminCapabilityCheckboxItems.reduce
 }, [])
 
 export const isAdminRole = (value: unknown): value is AdminRole => {
-  return typeof value === 'string' && validRoles.has(value as AdminRole)
+  return normalizeEditorialRole(value, 'admin') === value
 }
 
 export const normalizeAdminRole = (
   value: unknown,
-  fallback: AdminRole = 'contentEditor',
+  fallback: AdminRole = 'editor',
 ): AdminRole => {
-  return isAdminRole(value) ? value : fallback
+  return normalizeEditorialRole(value, fallback)
 }
 
 export const sanitizeAdminCapabilities = (value: unknown): AdminCapability[] => {
@@ -161,7 +172,7 @@ export const toAdminCapabilitiesMap = (value: unknown): AdminCapabilitiesMap => 
 }
 
 export const isAdminUser = (user: AdminUserLike | null | undefined): boolean => {
-  return user?.role === 'admin'
+  return normalizeAdminRole(user?.role, 'editor') === 'admin'
 }
 
 export const hasAdminCapability = (
@@ -236,3 +247,31 @@ export const hideFromUsersWithoutCapability =
       hasAdminCapability(typedUser, currentCapability),
     )
   }
+
+export const canPublishPages = (user: AdminUserLike | null | undefined): boolean => {
+  return hasAdminCapability(user, 'publish_pages')
+}
+
+export const canPublishSystemPages = (user: AdminUserLike | null | undefined): boolean => {
+  return hasAdminCapability(user, 'publish_system_pages')
+}
+
+export const canManageSystemModes = (user: AdminUserLike | null | undefined): boolean => {
+  return hasAdminCapability(user, 'manage_system_modes')
+}
+
+export const canViewOperationalAudit = (user: AdminUserLike | null | undefined): boolean => {
+  return hasAdminCapability(user, 'view_operational_audit')
+}
+
+const allCapabilitiesEnabled = (): AdminCapabilitiesMap => {
+  return toAdminCapabilitiesMap(allAdminCapabilities)
+}
+
+export const getCapabilitiesForRole = (role: AdminRole): AdminCapabilitiesMap => {
+  if (role === 'admin') {
+    return allCapabilitiesEnabled()
+  }
+
+  return toAdminCapabilitiesMap(getDefaultCapabilitiesForRole(role))
+}

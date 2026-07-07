@@ -4,12 +4,15 @@ import {
   adminCapabilityCheckboxFields,
   adminOnlyAccess,
   adminOrFirstUserAccess,
-  adminRoleOptions,
   allAdminCapabilities,
+  getCapabilitiesForRole,
   hideFromNonAdmin,
-  normalizeAdminRole,
   toAdminCapabilitiesMap,
 } from '@/access/adminCapabilities'
+import {
+  editorialRoleOptions,
+  normalizeEditorialRole,
+} from '@/access/editorialRoles'
 
 const showOnlyForAuthenticatedAdminUser = (
   _: Record<string, unknown>,
@@ -28,7 +31,7 @@ const showCapabilitiesForNonAdminRole = (
     return false
   }
 
-  const resolvedRole = normalizeAdminRole(siblingData?.role ?? data?.role, 'contentEditor')
+  const resolvedRole = normalizeEditorialRole(siblingData?.role ?? data?.role, 'editor')
 
   return resolvedRole !== 'admin'
 }
@@ -37,25 +40,55 @@ const normalizeUserAccessFields: CollectionBeforeChangeHook = async ({
   data,
   operation,
   originalDoc,
+  req,
 }) => {
   if (!data) {
     return data
   }
 
   if (operation === 'create') {
-    data.role = 'admin'
+    const { totalDocs } = await req.payload.count({
+      collection: 'users',
+      overrideAccess: true,
+      where: {},
+    })
+
+    if (totalDocs === 0) {
+      data.role = 'admin'
+      data.capabilities = toAdminCapabilitiesMap(allAdminCapabilities)
+      return data
+    }
+
+    const nextRole = normalizeEditorialRole(data.role, 'editor')
+
+    data.role = nextRole
+    data.capabilities =
+      data.capabilities === undefined
+        ? getCapabilitiesForRole(nextRole)
+        : toAdminCapabilitiesMap(data.capabilities)
+
+    return data
+  }
+
+  const defaultRole = normalizeEditorialRole(originalDoc?.role, 'editor')
+  const nextRole = normalizeEditorialRole(data.role, defaultRole)
+  const roleChanged = nextRole !== defaultRole
+
+  data.role = nextRole
+
+  if (nextRole === 'admin') {
     data.capabilities = toAdminCapabilitiesMap(allAdminCapabilities)
     return data
   }
 
-  const defaultRole = normalizeAdminRole(originalDoc?.role, 'contentEditor')
-  const nextRole = normalizeAdminRole(data.role, defaultRole)
+  if (data.capabilities !== undefined) {
+    data.capabilities = toAdminCapabilitiesMap(data.capabilities)
+    return data
+  }
 
-  data.role = nextRole
-  data.capabilities =
-    nextRole === 'admin'
-      ? toAdminCapabilitiesMap(allAdminCapabilities)
-      : toAdminCapabilitiesMap(data.capabilities ?? originalDoc?.capabilities)
+  data.capabilities = roleChanged
+    ? getCapabilitiesForRole(nextRole)
+    : toAdminCapabilitiesMap(originalDoc?.capabilities ?? getCapabilitiesForRole(nextRole))
 
   return data
 }
@@ -83,13 +116,13 @@ export const Users: CollectionConfig = {
     {
       name: 'role',
       type: 'select',
-      defaultValue: 'admin',
-      options: [...adminRoleOptions],
+      defaultValue: 'editor',
+      options: [...editorialRoleOptions],
       required: true,
       saveToJWT: true,
       admin: {
         condition: showOnlyForAuthenticatedAdminUser,
-        description: 'Controls the base admin role for this user.',
+        description: 'Controls the editorial role for this user.',
         position: 'sidebar',
       },
     },
@@ -100,7 +133,7 @@ export const Users: CollectionConfig = {
       admin: {
         condition: showCapabilitiesForNonAdminRole,
         description:
-          'Choose which admin areas this user can access. Admin users always receive full access.',
+          'Adjust capability overrides for non-admin users. Role defaults apply when no overrides are set.',
       },
       fields: [...adminCapabilityCheckboxFields],
     },
