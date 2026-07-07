@@ -19,6 +19,7 @@ import { getRuntimeConfig } from './config/runtime'
 import { PageSettings } from './globals/PageSettings'
 import { SEOSettings } from './globals/SEOSettings'
 import { SiteSettings } from './globals/SiteSettings'
+import { SystemModeSettings } from './globals/SystemModeSettings'
 import { ThemeSettings } from './globals/ThemeSettings'
 import { withTrash } from './plugins/withTrash'
 
@@ -50,7 +51,7 @@ export default buildConfig({
     Media,
     Users,
   ],
-  globals: [PageSettings, SiteSettings, ThemeSettings, SEOSettings],
+  globals: [PageSettings, SystemModeSettings, SiteSettings, ThemeSettings, SEOSettings],
   editor: lexicalEditor(),
   email,
   secret: process.env.PAYLOAD_SECRET || '',

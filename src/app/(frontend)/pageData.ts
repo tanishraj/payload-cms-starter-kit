@@ -37,6 +37,17 @@ const getPageSettings = cache(async () => {
   })
 })
 
+const getSystemModeSettings = cache(async () => {
+  const payload = await getPayload({
+    config: configPromise,
+  })
+
+  return payload.findGlobal({
+    slug: 'system-mode-settings',
+    depth: 0,
+  })
+})
+
 const getSeoSettings = cache(async (): Promise<SeoSetting> => {
   const payload = await getPayload({
     config: configPromise,
@@ -49,9 +60,9 @@ const getSeoSettings = cache(async (): Promise<SeoSetting> => {
 })
 
 const canCurrentRequestBypassSystemModes = cache(async (): Promise<boolean> => {
-  const pageSettings = await getPageSettings()
+  const systemModeSettings = await getSystemModeSettings()
 
-  if (!pageSettings.bypassForLoggedInAdmins) {
+  if (!systemModeSettings.bypassForLoggedInAdmins) {
     return false
   }
 
@@ -311,37 +322,37 @@ const getPublishedSystemPageByID = cache(
 )
 
 const getSystemBehaviorPages = cache(async () => {
-  const pageSettings = await getPageSettings()
+  const systemModeSettings = await getSystemModeSettings()
   const [notFoundPage, maintenancePage, comingSoonPage] = await Promise.all([
-    extractRelationshipID(pageSettings.notFoundPage)
+    extractRelationshipID(systemModeSettings.notFoundPage)
       ? getPublishedSystemPageByID({
           depth: 10,
           expectedType: '404',
-          id: extractRelationshipID(pageSettings.notFoundPage)!,
+          id: extractRelationshipID(systemModeSettings.notFoundPage)!,
         })
       : Promise.resolve(null),
-    extractRelationshipID(pageSettings.maintenancePage)
+    extractRelationshipID(systemModeSettings.maintenancePage)
       ? getPublishedSystemPageByID({
           depth: 10,
           expectedType: 'maintenance',
-          id: extractRelationshipID(pageSettings.maintenancePage)!,
+          id: extractRelationshipID(systemModeSettings.maintenancePage)!,
         })
       : Promise.resolve(null),
-    extractRelationshipID(pageSettings.comingSoonPage)
+    extractRelationshipID(systemModeSettings.comingSoonPage)
       ? getPublishedSystemPageByID({
           depth: 10,
           expectedType: 'comingSoon',
-          id: extractRelationshipID(pageSettings.comingSoonPage)!,
+          id: extractRelationshipID(systemModeSettings.comingSoonPage)!,
         })
       : Promise.resolve(null),
   ])
 
   return {
-    bypassForLoggedInAdmins: Boolean(pageSettings.bypassForLoggedInAdmins),
+    bypassForLoggedInAdmins: Boolean(systemModeSettings.bypassForLoggedInAdmins),
     comingSoonPage,
     maintenancePage,
     notFoundPage,
-    siteMode: pageSettings.siteMode ?? 'off',
+    siteMode: systemModeSettings.siteMode ?? 'off',
   }
 })
 
