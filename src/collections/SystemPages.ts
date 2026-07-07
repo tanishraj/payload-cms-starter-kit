@@ -9,6 +9,7 @@ import {
   requireCapability,
 } from '@/access/adminCapabilities'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
+import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 import { systemPageTypeOptions, type SystemPageType } from '@/lib/systemPageTypes'
 
@@ -75,6 +76,14 @@ export const SystemPages: CollectionConfig = {
     update: requireCapability('manage_system_pages'),
   },
   hooks: {
+    afterChange: [
+      createCollectionAuditHook({
+        entityType: 'system_page',
+        getSummary: ({ doc, previousDoc }) =>
+          `Workflow moved from ${previousDoc?.workflowState ?? 'draft'} to ${doc.workflowState}.`,
+        titleField: 'title',
+      }),
+    ],
     beforeChange: [
       enforceEditorialWorkflow('publish_system_pages'),
       preventReferencedSystemPageInvalidation,

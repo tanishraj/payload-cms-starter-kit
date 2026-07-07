@@ -11,6 +11,7 @@ import {
   requireCapability,
 } from '@/access/adminCapabilities'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
+import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 import { robotsFieldOptions } from '@/lib/seo'
 
@@ -133,7 +134,16 @@ export const Pages: CollectionConfig = {
   },
   hooks: {
     afterRead: [populatePageUrlPreview],
-    afterChange: [syncNavigationLinkAfterChange, createRedirectsForChangedPagePath],
+    afterChange: [
+      syncNavigationLinkAfterChange,
+      createRedirectsForChangedPagePath,
+      createCollectionAuditHook({
+        entityType: 'page',
+        getSummary: ({ doc, previousDoc }) =>
+          `Workflow moved from ${previousDoc?.workflowState ?? 'draft'} to ${doc.workflowState}.`,
+        titleField: 'title',
+      }),
+    ],
     afterDelete: [syncNavigationLinkAfterDelete],
     beforeChange: [
       enforceEditorialWorkflow('publish_pages'),

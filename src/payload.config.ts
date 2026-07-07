@@ -13,6 +13,7 @@ import { NavigationLinks } from './collections/NavigationLinks'
 import { Pages } from './collections/Pages'
 import { Redirects } from './collections/Redirects'
 import { Headers } from './collections/Headers'
+import { OperationalAuditEvents } from './collections/OperationalAuditEvents'
 import { SystemPages } from './collections/SystemPages'
 import { createDatabaseAdapter, createEmailAdapter } from './config/providers'
 import { getRuntimeConfig } from './config/runtime'
@@ -49,6 +50,7 @@ export default buildConfig({
     Forms,
     FormSubmissions,
     Media,
+    OperationalAuditEvents,
     Users,
   ],
   globals: [PageSettings, SystemModeSettings, SiteSettings, ThemeSettings, SEOSettings],

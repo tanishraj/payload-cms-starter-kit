@@ -5,6 +5,7 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { createGlobalAuditHook } from '@/hooks/logOperationalAuditEvent'
 import type { SystemPageType } from '@/lib/systemPageTypes'
 
 const extractPageID = (
@@ -83,6 +84,16 @@ export const SystemModeSettings: GlobalConfig = {
   },
   versions: {
     drafts: true,
+  },
+  hooks: {
+    afterChange: [
+      createGlobalAuditHook({
+        entityType: 'system_mode_settings',
+        getSummary: ({ doc, previousDoc }) =>
+          `Site mode changed from ${previousDoc?.siteMode ?? 'off'} to ${doc.siteMode}.`,
+        title: 'System Modes',
+      }),
+    ],
   },
   fields: [
     {

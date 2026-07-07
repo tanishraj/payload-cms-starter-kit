@@ -1,0 +1,61 @@
+import type { PayloadRequest } from 'payload'
+
+export type RecordOperationalAuditEventArgs = {
+  action: string
+  entityId: string
+  entityTitle: string
+  entityType: string
+  req: PayloadRequest
+  summary: string
+}
+
+export const describeAuditValue = (value: unknown, fallback = 'unset'): string => {
+  if (value == null || value === '') {
+    return fallback
+  }
+
+  if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+    return String(value)
+  }
+
+  if (typeof value === 'object') {
+    if ('title' in value && typeof value.title === 'string' && value.title.length > 0) {
+      return value.title
+    }
+
+    if ('slug' in value && typeof value.slug === 'string' && value.slug.length > 0) {
+      return value.slug
+    }
+
+    if ('id' in value && (typeof value.id === 'string' || typeof value.id === 'number')) {
+      return String(value.id)
+    }
+  }
+
+  return fallback
+}
+
+export const recordOperationalAuditEvent = async ({
+  action,
+  entityId,
+  entityTitle,
+  entityType,
+  req,
+  summary,
+}: RecordOperationalAuditEventArgs): Promise<void> => {
+  await req.payload.create({
+    collection: 'operational-audit-events',
+    data: {
+      action,
+      actorEmail: typeof req.user?.email === 'string' ? req.user.email : undefined,
+      actorRole: typeof req.user?.role === 'string' ? req.user.role : undefined,
+      entityId,
+      entityTitle,
+      entityType,
+      occurredAt: new Date().toISOString(),
+      summary,
+    },
+    overrideAccess: true,
+    req,
+  })
+}

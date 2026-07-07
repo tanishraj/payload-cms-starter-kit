@@ -5,6 +5,8 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { createGlobalAuditHook } from '@/hooks/logOperationalAuditEvent'
+import { describeAuditValue } from '@/lib/operationalAudit'
 
 const extractPageID = (
   value: number | { id: number | string } | null | undefined,
@@ -69,6 +71,16 @@ export const PageSettings: GlobalConfig = {
   },
   versions: {
     drafts: true,
+  },
+  hooks: {
+    afterChange: [
+      createGlobalAuditHook({
+        entityType: 'page_settings',
+        getSummary: ({ doc, previousDoc }) =>
+          `Homepage reference changed from ${describeAuditValue(previousDoc?.homepage)} to ${describeAuditValue(doc.homepage)}.`,
+        title: 'Site Defaults',
+      }),
+    ],
   },
   fields: [
     {
