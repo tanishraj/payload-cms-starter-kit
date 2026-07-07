@@ -67,9 +67,16 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
-    media: Media;
     pages: Page;
+    'navigation-links': NavigationLink;
+    redirects: Redirect;
+    headers: Header;
+    footers: Footer;
+    'system-pages': SystemPage;
+    forms: Form;
+    'form-submissions': FormSubmission;
+    media: Media;
+    users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -77,20 +84,37 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
+    'navigation-links': NavigationLinksSelect<false> | NavigationLinksSelect<true>;
+    redirects: RedirectsSelect<false> | RedirectsSelect<true>;
+    headers: HeadersSelect<false> | HeadersSelect<true>;
+    footers: FootersSelect<false> | FootersSelect<true>;
+    'system-pages': SystemPagesSelect<false> | SystemPagesSelect<true>;
+    forms: FormsSelect<false> | FormsSelect<true>;
+    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'page-settings': PageSetting;
+    'site-settings': SiteSetting;
+    'theme-settings': ThemeSetting;
+    'seo-settings': SeoSetting;
+  };
+  globalsSelect: {
+    'page-settings': PageSettingsSelect<false> | PageSettingsSelect<true>;
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'theme-settings': ThemeSettingsSelect<false> | ThemeSettingsSelect<true>;
+    'seo-settings': SeoSettingsSelect<false> | SeoSettingsSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -120,11 +144,611 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Flexible website pages with reusable layout blocks, SEO controls, and publishing settings.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Compose the page with reusable frontend sections.
+   */
+  layout?: (Hero36Block | FormBlock)[] | null;
+  metaTitle: string;
+  metaDescription: string;
+  /**
+   * Optional. Leave empty to use the resolved public page URL. Supports relative paths or full URLs.
+   */
+  canonicalURL?: string | null;
+  /**
+   * Optional. Leave empty to inherit the global robots setting for this page.
+   */
+  robots?: ('index,follow' | 'noindex,follow' | 'index,nofollow' | 'noindex,nofollow') | null;
+  /**
+   * Optional. Leave empty to use the page SEO title, then global defaults.
+   */
+  ogTitle?: string | null;
+  /**
+   * Optional. Leave empty to use the global default social image.
+   */
+  ogImage?: (number | null) | Media;
+  /**
+   * Optional. Leave empty to use the page SEO description, then global defaults.
+   */
+  ogDescription?: string | null;
+  /**
+   * Resolved from the current saved slug and parent hierarchy.
+   */
+  publicUrlPreview?: string | null;
+  /**
+   * Use this for nested page hierarchies like /services/web-development.
+   */
+  parent?: (number | null) | Page;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Hero36Block".
+ */
+export interface Hero36Block {
+  badge?: {
+    text?: string | null;
+  };
+  heading: string;
+  description?: string | null;
+  cards: {
+    title: string;
+    description: string;
+    visualType: 'icon' | 'image';
+    icon?: ('blocks' | 'database' | 'layout' | 'rocket') | null;
+    image?: (number | null) | Media;
+    /**
+     * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
+     */
+    link?: (number | null) | NavigationLink;
+    openInNewTab?: boolean | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'hero36';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Internal asset name used in the admin panel.
+   */
+  title?: string | null;
+  /**
+   * Use Logo, Hero, and SEO for image assets only. Logo: prefer transparent background and clean padding. Hero: prefer wide, high-resolution imagery for desktop layouts. SEO: prefer Open Graph-friendly images around 1200x630.
+   */
+  assetType?: ('general' | 'logo' | 'hero' | 'seo' | 'icon' | 'document') | null;
+  /**
+   * Describe the image for accessibility and SEO. Keep logo alt concise, describe meaningful hero imagery, and write SEO alt as a clear preview description.
+   */
+  alt: string;
+  /**
+   * Optional labels to make assets easier to find later.
+   */
+  tags?:
+    | {
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional internal notes about where or how this asset should be used, plus any preferred sizing or placement guidance for editors.
+   */
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * Reusable destinations for menus, CTAs, legal links, and utility links.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation-links".
+ */
+export interface NavigationLink {
+  id: number;
+  title: string;
+  description?: string | null;
+  linkType: 'page' | 'custom';
+  page?: (number | null) | Page;
+  url?: string | null;
+  openInNewTab?: boolean | null;
+  /**
+   * Shows whether this reusable link is manually managed or synced from a page.
+   */
+  sourceType: 'manual' | 'pageSynced';
+  /**
+   * The page that currently owns this synced reusable link.
+   */
+  syncPage?: (number | null) | Page;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormBlock".
+ */
+export interface FormBlock {
+  /**
+   * Select the published form to render on this page.
+   */
+  form: number | Form;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'form';
+}
+/**
+ * Reusable form definitions that can be placed on pages.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "forms".
+ */
+export interface Form {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Optional notes for editors. This is not shown on the website.
+   */
+  internalNotes?: string | null;
+  submitButtonLabel: string;
+  successMessage: string;
+  /**
+   * Optional internal email recipients who should be notified when this form receives a valid submission.
+   */
+  notificationRecipients?:
+    | {
+        email: string;
+        id?: string | null;
+      }[]
+    | null;
+  fields: {
+    /**
+     * Machine key used in stored submission data.
+     */
+    name: string;
+    label: string;
+    type: 'text' | 'email' | 'textarea' | 'select' | 'checkbox';
+    required?: boolean | null;
+    placeholder?: string | null;
+    options?:
+      | {
+          label: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Map old URLs to new destinations during migrations and ongoing URL changes. Some redirects may be auto-generated when a published page URL changes.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects".
+ */
+export interface Redirect {
+  id: number;
+  /**
+   * The old incoming path to redirect, for example /old-page or /services/web-design.html.
+   */
+  fromPath: string;
+  destinationType: 'page' | 'custom';
+  /**
+   * Choose the page this old path should redirect to.
+   */
+  page?: (number | null) | Page;
+  /**
+   * Enter an internal path or full external URL to redirect to.
+   */
+  url?: string | null;
+  /**
+   * Use 301 for permanent site migrations. Use 302 only for temporary routing changes.
+   */
+  statusCode: '301' | '302';
+  enabled?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Reusable site header presets powered by header layout blocks.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "headers".
+ */
+export interface Header {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Select the header block variant to use for this preset.
+   */
+  layout: HeaderNavbar12Block[];
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeaderNavbar12Block".
+ */
+export interface HeaderNavbar12Block {
+  logoMode: 'siteSettingsLogo' | 'customLogo';
+  customLogo?: (number | null) | Media;
+  /**
+   * Configure the main navigation structure for this header.
+   */
+  navigationItems?:
+    | {
+        /**
+         * Optional top-level label override. Leave blank to use the reusable link title.
+         */
+        label?: string | null;
+        /**
+         * Optional top-level destination. If children are added, this becomes the overview link.
+         */
+        link?: (number | null) | NavigationLink;
+        children?:
+          | {
+              /**
+               * Optional label override. Leave blank to use the reusable link title.
+               */
+              label?: string | null;
+              /**
+               * Optional description for dropdown items.
+               */
+              description?: string | null;
+              link: number | NavigationLink;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional reusable links shown to the right of the navigation.
+   */
+  secondaryActions?:
+    | {
+        /**
+         * Optional label override. Leave blank to use the reusable link title.
+         */
+        label?: string | null;
+        link: number | NavigationLink;
+        id?: string | null;
+      }[]
+    | null;
+  cta?: {
+    enabled?: boolean | null;
+    /**
+     * Optional button label override. Leave blank to use the reusable link title.
+     */
+    label?: string | null;
+    link?: (number | null) | NavigationLink;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'headerNavbar12';
+}
+/**
+ * Reusable site footer presets powered by footer layout blocks.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footers".
+ */
+export interface Footer {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Select the footer block variant to use for this preset.
+   */
+  layout: Footer2Block[];
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Footer2Block".
+ */
+export interface Footer2Block {
+  logoMode: 'siteSettingsLogo' | 'customLogo';
+  customLogo?: (number | null) | Media;
+  description?: string | null;
+  /**
+   * Configure the footer sections for this footer layout.
+   */
+  sections?:
+    | {
+        title: string;
+        links?:
+          | {
+              /**
+               * Optional label override. Leave blank to use the reusable link title.
+               */
+              name?: string | null;
+              link: number | NavigationLink;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  copyright?: string | null;
+  legalLinks?:
+    | {
+        /**
+         * Optional label override. Leave blank to use the reusable link title.
+         */
+        name?: string | null;
+        link: number | NavigationLink;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'footer2';
+}
+/**
+ * Reusable presets for 404, maintenance, and coming soon experiences.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "system-pages".
+ */
+export interface SystemPage {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Choose which system behavior this preset is intended for. Only matching presets appear in System Defaults.
+   */
+  type: '404' | 'maintenance' | 'comingSoon';
+  /**
+   * Choose one system block variant for this preset. The selected block must match the system page type.
+   */
+  layout: (System404Block | SystemMaintenanceBlock | SystemComingSoonBlock)[];
+  metaTitle: string;
+  metaDescription: string;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "System404Block".
+ */
+export interface System404Block {
+  badge?: string | null;
+  heading: string;
+  description?: string | null;
+  supportingNote?: string | null;
+  primaryAction?: {
+    label?: string | null;
+    /**
+     * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
+     */
+    link?: (number | null) | NavigationLink;
+    openInNewTab?: boolean | null;
+  };
+  secondaryAction?: {
+    label?: string | null;
+    /**
+     * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
+     */
+    link?: (number | null) | NavigationLink;
+    openInNewTab?: boolean | null;
+  };
+  image?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'system404';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SystemMaintenanceBlock".
+ */
+export interface SystemMaintenanceBlock {
+  badge?: string | null;
+  heading: string;
+  description?: string | null;
+  supportingNote?: string | null;
+  primaryAction?: {
+    label?: string | null;
+    /**
+     * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
+     */
+    link?: (number | null) | NavigationLink;
+    openInNewTab?: boolean | null;
+  };
+  secondaryAction?: {
+    label?: string | null;
+    /**
+     * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
+     */
+    link?: (number | null) | NavigationLink;
+    openInNewTab?: boolean | null;
+  };
+  image?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'systemMaintenance';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SystemComingSoonBlock".
+ */
+export interface SystemComingSoonBlock {
+  badge?: string | null;
+  heading: string;
+  description?: string | null;
+  supportingNote?: string | null;
+  primaryAction?: {
+    label?: string | null;
+    /**
+     * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
+     */
+    link?: (number | null) | NavigationLink;
+    openInNewTab?: boolean | null;
+  };
+  secondaryAction?: {
+    label?: string | null;
+    /**
+     * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
+     */
+    link?: (number | null) | NavigationLink;
+    openInNewTab?: boolean | null;
+  };
+  image?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'systemComingSoon';
+}
+/**
+ * Stored form submissions. These records are read-only after creation.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions".
+ */
+export interface FormSubmission {
+  id: number;
+  form: number | Form;
+  data:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
+  /**
+   * Controls the base admin role for this user.
+   */
+  role?: ('admin' | 'editor' | 'contentEditor') | null;
+  /**
+   * Choose which admin areas this user can access. Admin users always receive full access.
+   */
+  capabilities?: {
+    /**
+     * Allow access to Pages.
+     */
+    manage_pages?: boolean | null;
+    /**
+     * Allow access to Navigation.
+     */
+    manage_navigation?: boolean | null;
+    /**
+     * Allow access to Redirects.
+     */
+    manage_redirects?: boolean | null;
+    /**
+     * Allow access to Headers.
+     */
+    manage_headers?: boolean | null;
+    /**
+     * Allow access to Footers.
+     */
+    manage_footers?: boolean | null;
+    /**
+     * Allow access to System Pages.
+     */
+    manage_system_pages?: boolean | null;
+    /**
+     * Allow access to Forms.
+     */
+    manage_forms?: boolean | null;
+    /**
+     * Allow access to Form Submissions.
+     */
+    manage_form_submissions?: boolean | null;
+    /**
+     * Allow access to Media.
+     */
+    manage_media?: boolean | null;
+    /**
+     * Allow access to Site Defaults.
+     */
+    manage_page_settings?: boolean | null;
+    /**
+     * Allow access to Site Settings.
+     */
+    manage_site_settings?: boolean | null;
+    /**
+     * Allow access to Theme Settings.
+     */
+    manage_theme_settings?: boolean | null;
+    /**
+     * Allow access to SEO Settings.
+     */
+    manage_seo_settings?: boolean | null;
+  };
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -147,59 +771,10 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: string;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
- */
-export interface Page {
-  id: string;
-  title: string;
-  /**
-   * Use "home" for the homepage.
-   */
-  slug: string;
-  intro?: string | null;
-  layout: {
-    title: string;
-    description?: string | null;
-    ctaLabel?: string | null;
-    ctaHref?: string | null;
-    backgroundImageUrl?: string | null;
-    locationLabel?: string | null;
-    locationValue?: string | null;
-    id?: string | null;
-    blockName?: string | null;
-    blockType: 'hero174';
-  }[];
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -216,24 +791,52 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: string | User;
+        relationTo: 'pages';
+        value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'navigation-links';
+        value: number | NavigationLink;
+      } | null)
+    | ({
+        relationTo: 'redirects';
+        value: number | Redirect;
+      } | null)
+    | ({
+        relationTo: 'headers';
+        value: number | Header;
+      } | null)
+    | ({
+        relationTo: 'footers';
+        value: number | Footer;
+      } | null)
+    | ({
+        relationTo: 'system-pages';
+        value: number | SystemPage;
+      } | null)
+    | ({
+        relationTo: 'forms';
+        value: number | Form;
+      } | null)
+    | ({
+        relationTo: 'form-submissions';
+        value: number | FormSubmission;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
       } | null)
     | ({
-        relationTo: 'pages';
-        value: string | Page;
+        relationTo: 'users';
+        value: number | User;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -243,10 +846,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -266,7 +869,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -274,9 +877,415 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  layout?:
+    | T
+    | {
+        hero36?: T | Hero36BlockSelect<T>;
+        form?: T | FormBlockSelect<T>;
+      };
+  metaTitle?: T;
+  metaDescription?: T;
+  canonicalURL?: T;
+  robots?: T;
+  ogTitle?: T;
+  ogImage?: T;
+  ogDescription?: T;
+  publicUrlPreview?: T;
+  parent?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Hero36Block_select".
+ */
+export interface Hero36BlockSelect<T extends boolean = true> {
+  badge?:
+    | T
+    | {
+        text?: T;
+      };
+  heading?: T;
+  description?: T;
+  cards?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        visualType?: T;
+        icon?: T;
+        image?: T;
+        link?: T;
+        openInNewTab?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormBlock_select".
+ */
+export interface FormBlockSelect<T extends boolean = true> {
+  form?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation-links_select".
+ */
+export interface NavigationLinksSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  linkType?: T;
+  page?: T;
+  url?: T;
+  openInNewTab?: T;
+  sourceType?: T;
+  syncPage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects_select".
+ */
+export interface RedirectsSelect<T extends boolean = true> {
+  fromPath?: T;
+  destinationType?: T;
+  page?: T;
+  url?: T;
+  statusCode?: T;
+  enabled?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "headers_select".
+ */
+export interface HeadersSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  layout?:
+    | T
+    | {
+        headerNavbar12?: T | HeaderNavbar12BlockSelect<T>;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeaderNavbar12Block_select".
+ */
+export interface HeaderNavbar12BlockSelect<T extends boolean = true> {
+  logoMode?: T;
+  customLogo?: T;
+  navigationItems?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        children?:
+          | T
+          | {
+              label?: T;
+              description?: T;
+              link?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  secondaryActions?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        id?: T;
+      };
+  cta?:
+    | T
+    | {
+        enabled?: T;
+        label?: T;
+        link?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footers_select".
+ */
+export interface FootersSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  layout?:
+    | T
+    | {
+        footer2?: T | Footer2BlockSelect<T>;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Footer2Block_select".
+ */
+export interface Footer2BlockSelect<T extends boolean = true> {
+  logoMode?: T;
+  customLogo?: T;
+  description?: T;
+  sections?:
+    | T
+    | {
+        title?: T;
+        links?:
+          | T
+          | {
+              name?: T;
+              link?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  copyright?: T;
+  legalLinks?:
+    | T
+    | {
+        name?: T;
+        link?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "system-pages_select".
+ */
+export interface SystemPagesSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  type?: T;
+  layout?:
+    | T
+    | {
+        system404?: T | System404BlockSelect<T>;
+        systemMaintenance?: T | SystemMaintenanceBlockSelect<T>;
+        systemComingSoon?: T | SystemComingSoonBlockSelect<T>;
+      };
+  metaTitle?: T;
+  metaDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "System404Block_select".
+ */
+export interface System404BlockSelect<T extends boolean = true> {
+  badge?: T;
+  heading?: T;
+  description?: T;
+  supportingNote?: T;
+  primaryAction?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        openInNewTab?: T;
+      };
+  secondaryAction?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        openInNewTab?: T;
+      };
+  image?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SystemMaintenanceBlock_select".
+ */
+export interface SystemMaintenanceBlockSelect<T extends boolean = true> {
+  badge?: T;
+  heading?: T;
+  description?: T;
+  supportingNote?: T;
+  primaryAction?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        openInNewTab?: T;
+      };
+  secondaryAction?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        openInNewTab?: T;
+      };
+  image?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SystemComingSoonBlock_select".
+ */
+export interface SystemComingSoonBlockSelect<T extends boolean = true> {
+  badge?: T;
+  heading?: T;
+  description?: T;
+  supportingNote?: T;
+  primaryAction?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        openInNewTab?: T;
+      };
+  secondaryAction?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        openInNewTab?: T;
+      };
+  image?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "forms_select".
+ */
+export interface FormsSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  internalNotes?: T;
+  submitButtonLabel?: T;
+  successMessage?: T;
+  notificationRecipients?:
+    | T
+    | {
+        email?: T;
+        id?: T;
+      };
+  fields?:
+    | T
+    | {
+        name?: T;
+        label?: T;
+        type?: T;
+        required?: T;
+        placeholder?: T;
+        options?:
+          | T
+          | {
+              label?: T;
+              value?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions_select".
+ */
+export interface FormSubmissionsSelect<T extends boolean = true> {
+  form?: T;
+  data?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  title?: T;
+  assetType?: T;
+  alt?: T;
+  tags?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  role?: T;
+  capabilities?:
+    | T
+    | {
+        manage_pages?: T;
+        manage_navigation?: T;
+        manage_redirects?: T;
+        manage_headers?: T;
+        manage_footers?: T;
+        manage_system_pages?: T;
+        manage_forms?: T;
+        manage_form_submissions?: T;
+        manage_media?: T;
+        manage_page_settings?: T;
+        manage_site_settings?: T;
+        manage_theme_settings?: T;
+        manage_seo_settings?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -294,55 +1303,6 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
- */
-export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  deletedAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages_select".
- */
-export interface PagesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  intro?: T;
-  layout?:
-    | T
-    | {
-        hero174?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              ctaLabel?: T;
-              ctaHref?: T;
-              backgroundImageUrl?: T;
-              locationLabel?: T;
-              locationValue?: T;
-              id?: T;
-              blockName?: T;
-            };
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  deletedAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -383,6 +1343,185 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-settings".
+ */
+export interface PageSetting {
+  id: number;
+  /**
+   * Choose which published page should render at the root URL (/).
+   */
+  homepage?: (number | null) | Page;
+  /**
+   * Choose which saved header preset should render site-wide.
+   */
+  activeHeader?: (number | null) | Header;
+  /**
+   * Choose which saved footer preset should render site-wide.
+   */
+  activeFooter?: (number | null) | Footer;
+  /**
+   * Select a 404 system preset. Draft presets appear here, but the selected preset must be published before it can be used live.
+   */
+  notFoundPage?: (number | null) | SystemPage;
+  /**
+   * Select a maintenance system preset. Draft presets appear here, but the selected preset must be published before it can be used live.
+   */
+  maintenancePage?: (number | null) | SystemPage;
+  /**
+   * Select a coming soon system preset. Draft presets appear here, but the selected preset must be published before it can be used live.
+   */
+  comingSoonPage?: (number | null) | SystemPage;
+  /**
+   * Allow logged-in admins to continue seeing the normal site when a mode is active.
+   */
+  bypassForLoggedInAdmins?: boolean | null;
+  /**
+   * Choose which system page should override the public site. This affects all public routes, not only the homepage.
+   */
+  siteMode?: ('off' | 'maintenance' | 'comingSoon') | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  siteName: string;
+  siteDescription?: string | null;
+  logo?: (number | null) | Media;
+  favicon?: (number | null) | Media;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  address?: string | null;
+  googleMapEmbedUrl?: string | null;
+  socialLinks?: {
+    facebook?: string | null;
+    instagram?: string | null;
+    linkedin?: string | null;
+    youtube?: string | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Control the frontend theme preset and light or dark mode behavior.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "theme-settings".
+ */
+export interface ThemeSetting {
+  id: number;
+  /**
+   * Select which frontend theme preset is loaded for the site.
+   */
+  themeColor: 'default' | 'blue' | 'sera';
+  /**
+   * Choose whether the site follows the system preference or forces light/dark mode.
+   */
+  colorScheme: 'system' | 'light' | 'dark';
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Default SEO values used when a page does not provide its own overrides.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seo-settings".
+ */
+export interface SeoSetting {
+  id: number;
+  defaultTitle?: string | null;
+  /**
+   * Example: %s | Your Site Name
+   */
+  titleTemplate?: string | null;
+  defaultDescription?: string | null;
+  defaultImage?: (number | null) | Media;
+  robots?: ('index,follow' | 'noindex,follow' | 'index,nofollow' | 'noindex,nofollow') | null;
+  googleSiteVerification?: string | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-settings_select".
+ */
+export interface PageSettingsSelect<T extends boolean = true> {
+  homepage?: T;
+  activeHeader?: T;
+  activeFooter?: T;
+  notFoundPage?: T;
+  maintenancePage?: T;
+  comingSoonPage?: T;
+  bypassForLoggedInAdmins?: T;
+  siteMode?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  siteName?: T;
+  siteDescription?: T;
+  logo?: T;
+  favicon?: T;
+  contactEmail?: T;
+  contactPhone?: T;
+  address?: T;
+  googleMapEmbedUrl?: T;
+  socialLinks?:
+    | T
+    | {
+        facebook?: T;
+        instagram?: T;
+        linkedin?: T;
+        youtube?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "theme-settings_select".
+ */
+export interface ThemeSettingsSelect<T extends boolean = true> {
+  themeColor?: T;
+  colorScheme?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seo-settings_select".
+ */
+export interface SeoSettingsSelect<T extends boolean = true> {
+  defaultTitle?: T;
+  titleTemplate?: T;
+  defaultDescription?: T;
+  defaultImage?: T;
+  robots?: T;
+  googleSiteVerification?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
