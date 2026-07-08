@@ -15,6 +15,7 @@ This repository is a single-site marketing CMS starter built with Payload, Next.
 - Pages with hierarchy, preview, redirects, and SEO controls
 - Navigation links, headers, footers, and site defaults
 - System pages for 404, maintenance, and coming soon
+- Editorial roles, publish guardrails, and operational audit history
 - Forms with validation, throttling, persistence, and notifications
 - Media uploads plus capability-based admin access for CMS operators
 
@@ -33,7 +34,8 @@ The starter already separates page content, reusable site structure, and site-wi
 - `pages` owns hierarchical marketing pages, live preview, redirects, and page-level SEO.
 - `navigation-links` stores reusable destinations for menus, CTAs, and synced page links.
 - `system-pages` stores managed 404, maintenance, and coming-soon experiences.
-- `page-settings` chooses the active homepage, header, footer, and site mode behavior.
+- `page-settings` chooses the active homepage, header, and footer.
+- `system-mode-settings` owns maintenance mode, coming-soon mode, 404 selection, and admin bypass behavior.
 - `site-settings`, `seo-settings`, and `theme-settings` hold brand, SEO, and presentation defaults.
 
 See [docs/architecture/content-model-map.md](docs/architecture/content-model-map.md) for the full ownership map.
@@ -74,6 +76,11 @@ Optional but currently supported:
 - local/dev uses `SQLite`
 - Vercel preview and production use `Postgres`
 - see [docs/operations/vercel-postgres-deployment.md](docs/operations/vercel-postgres-deployment.md)
+
+## Editorial Operations
+
+- [Editorial governance](./docs/operations/editorial-governance.md)
+- [Vercel Postgres deployment](./docs/operations/vercel-postgres-deployment.md)
 
 ## Testing
 

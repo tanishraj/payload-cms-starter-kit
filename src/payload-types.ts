@@ -76,6 +76,7 @@ export interface Config {
     forms: Form;
     'form-submissions': FormSubmission;
     media: Media;
+    'operational-audit-events': OperationalAuditEvent;
     users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -93,6 +94,7 @@ export interface Config {
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'operational-audit-events': OperationalAuditEventsSelect<false> | OperationalAuditEventsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -105,12 +107,14 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     'page-settings': PageSetting;
+    'system-mode-settings': SystemModeSetting;
     'site-settings': SiteSetting;
     'theme-settings': ThemeSetting;
     'seo-settings': SeoSetting;
   };
   globalsSelect: {
     'page-settings': PageSettingsSelect<false> | PageSettingsSelect<true>;
+    'system-mode-settings': SystemModeSettingsSelect<false> | SystemModeSettingsSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'theme-settings': ThemeSettingsSelect<false> | ThemeSettingsSelect<true>;
     'seo-settings': SeoSettingsSelect<false> | SeoSettingsSelect<true>;
@@ -191,6 +195,16 @@ export interface Page {
    * Use this for nested page hierarchies like /services/web-development.
    */
   parent?: (number | null) | Page;
+  workflowState: 'draft' | 'in_review' | 'scheduled' | 'published' | 'reverted';
+  scheduledPublishAt?: string | null;
+  /**
+   * Short operator-facing note explaining why this change exists.
+   */
+  changeSummary?: string | null;
+  lastReviewedAt?: string | null;
+  lastReviewedBy?: (number | null) | User;
+  publishedAt?: string | null;
+  publishedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -359,6 +373,109 @@ export interface Form {
   createdAt: string;
   deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  /**
+   * Controls the editorial role for this user.
+   */
+  role?: ('admin' | 'publisher' | 'editor' | 'marketingOps') | null;
+  /**
+   * Adjust capability overrides for non-admin users. Role defaults apply when no overrides are set.
+   */
+  capabilities?: {
+    /**
+     * Allow access to Pages.
+     */
+    manage_pages?: boolean | null;
+    /**
+     * Allow access to Navigation.
+     */
+    manage_navigation?: boolean | null;
+    /**
+     * Allow access to Redirects.
+     */
+    manage_redirects?: boolean | null;
+    /**
+     * Allow access to Headers.
+     */
+    manage_headers?: boolean | null;
+    /**
+     * Allow access to Footers.
+     */
+    manage_footers?: boolean | null;
+    /**
+     * Allow access to System Pages.
+     */
+    manage_system_pages?: boolean | null;
+    /**
+     * Allow access to Publish Pages.
+     */
+    publish_pages?: boolean | null;
+    /**
+     * Allow access to Publish System Pages.
+     */
+    publish_system_pages?: boolean | null;
+    /**
+     * Allow access to System Modes.
+     */
+    manage_system_modes?: boolean | null;
+    /**
+     * Allow access to Forms.
+     */
+    manage_forms?: boolean | null;
+    /**
+     * Allow access to Form Submissions.
+     */
+    manage_form_submissions?: boolean | null;
+    /**
+     * Allow access to Media.
+     */
+    manage_media?: boolean | null;
+    /**
+     * Allow access to Site Defaults.
+     */
+    manage_page_settings?: boolean | null;
+    /**
+     * Allow access to Site Settings.
+     */
+    manage_site_settings?: boolean | null;
+    /**
+     * Allow access to Theme Settings.
+     */
+    manage_theme_settings?: boolean | null;
+    /**
+     * Allow access to SEO Settings.
+     */
+    manage_seo_settings?: boolean | null;
+    /**
+     * Allow access to Operational Audit.
+     */
+    view_operational_audit?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
 }
 /**
  * Map old URLs to new destinations during migrations and ongoing URL changes. Some redirects may be auto-generated when a published page URL changes.
@@ -565,6 +682,13 @@ export interface SystemPage {
   layout: (System404Block | SystemMaintenanceBlock | SystemComingSoonBlock)[];
   metaTitle: string;
   metaDescription: string;
+  workflowState: 'draft' | 'in_review' | 'scheduled' | 'published' | 'reverted';
+  scheduledPublishAt?: string | null;
+  changeSummary?: string | null;
+  lastReviewedAt?: string | null;
+  lastReviewedBy?: (number | null) | User;
+  publishedAt?: string | null;
+  publishedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -661,7 +785,7 @@ export interface SystemComingSoonBlock {
   blockType: 'systemComingSoon';
 }
 /**
- * Stored form submissions. These records are read-only after creation.
+ * Stored form submissions. Submission payload fields stay read-only after creation, while operators can update workflow status.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-submissions".
@@ -669,6 +793,9 @@ export interface SystemComingSoonBlock {
 export interface FormSubmission {
   id: number;
   form: number | Form;
+  status?: ('new' | 'reviewed' | 'archived') | null;
+  email?: string | null;
+  submittedAt: string;
   data:
     | {
         [k: string]: unknown;
@@ -684,90 +811,21 @@ export interface FormSubmission {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "operational-audit-events".
  */
-export interface User {
+export interface OperationalAuditEvent {
   id: number;
-  /**
-   * Controls the base admin role for this user.
-   */
-  role?: ('admin' | 'editor' | 'contentEditor') | null;
-  /**
-   * Choose which admin areas this user can access. Admin users always receive full access.
-   */
-  capabilities?: {
-    /**
-     * Allow access to Pages.
-     */
-    manage_pages?: boolean | null;
-    /**
-     * Allow access to Navigation.
-     */
-    manage_navigation?: boolean | null;
-    /**
-     * Allow access to Redirects.
-     */
-    manage_redirects?: boolean | null;
-    /**
-     * Allow access to Headers.
-     */
-    manage_headers?: boolean | null;
-    /**
-     * Allow access to Footers.
-     */
-    manage_footers?: boolean | null;
-    /**
-     * Allow access to System Pages.
-     */
-    manage_system_pages?: boolean | null;
-    /**
-     * Allow access to Forms.
-     */
-    manage_forms?: boolean | null;
-    /**
-     * Allow access to Form Submissions.
-     */
-    manage_form_submissions?: boolean | null;
-    /**
-     * Allow access to Media.
-     */
-    manage_media?: boolean | null;
-    /**
-     * Allow access to Site Defaults.
-     */
-    manage_page_settings?: boolean | null;
-    /**
-     * Allow access to Site Settings.
-     */
-    manage_site_settings?: boolean | null;
-    /**
-     * Allow access to Theme Settings.
-     */
-    manage_theme_settings?: boolean | null;
-    /**
-     * Allow access to SEO Settings.
-     */
-    manage_seo_settings?: boolean | null;
-  };
+  entityType: string;
+  entityId: string;
+  entityTitle: string;
+  action: string;
+  summary: string;
+  actorEmail?: string | null;
+  actorRole?: string | null;
+  occurredAt: string;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -828,6 +886,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'operational-audit-events';
+        value: number | OperationalAuditEvent;
       } | null)
     | ({
         relationTo: 'users';
@@ -898,6 +960,13 @@ export interface PagesSelect<T extends boolean = true> {
   ogDescription?: T;
   publicUrlPreview?: T;
   parent?: T;
+  workflowState?: T;
+  scheduledPublishAt?: T;
+  changeSummary?: T;
+  lastReviewedAt?: T;
+  lastReviewedBy?: T;
+  publishedAt?: T;
+  publishedBy?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -1098,6 +1167,13 @@ export interface SystemPagesSelect<T extends boolean = true> {
       };
   metaTitle?: T;
   metaDescription?: T;
+  workflowState?: T;
+  scheduledPublishAt?: T;
+  changeSummary?: T;
+  lastReviewedAt?: T;
+  lastReviewedBy?: T;
+  publishedAt?: T;
+  publishedBy?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -1229,6 +1305,9 @@ export interface FormsSelect<T extends boolean = true> {
  */
 export interface FormSubmissionsSelect<T extends boolean = true> {
   form?: T;
+  status?: T;
+  email?: T;
+  submittedAt?: T;
   data?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1265,6 +1344,23 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "operational-audit-events_select".
+ */
+export interface OperationalAuditEventsSelect<T extends boolean = true> {
+  entityType?: T;
+  entityId?: T;
+  entityTitle?: T;
+  action?: T;
+  summary?: T;
+  actorEmail?: T;
+  actorRole?: T;
+  occurredAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
@@ -1278,6 +1374,9 @@ export interface UsersSelect<T extends boolean = true> {
         manage_headers?: T;
         manage_footers?: T;
         manage_system_pages?: T;
+        publish_pages?: T;
+        publish_system_pages?: T;
+        manage_system_modes?: T;
         manage_forms?: T;
         manage_form_submissions?: T;
         manage_media?: T;
@@ -1285,6 +1384,7 @@ export interface UsersSelect<T extends boolean = true> {
         manage_site_settings?: T;
         manage_theme_settings?: T;
         manage_seo_settings?: T;
+        view_operational_audit?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -1362,6 +1462,16 @@ export interface PageSetting {
    * Choose which saved footer preset should render site-wide.
    */
   activeFooter?: (number | null) | Footer;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "system-mode-settings".
+ */
+export interface SystemModeSetting {
+  id: number;
   /**
    * Select a 404 system preset. Draft presets appear here, but the selected preset must be published before it can be used live.
    */
@@ -1375,7 +1485,7 @@ export interface PageSetting {
    */
   comingSoonPage?: (number | null) | SystemPage;
   /**
-   * Allow logged-in admins to continue seeing the normal site when a mode is active.
+   * Allow logged-in admin users to continue seeing the normal site when a mode is active.
    */
   bypassForLoggedInAdmins?: boolean | null;
   /**
@@ -1459,6 +1569,16 @@ export interface PageSettingsSelect<T extends boolean = true> {
   homepage?: T;
   activeHeader?: T;
   activeFooter?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "system-mode-settings_select".
+ */
+export interface SystemModeSettingsSelect<T extends boolean = true> {
   notFoundPage?: T;
   maintenancePage?: T;
   comingSoonPage?: T;
