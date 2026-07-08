@@ -1,8 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const payloadMocks = vi.hoisted(() => ({
+  find: vi.fn(),
   create: vi.fn(),
   loggerError: vi.fn(),
+  sendEmail: vi.fn(),
+  update: vi.fn(),
+}))
+
+const eventMocks = vi.hoisted(() => ({
+  emitFormSubmissionEvent: vi.fn(),
 }))
 
 const spamProtectionMocks = vi.hoisted(() => ({
@@ -19,15 +26,22 @@ vi.mock('payload', async (importOriginal) => {
     ...actual,
     getPayload: vi.fn(async () => ({
       create: payloadMocks.create,
+      find: payloadMocks.find,
       logger: {
         error: payloadMocks.loggerError,
       },
+      sendEmail: payloadMocks.sendEmail,
+      update: payloadMocks.update,
     })),
   }
 })
 
 vi.mock('@payload-config', () => ({
   default: {},
+}))
+
+vi.mock('@/lib/formSubmissionEvents', () => ({
+  emitFormSubmissionEvent: eventMocks.emitFormSubmissionEvent,
 }))
 
 vi.mock('@/lib/formSpamProtection', () => ({
@@ -39,22 +53,82 @@ vi.mock('@/lib/formSpamProtection', () => ({
 
 const loadRouteModule = async () => {
   vi.resetModules()
-  return import('@/app/api/reviews/submit/route')
+  return import('@/app/api/forms/[slug]/submit/route')
 }
 
-describe('review submission route', () => {
+describe('review submission promotion', () => {
   beforeEach(() => {
     vi.clearAllMocks()
 
+    eventMocks.emitFormSubmissionEvent.mockResolvedValue(undefined)
     spamProtectionMocks.getClientIPAddress.mockReturnValue('127.0.0.1')
     spamProtectionMocks.isRateLimited.mockReturnValue(false)
     spamProtectionMocks.isSpamHoneypotTriggered.mockReturnValue(false)
+    payloadMocks.sendEmail.mockResolvedValue(undefined)
   })
 
   it('rejects incomplete review payloads', async () => {
+    payloadMocks.find.mockResolvedValue({
+      docs: [
+        {
+          fields: [
+            {
+              label: 'Your overall rating',
+              name: 'rating',
+              options: [
+                { label: '1', value: '1' },
+                { label: '2', value: '2' },
+                { label: '3', value: '3' },
+                { label: '4', value: '4' },
+                { label: '5', value: '5' },
+              ],
+              required: true,
+              type: 'select',
+            },
+            {
+              label: 'Title of your review',
+              name: 'reviewTitle',
+              required: true,
+              type: 'text',
+            },
+            {
+              label: 'Your review',
+              name: 'reviewBody',
+              required: true,
+              type: 'textarea',
+            },
+            {
+              label: 'Your name',
+              name: 'reviewerName',
+              required: true,
+              type: 'text',
+            },
+            {
+              label: 'Your email',
+              name: 'reviewerEmail',
+              required: true,
+              type: 'email',
+            },
+            {
+              label: 'This review is based on my own experience',
+              name: 'isGenuineExperience',
+              required: true,
+              type: 'checkbox',
+            },
+          ],
+          id: 42,
+          notificationRecipients: [],
+          slug: 'reviews',
+          submissionType: 'review',
+          successMessage: 'Thanks for your review.',
+          title: 'Reviews',
+        },
+      ],
+    })
+
     const { POST } = await loadRouteModule()
     const response = await POST(
-      new Request('http://localhost/api/reviews/submit', {
+      new Request('http://localhost/api/forms/reviews/submit', {
         body: JSON.stringify({
           values: {
             reviewTitle: '',
@@ -65,6 +139,11 @@ describe('review submission route', () => {
         },
         method: 'POST',
       }),
+      {
+        params: Promise.resolve({
+          slug: 'reviews',
+        }),
+      },
     )
 
     expect(response.status).toBe(400)
@@ -80,14 +159,76 @@ describe('review submission route', () => {
     )
   })
 
-  it('creates a draft in-review document for valid review submissions', async () => {
-    payloadMocks.create.mockResolvedValue({
-      id: 33,
+  it('creates a submission and links it to a draft in-review review document', async () => {
+    payloadMocks.find.mockResolvedValue({
+      docs: [
+        {
+          fields: [
+            {
+              label: 'Your overall rating',
+              name: 'rating',
+              options: [
+                { label: '1', value: '1' },
+                { label: '2', value: '2' },
+                { label: '3', value: '3' },
+                { label: '4', value: '4' },
+                { label: '5', value: '5' },
+              ],
+              required: true,
+              type: 'select',
+            },
+            {
+              label: 'Title of your review',
+              name: 'reviewTitle',
+              required: true,
+              type: 'text',
+            },
+            {
+              label: 'Your review',
+              name: 'reviewBody',
+              required: true,
+              type: 'textarea',
+            },
+            {
+              label: 'Your name',
+              name: 'reviewerName',
+              required: true,
+              type: 'text',
+            },
+            {
+              label: 'Your email',
+              name: 'reviewerEmail',
+              required: true,
+              type: 'email',
+            },
+            {
+              label: 'This review is based on my own experience',
+              name: 'isGenuineExperience',
+              required: true,
+              type: 'checkbox',
+            },
+          ],
+          id: 42,
+          notificationRecipients: [],
+          slug: 'reviews',
+          submissionType: 'review',
+          successMessage: 'Thanks for your review.',
+          title: 'Reviews',
+        },
+      ],
     })
+    payloadMocks.create
+      .mockResolvedValueOnce({
+        id: 33,
+        linkedReview: null,
+      })
+      .mockResolvedValueOnce({
+        id: 44,
+      })
 
     const { POST } = await loadRouteModule()
     const response = await POST(
-      new Request('http://localhost/api/reviews/submit', {
+      new Request('http://localhost/api/forms/reviews/submit', {
         body: JSON.stringify({
           values: {
             rating: '5',
@@ -104,6 +245,11 @@ describe('review submission route', () => {
         },
         method: 'POST',
       }),
+      {
+        params: Promise.resolve({
+          slug: 'reviews',
+        }),
+      },
     )
 
     expect(response.status).toBe(200)
@@ -116,11 +262,36 @@ describe('review submission route', () => {
       ipAddress: '127.0.0.1',
     })
 
-    expect(payloadMocks.create).toHaveBeenCalledWith(
+    expect(payloadMocks.create).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        collection: 'form-submissions',
+        data: expect.objectContaining({
+          data: expect.objectContaining({
+            isGenuineExperience: true,
+            rating: '5',
+            reviewBody: 'Everything worked exactly as expected.',
+            reviewerEmail: 'taylor@example.com',
+            reviewerName: 'Taylor Lead',
+            reviewTitle: 'Fast, clear, and reliable',
+          }),
+          email: 'taylor@example.com',
+          form: 42,
+          submissionType: 'review',
+          submitterEmail: 'taylor@example.com',
+          submitterName: 'Taylor Lead',
+        }),
+        overrideAccess: true,
+      }),
+    )
+
+    expect(payloadMocks.create).toHaveBeenNthCalledWith(
+      2,
       expect.objectContaining({
         collection: 'reviews',
         data: expect.objectContaining({
           _status: 'draft',
+          sourceSubmission: 33,
           workflowState: 'in_review',
           title: 'Fast, clear, and reliable',
           reviewTitle: 'Fast, clear, and reliable',
@@ -129,5 +300,126 @@ describe('review submission route', () => {
         overrideAccess: true,
       }),
     )
+
+    expect(payloadMocks.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        collection: 'form-submissions',
+        data: {
+          linkedReview: 44,
+          promotionError: null,
+        },
+        id: 33,
+        overrideAccess: true,
+      }),
+    )
+  })
+
+  it('keeps the submission and records a promotion error when linked review creation fails', async () => {
+    payloadMocks.find.mockResolvedValue({
+      docs: [
+        {
+          fields: [
+            {
+              label: 'Your overall rating',
+              name: 'rating',
+              options: [
+                { label: '1', value: '1' },
+                { label: '2', value: '2' },
+                { label: '3', value: '3' },
+                { label: '4', value: '4' },
+                { label: '5', value: '5' },
+              ],
+              required: true,
+              type: 'select',
+            },
+            {
+              label: 'Title of your review',
+              name: 'reviewTitle',
+              required: true,
+              type: 'text',
+            },
+            {
+              label: 'Your review',
+              name: 'reviewBody',
+              required: true,
+              type: 'textarea',
+            },
+            {
+              label: 'Your name',
+              name: 'reviewerName',
+              required: true,
+              type: 'text',
+            },
+            {
+              label: 'Your email',
+              name: 'reviewerEmail',
+              required: true,
+              type: 'email',
+            },
+            {
+              label: 'This review is based on my own experience',
+              name: 'isGenuineExperience',
+              required: true,
+              type: 'checkbox',
+            },
+          ],
+          id: 42,
+          notificationRecipients: [],
+          slug: 'reviews',
+          submissionType: 'review',
+          successMessage: 'Thanks for your review.',
+          title: 'Reviews',
+        },
+      ],
+    })
+    payloadMocks.create
+      .mockResolvedValueOnce({
+        id: 33,
+        linkedReview: null,
+      })
+      .mockRejectedValueOnce(new Error('review create failed'))
+
+    const { POST } = await loadRouteModule()
+    const response = await POST(
+      new Request('http://localhost/api/forms/reviews/submit', {
+        body: JSON.stringify({
+          values: {
+            rating: '5',
+            reviewTitle: 'Fast, clear, and reliable',
+            reviewBody: 'Everything worked exactly as expected.',
+            reviewerName: 'Taylor Lead',
+            reviewerEmail: 'taylor@example.com',
+            isGenuineExperience: true,
+            website: '',
+          },
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+      }),
+      {
+        params: Promise.resolve({
+          slug: 'reviews',
+        }),
+      },
+    )
+
+    expect(response.status).toBe(200)
+    await expect(response.json()).resolves.toEqual({
+      message: 'Thanks for your review.',
+    })
+
+    expect(payloadMocks.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        collection: 'form-submissions',
+        data: {
+          promotionError: 'review create failed',
+        },
+        id: 33,
+        overrideAccess: true,
+      }),
+    )
+    expect(payloadMocks.loggerError).toHaveBeenCalled()
   })
 })

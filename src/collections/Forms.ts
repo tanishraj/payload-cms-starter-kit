@@ -10,6 +10,7 @@ import {
 } from '@/access/adminCapabilities'
 import {
   formFieldTypeOptions,
+  formSubmissionTypeOptions,
   isTextLikeFormFieldType,
   isValidFormFieldName,
   validateFormFieldDefinitions,
@@ -55,6 +56,17 @@ export const Forms: CollectionConfig = {
       type: 'textarea',
       admin: {
         description: 'Optional notes for editors. This is not shown on the website.',
+      },
+    },
+    {
+      name: 'submissionType',
+      type: 'select',
+      defaultValue: 'general',
+      options: [...formSubmissionTypeOptions],
+      required: true,
+      admin: {
+        description:
+          'Controls whether submissions stay generic or also promote into a linked review draft.',
       },
     },
     {

@@ -4,6 +4,7 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { formSubmissionTypeOptions } from '@/lib/forms'
 
 export const FormSubmissions: CollectionConfig = {
   slug: 'form-submissions',
@@ -14,11 +15,11 @@ export const FormSubmissions: CollectionConfig = {
   admin: {
     group: 'Forms',
     hidden: hideFromUsersWithoutCapability('manage_form_submissions'),
-    useAsTitle: 'email',
-    defaultColumns: ['email', 'status', 'form', 'submittedAt'],
+    useAsTitle: 'submitterEmail',
+    defaultColumns: ['submissionType', 'submitterName', 'submitterEmail', 'status', 'submittedAt'],
     description:
       'Stored form submissions. Submission payload fields stay read-only after creation, while operators can update workflow status.',
-    listSearchableFields: ['email'],
+    listSearchableFields: ['email', 'submitterEmail', 'submitterName'],
   },
   access: {
     create: () => false,
@@ -57,8 +58,47 @@ export const FormSubmissions: CollectionConfig = {
       ],
     },
     {
+      name: 'submissionType',
+      type: 'select',
+      defaultValue: 'general',
+      options: [...formSubmissionTypeOptions],
+      required: true,
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'submitterName',
+      type: 'text',
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'submitterEmail',
+      type: 'email',
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
       name: 'email',
       type: 'email',
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'linkedReview',
+      type: 'relationship',
+      relationTo: 'reviews',
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'promotionError',
+      type: 'textarea',
       admin: {
         readOnly: true,
       },

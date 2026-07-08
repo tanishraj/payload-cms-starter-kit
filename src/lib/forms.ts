@@ -23,6 +23,19 @@ export const formFieldTypeOptions = [
 
 export type FormFieldType = (typeof formFieldTypeOptions)[number]['value']
 
+export const formSubmissionTypeOptions = [
+  {
+    label: 'General',
+    value: 'general',
+  },
+  {
+    label: 'Review',
+    value: 'review',
+  },
+] as const
+
+export type FormSubmissionType = (typeof formSubmissionTypeOptions)[number]['value']
+
 export type SimpleFormFieldOption = {
   label: string
   value: string
@@ -52,6 +65,14 @@ export const isTextLikeFormFieldType = (type: FormFieldType): boolean => {
 
 export const isSelectFormFieldType = (type: FormFieldType): boolean => {
   return type === 'select'
+}
+
+export const normalizeFormSubmissionType = (value: unknown): FormSubmissionType => {
+  return value === 'review' ? 'review' : 'general'
+}
+
+export const isReviewFormSubmissionType = (value: unknown): boolean => {
+  return normalizeFormSubmissionType(value) === 'review'
 }
 
 export const normalizeFormFieldName = (value: string): string => {
@@ -180,5 +201,46 @@ export const validateFormSubmission = ({
   return {
     errors,
     normalizedData,
+  }
+}
+
+const getFirstNormalizedStringValue = (
+  values: Record<string, boolean | string>,
+  candidateKeys: string[],
+): string | undefined => {
+  for (const key of candidateKeys) {
+    const rawValue = values[key]
+
+    if (typeof rawValue !== 'string') {
+      continue
+    }
+
+    const normalizedValue = rawValue.trim()
+
+    if (normalizedValue) {
+      return normalizedValue
+    }
+  }
+
+  return undefined
+}
+
+export const getSubmissionContactMetadata = (
+  values: Record<string, boolean | string>,
+): {
+  email?: string
+  name?: string
+} => {
+  const email = getFirstNormalizedStringValue(values, ['submitterEmail', 'reviewerEmail', 'email'])
+  const name = getFirstNormalizedStringValue(values, [
+    'submitterName',
+    'reviewerName',
+    'fullName',
+    'name',
+  ])
+
+  return {
+    email,
+    name,
   }
 }

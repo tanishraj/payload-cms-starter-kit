@@ -13,7 +13,16 @@ import {
   getNotificationRecipients,
 } from '@/lib/formNotifications'
 import { emitFormSubmissionEvent } from '@/lib/formSubmissionEvents'
-import { validateFormSubmission, type FormSubmissionValues, type SimpleFormField } from '@/lib/forms'
+import {
+  getSubmissionContactMetadata,
+  isReviewFormSubmissionType,
+  normalizeFormSubmissionType,
+  validateFormSubmission,
+  type FormSubmissionValues,
+  type SimpleFormField,
+} from '@/lib/forms'
+import { upsertReviewFromSubmission } from '@/lib/reviewPromotion'
+import { validateReviewSubmission } from '@/lib/reviews'
 import type { Form } from '@/payload-types'
 
 const toSimpleFields = (form: Form): SimpleFormField[] => {
@@ -114,27 +123,83 @@ export async function POST(
     values: submissionValues,
   })
 
-  if (Object.keys(errors).length > 0) {
+  const submissionType = normalizeFormSubmissionType(form.submissionType)
+  const isReviewSubmission = isReviewFormSubmissionType(submissionType)
+  const reviewValidation = isReviewSubmission
+    ? validateReviewSubmission({
+        values: normalizedData,
+      })
+    : null
+  const combinedErrors = reviewValidation
+    ? {
+        ...errors,
+        ...reviewValidation.errors,
+      }
+    : errors
+
+  if (Object.keys(combinedErrors).length > 0) {
     return NextResponse.json(
       {
-        errors,
+        errors: combinedErrors,
         message: 'Please correct the highlighted fields and try again.',
       },
       { status: 400 },
     )
   }
 
+  const { email: submitterEmail, name: submitterName } = getSubmissionContactMetadata(normalizedData)
   const submittedAt = new Date()
   const submission = await payload.create({
     collection: 'form-submissions',
     data: {
       data: normalizedData,
-      email: typeof normalizedData.email === 'string' ? normalizedData.email : undefined,
+      email: submitterEmail,
       form: form.id,
+      submissionType,
       submittedAt: submittedAt.toISOString(),
+      submitterEmail,
+      submitterName,
     },
     overrideAccess: true,
   })
+
+  if (reviewValidation) {
+    try {
+      const linkedReviewID = await upsertReviewFromSubmission({
+        existingReview: submission.linkedReview,
+        payload,
+        sourceSubmissionID: submission.id,
+        values: reviewValidation.normalizedData,
+      })
+
+      await payload.update({
+        collection: 'form-submissions',
+        data: {
+          linkedReview: linkedReviewID,
+          promotionError: null,
+        },
+        id: submission.id,
+        overrideAccess: true,
+      })
+    } catch (error) {
+      const promotionError =
+        error instanceof Error ? error.message : 'Failed to create the linked review draft.'
+
+      payload.logger.error({
+        err: error,
+        msg: `Failed to promote review submission for form "${form.slug}".`,
+      })
+
+      await payload.update({
+        collection: 'form-submissions',
+        data: {
+          promotionError,
+        },
+        id: submission.id,
+        overrideAccess: true,
+      })
+    }
+  }
 
   try {
     await emitFormSubmissionEvent({

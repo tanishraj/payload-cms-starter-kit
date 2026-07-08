@@ -1,14 +1,32 @@
-import { getPayload, Payload } from 'payload'
-import config from '@/payload.config'
+import { mkdtempSync, rmSync } from 'node:fs'
+import { join } from 'node:path'
+import { tmpdir } from 'node:os'
 
-import { describe, it, beforeAll, expect } from 'vitest'
+import { getPayload, Payload } from 'payload'
+
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
 let payload: Payload
+let testDirectory = ''
 
 describe('API', () => {
   beforeAll(async () => {
+    testDirectory = mkdtempSync(join(tmpdir(), 'payload-api-int-'))
+    process.env.DATABASE_PROVIDER = 'sqlite'
+    process.env.DATABASE_URL = `file:${join(testDirectory, 'payload-test.db')}`
+
+    const { default: config } = await import('@/payload.config')
     const payloadConfig = await config
     payload = await getPayload({ config: payloadConfig })
+  })
+
+  afterAll(() => {
+    if (testDirectory) {
+      rmSync(testDirectory, {
+        force: true,
+        recursive: true,
+      })
+    }
   })
 
   it('loads configured collections', async () => {

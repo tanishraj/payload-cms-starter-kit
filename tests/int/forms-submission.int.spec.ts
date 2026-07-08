@@ -8,6 +8,7 @@ const payloadMocks = vi.hoisted(() => {
     find: vi.fn(),
     loggerError: vi.fn(),
     sendEmail: vi.fn(),
+    update: vi.fn(),
   }
 })
 
@@ -34,6 +35,7 @@ vi.mock('payload', () => ({
       error: payloadMocks.loggerError,
     },
     sendEmail: payloadMocks.sendEmail,
+    update: payloadMocks.update,
   })),
 }))
 
@@ -97,7 +99,10 @@ describe('form submission model', () => {
   it('stores operator-friendly submission fields', () => {
     const statusField = getField('status')
     const emailField = getField('email')
+    const submissionTypeField = getField('submissionType')
     const submittedAtField = getField('submittedAt')
+    const submitterEmailField = getField('submitterEmail')
+    const linkedReviewField = getField('linkedReview')
 
     expect(statusField.type).toBe('select')
     expect(statusField.defaultValue).toBe('new')
@@ -106,8 +111,14 @@ describe('form submission model', () => {
       'reviewed',
       'archived',
     ])
+    expect(submissionTypeField.type).toBe('select')
+    expect(submissionTypeField.defaultValue).toBe('general')
+    expect(submissionTypeField.admin?.readOnly).toBe(true)
     expect(emailField.type).toBe('email')
     expect(emailField.admin?.readOnly).toBe(true)
+    expect(submitterEmailField.type).toBe('email')
+    expect(submitterEmailField.admin?.readOnly).toBe(true)
+    expect(linkedReviewField.type).toBe('relationship')
     expect(submittedAtField.type).toBe('date')
     expect(submittedAtField.admin?.readOnly).toBe(true)
   })
@@ -133,6 +144,7 @@ describe('form submission model', () => {
           id: 42,
           notificationRecipients: [],
           slug: 'contact',
+          submissionType: 'general',
           successMessage: 'Thanks. Your submission has been received.',
           title: 'Contact',
         },
@@ -185,7 +197,10 @@ describe('form submission model', () => {
           },
           email: 'lead@example.com',
           form: 42,
+          submissionType: 'general',
           submittedAt: expect.any(String),
+          submitterEmail: 'lead@example.com',
+          submitterName: 'Taylor Lead',
         }),
         overrideAccess: true,
       }),
@@ -204,5 +219,6 @@ describe('form submission model', () => {
       },
     })
     expect(payloadMocks.sendEmail).not.toHaveBeenCalled()
+    expect(payloadMocks.update).not.toHaveBeenCalled()
   })
 })

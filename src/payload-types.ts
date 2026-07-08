@@ -344,6 +344,10 @@ export interface Form {
    * Optional notes for editors. This is not shown on the website.
    */
   internalNotes?: string | null;
+  /**
+   * Controls whether submissions stay generic or also promote into a linked review draft.
+   */
+  submissionType: 'general' | 'review';
   submitButtonLabel: string;
   successMessage: string;
   /**
@@ -641,6 +645,10 @@ export interface Review {
    * Short operator-facing note explaining why this change exists.
    */
   changeSummary?: string | null;
+  /**
+   * Immutable link back to the public intake submission that generated this review.
+   */
+  sourceSubmission?: (number | null) | FormSubmission;
   lastReviewedAt?: string | null;
   lastReviewedBy?: (number | null) | User;
   publishedAt?: string | null;
@@ -667,6 +675,36 @@ export interface ContentSpotlightBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'contentSpotlight';
+}
+/**
+ * Stored form submissions. Submission payload fields stay read-only after creation, while operators can update workflow status.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions".
+ */
+export interface FormSubmission {
+  id: number;
+  form: number | Form;
+  status?: ('new' | 'reviewed' | 'archived') | null;
+  submissionType: 'general' | 'review';
+  submitterName?: string | null;
+  submitterEmail?: string | null;
+  email?: string | null;
+  linkedReview?: (number | null) | Review;
+  promotionError?: string | null;
+  submittedAt: string;
+  data:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * Map old URLs to new destinations during migrations and ongoing URL changes. Some redirects may be auto-generated when a published page URL changes.
@@ -976,31 +1014,6 @@ export interface SystemComingSoonBlock {
   blockType: 'systemComingSoon';
 }
 /**
- * Stored form submissions. Submission payload fields stay read-only after creation, while operators can update workflow status.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form-submissions".
- */
-export interface FormSubmission {
-  id: number;
-  form: number | Form;
-  status?: ('new' | 'reviewed' | 'archived') | null;
-  email?: string | null;
-  submittedAt: string;
-  data:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-}
-/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "operational-audit-events".
  */
@@ -1272,6 +1285,7 @@ export interface ReviewsSelect<T extends boolean = true> {
   workflowState?: T;
   scheduledPublishAt?: T;
   changeSummary?: T;
+  sourceSubmission?: T;
   lastReviewedAt?: T;
   lastReviewedBy?: T;
   publishedAt?: T;
@@ -1556,6 +1570,7 @@ export interface FormsSelect<T extends boolean = true> {
   generateSlug?: T;
   slug?: T;
   internalNotes?: T;
+  submissionType?: T;
   submitButtonLabel?: T;
   successMessage?: T;
   notificationRecipients?:
@@ -1593,7 +1608,12 @@ export interface FormsSelect<T extends boolean = true> {
 export interface FormSubmissionsSelect<T extends boolean = true> {
   form?: T;
   status?: T;
+  submissionType?: T;
+  submitterName?: T;
+  submitterEmail?: T;
   email?: T;
+  linkedReview?: T;
+  promotionError?: T;
   submittedAt?: T;
   data?: T;
   updatedAt?: T;

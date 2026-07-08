@@ -305,6 +305,15 @@ export const Reviews: CollectionConfig = {
               },
             },
             {
+              name: 'sourceSubmission',
+              type: 'relationship',
+              relationTo: 'form-submissions',
+              admin: {
+                description: 'Immutable link back to the public intake submission that generated this review.',
+                readOnly: true,
+              },
+            },
+            {
               name: 'lastReviewedAt',
               type: 'date',
               admin: {

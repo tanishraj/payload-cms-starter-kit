@@ -44,6 +44,7 @@ describe('reviews collection', () => {
     expect(JSON.stringify(Reviews.fields)).toContain('"value":"5"')
     expect(JSON.stringify(Reviews.fields)).toContain('"slug":"contentSpotlight"')
     expect(JSON.stringify(Reviews.fields)).toContain('"name":"metaTitle"')
+    expect(JSON.stringify(Reviews.fields)).toContain('"name":"sourceSubmission"')
     expect(JSON.stringify(Reviews.fields)).toContain('"name":"workflowState"')
   })
 
