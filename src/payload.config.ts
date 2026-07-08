@@ -4,6 +4,7 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
+import { Articles } from './collections/Articles'
 import { Users } from './collections/Users'
 import { Footers } from './collections/Footers'
 import { FormSubmissions } from './collections/FormSubmissions'
@@ -12,6 +13,7 @@ import { Media } from './collections/Media'
 import { NavigationLinks } from './collections/NavigationLinks'
 import { Pages } from './collections/Pages'
 import { Redirects } from './collections/Redirects'
+import { Reviews } from './collections/Reviews'
 import { Headers } from './collections/Headers'
 import { OperationalAuditEvents } from './collections/OperationalAuditEvents'
 import { SystemPages } from './collections/SystemPages'
@@ -42,6 +44,8 @@ export default buildConfig({
   },
   collections: [
     Pages,
+    Articles,
+    Reviews,
     NavigationLinks,
     Redirects,
     Headers,

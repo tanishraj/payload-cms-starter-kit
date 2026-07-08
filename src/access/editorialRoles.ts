@@ -29,6 +29,7 @@ const legacyRoleMap = {
 
 const withCapabilities = (enabled: Array<keyof AdminCapabilitiesMap>): AdminCapabilitiesMap => {
   const capabilities: AdminCapabilitiesMap = {
+    manage_articles: false,
     manage_footers: false,
     manage_form_submissions: false,
     manage_forms: false,
@@ -38,12 +39,15 @@ const withCapabilities = (enabled: Array<keyof AdminCapabilitiesMap>): AdminCapa
     manage_page_settings: false,
     manage_pages: false,
     manage_redirects: false,
+    manage_reviews: false,
     manage_seo_settings: false,
     manage_site_settings: false,
     manage_system_modes: false,
     manage_system_pages: false,
     manage_theme_settings: false,
+    publish_articles: false,
     publish_pages: false,
+    publish_reviews: false,
     publish_system_pages: false,
     view_operational_audit: false,
   }
@@ -72,7 +76,9 @@ const publisherDefaults = withCapabilities([
   'manage_pages',
   'manage_redirects',
   'manage_system_pages',
+  'publish_articles',
   'publish_pages',
+  'publish_reviews',
   'publish_system_pages',
   'view_operational_audit',
 ])
@@ -109,6 +115,7 @@ export const getDefaultCapabilitiesForRole = (
   switch (role) {
     case 'admin':
       return withCapabilities([
+        'manage_articles',
         'manage_footers',
         'manage_form_submissions',
         'manage_forms',
@@ -118,12 +125,15 @@ export const getDefaultCapabilitiesForRole = (
         'manage_page_settings',
         'manage_pages',
         'manage_redirects',
+        'manage_reviews',
         'manage_seo_settings',
         'manage_site_settings',
         'manage_system_modes',
         'manage_system_pages',
         'manage_theme_settings',
+        'publish_articles',
         'publish_pages',
+        'publish_reviews',
         'publish_system_pages',
         'view_operational_audit',
       ])

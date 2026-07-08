@@ -4,7 +4,9 @@ import {
   adminOrFirstUserAccess,
   allowPublicReadOrCapability,
   canManageSystemModes,
+  canPublishArticles,
   canPublishPages,
+  canPublishReviews,
   canViewOperationalAudit,
   getDefaultCapabilitiesForRole,
   hideFromNonAdmin,
@@ -53,8 +55,12 @@ describe('editorial roles', () => {
   it('assigns safe defaults to editors and publishers', () => {
     expect(getDefaultCapabilitiesForRole('editor')).toEqual(
       expect.objectContaining({
+        manage_articles: false,
         manage_pages: true,
+        manage_reviews: false,
+        publish_articles: false,
         publish_pages: false,
+        publish_reviews: false,
         manage_system_modes: false,
         view_operational_audit: false,
       }),
@@ -63,11 +69,20 @@ describe('editorial roles', () => {
     expect(getDefaultCapabilitiesForRole('publisher')).toEqual(
       expect.objectContaining({
         manage_pages: true,
+        publish_articles: true,
         publish_pages: true,
+        publish_reviews: true,
         manage_system_modes: false,
         view_operational_audit: true,
       }),
     )
+  })
+
+  it('gives admins unconditional access to article and review capabilities', () => {
+    expect(requireCapability('manage_articles')(toAccessReq(createReq({ role: 'admin' })))).toBe(true)
+    expect(requireCapability('manage_reviews')(toAccessReq(createReq({ role: 'admin' })))).toBe(true)
+    expect(requireCapability('publish_articles')(toAccessReq(createReq({ role: 'admin' })))).toBe(true)
+    expect(requireCapability('publish_reviews')(toAccessReq(createReq({ role: 'admin' })))).toBe(true)
   })
 
   it('separates publishing and system-mode controls from editing', () => {
@@ -81,8 +96,10 @@ describe('editorial roles', () => {
     const publisher = {
       role: 'publisher',
       capabilities: {
+        publish_articles: true,
         manage_pages: true,
         publish_pages: true,
+        publish_reviews: true,
         view_operational_audit: true,
       },
     }
@@ -97,8 +114,12 @@ describe('editorial roles', () => {
       },
     }
 
+    expect(canPublishArticles(editor)).toBe(false)
+    expect(canPublishArticles(publisher)).toBe(true)
     expect(canPublishPages(editor)).toBe(false)
     expect(canPublishPages(publisher)).toBe(true)
+    expect(canPublishReviews(editor)).toBe(false)
+    expect(canPublishReviews(publisher)).toBe(true)
     expect(canManageSystemModes(editor)).toBe(false)
     expect(canManageSystemModes(marketingOps)).toBe(true)
     expect(canViewOperationalAudit(publisher)).toBe(true)

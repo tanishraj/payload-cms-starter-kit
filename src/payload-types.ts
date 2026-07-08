@@ -68,6 +68,8 @@ export interface Config {
   blocks: {};
   collections: {
     pages: Page;
+    articles: Article;
+    reviews: Review;
     'navigation-links': NavigationLink;
     redirects: Redirect;
     headers: Header;
@@ -86,6 +88,8 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
+    articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     'navigation-links': NavigationLinksSelect<false> | NavigationLinksSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     headers: HeadersSelect<false> | HeadersSelect<true>;
@@ -389,6 +393,10 @@ export interface User {
    */
   capabilities?: {
     /**
+     * Allow access to Articles.
+     */
+    manage_articles?: boolean | null;
+    /**
      * Allow access to Pages.
      */
     manage_pages?: boolean | null;
@@ -409,13 +417,25 @@ export interface User {
      */
     manage_footers?: boolean | null;
     /**
+     * Allow access to Reviews.
+     */
+    manage_reviews?: boolean | null;
+    /**
      * Allow access to System Pages.
      */
     manage_system_pages?: boolean | null;
     /**
+     * Allow access to Publish Articles.
+     */
+    publish_articles?: boolean | null;
+    /**
      * Allow access to Publish Pages.
      */
     publish_pages?: boolean | null;
+    /**
+     * Allow access to Publish Reviews.
+     */
+    publish_reviews?: boolean | null;
     /**
      * Allow access to Publish System Pages.
      */
@@ -476,6 +496,177 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * Editorial long-form content with writing-first authoring and SEO controls.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles".
+ */
+export interface Article {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  excerpt: string;
+  featuredImage?: (number | null) | Media;
+  authorName: string;
+  /**
+   * Optional. Override the visible publication date without changing workflow metadata.
+   */
+  publishedAtOverride?: string | null;
+  /**
+   * Primary long-form article body.
+   */
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  metaTitle: string;
+  metaDescription: string;
+  /**
+   * Optional. Leave empty to use the resolved public article URL. Supports relative paths or full URLs.
+   */
+  canonicalURL?: string | null;
+  /**
+   * Optional. Leave empty to inherit the global robots setting for this article.
+   */
+  robots?: ('index,follow' | 'noindex,follow' | 'index,nofollow' | 'noindex,nofollow') | null;
+  /**
+   * Optional. Leave empty to use the article SEO title, then global defaults.
+   */
+  ogTitle?: string | null;
+  /**
+   * Optional. Leave empty to use the global default social image.
+   */
+  ogImage?: (number | null) | Media;
+  /**
+   * Optional. Leave empty to use the article SEO description, then global defaults.
+   */
+  ogDescription?: string | null;
+  workflowState: 'draft' | 'in_review' | 'scheduled' | 'published' | 'reverted';
+  scheduledPublishAt?: string | null;
+  /**
+   * Short operator-facing note explaining why this change exists.
+   */
+  changeSummary?: string | null;
+  lastReviewedAt?: string | null;
+  lastReviewedBy?: (number | null) | User;
+  publishedAt?: string | null;
+  publishedBy?: (number | null) | User;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Moderated public reviews with structured fields and supplemental layout blocks.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews".
+ */
+export interface Review {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  rating: '1' | '2' | '3' | '4' | '5';
+  /**
+   * Optional short subject like product, service, or campaign label.
+   */
+  subjectLabel?: string | null;
+  reviewTitle: string;
+  reviewBody: string;
+  reviewerName: string;
+  reviewerEmail: string;
+  /**
+   * Optional public-safe name shown on the frontend instead of the raw reviewer name.
+   */
+  displayName?: string | null;
+  /**
+   * Confirms the reviewer stated this review is based on their own genuine experience.
+   */
+  isGenuineExperience: boolean;
+  featuredImage?: (number | null) | Media;
+  /**
+   * Optional supplemental sections. Structured review content stays primary.
+   */
+  layout?: ContentSpotlightBlock[] | null;
+  /**
+   * Internal notes for moderation, rewriting decisions, or publication checks.
+   */
+  internalModerationNotes?: string | null;
+  metaTitle: string;
+  metaDescription: string;
+  /**
+   * Optional. Leave empty to use the resolved public review URL. Supports relative paths or full URLs.
+   */
+  canonicalURL?: string | null;
+  /**
+   * Optional. Leave empty to inherit the global robots setting for this review.
+   */
+  robots?: ('index,follow' | 'noindex,follow' | 'index,nofollow' | 'noindex,nofollow') | null;
+  /**
+   * Optional. Leave empty to use the review SEO title, then global defaults.
+   */
+  ogTitle?: string | null;
+  /**
+   * Optional. Leave empty to use the global default social image.
+   */
+  ogImage?: (number | null) | Media;
+  /**
+   * Optional. Leave empty to use the review SEO description, then global defaults.
+   */
+  ogDescription?: string | null;
+  workflowState: 'draft' | 'in_review' | 'scheduled' | 'published' | 'reverted';
+  scheduledPublishAt?: string | null;
+  /**
+   * Short operator-facing note explaining why this change exists.
+   */
+  changeSummary?: string | null;
+  lastReviewedAt?: string | null;
+  lastReviewedBy?: (number | null) | User;
+  publishedAt?: string | null;
+  publishedBy?: (number | null) | User;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentSpotlightBlock".
+ */
+export interface ContentSpotlightBlock {
+  eyebrow?: string | null;
+  heading: string;
+  description?: string | null;
+  image?: (number | null) | Media;
+  /**
+   * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
+   */
+  link?: (number | null) | NavigationLink;
+  openInNewTab?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contentSpotlight';
 }
 /**
  * Map old URLs to new destinations during migrations and ongoing URL changes. Some redirects may be auto-generated when a published page URL changes.
@@ -856,6 +1047,14 @@ export interface PayloadLockedDocument {
         value: number | Page;
       } | null)
     | ({
+        relationTo: 'articles';
+        value: number | Article;
+      } | null)
+    | ({
+        relationTo: 'reviews';
+        value: number | Review;
+      } | null)
+    | ({
         relationTo: 'navigation-links';
         value: number | NavigationLink;
       } | null)
@@ -1005,6 +1204,94 @@ export interface Hero36BlockSelect<T extends boolean = true> {
  */
 export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles_select".
+ */
+export interface ArticlesSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  excerpt?: T;
+  featuredImage?: T;
+  authorName?: T;
+  publishedAtOverride?: T;
+  body?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  canonicalURL?: T;
+  robots?: T;
+  ogTitle?: T;
+  ogImage?: T;
+  ogDescription?: T;
+  workflowState?: T;
+  scheduledPublishAt?: T;
+  changeSummary?: T;
+  lastReviewedAt?: T;
+  lastReviewedBy?: T;
+  publishedAt?: T;
+  publishedBy?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  rating?: T;
+  subjectLabel?: T;
+  reviewTitle?: T;
+  reviewBody?: T;
+  reviewerName?: T;
+  reviewerEmail?: T;
+  displayName?: T;
+  isGenuineExperience?: T;
+  featuredImage?: T;
+  layout?:
+    | T
+    | {
+        contentSpotlight?: T | ContentSpotlightBlockSelect<T>;
+      };
+  internalModerationNotes?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  canonicalURL?: T;
+  robots?: T;
+  ogTitle?: T;
+  ogImage?: T;
+  ogDescription?: T;
+  workflowState?: T;
+  scheduledPublishAt?: T;
+  changeSummary?: T;
+  lastReviewedAt?: T;
+  lastReviewedBy?: T;
+  publishedAt?: T;
+  publishedBy?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentSpotlightBlock_select".
+ */
+export interface ContentSpotlightBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  description?: T;
+  image?: T;
+  link?: T;
+  openInNewTab?: T;
   id?: T;
   blockName?: T;
 }
@@ -1368,13 +1655,17 @@ export interface UsersSelect<T extends boolean = true> {
   capabilities?:
     | T
     | {
+        manage_articles?: T;
         manage_pages?: T;
         manage_navigation?: T;
         manage_redirects?: T;
         manage_headers?: T;
         manage_footers?: T;
+        manage_reviews?: T;
         manage_system_pages?: T;
+        publish_articles?: T;
         publish_pages?: T;
+        publish_reviews?: T;
         publish_system_pages?: T;
         manage_system_modes?: T;
         manage_forms?: T;

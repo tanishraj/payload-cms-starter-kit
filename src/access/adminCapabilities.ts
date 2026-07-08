@@ -15,6 +15,10 @@ export type AdminRole = EditorialRole
 
 export const adminCapabilityFieldOptions = [
   {
+    label: 'Manage Articles',
+    value: 'manage_articles',
+  },
+  {
     label: 'Pages',
     value: 'manage_pages',
   },
@@ -35,12 +39,24 @@ export const adminCapabilityFieldOptions = [
     value: 'manage_footers',
   },
   {
+    label: 'Manage Reviews',
+    value: 'manage_reviews',
+  },
+  {
     label: 'System Pages',
     value: 'manage_system_pages',
   },
   {
+    label: 'Publish Articles',
+    value: 'publish_articles',
+  },
+  {
     label: 'Publish Pages',
     value: 'publish_pages',
+  },
+  {
+    label: 'Publish Reviews',
+    value: 'publish_reviews',
   },
   {
     label: 'Publish System Pages',
@@ -101,11 +117,29 @@ export const allAdminCapabilities = adminCapabilityFieldOptions.map(
   ({ value }) => value,
 ) as AdminCapability[]
 
+const getCapabilityDescription = ({
+  label,
+  value,
+}: {
+  label: string
+  value: AdminCapability
+}) => {
+  if (value.startsWith('publish_')) {
+    return `Allow publishing access for ${label.replace(/^Publish /, '')}.`
+  }
+
+  if (value.startsWith('manage_')) {
+    return `Allow access to ${label.replace(/^Manage /, '')}.`
+  }
+
+  return `Allow access to ${label}.`
+}
+
 const adminCapabilityCheckboxItems = adminCapabilityFieldOptions.map(({ label, value }) => ({
   name: value,
   type: 'checkbox' as const,
   admin: {
-    description: `Allow access to ${label}.`,
+    description: getCapabilityDescription({ label, value }),
     width: '33.33%',
   },
   defaultValue: false,
@@ -250,6 +284,14 @@ export const hideFromUsersWithoutCapability =
 
 export const canPublishPages = (user: AdminUserLike | null | undefined): boolean => {
   return hasAdminCapability(user, 'publish_pages')
+}
+
+export const canPublishArticles = (user: AdminUserLike | null | undefined): boolean => {
+  return hasAdminCapability(user, 'publish_articles')
+}
+
+export const canPublishReviews = (user: AdminUserLike | null | undefined): boolean => {
+  return hasAdminCapability(user, 'publish_reviews')
 }
 
 export const canPublishSystemPages = (user: AdminUserLike | null | undefined): boolean => {

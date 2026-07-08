@@ -2,12 +2,18 @@ import type { CollectionBeforeChangeHook } from 'payload'
 import { APIError } from 'payload'
 
 import {
+  canPublishArticles,
   canPublishPages,
+  canPublishReviews,
   canPublishSystemPages,
 } from '@/access/adminCapabilities'
 import type { EditorialWorkflowState } from '@/lib/editorialWorkflow'
 
-type PublishCapability = 'publish_pages' | 'publish_system_pages'
+type PublishCapability =
+  | 'publish_articles'
+  | 'publish_pages'
+  | 'publish_reviews'
+  | 'publish_system_pages'
 type DocStatus = 'draft' | 'published'
 
 type WorkflowDoc = {
@@ -22,9 +28,17 @@ type WorkflowDoc = {
 }
 
 const canPublish = (capability: PublishCapability, user: unknown) => {
-  return capability === 'publish_pages'
-    ? canPublishPages(user as never)
-    : canPublishSystemPages(user as never)
+  switch (capability) {
+    case 'publish_articles':
+      return canPublishArticles(user as never)
+    case 'publish_reviews':
+      return canPublishReviews(user as never)
+    case 'publish_system_pages':
+      return canPublishSystemPages(user as never)
+    case 'publish_pages':
+    default:
+      return canPublishPages(user as never)
+  }
 }
 
 const normalizeUserID = (value: unknown): number | null => {
