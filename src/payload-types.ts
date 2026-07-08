@@ -425,19 +425,19 @@ export interface User {
      */
     manage_system_pages?: boolean | null;
     /**
-     * Allow access to Publish Articles.
+     * Allow publishing access for Articles.
      */
     publish_articles?: boolean | null;
     /**
-     * Allow access to Publish Pages.
+     * Allow publishing access for Pages.
      */
     publish_pages?: boolean | null;
     /**
-     * Allow access to Publish Reviews.
+     * Allow publishing access for Reviews.
      */
     publish_reviews?: boolean | null;
     /**
-     * Allow access to Publish System Pages.
+     * Allow publishing access for System Pages.
      */
     publish_system_pages?: boolean | null;
     /**
