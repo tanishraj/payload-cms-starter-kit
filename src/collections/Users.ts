@@ -6,7 +6,9 @@ import {
   adminOrFirstUserAccess,
   allAdminCapabilities,
   getCapabilitiesForRole,
+  hasAdminCapability,
   hideFromNonAdmin,
+  isAdminUser,
   toAdminCapabilitiesMap,
 } from '@/access/adminCapabilities'
 import {
@@ -93,6 +95,16 @@ const normalizeUserAccessFields: CollectionBeforeChangeHook = async ({
   return data
 }
 
+const adminOrSubmissionOperatorReadAccess = ({ req }: { req: { user?: unknown } }) => {
+  const user = req.user as Parameters<typeof isAdminUser>[0]
+
+  if (isAdminUser(user)) {
+    return true
+  }
+
+  return hasAdminCapability(user, 'manage_form_submissions')
+}
+
 export const Users: CollectionConfig = {
   slug: 'users',
   admin: {
@@ -104,7 +116,7 @@ export const Users: CollectionConfig = {
   access: {
     create: adminOrFirstUserAccess,
     delete: adminOnlyAccess,
-    read: adminOnlyAccess,
+    read: adminOrSubmissionOperatorReadAccess,
     readVersions: adminOnlyAccess,
     update: adminOnlyAccess,
   },

@@ -345,9 +345,9 @@ export interface Form {
    */
   internalNotes?: string | null;
   /**
-   * Controls whether submissions stay generic or also promote into a linked review draft.
+   * Controls how submissions are operated after intake and whether review promotion applies.
    */
-  submissionType: 'general' | 'review';
+  submissionIntent: 'general' | 'lead' | 'review';
   submitButtonLabel: string;
   successMessage: string;
   /**
@@ -685,14 +685,20 @@ export interface ContentSpotlightBlock {
 export interface FormSubmission {
   id: number;
   form: number | Form;
-  status?: ('new' | 'reviewed' | 'archived') | null;
-  submissionType: 'general' | 'review';
+  status?: ('new' | 'in_review' | 'qualified' | 'won' | 'rejected' | 'archived') | null;
+  owner?: (number | null) | User;
+  internalNotes?: string | null;
+  submissionIntent: 'general' | 'lead' | 'review';
+  source?: string | null;
+  campaign?: string | null;
+  landingPage?: string | null;
   submitterName?: string | null;
   submitterEmail?: string | null;
   email?: string | null;
   linkedReview?: (number | null) | Review;
   promotionError?: string | null;
   submittedAt: string;
+  lastActionAt?: string | null;
   data:
     | {
         [k: string]: unknown;
@@ -1570,7 +1576,7 @@ export interface FormsSelect<T extends boolean = true> {
   generateSlug?: T;
   slug?: T;
   internalNotes?: T;
-  submissionType?: T;
+  submissionIntent?: T;
   submitButtonLabel?: T;
   successMessage?: T;
   notificationRecipients?:
@@ -1608,13 +1614,19 @@ export interface FormsSelect<T extends boolean = true> {
 export interface FormSubmissionsSelect<T extends boolean = true> {
   form?: T;
   status?: T;
-  submissionType?: T;
+  owner?: T;
+  internalNotes?: T;
+  submissionIntent?: T;
+  source?: T;
+  campaign?: T;
+  landingPage?: T;
   submitterName?: T;
   submitterEmail?: T;
   email?: T;
   linkedReview?: T;
   promotionError?: T;
   submittedAt?: T;
+  lastActionAt?: T;
   data?: T;
   updatedAt?: T;
   createdAt?: T;

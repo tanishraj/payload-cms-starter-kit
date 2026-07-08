@@ -10,7 +10,7 @@ import {
 } from '@/access/adminCapabilities'
 import {
   formFieldTypeOptions,
-  formSubmissionTypeOptions,
+  formSubmissionIntentOptions,
   isTextLikeFormFieldType,
   isValidFormFieldName,
   validateFormFieldDefinitions,
@@ -59,14 +59,14 @@ export const Forms: CollectionConfig = {
       },
     },
     {
-      name: 'submissionType',
+      name: 'submissionIntent',
       type: 'select',
       defaultValue: 'general',
-      options: [...formSubmissionTypeOptions],
+      options: [...formSubmissionIntentOptions],
       required: true,
       admin: {
         description:
-          'Controls whether submissions stay generic or also promote into a linked review draft.',
+          'Controls how submissions are operated after intake and whether review promotion applies.',
       },
     },
     {

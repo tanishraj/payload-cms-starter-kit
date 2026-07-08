@@ -137,6 +137,28 @@ describe('existing access helpers', () => {
     expect(access(toAccessReq(createReq({ role: 'editor' })))).toBe(false)
   })
 
+  it('allows submission operators to read users for owner assignment without exposing the Users nav', () => {
+    const usersReadAccess = Users.access?.read
+
+    if (!usersReadAccess) {
+      throw new Error('Expected Users read access to exist.')
+    }
+
+    expect(
+      usersReadAccess(
+        toAccessReq(
+          createReq({
+            role: 'marketingOps',
+            capabilities: {
+              manage_form_submissions: true,
+            },
+          }),
+        ),
+      ),
+    ).toBe(true)
+    expect(hideFromNonAdmin({ user: { role: 'marketingOps' } as never })).toBe(true)
+  })
+
   it('still allows first-user creation without an existing admin', async () => {
     const req = createReq(null)
     req.payload.count = vi.fn(async () => ({

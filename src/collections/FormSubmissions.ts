@@ -4,7 +4,8 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
-import { formSubmissionTypeOptions } from '@/lib/forms'
+import { updateFormSubmissionActivity } from '@/hooks/updateFormSubmissionActivity'
+import { formSubmissionIntentOptions } from '@/lib/forms'
 
 export const FormSubmissions: CollectionConfig = {
   slug: 'form-submissions',
@@ -16,16 +17,27 @@ export const FormSubmissions: CollectionConfig = {
     group: 'Forms',
     hidden: hideFromUsersWithoutCapability('manage_form_submissions'),
     useAsTitle: 'submitterEmail',
-    defaultColumns: ['submissionType', 'submitterName', 'submitterEmail', 'status', 'submittedAt'],
+    defaultColumns: [
+      'status',
+      'owner',
+      'submissionIntent',
+      'submitterName',
+      'submitterEmail',
+      'submittedAt',
+      'lastActionAt',
+    ],
     description:
       'Stored form submissions. Submission payload fields stay read-only after creation, while operators can update workflow status.',
-    listSearchableFields: ['email', 'submitterEmail', 'submitterName'],
+    listSearchableFields: ['email', 'submitterEmail', 'submitterName', 'campaign', 'source'],
   },
   access: {
     create: () => false,
     delete: requireCapability('manage_form_submissions'),
     read: requireCapability('manage_form_submissions'),
     update: requireCapability('manage_form_submissions'),
+  },
+  hooks: {
+    beforeChange: [updateFormSubmissionActivity],
   },
   timestamps: true,
   fields: [
@@ -48,8 +60,20 @@ export const FormSubmissions: CollectionConfig = {
           value: 'new',
         },
         {
-          label: 'Reviewed',
-          value: 'reviewed',
+          label: 'In Review',
+          value: 'in_review',
+        },
+        {
+          label: 'Qualified',
+          value: 'qualified',
+        },
+        {
+          label: 'Won',
+          value: 'won',
+        },
+        {
+          label: 'Rejected',
+          value: 'rejected',
         },
         {
           label: 'Archived',
@@ -58,11 +82,41 @@ export const FormSubmissions: CollectionConfig = {
       ],
     },
     {
-      name: 'submissionType',
+      name: 'owner',
+      type: 'relationship',
+      relationTo: 'users',
+    },
+    {
+      name: 'internalNotes',
+      type: 'textarea',
+    },
+    {
+      name: 'submissionIntent',
       type: 'select',
       defaultValue: 'general',
-      options: [...formSubmissionTypeOptions],
+      options: [...formSubmissionIntentOptions],
       required: true,
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'source',
+      type: 'text',
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'campaign',
+      type: 'text',
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'landingPage',
+      type: 'text',
       admin: {
         readOnly: true,
       },
@@ -107,6 +161,13 @@ export const FormSubmissions: CollectionConfig = {
       name: 'submittedAt',
       type: 'date',
       required: true,
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'lastActionAt',
+      type: 'date',
       admin: {
         readOnly: true,
       },

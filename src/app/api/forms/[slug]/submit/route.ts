@@ -15,8 +15,9 @@ import {
 import { emitFormSubmissionEvent } from '@/lib/formSubmissionEvents'
 import {
   getSubmissionContactMetadata,
-  isReviewFormSubmissionType,
-  normalizeFormSubmissionType,
+  isReviewFormSubmissionIntent,
+  normalizeFormSubmissionIntent,
+  normalizeFormSubmissionMetadata,
   validateFormSubmission,
   type FormSubmissionValues,
   type SimpleFormField,
@@ -80,7 +81,7 @@ export async function POST(
     )
   }
 
-  let payloadBody: { values?: FormSubmissionValues } | null = null
+  let payloadBody: { metadata?: unknown; values?: FormSubmissionValues } | null = null
 
   try {
     payloadBody = (await request.json()) as { values?: FormSubmissionValues }
@@ -95,6 +96,7 @@ export async function POST(
 
   const submissionValues =
     payloadBody?.values && typeof payloadBody.values === 'object' ? payloadBody.values : {}
+  const submissionMetadata = normalizeFormSubmissionMetadata(payloadBody?.metadata)
 
   if (isSpamHoneypotTriggered(submissionValues)) {
     return NextResponse.json({
@@ -123,8 +125,8 @@ export async function POST(
     values: submissionValues,
   })
 
-  const submissionType = normalizeFormSubmissionType(form.submissionType)
-  const isReviewSubmission = isReviewFormSubmissionType(submissionType)
+  const submissionIntent = normalizeFormSubmissionIntent(form.submissionIntent)
+  const isReviewSubmission = isReviewFormSubmissionIntent(submissionIntent)
   const reviewValidation = isReviewSubmission
     ? validateReviewSubmission({
         values: normalizedData,
@@ -153,9 +155,13 @@ export async function POST(
     collection: 'form-submissions',
     data: {
       data: normalizedData,
+      campaign: submissionMetadata.campaign,
       email: submitterEmail,
       form: form.id,
-      submissionType,
+      landingPage: submissionMetadata.landingPage,
+      source: submissionMetadata.source,
+      status: 'new',
+      submissionIntent,
       submittedAt: submittedAt.toISOString(),
       submitterEmail,
       submitterName,
@@ -203,9 +209,17 @@ export async function POST(
 
   try {
     await emitFormSubmissionEvent({
+      campaign: submissionMetadata.campaign,
       formId: form.id,
       formSlug: form.slug,
+      landingPage: submissionMetadata.landingPage,
+      owner: undefined,
       submissionId: submission.id,
+      source: submissionMetadata.source,
+      status: 'new',
+      submissionIntent,
+      submitterEmail,
+      submitterName,
       values: normalizedData,
     })
   } catch (error) {

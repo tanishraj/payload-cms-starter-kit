@@ -23,10 +23,14 @@ export const formFieldTypeOptions = [
 
 export type FormFieldType = (typeof formFieldTypeOptions)[number]['value']
 
-export const formSubmissionTypeOptions = [
+export const formSubmissionIntentOptions = [
   {
     label: 'General',
     value: 'general',
+  },
+  {
+    label: 'Lead',
+    value: 'lead',
   },
   {
     label: 'Review',
@@ -34,7 +38,7 @@ export const formSubmissionTypeOptions = [
   },
 ] as const
 
-export type FormSubmissionType = (typeof formSubmissionTypeOptions)[number]['value']
+export type FormSubmissionIntent = (typeof formSubmissionIntentOptions)[number]['value']
 
 export type SimpleFormFieldOption = {
   label: string
@@ -52,6 +56,11 @@ export type SimpleFormField = {
 
 export type FormSubmissionValues = Record<string, unknown>
 export type FormSubmissionErrors = Record<string, string>
+export type FormSubmissionMetadata = {
+  campaign?: string
+  landingPage?: string
+  source?: string
+}
 
 export const FORM_HONEYPOT_FIELD_NAME = 'website'
 export const FORM_RATE_LIMIT_MAX_SUBMISSIONS = 5
@@ -67,12 +76,16 @@ export const isSelectFormFieldType = (type: FormFieldType): boolean => {
   return type === 'select'
 }
 
-export const normalizeFormSubmissionType = (value: unknown): FormSubmissionType => {
-  return value === 'review' ? 'review' : 'general'
+export const normalizeFormSubmissionIntent = (value: unknown): FormSubmissionIntent => {
+  if (value === 'lead' || value === 'review') {
+    return value
+  }
+
+  return 'general'
 }
 
-export const isReviewFormSubmissionType = (value: unknown): boolean => {
-  return normalizeFormSubmissionType(value) === 'review'
+export const isReviewFormSubmissionIntent = (value: unknown): boolean => {
+  return normalizeFormSubmissionIntent(value) === 'review'
 }
 
 export const normalizeFormFieldName = (value: string): string => {
@@ -242,5 +255,29 @@ export const getSubmissionContactMetadata = (
   return {
     email,
     name,
+  }
+}
+
+const normalizeOptionalMetadataValue = (value: unknown): string | undefined => {
+  if (typeof value !== 'string') {
+    return undefined
+  }
+
+  const normalizedValue = value.trim()
+
+  return normalizedValue || undefined
+}
+
+export const normalizeFormSubmissionMetadata = (value: unknown): FormSubmissionMetadata => {
+  if (!value || typeof value !== 'object') {
+    return {}
+  }
+
+  const metadata = value as Record<string, unknown>
+
+  return {
+    campaign: normalizeOptionalMetadataValue(metadata.campaign),
+    landingPage: normalizeOptionalMetadataValue(metadata.landingPage),
+    source: normalizeOptionalMetadataValue(metadata.source),
   }
 }
