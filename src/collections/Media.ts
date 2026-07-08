@@ -1,10 +1,21 @@
-import type { CollectionBeforeValidateHook, CollectionConfig } from 'payload'
+import type {
+  CollectionAfterReadHook,
+  CollectionBeforeValidateHook,
+  CollectionConfig,
+} from 'payload'
 
 import {
   allowPublicReadOrCapability,
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import {
+  buildMediaUsageSummary,
+  findMediaUsage,
+  mediaUsageAdminFieldConfig,
+  type MediaUsageReference,
+} from '@/lib/mediaUsage'
+import { preventMediaDeletionWhileInUse } from '@/hooks/preventMediaDeletionWhileInUse'
 
 const mediaAssetTypeOptions = [
   {
@@ -56,6 +67,28 @@ const beforeValidate: CollectionBeforeValidateHook = async ({ data, operation, o
   return data
 }
 
+type MediaWithUsage = {
+  id?: number | string
+  usageDetails?: MediaUsageReference[]
+  usageSummary?: string
+}
+
+const populateMediaUsage: CollectionAfterReadHook<MediaWithUsage> = async ({ doc, findMany, req }) => {
+  if (findMany || doc.id == null) {
+    return doc
+  }
+
+  const usageDetails = await findMediaUsage({
+    mediaID: doc.id,
+    payload: req.payload,
+  })
+
+  doc.usageDetails = usageDetails
+  doc.usageSummary = buildMediaUsageSummary(usageDetails)
+
+  return doc
+}
+
 export const Media: CollectionConfig = {
   slug: 'media',
   admin: {
@@ -73,6 +106,8 @@ export const Media: CollectionConfig = {
     update: requireCapability('manage_media'),
   },
   hooks: {
+    afterRead: [populateMediaUsage],
+    beforeDelete: [preventMediaDeletionWhileInUse],
     beforeValidate: [beforeValidate],
   },
   versions: {
@@ -134,6 +169,24 @@ export const Media: CollectionConfig = {
           'Optional internal notes about where or how this asset should be used, plus any preferred sizing or placement guidance for editors.',
       },
     },
+    {
+      name: 'isCriticalAsset',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description:
+          'Mark logos, default SEO images, or other high-sensitivity assets that should be changed with extra care.',
+      },
+    },
+    {
+      name: 'replacementNotes',
+      type: 'textarea',
+      admin: {
+        description:
+          'Optional internal guidance for replacement, retirement, or migration of this asset.',
+      },
+    },
+    ...mediaUsageAdminFieldConfig,
   ],
   upload: true,
 }

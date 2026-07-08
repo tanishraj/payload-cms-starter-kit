@@ -272,6 +272,30 @@ export interface Media {
    * Optional internal notes about where or how this asset should be used, plus any preferred sizing or placement guidance for editors.
    */
   notes?: string | null;
+  /**
+   * Mark logos, default SEO images, or other high-sensitivity assets that should be changed with extra care.
+   */
+  isCriticalAsset?: boolean | null;
+  /**
+   * Optional internal guidance for replacement, retirement, or migration of this asset.
+   */
+  replacementNotes?: string | null;
+  /**
+   * Read-only usage overview derived from supported media relationship fields.
+   */
+  usageSummary?: string | null;
+  /**
+   * Read-only structured list of supported collection and global usage locations.
+   */
+  usageDetails?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1647,6 +1671,10 @@ export interface MediaSelect<T extends boolean = true> {
         id?: T;
       };
   notes?: T;
+  isCriticalAsset?: T;
+  replacementNotes?: T;
+  usageSummary?: T;
+  usageDetails?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
