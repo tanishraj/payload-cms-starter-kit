@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import { OperationalAuditEvents } from '@/collections/OperationalAuditEvents'
+import { WorkQueue } from '@/collections/WorkQueue'
 import {
   createCollectionAuditHook,
   createGlobalAuditHook,
@@ -103,5 +104,74 @@ describe('operational audit collection', () => {
         overrideAccess: true,
       }),
     )
+  })
+
+  it('records operator-driven work queue updates while ignoring sync-context writes', async () => {
+    const create = vi.fn(async () => ({}))
+    const hook = WorkQueue.hooks?.afterChange?.[0]
+
+    if (!hook) {
+      throw new Error('Expected Work Queue afterChange hook to exist.')
+    }
+
+    await hook({
+      doc: {
+        id: 9,
+        assignee: 21,
+        priority: 'high',
+        status: 'in_progress',
+      },
+      operation: 'update',
+      previousDoc: {
+        assignee: null,
+        priority: 'normal',
+        status: 'open',
+      },
+      req: {
+        context: {},
+        payload: {
+          create,
+        },
+        user: {
+          email: 'ops@example.com',
+          role: 'marketingOps',
+        },
+      },
+    } as never)
+
+    expect(create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        collection: 'operational-audit-events',
+        data: expect.objectContaining({
+          action: 'work_queue_updated',
+          entityId: '9',
+          entityType: 'work_queue',
+        }),
+        overrideAccess: true,
+      }),
+    )
+
+    create.mockClear()
+
+    await hook({
+      doc: {
+        id: 9,
+        status: 'resolved',
+      },
+      operation: 'update',
+      previousDoc: {
+        status: 'open',
+      },
+      req: {
+        context: {
+          workQueueSync: true,
+        },
+        payload: {
+          create,
+        },
+      },
+    } as never)
+
+    expect(create).not.toHaveBeenCalled()
   })
 })

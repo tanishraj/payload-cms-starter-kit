@@ -16,6 +16,7 @@ import {
   type MediaUsageReference,
 } from '@/lib/mediaUsage'
 import { preventMediaDeletionWhileInUse } from '@/hooks/preventMediaDeletionWhileInUse'
+import { syncMediaToWorkQueue } from '@/hooks/syncMediaToWorkQueue'
 
 const mediaAssetTypeOptions = [
   {
@@ -106,6 +107,7 @@ export const Media: CollectionConfig = {
     update: requireCapability('manage_media'),
   },
   hooks: {
+    afterChange: [syncMediaToWorkQueue],
     afterRead: [populateMediaUsage],
     beforeDelete: [preventMediaDeletionWhileInUse],
     beforeValidate: [beforeValidate],

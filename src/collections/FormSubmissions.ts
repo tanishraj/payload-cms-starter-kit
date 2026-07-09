@@ -4,6 +4,7 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { syncFormSubmissionToWorkQueue } from '@/hooks/syncFormSubmissionToWorkQueue'
 import { updateFormSubmissionActivity } from '@/hooks/updateFormSubmissionActivity'
 import { formSubmissionIntentOptions } from '@/lib/forms'
 
@@ -37,6 +38,7 @@ export const FormSubmissions: CollectionConfig = {
     update: requireCapability('manage_form_submissions'),
   },
   hooks: {
+    afterChange: [syncFormSubmissionToWorkQueue],
     beforeChange: [updateFormSubmissionActivity],
   },
   timestamps: true,

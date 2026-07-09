@@ -83,6 +83,10 @@ export const adminCapabilityFieldOptions = [
     value: 'manage_media',
   },
   {
+    label: 'Work Queue',
+    value: 'manage_work_queue',
+  },
+  {
     label: 'Site Defaults',
     value: 'manage_page_settings',
   },

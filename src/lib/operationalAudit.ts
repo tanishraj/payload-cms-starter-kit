@@ -9,6 +9,13 @@ export type RecordOperationalAuditEventArgs = {
   summary: string
 }
 
+export type RecordWorkQueueAuditEventArgs = {
+  action: string
+  req: PayloadRequest
+  summary: string
+  workQueueID: string
+}
+
 export const describeAuditValue = (value: unknown, fallback = 'unset'): string => {
   if (value == null || value === '') {
     return fallback
@@ -57,5 +64,21 @@ export const recordOperationalAuditEvent = async ({
     },
     overrideAccess: true,
     req,
+  })
+}
+
+export const recordWorkQueueAuditEvent = async ({
+  action,
+  req,
+  summary,
+  workQueueID,
+}: RecordWorkQueueAuditEventArgs): Promise<void> => {
+  await recordOperationalAuditEvent({
+    action,
+    entityId: workQueueID,
+    entityTitle: 'Work Queue Item',
+    entityType: 'work_queue',
+    req,
+    summary,
   })
 }

@@ -5,6 +5,7 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { Footer2Block } from '../blocks/Footer2/config'
 
 export const Footers: CollectionConfig = {
@@ -27,6 +28,16 @@ export const Footers: CollectionConfig = {
     read: allowPublicReadOrCapability('manage_footers'),
     readVersions: requireCapability('manage_footers'),
     update: requireCapability('manage_footers'),
+  },
+  hooks: {
+    afterChange: [
+      createDraftPublishQueueHook({
+        sourceAdminPathPrefix: '/admin/collections/footers',
+        sourceCollection: 'footers',
+        summary: (_doc, title) => `${title} has unpublished draft changes.`,
+        titleField: 'title',
+      }),
+    ],
   },
   versions: {
     drafts: true,

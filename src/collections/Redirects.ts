@@ -5,6 +5,7 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 
 const validateRequiredDestinationField =
   (destinationType: 'page' | 'custom', message: string) =>
@@ -161,6 +162,14 @@ export const Redirects: CollectionConfig = {
     update: requireCapability('manage_redirects'),
   },
   hooks: {
+    afterChange: [
+      createDraftPublishQueueHook({
+        sourceAdminPathPrefix: '/admin/collections/redirects',
+        sourceCollection: 'redirects',
+        summary: (_doc, title) => `${title} has unpublished redirect changes.`,
+        titleField: 'fromPath',
+      }),
+    ],
     beforeValidate: [beforeValidate],
   },
   versions: {

@@ -18,6 +18,7 @@ import { Reviews } from './collections/Reviews'
 import { Tags } from './collections/Tags'
 import { Headers } from './collections/Headers'
 import { OperationalAuditEvents } from './collections/OperationalAuditEvents'
+import { WorkQueue } from './collections/WorkQueue'
 import { SystemPages } from './collections/SystemPages'
 import { createDatabaseAdapter, createEmailAdapter } from './config/providers'
 import { assertSupportedStarterContract, getStarterContract } from './config/starterContract'
@@ -62,6 +63,7 @@ export default buildConfig({
     FormSubmissions,
     Media,
     OperationalAuditEvents,
+    WorkQueue,
     Users,
   ],
   globals: [PageSettings, SystemModeSettings, SiteSettings, ThemeSettings, SEOSettings],

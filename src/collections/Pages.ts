@@ -13,6 +13,7 @@ import {
 import { buildSEOFields } from '@/fields/buildSEOFields'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
+import { createWorkflowQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 
@@ -138,6 +139,26 @@ export const Pages: CollectionConfig = {
     afterChange: [
       syncNavigationLinkAfterChange,
       createRedirectsForChangedPagePath,
+      createWorkflowQueueHook({
+        sourceAdminPathPrefix: '/admin/collections/pages',
+        sourceCollection: 'pages',
+        states: [
+          {
+            queueType: 'approval',
+            reasonCode: 'page-review-required',
+            summary: (_doc, title) => `${title} is awaiting editorial approval.`,
+            workflowState: 'in_review',
+          },
+          {
+            priority: () => 'high',
+            queueType: 'approval',
+            reasonCode: 'page-scheduled-publication',
+            summary: (_doc, title) => `${title} is scheduled and requires publication oversight.`,
+            workflowState: 'scheduled',
+          },
+        ],
+        titleField: 'title',
+      }),
       createCollectionAuditHook({
         entityType: 'page',
         getSummary: ({ doc, previousDoc }) =>

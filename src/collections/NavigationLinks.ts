@@ -5,6 +5,7 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 
 const validateRequiredLinkField =
   (linkType: 'page' | 'custom', message: string) =>
@@ -125,6 +126,17 @@ export const NavigationLinks: CollectionConfig = {
     read: allowPublicReadOrCapability('manage_navigation'),
     readVersions: requireCapability('manage_navigation'),
     update: requireCapability('manage_navigation'),
+  },
+  hooks: {
+    afterChange: [
+      createDraftPublishQueueHook({
+        isActionable: (doc) => (doc as { sourceType?: string | null })?.sourceType !== 'pageSynced',
+        sourceAdminPathPrefix: '/admin/collections/navigation-links',
+        sourceCollection: 'navigation-links',
+        summary: (_doc, title) => `${title} has unpublished draft navigation changes.`,
+        titleField: 'title',
+      }),
+    ],
   },
   versions: {
     drafts: true,

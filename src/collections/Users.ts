@@ -102,7 +102,10 @@ const adminOrSubmissionOperatorReadAccess = ({ req }: { req: { user?: unknown } 
     return true
   }
 
-  return hasAdminCapability(user, 'manage_form_submissions')
+  return (
+    hasAdminCapability(user, 'manage_form_submissions') ||
+    hasAdminCapability(user, 'manage_work_queue')
+  )
 }
 
 export const Users: CollectionConfig = {

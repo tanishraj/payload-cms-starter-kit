@@ -9,6 +9,7 @@ import { ContentSpotlightBlock } from '@/blocks/ContentSpotlight/config'
 import { buildSEOFields } from '@/fields/buildSEOFields'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
+import { syncReviewToWorkQueue } from '@/hooks/syncReviewToWorkQueue'
 import { syncPrimaryCategoryMembership } from '@/hooks/syncPrimaryCategoryMembership'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
@@ -70,6 +71,7 @@ export const Reviews: CollectionConfig = {
   },
   hooks: {
     afterChange: [
+      syncReviewToWorkQueue,
       createCollectionAuditHook({
         entityType: 'review',
         getSummary: ({ doc, previousDoc }) =>

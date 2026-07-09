@@ -81,6 +81,7 @@ export interface Config {
     'form-submissions': FormSubmission;
     media: Media;
     'operational-audit-events': OperationalAuditEvent;
+    'work-queue': WorkQueue;
     users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -103,6 +104,7 @@ export interface Config {
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'operational-audit-events': OperationalAuditEventsSelect<false> | OperationalAuditEventsSelect<true>;
+    'work-queue': WorkQueueSelect<false> | WorkQueueSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -487,6 +489,10 @@ export interface User {
      * Allow access to Media.
      */
     manage_media?: boolean | null;
+    /**
+     * Allow access to Work Queue.
+     */
+    manage_work_queue?: boolean | null;
     /**
      * Allow access to Site Defaults.
      */
@@ -1176,6 +1182,39 @@ export interface OperationalAuditEvent {
   deletedAt?: string | null;
 }
 /**
+ * Operational inbox for actionable CMS work across content, reviews, forms, media, and structure.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "work-queue".
+ */
+export interface WorkQueue {
+  id: number;
+  summary: string;
+  details?: string | null;
+  queueType: 'approval' | 'moderation' | 'follow_up' | 'publish_issue' | 'media_issue' | 'system_issue';
+  reasonCode: string;
+  priority: 'low' | 'normal' | 'high' | 'urgent';
+  status: 'open' | 'in_progress' | 'blocked' | 'resolved' | 'canceled';
+  assignee?: (number | null) | User;
+  dueDate?: string | null;
+  operatorNotes?: string | null;
+  resolutionSummary?: string | null;
+  sourceCollection: string;
+  sourceID: string;
+  sourceSlug?: string | null;
+  sourceTitle: string;
+  sourceAdminPath?: string | null;
+  sourceUpdatedAt?: string | null;
+  dedupeKey: string;
+  autoResolved?: boolean | null;
+  firstOpenedAt: string;
+  lastSyncedAt: string;
+  resolvedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -1254,6 +1293,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'operational-audit-events';
         value: number | OperationalAuditEvent;
+      } | null)
+    | ({
+        relationTo: 'work-queue';
+        value: number | WorkQueue;
       } | null)
     | ({
         relationTo: 'users';
@@ -1888,6 +1931,36 @@ export interface OperationalAuditEventsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "work-queue_select".
+ */
+export interface WorkQueueSelect<T extends boolean = true> {
+  summary?: T;
+  details?: T;
+  queueType?: T;
+  reasonCode?: T;
+  priority?: T;
+  status?: T;
+  assignee?: T;
+  dueDate?: T;
+  operatorNotes?: T;
+  resolutionSummary?: T;
+  sourceCollection?: T;
+  sourceID?: T;
+  sourceSlug?: T;
+  sourceTitle?: T;
+  sourceAdminPath?: T;
+  sourceUpdatedAt?: T;
+  dedupeKey?: T;
+  autoResolved?: T;
+  firstOpenedAt?: T;
+  lastSyncedAt?: T;
+  resolvedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
@@ -1912,6 +1985,7 @@ export interface UsersSelect<T extends boolean = true> {
         manage_forms?: T;
         manage_form_submissions?: T;
         manage_media?: T;
+        manage_work_queue?: T;
         manage_page_settings?: T;
         manage_site_settings?: T;
         manage_theme_settings?: T;

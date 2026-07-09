@@ -11,6 +11,7 @@ import {
 import { buildSEOFields } from '@/fields/buildSEOFields'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
+import { createWorkflowQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 import { systemPageTypeOptions, type SystemPageType } from '@/lib/systemPageTypes'
@@ -79,6 +80,26 @@ export const SystemPages: CollectionConfig = {
   },
   hooks: {
     afterChange: [
+      createWorkflowQueueHook({
+        sourceAdminPathPrefix: '/admin/collections/system-pages',
+        sourceCollection: 'system-pages',
+        states: [
+          {
+            queueType: 'approval',
+            reasonCode: 'system-page-review-required',
+            summary: (_doc, title) => `${title} is awaiting editorial approval.`,
+            workflowState: 'in_review',
+          },
+          {
+            priority: () => 'high',
+            queueType: 'approval',
+            reasonCode: 'system-page-scheduled-publication',
+            summary: (_doc, title) => `${title} is scheduled and requires publication oversight.`,
+            workflowState: 'scheduled',
+          },
+        ],
+        titleField: 'title',
+      }),
       createCollectionAuditHook({
         entityType: 'system_page',
         getSummary: ({ doc, previousDoc }) =>

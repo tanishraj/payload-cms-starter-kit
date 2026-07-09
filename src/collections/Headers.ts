@@ -5,6 +5,7 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { HeaderNavbar12Block } from '../blocks/HeaderNavbar12/config'
 
 export const Headers: CollectionConfig = {
@@ -27,6 +28,16 @@ export const Headers: CollectionConfig = {
     read: allowPublicReadOrCapability('manage_headers'),
     readVersions: requireCapability('manage_headers'),
     update: requireCapability('manage_headers'),
+  },
+  hooks: {
+    afterChange: [
+      createDraftPublishQueueHook({
+        sourceAdminPathPrefix: '/admin/collections/headers',
+        sourceCollection: 'headers',
+        summary: (_doc, title) => `${title} has unpublished draft changes.`,
+        titleField: 'title',
+      }),
+    ],
   },
   versions: {
     drafts: true,

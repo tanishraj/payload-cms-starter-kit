@@ -60,6 +60,7 @@ describe('editorial roles', () => {
         manage_pages: true,
         manage_reviews: false,
         manage_taxonomy: false,
+        manage_work_queue: false,
         publish_articles: false,
         publish_pages: false,
         publish_reviews: false,
@@ -72,6 +73,7 @@ describe('editorial roles', () => {
       expect.objectContaining({
         manage_pages: true,
         manage_taxonomy: false,
+        manage_work_queue: false,
         publish_articles: true,
         publish_pages: true,
         publish_reviews: true,
@@ -114,6 +116,7 @@ describe('editorial roles', () => {
         manage_forms: true,
         manage_form_submissions: true,
         manage_system_modes: true,
+        manage_work_queue: false,
         view_operational_audit: true,
       },
     }
@@ -127,6 +130,9 @@ describe('editorial roles', () => {
     expect(canManageSystemModes(editor)).toBe(false)
     expect(canManageSystemModes(marketingOps)).toBe(true)
     expect(canViewOperationalAudit(publisher)).toBe(true)
+    expect(requireCapability('manage_work_queue')(toAccessReq(createReq({ role: 'admin' })))).toBe(
+      true,
+    )
   })
 
   it('allows content operators to read taxonomy without granting taxonomy management', () => {
@@ -175,6 +181,18 @@ describe('existing access helpers', () => {
             role: 'marketingOps',
             capabilities: {
               manage_form_submissions: true,
+            },
+          }),
+        ),
+      ),
+    ).toBe(true)
+    expect(
+      usersReadAccess(
+        toAccessReq(
+          createReq({
+            role: 'editor',
+            capabilities: {
+              manage_work_queue: true,
             },
           }),
         ),
