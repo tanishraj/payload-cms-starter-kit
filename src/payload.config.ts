@@ -20,6 +20,7 @@ import { Headers } from './collections/Headers'
 import { OperationalAuditEvents } from './collections/OperationalAuditEvents'
 import { SystemPages } from './collections/SystemPages'
 import { createDatabaseAdapter, createEmailAdapter } from './config/providers'
+import { assertSupportedStarterContract, getStarterContract } from './config/starterContract'
 import { getRuntimeConfig } from './config/runtime'
 import { PageSettings } from './globals/PageSettings'
 import { SEOSettings } from './globals/SEOSettings'
@@ -31,6 +32,8 @@ import { withTrash } from './plugins/withTrash'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 const runtimeConfig = getRuntimeConfig()
+const starterContract = getStarterContract(runtimeConfig)
+assertSupportedStarterContract(starterContract)
 const email = createEmailAdapter(runtimeConfig)
 
 if (runtimeConfig.deployment.isProduction && !email && runtimeConfig.email.provider === 'resend') {

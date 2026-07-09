@@ -10,9 +10,29 @@ This starter already has clear ownership boundaries for marketing-site content. 
 
 `navigation-links` stores reusable destinations for menus, CTAs, utility links, and page-synced links. Use it when a destination needs to be shared across headers, footers, or page content without duplicating URL logic.
 
+## Headers And Footers
+
+`headers` and `footers` own reusable structural chrome for the public site. Use them for shared navigation, logos, social links, and repeated CTA surfaces instead of rebuilding those patterns inside page layouts.
+
 ## System Pages
 
 `system-pages` stores managed presets for 404, maintenance, and coming-soon experiences. These are not normal marketing pages. They are selected by type and then activated through site defaults when the frontend should override public routes.
+
+## Editorial Inventory
+
+`articles` owns long-form editorial content with lexical rich text, featured media, taxonomies, archive behavior, and SEO fields. Use it for authored posts, resources, and newsroom-style content.
+
+`reviews` owns approved public testimonials promoted from form submissions. Use it for moderated review content that should be displayed on the public website after internal review.
+
+`categories` and `tags` provide reusable taxonomy for articles and reviews. Use them instead of ad hoc free-text labels when content needs filtering, archive pages, or shared SEO surfaces.
+
+## Intake And Lead Operations
+
+`forms` owns public submission schemas, field definitions, notification recipients, throttling behavior, and submission intent.
+
+`form-submissions` owns stored submissions, assignment, follow-up state, and operational handling after a visitor submits a form.
+
+Review intake starts in `forms` and `form-submissions`; public-facing reviews only belong in `reviews` after editorial approval.
 
 ## Site Defaults
 
@@ -35,3 +55,4 @@ This starter already has clear ownership boundaries for marketing-site content. 
 - Add client-specific collections beside the core starter collections instead of overloading `pages`, `system-pages`, or `navigation-links`.
 - Prefer hooks and `src/lib` helpers for cross-cutting behavior such as notifications, automations, or publishing side effects.
 - Keep global ownership explicit so branding, routing defaults, SEO defaults, and theme defaults do not drift across multiple globals.
+- Keep intake flows in `forms` and `form-submissions`, and only promote curated public content into editorial collections when that distinction matters operationally.

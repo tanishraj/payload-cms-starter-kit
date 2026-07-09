@@ -1,44 +1,51 @@
 # Payload CMS Marketing Starter
 
-This repository is a single-site marketing CMS starter built with Payload, Next.js, and TypeScript. It is meant to be copied for new client projects once the brand, providers, and site defaults are replaced.
+This repository is an editorial-first marketing CMS starter built to be copied for one client website at a time. It already includes page routing, system pages, articles, reviews, forms, SEO defaults, editorial governance, and capability-based admin access.
 
-## Quick Start
+## Supported Starter Contract
 
-1. Install dependencies with `pnpm install`.
-2. Copy `.env.example` to `.env`.
-3. Set the required environment variables for your database, Payload secret, and email provider.
-4. Start the app with `pnpm dev`.
-5. Open `http://localhost:3000` and create the first admin user.
+- local development: `SQLite` plus local-disk uploads
+- email: `none` or `resend`
+- Vercel database target: `Postgres`
+- Vercel deploy status today: blocked by design until a durable media adapter is added
 
-## Features
+The repo now fails fast if you try to boot a Vercel production profile with the default local-disk `media` behavior. That keeps the starter honest for client handoff.
 
-- Pages with hierarchy, preview, redirects, and SEO controls
-- Navigation links, headers, footers, and site defaults
-- System pages for 404, maintenance, and coming soon
-- Editorial roles, publish guardrails, and operational audit history
-- Forms with validation, throttling, persistence, and notifications
-- Media uploads plus capability-based admin access for CMS operators
-
-## Clone For A New Client
+## First Boot
 
 1. Copy `.env.example` to `.env`.
-2. Replace branding and contact defaults in `site-settings`.
-3. Choose runtime providers for database and email.
-4. Review theme presets and starter conventions.
-5. Follow [docs/operations/starter-clone-checklist.md](docs/operations/starter-clone-checklist.md).
+2. Keep `DATABASE_PROVIDER=sqlite` for local development.
+3. Set `PAYLOAD_SECRET`.
+4. Run `pnpm install`.
+5. Run `pnpm dev`.
+6. Open `http://localhost:3000` and create the first admin user.
 
-## Content Model
+## What This Starter Already Covers
 
-The starter already separates page content, reusable site structure, and site-wide defaults:
+- hierarchical pages with preview, redirects, and managed homepage selection
+- reusable navigation, headers, footers, and system pages
+- articles with lexical rich text, taxonomies, and SEO controls
+- moderated reviews promoted from form submissions into public content
+- forms, submissions, notifications, throttling, assignment, and follow-up states
+- editorial governance, publish guardrails, and operational audit history
 
-- `pages` owns hierarchical marketing pages, live preview, redirects, and page-level SEO.
-- `navigation-links` stores reusable destinations for menus, CTAs, and synced page links.
-- `system-pages` stores managed 404, maintenance, and coming-soon experiences.
-- `page-settings` chooses the active homepage, header, and footer.
-- `system-mode-settings` owns maintenance mode, coming-soon mode, 404 selection, and admin bypass behavior.
-- `site-settings`, `seo-settings`, and `theme-settings` hold brand, SEO, and presentation defaults.
+## Content Ownership
+
+The CMS already separates structural site content, editorial inventory, and site-wide defaults:
+
+- `pages`, `navigation-links`, `headers`, `footers`, and `system-pages` own the public site structure
+- `articles`, `reviews`, `categories`, and `tags` own editorial inventory
+- `forms` and `form-submissions` own intake and lead operations
+- `page-settings`, `system-mode-settings`, `site-settings`, `theme-settings`, and `seo-settings` own site-wide defaults
 
 See [docs/architecture/content-model-map.md](docs/architecture/content-model-map.md) for the full ownership map.
+
+## Handoff Docs
+
+- [Starter clone checklist](docs/operations/starter-clone-checklist.md)
+- [Content model map](docs/architecture/content-model-map.md)
+- [Editorial governance](docs/operations/editorial-governance.md)
+- [Vercel Postgres deployment](docs/operations/vercel-postgres-deployment.md)
 
 ## Environment
 
@@ -47,23 +54,17 @@ Local development defaults:
 - `DATABASE_PROVIDER=sqlite`
 - `DATABASE_URL=file:./payload-cms-next-tailwind-shadcn-starter-kit.db`
 - `PAYLOAD_SECRET`
+- `EMAIL_PROVIDER=none`
 
-Vercel deployments:
+Optional email variables:
 
-- `DATABASE_PROVIDER=postgres`
-- `POSTGRES_URL`
-- `PAYLOAD_SECRET`
-
-Email:
-
-- `EMAIL_PROVIDER=none | resend`
 - `RESEND_API_KEY`
 - `RESEND_FROM_EMAIL`
 - `RESEND_FROM_NAME`
-
-Optional but currently supported:
-
 - `RESEND_OVERRIDE_TO_EMAIL`
+
+Preview and production URL support:
+
 - `NEXT_PUBLIC_SERVER_URL`
 
 ## Tooling
@@ -71,31 +72,19 @@ Optional but currently supported:
 - `Node.js`: `^18.20.2 || >=20.9.0`
 - `pnpm`: `^9 || ^10 || ^11`
 
-## Deployment
-
-- local/dev uses `SQLite`
-- Vercel preview and production use `Postgres`
-- see [docs/operations/vercel-postgres-deployment.md](docs/operations/vercel-postgres-deployment.md)
-
-## Editorial Operations
-
-- [Editorial governance](./docs/operations/editorial-governance.md)
-- [Vercel Postgres deployment](./docs/operations/vercel-postgres-deployment.md)
-
 ## Testing
 
 - `pnpm test:int`
 - `pnpm test:e2e`
 - `pnpm test`
 
-Use integration tests to verify CMS behaviors and route resolution before cloning or handing off a client project.
+Use the integration suite to verify starter behavior, homepage resolution, and runtime contract checks before handing the repo to a client team.
 
 ## Starter Conventions
 
 - Treat this repo as one deployment and one dataset per client site.
-- Keep `Pages`, `SystemPages`, `NavigationLinks`, and site globals as the core starter primitives.
-- Extend behavior through dedicated `src/lib` or `src/config` seams before editing core collection logic.
+- Replace branding and operational defaults through globals before changing collection structure.
+- Extend behavior through `src/lib` or `src/config` seams instead of editing core collection logic ad hoc.
 - Treat provider configuration as runtime configuration, not content-model logic.
-- Keep core content ownership in the existing collections and globals unless a change solves a real CMS gap.
+- Keep the starter contract explicit. If a deployment path is not safe, document it and reject it early.
 - Add new blocks only after the CMS foundation, guardrails, and operational seams are stable.
-- Prefer documented extension points over editing core config ad hoc in every clone.

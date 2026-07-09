@@ -14,6 +14,8 @@ describe('API', () => {
     testDirectory = mkdtempSync(join(tmpdir(), 'payload-api-int-'))
     process.env.DATABASE_PROVIDER = 'sqlite'
     process.env.DATABASE_URL = `file:${join(testDirectory, 'payload-test.db')}`
+    process.env.EMAIL_PROVIDER = 'none'
+    process.env.PAYLOAD_SECRET = 'test-secret'
 
     const { default: config } = await import('@/payload.config')
     const payloadConfig = await config
