@@ -1,16 +1,15 @@
 # Editorial Governance
 
-## Roles
+## Editorial Roles
 
-- `admin`: full access, including user management and system-wide overrides
-- `publisher`: can review, publish, and revert Pages and System Pages
-- `editor`: can create and edit content, but cannot publish or change site-wide modes
-- `marketingOps`: can operate forms, SEO defaults, and system modes, but does not publish content by default
+- `Admin`: full system access, user management, and final recovery authority
+- `Site Manager`: trusted non-admin website operator who can manage content, structure, settings, and publishing
+- `Content Manager`: non-technical content publisher for pages, articles, reviews, and supporting media
 
 ## Workflow States
 
 - `draft`: work in progress
-- `in_review`: ready for publisher review
+- `in_review`: ready for site manager review
 - `scheduled`: approved, waiting for a scheduled release
 - `published`: live content
 - `reverted`: a prior version was restored and re-published

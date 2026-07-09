@@ -414,25 +414,33 @@ export interface Form {
 export interface User {
   id: number;
   /**
-   * Controls the editorial role for this user.
+   * Choose the base access preset for this user. Saving a changed non-admin role reapplies that role default.
    */
-  role?: ('admin' | 'publisher' | 'editor' | 'marketingOps') | null;
+  role?: ('admin' | 'siteManager' | 'contentManager') | null;
   /**
-   * Adjust capability overrides for non-admin users. Role defaults apply when no overrides are set.
+   * Role presets define the default access bundle for non-admin users. After saving the role, adjust these checkboxes only for explicit exceptions.
    */
   capabilities?: {
     /**
-     * Allow access to Taxonomy.
+     * Allow access to Pages.
      */
-    manage_taxonomy?: boolean | null;
+    manage_pages?: boolean | null;
     /**
      * Allow access to Articles.
      */
     manage_articles?: boolean | null;
     /**
-     * Allow access to Pages.
+     * Allow access to Reviews.
      */
-    manage_pages?: boolean | null;
+    manage_reviews?: boolean | null;
+    /**
+     * Allow access to Media.
+     */
+    manage_media?: boolean | null;
+    /**
+     * Allow access to Taxonomy.
+     */
+    manage_taxonomy?: boolean | null;
     /**
      * Allow access to Navigation.
      */
@@ -450,50 +458,6 @@ export interface User {
      */
     manage_footers?: boolean | null;
     /**
-     * Allow access to Reviews.
-     */
-    manage_reviews?: boolean | null;
-    /**
-     * Allow access to System Pages.
-     */
-    manage_system_pages?: boolean | null;
-    /**
-     * Allow publishing access for Articles.
-     */
-    publish_articles?: boolean | null;
-    /**
-     * Allow publishing access for Pages.
-     */
-    publish_pages?: boolean | null;
-    /**
-     * Allow publishing access for Reviews.
-     */
-    publish_reviews?: boolean | null;
-    /**
-     * Allow publishing access for System Pages.
-     */
-    publish_system_pages?: boolean | null;
-    /**
-     * Allow access to System Modes.
-     */
-    manage_system_modes?: boolean | null;
-    /**
-     * Allow access to Forms.
-     */
-    manage_forms?: boolean | null;
-    /**
-     * Allow access to Form Submissions.
-     */
-    manage_form_submissions?: boolean | null;
-    /**
-     * Allow access to Media.
-     */
-    manage_media?: boolean | null;
-    /**
-     * Allow access to Work Queue.
-     */
-    manage_work_queue?: boolean | null;
-    /**
      * Allow access to Site Defaults.
      */
     manage_page_settings?: boolean | null;
@@ -510,9 +474,45 @@ export interface User {
      */
     manage_seo_settings?: boolean | null;
     /**
+     * Allow access to System Pages.
+     */
+    manage_system_pages?: boolean | null;
+    /**
+     * Allow access to System Modes.
+     */
+    manage_system_modes?: boolean | null;
+    /**
+     * Allow access to Forms.
+     */
+    manage_forms?: boolean | null;
+    /**
+     * Allow access to Form Submissions.
+     */
+    manage_form_submissions?: boolean | null;
+    /**
+     * Allow access to Work Queue.
+     */
+    manage_work_queue?: boolean | null;
+    /**
      * Allow access to Operational Audit.
      */
     view_operational_audit?: boolean | null;
+    /**
+     * Allow publishing access for Pages.
+     */
+    publish_pages?: boolean | null;
+    /**
+     * Allow publishing access for Articles.
+     */
+    publish_articles?: boolean | null;
+    /**
+     * Allow publishing access for Reviews.
+     */
+    publish_reviews?: boolean | null;
+    /**
+     * Allow publishing access for System Pages.
+     */
+    publish_system_pages?: boolean | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -2028,29 +2028,29 @@ export interface UsersSelect<T extends boolean = true> {
   capabilities?:
     | T
     | {
-        manage_taxonomy?: T;
-        manage_articles?: T;
         manage_pages?: T;
+        manage_articles?: T;
+        manage_reviews?: T;
+        manage_media?: T;
+        manage_taxonomy?: T;
         manage_navigation?: T;
         manage_redirects?: T;
         manage_headers?: T;
         manage_footers?: T;
-        manage_reviews?: T;
-        manage_system_pages?: T;
-        publish_articles?: T;
-        publish_pages?: T;
-        publish_reviews?: T;
-        publish_system_pages?: T;
-        manage_system_modes?: T;
-        manage_forms?: T;
-        manage_form_submissions?: T;
-        manage_media?: T;
-        manage_work_queue?: T;
         manage_page_settings?: T;
         manage_site_settings?: T;
         manage_theme_settings?: T;
         manage_seo_settings?: T;
+        manage_system_pages?: T;
+        manage_system_modes?: T;
+        manage_forms?: T;
+        manage_form_submissions?: T;
+        manage_work_queue?: T;
         view_operational_audit?: T;
+        publish_pages?: T;
+        publish_articles?: T;
+        publish_reviews?: T;
+        publish_system_pages?: T;
       };
   updatedAt?: T;
   createdAt?: T;

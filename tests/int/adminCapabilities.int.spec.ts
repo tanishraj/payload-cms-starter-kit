@@ -9,6 +9,7 @@ import {
   canPublishPages,
   canPublishReviews,
   canViewOperationalAudit,
+  getCapabilitiesForRole,
   getDefaultCapabilitiesForRole,
   hideFromNonAdmin,
   requireCapability,
@@ -39,6 +40,18 @@ const toAccessReq = (req: TestReq) =>
     req,
   }) as never
 
+const getUsersField = (name: string) => {
+  const field = Users.fields?.find(
+    candidate => 'name' in candidate && candidate.name === name,
+  )
+
+  if (!field) {
+    throw new Error(`Expected Users field "${name}" to exist.`)
+  }
+
+  return field
+}
+
 describe('editorial roles', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -47,38 +60,53 @@ describe('editorial roles', () => {
   it('exposes the editorial role set', () => {
     expect(editorialRoleOptions.map(({ value }) => value)).toEqual([
       'admin',
-      'publisher',
-      'editor',
-      'marketingOps',
+      'siteManager',
+      'contentManager',
     ])
   })
 
-  it('assigns safe defaults to editors and publishers', () => {
-    expect(getDefaultCapabilitiesForRole('editor')).toEqual(
+  it('assigns the approved defaults to site managers and content managers', () => {
+    expect(getDefaultCapabilitiesForRole('siteManager')).toEqual(
       expect.objectContaining({
-        manage_articles: false,
+        manage_articles: true,
+        manage_footers: true,
+        manage_form_submissions: true,
+        manage_forms: true,
+        manage_headers: true,
+        manage_media: true,
+        manage_navigation: true,
+        manage_page_settings: true,
         manage_pages: true,
-        manage_reviews: false,
-        manage_taxonomy: false,
-        manage_work_queue: false,
-        publish_articles: false,
-        publish_pages: false,
-        publish_reviews: false,
-        manage_system_modes: false,
-        view_operational_audit: false,
-      }),
-    )
-
-    expect(getDefaultCapabilitiesForRole('publisher')).toEqual(
-      expect.objectContaining({
-        manage_pages: true,
-        manage_taxonomy: false,
-        manage_work_queue: false,
+        manage_redirects: true,
+        manage_reviews: true,
+        manage_seo_settings: true,
+        manage_site_settings: true,
+        manage_system_modes: true,
+        manage_system_pages: true,
+        manage_taxonomy: true,
+        manage_theme_settings: true,
+        manage_work_queue: true,
         publish_articles: true,
         publish_pages: true,
         publish_reviews: true,
-        manage_system_modes: false,
+        publish_system_pages: true,
         view_operational_audit: true,
+      }),
+    )
+
+    expect(getDefaultCapabilitiesForRole('contentManager')).toEqual(
+      expect.objectContaining({
+        manage_articles: true,
+        manage_media: true,
+        manage_pages: true,
+        manage_reviews: true,
+        publish_articles: true,
+        publish_pages: true,
+        publish_reviews: true,
+        manage_system_pages: false,
+        manage_system_modes: false,
+        publish_system_pages: false,
+        manage_site_settings: false,
       }),
     )
   })
@@ -91,45 +119,39 @@ describe('editorial roles', () => {
     expect(requireCapability('publish_reviews')(toAccessReq(createReq({ role: 'admin' })))).toBe(true)
   })
 
-  it('separates publishing and system-mode controls from editing', () => {
-    const editor = {
-      role: 'editor',
+  it('separates system-level controls from normal publishing', () => {
+    const contentManager = {
+      role: 'contentManager',
       capabilities: {
         manage_pages: true,
-      },
-    }
-
-    const publisher = {
-      role: 'publisher',
-      capabilities: {
         publish_articles: true,
-        manage_pages: true,
         publish_pages: true,
         publish_reviews: true,
-        view_operational_audit: true,
       },
     }
 
-    const marketingOps = {
-      role: 'marketingOps',
+    const siteManager = {
+      role: 'siteManager',
       capabilities: {
-        manage_forms: true,
-        manage_form_submissions: true,
+        manage_pages: true,
+        publish_pages: true,
+        publish_articles: true,
+        publish_reviews: true,
         manage_system_modes: true,
-        manage_work_queue: false,
         view_operational_audit: true,
       },
     }
 
-    expect(canPublishArticles(editor)).toBe(false)
-    expect(canPublishArticles(publisher)).toBe(true)
-    expect(canPublishPages(editor)).toBe(false)
-    expect(canPublishPages(publisher)).toBe(true)
-    expect(canPublishReviews(editor)).toBe(false)
-    expect(canPublishReviews(publisher)).toBe(true)
-    expect(canManageSystemModes(editor)).toBe(false)
-    expect(canManageSystemModes(marketingOps)).toBe(true)
-    expect(canViewOperationalAudit(publisher)).toBe(true)
+    expect(canPublishArticles(contentManager)).toBe(true)
+    expect(canPublishArticles(siteManager)).toBe(true)
+    expect(canPublishPages(contentManager)).toBe(true)
+    expect(canPublishPages(siteManager)).toBe(true)
+    expect(canPublishReviews(contentManager)).toBe(true)
+    expect(canPublishReviews(siteManager)).toBe(true)
+    expect(canManageSystemModes(contentManager)).toBe(false)
+    expect(canManageSystemModes(siteManager)).toBe(true)
+    expect(canViewOperationalAudit(contentManager)).toBe(false)
+    expect(canViewOperationalAudit(siteManager)).toBe(true)
     expect(requireCapability('manage_work_queue')(toAccessReq(createReq({ role: 'admin' })))).toBe(
       true,
     )
@@ -138,7 +160,7 @@ describe('editorial roles', () => {
   it('allows content operators to read taxonomy without granting taxonomy management', () => {
     expect(
       canReadTaxonomy({
-        role: 'editor',
+        role: 'contentManager',
         capabilities: {
           manage_articles: true,
         },
@@ -147,7 +169,7 @@ describe('editorial roles', () => {
 
     expect(
       canReadTaxonomy({
-        role: 'editor',
+        role: 'contentManager',
         capabilities: {
           manage_pages: true,
         },
@@ -164,7 +186,7 @@ describe('existing access helpers', () => {
 
   it('still denies protected writes without the matching capability', () => {
     const access = requireCapability('manage_pages')
-    expect(access(toAccessReq(createReq({ role: 'editor' })))).toBe(false)
+    expect(access(toAccessReq(createReq({ role: 'contentManager' })))).toBe(false)
   })
 
   it('allows submission operators to read users for owner assignment without exposing the Users nav', () => {
@@ -178,7 +200,7 @@ describe('existing access helpers', () => {
       usersReadAccess(
         toAccessReq(
           createReq({
-            role: 'marketingOps',
+            role: 'siteManager',
             capabilities: {
               manage_form_submissions: true,
             },
@@ -190,7 +212,7 @@ describe('existing access helpers', () => {
       usersReadAccess(
         toAccessReq(
           createReq({
-            role: 'editor',
+            role: 'contentManager',
             capabilities: {
               manage_work_queue: true,
             },
@@ -198,7 +220,7 @@ describe('existing access helpers', () => {
         ),
       ),
     ).toBe(true)
-    expect(hideFromNonAdmin({ user: { role: 'marketingOps' } as never })).toBe(true)
+    expect(hideFromNonAdmin({ user: { role: 'siteManager' } as never })).toBe(true)
   })
 
   it('still allows first-user creation without an existing admin', async () => {
@@ -212,7 +234,7 @@ describe('existing access helpers', () => {
 })
 
 describe('user normalization hook', () => {
-  it('promotes the first user to admin and later users to safe role defaults', async () => {
+  it('promotes the first user to admin and creates later users from the selected preset', async () => {
     const hook = Users.hooks?.beforeChange?.[0]
 
     if (!hook) {
@@ -235,30 +257,166 @@ describe('user normalization hook', () => {
 
     expect(firstResult.role).toBe('admin')
 
-    const editorResult = await hook({
+    const contentManagerResult = await hook({
       data: {
-        role: 'editor',
+        capabilities: {
+          manage_system_modes: true,
+          manage_system_pages: true,
+          publish_system_pages: true,
+        },
+        role: 'contentManager',
         email: 'editor@example.com',
+      },
+      operation: 'create',
+      req: createReq({ role: 'admin' }),
+    } as never)
+
+    expect(contentManagerResult.role).toBe('contentManager')
+    expect(contentManagerResult.capabilities).toEqual(
+      expect.objectContaining({
+        manage_articles: true,
+        manage_media: true,
+        manage_pages: true,
+        manage_reviews: true,
+        manage_taxonomy: false,
+        publish_articles: true,
+        publish_pages: true,
+        publish_reviews: true,
+        manage_system_modes: false,
+        manage_system_pages: false,
+        publish_system_pages: false,
+      }),
+    )
+  })
+
+  it('normalizes legacy stored roles into the new model', async () => {
+    const hook = Users.hooks?.beforeChange?.[0]
+
+    if (!hook) {
+      throw new Error('Expected Users beforeChange hook to exist.')
+    }
+
+    const siteManagerResult = await hook({
+      data: {
+        role: 'publisher',
       },
       operation: 'update',
       originalDoc: {
-        role: 'editor',
+        role: 'publisher',
+        capabilities: {},
       },
       req: createReq({ role: 'admin' }),
     } as never)
 
-    expect(editorResult.capabilities).toEqual(
+    expect(siteManagerResult.role).toBe('siteManager')
+
+    const contentManagerResult = await hook({
+      data: {
+        role: 'editor',
+      },
+      operation: 'update',
+      originalDoc: {
+        role: 'editor',
+        capabilities: {},
+      },
+      req: createReq({ role: 'admin' }),
+    } as never)
+
+    expect(contentManagerResult.role).toBe('contentManager')
+  })
+
+  it('reapplies the selected role defaults when a non-admin role changes', async () => {
+    const hook = Users.hooks?.beforeChange?.[0]
+
+    if (!hook) {
+      throw new Error('Expected Users beforeChange hook to exist.')
+    }
+
+    const result = await hook({
+      data: {
+        role: 'contentManager',
+        capabilities: {
+          manage_system_modes: true,
+          manage_system_pages: true,
+          publish_system_pages: true,
+        },
+      },
+      operation: 'update',
+      originalDoc: {
+        role: 'siteManager',
+        capabilities: getCapabilitiesForRole('siteManager'),
+      },
+      req: createReq({ role: 'admin' }),
+    } as never)
+
+    expect(result.role).toBe('contentManager')
+    expect(result.capabilities).toEqual(getCapabilitiesForRole('contentManager'))
+  })
+
+  it('preserves explicit capability overrides when the non-admin role stays the same', async () => {
+    const hook = Users.hooks?.beforeChange?.[0]
+
+    if (!hook) {
+      throw new Error('Expected Users beforeChange hook to exist.')
+    }
+
+    const result = await hook({
+      data: {
+        role: 'contentManager',
+        capabilities: {
+          ...getCapabilitiesForRole('contentManager'),
+          manage_forms: true,
+          manage_form_submissions: true,
+        },
+      },
+      operation: 'update',
+      originalDoc: {
+        role: 'contentManager',
+        capabilities: getCapabilitiesForRole('contentManager'),
+      },
+      req: createReq({ role: 'admin' }),
+    } as never)
+
+    expect(result.role).toBe('contentManager')
+    expect(result.capabilities).toEqual(
       expect.objectContaining({
-        manage_pages: true,
-        manage_taxonomy: false,
-        publish_pages: false,
+        manage_forms: true,
+        manage_form_submissions: true,
         manage_system_modes: false,
       }),
     )
   })
 
+  it('describes roles as presets with capability overrides in the Users admin fields', () => {
+    const roleField = getUsersField('role')
+    const capabilitiesField = getUsersField('capabilities')
+
+    expect(roleField.admin?.description).toBe(
+      'Choose the base access preset for this user. Saving a changed non-admin role reapplies that role default.',
+    )
+    expect(capabilitiesField.admin?.description).toBe(
+      'Role presets define the default access bundle for non-admin users. After saving the role, adjust these checkboxes only for explicit exceptions.',
+    )
+  })
+
+  it('groups capabilities by responsibility area for admin presentation', () => {
+    const capabilityField = getUsersField('capabilities')
+
+    if (capabilityField.type !== 'group') {
+      throw new Error('Expected capabilities group field to exist.')
+    }
+
+    const serialized = JSON.stringify(capabilityField.fields)
+
+    expect(serialized).toContain('"label":"Content"')
+    expect(serialized).toContain('"label":"Structure"')
+    expect(serialized).toContain('"label":"Site Controls"')
+    expect(serialized).toContain('"label":"Operations"')
+    expect(serialized).toContain('"label":"Publishing"')
+  })
+
   it('keeps Users hidden from non-admins', () => {
-    expect(hideFromNonAdmin({ user: { role: 'editor' } as never })).toBe(true)
+    expect(hideFromNonAdmin({ user: { role: 'contentManager' } as never })).toBe(true)
     expect(hideFromNonAdmin({ user: { role: 'admin' } as never })).toBe(false)
   })
 })

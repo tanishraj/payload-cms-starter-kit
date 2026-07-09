@@ -6,26 +6,53 @@ export const editorialRoleOptions = [
     value: 'admin',
   },
   {
-    label: 'Publisher',
-    value: 'publisher',
+    label: 'Site Manager',
+    value: 'siteManager',
   },
   {
-    label: 'Editor',
-    value: 'editor',
-  },
-  {
-    label: 'Marketing Ops',
-    value: 'marketingOps',
+    label: 'Content Manager',
+    value: 'contentManager',
   },
 ] as const
 
 export type EditorialRole = (typeof editorialRoleOptions)[number]['value']
+type LegacyEditorialRole = 'contentEditor' | 'editor' | 'marketingOps' | 'publisher'
+type EditorialRoleInput = EditorialRole | LegacyEditorialRole
 
 const validRoles = new Set<EditorialRole>(editorialRoleOptions.map(({ value }) => value))
 
 const legacyRoleMap = {
-  contentEditor: 'editor',
-} as const
+  contentEditor: 'contentManager',
+  editor: 'contentManager',
+  marketingOps: 'siteManager',
+  publisher: 'siteManager',
+} as const satisfies Record<LegacyEditorialRole, EditorialRole>
+
+const allCapabilityValues: Array<keyof AdminCapabilitiesMap> = [
+  'manage_articles',
+  'manage_footers',
+  'manage_form_submissions',
+  'manage_forms',
+  'manage_headers',
+  'manage_media',
+  'manage_navigation',
+  'manage_page_settings',
+  'manage_pages',
+  'manage_redirects',
+  'manage_reviews',
+  'manage_work_queue',
+  'manage_seo_settings',
+  'manage_site_settings',
+  'manage_system_modes',
+  'manage_system_pages',
+  'manage_taxonomy',
+  'manage_theme_settings',
+  'publish_articles',
+  'publish_pages',
+  'publish_reviews',
+  'publish_system_pages',
+  'view_operational_audit',
+]
 
 const withCapabilities = (enabled: Array<keyof AdminCapabilitiesMap>): AdminCapabilitiesMap => {
   const capabilities: AdminCapabilitiesMap = {
@@ -61,23 +88,35 @@ const withCapabilities = (enabled: Array<keyof AdminCapabilitiesMap>): AdminCapa
   return capabilities
 }
 
-const editorDefaults = withCapabilities([
-  'manage_footers',
-  'manage_headers',
+const contentManagerDefaults = withCapabilities([
+  'manage_articles',
   'manage_media',
-  'manage_navigation',
   'manage_pages',
-  'manage_redirects',
+  'manage_reviews',
+  'publish_articles',
+  'publish_pages',
+  'publish_reviews',
 ])
 
-const publisherDefaults = withCapabilities([
+const siteManagerDefaults = withCapabilities([
+  'manage_articles',
   'manage_footers',
+  'manage_form_submissions',
+  'manage_forms',
   'manage_headers',
   'manage_media',
   'manage_navigation',
+  'manage_page_settings',
   'manage_pages',
   'manage_redirects',
+  'manage_reviews',
+  'manage_work_queue',
+  'manage_seo_settings',
+  'manage_site_settings',
+  'manage_system_modes',
   'manage_system_pages',
+  'manage_taxonomy',
+  'manage_theme_settings',
   'publish_articles',
   'publish_pages',
   'publish_reviews',
@@ -85,30 +124,27 @@ const publisherDefaults = withCapabilities([
   'view_operational_audit',
 ])
 
-const marketingOpsDefaults = withCapabilities([
-  'manage_form_submissions',
-  'manage_forms',
-  'manage_page_settings',
-  'manage_seo_settings',
-  'manage_site_settings',
-  'manage_system_modes',
-  'manage_theme_settings',
-  'view_operational_audit',
-])
-
 export const isEditorialRole = (value: unknown): value is EditorialRole => {
   return typeof value === 'string' && validRoles.has(value as EditorialRole)
 }
 
-export const normalizeEditorialRole = (
-  value: unknown,
-  fallback: EditorialRole = 'editor',
-): EditorialRole => {
-  if (value === 'contentEditor') {
-    return legacyRoleMap.contentEditor
+const toNormalizedEditorialRole = (value: unknown): EditorialRole | null => {
+  if (isEditorialRole(value)) {
+    return value
   }
 
-  return isEditorialRole(value) ? value : fallback
+  if (typeof value === 'string' && value in legacyRoleMap) {
+    return legacyRoleMap[value as LegacyEditorialRole]
+  }
+
+  return null
+}
+
+export const normalizeEditorialRole = (
+  value: unknown,
+  fallback: EditorialRoleInput = 'contentManager',
+): EditorialRole => {
+  return toNormalizedEditorialRole(value) ?? toNormalizedEditorialRole(fallback) ?? 'contentManager'
 }
 
 export const getDefaultCapabilitiesForRole = (
@@ -116,43 +152,15 @@ export const getDefaultCapabilitiesForRole = (
 ): AdminCapabilitiesMap => {
   switch (role) {
     case 'admin':
-      return withCapabilities([
-        'manage_articles',
-        'manage_footers',
-        'manage_form_submissions',
-        'manage_forms',
-        'manage_headers',
-        'manage_media',
-        'manage_navigation',
-        'manage_page_settings',
-        'manage_pages',
-        'manage_redirects',
-        'manage_reviews',
-        'manage_work_queue',
-        'manage_seo_settings',
-        'manage_site_settings',
-        'manage_system_modes',
-        'manage_system_pages',
-        'manage_taxonomy',
-        'manage_theme_settings',
-        'publish_articles',
-        'publish_pages',
-        'publish_reviews',
-        'publish_system_pages',
-        'view_operational_audit',
-      ])
-    case 'publisher':
+      return withCapabilities(allCapabilityValues)
+    case 'siteManager':
       return {
-        ...publisherDefaults,
+        ...siteManagerDefaults,
       }
-    case 'marketingOps':
-      return {
-        ...marketingOpsDefaults,
-      }
-    case 'editor':
+    case 'contentManager':
     default:
       return {
-        ...editorDefaults,
+        ...contentManagerDefaults,
       }
   }
 }

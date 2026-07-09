@@ -15,16 +15,24 @@ export type AdminRole = EditorialRole
 
 export const adminCapabilityFieldOptions = [
   {
-    label: 'Taxonomy',
-    value: 'manage_taxonomy',
+    label: 'Pages',
+    value: 'manage_pages',
   },
   {
-    label: 'Manage Articles',
+    label: 'Articles',
     value: 'manage_articles',
   },
   {
-    label: 'Pages',
-    value: 'manage_pages',
+    label: 'Reviews',
+    value: 'manage_reviews',
+  },
+  {
+    label: 'Media',
+    value: 'manage_media',
+  },
+  {
+    label: 'Taxonomy',
+    value: 'manage_taxonomy',
   },
   {
     label: 'Navigation',
@@ -43,50 +51,6 @@ export const adminCapabilityFieldOptions = [
     value: 'manage_footers',
   },
   {
-    label: 'Manage Reviews',
-    value: 'manage_reviews',
-  },
-  {
-    label: 'System Pages',
-    value: 'manage_system_pages',
-  },
-  {
-    label: 'Publish Articles',
-    value: 'publish_articles',
-  },
-  {
-    label: 'Publish Pages',
-    value: 'publish_pages',
-  },
-  {
-    label: 'Publish Reviews',
-    value: 'publish_reviews',
-  },
-  {
-    label: 'Publish System Pages',
-    value: 'publish_system_pages',
-  },
-  {
-    label: 'System Modes',
-    value: 'manage_system_modes',
-  },
-  {
-    label: 'Forms',
-    value: 'manage_forms',
-  },
-  {
-    label: 'Form Submissions',
-    value: 'manage_form_submissions',
-  },
-  {
-    label: 'Media',
-    value: 'manage_media',
-  },
-  {
-    label: 'Work Queue',
-    value: 'manage_work_queue',
-  },
-  {
     label: 'Site Defaults',
     value: 'manage_page_settings',
   },
@@ -103,8 +67,44 @@ export const adminCapabilityFieldOptions = [
     value: 'manage_seo_settings',
   },
   {
+    label: 'System Pages',
+    value: 'manage_system_pages',
+  },
+  {
+    label: 'System Modes',
+    value: 'manage_system_modes',
+  },
+  {
+    label: 'Forms',
+    value: 'manage_forms',
+  },
+  {
+    label: 'Form Submissions',
+    value: 'manage_form_submissions',
+  },
+  {
+    label: 'Work Queue',
+    value: 'manage_work_queue',
+  },
+  {
     label: 'Operational Audit',
     value: 'view_operational_audit',
+  },
+  {
+    label: 'Publish Pages',
+    value: 'publish_pages',
+  },
+  {
+    label: 'Publish Articles',
+    value: 'publish_articles',
+  },
+  {
+    label: 'Publish Reviews',
+    value: 'publish_reviews',
+  },
+  {
+    label: 'Publish System Pages',
+    value: 'publish_system_pages',
   },
 ] as const
 
@@ -143,36 +143,72 @@ const getCapabilityDescription = ({
   return `Allow access to ${label}.`
 }
 
-const adminCapabilityCheckboxItems = adminCapabilityFieldOptions.map(({ label, value }) => ({
+const createCapabilityCheckbox = ({
+  label,
+  value,
+}: {
+  label: string
+  value: AdminCapability
+}) => ({
   name: value,
   type: 'checkbox' as const,
+  label,
+  defaultValue: false,
   admin: {
     description: getCapabilityDescription({ label, value }),
     width: '33.33%',
   },
-  defaultValue: false,
-  label,
+})
+
+const createCapabilityRows = (items: Array<{ label: string; value: AdminCapability }>) =>
+  items.reduce<Array<{ fields: ReturnType<typeof createCapabilityCheckbox>[]; type: 'row' }>>(
+    (rows, item, index) => {
+      const rowIndex = Math.floor(index / 3)
+
+      if (!rows[rowIndex]) {
+        rows[rowIndex] = {
+          fields: [],
+          type: 'row',
+        }
+      }
+
+      rows[rowIndex].fields.push(createCapabilityCheckbox(item))
+      return rows
+    },
+    [],
+  )
+
+const capabilitySections = [
+  {
+    label: 'Content',
+    items: adminCapabilityFieldOptions.slice(0, 5),
+  },
+  {
+    label: 'Structure',
+    items: adminCapabilityFieldOptions.slice(5, 9),
+  },
+  {
+    label: 'Site Controls',
+    items: adminCapabilityFieldOptions.slice(9, 15),
+  },
+  {
+    label: 'Operations',
+    items: adminCapabilityFieldOptions.slice(15, 19),
+  },
+  {
+    label: 'Publishing',
+    items: adminCapabilityFieldOptions.slice(19),
+  },
+] as const
+
+export const adminCapabilityCheckboxFields = capabilitySections.map((section) => ({
+  type: 'collapsible' as const,
+  label: section.label,
+  admin: {
+    initCollapsed: false,
+  },
+  fields: createCapabilityRows([...section.items]),
 }))
-
-export const adminCapabilityCheckboxFields = adminCapabilityCheckboxItems.reduce<
-  Array<{
-    fields: typeof adminCapabilityCheckboxItems
-    type: 'row'
-  }>
->((rows, field, index) => {
-  const rowIndex = Math.floor(index / 3)
-
-  if (!rows[rowIndex]) {
-    rows[rowIndex] = {
-      fields: [],
-      type: 'row',
-    }
-  }
-
-  rows[rowIndex].fields.push(field)
-
-  return rows
-}, [])
 
 export const isAdminRole = (value: unknown): value is AdminRole => {
   return normalizeEditorialRole(value, 'admin') === value
@@ -180,7 +216,7 @@ export const isAdminRole = (value: unknown): value is AdminRole => {
 
 export const normalizeAdminRole = (
   value: unknown,
-  fallback: AdminRole = 'editor',
+  fallback: AdminRole = 'contentManager',
 ): AdminRole => {
   return normalizeEditorialRole(value, fallback)
 }
@@ -214,7 +250,7 @@ export const toAdminCapabilitiesMap = (value: unknown): AdminCapabilitiesMap => 
 }
 
 export const isAdminUser = (user: AdminUserLike | null | undefined): boolean => {
-  return normalizeAdminRole(user?.role, 'editor') === 'admin'
+  return normalizeAdminRole(user?.role, 'contentManager') === 'admin'
 }
 
 export const hasAdminCapability = (

@@ -29,6 +29,12 @@ The repo now fails fast if you try to boot a Vercel production profile with the 
 - forms, submissions, notifications, throttling, assignment, and follow-up states
 - editorial governance, publish guardrails, and operational audit history
 
+## Role Model
+
+- `Admin`: full access, user management, and recovery control
+- `Site Manager`: trusted website operator with structural and system-level controls
+- `Content Manager`: non-technical publisher for normal website content
+
 ## Content Ownership
 
 The CMS already separates structural site content, editorial inventory, and site-wide defaults:

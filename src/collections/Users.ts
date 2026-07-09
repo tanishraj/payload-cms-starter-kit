@@ -33,7 +33,7 @@ const showCapabilitiesForNonAdminRole = (
     return false
   }
 
-  const resolvedRole = normalizeEditorialRole(siblingData?.role ?? data?.role, 'editor')
+  const resolvedRole = normalizeEditorialRole(siblingData?.role ?? data?.role, 'contentManager')
 
   return resolvedRole !== 'admin'
 }
@@ -61,18 +61,18 @@ const normalizeUserAccessFields: CollectionBeforeChangeHook = async ({
       return data
     }
 
-    const nextRole = normalizeEditorialRole(data.role, 'editor')
+    const nextRole = normalizeEditorialRole(data.role, 'contentManager')
 
     data.role = nextRole
     data.capabilities =
-      data.capabilities === undefined
-        ? getCapabilitiesForRole(nextRole)
-        : toAdminCapabilitiesMap(data.capabilities)
+      nextRole === 'admin'
+        ? toAdminCapabilitiesMap(allAdminCapabilities)
+        : getCapabilitiesForRole(nextRole)
 
     return data
   }
 
-  const defaultRole = normalizeEditorialRole(originalDoc?.role, 'editor')
+  const defaultRole = normalizeEditorialRole(originalDoc?.role, 'contentManager')
   const nextRole = normalizeEditorialRole(data.role, defaultRole)
   const roleChanged = nextRole !== defaultRole
 
@@ -83,14 +83,19 @@ const normalizeUserAccessFields: CollectionBeforeChangeHook = async ({
     return data
   }
 
+  if (roleChanged) {
+    data.capabilities = getCapabilitiesForRole(nextRole)
+    return data
+  }
+
   if (data.capabilities !== undefined) {
     data.capabilities = toAdminCapabilitiesMap(data.capabilities)
     return data
   }
 
-  data.capabilities = roleChanged
-    ? getCapabilitiesForRole(nextRole)
-    : toAdminCapabilitiesMap(originalDoc?.capabilities ?? getCapabilitiesForRole(nextRole))
+  data.capabilities = toAdminCapabilitiesMap(
+    originalDoc?.capabilities ?? getCapabilitiesForRole(nextRole),
+  )
 
   return data
 }
@@ -131,13 +136,14 @@ export const Users: CollectionConfig = {
     {
       name: 'role',
       type: 'select',
-      defaultValue: 'editor',
+      defaultValue: 'contentManager',
       options: [...editorialRoleOptions],
       required: true,
       saveToJWT: true,
       admin: {
         condition: showOnlyForAuthenticatedAdminUser,
-        description: 'Controls the editorial role for this user.',
+        description:
+          'Choose the base access preset for this user. Saving a changed non-admin role reapplies that role default.',
         position: 'sidebar',
       },
     },
@@ -148,7 +154,7 @@ export const Users: CollectionConfig = {
       admin: {
         condition: showCapabilitiesForNonAdminRole,
         description:
-          'Adjust capability overrides for non-admin users. Role defaults apply when no overrides are set.',
+          'Role presets define the default access bundle for non-admin users. After saving the role, adjust these checkboxes only for explicit exceptions.',
       },
       fields: [...adminCapabilityCheckboxFields],
     },
