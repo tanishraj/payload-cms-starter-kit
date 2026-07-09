@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { ReviewPage } from '@/components/reviews/ReviewPage'
-import { getReviewBySlug, getReviewMetadataBySlug } from '@/lib/contentEntries'
+import { getRelatedReviews, getReviewBySlug, getReviewMetadataBySlug } from '@/lib/contentEntries'
 
 type PageProps = {
   params: Promise<{
@@ -24,5 +24,12 @@ export default async function ReviewEntryPage({ params }: PageProps) {
     notFound()
   }
 
-  return <ReviewPage review={review} />
+  const relatedReviews = await getRelatedReviews(review)
+
+  return (
+    <ReviewPage
+      review={review}
+      relatedReviews={relatedReviews}
+    />
+  )
 }

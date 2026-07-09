@@ -43,7 +43,13 @@ describe('articles collection', () => {
     const tabsField = Articles.fields.find((field) => field.type === 'tabs')
 
     expect(tabsField).toBeDefined()
+    expect(Articles.admin?.defaultColumns).toContain('primaryCategory')
     expect(JSON.stringify(tabsField)).toContain('"name":"body"')
+    expect(JSON.stringify(tabsField)).toContain('"name":"primaryCategory"')
+    expect(JSON.stringify(tabsField)).toContain('"relationTo":"categories"')
+    expect(JSON.stringify(tabsField)).toContain('"name":"tags"')
+    expect(JSON.stringify(tabsField)).toContain('"relationTo":"tags"')
+    expect(JSON.stringify(tabsField)).toContain('"name":"categories"')
     expect(JSON.stringify(tabsField)).toContain('"type":"richText"')
     expect(JSON.stringify(tabsField)).toContain('"name":"metaTitle"')
     expect(JSON.stringify(tabsField)).toContain('"name":"workflowState"')

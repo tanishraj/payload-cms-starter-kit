@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 import { Articles } from './collections/Articles'
+import { Categories } from './collections/Categories'
 import { Users } from './collections/Users'
 import { Footers } from './collections/Footers'
 import { FormSubmissions } from './collections/FormSubmissions'
@@ -14,6 +15,7 @@ import { NavigationLinks } from './collections/NavigationLinks'
 import { Pages } from './collections/Pages'
 import { Redirects } from './collections/Redirects'
 import { Reviews } from './collections/Reviews'
+import { Tags } from './collections/Tags'
 import { Headers } from './collections/Headers'
 import { OperationalAuditEvents } from './collections/OperationalAuditEvents'
 import { SystemPages } from './collections/SystemPages'
@@ -44,6 +46,8 @@ export default buildConfig({
   },
   collections: [
     Pages,
+    Categories,
+    Tags,
     Articles,
     Reviews,
     NavigationLinks,

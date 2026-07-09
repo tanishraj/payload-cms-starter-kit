@@ -8,6 +8,7 @@ import {
 } from '@/access/adminCapabilities'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
+import { syncPrimaryCategoryMembership } from '@/hooks/syncPrimaryCategoryMembership'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 import { robotsFieldOptions } from '@/lib/seo'
 
@@ -42,7 +43,7 @@ export const Articles: CollectionConfig = {
     group: 'Content',
     hidden: hideFromUsersWithoutCapability('manage_articles'),
     useAsTitle: 'title',
-    defaultColumns: ['title', 'slug', 'workflowState', 'updatedAt'],
+    defaultColumns: ['title', 'primaryCategory', 'slug', 'workflowState', 'updatedAt'],
     description: 'Editorial long-form content with writing-first authoring and SEO controls.',
     listSearchableFields: ['title', 'slug', 'authorName'],
     livePreview: {
@@ -74,7 +75,7 @@ export const Articles: CollectionConfig = {
         titleField: 'title',
       }),
     ],
-    beforeChange: [enforceEditorialWorkflow('publish_articles')],
+    beforeChange: [syncPrimaryCategoryMembership, enforceEditorialWorkflow('publish_articles')],
   },
   versions: {
     drafts: true,
@@ -95,6 +96,42 @@ export const Articles: CollectionConfig = {
         {
           label: 'Content',
           fields: [
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'primaryCategory',
+                  type: 'relationship',
+                  relationTo: 'categories',
+                  required: true,
+                  admin: {
+                    description:
+                      'Primary category that owns article archive placement and related-content priority.',
+                    width: '50%',
+                  },
+                },
+                {
+                  name: 'tags',
+                  type: 'relationship',
+                  relationTo: 'tags',
+                  hasMany: true,
+                  admin: {
+                    description: 'Optional topical tags for cross-linking and tag archives.',
+                    width: '50%',
+                  },
+                },
+              ],
+            },
+            {
+              name: 'categories',
+              type: 'relationship',
+              relationTo: 'categories',
+              hasMany: true,
+              admin: {
+                description:
+                  'Supporting categories for cross-linking. The primary category is always included automatically.',
+              },
+            },
             {
               name: 'excerpt',
               type: 'textarea',

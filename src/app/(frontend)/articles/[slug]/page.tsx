@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { ArticlePage } from '@/components/articles/ArticlePage'
-import { getArticleBySlug, getArticleMetadataBySlug } from '@/lib/contentEntries'
+import { getArticleBySlug, getArticleMetadataBySlug, getRelatedArticles } from '@/lib/contentEntries'
 
 type PageProps = {
   params: Promise<{
@@ -24,5 +24,12 @@ export default async function ArticleEntryPage({ params }: PageProps) {
     notFound()
   }
 
-  return <ArticlePage article={article} />
+  const relatedArticles = await getRelatedArticles(article)
+
+  return (
+    <ArticlePage
+      article={article}
+      relatedArticles={relatedArticles}
+    />
+  )
 }

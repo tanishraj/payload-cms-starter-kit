@@ -8,6 +8,7 @@ import {
 import { ContentSpotlightBlock } from '@/blocks/ContentSpotlight/config'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
+import { syncPrimaryCategoryMembership } from '@/hooks/syncPrimaryCategoryMembership'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 import { reviewRatingOptions } from '@/lib/reviews'
 import { robotsFieldOptions } from '@/lib/seo'
@@ -43,7 +44,7 @@ export const Reviews: CollectionConfig = {
     group: 'Content',
     hidden: hideFromUsersWithoutCapability('manage_reviews'),
     useAsTitle: 'title',
-    defaultColumns: ['title', 'rating', 'workflowState', 'updatedAt'],
+    defaultColumns: ['title', 'primaryCategory', 'rating', 'workflowState', 'updatedAt'],
     description: 'Moderated public reviews with structured fields and supplemental layout blocks.',
     listSearchableFields: ['title', 'reviewTitle', 'reviewerName', 'subjectLabel'],
     livePreview: {
@@ -75,7 +76,7 @@ export const Reviews: CollectionConfig = {
         titleField: 'title',
       }),
     ],
-    beforeChange: [enforceEditorialWorkflow('publish_reviews')],
+    beforeChange: [syncPrimaryCategoryMembership, enforceEditorialWorkflow('publish_reviews')],
   },
   versions: {
     drafts: true,
@@ -96,6 +97,43 @@ export const Reviews: CollectionConfig = {
         {
           label: 'Content',
           fields: [
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'primaryCategory',
+                  type: 'relationship',
+                  relationTo: 'categories',
+                  required: true,
+                  admin: {
+                    description:
+                      'Primary category that owns review archive placement and related-content priority.',
+                    width: '50%',
+                  },
+                },
+                {
+                  name: 'tags',
+                  type: 'relationship',
+                  relationTo: 'tags',
+                  hasMany: true,
+                  admin: {
+                    description:
+                      'Optional topical tags used for related-content matching and editorial organization.',
+                    width: '50%',
+                  },
+                },
+              ],
+            },
+            {
+              name: 'categories',
+              type: 'relationship',
+              relationTo: 'categories',
+              hasMany: true,
+              admin: {
+                description:
+                  'Supporting categories for cross-linking. The primary category is always included automatically.',
+              },
+            },
             {
               type: 'row',
               fields: [

@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   adminOrFirstUserAccess,
   allowPublicReadOrCapability,
+  canReadTaxonomy,
   canManageSystemModes,
   canPublishArticles,
   canPublishPages,
@@ -58,6 +59,7 @@ describe('editorial roles', () => {
         manage_articles: false,
         manage_pages: true,
         manage_reviews: false,
+        manage_taxonomy: false,
         publish_articles: false,
         publish_pages: false,
         publish_reviews: false,
@@ -69,6 +71,7 @@ describe('editorial roles', () => {
     expect(getDefaultCapabilitiesForRole('publisher')).toEqual(
       expect.objectContaining({
         manage_pages: true,
+        manage_taxonomy: false,
         publish_articles: true,
         publish_pages: true,
         publish_reviews: true,
@@ -81,6 +84,7 @@ describe('editorial roles', () => {
   it('gives admins unconditional access to article and review capabilities', () => {
     expect(requireCapability('manage_articles')(toAccessReq(createReq({ role: 'admin' })))).toBe(true)
     expect(requireCapability('manage_reviews')(toAccessReq(createReq({ role: 'admin' })))).toBe(true)
+    expect(requireCapability('manage_taxonomy')(toAccessReq(createReq({ role: 'admin' })))).toBe(true)
     expect(requireCapability('publish_articles')(toAccessReq(createReq({ role: 'admin' })))).toBe(true)
     expect(requireCapability('publish_reviews')(toAccessReq(createReq({ role: 'admin' })))).toBe(true)
   })
@@ -123,6 +127,26 @@ describe('editorial roles', () => {
     expect(canManageSystemModes(editor)).toBe(false)
     expect(canManageSystemModes(marketingOps)).toBe(true)
     expect(canViewOperationalAudit(publisher)).toBe(true)
+  })
+
+  it('allows content operators to read taxonomy without granting taxonomy management', () => {
+    expect(
+      canReadTaxonomy({
+        role: 'editor',
+        capabilities: {
+          manage_articles: true,
+        },
+      }),
+    ).toBe(true)
+
+    expect(
+      canReadTaxonomy({
+        role: 'editor',
+        capabilities: {
+          manage_pages: true,
+        },
+      }),
+    ).toBe(false)
   })
 })
 
@@ -208,6 +232,7 @@ describe('user normalization hook', () => {
     expect(editorResult.capabilities).toEqual(
       expect.objectContaining({
         manage_pages: true,
+        manage_taxonomy: false,
         publish_pages: false,
         manage_system_modes: false,
       }),

@@ -15,6 +15,10 @@ export type AdminRole = EditorialRole
 
 export const adminCapabilityFieldOptions = [
   {
+    label: 'Taxonomy',
+    value: 'manage_taxonomy',
+  },
+  {
     label: 'Manage Articles',
     value: 'manage_articles',
   },
@@ -304,6 +308,20 @@ export const canManageSystemModes = (user: AdminUserLike | null | undefined): bo
 
 export const canViewOperationalAudit = (user: AdminUserLike | null | undefined): boolean => {
   return hasAdminCapability(user, 'view_operational_audit')
+}
+
+export const canManageTaxonomy = (user: AdminUserLike | null | undefined): boolean => {
+  return hasAdminCapability(user, 'manage_taxonomy')
+}
+
+export const canReadTaxonomy = (user: AdminUserLike | null | undefined): boolean => {
+  return ([
+    'manage_taxonomy',
+    'manage_articles',
+    'publish_articles',
+    'manage_reviews',
+    'publish_reviews',
+  ] as AdminCapability[]).some((capability) => hasAdminCapability(user, capability))
 }
 
 const allCapabilitiesEnabled = (): AdminCapabilitiesMap => {

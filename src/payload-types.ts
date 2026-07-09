@@ -68,6 +68,8 @@ export interface Config {
   blocks: {};
   collections: {
     pages: Page;
+    categories: Category;
+    tags: Tag;
     articles: Article;
     reviews: Review;
     'navigation-links': NavigationLink;
@@ -88,6 +90,8 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     'navigation-links': NavigationLinksSelect<false> | NavigationLinksSelect<true>;
@@ -421,6 +425,10 @@ export interface User {
    */
   capabilities?: {
     /**
+     * Allow access to Taxonomy.
+     */
+    manage_taxonomy?: boolean | null;
+    /**
      * Allow access to Articles.
      */
     manage_articles?: boolean | null;
@@ -526,6 +534,54 @@ export interface User {
   collection: 'users';
 }
 /**
+ * Reusable hierarchical content categories for articles and reviews.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Optional parent category for building a reusable category tree.
+   */
+  parent?: (number | null) | Category;
+  /**
+   * Optional short description for archive pages and editorial context.
+   */
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
+ * Reusable topical labels for cross-linking content across archives and related sections.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Optional short description for editorial context and tag archive metadata.
+   */
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
  * Editorial long-form content with writing-first authoring and SEO controls.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -539,6 +595,18 @@ export interface Article {
    */
   generateSlug?: boolean | null;
   slug: string;
+  /**
+   * Primary category that owns article archive placement and related-content priority.
+   */
+  primaryCategory: number | Category;
+  /**
+   * Optional topical tags for cross-linking and tag archives.
+   */
+  tags?: (number | Tag)[] | null;
+  /**
+   * Supporting categories for cross-linking. The primary category is always included automatically.
+   */
+  categories?: (number | Category)[] | null;
   excerpt: string;
   featuredImage?: (number | null) | Media;
   authorName: string;
@@ -615,6 +683,18 @@ export interface Review {
    */
   generateSlug?: boolean | null;
   slug: string;
+  /**
+   * Primary category that owns review archive placement and related-content priority.
+   */
+  primaryCategory: number | Category;
+  /**
+   * Optional topical tags used for related-content matching and editorial organization.
+   */
+  tags?: (number | Tag)[] | null;
+  /**
+   * Supporting categories for cross-linking. The primary category is always included automatically.
+   */
+  categories?: (number | Category)[] | null;
   rating: '1' | '2' | '3' | '4' | '5';
   /**
    * Optional short subject like product, service, or campaign label.
@@ -1090,6 +1170,14 @@ export interface PayloadLockedDocument {
         value: number | Page;
       } | null)
     | ({
+        relationTo: 'categories';
+        value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'tags';
+        value: number | Tag;
+      } | null)
+    | ({
         relationTo: 'articles';
         value: number | Article;
       } | null)
@@ -1252,12 +1340,42 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  parent?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "articles_select".
  */
 export interface ArticlesSelect<T extends boolean = true> {
   title?: T;
   generateSlug?: T;
   slug?: T;
+  primaryCategory?: T;
+  tags?: T;
+  categories?: T;
   excerpt?: T;
   featuredImage?: T;
   authorName?: T;
@@ -1290,6 +1408,9 @@ export interface ReviewsSelect<T extends boolean = true> {
   title?: T;
   generateSlug?: T;
   slug?: T;
+  primaryCategory?: T;
+  tags?: T;
+  categories?: T;
   rating?: T;
   subjectLabel?: T;
   reviewTitle?: T;
@@ -1715,6 +1836,7 @@ export interface UsersSelect<T extends boolean = true> {
   capabilities?:
     | T
     | {
+        manage_taxonomy?: T;
         manage_articles?: T;
         manage_pages?: T;
         manage_navigation?: T;
