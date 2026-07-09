@@ -48,6 +48,7 @@ See [docs/architecture/content-model-map.md](docs/architecture/content-model-map
 
 ## Handoff Docs
 
+- [CMS operator guide](docs/guides/README.md)
 - [Starter clone checklist](docs/operations/starter-clone-checklist.md)
 - [Content model map](docs/architecture/content-model-map.md)
 - [Editorial governance](docs/operations/editorial-governance.md)
