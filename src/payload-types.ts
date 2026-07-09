@@ -1189,26 +1189,86 @@ export interface OperationalAuditEvent {
  */
 export interface WorkQueue {
   id: number;
+  /**
+   * System-generated queue summary. This reflects the current source condition.
+   */
   summary: string;
+  /**
+   * Additional source context captured during queue sync.
+   */
   details?: string | null;
+  /**
+   * Why this item exists in the queue.
+   */
   queueType: 'approval' | 'moderation' | 'follow_up' | 'publish_issue' | 'media_issue' | 'system_issue';
   reasonCode: string;
+  /**
+   * Operator-set urgency for sorting and triage.
+   */
   priority: 'low' | 'normal' | 'high' | 'urgent';
+  /**
+   * Current handling state for this queue item.
+   */
   status: 'open' | 'in_progress' | 'blocked' | 'resolved' | 'canceled';
+  /**
+   * Operator responsible for resolving this item.
+   */
   assignee?: (number | null) | User;
+  /**
+   * Optional target date for follow-up or resolution.
+   */
   dueDate?: string | null;
+  /**
+   * Internal notes for triage, follow-up, and coordination.
+   */
   operatorNotes?: string | null;
+  /**
+   * What resolved or canceled the operational work.
+   */
   resolutionSummary?: string | null;
+  /**
+   * Collection that originated this work item.
+   */
   sourceCollection: string;
+  /**
+   * Source document identifier.
+   */
   sourceID: string;
+  /**
+   * Saved slug snapshot when the source provides one.
+   */
   sourceSlug?: string | null;
+  /**
+   * Source document title at the last sync.
+   */
   sourceTitle: string;
+  /**
+   * Direct admin route back to the underlying source record.
+   */
   sourceAdminPath?: string | null;
+  /**
+   * Last known source update timestamp at queue sync time.
+   */
   sourceUpdatedAt?: string | null;
+  /**
+   * Canonical key that prevents duplicate queue items for the same condition.
+   */
   dedupeKey: string;
+  /**
+   * Set when the source condition closed the queue item automatically.
+   */
   autoResolved?: boolean | null;
+  /**
+   * When this queue item was first created.
+   */
   firstOpenedAt: string;
+  /**
+   * Most recent sync time from the source document.
+   */
   lastSyncedAt: string;
+  /**
+   * When the queue item reached a terminal state.
+   */
   resolvedAt?: string | null;
   updatedAt: string;
   createdAt: string;

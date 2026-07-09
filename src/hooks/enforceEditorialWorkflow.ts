@@ -8,6 +8,10 @@ import {
   canPublishSystemPages,
 } from '@/access/adminCapabilities'
 import type { EditorialWorkflowState } from '@/lib/editorialWorkflow'
+import {
+  findBlockingPublishQueueItems,
+  formatBlockingPublishQueueMessage,
+} from '@/lib/workQueue'
 
 type PublishCapability =
   | 'publish_articles'
@@ -15,8 +19,10 @@ type PublishCapability =
   | 'publish_reviews'
   | 'publish_system_pages'
 type DocStatus = 'draft' | 'published'
+type QueueAwareCollection = 'pages' | 'articles' | 'reviews' | 'system-pages'
 
 type WorkflowDoc = {
+  id?: number | string | null
   _status?: DocStatus | null
   changeSummary?: string | null
   lastReviewedAt?: string | null
@@ -81,7 +87,10 @@ const resolveWorkflowState = (
 }
 
 export const enforceEditorialWorkflow =
-  (publishCapability: PublishCapability): CollectionBeforeChangeHook<WorkflowDoc> =>
+  (
+    publishCapability: PublishCapability,
+    sourceCollection?: QueueAwareCollection,
+  ): CollectionBeforeChangeHook<WorkflowDoc> =>
   async ({ data, originalDoc, req }) => {
     const nextData: WorkflowDoc = {
       ...(data ?? {}),
@@ -118,6 +127,20 @@ export const enforceEditorialWorkflow =
     }
 
     if (nextState === 'published' || nextState === 'reverted') {
+      const sourceID = nextData.id ?? originalDoc?.id
+
+      if (nextState === 'published' && sourceCollection && sourceID != null) {
+        const blockingItems = await findBlockingPublishQueueItems({
+          req,
+          sourceCollection,
+          sourceID,
+        })
+
+        if (blockingItems.length > 0) {
+          throw new APIError(formatBlockingPublishQueueMessage(blockingItems), 400)
+        }
+      }
+
       nextData._status = 'published'
       nextData.publishedAt = now
       nextData.publishedBy = userID

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
 
@@ -8,8 +8,12 @@ const createReq = (
     role?: string
     capabilities?: Record<string, boolean>
   },
+  payload?: {
+    find?: (...args: unknown[]) => Promise<{ docs: Array<{ summary?: string | null }> }>
+  },
 ) =>
   ({
+    payload,
     user,
   }) as never
 
@@ -93,27 +97,122 @@ describe('editorial workflow guardrails', () => {
     ).rejects.toThrow('Scheduled content requires scheduledPublishAt.')
   })
 
-  it('records publish metadata for publishers', async () => {
-    const hook = enforceEditorialWorkflow('publish_pages')
+  it('allows scheduling even when blocking queue items exist', async () => {
+    const find = vi.fn(async () => ({
+      docs: [
+        {
+          summary: 'Homepage is awaiting editorial approval.',
+        },
+      ],
+    }))
+    const hook = enforceEditorialWorkflow('publish_pages', 'pages')
 
     await expect(
       hook({
         data: {
+          id: 7,
+          workflowState: 'scheduled',
+          scheduledPublishAt: '2026-07-10T08:00:00.000Z',
+        },
+        operation: 'update',
+        originalDoc: {
+          id: 7,
+          _status: 'draft',
+          workflowState: 'in_review',
+        },
+        req: createReq(
+          {
+            id: 2,
+            role: 'publisher',
+            capabilities: {
+              publish_pages: true,
+            },
+          },
+          {
+            find,
+          },
+        ),
+      } as never),
+    ).resolves.toEqual(
+      expect.objectContaining({
+        _status: 'draft',
+        workflowState: 'scheduled',
+        scheduledPublishAt: '2026-07-10T08:00:00.000Z',
+      }),
+    )
+
+    expect(find).not.toHaveBeenCalled()
+  })
+
+  it('blocks publish when a blocking queue item exists', async () => {
+    const find = vi.fn(async () => ({
+      docs: [
+        {
+          summary: 'Homepage is awaiting editorial approval.',
+        },
+      ],
+    }))
+    const hook = enforceEditorialWorkflow('publish_pages', 'pages')
+
+    await expect(
+      hook({
+        data: {
+          id: 7,
+          workflowState: 'published',
+        },
+        operation: 'update',
+        originalDoc: {
+          id: 7,
+          _status: 'draft',
+          workflowState: 'in_review',
+        },
+        req: createReq(
+          {
+            id: 2,
+            role: 'publisher',
+            capabilities: {
+              publish_pages: true,
+            },
+          },
+          {
+            find,
+          },
+        ),
+      } as never),
+    ).rejects.toThrow('Cannot publish because Work Queue still has a blocking item')
+  })
+
+  it('records publish metadata for publishers', async () => {
+    const find = vi.fn(async () => ({
+      docs: [],
+    }))
+    const hook = enforceEditorialWorkflow('publish_pages', 'pages')
+
+    await expect(
+      hook({
+        data: {
+          id: 7,
           workflowState: 'published',
           changeSummary: 'Approved for launch.',
         },
         operation: 'update',
         originalDoc: {
+          id: 7,
           _status: 'draft',
           workflowState: 'in_review',
         },
-        req: createReq({
-          id: 2,
-          role: 'publisher',
-          capabilities: {
-            publish_pages: true,
+        req: createReq(
+          {
+            id: 2,
+            role: 'publisher',
+            capabilities: {
+              publish_pages: true,
+            },
           },
-        }),
+          {
+            find,
+          },
+        ),
       } as never),
     ).resolves.toEqual(
       expect.objectContaining({
@@ -123,5 +222,7 @@ describe('editorial workflow guardrails', () => {
         publishedBy: 2,
       }),
     )
+
+    expect(find).toHaveBeenCalledTimes(1)
   })
 })

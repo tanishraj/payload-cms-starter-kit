@@ -15,7 +15,7 @@ export type WorkQueueType =
   | 'media_issue'
   | 'system_issue'
 
-type WorkQueueRecord = {
+export type WorkQueueRecord = {
   id: number | string
   autoResolved?: boolean | null
   assignee?: number | string | { id?: number | string } | null
@@ -36,6 +36,9 @@ type WorkQueueRecord = {
   status?: WorkQueueStatus | null
   summary?: string | null
 }
+
+const blockingPublishStatuses: WorkQueueStatus[] = ['open', 'blocked']
+const blockingPublishQueueTypes: WorkQueueType[] = ['approval', 'publish_issue']
 
 export type UpsertWorkQueueItemArgs = {
   dedupeKey: string
@@ -98,6 +101,66 @@ const findWorkQueueRecord = async ({
   })
 
   return (result.docs[0] as WorkQueueRecord | undefined) ?? null
+}
+
+export const findBlockingPublishQueueItems = async ({
+  req,
+  sourceCollection,
+  sourceID,
+}: {
+  req: PayloadRequest
+  sourceCollection: string
+  sourceID: number | string
+}): Promise<WorkQueueRecord[]> => {
+  const result = await req.payload.find({
+    collection: 'work-queue',
+    depth: 0,
+    limit: 10,
+    overrideAccess: true,
+    req,
+    sort: 'summary',
+    where: {
+      and: [
+        {
+          sourceCollection: {
+            equals: sourceCollection,
+          },
+        },
+        {
+          sourceID: {
+            equals: String(sourceID),
+          },
+        },
+        {
+          status: {
+            in: blockingPublishStatuses,
+          },
+        },
+        {
+          queueType: {
+            in: blockingPublishQueueTypes,
+          },
+        },
+      ],
+    },
+  })
+
+  return result.docs as WorkQueueRecord[]
+}
+
+export const formatBlockingPublishQueueMessage = (
+  items: Array<{
+    summary?: string | null
+  }>,
+): string => {
+  const [first, ...rest] = items
+  const firstSummary = first?.summary || 'Unresolved publish blocker'
+
+  if (rest.length === 0) {
+    return `Cannot publish because Work Queue still has a blocking item: "${firstSummary}". Resolve it in Work Queue before publishing.`
+  }
+
+  return `Cannot publish because Work Queue still has blocking items: "${firstSummary}" and ${rest.length} more. Resolve them in Work Queue before publishing.`
 }
 
 export const upsertWorkQueueItem = async ({

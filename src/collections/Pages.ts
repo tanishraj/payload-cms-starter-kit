@@ -169,7 +169,7 @@ export const Pages: CollectionConfig = {
     afterDelete: [syncNavigationLinkAfterDelete],
     beforeChange: [
       validateSEOContract(),
-      enforceEditorialWorkflow('publish_pages'),
+      enforceEditorialWorkflow('publish_pages', 'pages'),
       preventReferencedPageUnpublish,
       migrateLegacyPageLinksBeforeChange,
     ],

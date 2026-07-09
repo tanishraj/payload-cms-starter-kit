@@ -10,6 +10,8 @@ import {
 } from '@/hooks/syncWorkflowStateToWorkQueue'
 import {
   buildWorkQueueDedupeKey,
+  findBlockingPublishQueueItems,
+  formatBlockingPublishQueueMessage,
   resolveWorkQueueItem,
   upsertWorkQueueItem,
 } from '@/lib/workQueue'
@@ -76,6 +78,88 @@ describe('work queue collection', () => {
         reasonCode: 'workflow-action-required',
       }),
     ).toBe('pages:12:approval:workflow-action-required')
+  })
+
+  it('finds blocking publish queue items by source identity, status, and queue type', async () => {
+    const docs = [
+      {
+        id: 17,
+        queueType: 'approval',
+        sourceCollection: 'pages',
+        sourceID: '12',
+        status: 'open',
+        summary: 'Homepage is awaiting editorial approval.',
+      },
+    ]
+    const req = createReq({ docs })
+
+    await expect(
+      findBlockingPublishQueueItems({
+        req,
+        sourceCollection: 'pages',
+        sourceID: 12,
+      }),
+    ).resolves.toEqual(docs)
+
+    expect(req.payload.find).toHaveBeenCalledWith({
+      collection: 'work-queue',
+      depth: 0,
+      limit: 10,
+      overrideAccess: true,
+      req,
+      sort: 'summary',
+      where: {
+        and: [
+          {
+            sourceCollection: {
+              equals: 'pages',
+            },
+          },
+          {
+            sourceID: {
+              equals: '12',
+            },
+          },
+          {
+            status: {
+              in: ['open', 'blocked'],
+            },
+          },
+          {
+            queueType: {
+              in: ['approval', 'publish_issue'],
+            },
+          },
+        ],
+      },
+    })
+  })
+
+  it('formats one blocking queue summary into a publish-safe error message', () => {
+    expect(
+      formatBlockingPublishQueueMessage([
+        {
+          summary: 'Homepage is awaiting editorial approval.',
+        },
+      ]),
+    ).toBe(
+      'Cannot publish because Work Queue still has a blocking item: "Homepage is awaiting editorial approval.". Resolve it in Work Queue before publishing.',
+    )
+  })
+
+  it('formats multiple blocking queue summaries with an additional blocker count', () => {
+    expect(
+      formatBlockingPublishQueueMessage([
+        {
+          summary: 'Homepage is awaiting editorial approval.',
+        },
+        {
+          summary: 'Publish checklist is incomplete.',
+        },
+      ]),
+    ).toBe(
+      'Cannot publish because Work Queue still has blocking items: "Homepage is awaiting editorial approval." and 1 more. Resolve them in Work Queue before publishing.',
+    )
   })
 
   it('creates a new queue item when no matching dedupe key exists', async () => {

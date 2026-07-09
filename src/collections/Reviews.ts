@@ -82,7 +82,7 @@ export const Reviews: CollectionConfig = {
     beforeChange: [
       syncPrimaryCategoryMembership,
       validateSEOContract(),
-      enforceEditorialWorkflow('publish_reviews'),
+      enforceEditorialWorkflow('publish_reviews', 'reviews'),
     ],
   },
   versions: {

@@ -109,7 +109,7 @@ export const SystemPages: CollectionConfig = {
     ],
     beforeChange: [
       validateSEOContract(),
-      enforceEditorialWorkflow('publish_system_pages'),
+      enforceEditorialWorkflow('publish_system_pages', 'system-pages'),
       preventReferencedSystemPageInvalidation,
       migrateLegacySystemPageLinksBeforeChange,
     ],

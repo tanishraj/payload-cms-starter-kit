@@ -100,7 +100,7 @@ export const Articles: CollectionConfig = {
     beforeChange: [
       syncPrimaryCategoryMembership,
       validateSEOContract(),
-      enforceEditorialWorkflow('publish_articles'),
+      enforceEditorialWorkflow('publish_articles', 'articles'),
     ],
   },
   versions: {
