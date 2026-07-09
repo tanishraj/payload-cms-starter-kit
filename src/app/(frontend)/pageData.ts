@@ -1,7 +1,6 @@
 import configPromise from '@payload-config'
 import { headers } from 'next/headers'
 import { getPayload, type Where } from 'payload'
-import { cache } from 'react'
 
 import type { Metadata } from 'next'
 import { isAdminUser } from '@/access/adminCapabilities'
@@ -26,7 +25,7 @@ const extractRelationshipID = (
   return null
 }
 
-const getPageSettings = cache(async () => {
+const getPageSettings = async () => {
   const payload = await getPayload({
     config: configPromise,
   })
@@ -35,9 +34,9 @@ const getPageSettings = cache(async () => {
     slug: 'page-settings',
     depth: 0,
   })
-})
+}
 
-const getSystemModeSettings = cache(async () => {
+const getSystemModeSettings = async () => {
   const payload = await getPayload({
     config: configPromise,
   })
@@ -46,9 +45,9 @@ const getSystemModeSettings = cache(async () => {
     slug: 'system-mode-settings',
     depth: 0,
   })
-})
+}
 
-const getSeoSettings = cache(async (): Promise<SeoSetting> => {
+const getSeoSettings = async (): Promise<SeoSetting> => {
   const payload = await getPayload({
     config: configPromise,
   })
@@ -57,9 +56,9 @@ const getSeoSettings = cache(async (): Promise<SeoSetting> => {
     slug: 'seo-settings',
     depth: 1,
   })
-})
+}
 
-const canCurrentRequestBypassSystemModes = cache(async (): Promise<boolean> => {
+const canCurrentRequestBypassSystemModes = async (): Promise<boolean> => {
   const systemModeSettings = await getSystemModeSettings()
 
   if (!systemModeSettings.bypassForLoggedInAdmins) {
@@ -76,47 +75,43 @@ const canCurrentRequestBypassSystemModes = cache(async (): Promise<boolean> => {
   })
 
   return isAdminUser(authResult.user as { role?: string } | null | undefined)
-})
+}
 
-const getPublishedPageByID = cache(
-  async ({
-    depth = 2,
-    id,
-  }: {
-    depth?: number
-    id: number
-  }): Promise<Page | null> => {
-    const payload = await getPayload({
-      config: configPromise,
-    })
+const getPublishedPageByID = async ({
+  depth = 2,
+  id,
+}: {
+  depth?: number
+  id: number
+}): Promise<Page | null> => {
+  const payload = await getPayload({
+    config: configPromise,
+  })
 
-    const andConditions: Where[] = [
-      {
-        id: {
-          equals: id,
+  const result = await payload.find({
+    collection: 'pages',
+    where: {
+      and: [
+        {
+          id: {
+            equals: id,
+          },
         },
-      },
-      {
-        _status: {
-          equals: 'published',
+        {
+          _status: {
+            equals: 'published',
+          },
         },
-      },
-    ]
+      ],
+    },
+    depth,
+    limit: 1,
+  })
 
-    const result = await payload.find({
-      collection: 'pages',
-      where: {
-        and: andConditions,
-      },
-      depth,
-      limit: 1,
-    })
+  return result.docs[0] ?? null
+}
 
-    return result.docs[0] ?? null
-  },
-)
-
-export const getPageBySlug = cache(async (slug: string): Promise<Page | null> => {
+export const getPageBySlug = async (slug: string): Promise<Page | null> => {
   const payload = await getPayload({
     config: configPromise,
   })
@@ -142,9 +137,9 @@ export const getPageBySlug = cache(async (slug: string): Promise<Page | null> =>
   })
 
   return result.docs[0] ?? null
-})
+}
 
-const getPageByPathname = cache(async (pathname: string): Promise<Page | null> => {
+const getPageByPathname = async (pathname: string): Promise<Page | null> => {
   const segments = pathname.split('/').filter(Boolean)
 
   if (!segments.length) {
@@ -185,13 +180,13 @@ const getPageByPathname = cache(async (pathname: string): Promise<Page | null> =
   const resolvedSegments = getPageSlugSegments(page)
 
   return resolvedSegments.join('/') === pathname ? page : null
-})
+}
 
 export async function getPageByPath(segments: string[]): Promise<Page | null> {
   return getPageByPathname(segments.join('/'))
 }
 
-export const getHomepagePage = cache(async (): Promise<Page | null> => {
+export const getHomepagePage = async (): Promise<Page | null> => {
   const homepageID = extractRelationshipID((await getPageSettings()).homepage)
 
   if (homepageID == null) {
@@ -202,7 +197,7 @@ export const getHomepagePage = cache(async (): Promise<Page | null> => {
     depth: 2,
     id: homepageID,
   })
-})
+}
 
 export async function getHomepagePath(): Promise<string | null> {
   const homepage = await getHomepagePage()
@@ -273,55 +268,53 @@ const toManagedPageMetadata = async (page: Page): Promise<Metadata> => {
   }
 }
 
-const getPublishedSystemPageByID = cache(
-  async ({
-    depth = 1,
-    expectedType,
-    id,
-  }: {
-    depth?: number
-    expectedType?: SystemPageType
-    id: number
-  }): Promise<SystemPage | null> => {
-    const payload = await getPayload({
-      config: configPromise,
+const getPublishedSystemPageByID = async ({
+  depth = 1,
+  expectedType,
+  id,
+}: {
+  depth?: number
+  expectedType?: SystemPageType
+  id: number
+}): Promise<SystemPage | null> => {
+  const payload = await getPayload({
+    config: configPromise,
+  })
+
+  const andConditions: Where[] = [
+    {
+      id: {
+        equals: id,
+      },
+    },
+    {
+      _status: {
+        equals: 'published',
+      },
+    },
+  ]
+
+  if (expectedType) {
+    andConditions.push({
+      type: {
+        equals: expectedType,
+      },
     })
+  }
 
-    const andConditions: Where[] = [
-      {
-        id: {
-          equals: id,
-        },
-      },
-      {
-        _status: {
-          equals: 'published',
-        },
-      },
-    ]
+  const result = await payload.find({
+    collection: 'system-pages',
+    where: {
+      and: andConditions,
+    },
+    depth,
+    limit: 1,
+  })
 
-    if (expectedType) {
-      andConditions.push({
-        type: {
-          equals: expectedType,
-        },
-      })
-    }
+  return result.docs[0] ?? null
+}
 
-    const result = await payload.find({
-      collection: 'system-pages',
-      where: {
-        and: andConditions,
-      },
-      depth,
-      limit: 1,
-    })
-
-    return result.docs[0] ?? null
-  },
-)
-
-const getSystemBehaviorPages = cache(async () => {
+const getSystemBehaviorPages = async () => {
   const systemModeSettings = await getSystemModeSettings()
   const [notFoundPage, maintenancePage, comingSoonPage] = await Promise.all([
     extractRelationshipID(systemModeSettings.notFoundPage)
@@ -354,7 +347,7 @@ const getSystemBehaviorPages = cache(async () => {
     notFoundPage,
     siteMode: systemModeSettings.siteMode ?? 'off',
   }
-})
+}
 
 export async function getSystemPageRenderState(_pathname: string): Promise<{
   mode: 'comingSoon' | 'maintenance' | null

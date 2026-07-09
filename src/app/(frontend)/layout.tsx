@@ -1,7 +1,7 @@
 import configPromise from '@payload-config'
 import Script from 'next/script'
 import { getPayload } from 'payload'
-import React, { cache } from 'react'
+import React from 'react'
 
 import '../../styles/globals.css'
 
@@ -18,7 +18,7 @@ export const dynamic = 'force-dynamic'
 const validThemeColors = new Set(['default', 'blue', 'sera'])
 const defaultSiteURL = getSiteURL()
 
-const getFrontendGlobals = cache(async () => {
+const getFrontendGlobals = async () => {
   const payload = await getPayload({
     config: configPromise,
   })
@@ -73,7 +73,7 @@ const getFrontendGlobals = cache(async () => {
     siteSettings,
     themeSettings,
   }
-})
+}
 
 const defaultSiteTitle = 'Payload Blank Template'
 const defaultSiteDescription = 'A blank template using Payload in a Next.js app.'
