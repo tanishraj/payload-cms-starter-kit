@@ -8,8 +8,10 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { buildSEOFields } from '@/fields/buildSEOFields'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
+import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 import { systemPageTypeOptions, type SystemPageType } from '@/lib/systemPageTypes'
 
@@ -85,6 +87,7 @@ export const SystemPages: CollectionConfig = {
       }),
     ],
     beforeChange: [
+      validateSEOContract(),
       enforceEditorialWorkflow('publish_system_pages'),
       preventReferencedSystemPageInvalidation,
       migrateLegacySystemPageLinksBeforeChange,
@@ -138,19 +141,8 @@ export const SystemPages: CollectionConfig = {
           ],
         },
         {
-          label: 'Meta',
-          fields: [
-            {
-              name: 'metaTitle',
-              type: 'text',
-              required: true,
-            },
-            {
-              name: 'metaDescription',
-              type: 'textarea',
-              required: true,
-            },
-          ],
+          label: 'SEO',
+          fields: [...buildSEOFields()],
         },
         {
           label: 'Workflow',

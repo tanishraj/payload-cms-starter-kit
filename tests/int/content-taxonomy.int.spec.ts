@@ -27,12 +27,30 @@ const loadContentEntries = async () => {
 }
 
 const categoryDocs = [
-  { description: 'Editorial guides and explainers.', id: 1, slug: 'guides', title: 'Guides' },
+  {
+    canonicalURL: '/library/guides',
+    description: 'Editorial guides and explainers.',
+    id: 1,
+    metaDescription: 'Custom guides archive description.',
+    metaTitle: 'Guides Archive',
+    robotsMode: 'noindex',
+    slug: 'guides',
+    title: 'Guides',
+  },
   { description: 'Customer stories and testimonials.', id: 2, slug: 'stories', title: 'Stories' },
 ]
 
 const tagDocs = [
-  { description: 'Featured content.', id: 10, slug: 'featured', title: 'Featured' },
+  {
+    canonicalURL: '/topics/featured',
+    description: 'Featured content.',
+    id: 10,
+    metaDescription: 'Featured content archive.',
+    metaTitle: 'Featured Archive',
+    robotsMode: 'index',
+    slug: 'featured',
+    title: 'Featured',
+  },
   { description: 'Launch updates.', id: 11, slug: 'launch', title: 'Launch' },
 ]
 
@@ -179,6 +197,22 @@ describe('content taxonomy helpers', () => {
       'launch-story',
       'customer-proof',
     ])
+  })
+
+  it('resolves taxonomy archive metadata from term seo overrides first', async () => {
+    const { getArticleTagArchiveMetadataBySlug, getReviewCategoryArchiveMetadataBySlug } =
+      await loadContentEntries()
+    const articleTagMetadata = await getArticleTagArchiveMetadataBySlug('featured')
+    const reviewCategoryMetadata = await getReviewCategoryArchiveMetadataBySlug('guides')
+
+    expect(articleTagMetadata.title).toBe('Featured Archive')
+    expect(articleTagMetadata.description).toBe('Featured content archive.')
+    expect(articleTagMetadata.alternates?.canonical).toBe('http://localhost:3000/topics/featured')
+    expect(reviewCategoryMetadata.title).toBe('Guides Archive')
+    expect(reviewCategoryMetadata.robots).toEqual({
+      follow: true,
+      index: false,
+    })
   })
 
   it('prioritizes same-category articles before shared-tag matches', async () => {

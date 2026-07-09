@@ -6,12 +6,13 @@ import {
   requireCapability,
 } from '@/access/adminCapabilities'
 import { ContentSpotlightBlock } from '@/blocks/ContentSpotlight/config'
+import { buildSEOFields } from '@/fields/buildSEOFields'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
 import { syncPrimaryCategoryMembership } from '@/hooks/syncPrimaryCategoryMembership'
+import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 import { reviewRatingOptions } from '@/lib/reviews'
-import { robotsFieldOptions } from '@/lib/seo'
 
 const previewBreakpoints = [
   {
@@ -76,7 +77,11 @@ export const Reviews: CollectionConfig = {
         titleField: 'title',
       }),
     ],
-    beforeChange: [syncPrimaryCategoryMembership, enforceEditorialWorkflow('publish_reviews')],
+    beforeChange: [
+      syncPrimaryCategoryMembership,
+      validateSEOContract(),
+      enforceEditorialWorkflow('publish_reviews'),
+    ],
   },
   versions: {
     drafts: true,
@@ -245,78 +250,7 @@ export const Reviews: CollectionConfig = {
         },
         {
           label: 'SEO',
-          fields: [
-            {
-              name: 'metaTitle',
-              type: 'text',
-              required: true,
-            },
-            {
-              name: 'metaDescription',
-              type: 'textarea',
-              required: true,
-            },
-            {
-              type: 'row',
-              fields: [
-                {
-                  name: 'canonicalURL',
-                  label: 'Canonical URL Override',
-                  type: 'text',
-                  admin: {
-                    description:
-                      'Optional. Leave empty to use the resolved public review URL. Supports relative paths or full URLs.',
-                    width: '50%',
-                  },
-                },
-                {
-                  name: 'robots',
-                  type: 'select',
-                  options: [...robotsFieldOptions],
-                  admin: {
-                    description:
-                      'Optional. Leave empty to inherit the global robots setting for this review.',
-                    width: '50%',
-                  },
-                },
-              ],
-            },
-            {
-              type: 'row',
-              fields: [
-                {
-                  name: 'ogTitle',
-                  label: 'Open Graph Title',
-                  type: 'text',
-                  admin: {
-                    description:
-                      'Optional. Leave empty to use the review SEO title, then global defaults.',
-                    width: '50%',
-                  },
-                },
-                {
-                  name: 'ogImage',
-                  label: 'Open Graph Image',
-                  type: 'upload',
-                  relationTo: 'media',
-                  admin: {
-                    description:
-                      'Optional. Leave empty to use the global default social image.',
-                    width: '50%',
-                  },
-                },
-              ],
-            },
-            {
-              name: 'ogDescription',
-              label: 'Open Graph Description',
-              type: 'textarea',
-              admin: {
-                description:
-                  'Optional. Leave empty to use the review SEO description, then global defaults.',
-              },
-            },
-          ],
+          fields: [...buildSEOFields()],
         },
         {
           label: 'Workflow',

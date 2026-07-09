@@ -5,7 +5,7 @@ import { getPayload, type Where } from 'payload'
 import type { Metadata } from 'next'
 import { isAdminUser } from '@/access/adminCapabilities'
 import { getMediaAbsoluteUrl } from '@/lib/media'
-import { getRobotsMetadata } from '@/lib/seo'
+import { resolveCanonicalURL, resolveRobotsMode } from '@/lib/seo'
 import { toAbsoluteSiteUrl } from '@/lib/siteUrl'
 import type { Media, Page, SeoSetting, SystemPage } from '@/payload-types'
 import { getPageHref, getPageSlugSegments } from '@/lib/pagePaths'
@@ -223,23 +223,46 @@ const toBaseMetadata = (
   }
 }
 
-const toManagedPageMetadata = async (page: Page): Promise<Metadata> => {
-  const [pageSettings, seoSettings] = await Promise.all([getPageSettings(), getSeoSettings()])
+type ManagedRouteMetadataSource = {
+  canonicalURL?: string | null
+  fallbackDescription?: string | null
+  fallbackTitle?: string | null
+  metaDescription?: string | null
+  metaTitle?: string | null
+  ogDescription?: string | null
+  ogImage?: Media | number | null
+  ogTitle?: string | null
+  robotsMode?: string | null
+}
 
-  const homepageID = extractRelationshipID(pageSettings.homepage)
-  const isHomepage = homepageID != null && page.id === homepageID
-  const resolvedCanonicalPath = isHomepage ? '/' : getPageHref(page)
-  const canonicalValue = page.canonicalURL?.trim() || resolvedCanonicalPath
-  const canonicalUrl = canonicalValue ? toAbsoluteSiteUrl(canonicalValue) : undefined
+const toManagedRouteMetadata = async ({
+  entry,
+  resolvedCanonicalPath,
+}: {
+  entry: ManagedRouteMetadataSource
+  resolvedCanonicalPath: string
+}): Promise<Metadata> => {
+  const seoSettings = await getSeoSettings()
+  const resolvedCanonical = resolveCanonicalURL({
+    canonicalURL: entry.canonicalURL,
+    resolvedPath: resolvedCanonicalPath,
+  })
+  const canonicalUrl = resolvedCanonical ? toAbsoluteSiteUrl(resolvedCanonical) : undefined
   const defaultImageUrl = getMediaAbsoluteUrl(seoSettings.defaultImage)
-  const pageImageUrl = getMediaAbsoluteUrl(page.ogImage) ?? defaultImageUrl
-  const openGraphTitle = page.ogTitle || page.metaTitle || seoSettings.defaultTitle || undefined
+  const pageImageUrl = getMediaAbsoluteUrl(entry.ogImage) ?? defaultImageUrl
+  const resolvedTitle = entry.metaTitle || entry.fallbackTitle || seoSettings.defaultTitle || undefined
+  const resolvedDescription =
+    entry.metaDescription ||
+    entry.fallbackDescription ||
+    seoSettings.defaultDescription ||
+    undefined
+  const openGraphTitle = entry.ogTitle || resolvedTitle
   const openGraphDescription =
-    page.ogDescription || page.metaDescription || seoSettings.defaultDescription || undefined
+    entry.ogDescription || resolvedDescription
 
   return {
-    title: page.metaTitle,
-    description: page.metaDescription,
+    title: resolvedTitle,
+    description: resolvedDescription,
     alternates: canonicalUrl
       ? {
           canonical: canonicalUrl,
@@ -258,7 +281,11 @@ const toManagedPageMetadata = async (page: Page): Promise<Metadata> => {
           ]
         : undefined,
     },
-    robots: getRobotsMetadata(page.robots || seoSettings.robots),
+    robots: resolveRobotsMode({
+      inheritedRobots: seoSettings.robots,
+      robotsMode:
+        typeof entry.robotsMode === 'string' ? (entry.robotsMode as 'default' | 'index' | 'noindex') : null,
+    }),
     twitter: {
       card: pageImageUrl ? 'summary_large_image' : 'summary',
       title: openGraphTitle,
@@ -266,6 +293,31 @@ const toManagedPageMetadata = async (page: Page): Promise<Metadata> => {
       images: pageImageUrl ? [pageImageUrl] : undefined,
     },
   }
+}
+
+const toManagedPageMetadata = async (page: Page): Promise<Metadata> => {
+  const pageSettings = await getPageSettings()
+  const homepageID = extractRelationshipID(pageSettings.homepage)
+  const isHomepage = homepageID != null && page.id === homepageID
+  const resolvedCanonicalPath = isHomepage ? '/' : getPageHref(page)
+
+  return toManagedRouteMetadata({
+    entry: {
+      ...(page as unknown as ManagedRouteMetadataSource),
+      fallbackTitle: page.title,
+    },
+    resolvedCanonicalPath,
+  })
+}
+
+const toManagedSystemPageMetadata = async (page: SystemPage): Promise<Metadata> => {
+  return toManagedRouteMetadata({
+    entry: {
+      ...(page as unknown as ManagedRouteMetadataSource),
+      fallbackTitle: page.title,
+    },
+    resolvedCanonicalPath: '/',
+  })
 }
 
 const getPublishedSystemPageByID = async ({
@@ -401,7 +453,7 @@ export async function getPageMetadataByPath(segments: string[]): Promise<Metadat
   const systemPageState = await getSystemPageRenderState(pathname)
 
   if (systemPageState.page) {
-    return toBaseMetadata(systemPageState.page)
+    return toManagedSystemPageMetadata(systemPageState.page)
   }
 
   if (systemPageState.mode === 'maintenance') {
@@ -422,14 +474,16 @@ export async function getPageMetadataByPath(segments: string[]): Promise<Metadat
     return toManagedPageMetadata(page)
   }
 
-  return toBaseMetadata(await getManagedNotFoundPage())
+  const notFoundPage = await getManagedNotFoundPage()
+
+  return notFoundPage ? toManagedSystemPageMetadata(notFoundPage) : {}
 }
 
 export async function getHomepageMetadata(): Promise<Metadata> {
   const systemPageState = await getSystemPageRenderState('/')
 
   if (systemPageState.page) {
-    return toBaseMetadata(systemPageState.page)
+    return toManagedSystemPageMetadata(systemPageState.page)
   }
 
   if (systemPageState.mode === 'maintenance') {
@@ -450,5 +504,7 @@ export async function getHomepageMetadata(): Promise<Metadata> {
     return toManagedPageMetadata(homepage)
   }
 
-  return toBaseMetadata(await getManagedNotFoundPage())
+  const notFoundPage = await getManagedNotFoundPage()
+
+  return notFoundPage ? toManagedSystemPageMetadata(notFoundPage) : {}
 }

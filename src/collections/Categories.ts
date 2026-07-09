@@ -5,6 +5,8 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { buildSEOFields } from '@/fields/buildSEOFields'
+import { validateSEOContract } from '@/hooks/validateSEOContract'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -32,30 +34,47 @@ export const Categories: CollectionConfig = {
     ]),
     update: requireCapability('manage_taxonomy'),
   },
+  hooks: {
+    beforeChange: [validateSEOContract()],
+  },
   timestamps: true,
   fields: [
     {
-      name: 'title',
-      type: 'text',
-      required: true,
-    },
-    slugField({
-      useAsSlug: 'title',
-    }),
-    {
-      name: 'parent',
-      type: 'relationship',
-      relationTo: 'categories',
-      admin: {
-        description: 'Optional parent category for building a reusable category tree.',
-      },
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-      admin: {
-        description: 'Optional short description for archive pages and editorial context.',
-      },
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+            },
+            slugField({
+              useAsSlug: 'title',
+            }),
+            {
+              name: 'parent',
+              type: 'relationship',
+              relationTo: 'categories',
+              admin: {
+                description: 'Optional parent category for building a reusable category tree.',
+              },
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+              admin: {
+                description: 'Optional short description for archive pages and editorial context.',
+              },
+            },
+          ],
+        },
+        {
+          label: 'SEO',
+          fields: [...buildSEOFields()],
+        },
+      ],
     },
   ],
 }

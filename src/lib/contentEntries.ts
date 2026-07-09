@@ -4,26 +4,36 @@ import { cache } from 'react'
 
 import type { Metadata } from 'next'
 import { getMediaAbsoluteUrl } from '@/lib/media'
-import { getRobotsMetadata } from '@/lib/seo'
+import { resolveCanonicalURL, resolveRobotsMode } from '@/lib/seo'
 import { getTaxonomyRelationshipIDs, getTaxonomyTerm } from '@/lib/taxonomy'
 import { toAbsoluteSiteUrl } from '@/lib/siteUrl'
 import type { Article, Review, SeoSetting } from '@/payload-types'
 
 type TaxonomyArchiveTerm = {
+  canonicalURL?: string | null
   description?: string | null
   id: number | string
+  includeInSitemap?: string | null
+  metaDescription?: string | null
+  metaTitle?: string | null
+  ogDescription?: string | null
+  ogImage?: Article['ogImage']
+  ogTitle?: string | null
+  robotsMode?: string | null
   slug: string
   title: string
 }
 
 type ManagedEntryMetadataSource = {
   canonicalURL?: string | null
+  fallbackDescription?: string | null
+  fallbackTitle?: string | null
   metaDescription?: string | null
   metaTitle?: string | null
   ogDescription?: string | null
   ogImage?: Article['ogImage']
   ogTitle?: string | null
-  robots?: string | null
+  robotsMode?: string | null
 }
 
 const getSeoSettings = cache(async (): Promise<SeoSetting> => {
@@ -37,6 +47,33 @@ const getSeoSettings = cache(async (): Promise<SeoSetting> => {
   })
 })
 
+const toTaxonomyArchiveTerm = (value: unknown): TaxonomyArchiveTerm | null => {
+  const term = getTaxonomyTerm(value as never)
+
+  if (!term || !value || typeof value !== 'object') {
+    return term
+  }
+
+  return {
+    ...term,
+    canonicalURL: 'canonicalURL' in value && typeof value.canonicalURL === 'string' ? value.canonicalURL : null,
+    includeInSitemap:
+      'includeInSitemap' in value && typeof value.includeInSitemap === 'string'
+        ? value.includeInSitemap
+        : null,
+    metaDescription:
+      'metaDescription' in value && typeof value.metaDescription === 'string'
+        ? value.metaDescription
+        : null,
+    metaTitle: 'metaTitle' in value && typeof value.metaTitle === 'string' ? value.metaTitle : null,
+    ogDescription:
+      'ogDescription' in value && typeof value.ogDescription === 'string' ? value.ogDescription : null,
+    ogImage: 'ogImage' in value ? ((value.ogImage as Article['ogImage']) ?? null) : null,
+    ogTitle: 'ogTitle' in value && typeof value.ogTitle === 'string' ? value.ogTitle : null,
+    robotsMode: 'robotsMode' in value && typeof value.robotsMode === 'string' ? value.robotsMode : null,
+  }
+}
+
 const toManagedEntryMetadata = async ({
   entry,
   resolvedCanonicalPath,
@@ -45,17 +82,26 @@ const toManagedEntryMetadata = async ({
   resolvedCanonicalPath: string
 }): Promise<Metadata> => {
   const seoSettings = await getSeoSettings()
-  const canonicalValue = entry.canonicalURL?.trim() || resolvedCanonicalPath
-  const canonicalUrl = canonicalValue ? toAbsoluteSiteUrl(canonicalValue) : undefined
+  const resolvedCanonical = resolveCanonicalURL({
+    canonicalURL: entry.canonicalURL,
+    resolvedPath: resolvedCanonicalPath,
+  })
+  const canonicalUrl = resolvedCanonical ? toAbsoluteSiteUrl(resolvedCanonical) : undefined
   const defaultImageUrl = getMediaAbsoluteUrl(seoSettings.defaultImage)
   const entryImageUrl = getMediaAbsoluteUrl(entry.ogImage) ?? defaultImageUrl
-  const openGraphTitle = entry.ogTitle || entry.metaTitle || seoSettings.defaultTitle || undefined
+  const resolvedTitle = entry.metaTitle || entry.fallbackTitle || seoSettings.defaultTitle || undefined
+  const resolvedDescription =
+    entry.metaDescription ||
+    entry.fallbackDescription ||
+    seoSettings.defaultDescription ||
+    undefined
+  const openGraphTitle = entry.ogTitle || resolvedTitle
   const openGraphDescription =
-    entry.ogDescription || entry.metaDescription || seoSettings.defaultDescription || undefined
+    entry.ogDescription || resolvedDescription
 
   return {
-    title: entry.metaTitle ?? undefined,
-    description: entry.metaDescription ?? undefined,
+    title: resolvedTitle,
+    description: resolvedDescription,
     alternates: canonicalUrl
       ? {
           canonical: canonicalUrl,
@@ -74,7 +120,13 @@ const toManagedEntryMetadata = async ({
           ]
         : undefined,
     },
-    robots: getRobotsMetadata(entry.robots || seoSettings.robots),
+    robots: resolveRobotsMode({
+      inheritedRobots: seoSettings.robots,
+      robotsMode:
+        typeof entry.robotsMode === 'string'
+          ? (entry.robotsMode as 'default' | 'index' | 'noindex')
+          : null,
+    }),
     twitter: {
       card: entryImageUrl ? 'summary_large_image' : 'summary',
       title: openGraphTitle,
@@ -120,7 +172,11 @@ export async function getArticleMetadataBySlug(slug: string): Promise<Metadata> 
   }
 
   return toManagedEntryMetadata({
-    entry: article,
+    entry: {
+      ...article,
+      fallbackDescription: article.excerpt,
+      fallbackTitle: article.title,
+    },
     resolvedCanonicalPath: `/articles/${article.slug}`,
   })
 }
@@ -141,7 +197,7 @@ const getCategoryBySlug = cache(async (slug: string): Promise<TaxonomyArchiveTer
     limit: 1,
   })
 
-  return getTaxonomyTerm(result.docs[0] ?? null)
+  return toTaxonomyArchiveTerm(result.docs[0] ?? null)
 })
 
 const getTagBySlug = cache(async (slug: string): Promise<TaxonomyArchiveTerm | null> => {
@@ -160,7 +216,7 @@ const getTagBySlug = cache(async (slug: string): Promise<TaxonomyArchiveTerm | n
     limit: 1,
   })
 
-  return getTaxonomyTerm(result.docs[0] ?? null)
+  return toTaxonomyArchiveTerm(result.docs[0] ?? null)
 })
 
 const toTaxonomyArchiveMetadata = async ({
@@ -175,38 +231,52 @@ const toTaxonomyArchiveMetadata = async ({
   term: TaxonomyArchiveTerm | null
 }): Promise<Metadata> => {
   const seoSettings = await getSeoSettings()
-  const title = term ? `${term.title} ${collectionLabel}` : fallbackTitle
+  const resolvedCanonical = resolveCanonicalURL({
+    canonicalURL: term?.canonicalURL,
+    resolvedPath: path,
+  })
+  const canonicalUrl = resolvedCanonical ? toAbsoluteSiteUrl(resolvedCanonical) : undefined
+  const title = term?.metaTitle || (term ? `${term.title} ${collectionLabel}` : fallbackTitle)
   const description =
+    term?.metaDescription?.trim() ||
     term?.description?.trim() ||
     `Browse published ${collectionLabel.toLowerCase()} content for ${term?.title ?? fallbackTitle}.`
-  const canonicalUrl = toAbsoluteSiteUrl(path)
   const defaultImageUrl = getMediaAbsoluteUrl(seoSettings.defaultImage)
+  const archiveImageUrl = getMediaAbsoluteUrl(term?.ogImage) ?? defaultImageUrl
+  const openGraphTitle = term?.ogTitle || title
+  const openGraphDescription = term?.ogDescription || description
 
   return {
     title,
     description,
-    alternates: {
-      canonical: canonicalUrl,
-    },
+    alternates: canonicalUrl
+      ? {
+          canonical: canonicalUrl,
+        }
+      : undefined,
     openGraph: {
-      title,
-      description,
+      title: openGraphTitle,
+      description: openGraphDescription,
       url: canonicalUrl,
       type: 'website',
-      images: defaultImageUrl
+      images: archiveImageUrl
         ? [
             {
-              url: defaultImageUrl,
+              url: archiveImageUrl,
             },
           ]
         : undefined,
     },
-    robots: getRobotsMetadata(seoSettings.robots),
+    robots: resolveRobotsMode({
+      inheritedRobots: seoSettings.robots,
+      robotsMode:
+        typeof term?.robotsMode === 'string' ? (term.robotsMode as 'default' | 'index' | 'noindex') : null,
+    }),
     twitter: {
-      card: defaultImageUrl ? 'summary_large_image' : 'summary',
-      title,
-      description,
-      images: defaultImageUrl ? [defaultImageUrl] : undefined,
+      card: archiveImageUrl ? 'summary_large_image' : 'summary',
+      title: openGraphTitle,
+      description: openGraphDescription,
+      images: archiveImageUrl ? [archiveImageUrl] : undefined,
     },
   }
 }
@@ -387,7 +457,11 @@ export async function getReviewMetadataBySlug(slug: string): Promise<Metadata> {
   }
 
   return toManagedEntryMetadata({
-    entry: review,
+    entry: {
+      ...review,
+      fallbackDescription: review.reviewBody,
+      fallbackTitle: review.reviewTitle || review.title,
+    },
     resolvedCanonicalPath: `/reviews/${review.slug}`,
   })
 }

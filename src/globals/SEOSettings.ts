@@ -12,7 +12,8 @@ export const SEOSettings: GlobalConfig = {
   label: 'SEO Settings',
   admin: {
     group: 'Settings',
-    description: 'Default SEO values used when a page does not provide its own overrides.',
+    description:
+      'Default SEO values inherited by public routes when local SEO fields stay on Default or empty.',
     hidden: hideFromUsersWithoutCapability('manage_seo_settings'),
   },
   access: {
@@ -49,6 +50,9 @@ export const SEOSettings: GlobalConfig = {
       type: 'select',
       defaultValue: 'index,follow',
       options: [...robotsFieldOptions],
+      admin: {
+        description: 'Inherited when a route keeps its local robots mode on Default.',
+      },
     },
     {
       name: 'googleSiteVerification',

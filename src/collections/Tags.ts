@@ -5,6 +5,8 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { buildSEOFields } from '@/fields/buildSEOFields'
+import { validateSEOContract } from '@/hooks/validateSEOContract'
 
 export const Tags: CollectionConfig = {
   slug: 'tags',
@@ -32,22 +34,39 @@ export const Tags: CollectionConfig = {
     ]),
     update: requireCapability('manage_taxonomy'),
   },
+  hooks: {
+    beforeChange: [validateSEOContract()],
+  },
   timestamps: true,
   fields: [
     {
-      name: 'title',
-      type: 'text',
-      required: true,
-    },
-    slugField({
-      useAsSlug: 'title',
-    }),
-    {
-      name: 'description',
-      type: 'textarea',
-      admin: {
-        description: 'Optional short description for editorial context and tag archive metadata.',
-      },
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+            },
+            slugField({
+              useAsSlug: 'title',
+            }),
+            {
+              name: 'description',
+              type: 'textarea',
+              admin: {
+                description: 'Optional short description for editorial context and tag archive metadata.',
+              },
+            },
+          ],
+        },
+        {
+          label: 'SEO',
+          fields: [...buildSEOFields()],
+        },
+      ],
     },
   ],
 }

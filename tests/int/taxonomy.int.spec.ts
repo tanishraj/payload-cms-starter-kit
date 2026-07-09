@@ -70,6 +70,10 @@ describe('taxonomy collections', () => {
   it('registers taxonomy fields and the primary-category sync hook on content collections', () => {
     expect(Articles.hooks?.beforeChange).toContain(syncPrimaryCategoryMembership)
     expect(Reviews.hooks?.beforeChange).toContain(syncPrimaryCategoryMembership)
+    expect(JSON.stringify(Categories.fields)).toContain('"name":"metaTitle"')
+    expect(JSON.stringify(Categories.fields)).toContain('"name":"includeInSitemap"')
+    expect(JSON.stringify(Tags.fields)).toContain('"name":"metaTitle"')
+    expect(JSON.stringify(Tags.fields)).toContain('"name":"includeInSitemap"')
     expect(JSON.stringify(Articles.fields)).toContain('"name":"primaryCategory"')
     expect(JSON.stringify(Articles.fields)).toContain('"name":"tags"')
     expect(JSON.stringify(Articles.fields)).toContain('"name":"categories"')

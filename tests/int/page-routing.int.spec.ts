@@ -83,4 +83,57 @@ describe('page routing', () => {
     expect([null, 'maintenance', 'comingSoon']).toContain(result.mode)
     expect(result.page).toBeNull()
   })
+
+  it('resolves homepage metadata from the shared canonical and robots contract', async () => {
+    payloadMocks.findGlobal.mockImplementation(async ({ slug }) => {
+      if (slug === 'page-settings') {
+        return { homepage: 42 }
+      }
+
+      if (slug === 'system-mode-settings') {
+        return {
+          bypassForLoggedInAdmins: false,
+          comingSoonPage: null,
+          maintenancePage: null,
+          notFoundPage: null,
+          siteMode: 'off',
+        }
+      }
+
+      return {
+        defaultDescription: 'Global fallback description',
+        defaultImage: null,
+        defaultTitle: 'Global fallback title',
+        robots: 'index,follow',
+      }
+    })
+    payloadMocks.find.mockResolvedValue({
+      docs: [
+        {
+          canonicalURL: '/custom-home',
+          id: 42,
+          metaDescription: null,
+          metaTitle: null,
+          ogDescription: null,
+          ogImage: null,
+          ogTitle: null,
+          parent: null,
+          robotsMode: 'noindex',
+          slug: 'home',
+          title: 'Homepage Title',
+        },
+      ],
+    })
+
+    const { getHomepageMetadata } = await loadPageData()
+    const metadata = await getHomepageMetadata()
+
+    expect(metadata.alternates?.canonical).toBe('http://localhost:3000/custom-home')
+    expect(metadata.robots).toEqual({
+      follow: true,
+      index: false,
+    })
+    expect(metadata.title).toBe('Homepage Title')
+    expect(metadata.description).toBe('Global fallback description')
+  })
 })

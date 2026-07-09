@@ -173,27 +173,22 @@ export interface Page {
    * Compose the page with reusable frontend sections.
    */
   layout?: (Hero36Block | FormBlock)[] | null;
-  metaTitle: string;
-  metaDescription: string;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
   /**
-   * Optional. Leave empty to use the resolved public page URL. Supports relative paths or full URLs.
+   * Optional. Leave empty to use the resolved public URL. Supports site-relative paths or full URLs.
    */
   canonicalURL?: string | null;
   /**
-   * Optional. Leave empty to inherit the global robots setting for this page.
+   * Default inherits the global robots setting.
    */
-  robots?: ('index,follow' | 'noindex,follow' | 'index,nofollow' | 'noindex,nofollow') | null;
+  robotsMode?: ('default' | 'index' | 'noindex') | null;
   /**
-   * Optional. Leave empty to use the page SEO title, then global defaults.
+   * Default includes public published routes that remain indexable.
    */
+  includeInSitemap?: ('default' | 'include' | 'exclude') | null;
   ogTitle?: string | null;
-  /**
-   * Optional. Leave empty to use the global default social image.
-   */
   ogImage?: (number | null) | Media;
-  /**
-   * Optional. Leave empty to use the page SEO description, then global defaults.
-   */
   ogDescription?: string | null;
   /**
    * Resolved from the current saved slug and parent hierarchy.
@@ -555,6 +550,23 @@ export interface Category {
    * Optional short description for archive pages and editorial context.
    */
   description?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  /**
+   * Optional. Leave empty to use the resolved public URL. Supports site-relative paths or full URLs.
+   */
+  canonicalURL?: string | null;
+  /**
+   * Default inherits the global robots setting.
+   */
+  robotsMode?: ('default' | 'index' | 'noindex') | null;
+  /**
+   * Default includes public published routes that remain indexable.
+   */
+  includeInSitemap?: ('default' | 'include' | 'exclude') | null;
+  ogTitle?: string | null;
+  ogImage?: (number | null) | Media;
+  ogDescription?: string | null;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -577,6 +589,23 @@ export interface Tag {
    * Optional short description for editorial context and tag archive metadata.
    */
   description?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  /**
+   * Optional. Leave empty to use the resolved public URL. Supports site-relative paths or full URLs.
+   */
+  canonicalURL?: string | null;
+  /**
+   * Default inherits the global robots setting.
+   */
+  robotsMode?: ('default' | 'index' | 'noindex') | null;
+  /**
+   * Default includes public published routes that remain indexable.
+   */
+  includeInSitemap?: ('default' | 'include' | 'exclude') | null;
+  ogTitle?: string | null;
+  ogImage?: (number | null) | Media;
+  ogDescription?: string | null;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -632,27 +661,22 @@ export interface Article {
     };
     [k: string]: unknown;
   };
-  metaTitle: string;
-  metaDescription: string;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
   /**
-   * Optional. Leave empty to use the resolved public article URL. Supports relative paths or full URLs.
+   * Optional. Leave empty to use the resolved public URL. Supports site-relative paths or full URLs.
    */
   canonicalURL?: string | null;
   /**
-   * Optional. Leave empty to inherit the global robots setting for this article.
+   * Default inherits the global robots setting.
    */
-  robots?: ('index,follow' | 'noindex,follow' | 'index,nofollow' | 'noindex,nofollow') | null;
+  robotsMode?: ('default' | 'index' | 'noindex') | null;
   /**
-   * Optional. Leave empty to use the article SEO title, then global defaults.
+   * Default includes public published routes that remain indexable.
    */
+  includeInSitemap?: ('default' | 'include' | 'exclude') | null;
   ogTitle?: string | null;
-  /**
-   * Optional. Leave empty to use the global default social image.
-   */
   ogImage?: (number | null) | Media;
-  /**
-   * Optional. Leave empty to use the article SEO description, then global defaults.
-   */
   ogDescription?: string | null;
   workflowState: 'draft' | 'in_review' | 'scheduled' | 'published' | 'reverted';
   scheduledPublishAt?: string | null;
@@ -721,27 +745,22 @@ export interface Review {
    * Internal notes for moderation, rewriting decisions, or publication checks.
    */
   internalModerationNotes?: string | null;
-  metaTitle: string;
-  metaDescription: string;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
   /**
-   * Optional. Leave empty to use the resolved public review URL. Supports relative paths or full URLs.
+   * Optional. Leave empty to use the resolved public URL. Supports site-relative paths or full URLs.
    */
   canonicalURL?: string | null;
   /**
-   * Optional. Leave empty to inherit the global robots setting for this review.
+   * Default inherits the global robots setting.
    */
-  robots?: ('index,follow' | 'noindex,follow' | 'index,nofollow' | 'noindex,nofollow') | null;
+  robotsMode?: ('default' | 'index' | 'noindex') | null;
   /**
-   * Optional. Leave empty to use the review SEO title, then global defaults.
+   * Default includes public published routes that remain indexable.
    */
+  includeInSitemap?: ('default' | 'include' | 'exclude') | null;
   ogTitle?: string | null;
-  /**
-   * Optional. Leave empty to use the global default social image.
-   */
   ogImage?: (number | null) | Media;
-  /**
-   * Optional. Leave empty to use the review SEO description, then global defaults.
-   */
   ogDescription?: string | null;
   workflowState: 'draft' | 'in_review' | 'scheduled' | 'published' | 'reverted';
   scheduledPublishAt?: string | null;
@@ -1019,8 +1038,23 @@ export interface SystemPage {
    * Choose one system block variant for this preset. The selected block must match the system page type.
    */
   layout: (System404Block | SystemMaintenanceBlock | SystemComingSoonBlock)[];
-  metaTitle: string;
-  metaDescription: string;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  /**
+   * Optional. Leave empty to use the resolved public URL. Supports site-relative paths or full URLs.
+   */
+  canonicalURL?: string | null;
+  /**
+   * Default inherits the global robots setting.
+   */
+  robotsMode?: ('default' | 'index' | 'noindex') | null;
+  /**
+   * Default includes public published routes that remain indexable.
+   */
+  includeInSitemap?: ('default' | 'include' | 'exclude') | null;
+  ogTitle?: string | null;
+  ogImage?: (number | null) | Media;
+  ogDescription?: string | null;
   workflowState: 'draft' | 'in_review' | 'scheduled' | 'published' | 'reverted';
   scheduledPublishAt?: string | null;
   changeSummary?: string | null;
@@ -1284,7 +1318,8 @@ export interface PagesSelect<T extends boolean = true> {
   metaTitle?: T;
   metaDescription?: T;
   canonicalURL?: T;
-  robots?: T;
+  robotsMode?: T;
+  includeInSitemap?: T;
   ogTitle?: T;
   ogImage?: T;
   ogDescription?: T;
@@ -1348,6 +1383,14 @@ export interface CategoriesSelect<T extends boolean = true> {
   slug?: T;
   parent?: T;
   description?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  canonicalURL?: T;
+  robotsMode?: T;
+  includeInSitemap?: T;
+  ogTitle?: T;
+  ogImage?: T;
+  ogDescription?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -1361,6 +1404,14 @@ export interface TagsSelect<T extends boolean = true> {
   generateSlug?: T;
   slug?: T;
   description?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  canonicalURL?: T;
+  robotsMode?: T;
+  includeInSitemap?: T;
+  ogTitle?: T;
+  ogImage?: T;
+  ogDescription?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -1384,7 +1435,8 @@ export interface ArticlesSelect<T extends boolean = true> {
   metaTitle?: T;
   metaDescription?: T;
   canonicalURL?: T;
-  robots?: T;
+  robotsMode?: T;
+  includeInSitemap?: T;
   ogTitle?: T;
   ogImage?: T;
   ogDescription?: T;
@@ -1429,7 +1481,8 @@ export interface ReviewsSelect<T extends boolean = true> {
   metaTitle?: T;
   metaDescription?: T;
   canonicalURL?: T;
-  robots?: T;
+  robotsMode?: T;
+  includeInSitemap?: T;
   ogTitle?: T;
   ogImage?: T;
   ogDescription?: T;
@@ -1619,6 +1672,12 @@ export interface SystemPagesSelect<T extends boolean = true> {
       };
   metaTitle?: T;
   metaDescription?: T;
+  canonicalURL?: T;
+  robotsMode?: T;
+  includeInSitemap?: T;
+  ogTitle?: T;
+  ogImage?: T;
+  ogDescription?: T;
   workflowState?: T;
   scheduledPublishAt?: T;
   changeSummary?: T;
@@ -2014,7 +2073,7 @@ export interface ThemeSetting {
   createdAt?: string | null;
 }
 /**
- * Default SEO values used when a page does not provide its own overrides.
+ * Default SEO values inherited by public routes when local SEO fields stay on Default or empty.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "seo-settings".
@@ -2028,6 +2087,9 @@ export interface SeoSetting {
   titleTemplate?: string | null;
   defaultDescription?: string | null;
   defaultImage?: (number | null) | Media;
+  /**
+   * Inherited when a route keeps its local robots mode on Default.
+   */
   robots?: ('index,follow' | 'noindex,follow' | 'index,nofollow' | 'noindex,nofollow') | null;
   googleSiteVerification?: string | null;
   _status?: ('draft' | 'published') | null;

@@ -10,10 +10,11 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { buildSEOFields } from '@/fields/buildSEOFields'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
+import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
-import { robotsFieldOptions } from '@/lib/seo'
 
 import { FormBlock } from '../blocks/Form/config'
 import { Hero36Block } from '../blocks/Hero36/config'
@@ -146,6 +147,7 @@ export const Pages: CollectionConfig = {
     ],
     afterDelete: [syncNavigationLinkAfterDelete],
     beforeChange: [
+      validateSEOContract(),
       enforceEditorialWorkflow('publish_pages'),
       preventReferencedPageUnpublish,
       migrateLegacyPageLinksBeforeChange,
@@ -184,78 +186,7 @@ export const Pages: CollectionConfig = {
         },
         {
           label: 'SEO',
-          fields: [
-            {
-              name: 'metaTitle',
-              type: 'text',
-              required: true,
-            },
-            {
-              name: 'metaDescription',
-              type: 'textarea',
-              required: true,
-            },
-            {
-              type: 'row',
-              fields: [
-                {
-                  name: 'canonicalURL',
-                  label: 'Canonical URL Override',
-                  type: 'text',
-                  admin: {
-                    description:
-                      'Optional. Leave empty to use the resolved public page URL. Supports relative paths or full URLs.',
-                    width: '50%',
-                  },
-                },
-                {
-                  name: 'robots',
-                  type: 'select',
-                  options: [...robotsFieldOptions],
-                  admin: {
-                    description:
-                      'Optional. Leave empty to inherit the global robots setting for this page.',
-                    width: '50%',
-                  },
-                },
-              ],
-            },
-            {
-              type: 'row',
-              fields: [
-                {
-                  name: 'ogTitle',
-                  label: 'Open Graph Title',
-                  type: 'text',
-                  admin: {
-                    description:
-                      'Optional. Leave empty to use the page SEO title, then global defaults.',
-                    width: '50%',
-                  },
-                },
-                {
-                  name: 'ogImage',
-                  label: 'Open Graph Image',
-                  type: 'upload',
-                  relationTo: 'media',
-                  admin: {
-                    description:
-                      'Optional. Leave empty to use the global default social image.',
-                    width: '50%',
-                  },
-                },
-              ],
-            },
-            {
-              name: 'ogDescription',
-              label: 'Open Graph Description',
-              type: 'textarea',
-              admin: {
-                description:
-                  'Optional. Leave empty to use the page SEO description, then global defaults.',
-              },
-            },
-          ],
+          fields: [...buildSEOFields()],
         },
         {
           label: 'Settings',

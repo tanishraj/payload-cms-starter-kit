@@ -30,7 +30,7 @@ describe('API', () => {
   })
 
   it('loads configured collections', async () => {
-    const [users, pages, forms] = await Promise.all([
+    const [users, pages, forms, categories, articles] = await Promise.all([
       payload.find({
         collection: 'users',
       }),
@@ -42,6 +42,14 @@ describe('API', () => {
         collection: 'forms',
         limit: 1,
       }),
+      payload.find({
+        collection: 'categories',
+        limit: 1,
+      }),
+      payload.find({
+        collection: 'articles',
+        limit: 1,
+      }),
     ])
 
     expect(users).toBeDefined()
@@ -50,5 +58,9 @@ describe('API', () => {
     expect(Array.isArray(pages.docs)).toBe(true)
     expect(forms).toBeDefined()
     expect(Array.isArray(forms.docs)).toBe(true)
+    expect(categories).toBeDefined()
+    expect(Array.isArray(categories.docs)).toBe(true)
+    expect(articles).toBeDefined()
+    expect(Array.isArray(articles.docs)).toBe(true)
   })
 })

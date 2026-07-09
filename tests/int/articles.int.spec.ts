@@ -52,6 +52,8 @@ describe('articles collection', () => {
     expect(JSON.stringify(tabsField)).toContain('"name":"categories"')
     expect(JSON.stringify(tabsField)).toContain('"type":"richText"')
     expect(JSON.stringify(tabsField)).toContain('"name":"metaTitle"')
+    expect(JSON.stringify(tabsField)).toContain('"name":"robotsMode"')
+    expect(JSON.stringify(tabsField)).toContain('"name":"includeInSitemap"')
     expect(JSON.stringify(tabsField)).toContain('"name":"workflowState"')
   })
 
