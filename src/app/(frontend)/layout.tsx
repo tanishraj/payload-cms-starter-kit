@@ -1,5 +1,4 @@
 import configPromise from '@payload-config'
-import Script from 'next/script'
 import { getPayload } from 'payload'
 import React from 'react'
 
@@ -123,31 +122,9 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-const systemThemeScript = `
-(() => {
-  const root = document.documentElement
-  const media = window.matchMedia('(prefers-color-scheme: dark)')
-
-  const apply = () => {
-    const scheme = media.matches ? 'dark' : 'light'
-    root.classList.toggle('dark', scheme === 'dark')
-    root.style.colorScheme = scheme
-  }
-
-  apply()
-
-  if (typeof media.addEventListener === 'function') {
-    media.addEventListener('change', apply)
-  } else if (typeof media.addListener === 'function') {
-    media.addListener(apply)
-  }
-})()
-`
-
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
-  const { activeFooter, activeHeader, siteSettings, themeSettings } =
-    await getFrontendGlobals()
+  const { activeFooter, activeHeader, siteSettings, themeSettings } = await getFrontendGlobals()
 
   const colorScheme = themeSettings.colorScheme ?? 'system'
   const rawThemeColor = String(themeSettings.themeColor ?? 'default')
@@ -163,29 +140,16 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     <html
       lang="en"
       className={htmlClassName}
+      data-color-scheme={colorScheme}
       data-theme-color={themeColor}
       style={htmlStyle}
       suppressHydrationWarning
     >
-      <head>
-        {colorScheme === 'system' && (
-          <Script
-            id="system-theme-script"
-            strategy="beforeInteractive"
-            dangerouslySetInnerHTML={{ __html: systemThemeScript }}
-          />
-        )}
-      </head>
+      <head />
       <body>
-        <RenderHeader
-          header={activeHeader}
-          siteSettings={siteSettings}
-        />
-        <main className={activeHeader ? 'pt-[3.75rem]' : undefined}>{children}</main>
-        <RenderFooter
-          footer={activeFooter}
-          siteSettings={siteSettings}
-        />
+        <RenderHeader header={activeHeader} siteSettings={siteSettings} />
+        <main className={activeHeader ? 'pt-15' : undefined}>{children}</main>
+        <RenderFooter footer={activeFooter} siteSettings={siteSettings} />
       </body>
     </html>
   )
