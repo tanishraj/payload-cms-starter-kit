@@ -99,12 +99,7 @@ describe('media governance resolver', () => {
               docs: [
                 {
                   id: 60,
-                  layout: [
-                    {
-                      blockType: 'systemMaintenance',
-                      image: 7,
-                    },
-                  ],
+                  layout: [],
                   title: 'Maintenance Mode',
                 },
               ],
@@ -186,14 +181,6 @@ describe('media governance resolver', () => {
           sourceType: 'collection',
         }),
         expect.objectContaining({
-          documentID: 60,
-          documentLabel: 'Maintenance Mode',
-          fieldPath: 'layout[0].image',
-          locationLabel: 'System Pages > Maintenance Mode > layout[0].image',
-          sourceSlug: 'system-pages',
-          sourceType: 'collection',
-        }),
-        expect.objectContaining({
           documentLabel: 'Site Settings',
           fieldPath: 'logo',
           locationLabel: 'Site Settings > Site Settings > logo',
@@ -210,8 +197,8 @@ describe('media governance resolver', () => {
       ]),
     )
 
-    expect(references).toHaveLength(9)
-    expect(buildMediaUsageSummary(references)).toBe('Used in 9 locations across 7 entries.')
+    expect(references).toHaveLength(8)
+    expect(buildMediaUsageSummary(references)).toBe('Used in 8 locations across 6 entries.')
     expect(buildMediaUsageSummary([])).toBe('Unused asset.')
   })
 

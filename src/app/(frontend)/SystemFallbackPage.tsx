@@ -8,22 +8,20 @@ export function SystemModeFallbackPage({
   if (mode === 'maintenance') {
     return (
       <SystemPageHero
-        kind="maintenance"
         badge="Maintenance"
-        heading="We’re carrying out scheduled updates."
-        description="The public site is temporarily unavailable while maintenance is in progress. Please check back shortly."
-        supportingNote="If you are an administrator, sign in to the admin panel to continue managing the site."
+        heading="We'll be back soon"
+        description="We're making a few updates right now. Please check back shortly."
+        statusDisplay="Maintenance"
       />
     )
   }
 
   return (
     <SystemPageHero
-      kind="comingSoon"
       badge="Coming Soon"
-      heading="A new experience is on the way."
-      description="This site is not publicly available yet. Please check back soon for the full launch."
-      supportingNote="If you are an administrator, sign in to the admin panel to continue managing the site."
+      heading="Something new is on the way"
+      description="We're getting things ready. Please check back soon."
+      statusDisplay="Coming Soon"
     />
   )
 }
@@ -31,14 +29,14 @@ export function SystemModeFallbackPage({
 export function DefaultNotFoundPage() {
   return (
     <SystemPageHero
-      kind="404"
       badge="404"
-      heading="The page you requested could not be found."
-      description="The link may be outdated, the page may have moved, or the URL may be incorrect."
+      heading="Page not found"
+      description="Sorry, we can't find that page."
       primaryAction={{
-        label: 'Go to homepage',
+        label: 'Back to home',
         url: '/',
       }}
+      statusDisplay="404"
     />
   )
 }

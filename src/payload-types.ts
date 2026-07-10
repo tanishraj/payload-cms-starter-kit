@@ -1114,7 +1114,6 @@ export interface System404Block {
     link?: (string | null) | NavigationLink;
     openInNewTab?: boolean | null;
   };
-  image?: (string | null) | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'system404';
@@ -1144,7 +1143,6 @@ export interface SystemMaintenanceBlock {
     link?: (string | null) | NavigationLink;
     openInNewTab?: boolean | null;
   };
-  image?: (string | null) | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'systemMaintenance';
@@ -1174,7 +1172,6 @@ export interface SystemComingSoonBlock {
     link?: (string | null) | NavigationLink;
     openInNewTab?: boolean | null;
   };
-  image?: (string | null) | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'systemComingSoon';
@@ -1832,7 +1829,6 @@ export interface System404BlockSelect<T extends boolean = true> {
         link?: T;
         openInNewTab?: T;
       };
-  image?: T;
   id?: T;
   blockName?: T;
 }
@@ -1859,7 +1855,6 @@ export interface SystemMaintenanceBlockSelect<T extends boolean = true> {
         link?: T;
         openInNewTab?: T;
       };
-  image?: T;
   id?: T;
   blockName?: T;
 }
@@ -1886,7 +1881,6 @@ export interface SystemComingSoonBlockSelect<T extends boolean = true> {
         link?: T;
         openInNewTab?: T;
       };
-  image?: T;
   id?: T;
   blockName?: T;
 }

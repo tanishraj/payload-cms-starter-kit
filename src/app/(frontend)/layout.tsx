@@ -147,9 +147,18 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     >
       <head />
       <body>
-        <RenderHeader header={activeHeader} siteSettings={siteSettings} />
-        <main className={activeHeader ? 'pt-15' : undefined}>{children}</main>
-        <RenderFooter footer={activeFooter} siteSettings={siteSettings} />
+        <div data-site-chrome="true">
+          <RenderHeader header={activeHeader} siteSettings={siteSettings} />
+        </div>
+        <main
+          data-site-main="true"
+          className={activeHeader ? 'pt-15' : undefined}
+        >
+          {children}
+        </main>
+        <div data-site-chrome="true">
+          <RenderFooter footer={activeFooter} siteSettings={siteSettings} />
+        </div>
       </body>
     </html>
   )

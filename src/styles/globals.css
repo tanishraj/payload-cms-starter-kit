@@ -675,6 +675,14 @@ Uncomment to import Google fonts if you want to use them in your project.
   }
 }
 
+body:has([data-system-page-root='true']) [data-site-chrome='true'] {
+  display: none;
+}
+
+body:has([data-system-page-root='true']) [data-site-main='true'] {
+  padding-top: 0 !important;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

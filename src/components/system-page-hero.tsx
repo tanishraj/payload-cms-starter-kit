@@ -1,61 +1,55 @@
-import { AlertTriangle, ArrowRight, Clock3, LucideIcon, Wrench } from 'lucide-react'
+import { ArrowRight, ExternalLink } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import { resolveCmsLink, type CmsLinkValue } from '@/lib/cmsLinks'
 
-type ActionLink = {
+type SystemPageAction = {
   label?: string | null
+} & CmsLinkValue
+
+type SystemPageActionLink = {
+  label: string
   openInNewTab?: boolean | null
-  url?: string | null
+  url: string
 }
 
-type SystemPageKind = '404' | 'comingSoon' | 'maintenance'
-
-export type SystemPageHeroProps = {
+type SystemScreenProps = {
   badge?: string | null
+  className?: string
   description?: string | null
   heading: string
-  image?: {
-    alt: string
-    src: string
-  }
-  kind: SystemPageKind
-  primaryAction?: ActionLink | null
-  secondaryAction?: ActionLink | null
+  primaryAction?: SystemPageActionLink | null
+  secondaryAction?: SystemPageActionLink | null
+  statusDisplay?: string | null
   supportingNote?: string | null
 }
 
-const kindStyles: Record<
-  SystemPageKind,
-  {
-    icon: LucideIcon
-    iconClassName: string
-    panelClassName: string
+export const resolveSystemPageAction = (
+  value: SystemPageAction | null | undefined,
+): SystemPageActionLink | null => {
+  if (!value?.label) {
+    return null
   }
-> = {
-  '404': {
-    icon: AlertTriangle,
-    iconClassName: 'text-amber-600 dark:text-amber-400',
-    panelClassName: 'border-amber-500/20 bg-amber-500/5',
-  },
-  comingSoon: {
-    icon: Clock3,
-    iconClassName: 'text-sky-600 dark:text-sky-400',
-    panelClassName: 'border-sky-500/20 bg-sky-500/5',
-  },
-  maintenance: {
-    icon: Wrench,
-    iconClassName: 'text-orange-600 dark:text-orange-400',
-    panelClassName: 'border-orange-500/20 bg-orange-500/5',
-  },
+
+  const resolved = resolveCmsLink(value)
+
+  if (!resolved.href) {
+    return null
+  }
+
+  return {
+    label: value.label,
+    openInNewTab: resolved.openInNewTab ?? null,
+    url: resolved.href,
+  }
 }
 
 function ActionButton({
   action,
   variant,
 }: {
-  action?: ActionLink | null
+  action?: SystemPageActionLink | null
   variant: 'default' | 'outline'
 }) {
   if (!action?.label || !action.url) {
@@ -77,86 +71,86 @@ function ActionButton({
         rel={openInNewTab ? 'noreferrer noopener' : undefined}
       >
         {action.label}
-        {variant === 'default' && <ArrowRight className="size-4" />}
+        {variant === 'default' ? <ArrowRight data-icon="inline-end" /> : null}
+        {variant === 'outline' && openInNewTab ? <ExternalLink data-icon="inline-end" /> : null}
       </a>
     </Button>
   )
 }
 
-export function SystemPageHero({
-  badge,
-  description,
-  heading,
-  image,
-  kind,
+function ActionRow({
   primaryAction,
   secondaryAction,
-  supportingNote,
-}: SystemPageHeroProps) {
-  const style = kindStyles[kind]
-  const Icon = style.icon
+}: {
+  primaryAction?: SystemPageActionLink | null
+  secondaryAction?: SystemPageActionLink | null
+}) {
+  const hasPrimary = Boolean(primaryAction?.label && primaryAction.url)
+  const hasSecondary = Boolean(secondaryAction?.label && secondaryAction.url)
+
+  if (!hasPrimary && !hasSecondary) {
+    return null
+  }
 
   return (
-    <section className="bg-background py-20 md:py-28">
-      <div className="container">
-        <div
-          className={cn(
-            'mx-auto grid max-w-6xl gap-10 overflow-hidden rounded-xl border p-8 md:grid-cols-[minmax(0,1.15fr)_minmax(300px,0.85fr)] md:p-12',
-            style.panelClassName,
-          )}
-        >
-          <div className="flex flex-col justify-center">
-            <div className="mb-6 flex items-center gap-3">
-              <div className="flex size-12 items-center justify-center rounded-full border border-border/70 bg-background/80">
-                <Icon className={cn('size-6', style.iconClassName)} />
-              </div>
-              {badge ? (
-                <Badge
-                  variant="outline"
-                  className="px-3 py-1 text-[11px] uppercase"
-                >
-                  {badge}
-                </Badge>
-              ) : null}
-            </div>
-            <h1 className="max-w-3xl text-3xl font-semibold text-foreground md:text-5xl">
-              {heading}
-            </h1>
-            {description ? (
-              <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground md:text-lg">
-                {description}
-              </p>
-            ) : null}
-            <div className="mt-8 flex flex-wrap gap-3">
-              <ActionButton
-                action={primaryAction}
-                variant="default"
-              />
-              <ActionButton
-                action={secondaryAction}
-                variant="outline"
-              />
-            </div>
-            {supportingNote ? (
-              <p className="mt-6 text-sm text-muted-foreground">{supportingNote}</p>
-            ) : null}
+    <div className="flex flex-wrap items-center justify-center gap-3">
+      <ActionButton
+        action={primaryAction}
+        variant="default"
+      />
+      <ActionButton
+        action={secondaryAction}
+        variant="outline"
+      />
+    </div>
+  )
+}
+
+export function SystemPageHero({
+  badge,
+  className,
+  description,
+  heading,
+  primaryAction,
+  secondaryAction,
+  statusDisplay,
+  supportingNote,
+}: SystemScreenProps) {
+  return (
+    <section
+      data-system-page-root="true"
+      className={[
+        'flex min-h-screen items-center justify-center bg-background px-6 py-16 text-center md:px-10',
+        className ?? '',
+      ]
+        .join(' ')
+        .trim()}
+    >
+      <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-6">
+        {statusDisplay ? (
+          <div className="text-7xl font-semibold tracking-tight text-foreground/20 md:text-9xl">
+            {statusDisplay}
           </div>
-          <div className="flex min-h-72 items-center justify-center">
-            {image ? (
-              <div className="w-full overflow-hidden rounded-xl border bg-background/90 shadow-sm">
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="h-full max-h-[420px] w-full object-cover"
-                />
-              </div>
-            ) : (
-              <div className="flex h-full min-h-72 w-full items-center justify-center rounded-xl border border-dashed border-border/80 bg-background/80">
-                <Icon className={cn('size-14', style.iconClassName)} />
-              </div>
-            )}
-          </div>
+        ) : badge ? (
+          <Badge variant="outline">{badge}</Badge>
+        ) : null}
+        <div className="flex flex-col items-center gap-4">
+          <h1 className="max-w-2xl text-balance text-4xl font-semibold tracking-tight text-foreground md:text-6xl">
+            {heading}
+          </h1>
+          {description ? (
+            <p className="max-w-xl text-balance text-base leading-7 text-muted-foreground md:text-lg">
+              {description}
+            </p>
+          ) : null}
         </div>
+        <ActionRow
+          primaryAction={primaryAction}
+          secondaryAction={secondaryAction}
+        />
+        {supportingNote ? (
+          <p className="max-w-lg text-sm leading-6 text-muted-foreground">{supportingNote}</p>
+        ) : null}
       </div>
     </section>
   )
