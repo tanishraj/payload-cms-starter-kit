@@ -11,6 +11,12 @@
 - `DATABASE_PROVIDER=postgres`
 - `POSTGRES_URL`
 - `PAYLOAD_SECRET`
+- `MEDIA_PROVIDER=s3`
+- `S3_BUCKET`
+- `S3_ENDPOINT`
+- `S3_REGION`
+- `S3_ACCESS_KEY_ID`
+- `S3_SECRET_ACCESS_KEY`
 
 ## Optional Email Variables
 
@@ -26,11 +32,13 @@
 - Local clones should keep `DATABASE_PROVIDER=sqlite` unless they are being prepared for hosted deployment.
 - Preview and production should both use the same Postgres-backed provider mode.
 
-## Media Limitation
+## Media Contract
 
-This starter's database contract supports Vercel deployments, but its default `media` collection still writes to local disk. That is acceptable for local development and test runs. It is not a durable production upload strategy on Vercel.
+This starter supports Vercel production only when `media` is moved off local disk. The shipped integration path is `MEDIA_PROVIDER=s3`, which works for IDrive e2 and other S3-compatible object storage providers.
 
-The current starter contract rejects Vercel production boot until a durable media adapter is added. That fail-fast behavior is intentional.
+If `MEDIA_PROVIDER=localDisk` is left enabled for Vercel production, the starter rejects boot intentionally.
+
+If you expect uploads larger than Vercel's server upload limit, set `S3_CLIENT_UPLOADS=true` and allow `PUT` CORS for your site origin on the bucket.
 
 ## Verification
 
@@ -38,6 +46,8 @@ The current starter contract rejects Vercel production boot until a durable medi
 2. Set `DATABASE_PROVIDER=postgres`.
 3. Set `POSTGRES_URL`.
 4. Set `PAYLOAD_SECRET`.
-5. If email is required, set the Resend variables.
-6. Add and verify a durable media adapter before allowing editor-managed uploads.
-7. Deploy and verify the app boots without runtime configuration errors.
+5. Set `MEDIA_PROVIDER=s3`.
+6. Set the S3-compatible storage variables for your bucket.
+7. If email is required, set the Resend variables.
+8. Deploy and verify the app boots without runtime configuration errors.
+9. Upload a test image in Payload admin and confirm the object appears in the bucket.

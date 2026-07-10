@@ -5,7 +5,7 @@ export type StarterContract = {
   deployment: RuntimeConfig['deployment']
   email: RuntimeConfig['email']
   media: {
-    mode: 'localDisk'
+    mode: RuntimeConfig['media']['provider']
     supported: boolean
     reason: string | null
   }
@@ -18,7 +18,7 @@ export const getStarterContract = (config: RuntimeConfig): StarterContract => {
     database: config.database,
     deployment: config.deployment,
     email: config.email,
-    media: deployedToVercel
+    media: deployedToVercel && config.media.provider === 'localDisk'
       ? {
           mode: 'localDisk',
           supported: false,
@@ -26,7 +26,7 @@ export const getStarterContract = (config: RuntimeConfig): StarterContract => {
             'This starter uses local disk media storage. Vercel deployments require a durable media adapter before editors can upload assets safely.',
         }
       : {
-          mode: 'localDisk',
+          mode: config.media.provider,
           supported: true,
           reason: null,
         },

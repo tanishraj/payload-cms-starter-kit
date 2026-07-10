@@ -7,9 +7,9 @@ This repository is an editorial-first marketing CMS starter built to be copied f
 - local development: `SQLite` plus local-disk uploads
 - email: `none` or `resend`
 - Vercel database target: `Postgres`
-- Vercel deploy status today: blocked by design until a durable media adapter is added
+- Vercel media target: `S3-compatible` object storage such as `IDrive e2`
 
-The repo now fails fast if you try to boot a Vercel production profile with the default local-disk `media` behavior. That keeps the starter honest for client handoff.
+The repo fails fast if you try to boot a Vercel production profile with the default local-disk `media` behavior. Use `MEDIA_PROVIDER=s3` with a durable bucket before allowing editor-managed uploads in hosted environments.
 
 ## First Boot
 
@@ -62,6 +62,7 @@ Local development defaults:
 - `DATABASE_URL=file:./payload-cms-next-tailwind-shadcn-starter-kit.db`
 - `PAYLOAD_SECRET`
 - `EMAIL_PROVIDER=none`
+- `MEDIA_PROVIDER=localDisk`
 
 Optional email variables:
 
@@ -73,6 +74,18 @@ Optional email variables:
 Preview and production URL support:
 
 - `NEXT_PUBLIC_SERVER_URL`
+
+S3-compatible media storage for hosted uploads:
+
+- `MEDIA_PROVIDER=s3`
+- `S3_BUCKET`
+- `S3_ENDPOINT`
+- `S3_REGION`
+- `S3_ACCESS_KEY_ID`
+- `S3_SECRET_ACCESS_KEY`
+- `S3_ACL=public-read | private`
+- `S3_FORCE_PATH_STYLE=true | false`
+- `S3_CLIENT_UPLOADS=true | false`
 
 ## Tooling
 

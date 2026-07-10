@@ -20,7 +20,7 @@ import { Headers } from './collections/Headers'
 import { OperationalAuditEvents } from './collections/OperationalAuditEvents'
 import { WorkQueue } from './collections/WorkQueue'
 import { SystemPages } from './collections/SystemPages'
-import { createDatabaseAdapter, createEmailAdapter } from './config/providers'
+import { createDatabaseAdapter, createEmailAdapter, createStoragePlugins } from './config/providers'
 import { assertSupportedStarterContract, getStarterContract } from './config/starterContract'
 import { getRuntimeConfig } from './config/runtime'
 import { PageSettings } from './globals/PageSettings'
@@ -36,6 +36,7 @@ const runtimeConfig = getRuntimeConfig()
 const starterContract = getStarterContract(runtimeConfig)
 assertSupportedStarterContract(starterContract)
 const email = createEmailAdapter(runtimeConfig)
+const storagePlugins = createStoragePlugins(runtimeConfig)
 
 if (runtimeConfig.deployment.isProduction && !email && runtimeConfig.email.provider === 'resend') {
   throw new Error('Missing production email configuration.')
@@ -75,5 +76,5 @@ export default buildConfig({
   },
   db: createDatabaseAdapter(runtimeConfig),
   sharp,
-  plugins: [withTrash()],
+  plugins: [...storagePlugins, withTrash()],
 })

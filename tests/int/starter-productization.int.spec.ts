@@ -15,6 +15,7 @@ describe('starter productization', () => {
     process.env.DATABASE_PROVIDER = 'sqlite'
     process.env.DATABASE_URL = `file:${join(testDirectory, 'payload-test.db')}`
     process.env.EMAIL_PROVIDER = 'none'
+    process.env.MEDIA_PROVIDER = 'localDisk'
     process.env.PAYLOAD_SECRET = 'test-secret'
 
     const { default: config } = await import('@/payload.config')
@@ -35,7 +36,8 @@ describe('starter productization', () => {
 
     expect(envExample).toContain('DATABASE_PROVIDER=sqlite')
     expect(envExample).toContain('EMAIL_PROVIDER=none')
-    expect(envExample).toContain('durable media adapter')
+    expect(envExample).toContain('MEDIA_PROVIDER=localDisk')
+    expect(envExample).toContain('S3_ENDPOINT')
   })
 
   it('boots the starter and exposes the documented core collections and globals', async () => {

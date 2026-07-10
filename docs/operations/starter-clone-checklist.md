@@ -16,6 +16,7 @@ Use this checklist when copying the starter into a new client repository. The go
 - Configure `RESEND_API_KEY` and `RESEND_FROM_EMAIL` if the site should send notifications.
 - Decide whether `RESEND_FROM_NAME` and `RESEND_OVERRIDE_TO_EMAIL` are needed for staging or QA.
 - Confirm `NEXT_PUBLIC_SERVER_URL` matches the public base URL used for previews and metadata.
+- Keep `MEDIA_PROVIDER=localDisk` for local work, or set `MEDIA_PROVIDER=s3` when the clone is being prepared for hosted editor uploads.
 
 ## Review CMS Defaults
 
@@ -36,8 +37,8 @@ Use this checklist when copying the starter into a new client repository. The go
 ## Verify Deployment Assumptions
 
 - Confirm `DATABASE_PROVIDER=postgres` and `POSTGRES_URL` before any Vercel deployment work.
+- Confirm `MEDIA_PROVIDER=s3` and the S3-compatible bucket credentials before any Vercel deployment work.
 - Do not treat the default `media` upload behavior as durable on Vercel.
-- If the client needs editor-managed uploads in production, add and verify a durable media adapter before launch.
 - Verify the configured homepage, 404 page, maintenance page, and coming-soon page all resolve correctly.
 
 ## Run Starter Verification

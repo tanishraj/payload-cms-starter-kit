@@ -29,6 +29,9 @@ describe('runtime config', () => {
       isVercel: false,
     })
     expect(config.email.provider).toBe('none')
+    expect(config.media).toEqual({
+      provider: 'localDisk',
+    })
   })
 
   it('reads postgres from POSTGRES_URL for vercel deployments', () => {
@@ -49,6 +52,36 @@ describe('runtime config', () => {
     expect(config.deployment).toEqual({
       isProduction: true,
       isVercel: true,
+    })
+  })
+
+  it('reads s3-compatible media configuration for hosted uploads', () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      DATABASE_PROVIDER: 'postgres',
+      POSTGRES_URL: 'postgres://starter:secret@db.example.com:5432/payload',
+      MEDIA_PROVIDER: 's3',
+      S3_BUCKET: 'payload-media',
+      S3_ENDPOINT: 'https://s3.ap-southeast-1.idrivee2.com',
+      S3_REGION: 'ap-southeast-1',
+      S3_ACCESS_KEY_ID: 'access-key',
+      S3_SECRET_ACCESS_KEY: 'secret-key',
+      S3_CLIENT_UPLOADS: 'true',
+      S3_FORCE_PATH_STYLE: 'true',
+    }
+
+    const config = getRuntimeConfig(process.env)
+
+    expect(config.media).toEqual({
+      provider: 's3',
+      acl: 'public-read',
+      accessKeyId: 'access-key',
+      bucket: 'payload-media',
+      clientUploads: true,
+      endpoint: 'https://s3.ap-southeast-1.idrivee2.com',
+      forcePathStyle: true,
+      region: 'ap-southeast-1',
+      secretAccessKey: 'secret-key',
     })
   })
 
@@ -75,6 +108,24 @@ describe('runtime config', () => {
 
     expect(() => getRuntimeConfig(process.env)).toThrow(
       'Missing Postgres connection string. Set POSTGRES_URL or DATABASE_URL.',
+    )
+  })
+
+  it('rejects s3 mode without the required bucket configuration', () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      DATABASE_PROVIDER: 'postgres',
+      POSTGRES_URL: 'postgres://starter:secret@db.example.com:5432/payload',
+      MEDIA_PROVIDER: 's3',
+      S3_BUCKET: '',
+      S3_ENDPOINT: '',
+      S3_REGION: '',
+      S3_ACCESS_KEY_ID: '',
+      S3_SECRET_ACCESS_KEY: '',
+    }
+
+    expect(() => getRuntimeConfig(process.env)).toThrow(
+      'Incomplete S3 media configuration. Set S3_BUCKET, S3_ENDPOINT, S3_REGION, S3_ACCESS_KEY_ID, and S3_SECRET_ACCESS_KEY.',
     )
   })
 })

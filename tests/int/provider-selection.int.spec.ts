@@ -4,6 +4,7 @@ const adapterMocks = vi.hoisted(() => ({
   sqliteAdapter: vi.fn((config) => ({ kind: 'sqlite', config })),
   vercelPostgresAdapter: vi.fn((config) => ({ kind: 'postgres', config })),
   resendAdapter: vi.fn((config) => ({ kind: 'email', config })),
+  s3Storage: vi.fn((config) => ({ kind: 's3-plugin', config })),
 }))
 
 vi.mock('@payloadcms/db-sqlite', () => ({
@@ -16,6 +17,10 @@ vi.mock('@payloadcms/db-vercel-postgres', () => ({
 
 vi.mock('@payloadcms/email-resend', () => ({
   resendAdapter: adapterMocks.resendAdapter,
+}))
+
+vi.mock('@payloadcms/storage-s3', () => ({
+  s3Storage: adapterMocks.s3Storage,
 }))
 
 describe('provider selection', () => {
@@ -36,6 +41,9 @@ describe('provider selection', () => {
         fromAddress: null,
         fromName: 'Website',
         provider: 'none',
+      },
+      media: {
+        provider: 'localDisk',
       },
     })
 
@@ -65,6 +73,9 @@ describe('provider selection', () => {
         fromName: 'Website',
         provider: 'none',
       },
+      media: {
+        provider: 'localDisk',
+      },
     })
 
     expect(adapterMocks.vercelPostgresAdapter).toHaveBeenCalledWith({
@@ -73,5 +84,57 @@ describe('provider selection', () => {
       },
     })
     expect(adapter).toMatchObject({ kind: 'postgres' })
+  })
+
+  it('creates an s3 storage plugin for the media collection', async () => {
+    const { createStoragePlugins } = await import('@/config/providers')
+
+    const plugins = createStoragePlugins({
+      database: {
+        provider: 'postgres',
+        url: 'postgres://starter:secret@db.example.com:5432/payload',
+      },
+      deployment: {
+        isProduction: true,
+        isVercel: true,
+      },
+      email: {
+        apiKey: null,
+        fromAddress: null,
+        fromName: 'Website',
+        provider: 'none',
+      },
+      media: {
+        provider: 's3',
+        acl: 'public-read',
+        accessKeyId: 'access-key',
+        bucket: 'payload-media',
+        clientUploads: true,
+        endpoint: 'https://s3.ap-southeast-1.idrivee2.com',
+        forcePathStyle: true,
+        region: 'ap-southeast-1',
+        secretAccessKey: 'secret-key',
+      },
+    })
+
+    expect(adapterMocks.s3Storage).toHaveBeenCalledWith({
+      acl: 'public-read',
+      bucket: 'payload-media',
+      clientUploads: true,
+      collections: {
+        media: true,
+      },
+      config: {
+        credentials: {
+          accessKeyId: 'access-key',
+          secretAccessKey: 'secret-key',
+        },
+        endpoint: 'https://s3.ap-southeast-1.idrivee2.com',
+        forcePathStyle: true,
+        region: 'ap-southeast-1',
+      },
+    })
+    expect(plugins).toHaveLength(1)
+    expect(plugins[0]).toMatchObject({ kind: 's3-plugin' })
   })
 })
