@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
   adminOrFirstUserAccess,
+  adminCapabilityFieldOptions,
   allowPublicReadOrCapability,
   canReadTaxonomy,
   canManageSystemModes,
@@ -408,11 +409,39 @@ describe('user normalization hook', () => {
 
     const serialized = JSON.stringify(capabilityField.fields)
 
-    expect(serialized).toContain('"label":"Content"')
-    expect(serialized).toContain('"label":"Structure"')
-    expect(serialized).toContain('"label":"Site Controls"')
+    expect(serialized).toContain('"label":"Website Content"')
+    expect(serialized).toContain('"label":"Website Structure"')
+    expect(serialized).toContain('"label":"Lead Capture"')
+    expect(serialized).toContain('"label":"Site Settings"')
     expect(serialized).toContain('"label":"Operations"')
     expect(serialized).toContain('"label":"Publishing"')
+  })
+
+  it('uses the approved capability vocabulary for admin checkboxes', () => {
+    expect(adminCapabilityFieldOptions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          label: 'Navigation Links',
+          value: 'manage_navigation',
+        }),
+        expect.objectContaining({
+          label: 'Website Defaults',
+          value: 'manage_page_settings',
+        }),
+        expect.objectContaining({
+          label: 'Website Modes',
+          value: 'manage_system_modes',
+        }),
+        expect.objectContaining({
+          label: 'Action Queue',
+          value: 'manage_work_queue',
+        }),
+        expect.objectContaining({
+          label: 'Activity Log',
+          value: 'view_operational_audit',
+        }),
+      ]),
+    )
   })
 
   it('keeps Users hidden from non-admins', () => {

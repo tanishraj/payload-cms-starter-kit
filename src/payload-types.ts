@@ -458,7 +458,7 @@ export interface User {
      */
     manage_taxonomy?: boolean | null;
     /**
-     * Allow access to Navigation.
+     * Allow access to Navigation Links.
      */
     manage_navigation?: boolean | null;
     /**
@@ -474,7 +474,19 @@ export interface User {
      */
     manage_footers?: boolean | null;
     /**
-     * Allow access to Site Defaults.
+     * Allow access to System Pages.
+     */
+    manage_system_pages?: boolean | null;
+    /**
+     * Allow access to Forms.
+     */
+    manage_forms?: boolean | null;
+    /**
+     * Allow access to Form Submissions.
+     */
+    manage_form_submissions?: boolean | null;
+    /**
+     * Allow access to Website Defaults.
      */
     manage_page_settings?: boolean | null;
     /**
@@ -490,27 +502,15 @@ export interface User {
      */
     manage_seo_settings?: boolean | null;
     /**
-     * Allow access to System Pages.
-     */
-    manage_system_pages?: boolean | null;
-    /**
-     * Allow access to System Modes.
+     * Allow access to Website Modes.
      */
     manage_system_modes?: boolean | null;
     /**
-     * Allow access to Forms.
-     */
-    manage_forms?: boolean | null;
-    /**
-     * Allow access to Form Submissions.
-     */
-    manage_form_submissions?: boolean | null;
-    /**
-     * Allow access to Work Queue.
+     * Allow access to Action Queue.
      */
     manage_work_queue?: boolean | null;
     /**
-     * Allow access to Operational Audit.
+     * Allow access to Activity Log.
      */
     view_operational_audit?: boolean | null;
     /**
@@ -2057,14 +2057,14 @@ export interface UsersSelect<T extends boolean = true> {
         manage_redirects?: T;
         manage_headers?: T;
         manage_footers?: T;
+        manage_system_pages?: T;
+        manage_forms?: T;
+        manage_form_submissions?: T;
         manage_page_settings?: T;
         manage_site_settings?: T;
         manage_theme_settings?: T;
         manage_seo_settings?: T;
-        manage_system_pages?: T;
         manage_system_modes?: T;
-        manage_forms?: T;
-        manage_form_submissions?: T;
         manage_work_queue?: T;
         view_operational_audit?: T;
         publish_pages?: T;

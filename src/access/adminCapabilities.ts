@@ -35,7 +35,7 @@ export const adminCapabilityFieldOptions = [
     value: 'manage_taxonomy',
   },
   {
-    label: 'Navigation',
+    label: 'Navigation Links',
     value: 'manage_navigation',
   },
   {
@@ -51,7 +51,11 @@ export const adminCapabilityFieldOptions = [
     value: 'manage_footers',
   },
   {
-    label: 'Site Defaults',
+    label: 'System Pages',
+    value: 'manage_system_pages',
+  },
+  {
+    label: 'Website Defaults',
     value: 'manage_page_settings',
   },
   {
@@ -67,11 +71,7 @@ export const adminCapabilityFieldOptions = [
     value: 'manage_seo_settings',
   },
   {
-    label: 'System Pages',
-    value: 'manage_system_pages',
-  },
-  {
-    label: 'System Modes',
+    label: 'Website Modes',
     value: 'manage_system_modes',
   },
   {
@@ -83,11 +83,11 @@ export const adminCapabilityFieldOptions = [
     value: 'manage_form_submissions',
   },
   {
-    label: 'Work Queue',
+    label: 'Action Queue',
     value: 'manage_work_queue',
   },
   {
-    label: 'Operational Audit',
+    label: 'Activity Log',
     value: 'view_operational_audit',
   },
   {
@@ -178,26 +178,67 @@ const createCapabilityRows = (items: Array<{ label: string; value: AdminCapabili
     [],
   )
 
+const capabilityItemsByValue = new Map<AdminCapability, (typeof adminCapabilityFieldOptions)[number]>(
+  adminCapabilityFieldOptions.map((item) => [item.value, item]),
+)
+
+const getCapabilityItem = (value: AdminCapability) => {
+  const item = capabilityItemsByValue.get(value)
+
+  if (!item) {
+    throw new Error(`Unknown admin capability: ${value}`)
+  }
+
+  return item
+}
+
 const capabilitySections = [
   {
-    label: 'Content',
-    items: adminCapabilityFieldOptions.slice(0, 5),
+    label: 'Website Content',
+    items: [
+      'manage_pages',
+      'manage_articles',
+      'manage_reviews',
+      'manage_media',
+      'manage_taxonomy',
+    ].map(getCapabilityItem),
   },
   {
-    label: 'Structure',
-    items: adminCapabilityFieldOptions.slice(5, 9),
+    label: 'Website Structure',
+    items: [
+      'manage_navigation',
+      'manage_redirects',
+      'manage_headers',
+      'manage_footers',
+      'manage_system_pages',
+    ].map(getCapabilityItem),
   },
   {
-    label: 'Site Controls',
-    items: adminCapabilityFieldOptions.slice(9, 15),
+    label: 'Lead Capture',
+    items: ['manage_forms', 'manage_form_submissions'].map(getCapabilityItem),
+  },
+  {
+    label: 'Site Settings',
+    items: [
+      'manage_page_settings',
+      'manage_site_settings',
+      'manage_theme_settings',
+      'manage_seo_settings',
+      'manage_system_modes',
+    ].map(getCapabilityItem),
   },
   {
     label: 'Operations',
-    items: adminCapabilityFieldOptions.slice(15, 19),
+    items: ['manage_work_queue', 'view_operational_audit'].map(getCapabilityItem),
   },
   {
     label: 'Publishing',
-    items: adminCapabilityFieldOptions.slice(19),
+    items: [
+      'publish_pages',
+      'publish_articles',
+      'publish_reviews',
+      'publish_system_pages',
+    ].map(getCapabilityItem),
   },
 ] as const
 
