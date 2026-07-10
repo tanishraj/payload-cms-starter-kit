@@ -1,5 +1,4 @@
-import { sqliteAdapter } from '@payloadcms/db-sqlite'
-import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { resendAdapter } from '@payloadcms/email-resend'
 import { s3Storage } from '@payloadcms/storage-s3'
 import type { Plugin } from 'payload'
@@ -7,18 +6,8 @@ import type { Plugin } from 'payload'
 import type { RuntimeConfig } from './runtime'
 
 export const createDatabaseAdapter = (config: RuntimeConfig) => {
-  if (config.database.provider === 'postgres') {
-    return vercelPostgresAdapter({
-      pool: {
-        connectionString: config.database.url,
-      },
-    })
-  }
-
-  return sqliteAdapter({
-    client: {
-      url: config.database.url,
-    },
+  return mongooseAdapter({
+    url: config.database.url,
   })
 }
 

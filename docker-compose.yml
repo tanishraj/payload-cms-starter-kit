@@ -12,11 +12,10 @@ services:
     command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm dev"
     depends_on:
       - mongo
-      # - postgres
     env_file:
       - .env
 
-  # Ensure your DATABASE_URL uses 'mongo' as the hostname ie. mongodb://mongo/my-db-name
+  # Use DATABASE_URL=mongodb://mongo:27017/payload-cms-starter-kit when the app runs in Docker.
   mongo:
     image: mongo:latest
     ports:
@@ -39,5 +38,4 @@ services:
 
 volumes:
   data:
-  # pgdata:
   node_modules:

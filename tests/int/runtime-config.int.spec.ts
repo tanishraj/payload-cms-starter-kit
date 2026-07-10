@@ -9,20 +9,19 @@ describe('runtime config', () => {
     process.env = { ...ORIGINAL_ENV }
   })
 
-  it('reads sqlite as the default local database provider', () => {
+  it('reads the mongodb database url for local runtime', () => {
     process.env = {
       ...ORIGINAL_ENV,
-      DATABASE_PROVIDER: 'sqlite',
-      DATABASE_URL: 'file:./payload.db',
+      DATABASE_URL: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
       EMAIL_PROVIDER: 'none',
+      MEDIA_PROVIDER: 'localDisk',
       VERCEL: '',
     }
 
     const config = getRuntimeConfig(process.env)
 
     expect(config.database).toEqual({
-      provider: 'sqlite',
-      url: 'file:./payload.db',
+      url: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
     })
     expect(config.deployment).toEqual({
       isProduction: false,
@@ -34,11 +33,10 @@ describe('runtime config', () => {
     })
   })
 
-  it('reads postgres from POSTGRES_URL for vercel deployments', () => {
+  it('accepts mongodb srv urls for hosted deployments', () => {
     process.env = {
       ...ORIGINAL_ENV,
-      DATABASE_PROVIDER: 'postgres',
-      POSTGRES_URL: 'postgres://starter:secret@db.example.com:5432/payload',
+      DATABASE_URL: 'mongodb+srv://starter:secret@cluster.example.com/payload',
       NODE_ENV: 'production',
       VERCEL: '1',
     }
@@ -46,8 +44,7 @@ describe('runtime config', () => {
     const config = getRuntimeConfig(process.env)
 
     expect(config.database).toEqual({
-      provider: 'postgres',
-      url: 'postgres://starter:secret@db.example.com:5432/payload',
+      url: 'mongodb+srv://starter:secret@cluster.example.com/payload',
     })
     expect(config.deployment).toEqual({
       isProduction: true,
@@ -58,8 +55,7 @@ describe('runtime config', () => {
   it('reads s3-compatible media configuration for hosted uploads', () => {
     process.env = {
       ...ORIGINAL_ENV,
-      DATABASE_PROVIDER: 'postgres',
-      POSTGRES_URL: 'postgres://starter:secret@db.example.com:5432/payload',
+      DATABASE_URL: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
       MEDIA_PROVIDER: 's3',
       S3_BUCKET: 'payload-media',
       S3_ENDPOINT: 'https://s3.ap-southeast-1.idrivee2.com',
@@ -85,37 +81,32 @@ describe('runtime config', () => {
     })
   })
 
-  it('rejects sqlite in vercel production', () => {
+  it('rejects a missing mongodb connection string', () => {
     process.env = {
       ...ORIGINAL_ENV,
-      DATABASE_PROVIDER: 'sqlite',
-      DATABASE_URL: 'file:./payload.db',
-      NODE_ENV: 'production',
-      VERCEL: '1',
+      DATABASE_URL: '',
     }
 
     expect(() => getRuntimeConfig(process.env)).toThrow(
-      'SQLite is only supported for local development. Use DATABASE_PROVIDER=postgres on Vercel.',
+      'Missing MongoDB DATABASE_URL. Set DATABASE_URL to a MongoDB connection string.',
     )
   })
 
-  it('rejects postgres without a connection string', () => {
+  it('rejects a non-mongodb connection string', () => {
     process.env = {
       ...ORIGINAL_ENV,
-      DATABASE_PROVIDER: 'postgres',
-      POSTGRES_URL: '',
+      DATABASE_URL: 'postgres://starter:secret@db.example.com:5432/payload',
     }
 
     expect(() => getRuntimeConfig(process.env)).toThrow(
-      'Missing Postgres connection string. Set POSTGRES_URL or DATABASE_URL.',
+      'Invalid MongoDB DATABASE_URL. Use a connection string starting with "mongodb://" or "mongodb+srv://".',
     )
   })
 
   it('rejects s3 mode without the required bucket configuration', () => {
     process.env = {
       ...ORIGINAL_ENV,
-      DATABASE_PROVIDER: 'postgres',
-      POSTGRES_URL: 'postgres://starter:secret@db.example.com:5432/payload',
+      DATABASE_URL: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
       MEDIA_PROVIDER: 's3',
       S3_BUCKET: '',
       S3_ENDPOINT: '',

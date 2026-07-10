@@ -1,4 +1,3 @@
-import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { cache } from 'react'
 
@@ -38,8 +37,9 @@ const resolveRedirectDestination = (
 }
 
 const getRedirectDocByPath = cache(async (pathname: string): Promise<Redirect | null> => {
+  const { default: config } = await import('@payload-config')
   const payload = await getPayload({
-    config: configPromise,
+    config,
   })
 
   const result = await payload.find({

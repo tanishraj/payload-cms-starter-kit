@@ -6,8 +6,7 @@ describe('starter contract', () => {
   it('marks the documented local profile as supported', () => {
     const contract = getStarterContract({
       database: {
-        provider: 'sqlite',
-        url: 'file:./payload.db',
+        url: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
       },
       deployment: {
         isProduction: false,
@@ -34,8 +33,7 @@ describe('starter contract', () => {
   it('rejects Vercel production because local-disk media is not durable there', () => {
     const contract = getStarterContract({
       database: {
-        provider: 'postgres',
-        url: 'postgres://starter:secret@db.example.com:5432/payload',
+        url: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
       },
       deployment: {
         isProduction: true,
@@ -60,8 +58,7 @@ describe('starter contract', () => {
   it('allows hosted deployments when s3 media storage is configured', () => {
     const contract = getStarterContract({
       database: {
-        provider: 'postgres',
-        url: 'postgres://starter:secret@db.example.com:5432/payload',
+        url: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
       },
       deployment: {
         isProduction: true,

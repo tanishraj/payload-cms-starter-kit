@@ -112,7 +112,7 @@ export interface Config {
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: number;
+    defaultIDType: string;
   };
   fallbackLocale: null;
   globals: {
@@ -164,7 +164,7 @@ export interface UserAuthOperations {
  * via the `definition` "pages".
  */
 export interface Page {
-  id: number;
+  id: string;
   title: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -190,7 +190,7 @@ export interface Page {
    */
   includeInSitemap?: ('default' | 'include' | 'exclude') | null;
   ogTitle?: string | null;
-  ogImage?: (number | null) | Media;
+  ogImage?: (string | null) | Media;
   ogDescription?: string | null;
   /**
    * Resolved from the current saved slug and parent hierarchy.
@@ -199,7 +199,7 @@ export interface Page {
   /**
    * Use this for nested page hierarchies like /services/web-development.
    */
-  parent?: (number | null) | Page;
+  parent?: (string | null) | Page;
   workflowState: 'draft' | 'in_review' | 'scheduled' | 'published' | 'reverted';
   scheduledPublishAt?: string | null;
   /**
@@ -207,9 +207,9 @@ export interface Page {
    */
   changeSummary?: string | null;
   lastReviewedAt?: string | null;
-  lastReviewedBy?: (number | null) | User;
+  lastReviewedBy?: (string | null) | User;
   publishedAt?: string | null;
-  publishedBy?: (number | null) | User;
+  publishedBy?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -230,11 +230,11 @@ export interface Hero36Block {
     description: string;
     visualType: 'icon' | 'image';
     icon?: ('blocks' | 'database' | 'layout' | 'rocket') | null;
-    image?: (number | null) | Media;
+    image?: (string | null) | Media;
     /**
      * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
      */
-    link?: (number | null) | NavigationLink;
+    link?: (string | null) | NavigationLink;
     openInNewTab?: boolean | null;
     id?: string | null;
   }[];
@@ -247,7 +247,23 @@ export interface Hero36Block {
  * via the `definition` "media".
  */
 export interface Media {
-  id: number;
+  id: string;
+  /**
+   * Read-only storage health set by the media reconciliation process.
+   */
+  storageStatus?: ('unchecked' | 'healthy' | 'missing' | 'check_failed' | 'local_only') | null;
+  /**
+   * Most recent storage verification time.
+   */
+  storageCheckedAt?: string | null;
+  /**
+   * When this asset was first detected missing from object storage.
+   */
+  storageMissingSince?: string | null;
+  /**
+   * Read-only diagnostic detail from the last storage verification.
+   */
+  storageIssue?: string | null;
   /**
    * Internal asset name used in the admin panel.
    */
@@ -318,11 +334,11 @@ export interface Media {
  * via the `definition` "navigation-links".
  */
 export interface NavigationLink {
-  id: number;
+  id: string;
   title: string;
   description?: string | null;
   linkType: 'page' | 'custom';
-  page?: (number | null) | Page;
+  page?: (string | null) | Page;
   url?: string | null;
   openInNewTab?: boolean | null;
   /**
@@ -332,7 +348,7 @@ export interface NavigationLink {
   /**
    * The page that currently owns this synced reusable link.
    */
-  syncPage?: (number | null) | Page;
+  syncPage?: (string | null) | Page;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -346,7 +362,7 @@ export interface FormBlock {
   /**
    * Select the published form to render on this page.
    */
-  form: number | Form;
+  form: string | Form;
   id?: string | null;
   blockName?: string | null;
   blockType: 'form';
@@ -358,7 +374,7 @@ export interface FormBlock {
  * via the `definition` "forms".
  */
 export interface Form {
-  id: number;
+  id: string;
   title: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -412,7 +428,7 @@ export interface Form {
  * via the `definition` "users".
  */
 export interface User {
-  id: number;
+  id: string;
   /**
    * Choose the base access preset for this user. Saving a changed non-admin role reapplies that role default.
    */
@@ -541,7 +557,7 @@ export interface User {
  * via the `definition` "categories".
  */
 export interface Category {
-  id: number;
+  id: string;
   title: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -551,7 +567,7 @@ export interface Category {
   /**
    * Optional parent category for building a reusable category tree.
    */
-  parent?: (number | null) | Category;
+  parent?: (string | null) | Category;
   /**
    * Optional short description for archive pages and editorial context.
    */
@@ -571,7 +587,7 @@ export interface Category {
    */
   includeInSitemap?: ('default' | 'include' | 'exclude') | null;
   ogTitle?: string | null;
-  ogImage?: (number | null) | Media;
+  ogImage?: (string | null) | Media;
   ogDescription?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -584,7 +600,7 @@ export interface Category {
  * via the `definition` "tags".
  */
 export interface Tag {
-  id: number;
+  id: string;
   title: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -610,7 +626,7 @@ export interface Tag {
    */
   includeInSitemap?: ('default' | 'include' | 'exclude') | null;
   ogTitle?: string | null;
-  ogImage?: (number | null) | Media;
+  ogImage?: (string | null) | Media;
   ogDescription?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -623,7 +639,7 @@ export interface Tag {
  * via the `definition` "articles".
  */
 export interface Article {
-  id: number;
+  id: string;
   title: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -633,17 +649,17 @@ export interface Article {
   /**
    * Primary category that owns article archive placement and related-content priority.
    */
-  primaryCategory: number | Category;
+  primaryCategory: string | Category;
   /**
    * Optional topical tags for cross-linking and tag archives.
    */
-  tags?: (number | Tag)[] | null;
+  tags?: (string | Tag)[] | null;
   /**
    * Supporting categories for cross-linking. The primary category is always included automatically.
    */
-  categories?: (number | Category)[] | null;
+  categories?: (string | Category)[] | null;
   excerpt: string;
-  featuredImage?: (number | null) | Media;
+  featuredImage?: (string | null) | Media;
   authorName: string;
   /**
    * Optional. Override the visible publication date without changing workflow metadata.
@@ -682,7 +698,7 @@ export interface Article {
    */
   includeInSitemap?: ('default' | 'include' | 'exclude') | null;
   ogTitle?: string | null;
-  ogImage?: (number | null) | Media;
+  ogImage?: (string | null) | Media;
   ogDescription?: string | null;
   workflowState: 'draft' | 'in_review' | 'scheduled' | 'published' | 'reverted';
   scheduledPublishAt?: string | null;
@@ -691,9 +707,9 @@ export interface Article {
    */
   changeSummary?: string | null;
   lastReviewedAt?: string | null;
-  lastReviewedBy?: (number | null) | User;
+  lastReviewedBy?: (string | null) | User;
   publishedAt?: string | null;
-  publishedBy?: (number | null) | User;
+  publishedBy?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -706,7 +722,7 @@ export interface Article {
  * via the `definition` "reviews".
  */
 export interface Review {
-  id: number;
+  id: string;
   title: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -716,15 +732,15 @@ export interface Review {
   /**
    * Primary category that owns review archive placement and related-content priority.
    */
-  primaryCategory: number | Category;
+  primaryCategory: string | Category;
   /**
    * Optional topical tags used for related-content matching and editorial organization.
    */
-  tags?: (number | Tag)[] | null;
+  tags?: (string | Tag)[] | null;
   /**
    * Supporting categories for cross-linking. The primary category is always included automatically.
    */
-  categories?: (number | Category)[] | null;
+  categories?: (string | Category)[] | null;
   rating: '1' | '2' | '3' | '4' | '5';
   /**
    * Optional short subject like product, service, or campaign label.
@@ -742,7 +758,7 @@ export interface Review {
    * Confirms the reviewer stated this review is based on their own genuine experience.
    */
   isGenuineExperience: boolean;
-  featuredImage?: (number | null) | Media;
+  featuredImage?: (string | null) | Media;
   /**
    * Optional supplemental sections. Structured review content stays primary.
    */
@@ -766,7 +782,7 @@ export interface Review {
    */
   includeInSitemap?: ('default' | 'include' | 'exclude') | null;
   ogTitle?: string | null;
-  ogImage?: (number | null) | Media;
+  ogImage?: (string | null) | Media;
   ogDescription?: string | null;
   workflowState: 'draft' | 'in_review' | 'scheduled' | 'published' | 'reverted';
   scheduledPublishAt?: string | null;
@@ -777,11 +793,11 @@ export interface Review {
   /**
    * Immutable link back to the public intake submission that generated this review.
    */
-  sourceSubmission?: (number | null) | FormSubmission;
+  sourceSubmission?: (string | null) | FormSubmission;
   lastReviewedAt?: string | null;
-  lastReviewedBy?: (number | null) | User;
+  lastReviewedBy?: (string | null) | User;
   publishedAt?: string | null;
-  publishedBy?: (number | null) | User;
+  publishedBy?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -795,11 +811,11 @@ export interface ContentSpotlightBlock {
   eyebrow?: string | null;
   heading: string;
   description?: string | null;
-  image?: (number | null) | Media;
+  image?: (string | null) | Media;
   /**
    * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
    */
-  link?: (number | null) | NavigationLink;
+  link?: (string | null) | NavigationLink;
   openInNewTab?: boolean | null;
   id?: string | null;
   blockName?: string | null;
@@ -812,10 +828,10 @@ export interface ContentSpotlightBlock {
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
-  id: number;
-  form: number | Form;
+  id: string;
+  form: string | Form;
   status?: ('new' | 'in_review' | 'qualified' | 'won' | 'rejected' | 'archived') | null;
-  owner?: (number | null) | User;
+  owner?: (string | null) | User;
   internalNotes?: string | null;
   submissionIntent: 'general' | 'lead' | 'review';
   source?: string | null;
@@ -824,7 +840,7 @@ export interface FormSubmission {
   submitterName?: string | null;
   submitterEmail?: string | null;
   email?: string | null;
-  linkedReview?: (number | null) | Review;
+  linkedReview?: (string | null) | Review;
   promotionError?: string | null;
   submittedAt: string;
   lastActionAt?: string | null;
@@ -848,7 +864,7 @@ export interface FormSubmission {
  * via the `definition` "redirects".
  */
 export interface Redirect {
-  id: number;
+  id: string;
   /**
    * The old incoming path to redirect, for example /old-page or /services/web-design.html.
    */
@@ -857,7 +873,7 @@ export interface Redirect {
   /**
    * Choose the page this old path should redirect to.
    */
-  page?: (number | null) | Page;
+  page?: (string | null) | Page;
   /**
    * Enter an internal path or full external URL to redirect to.
    */
@@ -879,7 +895,7 @@ export interface Redirect {
  * via the `definition` "headers".
  */
 export interface Header {
-  id: number;
+  id: string;
   title: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -901,7 +917,7 @@ export interface Header {
  */
 export interface HeaderNavbar12Block {
   logoMode: 'siteSettingsLogo' | 'customLogo';
-  customLogo?: (number | null) | Media;
+  customLogo?: (string | null) | Media;
   /**
    * Configure the main navigation structure for this header.
    */
@@ -914,7 +930,7 @@ export interface HeaderNavbar12Block {
         /**
          * Optional top-level destination. If children are added, this becomes the overview link.
          */
-        link?: (number | null) | NavigationLink;
+        link?: (string | null) | NavigationLink;
         children?:
           | {
               /**
@@ -925,7 +941,7 @@ export interface HeaderNavbar12Block {
                * Optional description for dropdown items.
                */
               description?: string | null;
-              link: number | NavigationLink;
+              link: string | NavigationLink;
               id?: string | null;
             }[]
           | null;
@@ -941,7 +957,7 @@ export interface HeaderNavbar12Block {
          * Optional label override. Leave blank to use the reusable link title.
          */
         label?: string | null;
-        link: number | NavigationLink;
+        link: string | NavigationLink;
         id?: string | null;
       }[]
     | null;
@@ -951,7 +967,7 @@ export interface HeaderNavbar12Block {
      * Optional button label override. Leave blank to use the reusable link title.
      */
     label?: string | null;
-    link?: (number | null) | NavigationLink;
+    link?: (string | null) | NavigationLink;
   };
   id?: string | null;
   blockName?: string | null;
@@ -964,7 +980,7 @@ export interface HeaderNavbar12Block {
  * via the `definition` "footers".
  */
 export interface Footer {
-  id: number;
+  id: string;
   title: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -986,7 +1002,7 @@ export interface Footer {
  */
 export interface Footer2Block {
   logoMode: 'siteSettingsLogo' | 'customLogo';
-  customLogo?: (number | null) | Media;
+  customLogo?: (string | null) | Media;
   description?: string | null;
   /**
    * Configure the footer sections for this footer layout.
@@ -1000,7 +1016,7 @@ export interface Footer2Block {
                * Optional label override. Leave blank to use the reusable link title.
                */
               name?: string | null;
-              link: number | NavigationLink;
+              link: string | NavigationLink;
               id?: string | null;
             }[]
           | null;
@@ -1014,7 +1030,7 @@ export interface Footer2Block {
          * Optional label override. Leave blank to use the reusable link title.
          */
         name?: string | null;
-        link: number | NavigationLink;
+        link: string | NavigationLink;
         id?: string | null;
       }[]
     | null;
@@ -1029,7 +1045,7 @@ export interface Footer2Block {
  * via the `definition` "system-pages".
  */
 export interface SystemPage {
-  id: number;
+  id: string;
   title: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -1059,15 +1075,15 @@ export interface SystemPage {
    */
   includeInSitemap?: ('default' | 'include' | 'exclude') | null;
   ogTitle?: string | null;
-  ogImage?: (number | null) | Media;
+  ogImage?: (string | null) | Media;
   ogDescription?: string | null;
   workflowState: 'draft' | 'in_review' | 'scheduled' | 'published' | 'reverted';
   scheduledPublishAt?: string | null;
   changeSummary?: string | null;
   lastReviewedAt?: string | null;
-  lastReviewedBy?: (number | null) | User;
+  lastReviewedBy?: (string | null) | User;
   publishedAt?: string | null;
-  publishedBy?: (number | null) | User;
+  publishedBy?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1087,7 +1103,7 @@ export interface System404Block {
     /**
      * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
      */
-    link?: (number | null) | NavigationLink;
+    link?: (string | null) | NavigationLink;
     openInNewTab?: boolean | null;
   };
   secondaryAction?: {
@@ -1095,10 +1111,10 @@ export interface System404Block {
     /**
      * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
      */
-    link?: (number | null) | NavigationLink;
+    link?: (string | null) | NavigationLink;
     openInNewTab?: boolean | null;
   };
-  image?: (number | null) | Media;
+  image?: (string | null) | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'system404';
@@ -1117,7 +1133,7 @@ export interface SystemMaintenanceBlock {
     /**
      * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
      */
-    link?: (number | null) | NavigationLink;
+    link?: (string | null) | NavigationLink;
     openInNewTab?: boolean | null;
   };
   secondaryAction?: {
@@ -1125,10 +1141,10 @@ export interface SystemMaintenanceBlock {
     /**
      * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
      */
-    link?: (number | null) | NavigationLink;
+    link?: (string | null) | NavigationLink;
     openInNewTab?: boolean | null;
   };
-  image?: (number | null) | Media;
+  image?: (string | null) | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'systemMaintenance';
@@ -1147,7 +1163,7 @@ export interface SystemComingSoonBlock {
     /**
      * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
      */
-    link?: (number | null) | NavigationLink;
+    link?: (string | null) | NavigationLink;
     openInNewTab?: boolean | null;
   };
   secondaryAction?: {
@@ -1155,10 +1171,10 @@ export interface SystemComingSoonBlock {
     /**
      * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
      */
-    link?: (number | null) | NavigationLink;
+    link?: (string | null) | NavigationLink;
     openInNewTab?: boolean | null;
   };
-  image?: (number | null) | Media;
+  image?: (string | null) | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'systemComingSoon';
@@ -1168,7 +1184,7 @@ export interface SystemComingSoonBlock {
  * via the `definition` "operational-audit-events".
  */
 export interface OperationalAuditEvent {
-  id: number;
+  id: string;
   entityType: string;
   entityId: string;
   entityTitle: string;
@@ -1188,7 +1204,7 @@ export interface OperationalAuditEvent {
  * via the `definition` "work-queue".
  */
 export interface WorkQueue {
-  id: number;
+  id: string;
   /**
    * System-generated queue summary. This reflects the current source condition.
    */
@@ -1213,7 +1229,7 @@ export interface WorkQueue {
   /**
    * Operator responsible for resolving this item.
    */
-  assignee?: (number | null) | User;
+  assignee?: (string | null) | User;
   /**
    * Optional target date for follow-up or resolution.
    */
@@ -1279,7 +1295,7 @@ export interface WorkQueue {
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: number;
+  id: string;
   key: string;
   data:
     | {
@@ -1296,76 +1312,76 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: number;
+  id: string;
   document?:
     | ({
         relationTo: 'pages';
-        value: number | Page;
+        value: string | Page;
       } | null)
     | ({
         relationTo: 'categories';
-        value: number | Category;
+        value: string | Category;
       } | null)
     | ({
         relationTo: 'tags';
-        value: number | Tag;
+        value: string | Tag;
       } | null)
     | ({
         relationTo: 'articles';
-        value: number | Article;
+        value: string | Article;
       } | null)
     | ({
         relationTo: 'reviews';
-        value: number | Review;
+        value: string | Review;
       } | null)
     | ({
         relationTo: 'navigation-links';
-        value: number | NavigationLink;
+        value: string | NavigationLink;
       } | null)
     | ({
         relationTo: 'redirects';
-        value: number | Redirect;
+        value: string | Redirect;
       } | null)
     | ({
         relationTo: 'headers';
-        value: number | Header;
+        value: string | Header;
       } | null)
     | ({
         relationTo: 'footers';
-        value: number | Footer;
+        value: string | Footer;
       } | null)
     | ({
         relationTo: 'system-pages';
-        value: number | SystemPage;
+        value: string | SystemPage;
       } | null)
     | ({
         relationTo: 'forms';
-        value: number | Form;
+        value: string | Form;
       } | null)
     | ({
         relationTo: 'form-submissions';
-        value: number | FormSubmission;
+        value: string | FormSubmission;
       } | null)
     | ({
         relationTo: 'media';
-        value: number | Media;
+        value: string | Media;
       } | null)
     | ({
         relationTo: 'operational-audit-events';
-        value: number | OperationalAuditEvent;
+        value: string | OperationalAuditEvent;
       } | null)
     | ({
         relationTo: 'work-queue';
-        value: number | WorkQueue;
+        value: string | WorkQueue;
       } | null)
     | ({
         relationTo: 'users';
-        value: number | User;
+        value: string | User;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -1375,10 +1391,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number;
+  id: string;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   key?: string | null;
   value?:
@@ -1398,7 +1414,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
+  id: string;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -1944,6 +1960,10 @@ export interface FormSubmissionsSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  storageStatus?: T;
+  storageCheckedAt?: T;
+  storageMissingSince?: T;
+  storageIssue?: T;
   title?: T;
   assetType?: T;
   alt?: T;
@@ -2115,19 +2135,19 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  * via the `definition` "page-settings".
  */
 export interface PageSetting {
-  id: number;
+  id: string;
   /**
    * Choose which published page should render at the root URL (/).
    */
-  homepage?: (number | null) | Page;
+  homepage?: (string | null) | Page;
   /**
    * Choose which saved header preset should render site-wide.
    */
-  activeHeader?: (number | null) | Header;
+  activeHeader?: (string | null) | Header;
   /**
    * Choose which saved footer preset should render site-wide.
    */
-  activeFooter?: (number | null) | Footer;
+  activeFooter?: (string | null) | Footer;
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -2137,19 +2157,19 @@ export interface PageSetting {
  * via the `definition` "system-mode-settings".
  */
 export interface SystemModeSetting {
-  id: number;
+  id: string;
   /**
    * Select a 404 system preset. Draft presets appear here, but the selected preset must be published before it can be used live.
    */
-  notFoundPage?: (number | null) | SystemPage;
+  notFoundPage?: (string | null) | SystemPage;
   /**
    * Select a maintenance system preset. Draft presets appear here, but the selected preset must be published before it can be used live.
    */
-  maintenancePage?: (number | null) | SystemPage;
+  maintenancePage?: (string | null) | SystemPage;
   /**
    * Select a coming soon system preset. Draft presets appear here, but the selected preset must be published before it can be used live.
    */
-  comingSoonPage?: (number | null) | SystemPage;
+  comingSoonPage?: (string | null) | SystemPage;
   /**
    * Allow logged-in admin users to continue seeing the normal site when a mode is active.
    */
@@ -2167,11 +2187,11 @@ export interface SystemModeSetting {
  * via the `definition` "site-settings".
  */
 export interface SiteSetting {
-  id: number;
+  id: string;
   siteName: string;
   siteDescription?: string | null;
-  logo?: (number | null) | Media;
-  favicon?: (number | null) | Media;
+  logo?: (string | null) | Media;
+  favicon?: (string | null) | Media;
   contactEmail?: string | null;
   contactPhone?: string | null;
   address?: string | null;
@@ -2193,7 +2213,7 @@ export interface SiteSetting {
  * via the `definition` "theme-settings".
  */
 export interface ThemeSetting {
-  id: number;
+  id: string;
   /**
    * Select which frontend theme preset is loaded for the site.
    */
@@ -2213,14 +2233,14 @@ export interface ThemeSetting {
  * via the `definition` "seo-settings".
  */
 export interface SeoSetting {
-  id: number;
+  id: string;
   defaultTitle?: string | null;
   /**
    * Example: %s | Your Site Name
    */
   titleTemplate?: string | null;
   defaultDescription?: string | null;
-  defaultImage?: (number | null) | Media;
+  defaultImage?: (string | null) | Media;
   /**
    * Inherited when a route keeps its local robots mode on Default.
    */

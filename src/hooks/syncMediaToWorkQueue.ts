@@ -6,6 +6,7 @@ type MediaDoc = {
   id?: number | string
   isCriticalAsset?: boolean | null
   replacementNotes?: string | null
+  storageStatus?: 'unchecked' | 'healthy' | 'missing' | 'check_failed' | 'local_only' | null
   title?: string | null
   updatedAt?: string | null
 }
@@ -17,6 +18,26 @@ export const syncMediaToWorkQueue: CollectionAfterChangeHook<MediaDoc> = async (
 
   const title = doc.title || `Media ${doc.id}`
   const conditions: WorkQueueCondition[] = [
+    {
+      dedupeKey: buildWorkQueueDedupeKey({
+        sourceCollection: 'media',
+        sourceID: doc.id,
+        queueType: 'media_issue',
+        reasonCode: 'media-object-missing',
+      }),
+      details:
+        'The media record still exists in Payload, but the backing object was not found in storage. Restore the object or replace the asset.',
+      priority: doc.isCriticalAsset ? 'urgent' : 'high',
+      queueType: 'media_issue',
+      reasonCode: 'media-object-missing',
+      resolutionSummary: `${title} is available in storage again.`,
+      sourceAdminPath: `/admin/collections/media/${doc.id}`,
+      sourceCollection: 'media',
+      sourceID: doc.id,
+      sourceTitle: title,
+      sourceUpdatedAt: doc.updatedAt ?? null,
+      summary: `${title} is missing from object storage.`,
+    },
     {
       dedupeKey: buildWorkQueueDedupeKey({
         sourceCollection: 'media',
@@ -59,10 +80,12 @@ export const syncMediaToWorkQueue: CollectionAfterChangeHook<MediaDoc> = async (
   ]
 
   const activeCondition =
-    !doc.title || doc.title.trim().length === 0
+    doc.storageStatus === 'missing'
       ? conditions[0]
-      : doc.isCriticalAsset && (!doc.replacementNotes || doc.replacementNotes.trim().length === 0)
+      : !doc.title || doc.title.trim().length === 0
         ? conditions[1]
+        : doc.isCriticalAsset && (!doc.replacementNotes || doc.replacementNotes.trim().length === 0)
+          ? conditions[2]
         : null
 
   await syncWorkQueueConditions({

@@ -1,6 +1,5 @@
 import { getPayload } from 'payload'
 import config from '../../src/payload.config.js'
-import { runWithSQLiteBusyRetry } from './sqliteRetry'
 
 export const testUser = {
   email: 'dev@payloadcms.com',
@@ -15,24 +14,20 @@ export async function seedTestUser(): Promise<void> {
   const payload = await getPayload({ config })
 
   // Delete existing test user if any
-  await runWithSQLiteBusyRetry(() =>
-    payload.delete({
-      collection: 'users',
-      where: {
-        email: {
-          equals: testUser.email,
-        },
+  await payload.delete({
+    collection: 'users',
+    where: {
+      email: {
+        equals: testUser.email,
       },
-    }),
-  )
+    },
+  })
 
   // Create fresh test user
-  await runWithSQLiteBusyRetry(() =>
-    payload.create({
-      collection: 'users',
-      data: testUser,
-    }),
-  )
+  await payload.create({
+    collection: 'users',
+    data: testUser,
+  })
 }
 
 export async function getTestUserDocument(): Promise<{
@@ -74,14 +69,12 @@ export async function getTestUserDocument(): Promise<{
 export async function cleanupTestUser(): Promise<void> {
   const payload = await getPayload({ config })
 
-  await runWithSQLiteBusyRetry(() =>
-    payload.delete({
-      collection: 'users',
-      where: {
-        email: {
-          equals: testUser.email,
-        },
+  await payload.delete({
+    collection: 'users',
+    where: {
+      email: {
+        equals: testUser.email,
       },
-    }),
-  )
+    },
+  })
 }

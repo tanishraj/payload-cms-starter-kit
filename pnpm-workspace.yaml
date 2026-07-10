@@ -1,10 +1,6 @@
 allowBuilds:
   bufferutil: true
   esbuild: true
+  mongodb-memory-server: true
   sharp: true
   unrs-resolver: true
-onlyBuiltDependencies:
-  - sharp
-  - esbuild
-  - unrs-resolver
-  - bufferutil

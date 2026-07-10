@@ -1,35 +1,37 @@
-import { mkdtempSync, rmSync } from 'node:fs'
-import { join } from 'node:path'
-import { tmpdir } from 'node:os'
-
 import { getPayload, Payload } from 'payload'
 
-import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
+
+import { createTestMongoServer } from '../helpers/mongoMemoryServer'
 
 let payload: Payload
-let testDirectory = ''
+let stopMongoServer: (() => Promise<void>) | null = null
 
 describe('API', () => {
   beforeAll(async () => {
-    testDirectory = mkdtempSync(join(tmpdir(), 'payload-api-int-'))
-    process.env.DATABASE_PROVIDER = 'sqlite'
-    process.env.DATABASE_URL = `file:${join(testDirectory, 'payload-test.db')}`
-    process.env.EMAIL_PROVIDER = 'none'
-    process.env.PAYLOAD_SECRET = 'test-secret'
+    const mongoServer = await createTestMongoServer()
 
+    process.env.DATABASE_URL = mongoServer.uri
+    process.env.EMAIL_PROVIDER = 'none'
+    process.env.MEDIA_PROVIDER = 'localDisk'
+    process.env.PAYLOAD_SECRET = 'test-secret'
+    stopMongoServer = mongoServer.stop
+
+    vi.resetModules()
     const { default: config } = await import('@/payload.config')
     const payloadConfig = await config
     payload = await getPayload({ config: payloadConfig })
-  })
+  }, 120000)
 
-  afterAll(() => {
-    if (testDirectory) {
-      rmSync(testDirectory, {
-        force: true,
-        recursive: true,
-      })
+  afterAll(async () => {
+    if (payload) {
+      await payload.destroy()
     }
-  })
+
+    if (stopMongoServer) {
+      await stopMongoServer()
+    }
+  }, 30000)
 
   it('loads configured collections', async () => {
     const [users, pages, forms, categories, articles] = await Promise.all([

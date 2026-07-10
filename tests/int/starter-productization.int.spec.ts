@@ -1,43 +1,49 @@
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
-import { join } from 'node:path'
-import { tmpdir } from 'node:os'
+import { readFileSync } from 'node:fs'
 
 import { getPayload, type Payload } from 'payload'
 
-import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
+
+import { createTestMongoServer } from '../helpers/mongoMemoryServer'
 
 let payload: Payload
-let testDirectory = ''
+let stopMongoServer: (() => Promise<void>) | null = null
 
 describe('starter productization', () => {
   beforeAll(async () => {
-    testDirectory = mkdtempSync(join(tmpdir(), 'payload-starter-productization-'))
-    process.env.DATABASE_PROVIDER = 'sqlite'
-    process.env.DATABASE_URL = `file:${join(testDirectory, 'payload-test.db')}`
+    const mongoServer = await createTestMongoServer()
+
+    process.env.DATABASE_URL = mongoServer.uri
     process.env.EMAIL_PROVIDER = 'none'
     process.env.MEDIA_PROVIDER = 'localDisk'
     process.env.PAYLOAD_SECRET = 'test-secret'
+    stopMongoServer = mongoServer.stop
 
+    vi.resetModules()
     const { default: config } = await import('@/payload.config')
     payload = await getPayload({ config: await config })
-  })
+  }, 120000)
 
-  afterAll(() => {
-    if (testDirectory) {
-      rmSync(testDirectory, {
-        force: true,
-        recursive: true,
-      })
+  afterAll(async () => {
+    if (payload) {
+      await payload.destroy()
     }
-  })
+
+    if (stopMongoServer) {
+      await stopMongoServer()
+    }
+  }, 30000)
 
   it('keeps the documented local defaults in .env.example', () => {
     const envExample = readFileSync('.env.example', 'utf8')
 
-    expect(envExample).toContain('DATABASE_PROVIDER=sqlite')
+    expect(envExample).toContain('DATABASE_URL=mongodb://127.0.0.1:27017/payload-cms-starter-kit')
+    expect(envExample).not.toContain('DATABASE_PROVIDER=sqlite')
     expect(envExample).toContain('EMAIL_PROVIDER=none')
-    expect(envExample).toContain('MEDIA_PROVIDER=localDisk')
+    expect(envExample).toContain('MEDIA_PROVIDER=s3')
+    expect(envExample).not.toContain('POSTGRES_URL=')
     expect(envExample).toContain('S3_ENDPOINT')
+    expect(envExample).toContain('MEDIA_RECONCILE_TOKEN')
   })
 
   it('boots the starter and exposes the documented core collections and globals', async () => {

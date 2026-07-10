@@ -4,9 +4,9 @@ This repository is an editorial-first marketing CMS starter built to be copied f
 
 ## Supported Starter Contract
 
-- local development: `SQLite` plus local-disk uploads
+- local development: `MongoDB` plus local-disk uploads
 - email: `none` or `resend`
-- Vercel database target: `Postgres`
+- hosted database target: `MongoDB`
 - Vercel media target: `S3-compatible` object storage such as `IDrive e2`
 
 The repo fails fast if you try to boot a Vercel production profile with the default local-disk `media` behavior. Use `MEDIA_PROVIDER=s3` with a durable bucket before allowing editor-managed uploads in hosted environments.
@@ -14,7 +14,7 @@ The repo fails fast if you try to boot a Vercel production profile with the defa
 ## First Boot
 
 1. Copy `.env.example` to `.env`.
-2. Keep `DATABASE_PROVIDER=sqlite` for local development.
+2. Start MongoDB locally with `docker compose up -d mongo`, or point `DATABASE_URL` at an existing MongoDB instance.
 3. Set `PAYLOAD_SECRET`.
 4. Run `pnpm install`.
 5. Run `pnpm dev`.
@@ -52,14 +52,13 @@ See [docs/architecture/content-model-map.md](docs/architecture/content-model-map
 - [Starter clone checklist](docs/operations/starter-clone-checklist.md)
 - [Content model map](docs/architecture/content-model-map.md)
 - [Editorial governance](docs/operations/editorial-governance.md)
-- [Vercel Postgres deployment](docs/operations/vercel-postgres-deployment.md)
+- [MongoDB deployment](docs/operations/mongodb-deployment.md)
 
 ## Environment
 
 Local development defaults:
 
-- `DATABASE_PROVIDER=sqlite`
-- `DATABASE_URL=file:./payload-cms-next-tailwind-shadcn-starter-kit.db`
+- `DATABASE_URL=mongodb://127.0.0.1:27017/payload-cms-starter-kit`
 - `PAYLOAD_SECRET`
 - `EMAIL_PROVIDER=none`
 - `MEDIA_PROVIDER=localDisk`

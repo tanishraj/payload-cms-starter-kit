@@ -1,5 +1,6 @@
 import type {
   CollectionAfterReadHook,
+  CollectionAfterDeleteHook,
   CollectionBeforeValidateHook,
   CollectionConfig,
 } from 'payload'
@@ -17,6 +18,20 @@ import {
 } from '@/lib/mediaUsage'
 import { preventMediaDeletionWhileInUse } from '@/hooks/preventMediaDeletionWhileInUse'
 import { syncMediaToWorkQueue } from '@/hooks/syncMediaToWorkQueue'
+import { recordOperationalAuditEvent } from '@/lib/operationalAudit'
+
+const recordMediaDeletionAudit: CollectionAfterDeleteHook = async ({ doc, req }) => {
+  await recordOperationalAuditEvent({
+    action: 'media_deleted',
+    entityId: String(doc.id),
+    entityTitle: doc.title?.trim() || doc.filename?.trim() || `Media ${doc.id}`,
+    entityType: 'media',
+    req,
+    summary: `Media asset ${doc.title?.trim() || doc.filename?.trim() || doc.id} was deleted through the CMS.`,
+  })
+
+  return doc
+}
 
 const mediaAssetTypeOptions = [
   {
@@ -108,6 +123,7 @@ export const Media: CollectionConfig = {
   },
   hooks: {
     afterChange: [syncMediaToWorkQueue],
+    afterDelete: [recordMediaDeletionAudit],
     afterRead: [populateMediaUsage],
     beforeDelete: [preventMediaDeletionWhileInUse],
     beforeValidate: [beforeValidate],
@@ -116,6 +132,70 @@ export const Media: CollectionConfig = {
     drafts: true,
   },
   fields: [
+    {
+      name: 'storageStatus',
+      label: 'Storage Status',
+      type: 'select',
+      defaultValue: 'unchecked',
+      options: [
+        {
+          label: 'Unchecked',
+          value: 'unchecked',
+        },
+        {
+          label: 'Healthy',
+          value: 'healthy',
+        },
+        {
+          label: 'Missing',
+          value: 'missing',
+        },
+        {
+          label: 'Check Failed',
+          value: 'check_failed',
+        },
+        {
+          label: 'Local Only',
+          value: 'local_only',
+        },
+      ],
+      admin: {
+        description:
+          'Read-only storage health set by the media reconciliation process.',
+        position: 'sidebar',
+        readOnly: true,
+      },
+    },
+    {
+      name: 'storageCheckedAt',
+      label: 'Storage Checked At',
+      type: 'date',
+      admin: {
+        description: 'Most recent storage verification time.',
+        position: 'sidebar',
+        readOnly: true,
+      },
+    },
+    {
+      name: 'storageMissingSince',
+      label: 'Missing Since',
+      type: 'date',
+      admin: {
+        description: 'When this asset was first detected missing from object storage.',
+        position: 'sidebar',
+        readOnly: true,
+      },
+    },
+    {
+      name: 'storageIssue',
+      label: 'Storage Issue',
+      type: 'textarea',
+      admin: {
+        description: 'Read-only diagnostic detail from the last storage verification.',
+        position: 'sidebar',
+        readOnly: true,
+      },
+    },
     {
       name: 'title',
       type: 'text',

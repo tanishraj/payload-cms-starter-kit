@@ -1,13 +1,7 @@
 export type RuntimeConfig = {
-  database:
-    | {
-        provider: 'sqlite'
-        url: string
-      }
-    | {
-        provider: 'postgres'
-        url: string
-      }
+  database: {
+    url: string
+  }
   deployment: {
     isProduction: boolean
     isVercel: boolean
@@ -35,20 +29,8 @@ export type RuntimeConfig = {
       }
 }
 
-const isPostgresConnectionString = (value: string): boolean =>
-  value.startsWith('postgres://') || value.startsWith('postgresql://')
-
-const getDatabaseProvider = (env: NodeJS.ProcessEnv): 'sqlite' | 'postgres' => {
-  if (!env.DATABASE_PROVIDER || env.DATABASE_PROVIDER === 'sqlite') {
-    return 'sqlite'
-  }
-
-  if (env.DATABASE_PROVIDER === 'postgres') {
-    return 'postgres'
-  }
-
-  throw new Error('Unsupported DATABASE_PROVIDER. Use "sqlite" or "postgres".')
-}
+const isMongoConnectionString = (value: string): boolean =>
+  value.startsWith('mongodb://') || value.startsWith('mongodb+srv://')
 
 const parseBooleanEnv = (value: string | undefined, defaultValue: boolean): boolean => {
   if (value == null || value.trim() === '') {
@@ -81,40 +63,20 @@ const getMediaProvider = (env: NodeJS.ProcessEnv): 'localDisk' | 's3' => {
 }
 
 export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeConfig => {
-  const databaseProvider = getDatabaseProvider(env)
   const mediaProvider = getMediaProvider(env)
   const isProduction = env.NODE_ENV === 'production'
   const isVercel = Boolean(env.VERCEL)
-  const postgresUrl = env.POSTGRES_URL || env.DATABASE_URL || ''
+  const databaseURL = env.DATABASE_URL?.trim() || ''
 
-  const database =
-    databaseProvider === 'postgres'
-      ? (() => {
-          if (!postgresUrl || !isPostgresConnectionString(postgresUrl)) {
-            throw new Error('Missing Postgres connection string. Set POSTGRES_URL or DATABASE_URL.')
-          }
+  if (!databaseURL) {
+    throw new Error('Missing MongoDB DATABASE_URL. Set DATABASE_URL to a MongoDB connection string.')
+  }
 
-          return {
-            provider: 'postgres' as const,
-            url: postgresUrl,
-          }
-        })()
-      : (() => {
-          if (!env.DATABASE_URL) {
-            throw new Error('Missing SQLite DATABASE_URL. Set DATABASE_URL to a local file path.')
-          }
-
-          if (isVercel && isProduction) {
-            throw new Error(
-              'SQLite is only supported for local development. Use DATABASE_PROVIDER=postgres on Vercel.',
-            )
-          }
-
-          return {
-            provider: 'sqlite' as const,
-            url: env.DATABASE_URL,
-          }
-        })()
+  if (!isMongoConnectionString(databaseURL)) {
+    throw new Error(
+      'Invalid MongoDB DATABASE_URL. Use a connection string starting with "mongodb://" or "mongodb+srv://".',
+    )
+  }
 
   const emailProvider =
     env.EMAIL_PROVIDER === 'none'
@@ -166,7 +128,9 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
         }
 
   return {
-    database,
+    database: {
+      url: databaseURL,
+    },
     deployment: {
       isProduction,
       isVercel,

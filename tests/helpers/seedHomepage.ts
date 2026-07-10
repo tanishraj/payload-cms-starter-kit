@@ -2,7 +2,6 @@ import { getPayload } from 'payload'
 
 import config from '../../src/payload.config.js'
 import { getTestUserDocument } from './seedUser'
-import { runWithSQLiteBusyRetry } from './sqliteRetry'
 
 const homepageSlug = 'e2e-homepage'
 
@@ -34,65 +33,55 @@ export async function seedHomepage(): Promise<void> {
   const payload = await getPayload({ config })
   const user = await getTestUserDocument()
 
-  await runWithSQLiteBusyRetry(() =>
-    payload.delete({
-      collection: 'pages',
-      overrideAccess: false,
-      user,
-      where: {
-        slug: {
-          equals: homepageSlug,
-        },
+  await payload.delete({
+    collection: 'pages',
+    overrideAccess: false,
+    user,
+    where: {
+      slug: {
+        equals: homepageSlug,
       },
-    }),
-  )
+    },
+  })
 
-  const page = await runWithSQLiteBusyRetry(() =>
-    payload.create({
-      collection: 'pages',
-      data: homepagePageData,
-      overrideAccess: false,
-      user,
-    }),
-  )
+  const page = await payload.create({
+    collection: 'pages',
+    data: homepagePageData,
+    overrideAccess: false,
+    user,
+  })
 
-  await runWithSQLiteBusyRetry(() =>
-    payload.updateGlobal({
-      data: {
-        homepage: page.id,
-      },
-      overrideAccess: false,
-      slug: 'page-settings',
-      user,
-    }),
-  )
+  await payload.updateGlobal({
+    data: {
+      homepage: page.id,
+    },
+    overrideAccess: false,
+    slug: 'page-settings',
+    user,
+  })
 }
 
 export async function cleanupHomepage(): Promise<void> {
   const payload = await getPayload({ config })
   const user = await getTestUserDocument()
 
-  await runWithSQLiteBusyRetry(() =>
-    payload.updateGlobal({
-      data: {
-        homepage: null,
-      },
-      overrideAccess: false,
-      slug: 'page-settings',
-      user,
-    }),
-  )
+  await payload.updateGlobal({
+    data: {
+      homepage: null,
+    },
+    overrideAccess: false,
+    slug: 'page-settings',
+    user,
+  })
 
-  await runWithSQLiteBusyRetry(() =>
-    payload.delete({
-      collection: 'pages',
-      overrideAccess: false,
-      user,
-      where: {
-        slug: {
-          equals: homepageSlug,
-        },
+  await payload.delete({
+    collection: 'pages',
+    overrideAccess: false,
+    user,
+    where: {
+      slug: {
+        equals: homepageSlug,
       },
-    }),
-  )
+    },
+  })
 }
