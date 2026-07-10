@@ -401,13 +401,21 @@ const getSystemBehaviorPages = async () => {
   }
 }
 
-export async function getSystemPageRenderState(_pathname: string): Promise<{
+const getResolvedSystemPageRenderState = async ({
+  ignoreBypass = false,
+}: {
+  ignoreBypass?: boolean
+} = {}): Promise<{
   mode: 'comingSoon' | 'maintenance' | null
   page: SystemPage | null
-}> {
+}> => {
   const systemBehavior = await getSystemBehaviorPages()
 
-  if (systemBehavior.bypassForLoggedInAdmins && (await canCurrentRequestBypassSystemModes())) {
+  if (
+    !ignoreBypass &&
+    systemBehavior.bypassForLoggedInAdmins &&
+    (await canCurrentRequestBypassSystemModes())
+  ) {
     return {
       mode: null,
       page: null,
@@ -432,6 +440,35 @@ export async function getSystemPageRenderState(_pathname: string): Promise<{
     mode: null,
     page: null,
   }
+}
+
+export async function getSystemPageRenderState(_pathname: string): Promise<{
+  mode: 'comingSoon' | 'maintenance' | null
+  page: SystemPage | null
+}> {
+  return getResolvedSystemPageRenderState()
+}
+
+export async function getHomepageRenderState(): Promise<{
+  mode: 'comingSoon' | 'maintenance' | null
+  page: SystemPage | null
+}> {
+  const renderState = await getResolvedSystemPageRenderState()
+
+  if (renderState.page || renderState.mode) {
+    return renderState
+  }
+
+  if (await getHomepagePage()) {
+    return {
+      mode: null,
+      page: null,
+    }
+  }
+
+  return getResolvedSystemPageRenderState({
+    ignoreBypass: true,
+  })
 }
 
 export async function getManagedNotFoundPage(): Promise<SystemPage | null> {
@@ -480,7 +517,7 @@ export async function getPageMetadataByPath(segments: string[]): Promise<Metadat
 }
 
 export async function getHomepageMetadata(): Promise<Metadata> {
-  const systemPageState = await getSystemPageRenderState('/')
+  const systemPageState = await getHomepageRenderState()
 
   if (systemPageState.page) {
     return toManagedSystemPageMetadata(systemPageState.page)

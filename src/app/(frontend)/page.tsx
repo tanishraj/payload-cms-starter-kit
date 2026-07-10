@@ -5,14 +5,14 @@ import { notFound } from 'next/navigation'
 
 import { PageContent } from './PageContent'
 import { SystemModeFallbackPage } from './SystemFallbackPage'
-import { getHomepageMetadata, getHomepagePage, getSystemPageRenderState } from './pageData'
+import { getHomepageMetadata, getHomepagePage, getHomepageRenderState } from './pageData'
 
 export async function generateMetadata(): Promise<Metadata> {
   return getHomepageMetadata()
 }
 
 export default async function HomePage() {
-  const systemPageState = await getSystemPageRenderState('/')
+  const systemPageState = await getHomepageRenderState()
 
   if (systemPageState.page) {
     return <PageContent page={systemPageState.page} />

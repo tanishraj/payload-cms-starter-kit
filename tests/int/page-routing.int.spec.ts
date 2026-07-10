@@ -84,6 +84,50 @@ describe('page routing', () => {
     expect(result.page).toBeNull()
   })
 
+  it('falls back to the active system mode for bypassed admins when the homepage is unavailable', async () => {
+    payloadMocks.findGlobal.mockImplementation(async ({ slug }) => {
+      if (slug === 'page-settings') {
+        return { homepage: 42 }
+      }
+
+      if (slug === 'system-mode-settings') {
+        return {
+          bypassForLoggedInAdmins: true,
+          comingSoonPage: null,
+          maintenancePage: null,
+          notFoundPage: null,
+          siteMode: 'maintenance',
+        }
+      }
+
+      return {
+        defaultDescription: 'Global fallback description',
+        defaultImage: null,
+        defaultTitle: 'Global fallback title',
+        robots: 'index,follow',
+      }
+    })
+    payloadMocks.auth.mockResolvedValue({
+      user: {
+        role: 'admin',
+      },
+    })
+    payloadMocks.find.mockResolvedValue({
+      docs: [],
+    })
+
+    const { getHomepageMetadata, getHomepageRenderState } = await loadPageData()
+
+    await expect(getHomepageRenderState()).resolves.toEqual({
+      mode: 'maintenance',
+      page: null,
+    })
+
+    await expect(getHomepageMetadata()).resolves.toMatchObject({
+      title: 'Maintenance',
+    })
+  })
+
   it('resolves homepage metadata from the shared canonical and robots contract', async () => {
     payloadMocks.findGlobal.mockImplementation(async ({ slug }) => {
       if (slug === 'page-settings') {
