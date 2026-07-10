@@ -224,6 +224,40 @@ describe('media governance resolver', () => {
     expect(Media.hooks?.beforeDelete).toBeDefined()
   })
 
+  it('requires alt text for images but allows documents without alt text', async () => {
+    const beforeValidate = Media.hooks?.beforeValidate?.[0]
+
+    expect(beforeValidate).toBeDefined()
+
+    await expect(
+      beforeValidate?.({
+        data: {
+          alt: '',
+          assetType: 'general',
+          mimeType: 'image/png',
+        },
+        operation: 'create',
+        originalDoc: undefined,
+      } as never),
+    ).rejects.toThrow('Image assets require alt text.')
+
+    await expect(
+      beforeValidate?.({
+        data: {
+          alt: '',
+          assetType: 'document',
+          mimeType: 'application/pdf',
+        },
+        operation: 'create',
+        originalDoc: undefined,
+      } as never),
+    ).resolves.toMatchObject({
+      alt: '',
+      assetType: 'document',
+      mimeType: 'application/pdf',
+    })
+  })
+
   it('blocks deletion for referenced assets and allows unused assets', async () => {
     const referencedPayload = {
       find: vi.fn(async ({ collection }: { collection: string }) => ({

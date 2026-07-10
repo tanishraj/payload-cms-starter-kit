@@ -273,9 +273,9 @@ export interface Media {
    */
   assetType?: ('general' | 'logo' | 'hero' | 'seo' | 'icon' | 'document') | null;
   /**
-   * Describe the image for accessibility and SEO. Keep logo alt concise, describe meaningful hero imagery, and write SEO alt as a clear preview description.
+   * Required for image assets. Describe the image for accessibility and SEO. Documents can leave this blank.
    */
-  alt: string;
+  alt?: string | null;
   /**
    * Optional labels to make assets easier to find later.
    */

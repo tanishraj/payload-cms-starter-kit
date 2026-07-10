@@ -61,6 +61,8 @@ const mediaAssetTypeOptions = [
 ] as const
 
 const imageOnlyAssetTypes = new Set(['hero', 'logo', 'seo'])
+const isImageMimeType = (value: unknown): value is string =>
+  typeof value === 'string' && value.startsWith('image/')
 
 const beforeValidate: CollectionBeforeValidateHook = async ({ data, operation, originalDoc }) => {
   if (!data || (operation !== 'create' && operation !== 'update')) {
@@ -69,8 +71,9 @@ const beforeValidate: CollectionBeforeValidateHook = async ({ data, operation, o
 
   const assetType = typeof data.assetType === 'string' ? data.assetType : originalDoc?.assetType
   const mimeType = typeof data.mimeType === 'string' ? data.mimeType : originalDoc?.mimeType
+  const alt = typeof data.alt === 'string' ? data.alt : originalDoc?.alt
 
-  if (assetType && imageOnlyAssetTypes.has(assetType) && (!mimeType || !mimeType.startsWith('image/'))) {
+  if (assetType && imageOnlyAssetTypes.has(assetType) && !isImageMimeType(mimeType)) {
     const labels: Record<string, string> = {
       hero: 'Hero',
       logo: 'Logo',
@@ -78,6 +81,10 @@ const beforeValidate: CollectionBeforeValidateHook = async ({ data, operation, o
     }
 
     throw new Error(`${labels[assetType]} assets must use an uploaded image file.`)
+  }
+
+  if (isImageMimeType(mimeType) && (!alt || alt.trim().length === 0)) {
+    throw new Error('Image assets require alt text.')
   }
 
   return data
@@ -217,10 +224,9 @@ export const Media: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
-      required: true,
       admin: {
         description:
-          'Describe the image for accessibility and SEO. Keep logo alt concise, describe meaningful hero imagery, and write SEO alt as a clear preview description.',
+          'Required for image assets. Describe the image for accessibility and SEO. Documents can leave this blank.',
       },
     },
     {
