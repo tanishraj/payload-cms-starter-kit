@@ -15,7 +15,7 @@ export const Headers: CollectionConfig = {
     plural: 'Headers',
   },
   admin: {
-    group: 'Site Structure',
+    group: 'Website Structure',
     hidden: hideFromUsersWithoutCapability('manage_headers'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'updatedAt'],

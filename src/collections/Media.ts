@@ -115,7 +115,7 @@ const populateMediaUsage: CollectionAfterReadHook<MediaWithUsage> = async ({ doc
 export const Media: CollectionConfig = {
   slug: 'media',
   admin: {
-    group: 'Content',
+    group: 'Website Content',
     hidden: hideFromUsersWithoutCapability('manage_media'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'assetType', 'alt', 'updatedAt'],

@@ -72,9 +72,9 @@ const pageOfTypeFilter = (type: SystemPageType) => ({
 
 export const SystemModeSettings: GlobalConfig = {
   slug: 'system-mode-settings',
-  label: 'System Modes',
+  label: 'Website Modes',
   admin: {
-    group: 'System Defaults',
+    group: 'Site Settings',
     hidden: hideFromUsersWithoutCapability('manage_system_modes'),
   },
   access: {
@@ -91,7 +91,7 @@ export const SystemModeSettings: GlobalConfig = {
         entityType: 'system_mode_settings',
         getSummary: ({ doc, previousDoc }) =>
           `Site mode changed from ${previousDoc?.siteMode ?? 'off'} to ${doc.siteMode}.`,
-        title: 'System Modes',
+        title: 'Website Modes',
       }),
     ],
   },

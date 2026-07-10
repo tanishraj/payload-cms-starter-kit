@@ -10,7 +10,7 @@ export const ThemeSettings: GlobalConfig = {
   slug: 'theme-settings',
   label: 'Theme Settings',
   admin: {
-    group: 'Settings',
+    group: 'Site Settings',
     description: 'Control the frontend theme preset and light or dark mode behavior.',
     hidden: hideFromUsersWithoutCapability('manage_theme_settings'),
   },

@@ -11,7 +11,7 @@ export const SEOSettings: GlobalConfig = {
   slug: 'seo-settings',
   label: 'SEO Settings',
   admin: {
-    group: 'Settings',
+    group: 'Site Settings',
     description:
       'Default SEO values inherited by public routes when local SEO fields stay on Default or empty.',
     hidden: hideFromUsersWithoutCapability('manage_seo_settings'),

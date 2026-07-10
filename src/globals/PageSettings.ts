@@ -59,9 +59,9 @@ const validatePublishedFrontPage: RelationshipFieldSingleValidation = async (val
 
 export const PageSettings: GlobalConfig = {
   slug: 'page-settings',
-  label: 'Site Defaults',
+  label: 'Website Defaults',
   admin: {
-    group: 'System Defaults',
+    group: 'Site Settings',
     hidden: hideFromUsersWithoutCapability(['manage_page_settings', 'manage_site_settings']),
   },
   access: {
@@ -78,7 +78,7 @@ export const PageSettings: GlobalConfig = {
         entityType: 'page_settings',
         getSummary: ({ doc, previousDoc }) =>
           `Homepage reference changed from ${describeAuditValue(previousDoc?.homepage)} to ${describeAuditValue(doc.homepage)}.`,
-        title: 'Site Defaults',
+        title: 'Website Defaults',
       }),
     ],
   },

@@ -79,11 +79,11 @@ const priorityOptions = [
 export const WorkQueue: CollectionConfig = {
   slug: 'work-queue',
   labels: {
-    singular: 'Work Queue Item',
-    plural: 'Work Queue',
+    singular: 'Action Queue Item',
+    plural: 'Action Queue',
   },
   admin: {
-    group: 'Admin',
+    group: 'Operations',
     hidden: hideFromUsersWithoutCapability('manage_work_queue'),
     useAsTitle: 'summary',
     defaultColumns: [
