@@ -13,13 +13,13 @@ Use `Redirects` when:
 - a campaign or admissions URL should point to a newer page
 - an old internal path should send users to a different live destination
 
-Do not use it to build navigation. That belongs in `Links`, `Headers`, and `Footers`.
+Do not use it to build navigation. That belongs in `Navigation Links`, `Headers`, and `Footers`.
 
 ## How It Connects To The Website
 
 Redirects affect real frontend routing. When a visitor opens a matching path, the public website sends them to the configured destination before the normal page lookup completes.
 
-This section has site-wide impact because a bad redirect can send all users of one path to the wrong place, create loops, or hide the intended page. Redirects depend on stable destination pages, careful slug changes, and coordination with `Pages` and `Links`.
+This section has site-wide impact because a bad redirect can send all users of one path to the wrong place, create loops, or hide the intended page. Redirects depend on stable destination pages, careful slug changes, and coordination with `Pages` and `Navigation Links`.
 
 ## Step-By-Step Medical College Example
 
@@ -55,11 +55,11 @@ Expected website result:
 - forgetting that a redirect can override what users expect from an old URL
 - creating a redirect after changing a page slug but not checking related links
 
-If users are landing in the wrong place, disable the redirect, confirm the correct destination, and review related `Pages` and `Links`. If an old page path changed during publishing, also check whether an automatic redirect was already created.
+If users are landing in the wrong place, disable the redirect, confirm the correct destination, and review related `Pages` and `Navigation Links`. If an old page path changed during publishing, also check whether an automatic redirect was already created.
 
 ## Related Guides
 
 - [Pages](./pages.md)
-- [Links](./links.md)
+- [Navigation Links](./links.md)
 - [Headers](./headers.md)
 - [Footers](./footers.md)

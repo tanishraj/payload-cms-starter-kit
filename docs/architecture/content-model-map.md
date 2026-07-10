@@ -16,7 +16,7 @@ This starter already has clear ownership boundaries for marketing-site content. 
 
 ## System Pages
 
-`system-pages` stores managed presets for 404, maintenance, and coming-soon experiences. These are not normal marketing pages. They are selected by type and then activated through site defaults when the frontend should override public routes.
+`system-pages` stores managed presets for 404, maintenance, and coming-soon experiences. These are not normal marketing pages. They are selected by type and then activated through Website Defaults and Website Modes when the frontend should override public routes.
 
 ## Editorial Inventory
 
@@ -34,9 +34,13 @@ This starter already has clear ownership boundaries for marketing-site content. 
 
 Review intake starts in `forms` and `form-submissions`; public-facing reviews only belong in `reviews` after editorial approval.
 
-## Site Defaults
+## Website Defaults
 
-`page-settings` is the control surface for site-wide routing and structural defaults. It chooses the active homepage, header, footer, system-page presets, and site mode behavior. Use it when a setting changes how the whole site resolves content.
+`page-settings` is the control surface for site-wide routing and structural defaults. It chooses the active homepage, header, and footer. Use it when a setting changes how the whole site resolves content.
+
+## Website Modes
+
+`system-mode-settings` is the control surface for site-wide fallback behavior. It chooses the active 404 page and maintenance or coming-soon override behavior when the public site should temporarily stop using the normal frontend content flow.
 
 ## Site Settings
 
@@ -54,5 +58,5 @@ Review intake starts in `forms` and `form-submissions`; public-facing reviews on
 
 - Add client-specific collections beside the core starter collections instead of overloading `pages`, `system-pages`, or `navigation-links`.
 - Prefer hooks and `src/lib` helpers for cross-cutting behavior such as notifications, automations, or publishing side effects.
-- Keep global ownership explicit so branding, routing defaults, SEO defaults, and theme defaults do not drift across multiple globals.
+- Keep global ownership explicit so branding, routing defaults, fallback modes, SEO defaults, and theme defaults do not drift across multiple globals.
 - Keep intake flows in `forms` and `form-submissions`, and only promote curated public content into editorial collections when that distinction matters operationally.

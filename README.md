@@ -42,7 +42,17 @@ The CMS already separates structural site content, editorial inventory, and site
 - `pages`, `navigation-links`, `headers`, `footers`, and `system-pages` own the public site structure
 - `articles`, `reviews`, `categories`, and `tags` own editorial inventory
 - `forms` and `form-submissions` own intake and lead operations
-- `page-settings`, `system-mode-settings`, `site-settings`, `theme-settings`, and `seo-settings` own site-wide defaults
+- `page-settings` (`Website Defaults`), `system-mode-settings` (`Website Modes`), `site-settings`, `theme-settings`, and `seo-settings` own site-wide defaults
+
+## Admin Information Architecture
+
+The operator-facing admin is organized into:
+
+- `Website Content`
+- `Website Structure`
+- `Lead Capture`
+- `Site Settings`
+- `Operations`
 
 See [docs/architecture/content-model-map.md](docs/architecture/content-model-map.md) for the full ownership map.
 

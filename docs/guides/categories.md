@@ -11,7 +11,7 @@ Use `Categories` when content should belong to a stable topic area that users ma
 Do not use it for:
 
 - one-off keywords that are better handled by `Tags`
-- navigation labels that belong in `Links`, `Headers`, or `Footers`
+- navigation labels that belong in `Navigation Links`, `Headers`, or `Footers`
 
 ## How It Connects To The Website
 

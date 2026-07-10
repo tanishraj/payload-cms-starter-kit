@@ -16,7 +16,7 @@ Do not use it for individual page content. Headers are structural and belong to 
 
 ## How It Connects To The Website
 
-Headers influence site-wide behavior because the active header is rendered across the public website layout. The currently active header is chosen in `Site Defaults`, and it usually depends on reusable `Links`, brand assets from `Media`, and correct page destinations.
+Headers influence site-wide behavior because the active header is rendered across the public website layout. The currently active header is chosen in `Website Defaults`, and it usually depends on reusable `Navigation Links`, brand assets from `Media`, and correct page destinations.
 
 If a header is misconfigured, users can lose access to important navigation paths such as `About`, `Programs`, `Admissions`, `Research`, or `Contact`. A broken or incomplete header affects the frontend on nearly every public page, not just one route.
 
@@ -32,7 +32,7 @@ Create the main North Valley Medical College top navigation:
 6. Add the primary admissions call to action, such as `Apply Now`, if the block supports it.
 7. Save the header preset.
 8. After review, publish it.
-9. Open `Site Defaults` and set this header as the active header if it should appear on the live website.
+9. Open `Website Defaults` and set this header as the active header if it should appear on the live website.
 
 Expected website result:
 
@@ -42,14 +42,14 @@ Expected website result:
 ## Best Practices
 
 - keep the header focused on the most important routes
-- use reusable `Links` so destinations stay consistent across the site
+- use reusable `Navigation Links` so destinations stay consistent across the site
 - preview the header after major navigation changes
 - treat header updates as high-impact because they affect site-wide navigation
 - confirm that the admissions and contact paths still lead to the intended pages
 
 ## Common Mistakes And Recovery
 
-- publishing a header but forgetting to make it active in `Site Defaults`
+- publishing a header but forgetting to make it active in `Website Defaults`
 - linking to draft or incorrect destinations
 - overcrowding the header with too many equal-priority items
 - changing header navigation without checking the footer and redirect strategy
@@ -58,7 +58,7 @@ If visitors cannot reach key sections, review the active header selection, inspe
 
 ## Related Guides
 
-- [Links](./links.md)
+- [Navigation Links](./links.md)
 - [Pages](./pages.md)
 - [Footers](./footers.md)
-- [Site Defaults](./site-defaults.md)
+- [Website Defaults](./site-defaults.md)

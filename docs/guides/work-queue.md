@@ -1,14 +1,14 @@
-# Work Queue Guide
+# Action Queue Guide
 
 ## What This Section Is
 
-`Work Queue` is the CMS operations inbox for work that still needs attention. It is not a separate ticketing system that staff must fill manually. The queue is created automatically from important CMS conditions and gives operators one place to triage, assign, and resolve ongoing work.
+`Action Queue` is the CMS operations inbox for work that still needs attention. It is not a separate ticketing system that staff must fill manually. The queue is created automatically from important CMS conditions and gives operators one place to triage, assign, and resolve ongoing work.
 
 In North Valley Medical College, this is where staff would see items such as an admissions submission needing follow-up, an article awaiting approval, a scheduled review that needs publication oversight, or a media asset missing governance details.
 
 ## When To Use It
 
-Use `Work Queue` when you need to:
+Use `Action Queue` when you need to:
 
 - see what still requires action across the CMS
 - assign operational ownership
@@ -27,7 +27,7 @@ The current system automatically creates or updates queue items from conditions 
 - `Pages`, `Articles`, and `System Pages` entering `In Review` or `Scheduled`
 - `Reviews` needing moderation or scheduled publication oversight
 - `Form Submissions` that are `New` or `In Review`
-- `Headers`, `Footers`, `Links`, and `Redirects` having unpublished draft changes
+- `Headers`, `Footers`, `Navigation Links`, and `Redirects` having unpublished draft changes
 - `Media` items missing governance details or critical replacement guidance
 
 Each queue item stores the source collection, source record, current reason, and a direct admin path back to the underlying document. Operators are expected to resolve the real source condition, then let the queue sync automatically.
@@ -36,7 +36,7 @@ Each queue item stores the source collection, source record, current reason, and
 
 Triage a new admissions-related work item for North Valley Medical College:
 
-1. Open `Work Queue`.
+1. Open `Action Queue`.
 2. Filter to status `Open`.
 3. Review the summary and source collection for the new item.
 4. Open the queue record and confirm the `queueType`, `reasonCode`, and source details.
@@ -72,6 +72,6 @@ If a queue item seems wrong, inspect the `Source` tab first, open the related do
 ## Related Guides
 
 - [Form Submissions](./form-submissions.md)
-- [Operational Audit Events](./operational-audit-events.md)
+- [Activity Log](./operational-audit-events.md)
 - [Pages](./pages.md)
 - [Users](./users.md)

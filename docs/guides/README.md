@@ -20,52 +20,49 @@ That shared example shows how pages, content, structure, forms, settings, and op
 
 ## How The Admin Is Grouped
 
-### Content
+### Website Content
 
 - [Pages](./pages.md)
 - [Categories](./categories.md)
 - [Tags](./tags.md)
 - [Articles](./articles.md)
 - [Reviews](./reviews.md)
-- [Links](./links.md)
 - [Media](./media.md)
 
-### Site Structure
+### Website Structure
 
+- [Navigation Links](./links.md)
 - [Redirects](./redirects.md)
 - [Headers](./headers.md)
 - [Footers](./footers.md)
 - [System Pages](./system-pages.md)
 
-### Forms
+### Lead Capture
 
 - [Forms](./forms.md)
 - [Form Submissions](./form-submissions.md)
 
-### Admin
+### Site Settings
 
-- [Operational Audit Events](./operational-audit-events.md)
-- [Work Queue](./work-queue.md)
-- [Users](./users.md)
-
-### System Defaults
-
-- [Site Defaults](./site-defaults.md)
-- [System Modes](./system-modes.md)
-
-### Settings
-
+- [Website Defaults](./site-defaults.md)
 - [Site Settings](./site-settings.md)
 - [Theme Settings](./theme-settings.md)
 - [SEO Settings](./seo-settings.md)
+- [Website Modes](./system-modes.md)
+
+### Operations
+
+- [Activity Log](./operational-audit-events.md)
+- [Action Queue](./work-queue.md)
+- [Users](./users.md)
 
 ## Recommended Reading Order
 
 1. [Site Settings](./site-settings.md), [Theme Settings](./theme-settings.md), [SEO Settings](./seo-settings.md)
-2. [Site Defaults](./site-defaults.md), [Headers](./headers.md), [Footers](./footers.md), [Links](./links.md)
+2. [Website Defaults](./site-defaults.md), [Headers](./headers.md), [Footers](./footers.md), [Navigation Links](./links.md)
 3. [Pages](./pages.md), [Media](./media.md), [Articles](./articles.md), [Categories](./categories.md), [Tags](./tags.md), [Reviews](./reviews.md)
 4. [Forms](./forms.md), [Form Submissions](./form-submissions.md)
-5. [Redirects](./redirects.md), [System Pages](./system-pages.md), [System Modes](./system-modes.md), [Operational Audit Events](./operational-audit-events.md), [Work Queue](./work-queue.md), [Users](./users.md)
+5. [Redirects](./redirects.md), [System Pages](./system-pages.md), [Website Modes](./system-modes.md), [Activity Log](./operational-audit-events.md), [Action Queue](./work-queue.md), [Users](./users.md)
 
 ## How To Use These Guides
 

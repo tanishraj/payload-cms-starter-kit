@@ -1,8 +1,8 @@
-# Site Defaults Guide
+# Website Defaults Guide
 
 ## What This Section Is
 
-`Site Defaults` is where you choose the global website defaults that control the real homepage, the active header, and the active footer.
+`Website Defaults` is where you choose the global website defaults that control the real homepage, the active header, and the active footer.
 
 In North Valley Medical College, this is the section that decides:
 
@@ -12,7 +12,7 @@ In North Valley Medical College, this is the section that decides:
 
 ## When To Use It
 
-Use `Site Defaults` when you need to:
+Use `Website Defaults` when you need to:
 
 - change the real homepage of the website
 - switch the live site to a different saved header preset
@@ -35,7 +35,7 @@ This section has immediate site-wide importance. A wrong homepage selection chan
 Make `Admissions Overview` the homepage for North Valley Medical College:
 
 1. Confirm the `Admissions Overview` page is published in `Pages`.
-2. Open `Site Defaults`.
+2. Open `Website Defaults`.
 3. Open the `Front Page` tab.
 4. Select `Admissions Overview` in the `Front Page` field.
 5. Open the `Header` tab and choose the intended live header preset.

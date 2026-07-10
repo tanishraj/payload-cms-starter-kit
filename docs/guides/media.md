@@ -11,7 +11,7 @@ Use `Media` whenever a file should be uploaded once and reused across the websit
 Do not use it for:
 
 - text content that belongs in `Pages`, `Articles`, or `Reviews`
-- external links that belong in `Links`
+- external links that belong in `Navigation Links`
 
 ## How It Connects To The Website
 

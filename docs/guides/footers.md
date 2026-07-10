@@ -17,7 +17,7 @@ Do not use it for page-specific content that belongs inside a page layout block.
 
 ## How It Connects To The Website
 
-Footers affect site-wide behavior because the active footer is rendered in the frontend layout across the public website. The active footer is selected in `Site Defaults`, and the footer often depends on `Links`, `Media`, and correct site contact details from settings.
+Footers affect site-wide behavior because the active footer is rendered in the frontend layout across the public website. The active footer is selected in `Website Defaults`, and the footer often depends on `Navigation Links`, `Media`, and correct site contact details from settings.
 
 If it is misconfigured, the public website can show outdated address information, broken quick links, or missing trust signals on every page. A footer problem is rarely isolated to one page because the same footer preset is reused globally.
 
@@ -34,7 +34,7 @@ Create a footer for North Valley Medical College with address, accreditation, qu
 7. Add an accreditation or institutional trust section if the block supports it.
 8. Add an admissions CTA such as `Request Prospectus`.
 9. Save and publish the footer preset.
-10. Open `Site Defaults` and choose this footer as the active footer if it should appear on the live website.
+10. Open `Website Defaults` and choose this footer as the active footer if it should appear on the live website.
 
 Expected website result:
 
@@ -56,11 +56,11 @@ Expected website result:
 - adding links that point to unpublished or removed pages
 - forgetting that a footer change affects the frontend everywhere
 
-If the live footer looks wrong, confirm the active footer in `Site Defaults`, review the configured links, and compare the footer content against the latest institutional details.
+If the live footer looks wrong, confirm the active footer in `Website Defaults`, review the configured links, and compare the footer content against the latest institutional details.
 
 ## Related Guides
 
-- [Links](./links.md)
+- [Navigation Links](./links.md)
 - [Media](./media.md)
 - [Site Settings](./site-settings.md)
-- [Site Defaults](./site-defaults.md)
+- [Website Defaults](./site-defaults.md)

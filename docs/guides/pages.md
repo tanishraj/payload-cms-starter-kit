@@ -15,7 +15,7 @@ Do not use it for:
 
 ## How It Connects To The Website
 
-Pages define real frontend routes. A published page can become the homepage through `Site Defaults`, can appear in navigation through `Links`, and can rely on `Headers`, `Footers`, and `Media`.
+Pages define real frontend routes. A published page can become the homepage through `Website Defaults`, can appear in navigation through `Navigation Links`, and can rely on `Headers`, `Footers`, and `Media`.
 
 This collection also supports parent-child hierarchy, public URL preview, reusable layout blocks, SEO fields, and editorial workflow states. If a page slug or hierarchy changes, related navigation and redirects may also need attention.
 
@@ -52,11 +52,11 @@ Expected website result:
 - publishing before reviewing the page URL and SEO settings
 - selecting a parent page that creates a confusing hierarchy
 
-If a URL changes unexpectedly, review `Redirects` and related `Links`.
+If a URL changes unexpectedly, review `Redirects` and related `Navigation Links`.
 
 ## Related Guides
 
-- [Links](./links.md)
+- [Navigation Links](./links.md)
 - [Headers](./headers.md)
 - [Footers](./footers.md)
-- [Site Defaults](./site-defaults.md)
+- [Website Defaults](./site-defaults.md)

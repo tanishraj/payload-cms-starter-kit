@@ -1,21 +1,21 @@
-# System Modes Guide
+# Website Modes Guide
 
 ## What This Section Is
 
-`System Modes` is where you prepare and activate site-wide fallback modes such as `Maintenance` and `Coming Soon`. It also stores the selected branded `404` page used when a public route does not exist.
+`Website Modes` is where you prepare and activate site-wide fallback modes such as `Maintenance` and `Coming Soon`. It also stores the selected branded `404` page used when a public route does not exist.
 
 In North Valley Medical College, this is the safety control for moments when the site needs a temporary override without rebuilding the normal content structure.
 
 ## When To Use It
 
-Use `System Modes` when you need to:
+Use `Website Modes` when you need to:
 
 - select the branded `404` page
 - prepare a maintenance override before planned technical work
 - prepare a coming-soon override before launch
 - temporarily replace the normal public website with a system page
 
-Do not use this section for normal marketing or editorial publishing. Use `Pages` and `System Pages` for the actual content, then use `System Modes` only to select or activate the override behavior.
+Do not use this section for normal marketing or editorial publishing. Use `Pages` and `System Pages` for the actual content, then use `Website Modes` only to select or activate the override behavior.
 
 ## How It Connects To The Website
 
@@ -33,7 +33,7 @@ Only published system pages of the correct type should be selected here. Because
 Prepare North Valley Medical College for a scheduled maintenance window:
 
 1. Open `System Pages` and confirm a published maintenance page already exists.
-2. Open `System Modes`.
+2. Open `Website Modes`.
 3. Select the correct `404 Page`.
 4. Select the published maintenance page in `Maintenance Page`.
 5. Leave `Bypass For Logged In Admins` enabled so trusted admins can still inspect the normal site.
@@ -66,6 +66,6 @@ If the public site shows the wrong override, check `Site Mode` first, then verif
 ## Related Guides
 
 - [System Pages](./system-pages.md)
-- [Site Defaults](./site-defaults.md)
-- [Operational Audit Events](./operational-audit-events.md)
+- [Website Defaults](./site-defaults.md)
+- [Activity Log](./operational-audit-events.md)
 - [Users](./users.md)

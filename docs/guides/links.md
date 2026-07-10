@@ -1,12 +1,12 @@
-# Links Guide
+# Navigation Links Guide
 
 ## What This Section Is
 
-`Links` stores reusable destinations for menus, calls to action, utility links, and legal links. In North Valley Medical College, this is where you can manage destinations such as `Apply Now`, `Download Prospectus`, and `Book Campus Visit`.
+`Navigation Links` stores reusable destinations for menus, calls to action, utility links, and legal links. In North Valley Medical College, this is where you can manage destinations such as `Apply Now`, `Download Prospectus`, and `Book Campus Visit`.
 
 ## When To Use It
 
-Use `Links` when the same destination may appear in multiple places across the website and should be managed centrally.
+Use `Navigation Links` when the same destination may appear in multiple places across the website and should be managed centrally.
 
 Do not use it for:
 
@@ -15,7 +15,7 @@ Do not use it for:
 
 ## How It Connects To The Website
 
-Links are used by structural elements such as headers, footers, and other navigation-driven areas. They can point to internal pages or custom URLs, and some links may be automatically synced from pages rather than manually managed.
+Navigation links are used by structural elements such as headers, footers, and other navigation-driven areas. They can point to internal pages or custom URLs, and some links may be automatically synced from pages rather than manually managed.
 
 If a reusable link points to the wrong page or URL, multiple parts of the frontend can break at once.
 
@@ -23,7 +23,7 @@ If a reusable link points to the wrong page or URL, multiple parts of the fronte
 
 Create reusable links for North Valley Medical College:
 
-1. Open `Links`.
+1. Open `Navigation Links`.
 2. Click `Create New`.
 3. Create a link titled `Apply Now`.
 4. Choose whether it points to a page or a custom URL.
