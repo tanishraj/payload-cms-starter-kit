@@ -2,7 +2,7 @@
 
 ## Objective
 
-Replace the current one-size-fits-all system page hero with three distinct default system page layouts:
+Replace the current system page presentation with a minimal full-page pattern for:
 
 - `404`
 - `Maintenance`
@@ -12,334 +12,271 @@ The result should feel:
 
 - simple
 - responsive
-- premium but reusable
-- theme-aware through the existing Payload theme system
-- safer for operators than a broad flexible block system
+- centered
+- theme-aware
+- operationally safe
+
+These pages should read as complete public-site states, not as ordinary content sections dropped into a normal page layout.
 
 ## Current Problem
 
-The CMS already supports typed `System Pages`, but the current implementation treats them too similarly.
+The CMS already supports typed `System Pages`, but the desired presentation is now much simpler than the richer direction originally explored.
 
-Today:
+The system pages should no longer behave like mini landing pages with:
 
-- `System Pages` correctly separates `404`, `Maintenance`, and `Coming Soon`
-- the collection already restricts each type to its matching block
-- the block configs currently share one field factory
-- the frontend currently relies on one shared hero-style renderer for the fallback experience
+- card shells
+- split layouts
+- side panels
+- multiple content regions
+- optional decorative media zones
 
-That means the operational behavior is correct, but the visual and editorial experience is too generic. These are different page types with different jobs:
+Instead, the desired outcome is a very clear status screen:
 
-- `404` should help visitors recover
-- `Maintenance` should explain temporary unavailability clearly
-- `Coming Soon` should hold attention and build anticipation
+- full-page section
+- centered stack
+- centered actions
+- minimal copy
+
+This better matches the job of these pages:
+
+- `404` should explain the missing page clearly
+- `Maintenance` should communicate temporary interruption clearly
+- `Coming Soon` should communicate pre-launch state clearly
 
 ## Design Goals
 
-1. Give each system page type a distinct layout and tone.
-2. Keep editing simple and predictable inside Payload.
-3. Use the existing site theme tokens rather than hardcoded per-page palettes.
-4. Stay responsive across mobile and desktop.
-5. Reuse shadcn primitives wherever they fit naturally.
-6. Preserve the current `System Pages` workflow and `Website Modes` behavior.
-7. Avoid turning these operational pages into a generic landing-page builder.
+1. Keep all three system pages visually minimal.
+2. Use one consistent full-page structural pattern across all three types.
+3. Keep content editing simple inside Payload.
+4. Preserve theme support through the existing Payload theme system.
+5. Hide the normal site chrome when a system page is shown.
+6. Keep the implementation dependable and low-complexity.
 
 ## Recommended Approach
 
-Keep the existing `System Pages` collection structure, but stop treating the three block types as visually interchangeable.
+Keep the existing `System Pages` collection and type enforcement, but simplify both the schema and the renderer.
 
 The system should move to:
 
-- one curated layout for `404`
-- one curated layout for `Maintenance`
-- one curated layout for `Coming Soon`
-
-Each block type remains strongly typed in the CMS, but each gets:
-
-- its own focused block config
-- its own frontend presentation component
-- its own layout logic
+- one shared minimal full-page visual structure
+- three typed block entries that differ mostly by purpose and copy
+- no card layout
+- no split columns
+- no decorative support regions
 
 This is preferred over:
 
-- one shared hero with light visual variations, which remains too generic
-- multiple preset options per type, which adds operational complexity without strong value for this starter
+- distinct layout compositions per type, which adds unnecessary complexity
+- richer content models, which make system pages harder to operate under pressure
 
 ## Layout Direction
 
+All three system pages should use the same structural rhythm:
+
+- a section that fills the visible page area
+- centered horizontal alignment
+- centered vertical emphasis
+- one compact content stack
+- centered action row beneath the copy
+
+The page should feel like a dedicated state screen, not a standard CMS block inside a longer page.
+
 ### 404
+
+Default content:
+
+- badge or status line: `404`
+- heading: `The page you requested could not be found.`
+- description: `The link may be outdated, the page may have moved, or the URL may be incorrect.`
 
 Purpose:
 
-- help the visitor recover quickly
-- turn a dead-end into a guided next step
-
-Layout:
-
-- asymmetric two-column frame on desktop
-- stacked single-column layout on mobile
-- left side is the main recovery message
-- right side is a compact help panel with suggested destinations
-
-Primary content:
-
-- status code or badge
-- heading
-- short explanation
-- primary action
-- optional secondary action
-
-Supporting content:
-
-- small recovery links panel
-- optional image or visual placeholder
-
-Tone:
-
-- calm
-- navigational
-- not alarming
+- explain the error
+- offer a clean recovery path
 
 ### Maintenance
 
 Purpose:
 
-- communicate temporary unavailability with confidence
-- reassure visitors that the interruption is intentional and temporary
+- explain that the site is temporarily unavailable
+- reassure the visitor that the interruption is intentional
 
-Layout:
+The structure remains the same:
 
-- centered status shell with narrower reading width
-- optional lower information strip for practical details or actions
-- more symmetrical than the `404` layout
-
-Primary content:
-
-- status badge
+- status
 - heading
-- service message
-- supporting note
-- primary and optional secondary actions
-
-Supporting content:
-
-- optional expected return time
-- optional visual or icon-led status panel
-
-Tone:
-
-- operational
-- trustworthy
-- controlled
+- description
+- centered action row
 
 ### Coming Soon
 
 Purpose:
 
-- hold attention during pre-launch
-- feel optimistic and polished without reading like a marketing homepage
+- explain that the site or experience is not yet publicly available
+- keep the tone calm and polished
 
-Layout:
+The structure remains the same:
 
-- strong centered headline area
-- larger breathing room than the other two types
-- optional media surface below or beside the main content depending on viewport
-
-Primary content:
-
-- eyebrow or badge
+- status
 - heading
 - description
-- CTA area
-
-Supporting content:
-
-- optional signup note or launch message
-- optional image
-
-Tone:
-
-- anticipatory
-- polished
-- more expressive than `404` or `Maintenance`, but still restrained
+- centered action row
 
 ## Shared Visual Rules
 
-These layouts should feel related, but not identical.
+All three screens should:
 
-Shared rules:
-
-- use existing semantic theme tokens such as `background`, `foreground`, `muted`, `border`, `primary`, and `accent`
+- use existing semantic theme tokens such as `background`, `foreground`, `muted`, `border`, and `primary`
 - respect the current `Theme Settings` presets: `default`, `blue`, and `sera`
 - respect current color-scheme behavior: `system`, `light`, and `dark`
-- use shadcn primitives such as `Button`, `Badge`, `Separator`, and `Card` when they naturally fit
-- avoid hardcoded brand palettes inside the page-type components
-- avoid making any layout dependent on one specific image being present
+- use shadcn primitives only where they support the minimal structure naturally
+- avoid hardcoded page-type palettes
+- avoid card shells
+- avoid side panels
+- avoid image-driven composition
 
-Typography direction:
+Typography should stay restrained:
 
-- keep the current project font stack and theme inheritance
-- use stronger spacing, framing, and layout hierarchy rather than introducing a new type system only for system pages
+- centered heading
+- centered description
+- compact vertical rhythm
+- no decorative overdesign
 
 ## Content Model
 
-The CMS should stay simple.
+The CMS should stay very small for these pages.
 
-### Shared Core Fields
+### Shared Fields
 
-All three block types should continue to support a familiar core:
+All three block types should use the same small field set:
 
 - `badge`
 - `heading`
 - `description`
-- `supportingNote`
 - `primaryAction`
 - `secondaryAction`
-- `image`
+- optional `supportingNote`
 
-### Type-Specific Fields
+### Fields To Remove From This Direction
 
-#### 404
+This simplified design should not include:
 
 - `helpLinks`
-  - a short list of recovery destinations
-  - examples: homepage, admissions, contact, articles
-
-#### Maintenance
-
 - `serviceMessage`
-  - a concise operational message that can differ from the main description
 - `expectedBackAt`
-  - optional short text field for human-readable return timing such as `Expected back by 6:00 PM GST`
-
-#### Coming Soon
-
 - `eyebrow`
-  - a lightweight launch label above the main heading
 - `signupNote`
-  - optional short note for launch interest, contact, or next-step context
-
-### Editorial Constraint
-
-This should not become a flexible multi-section block system.
+- `image`
 
 Reasoning:
 
-- these pages are operational surfaces
-- they are edited under pressure
-- predictability is more valuable than design freedom
+- these fields support richer layouts that are no longer desired
+- they add editorial complexity without helping the minimal design
+- system pages should be fast to edit and hard to misconfigure
 
 ## Rendering Architecture
 
-The frontend should move from one shared hero renderer to a type-aware rendering path.
+The frontend should use one shared minimal renderer for all three types.
 
 Recommended structure:
 
-- keep one high-level `System Page` rendering entry point
-- map each system block type to its own dedicated presentational component
-- keep shared helper logic for action links and optional media handling where useful
+- one minimal full-page system-page component
+- type-aware defaults for status copy and subtle status treatment
+- one shared action-row pattern
 
-Expected rendering split:
+The important behavior is not visual variation by layout. It is consistency:
 
-- `System404` renderer
-- `SystemMaintenance` renderer
-- `SystemComingSoon` renderer
+- all three types should feel like part of one clear system
+- content changes should be enough to distinguish them
 
-These components should:
+## Header And Footer Behavior
 
-- accept only the data shape for their own block
-- gracefully handle missing optional fields
-- still look complete when image, secondary action, or extra fields are absent
+When a system page or system-mode fallback is rendered, the normal public-site header and footer should not render.
+
+Reasoning:
+
+- these pages should own the whole page
+- the system state should feel complete and intentional
+- normal site chrome makes the state feel like a partial content block instead of a real page state
+
+This applies to:
+
+- custom managed `System Pages`
+- built-in fallback screens
 
 ## Responsive Behavior
 
 All three pages must be mobile-first.
 
-### 404
+Expected behavior:
 
-- stack into a single column on mobile
-- recovery actions remain near the main message
-- help panel moves below the primary content
-
-### Maintenance
-
-- remain centered and readable on narrow screens
-- supporting strip collapses into a simple vertical stack
-
-### Coming Soon
-
-- preserve the headline-first hierarchy on mobile
-- media drops below the text when horizontal space is limited
+- centered content remains centered on narrow screens
+- text stays readable without growing too wide on desktop
+- action buttons stay centered and stack naturally when needed
+- spacing should feel calm and intentional on both mobile and desktop
 
 ## Fallback Behavior
 
-Current fallback behavior should stay intact.
+Current fallback behavior should remain intact:
 
-That means:
+- if `Website Modes` references a published custom `System Page`, that page renders
+- if no custom system page is selected, the built-in fallback screen still renders
 
-- if `Website Modes` references a published `System Page`, that page renders
-- if no custom `System Page` is selected for `404`, `Maintenance`, or `Coming Soon`, the built-in fallback UI still renders
-- mode routing behavior must remain unchanged except for the homepage fallback fix already introduced separately
-
-The new block system improves the custom managed `System Pages`. It must not remove the safe built-in fallback screens.
+The built-in fallback screens should use the same simplified full-page renderer so the experience remains consistent whether a custom page exists or not.
 
 ## shadcn Usage Strategy
 
-Use existing project primitives first.
+Use shadcn only where it supports the minimal structure naturally.
 
-Preferred primitives:
+Priority:
 
-- `Button`
-- `Badge`
-- `Separator`
-- `Card` if needed for framed content surfaces
+- `Button` for actions
+- optionally `Badge` for the status marker
 
-If a new shadcn primitive is needed, it should be introduced because it directly improves the layout structure, not because the page needs more ornament.
+Do not introduce additional primitives just to create more visual structure than the design needs.
 
-Use shadcnblocks only if:
+This pass should not depend on:
 
-- a block provides a clean, minimal structural pattern worth adapting
-- it can be brought into the current theme/token system without fighting the codebase
-
-The default preference is:
-
-- native repo composition
-- then shadcn primitives
-- only then selective shadcnblocks borrowing
+- `Card`
+- complex framing components
+- shadcnblocks landing-page patterns
 
 ## Non-Goals
 
 This pass should not include:
 
-- a multi-layout preset picker per system page type
-- a generic block-builder for system pages
-- custom theming rules per system page type
+- multiple layout presets per system page type
+- rich supporting content zones
+- help panels
+- side-column recovery links
+- media-heavy layouts
+- custom per-type theming systems
 - animation-heavy presentation
-- signup backend flows for coming soon pages
-- major changes to `Website Modes` logic
 
 ## Testing Strategy
 
 ### Automated
 
-- verify block schemas expose the expected shared and type-specific fields
-- verify `System Pages` still only allow the matching block type per system page type
-- verify each renderer handles missing optional fields cleanly
-- verify mode-based rendering still works for `404`, `Maintenance`, and `Coming Soon`
+- verify the system page block schemas use the simplified shared field set
+- verify removed rich-layout fields no longer appear
+- verify the minimal renderer works for `404`, `Maintenance`, and `Coming Soon`
+- verify built-in fallback screens use the same rendering pattern
+- verify routing and system-mode behavior still works
 
 ### Manual
 
-- create one example page for each type in Payload
-- preview each on desktop
-- preview each on mobile
-- verify the active theme preset changes the page naturally
-- verify dark/light behavior stays correct
-- verify built-in fallback screens still work when no custom page is selected
+- create one system page for each type
+- preview them on desktop and mobile
+- confirm the content is centered
+- confirm actions are centered
+- confirm header and footer are hidden
+- confirm theme presets still affect the page correctly
 
 ## Recommended Outcome
 
 After this pass, the starter should ship with:
 
-- distinct and purposeful system page designs
-- a simpler operator editing experience than a flexible block system
-- theme-aware layouts that feel integrated with the rest of the site
-- safe fallback behavior even when editors have not configured custom system pages
+- one clean full-page status pattern
+- very low CMS complexity for system pages
+- consistent fallback behavior
+- system pages that feel intentional, centered, and easy to operate
