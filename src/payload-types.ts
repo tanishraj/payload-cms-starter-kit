@@ -200,7 +200,7 @@ export interface Page {
    * Use this for nested page hierarchies like /services/web-development.
    */
   parent?: (string | null) | Page;
-  workflowState: 'draft' | 'in_review' | 'scheduled' | 'published' | 'reverted';
+  workflowState?: ('draft' | 'in_review' | 'scheduled' | 'published' | 'reverted') | null;
   scheduledPublishAt?: string | null;
   /**
    * Short operator-facing note explaining why this change exists.
@@ -514,6 +514,10 @@ export interface User {
      */
     view_operational_audit?: boolean | null;
     /**
+     * Require this user to submit content through editorial workflow before publication.
+     */
+    require_editorial_workflow?: boolean | null;
+    /**
      * Allow publishing access for Pages.
      */
     publish_pages?: boolean | null;
@@ -700,7 +704,7 @@ export interface Article {
   ogTitle?: string | null;
   ogImage?: (string | null) | Media;
   ogDescription?: string | null;
-  workflowState: 'draft' | 'in_review' | 'scheduled' | 'published' | 'reverted';
+  workflowState?: ('draft' | 'in_review' | 'scheduled' | 'published' | 'reverted') | null;
   scheduledPublishAt?: string | null;
   /**
    * Short operator-facing note explaining why this change exists.
@@ -784,7 +788,7 @@ export interface Review {
   ogTitle?: string | null;
   ogImage?: (string | null) | Media;
   ogDescription?: string | null;
-  workflowState: 'draft' | 'in_review' | 'scheduled' | 'published' | 'reverted';
+  workflowState?: ('draft' | 'in_review' | 'scheduled' | 'published' | 'reverted') | null;
   scheduledPublishAt?: string | null;
   /**
    * Short operator-facing note explaining why this change exists.
@@ -1077,7 +1081,7 @@ export interface SystemPage {
   ogTitle?: string | null;
   ogImage?: (string | null) | Media;
   ogDescription?: string | null;
-  workflowState: 'draft' | 'in_review' | 'scheduled' | 'published' | 'reverted';
+  workflowState?: ('draft' | 'in_review' | 'scheduled' | 'published' | 'reverted') | null;
   scheduledPublishAt?: string | null;
   changeSummary?: string | null;
   lastReviewedAt?: string | null;
@@ -2061,6 +2065,7 @@ export interface UsersSelect<T extends boolean = true> {
         manage_system_modes?: T;
         manage_work_queue?: T;
         view_operational_audit?: T;
+        require_editorial_workflow?: T;
         publish_pages?: T;
         publish_articles?: T;
         publish_reviews?: T;

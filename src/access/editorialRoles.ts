@@ -51,6 +51,7 @@ const allCapabilityValues: Array<keyof AdminCapabilitiesMap> = [
   'publish_pages',
   'publish_reviews',
   'publish_system_pages',
+  'require_editorial_workflow',
   'view_operational_audit',
 ]
 
@@ -78,6 +79,7 @@ const withCapabilities = (enabled: Array<keyof AdminCapabilitiesMap>): AdminCapa
     publish_pages: false,
     publish_reviews: false,
     publish_system_pages: false,
+    require_editorial_workflow: false,
     view_operational_audit: false,
   }
 
@@ -96,6 +98,7 @@ const contentManagerDefaults = withCapabilities([
   'publish_articles',
   'publish_pages',
   'publish_reviews',
+  'require_editorial_workflow',
 ])
 
 const siteManagerDefaults = withCapabilities([

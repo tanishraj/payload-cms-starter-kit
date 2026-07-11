@@ -91,6 +91,10 @@ export const adminCapabilityFieldOptions = [
     value: 'view_operational_audit',
   },
   {
+    label: 'Require Editorial Workflow',
+    value: 'require_editorial_workflow',
+  },
+  {
     label: 'Publish Pages',
     value: 'publish_pages',
   },
@@ -132,6 +136,10 @@ const getCapabilityDescription = ({
   label: string
   value: AdminCapability
 }) => {
+  if (value === 'require_editorial_workflow') {
+    return 'Require this user to submit content through editorial workflow before publication.'
+  }
+
   if (value.startsWith('publish_')) {
     return `Allow publishing access for ${label.replace(/^Publish /, '')}.`
   }
@@ -229,7 +237,11 @@ const capabilitySections = [
   },
   {
     label: 'Operations',
-    items: ['manage_work_queue', 'view_operational_audit'].map(getCapabilityItem),
+    items: [
+      'manage_work_queue',
+      'view_operational_audit',
+      'require_editorial_workflow',
+    ].map(getCapabilityItem),
   },
   {
     label: 'Publishing',
@@ -389,6 +401,22 @@ export const canManageSystemModes = (user: AdminUserLike | null | undefined): bo
 
 export const canViewOperationalAudit = (user: AdminUserLike | null | undefined): boolean => {
   return hasAdminCapability(user, 'view_operational_audit')
+}
+
+export const requiresEditorialWorkflow = (
+  user: AdminUserLike | null | undefined,
+): boolean => {
+  if (isAdminUser(user)) {
+    return false
+  }
+
+  return hasAdminCapability(user, 'require_editorial_workflow')
+}
+
+export const canShowEditorialWorkflow = (
+  user: AdminUserLike | null | undefined,
+): boolean => {
+  return isAdminUser(user) || requiresEditorialWorkflow(user)
 }
 
 export const canManageTaxonomy = (user: AdminUserLike | null | undefined): boolean => {

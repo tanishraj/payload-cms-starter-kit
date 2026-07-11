@@ -2,6 +2,7 @@ import { slugField, type CollectionConfig } from 'payload'
 
 import {
   allowPublicReadOrCapability,
+  canShowEditorialWorkflow,
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
@@ -263,18 +264,26 @@ export const Reviews: CollectionConfig = {
               defaultValue: 'draft',
               options: [...editorialWorkflowStateOptions],
               required: true,
+              admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
+              },
             },
             {
               name: 'scheduledPublishAt',
               type: 'date',
               admin: {
-                condition: (_, siblingData) => siblingData?.workflowState === 'scheduled',
+                condition: (_data, siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never) &&
+                  siblingData?.workflowState === 'scheduled',
               },
             },
             {
               name: 'changeSummary',
               type: 'textarea',
               admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
                 description: 'Short operator-facing note explaining why this change exists.',
               },
             },
@@ -283,6 +292,8 @@ export const Reviews: CollectionConfig = {
               type: 'relationship',
               relationTo: 'form-submissions',
               admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
                 description: 'Immutable link back to the public intake submission that generated this review.',
                 readOnly: true,
               },
@@ -291,6 +302,8 @@ export const Reviews: CollectionConfig = {
               name: 'lastReviewedAt',
               type: 'date',
               admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
                 readOnly: true,
               },
             },
@@ -299,6 +312,8 @@ export const Reviews: CollectionConfig = {
               type: 'relationship',
               relationTo: 'users',
               admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
                 readOnly: true,
               },
             },
@@ -306,6 +321,8 @@ export const Reviews: CollectionConfig = {
               name: 'publishedAt',
               type: 'date',
               admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
                 readOnly: true,
               },
             },
@@ -314,6 +331,8 @@ export const Reviews: CollectionConfig = {
               type: 'relationship',
               relationTo: 'users',
               admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
                 readOnly: true,
               },
             },

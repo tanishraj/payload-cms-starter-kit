@@ -1,5 +1,6 @@
 import type { CollectionAfterChangeHook } from 'payload'
 
+import { requiresEditorialWorkflow } from '@/access/adminCapabilities'
 import type { WorkQueueCondition } from '@/lib/workQueue'
 import { buildWorkQueueDedupeKey, syncWorkQueueConditions } from '@/lib/workQueue'
 
@@ -64,8 +65,10 @@ export const createWorkflowQueueHook = ({
       summary: state.summary(doc, title),
     }))
 
-    const activeCondition =
-      conditions.find((_, index) => states[index]?.workflowState === doc.workflowState) ?? null
+    const workflowRequired = requiresEditorialWorkflow(req.user as never)
+    const activeCondition = workflowRequired
+      ? conditions.find((_, index) => states[index]?.workflowState === doc.workflowState) ?? null
+      : null
 
     await syncWorkQueueConditions({
       activeCondition,

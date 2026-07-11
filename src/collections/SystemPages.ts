@@ -5,6 +5,7 @@ import {
 
 import {
   allowPublicReadOrCapability,
+  canShowEditorialWorkflow,
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
@@ -174,22 +175,34 @@ export const SystemPages: CollectionConfig = {
               defaultValue: 'draft',
               options: [...editorialWorkflowStateOptions],
               required: true,
+              admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
+              },
             },
             {
               name: 'scheduledPublishAt',
               type: 'date',
               admin: {
-                condition: (_, siblingData) => siblingData?.workflowState === 'scheduled',
+                condition: (_data, siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never) &&
+                  siblingData?.workflowState === 'scheduled',
               },
             },
             {
               name: 'changeSummary',
               type: 'textarea',
+              admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
+              },
             },
             {
               name: 'lastReviewedAt',
               type: 'date',
               admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
                 readOnly: true,
               },
             },
@@ -198,6 +211,8 @@ export const SystemPages: CollectionConfig = {
               type: 'relationship',
               relationTo: 'users',
               admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
                 readOnly: true,
               },
             },
@@ -205,6 +220,8 @@ export const SystemPages: CollectionConfig = {
               name: 'publishedAt',
               type: 'date',
               admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
                 readOnly: true,
               },
             },
@@ -213,6 +230,8 @@ export const SystemPages: CollectionConfig = {
               type: 'relationship',
               relationTo: 'users',
               admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
                 readOnly: true,
               },
             },

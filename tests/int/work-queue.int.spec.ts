@@ -19,9 +19,11 @@ import {
 const createReq = ({
   docs = [],
   context,
+  user,
 }: {
   context?: Record<string, unknown>
   docs?: Array<Record<string, unknown>>
+  user?: { capabilities?: Record<string, boolean>; role?: string }
 } = {}) => {
   const create = vi.fn(async () => ({}))
   const find = vi.fn(async () => ({
@@ -36,6 +38,7 @@ const createReq = ({
       find,
       update,
     },
+    user,
   } as never
 }
 
@@ -262,7 +265,14 @@ describe('work queue collection', () => {
   })
 
   it('creates an approval queue item when a workflow collection enters in_review', async () => {
-    const req = createReq()
+    const req = createReq({
+      user: {
+        role: 'contentManager',
+        capabilities: {
+          require_editorial_workflow: true,
+        },
+      },
+    })
     const hook = createWorkflowQueueHook({
       sourceAdminPathPrefix: '/admin/collections/pages',
       sourceCollection: 'pages',
@@ -297,6 +307,58 @@ describe('work queue collection', () => {
         }),
       }),
     )
+  })
+
+  it('resolves workflow queue items instead of creating new ones for direct-publish users', async () => {
+    const req = createReq({
+      docs: [
+        {
+          id: 44,
+          status: 'open',
+        },
+      ],
+      user: {
+        role: 'siteManager',
+        capabilities: {
+          publish_pages: true,
+        },
+      },
+    })
+    const hook = createWorkflowQueueHook({
+      sourceAdminPathPrefix: '/admin/collections/pages',
+      sourceCollection: 'pages',
+      states: [
+        {
+          queueType: 'approval',
+          reasonCode: 'page-review-required',
+          summary: (_doc, title) => `${title} is awaiting editorial approval.`,
+          workflowState: 'in_review',
+        },
+      ],
+      titleField: 'title',
+    })
+
+    await hook({
+      doc: {
+        id: 12,
+        title: 'About',
+        workflowState: 'published',
+      },
+      req,
+    } as never)
+
+    expect(req.payload.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        collection: 'work-queue',
+        id: 44,
+        data: expect.objectContaining({
+          autoResolved: true,
+          status: 'resolved',
+        }),
+        overrideAccess: true,
+      }),
+    )
+    expect(req.payload.create).not.toHaveBeenCalled()
   })
 
   it('creates a publish queue item for draft-only collections', async () => {

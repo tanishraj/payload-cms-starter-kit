@@ -6,6 +6,7 @@ import {
   canPublishPages,
   canPublishReviews,
   canPublishSystemPages,
+  requiresEditorialWorkflow,
 } from '@/access/adminCapabilities'
 import type { EditorialWorkflowState } from '@/lib/editorialWorkflow'
 import {
@@ -86,6 +87,25 @@ const resolveWorkflowState = (
   return 'draft'
 }
 
+const resolveBypassedWorkflowState = (
+  data: WorkflowDoc,
+  originalDoc: WorkflowDoc | undefined,
+): EditorialWorkflowState => {
+  if (data._status === 'published' || data.workflowState === 'published') {
+    return 'published'
+  }
+
+  if (data._status === 'draft') {
+    return 'draft'
+  }
+
+  if (originalDoc?._status === 'published' && data._status == null && data.workflowState == null) {
+    return 'published'
+  }
+
+  return 'draft'
+}
+
 export const enforceEditorialWorkflow =
   (
     publishCapability: PublishCapability,
@@ -95,11 +115,34 @@ export const enforceEditorialWorkflow =
     const nextData: WorkflowDoc = {
       ...(data ?? {}),
     }
-    const nextState = resolveWorkflowState(nextData, originalDoc)
     const now = new Date().toISOString()
     const userID = normalizeUserID(req.user?.id)
+    const workflowRequired = requiresEditorialWorkflow(req.user as never)
+    const nextState = workflowRequired
+      ? resolveWorkflowState(nextData, originalDoc)
+      : resolveBypassedWorkflowState(nextData, originalDoc)
 
     nextData.workflowState = nextState
+
+    if (!workflowRequired) {
+      if (nextState === 'published') {
+        if (!canPublish(publishCapability, req.user)) {
+          throw new APIError('Only publishers and admins can move content to published.', 400)
+        }
+
+        nextData._status = 'published'
+        nextData.publishedAt = now
+        nextData.publishedBy = userID
+        nextData.scheduledPublishAt = null
+        nextData.workflowState = 'published'
+        return nextData
+      }
+
+      nextData._status = 'draft'
+      nextData.workflowState = 'draft'
+      nextData.scheduledPublishAt = null
+      return nextData
+    }
 
     if (nextState === 'draft') {
       nextData._status = 'draft'

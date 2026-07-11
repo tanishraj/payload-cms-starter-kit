@@ -18,6 +18,97 @@ const createReq = (
   }) as never
 
 describe('editorial workflow guardrails', () => {
+  it('lets admins publish directly without manually moving workflow state', async () => {
+    const find = vi.fn(async () => ({
+      docs: [
+        {
+          summary: 'Homepage is awaiting editorial approval.',
+        },
+      ],
+    }))
+    const hook = enforceEditorialWorkflow('publish_pages', 'pages')
+
+    await expect(
+      hook({
+        data: {
+          _status: 'published',
+          id: 7,
+          workflowState: 'draft',
+        },
+        operation: 'update',
+        originalDoc: {
+          id: 7,
+          _status: 'draft',
+          workflowState: 'in_review',
+        },
+        req: createReq(
+          {
+            id: 1,
+            role: 'admin',
+          },
+          {
+            find,
+          },
+        ),
+      } as never),
+    ).resolves.toEqual(
+      expect.objectContaining({
+        _status: 'published',
+        workflowState: 'published',
+        publishedBy: 1,
+      }),
+    )
+
+    expect(find).not.toHaveBeenCalled()
+  })
+
+  it('lets non-workflow users publish directly when they have publish capability', async () => {
+    const find = vi.fn(async () => ({
+      docs: [
+        {
+          summary: 'Homepage is awaiting editorial approval.',
+        },
+      ],
+    }))
+    const hook = enforceEditorialWorkflow('publish_pages', 'pages')
+
+    await expect(
+      hook({
+        data: {
+          _status: 'published',
+          id: 7,
+          workflowState: 'draft',
+        },
+        operation: 'update',
+        originalDoc: {
+          id: 7,
+          _status: 'draft',
+          workflowState: 'in_review',
+        },
+        req: createReq(
+          {
+            id: 2,
+            role: 'siteManager',
+            capabilities: {
+              publish_pages: true,
+            },
+          },
+          {
+            find,
+          },
+        ),
+      } as never),
+    ).resolves.toEqual(
+      expect.objectContaining({
+        _status: 'published',
+        workflowState: 'published',
+        publishedBy: 2,
+      }),
+    )
+
+    expect(find).not.toHaveBeenCalled()
+  })
+
   it('prevents editors from publishing directly', async () => {
     const hook = enforceEditorialWorkflow('publish_pages')
 
@@ -33,9 +124,10 @@ describe('editorial workflow guardrails', () => {
         },
         req: createReq({
           id: 11,
-          role: 'editor',
+          role: 'contentManager',
           capabilities: {
             manage_pages: true,
+            require_editorial_workflow: true,
           },
         }),
       } as never),
@@ -57,9 +149,10 @@ describe('editorial workflow guardrails', () => {
         },
         req: createReq({
           id: 11,
-          role: 'editor',
+          role: 'contentManager',
           capabilities: {
             manage_pages: true,
+            require_editorial_workflow: true,
           },
         }),
       } as never),
@@ -88,9 +181,10 @@ describe('editorial workflow guardrails', () => {
         },
         req: createReq({
           id: 2,
-          role: 'publisher',
+          role: 'siteManager',
           capabilities: {
             publish_pages: true,
+            require_editorial_workflow: true,
           },
         }),
       } as never),
@@ -123,9 +217,10 @@ describe('editorial workflow guardrails', () => {
         req: createReq(
           {
             id: 2,
-            role: 'publisher',
+            role: 'siteManager',
             capabilities: {
               publish_pages: true,
+              require_editorial_workflow: true,
             },
           },
           {
@@ -169,9 +264,10 @@ describe('editorial workflow guardrails', () => {
         req: createReq(
           {
             id: 2,
-            role: 'publisher',
+            role: 'siteManager',
             capabilities: {
               publish_pages: true,
+              require_editorial_workflow: true,
             },
           },
           {
@@ -204,9 +300,10 @@ describe('editorial workflow guardrails', () => {
         req: createReq(
           {
             id: 2,
-            role: 'publisher',
+            role: 'siteManager',
             capabilities: {
               publish_pages: true,
+              require_editorial_workflow: true,
             },
           },
           {

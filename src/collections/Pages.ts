@@ -7,6 +7,7 @@ import {
 import type { Page } from '@/payload-types'
 import {
   allowPublicReadOrCapability,
+  canShowEditorialWorkflow,
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
@@ -253,18 +254,26 @@ export const Pages: CollectionConfig = {
               defaultValue: 'draft',
               options: [...editorialWorkflowStateOptions],
               required: true,
+              admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
+              },
             },
             {
               name: 'scheduledPublishAt',
               type: 'date',
               admin: {
-                condition: (_, siblingData) => siblingData?.workflowState === 'scheduled',
+                condition: (_data, siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never) &&
+                  siblingData?.workflowState === 'scheduled',
               },
             },
             {
               name: 'changeSummary',
               type: 'textarea',
               admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
                 description: 'Short operator-facing note explaining why this change exists.',
               },
             },
@@ -272,6 +281,8 @@ export const Pages: CollectionConfig = {
               name: 'lastReviewedAt',
               type: 'date',
               admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
                 readOnly: true,
               },
             },
@@ -280,6 +291,8 @@ export const Pages: CollectionConfig = {
               type: 'relationship',
               relationTo: 'users',
               admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
                 readOnly: true,
               },
             },
@@ -287,6 +300,8 @@ export const Pages: CollectionConfig = {
               name: 'publishedAt',
               type: 'date',
               admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
                 readOnly: true,
               },
             },
@@ -295,6 +310,8 @@ export const Pages: CollectionConfig = {
               type: 'relationship',
               relationTo: 'users',
               admin: {
+                condition: (_data, _siblingData, { user }) =>
+                  canShowEditorialWorkflow(user as never),
                 readOnly: true,
               },
             },

@@ -9,10 +9,12 @@ import {
   canPublishArticles,
   canPublishPages,
   canPublishReviews,
+  canShowEditorialWorkflow,
   canViewOperationalAudit,
   getCapabilitiesForRole,
   getDefaultCapabilitiesForRole,
   hideFromNonAdmin,
+  requiresEditorialWorkflow,
   requireCapability,
 } from '@/access/adminCapabilities'
 import { editorialRoleOptions } from '@/access/editorialRoles'
@@ -91,6 +93,7 @@ describe('editorial roles', () => {
         publish_pages: true,
         publish_reviews: true,
         publish_system_pages: true,
+        require_editorial_workflow: false,
         view_operational_audit: true,
       }),
     )
@@ -104,6 +107,7 @@ describe('editorial roles', () => {
         publish_articles: true,
         publish_pages: true,
         publish_reviews: true,
+        require_editorial_workflow: true,
         manage_system_pages: false,
         manage_system_modes: false,
         publish_system_pages: false,
@@ -153,9 +157,27 @@ describe('editorial roles', () => {
     expect(canManageSystemModes(siteManager)).toBe(true)
     expect(canViewOperationalAudit(contentManager)).toBe(false)
     expect(canViewOperationalAudit(siteManager)).toBe(true)
+    expect(requiresEditorialWorkflow(contentManager)).toBe(false)
+    expect(requiresEditorialWorkflow(siteManager)).toBe(false)
+    expect(canShowEditorialWorkflow(contentManager)).toBe(false)
+    expect(canShowEditorialWorkflow(siteManager)).toBe(false)
     expect(requireCapability('manage_work_queue')(toAccessReq(createReq({ role: 'admin' })))).toBe(
       true,
     )
+  })
+
+  it('uses editorial workflow for content managers by default while admins bypass it', () => {
+    const contentManager = getDefaultCapabilitiesForRole('contentManager')
+    const admin = { role: 'admin' as const }
+
+    expect(requiresEditorialWorkflow({ role: 'contentManager', capabilities: contentManager })).toBe(
+      true,
+    )
+    expect(canShowEditorialWorkflow({ role: 'contentManager', capabilities: contentManager })).toBe(
+      true,
+    )
+    expect(requiresEditorialWorkflow(admin)).toBe(false)
+    expect(canShowEditorialWorkflow(admin)).toBe(true)
   })
 
   it('allows content operators to read taxonomy without granting taxonomy management', () => {
@@ -283,6 +305,7 @@ describe('user normalization hook', () => {
         publish_articles: true,
         publish_pages: true,
         publish_reviews: true,
+        require_editorial_workflow: true,
         manage_system_modes: false,
         manage_system_pages: false,
         publish_system_pages: false,
@@ -383,6 +406,7 @@ describe('user normalization hook', () => {
       expect.objectContaining({
         manage_forms: true,
         manage_form_submissions: true,
+        require_editorial_workflow: true,
         manage_system_modes: false,
       }),
     )
@@ -439,6 +463,10 @@ describe('user normalization hook', () => {
         expect.objectContaining({
           label: 'Activity Log',
           value: 'view_operational_audit',
+        }),
+        expect.objectContaining({
+          label: 'Require Editorial Workflow',
+          value: 'require_editorial_workflow',
         }),
       ]),
     )
