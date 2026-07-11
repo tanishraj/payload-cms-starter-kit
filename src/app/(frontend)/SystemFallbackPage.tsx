@@ -1,4 +1,6 @@
-import { SystemPageHero } from '@/components/system-page-hero'
+import { SystemComingSoonView } from '@/components/system-pages/SystemComingSoonView'
+import { System404View } from '@/components/system-pages/System404View'
+import { SystemMaintenanceView } from '@/components/system-pages/SystemMaintenanceView'
 
 export function SystemModeFallbackPage({
   mode,
@@ -7,20 +9,20 @@ export function SystemModeFallbackPage({
 }) {
   if (mode === 'maintenance') {
     return (
-      <SystemPageHero
+      <SystemMaintenanceView
         badge="Maintenance"
-        heading="We'll be back soon"
-        description="We're making a few updates right now. Please check back shortly."
+        heading="This website is temporarily unavailable"
+        description="We are carrying out scheduled updates to improve the website. Please check back shortly."
         statusDisplay="Maintenance"
       />
     )
   }
 
   return (
-    <SystemPageHero
+    <SystemComingSoonView
       badge="Coming Soon"
-      heading="Something new is on the way"
-      description="We're getting things ready. Please check back soon."
+      heading="This website is being prepared"
+      description="We are finalizing the website and its information. Please check back again soon."
       statusDisplay="Coming Soon"
     />
   )
@@ -28,12 +30,12 @@ export function SystemModeFallbackPage({
 
 export function DefaultNotFoundPage() {
   return (
-    <SystemPageHero
+    <System404View
       badge="404"
-      heading="Page not found"
-      description="Sorry, we can't find that page."
+      heading="We couldn't find that page"
+      description="It may have been moved, deleted, or the web address might be incorrect."
       primaryAction={{
-        label: 'Back to home',
+        label: 'Go to homepage',
         url: '/',
       }}
       statusDisplay="404"

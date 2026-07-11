@@ -1,4 +1,5 @@
-import { resolveSystemPageAction, SystemPageHero } from '@/components/system-page-hero'
+import { SystemComingSoonView } from '@/components/system-pages/SystemComingSoonView'
+import { resolveSystemPageAction } from '@/lib/systemPageActions'
 import type { SystemComingSoonBlock as SystemComingSoonBlockData } from '@/payload-types'
 
 export function SystemComingSoonBlockComponent(props: SystemComingSoonBlockData) {
@@ -6,7 +7,7 @@ export function SystemComingSoonBlockComponent(props: SystemComingSoonBlockData)
   const secondaryAction = resolveSystemPageAction(props.secondaryAction)
 
   return (
-    <SystemPageHero
+    <SystemComingSoonView
       badge={props.badge}
       description={props.description}
       heading={props.heading}

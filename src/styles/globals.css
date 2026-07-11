@@ -210,6 +210,16 @@ Uncomment to import Google fonts if you want to use them in your project.
     }
   }
 
+  @keyframes float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -14px, 0);
+    }
+  }
+
   @keyframes infiniteSlider {
     0% {
       transform: 'translateX(0)';

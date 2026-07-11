@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { System404Block } from '@/blocks/System404/config'
 import { SystemComingSoonBlock } from '@/blocks/SystemComingSoon/config'
 import { SystemMaintenanceBlock } from '@/blocks/SystemMaintenance/config'
+import { createBaseSystemPageFields } from '@/blocks/systemPageFields'
 
 type NamedField = {
   defaultValue?: unknown
@@ -23,7 +24,7 @@ const flattenNamedFields = (fields: unknown[]): NamedField[] => {
         ? [
             {
               name: field.name,
-              type: 'type' in field ? field.type : undefined,
+              type: 'type' in field && typeof field.type === 'string' ? field.type : undefined,
               defaultValue: 'defaultValue' in field ? field.defaultValue : undefined,
             },
           ]
@@ -44,6 +45,10 @@ const getNamedField = (fields: unknown[], fieldName: string): NamedField => {
 }
 
 describe('system page block schemas', () => {
+  it('keeps the block assembly thin and the field factory reusable', () => {
+    expect(typeof createBaseSystemPageFields).toBe('function')
+  })
+
   it('keeps the shared core fields across all system page blocks', () => {
     for (const block of [System404Block, SystemMaintenanceBlock, SystemComingSoonBlock]) {
       const fieldNames = flattenNamedFields(block.fields).map((field) => field.name)
@@ -75,23 +80,25 @@ describe('system page block schemas', () => {
 
   it('prefills simple user-friendly default copy for each system page type', () => {
     expect(getNamedField(System404Block.fields, 'badge').defaultValue).toBe('404')
-    expect(getNamedField(System404Block.fields, 'heading').defaultValue).toBe('Page not found')
+    expect(getNamedField(System404Block.fields, 'heading').defaultValue).toBe(
+      "We couldn't find that page",
+    )
     expect(getNamedField(System404Block.fields, 'description').defaultValue).toBe(
-      "Sorry, we can't find that page.",
+      'It may have been moved, deleted, or the web address might be incorrect.',
     )
 
     expect(getNamedField(SystemMaintenanceBlock.fields, 'badge').defaultValue).toBe('Maintenance')
-    expect(getNamedField(SystemMaintenanceBlock.fields, 'heading').defaultValue).toBe("We'll be back soon")
+    expect(getNamedField(SystemMaintenanceBlock.fields, 'heading').defaultValue).toBe(
+      'This website is temporarily unavailable',
+    )
     expect(getNamedField(SystemMaintenanceBlock.fields, 'description').defaultValue).toBe(
-      "We're making a few updates right now. Please check back shortly.",
+      'We are carrying out scheduled updates to improve the website. Please check back shortly.',
     )
 
     expect(getNamedField(SystemComingSoonBlock.fields, 'badge').defaultValue).toBe('Coming Soon')
-    expect(getNamedField(SystemComingSoonBlock.fields, 'heading').defaultValue).toBe(
-      'Something new is on the way',
-    )
+    expect(getNamedField(SystemComingSoonBlock.fields, 'heading').defaultValue).toBe('This website is being prepared')
     expect(getNamedField(SystemComingSoonBlock.fields, 'description').defaultValue).toBe(
-      "We're getting things ready. Please check back soon.",
+      'We are finalizing the website and its information. Please check back again soon.',
     )
   })
 })

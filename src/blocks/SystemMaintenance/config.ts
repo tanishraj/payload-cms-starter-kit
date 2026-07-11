@@ -1,11 +1,13 @@
-import { createSystemPageBlock } from '../systemPageFields'
+import { createBaseSystemPageFields, createSystemPageBlock } from '../systemPageFields'
+
+const defaults = {
+  badge: 'Maintenance',
+  heading: 'This website is temporarily unavailable',
+  description: 'We are carrying out scheduled updates to improve the website. Please check back shortly.',
+}
 
 export const SystemMaintenanceBlock = createSystemPageBlock({
-  defaults: {
-    badge: 'Maintenance',
-    heading: "We'll be back soon",
-    description: "We're making a few updates right now. Please check back shortly.",
-  },
+  fields: createBaseSystemPageFields(defaults),
   singularLabel: 'System Maintenance',
   pluralLabel: 'System Maintenance Blocks',
   slug: 'systemMaintenance',

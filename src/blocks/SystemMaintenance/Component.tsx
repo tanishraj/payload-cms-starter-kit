@@ -1,4 +1,5 @@
-import { resolveSystemPageAction, SystemPageHero } from '@/components/system-page-hero'
+import { SystemMaintenanceView } from '@/components/system-pages/SystemMaintenanceView'
+import { resolveSystemPageAction } from '@/lib/systemPageActions'
 import type { SystemMaintenanceBlock as SystemMaintenanceBlockData } from '@/payload-types'
 
 export function SystemMaintenanceBlockComponent(props: SystemMaintenanceBlockData) {
@@ -6,7 +7,7 @@ export function SystemMaintenanceBlockComponent(props: SystemMaintenanceBlockDat
   const secondaryAction = resolveSystemPageAction(props.secondaryAction)
 
   return (
-    <SystemPageHero
+    <SystemMaintenanceView
       badge={props.badge}
       description={props.description}
       heading={props.heading}

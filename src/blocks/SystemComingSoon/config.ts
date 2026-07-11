@@ -1,11 +1,13 @@
-import { createSystemPageBlock } from '../systemPageFields'
+import { createBaseSystemPageFields, createSystemPageBlock } from '../systemPageFields'
+
+const defaults = {
+  badge: 'Coming Soon',
+  heading: 'This website is being prepared',
+  description: 'We are finalizing the website and its information. Please check back again soon.',
+}
 
 export const SystemComingSoonBlock = createSystemPageBlock({
-  defaults: {
-    badge: 'Coming Soon',
-    heading: 'Something new is on the way',
-    description: "We're getting things ready. Please check back soon.",
-  },
+  fields: createBaseSystemPageFields(defaults),
   singularLabel: 'System Coming Soon',
   pluralLabel: 'System Coming Soon Blocks',
   slug: 'systemComingSoon',

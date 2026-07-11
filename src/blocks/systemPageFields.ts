@@ -16,7 +16,7 @@ const actionFields: Field[] = [
   ...createCmsLinkFields(),
 ]
 
-const createSharedSystemPageFields = (defaults: SystemPageDefaults): Field[] => [
+export const createBaseSystemPageFields = (defaults: SystemPageDefaults): Field[] => [
   {
     name: 'badge',
     type: 'text',
@@ -61,12 +61,12 @@ const createSharedSystemPageFields = (defaults: SystemPageDefaults): Field[] => 
 ]
 
 export const createSystemPageBlock = ({
-  defaults,
+  fields,
   pluralLabel,
   singularLabel,
   slug,
 }: {
-  defaults: SystemPageDefaults
+  fields: Field[]
   pluralLabel: string
   singularLabel: string
   slug: string
@@ -77,5 +77,5 @@ export const createSystemPageBlock = ({
     singular: singularLabel,
     plural: pluralLabel,
   },
-  fields: createSharedSystemPageFields(defaults),
+  fields,
 })

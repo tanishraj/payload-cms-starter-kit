@@ -8,11 +8,11 @@ import { SystemComingSoonBlockComponent } from '@/blocks/SystemComingSoon/Compon
 import { SystemMaintenanceBlockComponent } from '@/blocks/SystemMaintenance/Component'
 
 describe('system page rendering', () => {
-  it('renders the 404 block as a centered full-page system screen', () => {
+  it('renders the 404 block with the dedicated centered not-found layout', () => {
     const html = renderToStaticMarkup(
       createElement(System404BlockComponent, {
         badge: '404',
-        heading: 'Page not found',
+        heading: "We couldn't find that page",
         description: 'The page has moved.',
         id: 'system-404',
         primaryAction: null,
@@ -22,12 +22,17 @@ describe('system page rendering', () => {
     )
 
     expect(html).toContain('data-system-page-root="true"')
-    expect(html).toContain('min-h-screen')
+    expect(html).toContain('data-system-page-variant="notFound"')
+    expect(html).toContain('min-h-[100dvh]')
+    expect(html).toContain('justify-center')
     expect(html).toContain('text-center')
-    expect(html).toContain('text-7xl')
+    expect(html).toContain('animate-[fade-in_.7s_ease-out_both]')
+    expect(html).toContain('animate-[fade-in_.7s_ease-out_.12s_both]')
+    expect(html).toContain('animate-[fade-in_.7s_ease-out_.2s_both]')
+    expect(html).toContain('text-[clamp(4rem,15vw,7rem)]')
   })
 
-  it('renders the maintenance block with the shared minimal layout', () => {
+  it('renders the maintenance block through the dedicated maintenance view', () => {
     const html = renderToStaticMarkup(
       createElement(SystemMaintenanceBlockComponent, {
         badge: 'Maintenance',
@@ -40,13 +45,14 @@ describe('system page rendering', () => {
       } as never),
     )
 
+    expect(html).toContain('data-system-page-root="true"')
+    expect(html).toContain('data-system-page-variant="maintenance"')
     expect(html).toContain('Scheduled maintenance')
     expect(html).toContain('Support remains available by email.')
-    expect(html).toContain('data-system-page-root="true"')
-    expect(html).toContain('text-7xl')
+    expect(html).toContain('text-[clamp(4.5rem,18vw,8rem)]')
   })
 
-  it('renders the coming soon block with the shared minimal layout', () => {
+  it('renders the coming soon block through the dedicated coming-soon view', () => {
     const html = renderToStaticMarkup(
       createElement(SystemComingSoonBlockComponent, {
         badge: 'Coming Soon',
@@ -59,9 +65,10 @@ describe('system page rendering', () => {
       } as never),
     )
 
-    expect(html).toContain('New site in progress')
     expect(html).toContain('data-system-page-root="true"')
-    expect(html).toContain('text-7xl')
+    expect(html).toContain('data-system-page-variant="comingSoon"')
+    expect(html).toContain('New site in progress')
+    expect(html).toContain('text-[clamp(4.5rem,18vw,8rem)]')
   })
 
   it('keeps the built-in fallback screens available without custom system pages', () => {
@@ -73,8 +80,10 @@ describe('system page rendering', () => {
     const notFoundHtml = renderToStaticMarkup(createElement(DefaultNotFoundPage))
 
     expect(maintenanceHtml).toContain('data-system-page-root="true"')
-    expect(maintenanceHtml).toContain("We&#x27;ll be back soon")
-    expect(notFoundHtml).toContain('Back to home')
-    expect(notFoundHtml).toContain('Page not found')
+    expect(maintenanceHtml).toContain('This website is temporarily unavailable')
+    expect(maintenanceHtml).not.toContain('data-system-page-variant="notFound"')
+    expect(notFoundHtml).toContain('Go to homepage')
+    expect(notFoundHtml).toContain("We couldn&#x27;t find that page")
+    expect(notFoundHtml).toContain('data-system-page-variant="notFound"')
   })
 })

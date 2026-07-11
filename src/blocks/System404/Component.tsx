@@ -1,4 +1,5 @@
-import { resolveSystemPageAction, SystemPageHero } from '@/components/system-page-hero'
+import { System404View } from '@/components/system-pages/System404View'
+import { resolveSystemPageAction } from '@/lib/systemPageActions'
 import type { System404Block as System404BlockData } from '@/payload-types'
 
 export function System404BlockComponent(props: System404BlockData) {
@@ -6,7 +7,7 @@ export function System404BlockComponent(props: System404BlockData) {
   const secondaryAction = resolveSystemPageAction(props.secondaryAction)
 
   return (
-    <SystemPageHero
+    <System404View
       badge={props.badge}
       description={props.description}
       heading={props.heading}
