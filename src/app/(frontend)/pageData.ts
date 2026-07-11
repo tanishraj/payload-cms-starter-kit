@@ -1,9 +1,8 @@
 import configPromise from '@payload-config'
-import { headers } from 'next/headers'
 import { getPayload, type Where } from 'payload'
 
 import type { Metadata } from 'next'
-import { isAdminUser } from '@/access/adminCapabilities'
+import { isCurrentCMSAdmin } from '@/lib/cmsSession'
 import { getMediaAbsoluteUrl } from '@/lib/media'
 import { resolveCanonicalURL, resolveRobotsMode } from '@/lib/seo'
 import { toAbsoluteSiteUrl } from '@/lib/siteUrl'
@@ -65,16 +64,7 @@ const canCurrentRequestBypassSystemModes = async (): Promise<boolean> => {
     return false
   }
 
-  const payload = await getPayload({
-    config: configPromise,
-  })
-
-  const authResult = await payload.auth({
-    canSetHeaders: false,
-    headers: new Headers(await headers()),
-  })
-
-  return isAdminUser(authResult.user as { role?: string } | null | undefined)
+  return isCurrentCMSAdmin()
 }
 
 const getPublishedPageByID = async ({

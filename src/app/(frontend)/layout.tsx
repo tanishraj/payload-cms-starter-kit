@@ -5,8 +5,10 @@ import React from 'react'
 import '../../styles/globals.css'
 
 import type { Metadata } from 'next'
+import { AdminSessionBar } from '@/components/admin/AdminSessionBar'
 import { RenderFooter } from '@/blocks/renderFooter'
 import { RenderHeader } from '@/blocks/renderHeader'
+import { getCurrentCMSUser } from '@/lib/cmsSession'
 import { getMediaAbsoluteUrl } from '@/lib/media'
 import { getRobotsMetadata } from '@/lib/seo'
 import { getSiteURL } from '@/lib/siteUrl'
@@ -124,7 +126,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
-  const { activeFooter, activeHeader, siteSettings, themeSettings } = await getFrontendGlobals()
+  const [frontendGlobals, currentUser] = await Promise.all([
+    getFrontendGlobals(),
+    getCurrentCMSUser(),
+  ])
+  const { activeFooter, activeHeader, siteSettings, themeSettings } = frontendGlobals
 
   const colorScheme = themeSettings.colorScheme ?? 'system'
   const rawThemeColor = String(themeSettings.themeColor ?? 'default')
@@ -135,6 +141,15 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     colorScheme === 'system'
       ? ({ colorScheme: 'light dark' } as React.CSSProperties)
       : ({ colorScheme } as React.CSSProperties)
+  const cmsToolbarOffset = currentUser ? '2.5rem' : '0px'
+  const bodyStyle = {
+    '--cms-toolbar-offset': cmsToolbarOffset,
+  } as React.CSSProperties
+  const mainStyle = {
+    paddingTop: activeHeader
+      ? `calc(3.75rem + ${cmsToolbarOffset})`
+      : cmsToolbarOffset,
+  } as React.CSSProperties
 
   return (
     <html
@@ -146,13 +161,14 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       suppressHydrationWarning
     >
       <head />
-      <body>
+      <body style={bodyStyle}>
+        <AdminSessionBar user={currentUser} />
         <div data-site-chrome="true">
           <RenderHeader header={activeHeader} siteSettings={siteSettings} />
         </div>
         <main
           data-site-main="true"
-          className={activeHeader ? 'pt-15' : undefined}
+          style={mainStyle}
         >
           {children}
         </main>

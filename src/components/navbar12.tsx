@@ -304,7 +304,10 @@ const Navbar12 = ({
 
   return (
     <section className={cn("", className)}>
-      <div className="pointer-events-auto fixed top-0 z-999 w-full bg-background">
+      <div
+        className="pointer-events-auto fixed z-999 w-full bg-background"
+        style={{ top: "var(--cms-toolbar-offset, 0px)" }}
+      >
         <DesktopNavigationMenu
           handleMobileMenu={handleMobileMenu}
           logo={logo}
