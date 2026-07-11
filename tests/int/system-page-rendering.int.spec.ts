@@ -49,7 +49,8 @@ describe('system page rendering', () => {
     expect(html).toContain('data-system-page-variant="maintenance"')
     expect(html).toContain('Scheduled maintenance')
     expect(html).toContain('Support remains available by email.')
-    expect(html).toContain('text-[clamp(4.5rem,18vw,8rem)]')
+    expect(html).toContain('min-h-[100dvh]')
+    expect(html).toContain('text-[clamp(4rem,15vw,7rem)]')
   })
 
   it('renders the coming soon block through the dedicated coming-soon view', () => {
@@ -68,7 +69,8 @@ describe('system page rendering', () => {
     expect(html).toContain('data-system-page-root="true"')
     expect(html).toContain('data-system-page-variant="comingSoon"')
     expect(html).toContain('New site in progress')
-    expect(html).toContain('text-[clamp(4.5rem,18vw,8rem)]')
+    expect(html).toContain('min-h-[100dvh]')
+    expect(html).toContain('text-[clamp(4rem,15vw,7rem)]')
   })
 
   it('keeps the built-in fallback screens available without custom system pages', () => {

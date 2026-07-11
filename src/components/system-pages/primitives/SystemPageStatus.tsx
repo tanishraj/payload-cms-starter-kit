@@ -8,8 +8,8 @@ export function SystemPageStatus({
   return (
     <div
       className={[
-        'animate-[fade-in_.7s_ease-out_both] font-semibold leading-none tracking-tight text-foreground/20',
-        className ?? 'text-[clamp(4.5rem,18vw,8rem)]',
+        'animate-[fade-in_.7s_ease-out_both] select-none font-semibold leading-none tracking-tight text-foreground/10',
+        className ?? 'text-[clamp(4rem,15vw,7rem)]',
       ]
         .join(' ')
         .trim()}
