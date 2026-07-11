@@ -48,11 +48,11 @@ export function AdminSessionBar({
             asChild
             size="xs"
             variant="ghost"
-            className="shrink-0 whitespace-nowrap px-2 text-zinc-200 hover:bg-white/8 hover:text-white"
+            className="h-8 rounded-full px-2.5 text-zinc-300 hover:bg-white/8 hover:text-white"
           >
             <Link href="/admin" target="_blank" rel="noreferrer">
               Open Admin
-              <ArrowUpRight className="size-4" />
+              <ArrowUpRight className="size-3.5" />
             </Link>
           </Button>
           <AdminUserMenu
