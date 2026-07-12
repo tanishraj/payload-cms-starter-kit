@@ -110,10 +110,10 @@ export const enforceEditorialWorkflow =
   (
     publishCapability: PublishCapability,
     sourceCollection?: QueueAwareCollection,
-  ): CollectionBeforeChangeHook<WorkflowDoc> =>
+  ): CollectionBeforeChangeHook =>
   async ({ data, originalDoc, req }) => {
     const nextData: WorkflowDoc = {
-      ...(data ?? {}),
+      ...((data ?? {}) as Partial<WorkflowDoc>),
     }
     const now = new Date().toISOString()
     const userID = normalizeUserID(req.user?.id)
@@ -170,7 +170,7 @@ export const enforceEditorialWorkflow =
     }
 
     if (nextState === 'published' || nextState === 'reverted') {
-      const sourceID = nextData.id ?? originalDoc?.id
+      const sourceID = nextData.id ?? (originalDoc as Partial<WorkflowDoc> | undefined)?.id
 
       if (nextState === 'published' && sourceCollection && sourceID != null) {
         const blockingItems = await findBlockingPublishQueueItems({

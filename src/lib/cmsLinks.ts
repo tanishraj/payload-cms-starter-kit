@@ -4,10 +4,10 @@ import { resolveNavigationLink } from './navigationLinks'
 import { getPageHref } from './pagePaths'
 
 export type CmsLinkValue = {
-  link?: number | NavigationLink | null
+  link?: string | number | NavigationLink | null
   linkType?: 'page' | 'custom' | null
   openInNewTab?: boolean | null
-  page?: number | Page | null
+  page?: string | number | Page | null
   url?: string | null
 }
 

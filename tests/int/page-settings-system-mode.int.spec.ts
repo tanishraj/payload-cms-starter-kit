@@ -64,11 +64,12 @@ describe('system mode settings', () => {
 
   it('keeps Page Settings free of system-mode fields', () => {
     const tabsField = PageSettings.fields.find(
-      (field): field is { tabs: Array<{ label: string }> } =>
-        typeof field === 'object' && field !== null && 'tabs' in field,
+      (field) => typeof field === 'object' && field !== null && 'tabs' in field,
     )
 
-    expect(tabsField?.tabs.map((tab) => tab.label)).toEqual(['Front Page', 'Header', 'Footer'])
+    const typedTabsField = tabsField as { tabs: Array<{ label: string }> } | undefined
+
+    expect(typedTabsField?.tabs.map((tab) => tab.label)).toEqual(['Front Page', 'Header', 'Footer'])
   })
 
   it('moves site mode controls into System Mode Settings', () => {

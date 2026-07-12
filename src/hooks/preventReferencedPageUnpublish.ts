@@ -28,7 +28,7 @@ const getRedirectTargetLabel = (redirect: Redirect): string => {
   return `Redirects -> #${redirect.id}`
 }
 
-const getReferencedPageUsage = async (pageID: number, req: PayloadRequest) => {
+const getReferencedPageUsage = async (pageID: string | number, req: PayloadRequest) => {
   const [pageSettings, links, redirects] = await Promise.all([
     req.payload.findGlobal({
       slug: 'page-settings',
@@ -80,7 +80,7 @@ const getReferencedPageUsage = async (pageID: number, req: PayloadRequest) => {
 
   const usage: string[] = []
 
-  if (getPageID(pageSettings.homepage as number | Page | null | undefined) === pageID) {
+  if (getPageID(pageSettings.homepage as string | number | Page | null | undefined) === pageID) {
     usage.push('Page Settings -> Front Page')
   }
 
@@ -111,7 +111,7 @@ export const preventReferencedPageUnpublish: CollectionBeforeChangeHook<Page> = 
     return data
   }
 
-  const pageID = typeof originalDoc.id === 'number' ? originalDoc.id : Number(originalDoc.id)
+  const pageID = originalDoc.id
   const usage = await getReferencedPageUsage(pageID, req)
 
   if (usage.length > 0) {

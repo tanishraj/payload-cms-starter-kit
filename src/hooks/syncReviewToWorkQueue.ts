@@ -4,7 +4,7 @@ import { buildWorkQueueDedupeKey, syncWorkQueueConditions, type WorkQueueConditi
 
 type ReviewDoc = {
   changeSummary?: string | null
-  id?: number | string
+  id: number | string
   internalModerationNotes?: string | null
   slug?: string | null
   title?: string | null
@@ -12,59 +12,61 @@ type ReviewDoc = {
   workflowState?: string | null
 }
 
-export const syncReviewToWorkQueue: CollectionAfterChangeHook<ReviewDoc> = async ({ doc, req }) => {
-  if (!doc?.id) {
+export const syncReviewToWorkQueue: CollectionAfterChangeHook = async ({ doc, req }) => {
+  const typedDoc = doc as Partial<ReviewDoc>
+
+  if (!typedDoc?.id) {
     return doc
   }
 
-  const title = doc.title || `Review ${doc.id}`
+  const title = typedDoc.title || `Review ${typedDoc.id}`
   const conditions: WorkQueueCondition[] = [
     {
       dedupeKey: buildWorkQueueDedupeKey({
         sourceCollection: 'reviews',
-        sourceID: doc.id,
+        sourceID: typedDoc.id,
         queueType: 'moderation',
         reasonCode: 'review-moderation-required',
       }),
-      details: doc.internalModerationNotes ?? doc.changeSummary,
+      details: typedDoc.internalModerationNotes ?? typedDoc.changeSummary,
       priority: 'normal',
       queueType: 'moderation',
       reasonCode: 'review-moderation-required',
       resolutionSummary: `${title} no longer requires moderation review.`,
-      sourceAdminPath: `/admin/collections/reviews/${doc.id}`,
+      sourceAdminPath: `/admin/collections/reviews/${typedDoc.id}`,
       sourceCollection: 'reviews',
-      sourceID: doc.id,
-      sourceSlug: doc.slug ?? null,
+      sourceID: typedDoc.id,
+      sourceSlug: typedDoc.slug ?? null,
       sourceTitle: title,
-      sourceUpdatedAt: doc.updatedAt ?? null,
+      sourceUpdatedAt: typedDoc.updatedAt ?? null,
       summary: `${title} requires review moderation.`,
     },
     {
       dedupeKey: buildWorkQueueDedupeKey({
         sourceCollection: 'reviews',
-        sourceID: doc.id,
+        sourceID: typedDoc.id,
         queueType: 'approval',
         reasonCode: 'review-scheduled-publication',
       }),
-      details: doc.changeSummary,
+      details: typedDoc.changeSummary,
       priority: 'high',
       queueType: 'approval',
       reasonCode: 'review-scheduled-publication',
       resolutionSummary: `${title} no longer requires scheduled publication handling.`,
-      sourceAdminPath: `/admin/collections/reviews/${doc.id}`,
+      sourceAdminPath: `/admin/collections/reviews/${typedDoc.id}`,
       sourceCollection: 'reviews',
-      sourceID: doc.id,
-      sourceSlug: doc.slug ?? null,
+      sourceID: typedDoc.id,
+      sourceSlug: typedDoc.slug ?? null,
       sourceTitle: title,
-      sourceUpdatedAt: doc.updatedAt ?? null,
+      sourceUpdatedAt: typedDoc.updatedAt ?? null,
       summary: `${title} is scheduled and requires publication oversight.`,
     },
   ]
 
   const activeCondition =
-    doc.workflowState === 'in_review'
+    typedDoc.workflowState === 'in_review'
       ? conditions[0]
-      : doc.workflowState === 'scheduled'
+      : typedDoc.workflowState === 'scheduled'
         ? conditions[1]
         : null
 
@@ -74,5 +76,5 @@ export const syncReviewToWorkQueue: CollectionAfterChangeHook<ReviewDoc> = async
     req,
   })
 
-  return doc
+  return typedDoc
 }

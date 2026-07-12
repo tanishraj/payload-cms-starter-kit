@@ -7,15 +7,15 @@ import {
 } from '@/lib/navigationLinkSync'
 
 type LegacyLinkValue = {
-  link?: number | NavigationLink | null
+  link?: string | number | NavigationLink | null
   linkType?: 'page' | 'custom' | null
   openInNewTab?: boolean | null
-  page?: number | Page | null
+  page?: string | number | Page | null
   url?: string | null
 }
 
-const getRelationshipID = (value: number | NavigationLink | null | undefined): number | null => {
-  if (typeof value === 'number') {
+const getRelationshipID = (value: string | number | NavigationLink | null | undefined): string | number | null => {
+  if (typeof value === 'number' || typeof value === 'string') {
     return value
   }
 
@@ -40,7 +40,7 @@ const resolveLinkID = async ({
   fallbackTitle?: string | null
   req: PayloadRequest
   value: LegacyLinkValue
-}): Promise<number | null> => {
+}): Promise<string | number | null> => {
   const existingLinkID = getRelationshipID(value.link)
 
   if (existingLinkID) {

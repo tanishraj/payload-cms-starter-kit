@@ -1,6 +1,7 @@
 import type { CollectionBeforeChangeHook } from 'payload'
 
 type FormSubmissionActivityDoc = {
+  id: number | string
   internalNotes?: string | null
   lastActionAt?: string | null
   owner?: number | { id?: number | null } | null

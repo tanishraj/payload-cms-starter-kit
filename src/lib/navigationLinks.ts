@@ -3,13 +3,13 @@ import type { NavigationLink, Page } from '@/payload-types'
 import { getPageHref } from './pagePaths'
 
 export const isNavigationLinkDoc = (
-  value: number | NavigationLink | null | undefined,
+  value: string | number | NavigationLink | null | undefined,
 ): value is NavigationLink => {
   return typeof value === 'object' && value !== null
 }
 
 export const resolveNavigationLink = (
-  value: number | NavigationLink | null | undefined,
+  value: string | number | NavigationLink | null | undefined,
 ): {
   description?: string
   href?: string
@@ -22,7 +22,7 @@ export const resolveNavigationLink = (
 
   const href =
     value.linkType === 'page'
-      ? getPageHref(value.page as number | Page | null | undefined)
+      ? getPageHref(value.page as string | number | Page | null | undefined)
       : value.url ?? undefined
 
   if (!href) {

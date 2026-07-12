@@ -3,14 +3,14 @@ import type { PayloadRequest } from 'payload'
 import type { Page } from '@/payload-types'
 
 type PagePathSource = Pick<Page, 'parent' | 'slug'>
-type ResolvePageParent = (id: number) => Promise<PagePathSource | null>
+type ResolvePageParent = (id: string | number) => Promise<PagePathSource | null>
 
-export const isPageDoc = (value: number | Page | null | undefined): value is Page => {
+export const isPageDoc = (value: string | number | Page | null | undefined): value is Page => {
   return typeof value === 'object' && value !== null
 }
 
-export const getPageID = (value: number | Page | null | undefined): number | null => {
-  if (typeof value === 'number') {
+export const getPageID = (value: string | number | Page | null | undefined): string | number | null => {
+  if (typeof value === 'number' || typeof value === 'string') {
     return value
   }
 
@@ -33,7 +33,7 @@ export const getPageSlugSegments = (page: Page): string[] => {
   return segments
 }
 
-export const getPageHref = (page: number | Page | null | undefined): string | undefined => {
+export const getPageHref = (page: string | number | Page | null | undefined): string | undefined => {
   if (!isPageDoc(page)) {
     return undefined
   }
@@ -80,7 +80,7 @@ export const getPageHrefFromSourceWithResolver = async (
     }
 
     segments.unshift(parentPage.slug)
-    currentParent = parentPage.parent as number | Page | null | undefined
+    currentParent = parentPage.parent as string | Page | null | undefined
   }
 
   return `/${segments.join('/')}`

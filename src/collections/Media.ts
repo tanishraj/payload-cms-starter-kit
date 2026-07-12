@@ -91,7 +91,7 @@ const beforeValidate: CollectionBeforeValidateHook = async ({ data, operation, o
 }
 
 type MediaWithUsage = {
-  id?: number | string
+  id: number | string
   usageDetails?: MediaUsageReference[]
   usageSummary?: string
 }

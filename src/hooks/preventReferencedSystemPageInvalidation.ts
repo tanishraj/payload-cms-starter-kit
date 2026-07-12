@@ -1,11 +1,11 @@
 import type { CollectionBeforeChangeHook } from 'payload'
 import { APIError } from 'payload'
 
-import type { PageSetting, SystemPage } from '@/payload-types'
+import type { SystemModeSetting, SystemPage } from '@/payload-types'
 import type { SystemPageType } from '@/lib/systemPageTypes'
 
-const getSystemPageID = (value: number | SystemPage | null | undefined): number | null => {
-  if (typeof value === 'number') {
+const getSystemPageID = (value: string | number | SystemPage | null | undefined): string | number | null => {
+  if (typeof value === 'number' || typeof value === 'string') {
     return value
   }
 
@@ -16,13 +16,13 @@ const getSystemPageID = (value: number | SystemPage | null | undefined): number 
   return null
 }
 
-const getSystemBehaviorUsage = (pageSettings: PageSetting, pageID: number) => {
+const getSystemBehaviorUsage = (pageSettings: SystemModeSetting, pageID: string | number) => {
   const usage: Array<{
     fieldLabel: string
     requiredType: SystemPageType
   }> = []
 
-  if (getSystemPageID(pageSettings.notFoundPage as number | SystemPage | null | undefined) === pageID) {
+  if (getSystemPageID(pageSettings.notFoundPage as string | number | SystemPage | null | undefined) === pageID) {
     usage.push({
       fieldLabel: 'Site Defaults -> System -> 404 Page',
       requiredType: '404',
@@ -30,7 +30,7 @@ const getSystemBehaviorUsage = (pageSettings: PageSetting, pageID: number) => {
   }
 
   if (
-    getSystemPageID(pageSettings.maintenancePage as number | SystemPage | null | undefined) === pageID
+    getSystemPageID(pageSettings.maintenancePage as string | number | SystemPage | null | undefined) === pageID
   ) {
     usage.push({
       fieldLabel: 'Site Defaults -> System -> Maintenance Page',
@@ -39,7 +39,7 @@ const getSystemBehaviorUsage = (pageSettings: PageSetting, pageID: number) => {
   }
 
   if (
-    getSystemPageID(pageSettings.comingSoonPage as number | SystemPage | null | undefined) === pageID
+    getSystemPageID(pageSettings.comingSoonPage as string | number | SystemPage | null | undefined) === pageID
   ) {
     usage.push({
       fieldLabel: 'Site Defaults -> System -> Coming Soon Page',
@@ -60,7 +60,7 @@ export const preventReferencedSystemPageInvalidation: CollectionBeforeChangeHook
     return data
   }
 
-  const pageID = typeof originalDoc.id === 'number' ? originalDoc.id : Number(originalDoc.id)
+  const pageID = originalDoc.id
   const pageSettings = await req.payload.findGlobal({
     slug: 'page-settings',
     depth: 0,

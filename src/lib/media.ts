@@ -10,12 +10,12 @@ type ResolvedMediaImage = {
 
 const defaultSiteURL = getSiteURL()
 
-export const isMediaDoc = (value: number | Media | null | undefined): value is Media => {
+export const isMediaDoc = (value: string | number | Media | null | undefined): value is Media => {
   return typeof value === 'object' && value !== null
 }
 
 export const getMediaAbsoluteUrl = (
-  media: number | Media | null | undefined,
+  media: string | number | Media | null | undefined,
 ): string | undefined => {
   if (!isMediaDoc(media) || !media.url) {
     return undefined
@@ -47,7 +47,7 @@ export const getMediaImageProps = ({
   fallbackAlt,
 }: {
   fallbackAlt?: string | null
-  media: number | Media | null | undefined
+  media: string | number | Media | null | undefined
   preset?: MediaPreset
 }): ResolvedMediaImage | undefined => {
   const src = getMediaAbsoluteUrl(media)

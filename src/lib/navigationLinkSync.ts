@@ -2,8 +2,8 @@ import type { PayloadRequest } from 'payload'
 
 import type { NavigationLink, Page } from '@/payload-types'
 
-const getPageID = (value: number | Page | null | undefined): number | null => {
-  if (typeof value === 'number') {
+const getPageID = (value: string | number | Page | null | undefined): string | number | null => {
+  if (typeof value === 'number' || typeof value === 'string') {
     return value
   }
 
@@ -15,7 +15,7 @@ const getPageID = (value: number | Page | null | undefined): number | null => {
 }
 
 const getPageTitle = async (
-  value: number | Page,
+  value: string | number | Page,
   req: PayloadRequest,
 ): Promise<string | null> => {
   if (typeof value === 'object' && value !== null) {
@@ -33,7 +33,7 @@ const getPageTitle = async (
 }
 
 export const findSyncedNavigationLink = async (
-  pageID: number,
+  pageID: string | number,
   req: PayloadRequest,
 ): Promise<NavigationLink | null> => {
   const result = await req.payload.find({
@@ -52,7 +52,7 @@ export const findSyncedNavigationLink = async (
 }
 
 export const findReusablePageLink = async (
-  pageID: number,
+  pageID: string | number,
   req: PayloadRequest,
 ): Promise<NavigationLink | null> => {
   const result = await req.payload.find({
@@ -108,7 +108,7 @@ export const ensureSyncedNavigationLinkForPage = async ({
   page,
   req,
 }: {
-  page: number | Page
+  page: string | number | Page
   req: PayloadRequest
 }): Promise<NavigationLink | null> => {
   const pageID = getPageID(page)
@@ -129,9 +129,9 @@ export const ensureSyncedNavigationLinkForPage = async ({
 
   const data = {
     linkType: 'page' as const,
-    page: pageID,
+    page: String(pageID),
     sourceType: 'pageSynced' as const,
-    syncPage: pageID,
+    syncPage: String(pageID),
     title: pageTitle,
   }
 

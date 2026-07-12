@@ -11,8 +11,8 @@ import { getPageHref, isPageDoc } from '@/lib/pagePaths'
 const isPublished = (value: { _status?: 'draft' | 'published' | null } | null | undefined) =>
   value?._status === 'published'
 
-const getRelationshipID = (value: number | Page | null | undefined): number | null => {
-  if (typeof value === 'number') {
+const getRelationshipID = (value: string | number | Page | null | undefined): string | number | null => {
+  if (typeof value === 'number' || typeof value === 'string') {
     return value
   }
 
@@ -70,14 +70,14 @@ const findEnabledRedirectsByFromPath = async (
   return result.docs
 }
 
-const getHomepageID = async (req: PayloadRequest): Promise<number | null> => {
+const getHomepageID = async (req: PayloadRequest): Promise<string | number | null> => {
   const pageSettings = await req.payload.findGlobal({
     slug: 'page-settings',
     depth: 0,
     req,
   })
 
-  return getRelationshipID(pageSettings.homepage as number | Page | null | undefined)
+  return getRelationshipID(pageSettings.homepage as string | number | Page | null | undefined)
 }
 
 const upsertRedirect = async ({
@@ -91,7 +91,7 @@ const upsertRedirect = async ({
         url: string
       }
     | {
-        pageID: number
+        pageID: string | number
         type: 'page'
       }
   fromPath: string
@@ -105,7 +105,7 @@ const upsertRedirect = async ({
   > = {
     fromPath: normalizedFromPath,
     destinationType: destination.type === 'page' ? 'page' : 'custom',
-    page: destination.type === 'page' ? destination.pageID : null,
+    page: destination.type === 'page' ? String(destination.pageID) : null,
     statusCode: '301',
     url: destination.type === 'custom' ? destination.url : null,
     enabled: true,
@@ -172,13 +172,13 @@ const hydratePagePath = async (
     })
 
     segments.unshift(parentPage.slug)
-    currentParent = parentPage.parent as number | Page | null | undefined
+    currentParent = parentPage.parent as string | Page | null | undefined
   }
 
   return normalizeRedirectPath(`/${segments.join('/')}`)
 }
 
-const isDescendantOf = (page: Page, ancestorID: number): boolean => {
+const isDescendantOf = (page: Page, ancestorID: string | number): boolean => {
   let currentParent = page.parent
 
   while (currentParent != null) {
@@ -210,7 +210,7 @@ const createDescendantRedirects = async ({
 }: {
   newRootPath: string
   oldRootPath: string
-  pageID: number
+  pageID: string | number
   req: PayloadRequest
 }) => {
   const publishedPages = await req.payload.find({
@@ -283,7 +283,7 @@ export const createRedirectsForChangedPagePath: CollectionAfterChangeHook<Page> 
 
   const restoredPreviousPath = deletedConflicts.some((redirect) => {
     if (redirect.destinationType === 'page') {
-      return getRelationshipID(redirect.page as number | Page | null | undefined) === pageID
+      return getRelationshipID(redirect.page as string | number | Page | null | undefined) === pageID
     }
 
     const destinationUrl = redirect.url?.trim()

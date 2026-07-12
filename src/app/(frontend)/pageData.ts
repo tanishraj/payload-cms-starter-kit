@@ -11,9 +11,9 @@ import { getPageHref, getPageSlugSegments } from '@/lib/pagePaths'
 import type { SystemPageType } from '@/lib/systemPageTypes'
 
 const extractRelationshipID = (
-  value: number | Page | SystemPage | null | undefined,
-): number | null => {
-  if (typeof value === 'number') {
+  value: string | number | Page | SystemPage | null | undefined,
+): string | number | null => {
+  if (typeof value === 'number' || typeof value === 'string') {
     return value
   }
 
@@ -72,7 +72,7 @@ const getPublishedPageByID = async ({
   id,
 }: {
   depth?: number
-  id: number
+  id: string | number
 }): Promise<Page | null> => {
   const payload = await getPayload({
     config: configPromise,
@@ -200,19 +200,6 @@ export async function getHomepagePath(): Promise<string | null> {
   return href
 }
 
-const toBaseMetadata = (
-  page: Pick<Page, 'metaDescription' | 'metaTitle'> | Pick<SystemPage, 'metaDescription' | 'metaTitle'> | null,
-): Metadata => {
-  if (!page) {
-    return {}
-  }
-
-  return {
-    title: page.metaTitle,
-    description: page.metaDescription,
-  }
-}
-
 type ManagedRouteMetadataSource = {
   canonicalURL?: string | null
   fallbackDescription?: string | null
@@ -220,7 +207,7 @@ type ManagedRouteMetadataSource = {
   metaDescription?: string | null
   metaTitle?: string | null
   ogDescription?: string | null
-  ogImage?: Media | number | null
+  ogImage?: Media | string | number | null
   ogTitle?: string | null
   robotsMode?: string | null
 }
@@ -296,7 +283,7 @@ const toManagedPageMetadata = async (page: Page): Promise<Metadata> => {
       ...(page as unknown as ManagedRouteMetadataSource),
       fallbackTitle: page.title,
     },
-    resolvedCanonicalPath,
+    resolvedCanonicalPath: resolvedCanonicalPath ?? '/',
   })
 }
 
@@ -317,7 +304,7 @@ const getPublishedSystemPageByID = async ({
 }: {
   depth?: number
   expectedType?: SystemPageType
-  id: number
+  id: string | number
 }): Promise<SystemPage | null> => {
   const payload = await getPayload({
     config: configPromise,

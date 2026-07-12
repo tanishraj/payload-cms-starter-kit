@@ -5,7 +5,7 @@ import { cleanupTestUser, seedTestUser } from '../helpers/seedUser'
 test.describe('Frontend', () => {
   let page: Page
 
-  test.beforeAll(async ({ browser }, testInfo) => {
+  test.beforeAll(async ({ browser }) => {
     await seedTestUser()
     await seedHomepage()
 
@@ -18,7 +18,7 @@ test.describe('Frontend', () => {
     await cleanupTestUser()
   })
 
-  test('can go on homepage', async ({ page }) => {
+  test('can go on homepage', async () => {
     await page.goto('http://localhost:3000')
 
     await expect(page).toHaveTitle(/E2E Homepage/)

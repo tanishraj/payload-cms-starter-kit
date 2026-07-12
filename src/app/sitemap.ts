@@ -3,7 +3,7 @@ import type { MetadataRoute } from 'next'
 import { getPayload } from 'payload'
 
 import { getPageHrefFromSourceWithResolver, getPageID } from '@/lib/pagePaths'
-import { resolveRobotsMode, resolveSitemapInclusion } from '@/lib/seo'
+import { resolveRobotsMode, resolveSitemapInclusion, type RobotsFieldValue } from '@/lib/seo'
 import { getTaxonomyRelationshipIDs, getTaxonomyTerm } from '@/lib/taxonomy'
 import { toAbsoluteSiteUrl } from '@/lib/siteUrl'
 
@@ -23,7 +23,7 @@ const isRouteEligibleForSitemap = ({
   isPublished = true,
 }: {
   entry: SitemapEntryLike
-  inheritedRobots: string | null | undefined
+  inheritedRobots: RobotsFieldValue | null | undefined
   isPublicRoute?: boolean
   isPublished?: boolean
 }) => {
@@ -33,12 +33,17 @@ const isRouteEligibleForSitemap = ({
       typeof entry.robotsMode === 'string' ? (entry.robotsMode as 'default' | 'index' | 'noindex') : null,
   })
 
+  const isIndexable =
+    typeof resolvedRobots === 'object' && resolvedRobots !== null
+      ? resolvedRobots.index !== false
+      : resolvedRobots !== 'noindex'
+
   return resolveSitemapInclusion({
     includeInSitemap:
       typeof entry.includeInSitemap === 'string'
         ? (entry.includeInSitemap as 'default' | 'include' | 'exclude')
         : 'default',
-    isIndexable: resolvedRobots.index !== false,
+    isIndexable,
     isPublicRoute,
     isPublished,
   })
@@ -78,7 +83,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const inheritedRobots = seoSettings.robots
   const homepageID = getPageID(pageSettings.homepage)
   const entries = new Map<string, MetadataRoute.Sitemap[number]>()
-  const resolvePageParent = async (id: number) => {
+  const resolvePageParent = async (id: string | number) => {
     return payload.findByID({
       collection: 'pages',
       id,

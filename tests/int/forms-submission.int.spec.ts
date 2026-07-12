@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { Field } from 'payload'
 
 import { FormSubmissions } from '@/collections/FormSubmissions'
 import { updateFormSubmissionActivity } from '@/hooks/updateFormSubmissionActivity'
@@ -67,18 +68,18 @@ type NamedField = {
 
 const getField = (fieldName: string): NamedField => {
   const field = FormSubmissions.fields.find(
-    (candidate): candidate is NamedField =>
+    (candidate) =>
       typeof candidate === 'object' &&
       candidate !== null &&
       'name' in candidate &&
       candidate.name === fieldName,
-  )
+  ) as Field | undefined
 
   if (!field) {
     throw new Error(`Expected FormSubmissions to include "${fieldName}".`)
   }
 
-  return field
+  return field as unknown as NamedField
 }
 
 const loadRouteModule = async () => {

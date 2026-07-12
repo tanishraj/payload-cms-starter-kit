@@ -3,7 +3,7 @@ import type { CollectionAfterChangeHook } from 'payload'
 import { buildWorkQueueDedupeKey, syncWorkQueueConditions, type WorkQueueCondition } from '@/lib/workQueue'
 
 type FormSubmissionDoc = {
-  id?: number | string
+  id: number | string
   internalNotes?: string | null
   submissionIntent?: 'general' | 'lead' | 'review' | null
   status?: string | null
@@ -12,58 +12,61 @@ type FormSubmissionDoc = {
   updatedAt?: string | null
 }
 
-export const syncFormSubmissionToWorkQueue: CollectionAfterChangeHook<FormSubmissionDoc> = async ({
-  doc,
-  req,
-}) => {
-  if (!doc?.id) {
+export const syncFormSubmissionToWorkQueue: CollectionAfterChangeHook = async ({ doc, req }) => {
+  const typedDoc = doc as Partial<FormSubmissionDoc>
+
+  if (!typedDoc?.id) {
     return doc
   }
 
-  const title = doc.submitterEmail || doc.submitterName || `Submission ${doc.id}`
+  const title = typedDoc.submitterEmail || typedDoc.submitterName || `Submission ${typedDoc.id}`
   const conditions: WorkQueueCondition[] = [
     {
       dedupeKey: buildWorkQueueDedupeKey({
         sourceCollection: 'form-submissions',
-        sourceID: doc.id,
+        sourceID: typedDoc.id,
         queueType: 'follow_up',
         reasonCode: 'submission-new',
       }),
-      details: doc.internalNotes,
-      priority: doc.submissionIntent === 'lead' ? 'high' : 'normal',
+      details: typedDoc.internalNotes,
+      priority: typedDoc.submissionIntent === 'lead' ? 'high' : 'normal',
       queueType: 'follow_up',
       reasonCode: 'submission-new',
       resolutionSummary: `${title} is no longer new.`,
-      sourceAdminPath: `/admin/collections/form-submissions/${doc.id}`,
+      sourceAdminPath: `/admin/collections/form-submissions/${typedDoc.id}`,
       sourceCollection: 'form-submissions',
-      sourceID: doc.id,
+      sourceID: typedDoc.id,
       sourceTitle: title,
-      sourceUpdatedAt: doc.updatedAt ?? null,
+      sourceUpdatedAt: typedDoc.updatedAt ?? null,
       summary: `${title} requires initial follow-up.`,
     },
     {
       dedupeKey: buildWorkQueueDedupeKey({
         sourceCollection: 'form-submissions',
-        sourceID: doc.id,
+        sourceID: typedDoc.id,
         queueType: 'follow_up',
         reasonCode: 'submission-in-review',
       }),
-      details: doc.internalNotes,
-      priority: doc.submissionIntent === 'lead' ? 'high' : 'normal',
+      details: typedDoc.internalNotes,
+      priority: typedDoc.submissionIntent === 'lead' ? 'high' : 'normal',
       queueType: 'follow_up',
       reasonCode: 'submission-in-review',
       resolutionSummary: `${title} is no longer in review.`,
-      sourceAdminPath: `/admin/collections/form-submissions/${doc.id}`,
+      sourceAdminPath: `/admin/collections/form-submissions/${typedDoc.id}`,
       sourceCollection: 'form-submissions',
-      sourceID: doc.id,
+      sourceID: typedDoc.id,
       sourceTitle: title,
-      sourceUpdatedAt: doc.updatedAt ?? null,
+      sourceUpdatedAt: typedDoc.updatedAt ?? null,
       summary: `${title} still requires follow-up review.`,
     },
   ]
 
   const activeCondition =
-    doc.status === 'new' ? conditions[0] : doc.status === 'in_review' ? conditions[1] : null
+    typedDoc.status === 'new'
+      ? conditions[0]
+      : typedDoc.status === 'in_review'
+        ? conditions[1]
+        : null
 
   await syncWorkQueueConditions({
     activeCondition,
@@ -71,5 +74,5 @@ export const syncFormSubmissionToWorkQueue: CollectionAfterChangeHook<FormSubmis
     req,
   })
 
-  return doc
+  return typedDoc
 }

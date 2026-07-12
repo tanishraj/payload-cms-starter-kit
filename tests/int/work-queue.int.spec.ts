@@ -16,6 +16,16 @@ import {
   upsertWorkQueueItem,
 } from '@/lib/workQueue'
 
+type TestReq = {
+  context?: Record<string, unknown>
+  payload: {
+    create: ReturnType<typeof vi.fn>
+    find: ReturnType<typeof vi.fn>
+    update: ReturnType<typeof vi.fn>
+  }
+  user?: { capabilities?: Record<string, boolean>; role?: string }
+}
+
 const createReq = ({
   docs = [],
   context,
@@ -39,7 +49,7 @@ const createReq = ({
       update,
     },
     user,
-  } as never
+  } as TestReq
 }
 
 describe('work queue collection', () => {
@@ -98,7 +108,7 @@ describe('work queue collection', () => {
 
     await expect(
       findBlockingPublishQueueItems({
-        req,
+        req: req as never,
         sourceCollection: 'pages',
         sourceID: 12,
       }),
@@ -109,7 +119,7 @@ describe('work queue collection', () => {
       depth: 0,
       limit: 10,
       overrideAccess: true,
-      req,
+      req: req as never,
       sort: 'summary',
       where: {
         and: [
@@ -172,7 +182,7 @@ describe('work queue collection', () => {
       dedupeKey: 'pages:12:approval:workflow-action-required',
       queueType: 'approval',
       reasonCode: 'workflow-action-required',
-      req,
+      req: req as never,
       sourceCollection: 'pages',
       sourceID: 12,
       sourceTitle: 'About',
@@ -211,7 +221,7 @@ describe('work queue collection', () => {
       dedupeKey: 'pages:12:approval:workflow-action-required',
       queueType: 'approval',
       reasonCode: 'workflow-action-required',
-      req,
+      req: req as never,
       sourceCollection: 'pages',
       sourceID: 12,
       sourceTitle: 'About',
@@ -246,7 +256,7 @@ describe('work queue collection', () => {
 
     await resolveWorkQueueItem({
       dedupeKey: 'pages:12:approval:workflow-action-required',
-      req,
+      req: req as never,
       resolutionSummary: 'The page was published.',
     })
 
@@ -293,7 +303,7 @@ describe('work queue collection', () => {
         title: 'About',
         workflowState: 'in_review',
       },
-      req,
+      req: req as never,
     } as never)
 
     expect(req.payload.create).toHaveBeenCalledWith(
@@ -344,7 +354,7 @@ describe('work queue collection', () => {
         title: 'About',
         workflowState: 'published',
       },
-      req,
+      req: req as never,
     } as never)
 
     expect(req.payload.update).toHaveBeenCalledWith(
@@ -376,7 +386,7 @@ describe('work queue collection', () => {
         id: 8,
         title: 'Primary Header',
       },
-      req,
+      req: req as never,
     } as never)
 
     expect(req.payload.create).toHaveBeenCalledWith(
@@ -401,7 +411,7 @@ describe('work queue collection', () => {
         submissionIntent: 'lead',
         submitterEmail: 'lead@example.com',
       },
-      req,
+      req: req as never,
     } as never)
 
     expect(req.payload.create).toHaveBeenCalledWith(
@@ -425,7 +435,7 @@ describe('work queue collection', () => {
         title: 'Review Title',
         workflowState: 'in_review',
       },
-      req,
+      req: req as never,
     } as never)
 
     expect(req.payload.create).toHaveBeenCalledWith(
@@ -449,7 +459,7 @@ describe('work queue collection', () => {
         replacementNotes: '',
         title: 'Homepage Logo',
       },
-      req,
+      req: req as never,
     } as never)
 
     expect(req.payload.create).toHaveBeenCalledWith(

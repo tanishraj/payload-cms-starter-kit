@@ -52,7 +52,7 @@ const getUsersField = (name: string) => {
     throw new Error(`Expected Users field "${name}" to exist.`)
   }
 
-  return field
+  return field as typeof field & { admin?: { description?: string } }
 }
 
 describe('editorial roles', () => {

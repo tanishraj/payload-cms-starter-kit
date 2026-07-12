@@ -55,7 +55,10 @@ export const validateSEOContract =
       inheritedRobots: 'index,follow',
       robotsMode: nextData.robotsMode,
     })
-    const isIndexable = resolvedRobots?.index !== false
+    const isIndexable =
+      typeof resolvedRobots === 'object' && resolvedRobots !== null
+        ? resolvedRobots.index !== false
+        : resolvedRobots !== 'noindex'
 
     if (nextData.includeInSitemap === 'include' && (!isPublicRoute || !isIndexable)) {
       throw new APIError('Noindexed or non-public routes cannot be forced into the sitemap.', 400)

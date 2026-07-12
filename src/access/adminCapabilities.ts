@@ -200,57 +200,60 @@ const getCapabilityItem = (value: AdminCapability) => {
   return item
 }
 
+const createCapabilitySectionItems = (values: readonly AdminCapability[]) =>
+  values.map(getCapabilityItem)
+
 const capabilitySections = [
   {
     label: 'Website Content',
-    items: [
+    items: createCapabilitySectionItems([
       'manage_pages',
       'manage_articles',
       'manage_reviews',
       'manage_media',
       'manage_taxonomy',
-    ].map(getCapabilityItem),
+    ] as const),
   },
   {
     label: 'Website Structure',
-    items: [
+    items: createCapabilitySectionItems([
       'manage_navigation',
       'manage_redirects',
       'manage_headers',
       'manage_footers',
       'manage_system_pages',
-    ].map(getCapabilityItem),
+    ] as const),
   },
   {
     label: 'Lead Capture',
-    items: ['manage_forms', 'manage_form_submissions'].map(getCapabilityItem),
+    items: createCapabilitySectionItems(['manage_forms', 'manage_form_submissions'] as const),
   },
   {
     label: 'Site Settings',
-    items: [
+    items: createCapabilitySectionItems([
       'manage_page_settings',
       'manage_site_settings',
       'manage_theme_settings',
       'manage_seo_settings',
       'manage_system_modes',
-    ].map(getCapabilityItem),
+    ] as const),
   },
   {
     label: 'Operations',
-    items: [
+    items: createCapabilitySectionItems([
       'manage_work_queue',
       'view_operational_audit',
       'require_editorial_workflow',
-    ].map(getCapabilityItem),
+    ] as const),
   },
   {
     label: 'Publishing',
-    items: [
+    items: createCapabilitySectionItems([
       'publish_pages',
       'publish_articles',
       'publish_reviews',
       'publish_system_pages',
-    ].map(getCapabilityItem),
+    ] as const),
   },
 ] as const
 

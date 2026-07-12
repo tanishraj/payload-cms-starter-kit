@@ -3,18 +3,8 @@ import type { Field } from 'payload'
 type RelationshipValue = number | string | { id?: number | string | null } | null | undefined
 
 type PayloadLike = {
-  find: (args: {
-    collection: string
-    depth?: number
-    limit?: number
-    overrideAccess?: boolean
-    pagination?: boolean
-  }) => Promise<{ docs: Record<string, unknown>[] }>
-  findGlobal: (args: {
-    slug: string
-    depth?: number
-    overrideAccess?: boolean
-  }) => Promise<Record<string, unknown> | null>
+  find: unknown
+  findGlobal: unknown
 }
 
 export type MediaUsageReference = {
@@ -421,9 +411,21 @@ export const findMediaUsage = async ({
   payload: PayloadLike
 }): Promise<MediaUsageReference[]> => {
   const references: MediaUsageReference[] = []
+  const find = payload.find as (args: {
+    collection: string
+    depth: number
+    limit: number
+    overrideAccess: boolean
+    pagination: boolean
+  }) => Promise<{ docs: Record<string, unknown>[] }>
+  const findGlobal = payload.findGlobal as (args: {
+    slug: string
+    depth: number
+    overrideAccess: boolean
+  }) => Promise<Record<string, unknown> | null>
 
   for (const source of collectionSources) {
-    const result = await payload.find({
+    const result = await find({
       collection: source.slug,
       depth: 0,
       limit: 1000,
@@ -437,7 +439,7 @@ export const findMediaUsage = async ({
   }
 
   for (const source of globalSources) {
-    const doc = await payload.findGlobal({
+    const doc = await findGlobal({
       slug: source.slug,
       depth: 0,
       overrideAccess: true,

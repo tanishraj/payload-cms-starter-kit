@@ -1,11 +1,11 @@
 export type FormSubmissionEventInput = {
   campaign?: string
-  formId: number
+  formId: string | number
   formSlug: string
   landingPage?: string
-  owner?: number
+  owner?: string | number
   source?: string
-  submissionId: number
+  submissionId: string | number
   submissionIntent: 'general' | 'lead' | 'review'
   status: 'new' | 'in_review' | 'qualified' | 'won' | 'rejected' | 'archived'
   submitterEmail?: string

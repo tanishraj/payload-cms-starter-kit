@@ -5,16 +5,29 @@ import type {
 
 import { recordOperationalAuditEvent } from '@/lib/operationalAudit'
 
-type HookConfig<TDoc> = {
-  entityType: string
-  getSummary: (args: { doc: TDoc; previousDoc?: Partial<TDoc> | null }) => string
-  titleField: keyof TDoc
+type AuditDoc = {
+  [key: string]: unknown
+  id: number | string
+  siteMode?: string | null
+  title?: string | null
+  workflowState?: string | null
 }
 
-export const createCollectionAuditHook = <TDoc extends { id?: number | string }>(
-  config: HookConfig<TDoc>,
-): CollectionAfterChangeHook<TDoc> => {
-  return async ({ doc, operation, previousDoc, req }) => {
+type HookConfig = {
+  entityType: string
+  getSummary: (args: { doc: AuditDoc; previousDoc?: Partial<AuditDoc> | null }) => string
+  titleField: string
+}
+
+export const createCollectionAuditHook = (config: HookConfig): CollectionAfterChangeHook => {
+  return async (args) => {
+    const { doc, operation, previousDoc, req } = args as {
+      doc: AuditDoc
+      operation: string
+      previousDoc?: Partial<AuditDoc> | null
+      req: Parameters<typeof recordOperationalAuditEvent>[0]['req']
+    }
+
     await recordOperationalAuditEvent({
       action: operation,
       entityId: String(doc.id ?? ''),
@@ -28,10 +41,16 @@ export const createCollectionAuditHook = <TDoc extends { id?: number | string }>
   }
 }
 
-export const createGlobalAuditHook = <TDoc extends Record<string, unknown>>(
-  config: Omit<HookConfig<TDoc>, 'titleField'> & { title: string },
-): GlobalAfterChangeHook<TDoc> => {
-  return async ({ doc, previousDoc, req }) => {
+export const createGlobalAuditHook = (
+  config: Omit<HookConfig, 'titleField'> & { title: string },
+): GlobalAfterChangeHook => {
+  return async (args) => {
+    const { doc, previousDoc, req } = args as {
+      doc: AuditDoc
+      previousDoc?: Partial<AuditDoc> | null
+      req: Parameters<typeof recordOperationalAuditEvent>[0]['req']
+    }
+
     await recordOperationalAuditEvent({
       action: 'update',
       entityId: config.entityType,

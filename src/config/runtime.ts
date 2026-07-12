@@ -113,7 +113,7 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
 
           return {
             provider: 's3' as const,
-            acl: rawACL,
+            acl: rawACL as 'private' | 'public-read',
             accessKeyId,
             bucket,
             clientUploads: parseBooleanEnv(env.S3_CLIENT_UPLOADS, false),

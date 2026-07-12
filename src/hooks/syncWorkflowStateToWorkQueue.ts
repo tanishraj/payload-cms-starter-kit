@@ -8,7 +8,7 @@ type WorkflowLikeDoc = {
   [key: string]: unknown
   _status?: 'draft' | 'published' | null
   changeSummary?: string | null
-  id?: number | string
+  id: number | string
   slug?: string | null
   title?: string | null
   updatedAt?: string | null
@@ -37,37 +37,41 @@ export const createWorkflowQueueHook = ({
     workflowState: string
   }>
   titleField: string
-}): CollectionAfterChangeHook<WorkflowLikeDoc> => {
+}): CollectionAfterChangeHook => {
   return async ({ doc, req }) => {
-    if (!doc?.id) {
+    const typedDoc = doc as Partial<WorkflowLikeDoc>
+
+    if (!typedDoc?.id) {
       return doc
     }
 
-    const title = toSourceTitle(doc, titleField, `${sourceCollection} ${doc.id}`)
+    const sourceID = typedDoc.id
+
+    const title = toSourceTitle(typedDoc as WorkflowLikeDoc, titleField, `${sourceCollection} ${typedDoc.id}`)
     const conditions = states.map<WorkQueueCondition>((state) => ({
       dedupeKey: buildWorkQueueDedupeKey({
         sourceCollection,
-        sourceID: doc.id!,
+        sourceID,
         queueType: state.queueType,
         reasonCode: state.reasonCode,
       }),
-      details: state.details?.(doc) ?? doc.changeSummary,
-      priority: state.priority?.(doc) ?? 'normal',
+      details: state.details?.(typedDoc as WorkflowLikeDoc) ?? typedDoc.changeSummary,
+      priority: state.priority?.(typedDoc as WorkflowLikeDoc) ?? 'normal',
       queueType: state.queueType,
       reasonCode: state.reasonCode,
       resolutionSummary: `${title} no longer matches ${state.workflowState}.`,
-      sourceAdminPath: `${sourceAdminPathPrefix}/${doc.id}`,
+      sourceAdminPath: `${sourceAdminPathPrefix}/${typedDoc.id}`,
       sourceCollection,
-      sourceID: doc.id,
-      sourceSlug: doc.slug ?? null,
+      sourceID,
+      sourceSlug: typedDoc.slug ?? null,
       sourceTitle: title,
-      sourceUpdatedAt: doc.updatedAt ?? null,
-      summary: state.summary(doc, title),
+      sourceUpdatedAt: typedDoc.updatedAt ?? null,
+      summary: state.summary(typedDoc as WorkflowLikeDoc, title),
     }))
 
     const workflowRequired = requiresEditorialWorkflow(req.user as never)
     const activeCondition = workflowRequired
-      ? conditions.find((_, index) => states[index]?.workflowState === doc.workflowState) ?? null
+      ? conditions.find((_, index) => states[index]?.workflowState === typedDoc.workflowState) ?? null
       : null
 
     await syncWorkQueueConditions({
@@ -76,7 +80,7 @@ export const createWorkflowQueueHook = ({
       req,
     })
 
-    return doc
+    return typedDoc
   }
 }
 
@@ -92,35 +96,40 @@ export const createDraftPublishQueueHook = ({
   sourceCollection: string
   summary: (doc: WorkflowLikeDoc, title: string) => string
   titleField: string
-}): CollectionAfterChangeHook<WorkflowLikeDoc> => {
+}): CollectionAfterChangeHook => {
   return async ({ doc, req }) => {
-    if (!doc?.id) {
+    const typedDoc = doc as Partial<WorkflowLikeDoc>
+
+    if (!typedDoc?.id) {
       return doc
     }
 
-    const title = toSourceTitle(doc, titleField, `${sourceCollection} ${doc.id}`)
+    const sourceID = typedDoc.id
+
+    const title = toSourceTitle(typedDoc as WorkflowLikeDoc, titleField, `${sourceCollection} ${typedDoc.id}`)
     const condition: WorkQueueCondition = {
       dedupeKey: buildWorkQueueDedupeKey({
         sourceCollection,
-        sourceID: doc.id!,
+        sourceID,
         queueType: 'publish_issue',
         reasonCode: 'draft-change-pending-publication',
       }),
-      details: doc.changeSummary,
+      details: typedDoc.changeSummary,
       priority: 'normal',
       queueType: 'publish_issue',
       reasonCode: 'draft-change-pending-publication',
       resolutionSummary: `${title} no longer has unpublished draft changes.`,
-      sourceAdminPath: `${sourceAdminPathPrefix}/${doc.id}`,
+      sourceAdminPath: `${sourceAdminPathPrefix}/${typedDoc.id}`,
       sourceCollection,
-      sourceID: doc.id,
-      sourceSlug: doc.slug ?? null,
+      sourceID,
+      sourceSlug: typedDoc.slug ?? null,
       sourceTitle: title,
-      sourceUpdatedAt: doc.updatedAt ?? null,
-      summary: summary(doc, title),
+      sourceUpdatedAt: typedDoc.updatedAt ?? null,
+      summary: summary(typedDoc as WorkflowLikeDoc, title),
     }
 
-    const actionable = doc._status === 'draft' && (isActionable?.(doc) ?? true)
+    const actionable =
+      typedDoc._status === 'draft' && (isActionable?.(typedDoc as WorkflowLikeDoc) ?? true)
 
     await syncWorkQueueConditions({
       activeCondition: actionable ? condition : null,
@@ -128,6 +137,6 @@ export const createDraftPublishQueueHook = ({
       req,
     })
 
-    return doc
+    return typedDoc
   }
 }

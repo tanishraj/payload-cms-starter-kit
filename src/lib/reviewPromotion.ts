@@ -2,8 +2,12 @@ import type { Payload } from 'payload'
 
 import type { RequiredReviewSubmissionValues } from '@/lib/reviews'
 
-const normalizeRelationshipID = (value: unknown): number | null => {
+const normalizeRelationshipID = (value: unknown): string | number | null => {
   if (typeof value === 'number' && Number.isFinite(value)) {
+    return value
+  }
+
+  if (typeof value === 'string' && value.length > 0) {
     return value
   }
 
@@ -11,6 +15,10 @@ const normalizeRelationshipID = (value: unknown): number | null => {
     const relationshipID = (value as { id?: unknown }).id
 
     if (typeof relationshipID === 'number' && Number.isFinite(relationshipID)) {
+      return relationshipID
+    }
+
+    if (typeof relationshipID === 'string' && relationshipID.length > 0) {
       return relationshipID
     }
   }
@@ -26,9 +34,9 @@ export const upsertReviewFromSubmission = async ({
 }: {
   existingReview?: unknown
   payload: Payload
-  sourceSubmissionID: number
+  sourceSubmissionID: string | number
   values: RequiredReviewSubmissionValues
-}): Promise<number> => {
+}): Promise<string> => {
   const existingReviewID = normalizeRelationshipID(existingReview)
   const reviewData = {
     _status: 'draft' as const,
@@ -38,7 +46,7 @@ export const upsertReviewFromSubmission = async ({
     reviewerEmail: values.reviewerEmail,
     reviewerName: values.reviewerName,
     reviewTitle: values.reviewTitle,
-    sourceSubmission: sourceSubmissionID,
+    sourceSubmission: String(sourceSubmissionID),
     title: values.reviewTitle,
     workflowState: 'in_review' as const,
   }
@@ -51,14 +59,15 @@ export const upsertReviewFromSubmission = async ({
       overrideAccess: true,
     })
 
-    return updatedReview.id
+    return String(updatedReview.id)
   }
 
   const createdReview = await payload.create({
     collection: 'reviews',
     data: reviewData,
+    draft: true,
     overrideAccess: true,
   })
 
-  return createdReview.id
+  return String(createdReview.id)
 }

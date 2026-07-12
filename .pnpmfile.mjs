@@ -1,1 +1,3 @@
-export default {}
+const pnpmHooks = {}
+
+export default pnpmHooks

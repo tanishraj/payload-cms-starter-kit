@@ -26,8 +26,8 @@ import {
   syncNavigationLinkAfterDelete,
 } from '../hooks/syncNavigationLinkForPage'
 
-const extractPageID = (value: number | Page | null | undefined): number | null => {
-  if (typeof value === 'number') {
+const extractPageID = (value: string | number | Page | null | undefined): string | number | null => {
+  if (typeof value === 'number' || typeof value === 'string') {
     return value
   }
 
@@ -42,20 +42,20 @@ const validateParentRelationship: RelationshipFieldSingleValidation = async (
   value,
   { id, req },
 ) => {
-  const parentID = extractPageID(value as number | Page | null | undefined)
+  const parentID = extractPageID(value as string | number | Page | null | undefined)
 
   if (!parentID || id == null) {
     return true
   }
 
-  const currentPageID = typeof id === 'string' ? Number(id) : id
+  const currentPageID = id
 
   if (parentID === currentPageID) {
     return 'A page cannot be its own parent.'
   }
 
-  const visited = new Set<number>([currentPageID])
-  let nextParentID: number | null = parentID
+  const visited = new Set<string | number>([currentPageID])
+  let nextParentID: string | number | null = parentID
 
   while (nextParentID != null) {
     if (visited.has(nextParentID)) {
@@ -71,7 +71,7 @@ const validateParentRelationship: RelationshipFieldSingleValidation = async (
       req,
     })
 
-    nextParentID = extractPageID(parentPage.parent as number | Page | null | undefined)
+    nextParentID = extractPageID(parentPage.parent as string | number | Page | null | undefined)
   }
 
   return true

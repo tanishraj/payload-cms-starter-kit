@@ -54,6 +54,15 @@ const tagDocs = [
   { description: 'Launch updates.', id: 11, slug: 'launch', title: 'Launch' },
 ]
 
+type PayloadFindArgs = {
+  collection: string
+  where?: {
+    slug?: {
+      equals?: string
+    }
+  }
+}
+
 const articleDocs = [
   {
     _status: 'published',
@@ -144,16 +153,18 @@ describe('content taxonomy helpers', () => {
       robots: 'index,follow',
     })
 
-    payloadMocks.find.mockImplementation(async ({ collection, where }: Record<string, any>) => {
+    payloadMocks.find.mockImplementation(async ({ collection, where }: PayloadFindArgs) => {
+      const slug = where?.slug?.equals
+
       if (collection === 'categories') {
         return {
-          docs: categoryDocs.filter((category) => category.slug === where.slug.equals),
+          docs: categoryDocs.filter((category) => category.slug === slug),
         }
       }
 
       if (collection === 'tags') {
         return {
-          docs: tagDocs.filter((tag) => tag.slug === where.slug.equals),
+          docs: tagDocs.filter((tag) => tag.slug === slug),
         }
       }
 

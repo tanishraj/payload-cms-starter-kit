@@ -57,9 +57,9 @@ export async function getTestUserDocument(): Promise<{
 
   return {
     capabilities: user.capabilities,
-    email: user.email,
+    email: user.email ?? testUser.email,
     id: user.id,
-    role: user.role,
+    role: user.role ?? 'admin',
   }
 }
 

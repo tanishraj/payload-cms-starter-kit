@@ -46,6 +46,8 @@ export function ReviewPage({
           </p>
         </div>
         {featuredImage ? (
+          // CMS media URLs are runtime-managed and may be absolute, so keep a direct img element.
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             alt={featuredImage.alt}
             className="w-full rounded-3xl border object-cover"
