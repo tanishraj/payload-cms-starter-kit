@@ -171,10 +171,6 @@ export interface Page {
    */
   generateSlug?: boolean | null;
   slug: string;
-  /**
-   * Compose the page with reusable frontend sections.
-   */
-  layout?: (Hero36Block | FormBlock)[] | null;
   metaTitle?: string | null;
   metaDescription?: string | null;
   /**
@@ -214,33 +210,6 @@ export interface Page {
   createdAt: string;
   deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "Hero36Block".
- */
-export interface Hero36Block {
-  badge?: {
-    text?: string | null;
-  };
-  heading: string;
-  description?: string | null;
-  cards: {
-    title: string;
-    description: string;
-    visualType: 'icon' | 'image';
-    icon?: ('blocks' | 'database' | 'layout' | 'rocket') | null;
-    image?: (string | null) | Media;
-    /**
-     * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
-     */
-    link?: (string | null) | NavigationLink;
-    openInNewTab?: boolean | null;
-    id?: string | null;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'hero36';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -326,102 +295,6 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
-}
-/**
- * Reusable destinations for menus, CTAs, legal links, and utility links.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "navigation-links".
- */
-export interface NavigationLink {
-  id: string;
-  title: string;
-  description?: string | null;
-  linkType: 'page' | 'custom';
-  page?: (string | null) | Page;
-  url?: string | null;
-  openInNewTab?: boolean | null;
-  /**
-   * Shows whether this reusable link is manually managed or synced from a page.
-   */
-  sourceType: 'manual' | 'pageSynced';
-  /**
-   * The page that currently owns this synced reusable link.
-   */
-  syncPage?: (string | null) | Page;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormBlock".
- */
-export interface FormBlock {
-  /**
-   * Select the published form to render on this page.
-   */
-  form: string | Form;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'form';
-}
-/**
- * Reusable form definitions that can be placed on pages.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "forms".
- */
-export interface Form {
-  id: string;
-  title: string;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  /**
-   * Optional notes for editors. This is not shown on the website.
-   */
-  internalNotes?: string | null;
-  /**
-   * Controls how submissions are operated after intake and whether review promotion applies.
-   */
-  submissionIntent: 'general' | 'lead' | 'review';
-  submitButtonLabel: string;
-  successMessage: string;
-  /**
-   * Optional internal email recipients who should be notified when this form receives a valid submission.
-   */
-  notificationRecipients?:
-    | {
-        email: string;
-        id?: string | null;
-      }[]
-    | null;
-  fields: {
-    /**
-     * Machine key used in stored submission data.
-     */
-    name: string;
-    label: string;
-    type: 'text' | 'email' | 'textarea' | 'select' | 'checkbox';
-    required?: boolean | null;
-    placeholder?: string | null;
-    options?:
-      | {
-          label: string;
-          value: string;
-          id?: string | null;
-        }[]
-      | null;
-    id?: string | null;
-  }[];
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -764,10 +637,6 @@ export interface Review {
   isGenuineExperience: boolean;
   featuredImage?: (string | null) | Media;
   /**
-   * Optional supplemental sections. Structured review content stays primary.
-   */
-  layout?: ContentSpotlightBlock[] | null;
-  /**
    * Internal notes for moderation, rewriting decisions, or publication checks.
    */
   internalModerationNotes?: string | null;
@@ -808,24 +677,6 @@ export interface Review {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ContentSpotlightBlock".
- */
-export interface ContentSpotlightBlock {
-  eyebrow?: string | null;
-  heading: string;
-  description?: string | null;
-  image?: (string | null) | Media;
-  /**
-   * Select a reusable link. Save target pages first so their synced links exist in the Links collection.
-   */
-  link?: (string | null) | NavigationLink;
-  openInNewTab?: boolean | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'contentSpotlight';
-}
-/**
  * Stored form submissions. Submission payload fields stay read-only after creation, while operators can update workflow status.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -860,6 +711,89 @@ export interface FormSubmission {
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
+}
+/**
+ * Reusable form definitions that can be placed on pages.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "forms".
+ */
+export interface Form {
+  id: string;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Optional notes for editors. This is not shown on the website.
+   */
+  internalNotes?: string | null;
+  /**
+   * Controls how submissions are operated after intake and whether review promotion applies.
+   */
+  submissionIntent: 'general' | 'lead' | 'review';
+  submitButtonLabel: string;
+  successMessage: string;
+  /**
+   * Optional internal email recipients who should be notified when this form receives a valid submission.
+   */
+  notificationRecipients?:
+    | {
+        email: string;
+        id?: string | null;
+      }[]
+    | null;
+  fields: {
+    /**
+     * Machine key used in stored submission data.
+     */
+    name: string;
+    label: string;
+    type: 'text' | 'email' | 'textarea' | 'select' | 'checkbox';
+    required?: boolean | null;
+    placeholder?: string | null;
+    options?:
+      | {
+          label: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Reusable destinations for menus, CTAs, legal links, and utility links.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation-links".
+ */
+export interface NavigationLink {
+  id: string;
+  title: string;
+  description?: string | null;
+  linkType: 'page' | 'custom';
+  page?: (string | null) | Page;
+  url?: string | null;
+  openInNewTab?: boolean | null;
+  /**
+   * Shows whether this reusable link is manually managed or synced from a page.
+   */
+  sourceType: 'manual' | 'pageSynced';
+  /**
+   * The page that currently owns this synced reusable link.
+   */
+  syncPage?: (string | null) | Page;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * Map old URLs to new destinations during migrations and ongoing URL changes. Some redirects may be auto-generated when a published page URL changes.
@@ -906,76 +840,10 @@ export interface Header {
    */
   generateSlug?: boolean | null;
   slug: string;
-  /**
-   * Select the header block variant to use for this preset.
-   */
-  layout: HeaderNavbar12Block[];
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HeaderNavbar12Block".
- */
-export interface HeaderNavbar12Block {
-  logoMode: 'siteSettingsLogo' | 'customLogo';
-  customLogo?: (string | null) | Media;
-  /**
-   * Configure the main navigation structure for this header.
-   */
-  navigationItems?:
-    | {
-        /**
-         * Optional top-level label override. Leave blank to use the reusable link title.
-         */
-        label?: string | null;
-        /**
-         * Optional top-level destination. If children are added, this becomes the overview link.
-         */
-        link?: (string | null) | NavigationLink;
-        children?:
-          | {
-              /**
-               * Optional label override. Leave blank to use the reusable link title.
-               */
-              label?: string | null;
-              /**
-               * Optional description for dropdown items.
-               */
-              description?: string | null;
-              link: string | NavigationLink;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Optional reusable links shown to the right of the navigation.
-   */
-  secondaryActions?:
-    | {
-        /**
-         * Optional label override. Leave blank to use the reusable link title.
-         */
-        label?: string | null;
-        link: string | NavigationLink;
-        id?: string | null;
-      }[]
-    | null;
-  cta?: {
-    enabled?: boolean | null;
-    /**
-     * Optional button label override. Leave blank to use the reusable link title.
-     */
-    label?: string | null;
-    link?: (string | null) | NavigationLink;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'headerNavbar12';
 }
 /**
  * Reusable site footer presets powered by footer layout blocks.
@@ -991,56 +859,10 @@ export interface Footer {
    */
   generateSlug?: boolean | null;
   slug: string;
-  /**
-   * Select the footer block variant to use for this preset.
-   */
-  layout: Footer2Block[];
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "Footer2Block".
- */
-export interface Footer2Block {
-  logoMode: 'siteSettingsLogo' | 'customLogo';
-  customLogo?: (string | null) | Media;
-  description?: string | null;
-  /**
-   * Configure the footer sections for this footer layout.
-   */
-  sections?:
-    | {
-        title: string;
-        links?:
-          | {
-              /**
-               * Optional label override. Leave blank to use the reusable link title.
-               */
-              name?: string | null;
-              link: string | NavigationLink;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-      }[]
-    | null;
-  copyright?: string | null;
-  legalLinks?:
-    | {
-        /**
-         * Optional label override. Leave blank to use the reusable link title.
-         */
-        name?: string | null;
-        link: string | NavigationLink;
-        id?: string | null;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'footer2';
 }
 /**
  * Reusable presets for 404, maintenance, and coming soon experiences.
@@ -1429,12 +1251,6 @@ export interface PagesSelect<T extends boolean = true> {
   title?: T;
   generateSlug?: T;
   slug?: T;
-  layout?:
-    | T
-    | {
-        hero36?: T | Hero36BlockSelect<T>;
-        form?: T | FormBlockSelect<T>;
-      };
   metaTitle?: T;
   metaDescription?: T;
   canonicalURL?: T;
@@ -1456,42 +1272,6 @@ export interface PagesSelect<T extends boolean = true> {
   createdAt?: T;
   deletedAt?: T;
   _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "Hero36Block_select".
- */
-export interface Hero36BlockSelect<T extends boolean = true> {
-  badge?:
-    | T
-    | {
-        text?: T;
-      };
-  heading?: T;
-  description?: T;
-  cards?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        visualType?: T;
-        icon?: T;
-        image?: T;
-        link?: T;
-        openInNewTab?: T;
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormBlock_select".
- */
-export interface FormBlockSelect<T extends boolean = true> {
-  form?: T;
-  id?: T;
-  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1592,11 +1372,6 @@ export interface ReviewsSelect<T extends boolean = true> {
   displayName?: T;
   isGenuineExperience?: T;
   featuredImage?: T;
-  layout?:
-    | T
-    | {
-        contentSpotlight?: T | ContentSpotlightBlockSelect<T>;
-      };
   internalModerationNotes?: T;
   metaTitle?: T;
   metaDescription?: T;
@@ -1618,20 +1393,6 @@ export interface ReviewsSelect<T extends boolean = true> {
   createdAt?: T;
   deletedAt?: T;
   _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ContentSpotlightBlock_select".
- */
-export interface ContentSpotlightBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  heading?: T;
-  description?: T;
-  image?: T;
-  link?: T;
-  openInNewTab?: T;
-  id?: T;
-  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1675,54 +1436,10 @@ export interface HeadersSelect<T extends boolean = true> {
   title?: T;
   generateSlug?: T;
   slug?: T;
-  layout?:
-    | T
-    | {
-        headerNavbar12?: T | HeaderNavbar12BlockSelect<T>;
-      };
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
   _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HeaderNavbar12Block_select".
- */
-export interface HeaderNavbar12BlockSelect<T extends boolean = true> {
-  logoMode?: T;
-  customLogo?: T;
-  navigationItems?:
-    | T
-    | {
-        label?: T;
-        link?: T;
-        children?:
-          | T
-          | {
-              label?: T;
-              description?: T;
-              link?: T;
-              id?: T;
-            };
-        id?: T;
-      };
-  secondaryActions?:
-    | T
-    | {
-        label?: T;
-        link?: T;
-        id?: T;
-      };
-  cta?:
-    | T
-    | {
-        enabled?: T;
-        label?: T;
-        link?: T;
-      };
-  id?: T;
-  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1732,47 +1449,10 @@ export interface FootersSelect<T extends boolean = true> {
   title?: T;
   generateSlug?: T;
   slug?: T;
-  layout?:
-    | T
-    | {
-        footer2?: T | Footer2BlockSelect<T>;
-      };
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
   _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "Footer2Block_select".
- */
-export interface Footer2BlockSelect<T extends boolean = true> {
-  logoMode?: T;
-  customLogo?: T;
-  description?: T;
-  sections?:
-    | T
-    | {
-        title?: T;
-        links?:
-          | T
-          | {
-              name?: T;
-              link?: T;
-              id?: T;
-            };
-        id?: T;
-      };
-  copyright?: T;
-  legalLinks?:
-    | T
-    | {
-        name?: T;
-        link?: T;
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

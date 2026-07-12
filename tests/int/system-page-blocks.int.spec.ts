@@ -4,6 +4,11 @@ import { System404Block } from '@/blocks/System404/config'
 import { SystemComingSoonBlock } from '@/blocks/SystemComingSoon/config'
 import { SystemMaintenanceBlock } from '@/blocks/SystemMaintenance/config'
 import { createBaseSystemPageFields } from '@/blocks/systemPageFields'
+import { Footers } from '@/collections/Footers'
+import { Headers } from '@/collections/Headers'
+import { Pages } from '@/collections/Pages'
+import { Reviews } from '@/collections/Reviews'
+import { SystemPages } from '@/collections/SystemPages'
 
 type NamedField = {
   defaultValue?: unknown
@@ -44,7 +49,45 @@ const getNamedField = (fields: unknown[], fieldName: string): NamedField => {
   return field
 }
 
+const collectBlockSlugs = (fields: unknown[]): string[] => {
+  return fields.flatMap((field) => {
+    if (typeof field !== 'object' || field === null) return []
+
+    const slugs =
+      'blocks' in field && Array.isArray(field.blocks)
+        ? field.blocks.flatMap((block) =>
+            typeof block === 'object' && block !== null && 'slug' in block && typeof block.slug === 'string'
+              ? [block.slug]
+              : [],
+          )
+        : []
+    const nested = 'fields' in field && Array.isArray(field.fields) ? collectBlockSlugs(field.fields) : []
+    const tabs =
+      'tabs' in field && Array.isArray(field.tabs)
+        ? field.tabs.flatMap((tab) =>
+            typeof tab === 'object' && tab !== null && 'fields' in tab && Array.isArray(tab.fields)
+              ? collectBlockSlugs(tab.fields)
+              : [],
+          )
+        : []
+
+    return [...slugs, ...nested, ...tabs]
+  })
+}
+
 describe('system page block schemas', () => {
+  it('registers blocks only for system pages', () => {
+    expect(collectBlockSlugs(Pages.fields)).toEqual([])
+    expect(collectBlockSlugs(Reviews.fields)).toEqual([])
+    expect(collectBlockSlugs(Headers.fields)).toEqual([])
+    expect(collectBlockSlugs(Footers.fields)).toEqual([])
+    expect(collectBlockSlugs(SystemPages.fields)).toEqual([
+      'system404',
+      'systemMaintenance',
+      'systemComingSoon',
+    ])
+  })
+
   it('keeps the block assembly thin and the field factory reusable', () => {
     expect(typeof createBaseSystemPageFields).toBe('function')
   })

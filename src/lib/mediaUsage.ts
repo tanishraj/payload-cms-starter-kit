@@ -173,7 +173,6 @@ const collectionSources: CollectionUsageSource[] = [
     resolve: (doc, mediaID) => {
       const documentLabel = getTextValue(doc.title, 'Untitled Page')
       const references: MediaUsageReference[] = []
-      const layout = Array.isArray(doc.layout) ? doc.layout : []
 
       pushIfMatched({
         mediaID,
@@ -185,32 +184,6 @@ const collectionSources: CollectionUsageSource[] = [
         }),
         references,
         value: doc.ogImage as RelationshipValue,
-      })
-
-      layout.forEach((block, blockIndex) => {
-        if (!block || typeof block !== 'object' || block === null || block.blockType !== 'hero36') {
-          return
-        }
-
-        const cards = Array.isArray(block.cards) ? block.cards : []
-
-        cards.forEach((card, cardIndex) => {
-          if (!card || typeof card !== 'object' || card === null || card.visualType !== 'image') {
-            return
-          }
-
-          pushIfMatched({
-            mediaID,
-            reference: createCollectionReference({
-              doc,
-              documentLabel,
-              fieldPath: `layout[${blockIndex}].cards[${cardIndex}].image`,
-              slug: 'pages',
-            }),
-            references,
-            value: card.image as RelationshipValue,
-          })
-        })
       })
 
       return references
@@ -258,7 +231,6 @@ const collectionSources: CollectionUsageSource[] = [
     resolve: (doc, mediaID) => {
       const documentLabel = getTextValue(doc.title, 'Untitled Review')
       const references: MediaUsageReference[] = []
-      const layout = Array.isArray(doc.layout) ? doc.layout : []
 
       pushIfMatched({
         mediaID,
@@ -282,24 +254,6 @@ const collectionSources: CollectionUsageSource[] = [
         }),
         references,
         value: doc.ogImage as RelationshipValue,
-      })
-
-      layout.forEach((block, blockIndex) => {
-        if (!block || typeof block !== 'object' || block === null || block.blockType !== 'contentSpotlight') {
-          return
-        }
-
-        pushIfMatched({
-          mediaID,
-          reference: createCollectionReference({
-            doc,
-            documentLabel,
-            fieldPath: `layout[${blockIndex}].image`,
-            slug: 'reviews',
-          }),
-          references,
-          value: block.image as RelationshipValue,
-        })
       })
 
       return references

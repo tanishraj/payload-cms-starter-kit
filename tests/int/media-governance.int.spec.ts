@@ -141,14 +141,6 @@ describe('media governance resolver', () => {
           sourceType: 'collection',
         }),
         expect.objectContaining({
-          documentID: 10,
-          documentLabel: 'Home',
-          fieldPath: 'layout[0].cards[0].image',
-          locationLabel: 'Pages > Home > layout[0].cards[0].image',
-          sourceSlug: 'pages',
-          sourceType: 'collection',
-        }),
-        expect.objectContaining({
           documentID: 20,
           documentLabel: 'Pricing Strategy',
           fieldPath: 'featuredImage',
@@ -161,14 +153,6 @@ describe('media governance resolver', () => {
           documentLabel: 'Great Service',
           fieldPath: 'ogImage',
           locationLabel: 'Reviews > Great Service > ogImage',
-          sourceSlug: 'reviews',
-          sourceType: 'collection',
-        }),
-        expect.objectContaining({
-          documentID: 30,
-          documentLabel: 'Great Service',
-          fieldPath: 'layout[0].image',
-          locationLabel: 'Reviews > Great Service > layout[0].image',
           sourceSlug: 'reviews',
           sourceType: 'collection',
         }),
@@ -197,8 +181,8 @@ describe('media governance resolver', () => {
       ]),
     )
 
-    expect(references).toHaveLength(8)
-    expect(buildMediaUsageSummary(references)).toBe('Used in 8 locations across 6 entries.')
+    expect(references).toHaveLength(6)
+    expect(buildMediaUsageSummary(references)).toBe('Used in 6 locations across 6 entries.')
     expect(buildMediaUsageSummary([])).toBe('Unused asset.')
   })
 

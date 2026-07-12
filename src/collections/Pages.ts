@@ -18,10 +18,7 @@ import { createWorkflowQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 
-import { FormBlock } from '../blocks/Form/config'
-import { Hero36Block } from '../blocks/Hero36/config'
 import { createRedirectsForChangedPagePath } from '../hooks/createRedirectsForChangedPagePath'
-import { migrateLegacyPageLinksBeforeChange } from '../hooks/migrateLegacyReusableLinks'
 import { populatePageUrlPreview } from '../hooks/populatePageUrlPreview'
 import { preventReferencedPageUnpublish } from '../hooks/preventReferencedPageUnpublish'
 import {
@@ -172,7 +169,6 @@ export const Pages: CollectionConfig = {
       validateSEOContract(),
       enforceEditorialWorkflow('publish_pages', 'pages'),
       preventReferencedPageUnpublish,
-      migrateLegacyPageLinksBeforeChange,
     ],
   },
   versions: {
@@ -191,21 +187,6 @@ export const Pages: CollectionConfig = {
     {
       type: 'tabs',
       tabs: [
-        {
-          label: 'Content',
-          fields: [
-            {
-              name: 'layout',
-              type: 'blocks',
-              blocks: [Hero36Block, FormBlock],
-              admin: {
-                initCollapsed: true,
-                description:
-                  'Compose the page with reusable frontend sections.',
-              },
-            },
-          ],
-        },
         {
           label: 'SEO',
           fields: [...buildSEOFields()],

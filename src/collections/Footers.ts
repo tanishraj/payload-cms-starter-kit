@@ -6,7 +6,6 @@ import {
   requireCapability,
 } from '@/access/adminCapabilities'
 import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
-import { Footer2Block } from '../blocks/Footer2/config'
 
 export const Footers: CollectionConfig = {
   slug: 'footers',
@@ -52,17 +51,5 @@ export const Footers: CollectionConfig = {
     slugField({
       useAsSlug: 'title',
     }),
-    {
-      name: 'layout',
-      type: 'blocks',
-      required: true,
-      minRows: 1,
-      maxRows: 1,
-      blocks: [Footer2Block],
-      admin: {
-        initCollapsed: true,
-        description: 'Select the footer block variant to use for this preset.',
-      },
-    },
   ],
 }

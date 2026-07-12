@@ -80,39 +80,6 @@ const resolveLinkID = async ({
   return null
 }
 
-export const migrateLegacyPageLinksBeforeChange: CollectionBeforeChangeHook<Page> = async ({
-  data,
-  req,
-}) => {
-  if (!data || !Array.isArray(data.layout)) {
-    return data
-  }
-
-  for (const block of data.layout) {
-    if (!block || typeof block !== 'object' || !('blockType' in block)) {
-      continue
-    }
-
-    if (block.blockType !== 'hero36' || !Array.isArray(block.cards)) {
-      continue
-    }
-
-    for (const card of block.cards) {
-      if (!card || typeof card !== 'object') {
-        continue
-      }
-
-      await resolveLinkID({
-        fallbackTitle: typeof card.title === 'string' ? card.title : null,
-        req,
-        value: card as LegacyLinkValue,
-      })
-    }
-  }
-
-  return data
-}
-
 export const migrateLegacySystemPageLinksBeforeChange: CollectionBeforeChangeHook<SystemPage> = async ({
   data,
   req,

@@ -6,7 +6,6 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
-import { ContentSpotlightBlock } from '@/blocks/ContentSpotlight/config'
 import { buildSEOFields } from '@/fields/buildSEOFields'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
@@ -229,16 +228,6 @@ export const Reviews: CollectionConfig = {
                 mimeType: {
                   contains: 'image',
                 },
-              },
-            },
-            {
-              name: 'layout',
-              type: 'blocks',
-              blocks: [ContentSpotlightBlock],
-              admin: {
-                description:
-                  'Optional supplemental sections. Structured review content stays primary.',
-                initCollapsed: true,
               },
             },
             {

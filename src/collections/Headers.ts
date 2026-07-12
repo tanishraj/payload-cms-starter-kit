@@ -6,7 +6,6 @@ import {
   requireCapability,
 } from '@/access/adminCapabilities'
 import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
-import { HeaderNavbar12Block } from '../blocks/HeaderNavbar12/config'
 
 export const Headers: CollectionConfig = {
   slug: 'headers',
@@ -52,17 +51,5 @@ export const Headers: CollectionConfig = {
     slugField({
       useAsSlug: 'title',
     }),
-    {
-      name: 'layout',
-      type: 'blocks',
-      required: true,
-      minRows: 1,
-      maxRows: 1,
-      blocks: [HeaderNavbar12Block],
-      admin: {
-        initCollapsed: true,
-        description: 'Select the header block variant to use for this preset.',
-      },
-    },
   ],
 }
