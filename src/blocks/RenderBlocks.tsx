@@ -1,24 +1,12 @@
-import type { Page, Review, SystemPage } from '@/payload-types'
+import type { SystemPage } from '@/payload-types'
 
-import { ContentSpotlightBlockComponent } from './ContentSpotlight/Component'
-import { FormBlockComponent } from './Form/Component'
-import { Hero36BlockComponent } from './Hero36/Component'
 import { System404BlockComponent } from './System404/Component'
 import { SystemComingSoonBlockComponent } from './SystemComingSoon/Component'
 import { SystemMaintenanceBlockComponent } from './SystemMaintenance/Component'
 
-type RenderableBlock =
-  | NonNullable<Page['layout']>[number]
-  | NonNullable<Review['layout']>[number]
-  | NonNullable<SystemPage['layout']>[number]
+type RenderableBlock = NonNullable<SystemPage['layout']>[number]
 
-type RenderableDocument = Page | SystemPage
-
-export function getRenderableBlocks(document: RenderableDocument): RenderableBlock[] | null {
-  if ('type' in document) {
-    return document.layout ?? null
-  }
-
+export function getRenderableBlocks(document: SystemPage): RenderableBlock[] | null {
   return document.layout ?? null
 }
 
@@ -31,19 +19,6 @@ export function RenderBlocks({ blocks }: { blocks?: RenderableBlock[] | null }) 
     <>
       {blocks.map((block, index) => {
         switch (block.blockType) {
-          case 'contentSpotlight':
-            return (
-              <ContentSpotlightBlockComponent
-                key={block.id ?? `${block.blockType}-${index}`}
-                {...block}
-              />
-            )
-          case 'hero36':
-            return (
-              <Hero36BlockComponent key={block.id ?? `${block.blockType}-${index}`} {...block} />
-            )
-          case 'form':
-            return <FormBlockComponent key={block.id ?? `${block.blockType}-${index}`} {...block} />
           case 'system404':
             return (
               <System404BlockComponent key={block.id ?? `${block.blockType}-${index}`} {...block} />

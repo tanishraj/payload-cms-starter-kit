@@ -6,13 +6,10 @@ import '../../styles/globals.css'
 
 import type { Metadata } from 'next'
 import { AdminSessionBar } from '@/components/admin/AdminSessionBar'
-import { RenderFooter } from '@/blocks/renderFooter'
-import { RenderHeader } from '@/blocks/renderHeader'
 import { getCurrentCMSUser } from '@/lib/cmsSession'
 import { getMediaAbsoluteUrl } from '@/lib/media'
 import { getRobotsMetadata } from '@/lib/seo'
 import { getSiteURL } from '@/lib/siteUrl'
-import type { Footer, Header } from '@/payload-types'
 
 export const dynamic = 'force-dynamic'
 
@@ -24,11 +21,7 @@ const getFrontendGlobals = async () => {
     config: configPromise,
   })
 
-  const [pageSettings, themeSettings, seoSettings, siteSettings] = await Promise.all([
-    payload.findGlobal({
-      slug: 'page-settings',
-      depth: 0,
-    }),
+  const [themeSettings, seoSettings, siteSettings] = await Promise.all([
     payload.findGlobal({
       slug: 'theme-settings',
       depth: 0,
@@ -42,34 +35,7 @@ const getFrontendGlobals = async () => {
       depth: 1,
     }),
   ])
-  const activeHeaderID =
-    typeof pageSettings.activeHeader === 'number'
-      ? pageSettings.activeHeader
-      : pageSettings.activeHeader?.id
-  const activeFooterID =
-    typeof pageSettings.activeFooter === 'number'
-      ? pageSettings.activeFooter
-      : pageSettings.activeFooter?.id
-  const activeHeader: Header | null =
-    activeHeaderID != null
-      ? await payload.findByID({
-          collection: 'headers',
-          id: activeHeaderID,
-          depth: 10,
-        })
-      : null
-  const activeFooter: Footer | null =
-    activeFooterID != null
-      ? await payload.findByID({
-          collection: 'footers',
-          id: activeFooterID,
-          depth: 10,
-        })
-      : null
-
   return {
-    activeFooter,
-    activeHeader,
     seoSettings,
     siteSettings,
     themeSettings,
@@ -130,7 +96,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     getFrontendGlobals(),
     getCurrentCMSUser(),
   ])
-  const { activeFooter, activeHeader, siteSettings, themeSettings } = frontendGlobals
+  const { themeSettings } = frontendGlobals
 
   const colorScheme = themeSettings.colorScheme ?? 'system'
   const rawThemeColor = String(themeSettings.themeColor ?? 'default')
@@ -145,11 +111,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const bodyStyle = {
     '--cms-toolbar-offset': cmsToolbarOffset,
   } as React.CSSProperties
-  const mainStyle = {
-    paddingTop: activeHeader
-      ? `calc(3.75rem + ${cmsToolbarOffset})`
-      : cmsToolbarOffset,
-  } as React.CSSProperties
+  const mainStyle = { paddingTop: cmsToolbarOffset } as React.CSSProperties
 
   return (
     <html
@@ -163,18 +125,12 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       <head />
       <body style={bodyStyle}>
         <AdminSessionBar user={currentUser} />
-        <div data-site-chrome="true">
-          <RenderHeader header={activeHeader} siteSettings={siteSettings} />
-        </div>
         <main
           data-site-main="true"
           style={mainStyle}
         >
           {children}
         </main>
-        <div data-site-chrome="true">
-          <RenderFooter footer={activeFooter} siteSettings={siteSettings} />
-        </div>
       </body>
     </html>
   )

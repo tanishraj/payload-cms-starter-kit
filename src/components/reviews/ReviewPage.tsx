@@ -1,6 +1,5 @@
 import Link from 'next/link'
 
-import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { getMediaImageProps } from '@/lib/media'
 import { getReviewDisplayName } from '@/lib/reviews'
 import { getTaxonomyTerm, getTaxonomyTerms } from '@/lib/taxonomy'
@@ -69,7 +68,6 @@ export function ReviewPage({
       <div className="rounded-3xl border bg-background p-6">
         <p className="text-base leading-8 text-foreground">{review.reviewBody}</p>
       </div>
-      <RenderBlocks blocks={review.layout ?? null} />
       {relatedReviews.length ? (
         <section className="space-y-4 rounded-3xl border bg-background p-6">
           <h2 className="text-2xl font-semibold text-foreground">Related reviews</h2>

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { readFileSync } from 'node:fs'
 
 import { System404Block } from '@/blocks/System404/config'
 import { SystemComingSoonBlock } from '@/blocks/SystemComingSoon/config'
@@ -76,6 +77,17 @@ const collectBlockSlugs = (fields: unknown[]): string[] => {
 }
 
 describe('system page block schemas', () => {
+  it('renders only system page blocks', () => {
+    const source = readFileSync('src/blocks/RenderBlocks.tsx', 'utf8')
+
+    for (const slug of ['system404', 'systemMaintenance', 'systemComingSoon']) {
+      expect(source).toContain(`case '${slug}'`)
+    }
+    for (const slug of ['hero36', 'form', 'contentSpotlight']) {
+      expect(source).not.toContain(`case '${slug}'`)
+    }
+  })
+
   it('registers blocks only for system pages', () => {
     expect(collectBlockSlugs(Pages.fields)).toEqual([])
     expect(collectBlockSlugs(Reviews.fields)).toEqual([])
