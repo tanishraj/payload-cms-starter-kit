@@ -39,21 +39,24 @@ describe('reviews collection', () => {
     })
   })
 
-  it('includes the shared content spotlight block and structured rating fields', () => {
+  it('includes structured rating fields without legacy blocks', () => {
+    const serializedFields = JSON.stringify(Reviews.fields)
+
     expect(Reviews.admin?.defaultColumns).toContain('primaryCategory')
-    expect(JSON.stringify(Reviews.fields)).toContain('"name":"rating"')
-    expect(JSON.stringify(Reviews.fields)).toContain('"value":"5"')
-    expect(JSON.stringify(Reviews.fields)).toContain('"name":"primaryCategory"')
-    expect(JSON.stringify(Reviews.fields)).toContain('"relationTo":"categories"')
-    expect(JSON.stringify(Reviews.fields)).toContain('"name":"tags"')
-    expect(JSON.stringify(Reviews.fields)).toContain('"relationTo":"tags"')
-    expect(JSON.stringify(Reviews.fields)).toContain('"name":"categories"')
-    expect(JSON.stringify(Reviews.fields)).toContain('"slug":"contentSpotlight"')
-    expect(JSON.stringify(Reviews.fields)).toContain('"name":"metaTitle"')
-    expect(JSON.stringify(Reviews.fields)).toContain('"name":"robotsMode"')
-    expect(JSON.stringify(Reviews.fields)).toContain('"name":"includeInSitemap"')
-    expect(JSON.stringify(Reviews.fields)).toContain('"name":"sourceSubmission"')
-    expect(JSON.stringify(Reviews.fields)).toContain('"name":"workflowState"')
+    expect(serializedFields).toContain('"name":"rating"')
+    expect(serializedFields).toContain('"value":"5"')
+    expect(serializedFields).toContain('"name":"primaryCategory"')
+    expect(serializedFields).toContain('"relationTo":"categories"')
+    expect(serializedFields).toContain('"name":"tags"')
+    expect(serializedFields).toContain('"relationTo":"tags"')
+    expect(serializedFields).toContain('"name":"categories"')
+    expect(serializedFields).not.toContain('"type":"blocks"')
+    expect(serializedFields).not.toContain('"slug":"contentSpotlight"')
+    expect(serializedFields).toContain('"name":"metaTitle"')
+    expect(serializedFields).toContain('"name":"robotsMode"')
+    expect(serializedFields).toContain('"name":"includeInSitemap"')
+    expect(serializedFields).toContain('"name":"sourceSubmission"')
+    expect(serializedFields).toContain('"name":"workflowState"')
   })
 
   it('queries only published reviews by slug', async () => {
