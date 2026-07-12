@@ -23,8 +23,8 @@ test.describe('Frontend', () => {
 
     await expect(page).toHaveTitle(/E2E Homepage/)
 
-    const heading = page.locator('h1').first()
+    const announcement = page.getByText('E2E Homepage Heading').first()
 
-    await expect(heading).toHaveText('E2E Homepage Heading')
+    await expect(announcement).toBeVisible()
   })
 })

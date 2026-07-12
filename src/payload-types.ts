@@ -171,6 +171,10 @@ export interface Page {
    */
   generateSlug?: boolean | null;
   slug: string;
+  /**
+   * Compose the page using reusable content blocks.
+   */
+  layout?: AnnouncementBlock[] | null;
   metaTitle?: string | null;
   metaDescription?: string | null;
   /**
@@ -210,6 +214,22 @@ export interface Page {
   createdAt: string;
   deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AnnouncementBlock".
+ */
+export interface AnnouncementBlock {
+  intervalMs: number;
+  items: {
+    title?: string | null;
+    description: string;
+    url?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'announcement';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1251,6 +1271,11 @@ export interface PagesSelect<T extends boolean = true> {
   title?: T;
   generateSlug?: T;
   slug?: T;
+  layout?:
+    | T
+    | {
+        announcement?: T | AnnouncementBlockSelect<T>;
+      };
   metaTitle?: T;
   metaDescription?: T;
   canonicalURL?: T;
@@ -1272,6 +1297,23 @@ export interface PagesSelect<T extends boolean = true> {
   createdAt?: T;
   deletedAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AnnouncementBlock_select".
+ */
+export interface AnnouncementBlockSelect<T extends boolean = true> {
+  intervalMs?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        url?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1827,6 +1869,22 @@ export interface PageSetting {
    * Choose which saved footer preset should render site-wide.
    */
   activeFooter?: (string | null) | Footer;
+  announcementEnabled?: boolean | null;
+  /**
+   * Auto-advance interval for rotating announcement items. Minimum 2000ms.
+   */
+  announcementIntervalMs?: number | null;
+  /**
+   * Displayed as a thin rotating site-wide banner above all frontend pages.
+   */
+  announcementItems?:
+    | {
+        title?: string | null;
+        description: string;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1937,6 +1995,16 @@ export interface PageSettingsSelect<T extends boolean = true> {
   homepage?: T;
   activeHeader?: T;
   activeFooter?: T;
+  announcementEnabled?: T;
+  announcementIntervalMs?: T;
+  announcementItems?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        url?: T;
+        id?: T;
+      };
   _status?: T;
   updatedAt?: T;
   createdAt?: T;

@@ -57,6 +57,44 @@ const validatePublishedFrontPage: RelationshipFieldSingleValidation = async (val
   return true
 }
 
+const validateAnnouncementInterval = (
+  value: unknown,
+  { siblingData }: { siblingData?: { announcementEnabled?: boolean | null } },
+) => {
+  if (!siblingData?.announcementEnabled) {
+    return true
+  }
+
+  return typeof value === 'number' && Number.isFinite(value) && value >= 2000
+    ? true
+    : 'Announcement interval must be at least 2000 milliseconds.'
+}
+
+const validateAnnouncementItems = (
+  value: unknown,
+  { siblingData }: { siblingData?: { announcementEnabled?: boolean | null } },
+) => {
+  if (!siblingData?.announcementEnabled) {
+    return true
+  }
+
+  if (!Array.isArray(value) || value.length === 0) {
+    return 'Add at least one announcement item.'
+  }
+
+  const hasValidItem = value.some((item) => {
+    if (typeof item !== 'object' || item === null) {
+      return false
+    }
+
+    const description = 'description' in item ? item.description : null
+
+    return typeof description === 'string' && description.trim()
+  })
+
+  return hasValidItem ? true : 'Add at least one announcement item with a description.'
+}
+
 export const PageSettings: GlobalConfig = {
   slug: 'page-settings',
   label: 'Website Defaults',
@@ -128,6 +166,77 @@ export const PageSettings: GlobalConfig = {
               relationTo: 'footers',
               admin: {
                 description: 'Choose which saved footer preset should render site-wide.',
+              },
+            },
+          ],
+        },
+        {
+          label: 'Announcement',
+          fields: [
+            {
+              name: 'announcementEnabled',
+              label: 'Enable Announcement',
+              type: 'checkbox',
+              defaultValue: false,
+            },
+            {
+              name: 'announcementIntervalMs',
+              label: 'Announcement Interval (ms)',
+              type: 'number',
+              defaultValue: 4000,
+              admin: {
+                condition: (data) => Boolean(data?.announcementEnabled),
+                description: 'Auto-advance interval for rotating announcement items. Minimum 2000ms.',
+              },
+              validate: validateAnnouncementInterval,
+            },
+            {
+              name: 'announcementItems',
+              label: 'Announcement Items',
+              type: 'array',
+              minRows: 1,
+              admin: {
+                condition: (data) => Boolean(data?.announcementEnabled),
+                description: 'Displayed as a thin rotating site-wide banner above all frontend pages.',
+              },
+              fields: [
+                {
+                  name: 'title',
+                  type: 'text',
+                },
+                {
+                  name: 'description',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'url',
+                  label: 'Link URL',
+                  type: 'text',
+                },
+              ],
+              validate: (value, options) => {
+                const baseValidation = validateAnnouncementItems(value, options)
+
+                if (baseValidation !== true) {
+                  return baseValidation
+                }
+
+                if (!Array.isArray(value)) {
+                  return true
+                }
+
+                const invalidRow = value.find((item) => {
+                  if (typeof item !== 'object' || item === null) {
+                    return true
+                  }
+
+                  const description = 'description' in item ? item.description : null
+
+                  return typeof description !== 'string' || !description.trim()
+                })
+
+                return invalidRow ? 'Each announcement item requires a description.' : true
               },
             },
           ],

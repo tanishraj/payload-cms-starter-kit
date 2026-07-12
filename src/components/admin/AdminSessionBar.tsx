@@ -20,7 +20,7 @@ export function AdminSessionBar({
 
   return (
     <div className="fixed inset-x-0 top-0 z-[1100] border-b border-white/10 bg-zinc-950 text-zinc-50">
-      <div className="mx-auto flex min-h-10 w-full max-w-7xl items-center justify-between gap-3 px-4 py-1.5 sm:px-6">
+      <div className="mx-auto flex min-h-10 w-full max-w-screen-2xl items-center justify-between gap-3 px-4 py-2">
         <div className="flex min-w-0 items-center">
           <Link
             href="/admin"

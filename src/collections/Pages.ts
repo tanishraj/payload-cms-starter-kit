@@ -4,6 +4,7 @@ import {
   type RelationshipFieldSingleValidation,
 } from 'payload'
 
+import { AnnouncementBlock } from '@/blocks/Announcement/config'
 import type { Page } from '@/payload-types'
 import {
   allowPublicReadOrCapability,
@@ -187,6 +188,21 @@ export const Pages: CollectionConfig = {
     {
       type: 'tabs',
       tabs: [
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'layout',
+              label: 'Layout',
+              type: 'blocks',
+              blocks: [AnnouncementBlock],
+              required: false,
+              admin: {
+                description: 'Compose the page using reusable content blocks.',
+              },
+            },
+          ],
+        },
         {
           label: 'SEO',
           fields: [...buildSEOFields()],

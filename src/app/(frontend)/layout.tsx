@@ -6,6 +6,7 @@ import '../../styles/globals.css'
 
 import type { Metadata } from 'next'
 import { AdminSessionBar } from '@/components/admin/AdminSessionBar'
+import { GlobalAnnouncement } from '@/components/global/GlobalAnnouncement'
 import { getCurrentCMSUser } from '@/lib/cmsSession'
 import { getMediaAbsoluteUrl } from '@/lib/media'
 import { getRobotsMetadata } from '@/lib/seo'
@@ -21,7 +22,7 @@ const getFrontendGlobals = async () => {
     config: configPromise,
   })
 
-  const [themeSettings, seoSettings, siteSettings] = await Promise.all([
+  const [themeSettings, seoSettings, siteSettings, pageSettings] = await Promise.all([
     payload.findGlobal({
       slug: 'theme-settings',
       depth: 0,
@@ -34,8 +35,13 @@ const getFrontendGlobals = async () => {
       slug: 'site-settings',
       depth: 1,
     }),
+    payload.findGlobal({
+      slug: 'page-settings',
+      depth: 0,
+    }),
   ])
   return {
+    pageSettings,
     seoSettings,
     siteSettings,
     themeSettings,
@@ -96,22 +102,28 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     getFrontendGlobals(),
     getCurrentCMSUser(),
   ])
-  const { themeSettings } = frontendGlobals
+  const { pageSettings, themeSettings } = frontendGlobals
 
   const colorScheme = themeSettings.colorScheme ?? 'system'
   const rawThemeColor = String(themeSettings.themeColor ?? 'default')
   const savedThemeColor = rawThemeColor === 'amber' ? 'sera' : rawThemeColor
   const themeColor = validThemeColors.has(savedThemeColor) ? savedThemeColor : 'default'
+  const announcementIntervalMs = pageSettings?.announcementEnabled
+    ? (pageSettings as { announcementIntervalMs?: number | null }).announcementIntervalMs
+    : null
+  const announcementItems = pageSettings?.announcementEnabled
+    ? (pageSettings as {
+        announcementItems?: Array<{ title?: string | null; description?: string | null; url?: string | null }> | null
+      })
+        .announcementItems
+    : null
   const htmlClassName = colorScheme === 'dark' ? 'dark' : undefined
   const htmlStyle =
     colorScheme === 'system'
       ? ({ colorScheme: 'light dark' } as React.CSSProperties)
       : ({ colorScheme } as React.CSSProperties)
-  const cmsToolbarOffset = currentUser ? '2.5rem' : '0px'
-  const bodyStyle = {
-    '--cms-toolbar-offset': cmsToolbarOffset,
-  } as React.CSSProperties
-  const mainStyle = { paddingTop: cmsToolbarOffset } as React.CSSProperties
+  const cmsToolbarOffset = currentUser ? '3rem' : '0px'
+  const contentShellStyle = { paddingTop: cmsToolbarOffset } as React.CSSProperties
 
   return (
     <html
@@ -123,14 +135,16 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       suppressHydrationWarning
     >
       <head />
-      <body style={bodyStyle}>
+      <body>
         <AdminSessionBar user={currentUser} />
-        <main
-          data-site-main="true"
-          style={mainStyle}
-        >
-          {children}
-        </main>
+        <div style={contentShellStyle}>
+          <GlobalAnnouncement
+            intervalMs={announcementIntervalMs}
+            items={announcementItems}
+            stickyTopOffset={cmsToolbarOffset}
+          />
+          <main data-site-main="true">{children}</main>
+        </div>
       </body>
     </html>
   )

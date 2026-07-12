@@ -9,17 +9,14 @@ const homepagePageData = {
   _status: 'published' as const,
   layout: [
     {
-      blockType: 'hero36',
-      cards: [
+      blockType: 'announcement' as const,
+      intervalMs: 4000,
+      items: [
         {
-          description: 'Seeded homepage card used by the Playwright frontend suite.',
-          icon: 'rocket',
-          title: 'Reliable homepage seed',
-          visualType: 'icon',
+          description: 'E2E Homepage Description',
+          title: 'E2E Homepage Heading',
         },
       ],
-      description: 'Seeded homepage description for deterministic e2e coverage.',
-      heading: 'E2E Homepage Heading',
     },
   ],
   metaDescription: 'Seeded homepage description',

@@ -35,5 +35,6 @@ describe('admin session bar', () => {
     expect(html).toContain('aria-haspopup="menu"')
     expect(html).toContain('Open user menu')
     expect(html).toContain('fixed')
+    expect(html).toContain('max-w-screen-2xl')
   })
 })
