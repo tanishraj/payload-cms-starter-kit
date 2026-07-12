@@ -42,7 +42,7 @@ Uncomment to import Google fonts if you want to use them in your project.
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
   --font-serif: 'Playfair Display', ui-serif, Georgia, serif;
 
-  --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Playfair Display', ui-serif, Georgia, serif;
   --font-text: 'Inter', ui-sans-serif, system-ui, sans-serif;
 
   --font-handwriting: 'Caveat', cursive;
