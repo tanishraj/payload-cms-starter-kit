@@ -353,4 +353,43 @@ describe('page block pipeline', () => {
     expect(html).toContain('href="/programs"')
     expect(html).toContain('See all programs')
   })
+
+  it('renders a statsStrip page block through PageContent', () => {
+    const result = PageContent({
+      page: {
+        id: 'page-stats-1',
+        layout: [
+          {
+            animationDuration: 1200,
+            animationEnabled: true,
+            backgroundStyle: 'accent',
+            blockType: 'statsStrip',
+            id: 'stats-block-1',
+            items: [
+              { label: 'Years of training physicians', value: 112 },
+              { label: 'Student-to-faculty ratio', suffix: ':1', value: 9 },
+              { label: 'Annual research funding', prefix: '$', suffix: 'M', value: 186 },
+              { label: 'Residency match rate', suffix: '%', value: 96 },
+              { label: 'Clinical sites', value: 14 },
+            ],
+            triggerOnce: true,
+          },
+        ],
+        slug: 'stats',
+        title: 'Stats',
+      } as never,
+    })
+
+    const html = renderToStaticMarkup(result)
+
+    expect(html).toContain('data-stats-strip-background="accent"')
+    expect(html).toContain('data-stats-strip-row="0"')
+    expect(html).toContain('data-stats-strip-row="1"')
+    expect(html).toContain('data-stats-strip-row-size="4"')
+    expect(html).toContain('data-stats-strip-row-size="1"')
+    expect(html).toContain('Years of training physicians')
+    expect(html).toContain('Student-to-faculty ratio')
+    expect(html).toContain('$0M')
+    expect(html).toContain('0%')
+  })
 })

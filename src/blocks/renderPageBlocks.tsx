@@ -3,6 +3,7 @@ import type { Page } from '@/payload-types'
 import { AnnouncementBlockComponent } from './Announcement/Component'
 import { HeroInstitutionalBlockComponent } from './HeroInstitutional/Component'
 import { SplitFeatureBlockComponent } from './SplitFeature/Component'
+import { StatsStripBlockComponent } from './StatsStrip/Component'
 
 export type PageBlock = NonNullable<Page['layout']>[number]
 
@@ -32,6 +33,13 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
           case 'splitFeature':
             return (
               <SplitFeatureBlockComponent
+                key={block.id ?? `${block.blockType}-${index}`}
+                {...block}
+              />
+            )
+          case 'statsStrip':
+            return (
+              <StatsStripBlockComponent
                 key={block.id ?? `${block.blockType}-${index}`}
                 {...block}
               />
