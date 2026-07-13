@@ -38,12 +38,14 @@ const chunkItems = (items: ValidStatsStripItem[]) => {
   return rows
 }
 
+type RowSize = 1 | 2 | 3 | 4
+
 const rowGridClasses = {
   1: 'md:grid-cols-1',
   2: 'md:grid-cols-2',
   3: 'md:grid-cols-3',
   4: 'md:grid-cols-4',
-} as const
+} satisfies Record<RowSize, string>
 
 export function StatsStripBlockComponent({
   animationDuration = 1200,
@@ -83,7 +85,7 @@ export function StatsStripBlockComponent({
       <div className="mx-auto flex max-w-screen-2xl flex-col px-4">
         {rows.map((row, rowIndex) => (
           <div
-            className={cn('grid grid-cols-2', rowGridClasses[row.length])}
+            className={cn('grid grid-cols-2', rowGridClasses[row.length as RowSize])}
             data-stats-strip-row={rowIndex}
             data-stats-strip-row-size={row.length}
             key={`stats-strip-row-${rowIndex}`}

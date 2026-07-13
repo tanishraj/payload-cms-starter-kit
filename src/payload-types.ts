@@ -174,7 +174,7 @@ export interface Page {
   /**
    * Compose the page using reusable content blocks.
    */
-  layout?: (AnnouncementBlock | HeroInstitutionalBlock | SplitFeatureBlock)[] | null;
+  layout?: (AnnouncementBlock | HeroInstitutionalBlock | SplitFeatureBlock | StatsStripBlock)[] | null;
   metaTitle?: string | null;
   metaDescription?: string | null;
   /**
@@ -383,6 +383,28 @@ export interface SplitFeatureBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'splitFeature';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsStripBlock".
+ */
+export interface StatsStripBlock {
+  items?:
+    | {
+        prefix?: string | null;
+        value: number;
+        suffix?: string | null;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  backgroundStyle: 'default' | 'muted' | 'accent';
+  animationEnabled?: boolean | null;
+  animationDuration: number;
+  triggerOnce?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'statsStrip';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1396,6 +1418,7 @@ export interface PagesSelect<T extends boolean = true> {
         announcement?: T | AnnouncementBlockSelect<T>;
         heroInstitutional?: T | HeroInstitutionalBlockSelect<T>;
         splitFeature?: T | SplitFeatureBlockSelect<T>;
+        statsStrip?: T | StatsStripBlockSelect<T>;
       };
   metaTitle?: T;
   metaDescription?: T;
@@ -1496,6 +1519,27 @@ export interface SplitFeatureBlockSelect<T extends boolean = true> {
         variant?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsStripBlock_select".
+ */
+export interface StatsStripBlockSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        prefix?: T;
+        value?: T;
+        suffix?: T;
+        label?: T;
+        id?: T;
+      };
+  backgroundStyle?: T;
+  animationEnabled?: T;
+  animationDuration?: T;
+  triggerOnce?: T;
   id?: T;
   blockName?: T;
 }
