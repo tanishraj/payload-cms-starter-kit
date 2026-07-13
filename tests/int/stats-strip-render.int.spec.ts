@@ -19,7 +19,7 @@ describe('stats strip block', () => {
     cleanup()
   })
 
-  it('renders four items in the first row and wraps remaining items', () => {
+  it('renders items sequentially across rows and adds a divider before later rows', () => {
     const html = renderToStaticMarkup(
       createElement(StatsStripBlockComponent, {
         backgroundStyle: 'accent',
@@ -29,6 +29,7 @@ describe('stats strip block', () => {
           { label: 'Annual research funding', prefix: '$', suffix: 'M', value: 186 },
           { label: 'Residency match rate', suffix: '%', value: 96 },
           { label: 'Clinical sites', value: 14 },
+          { label: 'Successful operations', suffix: 'K', value: 40 },
         ],
       }),
     )
@@ -37,9 +38,12 @@ describe('stats strip block', () => {
     expect(html).toContain('data-stats-strip-row="0"')
     expect(html).toContain('data-stats-strip-row="1"')
     expect(html).toContain('data-stats-strip-row-size="4"')
-    expect(html).toContain('data-stats-strip-row-size="1"')
+    expect(html).toContain('data-stats-strip-row-size="2"')
+    expect(html).toContain('data-stats-strip-row-divider="false"')
+    expect(html).toContain('data-stats-strip-row-divider="true"')
     expect(html).toContain('Years of training physicians')
     expect(html).toContain('Student-to-faculty ratio')
+    expect(html.indexOf('Clinical sites')).toBeLessThan(html.indexOf('Successful operations'))
   })
 
   it('animates only the numeric value and preserves prefix and suffix', () => {

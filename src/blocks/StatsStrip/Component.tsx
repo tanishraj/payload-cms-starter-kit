@@ -76,18 +76,25 @@ export function StatsStripBlockComponent({
 
   const resolvedBackgroundStyle = backgroundStyle ?? 'default'
   const rows = chunkItems(validItems)
+  const hasMultipleRows = rows.length > 1
 
   return (
     <section
-      className={cn('border-b border-border', backgroundClasses[resolvedBackgroundStyle])}
+      className={cn('border-b border-border/60', backgroundClasses[resolvedBackgroundStyle])}
       data-stats-strip-background={resolvedBackgroundStyle}
     >
       <div className="mx-auto flex max-w-screen-2xl flex-col px-4">
         {rows.map((row, rowIndex) => (
           <div
-            className={cn('grid grid-cols-2', rowGridClasses[row.length as RowSize])}
+            className={cn(
+              'grid grid-cols-2',
+              rowGridClasses[row.length as RowSize],
+              rowIndex > 0 && 'border-t border-border/60',
+            )}
+            data-stats-strip-row-divider={rowIndex > 0 ? 'true' : 'false'}
             data-stats-strip-row={rowIndex}
             data-stats-strip-row-size={row.length}
+            data-stats-strip-rows={rows.length}
             key={`stats-strip-row-${rowIndex}`}
           >
             {row.map((item, itemIndex) => {
@@ -96,14 +103,14 @@ export function StatsStripBlockComponent({
               return (
                 <article
                   className={cn(
-                    'flex min-h-40 flex-col justify-center gap-3 px-6 py-8',
-                    'border-b border-border md:border-b-0',
-                    itemIndex < row.length - 1 && 'md:border-r',
+                    'flex min-h-32 flex-col justify-center gap-3 px-5 py-7 text-left md:min-h-40 md:px-8 md:py-9',
+                    itemIndex < row.length - 1 && 'border-r border-border/60',
+                    hasMultipleRows && rowIndex < rows.length - 1 && 'md:border-b-0',
                     isOddLastMobileItem && 'col-span-2 md:col-span-1',
                   )}
                   key={`${item.label}-${rowIndex}-${itemIndex}`}
                 >
-                  <p className="font-serif text-4xl font-semibold tracking-tight sm:text-5xl">
+                  <p className="font-serif text-4xl font-semibold leading-none tracking-tight sm:text-5xl">
                     {animationEnabled ? (
                       <AnimatedMetricValue
                         durationMs={animationDuration}
@@ -116,7 +123,7 @@ export function StatsStripBlockComponent({
                       `${item.prefix ?? ''}${item.value}${item.suffix ?? ''}`
                     )}
                   </p>
-                  <p className="font-mono text-xs uppercase tracking-[0.24em] opacity-70">
+                  <p className="max-w-[18ch] font-mono text-[0.7rem] leading-[1.55] uppercase tracking-[0.18em] opacity-70 sm:text-xs">
                     {item.label}
                   </p>
                 </article>
