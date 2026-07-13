@@ -85,54 +85,56 @@ export function StatsStripBlockComponent({
     >
       <div className="mx-auto flex max-w-screen-2xl flex-col px-4">
         {rows.map((row, rowIndex) => (
-          <div
-            className={cn(
-              'grid grid-cols-2',
-              rowGridClasses[row.length as RowSize],
-              rowIndex > 0 && 'border-t border-border/60',
-            )}
-            data-stats-strip-row-divider={rowIndex > 0 ? 'true' : 'false'}
-            data-stats-strip-row={rowIndex}
-            data-stats-strip-row-size={row.length}
-            data-stats-strip-rows={rows.length}
-            key={`stats-strip-row-${rowIndex}`}
-          >
-            {row.map((item, itemIndex) => {
-              const isOddLastMobileItem = row.length % 2 === 1 && itemIndex === row.length - 1
-              const hasMobileRightDivider =
-                !isOddLastMobileItem && itemIndex % 2 === 0 && itemIndex + 1 < row.length
-              const hasDesktopRightDivider = itemIndex < row.length - 1
+          <div key={`stats-strip-row-group-${rowIndex}`}>
+            {rowIndex > 0 ? (
+              <div
+                className="w-full border-t border-border"
+                data-stats-strip-row-divider="true"
+              />
+            ) : null}
+            <div
+              className={cn('grid grid-cols-2', rowGridClasses[row.length as RowSize])}
+              data-stats-strip-row={rowIndex}
+              data-stats-strip-row-size={row.length}
+              data-stats-strip-rows={rows.length}
+            >
+              {row.map((item, itemIndex) => {
+                const isOddLastMobileItem = row.length % 2 === 1 && itemIndex === row.length - 1
+                const hasMobileRightDivider =
+                  !isOddLastMobileItem && itemIndex % 2 === 0 && itemIndex + 1 < row.length
+                const hasDesktopRightDivider = itemIndex < row.length - 1
 
-              return (
-                <article
-                  className={cn(
-                    'flex min-h-32 flex-col justify-center gap-3 px-5 py-7 text-left md:min-h-40 md:px-8 md:py-9',
-                    hasMobileRightDivider && 'border-r border-border/60',
-                    hasDesktopRightDivider && 'md:border-r md:border-border/60',
-                    hasMultipleRows && rowIndex < rows.length - 1 && 'md:border-b-0',
-                    isOddLastMobileItem && 'col-span-2 md:col-span-1',
-                  )}
-                  key={`${item.label}-${rowIndex}-${itemIndex}`}
-                >
-                  <p className="font-serif text-4xl font-semibold leading-none tracking-tight sm:text-5xl">
-                    {animationEnabled ? (
-                      <AnimatedMetricValue
-                        durationMs={animationDuration}
-                        prefix={item.prefix}
-                        suffix={item.suffix}
-                        triggerOnce={triggerOnce}
-                        value={item.value}
-                      />
-                    ) : (
-                      `${item.prefix ?? ''}${item.value}${item.suffix ?? ''}`
+                return (
+                  <article
+                    className={cn(
+                      'flex min-h-32 flex-col justify-center gap-3 px-5 py-7 text-left md:min-h-40 md:px-8 md:py-9',
+                      hasMobileRightDivider && 'border-r border-border/60',
+                      hasDesktopRightDivider && 'md:border-r md:border-border/60',
+                      hasMultipleRows && rowIndex < rows.length - 1 && 'md:border-b-0',
+                      isOddLastMobileItem && 'col-span-2 md:col-span-1',
                     )}
-                  </p>
-                  <p className="max-w-[18ch] font-mono text-[0.7rem] leading-[1.55] uppercase tracking-[0.18em] opacity-70 sm:text-xs">
-                    {item.label}
-                  </p>
-                </article>
-              )
-            })}
+                    key={`${item.label}-${rowIndex}-${itemIndex}`}
+                  >
+                    <p className="font-serif text-4xl font-semibold leading-none tracking-tight sm:text-5xl">
+                      {animationEnabled ? (
+                        <AnimatedMetricValue
+                          durationMs={animationDuration}
+                          prefix={item.prefix}
+                          suffix={item.suffix}
+                          triggerOnce={triggerOnce}
+                          value={item.value}
+                        />
+                      ) : (
+                        `${item.prefix ?? ''}${item.value}${item.suffix ?? ''}`
+                      )}
+                    </p>
+                    <p className="max-w-[18ch] font-mono text-[0.7rem] leading-[1.55] uppercase tracking-[0.18em] opacity-70 sm:text-xs">
+                      {item.label}
+                    </p>
+                  </article>
+                )
+              })}
+            </div>
           </div>
         ))}
       </div>

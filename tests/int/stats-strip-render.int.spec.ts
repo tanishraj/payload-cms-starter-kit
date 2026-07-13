@@ -39,7 +39,6 @@ describe('stats strip block', () => {
     expect(html).toContain('data-stats-strip-row="1"')
     expect(html).toContain('data-stats-strip-row-size="4"')
     expect(html).toContain('data-stats-strip-row-size="2"')
-    expect(html).toContain('data-stats-strip-row-divider="false"')
     expect(html).toContain('data-stats-strip-row-divider="true"')
     expect(html).toContain('Years of training physicians')
     expect(html).toContain('Student-to-faculty ratio')
