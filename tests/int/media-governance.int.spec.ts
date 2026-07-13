@@ -70,7 +70,8 @@ describe('media governance resolver', () => {
                   layout: [
                     {
                       blockType: 'headerNavbar12',
-                      customLogo: 7,
+                      customLogoDark: 7,
+                      customLogoLight: 7,
                       logoMode: 'customLogo',
                     },
                   ],
@@ -159,8 +160,16 @@ describe('media governance resolver', () => {
         expect.objectContaining({
           documentID: 40,
           documentLabel: 'Main Header',
-          fieldPath: 'layout[0].customLogo',
-          locationLabel: 'Headers > Main Header > layout[0].customLogo',
+          fieldPath: 'layout[0].customLogoLight',
+          locationLabel: 'Headers > Main Header > layout[0].customLogoLight',
+          sourceSlug: 'headers',
+          sourceType: 'collection',
+        }),
+        expect.objectContaining({
+          documentID: 40,
+          documentLabel: 'Main Header',
+          fieldPath: 'layout[0].customLogoDark',
+          locationLabel: 'Headers > Main Header > layout[0].customLogoDark',
           sourceSlug: 'headers',
           sourceType: 'collection',
         }),
@@ -181,8 +190,8 @@ describe('media governance resolver', () => {
       ]),
     )
 
-    expect(references).toHaveLength(6)
-    expect(buildMediaUsageSummary(references)).toBe('Used in 6 locations across 6 entries.')
+    expect(references).toHaveLength(7)
+    expect(buildMediaUsageSummary(references)).toBe('Used in 7 locations across 6 entries.')
     expect(buildMediaUsageSummary([])).toBe('Unused asset.')
   })
 

@@ -59,7 +59,7 @@ export function AnnouncementBar({
     ? ({
         position: 'sticky',
         top: topOffset,
-        zIndex: 1000,
+        zIndex: 40,
       } as const)
     : undefined
 

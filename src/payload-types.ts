@@ -866,10 +866,58 @@ export interface Header {
    */
   generateSlug?: boolean | null;
   slug: string;
+  layout?: HeaderNavbar12Block[] | null;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeaderNavbar12Block".
+ */
+export interface HeaderNavbar12Block {
+  sticky?: boolean | null;
+  size?: ('compact' | 'default' | 'large') | null;
+  navAlignment?: ('left' | 'center' | 'right') | null;
+  logoMode?: ('siteDefault' | 'customLogo') | null;
+  customLogoLight?: (string | null) | Media;
+  customLogoDark?: (string | null) | Media;
+  logoHeight?: number | null;
+  menuItems?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        children?:
+          | {
+              label: string;
+              linkType?: ('page' | 'custom') | null;
+              page?: (string | null) | Page;
+              url?: string | null;
+              openInNewTab?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  ctaButtons?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant?: ('link' | 'outline' | 'default') | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'headerNavbar12';
 }
 /**
  * Reusable site footer presets powered by footer layout blocks.
@@ -1487,10 +1535,61 @@ export interface HeadersSelect<T extends boolean = true> {
   title?: T;
   generateSlug?: T;
   slug?: T;
+  layout?:
+    | T
+    | {
+        headerNavbar12?: T | HeaderNavbar12BlockSelect<T>;
+      };
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeaderNavbar12Block_select".
+ */
+export interface HeaderNavbar12BlockSelect<T extends boolean = true> {
+  sticky?: T;
+  size?: T;
+  navAlignment?: T;
+  logoMode?: T;
+  customLogoLight?: T;
+  customLogoDark?: T;
+  logoHeight?: T;
+  menuItems?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        children?:
+          | T
+          | {
+              label?: T;
+              linkType?: T;
+              page?: T;
+              url?: T;
+              openInNewTab?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  ctaButtons?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

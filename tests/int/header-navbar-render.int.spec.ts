@@ -1,0 +1,224 @@
+import { createElement } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { describe, expect, it } from 'vitest'
+
+import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
+import { renderHeaderBlocks } from '@/blocks/renderHeaderBlocks'
+import { HeaderNavbar } from '@/components/header/HeaderNavbar'
+import { SiteLogo } from '@/components/site/SiteLogo'
+import { resolveHeaderLink, resolveHeaderMenuItems } from '@/lib/headerNavigation'
+
+describe('header navigation helpers', () => {
+  it('resolves page and custom links and drops invalid entries', () => {
+    expect(
+      resolveHeaderLink({
+        label: ' Work ',
+        linkType: 'page',
+        openInNewTab: false,
+        page: {
+          slug: 'work',
+        } as never,
+      }),
+    ).toEqual({
+      href: '/work',
+      label: 'Work',
+      newTab: false,
+    })
+
+    expect(
+      resolveHeaderLink({
+        label: 'Docs',
+        linkType: 'custom',
+        openInNewTab: true,
+        url: 'https://example.com/docs',
+      }),
+    ).toEqual({
+      href: 'https://example.com/docs',
+      label: 'Docs',
+      newTab: true,
+    })
+
+    expect(
+      resolveHeaderMenuItems([
+        {
+          children: [
+            {
+              label: 'Overview',
+              linkType: 'page',
+              page: {
+                slug: 'overview',
+              } as never,
+            },
+            {
+              label: '   ',
+              linkType: 'custom',
+              url: 'https://example.com/ignored',
+            },
+          ],
+          label: 'Products',
+          linkType: 'custom',
+          url: '/products',
+        },
+        {
+          label: 'Missing href',
+          linkType: 'page',
+          page: null,
+        },
+      ]),
+    ).toEqual([
+      {
+        children: [
+          {
+            href: '/overview',
+            label: 'Overview',
+            newTab: false,
+          },
+        ],
+        href: '/products',
+        label: 'Products',
+        newTab: false,
+      },
+    ])
+  })
+})
+
+describe('header logo resolution', () => {
+  it('falls back to site name when no media logo is available', () => {
+    const html = renderToStaticMarkup(
+      createElement(SiteLogo, {
+        fallbackText: 'Acme Studio',
+        height: 32,
+        mode: 'siteDefault',
+        siteLogo: null,
+      }),
+    )
+
+    expect(html).toContain('Acme Studio')
+  })
+
+  it('renders light and dark custom logo variants when present', () => {
+    const html = renderToStaticMarkup(
+      createElement(SiteLogo, {
+        customDark: { alt: 'Acme dark', url: '/dark-logo.svg' },
+        customLight: { alt: 'Acme light', url: '/light-logo.svg' },
+        fallbackText: 'Acme Studio',
+        height: 40,
+        mode: 'customLogo',
+      }),
+    )
+
+    expect(html).toContain('dark:hidden')
+    expect(html).toContain('hidden h-auto w-auto object-contain dark:block')
+    expect(html).toContain('/light-logo.svg')
+    expect(html).toContain('/dark-logo.svg')
+  })
+})
+
+describe('header navbar rendering', () => {
+  it('renders aligned menu items, dropdown children, and CTA buttons', () => {
+    const html = renderToStaticMarkup(
+      createElement(HeaderNavbar, {
+        ctas: [{ href: '/contact', label: 'Contact', newTab: false, variant: 'outline' }],
+        logo: createElement('span', null, 'Acme'),
+        menuItems: [
+          { href: '/work', label: 'Work', newTab: false },
+          {
+            children: [
+              { href: '/services/child-01', label: 'Child 01', newTab: false },
+              { href: '/services/child-02', label: 'Child 02', newTab: false },
+              { href: '/services/child-03', label: 'Child 03', newTab: false },
+            ],
+            href: '/services',
+            label: 'Services',
+            newTab: false,
+          },
+        ],
+        navAlignment: 'center',
+        size: 'default',
+      }),
+    )
+
+    expect(html).toContain('data-header-navbar="true"')
+    expect(html).toContain('Acme')
+    expect(html).toContain('Services')
+    expect(html).toContain('Contact')
+    expect(html).toContain('data-slot="navigation-menu-trigger"')
+    expect(html).toContain('lucide-chevron-down')
+  })
+
+  it('adapts block data into the navbar shell with site-name fallback', () => {
+    const html = renderToStaticMarkup(
+      createElement(HeaderNavbar12BlockComponent, {
+        blockType: 'headerNavbar12',
+        ctaButtons: [
+          {
+            label: 'Contact',
+            linkType: 'custom',
+            url: '/contact',
+            variant: 'outline',
+          },
+        ],
+        logoHeight: 36,
+        logoMode: 'siteDefault',
+        menuItems: [
+          {
+            children: [
+              {
+                label: 'Overview',
+                linkType: 'custom',
+                url: '/services/overview',
+              },
+            ],
+            label: 'Services',
+            linkType: 'custom',
+            url: '/services',
+          },
+        ],
+        navAlignment: 'left',
+        siteLogo: null,
+        siteName: 'Acme Studio',
+        size: 'compact',
+      }),
+    )
+
+    expect(html).toContain('Acme Studio')
+    expect(html).toContain('data-slot="navigation-menu-trigger"')
+    expect(html).toContain('lucide-chevron-down')
+    expect(html).toContain('/contact')
+  })
+
+  it('renders header layout blocks through the shared renderer', () => {
+    const html = renderToStaticMarkup(
+      createElement('div', null, renderHeaderBlocks(
+        [
+          {
+            blockType: 'headerNavbar12',
+            ctaButtons: [
+              {
+                label: 'Book',
+                linkType: 'custom',
+                url: '/book',
+                variant: 'default',
+              },
+            ],
+            logoMode: 'siteDefault',
+            menuItems: [
+              {
+                label: 'Home',
+                linkType: 'custom',
+                url: '/',
+              },
+            ],
+            navAlignment: 'right',
+            size: 'large',
+          },
+        ] as never,
+        { siteLogo: null, siteName: 'Acme Studio' },
+      )),
+    )
+
+    expect(html).toContain('Acme Studio')
+    expect(html).toContain('Book')
+    expect(html).toContain('Home')
+  })
+})

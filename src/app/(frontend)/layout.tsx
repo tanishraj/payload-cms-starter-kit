@@ -7,10 +7,12 @@ import '../../styles/globals.css'
 import type { Metadata } from 'next'
 import { AdminSessionBar } from '@/components/admin/AdminSessionBar'
 import { GlobalAnnouncement } from '@/components/global/GlobalAnnouncement'
+import { GlobalHeader } from '@/components/global/GlobalHeader'
 import { getCurrentCMSUser } from '@/lib/cmsSession'
 import { getMediaAbsoluteUrl } from '@/lib/media'
 import { getRobotsMetadata } from '@/lib/seo'
 import { getSiteURL } from '@/lib/siteUrl'
+import type { Header } from '@/payload-types'
 
 export const dynamic = 'force-dynamic'
 
@@ -40,7 +42,41 @@ const getFrontendGlobals = async () => {
       depth: 0,
     }),
   ])
+
+  const activeHeaderID =
+    typeof pageSettings?.activeHeader === 'string' || typeof pageSettings?.activeHeader === 'number'
+      ? pageSettings.activeHeader
+      : typeof pageSettings?.activeHeader === 'object' && pageSettings.activeHeader !== null
+        ? pageSettings.activeHeader.id
+        : null
+
+  const activeHeaderResult =
+    activeHeaderID == null
+      ? null
+      : await payload.find({
+          collection: 'headers',
+          where: {
+            and: [
+              {
+                id: {
+                  equals: activeHeaderID,
+                },
+              },
+              {
+                _status: {
+                  equals: 'published',
+                },
+              },
+            ],
+          },
+          depth: 2,
+          limit: 1,
+        })
+
+  const activeHeader = (activeHeaderResult?.docs[0] ?? null) as Header | null
+
   return {
+    activeHeader,
     pageSettings,
     seoSettings,
     siteSettings,
@@ -102,7 +138,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     getFrontendGlobals(),
     getCurrentCMSUser(),
   ])
-  const { pageSettings, themeSettings } = frontendGlobals
+  const { activeHeader, pageSettings, siteSettings, themeSettings } = frontendGlobals
 
   const colorScheme = themeSettings.colorScheme ?? 'system'
   const rawThemeColor = String(themeSettings.themeColor ?? 'default')
@@ -134,6 +170,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       ? ({ colorScheme: 'light dark' } as React.CSSProperties)
       : ({ colorScheme } as React.CSSProperties)
   const cmsToolbarOffset = currentUser ? '3rem' : '0px'
+  const headerTopOffset = `calc(${cmsToolbarOffset} + ${announcementItems?.length ? '3rem' : '0px'})`
   const contentShellStyle = { paddingTop: cmsToolbarOffset } as React.CSSProperties
 
   return (
@@ -156,6 +193,12 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
             label={announcementLabel}
             marqueeDurationMs={announcementMarqueeDurationMs}
             stickyTopOffset={cmsToolbarOffset}
+          />
+          <GlobalHeader
+            header={activeHeader}
+            siteLogo={siteSettings.logo}
+            siteName={siteSettings.siteName}
+            stickyTopOffset={headerTopOffset}
           />
           <main data-site-main="true">{children}</main>
         </div>

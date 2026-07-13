@@ -272,11 +272,23 @@ const collectionSources: CollectionUsageSource[] = [
           reference: createCollectionReference({
             doc,
             documentLabel,
-            fieldPath: `layout[${blockIndex}].customLogo`,
+            fieldPath: `layout[${blockIndex}].customLogoLight`,
             slug: 'headers',
           }),
           references,
-          value: block.customLogo as RelationshipValue,
+          value: block.customLogoLight as RelationshipValue,
+        })
+
+        pushIfMatched({
+          mediaID,
+          reference: createCollectionReference({
+            doc,
+            documentLabel,
+            fieldPath: `layout[${blockIndex}].customLogoDark`,
+            slug: 'headers',
+          }),
+          references,
+          value: block.customLogoDark as RelationshipValue,
         })
       })
 

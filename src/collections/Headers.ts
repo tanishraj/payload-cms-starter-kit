@@ -5,6 +5,7 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { HeaderNavbar12Block } from '@/blocks/HeaderNavbar12/config'
 import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 
 export const Headers: CollectionConfig = {
@@ -51,5 +52,10 @@ export const Headers: CollectionConfig = {
     slugField({
       useAsSlug: 'title',
     }),
+    {
+      name: 'layout',
+      type: 'blocks',
+      blocks: [HeaderNavbar12Block],
+    },
   ],
 }
