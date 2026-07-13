@@ -22,9 +22,9 @@ const navListGapClasses = {
 } as const
 
 const triggerContainerClasses = {
-  compact: 'h-8 rounded-full px-3 pr-2.5',
-  default: 'h-9 rounded-full px-3.5 pr-3',
-  large: 'h-10 rounded-full px-4 pr-3.5',
+  compact: 'h-8 px-3',
+  default: 'h-9 px-3.5',
+  large: 'h-10 px-4',
 } as const
 
 const triggerLinkClasses = {
@@ -40,9 +40,9 @@ const dropdownContentClasses = {
 } as const
 
 const childRowClasses = {
-  compact: 'h-8 rounded-full px-3 py-0 text-sm font-normal hover:bg-muted/80 focus:bg-muted/80',
-  default: 'h-9 rounded-full px-3.5 py-0 text-sm font-normal hover:bg-muted/80 focus:bg-muted/80',
-  large: 'h-10 rounded-full px-4 py-0 text-base font-normal hover:bg-muted/80 focus:bg-muted/80',
+  compact: 'h-8 px-3 py-0 text-sm font-normal hover:bg-muted/80 focus:bg-muted/80',
+  default: 'h-9 px-3.5 py-0 text-sm font-normal hover:bg-muted/80 focus:bg-muted/80',
+  large: 'h-10 px-4 py-0 text-base font-normal hover:bg-muted/80 focus:bg-muted/80',
 } as const
 
 export function HeaderNavMenu({ menuItems, size }: HeaderNavMenuProps) {

@@ -20,14 +20,11 @@ type HeaderMobileMenuProps = {
   menuItems: ResolvedHeaderMenuItem[]
 }
 
-const topLevelLinkClasses =
-  'inline-flex min-h-9 items-center rounded-xl px-2 text-sm font-medium text-foreground transition-colors hover:bg-muted'
+const topLevelLinkClasses = 'min-h-9 w-full justify-start px-3'
 
-const childLinkClasses =
-  'inline-flex min-h-7 items-center rounded-xl px-0 text-sm font-normal text-foreground'
+const childLinkClasses = 'h-7 justify-start px-2 font-normal'
 
-const expandableRowClasses =
-  'inline-flex min-h-9 w-full items-center justify-between rounded-xl px-2 text-sm font-medium text-foreground transition-colors hover:bg-muted'
+const expandableRowClasses = 'min-h-9 w-full justify-between px-3'
 
 export function HeaderMobileMenu({ ctas, menuItems }: HeaderMobileMenuProps) {
   const [open, setOpen] = useState(false)
@@ -75,12 +72,13 @@ export function HeaderMobileMenu({ ctas, menuItems }: HeaderMobileMenuProps) {
                 return (
                   <li className="flex flex-col gap-1" key={`${item.label}-${item.href}-${index}`}>
                     {hasChildren ? (
-                      <button
+                      <Button
                         aria-expanded={isExpanded}
                         aria-label={`Toggle ${item.label} submenu`}
                         className={expandableRowClasses}
                         onClick={() => toggleExpanded(itemKey)}
                         type="button"
+                        variant="ghost"
                       >
                         <span className="truncate">{item.label}</span>
                         <ChevronDown
@@ -89,16 +87,17 @@ export function HeaderMobileMenu({ ctas, menuItems }: HeaderMobileMenuProps) {
                             isExpanded ? 'rotate-180' : undefined,
                           )}
                         />
-                      </button>
+                      </Button>
                     ) : (
-                      <a
-                        className={cn(topLevelLinkClasses, 'min-w-0 flex-1')}
-                        href={item.href}
-                        rel={item.newTab ? 'noreferrer' : undefined}
-                        target={item.newTab ? '_blank' : undefined}
-                      >
-                        <span className="truncate">{item.label}</span>
-                      </a>
+                      <Button asChild className={cn(topLevelLinkClasses, 'min-w-0 flex-1')} variant="ghost">
+                        <a
+                          href={item.href}
+                          rel={item.newTab ? 'noreferrer' : undefined}
+                          target={item.newTab ? '_blank' : undefined}
+                        >
+                          <span className="truncate">{item.label}</span>
+                        </a>
+                      </Button>
                     )}
 
                     {hasChildren ? (
@@ -113,15 +112,21 @@ export function HeaderMobileMenu({ ctas, menuItems }: HeaderMobileMenuProps) {
                         <div className="min-h-0">
                           <div className="flex flex-col gap-0 border-l border-border pl-2">
                             {item.children?.map((child) => (
-                              <a
+                              <Button
+                                asChild
                                 className={childLinkClasses}
-                                href={child.href}
                                 key={`${child.label}-${child.href}`}
-                                rel={child.newTab ? 'noreferrer' : undefined}
-                                target={child.newTab ? '_blank' : undefined}
+                                size="sm"
+                                variant="ghost"
                               >
-                                <span className="truncate">{child.label}</span>
-                              </a>
+                                <a
+                                  href={child.href}
+                                  rel={child.newTab ? 'noreferrer' : undefined}
+                                  target={child.newTab ? '_blank' : undefined}
+                                >
+                                  <span className="truncate">{child.label}</span>
+                                </a>
+                              </Button>
                             ))}
                           </div>
                         </div>

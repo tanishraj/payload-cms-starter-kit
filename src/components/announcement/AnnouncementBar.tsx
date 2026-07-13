@@ -66,7 +66,7 @@ export function AnnouncementBar({
   return (
     <section
       aria-label="Announcement"
-      className="border-b border-primary/20 bg-primary text-primary-foreground"
+      className="border-b border-border bg-primary text-primary-foreground"
       style={style}
     >
       <div className="mx-auto flex min-h-10 w-full max-w-screen-2xl items-center gap-2 px-4 py-2 text-sm">

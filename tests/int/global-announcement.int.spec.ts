@@ -114,8 +114,9 @@ describe('global announcement settings', () => {
     expect(html).toContain('Important')
     expect(html).toContain('Maintenance')
     expect(html).toContain('Scheduled tonight at 10:00 PM.')
-    expect(html).toContain('bg-primary')
-    expect(html).toContain('text-primary-foreground')
+    expect(html).toContain('bg-accent')
+    expect(html).toContain('text-accent-foreground')
+    expect(html).toContain('border-border')
   })
 
   it('renders a linked description and does not require a title', () => {
