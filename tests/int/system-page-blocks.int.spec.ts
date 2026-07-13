@@ -88,11 +88,11 @@ describe('system page block schemas', () => {
     }
   })
 
-  it('registers blocks only for system pages', () => {
-    expect(collectBlockSlugs(Pages.fields)).toEqual([])
+  it('registers page, header, footer, and system blocks only on their intended collections', () => {
+    expect(collectBlockSlugs(Pages.fields)).toEqual(['announcement', 'heroInstitutional', 'splitFeature', 'statsStrip'])
     expect(collectBlockSlugs(Reviews.fields)).toEqual([])
-    expect(collectBlockSlugs(Headers.fields)).toEqual([])
-    expect(collectBlockSlugs(Footers.fields)).toEqual([])
+    expect(collectBlockSlugs(Headers.fields)).toEqual(['headerNavbar12'])
+    expect(collectBlockSlugs(Footers.fields)).toEqual(['footer56'])
     expect(collectBlockSlugs(SystemPages.fields)).toEqual([
       'system404',
       'systemMaintenance',

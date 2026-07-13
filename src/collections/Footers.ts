@@ -5,6 +5,7 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { Footer56Block } from '@/blocks/Footer56/config'
 import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 
 export const Footers: CollectionConfig = {
@@ -51,5 +52,10 @@ export const Footers: CollectionConfig = {
     slugField({
       useAsSlug: 'title',
     }),
+    {
+      name: 'layout',
+      type: 'blocks',
+      blocks: [Footer56Block],
+    },
   ],
 }

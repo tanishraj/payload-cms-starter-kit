@@ -147,6 +147,49 @@ describe('page block pipeline', () => {
     expect(buttonsField?.maxRows).toBe(2)
   })
 
+  it('defines the footer56 schema with branding, link groups, utilities, and background style', async () => {
+    const { Footer56Block } = await import('@/blocks/Footer56/config')
+
+    const logoModeField = Footer56Block.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'logoMode',
+    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+
+    const linkGroupsField = Footer56Block.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'linkGroups',
+    ) as { maxRows?: number; minRows?: number; type?: string } | undefined
+
+    const ctaButtonsField = Footer56Block.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'ctaButtons',
+    ) as { maxRows?: number; type?: string } | undefined
+
+    const socialLinksField = Footer56Block.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'socialLinks',
+    ) as { type?: string } | undefined
+
+    const backgroundStyleField = Footer56Block.fields.find(
+      (field) =>
+        typeof field === 'object' && field !== null && 'name' in field && field.name === 'backgroundStyle',
+    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+
+    expect(logoModeField?.type).toBe('select')
+    expect(logoModeField?.defaultValue).toBe('siteDefault')
+    expect(logoModeField?.options?.map((option) => option.value)).toEqual(['siteDefault', 'customLogo'])
+    expect(linkGroupsField?.type).toBe('array')
+    expect(linkGroupsField?.minRows).toBe(1)
+    expect(linkGroupsField?.maxRows).toBe(4)
+    expect(ctaButtonsField?.type).toBe('array')
+    expect(ctaButtonsField?.maxRows).toBe(2)
+    expect(socialLinksField?.type).toBe('array')
+    expect(backgroundStyleField?.type).toBe('select')
+    expect(backgroundStyleField?.defaultValue).toBe('inverse')
+    expect(backgroundStyleField?.options?.map((option) => option.value)).toEqual([
+      'default',
+      'muted',
+      'accent',
+      'inverse',
+    ])
+  })
+
   it('renders nothing for a normal page without layout blocks', () => {
     const result = PageContent({
       page: {
