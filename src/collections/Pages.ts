@@ -6,6 +6,7 @@ import {
 
 import { AnnouncementBlock } from '@/blocks/Announcement/config'
 import { HeroInstitutionalBlock } from '@/blocks/HeroInstitutional/config'
+import { SplitFeatureBlock } from '@/blocks/SplitFeature/config'
 import type { Page } from '@/payload-types'
 import {
   allowPublicReadOrCapability,
@@ -196,10 +197,11 @@ export const Pages: CollectionConfig = {
               name: 'layout',
               label: 'Layout',
               type: 'blocks',
-              blocks: [AnnouncementBlock, HeroInstitutionalBlock],
+              blocks: [AnnouncementBlock, HeroInstitutionalBlock, SplitFeatureBlock],
               required: false,
               admin: {
                 description: 'Compose the page using reusable content blocks.',
+                initCollapsed: true,
               },
             },
           ],

@@ -2,6 +2,7 @@ import type { Page } from '@/payload-types'
 
 import { AnnouncementBlockComponent } from './Announcement/Component'
 import { HeroInstitutionalBlockComponent } from './HeroInstitutional/Component'
+import { SplitFeatureBlockComponent } from './SplitFeature/Component'
 
 export type PageBlock = NonNullable<Page['layout']>[number]
 
@@ -24,6 +25,13 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
           case 'heroInstitutional':
             return (
               <HeroInstitutionalBlockComponent
+                key={block.id ?? `${block.blockType}-${index}`}
+                {...block}
+              />
+            )
+          case 'splitFeature':
+            return (
+              <SplitFeatureBlockComponent
                 key={block.id ?? `${block.blockType}-${index}`}
                 {...block}
               />

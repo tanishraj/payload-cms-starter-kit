@@ -170,7 +170,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       ? ({ colorScheme: 'light dark' } as React.CSSProperties)
       : ({ colorScheme } as React.CSSProperties)
   const cmsToolbarOffset = currentUser ? '3rem' : '0px'
-  const headerTopOffset = `calc(${cmsToolbarOffset} + ${announcementItems?.length ? '3rem' : '0px'})`
+  const headerTopOffset = `calc(${cmsToolbarOffset} + ${announcementItems?.length ? '2.5rem' : '0px'})`
   const contentShellStyle = { paddingTop: cmsToolbarOffset } as React.CSSProperties
 
   return (

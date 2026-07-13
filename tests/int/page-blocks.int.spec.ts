@@ -25,6 +25,7 @@ describe('page block pipeline', () => {
     expect(layoutField?.blocks?.map((block) => block.slug)).toEqual([
       'announcement',
       'heroInstitutional',
+      'splitFeature',
     ])
   })
 
@@ -215,5 +216,96 @@ describe('page block pipeline', () => {
     expect(html).toContain('Practice begins before the clinic.')
     expect(html).toContain('Admissions')
     expect(html).toContain('href="/apply"')
+  })
+
+  it('defines the splitFeature schema with image, layout, and CTA mode fields', async () => {
+    const { SplitFeatureBlock } = await import('@/blocks/SplitFeature/config')
+
+    const imageField = SplitFeatureBlock.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'image',
+    ) as { relationTo?: string; required?: boolean; type?: string } | undefined
+
+    const titleField = SplitFeatureBlock.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'title',
+    ) as { required?: boolean; type?: string } | undefined
+
+    const layoutModeField = SplitFeatureBlock.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'layoutMode',
+    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+
+    const mediaPositionField = SplitFeatureBlock.fields.find(
+      (field) =>
+        typeof field === 'object' && field !== null && 'name' in field && field.name === 'mediaPosition',
+    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+
+    const backgroundStyleField = SplitFeatureBlock.fields.find(
+      (field) =>
+        typeof field === 'object' && field !== null && 'name' in field && field.name === 'backgroundStyle',
+    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+
+    const ctaModeField = SplitFeatureBlock.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'ctaMode',
+    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+
+    const buttonsField = SplitFeatureBlock.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'buttons',
+    ) as { maxRows?: number; type?: string } | undefined
+
+    expect(imageField?.type).toBe('upload')
+    expect(imageField?.relationTo).toBe('media')
+    expect(imageField?.required).not.toBe(true)
+    expect(titleField?.type).toBe('text')
+    expect(titleField?.required).toBe(true)
+    expect(layoutModeField?.type).toBe('select')
+    expect(layoutModeField?.defaultValue).toBe('split')
+    expect(layoutModeField?.options?.map((option) => option.value)).toEqual(['split', 'contentOnly'])
+    expect(mediaPositionField?.type).toBe('select')
+    expect(mediaPositionField?.defaultValue).toBe('left')
+    expect(mediaPositionField?.options?.map((option) => option.value)).toEqual(['left', 'right'])
+    expect(backgroundStyleField?.type).toBe('select')
+    expect(backgroundStyleField?.defaultValue).toBe('plain')
+    expect(backgroundStyleField?.options?.map((option) => option.value)).toEqual(['plain', 'muted'])
+    expect(ctaModeField?.type).toBe('select')
+    expect(ctaModeField?.defaultValue).toBe('link')
+    expect(ctaModeField?.options?.map((option) => option.value)).toEqual(['link', 'buttons'])
+    expect(buttonsField?.type).toBe('array')
+    expect(buttonsField?.maxRows).toBe(2)
+  })
+
+  it('renders a splitFeature page block through PageContent', () => {
+    const result = PageContent({
+      page: {
+        id: 'page-split-1',
+        layout: [
+          {
+            backgroundStyle: 'muted',
+            blockType: 'splitFeature',
+            ctaMode: 'link',
+            description: 'Choose from MD, MD-PhD, and specialized tracks.',
+            eyebrow: 'Programs',
+            image: {
+              alt: 'Students in clinic',
+              url: '/media/programs.jpg',
+            },
+            layoutMode: 'split',
+            linkLabel: 'See all programs',
+            linkType: 'custom',
+            mediaPosition: 'right',
+            title: 'Four years. Six pathways. One physician.',
+            url: '/programs',
+          },
+        ],
+        slug: 'programs',
+        title: 'Programs',
+      } as never,
+    })
+
+    const html = renderToStaticMarkup(result)
+
+    expect(html).toContain('data-split-feature-position="right"')
+    expect(html).toContain('data-split-feature-layout="split"')
+    expect(html).toContain('data-split-feature-background="muted"')
+    expect(html).toContain('href="/programs"')
+    expect(html).toContain('See all programs')
   })
 })

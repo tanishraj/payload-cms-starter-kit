@@ -174,7 +174,7 @@ export interface Page {
   /**
    * Compose the page using reusable content blocks.
    */
-  layout?: (AnnouncementBlock | HeroInstitutionalBlock)[] | null;
+  layout?: (AnnouncementBlock | HeroInstitutionalBlock | SplitFeatureBlock)[] | null;
   metaTitle?: string | null;
   metaDescription?: string | null;
   /**
@@ -350,6 +350,39 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SplitFeatureBlock".
+ */
+export interface SplitFeatureBlock {
+  image?: (string | null) | Media;
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  layoutMode: 'split' | 'contentOnly';
+  mediaPosition?: ('left' | 'right') | null;
+  backgroundStyle: 'plain' | 'muted';
+  ctaMode: 'link' | 'buttons';
+  linkLabel?: string | null;
+  linkType?: ('page' | 'custom') | null;
+  page?: (string | null) | Page;
+  url?: string | null;
+  openInNewTab?: boolean | null;
+  buttons?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'link';
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'splitFeature';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1362,6 +1395,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         announcement?: T | AnnouncementBlockSelect<T>;
         heroInstitutional?: T | HeroInstitutionalBlockSelect<T>;
+        splitFeature?: T | SplitFeatureBlockSelect<T>;
       };
   metaTitle?: T;
   metaDescription?: T;
@@ -1419,6 +1453,38 @@ export interface HeroInstitutionalBlockSelect<T extends boolean = true> {
   overlayStyle?: T;
   contentWidth?: T;
   height?: T;
+  buttons?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SplitFeatureBlock_select".
+ */
+export interface SplitFeatureBlockSelect<T extends boolean = true> {
+  image?: T;
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  layoutMode?: T;
+  mediaPosition?: T;
+  backgroundStyle?: T;
+  ctaMode?: T;
+  linkLabel?: T;
+  linkType?: T;
+  page?: T;
+  url?: T;
+  openInNewTab?: T;
   buttons?:
     | T
     | {

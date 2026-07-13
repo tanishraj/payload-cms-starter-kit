@@ -64,11 +64,7 @@ export function AnnouncementBar({
     : undefined
 
   return (
-    <section
-      aria-label="Announcement"
-      className="border-b border-border bg-primary text-primary-foreground"
-      style={style}
-    >
+    <section aria-label="Announcement" className="bg-primary text-primary-foreground" style={style}>
       <div className="mx-auto flex min-h-10 w-full max-w-screen-2xl items-center gap-2 px-4 py-2 text-sm">
         <Megaphone
           aria-hidden="true"
@@ -77,10 +73,7 @@ export function AnnouncementBar({
         <span className="hidden shrink-0 font-mono font-bold uppercase tracking-wider md:inline">
           {resolvedLabel}
         </span>
-        <span
-          aria-hidden="true"
-          className="hidden shrink-0 text-primary-foreground/70 md:inline"
-        >
+        <span aria-hidden="true" className="hidden shrink-0 text-primary-foreground/70 md:inline">
           |
         </span>
         {resolvedDisplayMode === 'marquee' ? (

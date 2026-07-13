@@ -35,10 +35,15 @@ const ctaButtonSizes = {
 export function HeaderNavbar({ ctas, logo, menuItems, navAlignment, size }: HeaderNavbarProps) {
   return (
     <header
-      className="border-b bg-background/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/85"
+      className="bg-background/80 shadow-sm backdrop-blur-lg supports-[backdrop-filter]:bg-background/70"
       data-header-navbar="true"
     >
-      <div className={cn('mx-auto flex w-full max-w-screen-2xl items-center gap-4 px-4', sizeClasses[size])}>
+      <div
+        className={cn(
+          'mx-auto flex w-full max-w-screen-2xl items-center gap-4 px-4',
+          sizeClasses[size],
+        )}
+      >
         <div className="flex shrink-0 items-center self-stretch">{logo}</div>
 
         <div className={cn('hidden min-w-0 flex-1 lg:flex', navAlignmentClasses[navAlignment])}>
@@ -47,8 +52,17 @@ export function HeaderNavbar({ ctas, logo, menuItems, navAlignment, size }: Head
 
         <div className="ml-auto hidden items-center gap-2 lg:flex">
           {ctas.map((item) => (
-            <Button asChild key={`${item.label}-${item.href}`} size={ctaButtonSizes[size]} variant={item.variant ?? 'default'}>
-              <a href={item.href} rel={item.newTab ? 'noreferrer' : undefined} target={item.newTab ? '_blank' : undefined}>
+            <Button
+              asChild
+              key={`${item.label}-${item.href}`}
+              size={ctaButtonSizes[size]}
+              variant={item.variant ?? 'default'}
+            >
+              <a
+                href={item.href}
+                rel={item.newTab ? 'noreferrer' : undefined}
+                target={item.newTab ? '_blank' : undefined}
+              >
                 {item.label}
               </a>
             </Button>
