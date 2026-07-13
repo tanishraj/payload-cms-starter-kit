@@ -25,9 +25,9 @@ export default async function AdminPreviewPage({ params }: PageProps) {
     notFound()
   }
 
-  const pageID = Number(id)
+  const pageID = id?.trim()
 
-  if (!Number.isInteger(pageID) || pageID <= 0) {
+  if (!pageID) {
     notFound()
   }
 

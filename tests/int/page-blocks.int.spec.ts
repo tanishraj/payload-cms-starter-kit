@@ -22,7 +22,83 @@ describe('page block pipeline', () => {
     const layoutField = getLayoutField()
 
     expect(layoutField?.type).toBe('blocks')
-    expect(layoutField?.blocks?.map((block) => block.slug)).toEqual(['announcement'])
+    expect(layoutField?.blocks?.map((block) => block.slug)).toEqual([
+      'announcement',
+      'heroInstitutional',
+    ])
+  })
+
+  it('defines the heroInstitutional schema with image, overlay, alignment, and CTA fields', async () => {
+    const { HeroInstitutionalBlock } = await import('@/blocks/HeroInstitutional/config')
+
+    const backgroundImageField = HeroInstitutionalBlock.fields.find(
+      (field) =>
+        typeof field === 'object' && field !== null && 'name' in field && field.name === 'backgroundImage',
+    ) as { relationTo?: string; required?: boolean; type?: string } | undefined
+
+    const titleField = HeroInstitutionalBlock.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'title',
+    ) as { required?: boolean; type?: string } | undefined
+
+    const overlayStyleField = HeroInstitutionalBlock.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'overlayStyle',
+    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+
+    const horizontalAlignmentField = HeroInstitutionalBlock.fields.find(
+      (field) =>
+        typeof field === 'object' &&
+        field !== null &&
+        'name' in field &&
+        field.name === 'horizontalAlignment',
+    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+
+    const verticalAlignmentField = HeroInstitutionalBlock.fields.find(
+      (field) =>
+        typeof field === 'object' && field !== null && 'name' in field && field.name === 'verticalAlignment',
+    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+
+    const buttonsField = HeroInstitutionalBlock.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'buttons',
+    ) as { maxRows?: number; type?: string } | undefined
+
+    expect(backgroundImageField?.type).toBe('upload')
+    expect(backgroundImageField?.relationTo).toBe('media')
+    expect(backgroundImageField?.required).toBe(true)
+    expect(titleField?.type).toBe('text')
+    expect(titleField?.required).toBe(true)
+    expect(overlayStyleField?.type).toBe('select')
+    expect(overlayStyleField?.defaultValue).toBe('dark')
+    expect(overlayStyleField?.options?.map((option) => option.value)).toEqual(['light', 'dark', 'darker'])
+    expect(horizontalAlignmentField?.options?.map((option) => option.value)).toEqual([
+      'left',
+      'center',
+      'right',
+    ])
+    expect(verticalAlignmentField?.options?.map((option) => option.value)).toEqual([
+      'top',
+      'center',
+      'bottom',
+    ])
+    const heightField = HeroInstitutionalBlock.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'height',
+    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+
+    const contentWidthField = HeroInstitutionalBlock.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'contentWidth',
+    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+
+    expect(contentWidthField?.type).toBe('select')
+    expect(contentWidthField?.defaultValue).toBe('default')
+    expect(contentWidthField?.options?.map((option) => option.value)).toEqual(['narrow', 'default', 'wide'])
+    expect(heightField?.type).toBe('select')
+    expect(heightField?.defaultValue).toBe('default')
+    expect(heightField?.options?.map((option) => option.value)).toEqual([
+      'compact',
+      'default',
+      'immersive',
+    ])
+    expect(buttonsField?.type).toBe('array')
+    expect(buttonsField?.maxRows).toBe(2)
   })
 
   it('renders nothing for a normal page without layout blocks', () => {
@@ -106,5 +182,38 @@ describe('page block pipeline', () => {
     expect(html).toContain('Urgent Notice')
     expect(html).toContain('Scheduled tonight at 10:00 PM.')
     expect(html).toContain('href="/maintenance"')
+  })
+
+  it('renders a heroInstitutional page block through PageContent', () => {
+    const result = PageContent({
+      page: {
+        id: 'page-hero-1',
+        layout: [
+          {
+            backgroundImage: {
+              alt: 'Main hall',
+              url: '/media/main-hall.jpg',
+            },
+            blockType: 'heroInstitutional',
+            buttons: [{ label: 'Apply now', linkType: 'custom', url: '/apply', variant: 'default' }],
+            description: 'Train for the work that follows.',
+            eyebrow: 'Admissions',
+            height: 'default',
+            horizontalAlignment: 'left',
+            overlayStyle: 'dark',
+            title: 'Practice begins before the clinic.',
+            verticalAlignment: 'center',
+          },
+        ],
+        slug: 'admissions',
+        title: 'Admissions',
+      } as never,
+    })
+
+    const html = renderToStaticMarkup(result)
+
+    expect(html).toContain('Practice begins before the clinic.')
+    expect(html).toContain('Admissions')
+    expect(html).toContain('href="/apply"')
   })
 })

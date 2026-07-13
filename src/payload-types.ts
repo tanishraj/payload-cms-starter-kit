@@ -174,7 +174,7 @@ export interface Page {
   /**
    * Compose the page using reusable content blocks.
    */
-  layout?: AnnouncementBlock[] | null;
+  layout?: (AnnouncementBlock | HeroInstitutionalBlock)[] | null;
   metaTitle?: string | null;
   metaDescription?: string | null;
   /**
@@ -236,6 +236,35 @@ export interface AnnouncementBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'announcement';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroInstitutionalBlock".
+ */
+export interface HeroInstitutionalBlock {
+  backgroundImage: string | Media;
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  horizontalAlignment: 'left' | 'center' | 'right';
+  verticalAlignment: 'top' | 'center' | 'bottom';
+  overlayStyle: 'light' | 'dark' | 'darker';
+  contentWidth: 'narrow' | 'default' | 'wide';
+  height: 'compact' | 'default' | 'immersive';
+  buttons?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'link';
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroInstitutional';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1332,6 +1361,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         announcement?: T | AnnouncementBlockSelect<T>;
+        heroInstitutional?: T | HeroInstitutionalBlockSelect<T>;
       };
   metaTitle?: T;
   metaDescription?: T;
@@ -1370,6 +1400,34 @@ export interface AnnouncementBlockSelect<T extends boolean = true> {
         title?: T;
         description?: T;
         url?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroInstitutionalBlock_select".
+ */
+export interface HeroInstitutionalBlockSelect<T extends boolean = true> {
+  backgroundImage?: T;
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  horizontalAlignment?: T;
+  verticalAlignment?: T;
+  overlayStyle?: T;
+  contentWidth?: T;
+  height?: T;
+  buttons?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
         id?: T;
       };
   id?: T;

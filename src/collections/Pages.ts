@@ -5,6 +5,7 @@ import {
 } from 'payload'
 
 import { AnnouncementBlock } from '@/blocks/Announcement/config'
+import { HeroInstitutionalBlock } from '@/blocks/HeroInstitutional/config'
 import type { Page } from '@/payload-types'
 import {
   allowPublicReadOrCapability,
@@ -195,7 +196,7 @@ export const Pages: CollectionConfig = {
               name: 'layout',
               label: 'Layout',
               type: 'blocks',
-              blocks: [AnnouncementBlock],
+              blocks: [AnnouncementBlock, HeroInstitutionalBlock],
               required: false,
               admin: {
                 description: 'Compose the page using reusable content blocks.',

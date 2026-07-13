@@ -1,5 +1,6 @@
 'use client'
 
+import { renderPageBlocks } from '@/blocks/renderPageBlocks'
 import type { Page } from '@/payload-types'
 import { RefreshRouteOnSave, useLivePreview } from '@payloadcms/live-preview-react'
 import { useRouter } from 'next/navigation'
@@ -12,7 +13,7 @@ type Props = {
 
 export function PageLivePreview({ initialData }: Props) {
   const router = useRouter()
-  useLivePreview<Page>({
+  const { data } = useLivePreview<Page>({
     depth: 2,
     initialData,
     serverURL,
@@ -20,6 +21,7 @@ export function PageLivePreview({ initialData }: Props) {
 
   return (
     <>
+      {renderPageBlocks(data.layout)}
       <RefreshRouteOnSave
         depth={2}
         refresh={() => router.refresh()}
