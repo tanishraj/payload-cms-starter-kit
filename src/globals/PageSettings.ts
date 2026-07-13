@@ -59,15 +59,42 @@ const validatePublishedFrontPage: RelationshipFieldSingleValidation = async (val
 
 const validateAnnouncementInterval = (
   value: unknown,
-  { siblingData }: { siblingData?: { announcementEnabled?: boolean | null } },
+  {
+    siblingData,
+  }: {
+    siblingData?: {
+      announcementDisplayMode?: 'horizontal' | 'marquee' | 'vertical' | null
+      announcementEnabled?: boolean | null
+    }
+  },
 ) => {
-  if (!siblingData?.announcementEnabled) {
+  if (!siblingData?.announcementEnabled || siblingData?.announcementDisplayMode === 'marquee') {
     return true
   }
 
   return typeof value === 'number' && Number.isFinite(value) && value >= 2000
     ? true
     : 'Announcement interval must be at least 2000 milliseconds.'
+}
+
+const validateAnnouncementMarqueeDuration = (
+  value: unknown,
+  {
+    siblingData,
+  }: {
+    siblingData?: {
+      announcementDisplayMode?: 'horizontal' | 'marquee' | 'vertical' | null
+      announcementEnabled?: boolean | null
+    }
+  },
+) => {
+  if (!siblingData?.announcementEnabled || siblingData?.announcementDisplayMode !== 'marquee') {
+    return true
+  }
+
+  return typeof value === 'number' && Number.isFinite(value) && value >= 8000
+    ? true
+    : 'Marquee duration must be at least 8000 milliseconds.'
 }
 
 const validateAnnouncementItems = (
@@ -180,15 +207,60 @@ export const PageSettings: GlobalConfig = {
               defaultValue: false,
             },
             {
+              name: 'announcementLabel',
+              label: 'Announcement Label',
+              type: 'text',
+              admin: {
+                condition: (data) => Boolean(data?.announcementEnabled),
+              },
+            },
+            {
+              name: 'announcementDisplayMode',
+              label: 'Animation Mode',
+              type: 'select',
+              defaultValue: 'vertical',
+              options: [
+                {
+                  label: 'Vertical Slider',
+                  value: 'vertical',
+                },
+                {
+                  label: 'Horizontal Slider',
+                  value: 'horizontal',
+                },
+                {
+                  label: 'Marquee',
+                  value: 'marquee',
+                },
+              ],
+              admin: {
+                condition: (data) => Boolean(data?.announcementEnabled),
+              },
+              required: true,
+            },
+            {
               name: 'announcementIntervalMs',
               label: 'Announcement Interval (ms)',
               type: 'number',
               defaultValue: 4000,
               admin: {
-                condition: (data) => Boolean(data?.announcementEnabled),
+                condition: (data) =>
+                  Boolean(data?.announcementEnabled) && data?.announcementDisplayMode !== 'marquee',
                 description: 'Auto-advance interval for rotating announcement items. Minimum 2000ms.',
               },
               validate: validateAnnouncementInterval,
+            },
+            {
+              name: 'announcementMarqueeDurationMs',
+              label: 'Marquee Duration (ms)',
+              type: 'number',
+              defaultValue: 18000,
+              admin: {
+                condition: (data) =>
+                  Boolean(data?.announcementEnabled) && data?.announcementDisplayMode === 'marquee',
+                description: 'Lower values scroll faster.',
+              },
+              validate: validateAnnouncementMarqueeDuration,
             },
             {
               name: 'announcementItems',

@@ -37,16 +37,38 @@ describe('page block pipeline', () => {
     expect(result).toBeNull()
   })
 
-  it('defines the page announcement block schema with interval and rotating items', () => {
+  it('defines the page announcement block schema with mode, timing, and rotating items', () => {
+    const displayModeField = AnnouncementBlock.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'displayMode',
+    ) as { defaultValue?: string; label?: string; options?: Array<{ value: string }>; type?: string } | undefined
+    const labelField = AnnouncementBlock.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'label',
+    ) as { label?: string; type?: string } | undefined
     const intervalField = AnnouncementBlock.fields.find(
       (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'intervalMs',
+    ) as { defaultValue?: number; type?: string } | undefined
+    const marqueeDurationField = AnnouncementBlock.fields.find(
+      (field) =>
+        typeof field === 'object' && field !== null && 'name' in field && field.name === 'marqueeDurationMs',
     ) as { defaultValue?: number; type?: string } | undefined
     const itemsField = AnnouncementBlock.fields.find(
       (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'items',
     ) as { minRows?: number; type?: string } | undefined
 
+    expect(displayModeField?.type).toBe('select')
+    expect(displayModeField?.label).toBe('Animation Mode')
+    expect(displayModeField?.defaultValue).toBe('vertical')
+    expect(displayModeField?.options?.map((option) => option.value)).toEqual([
+      'vertical',
+      'horizontal',
+      'marquee',
+    ])
+    expect(labelField?.type).toBe('text')
+    expect(labelField?.label).toBe('Announcement Label')
     expect(intervalField?.type).toBe('number')
     expect(intervalField?.defaultValue).toBe(4000)
+    expect(marqueeDurationField?.type).toBe('number')
+    expect(marqueeDurationField?.defaultValue).toBe(18000)
     expect(itemsField?.type).toBe('array')
     expect(itemsField?.minRows).toBe(1)
   })
@@ -60,6 +82,7 @@ describe('page block pipeline', () => {
             blockType: 'announcement',
             intervalMs: 4000,
             id: 'block-1',
+            label: 'Urgent Notice',
             items: [
               {
                 description: 'Scheduled tonight at 10:00 PM.',
@@ -80,6 +103,7 @@ describe('page block pipeline', () => {
     const html = renderToStaticMarkup(result)
 
     expect(html).toContain('lucide-megaphone')
+    expect(html).toContain('Urgent Notice')
     expect(html).toContain('Scheduled tonight at 10:00 PM.')
     expect(html).toContain('href="/maintenance"')
   })

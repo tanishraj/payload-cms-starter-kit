@@ -220,7 +220,13 @@ export interface Page {
  * via the `definition` "AnnouncementBlock".
  */
 export interface AnnouncementBlock {
-  intervalMs: number;
+  displayMode: 'vertical' | 'horizontal' | 'marquee';
+  label?: string | null;
+  intervalMs?: number | null;
+  /**
+   * Lower values scroll faster.
+   */
+  marqueeDurationMs?: number | null;
   items: {
     title?: string | null;
     description: string;
@@ -1303,7 +1309,10 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "AnnouncementBlock_select".
  */
 export interface AnnouncementBlockSelect<T extends boolean = true> {
+  displayMode?: T;
+  label?: T;
   intervalMs?: T;
+  marqueeDurationMs?: T;
   items?:
     | T
     | {
@@ -1870,10 +1879,16 @@ export interface PageSetting {
    */
   activeFooter?: (string | null) | Footer;
   announcementEnabled?: boolean | null;
+  announcementLabel?: string | null;
+  announcementDisplayMode?: ('vertical' | 'horizontal' | 'marquee') | null;
   /**
    * Auto-advance interval for rotating announcement items. Minimum 2000ms.
    */
   announcementIntervalMs?: number | null;
+  /**
+   * Lower values scroll faster.
+   */
+  announcementMarqueeDurationMs?: number | null;
   /**
    * Displayed as a thin rotating site-wide banner above all frontend pages.
    */
@@ -1996,7 +2011,10 @@ export interface PageSettingsSelect<T extends boolean = true> {
   activeHeader?: T;
   activeFooter?: T;
   announcementEnabled?: T;
+  announcementLabel?: T;
+  announcementDisplayMode?: T;
   announcementIntervalMs?: T;
+  announcementMarqueeDurationMs?: T;
   announcementItems?:
     | T
     | {

@@ -94,4 +94,27 @@ describe('rotating announcement content', () => {
     expect(screen.getByText('Second title')).toBeTruthy()
     expect(screen.getByText('Second description')).toBeTruthy()
   })
+
+  it('supports horizontal transitions with the same one-at-a-time rotation model', () => {
+    render(
+      createElement(RotatingAnnouncementContent, {
+        intervalMs: 2000,
+        items: [
+          { description: 'First horizontal description', title: 'First horizontal title' },
+          { description: 'Second horizontal description', title: 'Second horizontal title' },
+        ],
+        mode: 'horizontal',
+      }),
+    )
+
+    expect(screen.getByText('First horizontal title')).toBeTruthy()
+
+    act(() => {
+      vi.advanceTimersByTime(2325)
+    })
+
+    expect(screen.getByText('Second horizontal title')).toBeTruthy()
+    expect(screen.getByText('Second horizontal description')).toBeTruthy()
+    expect(screen.queryByText('First horizontal title')).toBeNull()
+  })
 })

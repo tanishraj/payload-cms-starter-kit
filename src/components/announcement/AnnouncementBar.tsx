@@ -1,5 +1,6 @@
 import { Megaphone } from 'lucide-react'
 
+import { MarqueeAnnouncementContent } from '@/components/announcement/MarqueeAnnouncementContent'
 import { RotatingAnnouncementContent } from '@/components/announcement/RotatingAnnouncementContent'
 
 export type AnnouncementItemInput = {
@@ -8,9 +9,14 @@ export type AnnouncementItemInput = {
   url?: string | null
 }
 
+export type AnnouncementDisplayMode = 'horizontal' | 'marquee' | 'vertical'
+
 type AnnouncementBarProps = {
+  displayMode?: AnnouncementDisplayMode | null
   intervalMs?: number | null
   items?: AnnouncementItemInput[] | null
+  label?: string | null
+  marqueeDurationMs?: number | null
   sticky?: boolean
   topOffset?: string
 }
@@ -33,12 +39,17 @@ const normalizeAnnouncementItems = (items?: AnnouncementItemInput[] | null) =>
   })
 
 export function AnnouncementBar({
+  displayMode = 'vertical',
   intervalMs,
   items,
+  label,
+  marqueeDurationMs,
   sticky = false,
   topOffset = '0px',
 }: AnnouncementBarProps) {
   const normalizedItems = normalizeAnnouncementItems(items)
+  const resolvedDisplayMode = displayMode ?? 'vertical'
+  const resolvedLabel = label?.trim() || 'Announcement'
 
   if (normalizedItems.length === 0) {
     return null
@@ -64,7 +75,7 @@ export function AnnouncementBar({
           className="size-4 shrink-0 text-primary-foreground/80 md:hidden"
         />
         <span className="hidden shrink-0 font-mono font-bold uppercase tracking-wider md:inline">
-          Announcement
+          {resolvedLabel}
         </span>
         <span
           aria-hidden="true"
@@ -72,7 +83,15 @@ export function AnnouncementBar({
         >
           |
         </span>
-        <RotatingAnnouncementContent intervalMs={intervalMs} items={normalizedItems} />
+        {resolvedDisplayMode === 'marquee' ? (
+          <MarqueeAnnouncementContent durationMs={marqueeDurationMs} items={normalizedItems} />
+        ) : (
+          <RotatingAnnouncementContent
+            intervalMs={intervalMs}
+            items={normalizedItems}
+            mode={resolvedDisplayMode}
+          />
+        )}
       </div>
     </section>
   )

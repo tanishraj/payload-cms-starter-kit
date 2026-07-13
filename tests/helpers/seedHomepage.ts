@@ -10,6 +10,7 @@ const homepagePageData = {
   layout: [
     {
       blockType: 'announcement' as const,
+      displayMode: 'vertical' as const,
       intervalMs: 4000,
       items: [
         {

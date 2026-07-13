@@ -12,12 +12,16 @@ type RotatingAnnouncementItem = {
   url?: string
 }
 
+export type RotatingAnnouncementMode = 'horizontal' | 'vertical'
+
 export function RotatingAnnouncementContent({
   intervalMs,
   items,
+  mode = 'vertical',
 }: {
   intervalMs?: number | null
   items: RotatingAnnouncementItem[]
+  mode?: RotatingAnnouncementMode
 }) {
   const sanitizedInterval = useMemo(
     () => Math.max(intervalMs ?? DEFAULT_INTERVAL_MS, MIN_INTERVAL_MS),
@@ -69,6 +73,14 @@ export function RotatingAnnouncementContent({
   const safePreviousIndex = previousIndex != null ? previousIndex % items.length : null
   const currentItem = items[safeCurrentIndex]
   const previousItem = safePreviousIndex != null ? items[safePreviousIndex] : null
+  const exitAnimationClass =
+    mode === 'horizontal'
+      ? 'animate-out fade-out slide-out-to-left-2'
+      : 'animate-out fade-out slide-out-to-top-2'
+  const enterAnimationClass =
+    mode === 'horizontal'
+      ? 'animate-in fade-in slide-in-from-right-2'
+      : 'animate-in fade-in slide-in-from-bottom-2'
 
   if (!previousItem) {
     return (
@@ -95,14 +107,14 @@ export function RotatingAnnouncementContent({
       </div>
       {previousItem ? (
         <div
-          className="animate-out fade-out slide-out-to-top-2 absolute inset-0"
+          className={`${exitAnimationClass} absolute inset-0`}
           style={{ animationDuration: `${TRANSITION_MS}ms` }}
         >
           <AnnouncementItem item={previousItem} />
         </div>
       ) : null}
       <div
-        className="animate-in fade-in slide-in-from-bottom-2 absolute inset-0"
+        className={`${enterAnimationClass} absolute inset-0`}
         style={previousItem ? { animationDuration: `${TRANSITION_MS}ms` } : undefined}
       >
         <AnnouncementItem item={currentItem} />

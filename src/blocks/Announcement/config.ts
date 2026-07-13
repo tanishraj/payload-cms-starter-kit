@@ -18,11 +18,52 @@ export const AnnouncementBlock: Block = {
   },
   fields: [
     {
+      name: 'displayMode',
+      label: 'Animation Mode',
+      type: 'select',
+      defaultValue: 'vertical',
+      options: [
+        {
+          label: 'Vertical Slider',
+          value: 'vertical',
+        },
+        {
+          label: 'Horizontal Slider',
+          value: 'horizontal',
+        },
+        {
+          label: 'Marquee',
+          value: 'marquee',
+        },
+      ],
+      required: true,
+    },
+    {
+      name: 'label',
+      label: 'Announcement Label',
+      type: 'text',
+    },
+    {
       name: 'intervalMs',
       label: 'Announcement Interval (ms)',
       type: 'number',
       defaultValue: 4000,
       min: 2000,
+      admin: {
+        condition: (_, siblingData) => siblingData?.displayMode !== 'marquee',
+      },
+      required: true,
+    },
+    {
+      name: 'marqueeDurationMs',
+      label: 'Marquee Duration (ms)',
+      type: 'number',
+      defaultValue: 18000,
+      min: 8000,
+      admin: {
+        condition: (_, siblingData) => siblingData?.displayMode === 'marquee',
+        description: 'Lower values scroll faster.',
+      },
       required: true,
     },
     {

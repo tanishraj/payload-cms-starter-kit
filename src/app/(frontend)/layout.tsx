@@ -108,8 +108,19 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const rawThemeColor = String(themeSettings.themeColor ?? 'default')
   const savedThemeColor = rawThemeColor === 'amber' ? 'sera' : rawThemeColor
   const themeColor = validThemeColors.has(savedThemeColor) ? savedThemeColor : 'default'
+  const announcementDisplayMode = pageSettings?.announcementEnabled
+    ? (pageSettings as {
+        announcementDisplayMode?: 'horizontal' | 'marquee' | 'vertical' | null
+      }).announcementDisplayMode
+    : null
   const announcementIntervalMs = pageSettings?.announcementEnabled
     ? (pageSettings as { announcementIntervalMs?: number | null }).announcementIntervalMs
+    : null
+  const announcementLabel = pageSettings?.announcementEnabled
+    ? (pageSettings as { announcementLabel?: string | null }).announcementLabel
+    : null
+  const announcementMarqueeDurationMs = pageSettings?.announcementEnabled
+    ? (pageSettings as { announcementMarqueeDurationMs?: number | null }).announcementMarqueeDurationMs
     : null
   const announcementItems = pageSettings?.announcementEnabled
     ? (pageSettings as {
@@ -139,8 +150,11 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         <AdminSessionBar user={currentUser} />
         <div style={contentShellStyle}>
           <GlobalAnnouncement
+            displayMode={announcementDisplayMode}
             intervalMs={announcementIntervalMs}
             items={announcementItems}
+            label={announcementLabel}
+            marqueeDurationMs={announcementMarqueeDurationMs}
             stickyTopOffset={cmsToolbarOffset}
           />
           <main data-site-main="true">{children}</main>

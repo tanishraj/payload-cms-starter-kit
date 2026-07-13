@@ -32,6 +32,20 @@ describe('global announcement settings', () => {
         'name' in field &&
         field.name === 'announcementEnabled',
     ) as { defaultValue?: boolean; type?: string } | undefined
+    const labelField = announcementTab?.fields.find(
+      (field) =>
+        typeof field === 'object' &&
+        field !== null &&
+        'name' in field &&
+        field.name === 'announcementLabel',
+    ) as { label?: string; type?: string } | undefined
+    const displayModeField = announcementTab?.fields.find(
+      (field) =>
+        typeof field === 'object' &&
+        field !== null &&
+        'name' in field &&
+        field.name === 'announcementDisplayMode',
+    ) as { defaultValue?: string; label?: string; options?: Array<{ value: string }>; type?: string } | undefined
     const intervalField = announcementTab?.fields.find(
       (field) =>
         typeof field === 'object' &&
@@ -39,6 +53,13 @@ describe('global announcement settings', () => {
         'name' in field &&
         field.name === 'announcementIntervalMs',
     ) as { defaultValue?: number; min?: number; type?: string } | undefined
+    const marqueeDurationField = announcementTab?.fields.find(
+      (field) =>
+        typeof field === 'object' &&
+        field !== null &&
+        'name' in field &&
+        field.name === 'announcementMarqueeDurationMs',
+    ) as { defaultValue?: number; type?: string } | undefined
     const itemsField = announcementTab?.fields.find(
       (field) =>
         typeof field === 'object' &&
@@ -49,9 +70,21 @@ describe('global announcement settings', () => {
 
     expect(enabledField?.type).toBe('checkbox')
     expect(enabledField?.defaultValue).toBe(false)
+    expect(labelField?.type).toBe('text')
+    expect(labelField?.label).toBe('Announcement Label')
+    expect(displayModeField?.type).toBe('select')
+    expect(displayModeField?.label).toBe('Animation Mode')
+    expect(displayModeField?.defaultValue).toBe('vertical')
+    expect(displayModeField?.options?.map((option) => option.value)).toEqual([
+      'vertical',
+      'horizontal',
+      'marquee',
+    ])
     expect(intervalField?.type).toBe('number')
     expect(intervalField?.defaultValue).toBe(4000)
     expect(intervalField?.min).toBeUndefined()
+    expect(marqueeDurationField?.type).toBe('number')
+    expect(marqueeDurationField?.defaultValue).toBe(18000)
     expect(itemsField?.type).toBe('array')
     expect(itemsField?.minRows).toBe(1)
   })
@@ -70,12 +103,15 @@ describe('global announcement settings', () => {
   it('renders the announcement icon, optional title, and item description', () => {
     const html = renderToStaticMarkup(
       createElement(GlobalAnnouncement, {
+        displayMode: 'horizontal',
         intervalMs: 4000,
         items: [{ title: 'Maintenance', description: 'Scheduled tonight at 10:00 PM.' }],
+        label: 'Important',
       }),
     )
 
     expect(html).toContain('lucide-megaphone')
+    expect(html).toContain('Important')
     expect(html).toContain('Maintenance')
     expect(html).toContain('Scheduled tonight at 10:00 PM.')
     expect(html).toContain('bg-primary')
@@ -114,10 +150,16 @@ describe('global announcement settings', () => {
     expect(layoutSource).toContain("import { GlobalAnnouncement } from '@/components/global/GlobalAnnouncement'")
     expect(layoutSource).toContain("slug: 'page-settings'")
     expect(layoutSource).toContain('<GlobalAnnouncement')
+    expect(layoutSource).toContain('const announcementDisplayMode = pageSettings?.announcementEnabled')
     expect(layoutSource).toContain('const announcementIntervalMs = pageSettings?.announcementEnabled')
+    expect(layoutSource).toContain('const announcementLabel = pageSettings?.announcementEnabled')
+    expect(layoutSource).toContain('const announcementMarqueeDurationMs = pageSettings?.announcementEnabled')
     expect(layoutSource).toContain('const announcementItems = pageSettings?.announcementEnabled')
+    expect(layoutSource).toContain('displayMode={announcementDisplayMode}')
     expect(layoutSource).toContain('intervalMs={announcementIntervalMs}')
     expect(layoutSource).toContain('items={announcementItems}')
+    expect(layoutSource).toContain('label={announcementLabel}')
+    expect(layoutSource).toContain('marqueeDurationMs={announcementMarqueeDurationMs}')
     expect(layoutSource).toContain('stickyTopOffset={cmsToolbarOffset}')
   })
 })
