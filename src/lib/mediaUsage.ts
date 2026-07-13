@@ -305,7 +305,7 @@ const collectionSources: CollectionUsageSource[] = [
       const layout = Array.isArray(doc.layout) ? doc.layout : []
 
       layout.forEach((block, blockIndex) => {
-        if (!block || typeof block !== 'object' || block === null || block.blockType !== 'footer2') {
+        if (!block || typeof block !== 'object' || block === null || block.blockType !== 'footer56') {
           return
         }
 
@@ -318,11 +318,23 @@ const collectionSources: CollectionUsageSource[] = [
           reference: createCollectionReference({
             doc,
             documentLabel,
-            fieldPath: `layout[${blockIndex}].customLogo`,
+            fieldPath: `layout[${blockIndex}].customLogoLight`,
             slug: 'footers',
           }),
           references,
-          value: block.customLogo as RelationshipValue,
+          value: block.customLogoLight as RelationshipValue,
+        })
+
+        pushIfMatched({
+          mediaID,
+          reference: createCollectionReference({
+            doc,
+            documentLabel,
+            fieldPath: `layout[${blockIndex}].customLogoDark`,
+            slug: 'footers',
+          }),
+          references,
+          value: block.customLogoDark as RelationshipValue,
         })
       })
 

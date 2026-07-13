@@ -86,9 +86,10 @@ describe('media governance resolver', () => {
                   id: 50,
                   layout: [
                     {
-                      blockType: 'footer2',
-                      customLogo: 7,
-                      logoMode: 'siteSettingsLogo',
+                      blockType: 'footer56',
+                      customLogoDark: 7,
+                      customLogoLight: 7,
+                      logoMode: 'customLogo',
                     },
                   ],
                   title: 'Site Footer',
@@ -174,6 +175,22 @@ describe('media governance resolver', () => {
           sourceType: 'collection',
         }),
         expect.objectContaining({
+          documentID: 50,
+          documentLabel: 'Site Footer',
+          fieldPath: 'layout[0].customLogoLight',
+          locationLabel: 'Footers > Site Footer > layout[0].customLogoLight',
+          sourceSlug: 'footers',
+          sourceType: 'collection',
+        }),
+        expect.objectContaining({
+          documentID: 50,
+          documentLabel: 'Site Footer',
+          fieldPath: 'layout[0].customLogoDark',
+          locationLabel: 'Footers > Site Footer > layout[0].customLogoDark',
+          sourceSlug: 'footers',
+          sourceType: 'collection',
+        }),
+        expect.objectContaining({
           documentLabel: 'Site Settings',
           fieldPath: 'logo',
           locationLabel: 'Site Settings > Site Settings > logo',
@@ -190,8 +207,8 @@ describe('media governance resolver', () => {
       ]),
     )
 
-    expect(references).toHaveLength(7)
-    expect(buildMediaUsageSummary(references)).toBe('Used in 7 locations across 6 entries.')
+    expect(references).toHaveLength(9)
+    expect(buildMediaUsageSummary(references)).toBe('Used in 9 locations across 7 entries.')
     expect(buildMediaUsageSummary([])).toBe('Unused asset.')
   })
 
