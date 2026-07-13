@@ -1,10 +1,6 @@
 import Link from 'next/link'
-import {
-  FaFacebook,
-  FaInstagram,
-  FaLinkedin,
-  FaYoutube,
-} from 'react-icons/fa'
+import { Mail, MapPin, Phone } from 'lucide-react'
+import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube } from 'react-icons/fa'
 
 import { SiteLogo, type LogoMediaLike } from '@/components/site/SiteLogo'
 import { Button } from '@/components/ui/button'
@@ -114,9 +110,13 @@ export function Footer56BlockComponent({
       data-footer56-background={backgroundStyle}
     >
       <div className="mx-auto flex max-w-screen-2xl flex-col px-4 py-12 md:px-6 md:py-16">
-        <div className="grid gap-10 border-b border-border/70 pb-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1.85fr)]">
+        <div className="grid gap-10 border-b border-border/70 pb-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1.85fr)]">
           <div className="flex flex-col gap-6">
-            <Link aria-label={`Go to ${fallbackName} home page`} className="inline-flex items-center" href="/">
+            <Link
+              aria-label={`Go to ${fallbackName} home page`}
+              className="inline-flex items-center"
+              href="/"
+            >
               <SiteLogo
                 customDark={customLogoDark}
                 customLight={customLogoLight}
@@ -126,18 +126,40 @@ export function Footer56BlockComponent({
                 siteLogo={siteLogo}
               />
             </Link>
-            {description ? <p className="max-w-[36ch] text-sm leading-6 text-current/75">{description}</p> : null}
-            {siteAddress ? (
-              <p className="max-w-[36ch] whitespace-pre-line text-sm leading-6 text-current/75">{siteAddress}</p>
+            {description ? (
+              <p className="max-w-[36ch] text-sm leading-6 text-current/75">{description}</p>
             ) : null}
-            {sitePhone ? <p className="text-sm leading-6 text-current/75">{sitePhone}</p> : null}
-            {siteEmail ? (
-              <a
-                className="text-sm leading-6 text-current/75 transition-opacity hover:opacity-70 focus-visible:opacity-70"
-                href={`mailto:${siteEmail}`}
-              >
-                {siteEmail}
-              </a>
+            {siteAddress || sitePhone || siteEmail ? (
+              <div className="flex flex-col gap-2.5">
+                {siteAddress ? (
+                  <div className="flex items-start gap-2.5 text-sm leading-6 text-current/75">
+                    <MapPin aria-hidden="true" className="mt-1 size-4 shrink-0" />
+                    <p className="max-w-[36ch] whitespace-pre-line">{siteAddress}</p>
+                  </div>
+                ) : null}
+                {sitePhone ? (
+                  <div className="flex items-start gap-2.5 text-sm leading-6 text-current/75">
+                    <Phone aria-hidden="true" className="mt-1 size-4 shrink-0" />
+                    <a
+                      className="transition-opacity hover:opacity-70 focus-visible:opacity-70"
+                      href={`tel:${sitePhone}`}
+                    >
+                      {sitePhone}
+                    </a>
+                  </div>
+                ) : null}
+                {siteEmail ? (
+                  <div className="flex items-start gap-2.5 text-sm leading-6 text-current/75">
+                    <Mail aria-hidden="true" className="mt-1 size-4 shrink-0" />
+                    <a
+                      className="transition-opacity hover:opacity-70 focus-visible:opacity-70"
+                      href={`mailto:${siteEmail}`}
+                    >
+                      {siteEmail}
+                    </a>
+                  </div>
+                ) : null}
+              </div>
             ) : null}
             {resolvedSiteSocialLinks.length ? (
               <ul className="flex flex-wrap gap-4">
@@ -180,7 +202,9 @@ export function Footer56BlockComponent({
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {resolvedLinkGroups.map((group, groupIndex) => (
               <div className="flex flex-col gap-4" key={`${group.title}-${groupIndex}`}>
-                <h3 className="font-mono text-[11px] uppercase tracking-[0.22em] text-current/65">{group.title}</h3>
+                <h3 className="font-mono text-[11px] uppercase tracking-[0.22em] text-current/65">
+                  {group.title}
+                </h3>
                 <ul className="flex flex-col gap-3 text-sm">
                   {group.links.map((link, linkIndex) => (
                     <li key={`${group.title}-${link.href}-${linkIndex}`}>
@@ -200,8 +224,10 @@ export function Footer56BlockComponent({
           </div>
         </div>
 
-        <div className="flex flex-col gap-5 py-6 md:flex-row md:items-center md:justify-between">
-          <div>{copyrightText ? <p className="text-xs text-current/65">{copyrightText}</p> : null}</div>
+        <div className="flex flex-col gap-5 py-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            {copyrightText ? <p className="text-xs text-current/65">{copyrightText}</p> : null}
+          </div>
           {resolvedBottomLinks.length ? (
             <ul className="flex flex-wrap gap-x-4 gap-y-2 text-xs md:justify-end">
               {resolvedBottomLinks.map((link, linkIndex) => (
