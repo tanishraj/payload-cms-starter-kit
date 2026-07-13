@@ -31,7 +31,7 @@ describe('global footer wiring', () => {
             {
               backgroundStyle: 'inverse',
               blockType: 'footer56',
-              bottomLinks: [{ label: 'Privacy Policy', linkType: 'custom', url: '/privacy' }],
+              bottomLinks: [{ label: 'Terms and Conditions', linkType: 'custom', url: '/terms' }],
               copyrightText: '© 2026 Acme Institute. All rights reserved.',
               ctaButtons: [{ label: 'Apply now', linkType: 'custom', url: '/apply', variant: 'outline' }],
               description: 'Preparing students for decisive practice and public service.',
@@ -41,11 +41,27 @@ describe('global footer wiring', () => {
                   title: 'Academics',
                 },
               ],
+              logoHeight: 44,
               logoMode: 'siteDefault',
-              socialLinks: [{ platform: 'linkedin', url: 'https://example.com/linkedin' }],
             },
           ] as never,
-          { siteLogo: null, siteName: 'Acme Institute' },
+          {
+            privacyPolicyPage: { id: 'privacy-page', slug: 'privacy-policy', title: 'Privacy Policy' } as never,
+            siteAddress: '123 Market Street, Suite 400',
+            siteEmail: 'hello@acme.edu',
+            siteLogo: { alt: 'Acme Institute logo', url: '/media/acme-logo.svg' },
+            siteName: 'Acme Institute',
+            sitePhone: '+1 (555) 000-0000',
+            termsAndConditionsPage: {
+              id: 'terms-page',
+              slug: 'terms-and-conditions',
+              title: 'Terms and Conditions',
+            } as never,
+            siteSocialLinks: {
+              linkedin: 'https://example.com/linkedin',
+              youtube: 'https://example.com/youtube',
+            },
+          },
         ),
       ),
     )
@@ -54,9 +70,32 @@ describe('global footer wiring', () => {
     expect(html).toContain('Acme Institute')
     expect(html).toContain('Programs')
     expect(html).toContain('Privacy Policy')
+    expect(html).toContain('Terms and Conditions')
     expect(html).toContain('Apply now')
     expect(html).toContain('© 2026 Acme Institute. All rights reserved.')
+    expect(html).toContain('123 Market Street, Suite 400')
+    expect(html).toContain('+1 (555) 000-0000')
+    expect(html).toContain('hello@acme.edu')
     expect(html).toContain('linkedin')
+    expect(html).toContain('youtube')
+    expect(html).toContain('height:44px')
+    expect(html).not.toContain('github')
+
+    const descriptionIndex = html.indexOf('Preparing students for decisive practice and public service.')
+    const addressIndex = html.indexOf('123 Market Street, Suite 400')
+    const phoneIndex = html.indexOf('+1 (555) 000-0000')
+    const emailIndex = html.indexOf('hello@acme.edu')
+    const linkedInIndex = html.indexOf('linkedin')
+    const customBottomLinkIndex = html.indexOf('Terms and Conditions', html.indexOf('href="/terms"'))
+    const legalTermsIndex = html.lastIndexOf('Terms and Conditions')
+    const privacyIndex = html.indexOf('Privacy Policy')
+
+    expect(addressIndex).toBeGreaterThan(descriptionIndex)
+    expect(phoneIndex).toBeGreaterThan(addressIndex)
+    expect(emailIndex).toBeGreaterThan(phoneIndex)
+    expect(linkedInIndex).toBeGreaterThan(emailIndex)
+    expect(legalTermsIndex).toBeGreaterThan(customBottomLinkIndex)
+    expect(privacyIndex).toBeGreaterThan(legalTermsIndex)
   })
 
   it('renders the active footer preset inside the global footer shell', () => {
@@ -79,14 +118,21 @@ describe('global footer wiring', () => {
             },
           ],
         } as never,
+        siteAddress: '123 Market Street, Suite 400',
+        siteEmail: 'hello@acme.edu',
         siteLogo: null,
         siteName: 'Acme Institute',
+        sitePhone: '+1 (555) 000-0000',
+        siteSocialLinks: { facebook: 'https://example.com/facebook' },
       }),
     )
 
     expect(html).toContain('data-global-footer="true"')
     expect(html).toContain('data-footer56-background="muted"')
     expect(html).toContain('Acme Institute')
+    expect(html).toContain('123 Market Street, Suite 400')
+    expect(html).toContain('hello@acme.edu')
+    expect(html).toContain('facebook')
     expect(html).toContain('Contact')
     expect(html).toContain('About')
   })
@@ -98,10 +144,17 @@ describe('global footer wiring', () => {
     expect(layoutSource).toContain('const activeFooterID =')
     expect(layoutSource).toContain('const activeFooter =')
     expect(layoutSource).toContain("collection: 'footers'")
-    expect(layoutSource).toContain('<GlobalFooter footer={activeFooter} siteLogo={siteSettings.logo} siteName={siteSettings.siteName} />')
+    expect(layoutSource).toContain("payload.findGlobal({\n      slug: 'site-settings',\n      depth: 2,")
+    expect(layoutSource).toContain('<GlobalFooter')
+    expect(layoutSource).toContain('privacyPolicyPage={siteSettings.privacyPolicyPage}')
+    expect(layoutSource).toContain('termsAndConditionsPage={siteSettings.termsAndConditionsPage}')
+    expect(layoutSource).toContain('siteAddress={siteSettings.address}')
+    expect(layoutSource).toContain('sitePhone={siteSettings.contactPhone}')
+    expect(layoutSource).toContain('siteEmail={siteSettings.contactEmail}')
+    expect(layoutSource).toContain('siteSocialLinks={siteSettings.socialLinks}')
 
     const mainIndex = layoutSource.indexOf('<main data-site-main="true">{children}</main>')
-    const footerIndex = layoutSource.indexOf('<GlobalFooter footer={activeFooter} siteLogo={siteSettings.logo} siteName={siteSettings.siteName} />')
+    const footerIndex = layoutSource.indexOf('<GlobalFooter')
 
     expect(mainIndex).toBeGreaterThanOrEqual(0)
     expect(footerIndex).toBeGreaterThan(mainIndex)

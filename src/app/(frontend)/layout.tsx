@@ -36,7 +36,7 @@ const getFrontendGlobals = async () => {
     }),
     payload.findGlobal({
       slug: 'site-settings',
-      depth: 1,
+      depth: 2,
     }),
     payload.findGlobal({
       slug: 'page-settings',
@@ -234,7 +234,17 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
             stickyTopOffset={headerTopOffset}
           />
           <main data-site-main="true">{children}</main>
-          <GlobalFooter footer={activeFooter} siteLogo={siteSettings.logo} siteName={siteSettings.siteName} />
+          <GlobalFooter
+            footer={activeFooter}
+            privacyPolicyPage={siteSettings.privacyPolicyPage}
+            termsAndConditionsPage={siteSettings.termsAndConditionsPage}
+            siteAddress={siteSettings.address}
+            siteEmail={siteSettings.contactEmail}
+            siteLogo={siteSettings.logo}
+            siteName={siteSettings.siteName}
+            sitePhone={siteSettings.contactPhone}
+            siteSocialLinks={siteSettings.socialLinks}
+          />
         </div>
       </body>
     </html>

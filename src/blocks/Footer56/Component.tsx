@@ -1,20 +1,32 @@
+import Link from 'next/link'
 import {
   FaFacebook,
-  FaGithub,
   FaInstagram,
   FaLinkedin,
-  FaTwitter,
+  FaYoutube,
 } from 'react-icons/fa'
 
 import { SiteLogo, type LogoMediaLike } from '@/components/site/SiteLogo'
 import { Button } from '@/components/ui/button'
 import { resolveHeaderLink } from '@/lib/headerNavigation'
+import { getPageHref } from '@/lib/pagePaths'
 import { cn } from '@/lib/utils'
-import type { Footer56Block as Footer56BlockType } from '@/payload-types'
+import type { Footer56Block as Footer56BlockType, Page } from '@/payload-types'
 
 type Footer56BlockComponentProps = Footer56BlockType & {
+  privacyPolicyPage?: Page | null
+  siteAddress?: string | null
+  siteEmail?: string | null
   siteLogo?: LogoMediaLike
   siteName?: string | null
+  sitePhone?: string | null
+  termsAndConditionsPage?: Page | null
+  siteSocialLinks?: {
+    facebook?: string | null
+    instagram?: string | null
+    linkedin?: string | null
+    youtube?: string | null
+  } | null
 }
 
 const backgroundClasses = {
@@ -26,10 +38,9 @@ const backgroundClasses = {
 
 const socialIconByPlatform = {
   facebook: FaFacebook,
-  github: FaGithub,
   instagram: FaInstagram,
   linkedin: FaLinkedin,
-  twitter: FaTwitter,
+  youtube: FaYoutube,
 } as const
 
 export function Footer56BlockComponent({
@@ -41,10 +52,16 @@ export function Footer56BlockComponent({
   customLogoLight,
   description,
   linkGroups,
+  logoHeight,
   logoMode = 'siteDefault',
+  privacyPolicyPage,
+  siteAddress,
+  siteEmail,
   siteLogo,
   siteName,
-  socialLinks,
+  sitePhone,
+  termsAndConditionsPage,
+  siteSocialLinks,
 }: Footer56BlockComponentProps) {
   const resolvedCtas = (ctaButtons ?? [])
     .map((button) => {
@@ -61,9 +78,16 @@ export function Footer56BlockComponent({
     })
     .filter((button): button is NonNullable<typeof button> => button !== null)
 
-  const resolvedBottomLinks = (bottomLinks ?? [])
-    .map((link) => resolveHeaderLink(link))
-    .filter((link): link is NonNullable<typeof link> => link !== null)
+  const termsHref = getPageHref(termsAndConditionsPage)
+  const privacyHref = getPageHref(privacyPolicyPage)
+
+  const resolvedBottomLinks = [
+    ...(bottomLinks ?? [])
+      .map((link) => resolveHeaderLink(link))
+      .filter((link): link is NonNullable<typeof link> => link !== null),
+    ...(termsHref ? [{ href: termsHref, label: 'Terms and Conditions', newTab: false }] : []),
+    ...(privacyHref ? [{ href: privacyHref, label: 'Privacy Policy', newTab: false }] : []),
+  ]
 
   const resolvedLinkGroups = (linkGroups ?? [])
     .map((group) => ({
@@ -74,8 +98,15 @@ export function Footer56BlockComponent({
     }))
     .filter((group) => group.title && group.links.length > 0)
 
-  const resolvedSocialLinks = (socialLinks ?? []).filter((social) => social.url?.trim())
   const fallbackName = siteName?.trim() || 'Site'
+  const resolvedLogoHeight = Math.max(20, logoHeight ?? 32)
+  const resolvedSiteSocialLinks = Object.entries(siteSocialLinks ?? {})
+    .filter((entry): entry is [keyof typeof socialIconByPlatform, string] => {
+      const [platform, url] = entry
+
+      return platform in socialIconByPlatform && typeof url === 'string' && url.trim().length > 0
+    })
+    .map(([platform, url]) => ({ platform, url: url.trim() }))
 
   return (
     <section
@@ -85,17 +116,50 @@ export function Footer56BlockComponent({
       <div className="mx-auto flex max-w-screen-2xl flex-col px-4 py-12 md:px-6 md:py-16">
         <div className="grid gap-10 border-b border-border/70 pb-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1.85fr)]">
           <div className="flex flex-col gap-6">
-            <a aria-label={`Go to ${fallbackName} home page`} className="inline-flex items-center" href="/">
+            <Link aria-label={`Go to ${fallbackName} home page`} className="inline-flex items-center" href="/">
               <SiteLogo
                 customDark={customLogoDark}
                 customLight={customLogoLight}
                 fallbackText={fallbackName}
-                height={32}
+                height={resolvedLogoHeight}
                 mode={logoMode}
                 siteLogo={siteLogo}
               />
-            </a>
+            </Link>
             {description ? <p className="max-w-[36ch] text-sm leading-6 text-current/75">{description}</p> : null}
+            {siteAddress ? (
+              <p className="max-w-[36ch] whitespace-pre-line text-sm leading-6 text-current/75">{siteAddress}</p>
+            ) : null}
+            {sitePhone ? <p className="text-sm leading-6 text-current/75">{sitePhone}</p> : null}
+            {siteEmail ? (
+              <a
+                className="text-sm leading-6 text-current/75 transition-opacity hover:opacity-70 focus-visible:opacity-70"
+                href={`mailto:${siteEmail}`}
+              >
+                {siteEmail}
+              </a>
+            ) : null}
+            {resolvedSiteSocialLinks.length ? (
+              <ul className="flex flex-wrap gap-4">
+                {resolvedSiteSocialLinks.map(({ platform, url }) => {
+                  const Icon = socialIconByPlatform[platform]
+
+                  return (
+                    <li key={platform}>
+                      <a
+                        aria-label={`${fallbackName} on ${platform}`}
+                        className="inline-flex items-center justify-center text-current/70 transition-opacity hover:opacity-100 focus-visible:opacity-100"
+                        href={url}
+                        rel="noreferrer"
+                        target="_blank"
+                      >
+                        <Icon className="size-4" />
+                      </a>
+                    </li>
+                  )
+                })}
+              </ul>
+            ) : null}
             {resolvedCtas.length ? (
               <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 {resolvedCtas.map((button) => (
@@ -137,45 +201,21 @@ export function Footer56BlockComponent({
         </div>
 
         <div className="flex flex-col gap-5 py-6 md:flex-row md:items-center md:justify-between">
-          <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-center">
-            {copyrightText ? <p className="text-xs text-current/65">{copyrightText}</p> : null}
-            {resolvedBottomLinks.length ? (
-              <ul className="flex flex-wrap gap-x-4 gap-y-2 text-xs">
-                {resolvedBottomLinks.map((link, linkIndex) => (
-                  <li key={`${link.href}-${linkIndex}`}>
-                    <a
-                      className="transition-opacity hover:opacity-70 focus-visible:opacity-70"
-                      href={link.href}
-                      rel={link.newTab ? 'noreferrer' : undefined}
-                      target={link.newTab ? '_blank' : undefined}
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </div>
-
-          {resolvedSocialLinks.length ? (
-            <ul className="flex flex-wrap gap-4">
-              {resolvedSocialLinks.map((social, socialIndex) => {
-                const Icon = socialIconByPlatform[social.platform]
-
-                return (
-                  <li key={`${social.platform}-${socialIndex}`}>
-                    <a
-                      aria-label={`${fallbackName} on ${social.platform}`}
-                      className="inline-flex items-center justify-center text-current/70 transition-opacity hover:opacity-100 focus-visible:opacity-100"
-                      href={social.url}
-                      rel="noreferrer"
-                      target="_blank"
-                    >
-                      <Icon className="size-4" />
-                    </a>
-                  </li>
-                )
-              })}
+          <div>{copyrightText ? <p className="text-xs text-current/65">{copyrightText}</p> : null}</div>
+          {resolvedBottomLinks.length ? (
+            <ul className="flex flex-wrap gap-x-4 gap-y-2 text-xs md:justify-end">
+              {resolvedBottomLinks.map((link, linkIndex) => (
+                <li key={`${link.href}-${linkIndex}`}>
+                  <a
+                    className="transition-opacity hover:opacity-70 focus-visible:opacity-70"
+                    href={link.href}
+                    rel={link.newTab ? 'noreferrer' : undefined}
+                    target={link.newTab ? '_blank' : undefined}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           ) : null}
         </div>

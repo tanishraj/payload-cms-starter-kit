@@ -101,6 +101,15 @@ export const Footer56Block: Block = {
       },
     },
     {
+      name: 'logoHeight',
+      label: 'Logo Height',
+      type: 'number',
+      min: 20,
+      admin: {
+        description: 'Overrides the rendered footer logo height in pixels.',
+      },
+    },
+    {
       name: 'description',
       type: 'textarea',
     },
@@ -150,29 +159,6 @@ export const Footer56Block: Block = {
       name: 'copyrightText',
       type: 'text',
     },
-    {
-      name: 'socialLinks',
-      type: 'array',
-      fields: [
-        {
-          name: 'platform',
-          type: 'select',
-          required: true,
-          options: [
-            { label: 'Facebook', value: 'facebook' },
-            { label: 'Instagram', value: 'instagram' },
-            { label: 'LinkedIn', value: 'linkedin' },
-            { label: 'X / Twitter', value: 'twitter' },
-            { label: 'GitHub', value: 'github' },
-          ],
-        } satisfies SelectField,
-        {
-          name: 'url',
-          type: 'text',
-          required: true,
-        },
-      ],
-    } satisfies ArrayField,
     {
       name: 'backgroundStyle',
       type: 'select',

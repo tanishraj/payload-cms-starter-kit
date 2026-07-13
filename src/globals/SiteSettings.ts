@@ -94,6 +94,23 @@ export const SiteSettings: GlobalConfig = {
           ],
         },
         {
+          label: 'Legal',
+          fields: [
+            {
+              name: 'privacyPolicyPage',
+              label: 'Privacy Policy Page',
+              type: 'relationship',
+              relationTo: 'pages',
+            },
+            {
+              name: 'termsAndConditionsPage',
+              label: 'Terms and Conditions Page',
+              type: 'relationship',
+              relationTo: 'pages',
+            },
+          ],
+        },
+        {
           label: 'Social Links',
           fields: [
             {

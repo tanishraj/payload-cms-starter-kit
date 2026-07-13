@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { PageContent } from '@/app/(frontend)/PageContent'
 import { AnnouncementBlock } from '@/blocks/Announcement/config'
 import { Pages } from '@/collections/Pages'
+import { SiteSettings } from '@/globals/SiteSettings'
 
 const getLayoutField = () => {
   const tabsField = Pages.fields.find(
@@ -162,6 +163,10 @@ describe('page block pipeline', () => {
       (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'ctaButtons',
     ) as { maxRows?: number; type?: string } | undefined
 
+    const logoHeightField = Footer56Block.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'logoHeight',
+    ) as { min?: number; type?: string } | undefined
+
     const socialLinksField = Footer56Block.fields.find(
       (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'socialLinks',
     ) as { type?: string } | undefined
@@ -179,7 +184,9 @@ describe('page block pipeline', () => {
     expect(linkGroupsField?.maxRows).toBe(4)
     expect(ctaButtonsField?.type).toBe('array')
     expect(ctaButtonsField?.maxRows).toBe(2)
-    expect(socialLinksField?.type).toBe('array')
+    expect(logoHeightField?.type).toBe('number')
+    expect(logoHeightField?.min).toBe(20)
+    expect(socialLinksField).toBeUndefined()
     expect(backgroundStyleField?.type).toBe('select')
     expect(backgroundStyleField?.defaultValue).toBe('inverse')
     expect(backgroundStyleField?.options?.map((option) => option.value)).toEqual([
@@ -188,6 +195,39 @@ describe('page block pipeline', () => {
       'accent',
       'inverse',
     ])
+  })
+
+  it('defines the site settings legal schema with privacy policy and terms relationships', () => {
+    const siteSettingsTabs = SiteSettings.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'tabs' in field,
+    ) as { tabs: Array<{ fields: unknown[]; label: string }> } | undefined
+
+    const contactTab = siteSettingsTabs?.tabs.find((tab) => tab.label === 'Contact')
+    const legalTab = siteSettingsTabs?.tabs.find((tab) => tab.label === 'Legal')
+
+    const privacyPolicyField = legalTab?.fields.find(
+      (field) =>
+        typeof field === 'object' && field !== null && 'name' in field && field.name === 'privacyPolicyPage',
+    ) as { relationTo?: string; type?: string } | undefined
+
+    const termsField = legalTab?.fields.find(
+      (field) =>
+        typeof field === 'object' &&
+        field !== null &&
+        'name' in field &&
+        field.name === 'termsAndConditionsPage',
+    ) as { relationTo?: string; type?: string } | undefined
+
+    const contactPrivacyField = contactTab?.fields.find(
+      (field) =>
+        typeof field === 'object' && field !== null && 'name' in field && field.name === 'privacyPolicyPage',
+    )
+
+    expect(privacyPolicyField?.type).toBe('relationship')
+    expect(privacyPolicyField?.relationTo).toBe('pages')
+    expect(termsField?.type).toBe('relationship')
+    expect(termsField?.relationTo).toBe('pages')
+    expect(contactPrivacyField).toBeUndefined()
   })
 
   it('renders nothing for a normal page without layout blocks', () => {

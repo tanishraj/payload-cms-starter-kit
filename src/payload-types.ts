@@ -1034,6 +1034,10 @@ export interface Footer56Block {
   logoMode: 'siteDefault' | 'customLogo';
   customLogoLight?: (string | null) | Media;
   customLogoDark?: (string | null) | Media;
+  /**
+   * Overrides the rendered footer logo height in pixels.
+   */
+  logoHeight?: number | null;
   description?: string | null;
   linkGroups?:
     | {
@@ -1073,13 +1077,6 @@ export interface Footer56Block {
       }[]
     | null;
   copyrightText?: string | null;
-  socialLinks?:
-    | {
-        platform: 'facebook' | 'instagram' | 'linkedin' | 'twitter' | 'github';
-        url: string;
-        id?: string | null;
-      }[]
-    | null;
   backgroundStyle: 'default' | 'muted' | 'accent' | 'inverse';
   id?: string | null;
   blockName?: string | null;
@@ -1848,6 +1845,7 @@ export interface Footer56BlockSelect<T extends boolean = true> {
   logoMode?: T;
   customLogoLight?: T;
   customLogoDark?: T;
+  logoHeight?: T;
   description?: T;
   linkGroups?:
     | T
@@ -1887,13 +1885,6 @@ export interface Footer56BlockSelect<T extends boolean = true> {
         id?: T;
       };
   copyrightText?: T;
-  socialLinks?:
-    | T
-    | {
-        platform?: T;
-        url?: T;
-        id?: T;
-      };
   backgroundStyle?: T;
   id?: T;
   blockName?: T;
@@ -2341,6 +2332,8 @@ export interface SiteSetting {
   contactPhone?: string | null;
   address?: string | null;
   googleMapEmbedUrl?: string | null;
+  privacyPolicyPage?: (string | null) | Page;
+  termsAndConditionsPage?: (string | null) | Page;
   socialLinks?: {
     facebook?: string | null;
     instagram?: string | null;
@@ -2449,6 +2442,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   contactPhone?: T;
   address?: T;
   googleMapEmbedUrl?: T;
+  privacyPolicyPage?: T;
+  termsAndConditionsPage?: T;
   socialLinks?:
     | T
     | {
