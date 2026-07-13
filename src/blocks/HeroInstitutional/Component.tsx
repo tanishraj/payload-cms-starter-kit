@@ -27,9 +27,9 @@ type HeroInstitutionalBlockLike = {
 }
 
 const overlayClasses = {
-  light: 'bg-linear-to-b from-black/38 via-black/26 to-black/42',
-  dark: 'bg-linear-to-b from-black/58 via-black/42 to-black/62',
-  darker: 'bg-linear-to-b from-black/74 via-black/58 to-black/78',
+  light: 'bg-linear-to-b from-black/58 via-black/42 to-black/62',
+  dark: 'bg-linear-to-b from-black/74 via-black/58 to-black/78',
+  darker: 'bg-linear-to-b from-black/84 via-black/70 to-black/88',
 } as const
 
 const horizontalShellClasses = {
