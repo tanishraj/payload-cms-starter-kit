@@ -6,6 +6,24 @@ import {
   requireCapability,
 } from '@/access/adminCapabilities'
 
+const validateExternalSocialUrl = (value: unknown) => {
+  if (typeof value !== 'string' || !value.trim()) {
+    return true
+  }
+
+  try {
+    const url = new URL(value.trim())
+
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return 'Enter a full external URL starting with http:// or https://.'
+    }
+
+    return true
+  } catch {
+    return 'Enter a valid external URL starting with http:// or https://.'
+  }
+}
+
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   label: 'Site Settings',
@@ -119,23 +137,39 @@ export const SiteSettings: GlobalConfig = {
               fields: [
                 {
                   name: 'facebook',
-                  label: 'Facebook URL',
+                  label: 'Facebook External URL',
                   type: 'text',
+                  admin: {
+                    description: 'Must be a full external URL, for example https://facebook.com/your-page.',
+                  },
+                  validate: validateExternalSocialUrl,
                 },
                 {
                   name: 'instagram',
-                  label: 'Instagram URL',
+                  label: 'Instagram External URL',
                   type: 'text',
+                  admin: {
+                    description: 'Must be a full external URL, for example https://instagram.com/your-handle.',
+                  },
+                  validate: validateExternalSocialUrl,
                 },
                 {
                   name: 'linkedin',
-                  label: 'LinkedIn URL',
+                  label: 'LinkedIn External URL',
                   type: 'text',
+                  admin: {
+                    description: 'Must be a full external URL, for example https://linkedin.com/company/your-org.',
+                  },
+                  validate: validateExternalSocialUrl,
                 },
                 {
                   name: 'youtube',
-                  label: 'YouTube URL',
+                  label: 'YouTube External URL',
                   type: 'text',
+                  admin: {
+                    description: 'Must be a full external URL, for example https://youtube.com/@your-channel.',
+                  },
+                  validate: validateExternalSocialUrl,
                 },
               ],
             },

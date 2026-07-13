@@ -230,6 +230,38 @@ describe('page block pipeline', () => {
     expect(contactPrivacyField).toBeUndefined()
   })
 
+  it('defines site settings social links as validated external URLs', () => {
+    const siteSettingsTabs = SiteSettings.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'tabs' in field,
+    ) as { tabs: Array<{ fields: unknown[]; label: string }> } | undefined
+
+    const socialLinksTab = siteSettingsTabs?.tabs.find((tab) => tab.label === 'Social Links')
+    const socialLinksGroup = socialLinksTab?.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'socialLinks',
+    ) as
+      | {
+          fields?: Array<{
+            admin?: { description?: string }
+            label?: string
+            name?: string
+            validate?: (value: unknown) => true | string
+          }>
+        }
+      | undefined
+
+    const facebookField = socialLinksGroup?.fields?.find((field) => field.name === 'facebook')
+
+    expect(facebookField?.label).toBe('Facebook External URL')
+    expect(facebookField?.admin?.description).toContain('full external URL')
+    expect(facebookField?.validate?.('https://facebook.com/example')).toBe(true)
+    expect(facebookField?.validate?.('facebook.com/example')).toBe(
+      'Enter a valid external URL starting with http:// or https://.',
+    )
+    expect(facebookField?.validate?.('mailto:test@example.com')).toBe(
+      'Enter a full external URL starting with http:// or https://.',
+    )
+  })
+
   it('renders nothing for a normal page without layout blocks', () => {
     const result = PageContent({
       page: {

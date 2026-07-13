@@ -175,7 +175,7 @@ export function Footer56BlockComponent({
                         rel="noreferrer"
                         target="_blank"
                       >
-                        <Icon className="size-4" />
+                        <Icon className="size-5" />
                       </a>
                     </li>
                   )
@@ -202,7 +202,7 @@ export function Footer56BlockComponent({
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {resolvedLinkGroups.map((group, groupIndex) => (
               <div className="flex flex-col gap-4" key={`${group.title}-${groupIndex}`}>
-                <h3 className="font-mono text-[11px] uppercase tracking-[0.22em] text-current/65">
+                <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-current/75">
                   {group.title}
                 </h3>
                 <ul className="flex flex-col gap-3 text-sm">

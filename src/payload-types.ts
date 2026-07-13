@@ -2335,9 +2335,21 @@ export interface SiteSetting {
   privacyPolicyPage?: (string | null) | Page;
   termsAndConditionsPage?: (string | null) | Page;
   socialLinks?: {
+    /**
+     * Must be a full external URL, for example https://facebook.com/your-page.
+     */
     facebook?: string | null;
+    /**
+     * Must be a full external URL, for example https://instagram.com/your-handle.
+     */
     instagram?: string | null;
+    /**
+     * Must be a full external URL, for example https://linkedin.com/company/your-org.
+     */
     linkedin?: string | null;
+    /**
+     * Must be a full external URL, for example https://youtube.com/@your-channel.
+     */
     youtube?: string | null;
   };
   _status?: ('draft' | 'published') | null;
