@@ -26,6 +26,12 @@ const navAlignmentClasses = {
   right: 'justify-end',
 } as const
 
+const ctaButtonSizes = {
+  compact: 'sm',
+  default: 'default',
+  large: 'lg',
+} as const
+
 export function HeaderNavbar({ ctas, logo, menuItems, navAlignment, size }: HeaderNavbarProps) {
   return (
     <header
@@ -36,12 +42,12 @@ export function HeaderNavbar({ ctas, logo, menuItems, navAlignment, size }: Head
         <div className="flex shrink-0 items-center self-stretch">{logo}</div>
 
         <div className={cn('hidden min-w-0 flex-1 lg:flex', navAlignmentClasses[navAlignment])}>
-          <HeaderNavMenu menuItems={menuItems} />
+          <HeaderNavMenu menuItems={menuItems} size={size} />
         </div>
 
         <div className="ml-auto hidden items-center gap-2 lg:flex">
           {ctas.map((item) => (
-            <Button asChild key={`${item.label}-${item.href}`} variant={item.variant ?? 'default'}>
+            <Button asChild key={`${item.label}-${item.href}`} size={ctaButtonSizes[size]} variant={item.variant ?? 'default'}>
               <a href={item.href} rel={item.newTab ? 'noreferrer' : undefined} target={item.newTab ? '_blank' : undefined}>
                 {item.label}
               </a>

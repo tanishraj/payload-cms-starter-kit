@@ -12,11 +12,40 @@ import { cn } from '@/lib/utils'
 
 type HeaderNavMenuProps = {
   menuItems: ResolvedHeaderMenuItem[]
+  size: 'compact' | 'default' | 'large'
 }
 
-const triggerLinkClasses = 'text-sm font-medium text-foreground'
+const navListGapClasses = {
+  compact: 'gap-1',
+  default: 'gap-1',
+  large: 'gap-1.5',
+} as const
 
-export function HeaderNavMenu({ menuItems }: HeaderNavMenuProps) {
+const triggerContainerClasses = {
+  compact: 'h-8 rounded-full px-3 pr-2.5',
+  default: 'h-9 rounded-full px-3.5 pr-3',
+  large: 'h-10 rounded-full px-4 pr-3.5',
+} as const
+
+const triggerLinkClasses = {
+  compact: 'text-sm font-medium text-foreground',
+  default: 'text-sm font-medium text-foreground',
+  large: 'text-base font-medium text-foreground',
+} as const
+
+const dropdownContentClasses = {
+  compact: 'left-0 min-w-56 p-1.5 md:w-56',
+  default: 'left-0 min-w-60 p-1.5 md:w-60',
+  large: 'left-0 min-w-64 p-2 md:w-64',
+} as const
+
+const childRowClasses = {
+  compact: 'h-8 rounded-full px-3 py-0 text-sm font-normal hover:bg-muted/80 focus:bg-muted/80',
+  default: 'h-9 rounded-full px-3.5 py-0 text-sm font-normal hover:bg-muted/80 focus:bg-muted/80',
+  large: 'h-10 rounded-full px-4 py-0 text-base font-normal hover:bg-muted/80 focus:bg-muted/80',
+} as const
+
+export function HeaderNavMenu({ menuItems, size }: HeaderNavMenuProps) {
   if (menuItems.length === 0) {
     return null
   }
@@ -24,7 +53,7 @@ export function HeaderNavMenu({ menuItems }: HeaderNavMenuProps) {
   return (
     <nav aria-label="Primary navigation">
       <NavigationMenu className="max-w-none" viewport={false}>
-        <NavigationMenuList className="gap-1">
+        <NavigationMenuList className={navListGapClasses[size]}>
           {menuItems.map((item) => {
             const hasChildren = Boolean(item.children?.length)
 
@@ -32,16 +61,16 @@ export function HeaderNavMenu({ menuItems }: HeaderNavMenuProps) {
               <NavigationMenuItem className="relative" key={`${item.label}-${item.href}`}>
                 {hasChildren ? (
                   <>
-                    <NavigationMenuTrigger className="h-8 rounded-full px-3 pr-2.5">
-                      <span className={triggerLinkClasses}>{item.label}</span>
+                    <NavigationMenuTrigger className={triggerContainerClasses[size]}>
+                      <span className={triggerLinkClasses[size]}>{item.label}</span>
                     </NavigationMenuTrigger>
 
-                    <NavigationMenuContent className="left-0 min-w-56 p-1.5 md:w-56">
+                    <NavigationMenuContent className={dropdownContentClasses[size]}>
                       <ul className="flex flex-col gap-0.5">
                         {item.children?.map((child) => (
                           <li key={`${child.label}-${child.href}`}>
                             <NavigationMenuLink
-                              className="h-8 rounded-full px-3 py-0 font-normal hover:bg-muted/80 focus:bg-muted/80"
+                              className={childRowClasses[size]}
                               href={child.href}
                               rel={child.newTab ? 'noreferrer' : undefined}
                               target={child.newTab ? '_blank' : undefined}
@@ -55,12 +84,12 @@ export function HeaderNavMenu({ menuItems }: HeaderNavMenuProps) {
                   </>
                 ) : (
                   <NavigationMenuLink
-                    className={cn(navigationMenuTriggerStyle(), 'h-8 rounded-full px-3 py-0')}
+                    className={cn(navigationMenuTriggerStyle(), triggerContainerClasses[size], 'py-0')}
                     href={item.href}
                     rel={item.newTab ? 'noreferrer' : undefined}
                     target={item.newTab ? '_blank' : undefined}
                   >
-                    <span className={triggerLinkClasses}>{item.label}</span>
+                    <span className={triggerLinkClasses[size]}>{item.label}</span>
                   </NavigationMenuLink>
                 )}
               </NavigationMenuItem>

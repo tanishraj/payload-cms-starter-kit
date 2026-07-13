@@ -21,10 +21,13 @@ type HeaderMobileMenuProps = {
 }
 
 const topLevelLinkClasses =
-  'inline-flex min-h-9 items-center rounded-xl pr-2 text-sm font-medium text-foreground transition-colors hover:bg-muted'
+  'inline-flex min-h-9 items-center rounded-xl px-2 text-sm font-medium text-foreground transition-colors hover:bg-muted'
 
 const childLinkClasses =
-  'inline-flex min-h-7 items-center rounded-xl px-0 text-sm font-normal text-foreground transition-colors hover:bg-muted'
+  'inline-flex min-h-7 items-center rounded-xl px-0 text-sm font-normal text-foreground'
+
+const expandableRowClasses =
+  'inline-flex min-h-9 w-full items-center justify-between rounded-xl px-2 text-sm font-medium text-foreground transition-colors hover:bg-muted'
 
 export function HeaderMobileMenu({ ctas, menuItems }: HeaderMobileMenuProps) {
   const [open, setOpen] = useState(false)
@@ -71,7 +74,23 @@ export function HeaderMobileMenu({ ctas, menuItems }: HeaderMobileMenuProps) {
 
                 return (
                   <li className="flex flex-col gap-1" key={`${item.label}-${item.href}-${index}`}>
-                    <div className="flex items-center gap-2">
+                    {hasChildren ? (
+                      <button
+                        aria-expanded={isExpanded}
+                        aria-label={`Toggle ${item.label} submenu`}
+                        className={expandableRowClasses}
+                        onClick={() => toggleExpanded(itemKey)}
+                        type="button"
+                      >
+                        <span className="truncate">{item.label}</span>
+                        <ChevronDown
+                          className={cn(
+                            'shrink-0 transition-transform duration-200',
+                            isExpanded ? 'rotate-180' : undefined,
+                          )}
+                        />
+                      </button>
+                    ) : (
                       <a
                         className={cn(topLevelLinkClasses, 'min-w-0 flex-1')}
                         href={item.href}
@@ -80,25 +99,7 @@ export function HeaderMobileMenu({ ctas, menuItems }: HeaderMobileMenuProps) {
                       >
                         <span className="truncate">{item.label}</span>
                       </a>
-
-                      {hasChildren ? (
-                        <Button
-                          aria-expanded={isExpanded}
-                          aria-label={`Toggle ${item.label} submenu`}
-                          onClick={() => toggleExpanded(itemKey)}
-                          size="icon-sm"
-                          type="button"
-                          variant="ghost"
-                        >
-                          <ChevronDown
-                            className={cn(
-                              'transition-transform duration-200',
-                              isExpanded ? 'rotate-180' : undefined,
-                            )}
-                          />
-                        </Button>
-                      ) : null}
-                    </div>
+                    )}
 
                     {hasChildren ? (
                       <div

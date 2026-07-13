@@ -82,10 +82,15 @@ const navAlignmentField = {
 
 const logoHeightField = {
   name: 'logoHeight',
-  label: 'Logo Height (px)',
+  label: 'Logo Height Override (px)',
   type: 'number',
-  defaultValue: 32,
   min: 20,
+  admin: {
+    components: {
+      Field: '/blocks/HeaderNavbar12/LogoHeightField#LogoHeightField',
+    },
+    description: 'Changing header size resets this value to match the header height. You can still edit it manually afterward.',
+  },
 } satisfies NumberField
 
 const menuItemsField = {

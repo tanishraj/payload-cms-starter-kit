@@ -883,6 +883,9 @@ export interface HeaderNavbar12Block {
   logoMode?: ('siteDefault' | 'customLogo') | null;
   customLogoLight?: (string | null) | Media;
   customLogoDark?: (string | null) | Media;
+  /**
+   * Changing header size resets this value to match the header height. You can still edit it manually afterward.
+   */
   logoHeight?: number | null;
   menuItems?:
     | {

@@ -8,6 +8,12 @@ type HeaderNavbar12BlockComponentProps = HeaderNavbar12BlockType & {
   siteName?: string | null
 }
 
+const logoHeightBySize = {
+  compact: 56,
+  default: 64,
+  large: 80,
+} as const
+
 export function HeaderNavbar12BlockComponent({
   ctaButtons,
   customLogoDark,
@@ -20,6 +26,7 @@ export function HeaderNavbar12BlockComponent({
   siteName,
   size,
 }: HeaderNavbar12BlockComponentProps) {
+  const resolvedSize = size ?? 'default'
   const resolvedMenuItems = resolveHeaderMenuItems(menuItems)
   const resolvedCtas = (ctaButtons ?? [])
     .map((item) => {
@@ -46,7 +53,7 @@ export function HeaderNavbar12BlockComponent({
         customDark={customLogoDark}
         customLight={customLogoLight}
         fallbackText={siteName?.trim() || 'Site'}
-        height={logoHeight ?? 32}
+        height={logoHeight ?? logoHeightBySize[resolvedSize]}
         mode={logoMode ?? 'siteDefault'}
         siteLogo={siteLogo}
       />
@@ -59,7 +66,7 @@ export function HeaderNavbar12BlockComponent({
       logo={logo}
       menuItems={resolvedMenuItems}
       navAlignment={navAlignment ?? 'center'}
-      size={size ?? 'default'}
+      size={resolvedSize}
     />
   )
 }

@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 
 import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
+import { HeaderMobileMenu } from '@/components/header/HeaderMobileMenu'
 import { renderHeaderBlocks } from '@/blocks/renderHeaderBlocks'
 import { HeaderNavbar } from '@/components/header/HeaderNavbar'
 import { SiteLogo } from '@/components/site/SiteLogo'
@@ -187,6 +188,45 @@ describe('header navbar rendering', () => {
     expect(html).toContain('/contact')
   })
 
+  it('uses size-based logo height defaults when no logo override is set', () => {
+    const compactHtml = renderToStaticMarkup(
+      createElement(HeaderNavbar12BlockComponent, {
+        blockType: 'headerNavbar12',
+        logoMode: 'siteDefault',
+        menuItems: [
+          {
+            label: 'Home',
+            linkType: 'custom',
+            url: '/',
+          },
+        ],
+        siteLogo: { alt: 'Acme logo', url: '/logo.svg' } as never,
+        siteName: 'Acme Studio',
+        size: 'compact',
+      }),
+    )
+
+    const largeHtml = renderToStaticMarkup(
+      createElement(HeaderNavbar12BlockComponent, {
+        blockType: 'headerNavbar12',
+        logoMode: 'siteDefault',
+        menuItems: [
+          {
+            label: 'Home',
+            linkType: 'custom',
+            url: '/',
+          },
+        ],
+        siteLogo: { alt: 'Acme logo', url: '/logo.svg' } as never,
+        siteName: 'Acme Studio',
+        size: 'large',
+      }),
+    )
+
+    expect(compactHtml).toContain('height:56px')
+    expect(largeHtml).toContain('height:80px')
+  })
+
   it('renders header layout blocks through the shared renderer', () => {
     const html = renderToStaticMarkup(
       createElement('div', null, renderHeaderBlocks(
@@ -220,5 +260,30 @@ describe('header navbar rendering', () => {
     expect(html).toContain('Acme Studio')
     expect(html).toContain('Book')
     expect(html).toContain('Home')
+    expect(html).toContain('data-size="lg"')
+  })
+
+  it('renders mobile parent items with children as expand controls instead of links', () => {
+    const html = renderToStaticMarkup(
+      createElement(HeaderMobileMenu, {
+        ctas: [],
+        menuItems: [
+          {
+            children: [{ href: '/about/overview', label: 'Overview', newTab: false }],
+            href: '/about-parent',
+            label: 'About',
+            newTab: false,
+          },
+          {
+            href: '/contact',
+            label: 'Contact',
+            newTab: false,
+          },
+        ],
+      }),
+    )
+
+    expect(html).toContain('data-header-mobile-menu="true"')
+    expect(html).toContain('Open navigation menu')
   })
 })
