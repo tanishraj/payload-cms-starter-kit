@@ -1,0 +1,185 @@
+import {
+  FaFacebook,
+  FaGithub,
+  FaInstagram,
+  FaLinkedin,
+  FaTwitter,
+} from 'react-icons/fa'
+
+import { SiteLogo, type LogoMediaLike } from '@/components/site/SiteLogo'
+import { Button } from '@/components/ui/button'
+import { resolveHeaderLink } from '@/lib/headerNavigation'
+import { cn } from '@/lib/utils'
+import type { Footer56Block as Footer56BlockType } from '@/payload-types'
+
+type Footer56BlockComponentProps = Footer56BlockType & {
+  siteLogo?: LogoMediaLike
+  siteName?: string | null
+}
+
+const backgroundClasses = {
+  default: 'bg-background text-foreground',
+  muted: 'bg-muted text-foreground',
+  accent: 'bg-accent text-accent-foreground',
+  inverse: 'bg-sidebar text-sidebar-foreground',
+} as const
+
+const socialIconByPlatform = {
+  facebook: FaFacebook,
+  github: FaGithub,
+  instagram: FaInstagram,
+  linkedin: FaLinkedin,
+  twitter: FaTwitter,
+} as const
+
+export function Footer56BlockComponent({
+  backgroundStyle = 'inverse',
+  bottomLinks,
+  copyrightText,
+  ctaButtons,
+  customLogoDark,
+  customLogoLight,
+  description,
+  linkGroups,
+  logoMode = 'siteDefault',
+  siteLogo,
+  siteName,
+  socialLinks,
+}: Footer56BlockComponentProps) {
+  const resolvedCtas = (ctaButtons ?? [])
+    .map((button) => {
+      const link = resolveHeaderLink(button)
+
+      if (!link) {
+        return null
+      }
+
+      return {
+        ...link,
+        variant: button.variant ?? 'outline',
+      }
+    })
+    .filter((button): button is NonNullable<typeof button> => button !== null)
+
+  const resolvedBottomLinks = (bottomLinks ?? [])
+    .map((link) => resolveHeaderLink(link))
+    .filter((link): link is NonNullable<typeof link> => link !== null)
+
+  const resolvedLinkGroups = (linkGroups ?? [])
+    .map((group) => ({
+      links: (group.links ?? [])
+        .map((link) => resolveHeaderLink(link))
+        .filter((link): link is NonNullable<typeof link> => link !== null),
+      title: group.title?.trim() ?? '',
+    }))
+    .filter((group) => group.title && group.links.length > 0)
+
+  const resolvedSocialLinks = (socialLinks ?? []).filter((social) => social.url?.trim())
+  const fallbackName = siteName?.trim() || 'Site'
+
+  return (
+    <section
+      className={cn('border-t border-border/70', backgroundClasses[backgroundStyle])}
+      data-footer56-background={backgroundStyle}
+    >
+      <div className="mx-auto flex max-w-screen-2xl flex-col px-4 py-12 md:px-6 md:py-16">
+        <div className="grid gap-10 border-b border-border/70 pb-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1.85fr)]">
+          <div className="flex flex-col gap-6">
+            <a aria-label={`Go to ${fallbackName} home page`} className="inline-flex items-center" href="/">
+              <SiteLogo
+                customDark={customLogoDark}
+                customLight={customLogoLight}
+                fallbackText={fallbackName}
+                height={32}
+                mode={logoMode}
+                siteLogo={siteLogo}
+              />
+            </a>
+            {description ? <p className="max-w-[36ch] text-sm leading-6 text-current/75">{description}</p> : null}
+            {resolvedCtas.length ? (
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                {resolvedCtas.map((button) => (
+                  <Button asChild key={`${button.label}-${button.href}`} variant={button.variant}>
+                    <a
+                      href={button.href}
+                      rel={button.newTab ? 'noreferrer' : undefined}
+                      target={button.newTab ? '_blank' : undefined}
+                    >
+                      {button.label}
+                    </a>
+                  </Button>
+                ))}
+              </div>
+            ) : null}
+          </div>
+
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {resolvedLinkGroups.map((group, groupIndex) => (
+              <div className="flex flex-col gap-4" key={`${group.title}-${groupIndex}`}>
+                <h3 className="font-mono text-[11px] uppercase tracking-[0.22em] text-current/65">{group.title}</h3>
+                <ul className="flex flex-col gap-3 text-sm">
+                  {group.links.map((link, linkIndex) => (
+                    <li key={`${group.title}-${link.href}-${linkIndex}`}>
+                      <a
+                        className="transition-opacity hover:opacity-70 focus-visible:opacity-70"
+                        href={link.href}
+                        rel={link.newTab ? 'noreferrer' : undefined}
+                        target={link.newTab ? '_blank' : undefined}
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-5 py-6 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-center">
+            {copyrightText ? <p className="text-xs text-current/65">{copyrightText}</p> : null}
+            {resolvedBottomLinks.length ? (
+              <ul className="flex flex-wrap gap-x-4 gap-y-2 text-xs">
+                {resolvedBottomLinks.map((link, linkIndex) => (
+                  <li key={`${link.href}-${linkIndex}`}>
+                    <a
+                      className="transition-opacity hover:opacity-70 focus-visible:opacity-70"
+                      href={link.href}
+                      rel={link.newTab ? 'noreferrer' : undefined}
+                      target={link.newTab ? '_blank' : undefined}
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+
+          {resolvedSocialLinks.length ? (
+            <ul className="flex flex-wrap gap-4">
+              {resolvedSocialLinks.map((social, socialIndex) => {
+                const Icon = socialIconByPlatform[social.platform]
+
+                return (
+                  <li key={`${social.platform}-${socialIndex}`}>
+                    <a
+                      aria-label={`${fallbackName} on ${social.platform}`}
+                      className="inline-flex items-center justify-center text-current/70 transition-opacity hover:opacity-100 focus-visible:opacity-100"
+                      href={social.url}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      <Icon className="size-4" />
+                    </a>
+                  </li>
+                )
+              })}
+            </ul>
+          ) : null}
+        </div>
+      </div>
+    </section>
+  )
+}
