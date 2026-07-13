@@ -26,7 +26,52 @@ describe('page block pipeline', () => {
       'announcement',
       'heroInstitutional',
       'splitFeature',
+      'statsStrip',
     ])
+  })
+
+  it('defines the statsStrip schema with metric items, background, and animation fields', async () => {
+    const { StatsStripBlock } = await import('@/blocks/StatsStrip/config')
+
+    const itemsField = StatsStripBlock.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'items',
+    ) as { fields?: Array<{ name?: string; type?: string }>; minRows?: number; type?: string } | undefined
+
+    const backgroundStyleField = StatsStripBlock.fields.find(
+      (field) =>
+        typeof field === 'object' && field !== null && 'name' in field && field.name === 'backgroundStyle',
+    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+
+    const animationEnabledField = StatsStripBlock.fields.find(
+      (field) =>
+        typeof field === 'object' && field !== null && 'name' in field && field.name === 'animationEnabled',
+    ) as { defaultValue?: boolean; type?: string } | undefined
+
+    const animationDurationField = StatsStripBlock.fields.find(
+      (field) =>
+        typeof field === 'object' && field !== null && 'name' in field && field.name === 'animationDuration',
+    ) as { defaultValue?: number; type?: string } | undefined
+
+    const triggerOnceField = StatsStripBlock.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'triggerOnce',
+    ) as { defaultValue?: boolean; type?: string } | undefined
+
+    expect(itemsField?.type).toBe('array')
+    expect(itemsField?.minRows).toBe(1)
+    expect(itemsField?.fields?.map((field) => field.name)).toEqual(['prefix', 'value', 'suffix', 'label'])
+    expect(backgroundStyleField?.type).toBe('select')
+    expect(backgroundStyleField?.defaultValue).toBe('default')
+    expect(backgroundStyleField?.options?.map((option) => option.value)).toEqual([
+      'default',
+      'muted',
+      'accent',
+    ])
+    expect(animationEnabledField?.type).toBe('checkbox')
+    expect(animationEnabledField?.defaultValue).toBe(true)
+    expect(animationDurationField?.type).toBe('number')
+    expect(animationDurationField?.defaultValue).toBe(1200)
+    expect(triggerOnceField?.type).toBe('checkbox')
+    expect(triggerOnceField?.defaultValue).toBe(true)
   })
 
   it('defines the heroInstitutional schema with image, overlay, alignment, and CTA fields', async () => {

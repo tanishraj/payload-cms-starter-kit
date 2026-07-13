@@ -6,6 +6,7 @@ import {
 
 import { AnnouncementBlock } from '@/blocks/Announcement/config'
 import { HeroInstitutionalBlock } from '@/blocks/HeroInstitutional/config'
+import { StatsStripBlock } from '@/blocks/StatsStrip/config'
 import { SplitFeatureBlock } from '@/blocks/SplitFeature/config'
 import type { Page } from '@/payload-types'
 import {
@@ -197,7 +198,7 @@ export const Pages: CollectionConfig = {
               name: 'layout',
               label: 'Layout',
               type: 'blocks',
-              blocks: [AnnouncementBlock, HeroInstitutionalBlock, SplitFeatureBlock],
+              blocks: [AnnouncementBlock, HeroInstitutionalBlock, SplitFeatureBlock, StatsStripBlock],
               required: false,
               admin: {
                 description: 'Compose the page using reusable content blocks.',
