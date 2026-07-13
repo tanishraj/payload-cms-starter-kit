@@ -1,8 +1,17 @@
 import type { Block } from 'payload'
+import { announcementThumbnail } from './thumbnail'
 
 export const AnnouncementBlock: Block = {
   slug: 'announcement',
   interfaceName: 'AnnouncementBlock',
+  admin: {
+    images: {
+      thumbnail: {
+        alt: 'Announcement block preview',
+        url: announcementThumbnail,
+      },
+    },
+  },
   labels: {
     singular: 'Announcement',
     plural: 'Announcements',
