@@ -1020,10 +1020,70 @@ export interface Footer {
    */
   generateSlug?: boolean | null;
   slug: string;
+  layout?: Footer56Block[] | null;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Footer56Block".
+ */
+export interface Footer56Block {
+  logoMode: 'siteDefault' | 'customLogo';
+  customLogoLight?: (string | null) | Media;
+  customLogoDark?: (string | null) | Media;
+  description?: string | null;
+  linkGroups?:
+    | {
+        title: string;
+        links?:
+          | {
+              label: string;
+              linkType?: ('page' | 'custom') | null;
+              page?: (string | null) | Page;
+              url?: string | null;
+              openInNewTab?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  ctaButtons?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant?: ('link' | 'outline' | 'default') | null;
+        id?: string | null;
+      }[]
+    | null;
+  bottomLinks?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  copyrightText?: string | null;
+  socialLinks?:
+    | {
+        platform: 'facebook' | 'instagram' | 'linkedin' | 'twitter' | 'github';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  backgroundStyle: 'default' | 'muted' | 'accent' | 'inverse';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'footer56';
 }
 /**
  * Reusable presets for 404, maintenance, and coming soon experiences.
@@ -1770,10 +1830,73 @@ export interface FootersSelect<T extends boolean = true> {
   title?: T;
   generateSlug?: T;
   slug?: T;
+  layout?:
+    | T
+    | {
+        footer56?: T | Footer56BlockSelect<T>;
+      };
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Footer56Block_select".
+ */
+export interface Footer56BlockSelect<T extends boolean = true> {
+  logoMode?: T;
+  customLogoLight?: T;
+  customLogoDark?: T;
+  description?: T;
+  linkGroups?:
+    | T
+    | {
+        title?: T;
+        links?:
+          | T
+          | {
+              label?: T;
+              linkType?: T;
+              page?: T;
+              url?: T;
+              openInNewTab?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  ctaButtons?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
+  bottomLinks?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        id?: T;
+      };
+  copyrightText?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  backgroundStyle?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

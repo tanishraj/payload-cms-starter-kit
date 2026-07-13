@@ -1,3 +1,5 @@
+import fs from 'node:fs'
+import path from 'node:path'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
@@ -87,5 +89,21 @@ describe('global footer wiring', () => {
     expect(html).toContain('Acme Institute')
     expect(html).toContain('Contact')
     expect(html).toContain('About')
+  })
+
+  it('fetches and renders the active footer preset in the frontend shell', () => {
+    const layoutSource = fs.readFileSync(path.resolve(process.cwd(), 'src/app/(frontend)/layout.tsx'), 'utf8')
+
+    expect(layoutSource).toContain("import { GlobalFooter } from '@/components/global/GlobalFooter'")
+    expect(layoutSource).toContain('const activeFooterID =')
+    expect(layoutSource).toContain('const activeFooter =')
+    expect(layoutSource).toContain("collection: 'footers'")
+    expect(layoutSource).toContain('<GlobalFooter footer={activeFooter} siteLogo={siteSettings.logo} siteName={siteSettings.siteName} />')
+
+    const mainIndex = layoutSource.indexOf('<main data-site-main="true">{children}</main>')
+    const footerIndex = layoutSource.indexOf('<GlobalFooter footer={activeFooter} siteLogo={siteSettings.logo} siteName={siteSettings.siteName} />')
+
+    expect(mainIndex).toBeGreaterThanOrEqual(0)
+    expect(footerIndex).toBeGreaterThan(mainIndex)
   })
 })

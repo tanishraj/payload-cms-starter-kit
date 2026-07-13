@@ -7,12 +7,13 @@ import '../../styles/globals.css'
 import type { Metadata } from 'next'
 import { AdminSessionBar } from '@/components/admin/AdminSessionBar'
 import { GlobalAnnouncement } from '@/components/global/GlobalAnnouncement'
+import { GlobalFooter } from '@/components/global/GlobalFooter'
 import { GlobalHeader } from '@/components/global/GlobalHeader'
 import { getCurrentCMSUser } from '@/lib/cmsSession'
 import { getMediaAbsoluteUrl } from '@/lib/media'
 import { getRobotsMetadata } from '@/lib/seo'
 import { getSiteURL } from '@/lib/siteUrl'
-import type { Header } from '@/payload-types'
+import type { Footer, Header } from '@/payload-types'
 
 export const dynamic = 'force-dynamic'
 
@@ -74,8 +75,40 @@ const getFrontendGlobals = async () => {
         })
 
   const activeHeader = (activeHeaderResult?.docs[0] ?? null) as Header | null
+  const activeFooterID =
+    typeof pageSettings?.activeFooter === 'string' || typeof pageSettings?.activeFooter === 'number'
+      ? pageSettings.activeFooter
+      : typeof pageSettings?.activeFooter === 'object' && pageSettings.activeFooter !== null
+        ? pageSettings.activeFooter.id
+        : null
+
+  const activeFooterResult =
+    activeFooterID == null
+      ? null
+      : await payload.find({
+          collection: 'footers',
+          where: {
+            and: [
+              {
+                id: {
+                  equals: activeFooterID,
+                },
+              },
+              {
+                _status: {
+                  equals: 'published',
+                },
+              },
+            ],
+          },
+          depth: 2,
+          limit: 1,
+        })
+
+  const activeFooter = (activeFooterResult?.docs[0] ?? null) as Footer | null
 
   return {
+    activeFooter,
     activeHeader,
     pageSettings,
     seoSettings,
@@ -138,7 +171,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     getFrontendGlobals(),
     getCurrentCMSUser(),
   ])
-  const { activeHeader, pageSettings, siteSettings, themeSettings } = frontendGlobals
+  const { activeFooter, activeHeader, pageSettings, siteSettings, themeSettings } = frontendGlobals
 
   const colorScheme = themeSettings.colorScheme ?? 'system'
   const rawThemeColor = String(themeSettings.themeColor ?? 'default')
@@ -201,6 +234,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
             stickyTopOffset={headerTopOffset}
           />
           <main data-site-main="true">{children}</main>
+          <GlobalFooter footer={activeFooter} siteLogo={siteSettings.logo} siteName={siteSettings.siteName} />
         </div>
       </body>
     </html>
