@@ -46,6 +46,27 @@ describe('stats strip block', () => {
     expect(html.indexOf('Clinical sites')).toBeLessThan(html.indexOf('Successful operations'))
   })
 
+  it('applies the mobile right divider only to the first item in each two-column mobile row', () => {
+    const { container } = render(
+      createElement(StatsStripBlockComponent, {
+        items: [
+          { label: 'Current students', value: 750 },
+          { label: 'Available seats', value: 300 },
+          { label: 'Experienced faculties', value: 300 },
+          { label: 'Successful operations', suffix: 'K', value: 40 },
+        ],
+      }),
+    )
+
+    const articles = Array.from(container.querySelectorAll('article'))
+
+    expect(articles).toHaveLength(4)
+    expect(articles[0]?.className).toContain('border-r')
+    expect(articles[1]?.className).not.toContain('border-r border-border/60')
+    expect(articles[2]?.className).toContain('border-r')
+    expect(articles[3]?.className).not.toContain('border-r border-border/60')
+  })
+
   it('animates only the numeric value and preserves prefix and suffix', () => {
     const observerCallback = vi.fn()
 

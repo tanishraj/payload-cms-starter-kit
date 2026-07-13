@@ -99,12 +99,16 @@ export function StatsStripBlockComponent({
           >
             {row.map((item, itemIndex) => {
               const isOddLastMobileItem = row.length % 2 === 1 && itemIndex === row.length - 1
+              const hasMobileRightDivider =
+                !isOddLastMobileItem && itemIndex % 2 === 0 && itemIndex + 1 < row.length
+              const hasDesktopRightDivider = itemIndex < row.length - 1
 
               return (
                 <article
                   className={cn(
                     'flex min-h-32 flex-col justify-center gap-3 px-5 py-7 text-left md:min-h-40 md:px-8 md:py-9',
-                    itemIndex < row.length - 1 && 'border-r border-border/60',
+                    hasMobileRightDivider && 'border-r border-border/60',
+                    hasDesktopRightDivider && 'md:border-r md:border-border/60',
                     hasMultipleRows && rowIndex < rows.length - 1 && 'md:border-b-0',
                     isOddLastMobileItem && 'col-span-2 md:col-span-1',
                   )}
