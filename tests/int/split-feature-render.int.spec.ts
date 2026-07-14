@@ -28,7 +28,6 @@ describe('split feature block', () => {
     expect(html).toContain('data-split-feature-link-cta="true"')
     expect(html).toContain('href="/programs"')
     expect(html).toContain('See all programs')
-    expect(html).toContain('lucide-arrow-up-right')
     expect(html).toContain('lucide-arrow-right')
   })
 

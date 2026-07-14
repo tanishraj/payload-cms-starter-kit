@@ -111,7 +111,7 @@ export function SplitFeatureBlockComponent({
 
   return (
     <section
-      className={cn('border-b border-border', backgroundClasses[resolvedBackgroundStyle])}
+      className={cn('border-b border-border text-foreground', backgroundClasses[resolvedBackgroundStyle])}
       data-split-feature-background={resolvedBackgroundStyle}
       data-split-feature-cta={ctaMode}
       data-split-feature-layout={renderAsSplit ? 'split' : 'contentOnly'}
@@ -125,7 +125,7 @@ export function SplitFeatureBlockComponent({
         >
           {renderAsSplit ? (
             <div className={cn(order.media)}>
-              <div className="overflow-hidden rounded-(--radius-xl) bg-muted">
+              <div className="overflow-hidden rounded-(--radius-xl) bg-card">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   alt={media?.alt}

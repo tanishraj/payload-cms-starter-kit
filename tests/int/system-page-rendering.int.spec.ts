@@ -23,7 +23,7 @@ describe('system page rendering', () => {
 
     expect(html).toContain('data-system-page-root="true"')
     expect(html).toContain('data-system-page-variant="notFound"')
-    expect(html).toContain('min-h-[100dvh]')
+    expect(html).toContain('min-h-dvh')
     expect(html).toContain('justify-center')
     expect(html).toContain('text-center')
     expect(html).toContain('animate-[fade-in_.7s_ease-out_both]')
@@ -49,7 +49,7 @@ describe('system page rendering', () => {
     expect(html).toContain('data-system-page-variant="maintenance"')
     expect(html).toContain('Scheduled maintenance')
     expect(html).toContain('Support remains available by email.')
-    expect(html).toContain('min-h-[100dvh]')
+    expect(html).toContain('min-h-dvh')
     expect(html).toContain('text-[clamp(4rem,15vw,7rem)]')
   })
 
@@ -69,7 +69,7 @@ describe('system page rendering', () => {
     expect(html).toContain('data-system-page-root="true"')
     expect(html).toContain('data-system-page-variant="comingSoon"')
     expect(html).toContain('New site in progress')
-    expect(html).toContain('min-h-[100dvh]')
+    expect(html).toContain('min-h-dvh')
     expect(html).toContain('text-[clamp(4rem,15vw,7rem)]')
   })
 

@@ -227,7 +227,7 @@ export function Footer56BlockComponent({
         <div className="flex flex-col gap-5 py-6 md:flex-row md:items-center md:justify-between">
           <div>
             {copyrightText ? (
-              <p className="font-mono text-xs font-normal text-current/65">{copyrightText}</p>
+              <p className="text-xs font-normal text-current/65">{copyrightText}</p>
             ) : null}
           </div>
           {resolvedBottomLinks.length ? (

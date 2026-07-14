@@ -76,7 +76,7 @@ function MarqueeTrack({
           <MarqueeItem duplicate={duplicate} item={item} />
           <span
             aria-hidden="true"
-            className="size-1.5 shrink-0 rounded-(--radius) bg-primary-foreground/70"
+            className="size-1.5 shrink-0 rounded-(--radius) bg-accent-foreground/70"
           />
         </Fragment>
       ))}
@@ -104,7 +104,7 @@ function MarqueeItem({
       >
         {item.title ? <span className="font-medium">{item.title}</span> : null}
         {item.title ? (
-          <span aria-hidden="true" className="text-primary-foreground/70">
+          <span aria-hidden="true" className="text-accent-foreground/70">
             —
           </span>
         ) : null}
@@ -117,7 +117,7 @@ function MarqueeItem({
     <div className="inline-flex items-center gap-x-2">
       {item.title ? <span className="font-medium">{item.title}</span> : null}
       {item.title ? (
-        <span aria-hidden="true" className="text-primary-foreground/70">
+        <span aria-hidden="true" className="text-accent-foreground/70">
           —
         </span>
       ) : null}

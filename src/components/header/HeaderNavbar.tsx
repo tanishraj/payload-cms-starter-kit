@@ -35,7 +35,7 @@ const ctaButtonSizes = {
 export function HeaderNavbar({ ctas, logo, menuItems, navAlignment, size }: HeaderNavbarProps) {
   return (
     <header
-      className="bg-background/80 shadow-sm backdrop-blur-lg supports-[backdrop-filter]:bg-background/70"
+      className="border-b border-border bg-background/80 text-foreground shadow-sm backdrop-blur-lg supports-[backdrop-filter]:bg-background/70"
       data-header-navbar="true"
     >
       <div

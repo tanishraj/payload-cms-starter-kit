@@ -140,7 +140,10 @@ export function HeroInstitutionalBlockComponent({
   })
 
   return (
-    <section className="relative isolate overflow-hidden border-b border-border" data-hero-block="true">
+    <section
+      className="relative isolate overflow-hidden border-b border-border bg-background"
+      data-hero-block="true"
+    >
       <div className="absolute inset-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img alt={image.alt} className="size-full object-cover" src={image.src} />
