@@ -73,6 +73,9 @@ export const AnnouncementBlock: Block = {
       type: 'array',
       minRows: 1,
       required: true,
+      admin: {
+        initCollapsed: true,
+      },
       fields: [
         {
           name: 'title',

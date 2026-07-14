@@ -129,6 +129,9 @@ const buttonsField = {
   label: 'Buttons',
   type: 'array',
   maxRows: 2,
+  admin: {
+    initCollapsed: true,
+  },
   fields: [
     ...createLinkFields(),
     {

@@ -7,6 +7,9 @@ const itemsField = {
   name: 'items',
   type: 'array',
   minRows: 1,
+  admin: {
+    initCollapsed: true,
+  },
   fields: [
     {
       name: 'prefix',

@@ -100,11 +100,17 @@ const menuItemsField = {
   label: 'Menu Items',
   type: 'array',
   minRows: 1,
+  admin: {
+    initCollapsed: true,
+  },
   fields: [
     ...createLinkFields(),
     {
       name: 'children',
       type: 'array',
+      admin: {
+        initCollapsed: true,
+      },
       fields: childLinkFields,
     } satisfies ArrayField,
   ],
@@ -115,6 +121,9 @@ const ctaButtonsField = {
   label: 'CTA Buttons',
   type: 'array',
   maxRows: 2,
+  admin: {
+    initCollapsed: true,
+  },
   fields: [
     ...createLinkFields(),
     {

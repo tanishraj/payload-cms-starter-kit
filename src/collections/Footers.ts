@@ -56,6 +56,9 @@ export const Footers: CollectionConfig = {
       name: 'layout',
       type: 'blocks',
       blocks: [Footer56Block],
+      admin: {
+        initCollapsed: true,
+      },
     },
   ],
 }

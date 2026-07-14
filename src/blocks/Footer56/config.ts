@@ -121,6 +121,9 @@ export const Footer56Block: Block = {
       type: 'array',
       minRows: 1,
       maxRows: 4,
+      admin: {
+        initCollapsed: true,
+      },
       fields: [
         {
           name: 'title',
@@ -131,6 +134,9 @@ export const Footer56Block: Block = {
           name: 'links',
           type: 'array',
           minRows: 1,
+          admin: {
+            initCollapsed: true,
+          },
           fields: createLinkFields(),
         } satisfies ArrayField,
       ],
@@ -139,6 +145,9 @@ export const Footer56Block: Block = {
       name: 'ctaButtons',
       type: 'array',
       maxRows: 2,
+      admin: {
+        initCollapsed: true,
+      },
       fields: [
         ...createLinkFields(),
         {
@@ -156,6 +165,9 @@ export const Footer56Block: Block = {
     {
       name: 'bottomLinks',
       type: 'array',
+      admin: {
+        initCollapsed: true,
+      },
       fields: createLinkFields(),
     } satisfies ArrayField,
     {

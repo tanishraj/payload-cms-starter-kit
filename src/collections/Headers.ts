@@ -56,6 +56,9 @@ export const Headers: CollectionConfig = {
       name: 'layout',
       type: 'blocks',
       blocks: [HeaderNavbar12Block],
+      admin: {
+        initCollapsed: true,
+      },
     },
   ],
 }

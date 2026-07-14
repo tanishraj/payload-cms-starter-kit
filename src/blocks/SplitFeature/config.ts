@@ -208,6 +208,7 @@ export const SplitFeatureBlock: Block = {
       maxRows: 2,
       admin: {
         condition: isButtonsMode,
+        initCollapsed: true,
       },
       fields: [
         ...createLinkFields(),
