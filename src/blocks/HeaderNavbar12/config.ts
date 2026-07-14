@@ -1,5 +1,7 @@
 import type { ArrayField, Block, CheckboxField, Field, NumberField, RadioField, SelectField } from 'payload'
 
+import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+
 import { headerNavbar12Thumbnail } from './thumbnail'
 
 type LinkType = 'page' | 'custom'
@@ -149,6 +151,7 @@ export const HeaderNavbar12Block: Block = {
       type: 'checkbox',
       defaultValue: true,
     } satisfies CheckboxField,
+    createBlockAppearanceFields(),
     sizeField,
     navAlignmentField,
     {

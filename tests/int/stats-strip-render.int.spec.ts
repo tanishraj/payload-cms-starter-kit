@@ -22,7 +22,11 @@ describe('stats strip block', () => {
   it('renders items sequentially across rows and adds a divider before later rows', () => {
     const html = renderToStaticMarkup(
       createElement(StatsStripBlockComponent, {
-        backgroundStyle: 'accent',
+        appearance: {
+          background: 'accent',
+          border: 'bottom',
+          textColor: 'auto',
+        },
         items: [
           { label: 'Years of training physicians', value: 112 },
           { label: 'Student-to-faculty ratio', suffix: ':1', value: 9 },
@@ -35,6 +39,9 @@ describe('stats strip block', () => {
     )
 
     expect(html).toContain('data-stats-strip-background="accent"')
+    expect(html).toContain('bg-accent')
+    expect(html).toContain('text-accent-foreground')
+    expect(html).toContain('border-b border-border')
     expect(html).toContain('data-stats-strip-row="0"')
     expect(html).toContain('data-stats-strip-row="1"')
     expect(html).toContain('data-stats-strip-row-size="4"')

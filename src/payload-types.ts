@@ -220,6 +220,11 @@ export interface Page {
  * via the `definition` "AnnouncementBlock".
  */
 export interface AnnouncementBlock {
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
   displayMode: 'vertical' | 'horizontal' | 'marquee';
   label?: string | null;
   intervalMs?: number | null;
@@ -242,6 +247,11 @@ export interface AnnouncementBlock {
  * via the `definition` "HeroInstitutionalBlock".
  */
 export interface HeroInstitutionalBlock {
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
   backgroundImage: string | Media;
   eyebrow?: string | null;
   title: string;
@@ -356,13 +366,17 @@ export interface Media {
  * via the `definition` "SplitFeatureBlock".
  */
 export interface SplitFeatureBlock {
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
   image?: (string | null) | Media;
   eyebrow?: string | null;
   title: string;
   description?: string | null;
   layoutMode: 'split' | 'contentOnly';
   mediaPosition?: ('left' | 'right') | null;
-  backgroundStyle: 'plain' | 'muted';
   ctaMode: 'link' | 'buttons';
   linkLabel?: string | null;
   linkType?: ('page' | 'custom') | null;
@@ -398,7 +412,11 @@ export interface StatsStripBlock {
         id?: string | null;
       }[]
     | null;
-  backgroundStyle: 'default' | 'muted' | 'accent';
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
   animationEnabled?: boolean | null;
   animationDuration: number;
   triggerOnce?: boolean | null;
@@ -962,6 +980,11 @@ export interface Header {
  */
 export interface HeaderNavbar12Block {
   sticky?: boolean | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
   size?: ('compact' | 'default' | 'large') | null;
   navAlignment?: ('left' | 'center' | 'right') | null;
   logoMode?: ('siteDefault' | 'customLogo') | null;
@@ -1039,6 +1062,11 @@ export interface Footer56Block {
    */
   logoHeight?: number | null;
   description?: string | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
   linkGroups?:
     | {
         title: string;
@@ -1077,7 +1105,6 @@ export interface Footer56Block {
       }[]
     | null;
   copyrightText?: string | null;
-  backgroundStyle: 'default' | 'muted' | 'accent' | 'inverse';
   id?: string | null;
   blockName?: string | null;
   blockType: 'footer56';
@@ -1138,6 +1165,11 @@ export interface SystemPage {
  * via the `definition` "System404Block".
  */
 export interface System404Block {
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
   badge?: string | null;
   heading: string;
   description?: string | null;
@@ -1167,6 +1199,11 @@ export interface System404Block {
  * via the `definition` "SystemMaintenanceBlock".
  */
 export interface SystemMaintenanceBlock {
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
   badge?: string | null;
   heading: string;
   description?: string | null;
@@ -1196,6 +1233,11 @@ export interface SystemMaintenanceBlock {
  * via the `definition` "SystemComingSoonBlock".
  */
 export interface SystemComingSoonBlock {
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
   badge?: string | null;
   heading: string;
   description?: string | null;
@@ -1504,6 +1546,13 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "AnnouncementBlock_select".
  */
 export interface AnnouncementBlockSelect<T extends boolean = true> {
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
   displayMode?: T;
   label?: T;
   intervalMs?: T;
@@ -1524,6 +1573,13 @@ export interface AnnouncementBlockSelect<T extends boolean = true> {
  * via the `definition` "HeroInstitutionalBlock_select".
  */
 export interface HeroInstitutionalBlockSelect<T extends boolean = true> {
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
   backgroundImage?: T;
   eyebrow?: T;
   title?: T;
@@ -1552,13 +1608,19 @@ export interface HeroInstitutionalBlockSelect<T extends boolean = true> {
  * via the `definition` "SplitFeatureBlock_select".
  */
 export interface SplitFeatureBlockSelect<T extends boolean = true> {
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
   image?: T;
   eyebrow?: T;
   title?: T;
   description?: T;
   layoutMode?: T;
   mediaPosition?: T;
-  backgroundStyle?: T;
   ctaMode?: T;
   linkLabel?: T;
   linkType?: T;
@@ -1593,7 +1655,13 @@ export interface StatsStripBlockSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
-  backgroundStyle?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
   animationEnabled?: T;
   animationDuration?: T;
   triggerOnce?: T;
@@ -1779,6 +1847,13 @@ export interface HeadersSelect<T extends boolean = true> {
  */
 export interface HeaderNavbar12BlockSelect<T extends boolean = true> {
   sticky?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
   size?: T;
   navAlignment?: T;
   logoMode?: T;
@@ -1847,6 +1922,13 @@ export interface Footer56BlockSelect<T extends boolean = true> {
   customLogoDark?: T;
   logoHeight?: T;
   description?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
   linkGroups?:
     | T
     | {
@@ -1885,7 +1967,6 @@ export interface Footer56BlockSelect<T extends boolean = true> {
         id?: T;
       };
   copyrightText?: T;
-  backgroundStyle?: T;
   id?: T;
   blockName?: T;
 }
@@ -1930,6 +2011,13 @@ export interface SystemPagesSelect<T extends boolean = true> {
  * via the `definition` "System404Block_select".
  */
 export interface System404BlockSelect<T extends boolean = true> {
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
   badge?: T;
   heading?: T;
   description?: T;
@@ -1956,6 +2044,13 @@ export interface System404BlockSelect<T extends boolean = true> {
  * via the `definition` "SystemMaintenanceBlock_select".
  */
 export interface SystemMaintenanceBlockSelect<T extends boolean = true> {
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
   badge?: T;
   heading?: T;
   description?: T;
@@ -1982,6 +2077,13 @@ export interface SystemMaintenanceBlockSelect<T extends boolean = true> {
  * via the `definition` "SystemComingSoonBlock_select".
  */
 export interface SystemComingSoonBlockSelect<T extends boolean = true> {
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
   badge?: T;
   heading?: T;
   description?: T;

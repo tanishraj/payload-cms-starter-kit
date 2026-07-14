@@ -7,6 +7,7 @@ import type {
   SelectField,
 } from 'payload'
 
+import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { heroInstitutionalThumbnail } from './thumbnail'
 
 type LinkType = 'page' | 'custom'
@@ -160,6 +161,7 @@ export const HeroInstitutionalBlock: Block = {
     plural: 'Hero Institutionals',
   },
   fields: [
+    createBlockAppearanceFields(),
     {
       name: 'backgroundImage',
       label: 'Background Image',

@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Mail, MapPin, Phone } from 'lucide-react'
 import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube } from 'react-icons/fa'
 
+import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
 import { SiteLogo, type LogoMediaLike } from '@/components/site/SiteLogo'
 import { Button } from '@/components/ui/button'
 import { resolveHeaderLink } from '@/lib/headerNavigation'
@@ -10,6 +11,7 @@ import { cn } from '@/lib/utils'
 import type { Footer56Block as Footer56BlockType, Page } from '@/payload-types'
 
 type Footer56BlockComponentProps = Footer56BlockType & {
+  appearance?: BlockAppearance | null
   privacyPolicyPage?: Page | null
   siteAddress?: string | null
   siteEmail?: string | null
@@ -25,13 +27,6 @@ type Footer56BlockComponentProps = Footer56BlockType & {
   } | null
 }
 
-const backgroundClasses = {
-  default: 'bg-background text-foreground',
-  muted: 'bg-muted text-foreground',
-  accent: 'bg-accent text-accent-foreground',
-  inverse: 'bg-sidebar text-sidebar-foreground',
-} as const
-
 const socialIconByPlatform = {
   facebook: FaFacebook,
   instagram: FaInstagram,
@@ -40,7 +35,7 @@ const socialIconByPlatform = {
 } as const
 
 export function Footer56BlockComponent({
-  backgroundStyle = 'inverse',
+  appearance,
   bottomLinks,
   copyrightText,
   ctaButtons,
@@ -103,11 +98,12 @@ export function Footer56BlockComponent({
       return platform in socialIconByPlatform && typeof url === 'string' && url.trim().length > 0
     })
     .map(([platform, url]) => ({ platform, url: url.trim() }))
+  const appearanceClasses = resolveBlockAppearanceClasses(appearance)
 
   return (
     <section
-      className={cn('border-t border-border/70', backgroundClasses[backgroundStyle])}
-      data-footer56-background={backgroundStyle}
+      className={cn('text-sm', appearanceClasses.className)}
+      data-footer56-background={appearance?.background ?? 'none'}
     >
       <div className="mx-auto flex max-w-screen-2xl flex-col px-4 py-12 md:px-6 md:py-16">
         <div className="grid gap-10 border-b border-border/70 pb-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,2fr)]">

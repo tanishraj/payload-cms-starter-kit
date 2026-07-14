@@ -29,7 +29,11 @@ describe('global footer wiring', () => {
         renderFooterBlocks(
           [
             {
-              backgroundStyle: 'inverse',
+              appearance: {
+                background: 'accent',
+                border: 'top',
+                textColor: 'auto',
+              },
               blockType: 'footer56',
               bottomLinks: [{ label: 'Terms and Conditions', linkType: 'custom', url: '/terms' }],
               copyrightText: '© 2026 Acme Institute. All rights reserved.',
@@ -66,7 +70,10 @@ describe('global footer wiring', () => {
       ),
     )
 
-    expect(html).toContain('data-footer56-background="inverse"')
+    expect(html).toContain('data-footer56-background="accent"')
+    expect(html).toContain('bg-accent')
+    expect(html).toContain('text-accent-foreground')
+    expect(html).toContain('border-t')
     expect(html).toContain('Acme Institute')
     expect(html).toContain('Programs')
     expect(html).toContain('Privacy Policy')
@@ -104,7 +111,11 @@ describe('global footer wiring', () => {
         footer: {
           layout: [
             {
-              backgroundStyle: 'muted',
+              appearance: {
+                background: 'muted',
+                border: 'top',
+                textColor: 'auto',
+              },
               blockType: 'footer56',
               ctaButtons: [{ label: 'Contact', linkType: 'custom', url: '/contact', variant: 'outline' }],
               description: 'A quieter institutional footer for public-facing pages.',
@@ -129,6 +140,7 @@ describe('global footer wiring', () => {
 
     expect(html).toContain('data-global-footer="true"')
     expect(html).toContain('data-footer56-background="muted"')
+    expect(html).toContain('bg-muted')
     expect(html).toContain('Acme Institute')
     expect(html).toContain('123 Market Street, Suite 400')
     expect(html).toContain('hello@acme.edu')

@@ -1,5 +1,6 @@
-import type { ArrayField, Block, CheckboxField, NumberField, SelectField } from 'payload'
+import type { ArrayField, Block, CheckboxField, NumberField } from 'payload'
 
+import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { statsStripThumbnail } from './thumbnail'
 
 const itemsField = {
@@ -45,17 +46,7 @@ export const StatsStripBlock: Block = {
   },
   fields: [
     itemsField,
-    {
-      name: 'backgroundStyle',
-      type: 'select',
-      defaultValue: 'default',
-      options: [
-        { label: 'Default', value: 'default' },
-        { label: 'Muted', value: 'muted' },
-        { label: 'Accent', value: 'accent' },
-      ],
-      required: true,
-    } satisfies SelectField,
+    createBlockAppearanceFields(),
     {
       name: 'animationEnabled',
       type: 'checkbox',

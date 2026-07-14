@@ -1,3 +1,4 @@
+import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
 import { Button } from '@/components/ui/button'
 import { resolveCmsLink } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
@@ -15,7 +16,7 @@ type SplitFeatureButton = {
 }
 
 type SplitFeatureBlockLike = {
-  backgroundStyle?: 'muted' | 'plain' | null
+  appearance?: BlockAppearance | null
   buttons?: SplitFeatureButton[] | null
   ctaMode?: 'buttons' | 'link' | null
   description?: string | null
@@ -31,11 +32,6 @@ type SplitFeatureBlockLike = {
   url?: string | null
 }
 
-const backgroundClasses = {
-  plain: 'bg-background',
-  muted: 'bg-muted',
-} as const
-
 const orderClasses = {
   left: {
     content: 'md:order-2',
@@ -48,7 +44,7 @@ const orderClasses = {
 } as const
 
 export function SplitFeatureBlockComponent({
-  backgroundStyle = 'plain',
+  appearance,
   buttons,
   ctaMode = 'link',
   description,
@@ -63,13 +59,13 @@ export function SplitFeatureBlockComponent({
   title,
   url,
 }: SplitFeatureBlockLike) {
+  const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const media = getMediaImageProps({
     media: image as never,
     preset: 'generic',
     fallbackAlt: title,
   })
 
-  const resolvedBackgroundStyle = backgroundStyle ?? 'plain'
   const resolvedLayoutMode = layoutMode ?? 'split'
 
   const linkCta = resolveCmsLink({
@@ -111,8 +107,8 @@ export function SplitFeatureBlockComponent({
 
   return (
     <section
-      className={cn('border-b border-border text-foreground', backgroundClasses[resolvedBackgroundStyle])}
-      data-split-feature-background={resolvedBackgroundStyle}
+      className={appearanceClasses.className}
+      data-split-feature-background={appearance?.background ?? 'none'}
       data-split-feature-cta={ctaMode}
       data-split-feature-layout={renderAsSplit ? 'split' : 'contentOnly'}
       data-split-feature-position={renderAsSplit ? resolvedPosition : 'contentOnly'}

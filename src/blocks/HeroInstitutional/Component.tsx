@@ -1,3 +1,4 @@
+import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
 import { Button } from '@/components/ui/button'
 import { resolveCmsLink } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
@@ -14,6 +15,7 @@ type HeroButton = {
 }
 
 type HeroInstitutionalBlockLike = {
+  appearance?: BlockAppearance | null
   backgroundImage?: unknown
   buttons?: HeroButton[] | null
   contentWidth?: 'default' | 'narrow' | 'wide' | null
@@ -81,6 +83,7 @@ const actionAlignmentClasses = {
 } as const
 
 export function HeroInstitutionalBlockComponent({
+  appearance,
   backgroundImage,
   buttons,
   contentWidth = 'default',
@@ -92,6 +95,7 @@ export function HeroInstitutionalBlockComponent({
   title,
   verticalAlignment = 'center',
 }: HeroInstitutionalBlockLike) {
+  const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const resolvedContentWidth = contentWidth ?? 'default'
   const resolvedHorizontalAlignment = horizontalAlignment ?? 'left'
   const resolvedOverlayStyle =
@@ -141,7 +145,8 @@ export function HeroInstitutionalBlockComponent({
 
   return (
     <section
-      className="relative isolate overflow-hidden border-b border-border bg-background"
+      className={cn('relative isolate overflow-hidden', appearanceClasses.className)}
+      data-hero-background={appearance?.background ?? 'none'}
       data-hero-block="true"
     >
       <div className="absolute inset-0">

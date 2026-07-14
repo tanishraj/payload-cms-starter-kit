@@ -1,3 +1,5 @@
+import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
+
 export type SystemPageVariant = 'comingSoon' | 'maintenance' | 'notFound'
 
 export type SystemPageActionLink = {
@@ -7,6 +9,7 @@ export type SystemPageActionLink = {
 }
 
 export type SystemPageViewProps = {
+  appearance?: BlockAppearance | null
   badge?: string | null
   description?: string | null
   heading: string

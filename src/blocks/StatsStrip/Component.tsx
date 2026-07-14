@@ -1,3 +1,4 @@
+import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
 import { cn } from '@/lib/utils'
 
 import { AnimatedMetricValue } from './AnimatedMetricValue'
@@ -17,16 +18,10 @@ type ValidStatsStripItem = StatsStripItem & {
 export type StatsStripBlockLike = {
   animationDuration?: number | null
   animationEnabled?: boolean | null
-  backgroundStyle?: 'accent' | 'default' | 'muted' | null
+  appearance?: BlockAppearance | null
   items?: StatsStripItem[] | null
   triggerOnce?: boolean | null
 }
-
-const backgroundClasses = {
-  default: 'bg-background text-foreground',
-  muted: 'bg-muted text-foreground',
-  accent: 'bg-accent text-accent-foreground',
-} as const
 
 const chunkItems = (items: ValidStatsStripItem[]) => {
   const rows: ValidStatsStripItem[][] = []
@@ -50,10 +45,11 @@ const rowGridClasses = {
 export function StatsStripBlockComponent({
   animationDuration = 1200,
   animationEnabled = true,
-  backgroundStyle = 'default',
+  appearance,
   items,
   triggerOnce = true,
 }: StatsStripBlockLike) {
+  const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const validItems = (items ?? []).flatMap((item) => {
     const label = item?.label?.trim()
 
@@ -74,14 +70,13 @@ export function StatsStripBlockComponent({
     return null
   }
 
-  const resolvedBackgroundStyle = backgroundStyle ?? 'default'
   const rows = chunkItems(validItems)
   const hasMultipleRows = rows.length > 1
 
   return (
     <section
-      className={cn('border-b border-border/60', backgroundClasses[resolvedBackgroundStyle])}
-      data-stats-strip-background={resolvedBackgroundStyle}
+      className={appearanceClasses.className}
+      data-stats-strip-background={appearance?.background ?? 'none'}
     >
       <div className="mx-auto flex max-w-screen-2xl flex-col px-4">
         {rows.map((row, rowIndex) => (

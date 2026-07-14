@@ -8,6 +8,7 @@ export function System404View(props: SystemPageViewProps) {
 
   return (
     <SystemPageShell
+      appearance={props.appearance}
       variant="notFound"
       className="relative min-h-dvh overflow-hidden py-16 md:py-20"
     >

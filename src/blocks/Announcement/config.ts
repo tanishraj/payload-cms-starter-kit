@@ -1,4 +1,5 @@
 import type { Block } from 'payload'
+import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { announcementThumbnail } from './thumbnail'
 
 export const AnnouncementBlock: Block = {
@@ -17,6 +18,7 @@ export const AnnouncementBlock: Block = {
     plural: 'Announcements',
   },
   fields: [
+    createBlockAppearanceFields(),
     {
       name: 'displayMode',
       label: 'Animation Mode',

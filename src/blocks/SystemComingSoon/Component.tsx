@@ -8,6 +8,7 @@ export function SystemComingSoonBlockComponent(props: SystemComingSoonBlockData)
 
   return (
     <SystemComingSoonView
+      appearance={props.appearance}
       badge={props.badge}
       description={props.description}
       heading={props.heading}

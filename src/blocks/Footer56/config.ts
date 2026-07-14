@@ -1,5 +1,7 @@
 import type { ArrayField, Block, CheckboxField, Field, RadioField, SelectField } from 'payload'
 
+import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+
 import { footer56Thumbnail } from './thumbnail'
 
 type LinkType = 'page' | 'custom'
@@ -113,6 +115,7 @@ export const Footer56Block: Block = {
       name: 'description',
       type: 'textarea',
     },
+    createBlockAppearanceFields(),
     {
       name: 'linkGroups',
       type: 'array',
@@ -159,17 +162,5 @@ export const Footer56Block: Block = {
       name: 'copyrightText',
       type: 'text',
     },
-    {
-      name: 'backgroundStyle',
-      type: 'select',
-      defaultValue: 'inverse',
-      options: [
-        { label: 'Default', value: 'default' },
-        { label: 'Muted', value: 'muted' },
-        { label: 'Accent', value: 'accent' },
-        { label: 'Inverse', value: 'inverse' },
-      ],
-      required: true,
-    } satisfies SelectField,
   ],
 }

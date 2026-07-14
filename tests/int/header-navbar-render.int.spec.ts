@@ -119,6 +119,11 @@ describe('header navbar rendering', () => {
   it('renders aligned menu items, dropdown children, and CTA buttons', () => {
     const html = renderToStaticMarkup(
       createElement(HeaderNavbar, {
+        appearance: {
+          background: 'secondary',
+          border: 'bottom',
+          textColor: 'auto',
+        },
         ctas: [{ href: '/contact', label: 'Contact', newTab: false, variant: 'outline' }],
         logo: createElement('span', null, 'Acme'),
         menuItems: [
@@ -140,6 +145,10 @@ describe('header navbar rendering', () => {
     )
 
     expect(html).toContain('data-header-navbar="true"')
+    expect(html).toContain('data-header-navbar-background="secondary"')
+    expect(html).toContain('bg-secondary')
+    expect(html).toContain('text-secondary-foreground')
+    expect(html).toContain('border-b')
     expect(html).toContain('Acme')
     expect(html).toContain('Services')
     expect(html).toContain('Contact')
@@ -150,6 +159,11 @@ describe('header navbar rendering', () => {
   it('adapts block data into the navbar shell with site-name fallback', () => {
     const html = renderToStaticMarkup(
       createElement(HeaderNavbar12BlockComponent, {
+        appearance: {
+          background: 'accent',
+          border: 'bottom',
+          textColor: 'auto',
+        },
         blockType: 'headerNavbar12',
         ctaButtons: [
           {
@@ -183,6 +197,7 @@ describe('header navbar rendering', () => {
     )
 
     expect(html).toContain('Acme Studio')
+    expect(html).toContain('data-header-navbar-background="accent"')
     expect(html).toContain('data-slot="navigation-menu-trigger"')
     expect(html).toContain('lucide-chevron-down')
     expect(html).toContain('/contact')
@@ -232,6 +247,11 @@ describe('header navbar rendering', () => {
       createElement('div', null, renderHeaderBlocks(
         [
           {
+            appearance: {
+              background: 'primary',
+              border: 'bottom',
+              textColor: 'auto',
+            },
             blockType: 'headerNavbar12',
             ctaButtons: [
               {
@@ -258,6 +278,7 @@ describe('header navbar rendering', () => {
     )
 
     expect(html).toContain('Acme Studio')
+    expect(html).toContain('data-header-navbar-background="primary"')
     expect(html).toContain('Book')
     expect(html).toContain('Home')
     expect(html).toContain('data-size="lg"')

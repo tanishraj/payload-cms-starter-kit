@@ -7,6 +7,7 @@ import type { SystemPageViewProps } from '@/components/system-pages/types'
 export function SystemMaintenanceView(props: SystemPageViewProps) {
   return (
     <SystemPageShell
+      appearance={props.appearance}
       variant="maintenance"
       className="relative min-h-dvh overflow-hidden py-16 md:py-20"
     >

@@ -8,6 +8,7 @@ export function System404BlockComponent(props: System404BlockData) {
 
   return (
     <System404View
+      appearance={props.appearance}
       badge={props.badge}
       description={props.description}
       heading={props.heading}

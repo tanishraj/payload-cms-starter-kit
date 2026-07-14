@@ -7,6 +7,7 @@ import type { SystemPageViewProps } from '@/components/system-pages/types'
 export function SystemComingSoonView(props: SystemPageViewProps) {
   return (
     <SystemPageShell
+      appearance={props.appearance}
       variant="comingSoon"
       className="relative min-h-dvh overflow-hidden py-16 md:py-20"
     >

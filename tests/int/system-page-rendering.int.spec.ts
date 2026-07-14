@@ -11,6 +11,11 @@ describe('system page rendering', () => {
   it('renders the 404 block with the dedicated centered not-found layout', () => {
     const html = renderToStaticMarkup(
       createElement(System404BlockComponent, {
+        appearance: {
+          background: 'muted',
+          textColor: 'auto',
+          border: 'topAndBottom',
+        },
         badge: '404',
         heading: "We couldn't find that page",
         description: 'The page has moved.',
@@ -25,6 +30,9 @@ describe('system page rendering', () => {
     expect(html).toContain('data-system-page-variant="notFound"')
     expect(html).toContain('min-h-dvh')
     expect(html).toContain('justify-center')
+    expect(html).toContain('bg-muted')
+    expect(html).toContain('text-foreground')
+    expect(html).toContain('border-y border-border')
     expect(html).toContain('text-center')
     expect(html).toContain('animate-[fade-in_.7s_ease-out_both]')
     expect(html).toContain('animate-[fade-in_.7s_ease-out_.12s_both]')

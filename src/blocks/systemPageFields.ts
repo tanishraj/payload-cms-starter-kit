@@ -1,5 +1,6 @@
 import type { Block, Field } from 'payload'
 
+import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCmsLinkFields } from '@/fields/cmsLinkFields'
 
 type SystemPageDefaults = {
@@ -17,6 +18,7 @@ const actionFields: Field[] = [
 ]
 
 export const createBaseSystemPageFields = (defaults: SystemPageDefaults): Field[] => [
+  createBlockAppearanceFields(),
   {
     name: 'badge',
     type: 'text',

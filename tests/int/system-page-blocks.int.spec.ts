@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs'
 import { System404Block } from '@/blocks/System404/config'
 import { SystemComingSoonBlock } from '@/blocks/SystemComingSoon/config'
 import { SystemMaintenanceBlock } from '@/blocks/SystemMaintenance/config'
+import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createBaseSystemPageFields } from '@/blocks/systemPageFields'
 import { Footers } from '@/collections/Footers'
 import { Headers } from '@/collections/Headers'
@@ -77,6 +78,38 @@ const collectBlockSlugs = (fields: unknown[]): string[] => {
 }
 
 describe('system page block schemas', () => {
+  it('defines the shared block appearance schema defaults and options', () => {
+    const appearanceField = createBlockAppearanceFields()
+    const appearanceFields = 'fields' in appearanceField ? appearanceField.fields : []
+
+    const appearanceBackgroundField = appearanceFields.find((field) => field.name === 'background')
+    const appearanceTextColorField = appearanceFields.find((field) => field.name === 'textColor')
+    const appearanceBorderField = appearanceFields.find((field) => field.name === 'border')
+
+    expect(appearanceField?.type).toBe('group')
+    expect(appearanceBackgroundField?.defaultValue).toBe('none')
+    expect(appearanceTextColorField?.defaultValue).toBe('auto')
+    expect(appearanceBorderField?.defaultValue).toBe('none')
+    expect(appearanceBackgroundField?.options?.map((option) => option.value)).toEqual([
+      'none',
+      'primary',
+      'secondary',
+      'muted',
+      'accent',
+    ])
+    expect(appearanceTextColorField?.options?.map((option) => option.value)).toEqual([
+      'auto',
+      'default',
+      'inverse',
+    ])
+    expect(appearanceBorderField?.options?.map((option) => option.value)).toEqual([
+      'none',
+      'top',
+      'bottom',
+      'topAndBottom',
+    ])
+  })
+
   it('renders only system page blocks', () => {
     const source = readFileSync('src/blocks/RenderBlocks.tsx', 'utf8')
 
@@ -110,6 +143,10 @@ describe('system page block schemas', () => {
 
       expect(fieldNames).toEqual(
         expect.arrayContaining([
+          'appearance',
+          'background',
+          'textColor',
+          'border',
           'badge',
           'heading',
           'description',
@@ -118,6 +155,19 @@ describe('system page block schemas', () => {
           'secondaryAction',
         ]),
       )
+    }
+  })
+
+  it('adds the shared appearance group to every system page block', () => {
+    for (const block of [System404Block, SystemMaintenanceBlock, SystemComingSoonBlock]) {
+      const appearanceField = block.fields.find(
+        (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'appearance',
+      )
+
+      expect(appearanceField).toMatchObject({
+        name: 'appearance',
+        type: 'group',
+      })
     }
   })
 

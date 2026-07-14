@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
 import { HeaderMobileMenu } from '@/components/header/HeaderMobileMenu'
 import { HeaderNavMenu } from '@/components/header/HeaderNavMenu'
 import { Button } from '@/components/ui/button'
@@ -7,6 +8,7 @@ import type { ResolvedHeaderLink, ResolvedHeaderMenuItem } from '@/lib/headerNav
 import { cn } from '@/lib/utils'
 
 type HeaderNavbarProps = {
+  appearance?: BlockAppearance | null
   ctas: Array<ResolvedHeaderLink & { variant?: 'default' | 'link' | 'outline' | null }>
   logo: ReactNode
   menuItems: ResolvedHeaderMenuItem[]
@@ -32,10 +34,18 @@ const ctaButtonSizes = {
   large: 'lg',
 } as const
 
-export function HeaderNavbar({ ctas, logo, menuItems, navAlignment, size }: HeaderNavbarProps) {
+export function HeaderNavbar({ appearance, ctas, logo, menuItems, navAlignment, size }: HeaderNavbarProps) {
+  const appearanceClasses = resolveBlockAppearanceClasses(appearance)
+  const usesDefaultSurface = (appearance?.background ?? 'none') === 'none'
+
   return (
     <header
-      className="border-b border-border bg-background/80 text-foreground shadow-sm backdrop-blur-lg supports-[backdrop-filter]:bg-background/70"
+      className={cn(
+        'shadow-sm backdrop-blur-lg',
+        usesDefaultSurface && 'bg-background/80 text-foreground supports-[backdrop-filter]:bg-background/70',
+        appearanceClasses.className,
+      )}
+      data-header-navbar-background={appearance?.background ?? 'none'}
       data-header-navbar="true"
     >
       <div

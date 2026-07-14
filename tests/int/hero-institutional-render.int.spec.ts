@@ -8,6 +8,11 @@ describe('hero institutional block', () => {
   it('renders image, eyebrow, title, description, and two CTA buttons', () => {
     const html = renderToStaticMarkup(
       createElement(HeroInstitutionalBlockComponent, {
+        appearance: {
+          background: 'primary',
+          border: 'topAndBottom',
+          textColor: 'auto',
+        },
         backgroundImage: { alt: 'Campus facade', url: '/media/campus.jpg' } as never,
         buttons: [
           { label: 'Apply now', linkType: 'custom', url: '/apply', variant: 'default' },
@@ -32,6 +37,10 @@ describe('hero institutional block', () => {
     expect(html).toContain('href="/programs"')
     expect(html).toContain('data-hero-content-width="wide"')
     expect(html).toContain('data-hero-height="immersive"')
+    expect(html).toContain('data-hero-background="primary"')
+    expect(html).toContain('bg-primary')
+    expect(html).toContain('text-primary-foreground')
+    expect(html).toContain('border-y border-border')
   })
 
   it('maps overlay and alignment presets into deterministic class hooks', () => {

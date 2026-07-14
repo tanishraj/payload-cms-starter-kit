@@ -8,6 +8,7 @@ export function SystemMaintenanceBlockComponent(props: SystemMaintenanceBlockDat
 
   return (
     <SystemMaintenanceView
+      appearance={props.appearance}
       badge={props.badge}
       description={props.description}
       heading={props.heading}

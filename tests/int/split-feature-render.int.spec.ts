@@ -8,6 +8,11 @@ describe('split feature block', () => {
   it('renders image-right layout with a text link CTA', () => {
     const html = renderToStaticMarkup(
       createElement(SplitFeatureBlockComponent, {
+        appearance: {
+          background: 'muted',
+          border: 'bottom',
+          textColor: 'auto',
+        },
         ctaMode: 'link',
         description: 'Choose from MD, MD-PhD, and specialized tracks.',
         eyebrow: 'Programs',
@@ -24,17 +29,23 @@ describe('split feature block', () => {
     expect(html).toContain('data-split-feature-position="right"')
     expect(html).toContain('data-split-feature-layout="split"')
     expect(html).toContain('data-split-feature-cta="link"')
-    expect(html).toContain('data-split-feature-background="plain"')
+    expect(html).toContain('data-split-feature-background="muted"')
     expect(html).toContain('data-split-feature-link-cta="true"')
     expect(html).toContain('href="/programs"')
     expect(html).toContain('See all programs')
     expect(html).toContain('lucide-arrow-right')
+    expect(html).toContain('bg-muted')
+    expect(html).toContain('border-b border-border')
   })
 
   it('renders muted background and two CTA buttons', () => {
     const html = renderToStaticMarkup(
       createElement(SplitFeatureBlockComponent, {
-        backgroundStyle: 'muted',
+        appearance: {
+          background: 'accent',
+          border: 'top',
+          textColor: 'auto',
+        },
         buttons: [
           { label: 'Start your application', linkType: 'custom', url: '/apply', variant: 'default' },
           { label: 'Schedule a visit', linkType: 'custom', url: '/visit', variant: 'secondary' },
@@ -48,10 +59,13 @@ describe('split feature block', () => {
       }),
     )
 
-    expect(html).toContain('data-split-feature-background="muted"')
+    expect(html).toContain('data-split-feature-background="accent"')
     expect(html).toContain('data-split-feature-cta="buttons"')
     expect(html).toContain('href="/apply"')
     expect(html).toContain('href="/visit"')
+    expect(html).toContain('bg-accent')
+    expect(html).toContain('text-accent-foreground')
+    expect(html).toContain('border-t border-border')
   })
 
   it('renders centered content-only layout without an image', () => {

@@ -3,6 +3,8 @@ import { renderToStaticMarkup } from 'react-dom/server'
 
 import { PageContent } from '@/app/(frontend)/PageContent'
 import { AnnouncementBlock } from '@/blocks/Announcement/config'
+import { resolveBlockAppearanceClasses } from '@/blocks/shared/blockAppearance'
+import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { Pages } from '@/collections/Pages'
 import { SiteSettings } from '@/globals/SiteSettings'
 
@@ -18,7 +20,69 @@ const getLayoutField = () => {
   ) as { blocks?: Array<{ slug: string }>; type?: string } | undefined
 }
 
+const getNamedField = <T extends { name?: string }>(
+  fields: unknown[],
+  fieldName: string,
+) =>
+  fields.find(
+    (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === fieldName,
+  ) as T | undefined
+
 describe('page block pipeline', () => {
+  it('defines the shared block appearance schema defaults and options', () => {
+    const appearanceField = createBlockAppearanceFields()
+    const appearanceFields = 'fields' in appearanceField ? appearanceField.fields : []
+
+    const appearanceBackgroundField = appearanceFields.find((field) => field.name === 'background')
+    const appearanceTextColorField = appearanceFields.find((field) => field.name === 'textColor')
+    const appearanceBorderField = appearanceFields.find((field) => field.name === 'border')
+
+    expect(appearanceField?.type).toBe('group')
+    expect(appearanceBackgroundField?.defaultValue).toBe('none')
+    expect(appearanceTextColorField?.defaultValue).toBe('auto')
+    expect(appearanceBorderField?.defaultValue).toBe('none')
+    expect(appearanceBackgroundField?.options?.map((option) => option.value)).toEqual([
+      'none',
+      'primary',
+      'secondary',
+      'muted',
+      'accent',
+    ])
+    expect(appearanceTextColorField?.options?.map((option) => option.value)).toEqual([
+      'auto',
+      'default',
+      'inverse',
+    ])
+    expect(appearanceBorderField?.options?.map((option) => option.value)).toEqual([
+      'none',
+      'top',
+      'bottom',
+      'topAndBottom',
+    ])
+  })
+
+  it('resolves shared block appearance classes from semantic appearance values', () => {
+    expect(resolveBlockAppearanceClasses()).toEqual({
+      backgroundClassName: '',
+      textClassName: 'text-foreground',
+      borderClassName: '',
+      className: 'text-foreground',
+    })
+
+    expect(
+      resolveBlockAppearanceClasses({
+        background: 'primary',
+        textColor: 'auto',
+        border: 'topAndBottom',
+      }),
+    ).toEqual({
+      backgroundClassName: 'bg-primary',
+      textClassName: 'text-primary-foreground',
+      borderClassName: 'border-y border-border',
+      className: 'bg-primary text-primary-foreground border-y border-border',
+    })
+  })
+
   it('registers a general layout blocks field on Pages', () => {
     const layoutField = getLayoutField()
 
@@ -34,39 +98,33 @@ describe('page block pipeline', () => {
   it('defines the statsStrip schema with metric items, background, and animation fields', async () => {
     const { StatsStripBlock } = await import('@/blocks/StatsStrip/config')
 
-    const itemsField = StatsStripBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'items',
-    ) as { fields?: Array<{ name?: string; type?: string }>; minRows?: number; type?: string } | undefined
+    const itemsField = getNamedField<
+      { fields?: Array<{ name?: string; type?: string }>; minRows?: number; type?: string }
+    >(StatsStripBlock.fields, 'items')
+    const appearanceField = getNamedField<{ fields?: Array<{ name?: string; type?: string }>; type?: string }>(
+      StatsStripBlock.fields,
+      'appearance',
+    )
 
-    const backgroundStyleField = StatsStripBlock.fields.find(
-      (field) =>
-        typeof field === 'object' && field !== null && 'name' in field && field.name === 'backgroundStyle',
-    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+    const animationEnabledField = getNamedField<{ defaultValue?: boolean; type?: string }>(
+      StatsStripBlock.fields,
+      'animationEnabled',
+    )
 
-    const animationEnabledField = StatsStripBlock.fields.find(
-      (field) =>
-        typeof field === 'object' && field !== null && 'name' in field && field.name === 'animationEnabled',
-    ) as { defaultValue?: boolean; type?: string } | undefined
+    const animationDurationField = getNamedField<{ defaultValue?: number; type?: string }>(
+      StatsStripBlock.fields,
+      'animationDuration',
+    )
 
-    const animationDurationField = StatsStripBlock.fields.find(
-      (field) =>
-        typeof field === 'object' && field !== null && 'name' in field && field.name === 'animationDuration',
-    ) as { defaultValue?: number; type?: string } | undefined
-
-    const triggerOnceField = StatsStripBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'triggerOnce',
-    ) as { defaultValue?: boolean; type?: string } | undefined
+    const triggerOnceField = getNamedField<{ defaultValue?: boolean; type?: string }>(
+      StatsStripBlock.fields,
+      'triggerOnce',
+    )
 
     expect(itemsField?.type).toBe('array')
     expect(itemsField?.minRows).toBe(1)
     expect(itemsField?.fields?.map((field) => field.name)).toEqual(['prefix', 'value', 'suffix', 'label'])
-    expect(backgroundStyleField?.type).toBe('select')
-    expect(backgroundStyleField?.defaultValue).toBe('default')
-    expect(backgroundStyleField?.options?.map((option) => option.value)).toEqual([
-      'default',
-      'muted',
-      'accent',
-    ])
+    expect(appearanceField?.type).toBe('group')
     expect(animationEnabledField?.type).toBe('checkbox')
     expect(animationEnabledField?.defaultValue).toBe(true)
     expect(animationDurationField?.type).toBe('number')
@@ -78,36 +136,34 @@ describe('page block pipeline', () => {
   it('defines the heroInstitutional schema with image, overlay, alignment, and CTA fields', async () => {
     const { HeroInstitutionalBlock } = await import('@/blocks/HeroInstitutional/config')
 
-    const backgroundImageField = HeroInstitutionalBlock.fields.find(
-      (field) =>
-        typeof field === 'object' && field !== null && 'name' in field && field.name === 'backgroundImage',
-    ) as { relationTo?: string; required?: boolean; type?: string } | undefined
+    const appearanceField = getNamedField<{ type?: string }>(HeroInstitutionalBlock.fields, 'appearance')
+    const backgroundImageField = getNamedField<
+      { relationTo?: string; required?: boolean; type?: string }
+    >(HeroInstitutionalBlock.fields, 'backgroundImage')
 
-    const titleField = HeroInstitutionalBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'title',
-    ) as { required?: boolean; type?: string } | undefined
+    const titleField = getNamedField<{ required?: boolean; type?: string }>(
+      HeroInstitutionalBlock.fields,
+      'title',
+    )
 
-    const overlayStyleField = HeroInstitutionalBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'overlayStyle',
-    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+    const overlayStyleField = getNamedField<
+      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
+    >(HeroInstitutionalBlock.fields, 'overlayStyle')
 
-    const horizontalAlignmentField = HeroInstitutionalBlock.fields.find(
-      (field) =>
-        typeof field === 'object' &&
-        field !== null &&
-        'name' in field &&
-        field.name === 'horizontalAlignment',
-    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+    const horizontalAlignmentField = getNamedField<
+      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
+    >(HeroInstitutionalBlock.fields, 'horizontalAlignment')
 
-    const verticalAlignmentField = HeroInstitutionalBlock.fields.find(
-      (field) =>
-        typeof field === 'object' && field !== null && 'name' in field && field.name === 'verticalAlignment',
-    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+    const verticalAlignmentField = getNamedField<
+      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
+    >(HeroInstitutionalBlock.fields, 'verticalAlignment')
 
-    const buttonsField = HeroInstitutionalBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'buttons',
-    ) as { maxRows?: number; type?: string } | undefined
+    const buttonsField = getNamedField<{ maxRows?: number; type?: string }>(
+      HeroInstitutionalBlock.fields,
+      'buttons',
+    )
 
+    expect(appearanceField?.type).toBe('group')
     expect(backgroundImageField?.type).toBe('upload')
     expect(backgroundImageField?.relationTo).toBe('media')
     expect(backgroundImageField?.required).toBe(true)
@@ -126,13 +182,13 @@ describe('page block pipeline', () => {
       'center',
       'bottom',
     ])
-    const heightField = HeroInstitutionalBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'height',
-    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+    const heightField = getNamedField<
+      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
+    >(HeroInstitutionalBlock.fields, 'height')
 
-    const contentWidthField = HeroInstitutionalBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'contentWidth',
-    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+    const contentWidthField = getNamedField<
+      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
+    >(HeroInstitutionalBlock.fields, 'contentWidth')
 
     expect(contentWidthField?.type).toBe('select')
     expect(contentWidthField?.defaultValue).toBe('default')
@@ -148,7 +204,7 @@ describe('page block pipeline', () => {
     expect(buttonsField?.maxRows).toBe(2)
   })
 
-  it('defines the footer56 schema with branding, link groups, utilities, and background style', async () => {
+  it('defines the footer56 schema with branding, link groups, utilities, and shared appearance', async () => {
     const { Footer56Block } = await import('@/blocks/Footer56/config')
 
     const logoModeField = Footer56Block.fields.find(
@@ -171,10 +227,9 @@ describe('page block pipeline', () => {
       (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'socialLinks',
     ) as { type?: string } | undefined
 
-    const backgroundStyleField = Footer56Block.fields.find(
-      (field) =>
-        typeof field === 'object' && field !== null && 'name' in field && field.name === 'backgroundStyle',
-    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+    const appearanceField = Footer56Block.fields.find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'appearance',
+    ) as { fields?: Array<{ name?: string }>; type?: string } | undefined
 
     expect(logoModeField?.type).toBe('select')
     expect(logoModeField?.defaultValue).toBe('siteDefault')
@@ -187,13 +242,11 @@ describe('page block pipeline', () => {
     expect(logoHeightField?.type).toBe('number')
     expect(logoHeightField?.min).toBe(20)
     expect(socialLinksField).toBeUndefined()
-    expect(backgroundStyleField?.type).toBe('select')
-    expect(backgroundStyleField?.defaultValue).toBe('inverse')
-    expect(backgroundStyleField?.options?.map((option) => option.value)).toEqual([
-      'default',
-      'muted',
-      'accent',
-      'inverse',
+    expect(appearanceField?.type).toBe('group')
+    expect(appearanceField?.fields?.map((field) => field.name)).toEqual([
+      'background',
+      'textColor',
+      'border',
     ])
   })
 
@@ -275,23 +328,22 @@ describe('page block pipeline', () => {
   })
 
   it('defines the page announcement block schema with mode, timing, and rotating items', () => {
-    const displayModeField = AnnouncementBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'displayMode',
-    ) as { defaultValue?: string; label?: string; options?: Array<{ value: string }>; type?: string } | undefined
-    const labelField = AnnouncementBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'label',
-    ) as { label?: string; type?: string } | undefined
-    const intervalField = AnnouncementBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'intervalMs',
-    ) as { defaultValue?: number; type?: string } | undefined
-    const marqueeDurationField = AnnouncementBlock.fields.find(
-      (field) =>
-        typeof field === 'object' && field !== null && 'name' in field && field.name === 'marqueeDurationMs',
-    ) as { defaultValue?: number; type?: string } | undefined
-    const itemsField = AnnouncementBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'items',
-    ) as { minRows?: number; type?: string } | undefined
+    const appearanceField = getNamedField<{ type?: string }>(AnnouncementBlock.fields, 'appearance')
+    const displayModeField = getNamedField<
+      { defaultValue?: string; label?: string; options?: Array<{ value: string }>; type?: string }
+    >(AnnouncementBlock.fields, 'displayMode')
+    const labelField = getNamedField<{ label?: string; type?: string }>(AnnouncementBlock.fields, 'label')
+    const intervalField = getNamedField<{ defaultValue?: number; type?: string }>(
+      AnnouncementBlock.fields,
+      'intervalMs',
+    )
+    const marqueeDurationField = getNamedField<{ defaultValue?: number; type?: string }>(
+      AnnouncementBlock.fields,
+      'marqueeDurationMs',
+    )
+    const itemsField = getNamedField<{ minRows?: number; type?: string }>(AnnouncementBlock.fields, 'items')
 
+    expect(appearanceField?.type).toBe('group')
     expect(displayModeField?.type).toBe('select')
     expect(displayModeField?.label).toBe('Animation Mode')
     expect(displayModeField?.defaultValue).toBe('vertical')
@@ -316,6 +368,11 @@ describe('page block pipeline', () => {
         id: 'page-2',
         layout: [
           {
+            appearance: {
+              background: 'secondary',
+              border: 'topAndBottom',
+              textColor: 'auto',
+            },
             blockType: 'announcement',
             intervalMs: 4000,
             id: 'block-1',
@@ -343,6 +400,10 @@ describe('page block pipeline', () => {
     expect(html).toContain('Urgent Notice')
     expect(html).toContain('Scheduled tonight at 10:00 PM.')
     expect(html).toContain('href="/maintenance"')
+    expect(html).toContain('data-announcement-background="secondary"')
+    expect(html).toContain('bg-secondary')
+    expect(html).toContain('text-secondary-foreground')
+    expect(html).toContain('border-y border-border')
   })
 
   it('renders a heroInstitutional page block through PageContent', () => {
@@ -351,6 +412,11 @@ describe('page block pipeline', () => {
         id: 'page-hero-1',
         layout: [
           {
+            appearance: {
+              background: 'primary',
+              border: 'top',
+              textColor: 'auto',
+            },
             backgroundImage: {
               alt: 'Main hall',
               url: '/media/main-hall.jpg',
@@ -376,41 +442,40 @@ describe('page block pipeline', () => {
     expect(html).toContain('Practice begins before the clinic.')
     expect(html).toContain('Admissions')
     expect(html).toContain('href="/apply"')
+    expect(html).toContain('data-hero-background="primary"')
+    expect(html).toContain('bg-primary')
+    expect(html).toContain('text-primary-foreground')
+    expect(html).toContain('border-t border-border')
   })
 
   it('defines the splitFeature schema with image, layout, and CTA mode fields', async () => {
     const { SplitFeatureBlock } = await import('@/blocks/SplitFeature/config')
 
-    const imageField = SplitFeatureBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'image',
-    ) as { relationTo?: string; required?: boolean; type?: string } | undefined
+    const appearanceField = getNamedField<{ type?: string }>(SplitFeatureBlock.fields, 'appearance')
+    const imageField = getNamedField<{ relationTo?: string; required?: boolean; type?: string }>(
+      SplitFeatureBlock.fields,
+      'image',
+    )
+    const titleField = getNamedField<{ required?: boolean; type?: string }>(
+      SplitFeatureBlock.fields,
+      'title',
+    )
+    const layoutModeField = getNamedField<
+      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
+    >(SplitFeatureBlock.fields, 'layoutMode')
+    const mediaPositionField = getNamedField<
+      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
+    >(SplitFeatureBlock.fields, 'mediaPosition')
+    const backgroundStyleField = getNamedField<{ type?: string }>(SplitFeatureBlock.fields, 'backgroundStyle')
+    const ctaModeField = getNamedField<
+      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
+    >(SplitFeatureBlock.fields, 'ctaMode')
+    const buttonsField = getNamedField<{ maxRows?: number; type?: string }>(
+      SplitFeatureBlock.fields,
+      'buttons',
+    )
 
-    const titleField = SplitFeatureBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'title',
-    ) as { required?: boolean; type?: string } | undefined
-
-    const layoutModeField = SplitFeatureBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'layoutMode',
-    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
-
-    const mediaPositionField = SplitFeatureBlock.fields.find(
-      (field) =>
-        typeof field === 'object' && field !== null && 'name' in field && field.name === 'mediaPosition',
-    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
-
-    const backgroundStyleField = SplitFeatureBlock.fields.find(
-      (field) =>
-        typeof field === 'object' && field !== null && 'name' in field && field.name === 'backgroundStyle',
-    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
-
-    const ctaModeField = SplitFeatureBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'ctaMode',
-    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
-
-    const buttonsField = SplitFeatureBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'buttons',
-    ) as { maxRows?: number; type?: string } | undefined
-
+    expect(appearanceField?.type).toBe('group')
     expect(imageField?.type).toBe('upload')
     expect(imageField?.relationTo).toBe('media')
     expect(imageField?.required).not.toBe(true)
@@ -422,9 +487,7 @@ describe('page block pipeline', () => {
     expect(mediaPositionField?.type).toBe('select')
     expect(mediaPositionField?.defaultValue).toBe('left')
     expect(mediaPositionField?.options?.map((option) => option.value)).toEqual(['left', 'right'])
-    expect(backgroundStyleField?.type).toBe('select')
-    expect(backgroundStyleField?.defaultValue).toBe('plain')
-    expect(backgroundStyleField?.options?.map((option) => option.value)).toEqual(['plain', 'muted'])
+    expect(backgroundStyleField).toBeUndefined()
     expect(ctaModeField?.type).toBe('select')
     expect(ctaModeField?.defaultValue).toBe('link')
     expect(ctaModeField?.options?.map((option) => option.value)).toEqual(['link', 'buttons'])
@@ -438,7 +501,11 @@ describe('page block pipeline', () => {
         id: 'page-split-1',
         layout: [
           {
-            backgroundStyle: 'muted',
+            appearance: {
+              background: 'muted',
+              border: 'bottom',
+              textColor: 'auto',
+            },
             blockType: 'splitFeature',
             ctaMode: 'link',
             description: 'Choose from MD, MD-PhD, and specialized tracks.',
@@ -467,6 +534,7 @@ describe('page block pipeline', () => {
     expect(html).toContain('data-split-feature-background="muted"')
     expect(html).toContain('href="/programs"')
     expect(html).toContain('See all programs')
+    expect(html).toContain('border-b border-border')
   })
 
   it('renders a statsStrip page block through PageContent', () => {
@@ -477,7 +545,11 @@ describe('page block pipeline', () => {
           {
             animationDuration: 1200,
             animationEnabled: true,
-            backgroundStyle: 'accent',
+            appearance: {
+              background: 'accent',
+              border: 'top',
+              textColor: 'auto',
+            },
             blockType: 'statsStrip',
             id: 'stats-block-1',
             items: [
@@ -498,6 +570,9 @@ describe('page block pipeline', () => {
     const html = renderToStaticMarkup(result)
 
     expect(html).toContain('data-stats-strip-background="accent"')
+    expect(html).toContain('bg-accent')
+    expect(html).toContain('text-accent-foreground')
+    expect(html).toContain('border-t border-border')
     expect(html).toContain('data-stats-strip-row="0"')
     expect(html).toContain('data-stats-strip-row="1"')
     expect(html).toContain('data-stats-strip-row-size="4"')

@@ -7,6 +7,7 @@ import type {
   SelectField,
 } from 'payload'
 
+import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { splitFeatureThumbnail } from './thumbnail'
 
 type LinkType = 'page' | 'custom'
@@ -90,6 +91,7 @@ export const SplitFeatureBlock: Block = {
     plural: 'Split Features',
   },
   fields: [
+    createBlockAppearanceFields(),
     {
       name: 'image',
       type: 'upload',
@@ -145,16 +147,6 @@ export const SplitFeatureBlock: Block = {
 
         return true
       },
-    } satisfies SelectField,
-    {
-      name: 'backgroundStyle',
-      type: 'select',
-      defaultValue: 'plain',
-      options: [
-        { label: 'Plain', value: 'plain' },
-        { label: 'Muted', value: 'muted' },
-      ],
-      required: true,
     } satisfies SelectField,
     {
       name: 'ctaMode',
