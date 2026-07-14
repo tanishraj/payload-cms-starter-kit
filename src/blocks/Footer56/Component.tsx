@@ -110,7 +110,7 @@ export function Footer56BlockComponent({
       data-footer56-background={backgroundStyle}
     >
       <div className="mx-auto flex max-w-screen-2xl flex-col px-4 py-12 md:px-6 md:py-16">
-        <div className="grid gap-10 border-b border-border/70 pb-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1.85fr)]">
+        <div className="grid gap-10 border-b border-border/70 pb-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,2fr)]">
           <div className="flex flex-col gap-6">
             <Link
               aria-label={`Go to ${fallbackName} home page`}
@@ -127,14 +127,14 @@ export function Footer56BlockComponent({
               />
             </Link>
             {description ? (
-              <p className="max-w-[36ch] text-sm leading-6 text-current/75">{description}</p>
+              <p className="max-w-[34ch] text-sm leading-6 text-current/80">{description}</p>
             ) : null}
             {siteAddress || sitePhone || siteEmail ? (
-              <div className="flex flex-col gap-2.5">
+              <div className="flex flex-col gap-3">
                 {siteAddress ? (
                   <div className="flex items-start gap-2.5 text-sm leading-6 text-current/75">
                     <MapPin aria-hidden="true" className="mt-1 size-4 shrink-0" />
-                    <p className="max-w-[36ch] whitespace-pre-line">{siteAddress}</p>
+                    <p className="max-w-[34ch] whitespace-pre-line">{siteAddress}</p>
                   </div>
                 ) : null}
                 {sitePhone ? (
@@ -202,7 +202,7 @@ export function Footer56BlockComponent({
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {resolvedLinkGroups.map((group, groupIndex) => (
               <div className="flex flex-col gap-4" key={`${group.title}-${groupIndex}`}>
-                <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-current/75">
+                <h3 className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-current/75">
                   {group.title}
                 </h3>
                 <ul className="flex flex-col gap-3 text-sm">
@@ -224,9 +224,11 @@ export function Footer56BlockComponent({
           </div>
         </div>
 
-        <div className="flex flex-col gap-5 py-4 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-5 py-6 md:flex-row md:items-center md:justify-between">
           <div>
-            {copyrightText ? <p className="text-xs text-current/65">{copyrightText}</p> : null}
+            {copyrightText ? (
+              <p className="font-mono text-xs font-normal text-current/65">{copyrightText}</p>
+            ) : null}
           </div>
           {resolvedBottomLinks.length ? (
             <ul className="flex flex-wrap gap-x-4 gap-y-2 text-xs md:justify-end">
