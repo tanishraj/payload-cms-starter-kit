@@ -1,4 +1,5 @@
 import { createBaseSystemPageFields, createSystemPageBlock } from '../systemPageFields'
+import { systemMaintenanceThumbnail } from './thumbnail'
 
 const defaults = {
   badge: 'Maintenance',
@@ -11,4 +12,5 @@ export const SystemMaintenanceBlock = createSystemPageBlock({
   singularLabel: 'System Maintenance',
   pluralLabel: 'System Maintenance Blocks',
   slug: 'systemMaintenance',
+  thumbnailUrl: systemMaintenanceThumbnail,
 })

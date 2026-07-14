@@ -67,14 +67,26 @@ export const createSystemPageBlock = ({
   pluralLabel,
   singularLabel,
   slug,
+  thumbnailUrl,
 }: {
   fields: Field[]
   pluralLabel: string
   singularLabel: string
   slug: string
+  thumbnailUrl?: string
 }): Block => ({
   slug,
   interfaceName: `${slug.charAt(0).toUpperCase()}${slug.slice(1)}Block`,
+  admin: thumbnailUrl
+    ? {
+        images: {
+          thumbnail: {
+            alt: `${singularLabel} preview`,
+            url: thumbnailUrl,
+          },
+        },
+      }
+    : undefined,
   labels: {
     singular: singularLabel,
     plural: pluralLabel,

@@ -1,4 +1,5 @@
 import { createBaseSystemPageFields, createSystemPageBlock } from '../systemPageFields'
+import { systemComingSoonThumbnail } from './thumbnail'
 
 const defaults = {
   badge: 'Coming Soon',
@@ -11,4 +12,5 @@ export const SystemComingSoonBlock = createSystemPageBlock({
   singularLabel: 'System Coming Soon',
   pluralLabel: 'System Coming Soon Blocks',
   slug: 'systemComingSoon',
+  thumbnailUrl: systemComingSoonThumbnail,
 })
