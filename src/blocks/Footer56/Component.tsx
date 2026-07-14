@@ -2,7 +2,10 @@ import Link from 'next/link'
 import { Mail, MapPin, Phone } from 'lucide-react'
 import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube } from 'react-icons/fa'
 
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
 import { SiteLogo, type LogoMediaLike } from '@/components/site/SiteLogo'
 import { Button } from '@/components/ui/button'
 import { resolveHeaderLink } from '@/lib/headerNavigation'
@@ -33,6 +36,9 @@ const socialIconByPlatform = {
   linkedin: FaLinkedin,
   youtube: FaYoutube,
 } as const
+
+const footerLinkListItemClasses =
+  'text-foreground/80 transition-colors hover:text-primary focus-visible:text-primary'
 
 export function Footer56BlockComponent({
   appearance,
@@ -205,7 +211,7 @@ export function Footer56BlockComponent({
                   {group.links.map((link, linkIndex) => (
                     <li key={`${group.title}-${link.href}-${linkIndex}`}>
                       <a
-                        className="transition-opacity hover:opacity-70 focus-visible:opacity-70"
+                        className={footerLinkListItemClasses}
                         href={link.href}
                         rel={link.newTab ? 'noreferrer' : undefined}
                         target={link.newTab ? '_blank' : undefined}

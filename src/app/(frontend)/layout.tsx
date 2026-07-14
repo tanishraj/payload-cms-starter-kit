@@ -13,11 +13,11 @@ import { getCurrentCMSUser } from '@/lib/cmsSession'
 import { getMediaAbsoluteUrl } from '@/lib/media'
 import { getRobotsMetadata } from '@/lib/seo'
 import { getSiteURL } from '@/lib/siteUrl'
+import { defaultWebsiteTheme, isWebsiteTheme } from '@/lib/themes/websiteThemes'
 import type { Footer, Header } from '@/payload-types'
 
 export const dynamic = 'force-dynamic'
 
-const validThemeColors = new Set(['default', 'blue', 'sera'])
 const defaultSiteURL = getSiteURL()
 
 const getFrontendGlobals = async () => {
@@ -174,9 +174,9 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const { activeFooter, activeHeader, pageSettings, siteSettings, themeSettings } = frontendGlobals
 
   const colorScheme = themeSettings.colorScheme ?? 'system'
-  const rawThemeColor = String(themeSettings.themeColor ?? 'default')
+  const rawThemeColor = String(themeSettings.themeColor ?? defaultWebsiteTheme)
   const savedThemeColor = rawThemeColor === 'amber' ? 'sera' : rawThemeColor
-  const themeColor = validThemeColors.has(savedThemeColor) ? savedThemeColor : 'default'
+  const themeColor = isWebsiteTheme(savedThemeColor) ? savedThemeColor : defaultWebsiteTheme
   const announcementDisplayMode = pageSettings?.announcementEnabled
     ? (pageSettings as {
         announcementDisplayMode?: 'horizontal' | 'marquee' | 'vertical' | null

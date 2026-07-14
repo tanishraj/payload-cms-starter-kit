@@ -5,6 +5,7 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { defaultWebsiteTheme, websiteThemeOptions } from '@/lib/themes/websiteThemes'
 
 export const ThemeSettings: GlobalConfig = {
   slug: 'theme-settings',
@@ -26,25 +27,12 @@ export const ThemeSettings: GlobalConfig = {
     {
       name: 'themeColor',
       type: 'select',
-      defaultValue: 'default',
+      defaultValue: defaultWebsiteTheme,
       required: true,
       admin: {
         description: 'Select which frontend theme preset is loaded for the site.',
       },
-      options: [
-        {
-          label: 'Default',
-          value: 'default',
-        },
-        {
-          label: 'Blue',
-          value: 'blue',
-        },
-        {
-          label: 'Sera',
-          value: 'sera',
-        },
-      ],
+      options: websiteThemeOptions,
     },
     {
       name: 'colorScheme',
