@@ -73,6 +73,7 @@ export const Footer56Block: Block = {
     plural: 'Footer 56',
   },
   fields: [
+    createBlockAppearanceFields({ includeTextOverride: false }),
     {
       name: 'logoMode',
       label: 'Logo Source',
@@ -115,7 +116,6 @@ export const Footer56Block: Block = {
       name: 'description',
       type: 'textarea',
     },
-    createBlockAppearanceFields({ includeTextOverride: false }),
     {
       name: 'linkGroups',
       type: 'array',

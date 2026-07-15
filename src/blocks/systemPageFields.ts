@@ -18,7 +18,7 @@ const actionFields: Field[] = [
 ]
 
 export const createBaseSystemPageFields = (defaults: SystemPageDefaults): Field[] => [
-  createBlockAppearanceFields(),
+  createBlockAppearanceFields({ includeTextOverride: false }),
   {
     name: 'badge',
     type: 'text',

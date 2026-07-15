@@ -248,7 +248,6 @@ export interface AnnouncementBlock {
 export interface HeroInstitutionalBlock {
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   backgroundImage: string | Media;
@@ -367,7 +366,6 @@ export interface Media {
 export interface SplitFeatureBlock {
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   image?: (string | null) | Media;
@@ -402,6 +400,13 @@ export interface SplitFeatureBlock {
  * via the `definition` "StatsStripBlock".
  */
 export interface StatsStripBlock {
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  animationEnabled?: boolean | null;
+  animationDuration: number;
+  triggerOnce?: boolean | null;
   items?:
     | {
         prefix?: string | null;
@@ -411,14 +416,6 @@ export interface StatsStripBlock {
         id?: string | null;
       }[]
     | null;
-  appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  animationEnabled?: boolean | null;
-  animationDuration: number;
-  triggerOnce?: boolean | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'statsStrip';
@@ -978,12 +975,12 @@ export interface Header {
  * via the `definition` "HeaderNavbar12Block".
  */
 export interface HeaderNavbar12Block {
-  sticky?: boolean | null;
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  sticky?: boolean | null;
   size?: ('compact' | 'default' | 'large') | null;
   navAlignment?: ('left' | 'center' | 'right') | null;
   logoMode?: ('siteDefault' | 'customLogo') | null;
@@ -1053,6 +1050,10 @@ export interface Footer {
  * via the `definition` "Footer56Block".
  */
 export interface Footer56Block {
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
   logoMode: 'siteDefault' | 'customLogo';
   customLogoLight?: (string | null) | Media;
   customLogoDark?: (string | null) | Media;
@@ -1061,10 +1062,6 @@ export interface Footer56Block {
    */
   logoHeight?: number | null;
   description?: string | null;
-  appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
   linkGroups?:
     | {
         title: string;
@@ -1165,7 +1162,6 @@ export interface SystemPage {
 export interface System404Block {
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   badge?: string | null;
@@ -1199,7 +1195,6 @@ export interface System404Block {
 export interface SystemMaintenanceBlock {
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   badge?: string | null;
@@ -1233,7 +1228,6 @@ export interface SystemMaintenanceBlock {
 export interface SystemComingSoonBlock {
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   badge?: string | null;
@@ -1574,7 +1568,6 @@ export interface HeroInstitutionalBlockSelect<T extends boolean = true> {
     | T
     | {
         background?: T;
-        textColor?: T;
         border?: T;
       };
   backgroundImage?: T;
@@ -1609,7 +1602,6 @@ export interface SplitFeatureBlockSelect<T extends boolean = true> {
     | T
     | {
         background?: T;
-        textColor?: T;
         border?: T;
       };
   image?: T;
@@ -1643,6 +1635,15 @@ export interface SplitFeatureBlockSelect<T extends boolean = true> {
  * via the `definition` "StatsStripBlock_select".
  */
 export interface StatsStripBlockSelect<T extends boolean = true> {
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  animationEnabled?: T;
+  animationDuration?: T;
+  triggerOnce?: T;
   items?:
     | T
     | {
@@ -1652,16 +1653,6 @@ export interface StatsStripBlockSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
-  appearance?:
-    | T
-    | {
-        background?: T;
-        textColor?: T;
-        border?: T;
-      };
-  animationEnabled?: T;
-  animationDuration?: T;
-  triggerOnce?: T;
   id?: T;
   blockName?: T;
 }
@@ -1843,7 +1834,6 @@ export interface HeadersSelect<T extends boolean = true> {
  * via the `definition` "HeaderNavbar12Block_select".
  */
 export interface HeaderNavbar12BlockSelect<T extends boolean = true> {
-  sticky?: T;
   appearance?:
     | T
     | {
@@ -1851,6 +1841,7 @@ export interface HeaderNavbar12BlockSelect<T extends boolean = true> {
         textColor?: T;
         border?: T;
       };
+  sticky?: T;
   size?: T;
   navAlignment?: T;
   logoMode?: T;
@@ -1914,17 +1905,17 @@ export interface FootersSelect<T extends boolean = true> {
  * via the `definition` "Footer56Block_select".
  */
 export interface Footer56BlockSelect<T extends boolean = true> {
-  logoMode?: T;
-  customLogoLight?: T;
-  customLogoDark?: T;
-  logoHeight?: T;
-  description?: T;
   appearance?:
     | T
     | {
         background?: T;
         border?: T;
       };
+  logoMode?: T;
+  customLogoLight?: T;
+  customLogoDark?: T;
+  logoHeight?: T;
+  description?: T;
   linkGroups?:
     | T
     | {
@@ -2011,7 +2002,6 @@ export interface System404BlockSelect<T extends boolean = true> {
     | T
     | {
         background?: T;
-        textColor?: T;
         border?: T;
       };
   badge?: T;
@@ -2044,7 +2034,6 @@ export interface SystemMaintenanceBlockSelect<T extends boolean = true> {
     | T
     | {
         background?: T;
-        textColor?: T;
         border?: T;
       };
   badge?: T;
@@ -2077,7 +2066,6 @@ export interface SystemComingSoonBlockSelect<T extends boolean = true> {
     | T
     | {
         background?: T;
-        textColor?: T;
         border?: T;
       };
   badge?: T;
@@ -2353,6 +2341,13 @@ export interface PageSetting {
    */
   homepage?: (string | null) | Page;
   /**
+   * Default HTML/body appearance for all frontend pages.
+   */
+  pageAppearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+  };
+  /**
    * Choose which saved header preset should render site-wide.
    */
   activeHeader?: (string | null) | Header;
@@ -2362,6 +2357,10 @@ export interface PageSetting {
   activeFooter?: (string | null) | Footer;
   announcementEnabled?: boolean | null;
   announcementLabel?: string | null;
+  announcementAppearance?: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
   announcementDisplayMode?: ('vertical' | 'horizontal' | 'marquee') | null;
   /**
    * Auto-advance interval for rotating announcement items. Minimum 2000ms.
@@ -2465,7 +2464,7 @@ export interface ThemeSetting {
   /**
    * Select which frontend theme preset is loaded for the site.
    */
-  themeColor: 'default' | 'blue' | 'sera';
+  themeColor: 'default' | 'sunset' | 'blue' | 'kodama';
   /**
    * Choose whether the site follows the system preference or forces light/dark mode.
    */
@@ -2504,10 +2503,22 @@ export interface SeoSetting {
  */
 export interface PageSettingsSelect<T extends boolean = true> {
   homepage?: T;
+  pageAppearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+      };
   activeHeader?: T;
   activeFooter?: T;
   announcementEnabled?: T;
   announcementLabel?: T;
+  announcementAppearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
   announcementDisplayMode?: T;
   announcementIntervalMs?: T;
   announcementMarqueeDurationMs?: T;

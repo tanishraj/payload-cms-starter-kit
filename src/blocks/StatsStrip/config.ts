@@ -48,8 +48,8 @@ export const StatsStripBlock: Block = {
     plural: 'Stats Strips',
   },
   fields: [
-    itemsField,
-    createBlockAppearanceFields(),
+    createBlockAppearanceFields({ includeTextOverride: false }),
+
     {
       name: 'animationEnabled',
       type: 'checkbox',
@@ -66,5 +66,6 @@ export const StatsStripBlock: Block = {
       type: 'checkbox',
       defaultValue: true,
     } satisfies CheckboxField,
+    itemsField,
   ],
 }

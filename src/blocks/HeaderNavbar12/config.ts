@@ -155,12 +155,12 @@ export const HeaderNavbar12Block: Block = {
     plural: 'Header Navbars',
   },
   fields: [
+    createBlockAppearanceFields({}),
     {
       name: 'sticky',
       type: 'checkbox',
       defaultValue: true,
     } satisfies CheckboxField,
-    createBlockAppearanceFields(),
     sizeField,
     navAlignmentField,
     {

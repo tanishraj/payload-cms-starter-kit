@@ -81,7 +81,7 @@ const getReferencedPageUsage = async (pageID: string | number, req: PayloadReque
   const usage: string[] = []
 
   if (getPageID(pageSettings.homepage as string | number | Page | null | undefined) === pageID) {
-    usage.push('Page Settings -> Front Page')
+    usage.push('Page Settings -> Default Home')
   }
 
   if (links.docs.length > 0) {

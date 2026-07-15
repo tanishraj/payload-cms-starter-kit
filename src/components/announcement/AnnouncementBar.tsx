@@ -1,5 +1,7 @@
 import { Megaphone } from 'lucide-react'
 
+import { cn } from '@/lib/utils'
+
 import { MarqueeAnnouncementContent } from '@/components/announcement/MarqueeAnnouncementContent'
 import { RotatingAnnouncementContent } from '@/components/announcement/RotatingAnnouncementContent'
 
@@ -19,6 +21,7 @@ type AnnouncementBarProps = {
   marqueeDurationMs?: number | null
   sticky?: boolean
   topOffset?: string
+  className?: string
 }
 
 const normalizeAnnouncementItems = (items?: AnnouncementItemInput[] | null) =>
@@ -46,6 +49,7 @@ export function AnnouncementBar({
   marqueeDurationMs,
   sticky = false,
   topOffset = '0px',
+  className,
 }: AnnouncementBarProps) {
   const normalizedItems = normalizeAnnouncementItems(items)
   const resolvedDisplayMode = displayMode ?? 'vertical'
@@ -66,7 +70,7 @@ export function AnnouncementBar({
   return (
     <section
       aria-label="Announcement"
-      className="border-b border-border bg-accent text-accent-foreground"
+      className={cn(className)}
       style={style}
     >
       <div className="mx-auto flex min-h-10 w-full max-w-screen-2xl items-center gap-2 px-4 py-2 text-sm">

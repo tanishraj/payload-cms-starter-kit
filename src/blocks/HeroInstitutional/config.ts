@@ -164,7 +164,7 @@ export const HeroInstitutionalBlock: Block = {
     plural: 'Hero Institutionals',
   },
   fields: [
-    createBlockAppearanceFields(),
+    createBlockAppearanceFields({ includeTextOverride: false }),
     {
       name: 'backgroundImage',
       label: 'Background Image',

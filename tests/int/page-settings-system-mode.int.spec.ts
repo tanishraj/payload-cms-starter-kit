@@ -69,7 +69,11 @@ describe('system mode settings', () => {
 
     const typedTabsField = tabsField as { tabs: Array<{ label: string }> } | undefined
 
-    expect(typedTabsField?.tabs.map((tab) => tab.label)).toEqual(['Front Page', 'Header', 'Footer'])
+    expect(typedTabsField?.tabs.map((tab) => tab.label)).toEqual([
+      'Default Home',
+      'Header',
+      'Footer',
+    ])
   })
 
   it('moves site mode controls into System Mode Settings', () => {

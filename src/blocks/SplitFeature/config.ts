@@ -91,7 +91,7 @@ export const SplitFeatureBlock: Block = {
     plural: 'Split Features',
   },
   fields: [
-    createBlockAppearanceFields(),
+    createBlockAppearanceFields({ includeTextOverride: false }),
     {
       name: 'image',
       type: 'upload',

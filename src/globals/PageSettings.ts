@@ -5,6 +5,7 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createGlobalAuditHook } from '@/hooks/logOperationalAuditEvent'
 import { describeAuditValue } from '@/lib/operationalAudit'
 
@@ -51,7 +52,7 @@ const validatePublishedFrontPage: RelationshipFieldSingleValidation = async (val
   })
 
   if (result.docs.length === 0) {
-    return 'Front Page must reference a published page.'
+    return 'Default Home must reference a published page.'
   }
 
   return true
@@ -152,11 +153,11 @@ export const PageSettings: GlobalConfig = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Front Page',
+          label: 'Default Home',
           fields: [
             {
               name: 'homepage',
-              label: 'Front Page',
+              label: 'Default Home',
               type: 'relationship',
               relationTo: 'pages',
               filterOptions: {
@@ -167,6 +168,19 @@ export const PageSettings: GlobalConfig = {
               validate: validatePublishedFrontPage,
               admin: {
                 description: 'Choose which published page should render at the root URL (/).',
+              },
+            },
+          ],
+        },
+        {
+          label: 'Page Appearance',
+          fields: [
+            {
+              ...createBlockAppearanceFields({ includeBorder: false }),
+              name: 'pageAppearance',
+              label: 'Appearance',
+              admin: {
+                description: 'Default HTML/body appearance for all frontend pages.',
               },
             },
           ],
@@ -210,6 +224,14 @@ export const PageSettings: GlobalConfig = {
               name: 'announcementLabel',
               label: 'Announcement Label',
               type: 'text',
+              admin: {
+                condition: (data) => Boolean(data?.announcementEnabled),
+              },
+            },
+            {
+              ...createBlockAppearanceFields({ includeTextOverride: false }),
+              name: 'announcementAppearance',
+              label: 'Appearance',
               admin: {
                 condition: (data) => Boolean(data?.announcementEnabled),
               },

@@ -110,7 +110,7 @@ export function StatsStripBlockComponent({
                     )}
                     key={`${item.label}-${rowIndex}-${itemIndex}`}
                   >
-                    <p className="font-serif text-4xl font-semibold leading-none tracking-tight sm:text-5xl">
+                    <p className="font-serif text-4xl font-semibold leading-none tracking-tight text-current sm:text-5xl">
                       {animationEnabled ? (
                         <AnimatedMetricValue
                           durationMs={animationDuration}
@@ -123,7 +123,7 @@ export function StatsStripBlockComponent({
                         `${item.prefix ?? ''}${item.value}${item.suffix ?? ''}`
                       )}
                     </p>
-                    <p className="max-w-[18ch] font-mono text-[0.7rem] leading-[1.55] uppercase tracking-[0.18em] opacity-70 sm:text-xs">
+                    <p className="max-w-[18ch] font-mono text-[0.7rem] leading-[1.55] uppercase tracking-[0.18em] text-current/70 sm:text-xs">
                       {item.label}
                     </p>
                   </article>

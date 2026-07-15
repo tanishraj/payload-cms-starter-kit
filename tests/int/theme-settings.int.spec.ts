@@ -35,15 +35,18 @@ const getThemeField = () => {
 describe('website theme registry', () => {
   it('exports the supported website themes and helpers', () => {
     expect(defaultWebsiteTheme).toBe('default')
-    expect(websiteThemeValues).toEqual(['default', 'blue', 'sera'])
+    expect(websiteThemeValues).toEqual(['default', 'sunset', 'blue', 'kodama'])
     expect(websiteThemeOptions).toEqual([
       { label: 'Default', value: 'default' },
+      { label: 'Sunset', value: 'sunset' },
       { label: 'Blue', value: 'blue' },
-      { label: 'Sera', value: 'sera' },
+      { label: 'Kodama', value: 'kodama' },
     ])
     expect(isWebsiteTheme('default')).toBe(true)
+    expect(isWebsiteTheme('sunset')).toBe(true)
     expect(isWebsiteTheme('blue')).toBe(true)
-    expect(isWebsiteTheme('sera')).toBe(true)
+    expect(isWebsiteTheme('kodama')).toBe(true)
+    expect(isWebsiteTheme('sera')).toBe(false)
     expect(isWebsiteTheme('amber')).toBe(false)
   })
 

@@ -1,17 +1,25 @@
 /**
  * Website theme registry.
  *
- * To add a new website theme:
- * 1. Create `src/styles/themes/theme-<name>.css`
- * 2. Import that file in `src/styles/globals.css`
- * 3. Add one entry here with a stable `value` and admin-facing `label`
+ * Each theme preset lives in its own file: `src/styles/themes/theme-<name>.css`.
+ * A preset file holds two scoped variable blocks:
+ *   :root[data-theme-color='<name>']        { ... }  // light mode
+ *   :root[data-theme-color='<name>'].dark   { ... }  // dark mode
  *
- * Payload Theme Settings and frontend runtime validation both read from this file.
+ * To add a new website theme:
+ * 1. Create `src/styles/themes/theme-<name>.css` with those two blocks.
+ * 2. Import it in `src/styles/globals.css` (alongside the other theme imports).
+ * 3. Add one entry here with a stable `value` (matching the attribute) and an
+ *    admin-facing `label`.
+ *
+ * Payload Theme Settings (the `themeColor` select) and the frontend runtime
+ * validation both read from this file, so the two stay in sync automatically.
  */
 export const websiteThemes = [
   { label: 'Default', value: 'default' },
+  { label: 'Sunset', value: 'sunset' },
   { label: 'Blue', value: 'blue' },
-  { label: 'Sera', value: 'sera' },
+  { label: 'Kodama', value: 'kodama' },
 ] as const
 
 export type WebsiteThemeValue = (typeof websiteThemes)[number]['value']

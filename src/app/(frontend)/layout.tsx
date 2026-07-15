@@ -9,6 +9,10 @@ import { AdminSessionBar } from '@/components/admin/AdminSessionBar'
 import { GlobalAnnouncement } from '@/components/global/GlobalAnnouncement'
 import { GlobalFooter } from '@/components/global/GlobalFooter'
 import { GlobalHeader } from '@/components/global/GlobalHeader'
+import {
+  type BlockAppearance,
+  resolveBlockAppearanceClasses,
+} from '@/blocks/shared/blockAppearance'
 import { getCurrentCMSUser } from '@/lib/cmsSession'
 import { getMediaAbsoluteUrl } from '@/lib/media'
 import { getRobotsMetadata } from '@/lib/seo'
@@ -182,6 +186,11 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         announcementDisplayMode?: 'horizontal' | 'marquee' | 'vertical' | null
       }).announcementDisplayMode
     : null
+  const announcementAppearance = pageSettings?.announcementEnabled
+    ? (pageSettings as {
+        announcementAppearance?: BlockAppearance | null
+      }).announcementAppearance
+    : null
   const announcementIntervalMs = pageSettings?.announcementEnabled
     ? (pageSettings as { announcementIntervalMs?: number | null }).announcementIntervalMs
     : null
@@ -197,11 +206,22 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       })
         .announcementItems
     : null
+  const pageAppearance = pageSettings?.pageAppearance as BlockAppearance | null | undefined
+  const privacyPolicyPage =
+    typeof siteSettings.privacyPolicyPage === 'object' && siteSettings.privacyPolicyPage !== null
+      ? siteSettings.privacyPolicyPage
+      : null
+  const termsAndConditionsPage =
+    typeof siteSettings.termsAndConditionsPage === 'object' &&
+    siteSettings.termsAndConditionsPage !== null
+      ? siteSettings.termsAndConditionsPage
+      : null
   const htmlClassName = colorScheme === 'dark' ? 'dark' : undefined
   const htmlStyle =
     colorScheme === 'system'
       ? ({ colorScheme: 'light dark' } as React.CSSProperties)
       : ({ colorScheme } as React.CSSProperties)
+  const { className: pageBodyClassName } = resolveBlockAppearanceClasses(pageAppearance)
   const cmsToolbarOffset = currentUser ? '3rem' : '0px'
   const headerTopOffset = `calc(${cmsToolbarOffset} + ${announcementItems?.length ? '2.5rem' : '0px'})`
   const contentShellStyle = { paddingTop: cmsToolbarOffset } as React.CSSProperties
@@ -216,11 +236,12 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       suppressHydrationWarning
     >
       <head />
-      <body>
+      <body className={pageBodyClassName}>
         <AdminSessionBar user={currentUser} />
         <div style={contentShellStyle}>
           <GlobalAnnouncement
             displayMode={announcementDisplayMode}
+            appearance={announcementAppearance}
             intervalMs={announcementIntervalMs}
             items={announcementItems}
             label={announcementLabel}
@@ -236,8 +257,8 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
           <main data-site-main="true">{children}</main>
           <GlobalFooter
             footer={activeFooter}
-            privacyPolicyPage={siteSettings.privacyPolicyPage}
-            termsAndConditionsPage={siteSettings.termsAndConditionsPage}
+            privacyPolicyPage={privacyPolicyPage}
+            termsAndConditionsPage={termsAndConditionsPage}
             siteAddress={siteSettings.address}
             siteEmail={siteSettings.contactEmail}
             siteLogo={siteSettings.logo}
