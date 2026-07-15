@@ -54,6 +54,7 @@ export function AnnouncementBar({
   const normalizedItems = normalizeAnnouncementItems(items)
   const resolvedDisplayMode = displayMode ?? 'vertical'
   const resolvedLabel = label?.trim() || 'Announcement'
+  const resolvedClassName = cn('bg-primary text-primary-foreground', className)
 
   if (normalizedItems.length === 0) {
     return null
@@ -68,16 +69,9 @@ export function AnnouncementBar({
     : undefined
 
   return (
-    <section
-      aria-label="Announcement"
-      className={cn(className)}
-      style={style}
-    >
+    <section aria-label="Announcement" className={resolvedClassName} style={style}>
       <div className="mx-auto flex min-h-10 w-full max-w-screen-2xl items-center gap-2 px-4 py-2 text-sm">
-        <Megaphone
-          aria-hidden="true"
-          className="size-4 shrink-0 text-current/80 md:hidden"
-        />
+        <Megaphone aria-hidden="true" className="size-4 shrink-0 text-current/80 md:hidden" />
         <span className="hidden shrink-0 font-mono font-bold uppercase tracking-wider md:inline">
           {resolvedLabel}
         </span>

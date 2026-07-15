@@ -15,7 +15,7 @@ const backgroundClasses = {
 } as const
 
 const surfaceForegroundClasses = {
-  none: 'text-foreground',
+  none: '',
   primary: 'text-primary-foreground',
   secondary: 'text-secondary-foreground',
   muted: 'text-foreground',
