@@ -6,6 +6,8 @@ export type MediaPreset = 'favicon' | 'generic' | 'hero' | 'logo' | 'seo' | 'sys
 type ResolvedMediaImage = {
   alt: string
   src: string
+  width?: number
+  height?: number
 }
 
 const defaultSiteURL = getSiteURL()
@@ -21,7 +23,17 @@ export const getMediaAbsoluteUrl = (
     return undefined
   }
 
-  return new URL(media.url, defaultSiteURL).toString()
+  const url = media.url.trim()
+
+  if (url.startsWith('/')) {
+    return url
+  }
+
+  if (/^https?:\/\//i.test(url)) {
+    return url
+  }
+
+  return new URL(url, defaultSiteURL).toString()
 }
 
 const getMediaAltFallback = (preset: MediaPreset): string => {
@@ -62,5 +74,7 @@ export const getMediaImageProps = ({
   return {
     alt,
     src,
+    width: isMediaDoc(media) && typeof media.width === 'number' ? media.width : undefined,
+    height: isMediaDoc(media) && typeof media.height === 'number' ? media.height : undefined,
   }
 }

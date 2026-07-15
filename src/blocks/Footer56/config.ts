@@ -115,7 +115,7 @@ export const Footer56Block: Block = {
       name: 'description',
       type: 'textarea',
     },
-    createBlockAppearanceFields(),
+    createBlockAppearanceFields({ includeTextOverride: false }),
     {
       name: 'linkGroups',
       type: 'array',

@@ -1064,7 +1064,6 @@ export interface Footer56Block {
   description?: string | null;
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   linkGroups?:
@@ -1926,7 +1925,6 @@ export interface Footer56BlockSelect<T extends boolean = true> {
     | T
     | {
         background?: T;
-        textColor?: T;
         border?: T;
       };
   linkGroups?:
