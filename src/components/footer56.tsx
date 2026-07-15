@@ -3,7 +3,10 @@ import Image from 'next/image'
 import { FaFacebook, FaGithub, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import { Mail, MapPin, Phone } from 'lucide-react'
 
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
 import { cn } from '@/lib/utils'
 
 interface FooterLink {
@@ -200,7 +203,9 @@ const Footer56 = (props: Props) => {
             </div>
             {visibleSections.map((section, sectionIdx) => (
               <div key={sectionIdx}>
-                <h3 className="mb-4 text-sm font-semibold tracking-tight">{section.title}</h3>
+                <h3 className="mb-4 text-sm font-semibold uppercase font-mono tracking-widest">
+                  {section.title}
+                </h3>
                 <ul className="space-y-4 text-sm text-muted-foreground">
                   {section.links.map((link, linkIdx) => (
                     <li key={linkIdx} className="font-medium hover:text-primary">

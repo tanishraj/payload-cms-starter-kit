@@ -1,4 +1,7 @@
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
 import { Button } from '@/components/ui/button'
 import { resolveCmsLink } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
@@ -121,11 +124,11 @@ export function SplitFeatureBlockComponent({
         >
           {renderAsSplit ? (
             <div className={cn(order.media)}>
-              <div className="overflow-hidden rounded-(--radius-xl) bg-card">
+              <div className="overflow-hidden rounded-xl bg-card">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   alt={media?.alt}
-                  className="aspect-[4/3] size-full object-cover"
+                  className="aspect-4/3 size-full object-cover"
                   src={media?.src}
                 />
               </div>
