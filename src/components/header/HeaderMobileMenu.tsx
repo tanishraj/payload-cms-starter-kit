@@ -46,7 +46,7 @@ export function HeaderMobileMenu({ ctas, menuItems, topOffset = '0px' }: HeaderM
 
       <SheetContent
         aria-describedby={undefined}
-        className="inset-x-0 z-2 !animate-none bg-background p-0 [&>button]:hidden lg:hidden"
+        className="inset-x-0 z-2 animate-none! bg-background p-0 [&>button]:hidden lg:hidden"
         showCloseButton={false}
         side="top"
         showOverlay={false}
@@ -63,10 +63,7 @@ export function HeaderMobileMenu({ ctas, menuItems, topOffset = '0px' }: HeaderM
           <div className="flex-1 overflow-y-auto">
             <div className="mx-auto w-full max-w-screen-2xl px-4">
               <nav aria-label="Mobile navigation">
-                <Accordion
-                  className="w-full rounded-none border-x-0 border-t-0"
-                  type="multiple"
-                >
+                <Accordion className="w-full rounded-none border-x-0 border-t-0" type="multiple">
                   {menuItems.map((item, index) => {
                     if (item.children?.length) {
                       return (
@@ -75,7 +72,7 @@ export function HeaderMobileMenu({ ctas, menuItems, topOffset = '0px' }: HeaderM
                           key={`${item.label}-${item.href}-${index}`}
                           value={`nav-${index}`}
                         >
-                          <AccordionTrigger className="h-[3.75rem] items-center p-0 text-base leading-[3.75] font-bold no-underline hover:no-underline">
+                          <AccordionTrigger className="h-15 items-center p-0 text-base leading-[3.75] font-bold no-underline hover:no-underline">
                             {item.label}
                           </AccordionTrigger>
                           <AccordionContent className="px-0 pb-2 [&_a]:no-underline">
