@@ -13,6 +13,8 @@ type GlobalAnnouncementProps = {
   label?: string | null
   marqueeDurationMs?: number | null
   stickyTopOffset?: string
+  dismissible?: boolean | null
+  hideOnScroll?: boolean | null
 }
 
 export function GlobalAnnouncement({
@@ -23,6 +25,8 @@ export function GlobalAnnouncement({
   label,
   marqueeDurationMs,
   stickyTopOffset = '0px',
+  dismissible,
+  hideOnScroll,
 }: GlobalAnnouncementProps) {
   const { className } = resolveBlockAppearanceClasses(appearance)
 
@@ -36,6 +40,8 @@ export function GlobalAnnouncement({
       className={className}
       sticky
       topOffset={stickyTopOffset}
+      dismissible={dismissible}
+      hideOnScroll={hideOnScroll}
     />
   )
 }

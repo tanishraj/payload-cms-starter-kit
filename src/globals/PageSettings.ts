@@ -237,6 +237,28 @@ export const PageSettings: GlobalConfig = {
               },
             },
             {
+              name: 'announcementDismissible',
+              label: 'Dismissible',
+              type: 'checkbox',
+              defaultValue: false,
+              admin: {
+                condition: (data) => Boolean(data?.announcementEnabled),
+                description:
+                  'Show a close button so visitors can hide the announcement for the rest of their browser session.',
+              },
+            },
+            {
+              name: 'announcementHideOnScroll',
+              label: 'Hide on Scroll',
+              type: 'checkbox',
+              defaultValue: false,
+              admin: {
+                condition: (data) => Boolean(data?.announcementEnabled),
+                description:
+                  'Allow the announcement bar to scroll out of view instead of remaining pinned above the header.',
+              },
+            },
+            {
               name: 'announcementDisplayMode',
               label: 'Animation Mode',
               type: 'select',
@@ -268,7 +290,8 @@ export const PageSettings: GlobalConfig = {
               admin: {
                 condition: (data) =>
                   Boolean(data?.announcementEnabled) && data?.announcementDisplayMode !== 'marquee',
-                description: 'Auto-advance interval for rotating announcement items. Minimum 2000ms.',
+                description:
+                  'Auto-advance interval for rotating announcement items. Minimum 2000ms.',
               },
               validate: validateAnnouncementInterval,
             },
@@ -291,7 +314,8 @@ export const PageSettings: GlobalConfig = {
               minRows: 1,
               admin: {
                 condition: (data) => Boolean(data?.announcementEnabled),
-                description: 'Displayed as a thin rotating site-wide banner above all frontend pages.',
+                description:
+                  'Displayed as a thin rotating site-wide banner above all frontend pages.',
               },
               fields: [
                 {

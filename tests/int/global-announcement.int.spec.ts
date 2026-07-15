@@ -1,13 +1,20 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { createElement } from 'react'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { renderToStaticMarkup } from 'react-dom/server'
 
 import { GlobalAnnouncement } from '@/components/global/GlobalAnnouncement'
 import { PageSettings } from '@/globals/PageSettings'
 
 describe('global announcement settings', () => {
+  afterEach(() => {
+    cleanup()
+    window.sessionStorage.clear()
+    vi.restoreAllMocks()
+  })
+
   it('keeps announcement fields inside Website Defaults instead of a separate global', () => {
     const payloadConfigSource = fs.readFileSync(
       path.resolve(process.cwd(), 'src/payload.config.ts'),
@@ -103,6 +110,10 @@ describe('global announcement settings', () => {
   it('renders the announcement icon, optional title, and item description', () => {
     const html = renderToStaticMarkup(
       createElement(GlobalAnnouncement, {
+        appearance: {
+          background: 'accent',
+          border: 'topAndBottom',
+        },
         displayMode: 'horizontal',
         intervalMs: 4000,
         items: [{ title: 'Maintenance', description: 'Scheduled tonight at 10:00 PM.' }],
@@ -145,17 +156,56 @@ describe('global announcement settings', () => {
     expect(html).toContain('top:3rem')
   })
 
+  it('lets the announcement scroll away when hide on scroll is enabled', () => {
+    const html = renderToStaticMarkup(
+      createElement(GlobalAnnouncement, {
+        hideOnScroll: true,
+        items: [{ description: 'Scheduled maintenance tonight.' }],
+        stickyTopOffset: '3rem',
+      }),
+    )
+
+    expect(html).not.toContain('position:sticky')
+    expect(html).not.toContain('top:3rem')
+  })
+
+  it('dismisses for the current render when session storage is unavailable', () => {
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('Storage unavailable')
+    })
+
+    render(
+      createElement(GlobalAnnouncement, {
+        dismissible: true,
+        items: [{ description: 'Scheduled maintenance tonight.' }],
+      }),
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Dismiss announcement' }))
+
+    expect(screen.queryByRole('region', { name: 'Announcement' })).toBeNull()
+  })
+
   it('wires the frontend layout to fetch and render the announcement global', () => {
     const layoutSource = fs.readFileSync(path.resolve(process.cwd(), 'src/app/(frontend)/layout.tsx'), 'utf8')
 
     expect(layoutSource).toContain("import { GlobalAnnouncement } from '@/components/global/GlobalAnnouncement'")
     expect(layoutSource).toContain("slug: 'page-settings'")
     expect(layoutSource).toContain('<GlobalAnnouncement')
-    expect(layoutSource).toContain('const announcementDisplayMode = pageSettings?.announcementEnabled')
-    expect(layoutSource).toContain('const announcementIntervalMs = pageSettings?.announcementEnabled')
-    expect(layoutSource).toContain('const announcementLabel = pageSettings?.announcementEnabled')
-    expect(layoutSource).toContain('const announcementMarqueeDurationMs = pageSettings?.announcementEnabled')
-    expect(layoutSource).toContain('const announcementItems = pageSettings?.announcementEnabled')
+    expect(layoutSource).toContain(
+      'const announcementSettings = pageSettings?.announcementEnabled ? pageSettings : null',
+    )
+    expect(layoutSource).toContain(
+      'const announcementDisplayMode = announcementSettings?.announcementDisplayMode',
+    )
+    expect(layoutSource).toContain(
+      'const announcementIntervalMs = announcementSettings?.announcementIntervalMs',
+    )
+    expect(layoutSource).toContain('const announcementLabel = announcementSettings?.announcementLabel')
+    expect(layoutSource).toContain(
+      'const announcementMarqueeDurationMs = announcementSettings?.announcementMarqueeDurationMs',
+    )
+    expect(layoutSource).toContain('const announcementItems = announcementSettings?.announcementItems')
     expect(layoutSource).toContain('displayMode={announcementDisplayMode}')
     expect(layoutSource).toContain('intervalMs={announcementIntervalMs}')
     expect(layoutSource).toContain('items={announcementItems}')

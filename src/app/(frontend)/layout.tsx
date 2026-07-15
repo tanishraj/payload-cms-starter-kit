@@ -181,31 +181,15 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const rawThemeColor = String(themeSettings.themeColor ?? defaultWebsiteTheme)
   const savedThemeColor = rawThemeColor === 'amber' ? 'sera' : rawThemeColor
   const themeColor = isWebsiteTheme(savedThemeColor) ? savedThemeColor : defaultWebsiteTheme
-  const announcementDisplayMode = pageSettings?.announcementEnabled
-    ? (pageSettings as {
-        announcementDisplayMode?: 'horizontal' | 'marquee' | 'vertical' | null
-      }).announcementDisplayMode
-    : null
-  const announcementAppearance = pageSettings?.announcementEnabled
-    ? (pageSettings as {
-        announcementAppearance?: BlockAppearance | null
-      }).announcementAppearance
-    : null
-  const announcementIntervalMs = pageSettings?.announcementEnabled
-    ? (pageSettings as { announcementIntervalMs?: number | null }).announcementIntervalMs
-    : null
-  const announcementLabel = pageSettings?.announcementEnabled
-    ? (pageSettings as { announcementLabel?: string | null }).announcementLabel
-    : null
-  const announcementMarqueeDurationMs = pageSettings?.announcementEnabled
-    ? (pageSettings as { announcementMarqueeDurationMs?: number | null }).announcementMarqueeDurationMs
-    : null
-  const announcementItems = pageSettings?.announcementEnabled
-    ? (pageSettings as {
-        announcementItems?: Array<{ title?: string | null; description?: string | null; url?: string | null }> | null
-      })
-        .announcementItems
-    : null
+  const announcementSettings = pageSettings?.announcementEnabled ? pageSettings : null
+  const announcementDisplayMode = announcementSettings?.announcementDisplayMode
+  const announcementAppearance = announcementSettings?.announcementAppearance
+  const announcementIntervalMs = announcementSettings?.announcementIntervalMs
+  const announcementLabel = announcementSettings?.announcementLabel
+  const announcementMarqueeDurationMs = announcementSettings?.announcementMarqueeDurationMs
+  const announcementItems = announcementSettings?.announcementItems
+  const announcementDismissible = announcementSettings?.announcementDismissible
+  const announcementHideOnScroll = announcementSettings?.announcementHideOnScroll
   const pageAppearance = pageSettings?.pageAppearance as BlockAppearance | null | undefined
   const privacyPolicyPage =
     typeof siteSettings.privacyPolicyPage === 'object' && siteSettings.privacyPolicyPage !== null
@@ -223,7 +207,11 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       : ({ colorScheme } as React.CSSProperties)
   const { className: pageBodyClassName } = resolveBlockAppearanceClasses(pageAppearance)
   const cmsToolbarOffset = currentUser ? '3rem' : '0px'
-  const headerTopOffset = `calc(${cmsToolbarOffset} + ${announcementItems?.length ? '2.5rem' : '0px'})`
+  // Only a persistent (non-hide-on-scroll) announcement reserves space below it;
+  // the bar collapses --global-announcement-height to 0 when dismissed. The
+  // fallback keeps the correct offset during SSR and before hydration.
+  const headerReservesAnnouncement = Boolean(announcementItems?.length) && !announcementHideOnScroll
+  const headerTopOffset = `calc(${cmsToolbarOffset} + var(--global-announcement-height, ${headerReservesAnnouncement ? '2.5rem' : '0px'}))`
   const contentShellStyle = { paddingTop: cmsToolbarOffset } as React.CSSProperties
 
   return (
@@ -247,6 +235,8 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
             label={announcementLabel}
             marqueeDurationMs={announcementMarqueeDurationMs}
             stickyTopOffset={cmsToolbarOffset}
+            dismissible={announcementDismissible}
+            hideOnScroll={announcementHideOnScroll}
           />
           <GlobalHeader
             header={activeHeader}

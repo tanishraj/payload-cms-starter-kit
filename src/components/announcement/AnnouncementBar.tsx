@@ -1,9 +1,13 @@
-import { Megaphone } from 'lucide-react'
+'use client'
+
+import { Megaphone, X } from 'lucide-react'
+import { useEffect, useState, useSyncExternalStore } from 'react'
 
 import { cn } from '@/lib/utils'
 
 import { MarqueeAnnouncementContent } from '@/components/announcement/MarqueeAnnouncementContent'
 import { RotatingAnnouncementContent } from '@/components/announcement/RotatingAnnouncementContent'
+import { Button } from '@/components/ui/button'
 
 export type AnnouncementItemInput = {
   description?: string | null
@@ -22,6 +26,23 @@ type AnnouncementBarProps = {
   sticky?: boolean
   topOffset?: string
   className?: string
+  dismissible?: boolean | null
+  hideOnScroll?: boolean | null
+}
+
+// Per-tab dismissal: closing hides the bar for the session and it reappears on
+// a fresh visit. Not content-keyed by design (session scope).
+const DISMISS_STORAGE_KEY = 'announcement:dismissed'
+const noopSubscribe = () => () => {}
+const getServerFalse = () => false
+
+const getDismissSnapshot = () => {
+  try {
+    return window.sessionStorage.getItem(DISMISS_STORAGE_KEY) === '1'
+  } catch {
+    // sessionStorage can be unavailable (privacy mode); treat as not dismissed.
+    return false
+  }
 }
 
 const normalizeAnnouncementItems = (items?: AnnouncementItemInput[] | null) =>
@@ -50,17 +71,52 @@ export function AnnouncementBar({
   sticky = false,
   topOffset = '0px',
   className,
+  dismissible = false,
+  hideOnScroll = false,
 }: AnnouncementBarProps) {
   const normalizedItems = normalizeAnnouncementItems(items)
   const resolvedDisplayMode = displayMode ?? 'vertical'
   const resolvedLabel = label?.trim() || 'Announcement'
   const resolvedClassName = cn('bg-primary text-primary-foreground', className)
 
-  if (normalizedItems.length === 0) {
+  // "Hide on scroll" bars stay in normal page flow so they scroll away and the
+  // sticky header takes the top with no leftover gap. Persistent bars pin.
+  const barSticky = sticky && !hideOnScroll
+
+  const storedDismissed = useSyncExternalStore(noopSubscribe, getDismissSnapshot, getServerFalse)
+  const [locallyDismissed, setLocallyDismissed] = useState(false)
+  const isDismissed = Boolean(dismissible) && (storedDismissed || locallyDismissed)
+
+  const handleDismiss = () => {
+    setLocallyDismissed(true)
+    try {
+      window.sessionStorage.setItem(DISMISS_STORAGE_KEY, '1')
+    } catch {
+      // The in-memory state still dismisses the bar for this render.
+    }
+  }
+
+  // Only a shown, pinned bar makes the header reserve space below it. A
+  // scroll-away or dismissed bar collapses that offset so the header sits flush.
+  const reservesHeaderSpace = barSticky && !isDismissed && normalizedItems.length > 0
+  useEffect(() => {
+    const root = document.documentElement
+    if (reservesHeaderSpace) {
+      root.style.removeProperty('--global-announcement-height')
+    } else {
+      root.style.setProperty('--global-announcement-height', '0px')
+    }
+
+    return () => {
+      root.style.removeProperty('--global-announcement-height')
+    }
+  }, [reservesHeaderSpace])
+
+  if (normalizedItems.length === 0 || isDismissed) {
     return null
   }
 
-  const style = sticky
+  const style = barSticky
     ? ({
         position: 'sticky',
         top: topOffset,
@@ -87,6 +143,18 @@ export function AnnouncementBar({
             mode={resolvedDisplayMode}
           />
         )}
+        {dismissible ? (
+          <Button
+            aria-label="Dismiss announcement"
+            className="rounded-[calc(var(--radius))] text-current/90 hover:bg-current/10 hover:text-current"
+            onClick={handleDismiss}
+            size="icon-sm"
+            type="button"
+            variant="ghost"
+          >
+            <X aria-hidden="true" />
+          </Button>
+        ) : null}
       </div>
     </section>
   )

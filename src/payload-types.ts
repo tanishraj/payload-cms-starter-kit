@@ -2361,6 +2361,14 @@ export interface PageSetting {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Show a close button so visitors can hide the announcement for the rest of their browser session.
+   */
+  announcementDismissible?: boolean | null;
+  /**
+   * Allow the announcement bar to scroll out of view instead of remaining pinned above the header.
+   */
+  announcementHideOnScroll?: boolean | null;
   announcementDisplayMode?: ('vertical' | 'horizontal' | 'marquee') | null;
   /**
    * Auto-advance interval for rotating announcement items. Minimum 2000ms.
@@ -2519,6 +2527,8 @@ export interface PageSettingsSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  announcementDismissible?: T;
+  announcementHideOnScroll?: T;
   announcementDisplayMode?: T;
   announcementIntervalMs?: T;
   announcementMarqueeDurationMs?: T;
