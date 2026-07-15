@@ -17,6 +17,7 @@ type HeaderNavbarProps = {
   menuItems: ResolvedHeaderMenuItem[]
   navAlignment: 'left' | 'center' | 'right'
   size: 'compact' | 'default' | 'large'
+  stickyTopOffset?: string
 }
 
 const sizeClasses = {
@@ -37,6 +38,12 @@ const ctaButtonSizes = {
   large: 'lg',
 } as const
 
+const mobileHeaderHeightBySize = {
+  compact: '3.5rem',
+  default: '4rem',
+  large: '5rem',
+} as const
+
 export function HeaderNavbar({
   appearance,
   ctas,
@@ -44,9 +51,11 @@ export function HeaderNavbar({
   menuItems,
   navAlignment,
   size,
+  stickyTopOffset = '0px',
 }: HeaderNavbarProps) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const usesDefaultSurface = (appearance?.background ?? 'none') === 'none'
+  const mobileSheetTopOffset = `calc(${stickyTopOffset} + ${mobileHeaderHeightBySize[size]})`
 
   return (
     <header
@@ -57,21 +66,22 @@ export function HeaderNavbar({
         appearanceClasses.className,
       )}
       data-header-navbar-background={appearance?.background ?? 'none'}
+      data-header-navbar-style="navbar12"
       data-header-navbar="true"
     >
       <div
         className={cn(
-          'mx-auto flex w-full max-w-screen-2xl items-center gap-4 px-4',
+          'mx-auto flex w-full max-w-screen-2xl items-center justify-between gap-8 px-4',
           sizeClasses[size],
         )}
       >
-        <div className="flex shrink-0 items-center self-stretch">{logo}</div>
+        <div className="flex max-h-full shrink-0 items-center self-stretch">{logo}</div>
 
         <div className={cn('hidden min-w-0 flex-1 lg:flex', navAlignmentClasses[navAlignment])}>
           <HeaderNavMenu menuItems={menuItems} size={size} />
         </div>
 
-        <div className="ml-auto hidden items-center gap-2 lg:flex">
+        <div className="ml-auto hidden items-center gap-2.5 lg:flex">
           {ctas.map((item) => (
             <Button
               asChild
@@ -91,7 +101,7 @@ export function HeaderNavbar({
         </div>
 
         <div className="ml-auto lg:hidden">
-          <HeaderMobileMenu ctas={ctas} menuItems={menuItems} />
+          <HeaderMobileMenu ctas={ctas} menuItems={menuItems} topOffset={mobileSheetTopOffset} />
         </div>
       </div>
     </header>

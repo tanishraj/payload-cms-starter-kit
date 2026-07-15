@@ -8,6 +8,7 @@ type HeaderNavbar12BlockComponentProps = HeaderNavbar12BlockType & {
   appearance?: BlockAppearance | null
   siteLogo?: LogoMediaLike
   siteName?: string | null
+  stickyTopOffset?: string
 }
 
 const logoHeightBySize = {
@@ -28,6 +29,7 @@ export function HeaderNavbar12BlockComponent({
   siteLogo,
   siteName,
   size,
+  stickyTopOffset,
 }: HeaderNavbar12BlockComponentProps) {
   const resolvedSize = size ?? 'default'
   const resolvedMenuItems = resolveHeaderMenuItems(menuItems)
@@ -71,6 +73,7 @@ export function HeaderNavbar12BlockComponent({
       menuItems={resolvedMenuItems}
       navAlignment={navAlignment ?? 'center'}
       size={resolvedSize}
+      stickyTopOffset={stickyTopOffset}
     />
   )
 }

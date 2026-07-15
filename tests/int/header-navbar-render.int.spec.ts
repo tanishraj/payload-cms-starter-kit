@@ -145,6 +145,7 @@ describe('header navbar rendering', () => {
     )
 
     expect(html).toContain('data-header-navbar="true"')
+    expect(html).toContain('data-header-navbar-style="navbar12"')
     expect(html).toContain('data-header-navbar-background="secondary"')
     expect(html).toContain('bg-secondary')
     expect(html).toContain('text-secondary-foreground')
@@ -305,6 +306,7 @@ describe('header navbar rendering', () => {
     )
 
     expect(html).toContain('data-header-mobile-menu="true"')
+    expect(html).toContain('data-header-mobile-menu-style="navbar12"')
     expect(html).toContain('Open navigation menu')
   })
 })

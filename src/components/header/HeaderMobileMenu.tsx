@@ -1,160 +1,141 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronDown, Menu, X } from 'lucide-react'
+import { MenuIcon, X } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet'
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
+import { Button } from '@/components/ui/button'
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import type { ResolvedHeaderLink, ResolvedHeaderMenuItem } from '@/lib/headerNavigation'
-import { cn } from '@/lib/utils'
 
 type HeaderMobileMenuProps = {
   ctas: Array<ResolvedHeaderLink & { variant?: 'default' | 'link' | 'outline' | null }>
   menuItems: ResolvedHeaderMenuItem[]
+  topOffset?: string
 }
 
-const topLevelLinkClasses = 'min-h-9 w-full justify-start px-3'
+const topLevelLinkClasses =
+  'flex h-[3.75rem] items-center border-b p-0 text-left text-base leading-[3.75] font-bold no-underline ring-ring/10 outline-ring/50 transition-all focus-visible:ring-4 focus-visible:outline-1 nth-last-1:border-0'
 
-const childLinkClasses = 'h-7 justify-start px-2 font-normal'
+const childLinkClasses =
+  'flex w-full min-w-fit flex-row items-center gap-2.5 rounded-md px-2 py-[5px] no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground'
 
-const expandableRowClasses = 'min-h-9 w-full justify-between px-3'
-
-export function HeaderMobileMenu({ ctas, menuItems }: HeaderMobileMenuProps) {
+export function HeaderMobileMenu({ ctas, menuItems, topOffset = '0px' }: HeaderMobileMenuProps) {
   const [open, setOpen] = useState(false)
-  const [expandedItem, setExpandedItem] = useState<string | null>(null)
-
-  const toggleExpanded = (value: string) => {
-    setExpandedItem((current) => (current === value ? null : value))
-  }
 
   return (
     <Sheet onOpenChange={setOpen} open={open}>
-      <div data-header-mobile-menu="true">
+      <div data-header-mobile-menu="true" data-header-mobile-menu-style="navbar12">
         <SheetTrigger asChild>
           <Button
             aria-expanded={open}
             aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
-            size="icon"
+            className="size-11"
             type="button"
             variant="ghost"
           >
-            <Menu />
+            {open ? <X className="size-5.5" /> : <MenuIcon className="size-5.5" />}
           </Button>
         </SheetTrigger>
       </div>
 
-      <SheetContent className="w-full max-w-sm lg:hidden" showCloseButton={false} side="right">
-        <SheetHeader className="flex-row items-center justify-between border-b px-4 py-3">
-          <SheetTitle className="text-sm font-medium text-muted-foreground">Menu</SheetTitle>
-          <SheetClose asChild>
-            <Button size="icon-sm" type="button" variant="ghost">
-              <span className="sr-only">Close menu</span>
-              <X />
-            </Button>
-          </SheetClose>
-        </SheetHeader>
+      <SheetContent
+        aria-describedby={undefined}
+        className="inset-x-0 z-2 !animate-none bg-background p-0 [&>button]:hidden lg:hidden"
+        showCloseButton={false}
+        side="top"
+        showOverlay={false}
+        style={{
+          top: topOffset,
+          height: `calc(100dvh - ${topOffset})`,
+        }}
+      >
+        <div className="relative flex h-full flex-col animate-[fade-in_.35s_ease-in-out_forwards]">
+          <div className="absolute -m-px h-px w-px overflow-hidden border-0 p-0 text-nowrap whitespace-nowrap">
+            <SheetTitle className="text-primary">Mobile navigation</SheetTitle>
+          </div>
 
-        <div className="flex flex-1 flex-col gap-6 overflow-y-auto px-4 py-4">
-          <nav aria-label="Mobile navigation">
-            <ul className="flex flex-col gap-0">
-              {menuItems.map((item, index) => {
-                const hasChildren = Boolean(item.children?.length)
-                const itemKey = `${item.label}-${index}`
-                const isExpanded = expandedItem === itemKey
-
-                return (
-                  <li className="flex flex-col gap-1" key={`${item.label}-${item.href}-${index}`}>
-                    {hasChildren ? (
-                      <Button
-                        aria-expanded={isExpanded}
-                        aria-label={`Toggle ${item.label} submenu`}
-                        className={expandableRowClasses}
-                        onClick={() => toggleExpanded(itemKey)}
-                        type="button"
-                        variant="ghost"
-                      >
-                        <span className="truncate">{item.label}</span>
-                        <ChevronDown
-                          className={cn(
-                            'shrink-0 transition-transform duration-200',
-                            isExpanded ? 'rotate-180' : undefined,
-                          )}
-                        />
-                      </Button>
-                    ) : (
-                      <Button asChild className={cn(topLevelLinkClasses, 'min-w-0 flex-1')} variant="ghost">
-                        <a
-                          href={item.href}
-                          rel={item.newTab ? 'noreferrer' : undefined}
-                          target={item.newTab ? '_blank' : undefined}
+          <div className="flex-1 overflow-y-auto">
+            <div className="mx-auto w-full max-w-screen-2xl px-4">
+              <nav aria-label="Mobile navigation">
+                <Accordion
+                  className="w-full rounded-none border-x-0 border-t-0"
+                  type="multiple"
+                >
+                  {menuItems.map((item, index) => {
+                    if (item.children?.length) {
+                      return (
+                        <AccordionItem
+                          className="data-open:bg-transparent"
+                          key={`${item.label}-${item.href}-${index}`}
+                          value={`nav-${index}`}
                         >
-                          <span className="truncate">{item.label}</span>
-                        </a>
-                      </Button>
-                    )}
-
-                    {hasChildren ? (
-                      <div
-                        className={cn(
-                          'overflow-hidden pl-2.5 transition-[grid-template-rows,opacity] duration-200',
-                          isExpanded
-                            ? 'grid grid-rows-[1fr] opacity-100'
-                            : 'grid grid-rows-[0fr] opacity-0',
-                        )}
-                      >
-                        <div className="min-h-0">
-                          <div className="flex flex-col gap-0 border-l border-border pl-2">
-                            {item.children?.map((child) => (
-                              <Button
-                                asChild
+                          <AccordionTrigger className="h-[3.75rem] items-center p-0 text-base leading-[3.75] font-bold no-underline hover:no-underline">
+                            {item.label}
+                          </AccordionTrigger>
+                          <AccordionContent className="px-0 pb-2 [&_a]:no-underline">
+                            {item.children.map((child) => (
+                              <a
                                 className={childLinkClasses}
+                                href={child.href}
                                 key={`${child.label}-${child.href}`}
-                                size="sm"
-                                variant="ghost"
+                                rel={child.newTab ? 'noreferrer' : undefined}
+                                target={child.newTab ? '_blank' : undefined}
                               >
-                                <a
-                                  href={child.href}
-                                  rel={child.newTab ? 'noreferrer' : undefined}
-                                  target={child.newTab ? '_blank' : undefined}
-                                >
-                                  <span className="truncate">{child.label}</span>
-                                </a>
-                              </Button>
+                                <div className="text-base leading-normal whitespace-nowrap">
+                                  {child.label}
+                                </div>
+                              </a>
                             ))}
-                          </div>
-                        </div>
-                      </div>
-                    ) : null}
-                  </li>
-                )
-              })}
-            </ul>
-          </nav>
+                          </AccordionContent>
+                        </AccordionItem>
+                      )
+                    }
+
+                    return (
+                      <a
+                        className={topLevelLinkClasses}
+                        href={item.href}
+                        key={`${item.label}-${item.href}-${index}`}
+                        rel={item.newTab ? 'noreferrer' : undefined}
+                        target={item.newTab ? '_blank' : undefined}
+                      >
+                        {item.label}
+                      </a>
+                    )
+                  })}
+                </Accordion>
+              </nav>
+            </div>
+          </div>
 
           {ctas.length ? (
-            <div className="flex flex-col gap-2 border-t pt-4">
-              {ctas.map((item) => (
-                <Button
-                  asChild
-                  key={`${item.label}-${item.href}`}
-                  variant={item.variant ?? 'default'}
-                >
-                  <a
-                    href={item.href}
-                    rel={item.newTab ? 'noreferrer' : undefined}
-                    target={item.newTab ? '_blank' : undefined}
-                  >
-                    {item.label}
-                  </a>
-                </Button>
-              ))}
+            <div className="sticky bottom-0">
+              <div className="mx-auto w-full max-w-screen-2xl px-4">
+                <div className="flex flex-col gap-4 border-t py-4">
+                  {ctas.map((item) => (
+                    <Button
+                      asChild
+                      className="text-base leading-relaxed"
+                      key={`${item.label}-${item.href}`}
+                      variant={item.variant ?? 'default'}
+                    >
+                      <a
+                        href={item.href}
+                        rel={item.newTab ? 'noreferrer' : undefined}
+                        target={item.newTab ? '_blank' : undefined}
+                      >
+                        {item.label}
+                      </a>
+                    </Button>
+                  ))}
+                </div>
+              </div>
             </div>
           ) : null}
         </div>

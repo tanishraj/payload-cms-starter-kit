@@ -22,15 +22,15 @@ const navListGapClasses = {
 } as const
 
 const triggerContainerClasses = {
-  compact: 'h-8 px-3',
-  default: 'h-9 px-3.5',
-  large: 'h-10 px-4',
+  compact: 'h-7 px-2.5 py-0',
+  default: 'h-[1.875rem] px-2.5 py-0',
+  large: 'h-9 px-2.5 py-0',
 } as const
 
 const triggerLinkClasses = {
-  compact: 'text-sm font-medium text-foreground',
-  default: 'text-sm font-medium text-foreground',
-  large: 'text-base font-medium text-foreground',
+  compact: 'text-sm font-medium text-current',
+  default: 'text-[0.9375rem] font-medium text-current',
+  large: 'text-base font-medium text-current',
 } as const
 
 const dropdownContentClasses = {
@@ -84,7 +84,11 @@ export function HeaderNavMenu({ menuItems, size }: HeaderNavMenuProps) {
                   </>
                 ) : (
                   <NavigationMenuLink
-                    className={cn(navigationMenuTriggerStyle(), triggerContainerClasses[size], 'py-0')}
+                    className={cn(
+                      navigationMenuTriggerStyle(),
+                      triggerContainerClasses[size],
+                      'py-0',
+                    )}
                     href={item.href}
                     rel={item.newTab ? 'noreferrer' : undefined}
                     target={item.newTab ? '_blank' : undefined}
