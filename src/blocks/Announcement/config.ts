@@ -18,7 +18,7 @@ export const AnnouncementBlock: Block = {
     plural: 'Announcements',
   },
   fields: [
-    createBlockAppearanceFields(),
+    createBlockAppearanceFields({ includeTextOverride: false }),
     {
       name: 'displayMode',
       label: 'Animation Mode',

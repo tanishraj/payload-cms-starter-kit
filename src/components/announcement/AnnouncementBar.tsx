@@ -72,12 +72,12 @@ export function AnnouncementBar({
       <div className="mx-auto flex min-h-10 w-full max-w-screen-2xl items-center gap-2 px-4 py-2 text-sm">
         <Megaphone
           aria-hidden="true"
-          className="size-4 shrink-0 text-accent-foreground/80 md:hidden"
+          className="size-4 shrink-0 text-current/80 md:hidden"
         />
         <span className="hidden shrink-0 font-mono font-bold uppercase tracking-wider md:inline">
           {resolvedLabel}
         </span>
-        <span aria-hidden="true" className="hidden shrink-0 text-accent-foreground/70 md:inline">
+        <span aria-hidden="true" className="hidden shrink-0 text-current/70 md:inline">
           |
         </span>
         {resolvedDisplayMode === 'marquee' ? (

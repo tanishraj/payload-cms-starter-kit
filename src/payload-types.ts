@@ -222,7 +222,6 @@ export interface Page {
 export interface AnnouncementBlock {
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   displayMode: 'vertical' | 'horizontal' | 'marquee';
@@ -1549,7 +1548,6 @@ export interface AnnouncementBlockSelect<T extends boolean = true> {
     | T
     | {
         background?: T;
-        textColor?: T;
         border?: T;
       };
   displayMode?: T;

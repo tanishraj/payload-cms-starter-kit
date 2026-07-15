@@ -132,7 +132,7 @@ function AnnouncementItem({ item }: { item: RotatingAnnouncementItem }) {
         <span className="max-w-[40%] shrink truncate font-medium">{item.title}</span>
       ) : null}
       {item.title ? (
-        <span aria-hidden="true" className="shrink-0 text-accent-foreground/70">
+        <span aria-hidden="true" className="shrink-0 text-current/70">
           —
         </span>
       ) : null}
