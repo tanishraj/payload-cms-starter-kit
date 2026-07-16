@@ -41,6 +41,12 @@ describe('hero institutional block', () => {
     expect(html).toContain('bg-primary')
     expect(html).toContain('text-primary-foreground')
     expect(html).toContain('border-y border-border')
+    expect(html).toContain('from-background/90')
+    expect(html).toContain('flex flex-col gap-8 lg:flex-1')
+    expect(html).toContain('flex flex-col gap-6')
+    expect(html).toContain('text-balance text-foreground/84')
+    expect(html).toContain('lg:text-xl')
+    expect(html).toContain('h-12 w-full sm:w-auto')
   })
 
   it('maps overlay and alignment presets into deterministic class hooks', () => {
@@ -59,6 +65,7 @@ describe('hero institutional block', () => {
     expect(html).toContain('data-hero-horizontal="right"')
     expect(html).toContain('data-hero-vertical="bottom"')
     expect(html).toContain('data-hero-height="compact"')
+    expect(html).toContain('text-3xl sm:text-4xl md:text-5xl')
   })
 
   it('collapses optional content cleanly when eyebrow, description, and buttons are omitted', () => {

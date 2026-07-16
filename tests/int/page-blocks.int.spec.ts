@@ -136,33 +136,61 @@ describe('page block pipeline', () => {
   it('defines the heroInstitutional schema with image, overlay, alignment, and CTA fields', async () => {
     const { HeroInstitutionalBlock } = await import('@/blocks/HeroInstitutional/config')
 
-    const appearanceField = getNamedField<{ type?: string }>(HeroInstitutionalBlock.fields, 'appearance')
+    const tabsField = HeroInstitutionalBlock.fields[0] as
+      | {
+          tabs?: Array<{ fields: unknown[]; label: string }>
+          type?: string
+        }
+      | undefined
+    const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+
+    const appearanceField = getNamedField<{ type?: string }>(layoutTab?.fields ?? [], 'appearance')
     const backgroundImageField = getNamedField<
       { relationTo?: string; required?: boolean; type?: string }
-    >(HeroInstitutionalBlock.fields, 'backgroundImage')
+    >(contentTab?.fields ?? [], 'backgroundImage')
 
     const titleField = getNamedField<{ required?: boolean; type?: string }>(
-      HeroInstitutionalBlock.fields,
+      contentTab?.fields ?? [],
       'title',
     )
 
     const overlayStyleField = getNamedField<
       { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(HeroInstitutionalBlock.fields, 'overlayStyle')
+    >(layoutTab?.fields ?? [], 'overlayStyle')
 
     const horizontalAlignmentField = getNamedField<
       { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(HeroInstitutionalBlock.fields, 'horizontalAlignment')
+    >(layoutTab?.fields ?? [], 'horizontalAlignment')
 
     const verticalAlignmentField = getNamedField<
       { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(HeroInstitutionalBlock.fields, 'verticalAlignment')
+    >(layoutTab?.fields ?? [], 'verticalAlignment')
 
-    const buttonsField = getNamedField<{ maxRows?: number; type?: string }>(
-      HeroInstitutionalBlock.fields,
+    const buttonsField = getNamedField<
+      { fields?: unknown[]; maxRows?: number; type?: string }
+    >(
+      contentTab?.fields ?? [],
       'buttons',
     )
+    const buttonTabsField = buttonsField?.fields?.[0] as
+      | {
+          tabs?: Array<{ fields: unknown[]; label: string }>
+          type?: string
+        }
+      | undefined
+    const buttonContentTab = buttonTabsField?.tabs?.find((tab) => tab.label === 'Content')
+    const buttonLayoutTab = buttonTabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const buttonLabelField = getNamedField<{ required?: boolean; type?: string }>(
+      buttonContentTab?.fields ?? [],
+      'label',
+    )
+    const buttonVariantField = getNamedField<
+      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
+    >(buttonLayoutTab?.fields ?? [], 'variant')
 
+    expect(tabsField?.type).toBe('tabs')
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
     expect(appearanceField?.type).toBe('group')
     expect(backgroundImageField?.type).toBe('upload')
     expect(backgroundImageField?.relationTo).toBe('media')
@@ -184,11 +212,11 @@ describe('page block pipeline', () => {
     ])
     const heightField = getNamedField<
       { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(HeroInstitutionalBlock.fields, 'height')
+    >(layoutTab?.fields ?? [], 'height')
 
     const contentWidthField = getNamedField<
       { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(HeroInstitutionalBlock.fields, 'contentWidth')
+    >(layoutTab?.fields ?? [], 'contentWidth')
 
     expect(contentWidthField?.type).toBe('select')
     expect(contentWidthField?.defaultValue).toBe('default')
@@ -202,6 +230,17 @@ describe('page block pipeline', () => {
     ])
     expect(buttonsField?.type).toBe('array')
     expect(buttonsField?.maxRows).toBe(2)
+    expect(buttonTabsField?.type).toBe('tabs')
+    expect(buttonTabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(buttonLabelField?.type).toBe('text')
+    expect(buttonLabelField?.required).toBe(true)
+    expect(buttonVariantField?.defaultValue).toBe('default')
+    expect(buttonVariantField?.options?.map((option) => option.value)).toEqual([
+      'default',
+      'outline',
+      'secondary',
+      'link',
+    ])
   })
 
   it('defines the footer56 schema with branding, link groups, utilities, and shared appearance', async () => {

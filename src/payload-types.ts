@@ -246,19 +246,10 @@ export interface AnnouncementBlock {
  * via the `definition` "HeroInstitutionalBlock".
  */
 export interface HeroInstitutionalBlock {
-  appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
   backgroundImage: string | Media;
   eyebrow?: string | null;
   title: string;
   description?: string | null;
-  horizontalAlignment: 'left' | 'center' | 'right';
-  verticalAlignment: 'top' | 'center' | 'bottom';
-  overlayStyle: 'light' | 'dark' | 'darker';
-  contentWidth: 'narrow' | 'default' | 'wide';
-  height: 'compact' | 'default' | 'immersive';
   buttons?:
     | {
         label: string;
@@ -266,10 +257,19 @@ export interface HeroInstitutionalBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'link';
+        variant: 'default' | 'outline' | 'secondary' | 'link';
         id?: string | null;
       }[]
     | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  horizontalAlignment: 'left' | 'center' | 'right';
+  verticalAlignment: 'top' | 'center' | 'bottom';
+  overlayStyle: 'light' | 'dark' | 'darker';
+  contentWidth: 'narrow' | 'default' | 'wide';
+  height: 'compact' | 'default' | 'immersive';
   id?: string | null;
   blockName?: string | null;
   blockType: 'heroInstitutional';
@@ -1564,21 +1564,10 @@ export interface AnnouncementBlockSelect<T extends boolean = true> {
  * via the `definition` "HeroInstitutionalBlock_select".
  */
 export interface HeroInstitutionalBlockSelect<T extends boolean = true> {
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
   backgroundImage?: T;
   eyebrow?: T;
   title?: T;
   description?: T;
-  horizontalAlignment?: T;
-  verticalAlignment?: T;
-  overlayStyle?: T;
-  contentWidth?: T;
-  height?: T;
   buttons?:
     | T
     | {
@@ -1590,6 +1579,17 @@ export interface HeroInstitutionalBlockSelect<T extends boolean = true> {
         variant?: T;
         id?: T;
       };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  horizontalAlignment?: T;
+  verticalAlignment?: T;
+  overlayStyle?: T;
+  contentWidth?: T;
+  height?: T;
   id?: T;
   blockName?: T;
 }

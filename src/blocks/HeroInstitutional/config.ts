@@ -5,6 +5,7 @@ import type {
   Field,
   RadioField,
   SelectField,
+  TabsField,
 } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
@@ -133,18 +134,32 @@ const buttonsField = {
     initCollapsed: true,
   },
   fields: [
-    ...createLinkFields(),
     {
-      name: 'variant',
-      type: 'select',
-      defaultValue: 'default',
-      options: [
-        { label: 'Default', value: 'default' },
-        { label: 'Secondary', value: 'secondary' },
-        { label: 'Link', value: 'link' },
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: createLinkFields(),
+        },
+        {
+          label: 'Layout & Theme',
+          fields: [
+            {
+              name: 'variant',
+              type: 'select',
+              defaultValue: 'default',
+              options: [
+                { label: 'Default', value: 'default' },
+                { label: 'Outline', value: 'outline' },
+                { label: 'Secondary', value: 'secondary' },
+                { label: 'Link', value: 'link' },
+              ],
+              required: true,
+            } satisfies SelectField,
+          ],
+        },
       ],
-      required: true,
-    } satisfies SelectField,
+    } satisfies TabsField,
   ],
 } satisfies ArrayField
 
@@ -164,32 +179,47 @@ export const HeroInstitutionalBlock: Block = {
     plural: 'Hero Institutionals',
   },
   fields: [
-    createBlockAppearanceFields({ includeTextOverride: false }),
     {
-      name: 'backgroundImage',
-      label: 'Background Image',
-      type: 'upload',
-      relationTo: 'media',
-      required: true,
-    },
-    {
-      name: 'eyebrow',
-      type: 'text',
-    },
-    {
-      name: 'title',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-    },
-    horizontalAlignmentField,
-    verticalAlignmentField,
-    overlayStyleField,
-    contentWidthField,
-    heightField,
-    buttonsField,
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'backgroundImage',
+              label: 'Background Image',
+              type: 'upload',
+              relationTo: 'media',
+              required: true,
+            },
+            {
+              name: 'eyebrow',
+              type: 'text',
+            },
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+            },
+            buttonsField,
+          ],
+        },
+        {
+          label: 'Layout & Theme',
+          fields: [
+            createBlockAppearanceFields({ includeTextOverride: false }),
+            horizontalAlignmentField,
+            verticalAlignmentField,
+            overlayStyleField,
+            contentWidthField,
+            heightField,
+          ],
+        },
+      ],
+    } satisfies TabsField,
   ],
 }
