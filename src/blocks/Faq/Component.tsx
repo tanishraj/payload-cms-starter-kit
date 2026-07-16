@@ -178,12 +178,13 @@ export function FaqBlockComponent({
       data-faq-has-side-column={hasSideColumn ? 'true' : 'false'}
       data-faq-size={resolvedSize}
     >
-      <div className="container">
+      <div className="mx-auto w-full max-w-screen-2xl px-4">
         <div
           className={cn(
+            'w-full',
             hasSideColumn
               ? 'grid grid-cols-1 gap-8 lg:grid-cols-5 lg:gap-12 xl:grid-cols-12 xl:gap-16'
-              : 'w-full',
+              : undefined,
           )}
         >
           {hasSideColumn ? (
@@ -204,9 +205,9 @@ export function FaqBlockComponent({
                     ) : null}
                     <div className="min-w-0">
                       {profile?.name?.trim() ? (
-                        <h2 className="mb-1 text-lg leading-tight font-semibold text-foreground sm:text-xl">
+                        <p className="mb-1 text-sm font-semibold text-foreground sm:text-base">
                           {profile.name.trim()}
-                        </h2>
+                        </p>
                       ) : null}
                       {profile?.title?.trim() ? (
                         <p className="text-sm text-muted-foreground sm:text-base">
@@ -220,9 +221,9 @@ export function FaqBlockComponent({
                 {hasContact ? (
                   <div className="space-y-4 lg:space-y-6">
                     {contact?.title?.trim() ? (
-                      <h3 className="text-lg leading-tight font-semibold text-foreground sm:text-xl">
+                      <p className="text-lg leading-tight font-semibold text-foreground sm:text-xl">
                         {contact.title.trim()}
-                      </h3>
+                      </p>
                     ) : null}
                     {contact?.description?.trim() ? (
                       <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
@@ -267,7 +268,7 @@ export function FaqBlockComponent({
                 {heading}
               </h2>
               {description?.trim() ? (
-                <p className="mt-4 max-w-2xl text-balance text-base leading-7 text-muted-foreground">
+                <p className="mt-4 text-balance text-base leading-7 text-muted-foreground">
                   {description.trim()}
                 </p>
               ) : null}
@@ -288,7 +289,7 @@ export function FaqBlockComponent({
                   key={`${item.question}-${index}`}
                   value={`item-${index}`}
                 >
-                  <FaqAccordionTrigger className="justify-between py-6 text-left text-lg font-semibold hover:no-underline sm:text-xl lg:text-xl">
+                  <FaqAccordionTrigger className="justify-between py-6 text-left text-base font-semibold hover:no-underline sm:text-lg lg:py-8 lg:text-xl">
                     <span className="pr-4">{item.question}</span>
                   </FaqAccordionTrigger>
                   <FaqAccordionContent className="pb-6 pr-8 text-sm leading-relaxed text-muted-foreground sm:text-base">
