@@ -268,6 +268,7 @@ export interface HeroInstitutionalBlock {
   horizontalAlignment: 'left' | 'center' | 'right';
   verticalAlignment: 'top' | 'center' | 'bottom';
   overlayStyle: 'light' | 'dark' | 'darker';
+  themeMode: 'auto' | 'light' | 'dark';
   contentWidth: 'narrow' | 'default' | 'wide';
   height: 'compact' | 'default' | 'immersive';
   id?: string | null;
@@ -1588,6 +1589,7 @@ export interface HeroInstitutionalBlockSelect<T extends boolean = true> {
   horizontalAlignment?: T;
   verticalAlignment?: T;
   overlayStyle?: T;
+  themeMode?: T;
   contentWidth?: T;
   height?: T;
   id?: T;

@@ -165,6 +165,9 @@ describe('page block pipeline', () => {
     const overlayStyleField = getNamedField<
       { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
     >(layoutTab?.fields ?? [], 'overlayStyle')
+    const themeModeField = getNamedField<
+      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
+    >(layoutTab?.fields ?? [], 'themeMode')
 
     const horizontalAlignmentField = getNamedField<
       { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
@@ -207,6 +210,9 @@ describe('page block pipeline', () => {
     expect(overlayStyleField?.type).toBe('select')
     expect(overlayStyleField?.defaultValue).toBe('dark')
     expect(overlayStyleField?.options?.map((option) => option.value)).toEqual(['light', 'dark', 'darker'])
+    expect(themeModeField?.type).toBe('select')
+    expect(themeModeField?.defaultValue).toBe('auto')
+    expect(themeModeField?.options?.map((option) => option.value)).toEqual(['auto', 'light', 'dark'])
     expect(horizontalAlignmentField?.options?.map((option) => option.value)).toEqual([
       'left',
       'center',

@@ -24,14 +24,45 @@ type HeroInstitutionalBlockLike = {
   height?: '40' | '60' | '80' | 'balanced' | 'compact' | 'default' | 'immersive' | null
   horizontalAlignment?: 'center' | 'left' | 'right' | null
   overlayStyle?: 'brand' | 'dark' | 'darker' | 'ink' | 'light' | 'soft' | null
+  themeMode?: 'auto' | 'dark' | 'light' | null
   title: string
   verticalAlignment?: 'bottom' | 'center' | 'top' | null
 }
 
 const overlayClasses = {
-  light: 'bg-linear-to-b from-background/72 via-background/56 to-background/78',
-  dark: 'bg-linear-to-b from-background/82 via-background/68 to-background/86',
-  darker: 'bg-linear-to-b from-background/90 via-background/80 to-background/92',
+  auto: {
+    light: 'bg-linear-to-b from-background/72 via-background/56 to-background/78',
+    dark: 'bg-linear-to-b from-background/82 via-background/68 to-background/86',
+    darker: 'bg-linear-to-b from-background/90 via-background/80 to-background/92',
+  },
+  light: {
+    light: 'bg-linear-to-b from-background/72 via-background/56 to-background/78',
+    dark: 'bg-linear-to-b from-background/82 via-background/68 to-background/86',
+    darker: 'bg-linear-to-b from-background/90 via-background/80 to-background/92',
+  },
+  dark: {
+    light: 'bg-linear-to-b from-black/56 via-black/42 to-black/62',
+    dark: 'bg-linear-to-b from-black/68 via-black/54 to-black/74',
+    darker: 'bg-linear-to-b from-black/80 via-black/68 to-black/84',
+  },
+} as const
+
+const textToneClasses = {
+  auto: {
+    eyebrow: 'text-foreground/78',
+    title: 'text-foreground',
+    description: 'text-foreground/84',
+  },
+  light: {
+    eyebrow: 'text-slate-950/78',
+    title: 'text-slate-950',
+    description: 'text-slate-950/84',
+  },
+  dark: {
+    eyebrow: 'text-white/78',
+    title: 'text-white',
+    description: 'text-white/84',
+  },
 } as const
 
 const horizontalShellClasses = {
@@ -94,6 +125,33 @@ const actionAlignmentClasses = {
   right: 'justify-end',
 } as const
 
+const heroButtonToneClasses = {
+  auto: {
+    default: '',
+    secondary:
+      'bg-slate-950/8 text-slate-950 hover:bg-slate-950/12 aria-expanded:bg-slate-950/12 aria-expanded:text-slate-950',
+    outline:
+      'border-slate-950/16 bg-white/78 text-slate-950 hover:bg-white hover:text-slate-950 aria-expanded:bg-white aria-expanded:text-slate-950 dark:bg-white/78 dark:hover:bg-white',
+    link: 'text-slate-950 hover:text-slate-950/80',
+  },
+  light: {
+    default: '',
+    secondary:
+      'bg-slate-950/8 text-slate-950 hover:bg-slate-950/12 aria-expanded:bg-slate-950/12 aria-expanded:text-slate-950',
+    outline:
+      'border-slate-950/16 bg-white/78 text-slate-950 hover:bg-white hover:text-slate-950 aria-expanded:bg-white aria-expanded:text-slate-950 dark:bg-white/78 dark:hover:bg-white',
+    link: 'text-slate-950 hover:text-slate-950/80',
+  },
+  dark: {
+    default: '',
+    secondary:
+      'bg-white/12 text-white hover:bg-white/18 aria-expanded:bg-white/18 aria-expanded:text-white',
+    outline:
+      'border-white/20 bg-white/8 text-white hover:bg-white/14 hover:text-white aria-expanded:bg-white/14 aria-expanded:text-white dark:bg-white/8 dark:hover:bg-white/14',
+    link: 'text-white hover:text-white/84',
+  },
+} as const
+
 export function HeroInstitutionalBlockComponent({
   appearance,
   backgroundImage,
@@ -104,6 +162,7 @@ export function HeroInstitutionalBlockComponent({
   height = 'default',
   horizontalAlignment = 'left',
   overlayStyle = 'dark',
+  themeMode = 'auto',
   title,
   verticalAlignment = 'center',
 }: HeroInstitutionalBlockLike) {
@@ -118,6 +177,7 @@ export function HeroInstitutionalBlockComponent({
         : overlayStyle === 'soft'
           ? 'light'
           : (overlayStyle ?? 'dark')
+  const resolvedThemeMode = themeMode ?? 'auto'
   const resolvedVerticalAlignment = verticalAlignment ?? 'center'
   const resolvedHeight =
     height === '40'
@@ -166,8 +226,9 @@ export function HeroInstitutionalBlockComponent({
         <img alt={image.alt} className="size-full object-cover" src={image.src} />
       </div>
       <div
-        className={cn('absolute inset-0', overlayClasses[resolvedOverlayStyle])}
+        className={cn('absolute inset-0', overlayClasses[resolvedThemeMode][resolvedOverlayStyle])}
         data-hero-overlay={resolvedOverlayStyle}
+        data-hero-theme={resolvedThemeMode}
       />
       <div
         className={cn('relative mx-auto flex max-w-screen-2xl px-4', heightClasses[resolvedHeight])}
@@ -193,7 +254,10 @@ export function HeroInstitutionalBlockComponent({
             <div className="flex flex-col gap-6">
               {eyebrow ? (
                 <p
-                  className="font-mono text-xs font-semibold uppercase tracking-[0.28em] text-foreground/78"
+                  className={cn(
+                    'font-mono text-xs font-semibold uppercase tracking-[0.28em]',
+                    textToneClasses[resolvedThemeMode].eyebrow,
+                  )}
                   data-hero-eyebrow="true"
                 >
                   {eyebrow}
@@ -201,8 +265,9 @@ export function HeroInstitutionalBlockComponent({
               ) : null}
               <h1
                 className={cn(
-                  'font-semibold tracking-tight text-balance text-foreground',
+                  'font-semibold tracking-tight text-balance',
                   titleSizeClasses[resolvedHeight],
+                  textToneClasses[resolvedThemeMode].title,
                   titleWidthClasses[resolvedContentWidth],
                 )}
               >
@@ -211,9 +276,10 @@ export function HeroInstitutionalBlockComponent({
               {description ? (
                 <p
                   className={cn(
-                    'text-balance text-foreground/84',
+                    'text-balance',
                     descriptionSizeClasses[resolvedHeight],
                     descriptionWidthClasses[resolvedContentWidth],
+                    textToneClasses[resolvedThemeMode].description,
                     resolvedHorizontalAlignment !== 'center' ? 'max-w-2xl' : undefined,
                   )}
                   data-hero-description="true"
@@ -233,10 +299,13 @@ export function HeroInstitutionalBlockComponent({
                 {actions.map((action) => (
                   <Button
                     asChild
-                    className="h-12 w-full sm:w-auto"
                     key={`${action.label}-${action.href}`}
                     size="lg"
                     variant={action.variant}
+                    className={cn(
+                      'h-12 w-full sm:w-auto',
+                      heroButtonToneClasses[resolvedThemeMode][action.variant],
+                    )}
                   >
                     <a
                       href={action.href}

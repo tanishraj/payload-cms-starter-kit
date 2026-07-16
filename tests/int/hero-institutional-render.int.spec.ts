@@ -38,15 +38,67 @@ describe('hero institutional block', () => {
     expect(html).toContain('data-hero-content-width="wide"')
     expect(html).toContain('data-hero-height="immersive"')
     expect(html).toContain('data-hero-background="primary"')
+    expect(html).toContain('data-hero-theme="auto"')
     expect(html).toContain('bg-primary')
     expect(html).toContain('text-primary-foreground')
+    expect(html).toContain('bg-slate-950/8')
+    expect(html).toContain('text-slate-950')
     expect(html).toContain('border-y border-border')
     expect(html).toContain('from-background/90')
     expect(html).toContain('flex flex-col gap-8 lg:flex-1')
     expect(html).toContain('flex flex-col gap-6')
-    expect(html).toContain('text-balance text-foreground/84')
+    expect(html).toContain('text-balance')
+    expect(html).toContain('text-foreground/84')
     expect(html).toContain('lg:text-xl')
     expect(html).toContain('h-12 w-full sm:w-auto')
+  })
+
+  it('supports explicit light and dark hero theme overrides', () => {
+    const darkHtml = renderToStaticMarkup(
+      createElement(HeroInstitutionalBlockComponent, {
+        backgroundImage: { alt: 'Lecture hall', url: '/media/lecture.jpg' } as never,
+        buttons: [
+          { label: 'Apply now', linkType: 'custom', url: '/apply', variant: 'default' },
+          { label: 'Compare programs', linkType: 'custom', url: '/programs', variant: 'outline' },
+        ] as never,
+        description: 'Deliberate contrast regardless of site theme.',
+        overlayStyle: 'dark',
+        themeMode: 'dark',
+        title: 'Dark hero tone.',
+      }),
+    )
+
+    const lightHtml = renderToStaticMarkup(
+      createElement(HeroInstitutionalBlockComponent, {
+        backgroundImage: { alt: 'Quad', url: '/media/quad.jpg' } as never,
+        buttons: [
+          { label: 'Apply now', linkType: 'custom', url: '/apply', variant: 'default' },
+          { label: 'Learn more', linkType: 'custom', url: '/learn', variant: 'outline' },
+        ] as never,
+        description: 'Readable content on a lighter surface treatment.',
+        overlayStyle: 'light',
+        themeMode: 'light',
+        title: 'Light hero tone.',
+      }),
+    )
+
+    expect(darkHtml).toContain('data-hero-theme="dark"')
+    expect(darkHtml).toContain('from-black/68')
+    expect(darkHtml).toContain('text-white')
+    expect(darkHtml).toContain('text-white/84')
+    expect(darkHtml).toContain('bg-primary text-primary-foreground hover:bg-primary/80')
+    expect(darkHtml).toContain('border-white/20')
+    expect(darkHtml).toContain('bg-white/8')
+    expect(darkHtml).not.toContain('bg-white text-slate-950 hover:bg-white/90')
+
+    expect(lightHtml).toContain('data-hero-theme="light"')
+    expect(lightHtml).toContain('from-background/72')
+    expect(lightHtml).toContain('text-slate-950')
+    expect(lightHtml).toContain('text-slate-950/84')
+    expect(lightHtml).toContain('bg-primary text-primary-foreground hover:bg-primary/80')
+    expect(lightHtml).toContain('border-slate-950/16')
+    expect(lightHtml).toContain('bg-white/78')
+    expect(lightHtml).not.toContain('bg-slate-950 text-white hover:bg-slate-950/90')
   })
 
   it('maps overlay and alignment presets into deterministic class hooks', () => {

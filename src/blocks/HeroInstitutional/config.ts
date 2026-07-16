@@ -99,6 +99,19 @@ const overlayStyleField = {
   required: true,
 } satisfies SelectField
 
+const themeModeField = {
+  name: 'themeMode',
+  label: 'Theme Mode',
+  type: 'select',
+  defaultValue: 'auto',
+  options: [
+    { label: 'Auto', value: 'auto' },
+    { label: 'Light', value: 'light' },
+    { label: 'Dark', value: 'dark' },
+  ],
+  required: true,
+} satisfies SelectField
+
 const contentWidthField = {
   name: 'contentWidth',
   label: 'Content Width',
@@ -215,6 +228,7 @@ export const HeroInstitutionalBlock: Block = {
             horizontalAlignmentField,
             verticalAlignmentField,
             overlayStyleField,
+            themeModeField,
             contentWidthField,
             heightField,
           ],
