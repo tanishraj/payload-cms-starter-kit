@@ -2,7 +2,7 @@ import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { resolveCmsLink } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
@@ -124,7 +124,7 @@ export function SplitFeatureBlockComponent({
         >
           {renderAsSplit ? (
             <div className={cn(order.media)}>
-              <div className="overflow-hidden rounded-xl bg-card">
+              <div className="overflow-hidden rounded-xl border border-border bg-muted/20">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   alt={media?.alt}
@@ -137,21 +137,22 @@ export function SplitFeatureBlockComponent({
           <div className={cn(renderAsSplit ? order.content : undefined)}>
             <div className={cn('flex flex-col gap-4', contentContainerClasses)}>
               {eyebrow ? (
-                <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-primary/70">
+                <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
                   {eyebrow}
                 </p>
               ) : null}
-              <h2 className="font-serif text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+              <h2 className="font-heading text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-4xl">
                 {title}
               </h2>
               {description ? (
-                <p className="text-base leading-7 text-muted-foreground">{description}</p>
+                <p className="text-balance text-base leading-7 text-muted-foreground">{description}</p>
               ) : null}
               {ctaMode === 'link' && linkLabel?.trim() && linkCta.href ? (
                 <div>
                   <a
                     className={cn(
-                      'group inline-flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary/80',
+                      buttonVariants({ variant: 'link' }),
+                      'group/button h-auto gap-2 px-0 py-0 text-sm',
                       !renderAsSplit && 'justify-center',
                     )}
                     data-split-feature-link-cta="true"
@@ -164,8 +165,8 @@ export function SplitFeatureBlockComponent({
                       className="relative inline-flex size-4 shrink-0 overflow-hidden"
                       aria-hidden="true"
                     >
-                      <ArrowRight className="absolute left-0 top-0 size-4 rotate-[-35deg] transition-all duration-200 ease-out group-hover:translate-x-1 group-hover:opacity-0 group-hover:rotate-0" />
-                      <ArrowRight className="absolute left-0 top-0 size-4 translate-x-[-70%] opacity-0 transition-all duration-200 ease-out group-hover:translate-x-0 group-hover:opacity-100" />
+                      <ArrowRight className="absolute left-0 top-0 size-4 rotate-[-35deg] transition-all duration-200 ease-out group-hover/button:translate-x-1 group-hover/button:opacity-0 group-hover/button:rotate-0" />
+                      <ArrowRight className="absolute left-0 top-0 size-4 translate-x-[-70%] opacity-0 transition-all duration-200 ease-out group-hover/button:translate-x-0 group-hover/button:opacity-100" />
                     </span>
                   </a>
                 </div>

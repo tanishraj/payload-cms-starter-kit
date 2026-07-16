@@ -36,6 +36,10 @@ describe('split feature block', () => {
     expect(html).toContain('lucide-arrow-right')
     expect(html).toContain('bg-muted')
     expect(html).toContain('border-b border-border')
+    expect(html).toContain('text-muted-foreground')
+    expect(html).toContain('font-heading')
+    expect(html).toContain('hover:underline')
+    expect(html).toContain('border border-border')
   })
 
   it('renders muted background and two CTA buttons', () => {
@@ -66,6 +70,7 @@ describe('split feature block', () => {
     expect(html).toContain('bg-accent')
     expect(html).toContain('text-accent-foreground')
     expect(html).toContain('border-t border-border')
+    expect(html).toContain('border border-border')
   })
 
   it('renders centered content-only layout without an image', () => {
