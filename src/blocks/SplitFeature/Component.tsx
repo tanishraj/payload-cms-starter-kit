@@ -171,7 +171,7 @@ export function SplitFeatureBlockComponent({
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="font-heading text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-4xl">
+      <h2 className="text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-4xl">
         {title}
       </h2>
       {description ? (
@@ -294,15 +294,15 @@ export function SplitFeatureBlockComponent({
                 />
               </div>
             </div>
-          <div className={cn(order.content)}>
-            <div
-              className={cn(
-                'flex min-h-full flex-col',
-                contentVerticalAlignmentClass,
-                edgeContentPaddingClasses[resolvedSize],
-              )}
-            >
-              {content}
+            <div className={cn(order.content)}>
+              <div
+                className={cn(
+                  'flex min-h-full flex-col',
+                  contentVerticalAlignmentClass,
+                  edgeContentPaddingClasses[resolvedSize],
+                )}
+              >
+                {content}
               </div>
             </div>
           </div>
@@ -310,11 +310,7 @@ export function SplitFeatureBlockComponent({
       ) : (
         <div className={cn('mx-auto max-w-screen-2xl px-4', containedPaddingClasses[resolvedSize])}>
           {renderAsSplit ? (
-            <div
-              className={cn(
-                'grid items-stretch gap-8 md:grid-cols-2 md:gap-12 lg:gap-16',
-              )}
-            >
+            <div className={cn('grid items-stretch gap-8 md:grid-cols-2 md:gap-12 lg:gap-16')}>
               <div className={cn(order.media)} data-split-feature-media-frame="contained">
                 <div className="overflow-hidden rounded-xl border border-border bg-muted/20">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -329,7 +325,11 @@ export function SplitFeatureBlockComponent({
                 </div>
               </div>
               <div
-                className={cn(order.content, 'flex min-h-full flex-col', contentVerticalAlignmentClass)}
+                className={cn(
+                  order.content,
+                  'flex min-h-full flex-col',
+                  contentVerticalAlignmentClass,
+                )}
               >
                 {content}
               </div>

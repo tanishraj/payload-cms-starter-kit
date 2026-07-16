@@ -663,7 +663,6 @@ Uncomment to import Google fonts if you want to use them in your project.
       background-position: 200%;
     }
   }
-  --font-heading: var(--font-heading);
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);

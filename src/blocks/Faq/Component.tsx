@@ -263,7 +263,7 @@ export function FaqBlockComponent({
             <div
               className={cn('mb-8', hasSideColumn ? 'md:text-center lg:mb-16 lg:text-left' : '')}
             >
-              <h2 className="font-heading text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-4xl">
+              <h2 className="text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-4xl">
                 {heading}
               </h2>
               {description?.trim() ? (
