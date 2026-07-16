@@ -28,7 +28,7 @@ export function GlobalHeader({
         zIndex: 30,
       }}
     >
-      {renderHeaderBlocks(header.layout, { siteLogo, siteName, stickyTopOffset })}
+      {renderHeaderBlocks(header.layout, { siteLogo, siteName })}
     </div>
   )
 }

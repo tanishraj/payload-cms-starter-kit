@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { MenuIcon, X } from 'lucide-react'
 
 import {
@@ -16,7 +16,6 @@ import type { ResolvedHeaderLink, ResolvedHeaderMenuItem } from '@/lib/headerNav
 type HeaderMobileMenuProps = {
   ctas: Array<ResolvedHeaderLink & { variant?: 'default' | 'link' | 'outline' | null }>
   menuItems: ResolvedHeaderMenuItem[]
-  topOffset?: string
 }
 
 const topLevelLinkClasses =
@@ -25,12 +24,66 @@ const topLevelLinkClasses =
 const childLinkClasses =
   'flex w-full min-w-fit flex-row items-center gap-2.5 rounded-md px-2 py-[5px] no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground'
 
-export function HeaderMobileMenu({ ctas, menuItems, topOffset = '0px' }: HeaderMobileMenuProps) {
+export function HeaderMobileMenu({ ctas, menuItems }: HeaderMobileMenuProps) {
   const [open, setOpen] = useState(false)
+  const [sheetTopOffset, setSheetTopOffset] = useState('0px')
+  const triggerRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    if (!open) {
+      return
+    }
+
+    const triggerElement = triggerRef.current
+    const headerElement = triggerElement?.closest('[data-global-header="true"]') as HTMLElement | null
+
+    if (!headerElement) {
+      setSheetTopOffset('0px')
+      return
+    }
+
+    let frame = 0
+
+    const updateOffset = () => {
+      frame = 0
+      setSheetTopOffset(`${Math.max(0, headerElement.getBoundingClientRect().bottom)}px`)
+    }
+
+    const scheduleUpdate = () => {
+      if (frame !== 0) {
+        return
+      }
+
+      frame = window.requestAnimationFrame(updateOffset)
+    }
+
+    updateOffset()
+
+    window.addEventListener('scroll', scheduleUpdate, { passive: true })
+    window.addEventListener('resize', scheduleUpdate)
+
+    const observer =
+      typeof ResizeObserver === 'undefined'
+        ? null
+        : new ResizeObserver(() => {
+            scheduleUpdate()
+          })
+
+    observer?.observe(headerElement)
+
+    return () => {
+      if (frame !== 0) {
+        window.cancelAnimationFrame(frame)
+      }
+      window.removeEventListener('scroll', scheduleUpdate)
+      window.removeEventListener('resize', scheduleUpdate)
+      observer?.disconnect()
+    }
+  }, [open])
 
   return (
     <Sheet onOpenChange={setOpen} open={open}>
-      <div data-header-mobile-menu="true" data-header-mobile-menu-style="navbar12">
+      <div data-header-mobile-menu="true" data-header-mobile-menu-style="navbar12" ref={triggerRef}>
         <SheetTrigger asChild>
           <Button
             aria-expanded={open}
@@ -51,8 +104,8 @@ export function HeaderMobileMenu({ ctas, menuItems, topOffset = '0px' }: HeaderM
         side="top"
         showOverlay={false}
         style={{
-          top: topOffset,
-          height: `calc(100dvh - ${topOffset})`,
+          top: sheetTopOffset,
+          height: `calc(100dvh - ${sheetTopOffset})`,
         }}
       >
         <div className="relative flex h-full flex-col animate-[fade-in_.35s_ease-in-out_forwards]">

@@ -7,7 +7,7 @@ export type HeaderBlock = NonNullable<Header['layout']>[number]
 
 export function renderHeaderBlocks(
   blocks?: HeaderBlock[] | null,
-  context?: { siteLogo?: LogoMediaLike; siteName?: string | null; stickyTopOffset?: string },
+  context?: { siteLogo?: LogoMediaLike; siteName?: string | null },
 ) {
   if (!blocks?.length) {
     return null
@@ -23,7 +23,6 @@ export function renderHeaderBlocks(
                 key={block.id ?? `${block.blockType}-${index}`}
                 siteLogo={context?.siteLogo}
                 siteName={context?.siteName}
-                stickyTopOffset={context?.stickyTopOffset}
                 {...block}
               />
             )

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
 import { HeaderNavbar } from '@/components/header/HeaderNavbar'
 import { SiteLogo, type LogoMediaLike } from '@/components/site/SiteLogo'
@@ -8,7 +9,6 @@ type HeaderNavbar12BlockComponentProps = HeaderNavbar12BlockType & {
   appearance?: BlockAppearance | null
   siteLogo?: LogoMediaLike
   siteName?: string | null
-  stickyTopOffset?: string
 }
 
 const logoHeightBySize = {
@@ -29,7 +29,6 @@ export function HeaderNavbar12BlockComponent({
   siteLogo,
   siteName,
   size,
-  stickyTopOffset,
 }: HeaderNavbar12BlockComponentProps) {
   const resolvedSize = size ?? 'default'
   const resolvedMenuItems = resolveHeaderMenuItems(menuItems)
@@ -49,7 +48,7 @@ export function HeaderNavbar12BlockComponent({
     .filter((item): item is NonNullable<typeof item> => item !== null)
 
   const logo = (
-    <a
+    <Link
       aria-label={`Go to ${siteName?.trim() || 'home page'}`}
       className="inline-flex items-center"
       href="/"
@@ -62,7 +61,7 @@ export function HeaderNavbar12BlockComponent({
         mode={logoMode ?? 'siteDefault'}
         siteLogo={siteLogo}
       />
-    </a>
+    </Link>
   )
 
   return (
@@ -73,7 +72,6 @@ export function HeaderNavbar12BlockComponent({
       menuItems={resolvedMenuItems}
       navAlignment={navAlignment ?? 'center'}
       size={resolvedSize}
-      stickyTopOffset={stickyTopOffset}
     />
   )
 }

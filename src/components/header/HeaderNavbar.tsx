@@ -17,7 +17,6 @@ type HeaderNavbarProps = {
   menuItems: ResolvedHeaderMenuItem[]
   navAlignment: 'left' | 'center' | 'right'
   size: 'compact' | 'default' | 'large'
-  stickyTopOffset?: string
 }
 
 const sizeClasses = {
@@ -38,12 +37,6 @@ const ctaButtonSizes = {
   large: 'lg',
 } as const
 
-const mobileHeaderHeightBySize = {
-  compact: '3.5rem',
-  default: '4rem',
-  large: '5rem',
-} as const
-
 export function HeaderNavbar({
   appearance,
   ctas,
@@ -51,11 +44,9 @@ export function HeaderNavbar({
   menuItems,
   navAlignment,
   size,
-  stickyTopOffset = '0px',
 }: HeaderNavbarProps) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const usesDefaultSurface = (appearance?.background ?? 'none') === 'none'
-  const mobileSheetTopOffset = `calc(${stickyTopOffset} + ${mobileHeaderHeightBySize[size]})`
 
   return (
     <header
@@ -101,7 +92,7 @@ export function HeaderNavbar({
         </div>
 
         <div className="ml-auto lg:hidden">
-          <HeaderMobileMenu ctas={ctas} menuItems={menuItems} topOffset={mobileSheetTopOffset} />
+          <HeaderMobileMenu ctas={ctas} menuItems={menuItems} />
         </div>
       </div>
     </header>
