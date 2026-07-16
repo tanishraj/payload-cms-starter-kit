@@ -125,33 +125,6 @@ const actionAlignmentClasses = {
   right: 'justify-end',
 } as const
 
-const heroButtonToneClasses = {
-  auto: {
-    default: '',
-    secondary:
-      'bg-slate-950/8 text-slate-950 hover:bg-slate-950/12 aria-expanded:bg-slate-950/12 aria-expanded:text-slate-950',
-    outline:
-      'border-slate-950/16 bg-white/78 text-slate-950 hover:bg-white hover:text-slate-950 aria-expanded:bg-white aria-expanded:text-slate-950 dark:bg-white/78 dark:hover:bg-white',
-    link: 'text-slate-950 hover:text-slate-950/80',
-  },
-  light: {
-    default: '',
-    secondary:
-      'bg-slate-950/8 text-slate-950 hover:bg-slate-950/12 aria-expanded:bg-slate-950/12 aria-expanded:text-slate-950',
-    outline:
-      'border-slate-950/16 bg-white/78 text-slate-950 hover:bg-white hover:text-slate-950 aria-expanded:bg-white aria-expanded:text-slate-950 dark:bg-white/78 dark:hover:bg-white',
-    link: 'text-slate-950 hover:text-slate-950/80',
-  },
-  dark: {
-    default: '',
-    secondary:
-      'bg-white/12 text-white hover:bg-white/18 aria-expanded:bg-white/18 aria-expanded:text-white',
-    outline:
-      'border-white/20 bg-white/8 text-white hover:bg-white/14 hover:text-white aria-expanded:bg-white/14 aria-expanded:text-white dark:bg-white/8 dark:hover:bg-white/14',
-    link: 'text-white hover:text-white/84',
-  },
-} as const
-
 export function HeroInstitutionalBlockComponent({
   appearance,
   backgroundImage,
@@ -302,10 +275,7 @@ export function HeroInstitutionalBlockComponent({
                     key={`${action.label}-${action.href}`}
                     size="lg"
                     variant={action.variant}
-                    className={cn(
-                      'h-12 w-full sm:w-auto',
-                      heroButtonToneClasses[resolvedThemeMode][action.variant],
-                    )}
+                    className="h-12 w-full sm:w-auto"
                   >
                     <a
                       href={action.href}
