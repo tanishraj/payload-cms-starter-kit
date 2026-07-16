@@ -540,6 +540,18 @@ describe('page block pipeline', () => {
     const mediaPositionField = getNamedField<
       { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
     >(layoutTab?.fields ?? [], 'mediaPosition')
+    const imagePositionField = getNamedField<
+      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
+    >(layoutTab?.fields ?? [], 'imagePosition')
+    const mediaFillModeField = getNamedField<
+      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
+    >(layoutTab?.fields ?? [], 'mediaFillMode')
+    const contentVerticalAlignmentField = getNamedField<
+      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
+    >(layoutTab?.fields ?? [], 'contentVerticalAlignment')
+    const sizeField = getNamedField<
+      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
+    >(layoutTab?.fields ?? [], 'size')
     const backgroundStyleField = (layoutTab?.fields ?? []).find(
       (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'backgroundStyle',
     ) as { type?: string } | undefined
@@ -565,6 +577,36 @@ describe('page block pipeline', () => {
     expect(mediaPositionField?.type).toBe('select')
     expect(mediaPositionField?.defaultValue).toBe('left')
     expect(mediaPositionField?.options?.map((option) => option.value)).toEqual(['left', 'right'])
+    expect(imagePositionField?.type).toBe('select')
+    expect(imagePositionField?.defaultValue).toBe('center')
+    expect(imagePositionField?.options?.map((option) => option.value)).toEqual([
+      'center',
+      'top',
+      'bottom',
+      'left',
+      'right',
+    ])
+    expect(mediaFillModeField?.type).toBe('select')
+    expect(mediaFillModeField?.defaultValue).toBe('contained')
+    expect(mediaFillModeField?.options?.map((option) => option.value)).toEqual([
+      'contained',
+      'containedFill',
+      'edgeToEdge',
+    ])
+    expect(contentVerticalAlignmentField?.type).toBe('select')
+    expect(contentVerticalAlignmentField?.defaultValue).toBe('center')
+    expect(contentVerticalAlignmentField?.options?.map((option) => option.value)).toEqual([
+      'top',
+      'center',
+      'bottom',
+    ])
+    expect(sizeField?.type).toBe('select')
+    expect(sizeField?.defaultValue).toBe('default')
+    expect(sizeField?.options?.map((option) => option.value)).toEqual([
+      'compact',
+      'default',
+      'comfortable',
+    ])
     expect(backgroundStyleField).toBeUndefined()
     expect(ctaModeField?.type).toBe('select')
     expect(ctaModeField?.defaultValue).toBe('link')
@@ -595,6 +637,7 @@ describe('page block pipeline', () => {
             layoutMode: 'split',
             linkLabel: 'See all programs',
             linkType: 'custom',
+            imagePosition: 'right',
             mediaPosition: 'right',
             title: 'Four years. Six pathways. One physician.',
             url: '/programs',
@@ -608,6 +651,7 @@ describe('page block pipeline', () => {
     const html = renderToStaticMarkup(result)
 
     expect(html).toContain('data-split-feature-position="right"')
+    expect(html).toContain('data-split-feature-image-position="right"')
     expect(html).toContain('data-split-feature-layout="split"')
     expect(html).toContain('data-split-feature-background="muted"')
     expect(html).toContain('href="/programs"')

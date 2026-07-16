@@ -392,6 +392,10 @@ export interface SplitFeatureBlock {
   };
   layoutMode: 'split' | 'contentOnly';
   mediaPosition?: ('left' | 'right') | null;
+  imagePosition?: ('center' | 'top' | 'bottom' | 'left' | 'right') | null;
+  mediaFillMode?: ('contained' | 'containedFill' | 'edgeToEdge') | null;
+  size: 'compact' | 'default' | 'comfortable';
+  contentVerticalAlignment?: ('top' | 'center' | 'bottom') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'splitFeature';
@@ -1629,6 +1633,10 @@ export interface SplitFeatureBlockSelect<T extends boolean = true> {
       };
   layoutMode?: T;
   mediaPosition?: T;
+  imagePosition?: T;
+  mediaFillMode?: T;
+  size?: T;
+  contentVerticalAlignment?: T;
   id?: T;
   blockName?: T;
 }

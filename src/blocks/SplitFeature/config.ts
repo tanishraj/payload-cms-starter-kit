@@ -14,10 +14,16 @@ import { splitFeatureThumbnail } from './thumbnail'
 type LinkType = 'page' | 'custom'
 type CtaMode = 'link' | 'buttons'
 type LayoutMode = 'split' | 'contentOnly'
+type MediaFillMode = 'contained' | 'containedFill' | 'edgeToEdge'
+type ContentVerticalAlignment = 'bottom' | 'center' | 'top'
+type ImagePosition = 'bottom' | 'center' | 'left' | 'right' | 'top'
 type SplitFeatureSiblingData = {
   ctaMode?: CtaMode | null
+  contentVerticalAlignment?: ContentVerticalAlignment | null
   layoutMode?: LayoutMode | null
   linkType?: LinkType | null
+  mediaFillMode?: MediaFillMode | null
+  imagePosition?: ImagePosition | null
 }
 
 const isPageLink = (_data: unknown, siblingData: SplitFeatureSiblingData) =>
@@ -219,7 +225,7 @@ export const SplitFeatureBlock: Block = {
             } satisfies SelectField,
             {
               name: 'mediaPosition',
-              label: 'Media Position',
+              label: 'Image Placement',
               type: 'select',
               defaultValue: 'left',
               options: [
@@ -236,6 +242,71 @@ export const SplitFeatureBlock: Block = {
 
                 return true
               },
+            } satisfies SelectField,
+            {
+              name: 'imagePosition',
+              label: 'Background Position',
+              type: 'select',
+              defaultValue: 'center',
+              options: [
+                { label: 'Center', value: 'center' },
+                { label: 'Top', value: 'top' },
+                { label: 'Bottom', value: 'bottom' },
+                { label: 'Left', value: 'left' },
+                { label: 'Right', value: 'right' },
+              ],
+              admin: {
+                condition: isSplitMode,
+              },
+              required: true,
+            } satisfies SelectField,
+            {
+              name: 'mediaFillMode',
+              label: 'Media Fill',
+              type: 'select',
+              defaultValue: 'contained',
+              options: [
+                { label: 'Contained', value: 'contained' },
+                { label: 'Contained Fill', value: 'containedFill' },
+                { label: 'Edge to Edge', value: 'edgeToEdge' },
+              ],
+              admin: {
+                condition: isSplitMode,
+              },
+              validate: (value: unknown, { siblingData }: { siblingData?: SplitFeatureSiblingData }) => {
+                if (siblingData?.layoutMode === 'split' && !value) {
+                  return 'Media fill is required when layout mode is 50 / 50 split.'
+                }
+
+                return true
+              },
+            } satisfies SelectField,
+            {
+              name: 'size',
+              label: 'Size',
+              type: 'select',
+              defaultValue: 'default',
+              options: [
+                { label: 'Compact', value: 'compact' },
+                { label: 'Default', value: 'default' },
+                { label: 'Comfortable', value: 'comfortable' },
+              ],
+              required: true,
+            } satisfies SelectField,
+            {
+              name: 'contentVerticalAlignment',
+              label: 'Content Vertical Alignment',
+              type: 'select',
+              defaultValue: 'center',
+              options: [
+                { label: 'Top', value: 'top' },
+                { label: 'Center', value: 'center' },
+                { label: 'Bottom', value: 'bottom' },
+              ],
+              admin: {
+                condition: isSplitMode,
+              },
+              required: true,
             } satisfies SelectField,
           ],
         },
