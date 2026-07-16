@@ -67,10 +67,10 @@ describe('stats strip block', () => {
     const articles = Array.from(container.querySelectorAll('article'))
 
     expect(articles).toHaveLength(4)
-    expect(articles[0]?.className).toContain('border-r')
-    expect(articles[1]?.className).not.toContain('border-r border-border/60')
-    expect(articles[2]?.className).toContain('border-r')
-    expect(articles[3]?.className).not.toContain('border-r border-border/60')
+    expect(articles[0]?.className).toContain('border-r border-border')
+    expect(articles[1]?.className).not.toContain('border-r border-border')
+    expect(articles[2]?.className).toContain('border-r border-border')
+    expect(articles[3]?.className).not.toContain('border-r border-border')
   })
 
   it('animates only the numeric value and preserves prefix and suffix', () => {
