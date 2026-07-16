@@ -1,6 +1,7 @@
 import type { Page } from '@/payload-types'
 
 import { AnnouncementBlockComponent } from './Announcement/Component'
+import { FaqBlockComponent } from './Faq/Component'
 import { HeroInstitutionalBlockComponent } from './HeroInstitutional/Component'
 import { SplitFeatureBlockComponent } from './SplitFeature/Component'
 import { StatsStripBlockComponent } from './StatsStrip/Component'
@@ -30,6 +31,8 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
                 {...block}
               />
             )
+          case 'faq':
+            return <FaqBlockComponent key={block.id ?? `${block.blockType}-${index}`} {...block} />
           case 'splitFeature':
             return (
               <SplitFeatureBlockComponent

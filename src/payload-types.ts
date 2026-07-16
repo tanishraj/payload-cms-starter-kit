@@ -174,7 +174,7 @@ export interface Page {
   /**
    * Compose the page using reusable content blocks.
    */
-  layout?: (AnnouncementBlock | HeroInstitutionalBlock | SplitFeatureBlock | StatsStripBlock)[] | null;
+  layout?: (AnnouncementBlock | HeroInstitutionalBlock | SplitFeatureBlock | StatsStripBlock | FaqBlock)[] | null;
   metaTitle?: string | null;
   metaDescription?: string | null;
   /**
@@ -424,6 +424,61 @@ export interface StatsStripBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'statsStrip';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FaqBlock".
+ */
+export interface FaqBlock {
+  heading: string;
+  description?: string | null;
+  items?:
+    | {
+        question: string;
+        answer: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  sideColumnEnabled?: boolean | null;
+  sideColumn?: {
+    profile?: {
+      image?: (string | null) | Media;
+      name?: string | null;
+      title?: string | null;
+    };
+    contact?: {
+      title?: string | null;
+      description?: string | null;
+      linkLabel?: string | null;
+      linkType?: ('page' | 'custom') | null;
+      page?: (string | null) | Page;
+      url?: string | null;
+      openInNewTab?: boolean | null;
+    };
+  };
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  size: 'compact' | 'default' | 'comfortable';
+  defaultOpenFirst?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faq';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1515,6 +1570,7 @@ export interface PagesSelect<T extends boolean = true> {
         heroInstitutional?: T | HeroInstitutionalBlockSelect<T>;
         splitFeature?: T | SplitFeatureBlockSelect<T>;
         statsStrip?: T | StatsStripBlockSelect<T>;
+        faq?: T | FaqBlockSelect<T>;
       };
   metaTitle?: T;
   metaDescription?: T;
@@ -1663,6 +1719,54 @@ export interface StatsStripBlockSelect<T extends boolean = true> {
   animationEnabled?: T;
   animationDuration?: T;
   triggerOnce?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FaqBlock_select".
+ */
+export interface FaqBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  items?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  sideColumnEnabled?: T;
+  sideColumn?:
+    | T
+    | {
+        profile?:
+          | T
+          | {
+              image?: T;
+              name?: T;
+              title?: T;
+            };
+        contact?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              linkLabel?: T;
+              linkType?: T;
+              page?: T;
+              url?: T;
+              openInNewTab?: T;
+            };
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  size?: T;
+  defaultOpenFirst?: T;
   id?: T;
   blockName?: T;
 }

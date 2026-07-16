@@ -92,6 +92,7 @@ describe('page block pipeline', () => {
       'heroInstitutional',
       'splitFeature',
       'statsStrip',
+      'faq',
     ])
   })
 
@@ -613,6 +614,61 @@ describe('page block pipeline', () => {
     expect(ctaModeField?.options?.map((option) => option.value)).toEqual(['link', 'buttons'])
     expect(buttonsField?.type).toBe('array')
     expect(buttonsField?.maxRows).toBe(2)
+  })
+
+  it('defines the faq schema with rich-text items, optional side column, and shared appearance', async () => {
+    const { FaqBlock } = await import('@/blocks/Faq/config')
+    const tabsField = FaqBlock.fields[0] as
+      | { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string }
+      | undefined
+    const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+
+    const headingField = getNamedField<{ required?: boolean; type?: string }>(
+      contentTab?.fields ?? [],
+      'heading',
+    )
+    const itemsField = getNamedField<
+      { fields?: Array<{ name?: string; type?: string }>; minRows?: number; type?: string }
+    >(contentTab?.fields ?? [], 'items')
+    const sideColumnEnabledField = getNamedField<{ defaultValue?: boolean; type?: string }>(
+      contentTab?.fields ?? [],
+      'sideColumnEnabled',
+    )
+    const sideColumnField = getNamedField<
+      { fields?: Array<{ name?: string; type?: string }>; type?: string }
+    >(contentTab?.fields ?? [], 'sideColumn')
+    const sizeField = getNamedField<
+      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
+    >(layoutTab?.fields ?? [], 'size')
+    const defaultOpenFirstField = getNamedField<{ defaultValue?: boolean; type?: string }>(
+      layoutTab?.fields ?? [],
+      'defaultOpenFirst',
+    )
+    const appearanceField = getNamedField<{ type?: string }>(layoutTab?.fields ?? [], 'appearance')
+
+    expect(tabsField?.type).toBe('tabs')
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(headingField?.type).toBe('text')
+    expect(headingField?.required).toBe(true)
+    expect(itemsField?.type).toBe('array')
+    expect(itemsField?.minRows).toBe(1)
+    expect(itemsField?.fields?.map((field) => field.name)).toEqual(['question', 'answer'])
+    expect(itemsField?.fields?.map((field) => field.type)).toEqual(['text', 'richText'])
+    expect(sideColumnEnabledField?.type).toBe('checkbox')
+    expect(sideColumnEnabledField?.defaultValue).toBe(true)
+    expect(sideColumnField?.type).toBe('group')
+    expect(sideColumnField?.fields?.map((field) => field.name)).toEqual(['profile', 'contact'])
+    expect(appearanceField?.type).toBe('group')
+    expect(sizeField?.type).toBe('select')
+    expect(sizeField?.defaultValue).toBe('default')
+    expect(sizeField?.options?.map((option) => option.value)).toEqual([
+      'compact',
+      'default',
+      'comfortable',
+    ])
+    expect(defaultOpenFirstField?.type).toBe('checkbox')
+    expect(defaultOpenFirstField?.defaultValue).toBe(true)
   })
 
   it('renders a splitFeature page block through PageContent', () => {
