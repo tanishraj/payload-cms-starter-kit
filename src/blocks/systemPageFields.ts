@@ -1,4 +1,4 @@
-import type { Block, Field } from 'payload'
+import type { Block, Field, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCmsLinkFields } from '@/fields/cmsLinkFields'
@@ -18,48 +18,61 @@ const actionFields: Field[] = [
 ]
 
 export const createBaseSystemPageFields = (defaults: SystemPageDefaults): Field[] => [
-  createBlockAppearanceFields({ includeTextOverride: false }),
   {
-    name: 'badge',
-    type: 'text',
-    defaultValue: defaults.badge,
-  },
-  {
-    name: 'heading',
-    type: 'text',
-    required: true,
-    defaultValue: defaults.heading,
-  },
-  {
-    name: 'description',
-    type: 'textarea',
-    defaultValue: defaults.description,
-  },
-  {
-    name: 'supportingNote',
-    type: 'text',
-  },
-  {
-    type: 'row',
-    fields: [
+    type: 'tabs',
+    tabs: [
       {
-        name: 'primaryAction',
-        type: 'group',
-        admin: {
-          width: '50%',
-        },
-        fields: actionFields,
+        label: 'Content',
+        fields: [
+          {
+            name: 'badge',
+            type: 'text',
+            defaultValue: defaults.badge,
+          },
+          {
+            name: 'heading',
+            type: 'text',
+            required: true,
+            defaultValue: defaults.heading,
+          },
+          {
+            name: 'description',
+            type: 'textarea',
+            defaultValue: defaults.description,
+          },
+          {
+            name: 'supportingNote',
+            type: 'text',
+          },
+          {
+            type: 'row',
+            fields: [
+              {
+                name: 'primaryAction',
+                type: 'group',
+                admin: {
+                  width: '50%',
+                },
+                fields: actionFields,
+              },
+              {
+                name: 'secondaryAction',
+                type: 'group',
+                admin: {
+                  width: '50%',
+                },
+                fields: actionFields,
+              },
+            ],
+          },
+        ],
       },
       {
-        name: 'secondaryAction',
-        type: 'group',
-        admin: {
-          width: '50%',
-        },
-        fields: actionFields,
+        label: 'Layout & Theme',
+        fields: [createBlockAppearanceFields({ includeTextOverride: false })],
       },
     ],
-  },
+  } satisfies TabsField,
 ]
 
 export const createSystemPageBlock = ({

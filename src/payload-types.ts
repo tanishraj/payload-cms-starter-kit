@@ -220,23 +220,23 @@ export interface Page {
  * via the `definition` "AnnouncementBlock".
  */
 export interface AnnouncementBlock {
-  appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  displayMode: 'vertical' | 'horizontal' | 'marquee';
   label?: string | null;
-  intervalMs?: number | null;
-  /**
-   * Lower values scroll faster.
-   */
-  marqueeDurationMs?: number | null;
   items: {
     title?: string | null;
     description: string;
     url?: string | null;
     id?: string | null;
   }[];
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  displayMode: 'vertical' | 'horizontal' | 'marquee';
+  intervalMs?: number | null;
+  /**
+   * Lower values scroll faster.
+   */
+  marqueeDurationMs?: number | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'announcement';
@@ -364,16 +364,10 @@ export interface Media {
  * via the `definition` "SplitFeatureBlock".
  */
 export interface SplitFeatureBlock {
-  appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
   image?: (string | null) | Media;
   eyebrow?: string | null;
   title: string;
   description?: string | null;
-  layoutMode: 'split' | 'contentOnly';
-  mediaPosition?: ('left' | 'right') | null;
   ctaMode: 'link' | 'buttons';
   linkLabel?: string | null;
   linkType?: ('page' | 'custom') | null;
@@ -391,6 +385,12 @@ export interface SplitFeatureBlock {
         id?: string | null;
       }[]
     | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  layoutMode: 'split' | 'contentOnly';
+  mediaPosition?: ('left' | 'right') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'splitFeature';
@@ -400,13 +400,6 @@ export interface SplitFeatureBlock {
  * via the `definition` "StatsStripBlock".
  */
 export interface StatsStripBlock {
-  appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  animationEnabled?: boolean | null;
-  animationDuration: number;
-  triggerOnce?: boolean | null;
   items?:
     | {
         prefix?: string | null;
@@ -416,6 +409,13 @@ export interface StatsStripBlock {
         id?: string | null;
       }[]
     | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  animationEnabled?: boolean | null;
+  animationDuration: number;
+  triggerOnce?: boolean | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'statsStrip';
@@ -975,14 +975,6 @@ export interface Header {
  * via the `definition` "HeaderNavbar12Block".
  */
 export interface HeaderNavbar12Block {
-  appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  sticky?: boolean | null;
-  size?: ('compact' | 'default' | 'large') | null;
-  navAlignment?: ('left' | 'center' | 'right') | null;
   logoMode?: ('siteDefault' | 'customLogo') | null;
   customLogoLight?: (string | null) | Media;
   customLogoDark?: (string | null) | Media;
@@ -1021,6 +1013,14 @@ export interface HeaderNavbar12Block {
         id?: string | null;
       }[]
     | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  sticky?: boolean | null;
+  size?: ('compact' | 'default' | 'large') | null;
+  navAlignment?: ('left' | 'center' | 'right') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'headerNavbar12';
@@ -1050,10 +1050,6 @@ export interface Footer {
  * via the `definition` "Footer56Block".
  */
 export interface Footer56Block {
-  appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
   logoMode: 'siteDefault' | 'customLogo';
   customLogoLight?: (string | null) | Media;
   customLogoDark?: (string | null) | Media;
@@ -1100,6 +1096,10 @@ export interface Footer56Block {
       }[]
     | null;
   copyrightText?: string | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'footer56';
@@ -1160,10 +1160,6 @@ export interface SystemPage {
  * via the `definition` "System404Block".
  */
 export interface System404Block {
-  appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
   badge?: string | null;
   heading: string;
   description?: string | null;
@@ -1183,6 +1179,10 @@ export interface System404Block {
      */
     link?: (string | null) | NavigationLink;
     openInNewTab?: boolean | null;
+  };
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   id?: string | null;
   blockName?: string | null;
@@ -1193,10 +1193,6 @@ export interface System404Block {
  * via the `definition` "SystemMaintenanceBlock".
  */
 export interface SystemMaintenanceBlock {
-  appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
   badge?: string | null;
   heading: string;
   description?: string | null;
@@ -1216,6 +1212,10 @@ export interface SystemMaintenanceBlock {
      */
     link?: (string | null) | NavigationLink;
     openInNewTab?: boolean | null;
+  };
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   id?: string | null;
   blockName?: string | null;
@@ -1226,10 +1226,6 @@ export interface SystemMaintenanceBlock {
  * via the `definition` "SystemComingSoonBlock".
  */
 export interface SystemComingSoonBlock {
-  appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
   badge?: string | null;
   heading: string;
   description?: string | null;
@@ -1249,6 +1245,10 @@ export interface SystemComingSoonBlock {
      */
     link?: (string | null) | NavigationLink;
     openInNewTab?: boolean | null;
+  };
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   id?: string | null;
   blockName?: string | null;
@@ -1538,16 +1538,7 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "AnnouncementBlock_select".
  */
 export interface AnnouncementBlockSelect<T extends boolean = true> {
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  displayMode?: T;
   label?: T;
-  intervalMs?: T;
-  marqueeDurationMs?: T;
   items?:
     | T
     | {
@@ -1556,6 +1547,15 @@ export interface AnnouncementBlockSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  displayMode?: T;
+  intervalMs?: T;
+  marqueeDurationMs?: T;
   id?: T;
   blockName?: T;
 }
@@ -1598,18 +1598,10 @@ export interface HeroInstitutionalBlockSelect<T extends boolean = true> {
  * via the `definition` "SplitFeatureBlock_select".
  */
 export interface SplitFeatureBlockSelect<T extends boolean = true> {
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
   image?: T;
   eyebrow?: T;
   title?: T;
   description?: T;
-  layoutMode?: T;
-  mediaPosition?: T;
   ctaMode?: T;
   linkLabel?: T;
   linkType?: T;
@@ -1627,6 +1619,14 @@ export interface SplitFeatureBlockSelect<T extends boolean = true> {
         variant?: T;
         id?: T;
       };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  layoutMode?: T;
+  mediaPosition?: T;
   id?: T;
   blockName?: T;
 }
@@ -1635,15 +1635,6 @@ export interface SplitFeatureBlockSelect<T extends boolean = true> {
  * via the `definition` "StatsStripBlock_select".
  */
 export interface StatsStripBlockSelect<T extends boolean = true> {
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  animationEnabled?: T;
-  animationDuration?: T;
-  triggerOnce?: T;
   items?:
     | T
     | {
@@ -1653,6 +1644,15 @@ export interface StatsStripBlockSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  animationEnabled?: T;
+  animationDuration?: T;
+  triggerOnce?: T;
   id?: T;
   blockName?: T;
 }
@@ -1834,16 +1834,6 @@ export interface HeadersSelect<T extends boolean = true> {
  * via the `definition` "HeaderNavbar12Block_select".
  */
 export interface HeaderNavbar12BlockSelect<T extends boolean = true> {
-  appearance?:
-    | T
-    | {
-        background?: T;
-        textColor?: T;
-        border?: T;
-      };
-  sticky?: T;
-  size?: T;
-  navAlignment?: T;
   logoMode?: T;
   customLogoLight?: T;
   customLogoDark?: T;
@@ -1879,6 +1869,16 @@ export interface HeaderNavbar12BlockSelect<T extends boolean = true> {
         variant?: T;
         id?: T;
       };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
+  sticky?: T;
+  size?: T;
+  navAlignment?: T;
   id?: T;
   blockName?: T;
 }
@@ -1905,12 +1905,6 @@ export interface FootersSelect<T extends boolean = true> {
  * via the `definition` "Footer56Block_select".
  */
 export interface Footer56BlockSelect<T extends boolean = true> {
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
   logoMode?: T;
   customLogoLight?: T;
   customLogoDark?: T;
@@ -1954,6 +1948,12 @@ export interface Footer56BlockSelect<T extends boolean = true> {
         id?: T;
       };
   copyrightText?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1998,12 +1998,6 @@ export interface SystemPagesSelect<T extends boolean = true> {
  * via the `definition` "System404Block_select".
  */
 export interface System404BlockSelect<T extends boolean = true> {
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
   badge?: T;
   heading?: T;
   description?: T;
@@ -2021,6 +2015,12 @@ export interface System404BlockSelect<T extends boolean = true> {
         label?: T;
         link?: T;
         openInNewTab?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
       };
   id?: T;
   blockName?: T;
@@ -2030,12 +2030,6 @@ export interface System404BlockSelect<T extends boolean = true> {
  * via the `definition` "SystemMaintenanceBlock_select".
  */
 export interface SystemMaintenanceBlockSelect<T extends boolean = true> {
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
   badge?: T;
   heading?: T;
   description?: T;
@@ -2053,6 +2047,12 @@ export interface SystemMaintenanceBlockSelect<T extends boolean = true> {
         label?: T;
         link?: T;
         openInNewTab?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
       };
   id?: T;
   blockName?: T;
@@ -2062,12 +2062,6 @@ export interface SystemMaintenanceBlockSelect<T extends boolean = true> {
  * via the `definition` "SystemComingSoonBlock_select".
  */
 export interface SystemComingSoonBlockSelect<T extends boolean = true> {
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
   badge?: T;
   heading?: T;
   description?: T;
@@ -2085,6 +2079,12 @@ export interface SystemComingSoonBlockSelect<T extends boolean = true> {
         label?: T;
         link?: T;
         openInNewTab?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
       };
   id?: T;
   blockName?: T;
@@ -2357,6 +2357,17 @@ export interface PageSetting {
   activeFooter?: (string | null) | Footer;
   announcementEnabled?: boolean | null;
   announcementLabel?: string | null;
+  /**
+   * Displayed as a thin rotating site-wide banner above all frontend pages.
+   */
+  announcementItems?:
+    | {
+        title?: string | null;
+        description: string;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   announcementAppearance?: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
@@ -2378,17 +2389,6 @@ export interface PageSetting {
    * Lower values scroll faster.
    */
   announcementMarqueeDurationMs?: number | null;
-  /**
-   * Displayed as a thin rotating site-wide banner above all frontend pages.
-   */
-  announcementItems?:
-    | {
-        title?: string | null;
-        description: string;
-        url?: string | null;
-        id?: string | null;
-      }[]
-    | null;
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -2521,6 +2521,14 @@ export interface PageSettingsSelect<T extends boolean = true> {
   activeFooter?: T;
   announcementEnabled?: T;
   announcementLabel?: T;
+  announcementItems?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        url?: T;
+        id?: T;
+      };
   announcementAppearance?:
     | T
     | {
@@ -2532,14 +2540,6 @@ export interface PageSettingsSelect<T extends boolean = true> {
   announcementDisplayMode?: T;
   announcementIntervalMs?: T;
   announcementMarqueeDurationMs?: T;
-  announcementItems?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        url?: T;
-        id?: T;
-      };
   _status?: T;
   updatedAt?: T;
   createdAt?: T;

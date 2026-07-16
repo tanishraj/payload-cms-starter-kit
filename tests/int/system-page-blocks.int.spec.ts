@@ -26,6 +26,14 @@ const flattenNamedFields = (fields: unknown[]): NamedField[] => {
     }
 
     const nestedFields = 'fields' in field && Array.isArray(field.fields) ? flattenNamedFields(field.fields) : []
+    const tabFields =
+      'tabs' in field && Array.isArray(field.tabs)
+        ? field.tabs.flatMap((tab) =>
+            typeof tab === 'object' && tab !== null && 'fields' in tab && Array.isArray(tab.fields)
+              ? flattenNamedFields(tab.fields)
+              : [],
+          )
+        : []
     const currentField =
       'name' in field && typeof field.name === 'string'
         ? [
@@ -37,7 +45,7 @@ const flattenNamedFields = (fields: unknown[]): NamedField[] => {
           ]
         : []
 
-    return [...currentField, ...nestedFields]
+    return [...currentField, ...nestedFields, ...tabFields]
   })
 }
 
@@ -140,12 +148,16 @@ describe('system page block schemas', () => {
   it('keeps the shared core fields across all system page blocks', () => {
     for (const block of [System404Block, SystemMaintenanceBlock, SystemComingSoonBlock]) {
       const fieldNames = flattenNamedFields(block.fields).map((field) => field.name)
+      const tabsField = block.fields[0] as
+        | { tabs?: Array<{ label: string }>; type?: string }
+        | undefined
 
+      expect(tabsField?.type).toBe('tabs')
+      expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
       expect(fieldNames).toEqual(
         expect.arrayContaining([
           'appearance',
           'background',
-          'textColor',
           'border',
           'badge',
           'heading',
@@ -160,7 +172,11 @@ describe('system page block schemas', () => {
 
   it('adds the shared appearance group to every system page block', () => {
     for (const block of [System404Block, SystemMaintenanceBlock, SystemComingSoonBlock]) {
-      const appearanceField = block.fields.find(
+      const tabsField = block.fields[0] as
+        | { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string }
+        | undefined
+      const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+      const appearanceField = layoutTab?.fields.find(
         (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'appearance',
       )
 

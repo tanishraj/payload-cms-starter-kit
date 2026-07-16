@@ -215,147 +215,162 @@ export const PageSettings: GlobalConfig = {
           label: 'Announcement',
           fields: [
             {
-              name: 'announcementEnabled',
-              label: 'Enable Announcement',
-              type: 'checkbox',
-              defaultValue: false,
-            },
-            {
-              name: 'announcementLabel',
-              label: 'Announcement Label',
-              type: 'text',
-              admin: {
-                condition: (data) => Boolean(data?.announcementEnabled),
-              },
-            },
-            {
-              ...createBlockAppearanceFields({ includeTextOverride: false }),
-              name: 'announcementAppearance',
-              label: 'Appearance',
-              admin: {
-                condition: (data) => Boolean(data?.announcementEnabled),
-              },
-            },
-            {
-              name: 'announcementDismissible',
-              label: 'Dismissible',
-              type: 'checkbox',
-              defaultValue: false,
-              admin: {
-                condition: (data) => Boolean(data?.announcementEnabled),
-                description:
-                  'Show a close button so visitors can hide the announcement for the rest of their browser session.',
-              },
-            },
-            {
-              name: 'announcementHideOnScroll',
-              label: 'Hide on Scroll',
-              type: 'checkbox',
-              defaultValue: false,
-              admin: {
-                condition: (data) => Boolean(data?.announcementEnabled),
-                description:
-                  'Allow the announcement bar to scroll out of view instead of remaining pinned above the header.',
-              },
-            },
-            {
-              name: 'announcementDisplayMode',
-              label: 'Animation Mode',
-              type: 'select',
-              defaultValue: 'vertical',
-              options: [
+              type: 'tabs',
+              tabs: [
                 {
-                  label: 'Vertical Slider',
-                  value: 'vertical',
+                  label: 'Content',
+                  fields: [
+                    {
+                      name: 'announcementEnabled',
+                      label: 'Enable Announcement',
+                      type: 'checkbox',
+                      defaultValue: false,
+                    },
+                    {
+                      name: 'announcementLabel',
+                      label: 'Announcement Label',
+                      type: 'text',
+                      admin: {
+                        condition: (data) => Boolean(data?.announcementEnabled),
+                      },
+                    },
+                    {
+                      name: 'announcementItems',
+                      label: 'Announcement Items',
+                      type: 'array',
+                      minRows: 1,
+                      admin: {
+                        condition: (data) => Boolean(data?.announcementEnabled),
+                        description:
+                          'Displayed as a thin rotating site-wide banner above all frontend pages.',
+                      },
+                      fields: [
+                        {
+                          name: 'title',
+                          type: 'text',
+                        },
+                        {
+                          name: 'description',
+                          type: 'text',
+                          required: true,
+                        },
+                        {
+                          name: 'url',
+                          label: 'Link URL',
+                          type: 'text',
+                        },
+                      ],
+                      validate: (value, options) => {
+                        const baseValidation = validateAnnouncementItems(value, options)
+
+                        if (baseValidation !== true) {
+                          return baseValidation
+                        }
+
+                        if (!Array.isArray(value)) {
+                          return true
+                        }
+
+                        const invalidRow = value.find((item) => {
+                          if (typeof item !== 'object' || item === null) {
+                            return true
+                          }
+
+                          const description = 'description' in item ? item.description : null
+
+                          return typeof description !== 'string' || !description.trim()
+                        })
+
+                        return invalidRow ? 'Each announcement item requires a description.' : true
+                      },
+                    },
+                  ],
                 },
                 {
-                  label: 'Horizontal Slider',
-                  value: 'horizontal',
-                },
-                {
-                  label: 'Marquee',
-                  value: 'marquee',
+                  label: 'Layout & Theme',
+                  fields: [
+                    {
+                      ...createBlockAppearanceFields({ includeTextOverride: false }),
+                      name: 'announcementAppearance',
+                      label: 'Appearance',
+                      admin: {
+                        condition: (data) => Boolean(data?.announcementEnabled),
+                      },
+                    },
+                    {
+                      name: 'announcementDismissible',
+                      label: 'Dismissible',
+                      type: 'checkbox',
+                      defaultValue: false,
+                      admin: {
+                        condition: (data) => Boolean(data?.announcementEnabled),
+                        description:
+                          'Show a close button so visitors can hide the announcement for the rest of their browser session.',
+                      },
+                    },
+                    {
+                      name: 'announcementHideOnScroll',
+                      label: 'Hide on Scroll',
+                      type: 'checkbox',
+                      defaultValue: false,
+                      admin: {
+                        condition: (data) => Boolean(data?.announcementEnabled),
+                        description:
+                          'Allow the announcement bar to scroll out of view instead of remaining pinned above the header.',
+                      },
+                    },
+                    {
+                      name: 'announcementDisplayMode',
+                      label: 'Animation Mode',
+                      type: 'select',
+                      defaultValue: 'vertical',
+                      options: [
+                        {
+                          label: 'Vertical Slider',
+                          value: 'vertical',
+                        },
+                        {
+                          label: 'Horizontal Slider',
+                          value: 'horizontal',
+                        },
+                        {
+                          label: 'Marquee',
+                          value: 'marquee',
+                        },
+                      ],
+                      admin: {
+                        condition: (data) => Boolean(data?.announcementEnabled),
+                      },
+                      required: true,
+                    },
+                    {
+                      name: 'announcementIntervalMs',
+                      label: 'Announcement Interval (ms)',
+                      type: 'number',
+                      defaultValue: 4000,
+                      admin: {
+                        condition: (data) =>
+                          Boolean(data?.announcementEnabled) && data?.announcementDisplayMode !== 'marquee',
+                        description:
+                          'Auto-advance interval for rotating announcement items. Minimum 2000ms.',
+                      },
+                      validate: validateAnnouncementInterval,
+                    },
+                    {
+                      name: 'announcementMarqueeDurationMs',
+                      label: 'Marquee Duration (ms)',
+                      type: 'number',
+                      defaultValue: 18000,
+                      admin: {
+                        condition: (data) =>
+                          Boolean(data?.announcementEnabled) && data?.announcementDisplayMode === 'marquee',
+                        description: 'Lower values scroll faster.',
+                      },
+                      validate: validateAnnouncementMarqueeDuration,
+                    },
+                  ],
                 },
               ],
-              admin: {
-                condition: (data) => Boolean(data?.announcementEnabled),
-              },
-              required: true,
-            },
-            {
-              name: 'announcementIntervalMs',
-              label: 'Announcement Interval (ms)',
-              type: 'number',
-              defaultValue: 4000,
-              admin: {
-                condition: (data) =>
-                  Boolean(data?.announcementEnabled) && data?.announcementDisplayMode !== 'marquee',
-                description:
-                  'Auto-advance interval for rotating announcement items. Minimum 2000ms.',
-              },
-              validate: validateAnnouncementInterval,
-            },
-            {
-              name: 'announcementMarqueeDurationMs',
-              label: 'Marquee Duration (ms)',
-              type: 'number',
-              defaultValue: 18000,
-              admin: {
-                condition: (data) =>
-                  Boolean(data?.announcementEnabled) && data?.announcementDisplayMode === 'marquee',
-                description: 'Lower values scroll faster.',
-              },
-              validate: validateAnnouncementMarqueeDuration,
-            },
-            {
-              name: 'announcementItems',
-              label: 'Announcement Items',
-              type: 'array',
-              minRows: 1,
-              admin: {
-                condition: (data) => Boolean(data?.announcementEnabled),
-                description:
-                  'Displayed as a thin rotating site-wide banner above all frontend pages.',
-              },
-              fields: [
-                {
-                  name: 'title',
-                  type: 'text',
-                },
-                {
-                  name: 'description',
-                  type: 'text',
-                  required: true,
-                },
-                {
-                  name: 'url',
-                  label: 'Link URL',
-                  type: 'text',
-                },
-              ],
-              validate: (value, options) => {
-                const baseValidation = validateAnnouncementItems(value, options)
-
-                if (baseValidation !== true) {
-                  return baseValidation
-                }
-
-                if (!Array.isArray(value)) {
-                  return true
-                }
-
-                const invalidRow = value.find((item) => {
-                  if (typeof item !== 'object' || item === null) {
-                    return true
-                  }
-
-                  const description = 'description' in item ? item.description : null
-
-                  return typeof description !== 'string' || !description.trim()
-                })
-
-                return invalidRow ? 'Each announcement item requires a description.' : true
-              },
             },
           ],
         },

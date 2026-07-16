@@ -71,8 +71,10 @@ describe('system mode settings', () => {
 
     expect(typedTabsField?.tabs.map((tab) => tab.label)).toEqual([
       'Default Home',
+      'Page Appearance',
       'Header',
       'Footer',
+      'Announcement',
     ])
   })
 

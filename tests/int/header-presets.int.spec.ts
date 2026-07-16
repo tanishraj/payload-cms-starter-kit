@@ -17,19 +17,26 @@ describe('header presets', () => {
   })
 
   it('defines the header navbar schema', () => {
-    const stickyField = HeaderNavbar12Block.fields.find(
+    const tabsField = HeaderNavbar12Block.fields[0] as
+      | { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string }
+      | undefined
+    const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const stickyField = layoutTab?.fields.find(
       (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'sticky',
     ) as { defaultValue?: boolean; type?: string } | undefined
-    const sizeField = HeaderNavbar12Block.fields.find(
+    const sizeField = layoutTab?.fields.find(
       (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'size',
     ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
-    const navAlignmentField = HeaderNavbar12Block.fields.find(
+    const navAlignmentField = layoutTab?.fields.find(
       (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'navAlignment',
     ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
-    const ctaButtonsField = HeaderNavbar12Block.fields.find(
+    const ctaButtonsField = contentTab?.fields.find(
       (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'ctaButtons',
     ) as { maxRows?: number; type?: string } | undefined
 
+    expect(tabsField?.type).toBe('tabs')
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
     expect(stickyField?.type).toBe('checkbox')
     expect(stickyField?.defaultValue).toBe(true)
     expect(sizeField?.type).toBe('select')

@@ -1,4 +1,4 @@
-import type { ArrayField, Block, CheckboxField, Field, NumberField, RadioField, SelectField } from 'payload'
+import type { ArrayField, Block, CheckboxField, Field, NumberField, RadioField, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 
@@ -155,44 +155,59 @@ export const HeaderNavbar12Block: Block = {
     plural: 'Header Navbars',
   },
   fields: [
-    createBlockAppearanceFields({}),
     {
-      name: 'sticky',
-      type: 'checkbox',
-      defaultValue: true,
-    } satisfies CheckboxField,
-    sizeField,
-    navAlignmentField,
-    {
-      name: 'logoMode',
-      label: 'Logo Source',
-      type: 'select',
-      defaultValue: 'siteDefault',
-      options: [
-        { label: 'Site Default Logo', value: 'siteDefault' },
-        { label: 'Custom Logo Override', value: 'customLogo' },
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'logoMode',
+              label: 'Logo Source',
+              type: 'select',
+              defaultValue: 'siteDefault',
+              options: [
+                { label: 'Site Default Logo', value: 'siteDefault' },
+                { label: 'Custom Logo Override', value: 'customLogo' },
+              ],
+            } satisfies SelectField,
+            {
+              name: 'customLogoLight',
+              label: 'Custom Logo (Light)',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                condition: customLogoCondition,
+              },
+            },
+            {
+              name: 'customLogoDark',
+              label: 'Custom Logo (Dark)',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                condition: customLogoCondition,
+              },
+            },
+            logoHeightField,
+            menuItemsField,
+            ctaButtonsField,
+          ],
+        },
+        {
+          label: 'Layout & Theme',
+          fields: [
+            createBlockAppearanceFields({}),
+            {
+              name: 'sticky',
+              type: 'checkbox',
+              defaultValue: true,
+            } satisfies CheckboxField,
+            sizeField,
+            navAlignmentField,
+          ],
+        },
       ],
-    } satisfies SelectField,
-    {
-      name: 'customLogoLight',
-      label: 'Custom Logo (Light)',
-      type: 'upload',
-      relationTo: 'media',
-      admin: {
-        condition: customLogoCondition,
-      },
-    },
-    {
-      name: 'customLogoDark',
-      label: 'Custom Logo (Dark)',
-      type: 'upload',
-      relationTo: 'media',
-      admin: {
-        condition: customLogoCondition,
-      },
-    },
-    logoHeightField,
-    menuItemsField,
-    ctaButtonsField,
+    } satisfies TabsField,
   ],
 }

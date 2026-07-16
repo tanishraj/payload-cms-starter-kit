@@ -1,4 +1,4 @@
-import type { ArrayField, Block, CheckboxField, NumberField } from 'payload'
+import type { ArrayField, Block, CheckboxField, NumberField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { statsStripThumbnail } from './thumbnail'
@@ -48,24 +48,36 @@ export const StatsStripBlock: Block = {
     plural: 'Stats Strips',
   },
   fields: [
-    createBlockAppearanceFields({ includeTextOverride: false }),
-
     {
-      name: 'animationEnabled',
-      type: 'checkbox',
-      defaultValue: true,
-    } satisfies CheckboxField,
-    {
-      name: 'animationDuration',
-      type: 'number',
-      defaultValue: 1200,
-      required: true,
-    } satisfies NumberField,
-    {
-      name: 'triggerOnce',
-      type: 'checkbox',
-      defaultValue: true,
-    } satisfies CheckboxField,
-    itemsField,
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [itemsField],
+        },
+        {
+          label: 'Layout & Theme',
+          fields: [
+            createBlockAppearanceFields({ includeTextOverride: false }),
+            {
+              name: 'animationEnabled',
+              type: 'checkbox',
+              defaultValue: true,
+            } satisfies CheckboxField,
+            {
+              name: 'animationDuration',
+              type: 'number',
+              defaultValue: 1200,
+              required: true,
+            } satisfies NumberField,
+            {
+              name: 'triggerOnce',
+              type: 'checkbox',
+              defaultValue: true,
+            } satisfies CheckboxField,
+          ],
+        },
+      ],
+    } satisfies TabsField,
   ],
 }

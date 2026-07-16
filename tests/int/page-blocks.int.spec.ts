@@ -64,9 +64,9 @@ describe('page block pipeline', () => {
   it('resolves shared block appearance classes from semantic appearance values', () => {
     expect(resolveBlockAppearanceClasses()).toEqual({
       backgroundClassName: '',
-      textClassName: 'text-foreground',
+      textClassName: '',
       borderClassName: '',
-      className: 'text-foreground',
+      className: '',
     })
 
     expect(
@@ -97,30 +97,37 @@ describe('page block pipeline', () => {
 
   it('defines the statsStrip schema with metric items, background, and animation fields', async () => {
     const { StatsStripBlock } = await import('@/blocks/StatsStrip/config')
+    const tabsField = StatsStripBlock.fields[0] as
+      | { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string }
+      | undefined
+    const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
 
     const itemsField = getNamedField<
       { fields?: Array<{ name?: string; type?: string }>; minRows?: number; type?: string }
-    >(StatsStripBlock.fields, 'items')
+    >(contentTab?.fields ?? [], 'items')
     const appearanceField = getNamedField<{ fields?: Array<{ name?: string; type?: string }>; type?: string }>(
-      StatsStripBlock.fields,
+      layoutTab?.fields ?? [],
       'appearance',
     )
 
     const animationEnabledField = getNamedField<{ defaultValue?: boolean; type?: string }>(
-      StatsStripBlock.fields,
+      layoutTab?.fields ?? [],
       'animationEnabled',
     )
 
     const animationDurationField = getNamedField<{ defaultValue?: number; type?: string }>(
-      StatsStripBlock.fields,
+      layoutTab?.fields ?? [],
       'animationDuration',
     )
 
     const triggerOnceField = getNamedField<{ defaultValue?: boolean; type?: string }>(
-      StatsStripBlock.fields,
+      layoutTab?.fields ?? [],
       'triggerOnce',
     )
 
+    expect(tabsField?.type).toBe('tabs')
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
     expect(itemsField?.type).toBe('array')
     expect(itemsField?.minRows).toBe(1)
     expect(itemsField?.fields?.map((field) => field.name)).toEqual(['prefix', 'value', 'suffix', 'label'])
@@ -245,31 +252,42 @@ describe('page block pipeline', () => {
 
   it('defines the footer56 schema with branding, link groups, utilities, and shared appearance', async () => {
     const { Footer56Block } = await import('@/blocks/Footer56/config')
+    const tabsField = Footer56Block.fields[0] as
+      | { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string }
+      | undefined
+    const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
 
-    const logoModeField = Footer56Block.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'logoMode',
-    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+    const logoModeField = getNamedField<
+      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
+    >(contentTab?.fields ?? [], 'logoMode')
 
-    const linkGroupsField = Footer56Block.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'linkGroups',
-    ) as { maxRows?: number; minRows?: number; type?: string } | undefined
+    const linkGroupsField = getNamedField<{ maxRows?: number; minRows?: number; type?: string }>(
+      contentTab?.fields ?? [],
+      'linkGroups',
+    )
 
-    const ctaButtonsField = Footer56Block.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'ctaButtons',
-    ) as { maxRows?: number; type?: string } | undefined
+    const ctaButtonsField = getNamedField<{ maxRows?: number; type?: string }>(
+      contentTab?.fields ?? [],
+      'ctaButtons',
+    )
 
-    const logoHeightField = Footer56Block.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'logoHeight',
-    ) as { min?: number; type?: string } | undefined
+    const logoHeightField = getNamedField<{ min?: number; type?: string }>(
+      contentTab?.fields ?? [],
+      'logoHeight',
+    )
 
-    const socialLinksField = Footer56Block.fields.find(
+    const socialLinksField = (contentTab?.fields ?? []).find(
       (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'socialLinks',
     ) as { type?: string } | undefined
 
-    const appearanceField = Footer56Block.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'appearance',
-    ) as { fields?: Array<{ name?: string }>; type?: string } | undefined
+    const appearanceField = getNamedField<{ fields?: Array<{ name?: string }>; type?: string }>(
+      layoutTab?.fields ?? [],
+      'appearance',
+    )
 
+    expect(tabsField?.type).toBe('tabs')
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
     expect(logoModeField?.type).toBe('select')
     expect(logoModeField?.defaultValue).toBe('siteDefault')
     expect(logoModeField?.options?.map((option) => option.value)).toEqual(['siteDefault', 'customLogo'])
@@ -284,7 +302,6 @@ describe('page block pipeline', () => {
     expect(appearanceField?.type).toBe('group')
     expect(appearanceField?.fields?.map((field) => field.name)).toEqual([
       'background',
-      'textColor',
       'border',
     ])
   })
@@ -367,21 +384,28 @@ describe('page block pipeline', () => {
   })
 
   it('defines the page announcement block schema with mode, timing, and rotating items', () => {
-    const appearanceField = getNamedField<{ type?: string }>(AnnouncementBlock.fields, 'appearance')
+    const tabsField = AnnouncementBlock.fields[0] as
+      | { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string }
+      | undefined
+    const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const appearanceField = getNamedField<{ type?: string }>(layoutTab?.fields ?? [], 'appearance')
     const displayModeField = getNamedField<
       { defaultValue?: string; label?: string; options?: Array<{ value: string }>; type?: string }
-    >(AnnouncementBlock.fields, 'displayMode')
-    const labelField = getNamedField<{ label?: string; type?: string }>(AnnouncementBlock.fields, 'label')
+    >(layoutTab?.fields ?? [], 'displayMode')
+    const labelField = getNamedField<{ label?: string; type?: string }>(contentTab?.fields ?? [], 'label')
     const intervalField = getNamedField<{ defaultValue?: number; type?: string }>(
-      AnnouncementBlock.fields,
+      layoutTab?.fields ?? [],
       'intervalMs',
     )
     const marqueeDurationField = getNamedField<{ defaultValue?: number; type?: string }>(
-      AnnouncementBlock.fields,
+      layoutTab?.fields ?? [],
       'marqueeDurationMs',
     )
-    const itemsField = getNamedField<{ minRows?: number; type?: string }>(AnnouncementBlock.fields, 'items')
+    const itemsField = getNamedField<{ minRows?: number; type?: string }>(contentTab?.fields ?? [], 'items')
 
+    expect(tabsField?.type).toBe('tabs')
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
     expect(appearanceField?.type).toBe('group')
     expect(displayModeField?.type).toBe('select')
     expect(displayModeField?.label).toBe('Animation Mode')
@@ -489,31 +513,40 @@ describe('page block pipeline', () => {
 
   it('defines the splitFeature schema with image, layout, and CTA mode fields', async () => {
     const { SplitFeatureBlock } = await import('@/blocks/SplitFeature/config')
+    const tabsField = SplitFeatureBlock.fields[0] as
+      | { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string }
+      | undefined
+    const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
 
-    const appearanceField = getNamedField<{ type?: string }>(SplitFeatureBlock.fields, 'appearance')
+    const appearanceField = getNamedField<{ type?: string }>(layoutTab?.fields ?? [], 'appearance')
     const imageField = getNamedField<{ relationTo?: string; required?: boolean; type?: string }>(
-      SplitFeatureBlock.fields,
+      contentTab?.fields ?? [],
       'image',
     )
     const titleField = getNamedField<{ required?: boolean; type?: string }>(
-      SplitFeatureBlock.fields,
+      contentTab?.fields ?? [],
       'title',
     )
     const layoutModeField = getNamedField<
       { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(SplitFeatureBlock.fields, 'layoutMode')
+    >(layoutTab?.fields ?? [], 'layoutMode')
     const mediaPositionField = getNamedField<
       { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(SplitFeatureBlock.fields, 'mediaPosition')
-    const backgroundStyleField = getNamedField<{ type?: string }>(SplitFeatureBlock.fields, 'backgroundStyle')
+    >(layoutTab?.fields ?? [], 'mediaPosition')
+    const backgroundStyleField = (layoutTab?.fields ?? []).find(
+      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'backgroundStyle',
+    ) as { type?: string } | undefined
     const ctaModeField = getNamedField<
       { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(SplitFeatureBlock.fields, 'ctaMode')
+    >(contentTab?.fields ?? [], 'ctaMode')
     const buttonsField = getNamedField<{ maxRows?: number; type?: string }>(
-      SplitFeatureBlock.fields,
+      contentTab?.fields ?? [],
       'buttons',
     )
 
+    expect(tabsField?.type).toBe('tabs')
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
     expect(appearanceField?.type).toBe('group')
     expect(imageField?.type).toBe('upload')
     expect(imageField?.relationTo).toBe('media')
