@@ -1,5 +1,6 @@
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
+
 import { createBaseSystemPageFields, createSystemPageBlock } from '../systemPageFields'
-import { system404Thumbnail } from './thumbnail'
 
 const defaults = {
   badge: '404',
@@ -12,5 +13,5 @@ export const System404Block = createSystemPageBlock({
   singularLabel: 'System 404',
   pluralLabel: 'System 404 Blocks',
   slug: 'system404',
-  thumbnailUrl: system404Thumbnail,
+  thumbnailAdmin: getBlockThumbnailAdmin('system404'),
 })

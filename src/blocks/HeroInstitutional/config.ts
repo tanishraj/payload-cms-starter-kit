@@ -8,8 +8,8 @@ import type {
   TabsField,
 } from 'payload'
 
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { heroInstitutionalThumbnail } from './thumbnail'
 
 type LinkType = 'page' | 'custom'
 
@@ -179,14 +179,7 @@ const buttonsField = {
 export const HeroInstitutionalBlock: Block = {
   slug: 'heroInstitutional',
   interfaceName: 'HeroInstitutionalBlock',
-  admin: {
-    images: {
-      thumbnail: {
-        alt: 'Hero institutional block preview',
-        url: heroInstitutionalThumbnail,
-      },
-    },
-  },
+  admin: getBlockThumbnailAdmin('heroInstitutional'),
   labels: {
     singular: 'Hero Institutional',
     plural: 'Hero Institutionals',

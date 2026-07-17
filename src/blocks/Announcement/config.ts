@@ -1,18 +1,11 @@
 import type { Block, TabsField } from 'payload'
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { announcementThumbnail } from './thumbnail'
 
 export const AnnouncementBlock: Block = {
   slug: 'announcement',
   interfaceName: 'AnnouncementBlock',
-  admin: {
-    images: {
-      thumbnail: {
-        alt: 'Announcement block preview',
-        url: announcementThumbnail,
-      },
-    },
-  },
+  admin: getBlockThumbnailAdmin('announcement'),
   labels: {
     singular: 'Announcement',
     plural: 'Announcements',

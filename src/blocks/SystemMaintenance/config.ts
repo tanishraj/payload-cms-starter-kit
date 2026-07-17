@@ -1,10 +1,12 @@
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
+
 import { createBaseSystemPageFields, createSystemPageBlock } from '../systemPageFields'
-import { systemMaintenanceThumbnail } from './thumbnail'
 
 const defaults = {
   badge: 'Maintenance',
   heading: 'This website is temporarily unavailable',
-  description: 'We are carrying out scheduled updates to improve the website. Please check back shortly.',
+  description:
+    'We are carrying out scheduled updates to improve the website. Please check back shortly.',
 }
 
 export const SystemMaintenanceBlock = createSystemPageBlock({
@@ -12,5 +14,5 @@ export const SystemMaintenanceBlock = createSystemPageBlock({
   singularLabel: 'System Maintenance',
   pluralLabel: 'System Maintenance Blocks',
   slug: 'systemMaintenance',
-  thumbnailUrl: systemMaintenanceThumbnail,
+  thumbnailAdmin: getBlockThumbnailAdmin('systemMaintenance'),
 })

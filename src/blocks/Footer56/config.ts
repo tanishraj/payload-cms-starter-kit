@@ -1,8 +1,15 @@
-import type { ArrayField, Block, CheckboxField, Field, RadioField, SelectField, TabsField } from 'payload'
+import type {
+  ArrayField,
+  Block,
+  CheckboxField,
+  Field,
+  RadioField,
+  SelectField,
+  TabsField,
+} from 'payload'
 
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-
-import { footer56Thumbnail } from './thumbnail'
 
 type LinkType = 'page' | 'custom'
 type LogoMode = 'siteDefault' | 'customLogo'
@@ -60,14 +67,7 @@ const createLinkFields = (): Field[] => [
 export const Footer56Block: Block = {
   slug: 'footer56',
   interfaceName: 'Footer56Block',
-  admin: {
-    images: {
-      thumbnail: {
-        alt: 'Footer 56 preview',
-        url: footer56Thumbnail,
-      },
-    },
-  },
+  admin: getBlockThumbnailAdmin('footer56'),
   labels: {
     singular: 'Footer 56',
     plural: 'Footer 56',
@@ -183,9 +183,7 @@ export const Footer56Block: Block = {
         },
         {
           label: 'Layout & Theme',
-          fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
-          ],
+          fields: [createBlockAppearanceFields({ includeTextOverride: false })],
         },
       ],
     } satisfies TabsField,

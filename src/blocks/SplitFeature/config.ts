@@ -1,11 +1,11 @@
 import type { Block, SelectField, TabsField } from 'payload'
 
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import {
   createContentActionModeField,
   createContentActionsField,
 } from '@/blocks/shared/contentActionsFields'
-import { splitFeatureThumbnail } from './thumbnail'
 
 type LayoutMode = 'split' | 'contentOnly'
 type MediaFillMode = 'contained' | 'containedFill' | 'edgeToEdge'
@@ -24,14 +24,7 @@ const isSplitMode = (_data: unknown, siblingData: SplitFeatureSiblingData) =>
 export const SplitFeatureBlock: Block = {
   slug: 'splitFeature',
   interfaceName: 'SplitFeatureBlock',
-  admin: {
-    images: {
-      thumbnail: {
-        alt: 'Split feature block preview',
-        url: splitFeatureThumbnail,
-      },
-    },
-  },
+  admin: getBlockThumbnailAdmin('splitFeature'),
   labels: {
     singular: 'Split Feature',
     plural: 'Split Features',

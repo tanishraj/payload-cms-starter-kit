@@ -1,6 +1,7 @@
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import type { ArrayField, Block, CheckboxField, GroupField, SelectField, TabsField } from 'payload'
 
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import {
   createContentActionModeField,
@@ -88,6 +89,7 @@ const sideColumnField = {
 export const FaqBlock: Block = {
   slug: 'faq',
   interfaceName: 'FaqBlock',
+  admin: getBlockThumbnailAdmin('faq'),
   labels: {
     singular: 'FAQ',
     plural: 'FAQs',

@@ -1,5 +1,6 @@
 import type { Block, SelectField, TabsField } from 'payload'
 
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import {
   createContentActionModeField,
@@ -35,6 +36,7 @@ const contentAlignmentField = {
 export const ReviewSubmissionBlock: Block = {
   slug: 'reviewSubmission',
   interfaceName: 'ReviewSubmissionBlock',
+  admin: getBlockThumbnailAdmin('reviewSubmission'),
   labels: {
     singular: 'Review Submission',
     plural: 'Review Submissions',

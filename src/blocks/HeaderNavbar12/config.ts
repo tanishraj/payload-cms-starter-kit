@@ -1,8 +1,16 @@
-import type { ArrayField, Block, CheckboxField, Field, NumberField, RadioField, SelectField, TabsField } from 'payload'
+import type {
+  ArrayField,
+  Block,
+  CheckboxField,
+  Field,
+  NumberField,
+  RadioField,
+  SelectField,
+  TabsField,
+} from 'payload'
 
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-
-import { headerNavbar12Thumbnail } from './thumbnail'
 
 type LinkType = 'page' | 'custom'
 type LogoMode = 'siteDefault' | 'customLogo'
@@ -91,7 +99,8 @@ const logoHeightField = {
     components: {
       Field: '/blocks/HeaderNavbar12/LogoHeightField#LogoHeightField',
     },
-    description: 'Changing header size resets this value to match the header height. You can still edit it manually afterward.',
+    description:
+      'Changing header size resets this value to match the header height. You can still edit it manually afterward.',
   },
 } satisfies NumberField
 
@@ -142,14 +151,7 @@ const ctaButtonsField = {
 export const HeaderNavbar12Block: Block = {
   slug: 'headerNavbar12',
   interfaceName: 'HeaderNavbar12Block',
-  admin: {
-    images: {
-      thumbnail: {
-        alt: 'Header navbar block preview',
-        url: headerNavbar12Thumbnail,
-      },
-    },
-  },
+  admin: getBlockThumbnailAdmin('headerNavbar12'),
   labels: {
     singular: 'Header Navbar',
     plural: 'Header Navbars',

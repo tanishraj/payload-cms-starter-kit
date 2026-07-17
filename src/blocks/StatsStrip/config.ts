@@ -1,7 +1,7 @@
 import type { ArrayField, Block, CheckboxField, NumberField, TabsField } from 'payload'
 
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { statsStripThumbnail } from './thumbnail'
 
 const itemsField = {
   name: 'items',
@@ -35,14 +35,7 @@ const itemsField = {
 export const StatsStripBlock: Block = {
   slug: 'statsStrip',
   interfaceName: 'StatsStripBlock',
-  admin: {
-    images: {
-      thumbnail: {
-        alt: 'Stats strip block preview',
-        url: statsStripThumbnail,
-      },
-    },
-  },
+  admin: getBlockThumbnailAdmin('statsStrip'),
   labels: {
     singular: 'Stats Strip',
     plural: 'Stats Strips',
