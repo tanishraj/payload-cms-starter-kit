@@ -174,7 +174,16 @@ export interface Page {
   /**
    * Compose the page using reusable content blocks.
    */
-  layout?: (AnnouncementBlock | HeroInstitutionalBlock | SplitFeatureBlock | StatsStripBlock | FaqBlock)[] | null;
+  layout?:
+    | (
+        | AnnouncementBlock
+        | HeroInstitutionalBlock
+        | SplitFeatureBlock
+        | StatsStripBlock
+        | FaqBlock
+        | ReviewSubmissionBlock
+      )[]
+    | null;
   metaTitle?: string | null;
   metaDescription?: string | null;
   /**
@@ -479,6 +488,92 @@ export interface FaqBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'faq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReviewSubmissionBlock".
+ */
+export interface ReviewSubmissionBlock {
+  eyebrow?: string | null;
+  heading: string;
+  description?: string | null;
+  benefits?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Select a review-intent form. Use rating, reviewerName, reviewerEmail, reviewBody, and an optional subjectLabel select field; subjectLabel options become the topic chips. Review titles are generated from the submitted review.
+   */
+  form: string | Form;
+  formHeading?: string | null;
+  formEyebrow?: string | null;
+  formDescription?: string | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'reviewSubmission';
+}
+/**
+ * Reusable form definitions that can be placed on pages.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "forms".
+ */
+export interface Form {
+  id: string;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Optional notes for editors. This is not shown on the website.
+   */
+  internalNotes?: string | null;
+  /**
+   * Controls how submissions are operated after intake and whether review promotion applies.
+   */
+  submissionIntent: 'general' | 'lead' | 'review';
+  submitButtonLabel: string;
+  successMessage: string;
+  /**
+   * Optional internal email recipients who should be notified when this form receives a valid submission.
+   */
+  notificationRecipients?:
+    | {
+        email: string;
+        id?: string | null;
+      }[]
+    | null;
+  fields: {
+    /**
+     * Machine key used in stored submission data.
+     */
+    name: string;
+    label: string;
+    type: 'text' | 'email' | 'textarea' | 'select' | 'checkbox';
+    required?: boolean | null;
+    placeholder?: string | null;
+    options?:
+      | {
+          label: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -810,7 +905,10 @@ export interface Review {
   reviewTitle: string;
   reviewBody: string;
   reviewerName: string;
-  reviewerEmail: string;
+  /**
+   * Optional contact email used only for moderation follow-up.
+   */
+  reviewerEmail?: string | null;
   /**
    * Optional public-safe name shown on the frontend instead of the raw reviewer name.
    */
@@ -895,62 +993,6 @@ export interface FormSubmission {
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
-}
-/**
- * Reusable form definitions that can be placed on pages.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "forms".
- */
-export interface Form {
-  id: string;
-  title: string;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  /**
-   * Optional notes for editors. This is not shown on the website.
-   */
-  internalNotes?: string | null;
-  /**
-   * Controls how submissions are operated after intake and whether review promotion applies.
-   */
-  submissionIntent: 'general' | 'lead' | 'review';
-  submitButtonLabel: string;
-  successMessage: string;
-  /**
-   * Optional internal email recipients who should be notified when this form receives a valid submission.
-   */
-  notificationRecipients?:
-    | {
-        email: string;
-        id?: string | null;
-      }[]
-    | null;
-  fields: {
-    /**
-     * Machine key used in stored submission data.
-     */
-    name: string;
-    label: string;
-    type: 'text' | 'email' | 'textarea' | 'select' | 'checkbox';
-    required?: boolean | null;
-    placeholder?: string | null;
-    options?:
-      | {
-          label: string;
-          value: string;
-          id?: string | null;
-        }[]
-      | null;
-    id?: string | null;
-  }[];
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * Reusable destinations for menus, CTAs, legal links, and utility links.
@@ -1571,6 +1613,7 @@ export interface PagesSelect<T extends boolean = true> {
         splitFeature?: T | SplitFeatureBlockSelect<T>;
         statsStrip?: T | StatsStripBlockSelect<T>;
         faq?: T | FaqBlockSelect<T>;
+        reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
       };
   metaTitle?: T;
   metaDescription?: T;
@@ -1767,6 +1810,34 @@ export interface FaqBlockSelect<T extends boolean = true> {
       };
   size?: T;
   defaultOpenFirst?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReviewSubmissionBlock_select".
+ */
+export interface ReviewSubmissionBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  description?: T;
+  benefits?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  form?: T;
+  formHeading?: T;
+  formEyebrow?: T;
+  formDescription?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  size?: T;
   id?: T;
   blockName?: T;
 }

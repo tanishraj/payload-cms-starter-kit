@@ -74,10 +74,7 @@ function MarqueeTrack({
           key={`${duplicate ? 'duplicate' : 'primary'}-${item.url ?? item.description}-${index}`}
         >
           <MarqueeItem duplicate={duplicate} item={item} />
-          <span
-            aria-hidden="true"
-            className="size-1.5 shrink-0 rounded-(--radius) bg-current/70"
-          />
+          <span aria-hidden="true" className="size-1.5 shrink-0 rounded-lg bg-current/70" />
         </Fragment>
       ))}
     </div>

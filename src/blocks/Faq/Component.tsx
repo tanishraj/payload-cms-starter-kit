@@ -193,7 +193,7 @@ export function FaqBlockComponent({
                 {hasProfile ? (
                   <div className="mb-8 flex items-start gap-3 sm:gap-4 lg:mb-12">
                     {profileImage ? (
-                      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-[calc(var(--radius))] sm:h-16 sm:w-16">
+                      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg sm:h-16 sm:w-16">
                         {/* CMS media URLs are runtime-managed and may be absolute, so keep a direct img element. */}
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img

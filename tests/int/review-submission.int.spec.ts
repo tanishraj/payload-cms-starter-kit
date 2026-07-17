@@ -150,9 +150,9 @@ describe('review submission promotion', () => {
     await expect(response.json()).resolves.toEqual(
       expect.objectContaining({
         errors: expect.objectContaining({
+          isGenuineExperience: expect.any(String),
           rating: expect.any(String),
           reviewBody: expect.any(String),
-          reviewerEmail: expect.any(String),
         }),
         message: 'Please correct the highlighted fields and try again.',
       }),
@@ -232,10 +232,9 @@ describe('review submission promotion', () => {
         body: JSON.stringify({
           values: {
             rating: '5',
-            reviewTitle: 'Fast, clear, and reliable',
             reviewBody: 'Everything worked exactly as expected.',
             reviewerName: 'Taylor Lead',
-            reviewerEmail: 'taylor@example.com',
+            subjectLabel: 'academics',
             isGenuineExperience: true,
             website: '',
           },
@@ -271,14 +270,15 @@ describe('review submission promotion', () => {
             isGenuineExperience: true,
             rating: '5',
             reviewBody: 'Everything worked exactly as expected.',
-            reviewerEmail: 'taylor@example.com',
+            reviewerEmail: '',
             reviewerName: 'Taylor Lead',
-            reviewTitle: 'Fast, clear, and reliable',
+            reviewTitle: 'Everything worked exactly as expected.',
+            subjectLabel: 'academics',
           }),
-          email: 'taylor@example.com',
+          email: undefined,
           form: 42,
           submissionIntent: 'review',
-          submitterEmail: 'taylor@example.com',
+          submitterEmail: undefined,
           submitterName: 'Taylor Lead',
         }),
         overrideAccess: true,
@@ -291,11 +291,12 @@ describe('review submission promotion', () => {
         collection: 'reviews',
         data: expect.objectContaining({
           _status: 'draft',
-          sourceSubmission: 33,
+          sourceSubmission: '33',
+          subjectLabel: 'academics',
           workflowState: 'in_review',
-          title: 'Fast, clear, and reliable',
-          reviewTitle: 'Fast, clear, and reliable',
-          reviewerEmail: 'taylor@example.com',
+          title: 'Everything worked exactly as expected.',
+          reviewTitle: 'Everything worked exactly as expected.',
+          reviewerEmail: undefined,
         }),
         overrideAccess: true,
       }),
@@ -305,7 +306,7 @@ describe('review submission promotion', () => {
       expect.objectContaining({
         collection: 'form-submissions',
         data: {
-          linkedReview: 44,
+          linkedReview: '44',
           promotionError: null,
         },
         id: 33,

@@ -43,10 +43,11 @@ export const upsertReviewFromSubmission = async ({
     isGenuineExperience: values.isGenuineExperience,
     rating: values.rating,
     reviewBody: values.reviewBody,
-    reviewerEmail: values.reviewerEmail,
+    reviewerEmail: values.reviewerEmail || undefined,
     reviewerName: values.reviewerName,
     reviewTitle: values.reviewTitle,
     sourceSubmission: String(sourceSubmissionID),
+    subjectLabel: values.subjectLabel || undefined,
     title: values.reviewTitle,
     workflowState: 'in_review' as const,
   }

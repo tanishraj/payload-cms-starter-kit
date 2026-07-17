@@ -1,12 +1,9 @@
-import {
-  slugField,
-  type CollectionConfig,
-  type RelationshipFieldSingleValidation,
-} from 'payload'
+import { slugField, type CollectionConfig, type RelationshipFieldSingleValidation } from 'payload'
 
 import { AnnouncementBlock } from '@/blocks/Announcement/config'
 import { FaqBlock } from '@/blocks/Faq/config'
 import { HeroInstitutionalBlock } from '@/blocks/HeroInstitutional/config'
+import { ReviewSubmissionBlock } from '@/blocks/ReviewSubmission/config'
 import { StatsStripBlock } from '@/blocks/StatsStrip/config'
 import { SplitFeatureBlock } from '@/blocks/SplitFeature/config'
 import type { Page } from '@/payload-types'
@@ -31,7 +28,9 @@ import {
   syncNavigationLinkAfterDelete,
 } from '../hooks/syncNavigationLinkForPage'
 
-const extractPageID = (value: string | number | Page | null | undefined): string | number | null => {
+const extractPageID = (
+  value: string | number | Page | null | undefined,
+): string | number | null => {
   if (typeof value === 'number' || typeof value === 'string') {
     return value
   }
@@ -205,6 +204,7 @@ export const Pages: CollectionConfig = {
                 SplitFeatureBlock,
                 StatsStripBlock,
                 FaqBlock,
+                ReviewSubmissionBlock,
               ],
               required: false,
               admin: {

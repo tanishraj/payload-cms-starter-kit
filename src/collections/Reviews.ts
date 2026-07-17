@@ -157,8 +157,7 @@ export const Reviews: CollectionConfig = {
                   name: 'subjectLabel',
                   type: 'text',
                   admin: {
-                    description:
-                      'Optional short subject like product, service, or campaign label.',
+                    description: 'Optional short subject like product, service, or campaign label.',
                     width: '50%',
                   },
                 },
@@ -188,8 +187,8 @@ export const Reviews: CollectionConfig = {
                 {
                   name: 'reviewerEmail',
                   type: 'email',
-                  required: true,
                   admin: {
+                    description: 'Optional contact email used only for moderation follow-up.',
                     width: '50%',
                   },
                 },
@@ -283,7 +282,8 @@ export const Reviews: CollectionConfig = {
               admin: {
                 condition: (_data, _siblingData, { user }) =>
                   canShowEditorialWorkflow(user as never),
-                description: 'Immutable link back to the public intake submission that generated this review.',
+                description:
+                  'Immutable link back to the public intake submission that generated this review.',
                 readOnly: true,
               },
             },

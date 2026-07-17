@@ -19,6 +19,7 @@ export type RequiredReviewSubmissionValues = {
   reviewerEmail: string
   reviewerName: string
   reviewTitle: string
+  subjectLabel: string
 }
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -29,6 +30,26 @@ const normalizeReviewCheckboxValue = (value: unknown): boolean => {
 
 const normalizeReviewTextValue = (value: unknown): string => {
   return typeof value === 'string' ? value.trim() : ''
+}
+
+const deriveReviewTitle = ({
+  reviewBody,
+  reviewTitle,
+  subjectLabel,
+}: Pick<RequiredReviewSubmissionValues, 'reviewBody' | 'reviewTitle' | 'subjectLabel'>): string => {
+  if (reviewTitle) {
+    return reviewTitle
+  }
+
+  const normalizedReviewBody = reviewBody.replace(/\s+/g, ' ').trim()
+
+  if (normalizedReviewBody) {
+    return normalizedReviewBody.length > 72
+      ? `${normalizedReviewBody.slice(0, 69).trimEnd()}...`
+      : normalizedReviewBody
+  }
+
+  return subjectLabel ? `${subjectLabel} review` : 'Review submission'
 }
 
 export const getReviewDisplayName = (
@@ -60,13 +81,18 @@ export const validateReviewSubmission = ({
   normalizedData: RequiredReviewSubmissionValues
 } => {
   const errors: ReviewSubmissionErrors = {}
-  const normalizedData: RequiredReviewSubmissionValues = {
+  const normalizedValues = {
     isGenuineExperience: normalizeReviewCheckboxValue(values.isGenuineExperience),
     rating: normalizeReviewTextValue(values.rating) as RequiredReviewSubmissionValues['rating'],
     reviewBody: normalizeReviewTextValue(values.reviewBody),
     reviewerEmail: normalizeReviewTextValue(values.reviewerEmail).toLowerCase(),
     reviewerName: normalizeReviewTextValue(values.reviewerName),
     reviewTitle: normalizeReviewTextValue(values.reviewTitle),
+    subjectLabel: normalizeReviewTextValue(values.subjectLabel),
+  }
+  const normalizedData: RequiredReviewSubmissionValues = {
+    ...normalizedValues,
+    reviewTitle: deriveReviewTitle(normalizedValues),
   }
 
   const allowedRatings = new Set(reviewRatingOptions.map((option) => option.value))
@@ -75,22 +101,22 @@ export const validateReviewSubmission = ({
     errors.rating = 'Rating contains an invalid option.'
   }
 
-  if (!normalizedData.reviewTitle) {
-    errors.reviewTitle = 'Review title is required.'
-  }
-
   if (!normalizedData.reviewBody) {
     errors.reviewBody = 'Review body is required.'
+  } else if (normalizedData.reviewBody.length > 1000) {
+    errors.reviewBody = 'Review body must be 1000 characters or fewer.'
   }
 
   if (!normalizedData.reviewerName) {
     errors.reviewerName = 'Reviewer name is required.'
   }
 
-  if (!normalizedData.reviewerEmail) {
-    errors.reviewerEmail = 'Reviewer email is required.'
-  } else if (!emailPattern.test(normalizedData.reviewerEmail)) {
+  if (normalizedData.reviewerEmail && !emailPattern.test(normalizedData.reviewerEmail)) {
     errors.reviewerEmail = 'Reviewer email must be a valid email address.'
+  }
+
+  if (normalizedData.subjectLabel.length > 80) {
+    errors.subjectLabel = 'Review subject must be 80 characters or fewer.'
   }
 
   if (!normalizedData.isGenuineExperience) {

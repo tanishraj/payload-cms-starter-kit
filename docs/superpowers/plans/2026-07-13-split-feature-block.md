@@ -56,10 +56,12 @@
 ### Task 1: Add schema coverage for the new block
 
 **Files:**
+
 - Modify: `tests/int/page-blocks.int.spec.ts`
 - Test: `tests/int/page-blocks.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `Pages` collection shape via `getLayoutField()`
 - Produces: failing expectations for `splitFeature` registration and field schema
 
@@ -81,29 +83,39 @@ it('defines the splitFeature schema with image, layout, and CTA mode fields', as
   const { SplitFeatureBlock } = await import('@/blocks/SplitFeature/config')
 
   const imageField = SplitFeatureBlock.fields.find(
-    (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'image',
+    (field) =>
+      typeof field === 'object' && field !== null && 'name' in field && field.name === 'image',
   ) as { relationTo?: string; required?: boolean; type?: string } | undefined
 
   const titleField = SplitFeatureBlock.fields.find(
-    (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'title',
+    (field) =>
+      typeof field === 'object' && field !== null && 'name' in field && field.name === 'title',
   ) as { required?: boolean; type?: string } | undefined
 
   const mediaPositionField = SplitFeatureBlock.fields.find(
     (field) =>
-      typeof field === 'object' && field !== null && 'name' in field && field.name === 'mediaPosition',
+      typeof field === 'object' &&
+      field !== null &&
+      'name' in field &&
+      field.name === 'mediaPosition',
   ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
 
   const backgroundStyleField = SplitFeatureBlock.fields.find(
     (field) =>
-      typeof field === 'object' && field !== null && 'name' in field && field.name === 'backgroundStyle',
+      typeof field === 'object' &&
+      field !== null &&
+      'name' in field &&
+      field.name === 'backgroundStyle',
   ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
 
   const ctaModeField = SplitFeatureBlock.fields.find(
-    (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'ctaMode',
+    (field) =>
+      typeof field === 'object' && field !== null && 'name' in field && field.name === 'ctaMode',
   ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
 
   const buttonsField = SplitFeatureBlock.fields.find(
-    (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'buttons',
+    (field) =>
+      typeof field === 'object' && field !== null && 'name' in field && field.name === 'buttons',
   ) as { maxRows?: number; type?: string } | undefined
 
   expect(imageField?.type).toBe('upload')
@@ -145,12 +157,14 @@ git commit -m "test: cover split feature schema"
 ### Task 2: Implement the Payload block schema and register it on Pages
 
 **Files:**
+
 - Create: `src/blocks/SplitFeature/config.ts`
 - Create: `src/blocks/SplitFeature/thumbnail.ts`
 - Modify: `src/collections/Pages.ts`
 - Test: `tests/int/page-blocks.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `Block`, `ArrayField`, `CheckboxField`, `RadioField`, `SelectField` from `payload`
 - Consumes: thumbnail and field composition patterns from `src/blocks/Announcement/config.ts` and `src/blocks/HeroInstitutional/config.ts`
 - Produces: `export const SplitFeatureBlock: Block`
@@ -318,7 +332,8 @@ export const SplitFeatureBlock: Block = {
       type: 'relationship',
       relationTo: 'pages',
       admin: {
-        condition: (_data, siblingData) => isLinkMode(_data, siblingData) && isPageLink(_data, siblingData),
+        condition: (_data, siblingData) =>
+          isLinkMode(_data, siblingData) && isPageLink(_data, siblingData),
       },
     },
     {
@@ -326,7 +341,8 @@ export const SplitFeatureBlock: Block = {
       label: 'Custom URL',
       type: 'text',
       admin: {
-        condition: (_data, siblingData) => isLinkMode(_data, siblingData) && isCustomLink(_data, siblingData),
+        condition: (_data, siblingData) =>
+          isLinkMode(_data, siblingData) && isCustomLink(_data, siblingData),
       },
     },
     {
@@ -392,10 +408,12 @@ git commit -m "feat: add split feature block schema"
 ### Task 3: Add render coverage for the split feature component
 
 **Files:**
+
 - Create: `tests/int/split-feature-render.int.spec.ts`
 - Test: `tests/int/split-feature-render.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `SplitFeatureBlockComponent(props: SplitFeatureBlockLike): React.ReactNode`
 - Produces: failing render expectations for media position, CTA mode, and background style
 
@@ -436,7 +454,12 @@ describe('split feature block', () => {
       createElement(SplitFeatureBlockComponent, {
         backgroundStyle: 'muted',
         buttons: [
-          { label: 'Start your application', linkType: 'custom', url: '/apply', variant: 'default' },
+          {
+            label: 'Start your application',
+            linkType: 'custom',
+            url: '/apply',
+            variant: 'default',
+          },
           { label: 'Schedule a visit', linkType: 'custom', url: '/visit', variant: 'secondary' },
         ] as never,
         ctaMode: 'buttons',
@@ -475,12 +498,14 @@ git commit -m "test: cover split feature rendering"
 ### Task 4: Implement the split feature renderer and wire it into the page block pipeline
 
 **Files:**
+
 - Create: `src/blocks/SplitFeature/Component.tsx`
 - Modify: `src/blocks/renderPageBlocks.tsx`
 - Test: `tests/int/split-feature-render.int.spec.ts`
 - Test: `tests/int/page-blocks.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `resolveCmsLink`, `getMediaImageProps`, `Button`
 - Produces: `SplitFeatureBlockComponent`
 - Produces: new `case 'splitFeature'` in `renderPageBlocks`
@@ -602,7 +627,7 @@ export function SplitFeatureBlockComponent({
       <div className="mx-auto max-w-screen-2xl px-4 py-16 md:py-24">
         <div className="grid items-center gap-8 md:grid-cols-2 md:gap-12 lg:gap-16">
           <div className={cn(order.media)}>
-            <div className="overflow-hidden rounded-(--radius-xl) bg-muted">
+            <div className="overflow-hidden rounded-xl bg-muted">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img alt={media.alt} className="aspect-[4/3] size-full object-cover" src={media.src} />
             </div>
@@ -693,11 +718,13 @@ git commit -m "feat: render split feature block"
 ### Task 5: Regenerate types and run the final verification suite
 
 **Files:**
+
 - Modify: `src/payload-types.ts`
 - Test: `tests/int/page-blocks.int.spec.ts`
 - Test: `tests/int/split-feature-render.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: Payload config and block registration
 - Produces: updated generated types for `splitFeature`
 

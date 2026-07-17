@@ -8,10 +8,7 @@ import {
   isSpamHoneypotTriggered,
   recordSubmissionAttempt,
 } from '@/lib/formSpamProtection'
-import {
-  buildFormNotificationEmail,
-  getNotificationRecipients,
-} from '@/lib/formNotifications'
+import { buildFormNotificationEmail, getNotificationRecipients } from '@/lib/formNotifications'
 import { emitFormSubmissionEvent } from '@/lib/formSubmissionEvents'
 import {
   getSubmissionContactMetadata,
@@ -41,10 +38,7 @@ const toSimpleFields = (form: Form): SimpleFormField[] => {
   }))
 }
 
-export async function POST(
-  request: Request,
-  context: { params: Promise<{ slug: string }> },
-) {
+export async function POST(request: Request, context: { params: Promise<{ slug: string }> }) {
   const { slug } = await context.params
   const payload = await getPayload({
     config: configPromise,
@@ -120,16 +114,28 @@ export async function POST(
     ipAddress,
   })
 
-  const { errors, normalizedData } = validateFormSubmission({
-    fields: toSimpleFields(form),
-    values: submissionValues,
-  })
-
   const submissionIntent = normalizeFormSubmissionIntent(form.submissionIntent)
   const isReviewSubmission = isReviewFormSubmissionIntent(submissionIntent)
+  const formFields = toSimpleFields(form)
+  const validationFields = isReviewSubmission
+    ? formFields.map((field) =>
+        field.name === 'isGenuineExperience' ||
+        field.name === 'reviewTitle' ||
+        field.name === 'reviewerEmail'
+          ? { ...field, required: false }
+          : field,
+      )
+    : formFields
+  const { errors, normalizedData } = validateFormSubmission({
+    fields: validationFields,
+    values: submissionValues,
+  })
   const reviewValidation = isReviewSubmission
     ? validateReviewSubmission({
-        values: normalizedData,
+        values: {
+          ...submissionValues,
+          ...normalizedData,
+        },
       })
     : null
   const combinedErrors = reviewValidation
@@ -149,12 +155,19 @@ export async function POST(
     )
   }
 
-  const { email: submitterEmail, name: submitterName } = getSubmissionContactMetadata(normalizedData)
+  const submissionData = reviewValidation
+    ? {
+        ...normalizedData,
+        ...reviewValidation.normalizedData,
+      }
+    : normalizedData
+  const { email: submitterEmail, name: submitterName } =
+    getSubmissionContactMetadata(submissionData)
   const submittedAt = new Date()
   const submission = await payload.create({
     collection: 'form-submissions',
     data: {
-      data: normalizedData,
+      data: submissionData,
       campaign: submissionMetadata.campaign,
       email: submitterEmail,
       form: form.id,
@@ -220,7 +233,7 @@ export async function POST(
       submissionIntent,
       submitterEmail,
       submitterName,
-      values: normalizedData,
+      values: submissionData,
     })
   } catch (error) {
     payload.logger.error({
@@ -235,7 +248,7 @@ export async function POST(
     const emailContent = buildFormNotificationEmail({
       form,
       submittedAt,
-      values: normalizedData,
+      values: submissionData,
     })
 
     try {
