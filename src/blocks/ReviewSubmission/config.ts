@@ -1,6 +1,10 @@
-import type { ArrayField, Block, SelectField, TabsField } from 'payload'
+import type { Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import {
+  createContentActionModeField,
+  createContentActionsField,
+} from '@/blocks/shared/contentActionsFields'
 
 const sizeField = {
   name: 'size',
@@ -15,21 +19,18 @@ const sizeField = {
   required: true,
 } satisfies SelectField
 
-const benefitsField = {
-  name: 'benefits',
-  label: 'Benefits',
-  type: 'array',
-  admin: {
-    initCollapsed: true,
-  },
-  fields: [
-    {
-      name: 'text',
-      type: 'text',
-      required: true,
-    },
+const contentAlignmentField = {
+  name: 'contentAlignment',
+  label: 'Content Alignment',
+  type: 'select',
+  defaultValue: 'left',
+  options: [
+    { label: 'Left', value: 'left' },
+    { label: 'Center', value: 'center' },
+    { label: 'Right', value: 'right' },
   ],
-} satisfies ArrayField
+  required: true,
+} satisfies SelectField
 
 export const ReviewSubmissionBlock: Block = {
   slug: 'reviewSubmission',
@@ -50,7 +51,7 @@ export const ReviewSubmissionBlock: Block = {
               type: 'text',
             },
             {
-              name: 'heading',
+              name: 'title',
               type: 'text',
               required: true,
             },
@@ -58,7 +59,7 @@ export const ReviewSubmissionBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            benefitsField,
+            createContentActionsField(),
             {
               name: 'form',
               label: 'Review Form',
@@ -75,23 +76,16 @@ export const ReviewSubmissionBlock: Block = {
                   'Select a review-intent form. Use rating, reviewerName, reviewerEmail, reviewBody, and an optional subjectLabel select field; subjectLabel options become the topic chips. Review titles are generated from the submitted review.',
               },
             },
-            {
-              name: 'formHeading',
-              type: 'text',
-            },
-            {
-              name: 'formEyebrow',
-              type: 'text',
-            },
-            {
-              name: 'formDescription',
-              type: 'textarea',
-            },
           ],
         },
         {
           label: 'Layout & Theme',
-          fields: [createBlockAppearanceFields({ includeTextOverride: false }), sizeField],
+          fields: [
+            createBlockAppearanceFields({ includeTextOverride: false }),
+            createContentActionModeField(),
+            contentAlignmentField,
+            sizeField,
+          ],
         },
       ],
     } satisfies TabsField,

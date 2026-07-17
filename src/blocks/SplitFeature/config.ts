@@ -1,86 +1,25 @@
-import type {
-  ArrayField,
-  Block,
-  CheckboxField,
-  Field,
-  RadioField,
-  SelectField,
-  TabsField,
-} from 'payload'
+import type { Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import {
+  createContentActionModeField,
+  createContentActionsField,
+} from '@/blocks/shared/contentActionsFields'
 import { splitFeatureThumbnail } from './thumbnail'
 
-type LinkType = 'page' | 'custom'
-type CtaMode = 'link' | 'buttons'
 type LayoutMode = 'split' | 'contentOnly'
 type MediaFillMode = 'contained' | 'containedFill' | 'edgeToEdge'
 type ContentVerticalAlignment = 'bottom' | 'center' | 'top'
 type ImagePosition = 'bottom' | 'center' | 'left' | 'right' | 'top'
 type SplitFeatureSiblingData = {
-  ctaMode?: CtaMode | null
   contentVerticalAlignment?: ContentVerticalAlignment | null
   layoutMode?: LayoutMode | null
-  linkType?: LinkType | null
   mediaFillMode?: MediaFillMode | null
   imagePosition?: ImagePosition | null
 }
 
-const isPageLink = (_data: unknown, siblingData: SplitFeatureSiblingData) =>
-  siblingData?.linkType === 'page'
-
-const isCustomLink = (_data: unknown, siblingData: SplitFeatureSiblingData) =>
-  siblingData?.linkType === 'custom'
-
-const isLinkMode = (_data: unknown, siblingData: SplitFeatureSiblingData) =>
-  siblingData?.ctaMode === 'link'
-
-const isButtonsMode = (_data: unknown, siblingData: SplitFeatureSiblingData) =>
-  siblingData?.ctaMode === 'buttons'
-
 const isSplitMode = (_data: unknown, siblingData: SplitFeatureSiblingData) =>
   siblingData?.layoutMode === 'split'
-
-const createLinkFields = (): Field[] => [
-  {
-    name: 'label',
-    type: 'text',
-    required: true,
-  },
-  {
-    name: 'linkType',
-    type: 'radio',
-    defaultValue: 'page',
-    options: [
-      { label: 'Page', value: 'page' },
-      { label: 'Custom URL', value: 'custom' },
-    ],
-    admin: {
-      layout: 'horizontal',
-    },
-  } satisfies RadioField,
-  {
-    name: 'page',
-    type: 'relationship',
-    relationTo: 'pages',
-    admin: {
-      condition: isPageLink,
-    },
-  },
-  {
-    name: 'url',
-    label: 'Custom URL',
-    type: 'text',
-    admin: {
-      condition: isCustomLink,
-    },
-  },
-  {
-    name: 'openInNewTab',
-    type: 'checkbox',
-    defaultValue: false,
-  } satisfies CheckboxField,
-]
 
 export const SplitFeatureBlock: Block = {
   slug: 'splitFeature',
@@ -108,7 +47,10 @@ export const SplitFeatureBlock: Block = {
               name: 'image',
               type: 'upload',
               relationTo: 'media',
-              validate: (value: unknown, { siblingData }: { siblingData?: SplitFeatureSiblingData }) => {
+              validate: (
+                value: unknown,
+                { siblingData }: { siblingData?: SplitFeatureSiblingData },
+              ) => {
                 if (siblingData?.layoutMode === 'split' && !value) {
                   return 'Image is required when layout mode is 50 / 50 split.'
                 }
@@ -129,89 +71,14 @@ export const SplitFeatureBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            {
-              name: 'ctaMode',
-              type: 'select',
-              defaultValue: 'link',
-              options: [
-                { label: 'Text Link', value: 'link' },
-                { label: 'Buttons', value: 'buttons' },
-              ],
-              required: true,
-            } satisfies SelectField,
-            {
-              name: 'linkLabel',
-              type: 'text',
-              admin: {
-                condition: isLinkMode,
-              },
-            },
-            {
-              name: 'linkType',
-              type: 'radio',
-              defaultValue: 'page',
-              options: [
-                { label: 'Page', value: 'page' },
-                { label: 'Custom URL', value: 'custom' },
-              ],
-              admin: {
-                condition: isLinkMode,
-                layout: 'horizontal',
-              },
-            } satisfies RadioField,
-            {
-              name: 'page',
-              type: 'relationship',
-              relationTo: 'pages',
-              admin: {
-                condition: (data, siblingData) => isLinkMode(data, siblingData) && isPageLink(data, siblingData),
-              },
-            },
-            {
-              name: 'url',
-              label: 'Custom URL',
-              type: 'text',
-              admin: {
-                condition: (data, siblingData) => isLinkMode(data, siblingData) && isCustomLink(data, siblingData),
-              },
-            },
-            {
-              name: 'openInNewTab',
-              type: 'checkbox',
-              defaultValue: false,
-              admin: {
-                condition: isLinkMode,
-              },
-            } satisfies CheckboxField,
-            {
-              name: 'buttons',
-              type: 'array',
-              maxRows: 2,
-              admin: {
-                condition: isButtonsMode,
-                initCollapsed: true,
-              },
-              fields: [
-                ...createLinkFields(),
-                {
-                  name: 'variant',
-                  type: 'select',
-                  defaultValue: 'default',
-                  options: [
-                    { label: 'Default', value: 'default' },
-                    { label: 'Secondary', value: 'secondary' },
-                    { label: 'Link', value: 'link' },
-                  ],
-                  required: true,
-                } satisfies SelectField,
-              ],
-            } satisfies ArrayField,
+            createContentActionsField(),
           ],
         },
         {
           label: 'Layout & Theme',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
+            createContentActionModeField(),
             {
               name: 'layoutMode',
               label: 'Layout Mode',
@@ -235,7 +102,10 @@ export const SplitFeatureBlock: Block = {
               admin: {
                 condition: isSplitMode,
               },
-              validate: (value: unknown, { siblingData }: { siblingData?: SplitFeatureSiblingData }) => {
+              validate: (
+                value: unknown,
+                { siblingData }: { siblingData?: SplitFeatureSiblingData },
+              ) => {
                 if (siblingData?.layoutMode === 'split' && !value) {
                   return 'Media position is required when layout mode is 50 / 50 split.'
                 }
@@ -273,7 +143,10 @@ export const SplitFeatureBlock: Block = {
               admin: {
                 condition: isSplitMode,
               },
-              validate: (value: unknown, { siblingData }: { siblingData?: SplitFeatureSiblingData }) => {
+              validate: (
+                value: unknown,
+                { siblingData }: { siblingData?: SplitFeatureSiblingData },
+              ) => {
                 if (siblingData?.layoutMode === 'split' && !value) {
                   return 'Media fill is required when layout mode is 50 / 50 split.'
                 }

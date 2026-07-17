@@ -38,6 +38,13 @@ Uncomment to import Google fonts if you want to use them in your project.
   --info: oklch(0.36 0.68 241.16);
   --warning: oklch(0.769 0.288 70.08);
 
+  /* Review ratings */
+  --rating-poor: oklch(0.505 0.213 27.518);
+  --rating-fair: oklch(0.58 0.18 55);
+  --rating-good: oklch(0.62 0.16 90);
+  --rating-very-good: oklch(0.532 0.157 131.589);
+  --rating-excellent: oklch(0.448 0.119 151.328);
+
   /* Fonts */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
@@ -54,6 +61,14 @@ Uncomment to import Google fonts if you want to use them in your project.
   --color-3: oklch(69.6% 0.165 251);
   --color-4: oklch(80.2% 0.134 225);
   --color-5: oklch(90.7% 0.231 133);
+}
+
+:root.dark {
+  --rating-poor: oklch(0.704 0.191 22.216);
+  --rating-fair: oklch(0.75 0.183 55);
+  --rating-good: oklch(0.828 0.189 90);
+  --rating-very-good: oklch(0.768 0.233 130.85);
+  --rating-excellent: oklch(0.723 0.219 149.579);
 }
 
 @theme inline {
@@ -101,6 +116,13 @@ Uncomment to import Google fonts if you want to use them in your project.
   --color-success: var(--success);
   --color-info: var(--info);
   --color-warning: var(--warning);
+
+  /* Review ratings */
+  --color-rating-poor: var(--rating-poor);
+  --color-rating-fair: var(--rating-fair);
+  --color-rating-good: var(--rating-good);
+  --color-rating-very-good: var(--rating-very-good);
+  --color-rating-excellent: var(--rating-excellent);
 
   /* Magicui Colors */
   --color-color-5: var(--color-5);

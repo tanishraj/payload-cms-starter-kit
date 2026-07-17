@@ -2,17 +2,16 @@
 
 import { Accordion as AccordionPrimitive } from 'radix-ui'
 import { RichText } from '@payloadcms/richtext-lexical/react'
-import { ArrowRight, ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
+import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
 
 import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
-import { buttonVariants } from '@/components/ui/button'
-import { resolveCmsLink } from '@/lib/cmsLinks'
+import { ContentActions } from '@/components/ContentActions'
+import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
-import type { Page } from '@/payload-types'
 
 type RichTextValue = {
   root?: {
@@ -26,13 +25,9 @@ type FaqItem = {
 }
 
 type FaqContact = {
+  actions?: CmsActionValue[] | null
   description?: string | null
-  linkLabel?: string | null
-  linkType?: 'page' | 'custom' | null
-  openInNewTab?: boolean | null
-  page?: Page | number | string | null
   title?: string | null
-  url?: string | null
 }
 
 type FaqProfile = {
@@ -43,17 +38,43 @@ type FaqProfile = {
 
 type FaqBlockLike = {
   appearance?: BlockAppearance | null
+  contentAlignment?: 'center' | 'left' | 'right' | null
   defaultOpenFirst?: boolean | null
   description?: string | null
+  faqPlacement?: 'left' | 'right' | null
   heading: string
+  headerActionMode?: 'button' | 'link' | null
+  headerActions?: CmsActionValue[] | null
   items?: FaqItem[] | null
+  layoutMode?: 'fiftyFifty' | 'fullWidth' | 'oneThird' | null
+  sideActionMode?: 'button' | 'link' | null
   sideColumn?: {
     contact?: FaqContact | null
     profile?: FaqProfile | null
   } | null
-  sideColumnEnabled?: boolean | null
   size?: 'comfortable' | 'compact' | 'default' | null
 }
+
+const contentAlignmentClasses = {
+  left: 'items-start text-left',
+  center: 'items-center text-center',
+  right: 'items-end text-right',
+} as const
+
+const gridLayoutClasses = {
+  fiftyFifty: 'lg:grid-cols-2 lg:gap-12 xl:gap-16',
+  oneThird: 'lg:grid-cols-3 lg:gap-12 xl:gap-16',
+} as const
+
+const faqPlacementClasses = {
+  left: 'lg:order-1',
+  right: 'lg:order-2',
+} as const
+
+const sidePlacementClasses = {
+  left: 'lg:order-2',
+  right: 'lg:order-1',
+} as const
 
 const emptyRichText = {
   root: {
@@ -125,15 +146,23 @@ function FaqAccordionContent({
 
 export function FaqBlockComponent({
   appearance,
+  contentAlignment = 'left',
   defaultOpenFirst = true,
   description,
+  faqPlacement = 'right',
   heading,
+  headerActionMode = 'link',
+  headerActions,
   items,
+  layoutMode = 'fiftyFifty',
+  sideActionMode = 'link',
   sideColumn,
-  sideColumnEnabled = true,
   size = 'default',
 }: FaqBlockLike) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
+  const resolvedContentAlignment = contentAlignment ?? 'left'
+  const resolvedFaqPlacement = faqPlacement ?? 'right'
+  const configuredLayoutMode = layoutMode ?? 'fiftyFifty'
   const resolvedSize = size ?? 'default'
   const validItems = (items ?? []).flatMap((item) => {
     const question = item?.question?.trim()
@@ -161,21 +190,147 @@ export function FaqBlockComponent({
     preset: 'generic',
     fallbackAlt: profile?.name?.trim() || heading,
   })
-  const contactLink = resolveCmsLink(contact ?? {})
+  const resolvedHeaderActions = resolveCmsActions(headerActions)
+  const contactActions = resolveCmsActions(contact?.actions)
 
   const hasProfile = Boolean(profileImage || profile?.name?.trim() || profile?.title?.trim())
   const hasContact = Boolean(
-    contact?.title?.trim() ||
-    contact?.description?.trim() ||
-    (contact?.linkLabel?.trim() && contactLink.href),
+    contact?.title?.trim() || contact?.description?.trim() || contactActions.length > 0,
   )
-  const hasSideColumn = sideColumnEnabled && (hasProfile || hasContact)
+  const hasSideColumn = configuredLayoutMode !== 'fullWidth' && (hasProfile || hasContact)
+  const resolvedSplitLayoutMode = configuredLayoutMode === 'oneThird' ? 'oneThird' : 'fiftyFifty'
+  const resolvedLayoutMode = hasSideColumn ? configuredLayoutMode : 'fullWidth'
+
+  const faqContent = (
+    <div
+      className={cn(
+        'order-1',
+        hasSideColumn ? faqPlacementClasses[resolvedFaqPlacement] : 'w-full',
+        hasSideColumn && resolvedLayoutMode === 'oneThird' ? 'lg:col-span-2' : undefined,
+      )}
+      data-faq-main="true"
+    >
+      <div
+        className={cn(
+          'mb-8 flex flex-col gap-4 lg:mb-16',
+          contentAlignmentClasses[resolvedContentAlignment],
+        )}
+      >
+        <h2 className="text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-4xl">
+          {heading}
+        </h2>
+        {description?.trim() ? (
+          <p className="text-balance text-base leading-7 text-muted-foreground">
+            {description.trim()}
+          </p>
+        ) : null}
+        <ContentActions
+          actions={resolvedHeaderActions}
+          alignment={resolvedContentAlignment}
+          data-faq-header-actions="true"
+          mode={headerActionMode ?? 'link'}
+        />
+      </div>
+
+      <FaqAccordion
+        className="max-w-none"
+        collapsible
+        defaultValue={defaultOpenFirst ? 'item-0' : undefined}
+        type="single"
+      >
+        {validItems.map((item, index) => (
+          <FaqAccordionItem
+            className={cn('border-0', index !== validItems.length - 1 && 'border-b border-border')}
+            key={`${item.question}-${index}`}
+            value={`item-${index}`}
+          >
+            <FaqAccordionTrigger className="justify-between py-6 text-left text-base font-semibold hover:no-underline sm:text-lg lg:py-8 lg:text-xl">
+              <span className="pr-4">{item.question}</span>
+            </FaqAccordionTrigger>
+            <FaqAccordionContent className="pb-6 pr-8 text-left text-sm leading-relaxed text-muted-foreground sm:text-base">
+              <div className="prose max-w-none text-left text-sm leading-relaxed [--tw-prose-body:var(--muted-foreground)] [--tw-prose-bold:var(--foreground)] [--tw-prose-bullets:var(--border)] [--tw-prose-counters:var(--muted-foreground)] [--tw-prose-headings:var(--foreground)] [--tw-prose-links:var(--foreground)] sm:text-base">
+                <RichText
+                  className="[&>p]:m-0 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground"
+                  data={item.answer}
+                />
+              </div>
+            </FaqAccordionContent>
+          </FaqAccordionItem>
+        ))}
+      </FaqAccordion>
+    </div>
+  )
+
+  const sideContent = hasSideColumn ? (
+    <aside
+      className={cn(
+        'order-2',
+        sidePlacementClasses[resolvedFaqPlacement],
+        'flex flex-col justify-between text-left',
+      )}
+    >
+      <div>
+        {hasProfile ? (
+          <div className="mb-8 flex items-start gap-3 sm:gap-4 lg:mb-12">
+            {profileImage ? (
+              <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg sm:h-16 sm:w-16">
+                {/* CMS media URLs are runtime-managed and may be absolute, so keep a direct img element. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  alt={profileImage.alt}
+                  className="h-full w-full object-cover"
+                  src={profileImage.src}
+                />
+              </div>
+            ) : null}
+            <div className="min-w-0">
+              {profile?.name?.trim() ? (
+                <p className="mb-1 text-sm font-semibold text-foreground sm:text-base">
+                  {profile.name.trim()}
+                </p>
+              ) : null}
+              {profile?.title?.trim() ? (
+                <p className="text-sm text-muted-foreground sm:text-base">{profile.title.trim()}</p>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
+
+        {hasContact ? (
+          <div className="space-y-4 lg:space-y-6">
+            {contact?.title?.trim() ? (
+              <p className="text-lg leading-tight font-semibold text-foreground sm:text-xl">
+                {contact.title.trim()}
+              </p>
+            ) : null}
+            {contact?.description?.trim() ? (
+              <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+                {contact.description.trim()}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
+
+      <ContentActions
+        actions={contactActions}
+        alignment="left"
+        className="py-4"
+        data-faq-contact-actions="true"
+        mode={sideActionMode ?? 'link'}
+      />
+    </aside>
+  ) : null
 
   return (
     <section
       className={cn('py-32', appearanceClasses.className)}
       data-faq-background={appearance?.background ?? 'none'}
+      data-faq-content-alignment={resolvedContentAlignment}
       data-faq-has-side-column={hasSideColumn ? 'true' : 'false'}
+      data-faq-layout={resolvedLayoutMode}
+      data-faq-placement={resolvedFaqPlacement}
+      data-faq-side-column={hasSideColumn ? 'true' : 'false'}
       data-faq-size={resolvedSize}
     >
       <div className="mx-auto w-full max-w-screen-2xl px-4">
@@ -183,127 +338,12 @@ export function FaqBlockComponent({
           className={cn(
             'w-full',
             hasSideColumn
-              ? 'grid grid-cols-1 gap-8 lg:grid-cols-5 lg:gap-12 xl:grid-cols-12 xl:gap-16'
+              ? cn('grid grid-cols-1 gap-8', gridLayoutClasses[resolvedSplitLayoutMode])
               : undefined,
           )}
         >
-          {hasSideColumn ? (
-            <aside className="flex flex-col justify-between lg:col-span-2 xl:col-span-4">
-              <div>
-                {hasProfile ? (
-                  <div className="mb-8 flex items-start gap-3 sm:gap-4 lg:mb-12">
-                    {profileImage ? (
-                      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg sm:h-16 sm:w-16">
-                        {/* CMS media URLs are runtime-managed and may be absolute, so keep a direct img element. */}
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          alt={profileImage.alt}
-                          className="h-full w-full object-cover"
-                          src={profileImage.src}
-                        />
-                      </div>
-                    ) : null}
-                    <div className="min-w-0">
-                      {profile?.name?.trim() ? (
-                        <p className="mb-1 text-sm font-semibold text-foreground sm:text-base">
-                          {profile.name.trim()}
-                        </p>
-                      ) : null}
-                      {profile?.title?.trim() ? (
-                        <p className="text-sm text-muted-foreground sm:text-base">
-                          {profile.title.trim()}
-                        </p>
-                      ) : null}
-                    </div>
-                  </div>
-                ) : null}
-
-                {hasContact ? (
-                  <div className="space-y-4 lg:space-y-6">
-                    {contact?.title?.trim() ? (
-                      <p className="text-lg leading-tight font-semibold text-foreground sm:text-xl">
-                        {contact.title.trim()}
-                      </p>
-                    ) : null}
-                    {contact?.description?.trim() ? (
-                      <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-                        {contact.description.trim()}
-                      </p>
-                    ) : null}
-                  </div>
-                ) : null}
-              </div>
-
-              {contact?.linkLabel?.trim() && contactLink.href ? (
-                <div className="py-4">
-                  <a
-                    className={cn(
-                      buttonVariants({ variant: 'link' }),
-                      'group/button h-auto justify-start gap-2 px-0 py-0 text-left text-sm',
-                    )}
-                    data-faq-contact-cta="true"
-                    href={contactLink.href}
-                    rel={contactLink.openInNewTab ? 'noreferrer' : undefined}
-                    target={contactLink.openInNewTab ? '_blank' : undefined}
-                  >
-                    <span>{contact.linkLabel.trim()}</span>
-                    <span
-                      aria-hidden="true"
-                      className="relative inline-flex size-4 shrink-0 overflow-hidden"
-                    >
-                      <ArrowRight className="absolute left-0 top-0 size-4 rotate-[-35deg] transition-all duration-200 ease-out group-hover/button:translate-x-1 group-hover/button:opacity-0 group-hover/button:rotate-0" />
-                      <ArrowRight className="absolute left-0 top-0 size-4 translate-x-[-70%] opacity-0 transition-all duration-200 ease-out group-hover/button:translate-x-0 group-hover/button:opacity-100" />
-                    </span>
-                  </a>
-                </div>
-              ) : null}
-            </aside>
-          ) : null}
-
-          <div className={cn(hasSideColumn ? 'lg:col-span-3 xl:col-span-8' : 'w-full')}>
-            <div
-              className={cn('mb-8', hasSideColumn ? 'md:text-center lg:mb-16 lg:text-left' : '')}
-            >
-              <h2 className="text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-4xl">
-                {heading}
-              </h2>
-              {description?.trim() ? (
-                <p className="mt-4 text-balance text-base leading-7 text-muted-foreground">
-                  {description.trim()}
-                </p>
-              ) : null}
-            </div>
-
-            <FaqAccordion
-              className="max-w-none"
-              collapsible
-              defaultValue={defaultOpenFirst ? 'item-0' : undefined}
-              type="single"
-            >
-              {validItems.map((item, index) => (
-                <FaqAccordionItem
-                  className={cn(
-                    'border-0',
-                    index !== validItems.length - 1 && 'border-b border-border',
-                  )}
-                  key={`${item.question}-${index}`}
-                  value={`item-${index}`}
-                >
-                  <FaqAccordionTrigger className="justify-between py-6 text-left text-base font-semibold hover:no-underline sm:text-lg lg:py-8 lg:text-xl">
-                    <span className="pr-4">{item.question}</span>
-                  </FaqAccordionTrigger>
-                  <FaqAccordionContent className="pb-6 pr-8 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                    <div className="prose max-w-none text-sm leading-relaxed [--tw-prose-body:var(--muted-foreground)] [--tw-prose-bold:var(--foreground)] [--tw-prose-bullets:var(--border)] [--tw-prose-counters:var(--muted-foreground)] [--tw-prose-headings:var(--foreground)] [--tw-prose-links:var(--foreground)] sm:text-base">
-                      <RichText
-                        className="[&>p]:m-0 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground"
-                        data={item.answer}
-                      />
-                    </div>
-                  </FaqAccordionContent>
-                </FaqAccordionItem>
-              ))}
-            </FaqAccordion>
-          </div>
+          {faqContent}
+          {sideContent}
         </div>
       </div>
     </section>

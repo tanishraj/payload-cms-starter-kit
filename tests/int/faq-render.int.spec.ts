@@ -37,7 +37,7 @@ const createRichText = (text: string) => ({
 })
 
 describe('faq block', () => {
-  it('renders the FAQ with an optional side column', () => {
+  it('renders a one-third layout with the FAQ on the right', () => {
     const html = renderToStaticMarkup(
       createElement(FaqBlockComponent, {
         appearance: {
@@ -47,6 +47,7 @@ describe('faq block', () => {
         },
         defaultOpenFirst: true,
         description: 'Answers to the most common admissions questions.',
+        faqPlacement: 'right',
         heading: 'Frequently asked questions',
         items: [
           {
@@ -58,13 +59,15 @@ describe('faq block', () => {
             question: 'Do you offer financial support?',
           },
         ],
+        layoutMode: 'oneThird',
         sideColumn: {
           contact: {
+            actions: [
+              { label: 'Contact admissions', linkType: 'custom', url: '/contact' },
+              { label: 'Plan a visit', linkType: 'custom', url: '/visit' },
+            ],
             description: 'Reach the admissions team for personalized guidance.',
-            linkLabel: 'Contact admissions',
-            linkType: 'custom',
             title: 'Still have questions?',
-            url: '/contact',
           },
           profile: {
             image: { alt: 'Admissions counselor', url: '/media/counselor.jpg' } as never,
@@ -72,13 +75,16 @@ describe('faq block', () => {
             title: 'Admissions Counselor',
           },
         },
-        sideColumnEnabled: true,
+        sideActionMode: 'link',
         size: 'comfortable',
       }),
     )
 
     expect(html).toContain('data-faq-background="muted"')
     expect(html).toContain('data-faq-has-side-column="true"')
+    expect(html).toContain('data-faq-side-column="true"')
+    expect(html).toContain('data-faq-layout="oneThird"')
+    expect(html).toContain('data-faq-placement="right"')
     expect(html).toContain('data-faq-size="comfortable"')
     expect(html).toContain('bg-muted')
     expect(html).toContain('border-t border-border')
@@ -86,36 +92,116 @@ describe('faq block', () => {
     expect(html).toContain('Still have questions?')
     expect(html).toContain('Sarah Johnson')
     expect(html).toContain('href="/contact"')
-    expect(html).toContain('data-faq-contact-cta="true"')
-    expect(html).toContain('group/button h-auto justify-start gap-2 px-0 py-0 text-left text-sm')
+    expect(html).toContain('href="/visit"')
+    expect(html).toContain('data-faq-contact-actions="true"')
+    expect(html).toContain('data-action-mode="link"')
+    expect(html).toContain('group/button h-auto gap-2 px-0 py-0 text-sm')
     expect(html).toContain('rotate-[-35deg]')
     expect(html).toContain('group-hover/button:translate-x-1')
     expect(html).toContain('Applications open in August and close in January.')
     expect(html).toContain('Reach the admissions team for personalized guidance.')
-    expect(html).toContain('grid-cols-1 gap-8 lg:grid-cols-5')
+    expect(html).toContain('grid-cols-1 gap-8 lg:grid-cols-3')
+    expect(html).toContain('data-faq-main="true"')
+    expect(html).toContain('order-1 lg:order-2 lg:col-span-2')
+    expect(html).toContain('data-faq-side-column="true"')
+    expect(html).toContain('order-2 lg:order-1')
   })
 
-  it('renders a single-column FAQ when the side column is disabled', () => {
+  it('renders full-width centered content with independent header button actions', () => {
     const html = renderToStaticMarkup(
       createElement(FaqBlockComponent, {
+        contentAlignment: 'center',
         defaultOpenFirst: false,
+        description: 'Answers for prospective students.',
         heading: 'FAQ',
+        headerActionMode: 'button',
+        headerActions: [
+          {
+            label: 'Admissions guide',
+            linkType: 'custom',
+            url: '/guide',
+            variant: 'default',
+          },
+          {
+            label: 'Contact us',
+            linkType: 'custom',
+            url: '/contact',
+            variant: 'outline',
+          },
+        ],
         items: [
           {
             answer: createRichText('The curriculum includes early clinical exposure.'),
             question: 'What does the curriculum include?',
           },
         ],
-        sideColumnEnabled: false,
+        layoutMode: 'fullWidth',
+        sideColumn: {
+          contact: {
+            description: 'This content must not render in Full Width mode.',
+            title: 'Still have questions?',
+          },
+          profile: {
+            name: 'Sarah Johnson',
+          },
+        },
         size: 'compact',
       }),
     )
 
     expect(html).toContain('data-faq-has-side-column="false"')
+    expect(html).toContain('data-faq-side-column="false"')
+    expect(html).toContain('data-faq-layout="fullWidth"')
+    expect(html).toContain('data-faq-content-alignment="center"')
     expect(html).toContain('data-faq-size="compact"')
     expect(html).toContain('w-full')
+    expect(html).toContain('items-center text-center')
+    expect(html).toContain('data-faq-header-actions="true"')
+    expect(html).toContain('data-action-mode="button"')
+    expect(html).toContain('data-action-variant="default"')
+    expect(html).toContain('data-action-variant="outline"')
+    expect(html).toContain('href="/guide"')
+    expect(html).toContain('href="/contact"')
     expect(html).toContain('What does the curriculum include?')
     expect(html).toContain('aria-expanded="false"')
+    expect(html).toContain('text-left text-base font-semibold')
+    expect(html).not.toContain('data-faq-side-column="true"')
+    expect(html).not.toContain('Sarah Johnson')
+    expect(html).not.toContain('Still have questions?')
     expect(html).not.toContain('max-w-4xl')
+  })
+
+  it('renders a 50/50 layout with right-aligned header content and left-aligned FAQ rows', () => {
+    const html = renderToStaticMarkup(
+      createElement(FaqBlockComponent, {
+        contentAlignment: 'right',
+        description: 'Answers for current students.',
+        faqPlacement: 'left',
+        heading: 'Student FAQ',
+        items: [
+          {
+            answer: createRichText('Visit the student services office.'),
+            question: 'Where can I get support?',
+          },
+        ],
+        layoutMode: 'fiftyFifty',
+        sideColumn: {
+          contact: {
+            title: 'Student services',
+          },
+        },
+      }),
+    )
+
+    expect(html).toContain('data-faq-layout="fiftyFifty"')
+    expect(html).toContain('data-faq-placement="left"')
+    expect(html).toContain('data-faq-content-alignment="right"')
+    expect(html).toContain('grid-cols-1 gap-8 lg:grid-cols-2')
+    expect(html).toContain('data-faq-main="true"')
+    expect(html).toContain('order-1 lg:order-1')
+    expect(html).toContain('data-faq-side-column="true"')
+    expect(html).toContain('order-2 lg:order-2')
+    expect(html).toContain('items-end text-right')
+    expect(html).toContain('text-left text-base font-semibold')
   })
 })

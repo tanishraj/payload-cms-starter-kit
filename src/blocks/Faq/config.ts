@@ -1,33 +1,17 @@
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import type {
-  ArrayField,
-  Block,
-  CheckboxField,
-  GroupField,
-  RadioField,
-  SelectField,
-  TabsField,
-} from 'payload'
+import type { ArrayField, Block, CheckboxField, GroupField, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-
-type LinkType = 'page' | 'custom'
+import {
+  createContentActionModeField,
+  createContentActionsField,
+} from '@/blocks/shared/contentActionsFields'
 type FaqBlockSiblingData = {
-  sideColumnEnabled?: boolean | null
+  layoutMode?: 'fiftyFifty' | 'fullWidth' | 'oneThird' | null
 }
 
-type ContactLinkSiblingData = {
-  linkType?: LinkType | null
-}
-
-const isSideColumnEnabled = (_data: unknown, siblingData: FaqBlockSiblingData) =>
-  siblingData?.sideColumnEnabled === true
-
-const isPageLink = (_data: unknown, siblingData: ContactLinkSiblingData) =>
-  siblingData?.linkType === 'page'
-
-const isCustomLink = (_data: unknown, siblingData: ContactLinkSiblingData) =>
-  siblingData?.linkType === 'custom'
+const hasSplitLayout = (_data: unknown, siblingData: FaqBlockSiblingData) =>
+  siblingData?.layoutMode !== 'fullWidth'
 
 const faqItemsField = {
   name: 'items',
@@ -87,44 +71,7 @@ const contactGroupField = {
       name: 'description',
       type: 'textarea',
     },
-    {
-      name: 'linkLabel',
-      label: 'CTA Label',
-      type: 'text',
-    },
-    {
-      name: 'linkType',
-      type: 'radio',
-      defaultValue: 'page',
-      options: [
-        { label: 'Page', value: 'page' },
-        { label: 'Custom URL', value: 'custom' },
-      ],
-      admin: {
-        layout: 'horizontal',
-      },
-    } satisfies RadioField,
-    {
-      name: 'page',
-      type: 'relationship',
-      relationTo: 'pages',
-      admin: {
-        condition: isPageLink,
-      },
-    },
-    {
-      name: 'url',
-      label: 'Custom URL',
-      type: 'text',
-      admin: {
-        condition: isCustomLink,
-      },
-    },
-    {
-      name: 'openInNewTab',
-      type: 'checkbox',
-      defaultValue: false,
-    } satisfies CheckboxField,
+    createContentActionsField(),
   ],
 } satisfies GroupField
 
@@ -133,7 +80,7 @@ const sideColumnField = {
   label: 'Side Column',
   type: 'group',
   admin: {
-    condition: isSideColumnEnabled,
+    condition: hasSplitLayout,
   },
   fields: [profileGroupField, contactGroupField],
 } satisfies GroupField
@@ -161,13 +108,11 @@ export const FaqBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
+            createContentActionsField({
+              name: 'headerActions',
+              label: 'Header Actions',
+            }),
             faqItemsField,
-            {
-              name: 'sideColumnEnabled',
-              label: 'Enable Side Column',
-              type: 'checkbox',
-              defaultValue: true,
-            } satisfies CheckboxField,
             sideColumnField,
           ],
         },
@@ -175,6 +120,53 @@ export const FaqBlock: Block = {
           label: 'Layout & Theme',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
+            {
+              name: 'contentAlignment',
+              label: 'Content Alignment',
+              type: 'select',
+              defaultValue: 'left',
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+                { label: 'Right', value: 'right' },
+              ],
+              required: true,
+            } satisfies SelectField,
+            {
+              name: 'layoutMode',
+              label: 'Layout Mode',
+              type: 'select',
+              defaultValue: 'fiftyFifty',
+              options: [
+                { label: '50 / 50', value: 'fiftyFifty' },
+                { label: 'One-Third Side Column', value: 'oneThird' },
+                { label: 'Full Width', value: 'fullWidth' },
+              ],
+              required: true,
+            } satisfies SelectField,
+            {
+              name: 'faqPlacement',
+              label: 'FAQ Placement',
+              type: 'select',
+              defaultValue: 'right',
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Right', value: 'right' },
+              ],
+              admin: {
+                condition: hasSplitLayout,
+              },
+              required: true,
+            } satisfies SelectField,
+            createContentActionModeField({
+              name: 'headerActionMode',
+              label: 'Header Action Mode',
+            }),
+            createContentActionModeField({
+              name: 'sideActionMode',
+              label: 'Side Column Action Mode',
+              condition: hasSplitLayout,
+            }),
             {
               name: 'size',
               label: 'Size',

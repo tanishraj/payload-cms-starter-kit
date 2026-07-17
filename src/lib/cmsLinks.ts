@@ -11,12 +11,23 @@ export type CmsLinkValue = {
   url?: string | null
 }
 
-export const resolveCmsLink = (
-  value: CmsLinkValue,
-): { href?: string; openInNewTab?: boolean } => {
+export type CmsActionVariant = 'default' | 'outline' | 'secondary'
+
+export type CmsActionValue = CmsLinkValue & {
+  label?: string | null
+  variant?: CmsActionVariant | null
+}
+
+export type ResolvedCmsAction = {
+  href: string
+  label: string
+  openInNewTab?: boolean
+  variant: CmsActionVariant
+}
+
+export const resolveCmsLink = (value: CmsLinkValue): { href?: string; openInNewTab?: boolean } => {
   const reusableLink = resolveNavigationLink(value.link)
-  const legacyHref =
-    value.linkType === 'page' ? getPageHref(value.page) : value.url ?? undefined
+  const legacyHref = value.linkType === 'page' ? getPageHref(value.page) : (value.url ?? undefined)
   const href = reusableLink.href ?? legacyHref
 
   if (!href) {
@@ -28,3 +39,20 @@ export const resolveCmsLink = (
     openInNewTab: value.openInNewTab ?? reusableLink.openInNewTab ?? undefined,
   }
 }
+
+export const resolveCmsActions = (actions?: CmsActionValue[] | null): ResolvedCmsAction[] =>
+  (actions ?? []).flatMap((action) => {
+    const label = action.label?.trim()
+    const destination = resolveCmsLink(action)
+
+    return label && destination.href
+      ? [
+          {
+            href: destination.href,
+            label,
+            openInNewTab: destination.openInNewTab,
+            variant: action.variant ?? 'default',
+          },
+        ]
+      : []
+  })

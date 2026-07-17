@@ -2,41 +2,25 @@ import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
-import { Button, buttonVariants } from '@/components/ui/button'
-import { resolveCmsLink } from '@/lib/cmsLinks'
+import { ContentActions } from '@/components/ContentActions'
+import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
-import { ArrowRight } from 'lucide-react'
-import type { Page } from '@/payload-types'
-
-type SplitFeatureButton = {
-  label?: string | null
-  linkType?: 'page' | 'custom' | null
-  openInNewTab?: boolean | null
-  page?: Page | number | string | null
-  url?: string | null
-  variant?: 'default' | 'link' | 'secondary' | null
-}
 
 type SplitFeatureBlockLike = {
+  actionMode?: 'button' | 'link' | null
+  actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
-  buttons?: SplitFeatureButton[] | null
   contentVerticalAlignment?: 'bottom' | 'center' | 'top' | null
-  ctaMode?: 'buttons' | 'link' | null
   description?: string | null
   eyebrow?: string | null
   image?: unknown
   imagePosition?: 'bottom' | 'center' | 'left' | 'right' | 'top' | null
   layoutMode?: 'contentOnly' | 'split' | null
-  linkLabel?: string | null
-  linkType?: 'page' | 'custom' | null
   mediaFillMode?: 'contained' | 'containedFill' | 'edgeToEdge' | null
   mediaPosition?: 'left' | 'right' | null
-  openInNewTab?: boolean | null
-  page?: Page | number | string | null
   size?: 'comfortable' | 'compact' | 'default' | null
   title: string
-  url?: string | null
 }
 
 const orderClasses = {
@@ -70,6 +54,12 @@ const edgeContentPaddingClasses = {
   comfortable: 'px-4 py-16 md:px-8 md:py-16 lg:px-12',
 } as const
 
+const imageRightContentPaddingClasses = {
+  compact: 'py-10 pr-4 md:py-10 md:pr-8 lg:pr-12',
+  default: 'py-12 pr-4 md:py-12 md:pr-8 lg:pr-12',
+  comfortable: 'py-16 pr-4 md:py-16 md:pr-8 lg:pr-12',
+} as const
+
 const edgeLayoutMinHeightClasses = {
   compact: 'min-h-[18rem] md:min-h-[24rem]',
   default: 'min-h-[24rem] md:min-h-[32rem]',
@@ -83,24 +73,19 @@ const contentVerticalAlignmentClasses = {
 } as const
 
 export function SplitFeatureBlockComponent({
+  actionMode = 'link',
+  actions,
   appearance,
-  buttons,
   contentVerticalAlignment = 'center',
-  ctaMode = 'link',
   description,
   eyebrow,
   image,
   imagePosition = 'center',
   layoutMode = 'split',
-  linkLabel,
-  linkType,
   mediaFillMode = 'contained',
   mediaPosition = 'left',
-  openInNewTab,
-  page,
   size = 'default',
   title,
-  url,
 }: SplitFeatureBlockLike) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const media = getMediaImageProps({
@@ -111,28 +96,7 @@ export function SplitFeatureBlockComponent({
 
   const resolvedLayoutMode = layoutMode ?? 'split'
 
-  const linkCta = resolveCmsLink({
-    linkType,
-    openInNewTab,
-    page,
-    url,
-  })
-
-  const resolvedButtons = (buttons ?? []).flatMap((button) => {
-    const label = button.label?.trim()
-    const link = resolveCmsLink(button)
-
-    return label && link.href
-      ? [
-          {
-            href: link.href,
-            label,
-            openInNewTab: link.openInNewTab,
-            variant: button.variant ?? 'default',
-          },
-        ]
-      : []
-  })
+  const resolvedActions = resolveCmsActions(actions)
 
   const resolvedImagePosition = imagePosition ?? 'center'
   const resolvedPosition = mediaPosition ?? 'left'
@@ -147,23 +111,18 @@ export function SplitFeatureBlockComponent({
   const contentContainerClasses = renderAsSplit
     ? 'max-w-xl text-left'
     : 'mx-auto max-w-2xl items-center text-center'
-  const actionClasses =
-    ctaMode === 'buttons'
-      ? renderAsSplit
-        ? 'flex flex-col gap-3 sm:flex-row'
-        : 'flex flex-col items-center gap-3 sm:flex-row sm:justify-center'
-      : undefined
-  const edgeContentAlignmentClasses = resolvedPosition === 'left' ? 'mr-auto' : 'ml-auto'
   const contentVerticalAlignmentClass =
     contentVerticalAlignmentClasses[resolvedContentVerticalAlignment]
+  const splitContentPaddingClasses =
+    resolvedPosition === 'right'
+      ? imageRightContentPaddingClasses[resolvedSize]
+      : edgeContentPaddingClasses[resolvedSize]
 
   const content = (
     <div
       className={cn(
         'flex flex-col gap-4',
-        renderAsEdgeToEdge
-          ? cn('w-full max-w-xl text-left', edgeContentAlignmentClasses)
-          : contentContainerClasses,
+        renderAsEdgeToEdge ? 'w-full max-w-xl text-left mr-auto' : contentContainerClasses,
       )}
     >
       {eyebrow ? (
@@ -177,58 +136,20 @@ export function SplitFeatureBlockComponent({
       {description ? (
         <p className="text-balance text-base leading-7 text-muted-foreground">{description}</p>
       ) : null}
-      {ctaMode === 'link' && linkLabel?.trim() && linkCta.href ? (
-        <div>
-          <a
-            className={cn(
-              buttonVariants({ variant: 'link' }),
-              'group/button h-auto gap-2 px-0 py-0 text-sm',
-              !renderAsSplit && 'justify-center',
-            )}
-            data-split-feature-link-cta="true"
-            href={linkCta.href}
-            rel={linkCta.openInNewTab ? 'noreferrer' : undefined}
-            target={linkCta.openInNewTab ? '_blank' : undefined}
-          >
-            <span>{linkLabel.trim()}</span>
-            <span
-              className="relative inline-flex size-4 shrink-0 overflow-hidden"
-              aria-hidden="true"
-            >
-              <ArrowRight className="absolute left-0 top-0 size-4 rotate-[-35deg] transition-all duration-200 ease-out group-hover/button:translate-x-1 group-hover/button:opacity-0 group-hover/button:rotate-0" />
-              <ArrowRight className="absolute left-0 top-0 size-4 translate-x-[-70%] opacity-0 transition-all duration-200 ease-out group-hover/button:translate-x-0 group-hover/button:opacity-100" />
-            </span>
-          </a>
-        </div>
-      ) : null}
-      {ctaMode === 'buttons' && resolvedButtons.length ? (
-        <div className={actionClasses}>
-          {resolvedButtons.map((button) => (
-            <Button
-              asChild
-              key={`${button.label}-${button.href}`}
-              size="lg"
-              variant={button.variant}
-            >
-              <a
-                href={button.href}
-                rel={button.openInNewTab ? 'noreferrer' : undefined}
-                target={button.openInNewTab ? '_blank' : undefined}
-              >
-                {button.label}
-              </a>
-            </Button>
-          ))}
-        </div>
-      ) : null}
+      <ContentActions
+        actions={resolvedActions}
+        alignment={renderAsSplit ? 'left' : 'center'}
+        data-split-feature-actions="true"
+        mode={actionMode ?? 'link'}
+      />
     </div>
   )
 
   return (
     <section
       className={appearanceClasses.className}
+      data-split-feature-action-mode={actionMode ?? 'link'}
       data-split-feature-background={appearance?.background ?? 'none'}
-      data-split-feature-cta={ctaMode}
       data-split-feature-layout={renderAsSplit ? 'split' : 'contentOnly'}
       data-split-feature-media-fill={renderAsSplit ? resolvedMediaFillMode : 'contentOnly'}
       data-split-feature-content-vertical-alignment={
@@ -262,15 +183,29 @@ export function SplitFeatureBlockComponent({
             </div>
           ) : null}
           <div className={cn(order.content)}>
-            <div
-              className={cn(
-                'flex min-h-full flex-col',
-                contentVerticalAlignmentClass,
-                edgeContentPaddingClasses[resolvedSize],
-              )}
-            >
-              {content}
-            </div>
+            {resolvedPosition === 'right' ? (
+              <div className="ml-auto h-full w-full max-w-[calc(var(--breakpoint-2xl)/2)] pl-4">
+                <div
+                  className={cn(
+                    'flex min-h-full flex-col',
+                    contentVerticalAlignmentClass,
+                    splitContentPaddingClasses,
+                  )}
+                >
+                  {content}
+                </div>
+              </div>
+            ) : (
+              <div
+                className={cn(
+                  'flex min-h-full flex-col',
+                  contentVerticalAlignmentClass,
+                  splitContentPaddingClasses,
+                )}
+              >
+                {content}
+              </div>
+            )}
           </div>
         </div>
       ) : renderAsContainedFill ? (
@@ -299,7 +234,7 @@ export function SplitFeatureBlockComponent({
                 className={cn(
                   'flex min-h-full flex-col',
                   contentVerticalAlignmentClass,
-                  edgeContentPaddingClasses[resolvedSize],
+                  splitContentPaddingClasses,
                 )}
               >
                 {content}

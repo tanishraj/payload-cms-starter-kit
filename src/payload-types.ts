@@ -378,20 +378,14 @@ export interface SplitFeatureBlock {
   eyebrow?: string | null;
   title: string;
   description?: string | null;
-  ctaMode: 'link' | 'buttons';
-  linkLabel?: string | null;
-  linkType?: ('page' | 'custom') | null;
-  page?: (string | null) | Page;
-  url?: string | null;
-  openInNewTab?: boolean | null;
-  buttons?:
+  actions?:
     | {
         label: string;
         linkType?: ('page' | 'custom') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'link';
+        variant: 'default' | 'secondary' | 'outline';
         id?: string | null;
       }[]
     | null;
@@ -399,6 +393,7 @@ export interface SplitFeatureBlock {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  actionMode: 'link' | 'button';
   layoutMode: 'split' | 'contentOnly';
   mediaPosition?: ('left' | 'right') | null;
   imagePosition?: ('center' | 'top' | 'bottom' | 'left' | 'right') | null;
@@ -441,6 +436,17 @@ export interface StatsStripBlock {
 export interface FaqBlock {
   heading: string;
   description?: string | null;
+  headerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
   items?:
     | {
         question: string;
@@ -462,7 +468,6 @@ export interface FaqBlock {
         id?: string | null;
       }[]
     | null;
-  sideColumnEnabled?: boolean | null;
   sideColumn?: {
     profile?: {
       image?: (string | null) | Media;
@@ -472,17 +477,28 @@ export interface FaqBlock {
     contact?: {
       title?: string | null;
       description?: string | null;
-      linkLabel?: string | null;
-      linkType?: ('page' | 'custom') | null;
-      page?: (string | null) | Page;
-      url?: string | null;
-      openInNewTab?: boolean | null;
+      actions?:
+        | {
+            label: string;
+            linkType?: ('page' | 'custom') | null;
+            page?: (string | null) | Page;
+            url?: string | null;
+            openInNewTab?: boolean | null;
+            variant: 'default' | 'secondary' | 'outline';
+            id?: string | null;
+          }[]
+        | null;
     };
   };
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  contentAlignment: 'left' | 'center' | 'right';
+  layoutMode: 'fiftyFifty' | 'oneThird' | 'fullWidth';
+  faqPlacement?: ('left' | 'right') | null;
+  headerActionMode: 'link' | 'button';
+  sideActionMode?: ('link' | 'button') | null;
   size: 'compact' | 'default' | 'comfortable';
   defaultOpenFirst?: boolean | null;
   id?: string | null;
@@ -495,11 +511,16 @@ export interface FaqBlock {
  */
 export interface ReviewSubmissionBlock {
   eyebrow?: string | null;
-  heading: string;
+  title: string;
   description?: string | null;
-  benefits?:
+  actions?:
     | {
-        text: string;
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
         id?: string | null;
       }[]
     | null;
@@ -507,13 +528,12 @@ export interface ReviewSubmissionBlock {
    * Select a review-intent form. Use rating, reviewerName, reviewerEmail, reviewBody, and an optional subjectLabel select field; subjectLabel options become the topic chips. Review titles are generated from the submitted review.
    */
   form: string | Form;
-  formHeading?: string | null;
-  formEyebrow?: string | null;
-  formDescription?: string | null;
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  actionMode: 'link' | 'button';
+  contentAlignment: 'left' | 'center' | 'right';
   size: 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
@@ -1707,13 +1727,7 @@ export interface SplitFeatureBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
-  ctaMode?: T;
-  linkLabel?: T;
-  linkType?: T;
-  page?: T;
-  url?: T;
-  openInNewTab?: T;
-  buttons?:
+  actions?:
     | T
     | {
         label?: T;
@@ -1730,6 +1744,7 @@ export interface SplitFeatureBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  actionMode?: T;
   layoutMode?: T;
   mediaPosition?: T;
   imagePosition?: T;
@@ -1772,6 +1787,17 @@ export interface StatsStripBlockSelect<T extends boolean = true> {
 export interface FaqBlockSelect<T extends boolean = true> {
   heading?: T;
   description?: T;
+  headerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
   items?:
     | T
     | {
@@ -1779,7 +1805,6 @@ export interface FaqBlockSelect<T extends boolean = true> {
         answer?: T;
         id?: T;
       };
-  sideColumnEnabled?: T;
   sideColumn?:
     | T
     | {
@@ -1795,11 +1820,17 @@ export interface FaqBlockSelect<T extends boolean = true> {
           | {
               title?: T;
               description?: T;
-              linkLabel?: T;
-              linkType?: T;
-              page?: T;
-              url?: T;
-              openInNewTab?: T;
+              actions?:
+                | T
+                | {
+                    label?: T;
+                    linkType?: T;
+                    page?: T;
+                    url?: T;
+                    openInNewTab?: T;
+                    variant?: T;
+                    id?: T;
+                  };
             };
       };
   appearance?:
@@ -1808,6 +1839,11 @@ export interface FaqBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
+  layoutMode?: T;
+  faqPlacement?: T;
+  headerActionMode?: T;
+  sideActionMode?: T;
   size?: T;
   defaultOpenFirst?: T;
   id?: T;
@@ -1819,24 +1855,28 @@ export interface FaqBlockSelect<T extends boolean = true> {
  */
 export interface ReviewSubmissionBlockSelect<T extends boolean = true> {
   eyebrow?: T;
-  heading?: T;
+  title?: T;
   description?: T;
-  benefits?:
+  actions?:
     | T
     | {
-        text?: T;
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
         id?: T;
       };
   form?: T;
-  formHeading?: T;
-  formEyebrow?: T;
-  formDescription?: T;
   appearance?:
     | T
     | {
         background?: T;
         border?: T;
       };
+  actionMode?: T;
+  contentAlignment?: T;
   size?: T;
   id?: T;
   blockName?: T;

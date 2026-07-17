@@ -16,17 +16,84 @@ const getLayoutField = () => {
   const contentTab = tabsField?.tabs.find((tab) => tab.label === 'Content')
 
   return contentTab?.fields.find(
-    (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'layout',
+    (field) =>
+      typeof field === 'object' && field !== null && 'name' in field && field.name === 'layout',
   ) as { blocks?: Array<{ slug: string }>; type?: string } | undefined
 }
 
-const getNamedField = <T extends { name?: string }>(
-  fields: unknown[],
-  fieldName: string,
-) =>
+const getNamedField = <T extends { name?: string }>(fields: unknown[], fieldName: string) =>
   fields.find(
-    (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === fieldName,
+    (field) =>
+      typeof field === 'object' && field !== null && 'name' in field && field.name === fieldName,
   ) as T | undefined
+
+const expectContentActionsFieldSet = (
+  contentFields: unknown[],
+  layoutFields: unknown[],
+  {
+    actionsName = 'actions',
+    modeName = 'actionMode',
+  }: { actionsName?: string; modeName?: string } = {},
+) => {
+  const actionPresentationField = getNamedField<{
+    defaultValue?: string
+    name?: string
+    options?: Array<{ value: string }>
+    type?: string
+  }>(contentFields, 'actionPresentation')
+  const actionModeInContent = getNamedField<{ name?: string; type?: string }>(
+    contentFields,
+    modeName,
+  )
+  const actionModeField = getNamedField<{
+    defaultValue?: string
+    name?: string
+    options?: Array<{ value: string }>
+    type?: string
+  }>(layoutFields, modeName)
+  const actionsField = getNamedField<{
+    fields?: unknown[]
+    maxRows?: number
+    name?: string
+    type?: string
+  }>(contentFields, actionsName)
+  const actionTabsField = actionsField?.fields?.[0] as
+    | {
+        tabs?: Array<{ fields: unknown[]; label: string }>
+        type?: string
+      }
+    | undefined
+  const actionContentTab = actionTabsField?.tabs?.find((tab) => tab.label === 'Content')
+  const actionLayoutTab = actionTabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+  const variantField = getNamedField<{
+    defaultValue?: string
+    name?: string
+    options?: Array<{ value: string }>
+    type?: string
+  }>(actionLayoutTab?.fields ?? [], 'variant')
+
+  expect(actionPresentationField).toBeUndefined()
+  expect(actionModeInContent).toBeUndefined()
+  expect(actionModeField?.type).toBe('select')
+  expect(actionModeField?.defaultValue).toBe('link')
+  expect(actionModeField?.options?.map((option) => option.value)).toEqual(['link', 'button'])
+  expect(actionsField?.type).toBe('array')
+  expect(actionsField?.maxRows).toBe(2)
+  expect(actionTabsField?.type).toBe('tabs')
+  expect(actionTabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+  expect(
+    actionContentTab?.fields.map((field) =>
+      typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,
+    ),
+  ).toEqual(['label', 'linkType', 'page', 'url', 'openInNewTab'])
+  expect(variantField?.type).toBe('select')
+  expect(variantField?.defaultValue).toBe('default')
+  expect(variantField?.options?.map((option) => option.value)).toEqual([
+    'default',
+    'secondary',
+    'outline',
+  ])
+}
 
 describe('page block pipeline', () => {
   it('defines the shared block appearance schema defaults and options', () => {
@@ -93,24 +160,26 @@ describe('page block pipeline', () => {
       'splitFeature',
       'statsStrip',
       'faq',
+      'reviewSubmission',
     ])
   })
 
   it('defines the statsStrip schema with metric items, background, and animation fields', async () => {
     const { StatsStripBlock } = await import('@/blocks/StatsStrip/config')
     const tabsField = StatsStripBlock.fields[0] as
-      | { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string }
-      | undefined
+      { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string } | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
     const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
 
-    const itemsField = getNamedField<
-      { fields?: Array<{ name?: string; type?: string }>; minRows?: number; type?: string }
-    >(contentTab?.fields ?? [], 'items')
-    const appearanceField = getNamedField<{ fields?: Array<{ name?: string; type?: string }>; type?: string }>(
-      layoutTab?.fields ?? [],
-      'appearance',
-    )
+    const itemsField = getNamedField<{
+      fields?: Array<{ name?: string; type?: string }>
+      minRows?: number
+      type?: string
+    }>(contentTab?.fields ?? [], 'items')
+    const appearanceField = getNamedField<{
+      fields?: Array<{ name?: string; type?: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'appearance')
 
     const animationEnabledField = getNamedField<{ defaultValue?: boolean; type?: string }>(
       layoutTab?.fields ?? [],
@@ -131,7 +200,12 @@ describe('page block pipeline', () => {
     expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
     expect(itemsField?.type).toBe('array')
     expect(itemsField?.minRows).toBe(1)
-    expect(itemsField?.fields?.map((field) => field.name)).toEqual(['prefix', 'value', 'suffix', 'label'])
+    expect(itemsField?.fields?.map((field) => field.name)).toEqual([
+      'prefix',
+      'value',
+      'suffix',
+      'label',
+    ])
     expect(appearanceField?.type).toBe('group')
     expect(animationEnabledField?.type).toBe('checkbox')
     expect(animationEnabledField?.defaultValue).toBe(true)
@@ -154,33 +228,41 @@ describe('page block pipeline', () => {
     const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
 
     const appearanceField = getNamedField<{ type?: string }>(layoutTab?.fields ?? [], 'appearance')
-    const backgroundImageField = getNamedField<
-      { relationTo?: string; required?: boolean; type?: string }
-    >(contentTab?.fields ?? [], 'backgroundImage')
+    const backgroundImageField = getNamedField<{
+      relationTo?: string
+      required?: boolean
+      type?: string
+    }>(contentTab?.fields ?? [], 'backgroundImage')
 
     const titleField = getNamedField<{ required?: boolean; type?: string }>(
       contentTab?.fields ?? [],
       'title',
     )
 
-    const overlayStyleField = getNamedField<
-      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(layoutTab?.fields ?? [], 'overlayStyle')
-    const themeModeField = getNamedField<
-      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(layoutTab?.fields ?? [], 'themeMode')
+    const overlayStyleField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'overlayStyle')
+    const themeModeField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'themeMode')
 
-    const horizontalAlignmentField = getNamedField<
-      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(layoutTab?.fields ?? [], 'horizontalAlignment')
+    const horizontalAlignmentField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'horizontalAlignment')
 
-    const verticalAlignmentField = getNamedField<
-      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(layoutTab?.fields ?? [], 'verticalAlignment')
+    const verticalAlignmentField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'verticalAlignment')
 
-    const buttonsField = getNamedField<
-      { fields?: unknown[]; maxRows?: number; type?: string }
-    >(
+    const buttonsField = getNamedField<{ fields?: unknown[]; maxRows?: number; type?: string }>(
       contentTab?.fields ?? [],
       'buttons',
     )
@@ -196,9 +278,11 @@ describe('page block pipeline', () => {
       buttonContentTab?.fields ?? [],
       'label',
     )
-    const buttonVariantField = getNamedField<
-      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(buttonLayoutTab?.fields ?? [], 'variant')
+    const buttonVariantField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(buttonLayoutTab?.fields ?? [], 'variant')
 
     expect(tabsField?.type).toBe('tabs')
     expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
@@ -210,10 +294,18 @@ describe('page block pipeline', () => {
     expect(titleField?.required).toBe(true)
     expect(overlayStyleField?.type).toBe('select')
     expect(overlayStyleField?.defaultValue).toBe('dark')
-    expect(overlayStyleField?.options?.map((option) => option.value)).toEqual(['light', 'dark', 'darker'])
+    expect(overlayStyleField?.options?.map((option) => option.value)).toEqual([
+      'light',
+      'dark',
+      'darker',
+    ])
     expect(themeModeField?.type).toBe('select')
     expect(themeModeField?.defaultValue).toBe('auto')
-    expect(themeModeField?.options?.map((option) => option.value)).toEqual(['auto', 'light', 'dark'])
+    expect(themeModeField?.options?.map((option) => option.value)).toEqual([
+      'auto',
+      'light',
+      'dark',
+    ])
     expect(horizontalAlignmentField?.options?.map((option) => option.value)).toEqual([
       'left',
       'center',
@@ -224,17 +316,25 @@ describe('page block pipeline', () => {
       'center',
       'bottom',
     ])
-    const heightField = getNamedField<
-      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(layoutTab?.fields ?? [], 'height')
+    const heightField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'height')
 
-    const contentWidthField = getNamedField<
-      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(layoutTab?.fields ?? [], 'contentWidth')
+    const contentWidthField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'contentWidth')
 
     expect(contentWidthField?.type).toBe('select')
     expect(contentWidthField?.defaultValue).toBe('default')
-    expect(contentWidthField?.options?.map((option) => option.value)).toEqual(['narrow', 'default', 'wide'])
+    expect(contentWidthField?.options?.map((option) => option.value)).toEqual([
+      'narrow',
+      'default',
+      'wide',
+    ])
     expect(heightField?.type).toBe('select')
     expect(heightField?.defaultValue).toBe('default')
     expect(heightField?.options?.map((option) => option.value)).toEqual([
@@ -260,14 +360,15 @@ describe('page block pipeline', () => {
   it('defines the footer56 schema with branding, link groups, utilities, and shared appearance', async () => {
     const { Footer56Block } = await import('@/blocks/Footer56/config')
     const tabsField = Footer56Block.fields[0] as
-      | { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string }
-      | undefined
+      { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string } | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
     const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
 
-    const logoModeField = getNamedField<
-      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(contentTab?.fields ?? [], 'logoMode')
+    const logoModeField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(contentTab?.fields ?? [], 'logoMode')
 
     const linkGroupsField = getNamedField<{ maxRows?: number; minRows?: number; type?: string }>(
       contentTab?.fields ?? [],
@@ -285,7 +386,11 @@ describe('page block pipeline', () => {
     )
 
     const socialLinksField = (contentTab?.fields ?? []).find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'socialLinks',
+      (field) =>
+        typeof field === 'object' &&
+        field !== null &&
+        'name' in field &&
+        field.name === 'socialLinks',
     ) as { type?: string } | undefined
 
     const appearanceField = getNamedField<{ fields?: Array<{ name?: string }>; type?: string }>(
@@ -297,7 +402,10 @@ describe('page block pipeline', () => {
     expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
     expect(logoModeField?.type).toBe('select')
     expect(logoModeField?.defaultValue).toBe('siteDefault')
-    expect(logoModeField?.options?.map((option) => option.value)).toEqual(['siteDefault', 'customLogo'])
+    expect(logoModeField?.options?.map((option) => option.value)).toEqual([
+      'siteDefault',
+      'customLogo',
+    ])
     expect(linkGroupsField?.type).toBe('array')
     expect(linkGroupsField?.minRows).toBe(1)
     expect(linkGroupsField?.maxRows).toBe(4)
@@ -307,10 +415,7 @@ describe('page block pipeline', () => {
     expect(logoHeightField?.min).toBe(20)
     expect(socialLinksField).toBeUndefined()
     expect(appearanceField?.type).toBe('group')
-    expect(appearanceField?.fields?.map((field) => field.name)).toEqual([
-      'background',
-      'border',
-    ])
+    expect(appearanceField?.fields?.map((field) => field.name)).toEqual(['background', 'border'])
   })
 
   it('defines the site settings legal schema with privacy policy and terms relationships', () => {
@@ -323,7 +428,10 @@ describe('page block pipeline', () => {
 
     const privacyPolicyField = legalTab?.fields.find(
       (field) =>
-        typeof field === 'object' && field !== null && 'name' in field && field.name === 'privacyPolicyPage',
+        typeof field === 'object' &&
+        field !== null &&
+        'name' in field &&
+        field.name === 'privacyPolicyPage',
     ) as { relationTo?: string; type?: string } | undefined
 
     const termsField = legalTab?.fields.find(
@@ -336,7 +444,10 @@ describe('page block pipeline', () => {
 
     const contactPrivacyField = contactTab?.fields.find(
       (field) =>
-        typeof field === 'object' && field !== null && 'name' in field && field.name === 'privacyPolicyPage',
+        typeof field === 'object' &&
+        field !== null &&
+        'name' in field &&
+        field.name === 'privacyPolicyPage',
     )
 
     expect(privacyPolicyField?.type).toBe('relationship')
@@ -353,7 +464,11 @@ describe('page block pipeline', () => {
 
     const socialLinksTab = siteSettingsTabs?.tabs.find((tab) => tab.label === 'Social Links')
     const socialLinksGroup = socialLinksTab?.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'socialLinks',
+      (field) =>
+        typeof field === 'object' &&
+        field !== null &&
+        'name' in field &&
+        field.name === 'socialLinks',
     ) as
       | {
           fields?: Array<{
@@ -392,15 +507,20 @@ describe('page block pipeline', () => {
 
   it('defines the page announcement block schema with mode, timing, and rotating items', () => {
     const tabsField = AnnouncementBlock.fields[0] as
-      | { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string }
-      | undefined
+      { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string } | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
     const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
     const appearanceField = getNamedField<{ type?: string }>(layoutTab?.fields ?? [], 'appearance')
-    const displayModeField = getNamedField<
-      { defaultValue?: string; label?: string; options?: Array<{ value: string }>; type?: string }
-    >(layoutTab?.fields ?? [], 'displayMode')
-    const labelField = getNamedField<{ label?: string; type?: string }>(contentTab?.fields ?? [], 'label')
+    const displayModeField = getNamedField<{
+      defaultValue?: string
+      label?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'displayMode')
+    const labelField = getNamedField<{ label?: string; type?: string }>(
+      contentTab?.fields ?? [],
+      'label',
+    )
     const intervalField = getNamedField<{ defaultValue?: number; type?: string }>(
       layoutTab?.fields ?? [],
       'intervalMs',
@@ -409,7 +529,10 @@ describe('page block pipeline', () => {
       layoutTab?.fields ?? [],
       'marqueeDurationMs',
     )
-    const itemsField = getNamedField<{ minRows?: number; type?: string }>(contentTab?.fields ?? [], 'items')
+    const itemsField = getNamedField<{ minRows?: number; type?: string }>(
+      contentTab?.fields ?? [],
+      'items',
+    )
 
     expect(tabsField?.type).toBe('tabs')
     expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
@@ -492,7 +615,9 @@ describe('page block pipeline', () => {
               url: '/media/main-hall.jpg',
             },
             blockType: 'heroInstitutional',
-            buttons: [{ label: 'Apply now', linkType: 'custom', url: '/apply', variant: 'default' }],
+            buttons: [
+              { label: 'Apply now', linkType: 'custom', url: '/apply', variant: 'default' },
+            ],
             description: 'Train for the work that follows.',
             eyebrow: 'Admissions',
             height: 'default',
@@ -518,11 +643,10 @@ describe('page block pipeline', () => {
     expect(html).toContain('border-t border-border')
   })
 
-  it('defines the splitFeature schema with image, layout, and CTA mode fields', async () => {
+  it('defines the splitFeature schema with image, layout, and shared actions', async () => {
     const { SplitFeatureBlock } = await import('@/blocks/SplitFeature/config')
     const tabsField = SplitFeatureBlock.fields[0] as
-      | { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string }
-      | undefined
+      { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string } | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
     const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
 
@@ -535,34 +659,43 @@ describe('page block pipeline', () => {
       contentTab?.fields ?? [],
       'title',
     )
-    const layoutModeField = getNamedField<
-      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(layoutTab?.fields ?? [], 'layoutMode')
-    const mediaPositionField = getNamedField<
-      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(layoutTab?.fields ?? [], 'mediaPosition')
-    const imagePositionField = getNamedField<
-      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(layoutTab?.fields ?? [], 'imagePosition')
-    const mediaFillModeField = getNamedField<
-      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(layoutTab?.fields ?? [], 'mediaFillMode')
-    const contentVerticalAlignmentField = getNamedField<
-      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(layoutTab?.fields ?? [], 'contentVerticalAlignment')
-    const sizeField = getNamedField<
-      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(layoutTab?.fields ?? [], 'size')
+    const layoutModeField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'layoutMode')
+    const mediaPositionField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'mediaPosition')
+    const imagePositionField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'imagePosition')
+    const mediaFillModeField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'mediaFillMode')
+    const contentVerticalAlignmentField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'contentVerticalAlignment')
+    const sizeField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'size')
     const backgroundStyleField = (layoutTab?.fields ?? []).find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'backgroundStyle',
+      (field) =>
+        typeof field === 'object' &&
+        field !== null &&
+        'name' in field &&
+        field.name === 'backgroundStyle',
     ) as { type?: string } | undefined
-    const ctaModeField = getNamedField<
-      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(contentTab?.fields ?? [], 'ctaMode')
-    const buttonsField = getNamedField<{ maxRows?: number; type?: string }>(
-      contentTab?.fields ?? [],
-      'buttons',
-    )
 
     expect(tabsField?.type).toBe('tabs')
     expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
@@ -574,7 +707,10 @@ describe('page block pipeline', () => {
     expect(titleField?.required).toBe(true)
     expect(layoutModeField?.type).toBe('select')
     expect(layoutModeField?.defaultValue).toBe('split')
-    expect(layoutModeField?.options?.map((option) => option.value)).toEqual(['split', 'contentOnly'])
+    expect(layoutModeField?.options?.map((option) => option.value)).toEqual([
+      'split',
+      'contentOnly',
+    ])
     expect(mediaPositionField?.type).toBe('select')
     expect(mediaPositionField?.defaultValue).toBe('left')
     expect(mediaPositionField?.options?.map((option) => option.value)).toEqual(['left', 'right'])
@@ -609,18 +745,16 @@ describe('page block pipeline', () => {
       'comfortable',
     ])
     expect(backgroundStyleField).toBeUndefined()
-    expect(ctaModeField?.type).toBe('select')
-    expect(ctaModeField?.defaultValue).toBe('link')
-    expect(ctaModeField?.options?.map((option) => option.value)).toEqual(['link', 'buttons'])
-    expect(buttonsField?.type).toBe('array')
-    expect(buttonsField?.maxRows).toBe(2)
+    expect(getNamedField(contentTab?.fields ?? [], 'ctaMode')).toBeUndefined()
+    expect(getNamedField(contentTab?.fields ?? [], 'links')).toBeUndefined()
+    expect(getNamedField(contentTab?.fields ?? [], 'buttons')).toBeUndefined()
+    expectContentActionsFieldSet(contentTab?.fields ?? [], layoutTab?.fields ?? [])
   })
 
   it('defines the faq schema with rich-text items, optional side column, and shared appearance', async () => {
     const { FaqBlock } = await import('@/blocks/Faq/config')
     const tabsField = FaqBlock.fields[0] as
-      | { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string }
-      | undefined
+      { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string } | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
     const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
 
@@ -628,38 +762,102 @@ describe('page block pipeline', () => {
       contentTab?.fields ?? [],
       'heading',
     )
-    const itemsField = getNamedField<
-      { fields?: Array<{ name?: string; type?: string }>; minRows?: number; type?: string }
-    >(contentTab?.fields ?? [], 'items')
+    const itemsField = getNamedField<{
+      fields?: Array<{ name?: string; type?: string }>
+      minRows?: number
+      type?: string
+    }>(contentTab?.fields ?? [], 'items')
     const sideColumnEnabledField = getNamedField<{ defaultValue?: boolean; type?: string }>(
       contentTab?.fields ?? [],
       'sideColumnEnabled',
     )
-    const sideColumnField = getNamedField<
-      { fields?: Array<{ name?: string; type?: string }>; type?: string }
-    >(contentTab?.fields ?? [], 'sideColumn')
-    const sizeField = getNamedField<
-      { defaultValue?: string; options?: Array<{ value: string }>; type?: string }
-    >(layoutTab?.fields ?? [], 'size')
+    const sideColumnField = getNamedField<{
+      admin?: { condition?: unknown }
+      fields?: Array<{ name?: string; type?: string }>
+      type?: string
+    }>(contentTab?.fields ?? [], 'sideColumn')
+    const contactField = getNamedField<{
+      fields?: unknown[]
+      type?: string
+    }>(sideColumnField?.fields ?? [], 'contact')
+    const sizeField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'size')
     const defaultOpenFirstField = getNamedField<{ defaultValue?: boolean; type?: string }>(
       layoutTab?.fields ?? [],
       'defaultOpenFirst',
     )
     const appearanceField = getNamedField<{ type?: string }>(layoutTab?.fields ?? [], 'appearance')
+    const contentAlignmentField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'contentAlignment')
+    const layoutModeField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'layoutMode')
+    const faqPlacementField = getNamedField<{
+      admin?: { condition?: unknown }
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'faqPlacement')
+    const sideActionModeField = getNamedField<{
+      admin?: { condition?: unknown }
+      defaultValue?: string
+      type?: string
+    }>(layoutTab?.fields ?? [], 'sideActionMode')
 
     expect(tabsField?.type).toBe('tabs')
     expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(
+      contentTab?.fields.map((field) =>
+        typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,
+      ),
+    ).toEqual(['heading', 'description', 'headerActions', 'items', 'sideColumn'])
     expect(headingField?.type).toBe('text')
     expect(headingField?.required).toBe(true)
     expect(itemsField?.type).toBe('array')
     expect(itemsField?.minRows).toBe(1)
     expect(itemsField?.fields?.map((field) => field.name)).toEqual(['question', 'answer'])
     expect(itemsField?.fields?.map((field) => field.type)).toEqual(['text', 'richText'])
-    expect(sideColumnEnabledField?.type).toBe('checkbox')
-    expect(sideColumnEnabledField?.defaultValue).toBe(true)
+    expect(sideColumnEnabledField).toBeUndefined()
     expect(sideColumnField?.type).toBe('group')
+    expect(sideColumnField?.admin?.condition).toBeTypeOf('function')
     expect(sideColumnField?.fields?.map((field) => field.name)).toEqual(['profile', 'contact'])
+    expect(getNamedField(contactField?.fields ?? [], 'links')).toBeUndefined()
+    expectContentActionsFieldSet(contentTab?.fields ?? [], layoutTab?.fields ?? [], {
+      actionsName: 'headerActions',
+      modeName: 'headerActionMode',
+    })
+    expectContentActionsFieldSet(contactField?.fields ?? [], layoutTab?.fields ?? [], {
+      modeName: 'sideActionMode',
+    })
     expect(appearanceField?.type).toBe('group')
+    expect(contentAlignmentField?.type).toBe('select')
+    expect(contentAlignmentField?.defaultValue).toBe('left')
+    expect(contentAlignmentField?.options?.map((option) => option.value)).toEqual([
+      'left',
+      'center',
+      'right',
+    ])
+    expect(layoutModeField?.type).toBe('select')
+    expect(layoutModeField?.defaultValue).toBe('fiftyFifty')
+    expect(layoutModeField?.options?.map((option) => option.value)).toEqual([
+      'fiftyFifty',
+      'oneThird',
+      'fullWidth',
+    ])
+    expect(faqPlacementField?.type).toBe('select')
+    expect(faqPlacementField?.defaultValue).toBe('right')
+    expect(faqPlacementField?.options?.map((option) => option.value)).toEqual(['left', 'right'])
+    expect(faqPlacementField?.admin?.condition).toBeTypeOf('function')
+    expect(sideActionModeField?.defaultValue).toBe('link')
+    expect(sideActionModeField?.admin?.condition).toBeTypeOf('function')
     expect(sizeField?.type).toBe('select')
     expect(sizeField?.defaultValue).toBe('default')
     expect(sizeField?.options?.map((option) => option.value)).toEqual([
@@ -669,6 +867,34 @@ describe('page block pipeline', () => {
     ])
     expect(defaultOpenFirstField?.type).toBe('checkbox')
     expect(defaultOpenFirstField?.defaultValue).toBe(true)
+  })
+
+  it('defines Review Submission alignment and shared content actions', async () => {
+    const { ReviewSubmissionBlock } = await import('@/blocks/ReviewSubmission/config')
+
+    const tabsField = ReviewSubmissionBlock.fields[0] as
+      | {
+          tabs?: Array<{ fields: unknown[]; label: string }>
+          type?: string
+        }
+      | undefined
+    const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const contentAlignmentField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'contentAlignment')
+
+    expect(contentAlignmentField?.type).toBe('select')
+    expect(contentAlignmentField?.defaultValue).toBe('left')
+    expect(contentAlignmentField?.options?.map((option) => option.value)).toEqual([
+      'left',
+      'center',
+      'right',
+    ])
+    expect(getNamedField(contentTab?.fields ?? [], 'links')).toBeUndefined()
+    expectContentActionsFieldSet(contentTab?.fields ?? [], layoutTab?.fields ?? [])
   })
 
   it('renders a splitFeature page block through PageContent', () => {
@@ -682,8 +908,9 @@ describe('page block pipeline', () => {
               border: 'bottom',
               textColor: 'auto',
             },
+            actionMode: 'link',
+            actions: [{ label: 'See all programs', linkType: 'custom', url: '/programs' }],
             blockType: 'splitFeature',
-            ctaMode: 'link',
             description: 'Choose from MD, MD-PhD, and specialized tracks.',
             eyebrow: 'Programs',
             image: {
@@ -691,12 +918,9 @@ describe('page block pipeline', () => {
               url: '/media/programs.jpg',
             },
             layoutMode: 'split',
-            linkLabel: 'See all programs',
-            linkType: 'custom',
             imagePosition: 'right',
             mediaPosition: 'right',
             title: 'Four years. Six pathways. One physician.',
-            url: '/programs',
           },
         ],
         slug: 'programs',

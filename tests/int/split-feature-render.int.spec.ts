@@ -8,23 +8,24 @@ describe('split feature block', () => {
   it('renders image-right layout with a text link CTA', () => {
     const html = renderToStaticMarkup(
       createElement(SplitFeatureBlockComponent, {
+        actionMode: 'link',
+        actions: [
+          { label: 'See all programs', linkType: 'custom', url: '/programs' },
+          { label: 'Compare pathways', linkType: 'custom', url: '/pathways' },
+        ],
         appearance: {
           background: 'muted',
           border: 'bottom',
           textColor: 'auto',
         },
         contentVerticalAlignment: 'top',
-        ctaMode: 'link',
         description: 'Choose from MD, MD-PhD, and specialized tracks.',
         eyebrow: 'Programs',
         image: { alt: 'Students in clinic', url: '/media/programs.jpg' } as never,
         imagePosition: 'right',
         layoutMode: 'split',
-        linkLabel: 'See all programs',
-        linkType: 'custom',
         mediaPosition: 'right',
         title: 'Four years. Six pathways. One physician.',
-        url: '/programs',
       }),
     )
 
@@ -32,16 +33,19 @@ describe('split feature block', () => {
     expect(html).toContain('data-split-feature-content-vertical-alignment="top"')
     expect(html).toContain('data-split-feature-image-position="right"')
     expect(html).toContain('data-split-feature-layout="split"')
-    expect(html).toContain('data-split-feature-cta="link"')
+    expect(html).toContain('data-split-feature-action-mode="link"')
+    expect(html).toContain('data-action-mode="link"')
     expect(html).toContain('data-split-feature-background="muted"')
-    expect(html).toContain('data-split-feature-link-cta="true"')
+    expect(html).toContain('data-split-feature-actions="true"')
     expect(html).toContain('href="/programs"')
+    expect(html).toContain('href="/pathways"')
     expect(html).toContain('See all programs')
+    expect(html).toContain('Compare pathways')
     expect(html).toContain('lucide-arrow-right')
     expect(html).toContain('bg-muted')
     expect(html).toContain('border-b border-border')
     expect(html).toContain('text-muted-foreground')
-    expect(html).toContain('font-heading')
+    expect(html).toContain('text-3xl font-semibold tracking-tight')
     expect(html).toContain('hover:underline')
     expect(html).toContain('border border-border')
     expect(html).toContain('flex min-h-full flex-col justify-start')
@@ -50,16 +54,21 @@ describe('split feature block', () => {
   it('renders muted background and two CTA buttons', () => {
     const html = renderToStaticMarkup(
       createElement(SplitFeatureBlockComponent, {
+        actionMode: 'button',
+        actions: [
+          {
+            label: 'Start your application',
+            linkType: 'custom',
+            url: '/apply',
+            variant: 'default',
+          },
+          { label: 'Schedule a visit', linkType: 'custom', url: '/visit', variant: 'secondary' },
+        ],
         appearance: {
           background: 'accent',
           border: 'top',
           textColor: 'auto',
         },
-        buttons: [
-          { label: 'Start your application', linkType: 'custom', url: '/apply', variant: 'default' },
-          { label: 'Schedule a visit', linkType: 'custom', url: '/visit', variant: 'secondary' },
-        ] as never,
-        ctaMode: 'buttons',
         description: 'Applications for the Class of 2030 open August 1.',
         image: { alt: 'Clinical team', url: '/media/apply.jpg' } as never,
         imagePosition: 'top',
@@ -70,7 +79,10 @@ describe('split feature block', () => {
     )
 
     expect(html).toContain('data-split-feature-background="accent"')
-    expect(html).toContain('data-split-feature-cta="buttons"')
+    expect(html).toContain('data-split-feature-action-mode="button"')
+    expect(html).toContain('data-action-mode="button"')
+    expect(html).toContain('data-action-variant="default"')
+    expect(html).toContain('data-action-variant="secondary"')
     expect(html).toContain('href="/apply"')
     expect(html).toContain('href="/visit"')
     expect(html).toContain('bg-accent')
@@ -83,14 +95,12 @@ describe('split feature block', () => {
   it('renders centered content-only layout without an image', () => {
     const html = renderToStaticMarkup(
       createElement(SplitFeatureBlockComponent, {
-        ctaMode: 'link',
+        actionMode: 'link',
+        actions: [{ label: 'Start your application', linkType: 'custom', url: '/apply' }],
         description: 'Applications for the Class of 2030 open August 1.',
         layoutMode: 'contentOnly',
-        linkLabel: 'Start your application',
-        linkType: 'custom',
         size: 'compact',
         title: 'Ready to begin?',
-        url: '/apply',
       }),
     )
 
@@ -106,19 +116,17 @@ describe('split feature block', () => {
   it('supports edge-to-edge media fill while keeping content contained', () => {
     const html = renderToStaticMarkup(
       createElement(SplitFeatureBlockComponent, {
-        ctaMode: 'link',
+        actionMode: 'link',
+        actions: [{ label: 'Explore facilities', linkType: 'custom', url: '/facilities' }],
         contentVerticalAlignment: 'bottom',
         description: 'Train with faculty mentors across clinics, labs, and simulation spaces.',
         image: { alt: 'Simulation lab', url: '/media/sim-lab.jpg' } as never,
         imagePosition: 'bottom',
         layoutMode: 'split',
-        linkLabel: 'Explore facilities',
-        linkType: 'custom',
         mediaFillMode: 'edgeToEdge',
         mediaPosition: 'left',
         size: 'comfortable',
         title: 'Built for immersive study.',
-        url: '/facilities',
       }),
     )
 
@@ -140,22 +148,43 @@ describe('split feature block', () => {
     expect(html).not.toContain('rounded-xl border border-border bg-muted/20')
   })
 
+  it('aligns image-right edge-to-edge content with the website container gutter', () => {
+    const html = renderToStaticMarkup(
+      createElement(SplitFeatureBlockComponent, {
+        contentVerticalAlignment: 'center',
+        description: 'Train with faculty mentors across clinics, labs, and simulation spaces.',
+        image: { alt: 'Simulation lab', url: '/media/sim-lab.jpg' } as never,
+        layoutMode: 'split',
+        mediaFillMode: 'edgeToEdge',
+        mediaPosition: 'right',
+        size: 'default',
+        title: 'Built for immersive study.',
+      }),
+    )
+
+    expect(html).toContain('data-split-feature-position="right"')
+    expect(html).toContain('data-split-feature-media-fill="edgeToEdge"')
+    expect(html).toContain('ml-auto h-full w-full max-w-[calc(var(--breakpoint-2xl)/2)] pl-4')
+    expect(html).toContain(
+      'flex min-h-full flex-col justify-center py-12 pr-4 md:py-12 md:pr-8 lg:pr-12',
+    )
+    expect(html).toContain('w-full max-w-xl text-left mr-auto')
+  })
+
   it('supports contained-fill media while keeping the layout inside the normal container', () => {
     const html = renderToStaticMarkup(
       createElement(SplitFeatureBlockComponent, {
-        ctaMode: 'link',
+        actionMode: 'link',
+        actions: [{ label: 'Explore facilities', linkType: 'custom', url: '/facilities' }],
         contentVerticalAlignment: 'top',
         description: 'Train with faculty mentors across clinics, labs, and simulation spaces.',
         image: { alt: 'Simulation lab', url: '/media/sim-lab.jpg' } as never,
         imagePosition: 'center',
         layoutMode: 'split',
-        linkLabel: 'Explore facilities',
-        linkType: 'custom',
         mediaFillMode: 'containedFill',
         mediaPosition: 'left',
         size: 'comfortable',
         title: 'Built for immersive study.',
-        url: '/facilities',
       }),
     )
 
@@ -171,7 +200,34 @@ describe('split feature block', () => {
     expect(html).toContain('relative aspect-[4/3] overflow-hidden md:h-full md:aspect-auto')
     expect(html).toContain('absolute inset-0 size-full object-cover')
     expect(html).toContain('object-[center_center]')
-    expect(html).toContain('flex min-h-full flex-col justify-start px-4 py-16 md:px-8 md:py-16 lg:px-12')
+    expect(html).toContain(
+      'flex min-h-full flex-col justify-start px-4 py-16 md:px-8 md:py-16 lg:px-12',
+    )
     expect(html).not.toContain('rounded-xl border border-border bg-muted/20')
+  })
+
+  it('aligns image-right contained-fill content with the website container gutter', () => {
+    const html = renderToStaticMarkup(
+      createElement(SplitFeatureBlockComponent, {
+        contentVerticalAlignment: 'center',
+        description: 'Train with faculty mentors across clinics, labs, and simulation spaces.',
+        image: { alt: 'Simulation lab', url: '/media/sim-lab.jpg' } as never,
+        layoutMode: 'split',
+        mediaFillMode: 'containedFill',
+        mediaPosition: 'right',
+        size: 'default',
+        title: 'Built for immersive study.',
+      }),
+    )
+
+    expect(html).toContain('data-split-feature-position="right"')
+    expect(html).toContain('data-split-feature-media-fill="containedFill"')
+    expect(html).toContain('mx-auto max-w-screen-2xl px-4')
+    expect(html).toContain(
+      'flex min-h-full flex-col justify-center py-12 pr-4 md:py-12 md:pr-8 lg:pr-12',
+    )
+    expect(html).not.toContain(
+      'flex min-h-full flex-col justify-center px-4 py-12 md:px-8 md:py-12 lg:px-12',
+    )
   })
 })
