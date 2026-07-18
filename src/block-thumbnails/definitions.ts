@@ -37,6 +37,13 @@ export const blockThumbnailDefinitions = [
     slug: 'splitFeature',
   }),
   defineThumbnail({
+    alt: 'Feature Matrix block preview',
+    filename: 'feature-matrix.jpg',
+    label: 'Feature Matrix',
+    slug: 'featureMatrix',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Stats Strip block preview',
     filename: 'stats-strip.jpg',
     label: 'Stats Strip',

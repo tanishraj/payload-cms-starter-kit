@@ -45,6 +45,7 @@ describe('block thumbnail metadata', () => {
     expect(registeredSlugs.slice().sort()).toEqual([
       'announcement',
       'faq',
+      'featureMatrix',
       'footer56',
       'headerNavbar12',
       'heroInstitutional',
@@ -83,6 +84,7 @@ describe('block thumbnail metadata', () => {
     ) as {
       scripts?: Record<string, string>
     }
+    const definitionSlugs = blockThumbnailDefinitions.map(({ slug }) => slug)
     const filenames = blockThumbnailDefinitions.map(({ filename }) => filename)
     const urls = blockThumbnailDefinitions.map(({ url }) => url)
 
@@ -91,6 +93,13 @@ describe('block thumbnail metadata', () => {
     )
     expect(new Set(filenames).size).toBe(filenames.length)
     expect(new Set(urls).size).toBe(urls.length)
+    expect(getBlockThumbnailDefinition('featureMatrix')).toMatchObject({
+      filename: 'feature-matrix.jpg',
+      label: 'Feature Matrix',
+      slug: 'featureMatrix',
+    })
+    expect(definitionSlugs).not.toContain('feature166')
+    expect(filenames).not.toContain('feature-166.jpg')
   })
 
   it('has an exact 1600 by 900 JPEG for every definition', async () => {

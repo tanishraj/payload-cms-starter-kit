@@ -179,6 +179,7 @@ export interface Page {
         | AnnouncementBlock
         | HeroInstitutionalBlock
         | SplitFeatureBlock
+        | FeatureMatrixBlock
         | StatsStripBlock
         | FaqBlock
         | ReviewSubmissionBlock
@@ -403,6 +404,47 @@ export interface SplitFeatureBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'splitFeature';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureMatrixBlock".
+ */
+export interface FeatureMatrixBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
+  features?:
+    | {
+        title: string;
+        description?: string | null;
+        image: string | Media;
+        imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  actionMode: 'link' | 'button';
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'compact' | 'default' | 'comfortable';
+  showOuterBorder?: boolean | null;
+  borderAnimationEnabled?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureMatrix';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1631,6 +1673,7 @@ export interface PagesSelect<T extends boolean = true> {
         announcement?: T | AnnouncementBlockSelect<T>;
         heroInstitutional?: T | HeroInstitutionalBlockSelect<T>;
         splitFeature?: T | SplitFeatureBlockSelect<T>;
+        featureMatrix?: T | FeatureMatrixBlockSelect<T>;
         statsStrip?: T | StatsStripBlockSelect<T>;
         faq?: T | FaqBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
@@ -1751,6 +1794,48 @@ export interface SplitFeatureBlockSelect<T extends boolean = true> {
   mediaFillMode?: T;
   size?: T;
   contentVerticalAlignment?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureMatrixBlock_select".
+ */
+export interface FeatureMatrixBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
+  features?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        imagePosition?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  actionMode?: T;
+  contentAlignment?: T;
+  size?: T;
+  showOuterBorder?: T;
+  borderAnimationEnabled?: T;
   id?: T;
   blockName?: T;
 }

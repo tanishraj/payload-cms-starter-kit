@@ -1,0 +1,99 @@
+/* Feature Matrix internal-divider motion */
+.feature-matrix-divider-beam {
+  position: absolute;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.feature-matrix-divider-beam::after {
+  position: absolute;
+  content: '';
+  animation-timing-function: linear;
+  animation-duration: var(--feature-matrix-divider-beam-duration);
+  animation-delay: var(--feature-matrix-divider-beam-delay);
+  animation-iteration-count: infinite;
+  animation-direction: var(--feature-matrix-divider-beam-direction);
+}
+
+.feature-matrix-divider-beam[data-feature-matrix-divider-beam='horizontal'] {
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+}
+
+.feature-matrix-divider-beam[data-feature-matrix-divider-beam='horizontal']::after {
+  width: 22%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  animation-name: feature-matrix-divider-beam-horizontal;
+}
+
+.feature-matrix-divider-beam[data-feature-matrix-divider-beam='vertical'] {
+  top: 0;
+  right: -1px;
+  bottom: 0;
+  width: 2px;
+}
+
+.feature-matrix-divider-beam[data-feature-matrix-divider-beam='vertical']::after {
+  width: 100%;
+  height: 22%;
+  background: linear-gradient(180deg, transparent, var(--primary), transparent);
+  animation-name: feature-matrix-divider-beam-vertical;
+}
+
+.feature-matrix-divider-beam[data-feature-matrix-divider-beam-phase='0'] {
+  --feature-matrix-divider-beam-duration: 5.4s;
+  --feature-matrix-divider-beam-delay: -1.2s;
+  --feature-matrix-divider-beam-direction: normal;
+}
+
+.feature-matrix-divider-beam[data-feature-matrix-divider-beam-phase='1'] {
+  --feature-matrix-divider-beam-duration: 6.7s;
+  --feature-matrix-divider-beam-delay: -4.1s;
+  --feature-matrix-divider-beam-direction: reverse;
+}
+
+.feature-matrix-divider-beam[data-feature-matrix-divider-beam-phase='2'] {
+  --feature-matrix-divider-beam-duration: 7.3s;
+  --feature-matrix-divider-beam-delay: -2.8s;
+  --feature-matrix-divider-beam-direction: reverse;
+}
+
+.feature-matrix-divider-beam[data-feature-matrix-divider-beam-phase='3'] {
+  --feature-matrix-divider-beam-duration: 5.9s;
+  --feature-matrix-divider-beam-delay: -3.6s;
+  --feature-matrix-divider-beam-direction: normal;
+}
+
+.feature-matrix-divider-beam[data-feature-matrix-divider-beam-phase='4'] {
+  --feature-matrix-divider-beam-duration: 7.9s;
+  --feature-matrix-divider-beam-delay: -5.2s;
+  --feature-matrix-divider-beam-direction: normal;
+}
+
+@keyframes feature-matrix-divider-beam-horizontal {
+  from {
+    transform: translateX(-120%);
+  }
+  to {
+    transform: translateX(560%);
+  }
+}
+
+@keyframes feature-matrix-divider-beam-vertical {
+  from {
+    transform: translateY(-120%);
+  }
+  to {
+    transform: translateY(560%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feature-matrix-divider-beam {
+    display: none;
+  }
+}

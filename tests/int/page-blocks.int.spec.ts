@@ -158,10 +158,12 @@ describe('page block pipeline', () => {
       'announcement',
       'heroInstitutional',
       'splitFeature',
+      'featureMatrix',
       'statsStrip',
       'faq',
       'reviewSubmission',
     ])
+    expect(layoutField?.blocks?.map((block) => block.slug)).not.toContain('feature166')
   })
 
   it('defines the statsStrip schema with metric items, background, and animation fields', async () => {

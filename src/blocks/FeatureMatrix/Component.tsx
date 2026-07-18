@@ -1,0 +1,90 @@
+import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { ContentActions } from '@/components/ContentActions'
+import {
+  FeatureMatrix,
+  type FeatureMatrixAlignment,
+  type FeatureMatrixImagePosition,
+  type FeatureMatrixItem,
+  type FeatureMatrixSize,
+} from '@/components/feature-matrix'
+import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
+import { getMediaImageProps } from '@/lib/media'
+
+type FeatureMatrixBlockLike = {
+  actionMode?: 'button' | 'link' | null
+  actions?: CmsActionValue[] | null
+  appearance?: BlockAppearance | null
+  borderAnimationEnabled?: boolean | null
+  contentAlignment?: FeatureMatrixAlignment | null
+  description?: string | null
+  eyebrow?: string | null
+  features?:
+    | {
+        description?: string | null
+        image?: unknown
+        imagePosition?: FeatureMatrixImagePosition | null
+        title?: string | null
+      }[]
+    | null
+  showOuterBorder?: boolean | null
+  size?: FeatureMatrixSize | null
+  title: string
+}
+
+export function FeatureMatrixBlockComponent({
+  actionMode = 'link',
+  actions,
+  appearance,
+  borderAnimationEnabled = true,
+  contentAlignment = 'center',
+  description,
+  eyebrow,
+  features,
+  showOuterBorder = true,
+  size = 'default',
+  title,
+}: FeatureMatrixBlockLike) {
+  const resolvedFeatures = (features ?? []).flatMap((feature): FeatureMatrixItem[] => {
+    const featureTitle = feature.title?.trim()
+    const image = getMediaImageProps({
+      fallbackAlt: featureTitle,
+      media: feature.image as never,
+      preset: 'generic',
+    })
+
+    return featureTitle && image
+      ? [
+          {
+            description: feature.description,
+            image,
+            imagePosition: feature.imagePosition,
+            title: featureTitle,
+          },
+        ]
+      : []
+  })
+  const resolvedActions = resolveCmsActions(actions)
+  const resolvedAlignment = contentAlignment ?? 'center'
+
+  return (
+    <FeatureMatrix
+      actions={
+        <ContentActions
+          actions={resolvedActions}
+          alignment={resolvedAlignment}
+          data-feature-matrix-actions="true"
+          mode={actionMode ?? 'link'}
+        />
+      }
+      alignment={resolvedAlignment}
+      appearance={appearance}
+      borderAnimationEnabled={borderAnimationEnabled ?? true}
+      description={description}
+      eyebrow={eyebrow}
+      features={resolvedFeatures}
+      showOuterBorder={showOuterBorder ?? true}
+      size={size ?? 'default'}
+      title={title}
+    />
+  )
+}

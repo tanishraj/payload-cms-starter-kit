@@ -25,7 +25,8 @@ const flattenNamedFields = (fields: unknown[]): NamedField[] => {
       return []
     }
 
-    const nestedFields = 'fields' in field && Array.isArray(field.fields) ? flattenNamedFields(field.fields) : []
+    const nestedFields =
+      'fields' in field && Array.isArray(field.fields) ? flattenNamedFields(field.fields) : []
     const tabFields =
       'tabs' in field && Array.isArray(field.tabs)
         ? field.tabs.flatMap((tab) =>
@@ -66,12 +67,16 @@ const collectBlockSlugs = (fields: unknown[]): string[] => {
     const slugs =
       'blocks' in field && Array.isArray(field.blocks)
         ? field.blocks.flatMap((block) =>
-            typeof block === 'object' && block !== null && 'slug' in block && typeof block.slug === 'string'
+            typeof block === 'object' &&
+            block !== null &&
+            'slug' in block &&
+            typeof block.slug === 'string'
               ? [block.slug]
               : [],
           )
         : []
-    const nested = 'fields' in field && Array.isArray(field.fields) ? collectBlockSlugs(field.fields) : []
+    const nested =
+      'fields' in field && Array.isArray(field.fields) ? collectBlockSlugs(field.fields) : []
     const tabs =
       'tabs' in field && Array.isArray(field.tabs)
         ? field.tabs.flatMap((tab) =>
@@ -130,7 +135,16 @@ describe('system page block schemas', () => {
   })
 
   it('registers page, header, footer, and system blocks only on their intended collections', () => {
-    expect(collectBlockSlugs(Pages.fields)).toEqual(['announcement', 'heroInstitutional', 'splitFeature', 'statsStrip'])
+    expect(collectBlockSlugs(Pages.fields)).toEqual([
+      'announcement',
+      'heroInstitutional',
+      'splitFeature',
+      'featureMatrix',
+      'statsStrip',
+      'faq',
+      'reviewSubmission',
+    ])
+    expect(collectBlockSlugs(Pages.fields)).not.toContain('feature166')
     expect(collectBlockSlugs(Reviews.fields)).toEqual([])
     expect(collectBlockSlugs(Headers.fields)).toEqual(['headerNavbar12'])
     expect(collectBlockSlugs(Footers.fields)).toEqual(['footer56'])
@@ -149,8 +163,7 @@ describe('system page block schemas', () => {
     for (const block of [System404Block, SystemMaintenanceBlock, SystemComingSoonBlock]) {
       const fieldNames = flattenNamedFields(block.fields).map((field) => field.name)
       const tabsField = block.fields[0] as
-        | { tabs?: Array<{ label: string }>; type?: string }
-        | undefined
+        { tabs?: Array<{ label: string }>; type?: string } | undefined
 
       expect(tabsField?.type).toBe('tabs')
       expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
@@ -173,11 +186,14 @@ describe('system page block schemas', () => {
   it('adds the shared appearance group to every system page block', () => {
     for (const block of [System404Block, SystemMaintenanceBlock, SystemComingSoonBlock]) {
       const tabsField = block.fields[0] as
-        | { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string }
-        | undefined
+        { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string } | undefined
       const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
       const appearanceField = layoutTab?.fields.find(
-        (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'appearance',
+        (field) =>
+          typeof field === 'object' &&
+          field !== null &&
+          'name' in field &&
+          field.name === 'appearance',
       )
 
       expect(appearanceField).toMatchObject({
@@ -188,7 +204,14 @@ describe('system page block schemas', () => {
   })
 
   it('keeps the minimal shared schema and removes rich-layout fields', () => {
-    const removedFields = ['helpLinks', 'serviceMessage', 'expectedBackAt', 'eyebrow', 'signupNote', 'image']
+    const removedFields = [
+      'helpLinks',
+      'serviceMessage',
+      'expectedBackAt',
+      'eyebrow',
+      'signupNote',
+      'image',
+    ]
 
     for (const block of [System404Block, SystemMaintenanceBlock, SystemComingSoonBlock]) {
       const fieldNames = flattenNamedFields(block.fields).map((field) => field.name)
@@ -217,7 +240,9 @@ describe('system page block schemas', () => {
     )
 
     expect(getNamedField(SystemComingSoonBlock.fields, 'badge').defaultValue).toBe('Coming Soon')
-    expect(getNamedField(SystemComingSoonBlock.fields, 'heading').defaultValue).toBe('This website is being prepared')
+    expect(getNamedField(SystemComingSoonBlock.fields, 'heading').defaultValue).toBe(
+      'This website is being prepared',
+    )
     expect(getNamedField(SystemComingSoonBlock.fields, 'description').defaultValue).toBe(
       'We are finalizing the website and its information. Please check back again soon.',
     )

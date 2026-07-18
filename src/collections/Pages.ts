@@ -2,6 +2,7 @@ import { slugField, type CollectionConfig, type RelationshipFieldSingleValidatio
 
 import { AnnouncementBlock } from '@/blocks/Announcement/config'
 import { FaqBlock } from '@/blocks/Faq/config'
+import { FeatureMatrixBlock } from '@/blocks/FeatureMatrix/config'
 import { HeroInstitutionalBlock } from '@/blocks/HeroInstitutional/config'
 import { ReviewSubmissionBlock } from '@/blocks/ReviewSubmission/config'
 import { StatsStripBlock } from '@/blocks/StatsStrip/config'
@@ -202,6 +203,7 @@ export const Pages: CollectionConfig = {
                 AnnouncementBlock,
                 HeroInstitutionalBlock,
                 SplitFeatureBlock,
+                FeatureMatrixBlock,
                 StatsStripBlock,
                 FaqBlock,
                 ReviewSubmissionBlock,

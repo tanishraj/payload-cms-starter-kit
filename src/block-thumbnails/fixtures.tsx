@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 
 import { AnnouncementBlockComponent } from '@/blocks/Announcement/Component'
 import { FaqBlockComponent } from '@/blocks/Faq/Component'
+import { FeatureMatrixBlockComponent } from '@/blocks/FeatureMatrix/Component'
 import { Footer56BlockComponent } from '@/blocks/Footer56/Component'
 import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
 import { HeroInstitutionalBlockComponent } from '@/blocks/HeroInstitutional/Component'
@@ -206,6 +207,46 @@ export const blockThumbnailFixtures = {
         },
       }}
       size="compact"
+    />
+  ),
+  featureMatrix: (
+    <FeatureMatrixBlockComponent
+      actionMode="link"
+      actions={[
+        {
+          label: 'Explore our facilities',
+          linkType: 'custom',
+          url: '/facilities',
+        },
+      ]}
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      contentAlignment="center"
+      description="Four connected environments support focused study, practical work, collaboration, and community."
+      eyebrow="Facilities"
+      features={[
+        {
+          description: 'Flexible spaces for independent and collaborative learning.',
+          image: { alt: 'Modern learning environment', url: editorialLandscape },
+          title: 'Learning spaces',
+        },
+        {
+          description: 'Hands-on settings designed for practical exploration.',
+          image: { alt: 'Collaborative practical environment', url: collaboration },
+          title: 'Practical labs',
+        },
+        {
+          description: 'Helpful people and resources at every stage.',
+          image: { alt: 'Student support advisor', url: portrait },
+          title: 'Student support',
+        },
+        {
+          description: 'Shared programs that connect ideas with the wider community.',
+          image: { alt: 'Community learning environment', url: editorialLandscape },
+          title: 'Community programs',
+        },
+      ]}
+      size="compact"
+      title="Designed around the way you learn"
     />
   ),
   footer56: (

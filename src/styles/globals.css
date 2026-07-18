@@ -14,6 +14,7 @@ Uncomment to import Google fonts if you want to use them in your project.
 @import './themes/theme-sunset.css';
 @import './themes/theme-blue.css';
 @import './themes/theme-kodama.css';
+@import './custom.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
