@@ -157,7 +157,7 @@ describe('page block pipeline', () => {
     expect(layoutField?.blocks?.map((block) => block.slug)).toEqual([
       'announcement',
       'heroInstitutional',
-      'splitFeature',
+      'featureSpotlight',
       'featureMatrix',
       'statsStrip',
       'faq',
@@ -645,9 +645,9 @@ describe('page block pipeline', () => {
     expect(html).toContain('border-t border-border')
   })
 
-  it('defines the splitFeature schema with image, layout, and shared actions', async () => {
-    const { SplitFeatureBlock } = await import('@/blocks/SplitFeature/config')
-    const tabsField = SplitFeatureBlock.fields[0] as
+  it('defines the featureSpotlight schema with image, layout, and shared actions', async () => {
+    const { FeatureSpotlightBlock } = await import('@/blocks/FeatureSpotlight/config')
+    const tabsField = FeatureSpotlightBlock.fields[0] as
       { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string } | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
     const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
@@ -899,10 +899,10 @@ describe('page block pipeline', () => {
     expectContentActionsFieldSet(contentTab?.fields ?? [], layoutTab?.fields ?? [])
   })
 
-  it('renders a splitFeature page block through PageContent', () => {
+  it('renders a featureSpotlight page block through PageContent', () => {
     const result = PageContent({
       page: {
-        id: 'page-split-1',
+        id: 'page-spotlight-1',
         layout: [
           {
             appearance: {
@@ -912,7 +912,7 @@ describe('page block pipeline', () => {
             },
             actionMode: 'link',
             actions: [{ label: 'See all programs', linkType: 'custom', url: '/programs' }],
-            blockType: 'splitFeature',
+            blockType: 'featureSpotlight',
             description: 'Choose from MD, MD-PhD, and specialized tracks.',
             eyebrow: 'Programs',
             image: {
@@ -932,10 +932,10 @@ describe('page block pipeline', () => {
 
     const html = renderToStaticMarkup(result)
 
-    expect(html).toContain('data-split-feature-position="right"')
-    expect(html).toContain('data-split-feature-image-position="right"')
-    expect(html).toContain('data-split-feature-layout="split"')
-    expect(html).toContain('data-split-feature-background="muted"')
+    expect(html).toContain('data-feature-spotlight-position="right"')
+    expect(html).toContain('data-feature-spotlight-image-position="right"')
+    expect(html).toContain('data-feature-spotlight-layout="split"')
+    expect(html).toContain('data-feature-spotlight-background="muted"')
     expect(html).toContain('href="/programs"')
     expect(html).toContain('See all programs')
     expect(html).toContain('border-b border-border')

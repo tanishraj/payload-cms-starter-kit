@@ -5,7 +5,7 @@ import { FaqBlockComponent } from './Faq/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { HeroInstitutionalBlockComponent } from './HeroInstitutional/Component'
 import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
-import { SplitFeatureBlockComponent } from './SplitFeature/Component'
+import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
 import { StatsStripBlockComponent } from './StatsStrip/Component'
 
 export type PageBlock = NonNullable<Page['layout']>[number]
@@ -49,9 +49,9 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
                 {...block}
               />
             )
-          case 'splitFeature':
+          case 'featureSpotlight':
             return (
-              <SplitFeatureBlockComponent
+              <FeatureSpotlightBlockComponent
                 key={block.id ?? `${block.blockType}-${index}`}
                 {...block}
               />

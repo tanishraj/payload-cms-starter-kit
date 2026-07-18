@@ -7,7 +7,7 @@ import { Footer56BlockComponent } from '@/blocks/Footer56/Component'
 import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
 import { HeroInstitutionalBlockComponent } from '@/blocks/HeroInstitutional/Component'
 import { ReviewSubmissionBlockComponent } from '@/blocks/ReviewSubmission/Component'
-import { SplitFeatureBlockComponent } from '@/blocks/SplitFeature/Component'
+import { FeatureSpotlightBlockComponent } from '@/blocks/FeatureSpotlight/Component'
 import { StatsStripBlockComponent } from '@/blocks/StatsStrip/Component'
 import { System404BlockComponent } from '@/blocks/System404/Component'
 import { SystemComingSoonBlockComponent } from '@/blocks/SystemComingSoon/Component'
@@ -318,8 +318,8 @@ export const blockThumbnailFixtures = {
       title="Tell us about your experience."
     />
   ),
-  splitFeature: (
-    <SplitFeatureBlockComponent
+  featureSpotlight: (
+    <FeatureSpotlightBlockComponent
       actionMode="link"
       actions={[
         {

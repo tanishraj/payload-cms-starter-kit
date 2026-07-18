@@ -7,7 +7,7 @@ import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
 
-type SplitFeatureBlockLike = {
+type FeatureSpotlightBlockLike = {
   actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
@@ -66,13 +66,19 @@ const edgeLayoutMinHeightClasses = {
   comfortable: 'min-h-[30rem] md:min-h-[40rem]',
 } as const
 
+const edgeMediaMinHeightClasses = {
+  compact: 'min-h-64',
+  default: 'min-h-72',
+  comfortable: 'min-h-80',
+} as const
+
 const contentVerticalAlignmentClasses = {
   top: 'justify-start',
   center: 'justify-center',
   bottom: 'justify-end',
 } as const
 
-export function SplitFeatureBlockComponent({
+export function FeatureSpotlightBlockComponent({
   actionMode = 'link',
   actions,
   appearance,
@@ -86,7 +92,7 @@ export function SplitFeatureBlockComponent({
   mediaPosition = 'left',
   size = 'default',
   title,
-}: SplitFeatureBlockLike) {
+}: FeatureSpotlightBlockLike) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const media = getMediaImageProps({
     media: image as never,
@@ -139,7 +145,7 @@ export function SplitFeatureBlockComponent({
       <ContentActions
         actions={resolvedActions}
         alignment={renderAsSplit ? 'left' : 'center'}
-        data-split-feature-actions="true"
+        data-feature-spotlight-actions="true"
         mode={actionMode ?? 'link'}
       />
     </div>
@@ -148,16 +154,16 @@ export function SplitFeatureBlockComponent({
   return (
     <section
       className={appearanceClasses.className}
-      data-split-feature-action-mode={actionMode ?? 'link'}
-      data-split-feature-background={appearance?.background ?? 'none'}
-      data-split-feature-layout={renderAsSplit ? 'split' : 'contentOnly'}
-      data-split-feature-media-fill={renderAsSplit ? resolvedMediaFillMode : 'contentOnly'}
-      data-split-feature-content-vertical-alignment={
+      data-feature-spotlight-action-mode={actionMode ?? 'link'}
+      data-feature-spotlight-background={appearance?.background ?? 'none'}
+      data-feature-spotlight-layout={renderAsSplit ? 'split' : 'contentOnly'}
+      data-feature-spotlight-media-fill={renderAsSplit ? resolvedMediaFillMode : 'contentOnly'}
+      data-feature-spotlight-content-vertical-alignment={
         renderAsSplit ? resolvedContentVerticalAlignment : 'contentOnly'
       }
-      data-split-feature-image-position={resolvedImagePosition}
-      data-split-feature-position={renderAsSplit ? resolvedPosition : 'contentOnly'}
-      data-split-feature-size={resolvedSize}
+      data-feature-spotlight-image-position={resolvedImagePosition}
+      data-feature-spotlight-position={renderAsSplit ? resolvedPosition : 'contentOnly'}
+      data-feature-spotlight-size={resolvedSize}
     >
       {renderAsEdgeToEdge ? (
         <div
@@ -168,8 +174,12 @@ export function SplitFeatureBlockComponent({
         >
           {renderAsSplit ? (
             <div
-              className={cn(order.media, 'relative min-h-full overflow-hidden')}
-              data-split-feature-media-frame="edgeToEdge"
+              className={cn(
+                order.media,
+                'relative aspect-[4/3] overflow-hidden md:min-h-full md:aspect-auto',
+                edgeMediaMinHeightClasses[resolvedSize],
+              )}
+              data-feature-spotlight-media-frame="edgeToEdge"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -209,14 +219,14 @@ export function SplitFeatureBlockComponent({
           </div>
         </div>
       ) : renderAsContainedFill ? (
-        <div className="mx-auto max-w-screen-2xl px-4">
+        <div className="mx-auto max-w-screen-2xl px-0 md:px-4">
           <div
             className={cn(
               'grid items-stretch md:grid-cols-2',
               edgeLayoutMinHeightClasses[resolvedSize],
             )}
           >
-            <div className={cn(order.media)} data-split-feature-media-frame="containedFill">
+            <div className={cn(order.media)} data-feature-spotlight-media-frame="containedFill">
               <div className="relative aspect-[4/3] overflow-hidden md:h-full md:aspect-auto">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -246,7 +256,7 @@ export function SplitFeatureBlockComponent({
         <div className={cn('mx-auto max-w-screen-2xl px-4', containedPaddingClasses[resolvedSize])}>
           {renderAsSplit ? (
             <div className={cn('grid items-stretch gap-8 md:grid-cols-2 md:gap-12 lg:gap-16')}>
-              <div className={cn(order.media)} data-split-feature-media-frame="contained">
+              <div className={cn(order.media)} data-feature-spotlight-media-frame="contained">
                 <div className="overflow-hidden rounded-xl border border-border bg-muted/20">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img

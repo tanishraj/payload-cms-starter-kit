@@ -46,11 +46,11 @@ describe('block thumbnail metadata', () => {
       'announcement',
       'faq',
       'featureMatrix',
+      'featureSpotlight',
       'footer56',
       'headerNavbar12',
       'heroInstitutional',
       'reviewSubmission',
-      'splitFeature',
       'statsStrip',
       'system404',
       'systemComingSoon',
@@ -97,6 +97,11 @@ describe('block thumbnail metadata', () => {
       filename: 'feature-matrix.jpg',
       label: 'Feature Matrix',
       slug: 'featureMatrix',
+    })
+    expect(getBlockThumbnailDefinition('featureSpotlight')).toMatchObject({
+      filename: 'feature-spotlight.jpg',
+      label: 'Feature Spotlight',
+      slug: 'featureSpotlight',
     })
     expect(definitionSlugs).not.toContain('feature166')
     expect(filenames).not.toContain('feature-166.jpg')

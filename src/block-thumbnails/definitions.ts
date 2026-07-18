@@ -31,10 +31,10 @@ export const blockThumbnailDefinitions = [
     slug: 'heroInstitutional',
   }),
   defineThumbnail({
-    alt: 'Split Feature block preview',
-    filename: 'split-feature.jpg',
-    label: 'Split Feature',
-    slug: 'splitFeature',
+    alt: 'Feature Spotlight block preview',
+    filename: 'feature-spotlight.jpg',
+    label: 'Feature Spotlight',
+    slug: 'featureSpotlight',
   }),
   defineThumbnail({
     alt: 'Feature Matrix block preview',

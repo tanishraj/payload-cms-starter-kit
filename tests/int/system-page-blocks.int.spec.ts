@@ -138,7 +138,7 @@ describe('system page block schemas', () => {
     expect(collectBlockSlugs(Pages.fields)).toEqual([
       'announcement',
       'heroInstitutional',
-      'splitFeature',
+      'featureSpotlight',
       'featureMatrix',
       'statsStrip',
       'faq',

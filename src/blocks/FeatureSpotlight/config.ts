@@ -11,23 +11,23 @@ type LayoutMode = 'split' | 'contentOnly'
 type MediaFillMode = 'contained' | 'containedFill' | 'edgeToEdge'
 type ContentVerticalAlignment = 'bottom' | 'center' | 'top'
 type ImagePosition = 'bottom' | 'center' | 'left' | 'right' | 'top'
-type SplitFeatureSiblingData = {
+type FeatureSpotlightSiblingData = {
   contentVerticalAlignment?: ContentVerticalAlignment | null
   layoutMode?: LayoutMode | null
   mediaFillMode?: MediaFillMode | null
   imagePosition?: ImagePosition | null
 }
 
-const isSplitMode = (_data: unknown, siblingData: SplitFeatureSiblingData) =>
+const isSplitMode = (_data: unknown, siblingData: FeatureSpotlightSiblingData) =>
   siblingData?.layoutMode === 'split'
 
-export const SplitFeatureBlock: Block = {
-  slug: 'splitFeature',
-  interfaceName: 'SplitFeatureBlock',
-  admin: getBlockThumbnailAdmin('splitFeature'),
+export const FeatureSpotlightBlock: Block = {
+  slug: 'featureSpotlight',
+  interfaceName: 'FeatureSpotlightBlock',
+  admin: getBlockThumbnailAdmin('featureSpotlight'),
   labels: {
-    singular: 'Split Feature',
-    plural: 'Split Features',
+    singular: 'Feature Spotlight',
+    plural: 'Feature Spotlights',
   },
   fields: [
     {
@@ -42,7 +42,7 @@ export const SplitFeatureBlock: Block = {
               relationTo: 'media',
               validate: (
                 value: unknown,
-                { siblingData }: { siblingData?: SplitFeatureSiblingData },
+                { siblingData }: { siblingData?: FeatureSpotlightSiblingData },
               ) => {
                 if (siblingData?.layoutMode === 'split' && !value) {
                   return 'Image is required when layout mode is 50 / 50 split.'
@@ -97,7 +97,7 @@ export const SplitFeatureBlock: Block = {
               },
               validate: (
                 value: unknown,
-                { siblingData }: { siblingData?: SplitFeatureSiblingData },
+                { siblingData }: { siblingData?: FeatureSpotlightSiblingData },
               ) => {
                 if (siblingData?.layoutMode === 'split' && !value) {
                   return 'Media position is required when layout mode is 50 / 50 split.'
@@ -138,7 +138,7 @@ export const SplitFeatureBlock: Block = {
               },
               validate: (
                 value: unknown,
-                { siblingData }: { siblingData?: SplitFeatureSiblingData },
+                { siblingData }: { siblingData?: FeatureSpotlightSiblingData },
               ) => {
                 if (siblingData?.layoutMode === 'split' && !value) {
                   return 'Media fill is required when layout mode is 50 / 50 split.'

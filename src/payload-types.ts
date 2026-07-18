@@ -178,7 +178,7 @@ export interface Page {
     | (
         | AnnouncementBlock
         | HeroInstitutionalBlock
-        | SplitFeatureBlock
+        | FeatureSpotlightBlock
         | FeatureMatrixBlock
         | StatsStripBlock
         | FaqBlock
@@ -372,9 +372,9 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "SplitFeatureBlock".
+ * via the `definition` "FeatureSpotlightBlock".
  */
-export interface SplitFeatureBlock {
+export interface FeatureSpotlightBlock {
   image?: (string | null) | Media;
   eyebrow?: string | null;
   title: string;
@@ -403,7 +403,7 @@ export interface SplitFeatureBlock {
   contentVerticalAlignment?: ('top' | 'center' | 'bottom') | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'splitFeature';
+  blockType: 'featureSpotlight';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1672,7 +1672,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         announcement?: T | AnnouncementBlockSelect<T>;
         heroInstitutional?: T | HeroInstitutionalBlockSelect<T>;
-        splitFeature?: T | SplitFeatureBlockSelect<T>;
+        featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
         statsStrip?: T | StatsStripBlockSelect<T>;
         faq?: T | FaqBlockSelect<T>;
@@ -1763,9 +1763,9 @@ export interface HeroInstitutionalBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "SplitFeatureBlock_select".
+ * via the `definition` "FeatureSpotlightBlock_select".
  */
-export interface SplitFeatureBlockSelect<T extends boolean = true> {
+export interface FeatureSpotlightBlockSelect<T extends boolean = true> {
   image?: T;
   eyebrow?: T;
   title?: T;

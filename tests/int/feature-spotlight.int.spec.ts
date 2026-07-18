@@ -2,12 +2,22 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 
-import { SplitFeatureBlockComponent } from '@/blocks/SplitFeature/Component'
+import { FeatureSpotlightBlockComponent } from '@/blocks/FeatureSpotlight/Component'
+import { FeatureSpotlightBlock } from '@/blocks/FeatureSpotlight/config'
 
-describe('split feature block', () => {
+describe('feature spotlight block', () => {
+  it('uses the canonical Payload identity', () => {
+    expect(FeatureSpotlightBlock.slug).toBe('featureSpotlight')
+    expect(FeatureSpotlightBlock.interfaceName).toBe('FeatureSpotlightBlock')
+    expect(FeatureSpotlightBlock.labels).toEqual({
+      singular: 'Feature Spotlight',
+      plural: 'Feature Spotlights',
+    })
+  })
+
   it('renders image-right layout with a text link CTA', () => {
     const html = renderToStaticMarkup(
-      createElement(SplitFeatureBlockComponent, {
+      createElement(FeatureSpotlightBlockComponent, {
         actionMode: 'link',
         actions: [
           { label: 'See all programs', linkType: 'custom', url: '/programs' },
@@ -29,14 +39,14 @@ describe('split feature block', () => {
       }),
     )
 
-    expect(html).toContain('data-split-feature-position="right"')
-    expect(html).toContain('data-split-feature-content-vertical-alignment="top"')
-    expect(html).toContain('data-split-feature-image-position="right"')
-    expect(html).toContain('data-split-feature-layout="split"')
-    expect(html).toContain('data-split-feature-action-mode="link"')
+    expect(html).toContain('data-feature-spotlight-position="right"')
+    expect(html).toContain('data-feature-spotlight-content-vertical-alignment="top"')
+    expect(html).toContain('data-feature-spotlight-image-position="right"')
+    expect(html).toContain('data-feature-spotlight-layout="split"')
+    expect(html).toContain('data-feature-spotlight-action-mode="link"')
     expect(html).toContain('data-action-mode="link"')
-    expect(html).toContain('data-split-feature-background="muted"')
-    expect(html).toContain('data-split-feature-actions="true"')
+    expect(html).toContain('data-feature-spotlight-background="muted"')
+    expect(html).toContain('data-feature-spotlight-actions="true"')
     expect(html).toContain('href="/programs"')
     expect(html).toContain('href="/pathways"')
     expect(html).toContain('See all programs')
@@ -53,7 +63,7 @@ describe('split feature block', () => {
 
   it('renders muted background and two CTA buttons', () => {
     const html = renderToStaticMarkup(
-      createElement(SplitFeatureBlockComponent, {
+      createElement(FeatureSpotlightBlockComponent, {
         actionMode: 'button',
         actions: [
           {
@@ -78,8 +88,8 @@ describe('split feature block', () => {
       }),
     )
 
-    expect(html).toContain('data-split-feature-background="accent"')
-    expect(html).toContain('data-split-feature-action-mode="button"')
+    expect(html).toContain('data-feature-spotlight-background="accent"')
+    expect(html).toContain('data-feature-spotlight-action-mode="button"')
     expect(html).toContain('data-action-mode="button"')
     expect(html).toContain('data-action-variant="default"')
     expect(html).toContain('data-action-variant="secondary"')
@@ -94,7 +104,7 @@ describe('split feature block', () => {
 
   it('renders centered content-only layout without an image', () => {
     const html = renderToStaticMarkup(
-      createElement(SplitFeatureBlockComponent, {
+      createElement(FeatureSpotlightBlockComponent, {
         actionMode: 'link',
         actions: [{ label: 'Start your application', linkType: 'custom', url: '/apply' }],
         description: 'Applications for the Class of 2030 open August 1.',
@@ -104,9 +114,9 @@ describe('split feature block', () => {
       }),
     )
 
-    expect(html).toContain('data-split-feature-layout="contentOnly"')
-    expect(html).toContain('data-split-feature-position="contentOnly"')
-    expect(html).toContain('data-split-feature-size="compact"')
+    expect(html).toContain('data-feature-spotlight-layout="contentOnly"')
+    expect(html).toContain('data-feature-spotlight-position="contentOnly"')
+    expect(html).toContain('data-feature-spotlight-size="compact"')
     expect(html).toContain('py-10')
     expect(html).toContain('md:py-10')
     expect(html).toContain('href="/apply"')
@@ -115,7 +125,7 @@ describe('split feature block', () => {
 
   it('supports edge-to-edge media fill while keeping content contained', () => {
     const html = renderToStaticMarkup(
-      createElement(SplitFeatureBlockComponent, {
+      createElement(FeatureSpotlightBlockComponent, {
         actionMode: 'link',
         actions: [{ label: 'Explore facilities', linkType: 'custom', url: '/facilities' }],
         contentVerticalAlignment: 'bottom',
@@ -130,16 +140,19 @@ describe('split feature block', () => {
       }),
     )
 
-    expect(html).toContain('data-split-feature-layout="split"')
-    expect(html).toContain('data-split-feature-position="left"')
-    expect(html).toContain('data-split-feature-image-position="bottom"')
-    expect(html).toContain('data-split-feature-content-vertical-alignment="bottom"')
-    expect(html).toContain('data-split-feature-media-fill="edgeToEdge"')
-    expect(html).toContain('data-split-feature-media-frame="edgeToEdge"')
-    expect(html).toContain('data-split-feature-size="comfortable"')
+    expect(html).toContain('data-feature-spotlight-layout="split"')
+    expect(html).toContain('data-feature-spotlight-position="left"')
+    expect(html).toContain('data-feature-spotlight-image-position="bottom"')
+    expect(html).toContain('data-feature-spotlight-content-vertical-alignment="bottom"')
+    expect(html).toContain('data-feature-spotlight-media-fill="edgeToEdge"')
+    expect(html).toContain('data-feature-spotlight-media-frame="edgeToEdge"')
+    expect(html).toContain('data-feature-spotlight-size="comfortable"')
     expect(html).toContain('min-h-[30rem]')
     expect(html).toContain('md:min-h-[40rem]')
-    expect(html).toContain('relative min-h-full overflow-hidden')
+    expect(html).toContain('min-h-80')
+    expect(html).toContain(
+      'relative aspect-[4/3] overflow-hidden md:min-h-full md:aspect-auto',
+    )
     expect(html).toContain('py-16')
     expect(html).toContain('md:py-16')
     expect(html).toContain('flex min-h-full flex-col justify-end')
@@ -150,7 +163,7 @@ describe('split feature block', () => {
 
   it('aligns image-right edge-to-edge content with the website container gutter', () => {
     const html = renderToStaticMarkup(
-      createElement(SplitFeatureBlockComponent, {
+      createElement(FeatureSpotlightBlockComponent, {
         contentVerticalAlignment: 'center',
         description: 'Train with faculty mentors across clinics, labs, and simulation spaces.',
         image: { alt: 'Simulation lab', url: '/media/sim-lab.jpg' } as never,
@@ -162,8 +175,9 @@ describe('split feature block', () => {
       }),
     )
 
-    expect(html).toContain('data-split-feature-position="right"')
-    expect(html).toContain('data-split-feature-media-fill="edgeToEdge"')
+    expect(html).toContain('data-feature-spotlight-position="right"')
+    expect(html).toContain('data-feature-spotlight-media-fill="edgeToEdge"')
+    expect(html).toContain('min-h-72')
     expect(html).toContain('ml-auto h-full w-full max-w-[calc(var(--breakpoint-2xl)/2)] pl-4')
     expect(html).toContain(
       'flex min-h-full flex-col justify-center py-12 pr-4 md:py-12 md:pr-8 lg:pr-12',
@@ -173,7 +187,7 @@ describe('split feature block', () => {
 
   it('supports contained-fill media while keeping the layout inside the normal container', () => {
     const html = renderToStaticMarkup(
-      createElement(SplitFeatureBlockComponent, {
+      createElement(FeatureSpotlightBlockComponent, {
         actionMode: 'link',
         actions: [{ label: 'Explore facilities', linkType: 'custom', url: '/facilities' }],
         contentVerticalAlignment: 'top',
@@ -188,13 +202,14 @@ describe('split feature block', () => {
       }),
     )
 
-    expect(html).toContain('data-split-feature-layout="split"')
-    expect(html).toContain('data-split-feature-position="left"')
-    expect(html).toContain('data-split-feature-image-position="center"')
-    expect(html).toContain('data-split-feature-content-vertical-alignment="top"')
-    expect(html).toContain('data-split-feature-media-fill="containedFill"')
-    expect(html).toContain('data-split-feature-media-frame="containedFill"')
-    expect(html).toContain('data-split-feature-size="comfortable"')
+    expect(html).toContain('data-feature-spotlight-layout="split"')
+    expect(html).toContain('data-feature-spotlight-position="left"')
+    expect(html).toContain('data-feature-spotlight-image-position="center"')
+    expect(html).toContain('data-feature-spotlight-content-vertical-alignment="top"')
+    expect(html).toContain('data-feature-spotlight-media-fill="containedFill"')
+    expect(html).toContain('data-feature-spotlight-media-frame="containedFill"')
+    expect(html).toContain('data-feature-spotlight-size="comfortable"')
+    expect(html).toContain('mx-auto max-w-screen-2xl px-0 md:px-4')
     expect(html).toContain('min-h-[30rem]')
     expect(html).toContain('md:min-h-[40rem]')
     expect(html).toContain('relative aspect-[4/3] overflow-hidden md:h-full md:aspect-auto')
@@ -208,7 +223,7 @@ describe('split feature block', () => {
 
   it('aligns image-right contained-fill content with the website container gutter', () => {
     const html = renderToStaticMarkup(
-      createElement(SplitFeatureBlockComponent, {
+      createElement(FeatureSpotlightBlockComponent, {
         contentVerticalAlignment: 'center',
         description: 'Train with faculty mentors across clinics, labs, and simulation spaces.',
         image: { alt: 'Simulation lab', url: '/media/sim-lab.jpg' } as never,
@@ -220,9 +235,9 @@ describe('split feature block', () => {
       }),
     )
 
-    expect(html).toContain('data-split-feature-position="right"')
-    expect(html).toContain('data-split-feature-media-fill="containedFill"')
-    expect(html).toContain('mx-auto max-w-screen-2xl px-4')
+    expect(html).toContain('data-feature-spotlight-position="right"')
+    expect(html).toContain('data-feature-spotlight-media-fill="containedFill"')
+    expect(html).toContain('mx-auto max-w-screen-2xl px-0 md:px-4')
     expect(html).toContain(
       'flex min-h-full flex-col justify-center py-12 pr-4 md:py-12 md:pr-8 lg:pr-12',
     )

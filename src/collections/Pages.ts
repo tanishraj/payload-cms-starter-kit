@@ -6,7 +6,7 @@ import { FeatureMatrixBlock } from '@/blocks/FeatureMatrix/config'
 import { HeroInstitutionalBlock } from '@/blocks/HeroInstitutional/config'
 import { ReviewSubmissionBlock } from '@/blocks/ReviewSubmission/config'
 import { StatsStripBlock } from '@/blocks/StatsStrip/config'
-import { SplitFeatureBlock } from '@/blocks/SplitFeature/config'
+import { FeatureSpotlightBlock } from '@/blocks/FeatureSpotlight/config'
 import type { Page } from '@/payload-types'
 import {
   allowPublicReadOrCapability,
@@ -202,7 +202,7 @@ export const Pages: CollectionConfig = {
               blocks: [
                 AnnouncementBlock,
                 HeroInstitutionalBlock,
-                SplitFeatureBlock,
+                FeatureSpotlightBlock,
                 FeatureMatrixBlock,
                 StatsStripBlock,
                 FaqBlock,
