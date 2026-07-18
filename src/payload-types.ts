@@ -184,6 +184,7 @@ export interface Page {
         | GalleryShowcaseBlock
         | StatsStripBlock
         | QaAccordionBlock
+        | RatingSpotlightBlock
         | ReviewSubmissionBlock
       )[]
     | null;
@@ -626,6 +627,41 @@ export interface QaAccordionBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'qaAccordion';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RatingSpotlightBlock".
+ */
+export interface RatingSpotlightBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
+  ratingData: {
+    dataMode: 'live' | 'manual';
+    manualRating?: number | null;
+    manualReviewCount?: number | null;
+  };
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  actionMode: 'link' | 'button';
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ratingSpotlight';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1758,6 +1794,7 @@ export interface PagesSelect<T extends boolean = true> {
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
         statsStrip?: T | StatsStripBlockSelect<T>;
         qaAccordion?: T | QaAccordionBlockSelect<T>;
+        ratingSpotlight?: T | RatingSpotlightBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
       };
   metaTitle?: T;
@@ -2093,6 +2130,44 @@ export interface QaAccordionBlockSelect<T extends boolean = true> {
   sideActionMode?: T;
   size?: T;
   defaultOpenFirst?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RatingSpotlightBlock_select".
+ */
+export interface RatingSpotlightBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
+  ratingData?:
+    | T
+    | {
+        dataMode?: T;
+        manualRating?: T;
+        manualReviewCount?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  actionMode?: T;
+  contentAlignment?: T;
+  size?: T;
   id?: T;
   blockName?: T;
 }

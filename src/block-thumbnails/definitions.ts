@@ -78,6 +78,12 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Rating Spotlight block preview',
+    filename: 'rating-spotlight.jpg',
+    label: 'Rating Spotlight',
+    slug: 'ratingSpotlight',
+  }),
+  defineThumbnail({
     alt: 'Header Navbar 12 block preview',
     filename: 'header-navbar-12.jpg',
     label: 'Header Navbar 12',

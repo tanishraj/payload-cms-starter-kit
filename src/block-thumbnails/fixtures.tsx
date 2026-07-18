@@ -8,6 +8,7 @@ import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
 import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
 import { ProfileCarouselBlockComponent } from '@/blocks/ProfileCarousel/Component'
 import { QaAccordionBlockComponent } from '@/blocks/QaAccordion/Component'
+import { RatingSpotlightBlockComponent } from '@/blocks/RatingSpotlight/Component'
 import { ReviewSubmissionBlockComponent } from '@/blocks/ReviewSubmission/Component'
 import { FeatureSpotlightBlockComponent } from '@/blocks/FeatureSpotlight/Component'
 import { StatsStripBlockComponent } from '@/blocks/StatsStrip/Component'
@@ -406,6 +407,25 @@ export const blockThumbnailFixtures = {
       form={reviewFormFixture}
       size="compact"
       title="Tell us about your experience."
+    />
+  ),
+  ratingSpotlight: (
+    <RatingSpotlightBlockComponent
+      actionMode="button"
+      actions={[
+        {
+          label: 'Leave a review',
+          linkType: 'custom',
+          url: '/reviews/new',
+          variant: 'default',
+        },
+      ]}
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      description="Students, alumni, parents, and campus visitors — your rating and review help us keep sharpening what works."
+      eyebrow="Feedback"
+      ratingData={{ dataMode: 'manual', manualRating: 4.8, manualReviewCount: 1240 }}
+      size="compact"
+      title="Tell us how we're doing."
     />
   ),
   featureSpotlight: (

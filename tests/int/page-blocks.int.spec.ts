@@ -163,6 +163,7 @@ describe('page block pipeline', () => {
       'galleryShowcase',
       'statsStrip',
       'qaAccordion',
+      'ratingSpotlight',
       'reviewSubmission',
     ])
     expect(layoutField?.blocks?.map((block) => block.slug)).not.toContain('feature166')

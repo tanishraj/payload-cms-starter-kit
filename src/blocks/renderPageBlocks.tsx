@@ -6,6 +6,7 @@ import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
 import { HeroBannerBlockComponent } from './HeroBanner/Component'
 import { ProfileCarouselBlockComponent } from './ProfileCarousel/Component'
+import { RatingSpotlightBlockComponent } from './RatingSpotlight/Component'
 import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
 import { PageBlockStack } from './PageBlockStack'
@@ -67,6 +68,13 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
           case 'reviewSubmission':
             return (
               <ReviewSubmissionBlockComponent
+                key={block.id ?? `${block.blockType}-${index}`}
+                {...block}
+              />
+            )
+          case 'ratingSpotlight':
+            return (
+              <RatingSpotlightBlockComponent
                 key={block.id ?? `${block.blockType}-${index}`}
                 {...block}
               />
