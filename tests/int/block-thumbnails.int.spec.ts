@@ -44,12 +44,12 @@ describe('block thumbnail metadata', () => {
 
     expect(registeredSlugs.slice().sort()).toEqual([
       'announcement',
-      'faq',
       'featureMatrix',
       'featureSpotlight',
       'footer56',
       'headerNavbar12',
       'heroInstitutional',
+      'qaAccordion',
       'reviewSubmission',
       'statsStrip',
       'system404',
@@ -102,6 +102,11 @@ describe('block thumbnail metadata', () => {
       filename: 'feature-spotlight.jpg',
       label: 'Feature Spotlight',
       slug: 'featureSpotlight',
+    })
+    expect(getBlockThumbnailDefinition('qaAccordion')).toMatchObject({
+      filename: 'qa-accordion.jpg',
+      label: 'Q&A Accordion',
+      slug: 'qaAccordion',
     })
     expect(definitionSlugs).not.toContain('feature166')
     expect(filenames).not.toContain('feature-166.jpg')

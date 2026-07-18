@@ -181,7 +181,7 @@ export interface Page {
         | FeatureSpotlightBlock
         | FeatureMatrixBlock
         | StatsStripBlock
-        | FaqBlock
+        | QaAccordionBlock
         | ReviewSubmissionBlock
       )[]
     | null;
@@ -473,9 +473,9 @@ export interface StatsStripBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FaqBlock".
+ * via the `definition` "QaAccordionBlock".
  */
-export interface FaqBlock {
+export interface QaAccordionBlock {
   heading: string;
   description?: string | null;
   headerActions?:
@@ -538,14 +538,14 @@ export interface FaqBlock {
   };
   contentAlignment: 'left' | 'center' | 'right';
   layoutMode: 'fiftyFifty' | 'oneThird' | 'fullWidth';
-  faqPlacement?: ('left' | 'right') | null;
+  accordionPlacement?: ('left' | 'right') | null;
   headerActionMode: 'link' | 'button';
   sideActionMode?: ('link' | 'button') | null;
   size: 'compact' | 'default' | 'comfortable';
   defaultOpenFirst?: boolean | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'faq';
+  blockType: 'qaAccordion';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1675,7 +1675,7 @@ export interface PagesSelect<T extends boolean = true> {
         featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
         statsStrip?: T | StatsStripBlockSelect<T>;
-        faq?: T | FaqBlockSelect<T>;
+        qaAccordion?: T | QaAccordionBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
       };
   metaTitle?: T;
@@ -1867,9 +1867,9 @@ export interface StatsStripBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FaqBlock_select".
+ * via the `definition` "QaAccordionBlock_select".
  */
-export interface FaqBlockSelect<T extends boolean = true> {
+export interface QaAccordionBlockSelect<T extends boolean = true> {
   heading?: T;
   description?: T;
   headerActions?:
@@ -1926,7 +1926,7 @@ export interface FaqBlockSelect<T extends boolean = true> {
       };
   contentAlignment?: T;
   layoutMode?: T;
-  faqPlacement?: T;
+  accordionPlacement?: T;
   headerActionMode?: T;
   sideActionMode?: T;
   size?: T;

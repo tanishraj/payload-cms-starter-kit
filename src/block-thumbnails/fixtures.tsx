@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react'
 
 import { AnnouncementBlockComponent } from '@/blocks/Announcement/Component'
-import { FaqBlockComponent } from '@/blocks/Faq/Component'
 import { FeatureMatrixBlockComponent } from '@/blocks/FeatureMatrix/Component'
 import { Footer56BlockComponent } from '@/blocks/Footer56/Component'
 import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
 import { HeroInstitutionalBlockComponent } from '@/blocks/HeroInstitutional/Component'
+import { QaAccordionBlockComponent } from '@/blocks/QaAccordion/Component'
 import { ReviewSubmissionBlockComponent } from '@/blocks/ReviewSubmission/Component'
 import { FeatureSpotlightBlockComponent } from '@/blocks/FeatureSpotlight/Component'
 import { StatsStripBlockComponent } from '@/blocks/StatsStrip/Component'
@@ -57,7 +57,7 @@ const richTextParagraph = (text: string) => ({
   },
 })
 
-const faqFixtureItems = [
+const qaAccordionFixtureItems = [
   {
     question: 'How do I choose the right program?',
     answer: richTextParagraph(
@@ -180,12 +180,12 @@ export const blockThumbnailFixtures = {
       label="Latest"
     />
   ),
-  faq: (
-    <FaqBlockComponent
+  qaAccordion: (
+    <QaAccordionBlockComponent
       defaultOpenFirst
       description="Clear answers to common questions about programs, visits, and support."
       heading="Frequently asked questions"
-      items={faqFixtureItems}
+      items={qaAccordionFixtureItems}
       layoutMode="fiftyFifty"
       sideActionMode="link"
       sideColumn={{

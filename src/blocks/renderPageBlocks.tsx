@@ -1,7 +1,7 @@
 import type { Page } from '@/payload-types'
 
 import { AnnouncementBlockComponent } from './Announcement/Component'
-import { FaqBlockComponent } from './Faq/Component'
+import { QaAccordionBlockComponent } from './QaAccordion/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { HeroInstitutionalBlockComponent } from './HeroInstitutional/Component'
 import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
@@ -34,8 +34,13 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
                 {...block}
               />
             )
-          case 'faq':
-            return <FaqBlockComponent key={block.id ?? `${block.blockType}-${index}`} {...block} />
+          case 'qaAccordion':
+            return (
+              <QaAccordionBlockComponent
+                key={block.id ?? `${block.blockType}-${index}`}
+                {...block}
+              />
+            )
           case 'featureMatrix':
             return (
               <FeatureMatrixBlockComponent

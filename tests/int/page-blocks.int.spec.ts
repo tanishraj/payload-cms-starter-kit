@@ -160,7 +160,7 @@ describe('page block pipeline', () => {
       'featureSpotlight',
       'featureMatrix',
       'statsStrip',
-      'faq',
+      'qaAccordion',
       'reviewSubmission',
     ])
     expect(layoutField?.blocks?.map((block) => block.slug)).not.toContain('feature166')
@@ -753,9 +753,9 @@ describe('page block pipeline', () => {
     expectContentActionsFieldSet(contentTab?.fields ?? [], layoutTab?.fields ?? [])
   })
 
-  it('defines the faq schema with rich-text items, optional side column, and shared appearance', async () => {
-    const { FaqBlock } = await import('@/blocks/Faq/config')
-    const tabsField = FaqBlock.fields[0] as
+  it('defines the qaAccordion schema with rich-text items, optional side column, and shared appearance', async () => {
+    const { QaAccordionBlock } = await import('@/blocks/QaAccordion/config')
+    const tabsField = QaAccordionBlock.fields[0] as
       { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string } | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
     const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
@@ -802,12 +802,12 @@ describe('page block pipeline', () => {
       options?: Array<{ value: string }>
       type?: string
     }>(layoutTab?.fields ?? [], 'layoutMode')
-    const faqPlacementField = getNamedField<{
+    const accordionPlacementField = getNamedField<{
       admin?: { condition?: unknown }
       defaultValue?: string
       options?: Array<{ value: string }>
       type?: string
-    }>(layoutTab?.fields ?? [], 'faqPlacement')
+    }>(layoutTab?.fields ?? [], 'accordionPlacement')
     const sideActionModeField = getNamedField<{
       admin?: { condition?: unknown }
       defaultValue?: string
@@ -854,10 +854,13 @@ describe('page block pipeline', () => {
       'oneThird',
       'fullWidth',
     ])
-    expect(faqPlacementField?.type).toBe('select')
-    expect(faqPlacementField?.defaultValue).toBe('right')
-    expect(faqPlacementField?.options?.map((option) => option.value)).toEqual(['left', 'right'])
-    expect(faqPlacementField?.admin?.condition).toBeTypeOf('function')
+    expect(accordionPlacementField?.type).toBe('select')
+    expect(accordionPlacementField?.defaultValue).toBe('right')
+    expect(accordionPlacementField?.options?.map((option) => option.value)).toEqual([
+      'left',
+      'right',
+    ])
+    expect(accordionPlacementField?.admin?.condition).toBeTypeOf('function')
     expect(sideActionModeField?.defaultValue).toBe('link')
     expect(sideActionModeField?.admin?.condition).toBeTypeOf('function')
     expect(sizeField?.type).toBe('select')

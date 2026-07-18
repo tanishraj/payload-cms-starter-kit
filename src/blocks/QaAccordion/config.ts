@@ -7,16 +7,16 @@ import {
   createContentActionModeField,
   createContentActionsField,
 } from '@/blocks/shared/contentActionsFields'
-type FaqBlockSiblingData = {
+type QaAccordionBlockSiblingData = {
   layoutMode?: 'fiftyFifty' | 'fullWidth' | 'oneThird' | null
 }
 
-const hasSplitLayout = (_data: unknown, siblingData: FaqBlockSiblingData) =>
+const hasSplitLayout = (_data: unknown, siblingData: QaAccordionBlockSiblingData) =>
   siblingData?.layoutMode !== 'fullWidth'
 
-const faqItemsField = {
+const qaAccordionItemsField = {
   name: 'items',
-  label: 'FAQ Items',
+  label: 'Q&A Items',
   type: 'array',
   minRows: 1,
   admin: {
@@ -86,13 +86,13 @@ const sideColumnField = {
   fields: [profileGroupField, contactGroupField],
 } satisfies GroupField
 
-export const FaqBlock: Block = {
-  slug: 'faq',
-  interfaceName: 'FaqBlock',
-  admin: getBlockThumbnailAdmin('faq'),
+export const QaAccordionBlock: Block = {
+  slug: 'qaAccordion',
+  interfaceName: 'QaAccordionBlock',
+  admin: getBlockThumbnailAdmin('qaAccordion'),
   labels: {
-    singular: 'FAQ',
-    plural: 'FAQs',
+    singular: 'Q&A Accordion',
+    plural: 'Q&A Accordions',
   },
   fields: [
     {
@@ -114,7 +114,7 @@ export const FaqBlock: Block = {
               name: 'headerActions',
               label: 'Header Actions',
             }),
-            faqItemsField,
+            qaAccordionItemsField,
             sideColumnField,
           ],
         },
@@ -147,8 +147,8 @@ export const FaqBlock: Block = {
               required: true,
             } satisfies SelectField,
             {
-              name: 'faqPlacement',
-              label: 'FAQ Placement',
+              name: 'accordionPlacement',
+              label: 'Accordion Placement',
               type: 'select',
               defaultValue: 'right',
               options: [

@@ -17,44 +17,46 @@ import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
 
+type RichTextData = React.ComponentProps<typeof RichText>['data']
+
 type RichTextValue = {
   root?: {
     children?: unknown[]
   } | null
 } | null
 
-type FaqItem = {
+type QaAccordionItemValue = {
   answer?: RichTextValue
   question?: string | null
 }
 
-type FaqContact = {
+type QaAccordionContact = {
   actions?: CmsActionValue[] | null
   description?: string | null
   title?: string | null
 }
 
-type FaqProfile = {
+type QaAccordionProfile = {
   image?: unknown
   name?: string | null
   title?: string | null
 }
 
-type FaqBlockLike = {
+type QaAccordionBlockLike = {
   appearance?: BlockAppearance | null
   contentAlignment?: 'center' | 'left' | 'right' | null
   defaultOpenFirst?: boolean | null
   description?: string | null
-  faqPlacement?: 'left' | 'right' | null
+  accordionPlacement?: 'left' | 'right' | null
   heading: string
   headerActionMode?: 'button' | 'link' | null
   headerActions?: CmsActionValue[] | null
-  items?: FaqItem[] | null
+  items?: QaAccordionItemValue[] | null
   layoutMode?: 'fiftyFifty' | 'fullWidth' | 'oneThird' | null
   sideActionMode?: 'button' | 'link' | null
   sideColumn?: {
-    contact?: FaqContact | null
-    profile?: FaqProfile | null
+    contact?: QaAccordionContact | null
+    profile?: QaAccordionProfile | null
   } | null
   size?: 'comfortable' | 'compact' | 'default' | null
 }
@@ -70,7 +72,7 @@ const gridLayoutClasses = {
   oneThird: 'lg:grid-cols-3 lg:gap-12 xl:gap-16',
 } as const
 
-const faqPlacementClasses = {
+const accordionPlacementClasses = {
   left: 'lg:order-1',
   right: 'lg:order-2',
 } as const
@@ -89,23 +91,23 @@ const emptyRichText = {
     indent: 0,
     version: 1,
   },
-} satisfies NonNullable<RichTextValue>
+} satisfies RichTextData
 
-function FaqAccordion({
+function QaAccordion({
   className,
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Root>) {
   return <AccordionPrimitive.Root className={cn('space-y-0', className)} {...props} />
 }
 
-function FaqAccordionItem({
+function QaAccordionItem({
   className,
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Item>) {
   return <AccordionPrimitive.Item className={className} {...props} />
 }
 
-function FaqAccordionTrigger({
+function QaAccordionTrigger({
   className,
   children,
   ...props
@@ -133,7 +135,7 @@ function FaqAccordionTrigger({
   )
 }
 
-function FaqAccordionContent({
+function QaAccordionContent({
   className,
   children,
   ...props
@@ -148,12 +150,12 @@ function FaqAccordionContent({
   )
 }
 
-export function FaqBlockComponent({
+export function QaAccordionBlockComponent({
   appearance,
   contentAlignment = 'left',
   defaultOpenFirst = true,
   description,
-  faqPlacement = 'right',
+  accordionPlacement = 'right',
   heading,
   headerActionMode = 'link',
   headerActions,
@@ -162,10 +164,10 @@ export function FaqBlockComponent({
   sideActionMode = 'link',
   sideColumn,
   size = 'default',
-}: FaqBlockLike) {
+}: QaAccordionBlockLike) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const resolvedContentAlignment = contentAlignment ?? 'left'
-  const resolvedFaqPlacement = faqPlacement ?? 'right'
+  const resolvedAccordionPlacement = accordionPlacement ?? 'right'
   const configuredLayoutMode = layoutMode ?? 'fiftyFifty'
   const resolvedSize = size ?? 'default'
   const validItems = (items ?? []).flatMap((item) => {
@@ -205,14 +207,14 @@ export function FaqBlockComponent({
   const resolvedSplitLayoutMode = configuredLayoutMode === 'oneThird' ? 'oneThird' : 'fiftyFifty'
   const resolvedLayoutMode = hasSideColumn ? configuredLayoutMode : 'fullWidth'
 
-  const faqContent = (
+  const accordionContent = (
     <div
       className={cn(
         'order-1',
-        hasSideColumn ? faqPlacementClasses[resolvedFaqPlacement] : 'w-full',
+        hasSideColumn ? accordionPlacementClasses[resolvedAccordionPlacement] : 'w-full',
         hasSideColumn && resolvedLayoutMode === 'oneThird' ? 'lg:col-span-2' : undefined,
       )}
-      data-faq-main="true"
+      data-qa-accordion-main="true"
     >
       <div
         className={cn(
@@ -231,37 +233,37 @@ export function FaqBlockComponent({
         <ContentActions
           actions={resolvedHeaderActions}
           alignment={resolvedContentAlignment}
-          data-faq-header-actions="true"
+          data-qa-accordion-header-actions="true"
           mode={headerActionMode ?? 'link'}
         />
       </div>
 
-      <FaqAccordion
+      <QaAccordion
         className="max-w-none"
         collapsible
         defaultValue={defaultOpenFirst ? 'item-0' : undefined}
         type="single"
       >
         {validItems.map((item, index) => (
-          <FaqAccordionItem
+          <QaAccordionItem
             className={cn('border-0', index !== validItems.length - 1 && 'border-b border-border')}
             key={`${item.question}-${index}`}
             value={`item-${index}`}
           >
-            <FaqAccordionTrigger className="justify-between py-6 text-left text-base font-semibold hover:no-underline sm:text-lg lg:py-8 lg:text-xl">
+            <QaAccordionTrigger className="justify-between py-6 text-left text-base font-semibold hover:no-underline sm:text-lg lg:py-8 lg:text-xl">
               <span className="pr-4">{item.question}</span>
-            </FaqAccordionTrigger>
-            <FaqAccordionContent className="pb-6 pr-8 text-left text-sm leading-relaxed text-muted-foreground sm:text-base">
+            </QaAccordionTrigger>
+            <QaAccordionContent className="pb-6 pr-8 text-left text-sm leading-relaxed text-muted-foreground sm:text-base">
               <div className="prose max-w-none text-left text-sm leading-relaxed [--tw-prose-body:var(--muted-foreground)] [--tw-prose-bold:var(--foreground)] [--tw-prose-bullets:var(--border)] [--tw-prose-counters:var(--muted-foreground)] [--tw-prose-headings:var(--foreground)] [--tw-prose-links:var(--foreground)] sm:text-base">
                 <RichText
                   className="[&>p]:m-0 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground"
-                  data={item.answer}
+                  data={item.answer as RichTextData}
                 />
               </div>
-            </FaqAccordionContent>
-          </FaqAccordionItem>
+            </QaAccordionContent>
+          </QaAccordionItem>
         ))}
-      </FaqAccordion>
+      </QaAccordion>
     </div>
   )
 
@@ -269,7 +271,7 @@ export function FaqBlockComponent({
     <aside
       className={cn(
         'order-2',
-        sidePlacementClasses[resolvedFaqPlacement],
+        sidePlacementClasses[resolvedAccordionPlacement],
         'flex flex-col justify-between text-left',
       )}
     >
@@ -320,7 +322,7 @@ export function FaqBlockComponent({
         actions={contactActions}
         alignment="left"
         className="py-4"
-        data-faq-contact-actions="true"
+        data-qa-accordion-contact-actions="true"
         mode={sideActionMode ?? 'link'}
       />
     </aside>
@@ -333,13 +335,13 @@ export function FaqBlockComponent({
         'md:py-32',
         appearanceClasses.className,
       )}
-      data-faq-background={appearance?.background ?? 'none'}
-      data-faq-content-alignment={resolvedContentAlignment}
-      data-faq-has-side-column={hasSideColumn ? 'true' : 'false'}
-      data-faq-layout={resolvedLayoutMode}
-      data-faq-placement={resolvedFaqPlacement}
-      data-faq-side-column={hasSideColumn ? 'true' : 'false'}
-      data-faq-size={resolvedSize}
+      data-qa-accordion-background={appearance?.background ?? 'none'}
+      data-qa-accordion-content-alignment={resolvedContentAlignment}
+      data-qa-accordion-has-side-column={hasSideColumn ? 'true' : 'false'}
+      data-qa-accordion-layout={resolvedLayoutMode}
+      data-qa-accordion-placement={resolvedAccordionPlacement}
+      data-qa-accordion-side-column={hasSideColumn ? 'true' : 'false'}
+      data-qa-accordion-size={resolvedSize}
     >
       <div className={regularBlockContainerClasses}>
         <div
@@ -350,7 +352,7 @@ export function FaqBlockComponent({
               : undefined,
           )}
         >
-          {faqContent}
+          {accordionContent}
           {sideContent}
         </div>
       </div>
