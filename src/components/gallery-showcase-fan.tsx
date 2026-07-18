@@ -25,10 +25,18 @@ export const galleryShowcaseTransforms = [
   { rotate: 12, x: '120%', y: '0%', zIndex: 1 },
 ] as const
 
+export const galleryShowcaseMobileVisibilityClasses = [
+  'hidden sm:block',
+  '',
+  '',
+  '',
+  'hidden sm:block',
+] as const
+
 const fanHeightClasses = {
-  compact: 'h-28 sm:h-48 lg:h-52',
-  default: 'h-32 sm:h-52 lg:h-60',
-  comfortable: 'h-36 sm:h-60 lg:h-64',
+  compact: 'h-36 sm:h-48 lg:h-52',
+  default: 'h-40 sm:h-52 lg:h-60',
+  comfortable: 'h-44 sm:h-60 lg:h-64',
 } as const
 
 const cardSizeClasses = {
@@ -80,6 +88,7 @@ export function GalleryShowcaseFan({ images, size = 'default' }: GalleryShowcase
         {images.map((image, index) => {
           const transform = galleryShowcaseTransforms[index]
           const position = image.imagePosition ?? 'center'
+          const visibilityClass = galleryShowcaseMobileVisibilityClasses[index]
 
           return (
             <motion.div
@@ -87,6 +96,7 @@ export function GalleryShowcaseFan({ images, size = 'default' }: GalleryShowcase
               className={cn(
                 'absolute cursor-grab overflow-hidden rounded-md shadow-xl active:cursor-grabbing',
                 cardSizeClasses[size],
+                visibilityClass,
               )}
               drag
               dragSnapToOrigin

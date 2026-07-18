@@ -8,7 +8,10 @@ import { GalleryShowcaseBlock } from '@/blocks/GalleryShowcase/config'
 import { renderPageBlocks } from '@/blocks/renderPageBlocks'
 import { Pages } from '@/collections/Pages'
 import { GalleryShowcase, type GalleryShowcaseImage } from '@/components/gallery-showcase'
-import { galleryShowcaseTransforms } from '@/components/gallery-showcase-fan'
+import {
+  galleryShowcaseMobileVisibilityClasses,
+  galleryShowcaseTransforms,
+} from '@/components/gallery-showcase-fan'
 
 type TestField = {
   defaultValue?: unknown
@@ -131,10 +134,11 @@ describe('Gallery Showcase', () => {
     expect(html).toContain('border-y border-border')
     expect(html).toContain('py-10')
     expect(html).toContain('mx-auto w-full max-w-screen-2xl px-4')
-    expect(html).toContain('h-28 sm:h-48 lg:h-52')
+    expect(html).toContain('h-36 sm:h-48 lg:h-52')
     expect(html).toContain('size-16 sm:size-36 lg:size-40')
     expect(html).toContain('overflow-x-clip')
-    expect(html).toContain('mt-5')
+    expect(html).toContain('mx-auto w-full max-w-screen-2xl px-4 flex flex-col gap-5')
+    expect(html).not.toContain('mt-5')
     expect(html).toContain(
       'text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl',
     )
@@ -169,10 +173,28 @@ describe('Gallery Showcase', () => {
     expect(html.match(/object-cover/g)).toHaveLength(5)
   })
 
+  it('shows the center three cards on mobile and restores all five at sm', () => {
+    expect(galleryShowcaseMobileVisibilityClasses).toEqual([
+      'hidden sm:block',
+      '',
+      '',
+      '',
+      'hidden sm:block',
+    ])
+
+    const html = renderToStaticMarkup(GalleryShowcase({ images: galleryImages, title: 'Gallery' }))
+    const clientSource = readFileSync('src/components/gallery-showcase-fan.tsx', 'utf8')
+
+    expect(html.split('hidden sm:block')).toHaveLength(3)
+    expect(clientSource).not.toContain('window.matchMedia')
+    expect(clientSource).not.toContain('typeof window')
+    expect(clientSource).not.toContain('navigator.userAgent')
+  })
+
   it.each([
-    ['compact', 'h-28 sm:h-48 lg:h-52', 'size-16 sm:size-36 lg:size-40'],
-    ['default', 'h-32 sm:h-52 lg:h-60', 'size-20 sm:size-40 lg:size-44'],
-    ['comfortable', 'h-36 sm:h-60 lg:h-64', 'size-24 sm:size-44 lg:size-48'],
+    ['compact', 'h-36 sm:h-48 lg:h-52', 'size-16 sm:size-36 lg:size-40'],
+    ['default', 'h-40 sm:h-52 lg:h-60', 'size-20 sm:size-40 lg:size-44'],
+    ['comfortable', 'h-44 sm:h-60 lg:h-64', 'size-24 sm:size-44 lg:size-48'],
   ] as const)('applies %s fan and card sizing', (size, fanClasses, cardClasses) => {
     const html = renderToStaticMarkup(
       GalleryShowcase({ images: galleryImages, size, title: 'Gallery' }),

@@ -62,10 +62,10 @@ export function GalleryShowcase({
       data-gallery-showcase-background={appearance?.background ?? 'none'}
       data-gallery-showcase-size={size}
     >
-      <div className={regularBlockContainerClasses}>
+      <div className={cn(regularBlockContainerClasses, 'flex flex-col gap-5')}>
         <GalleryShowcaseFan images={images} size={size} />
 
-        <div className={cn('flex max-w-3xl flex-col gap-4 mt-5', alignmentClasses[alignment])}>
+        <div className={cn('flex max-w-3xl flex-col gap-4', alignmentClasses[alignment])}>
           {eyebrow ? (
             <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
               {eyebrow}
