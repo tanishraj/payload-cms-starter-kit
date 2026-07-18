@@ -160,6 +160,7 @@ describe('page block pipeline', () => {
       'featureSpotlight',
       'featureMatrix',
       'profileCarousel',
+      'galleryShowcase',
       'statsStrip',
       'qaAccordion',
       'reviewSubmission',

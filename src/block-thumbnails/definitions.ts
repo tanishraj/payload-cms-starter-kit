@@ -51,6 +51,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Gallery Showcase block preview',
+    filename: 'gallery-showcase.jpg',
+    label: 'Gallery Showcase',
+    slug: 'galleryShowcase',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Stats Strip block preview',
     filename: 'stats-strip.jpg',
     label: 'Stats Strip',

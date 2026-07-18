@@ -34,6 +34,7 @@
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",
     "embla-carousel-react": "^8.6.0",
+    "framer-motion": "^12.42.2",
     "graphql": "^16.8.1",
     "lucide-react": "^1.23.0",
     "mongodb-memory-server": "^11.2.0",

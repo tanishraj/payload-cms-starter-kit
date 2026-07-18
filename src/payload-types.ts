@@ -181,6 +181,7 @@ export interface Page {
         | FeatureSpotlightBlock
         | FeatureMatrixBlock
         | ProfileCarouselBlock
+        | GalleryShowcaseBlock
         | StatsStripBlock
         | QaAccordionBlock
         | ReviewSubmissionBlock
@@ -487,6 +488,43 @@ export interface ProfileCarouselBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'profileCarousel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryShowcaseBlock".
+ */
+export interface GalleryShowcaseBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
+  images?:
+    | {
+        image: string | Media;
+        imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  actionMode: 'link' | 'button';
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'galleryShowcase';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1717,6 +1755,7 @@ export interface PagesSelect<T extends boolean = true> {
         featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
+        galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
         statsStrip?: T | StatsStripBlockSelect<T>;
         qaAccordion?: T | QaAccordionBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
@@ -1920,6 +1959,44 @@ export interface ProfileCarouselBlockSelect<T extends boolean = true> {
   contentAlignment?: T;
   cardVariant?: T;
   overlayAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryShowcaseBlock_select".
+ */
+export interface GalleryShowcaseBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
+  images?:
+    | T
+    | {
+        image?: T;
+        imagePosition?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  actionMode?: T;
+  contentAlignment?: T;
   size?: T;
   id?: T;
   blockName?: T;

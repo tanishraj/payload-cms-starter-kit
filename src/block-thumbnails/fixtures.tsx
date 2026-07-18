@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { AnnouncementBlockComponent } from '@/blocks/Announcement/Component'
 import { FeatureMatrixBlockComponent } from '@/blocks/FeatureMatrix/Component'
 import { Footer56BlockComponent } from '@/blocks/Footer56/Component'
+import { GalleryShowcaseBlockComponent } from '@/blocks/GalleryShowcase/Component'
 import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
 import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
 import { ProfileCarouselBlockComponent } from '@/blocks/ProfileCarousel/Component'
@@ -297,6 +298,45 @@ export const blockThumbnailFixtures = {
       ]}
       size="compact"
       title="The people behind our work"
+    />
+  ),
+  galleryShowcase: (
+    <GalleryShowcaseBlockComponent
+      actionMode="link"
+      actions={[
+        {
+          label: 'Explore the gallery',
+          linkType: 'custom',
+          url: '/gallery',
+        },
+      ]}
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      contentAlignment="center"
+      description="Five perspectives capture the spaces, people, and shared moments that shape the experience."
+      eyebrow="Inside our community"
+      images={[
+        {
+          image: { alt: 'Editorial landscape', id: 1, url: editorialLandscape },
+        },
+        {
+          image: { alt: 'Collaborative environment', id: 2, url: collaboration },
+          imagePosition: 'top',
+        },
+        {
+          image: { alt: 'Community portrait', id: 3, url: portrait },
+          imagePosition: 'center',
+        },
+        {
+          image: { alt: 'Learning environment', id: 4, url: editorialLandscape },
+          imagePosition: 'right',
+        },
+        {
+          image: { alt: 'Shared campus moment', id: 5, url: collaboration },
+          imagePosition: 'bottom',
+        },
+      ]}
+      size="compact"
+      title="A closer look at life here"
     />
   ),
   footer56: (

@@ -3,6 +3,7 @@ import type { Page } from '@/payload-types'
 import { AnnouncementBlockComponent } from './Announcement/Component'
 import { QaAccordionBlockComponent } from './QaAccordion/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
+import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
 import { HeroBannerBlockComponent } from './HeroBanner/Component'
 import { ProfileCarouselBlockComponent } from './ProfileCarousel/Component'
 import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
@@ -52,6 +53,13 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
           case 'profileCarousel':
             return (
               <ProfileCarouselBlockComponent
+                key={block.id ?? `${block.blockType}-${index}`}
+                {...block}
+              />
+            )
+          case 'galleryShowcase':
+            return (
+              <GalleryShowcaseBlockComponent
                 key={block.id ?? `${block.blockType}-${index}`}
                 {...block}
               />

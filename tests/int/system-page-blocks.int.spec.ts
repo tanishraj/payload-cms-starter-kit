@@ -143,6 +143,7 @@ describe('system page block schemas', () => {
       'featureSpotlight',
       'featureMatrix',
       'profileCarousel',
+      'galleryShowcase',
       'statsStrip',
       'qaAccordion',
       'reviewSubmission',

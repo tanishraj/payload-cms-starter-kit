@@ -47,6 +47,7 @@ describe('block thumbnail metadata', () => {
       'featureMatrix',
       'featureSpotlight',
       'footer56',
+      'galleryShowcase',
       'headerNavbar12',
       'heroBanner',
       'profileCarousel',
@@ -108,6 +109,12 @@ describe('block thumbnail metadata', () => {
       filename: 'profile-carousel.jpg',
       label: 'Profile Carousel',
       slug: 'profileCarousel',
+    })
+    expect(getBlockThumbnailDefinition('galleryShowcase')).toMatchObject({
+      filename: 'gallery-showcase.jpg',
+      label: 'Gallery Showcase',
+      slug: 'galleryShowcase',
+      stageAlignment: 'top',
     })
     expect(getBlockThumbnailDefinition('qaAccordion')).toMatchObject({
       filename: 'qa-accordion.jpg',
