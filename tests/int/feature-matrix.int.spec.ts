@@ -80,6 +80,7 @@ describe('Feature Matrix presentation', () => {
     expect(html).toContain('data-feature-matrix="true"')
     expect(html).not.toContain('data-feature166')
     expect(html).toContain('data-feature-matrix-size="compact"')
+    expect(html).toContain('py-10')
     expect(html).toContain('data-feature-matrix-alignment="center"')
     expect(html).toContain('data-feature-matrix-border-animation="enabled"')
     expect(html).toContain('data-feature-matrix-outer-border="shown"')

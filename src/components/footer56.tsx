@@ -7,6 +7,10 @@ import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
+import {
+  regularBlockContainerClasses,
+  regularBlockMobilePaddingClasses,
+} from '@/blocks/shared/blockSpacing'
 import { cn } from '@/lib/utils'
 
 interface FooterLink {
@@ -137,11 +141,16 @@ const Footer56 = (props: Props) => {
 
   const visibleSections = (sections ?? []).slice(0, MAX_SECTIONS)
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
-  const sectionClassName = cn('py-32', appearanceClasses.className, className)
+  const sectionClassName = cn(
+    regularBlockMobilePaddingClasses.default,
+    'md:py-32',
+    appearanceClasses.className,
+    className,
+  )
 
   return (
     <section className={sectionClassName}>
-      <div className="mx-auto flex w-full max-w-screen-2xl px-4">
+      <div className={cn(regularBlockContainerClasses, 'flex')}>
         <footer className="w-full">
           <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
             <div className="col-span-2 mb-8 lg:mb-0">

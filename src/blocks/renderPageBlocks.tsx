@@ -6,6 +6,7 @@ import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { HeroInstitutionalBlockComponent } from './HeroInstitutional/Component'
 import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
+import { PageBlockStack } from './PageBlockStack'
 import { StatsStripBlockComponent } from './StatsStrip/Component'
 
 export type PageBlock = NonNullable<Page['layout']>[number]
@@ -16,7 +17,7 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
   }
 
   return (
-    <>
+    <PageBlockStack>
       {blocks.map((block, index) => {
         switch (block.blockType) {
           case 'announcement':
@@ -67,6 +68,6 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
             return null
         }
       })}
-    </>
+    </PageBlockStack>
   )
 }

@@ -2,6 +2,10 @@ import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
+import {
+  regularBlockContainerClasses,
+  regularBlockMobilePaddingClasses,
+} from '@/blocks/shared/blockSpacing'
 import { ContentActions } from '@/components/ContentActions'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
@@ -42,34 +46,10 @@ const objectPositionClasses = {
   right: 'object-[right_center]',
 } as const
 
-const containedPaddingClasses = {
-  compact: 'py-10 md:py-10',
-  default: 'py-12 md:py-12',
-  comfortable: 'py-16 md:py-16',
-} as const
-
-const edgeContentPaddingClasses = {
-  compact: 'px-4 py-10 md:px-8 md:py-10 lg:px-12',
-  default: 'px-4 py-12 md:px-8 md:py-12 lg:px-12',
-  comfortable: 'px-4 py-16 md:px-8 md:py-16 lg:px-12',
-} as const
-
-const imageRightContentPaddingClasses = {
-  compact: 'py-10 pr-4 md:py-10 md:pr-8 lg:pr-12',
-  default: 'py-12 pr-4 md:py-12 md:pr-8 lg:pr-12',
-  comfortable: 'py-16 pr-4 md:py-16 md:pr-8 lg:pr-12',
-} as const
-
-const containedFillImageLeftContentPaddingClasses = {
-  compact: 'py-10 md:px-8 md:py-10 lg:px-12',
-  default: 'py-12 md:px-8 md:py-12 lg:px-12',
-  comfortable: 'py-16 md:px-8 md:py-16 lg:px-12',
-} as const
-
-const containedFillImageRightContentPaddingClasses = {
-  compact: 'py-10 md:py-10 md:pr-8 lg:pr-12',
-  default: 'py-12 md:py-12 md:pr-8 lg:pr-12',
-  comfortable: 'py-16 md:py-16 md:pr-8 lg:pr-12',
+const desktopVerticalPaddingClasses = {
+  compact: 'md:py-10',
+  default: 'md:py-12',
+  comfortable: 'md:py-16',
 } as const
 
 const edgeLayoutMinHeightClasses = {
@@ -131,14 +111,34 @@ export function FeatureSpotlightBlockComponent({
     : 'mx-auto max-w-2xl items-center text-center'
   const contentVerticalAlignmentClass =
     contentVerticalAlignmentClasses[resolvedContentVerticalAlignment]
+  const filledSectionPaddingClasses =
+    renderAsEdgeToEdge || renderAsContainedFill
+      ? cn(regularBlockMobilePaddingClasses[resolvedSize], 'md:py-0')
+      : undefined
   const edgeToEdgeContentPaddingClasses =
     resolvedPosition === 'right'
-      ? imageRightContentPaddingClasses[resolvedSize]
-      : edgeContentPaddingClasses[resolvedSize]
+      ? cn(
+          'pr-4',
+          desktopVerticalPaddingClasses[resolvedSize],
+          'md:pr-8 lg:pr-12',
+        )
+      : cn(
+          'px-4',
+          'md:px-8',
+          desktopVerticalPaddingClasses[resolvedSize],
+          'lg:px-12',
+        )
   const containedFillContentPaddingClasses =
     resolvedPosition === 'right'
-      ? containedFillImageRightContentPaddingClasses[resolvedSize]
-      : containedFillImageLeftContentPaddingClasses[resolvedSize]
+      ? cn(
+          desktopVerticalPaddingClasses[resolvedSize],
+          'md:pr-8 lg:pr-12',
+        )
+      : cn(
+          'md:px-8',
+          desktopVerticalPaddingClasses[resolvedSize],
+          'lg:px-12',
+        )
   const splitContentPaddingClasses = renderAsContainedFill
     ? containedFillContentPaddingClasses
     : edgeToEdgeContentPaddingClasses
@@ -172,7 +172,7 @@ export function FeatureSpotlightBlockComponent({
 
   return (
     <section
-      className={appearanceClasses.className}
+      className={cn(filledSectionPaddingClasses, appearanceClasses.className)}
       data-feature-spotlight-action-mode={actionMode ?? 'link'}
       data-feature-spotlight-background={appearance?.background ?? 'none'}
       data-feature-spotlight-layout={renderAsSplit ? 'split' : 'contentOnly'}
@@ -187,7 +187,7 @@ export function FeatureSpotlightBlockComponent({
       {renderAsEdgeToEdge ? (
         <div
           className={cn(
-            'grid items-stretch md:grid-cols-2',
+            'grid items-stretch gap-8 md:grid-cols-2 md:gap-0',
             edgeLayoutMinHeightClasses[resolvedSize],
           )}
         >
@@ -238,10 +238,10 @@ export function FeatureSpotlightBlockComponent({
           </div>
         </div>
       ) : renderAsContainedFill ? (
-        <div className="mx-auto max-w-screen-2xl px-4">
+        <div className={regularBlockContainerClasses}>
           <div
             className={cn(
-              'grid items-stretch md:grid-cols-2',
+              'grid items-stretch gap-8 md:grid-cols-2 md:gap-0',
               edgeLayoutMinHeightClasses[resolvedSize],
             )}
           >
@@ -272,7 +272,13 @@ export function FeatureSpotlightBlockComponent({
           </div>
         </div>
       ) : (
-        <div className={cn('mx-auto max-w-screen-2xl px-4', containedPaddingClasses[resolvedSize])}>
+        <div
+          className={cn(
+            regularBlockContainerClasses,
+            regularBlockMobilePaddingClasses[resolvedSize],
+            desktopVerticalPaddingClasses[resolvedSize],
+          )}
+        >
           {renderAsSplit ? (
             <div className={cn('grid items-stretch gap-8 md:grid-cols-2 md:gap-12 lg:gap-16')}>
               <div className={cn(order.media)} data-feature-spotlight-media-frame="contained">

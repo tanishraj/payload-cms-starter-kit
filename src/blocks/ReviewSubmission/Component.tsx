@@ -7,6 +7,7 @@ import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
+import { regularBlockMobilePaddingClasses } from '@/blocks/shared/blockSpacing'
 import { ContentActions } from '@/components/ContentActions'
 import { Button } from '@/components/ui/button'
 import {
@@ -70,10 +71,10 @@ type ReviewSubmissionBlockLike = {
   title?: string | null
 }
 
-const sectionSizeClasses = {
-  compact: 'py-16 md:py-20',
-  default: 'py-20 md:py-24',
-  comfortable: 'py-24 md:py-28',
+const sectionDesktopPaddingClasses = {
+  compact: 'md:py-20',
+  default: 'md:py-24',
+  comfortable: 'md:py-28',
 } as const
 
 const formPanelPaddingClasses = {
@@ -352,7 +353,11 @@ export function ReviewSubmissionBlockComponent({
 
   return (
     <section
-      className={cn(sectionSizeClasses[resolvedSize], appearanceClasses.className)}
+      className={cn(
+        regularBlockMobilePaddingClasses[resolvedSize],
+        sectionDesktopPaddingClasses[resolvedSize],
+        appearanceClasses.className,
+      )}
       data-review-submission-background={appearance?.background ?? 'none'}
       data-review-submission-size={resolvedSize}
     >

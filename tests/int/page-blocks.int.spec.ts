@@ -932,6 +932,8 @@ describe('page block pipeline', () => {
 
     const html = renderToStaticMarkup(result)
 
+    expect(html).toContain('data-page-block-stack="true"')
+    expect(html).toContain('flex flex-col gap-4 md:gap-0')
     expect(html).toContain('data-feature-spotlight-position="right"')
     expect(html).toContain('data-feature-spotlight-image-position="right"')
     expect(html).toContain('data-feature-spotlight-layout="split"')

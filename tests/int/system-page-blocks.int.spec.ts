@@ -126,6 +126,8 @@ describe('system page block schemas', () => {
   it('renders only system page blocks', () => {
     const source = readFileSync('src/blocks/RenderBlocks.tsx', 'utf8')
 
+    expect(source).toContain("import { PageBlockStack } from './PageBlockStack'")
+    expect(source).toContain('<PageBlockStack>')
     for (const slug of ['system404', 'systemMaintenance', 'systemComingSoon']) {
       expect(source).toContain(`case '${slug}'`)
     }

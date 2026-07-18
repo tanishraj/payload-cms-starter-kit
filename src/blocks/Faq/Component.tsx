@@ -8,6 +8,10 @@ import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
+import {
+  regularBlockContainerClasses,
+  regularBlockMobilePaddingClasses,
+} from '@/blocks/shared/blockSpacing'
 import { ContentActions } from '@/components/ContentActions'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
@@ -324,7 +328,11 @@ export function FaqBlockComponent({
 
   return (
     <section
-      className={cn('py-32', appearanceClasses.className)}
+      className={cn(
+        regularBlockMobilePaddingClasses[resolvedSize],
+        'md:py-32',
+        appearanceClasses.className,
+      )}
       data-faq-background={appearance?.background ?? 'none'}
       data-faq-content-alignment={resolvedContentAlignment}
       data-faq-has-side-column={hasSideColumn ? 'true' : 'false'}
@@ -333,7 +341,7 @@ export function FaqBlockComponent({
       data-faq-side-column={hasSideColumn ? 'true' : 'false'}
       data-faq-size={resolvedSize}
     >
-      <div className="mx-auto w-full max-w-screen-2xl px-4">
+      <div className={regularBlockContainerClasses}>
         <div
           className={cn(
             'w-full',

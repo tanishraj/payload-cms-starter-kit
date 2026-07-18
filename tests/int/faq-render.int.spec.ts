@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 
 import { FaqBlockComponent } from '@/blocks/Faq/Component'
+import { regularBlockContainerClasses } from '@/blocks/shared/blockSpacing'
 
 const createRichText = (text: string) => ({
   root: {
@@ -86,6 +87,8 @@ describe('faq block', () => {
     expect(html).toContain('data-faq-layout="oneThird"')
     expect(html).toContain('data-faq-placement="right"')
     expect(html).toContain('data-faq-size="comfortable"')
+    expect(html).toContain('py-16 md:py-32')
+    expect(html).toContain(regularBlockContainerClasses)
     expect(html).toContain('bg-muted')
     expect(html).toContain('border-t border-border')
     expect(html).toContain('Frequently asked questions')
@@ -154,6 +157,7 @@ describe('faq block', () => {
     expect(html).toContain('data-faq-layout="fullWidth"')
     expect(html).toContain('data-faq-content-alignment="center"')
     expect(html).toContain('data-faq-size="compact"')
+    expect(html).toContain('py-10 md:py-32')
     expect(html).toContain('w-full')
     expect(html).toContain('items-center text-center')
     expect(html).toContain('data-faq-header-actions="true"')

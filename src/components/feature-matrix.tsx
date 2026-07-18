@@ -4,6 +4,7 @@ import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
+import { regularBlockMobilePaddingClasses } from '@/blocks/shared/blockSpacing'
 import { cn } from '@/lib/utils'
 
 export type FeatureMatrixAlignment = 'center' | 'left' | 'right'
@@ -33,12 +34,6 @@ type FeatureMatrixProps = {
   size?: FeatureMatrixSize
   title: string
 }
-
-const sectionPaddingClasses = {
-  compact: 'py-10',
-  default: 'py-12',
-  comfortable: 'py-16',
-} as const
 
 const panelPaddingClasses = {
   compact: 'p-5 md:p-6',
@@ -137,7 +132,11 @@ export function FeatureMatrix({
 
   return (
     <section
-      className={cn(sectionPaddingClasses[resolvedSize], appearanceClasses.className, className)}
+      className={cn(
+        regularBlockMobilePaddingClasses[resolvedSize],
+        appearanceClasses.className,
+        className,
+      )}
       data-feature-matrix="true"
       data-feature-matrix-alignment={resolvedAlignment}
       data-feature-matrix-background={appearance?.background ?? 'none'}
