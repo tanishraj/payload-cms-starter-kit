@@ -1,25 +1,84 @@
 import { createElement } from 'react'
-import { renderToStaticMarkup } from 'react-dom/server'
-import { describe, expect, it } from 'vitest'
+import { renderToStaticMarkup, renderToString } from 'react-dom/server'
+import { cleanup, render, waitFor } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { ReviewSubmissionBlockComponent } from '@/blocks/ReviewSubmission/Component'
 
+afterEach(() => {
+  cleanup()
+  vi.restoreAllMocks()
+  vi.unstubAllGlobals()
+})
+
 describe('review submission block', () => {
+  it('ignores browser-injected form identifiers during hydration', async () => {
+    vi.stubGlobal(
+      'ResizeObserver',
+      class ResizeObserverMock {
+        disconnect() {}
+        observe() {}
+        unobserve() {}
+      },
+    )
+
+    const element = createElement(ReviewSubmissionBlockComponent, {
+      form: {
+        fields: [],
+        slug: 'reviews',
+        submitButtonLabel: 'Submit review',
+        successMessage: 'Thanks for your review.',
+        title: 'Reviews',
+      },
+      title: 'Share your experience',
+    })
+    const container = document.createElement('div')
+    container.innerHTML = renderToString(element)
+    document.body.append(container)
+
+    const mutatedElements = [
+      container.querySelector('form'),
+      container.querySelector('#reviewer-name'),
+      container.querySelector('#reviewer-email'),
+      container.querySelector('#review-body'),
+      container.querySelector('input[name="website"]'),
+    ]
+
+    expect(mutatedElements.every(Boolean)).toBe(true)
+    mutatedElements.forEach((element, index) => {
+      element?.setAttribute('__gcruniqueid', String(index + 1))
+    })
+
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+    render(element, { container, hydrate: true })
+
+    await waitFor(() => {
+      expect(container.querySelector('form')).not.toBeNull()
+    })
+
+    const hydrationOutput = consoleError.mock.calls.flat().join(' ')
+    expect(hydrationOutput).not.toContain('__gcruniqueid')
+    expect(hydrationOutput).not.toContain('hydrated but some attributes')
+  })
+
   it.each([
     ['compact', 'py-10 md:py-20'],
     ['default', 'py-12 md:py-24'],
     ['comfortable', 'py-16 md:py-28'],
-  ] as const)('uses consistent %s mobile spacing without changing desktop spacing', (size, classes) => {
-    const html = renderToStaticMarkup(
-      createElement(ReviewSubmissionBlockComponent, {
-        size,
-        title: 'Share your experience',
-      }),
-    )
+  ] as const)(
+    'uses consistent %s mobile spacing without changing desktop spacing',
+    (size, classes) => {
+      const html = renderToStaticMarkup(
+        createElement(ReviewSubmissionBlockComponent, {
+          size,
+          title: 'Share your experience',
+        }),
+      )
 
-    expect(html).toContain(`data-review-submission-size="${size}"`)
-    expect(html).toContain(classes)
-  })
+      expect(html).toContain(`data-review-submission-size="${size}"`)
+      expect(html).toContain(classes)
+    },
+  )
 
   it('aligns only the content header while preserving shared description typography', () => {
     const centerHtml = renderToStaticMarkup(

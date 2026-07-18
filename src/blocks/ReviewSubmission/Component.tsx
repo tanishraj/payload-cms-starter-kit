@@ -397,7 +397,11 @@ export function ReviewSubmissionBlockComponent({
           )}
         >
           {isFormAvailable ? (
-            <form className="flex w-full flex-col gap-7" onSubmit={handleSubmit}>
+            <form
+              className="flex w-full flex-col gap-7"
+              suppressHydrationWarning
+              onSubmit={handleSubmit}
+            >
               <FieldGroup className="gap-6">
                 <FieldGroup className="gap-6 @lg/form-panel:grid @lg/form-panel:grid-cols-2 @lg/form-panel:items-start">
                   <FieldSet className="gap-3">
@@ -504,6 +508,7 @@ export function ReviewSubmissionBlockComponent({
                       id="reviewer-name"
                       placeholder={nameField.placeholder}
                       required={nameField.required}
+                      suppressHydrationWarning
                       type="text"
                       value={values.reviewerName}
                       onChange={(event) => updateValue('reviewerName', event.target.value)}
@@ -527,6 +532,7 @@ export function ReviewSubmissionBlockComponent({
                       id="reviewer-email"
                       placeholder={emailField.placeholder}
                       required={emailField.required}
+                      suppressHydrationWarning
                       type="email"
                       value={values.reviewerEmail}
                       onChange={(event) => updateValue('reviewerEmail', event.target.value)}
@@ -547,6 +553,7 @@ export function ReviewSubmissionBlockComponent({
                     placeholder={bodyField.placeholder}
                     required={bodyField.required}
                     rows={6}
+                    suppressHydrationWarning
                     value={values.reviewBody}
                     onChange={(event) => updateValue('reviewBody', event.target.value)}
                   />
@@ -569,6 +576,7 @@ export function ReviewSubmissionBlockComponent({
                 autoComplete="off"
                 className="hidden"
                 name={FORM_HONEYPOT_FIELD_NAME}
+                suppressHydrationWarning
                 tabIndex={-1}
                 type="text"
                 value=""
