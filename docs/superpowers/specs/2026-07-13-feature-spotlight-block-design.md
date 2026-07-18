@@ -1,4 +1,4 @@
-# Split Feature Block Design
+# Feature Spotlight Block Design
 
 ## Goal
 
@@ -36,7 +36,7 @@ The block should stay restrained, theme-driven, and simple to author. It should 
 
 ## Block Identity
 
-- Recommended block slug: `splitFeature`
+- Recommended block slug: `featureSpotlight`
 - Scope: page layout block
 - Rendering model: image/content split section or full-width content-only section
 - Admin picker: custom thumbnail in the block folder, matching the current block pattern
@@ -249,9 +249,9 @@ The memorable aspect is the calm zig-zag rhythm created by repeating the same bl
 
 ## Files to Add
 
-- `src/blocks/SplitFeature/config.ts`
-- `src/blocks/SplitFeature/Component.tsx`
-- `src/blocks/SplitFeature/thumbnail.ts`
+- `src/blocks/FeatureSpotlight/config.ts`
+- `src/blocks/FeatureSpotlight/Component.tsx`
+- `src/blocks/FeatureSpotlight/thumbnail.ts`
 
 ## Files to Update
 

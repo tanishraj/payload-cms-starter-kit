@@ -23,7 +23,7 @@ The block is intended for metrics like:
 
 ## Design Principles
 
-- Match the existing page block system already used by Announcement, HeroInstitutional, and SplitFeature
+- Match the existing page block system already used by Announcement, HeroInstitutional, and FeatureSpotlight
 - Keep the editorial tone restrained, institutional, and easy to scan
 - Use layout-first design; animation supports the content but does not dominate it
 - Avoid decorative settings that add admin complexity without improving outcomes

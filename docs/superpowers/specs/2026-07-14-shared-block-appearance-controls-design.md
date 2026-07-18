@@ -39,7 +39,7 @@ The model must stay theme-driven, work across all current light/dark themes, and
   - `Announcement`
   - `HeaderNavbar12`
   - `HeroInstitutional`
-  - `SplitFeature`
+  - `FeatureSpotlight`
   - `StatsStrip`
   - `Footer56`
   - `System404`
@@ -188,7 +188,7 @@ This prevents the appearance system from flattening component design into one gl
 - overlay veil remains custom
 - title/description wrapper should respect the resolved root foreground baseline where possible without reducing contrast on media-backed layouts
 
-### SplitFeature
+### FeatureSpotlight
 
 - root section adopts shared appearance controls
 - image shell and CTA elements keep their own semantic treatment where needed

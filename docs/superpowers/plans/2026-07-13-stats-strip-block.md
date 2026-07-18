@@ -4,7 +4,7 @@
 
 **Goal:** Add a reusable page-level `StatsStrip` block with a theme-driven inline stats layout, unlimited items, automatic wrapping at four items per row, mobile two-column behavior, and count-up animation on viewport entry.
 
-**Architecture:** The block follows the existing Payload block pattern used by Announcement, HeroInstitutional, and SplitFeature: a block config registered on `Pages`, a block thumbnail, and a renderer under `src/blocks`. Count-up behavior lives in a small client component colocated with the block so the main block renderer can stay deterministic in server markup while the animated value hydrates locally.
+**Architecture:** The block follows the existing Payload block pattern used by Announcement, HeroInstitutional, and FeatureSpotlight: a block config registered on `Pages`, a block thumbnail, and a renderer under `src/blocks`. Count-up behavior lives in a small client component colocated with the block so the main block renderer can stay deterministic in server markup while the animated value hydrates locally.
 
 **Tech Stack:** Payload CMS 3, Next.js App Router, React 19, TypeScript, Tailwind CSS v4, shadcn/ui theme tokens, Vitest, Testing Library
 
@@ -27,13 +27,15 @@
 ### Task 1: Add the Payload block schema and register it on Pages
 
 **Files:**
+
 - Create: `src/blocks/StatsStrip/config.ts`
 - Create: `src/blocks/StatsStrip/thumbnail.ts`
 - Modify: `src/collections/Pages.ts`
 - Modify: `tests/int/page-blocks.int.spec.ts`
 
 **Interfaces:**
-- Consumes: existing Payload `Block` patterns from `src/blocks/Announcement/config.ts` and `src/blocks/SplitFeature/config.ts`
+
+- Consumes: existing Payload `Block` patterns from `src/blocks/Announcement/config.ts` and `src/blocks/FeatureSpotlight/config.ts`
 - Produces:
   - `export const StatsStripBlock: Block`
   - block slug `statsStrip`
@@ -49,60 +51,81 @@
 Add a new assertion block to `tests/int/page-blocks.int.spec.ts`:
 
 ```ts
-  it('defines the statsStrip schema with metric items, background, and animation fields', async () => {
-    const { StatsStripBlock } = await import('@/blocks/StatsStrip/config')
+it('defines the statsStrip schema with metric items, background, and animation fields', async () => {
+  const { StatsStripBlock } = await import('@/blocks/StatsStrip/config')
 
-    const itemsField = StatsStripBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'items',
-    ) as { fields?: Array<{ name?: string; type?: string }>; minRows?: number; type?: string } | undefined
+  const itemsField = StatsStripBlock.fields.find(
+    (field) =>
+      typeof field === 'object' && field !== null && 'name' in field && field.name === 'items',
+  ) as
+    | { fields?: Array<{ name?: string; type?: string }>; minRows?: number; type?: string }
+    | undefined
 
-    const backgroundStyleField = StatsStripBlock.fields.find(
-      (field) =>
-        typeof field === 'object' && field !== null && 'name' in field && field.name === 'backgroundStyle',
-    ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
+  const backgroundStyleField = StatsStripBlock.fields.find(
+    (field) =>
+      typeof field === 'object' &&
+      field !== null &&
+      'name' in field &&
+      field.name === 'backgroundStyle',
+  ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
 
-    const animationEnabledField = StatsStripBlock.fields.find(
-      (field) =>
-        typeof field === 'object' && field !== null && 'name' in field && field.name === 'animationEnabled',
-    ) as { defaultValue?: boolean; type?: string } | undefined
+  const animationEnabledField = StatsStripBlock.fields.find(
+    (field) =>
+      typeof field === 'object' &&
+      field !== null &&
+      'name' in field &&
+      field.name === 'animationEnabled',
+  ) as { defaultValue?: boolean; type?: string } | undefined
 
-    const animationDurationField = StatsStripBlock.fields.find(
-      (field) =>
-        typeof field === 'object' && field !== null && 'name' in field && field.name === 'animationDuration',
-    ) as { defaultValue?: number; type?: string } | undefined
+  const animationDurationField = StatsStripBlock.fields.find(
+    (field) =>
+      typeof field === 'object' &&
+      field !== null &&
+      'name' in field &&
+      field.name === 'animationDuration',
+  ) as { defaultValue?: number; type?: string } | undefined
 
-    const triggerOnceField = StatsStripBlock.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'triggerOnce',
-    ) as { defaultValue?: boolean; type?: string } | undefined
+  const triggerOnceField = StatsStripBlock.fields.find(
+    (field) =>
+      typeof field === 'object' &&
+      field !== null &&
+      'name' in field &&
+      field.name === 'triggerOnce',
+  ) as { defaultValue?: boolean; type?: string } | undefined
 
-    expect(itemsField?.type).toBe('array')
-    expect(itemsField?.minRows).toBe(1)
-    expect(itemsField?.fields?.map((field) => field.name)).toEqual(['prefix', 'value', 'suffix', 'label'])
-    expect(backgroundStyleField?.type).toBe('select')
-    expect(backgroundStyleField?.defaultValue).toBe('default')
-    expect(backgroundStyleField?.options?.map((option) => option.value)).toEqual([
-      'default',
-      'muted',
-      'accent',
-    ])
-    expect(animationEnabledField?.type).toBe('checkbox')
-    expect(animationEnabledField?.defaultValue).toBe(true)
-    expect(animationDurationField?.type).toBe('number')
-    expect(animationDurationField?.defaultValue).toBe(1200)
-    expect(triggerOnceField?.type).toBe('checkbox')
-    expect(triggerOnceField?.defaultValue).toBe(true)
-  })
+  expect(itemsField?.type).toBe('array')
+  expect(itemsField?.minRows).toBe(1)
+  expect(itemsField?.fields?.map((field) => field.name)).toEqual([
+    'prefix',
+    'value',
+    'suffix',
+    'label',
+  ])
+  expect(backgroundStyleField?.type).toBe('select')
+  expect(backgroundStyleField?.defaultValue).toBe('default')
+  expect(backgroundStyleField?.options?.map((option) => option.value)).toEqual([
+    'default',
+    'muted',
+    'accent',
+  ])
+  expect(animationEnabledField?.type).toBe('checkbox')
+  expect(animationEnabledField?.defaultValue).toBe(true)
+  expect(animationDurationField?.type).toBe('number')
+  expect(animationDurationField?.defaultValue).toBe(1200)
+  expect(triggerOnceField?.type).toBe('checkbox')
+  expect(triggerOnceField?.defaultValue).toBe(true)
+})
 ```
 
 Update the existing layout registration expectation in the same file:
 
 ```ts
-    expect(layoutField?.blocks?.map((block) => block.slug)).toEqual([
-      'announcement',
-      'heroInstitutional',
-      'splitFeature',
-      'statsStrip',
-    ])
+expect(layoutField?.blocks?.map((block) => block.slug)).toEqual([
+  'announcement',
+  'heroInstitutional',
+  'featureSpotlight',
+  'statsStrip',
+])
 ```
 
 - [ ] **Step 2: Run the focused test to verify it fails**
@@ -198,7 +221,7 @@ import { StatsStripBlock } from '@/blocks/StatsStrip/config'
 
 // ...
 
-blocks: [AnnouncementBlock, HeroInstitutionalBlock, SplitFeatureBlock, StatsStripBlock],
+blocks: [AnnouncementBlock, HeroInstitutionalBlock, FeatureSpotlightBlock, StatsStripBlock],
 ```
 
 - [ ] **Step 4: Run the focused test to verify it passes**
@@ -221,11 +244,13 @@ git commit -m "feat: add stats strip block schema"
 ### Task 2: Build the stats strip renderer and the animated value primitive
 
 **Files:**
+
 - Create: `src/blocks/StatsStrip/AnimatedMetricValue.tsx`
 - Create: `src/blocks/StatsStrip/Component.tsx`
 - Create: `tests/int/stats-strip-render.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes:
   - `StatsStripBlock` field contract from Task 1
   - `cn` from `@/lib/utils`
@@ -406,12 +431,15 @@ export function AnimatedMetricValue({
     const node = rootRef.current
     if (!node) return
 
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry?.isIntersecting) {
-        setHasStarted(true)
-        if (triggerOnce) observer.disconnect()
-      }
-    }, { threshold: 0.35 })
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setHasStarted(true)
+          if (triggerOnce) observer.disconnect()
+        }
+      },
+      { threshold: 0.35 },
+    )
 
     observer.observe(node)
     return () => observer.disconnect()
@@ -437,7 +465,10 @@ export function AnimatedMetricValue({
     return () => window.clearInterval(interval)
   }, [durationMs, hasStarted, prefersReducedMotion, value])
 
-  const text = useMemo(() => `${prefix ?? ''}${displayValue}${suffix ?? ''}`, [displayValue, prefix, suffix])
+  const text = useMemo(
+    () => `${prefix ?? ''}${displayValue}${suffix ?? ''}`,
+    [displayValue, prefix, suffix],
+  )
 
   return (
     <span ref={rootRef} data-testid="stats-strip-value">
@@ -525,7 +556,9 @@ export function StatsStripBlockComponent({
                   'flex min-h-40 flex-col justify-center gap-3 px-6 py-8',
                   'border-b border-border md:border-b-0',
                   itemIndex < row.length - 1 && 'md:border-r',
-                  row.length % 2 === 1 && itemIndex === row.length - 1 && 'col-span-2 md:col-span-1',
+                  row.length % 2 === 1 &&
+                    itemIndex === row.length - 1 &&
+                    'col-span-2 md:col-span-1',
                 )}
               >
                 <p className="font-serif text-4xl font-semibold tracking-tight sm:text-5xl">
@@ -574,11 +607,13 @@ git commit -m "feat: add stats strip renderer"
 ### Task 3: Wire the block into page rendering, regenerate types, and verify the full block pipeline
 
 **Files:**
+
 - Modify: `src/blocks/renderPageBlocks.tsx`
 - Modify: `tests/int/page-blocks.int.spec.ts`
 - Modify: `src/payload-types.ts`
 
 **Interfaces:**
+
 - Consumes:
   - `StatsStripBlockComponent` from Task 2
   - `StatsStripBlock` registration from Task 1
@@ -591,36 +626,36 @@ git commit -m "feat: add stats strip renderer"
 Extend `tests/int/page-blocks.int.spec.ts` with a page-content rendering test:
 
 ```ts
-  it('renders a statsStrip page block through PageContent', () => {
-    const result = PageContent({
-      page: {
-        id: 'page-stats-1',
-        layout: [
-          {
-            animationDuration: 1200,
-            animationEnabled: true,
-            backgroundStyle: 'accent',
-            blockType: 'statsStrip',
-            items: [
-              { label: 'Years of training physicians', value: 112 },
-              { label: 'Student-to-faculty ratio', suffix: ':1', value: 9 },
-              { label: 'Annual research funding', prefix: '$', suffix: 'M', value: 186 },
-              { label: 'Residency match rate', suffix: '%', value: 96 },
-            ],
-            triggerOnce: true,
-          },
-        ],
-        slug: 'institutional-metrics',
-        title: 'Institutional Metrics',
-      } as never,
-    })
-
-    const html = renderToStaticMarkup(result)
-
-    expect(html).toContain('data-stats-strip-background="accent"')
-    expect(html).toContain('Years of training physicians')
-    expect(html).toContain('Residency match rate')
+it('renders a statsStrip page block through PageContent', () => {
+  const result = PageContent({
+    page: {
+      id: 'page-stats-1',
+      layout: [
+        {
+          animationDuration: 1200,
+          animationEnabled: true,
+          backgroundStyle: 'accent',
+          blockType: 'statsStrip',
+          items: [
+            { label: 'Years of training physicians', value: 112 },
+            { label: 'Student-to-faculty ratio', suffix: ':1', value: 9 },
+            { label: 'Annual research funding', prefix: '$', suffix: 'M', value: 186 },
+            { label: 'Residency match rate', suffix: '%', value: 96 },
+          ],
+          triggerOnce: true,
+        },
+      ],
+      slug: 'institutional-metrics',
+      title: 'Institutional Metrics',
+    } as never,
   })
+
+  const html = renderToStaticMarkup(result)
+
+  expect(html).toContain('data-stats-strip-background="accent"')
+  expect(html).toContain('Years of training physicians')
+  expect(html).toContain('Residency match rate')
+})
 ```
 
 - [ ] **Step 2: Run the focused tests to verify they fail**

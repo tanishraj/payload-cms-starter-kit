@@ -25,7 +25,7 @@ The pass should also pull visually drifted blocks back toward the spacing, surfa
 - `Announcement`
 - `HeaderNavbar12`
 - `HeroInstitutional`
-- `SplitFeature`
+- `FeatureSpotlight`
 - `StatsStrip`
 - `Footer56`
 
@@ -107,7 +107,7 @@ The pass must keep existing content behavior intact:
 - allow the image veil/overlay opacity treatment to remain custom where no semantic token equivalent exists
 - ensure foreground contrast remains stable across theme and color preset changes
 
-### SplitFeature
+### FeatureSpotlight
 
 - normalize section surfaces and media containers to semantic tokens
 - ensure feature links and buttons adapt through token-driven color changes

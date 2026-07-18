@@ -1,10 +1,10 @@
-# Split Feature Block Implementation Plan
+# Feature Spotlight Block Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add a reusable page-level `splitFeature` block that can render either a 50/50 image/content split section or a full-width content-only section, with plain or muted background and either an animated link CTA or up to two buttons.
+**Goal:** Add a reusable page-level `featureSpotlight` block that can render either a 50/50 image/content split section or a full-width content-only section, with plain or muted background and either an animated link CTA or up to two buttons.
 
-**Architecture:** Extend the existing page block pipeline with a focused `splitFeature` Payload block, a dedicated render component, and a small thumbnail asset. Keep the block server-rendered, use existing CMS link and media helpers, and rely on semantic theme tokens plus existing shadcn `Button` variants so the block stays consistent with the rest of the design system. Model the layout explicitly with `layoutMode` (`split` or `contentOnly`) rather than retrofitting optional media into a permanently split grid.
+**Architecture:** Extend the existing page block pipeline with a focused `featureSpotlight` Payload block, a dedicated render component, and a small thumbnail asset. Keep the block server-rendered, use existing CMS link and media helpers, and rely on semantic theme tokens plus existing shadcn `Button` variants so the block stays consistent with the rest of the design system. Model the layout explicitly with `layoutMode` (`split` or `contentOnly`) rather than retrofitting optional media into a permanently split grid.
 
 **Tech Stack:** Payload CMS blocks, Next.js App Router, React server rendering, TypeScript, Tailwind CSS v4, shadcn/ui Button, Vitest.
 
@@ -28,20 +28,20 @@
 
 ## File Map
 
-- Create: `src/blocks/SplitFeature/config.ts`
+- Create: `src/blocks/FeatureSpotlight/config.ts`
   - Define the Payload block schema, CTA mode conditionals, admin thumbnail, and content/layout fields.
-- Create: `src/blocks/SplitFeature/Component.tsx`
+- Create: `src/blocks/FeatureSpotlight/Component.tsx`
   - Render the split media/content section for both CTA modes and both media positions.
-- Create: `src/blocks/SplitFeature/thumbnail.ts`
+- Create: `src/blocks/FeatureSpotlight/thumbnail.ts`
   - Export the block picker thumbnail string using the same local pattern as other blocks.
-- Create: `tests/int/split-feature-render.int.spec.ts`
+- Create: `tests/int/feature-spotlight-render.int.spec.ts`
   - Cover component rendering, left/right layout flags, `contentOnly` mode, animated link CTA structure, and muted background behavior.
 - Modify: `src/collections/Pages.ts`
-  - Register `SplitFeatureBlock` in the Pages layout block list.
+  - Register `FeatureSpotlightBlock` in the Pages layout block list.
 - Modify: `src/blocks/renderPageBlocks.tsx`
-  - Render `splitFeature` blocks through the page block switch.
+  - Render `featureSpotlight` blocks through the page block switch.
 - Modify: `tests/int/page-blocks.int.spec.ts`
-  - Extend block registration and schema assertions to include `splitFeature`.
+  - Extend block registration and schema assertions to include `featureSpotlight`.
 - Modify: `src/payload-types.ts`
   - Regenerate Payload types after schema changes using `npm run generate:types`.
 
@@ -50,8 +50,8 @@
 - Existing helper consumed: `resolveCmsLink(value: CmsLinkValue): { href?: string; openInNewTab?: boolean }` from `src/lib/cmsLinks.ts`
 - Existing helper consumed: `getMediaImageProps({ media, preset, fallbackAlt }): { alt: string; src: string } | undefined` from `src/lib/media.ts`
 - Existing UI consumed: `Button` from `@/components/ui/button`
-- New block slug produced: `splitFeature`
-- New render component produced: `SplitFeatureBlockComponent(props: SplitFeatureBlockLike): React.ReactNode`
+- New block slug produced: `featureSpotlight`
+- New render component produced: `FeatureSpotlightBlockComponent(props: FeatureSpotlightBlockLike): React.ReactNode`
 
 ### Task 1: Add schema coverage for the new block
 
@@ -63,36 +63,36 @@
 **Interfaces:**
 
 - Consumes: `Pages` collection shape via `getLayoutField()`
-- Produces: failing expectations for `splitFeature` registration and field schema
+- Produces: failing expectations for `featureSpotlight` registration and field schema
 
 - [ ] **Step 1: Write the failing schema test**
 
 ```ts
-it('registers splitFeature in the Pages layout field', async () => {
+it('registers featureSpotlight in the Pages layout field', async () => {
   const layoutField = getLayoutField()
 
   expect(layoutField?.type).toBe('blocks')
   expect(layoutField?.blocks?.map((block) => block.slug)).toEqual([
     'announcement',
     'heroInstitutional',
-    'splitFeature',
+    'featureSpotlight',
   ])
 })
 
-it('defines the splitFeature schema with image, layout, and CTA mode fields', async () => {
-  const { SplitFeatureBlock } = await import('@/blocks/SplitFeature/config')
+it('defines the featureSpotlight schema with image, layout, and CTA mode fields', async () => {
+  const { FeatureSpotlightBlock } = await import('@/blocks/FeatureSpotlight/config')
 
-  const imageField = SplitFeatureBlock.fields.find(
+  const imageField = FeatureSpotlightBlock.fields.find(
     (field) =>
       typeof field === 'object' && field !== null && 'name' in field && field.name === 'image',
   ) as { relationTo?: string; required?: boolean; type?: string } | undefined
 
-  const titleField = SplitFeatureBlock.fields.find(
+  const titleField = FeatureSpotlightBlock.fields.find(
     (field) =>
       typeof field === 'object' && field !== null && 'name' in field && field.name === 'title',
   ) as { required?: boolean; type?: string } | undefined
 
-  const mediaPositionField = SplitFeatureBlock.fields.find(
+  const mediaPositionField = FeatureSpotlightBlock.fields.find(
     (field) =>
       typeof field === 'object' &&
       field !== null &&
@@ -100,7 +100,7 @@ it('defines the splitFeature schema with image, layout, and CTA mode fields', as
       field.name === 'mediaPosition',
   ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
 
-  const backgroundStyleField = SplitFeatureBlock.fields.find(
+  const backgroundStyleField = FeatureSpotlightBlock.fields.find(
     (field) =>
       typeof field === 'object' &&
       field !== null &&
@@ -108,12 +108,12 @@ it('defines the splitFeature schema with image, layout, and CTA mode fields', as
       field.name === 'backgroundStyle',
   ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
 
-  const ctaModeField = SplitFeatureBlock.fields.find(
+  const ctaModeField = FeatureSpotlightBlock.fields.find(
     (field) =>
       typeof field === 'object' && field !== null && 'name' in field && field.name === 'ctaMode',
   ) as { defaultValue?: string; options?: Array<{ value: string }>; type?: string } | undefined
 
-  const buttonsField = SplitFeatureBlock.fields.find(
+  const buttonsField = FeatureSpotlightBlock.fields.find(
     (field) =>
       typeof field === 'object' && field !== null && 'name' in field && field.name === 'buttons',
   ) as { maxRows?: number; type?: string } | undefined
@@ -145,7 +145,7 @@ Run:
 ./node_modules/.bin/vitest run --config ./vitest.config.mts tests/int/page-blocks.int.spec.ts
 ```
 
-Expected: FAIL with missing `@/blocks/SplitFeature/config` import and/or layout block mismatch.
+Expected: FAIL with missing `@/blocks/FeatureSpotlight/config` import and/or layout block mismatch.
 
 - [ ] **Step 3: Commit**
 
@@ -158,8 +158,8 @@ git commit -m "test: cover split feature schema"
 
 **Files:**
 
-- Create: `src/blocks/SplitFeature/config.ts`
-- Create: `src/blocks/SplitFeature/thumbnail.ts`
+- Create: `src/blocks/FeatureSpotlight/config.ts`
+- Create: `src/blocks/FeatureSpotlight/thumbnail.ts`
 - Modify: `src/collections/Pages.ts`
 - Test: `tests/int/page-blocks.int.spec.ts`
 
@@ -167,14 +167,14 @@ git commit -m "test: cover split feature schema"
 
 - Consumes: `Block`, `ArrayField`, `CheckboxField`, `RadioField`, `SelectField` from `payload`
 - Consumes: thumbnail and field composition patterns from `src/blocks/Announcement/config.ts` and `src/blocks/HeroInstitutional/config.ts`
-- Produces: `export const SplitFeatureBlock: Block`
+- Produces: `export const FeatureSpotlightBlock: Block`
 
 - [ ] **Step 1: Write the block schema**
 
 ```ts
 import type { ArrayField, Block, CheckboxField, Field, RadioField, SelectField } from 'payload'
 
-import { splitFeatureThumbnail } from './thumbnail'
+import { featureSpotlightThumbnail } from './thumbnail'
 
 type LinkType = 'page' | 'custom'
 type CtaMode = 'link' | 'buttons'
@@ -232,20 +232,20 @@ const createLinkFields = (): Field[] => [
   } satisfies CheckboxField,
 ]
 
-export const SplitFeatureBlock: Block = {
-  slug: 'splitFeature',
-  interfaceName: 'SplitFeatureBlock',
+export const FeatureSpotlightBlock: Block = {
+  slug: 'featureSpotlight',
+  interfaceName: 'FeatureSpotlightBlock',
   admin: {
     images: {
       thumbnail: {
         alt: 'Split feature block preview',
-        url: splitFeatureThumbnail,
+        url: featureSpotlightThumbnail,
       },
     },
   },
   labels: {
-    singular: 'Split Feature',
-    plural: 'Split Features',
+    singular: 'Feature Spotlight',
+    plural: 'Feature Spotlights',
   },
   fields: [
     {
@@ -382,10 +382,10 @@ export const SplitFeatureBlock: Block = {
 - [ ] **Step 2: Register the block on Pages**
 
 ```ts
-import { SplitFeatureBlock } from '@/blocks/SplitFeature/config'
+import { FeatureSpotlightBlock } from '@/blocks/FeatureSpotlight/config'
 
 // inside the layout blocks list
-blocks: [AnnouncementBlock, HeroInstitutionalBlock, SplitFeatureBlock],
+blocks: [AnnouncementBlock, HeroInstitutionalBlock, FeatureSpotlightBlock],
 ```
 
 - [ ] **Step 3: Run schema test to verify it passes**
@@ -396,12 +396,12 @@ Run:
 ./node_modules/.bin/vitest run --config ./vitest.config.mts tests/int/page-blocks.int.spec.ts
 ```
 
-Expected: PASS for `splitFeature` registration and schema expectations.
+Expected: PASS for `featureSpotlight` registration and schema expectations.
 
 - [ ] **Step 4: Commit**
 
 ```bash
-git add src/blocks/SplitFeature/config.ts src/blocks/SplitFeature/thumbnail.ts src/collections/Pages.ts tests/int/page-blocks.int.spec.ts
+git add src/blocks/FeatureSpotlight/config.ts src/blocks/FeatureSpotlight/thumbnail.ts src/collections/Pages.ts tests/int/page-blocks.int.spec.ts
 git commit -m "feat: add split feature block schema"
 ```
 
@@ -409,12 +409,12 @@ git commit -m "feat: add split feature block schema"
 
 **Files:**
 
-- Create: `tests/int/split-feature-render.int.spec.ts`
-- Test: `tests/int/split-feature-render.int.spec.ts`
+- Create: `tests/int/feature-spotlight-render.int.spec.ts`
+- Test: `tests/int/feature-spotlight-render.int.spec.ts`
 
 **Interfaces:**
 
-- Consumes: `SplitFeatureBlockComponent(props: SplitFeatureBlockLike): React.ReactNode`
+- Consumes: `FeatureSpotlightBlockComponent(props: FeatureSpotlightBlockLike): React.ReactNode`
 - Produces: failing render expectations for media position, CTA mode, and background style
 
 - [ ] **Step 1: Write the failing render test**
@@ -424,12 +424,12 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 
-import { SplitFeatureBlockComponent } from '@/blocks/SplitFeature/Component'
+import { FeatureSpotlightBlockComponent } from '@/blocks/FeatureSpotlight/Component'
 
 describe('split feature block', () => {
   it('renders image-right layout with a text link CTA', () => {
     const html = renderToStaticMarkup(
-      createElement(SplitFeatureBlockComponent, {
+      createElement(FeatureSpotlightBlockComponent, {
         contentWidth: 'narrow',
         ctaMode: 'link',
         description: 'Choose from MD, MD-PhD, and specialized tracks.',
@@ -443,15 +443,15 @@ describe('split feature block', () => {
       }),
     )
 
-    expect(html).toContain('data-split-feature-position="right"')
-    expect(html).toContain('data-split-feature-cta="link"')
+    expect(html).toContain('data-feature-spotlight-position="right"')
+    expect(html).toContain('data-feature-spotlight-cta="link"')
     expect(html).toContain('href="/programs"')
     expect(html).toContain('See all programs')
   })
 
   it('renders muted background and two CTA buttons', () => {
     const html = renderToStaticMarkup(
-      createElement(SplitFeatureBlockComponent, {
+      createElement(FeatureSpotlightBlockComponent, {
         backgroundStyle: 'muted',
         buttons: [
           {
@@ -470,8 +470,8 @@ describe('split feature block', () => {
       }),
     )
 
-    expect(html).toContain('data-split-feature-background="muted"')
-    expect(html).toContain('data-split-feature-cta="buttons"')
+    expect(html).toContain('data-feature-spotlight-background="muted"')
+    expect(html).toContain('data-feature-spotlight-cta="buttons"')
     expect(html).toContain('href="/apply"')
     expect(html).toContain('href="/visit"')
   })
@@ -483,15 +483,15 @@ describe('split feature block', () => {
 Run:
 
 ```bash
-./node_modules/.bin/vitest run --config ./vitest.config.mts tests/int/split-feature-render.int.spec.ts
+./node_modules/.bin/vitest run --config ./vitest.config.mts tests/int/feature-spotlight-render.int.spec.ts
 ```
 
-Expected: FAIL with missing `@/blocks/SplitFeature/Component`.
+Expected: FAIL with missing `@/blocks/FeatureSpotlight/Component`.
 
 - [ ] **Step 3: Commit**
 
 ```bash
-git add tests/int/split-feature-render.int.spec.ts
+git add tests/int/feature-spotlight-render.int.spec.ts
 git commit -m "test: cover split feature rendering"
 ```
 
@@ -499,16 +499,16 @@ git commit -m "test: cover split feature rendering"
 
 **Files:**
 
-- Create: `src/blocks/SplitFeature/Component.tsx`
+- Create: `src/blocks/FeatureSpotlight/Component.tsx`
 - Modify: `src/blocks/renderPageBlocks.tsx`
-- Test: `tests/int/split-feature-render.int.spec.ts`
+- Test: `tests/int/feature-spotlight-render.int.spec.ts`
 - Test: `tests/int/page-blocks.int.spec.ts`
 
 **Interfaces:**
 
 - Consumes: `resolveCmsLink`, `getMediaImageProps`, `Button`
-- Produces: `SplitFeatureBlockComponent`
-- Produces: new `case 'splitFeature'` in `renderPageBlocks`
+- Produces: `FeatureSpotlightBlockComponent`
+- Produces: new `case 'featureSpotlight'` in `renderPageBlocks`
 
 - [ ] **Step 1: Write the renderer**
 
@@ -519,7 +519,7 @@ import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
 import type { Page } from '@/payload-types'
 
-type SplitFeatureButton = {
+type FeatureSpotlightButton = {
   label?: string | null
   linkType?: 'page' | 'custom' | null
   openInNewTab?: boolean | null
@@ -528,9 +528,9 @@ type SplitFeatureButton = {
   variant?: 'default' | 'link' | 'secondary' | null
 }
 
-type SplitFeatureBlockLike = {
+type FeatureSpotlightBlockLike = {
   backgroundStyle?: 'muted' | 'plain' | null
-  buttons?: SplitFeatureButton[] | null
+  buttons?: FeatureSpotlightButton[] | null
   contentWidth?: 'default' | 'narrow' | null
   ctaMode?: 'buttons' | 'link' | null
   description?: string | null
@@ -566,7 +566,7 @@ const gridOrderClasses = {
   },
 } as const
 
-export function SplitFeatureBlockComponent({
+export function FeatureSpotlightBlockComponent({
   backgroundStyle = 'plain',
   buttons,
   contentWidth = 'default',
@@ -581,7 +581,7 @@ export function SplitFeatureBlockComponent({
   page,
   title,
   url,
-}: SplitFeatureBlockLike) {
+}: FeatureSpotlightBlockLike) {
   const media = getMediaImageProps({
     media: image as never,
     preset: 'generic',
@@ -620,9 +620,9 @@ export function SplitFeatureBlockComponent({
   return (
     <section
       className={cn('border-b border-border', backgroundClasses[backgroundStyle])}
-      data-split-feature-background={backgroundStyle}
-      data-split-feature-position={mediaPosition}
-      data-split-feature-cta={ctaMode}
+      data-feature-spotlight-background={backgroundStyle}
+      data-feature-spotlight-position={mediaPosition}
+      data-feature-spotlight-cta={ctaMode}
     >
       <div className="mx-auto max-w-screen-2xl px-4 py-16 md:py-24">
         <div className="grid items-center gap-8 md:grid-cols-2 md:gap-12 lg:gap-16">
@@ -687,11 +687,11 @@ export function SplitFeatureBlockComponent({
 - [ ] **Step 2: Wire the block into the page renderer**
 
 ```ts
-import { SplitFeatureBlockComponent } from './SplitFeature/Component'
+import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
 
-case 'splitFeature':
+case 'featureSpotlight':
   return (
-    <SplitFeatureBlockComponent
+    <FeatureSpotlightBlockComponent
       key={block.id ?? `${block.blockType}-${index}`}
       {...block}
     />
@@ -703,7 +703,7 @@ case 'splitFeature':
 Run:
 
 ```bash
-./node_modules/.bin/vitest run --config ./vitest.config.mts tests/int/split-feature-render.int.spec.ts tests/int/page-blocks.int.spec.ts
+./node_modules/.bin/vitest run --config ./vitest.config.mts tests/int/feature-spotlight-render.int.spec.ts tests/int/page-blocks.int.spec.ts
 ```
 
 Expected: PASS for split feature rendering and page block pipeline coverage.
@@ -711,7 +711,7 @@ Expected: PASS for split feature rendering and page block pipeline coverage.
 - [ ] **Step 4: Commit**
 
 ```bash
-git add src/blocks/SplitFeature/Component.tsx src/blocks/renderPageBlocks.tsx tests/int/split-feature-render.int.spec.ts tests/int/page-blocks.int.spec.ts
+git add src/blocks/FeatureSpotlight/Component.tsx src/blocks/renderPageBlocks.tsx tests/int/feature-spotlight-render.int.spec.ts tests/int/page-blocks.int.spec.ts
 git commit -m "feat: render split feature block"
 ```
 
@@ -721,12 +721,12 @@ git commit -m "feat: render split feature block"
 
 - Modify: `src/payload-types.ts`
 - Test: `tests/int/page-blocks.int.spec.ts`
-- Test: `tests/int/split-feature-render.int.spec.ts`
+- Test: `tests/int/feature-spotlight-render.int.spec.ts`
 
 **Interfaces:**
 
 - Consumes: Payload config and block registration
-- Produces: updated generated types for `splitFeature`
+- Produces: updated generated types for `featureSpotlight`
 
 - [ ] **Step 1: Regenerate Payload types**
 
@@ -736,7 +736,7 @@ Run:
 npm run generate:types
 ```
 
-Expected: `src/payload-types.ts` updates with `SplitFeatureBlock` and `splitFeature` layout unions.
+Expected: `src/payload-types.ts` updates with `FeatureSpotlightBlock` and `featureSpotlight` layout unions.
 
 - [ ] **Step 2: Run typecheck**
 
@@ -753,7 +753,7 @@ Expected: PASS with no type errors.
 Run:
 
 ```bash
-./node_modules/.bin/vitest run --config ./vitest.config.mts tests/int/page-blocks.int.spec.ts tests/int/hero-institutional-render.int.spec.ts tests/int/split-feature-render.int.spec.ts
+./node_modules/.bin/vitest run --config ./vitest.config.mts tests/int/page-blocks.int.spec.ts tests/int/hero-institutional-render.int.spec.ts tests/int/feature-spotlight-render.int.spec.ts
 ```
 
 Expected: PASS for all focused block tests.
@@ -769,11 +769,11 @@ git commit -m "chore: generate split feature types"
 
 - Spec coverage: the plan covers one-block-per-section usage, required image/title, manual side control, plain/muted backgrounds, link/button CTA mode switching, page block registration, rendering, and responsive verification.
 - Placeholder scan: removed generic placeholders; each task has exact files, commands, and code targets.
-- Type consistency: all produced names match the intended implementation surface: `splitFeature`, `SplitFeatureBlock`, `SplitFeatureBlockComponent`, `mediaPosition`, `backgroundStyle`, `ctaMode`.
+- Type consistency: all produced names match the intended implementation surface: `featureSpotlight`, `FeatureSpotlightBlock`, `FeatureSpotlightBlockComponent`, `mediaPosition`, `backgroundStyle`, `ctaMode`.
 
 ## Execution Handoff
 
-Plan complete and saved to `docs/superpowers/plans/2026-07-13-split-feature-block.md`.
+Plan complete and saved to `docs/superpowers/plans/2026-07-13-feature-spotlight-block.md`.
 
 Two execution options:
 

@@ -10,7 +10,7 @@ The first generated set covers every block currently selectable in Payload:
 
 - Announcement
 - Hero Institutional
-- Split Feature
+- Feature Spotlight
 - Stats Strip
 - FAQ
 - Review Submission
@@ -103,7 +103,7 @@ The generator does not require Payload data, administrator authentication, or a 
 
 Each block config uses Payload's native `admin.images.thumbnail` metadata with a stable public URL and descriptive alt text.
 
-The existing filenames remain unchanged: `announcement.jpg`, `hero-institutional.jpg`, `split-feature.jpg`, `stats-strip.jpg`, `header-navbar-12.jpg`, `footer-56.jpg`, `system-404.jpg`, `system-maintenance.jpg`, and `system-coming-soon.jpg`. FAQ uses `faq.jpg`, and Review Submission uses `review-submission.jpg`. FAQ and Review Submission receive new thumbnail constants and config metadata. Header, Footer, and system-page blocks use the same manifest and validation contract as page-layout blocks.
+The existing filenames remain unchanged: `announcement.jpg`, `hero-institutional.jpg`, `feature-spotlight.jpg`, `stats-strip.jpg`, `header-navbar-12.jpg`, `footer-56.jpg`, `system-404.jpg`, `system-maintenance.jpg`, and `system-coming-soon.jpg`. FAQ uses `faq.jpg`, and Review Submission uses `review-submission.jpg`. FAQ and Review Submission receive new thumbnail constants and config metadata. Header, Footer, and system-page blocks use the same manifest and validation contract as page-layout blocks.
 
 The block picker continues to use Payload's native UI. No custom block-selector component is introduced.
 

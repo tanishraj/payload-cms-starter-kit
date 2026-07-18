@@ -23,12 +23,14 @@
 ### Task 1: Add the shared appearance field factory and class resolver
 
 **Files:**
+
 - Create: `src/blocks/shared/blockAppearanceFields.ts`
 - Create: `src/blocks/shared/blockAppearance.ts`
 - Modify: `tests/int/page-blocks.int.spec.ts`
 - Modify: `tests/int/system-page-blocks.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: Payload `Field` types and the existing block config pattern
 - Produces:
   - `createBlockAppearanceFields(options?: { includeTextOverride?: boolean }): Field`
@@ -204,21 +206,23 @@ git commit -m "feat: add shared block appearance helpers"
 ### Task 2: Migrate page blocks to the shared appearance contract
 
 **Files:**
+
 - Modify: `src/blocks/Announcement/config.ts`
 - Modify: `src/blocks/Announcement/Component.tsx`
 - Modify: `src/blocks/HeroInstitutional/config.ts`
 - Modify: `src/blocks/HeroInstitutional/Component.tsx`
-- Modify: `src/blocks/SplitFeature/config.ts`
-- Modify: `src/blocks/SplitFeature/Component.tsx`
+- Modify: `src/blocks/FeatureSpotlight/config.ts`
+- Modify: `src/blocks/FeatureSpotlight/Component.tsx`
 - Modify: `src/blocks/StatsStrip/config.ts`
 - Modify: `src/blocks/StatsStrip/Component.tsx`
 - Modify: `tests/int/page-blocks.int.spec.ts`
 - Modify: `tests/int/global-announcement.int.spec.ts`
 - Modify: `tests/int/hero-institutional-render.int.spec.ts`
-- Modify: `tests/int/split-feature-render.int.spec.ts`
+- Modify: `tests/int/feature-spotlight-render.int.spec.ts`
 - Modify: `tests/int/stats-strip-render.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes:
   - `createBlockAppearanceFields(): Field`
   - `resolveBlockAppearanceClasses(appearance?: BlockAppearance | null)`
@@ -232,21 +236,22 @@ Extend `tests/int/page-blocks.int.spec.ts` for:
 
 - `AnnouncementBlock`
 - `HeroInstitutionalBlock`
-- `SplitFeatureBlock`
+- `FeatureSpotlightBlock`
 - `StatsStripBlock`
 
 Use checks like:
 
 ```ts
 const appearanceField = Block.fields.find(
-  (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'appearance',
+  (field) =>
+    typeof field === 'object' && field !== null && 'name' in field && field.name === 'appearance',
 )
 expect(appearanceField).toBeDefined()
 ```
 
 Also update the legacy background assertions:
 
-- `SplitFeature` should no longer assert `backgroundStyle`
+- `FeatureSpotlight` should no longer assert `backgroundStyle`
 - `StatsStrip` should no longer assert the old 3-option `backgroundStyle`
 
 - [ ] **Step 2: Run the page-block focused tests to confirm migration failures**
@@ -254,7 +259,7 @@ Also update the legacy background assertions:
 Run:
 
 ```bash
-pnpm exec vitest run --config ./vitest.config.mts tests/int/page-blocks.int.spec.ts tests/int/global-announcement.int.spec.ts tests/int/hero-institutional-render.int.spec.ts tests/int/split-feature-render.int.spec.ts tests/int/stats-strip-render.int.spec.ts
+pnpm exec vitest run --config ./vitest.config.mts tests/int/page-blocks.int.spec.ts tests/int/global-announcement.int.spec.ts tests/int/hero-institutional-render.int.spec.ts tests/int/feature-spotlight-render.int.spec.ts tests/int/stats-strip-render.int.spec.ts
 ```
 
 Expected: FAIL because the page blocks still use legacy fields and root classes.
@@ -276,12 +281,12 @@ Apply this to:
 
 - `Announcement/config.ts`
 - `HeroInstitutional/config.ts`
-- `SplitFeature/config.ts`
+- `FeatureSpotlight/config.ts`
 - `StatsStrip/config.ts`
 
 Remove:
 
-- `SplitFeature.backgroundStyle`
+- `FeatureSpotlight.backgroundStyle`
 - `StatsStrip.backgroundStyle`
 
 Keep all non-appearance options intact.
@@ -308,7 +313,7 @@ Specific expectations:
 
 - `Announcement`: remove the hardcoded shell surface class and let `appearance` drive the bar root.
 - `HeroInstitutional`: keep the overlay; apply appearance classes to the root section.
-- `SplitFeature`: remove `backgroundStyle` runtime branching and use `appearance`.
+- `FeatureSpotlight`: remove `backgroundStyle` runtime branching and use `appearance`.
 - `StatsStrip`: remove `backgroundStyle` runtime branching and use `appearance`.
 
 - [ ] **Step 5: Update render assertions to the new root-class model**
@@ -338,7 +343,7 @@ appearance: { background: 'muted', textColor: 'auto', border: 'none' }
 Run:
 
 ```bash
-pnpm exec vitest run --config ./vitest.config.mts tests/int/page-blocks.int.spec.ts tests/int/global-announcement.int.spec.ts tests/int/hero-institutional-render.int.spec.ts tests/int/split-feature-render.int.spec.ts tests/int/stats-strip-render.int.spec.ts
+pnpm exec vitest run --config ./vitest.config.mts tests/int/page-blocks.int.spec.ts tests/int/global-announcement.int.spec.ts tests/int/hero-institutional-render.int.spec.ts tests/int/feature-spotlight-render.int.spec.ts tests/int/stats-strip-render.int.spec.ts
 ```
 
 Expected: PASS.
@@ -346,13 +351,14 @@ Expected: PASS.
 - [ ] **Step 7: Commit**
 
 ```bash
-git add src/blocks/Announcement/config.ts src/blocks/Announcement/Component.tsx src/blocks/HeroInstitutional/config.ts src/blocks/HeroInstitutional/Component.tsx src/blocks/SplitFeature/config.ts src/blocks/SplitFeature/Component.tsx src/blocks/StatsStrip/config.ts src/blocks/StatsStrip/Component.tsx tests/int/page-blocks.int.spec.ts tests/int/global-announcement.int.spec.ts tests/int/hero-institutional-render.int.spec.ts tests/int/split-feature-render.int.spec.ts tests/int/stats-strip-render.int.spec.ts
+git add src/blocks/Announcement/config.ts src/blocks/Announcement/Component.tsx src/blocks/HeroInstitutional/config.ts src/blocks/HeroInstitutional/Component.tsx src/blocks/FeatureSpotlight/config.ts src/blocks/FeatureSpotlight/Component.tsx src/blocks/StatsStrip/config.ts src/blocks/StatsStrip/Component.tsx tests/int/page-blocks.int.spec.ts tests/int/global-announcement.int.spec.ts tests/int/hero-institutional-render.int.spec.ts tests/int/feature-spotlight-render.int.spec.ts tests/int/stats-strip-render.int.spec.ts
 git commit -m "feat: add shared appearance to page blocks"
 ```
 
 ### Task 3: Migrate header and footer blocks to the shared appearance contract
 
 **Files:**
+
 - Modify: `src/blocks/HeaderNavbar12/config.ts`
 - Modify: `src/components/header/HeaderNavbar.tsx`
 - Modify: `src/blocks/Footer56/config.ts`
@@ -362,6 +368,7 @@ git commit -m "feat: add shared appearance to page blocks"
 - Modify: `tests/int/page-blocks.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes:
   - `createBlockAppearanceFields(): Field`
   - `resolveBlockAppearanceClasses(appearance?: BlockAppearance | null)`
@@ -475,12 +482,14 @@ git commit -m "feat: add shared appearance to header and footer"
 ### Task 4: Migrate system page blocks and shared system field factory
 
 **Files:**
+
 - Modify: `src/blocks/systemPageFields.ts`
 - Modify: `src/components/system-pages/primitives/SystemPageShell.tsx`
 - Modify: `tests/int/system-page-blocks.int.spec.ts`
 - Modify: `tests/int/system-page-rendering.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes:
   - `createBlockAppearanceFields(): Field`
   - `resolveBlockAppearanceClasses(appearance?: BlockAppearance | null)`
@@ -588,9 +597,11 @@ git commit -m "feat: add shared appearance to system blocks"
 ### Task 5: Regenerate types and run the full focused regression surface
 
 **Files:**
+
 - Modify: `src/payload-types.ts`
 
 **Interfaces:**
+
 - Consumes: updated block schemas
 - Produces: regenerated Payload types consistent with the new `appearance` fields
 
@@ -609,7 +620,7 @@ Expected: `src/payload-types.ts` updates with `appearance` on all migrated block
 Run:
 
 ```bash
-pnpm exec vitest run --config ./vitest.config.mts tests/int/page-blocks.int.spec.ts tests/int/system-page-blocks.int.spec.ts tests/int/global-announcement.int.spec.ts tests/int/header-navbar-render.int.spec.ts tests/int/hero-institutional-render.int.spec.ts tests/int/split-feature-render.int.spec.ts tests/int/stats-strip-render.int.spec.ts tests/int/system-page-rendering.int.spec.ts tests/int/global-footer.int.spec.ts
+pnpm exec vitest run --config ./vitest.config.mts tests/int/page-blocks.int.spec.ts tests/int/system-page-blocks.int.spec.ts tests/int/global-announcement.int.spec.ts tests/int/header-navbar-render.int.spec.ts tests/int/hero-institutional-render.int.spec.ts tests/int/feature-spotlight-render.int.spec.ts tests/int/stats-strip-render.int.spec.ts tests/int/system-page-rendering.int.spec.ts tests/int/global-footer.int.spec.ts
 ```
 
 Expected: PASS.
@@ -619,7 +630,7 @@ Expected: PASS.
 Run:
 
 ```bash
-pnpm exec eslint src/blocks/shared/blockAppearanceFields.ts src/blocks/shared/blockAppearance.ts src/blocks/Announcement/config.ts src/blocks/Announcement/Component.tsx src/blocks/HeroInstitutional/config.ts src/blocks/HeroInstitutional/Component.tsx src/blocks/SplitFeature/config.ts src/blocks/SplitFeature/Component.tsx src/blocks/StatsStrip/config.ts src/blocks/StatsStrip/Component.tsx src/blocks/HeaderNavbar12/config.ts src/components/header/HeaderNavbar.tsx src/blocks/Footer56/config.ts src/blocks/Footer56/Component.tsx src/blocks/systemPageFields.ts src/components/system-pages/primitives/SystemPageShell.tsx
+pnpm exec eslint src/blocks/shared/blockAppearanceFields.ts src/blocks/shared/blockAppearance.ts src/blocks/Announcement/config.ts src/blocks/Announcement/Component.tsx src/blocks/HeroInstitutional/config.ts src/blocks/HeroInstitutional/Component.tsx src/blocks/FeatureSpotlight/config.ts src/blocks/FeatureSpotlight/Component.tsx src/blocks/StatsStrip/config.ts src/blocks/StatsStrip/Component.tsx src/blocks/HeaderNavbar12/config.ts src/components/header/HeaderNavbar.tsx src/blocks/Footer56/config.ts src/blocks/Footer56/Component.tsx src/blocks/systemPageFields.ts src/components/system-pages/primitives/SystemPageShell.tsx
 ```
 
 Expected: PASS.

@@ -28,7 +28,7 @@
 - Create: `src/block-thumbnails/definitions.ts`
 - Modify: `src/blocks/Announcement/config.ts`
 - Modify: `src/blocks/HeroInstitutional/config.ts`
-- Modify: `src/blocks/SplitFeature/config.ts`
+- Modify: `src/blocks/FeatureSpotlight/config.ts`
 - Modify: `src/blocks/StatsStrip/config.ts`
 - Modify: `src/blocks/Faq/config.ts`
 - Modify: `src/blocks/ReviewSubmission/config.ts`
@@ -46,7 +46,7 @@
 - Produces: `blockThumbnailDefinitions`, `BlockThumbnailSlug`, `getBlockThumbnailDefinition(slug)`, `getBlockThumbnailAdmin(slug)`, `isBlockThumbnailSlug(value)`, and `isBlockThumbnailPreviewEnabled(nodeEnv)`.
 - Consumes: native Payload `Block['admin']` and all block configs registered by Pages, Headers, Footers, and System Pages.
 
-- [ ] **Step 1: Write the failing manifest and Payload metadata test**
+- [x] **Step 1: Write the failing manifest and Payload metadata test**
 
 Create `tests/int/block-thumbnails.int.spec.ts`. Recursively traverse collection fields, including tabs and nested fields, to collect every `type: 'blocks'` entry from `Pages`, `Headers`, `Footers`, and `SystemPages`. Assert:
 
@@ -77,7 +77,7 @@ The expected slug list is:
   'headerNavbar12',
   'heroInstitutional',
   'reviewSubmission',
-  'splitFeature',
+  'featureSpotlight',
   'statsStrip',
   'system404',
   'systemComingSoon',
@@ -85,7 +85,7 @@ The expected slug list is:
 ]
 ```
 
-- [ ] **Step 2: Run the focused test and verify it fails**
+- [x] **Step 2: Run the focused test and verify it fails**
 
 Run:
 
@@ -95,7 +95,7 @@ pnpm exec vitest run tests/int/block-thumbnails.int.spec.ts --config ./vitest.co
 
 Expected: FAIL because the manifest does not exist and FAQ and Review Submission have no thumbnail metadata.
 
-- [ ] **Step 3: Implement the metadata-only manifest**
+- [x] **Step 3: Implement the metadata-only manifest**
 
 Create `src/block-thumbnails/definitions.ts` with this public contract:
 
@@ -133,10 +133,10 @@ export const blockThumbnailDefinitions = [
     alt: 'Hero Institutional block preview',
   }),
   defineThumbnail({
-    slug: 'splitFeature',
-    label: 'Split Feature',
-    filename: 'split-feature.jpg',
-    alt: 'Split Feature block preview',
+    slug: 'featureSpotlight',
+    label: 'Feature Spotlight',
+    filename: 'feature-spotlight.jpg',
+    alt: 'Feature Spotlight block preview',
   }),
   defineThumbnail({
     slug: 'statsStrip',
@@ -213,14 +213,14 @@ export const isBlockThumbnailPreviewEnabled = (nodeEnv: string | undefined) =>
 
 Format the definition array across multiple lines with Prettier.
 
-- [ ] **Step 4: Connect every block config to the manifest**
+- [x] **Step 4: Connect every block config to the manifest**
 
 Replace per-block thumbnail constant imports and inline `admin.images.thumbnail` objects with:
 
 ```ts
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
-admin: getBlockThumbnailAdmin('splitFeature')
+admin: getBlockThumbnailAdmin('featureSpotlight')
 ```
 
 Use the matching slug for every block. Add native metadata to FAQ and Review Submission. Change `createSystemPageBlock` to accept:
@@ -231,7 +231,7 @@ thumbnailAdmin: NonNullable<Block['admin']>
 
 and assign `admin: thumbnailAdmin`. Pass `getBlockThumbnailAdmin('system404')`, `getBlockThumbnailAdmin('systemMaintenance')`, and `getBlockThumbnailAdmin('systemComingSoon')` from the three system configs. Delete the now-unused thumbnail constant files.
 
-- [ ] **Step 5: Run focused verification**
+- [x] **Step 5: Run focused verification**
 
 Run:
 
@@ -255,16 +255,16 @@ Expected: metadata coverage assertions pass. File-existence assertions are added
 - Create: `src/block-thumbnails/BlockThumbnailPreviewStage.tsx`
 - Create: `src/app/(block-thumbnails)/layout.tsx`
 - Create: `src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx`
-- Test: `tests/int/block-thumbnail-fixtures.int.spec.tsx`
+- Test: `tests/int/block-thumbnail-fixtures.int.spec.ts`
 
 **Interfaces:**
 
 - Consumes: `BlockThumbnailSlug`, `getBlockThumbnailDefinition`, the eleven production block components, and local `/block-thumbnail-assets/*` URLs.
 - Produces: `blockThumbnailFixtures`, `getBlockThumbnailFixture(slug)`, a fixed `[data-block-thumbnail-canvas]`, and `[data-block-thumbnail-ready="true"]`.
 
-- [ ] **Step 1: Write failing fixture coverage and render tests**
+- [x] **Step 1: Write failing fixture coverage and render tests**
 
-Create `tests/int/block-thumbnail-fixtures.int.spec.tsx` and assert:
+Create `tests/int/block-thumbnail-fixtures.int.spec.ts` and assert:
 
 ```ts
 expect(Object.keys(blockThumbnailFixtures).toSorted()).toEqual(
@@ -280,28 +280,28 @@ for (const definition of blockThumbnailDefinitions) {
 
 Also verify every declared media URL begins with `/block-thumbnail-assets/` and does not begin with `http://` or `https://`.
 
-- [ ] **Step 2: Run the fixture test and verify it fails**
+- [x] **Step 2: Run the fixture test and verify it fails**
 
 Run:
 
 ```bash
-pnpm exec vitest run tests/int/block-thumbnail-fixtures.int.spec.tsx --config ./vitest.config.mts
+pnpm exec vitest run tests/int/block-thumbnail-fixtures.int.spec.ts --config ./vitest.config.mts
 ```
 
 Expected: FAIL because fixture rendering and local media assets do not exist.
 
-- [ ] **Step 3: Add local fixture media**
+- [x] **Step 3: Add local fixture media**
 
 Create four optimized SVG assets using only local gradients and vector shapes:
 
 - `editorial-landscape.svg`: a neutral architectural landscape for Hero Institutional;
-- `collaboration.svg`: an editorial collaboration scene for Split Feature;
+- `collaboration.svg`: an editorial collaboration scene for Feature Spotlight;
 - `portrait.svg`: a neutral profile portrait for FAQ;
 - `brand-mark.svg`: a simple geometric logo for Header and Footer.
 
 Each SVG must include a `viewBox`, descriptive `<title>`, no scripts, no embedded remote URLs, and a restrained palette that remains legible with the default light theme.
 
-- [ ] **Step 4: Implement all production-component fixtures**
+- [x] **Step 4: Implement all production-component fixtures**
 
 Create `src/block-thumbnails/fixtures.tsx`. Export:
 
@@ -316,7 +316,7 @@ export const blockThumbnailAssetPaths = [
 export const blockThumbnailFixtures = {
   announcement: <AnnouncementBlockComponent appearance={{ background: 'accent' }} displayMode="vertical" label="Latest" items={[{ title: 'New', description: 'Explore the latest programs and resources.' }]} />,
   heroInstitutional: <HeroInstitutionalBlockComponent backgroundImage={{ alt: 'Abstract architectural landscape', url: blockThumbnailAssetPaths[0] }} buttons={[{ label: 'Explore programs', linkType: 'custom', url: '/programs', variant: 'default' }, { label: 'Plan a visit', linkType: 'custom', url: '/visit', variant: 'outline' }]} description="Practical learning, thoughtful teaching, and spaces designed for discovery." eyebrow="Learning without limits" height="compact" horizontalAlignment="left" overlayStyle="light" themeMode="auto" title="A place to learn, connect, and grow." />,
-  splitFeature: <SplitFeatureBlockComponent actionMode="link" actions={[{ label: 'Explore the experience', linkType: 'custom', url: '/experience' }]} description="Flexible spaces and collaborative programs help ideas move from discussion to practice." eyebrow="Built for collaboration" image={{ alt: 'Abstract collaboration scene', url: blockThumbnailAssetPaths[1] }} layoutMode="split" mediaFillMode="containedFill" mediaPosition="left" size="compact" title="Designed around the way people learn." />,
+  featureSpotlight: <FeatureSpotlightBlockComponent actionMode="link" actions={[{ label: 'Explore the experience', linkType: 'custom', url: '/experience' }]} description="Flexible spaces and collaborative programs help ideas move from discussion to practice." eyebrow="Built for collaboration" image={{ alt: 'Abstract collaboration scene', url: blockThumbnailAssetPaths[1] }} layoutMode="split" mediaFillMode="containedFill" mediaPosition="left" size="compact" title="Designed around the way people learn." />,
   statsStrip: <StatsStripBlockComponent animationEnabled={false} appearance={{ background: 'muted', border: 'horizontal' }} items={[{ value: 48, suffix: '+', label: 'Programs' }, { value: 92, suffix: '%', label: 'Positive outcomes' }, { value: 24, suffix: '/7', label: 'Digital access' }, { value: 18, label: 'Community partners' }]} />,
   faq: <FaqBlockComponent defaultOpenFirst description="Clear answers to common questions about programs, visits, and support." heading="Frequently asked questions" items={faqFixtureItems} layoutMode="fullWidth" size="compact" />,
   reviewSubmission: <ReviewSubmissionBlockComponent description="Share what stood out and help others understand the experience." eyebrow="Your perspective matters" form={reviewFormFixture} size="compact" title="Tell us about your experience." />,
@@ -330,7 +330,7 @@ export const blockThumbnailFixtures = {
 
 Define `faqFixtureItems`, `reviewFormFixture`, `headerMenuFixture`, and `footerGroupsFixture` immediately above the map with complete neutral values required by their production component types. Export `getBlockThumbnailFixture(slug)` and throw `Unknown block thumbnail fixture: ${slug}` when missing.
 
-- [ ] **Step 5: Implement the fixed capture stage**
+- [x] **Step 5: Implement the fixed capture stage**
 
 Create a client component `BlockThumbnailPreviewStage` with props `{ alignment: 'center' | 'top'; children: React.ReactNode; label: string }`. It must:
 
@@ -344,7 +344,7 @@ Create a client component `BlockThumbnailPreviewStage` with props `{ alignment: 
 - set `data-block-thumbnail-ready="true"` only after measurement;
 - apply capture-only reduced motion without changing component colors or typography.
 
-- [ ] **Step 6: Add the isolated development-only route**
+- [x] **Step 6: Add the isolated development-only route**
 
 Create `src/app/(block-thumbnails)/layout.tsx` as a minimal root layout importing `src/styles/globals.css`. Render:
 
@@ -362,14 +362,14 @@ Create `src/app/(block-thumbnails)/layout.tsx` as a minimal root layout importin
 
 Create `src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx`. Resolve the Next 16 async `params`, call `notFound()` unless `isBlockThumbnailPreviewEnabled(process.env.NODE_ENV)` and the slug is valid, then render the definition's fixture in `BlockThumbnailPreviewStage`.
 
-- [ ] **Step 7: Run fixture and focused render verification**
+- [x] **Step 7: Run fixture and focused render verification**
 
 Run:
 
 ```bash
-pnpm exec prettier --check src/block-thumbnails public/block-thumbnail-assets 'src/app/(block-thumbnails)' tests/int/block-thumbnail-fixtures.int.spec.tsx
-pnpm exec eslint src/block-thumbnails 'src/app/(block-thumbnails)' tests/int/block-thumbnail-fixtures.int.spec.tsx
-pnpm exec vitest run tests/int/block-thumbnail-fixtures.int.spec.tsx tests/int/faq-render.int.spec.ts tests/int/review-submission-render.int.spec.ts tests/int/header-navbar-render.int.spec.ts --config ./vitest.config.mts
+pnpm exec prettier --check src/block-thumbnails public/block-thumbnail-assets 'src/app/(block-thumbnails)' tests/int/block-thumbnail-fixtures.int.spec.ts
+pnpm exec eslint src/block-thumbnails 'src/app/(block-thumbnails)' tests/int/block-thumbnail-fixtures.int.spec.ts
+pnpm exec vitest run tests/int/block-thumbnail-fixtures.int.spec.ts tests/int/faq-render.int.spec.ts tests/int/review-submission-render.int.spec.ts tests/int/header-navbar-render.int.spec.ts --config ./vitest.config.mts
 ```
 
 Expected: fixture coverage and component render tests pass without a database or remote network request.
@@ -389,7 +389,7 @@ Expected: fixture coverage and component render tests pass without a database or
 - Consumes: `blockThumbnailDefinitions`, `/block-thumbnail-previews/[slug]`, Playwright Chromium, Sharp, and `pnpm exec next dev`.
 - Produces: `pnpm generate:block-thumbnails`, eleven exact 1600×900 JPEGs, and non-zero exit status on any capture failure.
 
-- [ ] **Step 1: Extend the failing contract test for the package command and outputs**
+- [x] **Step 1: Extend the failing contract test for the package command and outputs**
 
 In `tests/int/block-thumbnails.int.spec.ts`, read `package.json` and assert:
 
@@ -409,7 +409,7 @@ expect(metadata.height).toBe(900)
 
 Also assert definition filenames and URLs are unique.
 
-- [ ] **Step 2: Run the contract test and verify it fails**
+- [x] **Step 2: Run the contract test and verify it fails**
 
 Run:
 
@@ -419,7 +419,7 @@ pnpm exec vitest run tests/int/block-thumbnails.int.spec.ts --config ./vitest.co
 
 Expected: FAIL because the package command and FAQ/Review images do not exist.
 
-- [ ] **Step 3: Implement the generator**
+- [x] **Step 3: Implement the generator**
 
 Create `scripts/generate-block-thumbnails.ts`. It must:
 
@@ -437,7 +437,7 @@ Create `scripts/generate-block-thumbnails.ts`. It must:
 - close browser and terminate only its child process in `finally`;
 - set `process.exitCode = 1` when any entry fails.
 
-- [ ] **Step 4: Add the package command and documentation**
+- [x] **Step 4: Add the package command and documentation**
 
 Add to `package.json`:
 
@@ -447,7 +447,7 @@ Add to `package.json`:
 
 Replace the placeholder README with instructions covering the command, 1600×900 output, canonical light theme, local fixture assets, stable filenames, manifest/config requirements for new blocks, and the focused verification command.
 
-- [ ] **Step 5: Generate and visually inspect every thumbnail**
+- [x] **Step 5: Generate and visually inspect every thumbnail**
 
 Run:
 
@@ -457,14 +457,14 @@ pnpm generate:block-thumbnails
 
 Expected: eleven success lines and eleven 1600×900 JPEGs. Build a temporary contact sheet outside the repository or inspect the files individually. Confirm every preview shows the real block, has safe margins, contains no clipped essential content, uses the light default theme, and contains no placeholder instructions.
 
-- [ ] **Step 6: Run final verification**
+- [x] **Step 6: Run final verification**
 
 Run:
 
 ```bash
-pnpm exec prettier --check package.json scripts/generate-block-thumbnails.ts src/block-thumbnails 'src/app/(block-thumbnails)' src/blocks tests/int/block-thumbnails.int.spec.ts tests/int/block-thumbnail-fixtures.int.spec.tsx
-pnpm exec eslint scripts/generate-block-thumbnails.ts src/block-thumbnails 'src/app/(block-thumbnails)' src/blocks tests/int/block-thumbnails.int.spec.ts tests/int/block-thumbnail-fixtures.int.spec.tsx
-pnpm exec vitest run tests/int/block-thumbnails.int.spec.ts tests/int/block-thumbnail-fixtures.int.spec.tsx tests/int/page-blocks.int.spec.ts tests/int/global-header.int.spec.ts tests/int/global-footer.int.spec.ts tests/int/system-page-blocks.int.spec.ts --config ./vitest.config.mts
+pnpm exec prettier --check package.json scripts/generate-block-thumbnails.ts src/block-thumbnails 'src/app/(block-thumbnails)' src/blocks tests/int/block-thumbnails.int.spec.ts tests/int/block-thumbnail-fixtures.int.spec.ts
+pnpm exec eslint scripts/generate-block-thumbnails.ts src/block-thumbnails 'src/app/(block-thumbnails)' src/blocks tests/int/block-thumbnails.int.spec.ts tests/int/block-thumbnail-fixtures.int.spec.ts
+pnpm exec vitest run tests/int/block-thumbnails.int.spec.ts tests/int/block-thumbnail-fixtures.int.spec.ts tests/int/page-blocks.int.spec.ts tests/int/global-header.int.spec.ts tests/int/global-footer.int.spec.ts tests/int/system-page-blocks.int.spec.ts --config ./vitest.config.mts
 pnpm run generate:types
 git diff --check
 git status --short
