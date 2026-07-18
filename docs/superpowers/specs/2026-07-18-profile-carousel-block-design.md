@@ -82,6 +82,7 @@ The profile count determines the interaction mode:
 - static and carousel tracks use a balanced 20px gutter (`gap-5` / matching carousel padding), separating profiles clearly while keeping images wider than the original 24px layout and retaining four desktop cards;
 - a partial static set retains the four-column desktop track, so one to three profiles do not stretch into oversized cards;
 - carousel navigation follows Gallery 27's top-right placement but uses the project's existing icon-button appearance and accessible labels;
+- the carousel track declares `touch-action: pan-y pinch-zoom`, and profile images disable native browser dragging, so horizontal Embla gestures remain reliable in mobile Safari without preventing normal vertical page scrolling or pinch zooming;
 - autoplay is not added.
 
 The Payload adapter remains a server component. It trims content, resolves media and actions, and passes only serializable presentation data into a focused client-side carousel component. The static-grid branch must not initialize Embla. This keeps the client boundary and shipped interaction code limited to the behavior that requires it.

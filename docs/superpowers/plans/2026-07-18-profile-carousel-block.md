@@ -29,6 +29,7 @@
 - Create `src/components/profile-carousel.tsx`: server section, header, static grid, and shared card.
 - Create `src/components/profile-carousel-client.tsx`: client-only shadcn Carousel branch.
 - Create `src/components/ui/carousel.tsx`: shadcn Carousel primitive generated from the registry dependency.
+- Give the carousel track Embla's mobile touch behavior (`pan-y pinch-zoom`) and disable native image dragging so Safari forwards horizontal gestures to the carousel.
 - Create `tests/int/profile-carousel.int.spec.ts`: schema, rendering, behavior, media, and registration coverage.
 - Modify `src/blocks/shared/contentActionsFields.ts`: allow a caller-specific `maxRows`, defaulting to two.
 - Modify `src/collections/Pages.ts`: register Profile Carousel.

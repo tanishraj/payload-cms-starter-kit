@@ -60,10 +60,11 @@ export function ProfileCarouselCard({
       <img
         alt={profile.image.alt}
         className={cn(
-          'block h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-300 [@media(hover:hover)]:group-hover:scale-[1.02]',
+          'block h-full w-full object-cover select-none motion-safe:transition-transform motion-safe:duration-300 [@media(hover:hover)]:group-hover:scale-[1.02]',
           objectPositionClasses[imagePosition],
         )}
         data-profile-carousel-image-position={imagePosition}
+        draggable={false}
         height={profile.image.height}
         src={profile.image.src}
         width={profile.image.width}
