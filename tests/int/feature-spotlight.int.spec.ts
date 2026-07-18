@@ -43,6 +43,7 @@ describe('feature spotlight block', () => {
     expect(html).toContain('data-feature-spotlight-content-vertical-alignment="top"')
     expect(html).toContain('data-feature-spotlight-image-position="right"')
     expect(html).toContain('data-feature-spotlight-layout="split"')
+    expect(html).toContain('data-feature-spotlight-media-fill="contained"')
     expect(html).toContain('data-feature-spotlight-action-mode="link"')
     expect(html).toContain('data-action-mode="link"')
     expect(html).toContain('data-feature-spotlight-background="muted"')
@@ -59,6 +60,7 @@ describe('feature spotlight block', () => {
     expect(html).toContain('hover:underline')
     expect(html).toContain('border border-border')
     expect(html).toContain('flex min-h-full flex-col justify-start')
+    expect(html).toContain('mx-auto max-w-screen-2xl px-4 py-12 md:py-12')
   })
 
   it('renders muted background and two CTA buttons', () => {
@@ -209,14 +211,15 @@ describe('feature spotlight block', () => {
     expect(html).toContain('data-feature-spotlight-media-fill="containedFill"')
     expect(html).toContain('data-feature-spotlight-media-frame="containedFill"')
     expect(html).toContain('data-feature-spotlight-size="comfortable"')
-    expect(html).toContain('mx-auto max-w-screen-2xl px-0 md:px-4')
+    expect(html).toContain('mx-auto max-w-screen-2xl px-4')
+    expect(html).not.toContain('mx-auto max-w-screen-2xl px-0 md:px-4')
     expect(html).toContain('min-h-[30rem]')
     expect(html).toContain('md:min-h-[40rem]')
     expect(html).toContain('relative aspect-[4/3] overflow-hidden md:h-full md:aspect-auto')
     expect(html).toContain('absolute inset-0 size-full object-cover')
     expect(html).toContain('object-[center_center]')
     expect(html).toContain(
-      'flex min-h-full flex-col justify-start px-4 py-16 md:px-8 md:py-16 lg:px-12',
+      'flex min-h-full flex-col justify-start py-16 md:px-8 md:py-16 lg:px-12',
     )
     expect(html).not.toContain('rounded-xl border border-border bg-muted/20')
   })
@@ -237,9 +240,10 @@ describe('feature spotlight block', () => {
 
     expect(html).toContain('data-feature-spotlight-position="right"')
     expect(html).toContain('data-feature-spotlight-media-fill="containedFill"')
-    expect(html).toContain('mx-auto max-w-screen-2xl px-0 md:px-4')
+    expect(html).toContain('mx-auto max-w-screen-2xl px-4')
+    expect(html).not.toContain('mx-auto max-w-screen-2xl px-0 md:px-4')
     expect(html).toContain(
-      'flex min-h-full flex-col justify-center py-12 pr-4 md:py-12 md:pr-8 lg:pr-12',
+      'flex min-h-full flex-col justify-center py-12 md:py-12 md:pr-8 lg:pr-12',
     )
     expect(html).not.toContain(
       'flex min-h-full flex-col justify-center px-4 py-12 md:px-8 md:py-12 lg:px-12',

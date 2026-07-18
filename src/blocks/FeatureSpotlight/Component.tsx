@@ -60,6 +60,18 @@ const imageRightContentPaddingClasses = {
   comfortable: 'py-16 pr-4 md:py-16 md:pr-8 lg:pr-12',
 } as const
 
+const containedFillImageLeftContentPaddingClasses = {
+  compact: 'py-10 md:px-8 md:py-10 lg:px-12',
+  default: 'py-12 md:px-8 md:py-12 lg:px-12',
+  comfortable: 'py-16 md:px-8 md:py-16 lg:px-12',
+} as const
+
+const containedFillImageRightContentPaddingClasses = {
+  compact: 'py-10 md:py-10 md:pr-8 lg:pr-12',
+  default: 'py-12 md:py-12 md:pr-8 lg:pr-12',
+  comfortable: 'py-16 md:py-16 md:pr-8 lg:pr-12',
+} as const
+
 const edgeLayoutMinHeightClasses = {
   compact: 'min-h-[18rem] md:min-h-[24rem]',
   default: 'min-h-[24rem] md:min-h-[32rem]',
@@ -119,10 +131,17 @@ export function FeatureSpotlightBlockComponent({
     : 'mx-auto max-w-2xl items-center text-center'
   const contentVerticalAlignmentClass =
     contentVerticalAlignmentClasses[resolvedContentVerticalAlignment]
-  const splitContentPaddingClasses =
+  const edgeToEdgeContentPaddingClasses =
     resolvedPosition === 'right'
       ? imageRightContentPaddingClasses[resolvedSize]
       : edgeContentPaddingClasses[resolvedSize]
+  const containedFillContentPaddingClasses =
+    resolvedPosition === 'right'
+      ? containedFillImageRightContentPaddingClasses[resolvedSize]
+      : containedFillImageLeftContentPaddingClasses[resolvedSize]
+  const splitContentPaddingClasses = renderAsContainedFill
+    ? containedFillContentPaddingClasses
+    : edgeToEdgeContentPaddingClasses
 
   const content = (
     <div
@@ -219,7 +238,7 @@ export function FeatureSpotlightBlockComponent({
           </div>
         </div>
       ) : renderAsContainedFill ? (
-        <div className="mx-auto max-w-screen-2xl px-0 md:px-4">
+        <div className="mx-auto max-w-screen-2xl px-4">
           <div
             className={cn(
               'grid items-stretch md:grid-cols-2',

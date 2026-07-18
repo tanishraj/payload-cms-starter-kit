@@ -138,6 +138,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     metadataBase: new URL(defaultSiteURL),
+    formatDetection: {
+      address: false,
+      email: false,
+      telephone: false,
+    },
     title,
     description: seoSettings.defaultDescription || defaultSiteDescription,
     icons: faviconUrl
