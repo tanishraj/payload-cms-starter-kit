@@ -12,6 +12,7 @@ import { RatingSpotlightBlockComponent } from '@/blocks/RatingSpotlight/Componen
 import { ReviewSubmissionBlockComponent } from '@/blocks/ReviewSubmission/Component'
 import { FeatureSpotlightBlockComponent } from '@/blocks/FeatureSpotlight/Component'
 import { StatsStripBlockComponent } from '@/blocks/StatsStrip/Component'
+import { ReviewFeed } from '@/components/review-feed'
 import { System404BlockComponent } from '@/blocks/System404/Component'
 import { SystemComingSoonBlockComponent } from '@/blocks/SystemComingSoon/Component'
 import { SystemMaintenanceBlockComponent } from '@/blocks/SystemMaintenance/Component'
@@ -407,6 +408,53 @@ export const blockThumbnailFixtures = {
       form={reviewFormFixture}
       size="compact"
       title="Tell us about your experience."
+    />
+  ),
+  reviewFeed: (
+    <ReviewFeed
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      description="Published experiences shared by students, families, alumni, and visitors."
+      emptyStateMessage="No published reviews yet."
+      eyebrow="Community voices"
+      initialPage={{
+        docs: [
+          {
+            authorName: 'Alex M.',
+            content: 'The support was thoughtful, clear, and genuinely welcoming throughout.',
+            date: 'Jul 18, 2026',
+            id: 'review-feed-1',
+            rating: 5,
+            title: 'Outstanding support',
+            verified: true,
+          },
+          {
+            authorName: 'Jordan K.',
+            content: 'Every step felt organized, and the team always made time for questions.',
+            date: 'Jul 15, 2026',
+            id: 'review-feed-2',
+            rating: 5,
+            title: 'A welcoming experience',
+            verified: true,
+          },
+          {
+            authorName: 'Priya S.',
+            content: 'A positive experience with helpful people and excellent communication.',
+            date: 'Jul 10, 2026',
+            id: 'review-feed-3',
+            rating: 4,
+            title: 'Helpful and responsive',
+            verified: false,
+          },
+        ],
+        hasNextPage: true,
+        page: 1,
+        totalPages: 2,
+      }}
+      loadMoreLabel="Load More Reviews"
+      pageSize={3}
+      size="compact"
+      summary={{ average: 4.7, count: 124, counts: [2, 3, 8, 19, 92] }}
+      title="What our community is saying"
     />
   ),
   ratingSpotlight: (

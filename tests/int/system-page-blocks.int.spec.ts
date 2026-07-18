@@ -147,6 +147,7 @@ describe('system page block schemas', () => {
       'statsStrip',
       'qaAccordion',
       'ratingSpotlight',
+      'reviewFeed',
       'reviewSubmission',
     ])
     expect(collectBlockSlugs(Pages.fields)).not.toContain('feature166')

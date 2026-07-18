@@ -7,30 +7,62 @@ export type PublishedReviewRatingSummary = {
   count: number
 }
 
+export type PublishedReviewRatingDistribution = PublishedReviewRatingSummary & {
+  counts: readonly [number, number, number, number, number]
+}
+
 export type ReviewRatingPayload = Pick<Payload, 'count' | 'logger'>
 
 const ratingValues = ['1', '2', '3', '4', '5'] as const
 
-export function calculatePublishedReviewRatingSummary(
+const toRatingCounts = (counts: readonly number[]): PublishedReviewRatingDistribution['counts'] => [
+  counts[0] ?? 0,
+  counts[1] ?? 0,
+  counts[2] ?? 0,
+  counts[3] ?? 0,
+  counts[4] ?? 0,
+]
+
+export function calculatePublishedReviewRatingDistribution(
   counts: readonly number[],
-): PublishedReviewRatingSummary | null {
-  const count = counts.reduce((total, current) => total + current, 0)
+): PublishedReviewRatingDistribution | null {
+  const normalizedCounts = toRatingCounts(counts)
+  const count = normalizedCounts.reduce((total, current) => total + current, 0)
 
   if (count === 0) {
     return null
   }
 
-  const weightedTotal = counts.reduce((total, current, index) => total + current * (index + 1), 0)
+  const weightedTotal = normalizedCounts.reduce(
+    (total, current, index) => total + current * (index + 1),
+    0,
+  )
 
   return {
     average: weightedTotal / count,
     count,
+    counts: normalizedCounts,
   }
 }
 
-export async function fetchPublishedReviewRatingSummary(
+export function calculatePublishedReviewRatingSummary(
+  counts: readonly number[],
+): PublishedReviewRatingSummary | null {
+  const distribution = calculatePublishedReviewRatingDistribution(counts)
+
+  if (!distribution) {
+    return null
+  }
+
+  return {
+    average: distribution.average,
+    count: distribution.count,
+  }
+}
+
+export async function fetchPublishedReviewRatingDistribution(
   payload: ReviewRatingPayload,
-): Promise<PublishedReviewRatingSummary | null> {
+): Promise<PublishedReviewRatingDistribution | null> {
   try {
     const buckets = await Promise.all(
       ratingValues.map((rating) =>
@@ -44,7 +76,7 @@ export async function fetchPublishedReviewRatingSummary(
       ),
     )
 
-    return calculatePublishedReviewRatingSummary(buckets.map(({ totalDocs }) => totalDocs))
+    return calculatePublishedReviewRatingDistribution(buckets.map(({ totalDocs }) => totalDocs))
   } catch (error) {
     payload.logger.error({
       err: error,
@@ -54,8 +86,22 @@ export async function fetchPublishedReviewRatingSummary(
   }
 }
 
-export const getPublishedReviewRatingSummary = cache(async () => {
+export async function fetchPublishedReviewRatingSummary(
+  payload: ReviewRatingPayload,
+): Promise<PublishedReviewRatingSummary | null> {
+  const distribution = await fetchPublishedReviewRatingDistribution(payload)
+
+  return distribution ? { average: distribution.average, count: distribution.count } : null
+}
+
+export const getPublishedReviewRatingDistribution = cache(async () => {
   const payload = await getPayload({ config: configPromise })
 
-  return fetchPublishedReviewRatingSummary(payload)
+  return fetchPublishedReviewRatingDistribution(payload)
+})
+
+export const getPublishedReviewRatingSummary = cache(async () => {
+  const distribution = await getPublishedReviewRatingDistribution()
+
+  return distribution ? { average: distribution.average, count: distribution.count } : null
 })

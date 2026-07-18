@@ -164,6 +164,7 @@ describe('page block pipeline', () => {
       'statsStrip',
       'qaAccordion',
       'ratingSpotlight',
+      'reviewFeed',
       'reviewSubmission',
     ])
     expect(layoutField?.blocks?.map((block) => block.slug)).not.toContain('feature166')

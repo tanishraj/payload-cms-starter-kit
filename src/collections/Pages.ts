@@ -7,6 +7,7 @@ import { GalleryShowcaseBlock } from '@/blocks/GalleryShowcase/config'
 import { ProfileCarouselBlock } from '@/blocks/ProfileCarousel/config'
 import { HeroBannerBlock } from '@/blocks/HeroBanner/config'
 import { RatingSpotlightBlock } from '@/blocks/RatingSpotlight/config'
+import { ReviewFeedBlock } from '@/blocks/ReviewFeed/config'
 import { ReviewSubmissionBlock } from '@/blocks/ReviewSubmission/config'
 import { StatsStripBlock } from '@/blocks/StatsStrip/config'
 import { FeatureSpotlightBlock } from '@/blocks/FeatureSpotlight/config'
@@ -212,6 +213,7 @@ export const Pages: CollectionConfig = {
                 StatsStripBlock,
                 QaAccordionBlock,
                 RatingSpotlightBlock,
+                ReviewFeedBlock,
                 ReviewSubmissionBlock,
               ],
               required: false,

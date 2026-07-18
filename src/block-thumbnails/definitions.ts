@@ -71,6 +71,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Review Feed block preview',
+    filename: 'review-feed.jpg',
+    label: 'Review Feed',
+    slug: 'reviewFeed',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Review Submission block preview',
     filename: 'review-submission.jpg',
     label: 'Review Submission',

@@ -1,0 +1,77 @@
+import type { Block, NumberField, SelectField, TabsField } from 'payload'
+
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
+import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { REVIEW_FEED_DEFAULT_PAGE_SIZE, REVIEW_FEED_MAX_PAGE_SIZE } from '@/lib/reviewFeedShared'
+
+const pageSizeField = {
+  name: 'pageSize',
+  label: 'Reviews Per Load',
+  type: 'number',
+  defaultValue: REVIEW_FEED_DEFAULT_PAGE_SIZE,
+  min: 1,
+  max: REVIEW_FEED_MAX_PAGE_SIZE,
+  required: true,
+  validate: (value: unknown) =>
+    typeof value === 'number' &&
+    Number.isInteger(value) &&
+    value >= 1 &&
+    value <= REVIEW_FEED_MAX_PAGE_SIZE
+      ? true
+      : `Reviews per load must be a whole number between 1 and ${REVIEW_FEED_MAX_PAGE_SIZE}.`,
+} satisfies NumberField
+
+const sizeField = {
+  name: 'size',
+  label: 'Size',
+  type: 'select',
+  defaultValue: 'default',
+  options: [
+    { label: 'Compact', value: 'compact' },
+    { label: 'Default', value: 'default' },
+    { label: 'Comfortable', value: 'comfortable' },
+  ],
+  required: true,
+} satisfies SelectField
+
+export const ReviewFeedBlock: Block = {
+  slug: 'reviewFeed',
+  interfaceName: 'ReviewFeedBlock',
+  admin: getBlockThumbnailAdmin('reviewFeed'),
+  labels: {
+    singular: 'Review Feed',
+    plural: 'Review Feeds',
+  },
+  fields: [
+    {
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [
+            { name: 'eyebrow', type: 'text' },
+            { name: 'title', type: 'text', required: true },
+            { name: 'description', type: 'textarea' },
+            pageSizeField,
+            {
+              name: 'loadMoreLabel',
+              label: 'Load More Label',
+              type: 'text',
+              defaultValue: 'Load More Reviews',
+            },
+            {
+              name: 'emptyStateMessage',
+              label: 'Empty State Message',
+              type: 'text',
+              defaultValue: 'No published reviews yet.',
+            },
+          ],
+        },
+        {
+          label: 'Layout & Theme',
+          fields: [createBlockAppearanceFields({ includeTextOverride: false }), sizeField],
+        },
+      ],
+    } satisfies TabsField,
+  ],
+}

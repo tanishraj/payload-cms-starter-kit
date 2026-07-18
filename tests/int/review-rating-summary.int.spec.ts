@@ -1,12 +1,22 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import {
+  calculatePublishedReviewRatingDistribution,
   calculatePublishedReviewRatingSummary,
   fetchPublishedReviewRatingSummary,
   type ReviewRatingPayload,
 } from '@/lib/reviewRatingSummary'
 
 describe('published review rating summary', () => {
+  it('calculates a five-bucket distribution without changing the summary contract', () => {
+    expect(calculatePublishedReviewRatingDistribution([1, 2, 3, 4, 10])).toEqual({
+      average: 4,
+      count: 20,
+      counts: [1, 2, 3, 4, 10],
+    })
+    expect(calculatePublishedReviewRatingDistribution([0, 0, 0, 0, 0])).toBeNull()
+  })
+
   it('calculates a weighted average and total from five rating buckets', () => {
     expect(calculatePublishedReviewRatingSummary([1, 2, 3, 4, 10])).toEqual({
       average: 4,

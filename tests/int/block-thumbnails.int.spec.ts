@@ -53,6 +53,7 @@ describe('block thumbnail metadata', () => {
       'profileCarousel',
       'qaAccordion',
       'ratingSpotlight',
+      'reviewFeed',
       'reviewSubmission',
       'statsStrip',
       'system404',
@@ -121,6 +122,12 @@ describe('block thumbnail metadata', () => {
       filename: 'rating-spotlight.jpg',
       label: 'Rating Spotlight',
       slug: 'ratingSpotlight',
+    })
+    expect(getBlockThumbnailDefinition('reviewFeed')).toMatchObject({
+      filename: 'review-feed.jpg',
+      label: 'Review Feed',
+      slug: 'reviewFeed',
+      stageAlignment: 'top',
     })
     expect(getBlockThumbnailDefinition('qaAccordion')).toMatchObject({
       filename: 'qa-accordion.jpg',

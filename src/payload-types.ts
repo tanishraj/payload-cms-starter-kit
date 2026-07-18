@@ -185,6 +185,7 @@ export interface Page {
         | StatsStripBlock
         | QaAccordionBlock
         | RatingSpotlightBlock
+        | ReviewFeedBlock
         | ReviewSubmissionBlock
       )[]
     | null;
@@ -662,6 +663,26 @@ export interface RatingSpotlightBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'ratingSpotlight';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReviewFeedBlock".
+ */
+export interface ReviewFeedBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  pageSize: number;
+  loadMoreLabel?: string | null;
+  emptyStateMessage?: string | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'reviewFeed';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1795,6 +1816,7 @@ export interface PagesSelect<T extends boolean = true> {
         statsStrip?: T | StatsStripBlockSelect<T>;
         qaAccordion?: T | QaAccordionBlockSelect<T>;
         ratingSpotlight?: T | RatingSpotlightBlockSelect<T>;
+        reviewFeed?: T | ReviewFeedBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
       };
   metaTitle?: T;
@@ -2167,6 +2189,27 @@ export interface RatingSpotlightBlockSelect<T extends boolean = true> {
       };
   actionMode?: T;
   contentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReviewFeedBlock_select".
+ */
+export interface ReviewFeedBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  pageSize?: T;
+  loadMoreLabel?: T;
+  emptyStateMessage?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
   size?: T;
   id?: T;
   blockName?: T;
