@@ -48,9 +48,9 @@ const introMarginClasses = {
 } as const
 
 const imageHeightClasses = {
-  compact: 'h-40 md:h-44 lg:h-48',
-  default: 'h-44 md:h-48 lg:h-52',
-  comfortable: 'h-48 md:h-52 lg:h-56',
+  compact: 'h-44 md:h-48 lg:h-52',
+  default: 'h-48 md:h-52 lg:h-56',
+  comfortable: 'h-52 md:h-64 lg:h-72',
 } as const
 
 const objectPositionClasses = {

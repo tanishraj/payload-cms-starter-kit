@@ -94,7 +94,7 @@ describe('Feature Matrix presentation', () => {
     expect(html.match(/flex flex-col gap-1/g)).toHaveLength(4)
     expect(html).toContain('border-b border-border lg:border-r lg:border-b-0')
     expect(html).toContain('Explore our facilities')
-    expect(html.match(/h-40 md:h-44 lg:h-48/g)).toHaveLength(4)
+    expect(html.match(/h-36 md:h-40 lg:h-44/g)).toHaveLength(4)
     expect(html).not.toContain('aspect-[1.45]')
     expect(html).not.toContain('lg:aspect-[2.4]')
     expect(html).not.toMatch(/<h3[^>]*>Learning spaces<\/h3>/)
@@ -107,6 +107,18 @@ describe('Feature Matrix presentation', () => {
       expect(html).toContain(feature.title)
       expect(html).toContain(feature.image.src)
     }
+  })
+
+  it.each([
+    ['compact', 'h-36 md:h-40 lg:h-44'],
+    ['default', 'h-44 md:h-52 lg:h-60'],
+    ['comfortable', 'h-52 md:h-64 lg:h-72'],
+  ] as const)('applies equal responsive image heights in %s mode', (size, classes) => {
+    const html = renderToStaticMarkup(
+      FeatureMatrix({ features, size, title: 'What we provide' }),
+    )
+
+    expect(html.match(new RegExp(classes, 'g'))).toHaveLength(4)
   })
 
   it('defines exactly four features and shared content/layout controls', () => {
