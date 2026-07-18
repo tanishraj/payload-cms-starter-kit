@@ -4,6 +4,7 @@ import { AnnouncementBlockComponent } from './Announcement/Component'
 import { QaAccordionBlockComponent } from './QaAccordion/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { HeroBannerBlockComponent } from './HeroBanner/Component'
+import { ProfileCarouselBlockComponent } from './ProfileCarousel/Component'
 import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
 import { PageBlockStack } from './PageBlockStack'
@@ -44,6 +45,13 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
           case 'featureMatrix':
             return (
               <FeatureMatrixBlockComponent
+                key={block.id ?? `${block.blockType}-${index}`}
+                {...block}
+              />
+            )
+          case 'profileCarousel':
+            return (
+              <ProfileCarouselBlockComponent
                 key={block.id ?? `${block.blockType}-${index}`}
                 {...block}
               />

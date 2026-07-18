@@ -14,6 +14,7 @@ type LinkSiblingData = {
 
 type CreateContentActionsFieldOptions = {
   label?: string
+  maxRows?: number
   name?: string
 }
 
@@ -110,12 +111,13 @@ export const createContentActionModeField = ({
 
 export const createContentActionsField = ({
   label = 'Actions',
+  maxRows = 2,
   name = 'actions',
 }: CreateContentActionsFieldOptions = {}): ArrayField => ({
   name,
   label,
   type: 'array',
-  maxRows: 2,
+  maxRows,
   admin: {
     initCollapsed: true,
   },

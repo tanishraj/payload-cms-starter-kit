@@ -44,6 +44,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Profile Carousel block preview',
+    filename: 'profile-carousel.jpg',
+    label: 'Profile Carousel',
+    slug: 'profileCarousel',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Stats Strip block preview',
     filename: 'stats-strip.jpg',
     label: 'Stats Strip',

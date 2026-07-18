@@ -5,6 +5,7 @@ import { FeatureMatrixBlockComponent } from '@/blocks/FeatureMatrix/Component'
 import { Footer56BlockComponent } from '@/blocks/Footer56/Component'
 import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
 import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
+import { ProfileCarouselBlockComponent } from '@/blocks/ProfileCarousel/Component'
 import { QaAccordionBlockComponent } from '@/blocks/QaAccordion/Component'
 import { ReviewSubmissionBlockComponent } from '@/blocks/ReviewSubmission/Component'
 import { FeatureSpotlightBlockComponent } from '@/blocks/FeatureSpotlight/Component'
@@ -247,6 +248,55 @@ export const blockThumbnailFixtures = {
       ]}
       size="compact"
       title="Designed around the way you learn"
+    />
+  ),
+  profileCarousel: (
+    <ProfileCarouselBlockComponent
+      actionMode="link"
+      actions={[
+        {
+          label: 'Meet the full team',
+          linkType: 'custom',
+          url: '/team',
+        },
+      ]}
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      cardVariant="overlay"
+      contentAlignment="left"
+      description="A multidisciplinary team brings practical experience, thoughtful guidance, and shared purpose to every program."
+      eyebrow="Our people"
+      overlayAlignment="left"
+      profiles={[
+        {
+          image: { alt: 'Program director', url: portrait },
+          name: 'Alex Morgan',
+          role: 'Program Director',
+        },
+        {
+          image: { alt: 'Student experience lead', url: collaboration },
+          name: 'Jordan Lee',
+          role: 'Student Experience Lead',
+        },
+        {
+          image: { alt: 'Faculty advisor', url: editorialLandscape },
+          name: 'Sam Rivera',
+          role: 'Faculty Advisor',
+        },
+        {
+          image: { alt: 'Research coordinator', url: portrait },
+          imagePosition: 'top',
+          name: 'Taylor Chen',
+          role: 'Research Coordinator',
+        },
+        {
+          image: { alt: 'Community partner', url: collaboration },
+          imagePosition: 'right',
+          name: 'Jamie Patel',
+          role: 'Community Partner',
+        },
+      ]}
+      size="compact"
+      title="The people behind our work"
     />
   ),
   footer56: (

@@ -142,6 +142,7 @@ describe('system page block schemas', () => {
       'heroBanner',
       'featureSpotlight',
       'featureMatrix',
+      'profileCarousel',
       'statsStrip',
       'qaAccordion',
       'reviewSubmission',

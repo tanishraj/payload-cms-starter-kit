@@ -180,6 +180,7 @@ export interface Page {
         | HeroBannerBlock
         | FeatureSpotlightBlock
         | FeatureMatrixBlock
+        | ProfileCarouselBlock
         | StatsStripBlock
         | QaAccordionBlock
         | ReviewSubmissionBlock
@@ -445,6 +446,47 @@ export interface FeatureMatrixBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'featureMatrix';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProfileCarouselBlock".
+ */
+export interface ProfileCarouselBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
+  profiles?:
+    | {
+        image: string | Media;
+        name: string;
+        role?: string | null;
+        imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  actionMode: 'link' | 'button';
+  contentAlignment: 'left' | 'center' | 'right';
+  cardVariant: 'stacked' | 'overlay';
+  overlayAlignment?: ('left' | 'center' | 'right') | null;
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'profileCarousel';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1674,6 +1716,7 @@ export interface PagesSelect<T extends boolean = true> {
         heroBanner?: T | HeroBannerBlockSelect<T>;
         featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
+        profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         statsStrip?: T | StatsStripBlockSelect<T>;
         qaAccordion?: T | QaAccordionBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
@@ -1836,6 +1879,48 @@ export interface FeatureMatrixBlockSelect<T extends boolean = true> {
   size?: T;
   showOuterBorder?: T;
   borderAnimationEnabled?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProfileCarouselBlock_select".
+ */
+export interface ProfileCarouselBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
+  profiles?:
+    | T
+    | {
+        image?: T;
+        name?: T;
+        role?: T;
+        imagePosition?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  actionMode?: T;
+  contentAlignment?: T;
+  cardVariant?: T;
+  overlayAlignment?: T;
+  size?: T;
   id?: T;
   blockName?: T;
 }
