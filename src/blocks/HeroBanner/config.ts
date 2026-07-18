@@ -176,13 +176,13 @@ const buttonsField = {
   ],
 } satisfies ArrayField
 
-export const HeroInstitutionalBlock: Block = {
-  slug: 'heroInstitutional',
-  interfaceName: 'HeroInstitutionalBlock',
-  admin: getBlockThumbnailAdmin('heroInstitutional'),
+export const HeroBannerBlock: Block = {
+  slug: 'heroBanner',
+  interfaceName: 'HeroBannerBlock',
+  admin: getBlockThumbnailAdmin('heroBanner'),
   labels: {
-    singular: 'Hero Institutional',
-    plural: 'Hero Institutionals',
+    singular: 'Hero Banner',
+    plural: 'Hero Banners',
   },
   fields: [
     {

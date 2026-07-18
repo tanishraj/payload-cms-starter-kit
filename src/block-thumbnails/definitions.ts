@@ -25,10 +25,10 @@ export const blockThumbnailDefinitions = [
     slug: 'announcement',
   }),
   defineThumbnail({
-    alt: 'Hero Institutional block preview',
-    filename: 'hero-institutional.jpg',
-    label: 'Hero Institutional',
-    slug: 'heroInstitutional',
+    alt: 'Hero Banner block preview',
+    filename: 'hero-banner.jpg',
+    label: 'Hero Banner',
+    slug: 'heroBanner',
   }),
   defineThumbnail({
     alt: 'Feature Spotlight block preview',

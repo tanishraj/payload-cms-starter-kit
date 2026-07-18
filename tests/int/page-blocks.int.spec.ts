@@ -156,7 +156,7 @@ describe('page block pipeline', () => {
     expect(layoutField?.type).toBe('blocks')
     expect(layoutField?.blocks?.map((block) => block.slug)).toEqual([
       'announcement',
-      'heroInstitutional',
+      'heroBanner',
       'featureSpotlight',
       'featureMatrix',
       'statsStrip',
@@ -217,10 +217,10 @@ describe('page block pipeline', () => {
     expect(triggerOnceField?.defaultValue).toBe(true)
   })
 
-  it('defines the heroInstitutional schema with image, overlay, alignment, and CTA fields', async () => {
-    const { HeroInstitutionalBlock } = await import('@/blocks/HeroInstitutional/config')
+  it('defines the heroBanner schema with image, overlay, alignment, and CTA fields', async () => {
+    const { HeroBannerBlock } = await import('@/blocks/HeroBanner/config')
 
-    const tabsField = HeroInstitutionalBlock.fields[0] as
+    const tabsField = HeroBannerBlock.fields[0] as
       | {
           tabs?: Array<{ fields: unknown[]; label: string }>
           type?: string
@@ -601,7 +601,7 @@ describe('page block pipeline', () => {
     expect(html).toContain('border-y border-border')
   })
 
-  it('renders a heroInstitutional page block through PageContent', () => {
+  it('renders a heroBanner page block through PageContent', () => {
     const result = PageContent({
       page: {
         id: 'page-hero-1',
@@ -616,7 +616,7 @@ describe('page block pipeline', () => {
               alt: 'Main hall',
               url: '/media/main-hall.jpg',
             },
-            blockType: 'heroInstitutional',
+            blockType: 'heroBanner',
             buttons: [
               { label: 'Apply now', linkType: 'custom', url: '/apply', variant: 'default' },
             ],
@@ -639,7 +639,7 @@ describe('page block pipeline', () => {
     expect(html).toContain('Practice begins before the clinic.')
     expect(html).toContain('Admissions')
     expect(html).toContain('href="/apply"')
-    expect(html).toContain('data-hero-background="primary"')
+    expect(html).toContain('data-hero-banner-background="primary"')
     expect(html).toContain('bg-primary')
     expect(html).toContain('text-primary-foreground')
     expect(html).toContain('border-t border-border')

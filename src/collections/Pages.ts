@@ -3,7 +3,7 @@ import { slugField, type CollectionConfig, type RelationshipFieldSingleValidatio
 import { AnnouncementBlock } from '@/blocks/Announcement/config'
 import { QaAccordionBlock } from '@/blocks/QaAccordion/config'
 import { FeatureMatrixBlock } from '@/blocks/FeatureMatrix/config'
-import { HeroInstitutionalBlock } from '@/blocks/HeroInstitutional/config'
+import { HeroBannerBlock } from '@/blocks/HeroBanner/config'
 import { ReviewSubmissionBlock } from '@/blocks/ReviewSubmission/config'
 import { StatsStripBlock } from '@/blocks/StatsStrip/config'
 import { FeatureSpotlightBlock } from '@/blocks/FeatureSpotlight/config'
@@ -201,7 +201,7 @@ export const Pages: CollectionConfig = {
               type: 'blocks',
               blocks: [
                 AnnouncementBlock,
-                HeroInstitutionalBlock,
+                HeroBannerBlock,
                 FeatureSpotlightBlock,
                 FeatureMatrixBlock,
                 StatsStripBlock,

@@ -177,7 +177,7 @@ export interface Page {
   layout?:
     | (
         | AnnouncementBlock
-        | HeroInstitutionalBlock
+        | HeroBannerBlock
         | FeatureSpotlightBlock
         | FeatureMatrixBlock
         | StatsStripBlock
@@ -253,9 +253,9 @@ export interface AnnouncementBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HeroInstitutionalBlock".
+ * via the `definition` "HeroBannerBlock".
  */
-export interface HeroInstitutionalBlock {
+export interface HeroBannerBlock {
   backgroundImage: string | Media;
   eyebrow?: string | null;
   title: string;
@@ -283,7 +283,7 @@ export interface HeroInstitutionalBlock {
   height: 'compact' | 'default' | 'immersive';
   id?: string | null;
   blockName?: string | null;
-  blockType: 'heroInstitutional';
+  blockType: 'heroBanner';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1671,7 +1671,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         announcement?: T | AnnouncementBlockSelect<T>;
-        heroInstitutional?: T | HeroInstitutionalBlockSelect<T>;
+        heroBanner?: T | HeroBannerBlockSelect<T>;
         featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
         statsStrip?: T | StatsStripBlockSelect<T>;
@@ -1728,9 +1728,9 @@ export interface AnnouncementBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HeroInstitutionalBlock_select".
+ * via the `definition` "HeroBannerBlock_select".
  */
-export interface HeroInstitutionalBlockSelect<T extends boolean = true> {
+export interface HeroBannerBlockSelect<T extends boolean = true> {
   backgroundImage?: T;
   eyebrow?: T;
   title?: T;

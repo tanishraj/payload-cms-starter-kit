@@ -48,7 +48,7 @@ describe('block thumbnail metadata', () => {
       'featureSpotlight',
       'footer56',
       'headerNavbar12',
-      'heroInstitutional',
+      'heroBanner',
       'qaAccordion',
       'reviewSubmission',
       'statsStrip',
@@ -107,6 +107,11 @@ describe('block thumbnail metadata', () => {
       filename: 'qa-accordion.jpg',
       label: 'Q&A Accordion',
       slug: 'qaAccordion',
+    })
+    expect(getBlockThumbnailDefinition('heroBanner')).toMatchObject({
+      filename: 'hero-banner.jpg',
+      label: 'Hero Banner',
+      slug: 'heroBanner',
     })
     expect(definitionSlugs).not.toContain('feature166')
     expect(filenames).not.toContain('feature-166.jpg')

@@ -14,7 +14,7 @@ type HeroButton = {
   variant?: 'default' | 'link' | 'outline' | 'secondary' | null
 }
 
-type HeroInstitutionalBlockLike = {
+type HeroBannerBlockLike = {
   appearance?: BlockAppearance | null
   backgroundImage?: unknown
   buttons?: HeroButton[] | null
@@ -125,7 +125,7 @@ const actionAlignmentClasses = {
   right: 'justify-end',
 } as const
 
-export function HeroInstitutionalBlockComponent({
+export function HeroBannerBlockComponent({
   appearance,
   backgroundImage,
   buttons,
@@ -138,7 +138,7 @@ export function HeroInstitutionalBlockComponent({
   themeMode = 'auto',
   title,
   verticalAlignment = 'center',
-}: HeroInstitutionalBlockLike) {
+}: HeroBannerBlockLike) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const resolvedContentWidth = contentWidth ?? 'default'
   const resolvedHorizontalAlignment = horizontalAlignment ?? 'left'
@@ -191,8 +191,8 @@ export function HeroInstitutionalBlockComponent({
   return (
     <section
       className={cn('relative isolate overflow-hidden', appearanceClasses.className)}
-      data-hero-background={appearance?.background ?? 'none'}
-      data-hero-block="true"
+      data-hero-banner-background={appearance?.background ?? 'none'}
+      data-hero-banner-block="true"
     >
       <div className="absolute inset-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -200,12 +200,12 @@ export function HeroInstitutionalBlockComponent({
       </div>
       <div
         className={cn('absolute inset-0', overlayClasses[resolvedThemeMode][resolvedOverlayStyle])}
-        data-hero-overlay={resolvedOverlayStyle}
-        data-hero-theme={resolvedThemeMode}
+        data-hero-banner-overlay={resolvedOverlayStyle}
+        data-hero-banner-theme={resolvedThemeMode}
       />
       <div
         className={cn('relative mx-auto flex max-w-screen-2xl px-4', heightClasses[resolvedHeight])}
-        data-hero-height={resolvedHeight}
+        data-hero-banner-height={resolvedHeight}
       >
         <div
           className={cn(
@@ -213,8 +213,8 @@ export function HeroInstitutionalBlockComponent({
             horizontalShellClasses[resolvedHorizontalAlignment],
             verticalShellClasses[resolvedVerticalAlignment],
           )}
-          data-hero-horizontal={resolvedHorizontalAlignment}
-          data-hero-vertical={resolvedVerticalAlignment}
+          data-hero-banner-horizontal={resolvedHorizontalAlignment}
+          data-hero-banner-vertical={resolvedVerticalAlignment}
         >
           <div
             className={cn(
@@ -222,7 +222,7 @@ export function HeroInstitutionalBlockComponent({
               resolvedHorizontalAlignment !== 'center' ? 'lg:max-w-xl' : contentWidthClasses[resolvedContentWidth],
               textAlignmentClasses[resolvedHorizontalAlignment],
             )}
-            data-hero-content-width={resolvedContentWidth}
+            data-hero-banner-content-width={resolvedContentWidth}
           >
             <div className="flex flex-col gap-6">
               {eyebrow ? (
@@ -231,7 +231,7 @@ export function HeroInstitutionalBlockComponent({
                     'font-mono text-xs font-semibold uppercase tracking-[0.28em]',
                     textToneClasses[resolvedThemeMode].eyebrow,
                   )}
-                  data-hero-eyebrow="true"
+                  data-hero-banner-eyebrow="true"
                 >
                   {eyebrow}
                 </p>
@@ -255,7 +255,7 @@ export function HeroInstitutionalBlockComponent({
                     textToneClasses[resolvedThemeMode].description,
                     resolvedHorizontalAlignment !== 'center' ? 'max-w-2xl' : undefined,
                   )}
-                  data-hero-description="true"
+                  data-hero-banner-description="true"
                 >
                   {description}
                 </p>
@@ -267,7 +267,7 @@ export function HeroInstitutionalBlockComponent({
                   'flex flex-col gap-3 sm:flex-row',
                   actionAlignmentClasses[resolvedHorizontalAlignment],
                 )}
-                data-hero-actions="true"
+                data-hero-banner-actions="true"
               >
                 {actions.map((action) => (
                   <Button

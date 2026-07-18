@@ -4,7 +4,7 @@ import { AnnouncementBlockComponent } from '@/blocks/Announcement/Component'
 import { FeatureMatrixBlockComponent } from '@/blocks/FeatureMatrix/Component'
 import { Footer56BlockComponent } from '@/blocks/Footer56/Component'
 import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
-import { HeroInstitutionalBlockComponent } from '@/blocks/HeroInstitutional/Component'
+import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
 import { QaAccordionBlockComponent } from '@/blocks/QaAccordion/Component'
 import { ReviewSubmissionBlockComponent } from '@/blocks/ReviewSubmission/Component'
 import { FeatureSpotlightBlockComponent } from '@/blocks/FeatureSpotlight/Component'
@@ -283,8 +283,8 @@ export const blockThumbnailFixtures = {
       size="compact"
     />
   ),
-  heroInstitutional: (
-    <HeroInstitutionalBlockComponent
+  heroBanner: (
+    <HeroBannerBlockComponent
       backgroundImage={{ alt: 'Abstract architectural landscape', url: editorialLandscape }}
       buttons={[
         {

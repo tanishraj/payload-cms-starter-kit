@@ -2,12 +2,12 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 
-import { HeroInstitutionalBlockComponent } from '@/blocks/HeroInstitutional/Component'
+import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
 
-describe('hero institutional block', () => {
+describe('Hero Banner block', () => {
   it('renders image, eyebrow, title, description, and two CTA buttons', () => {
     const html = renderToStaticMarkup(
-      createElement(HeroInstitutionalBlockComponent, {
+      createElement(HeroBannerBlockComponent, {
         appearance: {
           background: 'primary',
           border: 'topAndBottom',
@@ -35,10 +35,10 @@ describe('hero institutional block', () => {
     expect(html).toContain('Train across four rigorous years of science, practice, and reflection.')
     expect(html).toContain('href="/apply"')
     expect(html).toContain('href="/programs"')
-    expect(html).toContain('data-hero-content-width="wide"')
-    expect(html).toContain('data-hero-height="immersive"')
-    expect(html).toContain('data-hero-background="primary"')
-    expect(html).toContain('data-hero-theme="auto"')
+    expect(html).toContain('data-hero-banner-content-width="wide"')
+    expect(html).toContain('data-hero-banner-height="immersive"')
+    expect(html).toContain('data-hero-banner-background="primary"')
+    expect(html).toContain('data-hero-banner-theme="auto"')
     expect(html).toContain('bg-primary')
     expect(html).toContain('text-primary-foreground')
     expect(html).toContain(
@@ -56,7 +56,7 @@ describe('hero institutional block', () => {
 
   it('supports explicit light and dark hero theme overrides', () => {
     const darkHtml = renderToStaticMarkup(
-      createElement(HeroInstitutionalBlockComponent, {
+      createElement(HeroBannerBlockComponent, {
         backgroundImage: { alt: 'Lecture hall', url: '/media/lecture.jpg' } as never,
         buttons: [
           { label: 'Apply now', linkType: 'custom', url: '/apply', variant: 'default' },
@@ -70,7 +70,7 @@ describe('hero institutional block', () => {
     )
 
     const lightHtml = renderToStaticMarkup(
-      createElement(HeroInstitutionalBlockComponent, {
+      createElement(HeroBannerBlockComponent, {
         backgroundImage: { alt: 'Quad', url: '/media/quad.jpg' } as never,
         buttons: [
           { label: 'Apply now', linkType: 'custom', url: '/apply', variant: 'default' },
@@ -83,7 +83,7 @@ describe('hero institutional block', () => {
       }),
     )
 
-    expect(darkHtml).toContain('data-hero-theme="dark"')
+    expect(darkHtml).toContain('data-hero-banner-theme="dark"')
     expect(darkHtml).toContain('from-black/68')
     expect(darkHtml).toContain('text-white')
     expect(darkHtml).toContain('text-white/84')
@@ -92,7 +92,7 @@ describe('hero institutional block', () => {
       'border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground',
     )
 
-    expect(lightHtml).toContain('data-hero-theme="light"')
+    expect(lightHtml).toContain('data-hero-banner-theme="light"')
     expect(lightHtml).toContain('from-background/72')
     expect(lightHtml).toContain('text-slate-950')
     expect(lightHtml).toContain('text-slate-950/84')
@@ -104,7 +104,7 @@ describe('hero institutional block', () => {
 
   it('maps overlay and alignment presets into deterministic class hooks', () => {
     const html = renderToStaticMarkup(
-      createElement(HeroInstitutionalBlockComponent, {
+      createElement(HeroBannerBlockComponent, {
         backgroundImage: { alt: 'Library exterior', url: '/media/library.jpg' } as never,
         height: 'compact',
         horizontalAlignment: 'right',
@@ -114,24 +114,24 @@ describe('hero institutional block', () => {
       }),
     )
 
-    expect(html).toContain('data-hero-overlay="dark"')
-    expect(html).toContain('data-hero-horizontal="right"')
-    expect(html).toContain('data-hero-vertical="bottom"')
-    expect(html).toContain('data-hero-height="compact"')
+    expect(html).toContain('data-hero-banner-overlay="dark"')
+    expect(html).toContain('data-hero-banner-horizontal="right"')
+    expect(html).toContain('data-hero-banner-vertical="bottom"')
+    expect(html).toContain('data-hero-banner-height="compact"')
     expect(html).toContain('text-3xl sm:text-4xl md:text-5xl')
   })
 
   it('collapses optional content cleanly when eyebrow, description, and buttons are omitted', () => {
     const html = renderToStaticMarkup(
-      createElement(HeroInstitutionalBlockComponent, {
+      createElement(HeroBannerBlockComponent, {
         backgroundImage: { alt: 'Clinic hall', url: '/media/clinic.jpg' } as never,
         title: 'Built for decisive practice.',
       }),
     )
 
     expect(html).toContain('Built for decisive practice.')
-    expect(html).not.toContain('data-hero-eyebrow')
-    expect(html).not.toContain('data-hero-description')
-    expect(html).not.toContain('data-hero-actions')
+    expect(html).not.toContain('data-hero-banner-eyebrow')
+    expect(html).not.toContain('data-hero-banner-description')
+    expect(html).not.toContain('data-hero-banner-actions')
   })
 })

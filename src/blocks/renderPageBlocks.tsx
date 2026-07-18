@@ -3,7 +3,7 @@ import type { Page } from '@/payload-types'
 import { AnnouncementBlockComponent } from './Announcement/Component'
 import { QaAccordionBlockComponent } from './QaAccordion/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
-import { HeroInstitutionalBlockComponent } from './HeroInstitutional/Component'
+import { HeroBannerBlockComponent } from './HeroBanner/Component'
 import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
 import { PageBlockStack } from './PageBlockStack'
@@ -27,9 +27,9 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
                 {...block}
               />
             )
-          case 'heroInstitutional':
+          case 'heroBanner':
             return (
-              <HeroInstitutionalBlockComponent
+              <HeroBannerBlockComponent
                 key={block.id ?? `${block.blockType}-${index}`}
                 {...block}
               />

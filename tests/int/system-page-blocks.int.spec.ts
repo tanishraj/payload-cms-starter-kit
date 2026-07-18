@@ -139,7 +139,7 @@ describe('system page block schemas', () => {
   it('registers page, header, footer, and system blocks only on their intended collections', () => {
     expect(collectBlockSlugs(Pages.fields)).toEqual([
       'announcement',
-      'heroInstitutional',
+      'heroBanner',
       'featureSpotlight',
       'featureMatrix',
       'statsStrip',
