@@ -62,6 +62,17 @@ describe('media governance resolver', () => {
                 },
               ],
             }
+          case 'news-events':
+            return {
+              docs: [
+                {
+                  featuredImage: 7,
+                  id: 35,
+                  ogImage: 7,
+                  title: 'Open Day',
+                },
+              ],
+            }
           case 'headers':
             return {
               docs: [
@@ -121,6 +132,10 @@ describe('media governance resolver', () => {
             return {
               defaultImage: 7,
             }
+          case 'news-events-settings':
+            return {
+              ogImage: 7,
+            }
           default:
             throw new Error(`Unexpected global lookup: ${slug}`)
         }
@@ -157,6 +172,20 @@ describe('media governance resolver', () => {
           locationLabel: 'Reviews > Great Service > ogImage',
           sourceSlug: 'reviews',
           sourceType: 'collection',
+        }),
+        expect.objectContaining({
+          documentID: 35,
+          documentLabel: 'Open Day',
+          fieldPath: 'featuredImage',
+          locationLabel: 'News & Events > Open Day > featuredImage',
+          sourceSlug: 'news-events',
+          sourceType: 'collection',
+        }),
+        expect.objectContaining({
+          documentLabel: 'News & Events Settings',
+          fieldPath: 'ogImage',
+          sourceSlug: 'news-events-settings',
+          sourceType: 'global',
         }),
         expect.objectContaining({
           documentID: 40,
@@ -207,8 +236,8 @@ describe('media governance resolver', () => {
       ]),
     )
 
-    expect(references).toHaveLength(9)
-    expect(buildMediaUsageSummary(references)).toBe('Used in 9 locations across 7 entries.')
+    expect(references).toHaveLength(12)
+    expect(buildMediaUsageSummary(references)).toBe('Used in 12 locations across 9 entries.')
     expect(buildMediaUsageSummary([])).toBe('Unused asset.')
   })
 

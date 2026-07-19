@@ -7,6 +7,7 @@ import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
 import { HeroBannerBlockComponent } from './HeroBanner/Component'
 import { ImageMosaicBlockComponent } from './ImageMosaic/Component'
+import { NewsEventsHighlightsBlockComponent } from './NewsEventsHighlights/Component'
 import { ProfileCarouselBlockComponent } from './ProfileCarousel/Component'
 import { RatingSpotlightBlockComponent } from './RatingSpotlight/Component'
 import { ReviewFeedBlockComponent } from './ReviewFeed/Component'
@@ -57,6 +58,13 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
           case 'contentHighlights':
             return (
               <ContentHighlightsBlockComponent
+                key={block.id ?? `${block.blockType}-${index}`}
+                {...block}
+              />
+            )
+          case 'newsEventsHighlights':
+            return (
+              <NewsEventsHighlightsBlockComponent
                 key={block.id ?? `${block.blockType}-${index}`}
                 {...block}
               />

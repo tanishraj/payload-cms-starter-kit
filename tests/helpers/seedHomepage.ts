@@ -9,6 +9,10 @@ const homepagePageData = {
   _status: 'published' as const,
   layout: [
     {
+      appearance: {
+        background: 'none' as const,
+        border: 'none' as const,
+      },
       blockType: 'announcement' as const,
       displayMode: 'vertical' as const,
       intervalMs: 4000,

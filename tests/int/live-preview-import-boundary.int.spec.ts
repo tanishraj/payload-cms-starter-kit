@@ -108,7 +108,7 @@ describe('live-preview client import boundary', () => {
     expect(source).not.toContain("from '@/blocks/renderPageBlocks'")
   })
 
-  it('cannot reach Payload-backed review modules', () => {
+  it('cannot reach Payload-backed review or news modules', () => {
     const reachablePaths = collectReachableRuntimeModules(entryPath)
 
     for (const serverPath of [
@@ -117,6 +117,8 @@ describe('live-preview client import boundary', () => {
       'src/lib/reviewRatingSummary.ts',
       'src/blocks/ReviewFeed/Component.tsx',
       'src/blocks/RatingSpotlight/Component.tsx',
+      'src/lib/newsEvents.ts',
+      'src/blocks/NewsEventsHighlights/Component.tsx',
     ]) {
       expect(reachablePaths.has(serverPath), `${serverPath} entered the client graph`).toBe(false)
     }

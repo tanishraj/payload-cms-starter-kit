@@ -30,6 +30,7 @@ const legacyRoleMap = {
 
 const allCapabilityValues: Array<keyof AdminCapabilitiesMap> = [
   'manage_articles',
+  'manage_news_events',
   'manage_footers',
   'manage_form_submissions',
   'manage_forms',
@@ -48,6 +49,7 @@ const allCapabilityValues: Array<keyof AdminCapabilitiesMap> = [
   'manage_taxonomy',
   'manage_theme_settings',
   'publish_articles',
+  'publish_news_events',
   'publish_pages',
   'publish_reviews',
   'publish_system_pages',
@@ -58,6 +60,7 @@ const allCapabilityValues: Array<keyof AdminCapabilitiesMap> = [
 const withCapabilities = (enabled: Array<keyof AdminCapabilitiesMap>): AdminCapabilitiesMap => {
   const capabilities: AdminCapabilitiesMap = {
     manage_articles: false,
+    manage_news_events: false,
     manage_footers: false,
     manage_form_submissions: false,
     manage_forms: false,
@@ -76,6 +79,7 @@ const withCapabilities = (enabled: Array<keyof AdminCapabilitiesMap>): AdminCapa
     manage_taxonomy: false,
     manage_theme_settings: false,
     publish_articles: false,
+    publish_news_events: false,
     publish_pages: false,
     publish_reviews: false,
     publish_system_pages: false,
@@ -92,10 +96,12 @@ const withCapabilities = (enabled: Array<keyof AdminCapabilitiesMap>): AdminCapa
 
 const contentManagerDefaults = withCapabilities([
   'manage_articles',
+  'manage_news_events',
   'manage_media',
   'manage_pages',
   'manage_reviews',
   'publish_articles',
+  'publish_news_events',
   'publish_pages',
   'publish_reviews',
   'require_editorial_workflow',
@@ -103,6 +109,7 @@ const contentManagerDefaults = withCapabilities([
 
 const siteManagerDefaults = withCapabilities([
   'manage_articles',
+  'manage_news_events',
   'manage_footers',
   'manage_form_submissions',
   'manage_forms',
@@ -121,6 +128,7 @@ const siteManagerDefaults = withCapabilities([
   'manage_taxonomy',
   'manage_theme_settings',
   'publish_articles',
+  'publish_news_events',
   'publish_pages',
   'publish_reviews',
   'publish_system_pages',
@@ -150,9 +158,7 @@ export const normalizeEditorialRole = (
   return toNormalizedEditorialRole(value) ?? toNormalizedEditorialRole(fallback) ?? 'contentManager'
 }
 
-export const getDefaultCapabilitiesForRole = (
-  role: EditorialRole,
-): AdminCapabilitiesMap => {
+export const getDefaultCapabilitiesForRole = (role: EditorialRole): AdminCapabilitiesMap => {
   switch (role) {
     case 'admin':
       return withCapabilities(allCapabilityValues)

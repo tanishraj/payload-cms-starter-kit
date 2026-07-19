@@ -19,7 +19,8 @@ export const Tags: CollectionConfig = {
     hidden: hideFromUsersWithoutCapability('manage_taxonomy'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],
-    description: 'Reusable topical labels for cross-linking content across archives and related sections.',
+    description:
+      'Reusable topical labels for cross-linking articles, news, events, and related content.',
     listSearchableFields: ['title', 'slug'],
   },
   access: {
@@ -29,6 +30,8 @@ export const Tags: CollectionConfig = {
       'manage_taxonomy',
       'manage_articles',
       'publish_articles',
+      'manage_news_events',
+      'publish_news_events',
       'manage_reviews',
       'publish_reviews',
     ]),
@@ -57,7 +60,8 @@ export const Tags: CollectionConfig = {
               name: 'description',
               type: 'textarea',
               admin: {
-                description: 'Optional short description for editorial context and tag archive metadata.',
+                description:
+                  'Optional short description for editorial context and tag archive metadata.',
               },
             },
           ],

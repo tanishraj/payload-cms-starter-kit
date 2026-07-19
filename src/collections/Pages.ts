@@ -6,6 +6,7 @@ import { QaAccordionBlock } from '@/blocks/QaAccordion/config'
 import { FeatureMatrixBlock } from '@/blocks/FeatureMatrix/config'
 import { GalleryShowcaseBlock } from '@/blocks/GalleryShowcase/config'
 import { ImageMosaicBlock } from '@/blocks/ImageMosaic/config'
+import { NewsEventsHighlightsBlock } from '@/blocks/NewsEventsHighlights/config'
 import { ProfileCarouselBlock } from '@/blocks/ProfileCarousel/config'
 import { HeroBannerBlock } from '@/blocks/HeroBanner/config'
 import { RatingSpotlightBlock } from '@/blocks/RatingSpotlight/config'
@@ -211,6 +212,7 @@ export const Pages: CollectionConfig = {
                 FeatureSpotlightBlock,
                 FeatureMatrixBlock,
                 ContentHighlightsBlock,
+                NewsEventsHighlightsBlock,
                 ProfileCarouselBlock,
                 GalleryShowcaseBlock,
                 ImageMosaicBlock,

@@ -19,7 +19,8 @@ export const Categories: CollectionConfig = {
     hidden: hideFromUsersWithoutCapability('manage_taxonomy'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],
-    description: 'Reusable hierarchical content categories for articles and reviews.',
+    description:
+      'Reusable hierarchical content categories for articles, reviews, news, and events.',
     listSearchableFields: ['title', 'slug'],
   },
   access: {
@@ -29,6 +30,8 @@ export const Categories: CollectionConfig = {
       'manage_taxonomy',
       'manage_articles',
       'publish_articles',
+      'manage_news_events',
+      'publish_news_events',
       'manage_reviews',
       'publish_reviews',
     ]),

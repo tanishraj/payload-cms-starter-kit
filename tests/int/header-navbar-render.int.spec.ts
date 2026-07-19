@@ -207,6 +207,7 @@ describe('header navbar rendering', () => {
   it('uses size-based logo height defaults when no logo override is set', () => {
     const compactHtml = renderToStaticMarkup(
       createElement(HeaderNavbar12BlockComponent, {
+        appearance: { background: 'none', border: 'none', textColor: 'auto' },
         blockType: 'headerNavbar12',
         logoMode: 'siteDefault',
         menuItems: [
@@ -224,6 +225,7 @@ describe('header navbar rendering', () => {
 
     const largeHtml = renderToStaticMarkup(
       createElement(HeaderNavbar12BlockComponent, {
+        appearance: { background: 'none', border: 'none', textColor: 'auto' },
         blockType: 'headerNavbar12',
         logoMode: 'siteDefault',
         menuItems: [
@@ -245,37 +247,41 @@ describe('header navbar rendering', () => {
 
   it('renders header layout blocks through the shared renderer', () => {
     const html = renderToStaticMarkup(
-      createElement('div', null, renderHeaderBlocks(
-        [
-          {
-            appearance: {
-              background: 'primary',
-              border: 'bottom',
-              textColor: 'auto',
+      createElement(
+        'div',
+        null,
+        renderHeaderBlocks(
+          [
+            {
+              appearance: {
+                background: 'primary',
+                border: 'bottom',
+                textColor: 'auto',
+              },
+              blockType: 'headerNavbar12',
+              ctaButtons: [
+                {
+                  label: 'Book',
+                  linkType: 'custom',
+                  url: '/book',
+                  variant: 'default',
+                },
+              ],
+              logoMode: 'siteDefault',
+              menuItems: [
+                {
+                  label: 'Home',
+                  linkType: 'custom',
+                  url: '/',
+                },
+              ],
+              navAlignment: 'right',
+              size: 'large',
             },
-            blockType: 'headerNavbar12',
-            ctaButtons: [
-              {
-                label: 'Book',
-                linkType: 'custom',
-                url: '/book',
-                variant: 'default',
-              },
-            ],
-            logoMode: 'siteDefault',
-            menuItems: [
-              {
-                label: 'Home',
-                linkType: 'custom',
-                url: '/',
-              },
-            ],
-            navAlignment: 'right',
-            size: 'large',
-          },
-        ] as never,
-        { siteLogo: null, siteName: 'Acme Studio' },
-      )),
+          ] as never,
+          { siteLogo: null, siteName: 'Acme Studio' },
+        ),
+      ),
     )
 
     expect(html).toContain('Acme Studio')

@@ -3,24 +3,23 @@ import { APIError } from 'payload'
 
 import {
   canPublishArticles,
+  canPublishNewsEvents,
   canPublishPages,
   canPublishReviews,
   canPublishSystemPages,
   requiresEditorialWorkflow,
 } from '@/access/adminCapabilities'
 import type { EditorialWorkflowState } from '@/lib/editorialWorkflow'
-import {
-  findBlockingPublishQueueItems,
-  formatBlockingPublishQueueMessage,
-} from '@/lib/workQueue'
+import { findBlockingPublishQueueItems, formatBlockingPublishQueueMessage } from '@/lib/workQueue'
 
 type PublishCapability =
   | 'publish_articles'
+  | 'publish_news_events'
   | 'publish_pages'
   | 'publish_reviews'
   | 'publish_system_pages'
 type DocStatus = 'draft' | 'published'
-type QueueAwareCollection = 'pages' | 'articles' | 'reviews' | 'system-pages'
+type QueueAwareCollection = 'pages' | 'articles' | 'news-events' | 'reviews' | 'system-pages'
 
 type WorkflowDoc = {
   id?: number | string | null
@@ -38,6 +37,8 @@ const canPublish = (capability: PublishCapability, user: unknown) => {
   switch (capability) {
     case 'publish_articles':
       return canPublishArticles(user as never)
+    case 'publish_news_events':
+      return canPublishNewsEvents(user as never)
     case 'publish_reviews':
       return canPublishReviews(user as never)
     case 'publish_system_pages':

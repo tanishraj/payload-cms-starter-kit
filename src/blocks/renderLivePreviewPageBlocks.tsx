@@ -1,5 +1,6 @@
 import type { Page } from '@/payload-types'
 import type { ReviewPreviewSnapshot } from '@/lib/reviewPreviewShared'
+import type { NewsEventsPreviewSnapshot } from '@/lib/newsEventsPreviewShared'
 
 import { AnnouncementBlockComponent } from './Announcement/Component'
 import { ContentHighlightsBlockComponent } from './ContentHighlights/Component'
@@ -8,6 +9,7 @@ import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
 import { HeroBannerBlockComponent } from './HeroBanner/Component'
 import { ImageMosaicBlockComponent } from './ImageMosaic/Component'
+import { NewsEventsHighlightsPreviewBlockComponent } from './NewsEventsHighlights/PreviewComponent'
 import { PageBlockStack } from './PageBlockStack'
 import { ProfileCarouselBlockComponent } from './ProfileCarousel/Component'
 import { QaAccordionBlockComponent } from './QaAccordion/Component'
@@ -21,6 +23,7 @@ export type LivePreviewPageBlock = NonNullable<Page['layout']>[number]
 export function renderLivePreviewPageBlocks(
   blocks: Page['layout'] | null | undefined,
   snapshot: ReviewPreviewSnapshot,
+  newsEventsSnapshot: NewsEventsPreviewSnapshot,
 ) {
   if (!blocks?.length) {
     return null
@@ -42,6 +45,14 @@ export function renderLivePreviewPageBlocks(
             return <FeatureMatrixBlockComponent key={key} {...block} />
           case 'contentHighlights':
             return <ContentHighlightsBlockComponent key={key} {...block} />
+          case 'newsEventsHighlights':
+            return (
+              <NewsEventsHighlightsPreviewBlockComponent
+                key={key}
+                snapshot={newsEventsSnapshot}
+                {...block}
+              />
+            )
           case 'profileCarousel':
             return <ProfileCarouselBlockComponent key={key} {...block} />
           case 'galleryShowcase':

@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 
 import { renderLivePreviewPageBlocks } from '@/blocks/renderLivePreviewPageBlocks'
 import type { ReviewPreviewSnapshot } from '@/lib/reviewPreviewShared'
+import { EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT } from '@/lib/newsEventsPreviewShared'
 import type { Page } from '@/payload-types'
 
 describe('live-preview page block renderer', () => {
@@ -32,7 +33,9 @@ describe('live-preview page block renderer', () => {
       { blockType: 'ratingSpotlight', title: 'Live rating' },
       { blockType: 'reviewFeed', pageSize: 8, title: 'Reviews' },
     ] as unknown as NonNullable<Page['layout']>
-    const html = renderToStaticMarkup(renderLivePreviewPageBlocks(layout, snapshot))
+    const html = renderToStaticMarkup(
+      renderLivePreviewPageBlocks(layout, snapshot, EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT),
+    )
 
     expect(html).toContain('Live rating')
     expect(html).toContain('4.5 / 5')

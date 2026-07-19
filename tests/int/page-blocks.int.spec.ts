@@ -21,7 +21,7 @@ const getLayoutField = () => {
   ) as { blocks?: Array<{ slug: string }>; type?: string } | undefined
 }
 
-const getNamedField = <T extends { name?: string }>(fields: unknown[], fieldName: string) =>
+const getNamedField = <T>(fields: unknown[], fieldName: string) =>
   fields.find(
     (field) =>
       typeof field === 'object' && field !== null && 'name' in field && field.name === fieldName,
@@ -98,7 +98,11 @@ const expectContentActionsFieldSet = (
 describe('page block pipeline', () => {
   it('defines the shared block appearance schema defaults and options', () => {
     const appearanceField = createBlockAppearanceFields()
-    const appearanceFields = 'fields' in appearanceField ? appearanceField.fields : []
+    const appearanceFields = ('fields' in appearanceField ? appearanceField.fields : []) as Array<{
+      defaultValue?: unknown
+      name?: string
+      options?: Array<{ value: string }>
+    }>
 
     const appearanceBackgroundField = appearanceFields.find((field) => field.name === 'background')
     const appearanceTextColorField = appearanceFields.find((field) => field.name === 'textColor')
@@ -160,6 +164,7 @@ describe('page block pipeline', () => {
       'featureSpotlight',
       'featureMatrix',
       'contentHighlights',
+      'newsEventsHighlights',
       'profileCarousel',
       'galleryShowcase',
       'imageMosaic',
@@ -208,7 +213,7 @@ describe('page block pipeline', () => {
     expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
     expect(itemsField?.type).toBe('array')
     expect(itemsField?.minRows).toBe(1)
-    expect(itemsField?.fields?.map((field) => field.name)).toEqual([
+    expect(itemsField?.fields?.map((field) => field.name).filter((name) => name !== 'id')).toEqual([
       'prefix',
       'value',
       'suffix',
@@ -831,8 +836,13 @@ describe('page block pipeline', () => {
     expect(headingField?.required).toBe(true)
     expect(itemsField?.type).toBe('array')
     expect(itemsField?.minRows).toBe(1)
-    expect(itemsField?.fields?.map((field) => field.name)).toEqual(['question', 'answer'])
-    expect(itemsField?.fields?.map((field) => field.type)).toEqual(['text', 'richText'])
+    expect(itemsField?.fields?.map((field) => field.name).filter((name) => name !== 'id')).toEqual([
+      'question',
+      'answer',
+    ])
+    expect(
+      itemsField?.fields?.filter((field) => field.name !== 'id').map((field) => field.type),
+    ).toEqual(['text', 'richText'])
     expect(sideColumnEnabledField).toBeUndefined()
     expect(sideColumnField?.type).toBe('group')
     expect(sideColumnField?.admin?.condition).toBeTypeOf('function')

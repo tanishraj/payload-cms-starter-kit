@@ -52,6 +52,7 @@ describe('block thumbnail metadata', () => {
       'headerNavbar12',
       'heroBanner',
       'imageMosaic',
+      'newsEventsHighlights',
       'profileCarousel',
       'qaAccordion',
       'ratingSpotlight',
@@ -108,6 +109,12 @@ describe('block thumbnail metadata', () => {
       filename: 'content-highlights.jpg',
       label: 'Content Highlights',
       slug: 'contentHighlights',
+      stageAlignment: 'top',
+    })
+    expect(getBlockThumbnailDefinition('newsEventsHighlights')).toMatchObject({
+      filename: 'news-events-highlights.jpg',
+      label: 'News & Events Highlights',
+      slug: 'newsEventsHighlights',
       stageAlignment: 'top',
     })
     expect(getBlockThumbnailDefinition('featureSpotlight')).toMatchObject({

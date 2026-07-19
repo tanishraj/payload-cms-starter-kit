@@ -18,12 +18,12 @@ type ThemeField = {
 
 const getThemeField = () => {
   const field = ThemeSettings.fields.find(
-    (candidate): candidate is ThemeField =>
+    (candidate) =>
       typeof candidate === 'object' &&
       candidate !== null &&
       'name' in candidate &&
       candidate.name === 'themeColor',
-  )
+  ) as ThemeField | undefined
 
   if (!field) {
     throw new Error('Expected themeColor field to exist.')
@@ -58,7 +58,10 @@ describe('website theme registry', () => {
   })
 
   it('wires the frontend layout to the shared registry and default fallback', () => {
-    const layoutSource = fs.readFileSync(path.resolve(process.cwd(), 'src/app/(frontend)/layout.tsx'), 'utf8')
+    const layoutSource = fs.readFileSync(
+      path.resolve(process.cwd(), 'src/app/(frontend)/layout.tsx'),
+      'utf8',
+    )
 
     expect(layoutSource).toContain("from '@/lib/themes/websiteThemes'")
     expect(layoutSource).toContain('defaultWebsiteTheme')
@@ -66,6 +69,8 @@ describe('website theme registry', () => {
     expect(layoutSource).toContain(
       'const themeColor = isWebsiteTheme(savedThemeColor) ? savedThemeColor : defaultWebsiteTheme',
     )
-    expect(layoutSource).not.toContain("const validThemeColors = new Set(['default', 'blue', 'sera'])")
+    expect(layoutSource).not.toContain(
+      "const validThemeColors = new Set(['default', 'blue', 'sera'])",
+    )
   })
 })

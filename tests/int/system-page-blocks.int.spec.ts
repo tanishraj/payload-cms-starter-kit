@@ -93,7 +93,11 @@ const collectBlockSlugs = (fields: unknown[]): string[] => {
 describe('system page block schemas', () => {
   it('defines the shared block appearance schema defaults and options', () => {
     const appearanceField = createBlockAppearanceFields()
-    const appearanceFields = 'fields' in appearanceField ? appearanceField.fields : []
+    const appearanceFields = ('fields' in appearanceField ? appearanceField.fields : []) as Array<{
+      defaultValue?: unknown
+      name?: string
+      options?: Array<{ value: string }>
+    }>
 
     const appearanceBackgroundField = appearanceFields.find((field) => field.name === 'background')
     const appearanceTextColorField = appearanceFields.find((field) => field.name === 'textColor')
@@ -143,6 +147,7 @@ describe('system page block schemas', () => {
       'featureSpotlight',
       'featureMatrix',
       'contentHighlights',
+      'newsEventsHighlights',
       'profileCarousel',
       'galleryShowcase',
       'imageMosaic',

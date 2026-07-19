@@ -8,6 +8,7 @@ import { GalleryShowcaseBlockComponent } from '@/blocks/GalleryShowcase/Componen
 import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
 import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
 import { ImageMosaicBlockComponent } from '@/blocks/ImageMosaic/Component'
+import { NewsEventsHighlightsBlockPresentation } from '@/blocks/NewsEventsHighlights/Presentation'
 import { ProfileCarouselBlockComponent } from '@/blocks/ProfileCarousel/Component'
 import { QaAccordionBlockComponent } from '@/blocks/QaAccordion/Component'
 import { RatingSpotlightBlockComponent } from '@/blocks/RatingSpotlight/Component'
@@ -304,6 +305,58 @@ export const blockThumbnailFixtures = {
       layout="highlightsGrid"
       size="compact"
       title="What students say matters"
+    />
+  ),
+  newsEventsHighlights: (
+    <NewsEventsHighlightsBlockPresentation
+      actionMode="link"
+      actions={[{ label: 'View all stories', linkType: 'custom', url: '/news-events' }]}
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      description="Discover the latest stories, milestones, and opportunities from across our community."
+      eyebrow="Latest"
+      items={[
+        {
+          category: { id: 'category-1', slug: 'research', title: 'Research' },
+          contentType: 'news',
+          dateISO: '2026-07-18T00:00:00.000Z',
+          dateLabel: 'Jul 18, 2026',
+          excerpt: 'A new center brings collaborative research and practical learning together.',
+          href: '/news-events/research-center',
+          id: 'news-1',
+          image: { alt: 'Campus landscape', position: 'center', src: editorialLandscape },
+          isPastEvent: false,
+          slug: 'research-center',
+          title: 'New research center opens this summer',
+        },
+        {
+          category: { id: 'category-2', slug: 'campus', title: 'Campus' },
+          contentType: 'event',
+          dateISO: '2026-08-12T00:00:00.000Z',
+          dateLabel: 'Aug 12, 2026',
+          excerpt: 'Meet faculty, explore learning spaces, and discover the programs on offer.',
+          href: '/news-events/open-day',
+          id: 'event-1',
+          image: { alt: 'Community gathering', position: 'center', src: collaboration },
+          isPastEvent: false,
+          slug: 'open-day',
+          title: 'Community open day returns in August',
+        },
+        {
+          category: { id: 'category-3', slug: 'people', title: 'People' },
+          contentType: 'news',
+          dateISO: '2026-07-10T00:00:00.000Z',
+          dateLabel: 'Jul 10, 2026',
+          excerpt: 'Student-led projects are creating meaningful connections across the region.',
+          href: '/news-events/community-impact',
+          id: 'news-2',
+          image: { alt: 'Student portrait', position: 'top', src: portrait },
+          isPastEvent: false,
+          slug: 'community-impact',
+          title: 'Student initiatives make a community impact',
+        },
+      ]}
+      size="compact"
+      title="News & Events"
     />
   ),
   profileCarousel: (

@@ -30,7 +30,9 @@ const isRouteEligibleForSitemap = ({
   const resolvedRobots = resolveRobotsMode({
     inheritedRobots,
     robotsMode:
-      typeof entry.robotsMode === 'string' ? (entry.robotsMode as 'default' | 'index' | 'noindex') : null,
+      typeof entry.robotsMode === 'string'
+        ? (entry.robotsMode as 'default' | 'index' | 'noindex')
+        : null,
   })
 
   const isIndexable =
@@ -69,13 +71,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     config: configPromise,
   })
 
-  const [pageSettings, seoSettings] = await Promise.all([
+  const [pageSettings, seoSettings, newsEventsSettings] = await Promise.all([
     payload.findGlobal({
       slug: 'page-settings',
       depth: 0,
     }),
     payload.findGlobal({
       slug: 'seo-settings',
+      depth: 0,
+    }),
+    payload.findGlobal({
+      slug: 'news-events-settings',
       depth: 0,
     }),
   ])
@@ -166,6 +172,36 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   }
 
+  if (isRouteEligibleForSitemap({ entry: newsEventsSettings, inheritedRobots })) {
+    addEntry({
+      entries,
+      lastModified: newsEventsSettings.updatedAt,
+      pathname: '/news-events',
+    })
+  }
+
+  const newsEventsResult = await payload.find({
+    collection: 'news-events',
+    where: {
+      and: [{ _status: { equals: 'published' } }, { workflowState: { equals: 'published' } }],
+    },
+    depth: 1,
+    limit: 100,
+    sort: 'createdAt',
+  })
+
+  for (const entry of newsEventsResult.docs) {
+    if (!entry.slug || !isRouteEligibleForSitemap({ entry, inheritedRobots })) {
+      continue
+    }
+
+    addEntry({
+      entries,
+      lastModified: entry.updatedAt,
+      pathname: `/news-events/${entry.slug}`,
+    })
+  }
+
   const usedCategoryIDs = new Set<number | string>()
   const usedTagIDs = new Set<number | string>()
 
@@ -226,7 +262,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   for (const tag of tagsResult.docs) {
-    if (!usedTagIDs.has(tag.id) || !tag.slug || !isRouteEligibleForSitemap({ entry: tag, inheritedRobots })) {
+    if (
+      !usedTagIDs.has(tag.id) ||
+      !tag.slug ||
+      !isRouteEligibleForSitemap({ entry: tag, inheritedRobots })
+    ) {
       continue
     }
 

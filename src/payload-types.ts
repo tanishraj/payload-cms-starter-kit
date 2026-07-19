@@ -71,6 +71,7 @@ export interface Config {
     categories: Category;
     tags: Tag;
     articles: Article;
+    'news-events': NewsEvent;
     reviews: Review;
     'navigation-links': NavigationLink;
     redirects: Redirect;
@@ -94,6 +95,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    'news-events': NewsEventsSelect<false> | NewsEventsSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     'navigation-links': NavigationLinksSelect<false> | NavigationLinksSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -117,6 +119,7 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     'page-settings': PageSetting;
+    'news-events-settings': NewsEventsSetting;
     'system-mode-settings': SystemModeSetting;
     'site-settings': SiteSetting;
     'theme-settings': ThemeSetting;
@@ -124,6 +127,7 @@ export interface Config {
   };
   globalsSelect: {
     'page-settings': PageSettingsSelect<false> | PageSettingsSelect<true>;
+    'news-events-settings': NewsEventsSettingsSelect<false> | NewsEventsSettingsSelect<true>;
     'system-mode-settings': SystemModeSettingsSelect<false> | SystemModeSettingsSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'theme-settings': ThemeSettingsSelect<false> | ThemeSettingsSelect<true>;
@@ -181,6 +185,7 @@ export interface Page {
         | FeatureSpotlightBlock
         | FeatureMatrixBlock
         | ContentHighlightsBlock
+        | NewsEventsHighlightsBlock
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
         | ImageMosaicBlock
@@ -491,6 +496,40 @@ export interface ContentHighlightsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'contentHighlights';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsEventsHighlightsBlock".
+ */
+export interface NewsEventsHighlightsBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
+  itemCount: number;
+  /**
+   * Optional message shown when no published news or upcoming events exist.
+   */
+  emptyStateMessage?: string | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  actionMode: 'link' | 'button';
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'newsEventsHighlights';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -888,6 +927,10 @@ export interface User {
      */
     manage_articles?: boolean | null;
     /**
+     * Allow access to News & Events.
+     */
+    manage_news_events?: boolean | null;
+    /**
      * Allow access to Reviews.
      */
     manage_reviews?: boolean | null;
@@ -968,6 +1011,10 @@ export interface User {
      */
     publish_articles?: boolean | null;
     /**
+     * Allow publishing access for News & Events.
+     */
+    publish_news_events?: boolean | null;
+    /**
      * Allow publishing access for Reviews.
      */
     publish_reviews?: boolean | null;
@@ -997,7 +1044,7 @@ export interface User {
   collection: 'users';
 }
 /**
- * Reusable hierarchical content categories for articles and reviews.
+ * Reusable hierarchical content categories for articles, reviews, news, and events.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
@@ -1040,7 +1087,7 @@ export interface Category {
   deletedAt?: string | null;
 }
 /**
- * Reusable topical labels for cross-linking content across archives and related sections.
+ * Reusable topical labels for cross-linking articles, news, events, and related content.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "tags".
@@ -1129,6 +1176,105 @@ export interface Article {
     };
     [k: string]: unknown;
   };
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  /**
+   * Optional. Leave empty to use the resolved public URL. Supports site-relative paths or full URLs.
+   */
+  canonicalURL?: string | null;
+  /**
+   * Default inherits the global robots setting.
+   */
+  robotsMode?: ('default' | 'index' | 'noindex') | null;
+  /**
+   * Default includes public published routes that remain indexable.
+   */
+  includeInSitemap?: ('default' | 'include' | 'exclude') | null;
+  ogTitle?: string | null;
+  ogImage?: (string | null) | Media;
+  ogDescription?: string | null;
+  workflowState?: ('draft' | 'in_review' | 'scheduled' | 'published' | 'reverted') | null;
+  scheduledPublishAt?: string | null;
+  /**
+   * Short operator-facing note explaining why this change exists.
+   */
+  changeSummary?: string | null;
+  lastReviewedAt?: string | null;
+  lastReviewedBy?: (string | null) | User;
+  publishedAt?: string | null;
+  publishedBy?: (string | null) | User;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Published news stories and scheduled events for the public website.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news-events".
+ */
+export interface NewsEvent {
+  id: string;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  contentType: 'news' | 'event';
+  /**
+   * Short summary used in cards, archives, previews, and SEO fallbacks.
+   */
+  excerpt: string;
+  authorName?: string | null;
+  /**
+   * Complete story or event description.
+   */
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Primary archive category.
+   */
+  primaryCategory?: (string | null) | Category;
+  /**
+   * Optional topical tags.
+   */
+  tags?: (string | Tag)[] | null;
+  /**
+   * Supporting categories. The primary category is included automatically.
+   */
+  categories?: (string | Category)[] | null;
+  eventStart?: string | null;
+  eventEnd?: string | null;
+  eventLocation?: string | null;
+  eventRegistrationAction?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode: 'link' | 'button';
+        variant?: ('default' | 'secondary' | 'outline') | null;
+        id?: string | null;
+      }[]
+    | null;
+  featuredImage: string | Media;
+  featuredImagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
   metaTitle?: string | null;
   metaDescription?: string | null;
   /**
@@ -1798,6 +1944,10 @@ export interface PayloadLockedDocument {
         value: string | Article;
       } | null)
     | ({
+        relationTo: 'news-events';
+        value: string | NewsEvent;
+      } | null)
+    | ({
         relationTo: 'reviews';
         value: string | Review;
       } | null)
@@ -1903,6 +2053,7 @@ export interface PagesSelect<T extends boolean = true> {
         featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
         contentHighlights?: T | ContentHighlightsBlockSelect<T>;
+        newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
         imageMosaic?: T | ImageMosaicBlockSelect<T>;
@@ -2112,6 +2263,38 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
       };
   actionMode?: T;
   layout?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsEventsHighlightsBlock_select".
+ */
+export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
+  itemCount?: T;
+  emptyStateMessage?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  actionMode?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -2493,6 +2676,58 @@ export interface ArticlesSelect<T extends boolean = true> {
   authorName?: T;
   publishedAtOverride?: T;
   body?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  canonicalURL?: T;
+  robotsMode?: T;
+  includeInSitemap?: T;
+  ogTitle?: T;
+  ogImage?: T;
+  ogDescription?: T;
+  workflowState?: T;
+  scheduledPublishAt?: T;
+  changeSummary?: T;
+  lastReviewedAt?: T;
+  lastReviewedBy?: T;
+  publishedAt?: T;
+  publishedBy?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news-events_select".
+ */
+export interface NewsEventsSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  contentType?: T;
+  excerpt?: T;
+  authorName?: T;
+  body?: T;
+  primaryCategory?: T;
+  tags?: T;
+  categories?: T;
+  eventStart?: T;
+  eventEnd?: T;
+  eventLocation?: T;
+  eventRegistrationAction?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        id?: T;
+      };
+  featuredImage?: T;
+  featuredImagePosition?: T;
   metaTitle?: T;
   metaDescription?: T;
   canonicalURL?: T;
@@ -3027,6 +3262,7 @@ export interface UsersSelect<T extends boolean = true> {
     | {
         manage_pages?: T;
         manage_articles?: T;
+        manage_news_events?: T;
         manage_reviews?: T;
         manage_media?: T;
         manage_taxonomy?: T;
@@ -3047,6 +3283,7 @@ export interface UsersSelect<T extends boolean = true> {
         require_editorial_workflow?: T;
         publish_pages?: T;
         publish_articles?: T;
+        publish_news_events?: T;
         publish_reviews?: T;
         publish_system_pages?: T;
       };
@@ -3167,6 +3404,50 @@ export interface PageSetting {
    * Lower values scroll faster.
    */
   announcementMarqueeDurationMs?: number | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news-events-settings".
+ */
+export interface NewsEventsSetting {
+  id: string;
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  allLabel: string;
+  newsLabel: string;
+  eventsLabel: string;
+  upcomingEventsLabel: string;
+  pastEventsLabel: string;
+  readMoreLabel: string;
+  emptyStateTitle: string;
+  emptyStateDescription?: string | null;
+  entriesPerPage: number;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  size: 'compact' | 'default' | 'comfortable';
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  /**
+   * Optional. Leave empty to use the resolved public URL. Supports site-relative paths or full URLs.
+   */
+  canonicalURL?: string | null;
+  /**
+   * Default inherits the global robots setting.
+   */
+  robotsMode?: ('default' | 'index' | 'noindex') | null;
+  /**
+   * Default includes public published routes that remain indexable.
+   */
+  includeInSitemap?: ('default' | 'include' | 'exclude') | null;
+  ogTitle?: string | null;
+  ogImage?: (string | null) | Media;
+  ogDescription?: string | null;
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -3318,6 +3599,43 @@ export interface PageSettingsSelect<T extends boolean = true> {
   announcementDisplayMode?: T;
   announcementIntervalMs?: T;
   announcementMarqueeDurationMs?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news-events-settings_select".
+ */
+export interface NewsEventsSettingsSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  allLabel?: T;
+  newsLabel?: T;
+  eventsLabel?: T;
+  upcomingEventsLabel?: T;
+  pastEventsLabel?: T;
+  readMoreLabel?: T;
+  emptyStateTitle?: T;
+  emptyStateDescription?: T;
+  entriesPerPage?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  size?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  canonicalURL?: T;
+  robotsMode?: T;
+  includeInSitemap?: T;
+  ogTitle?: T;
+  ogImage?: T;
+  ogDescription?: T;
   _status?: T;
   updatedAt?: T;
   createdAt?: T;

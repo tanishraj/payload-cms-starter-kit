@@ -1,4 +1,4 @@
-import type { Access } from 'payload'
+import type { Access, Where } from 'payload'
 
 import {
   editorialRoleOptions,
@@ -21,6 +21,10 @@ export const adminCapabilityFieldOptions = [
   {
     label: 'Articles',
     value: 'manage_articles',
+  },
+  {
+    label: 'News & Events',
+    value: 'manage_news_events',
   },
   {
     label: 'Reviews',
@@ -103,6 +107,10 @@ export const adminCapabilityFieldOptions = [
     value: 'publish_articles',
   },
   {
+    label: 'Publish News & Events',
+    value: 'publish_news_events',
+  },
+  {
     label: 'Publish Reviews',
     value: 'publish_reviews',
   },
@@ -129,13 +137,7 @@ export const allAdminCapabilities = adminCapabilityFieldOptions.map(
   ({ value }) => value,
 ) as AdminCapability[]
 
-const getCapabilityDescription = ({
-  label,
-  value,
-}: {
-  label: string
-  value: AdminCapability
-}) => {
+const getCapabilityDescription = ({ label, value }: { label: string; value: AdminCapability }) => {
   if (value === 'require_editorial_workflow') {
     return 'Require this user to submit content through editorial workflow before publication.'
   }
@@ -151,13 +153,7 @@ const getCapabilityDescription = ({
   return `Allow access to ${label}.`
 }
 
-const createCapabilityCheckbox = ({
-  label,
-  value,
-}: {
-  label: string
-  value: AdminCapability
-}) => ({
+const createCapabilityCheckbox = ({ label, value }: { label: string; value: AdminCapability }) => ({
   name: value,
   type: 'checkbox' as const,
   label,
@@ -186,9 +182,10 @@ const createCapabilityRows = (items: Array<{ label: string; value: AdminCapabili
     [],
   )
 
-const capabilityItemsByValue = new Map<AdminCapability, (typeof adminCapabilityFieldOptions)[number]>(
-  adminCapabilityFieldOptions.map((item) => [item.value, item]),
-)
+const capabilityItemsByValue = new Map<
+  AdminCapability,
+  (typeof adminCapabilityFieldOptions)[number]
+>(adminCapabilityFieldOptions.map((item) => [item.value, item]))
 
 const getCapabilityItem = (value: AdminCapability) => {
   const item = capabilityItemsByValue.get(value)
@@ -209,6 +206,7 @@ const capabilitySections = [
     items: createCapabilitySectionItems([
       'manage_pages',
       'manage_articles',
+      'manage_news_events',
       'manage_reviews',
       'manage_media',
       'manage_taxonomy',
@@ -251,6 +249,7 @@ const capabilitySections = [
     items: createCapabilitySectionItems([
       'publish_pages',
       'publish_articles',
+      'publish_news_events',
       'publish_reviews',
       'publish_system_pages',
     ] as const),
@@ -368,6 +367,26 @@ export const allowPublicReadOrCapability =
     )
   }
 
+export const allowPublishedReadOrCapability =
+  (capability: AdminCapability | AdminCapability[]): Access =>
+  ({ req }) => {
+    const user = req.user as AdminUserLike | null | undefined
+
+    if (
+      toCapabilitiesArray(capability).some((currentCapability) =>
+        hasAdminCapability(user, currentCapability),
+      )
+    ) {
+      return true
+    }
+
+    const publishedWhere: Where = {
+      and: [{ _status: { equals: 'published' } }, { workflowState: { equals: 'published' } }],
+    }
+
+    return publishedWhere
+  }
+
 export const hideFromNonAdmin = ({ user }: { user: unknown }) => {
   return !isAdminUser(user as AdminUserLike | null | undefined)
 }
@@ -390,6 +409,10 @@ export const canPublishArticles = (user: AdminUserLike | null | undefined): bool
   return hasAdminCapability(user, 'publish_articles')
 }
 
+export const canPublishNewsEvents = (user: AdminUserLike | null | undefined): boolean => {
+  return hasAdminCapability(user, 'publish_news_events')
+}
+
 export const canPublishReviews = (user: AdminUserLike | null | undefined): boolean => {
   return hasAdminCapability(user, 'publish_reviews')
 }
@@ -406,9 +429,7 @@ export const canViewOperationalAudit = (user: AdminUserLike | null | undefined):
   return hasAdminCapability(user, 'view_operational_audit')
 }
 
-export const requiresEditorialWorkflow = (
-  user: AdminUserLike | null | undefined,
-): boolean => {
+export const requiresEditorialWorkflow = (user: AdminUserLike | null | undefined): boolean => {
   if (isAdminUser(user)) {
     return false
   }
@@ -416,9 +437,7 @@ export const requiresEditorialWorkflow = (
   return hasAdminCapability(user, 'require_editorial_workflow')
 }
 
-export const canShowEditorialWorkflow = (
-  user: AdminUserLike | null | undefined,
-): boolean => {
+export const canShowEditorialWorkflow = (user: AdminUserLike | null | undefined): boolean => {
   return isAdminUser(user) || requiresEditorialWorkflow(user)
 }
 
@@ -427,13 +446,17 @@ export const canManageTaxonomy = (user: AdminUserLike | null | undefined): boole
 }
 
 export const canReadTaxonomy = (user: AdminUserLike | null | undefined): boolean => {
-  return ([
-    'manage_taxonomy',
-    'manage_articles',
-    'publish_articles',
-    'manage_reviews',
-    'publish_reviews',
-  ] as AdminCapability[]).some((capability) => hasAdminCapability(user, capability))
+  return (
+    [
+      'manage_taxonomy',
+      'manage_articles',
+      'publish_articles',
+      'manage_news_events',
+      'publish_news_events',
+      'manage_reviews',
+      'publish_reviews',
+    ] as AdminCapability[]
+  ).some((capability) => hasAdminCapability(user, capability))
 }
 
 const allCapabilitiesEnabled = (): AdminCapabilitiesMap => {

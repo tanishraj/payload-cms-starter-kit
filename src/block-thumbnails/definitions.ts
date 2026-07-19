@@ -51,6 +51,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'News & Events Highlights block preview',
+    filename: 'news-events-highlights.jpg',
+    label: 'News & Events Highlights',
+    slug: 'newsEventsHighlights',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Profile Carousel block preview',
     filename: 'profile-carousel.jpg',
     label: 'Profile Carousel',

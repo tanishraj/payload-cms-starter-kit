@@ -24,7 +24,9 @@ vi.mock('@payload-config', () => ({
 }))
 
 vi.mock('@/lib/pagePaths', () => ({
-  getPageHrefFromSourceWithResolver: vi.fn(async (page: { path?: string | null }) => page.path ?? null),
+  getPageHrefFromSourceWithResolver: vi.fn(
+    async (page: { path?: string | null }) => page.path ?? null,
+  ),
   getPageID: vi.fn((value: unknown) =>
     typeof value === 'number'
       ? value
@@ -122,6 +124,22 @@ describe('sitemap route', () => {
         }
       }
 
+      if (collection === 'news-events') {
+        return {
+          docs: [
+            {
+              id: 25,
+              includeInSitemap: 'default',
+              robotsMode: 'index',
+              slug: 'community-open-day',
+              updatedAt: '2026-07-09T00:00:00.000Z',
+              workflowState: 'published',
+            },
+          ],
+          totalPages: 1,
+        }
+      }
+
       if (collection === 'categories') {
         return {
           docs: [
@@ -176,6 +194,8 @@ describe('sitemap route', () => {
     expect(urls).toContain('http://localhost:3000/articles/launch-notes')
     expect(urls).not.toContain('http://localhost:3000/articles/should-not-appear')
     expect(urls).toContain('http://localhost:3000/reviews/excellent-support')
+    expect(urls).toContain('http://localhost:3000/news-events')
+    expect(urls).toContain('http://localhost:3000/news-events/community-open-day')
     expect(urls).toContain('http://localhost:3000/articles/category/guides')
     expect(urls).toContain('http://localhost:3000/reviews/category/guides')
     expect(urls).toContain('http://localhost:3000/articles/tag/featured')

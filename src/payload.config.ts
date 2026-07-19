@@ -12,6 +12,7 @@ import { FormSubmissions } from './collections/FormSubmissions'
 import { Forms } from './collections/Forms'
 import { Media } from './collections/Media'
 import { NavigationLinks } from './collections/NavigationLinks'
+import { NewsEvents } from './collections/NewsEvents'
 import { Pages } from './collections/Pages'
 import { Redirects } from './collections/Redirects'
 import { Reviews } from './collections/Reviews'
@@ -28,6 +29,7 @@ import { SEOSettings } from './globals/SEOSettings'
 import { SiteSettings } from './globals/SiteSettings'
 import { SystemModeSettings } from './globals/SystemModeSettings'
 import { ThemeSettings } from './globals/ThemeSettings'
+import { NewsEventsSettings } from './globals/NewsEventsSettings'
 import { withTrash } from './plugins/withTrash'
 
 const filename = fileURLToPath(import.meta.url)
@@ -54,6 +56,7 @@ export default buildConfig({
     Categories,
     Tags,
     Articles,
+    NewsEvents,
     Reviews,
     NavigationLinks,
     Redirects,
@@ -69,6 +72,7 @@ export default buildConfig({
   ],
   globals: [
     PageSettings,
+    NewsEventsSettings,
     SystemModeSettings,
     SiteSettings,
     ThemeSettings,

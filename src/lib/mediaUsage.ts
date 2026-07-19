@@ -32,6 +32,7 @@ type GlobalUsageSource = {
 
 const mediaUsageSourceLabelByCollection: Record<string, string> = {
   articles: 'Articles',
+  'news-events': 'News & Events',
   footers: 'Footers',
   headers: 'Headers',
   pages: 'Pages',
@@ -41,6 +42,7 @@ const mediaUsageSourceLabelByCollection: Record<string, string> = {
 
 const mediaUsageSourceLabelByGlobal: Record<string, string> = {
   'seo-settings': 'SEO Settings',
+  'news-events-settings': 'News & Events Settings',
   'site-settings': 'Site Settings',
 }
 
@@ -250,6 +252,31 @@ const collectionSources: CollectionUsageSource[] = [
     },
   },
   {
+    slug: 'news-events',
+    sourceLabel: 'News & Events',
+    getDocumentLabel: (doc) => getTextValue(doc.title, 'Untitled News & Event Entry'),
+    resolve: (doc, mediaID) => {
+      const documentLabel = getTextValue(doc.title, 'Untitled News & Event Entry')
+      const references: MediaUsageReference[] = []
+
+      for (const fieldPath of ['featuredImage', 'ogImage'] as const) {
+        pushIfMatched({
+          mediaID,
+          reference: createCollectionReference({
+            doc,
+            documentLabel,
+            fieldPath,
+            slug: 'news-events',
+          }),
+          references,
+          value: doc[fieldPath] as RelationshipValue,
+        })
+      }
+
+      return references
+    },
+  },
+  {
     slug: 'headers',
     sourceLabel: 'Headers',
     getDocumentLabel: (doc) => getTextValue(doc.title, 'Untitled Header'),
@@ -259,7 +286,12 @@ const collectionSources: CollectionUsageSource[] = [
       const layout = Array.isArray(doc.layout) ? doc.layout : []
 
       layout.forEach((block, blockIndex) => {
-        if (!block || typeof block !== 'object' || block === null || block.blockType !== 'headerNavbar12') {
+        if (
+          !block ||
+          typeof block !== 'object' ||
+          block === null ||
+          block.blockType !== 'headerNavbar12'
+        ) {
           return
         }
 
@@ -305,7 +337,12 @@ const collectionSources: CollectionUsageSource[] = [
       const layout = Array.isArray(doc.layout) ? doc.layout : []
 
       layout.forEach((block, blockIndex) => {
-        if (!block || typeof block !== 'object' || block === null || block.blockType !== 'footer56') {
+        if (
+          !block ||
+          typeof block !== 'object' ||
+          block === null ||
+          block.blockType !== 'footer56'
+        ) {
           return
         }
 
@@ -374,6 +411,26 @@ const collectionSources: CollectionUsageSource[] = [
 ]
 
 const globalSources: GlobalUsageSource[] = [
+  {
+    slug: 'news-events-settings',
+    sourceLabel: 'News & Events Settings',
+    resolve: (doc, mediaID) => {
+      const references: MediaUsageReference[] = []
+
+      pushIfMatched({
+        mediaID,
+        reference: createGlobalReference({
+          documentLabel: 'News & Events Settings',
+          fieldPath: 'ogImage',
+          slug: 'news-events-settings',
+        }),
+        references,
+        value: doc.ogImage as RelationshipValue,
+      })
+
+      return references
+    },
+  },
   {
     slug: 'site-settings',
     sourceLabel: 'Site Settings',
