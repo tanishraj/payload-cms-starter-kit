@@ -9,7 +9,7 @@ import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
 import { ReviewFeedList } from '@/components/review-feed-list'
 import type { PublicReviewFeedPage } from '@/lib/reviewFeedShared'
-import type { PublishedReviewRatingDistribution } from '@/lib/reviewRatingSummary'
+import type { PublishedReviewRatingDistribution } from '@/lib/reviewRatingShared'
 import { cn } from '@/lib/utils'
 
 export type ReviewFeedSize = 'comfortable' | 'compact' | 'default'

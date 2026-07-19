@@ -17,3 +17,15 @@ export type PublicReviewFeedPage = {
   page: number
   totalPages: number
 }
+
+export const normalizeReviewFeedPageSize = (value: number | null | undefined): number =>
+  typeof value === 'number' && Number.isInteger(value)
+    ? Math.min(REVIEW_FEED_MAX_PAGE_SIZE, Math.max(1, value))
+    : REVIEW_FEED_DEFAULT_PAGE_SIZE
+
+export const createEmptyReviewFeedPage = (): PublicReviewFeedPage => ({
+  docs: [],
+  hasNextPage: false,
+  page: 1,
+  totalPages: 0,
+})

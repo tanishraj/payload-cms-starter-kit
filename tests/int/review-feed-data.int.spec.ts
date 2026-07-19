@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { describe, expect, it, vi } from 'vitest'
 
 import {
@@ -5,8 +6,27 @@ import {
   parseReviewFeedPagination,
   type ReviewFeedPayload,
 } from '@/lib/reviewFeed'
+import { createEmptyReviewFeedPage, normalizeReviewFeedPageSize } from '@/lib/reviewFeedShared'
 
 describe('Review Feed data', () => {
+  it('normalizes block page sizes and creates deterministic empty pages', () => {
+    expect(normalizeReviewFeedPageSize(undefined)).toBe(4)
+    expect(normalizeReviewFeedPageSize(0)).toBe(1)
+    expect(normalizeReviewFeedPageSize(20)).toBe(12)
+    expect(normalizeReviewFeedPageSize(2.5)).toBe(4)
+    expect(createEmptyReviewFeedPage()).toEqual({
+      docs: [],
+      hasNextPage: false,
+      page: 1,
+      totalPages: 0,
+    })
+    expect(createEmptyReviewFeedPage()).not.toBe(createEmptyReviewFeedPage())
+  })
+
+  it('marks the Payload-backed feed module as server-only', () => {
+    expect(readFileSync('src/lib/reviewFeed.ts', 'utf8')).toContain("import 'server-only'")
+  })
+
   it('defaults and validates server pagination parameters', () => {
     expect(parseReviewFeedPagination(new URLSearchParams())).toEqual({
       limit: 4,

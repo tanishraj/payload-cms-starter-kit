@@ -1,13 +1,20 @@
+import { readFileSync } from 'node:fs'
 import { describe, expect, it, vi } from 'vitest'
 
 import {
-  calculatePublishedReviewRatingDistribution,
-  calculatePublishedReviewRatingSummary,
   fetchPublishedReviewRatingSummary,
   type ReviewRatingPayload,
 } from '@/lib/reviewRatingSummary'
+import {
+  calculatePublishedReviewRatingDistribution,
+  calculatePublishedReviewRatingSummary,
+} from '@/lib/reviewRatingShared'
 
 describe('published review rating summary', () => {
+  it('marks the Payload-backed rating module as server-only', () => {
+    expect(readFileSync('src/lib/reviewRatingSummary.ts', 'utf8')).toContain("import 'server-only'")
+  })
+
   it('calculates a five-bucket distribution without changing the summary contract', () => {
     expect(calculatePublishedReviewRatingDistribution([1, 2, 3, 4, 10])).toEqual({
       average: 4,
