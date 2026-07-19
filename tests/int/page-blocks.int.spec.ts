@@ -162,6 +162,7 @@ describe('page block pipeline', () => {
       'contentHighlights',
       'profileCarousel',
       'galleryShowcase',
+      'imageMosaic',
       'statsStrip',
       'qaAccordion',
       'ratingSpotlight',

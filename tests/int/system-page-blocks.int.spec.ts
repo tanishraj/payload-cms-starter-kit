@@ -145,6 +145,7 @@ describe('system page block schemas', () => {
       'contentHighlights',
       'profileCarousel',
       'galleryShowcase',
+      'imageMosaic',
       'statsStrip',
       'qaAccordion',
       'ratingSpotlight',

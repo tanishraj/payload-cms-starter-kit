@@ -51,6 +51,7 @@ describe('block thumbnail metadata', () => {
       'galleryShowcase',
       'headerNavbar12',
       'heroBanner',
+      'imageMosaic',
       'profileCarousel',
       'qaAccordion',
       'ratingSpotlight',
@@ -123,6 +124,12 @@ describe('block thumbnail metadata', () => {
       filename: 'gallery-showcase.jpg',
       label: 'Gallery Showcase',
       slug: 'galleryShowcase',
+      stageAlignment: 'top',
+    })
+    expect(getBlockThumbnailDefinition('imageMosaic')).toMatchObject({
+      filename: 'image-mosaic.jpg',
+      label: 'Image Mosaic',
+      slug: 'imageMosaic',
       stageAlignment: 'top',
     })
     expect(getBlockThumbnailDefinition('ratingSpotlight')).toMatchObject({

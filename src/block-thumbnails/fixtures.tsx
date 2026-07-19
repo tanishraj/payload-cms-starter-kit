@@ -7,6 +7,7 @@ import { Footer56BlockComponent } from '@/blocks/Footer56/Component'
 import { GalleryShowcaseBlockComponent } from '@/blocks/GalleryShowcase/Component'
 import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
 import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
+import { ImageMosaicBlockComponent } from '@/blocks/ImageMosaic/Component'
 import { ProfileCarouselBlockComponent } from '@/blocks/ProfileCarousel/Component'
 import { QaAccordionBlockComponent } from '@/blocks/QaAccordion/Component'
 import { RatingSpotlightBlockComponent } from '@/blocks/RatingSpotlight/Component'
@@ -387,6 +388,86 @@ export const blockThumbnailFixtures = {
         {
           image: { alt: 'Shared campus moment', id: 5, url: collaboration },
           imagePosition: 'bottom',
+        },
+      ]}
+      size="compact"
+      title="A closer look at life here"
+    />
+  ),
+  imageMosaic: (
+    <ImageMosaicBlockComponent
+      actionMode="link"
+      actions={[
+        {
+          label: 'Explore all spaces',
+          linkType: 'custom',
+          url: '/spaces',
+        },
+      ]}
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      contentAlignment="center"
+      description="Explore the spaces, people, and moments that shape our community."
+      eyebrow="Inside our community"
+      items={[
+        {
+          action: [
+            {
+              label: 'Explore',
+              linkType: 'custom',
+              mode: 'link',
+              url: '/spaces',
+              variant: 'default',
+            },
+          ],
+          image: { alt: 'Learning environment', id: 1, url: editorialLandscape },
+          title: 'Learning spaces',
+        },
+        {
+          action: [
+            {
+              label: 'Discover',
+              linkType: 'custom',
+              mode: 'button',
+              url: '/community',
+              variant: 'outline',
+            },
+          ],
+          image: { alt: 'Collaborative environment', id: 2, url: collaboration },
+          imagePosition: 'top',
+          title: 'Collaboration',
+        },
+        {
+          image: { alt: 'Community portrait', id: 3, url: portrait },
+          imagePosition: 'center',
+          title: 'Our community',
+        },
+        {
+          action: [
+            {
+              label: 'Take a look',
+              linkType: 'custom',
+              mode: 'link',
+              url: '/campus',
+              variant: 'default',
+            },
+          ],
+          image: { alt: 'Campus landscape', id: 4, url: editorialLandscape },
+          imagePosition: 'right',
+          title: 'Campus life',
+        },
+        {
+          action: [
+            {
+              label: 'Learn more',
+              linkType: 'custom',
+              mode: 'link',
+              url: '/experience',
+              variant: 'default',
+            },
+          ],
+          image: { alt: 'Shared learning moment', id: 5, url: collaboration },
+          imagePosition: 'bottom',
+          title: 'Shared experiences',
         },
       ]}
       size="compact"

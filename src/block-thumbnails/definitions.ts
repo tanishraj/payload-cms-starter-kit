@@ -65,6 +65,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Image Mosaic block preview',
+    filename: 'image-mosaic.jpg',
+    label: 'Image Mosaic',
+    slug: 'imageMosaic',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Stats Strip block preview',
     filename: 'stats-strip.jpg',
     label: 'Stats Strip',

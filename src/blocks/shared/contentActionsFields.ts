@@ -13,9 +13,14 @@ type LinkSiblingData = {
 }
 
 type CreateContentActionsFieldOptions = {
+  includeDisplayMode?: boolean
   label?: string
   maxRows?: number
   name?: string
+}
+
+type ActionLayoutSiblingData = {
+  mode?: 'button' | 'link' | null
 }
 
 type CreateContentActionModeFieldOptions = {
@@ -29,6 +34,9 @@ const isPageLink = (_data: unknown, siblingData: LinkSiblingData) =>
 
 const isCustomLink = (_data: unknown, siblingData: LinkSiblingData) =>
   siblingData?.linkType === 'custom'
+
+const isButtonMode = (_data: unknown, siblingData: ActionLayoutSiblingData) =>
+  siblingData?.mode === 'button'
 
 const actionContentFields: Field[] = [
   {
@@ -71,7 +79,22 @@ const actionContentFields: Field[] = [
   } satisfies CheckboxField,
 ]
 
-const actionLayoutFields: Field[] = [
+const createActionLayoutFields = (includeDisplayMode: boolean): Field[] => [
+  ...(includeDisplayMode
+    ? [
+        {
+          name: 'mode',
+          label: 'Display As',
+          type: 'select',
+          defaultValue: 'link',
+          options: [
+            { label: 'Link', value: 'link' },
+            { label: 'Button', value: 'button' },
+          ],
+          required: true,
+        } satisfies SelectField,
+      ]
+    : []),
   {
     name: 'variant',
     label: 'Button Variant',
@@ -83,6 +106,13 @@ const actionLayoutFields: Field[] = [
       { label: 'Outline', value: 'outline' },
     ],
     required: true,
+    ...(includeDisplayMode
+      ? {
+          admin: {
+            condition: isButtonMode,
+          },
+        }
+      : {}),
   } satisfies SelectField,
 ]
 
@@ -110,6 +140,7 @@ export const createContentActionModeField = ({
 })
 
 export const createContentActionsField = ({
+  includeDisplayMode = false,
   label = 'Actions',
   maxRows = 2,
   name = 'actions',
@@ -131,7 +162,7 @@ export const createContentActionsField = ({
         },
         {
           label: 'Layout & Theme',
-          fields: actionLayoutFields,
+          fields: createActionLayoutFields(includeDisplayMode),
         },
       ],
     } satisfies TabsField,

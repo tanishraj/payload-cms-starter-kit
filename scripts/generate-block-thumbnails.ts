@@ -15,6 +15,15 @@ const existingServerBaseUrl =
 const outputDirectory = path.resolve(process.cwd(), 'public', 'block-thumbnails')
 const serverTimeoutMs = 60_000
 const previewTimeoutMs = 30_000
+const requestedSlug = process.env.BLOCK_THUMBNAIL_SLUG?.trim()
+const selectedDefinitions = requestedSlug
+  ? blockThumbnailDefinitions.filter(({ slug }) => slug === requestedSlug)
+  : blockThumbnailDefinitions
+const firstSelectedDefinition = selectedDefinitions[0]
+
+if (!firstSelectedDefinition) {
+  throw new Error(`Unknown block thumbnail slug: ${requestedSlug ?? '(none)'}`)
+}
 
 const delay = (durationMs: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, durationMs))
@@ -54,17 +63,21 @@ const startServer = () => {
 const getPreviewUrl = (baseUrl: string, slug: string) =>
   `${baseUrl}/block-thumbnail-previews/${slug}`
 
-const hasReadyPreviewServer = async (baseUrl: string) => {
+const hasReadyPreviewServer = async (baseUrl: string, slug: string) => {
   try {
-    const response = await fetch(getPreviewUrl(baseUrl, blockThumbnailDefinitions[0].slug))
+    const response = await fetch(getPreviewUrl(baseUrl, slug))
     return response.ok
   } catch {
     return false
   }
 }
 
-const waitForServer = async (child: ChildProcess, logs: string[], baseUrl: string) => {
-  const firstSlug = blockThumbnailDefinitions[0].slug
+const waitForServer = async (
+  child: ChildProcess,
+  logs: string[],
+  baseUrl: string,
+  slug: string,
+) => {
   const deadline = Date.now() + serverTimeoutMs
   let lastError: unknown
 
@@ -76,7 +89,7 @@ const waitForServer = async (child: ChildProcess, logs: string[], baseUrl: strin
     }
 
     try {
-      const response = await fetch(getPreviewUrl(baseUrl, firstSlug))
+      const response = await fetch(getPreviewUrl(baseUrl, slug))
 
       if (response.ok) {
         return
@@ -158,12 +171,12 @@ const generateThumbnails = async () => {
   const failures: Array<{ error: unknown; slug: string }> = []
 
   try {
-    if (await hasReadyPreviewServer(existingServerBaseUrl)) {
+    if (await hasReadyPreviewServer(existingServerBaseUrl, firstSelectedDefinition.slug)) {
       console.log(`Using existing development server at ${existingServerBaseUrl}`)
     } else {
       server = startServer()
       baseUrl = generatedServerBaseUrl
-      await waitForServer(server.child, server.logs, baseUrl)
+      await waitForServer(server.child, server.logs, baseUrl, firstSelectedDefinition.slug)
     }
 
     browser = await launchBrowser()
@@ -174,7 +187,7 @@ const generateThumbnails = async () => {
       viewport: { height: 900, width: 1600 },
     })
 
-    for (const definition of blockThumbnailDefinitions) {
+    for (const definition of selectedDefinitions) {
       const page = await context.newPage()
       const browserErrors: string[] = []
 

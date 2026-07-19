@@ -6,6 +6,7 @@ import { QaAccordionBlockComponent } from './QaAccordion/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
 import { HeroBannerBlockComponent } from './HeroBanner/Component'
+import { ImageMosaicBlockComponent } from './ImageMosaic/Component'
 import { ProfileCarouselBlockComponent } from './ProfileCarousel/Component'
 import { RatingSpotlightBlockComponent } from './RatingSpotlight/Component'
 import { ReviewFeedBlockComponent } from './ReviewFeed/Component'
@@ -70,6 +71,13 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
           case 'galleryShowcase':
             return (
               <GalleryShowcaseBlockComponent
+                key={block.id ?? `${block.blockType}-${index}`}
+                {...block}
+              />
+            )
+          case 'imageMosaic':
+            return (
+              <ImageMosaicBlockComponent
                 key={block.id ?? `${block.blockType}-${index}`}
                 {...block}
               />

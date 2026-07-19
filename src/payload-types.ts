@@ -183,6 +183,7 @@ export interface Page {
         | ContentHighlightsBlock
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
+        | ImageMosaicBlock
         | StatsStripBlock
         | QaAccordionBlock
         | RatingSpotlightBlock
@@ -568,6 +569,55 @@ export interface GalleryShowcaseBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'galleryShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageMosaicBlock".
+ */
+export interface ImageMosaicBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
+  items: {
+    image: string | Media;
+    imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+    title?: string | null;
+    action?:
+      | {
+          label: string;
+          linkType?: ('page' | 'custom') | null;
+          page?: (string | null) | Page;
+          url?: string | null;
+          openInNewTab?: boolean | null;
+          mode: 'link' | 'button';
+          variant?: ('default' | 'secondary' | 'outline') | null;
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  actionMode: 'link' | 'button';
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'compact' | 'default' | 'comfortable';
+  showImageOverlays?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageMosaic';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1855,6 +1905,7 @@ export interface PagesSelect<T extends boolean = true> {
         contentHighlights?: T | ContentHighlightsBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
+        imageMosaic?: T | ImageMosaicBlockSelect<T>;
         statsStrip?: T | StatsStripBlockSelect<T>;
         qaAccordion?: T | QaAccordionBlockSelect<T>;
         ratingSpotlight?: T | RatingSpotlightBlockSelect<T>;
@@ -2142,6 +2193,58 @@ export interface GalleryShowcaseBlockSelect<T extends boolean = true> {
   actionMode?: T;
   contentAlignment?: T;
   size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageMosaicBlock_select".
+ */
+export interface ImageMosaicBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
+  items?:
+    | T
+    | {
+        image?: T;
+        imagePosition?: T;
+        title?: T;
+        action?:
+          | T
+          | {
+              label?: T;
+              linkType?: T;
+              page?: T;
+              url?: T;
+              openInNewTab?: T;
+              mode?: T;
+              variant?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  actionMode?: T;
+  contentAlignment?: T;
+  size?: T;
+  showImageOverlays?: T;
   id?: T;
   blockName?: T;
 }
