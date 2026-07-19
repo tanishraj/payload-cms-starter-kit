@@ -52,6 +52,18 @@ export const NewsEventsHighlightsBlock: Block = {
             createBlockAppearanceFields({ includeTextOverride: false }),
             createContentActionModeField(),
             {
+              name: 'contentAlignment',
+              label: 'Content Alignment',
+              type: 'select',
+              defaultValue: 'left',
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+                { label: 'Right', value: 'right' },
+              ],
+              required: true,
+            } satisfies SelectField,
+            {
               name: 'size',
               label: 'Size',
               type: 'select',

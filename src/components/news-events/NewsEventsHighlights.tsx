@@ -13,8 +13,11 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { newsEventObjectPositionClasses, type PublicNewsEventCard } from '@/lib/newsEventsShared'
 import { cn } from '@/lib/utils'
 
+export type NewsEventsHighlightsAlignment = 'center' | 'left' | 'right'
+
 type NewsEventsHighlightsProps = {
   actions?: ReactNode
+  alignment?: NewsEventsHighlightsAlignment
   appearance?: BlockAppearance | null
   description?: string
   emptyStateMessage?: string
@@ -30,6 +33,12 @@ const sectionGapClasses = {
   comfortable: 'gap-12',
 } as const satisfies Record<RegularBlockSize, string>
 
+const alignmentClasses = {
+  left: 'items-start text-left',
+  center: 'mx-auto items-center text-center',
+  right: 'ml-auto items-end text-right',
+} as const satisfies Record<NewsEventsHighlightsAlignment, string>
+
 function NewsEventHighlightCard({ item }: { item: PublicNewsEventCard }) {
   return (
     <Card
@@ -37,7 +46,7 @@ function NewsEventHighlightCard({ item }: { item: PublicNewsEventCard }) {
       data-news-event-highlight-card="true"
     >
       {item.image ? (
-        <div className="relative aspect-[16/10] overflow-hidden rounded-t-md bg-muted">
+        <div className="h-44 sm:h-48 relative overflow-hidden rounded-t-md bg-muted">
           {/* CMS image URLs are runtime-managed and may be absolute. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -70,7 +79,7 @@ function NewsEventHighlightCard({ item }: { item: PublicNewsEventCard }) {
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1 px-5 pt-3 sm:px-6">
-        <p className="text-sm leading-6 text-muted-foreground">{item.excerpt}</p>
+        <p className="line-clamp-4 text-sm leading-6 text-muted-foreground">{item.excerpt}</p>
       </CardContent>
       <CardFooter className="px-5 pt-5 pb-5 sm:px-6 sm:pb-6">
         <ContentLink href={item.href} label="Read more" />
@@ -81,6 +90,7 @@ function NewsEventHighlightCard({ item }: { item: PublicNewsEventCard }) {
 
 export function NewsEventsHighlights({
   actions,
+  alignment = 'left',
   appearance,
   description,
   emptyStateMessage,
@@ -89,6 +99,7 @@ export function NewsEventsHighlights({
   size = 'default',
   title,
 }: NewsEventsHighlightsProps) {
+  const resolvedAlignment = alignment ?? 'left'
   const resolvedSize = size ?? 'default'
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
 
@@ -96,12 +107,15 @@ export function NewsEventsHighlights({
     <section
       className={cn(regularBlockMobilePaddingClasses[resolvedSize], appearanceClasses.className)}
       data-news-events-highlights="true"
+      data-news-events-highlights-alignment={resolvedAlignment}
       data-news-events-highlights-size={resolvedSize}
     >
       <div className={regularBlockContainerClasses}>
         <div className={cn('flex flex-col', sectionGapClasses[resolvedSize])}>
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="flex max-w-3xl flex-col gap-4">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-8">
+            <div
+              className={cn('flex max-w-3xl flex-col gap-4', alignmentClasses[resolvedAlignment])}
+            >
               {eyebrow ? (
                 <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                   {eyebrow}
@@ -114,7 +128,9 @@ export function NewsEventsHighlights({
                 <p className="text-base leading-7 text-balance text-current/70">{description}</p>
               ) : null}
             </div>
-            {actions ? <div className="lg:shrink-0 lg:pb-1">{actions}</div> : null}
+            {actions ? (
+              <div className="flex w-full justify-end lg:w-auto lg:pb-1">{actions}</div>
+            ) : null}
           </div>
           {items.length ? (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

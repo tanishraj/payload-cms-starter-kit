@@ -526,6 +526,7 @@ export interface NewsEventsHighlightsBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
+  contentAlignment: 'left' | 'center' | 'right';
   size: 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
@@ -2295,6 +2296,7 @@ export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
         border?: T;
       };
   actionMode?: T;
+  contentAlignment?: T;
   size?: T;
   id?: T;
   blockName?: T;
