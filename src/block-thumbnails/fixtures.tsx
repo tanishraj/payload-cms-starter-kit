@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { AnnouncementBlockComponent } from '@/blocks/Announcement/Component'
+import { ContentHighlightsBlockComponent } from '@/blocks/ContentHighlights/Component'
 import { FeatureMatrixBlockComponent } from '@/blocks/FeatureMatrix/Component'
 import { Footer56BlockComponent } from '@/blocks/Footer56/Component'
 import { GalleryShowcaseBlockComponent } from '@/blocks/GalleryShowcase/Component'
@@ -251,6 +252,57 @@ export const blockThumbnailFixtures = {
       ]}
       size="compact"
       title="Designed around the way you learn"
+    />
+  ),
+  contentHighlights: (
+    <ContentHighlightsBlockComponent
+      actionMode="link"
+      actions={[
+        {
+          label: 'Explore student life',
+          linkType: 'custom',
+          url: '/student-life',
+        },
+      ]}
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      description="Resources, communities, and opportunities designed to support every part of the student experience."
+      eyebrow="Life here"
+      items={[
+        {
+          description: 'On-campus and supported off-campus options for every stage.',
+          linkType: 'custom',
+          title: 'Housing',
+          url: '/student-life/housing',
+        },
+        {
+          description: 'Dedicated people and resources for physical and mental wellbeing.',
+          linkType: 'none',
+          title: 'Wellness',
+        },
+        {
+          description: 'Student-led groups spanning academic, creative, and community interests.',
+          linkType: 'none',
+          title: 'Organizations',
+        },
+        {
+          description: 'Recreation, team activities, and modern fitness facilities.',
+          linkType: 'none',
+          title: 'Athletics',
+        },
+        {
+          description: 'Volunteer programs connect learning with meaningful community work.',
+          linkType: 'none',
+          title: 'Service',
+        },
+        {
+          description: 'A welcoming community shaped by many backgrounds and perspectives.',
+          linkType: 'none',
+          title: 'Diversity',
+        },
+      ]}
+      layout="highlightsGrid"
+      size="compact"
+      title="What students say matters"
     />
   ),
   profileCarousel: (

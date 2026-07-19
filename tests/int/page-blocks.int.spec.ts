@@ -159,6 +159,7 @@ describe('page block pipeline', () => {
       'heroBanner',
       'featureSpotlight',
       'featureMatrix',
+      'contentHighlights',
       'profileCarousel',
       'galleryShowcase',
       'statsStrip',

@@ -44,6 +44,7 @@ describe('block thumbnail metadata', () => {
 
     expect(registeredSlugs.slice().sort()).toEqual([
       'announcement',
+      'contentHighlights',
       'featureMatrix',
       'featureSpotlight',
       'footer56',
@@ -101,6 +102,12 @@ describe('block thumbnail metadata', () => {
       filename: 'feature-matrix.jpg',
       label: 'Feature Matrix',
       slug: 'featureMatrix',
+    })
+    expect(getBlockThumbnailDefinition('contentHighlights')).toMatchObject({
+      filename: 'content-highlights.jpg',
+      label: 'Content Highlights',
+      slug: 'contentHighlights',
+      stageAlignment: 'top',
     })
     expect(getBlockThumbnailDefinition('featureSpotlight')).toMatchObject({
       filename: 'feature-spotlight.jpg',

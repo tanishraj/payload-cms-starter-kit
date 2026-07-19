@@ -1,6 +1,7 @@
 import type { Page } from '@/payload-types'
 
 import { AnnouncementBlockComponent } from './Announcement/Component'
+import { ContentHighlightsBlockComponent } from './ContentHighlights/Component'
 import { QaAccordionBlockComponent } from './QaAccordion/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
@@ -48,6 +49,13 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
           case 'featureMatrix':
             return (
               <FeatureMatrixBlockComponent
+                key={block.id ?? `${block.blockType}-${index}`}
+                {...block}
+              />
+            )
+          case 'contentHighlights':
+            return (
+              <ContentHighlightsBlockComponent
                 key={block.id ?? `${block.blockType}-${index}`}
                 {...block}
               />
