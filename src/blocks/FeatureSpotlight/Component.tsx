@@ -46,11 +46,7 @@ const objectPositionClasses = {
   right: 'object-[right_center]',
 } as const
 
-const desktopVerticalPaddingClasses = {
-  compact: 'md:py-10',
-  default: 'md:py-12',
-  comfortable: 'md:py-16',
-} as const
+const filledContentDesktopPaddingClass = 'md:py-16'
 
 const edgeLayoutMinHeightClasses = {
   compact: 'min-h-[18rem] md:min-h-[24rem]',
@@ -117,28 +113,12 @@ export function FeatureSpotlightBlockComponent({
       : undefined
   const edgeToEdgeContentPaddingClasses =
     resolvedPosition === 'right'
-      ? cn(
-          'pr-4',
-          desktopVerticalPaddingClasses[resolvedSize],
-          'md:pr-8 lg:pr-12',
-        )
-      : cn(
-          'px-4',
-          'md:px-8',
-          desktopVerticalPaddingClasses[resolvedSize],
-          'lg:px-12',
-        )
+      ? cn('pr-4', filledContentDesktopPaddingClass, 'md:pr-8 lg:pr-12')
+      : cn('px-4', 'md:px-8', filledContentDesktopPaddingClass, 'lg:px-12')
   const containedFillContentPaddingClasses =
     resolvedPosition === 'right'
-      ? cn(
-          desktopVerticalPaddingClasses[resolvedSize],
-          'md:pr-8 lg:pr-12',
-        )
-      : cn(
-          'md:px-8',
-          desktopVerticalPaddingClasses[resolvedSize],
-          'lg:px-12',
-        )
+      ? cn(filledContentDesktopPaddingClass, 'md:pr-8 lg:pr-12')
+      : cn('md:px-8', filledContentDesktopPaddingClass, 'lg:px-12')
   const splitContentPaddingClasses = renderAsContainedFill
     ? containedFillContentPaddingClasses
     : edgeToEdgeContentPaddingClasses
@@ -276,7 +256,6 @@ export function FeatureSpotlightBlockComponent({
           className={cn(
             regularBlockContainerClasses,
             regularBlockMobilePaddingClasses[resolvedSize],
-            desktopVerticalPaddingClasses[resolvedSize],
           )}
         >
           {renderAsSplit ? (

@@ -330,11 +330,7 @@ export function QaAccordionBlockComponent({
 
   return (
     <section
-      className={cn(
-        regularBlockMobilePaddingClasses[resolvedSize],
-        'md:py-32',
-        appearanceClasses.className,
-      )}
+      className={cn(regularBlockMobilePaddingClasses[resolvedSize], appearanceClasses.className)}
       data-qa-accordion-background={appearance?.background ?? 'none'}
       data-qa-accordion-content-alignment={resolvedContentAlignment}
       data-qa-accordion-has-side-column={hasSideColumn ? 'true' : 'false'}

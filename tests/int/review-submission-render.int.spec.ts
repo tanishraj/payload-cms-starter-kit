@@ -62,23 +62,20 @@ describe('review submission block', () => {
   })
 
   it.each([
-    ['compact', 'py-10 md:py-20'],
-    ['default', 'py-12 md:py-24'],
-    ['comfortable', 'py-16 md:py-28'],
-  ] as const)(
-    'uses consistent %s mobile spacing without changing desktop spacing',
-    (size, classes) => {
-      const html = renderToStaticMarkup(
-        createElement(ReviewSubmissionBlockComponent, {
-          size,
-          title: 'Share your experience',
-        }),
-      )
+    ['compact', 'py-12 md:py-16'],
+    ['default', 'py-12 md:py-16'],
+    ['comfortable', 'py-12 md:py-16'],
+  ] as const)('uses the shared responsive spacing for %s size', (size, classes) => {
+    const html = renderToStaticMarkup(
+      createElement(ReviewSubmissionBlockComponent, {
+        size,
+        title: 'Share your experience',
+      }),
+    )
 
-      expect(html).toContain(`data-review-submission-size="${size}"`)
-      expect(html).toContain(classes)
-    },
-  )
+    expect(html).toContain(`data-review-submission-size="${size}"`)
+    expect(html).toContain(classes)
+  })
 
   it('aligns only the content header while preserving shared description typography', () => {
     const centerHtml = renderToStaticMarkup(

@@ -146,7 +146,7 @@ describe('Profile Carousel', () => {
     expect(html).toContain('data-profile-carousel="true"')
     expect(html).toContain('data-profile-carousel-mode="static"')
     expect(html).toContain('data-profile-carousel-size="compact"')
-    expect(html).toContain('py-10')
+    expect(html).toContain('py-12 md:py-16')
     expect(html).toContain('grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4')
     expect(html).toContain(
       'text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl',

@@ -197,7 +197,7 @@ describe('Image Mosaic', () => {
     expect(html).toContain('data-image-mosaic-size="compact"')
     expect(html).toContain('bg-muted')
     expect(html).toContain('border-y border-border')
-    expect(html).toContain('py-10')
+    expect(html).toContain('py-12 md:py-16')
     expect(html).toContain('mx-auto w-full max-w-screen-2xl px-4')
     expect(html).toContain(
       'text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl',

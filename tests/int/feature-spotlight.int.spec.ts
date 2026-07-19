@@ -61,7 +61,7 @@ describe('feature spotlight block', () => {
     expect(html).toContain('hover:underline')
     expect(html).toContain('border border-border')
     expect(html).toContain('flex min-h-full flex-col justify-start')
-    expect(html).toContain(`${regularBlockContainerClasses} py-12 md:py-12`)
+    expect(html).toContain(`${regularBlockContainerClasses} py-12 md:py-16`)
   })
 
   it('renders muted background and two CTA buttons', () => {
@@ -120,8 +120,7 @@ describe('feature spotlight block', () => {
     expect(html).toContain('data-feature-spotlight-layout="contentOnly"')
     expect(html).toContain('data-feature-spotlight-position="contentOnly"')
     expect(html).toContain('data-feature-spotlight-size="compact"')
-    expect(html).toContain('py-10')
-    expect(html).toContain('md:py-10')
+    expect(html).toContain('py-12 md:py-16')
     expect(html).toContain('href="/apply"')
     expect(html).not.toContain('<img')
   })
@@ -150,13 +149,11 @@ describe('feature spotlight block', () => {
     expect(html).toContain('data-feature-spotlight-media-fill="edgeToEdge"')
     expect(html).toContain('data-feature-spotlight-media-frame="edgeToEdge"')
     expect(html).toContain('data-feature-spotlight-size="comfortable"')
-    expect(html).toContain('py-16 md:py-0')
+    expect(html).toContain('py-12 md:py-0')
     expect(html).toContain('min-h-[30rem]')
     expect(html).toContain('md:min-h-[40rem]')
     expect(html).toContain('min-h-80')
-    expect(html).toContain(
-      'relative aspect-[4/3] overflow-hidden md:min-h-full md:aspect-auto',
-    )
+    expect(html).toContain('relative aspect-[4/3] overflow-hidden md:min-h-full md:aspect-auto')
     expect(html).toContain('md:py-16')
     expect(html).toContain('grid items-stretch gap-8 md:grid-cols-2 md:gap-0')
     expect(html).toContain('flex min-h-full flex-col justify-end')
@@ -183,9 +180,7 @@ describe('feature spotlight block', () => {
     expect(html).toContain('data-feature-spotlight-media-fill="edgeToEdge"')
     expect(html).toContain('min-h-72')
     expect(html).toContain('ml-auto h-full w-full max-w-[calc(var(--breakpoint-2xl)/2)] pl-4')
-    expect(html).toContain(
-      'flex min-h-full flex-col justify-center pr-4 md:py-12 md:pr-8 lg:pr-12',
-    )
+    expect(html).toContain('flex min-h-full flex-col justify-center pr-4 md:py-16 md:pr-8 lg:pr-12')
     expect(html).toContain('w-full max-w-xl text-left mr-auto')
   })
 
@@ -213,16 +208,14 @@ describe('feature spotlight block', () => {
     expect(html).toContain('data-feature-spotlight-media-fill="containedFill"')
     expect(html).toContain('data-feature-spotlight-media-frame="containedFill"')
     expect(html).toContain('data-feature-spotlight-size="comfortable"')
-    expect(html).toContain('py-16 md:py-0')
+    expect(html).toContain('py-12 md:py-0')
     expect(html).toContain(regularBlockContainerClasses)
     expect(html).toContain('min-h-[30rem]')
     expect(html).toContain('md:min-h-[40rem]')
     expect(html).toContain('relative aspect-[4/3] overflow-hidden md:h-full md:aspect-auto')
     expect(html).toContain('absolute inset-0 size-full object-cover')
     expect(html).toContain('object-[center_center]')
-    expect(html).toContain(
-      'flex min-h-full flex-col justify-start md:px-8 md:py-16 lg:px-12',
-    )
+    expect(html).toContain('flex min-h-full flex-col justify-start md:px-8 md:py-16 lg:px-12')
     expect(html).toContain('grid items-stretch gap-8 md:grid-cols-2 md:gap-0')
     expect(html).not.toContain('rounded-xl border border-border bg-muted/20')
   })
@@ -244,9 +237,7 @@ describe('feature spotlight block', () => {
     expect(html).toContain('data-feature-spotlight-position="right"')
     expect(html).toContain('data-feature-spotlight-media-fill="containedFill"')
     expect(html).toContain(regularBlockContainerClasses)
-    expect(html).toContain(
-      'flex min-h-full flex-col justify-center md:py-12 md:pr-8 lg:pr-12',
-    )
+    expect(html).toContain('flex min-h-full flex-col justify-center md:py-16 md:pr-8 lg:pr-12')
     expect(html).not.toContain(
       'flex min-h-full flex-col justify-center px-4 py-12 md:px-8 md:py-12 lg:px-12',
     )

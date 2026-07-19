@@ -143,7 +143,6 @@ const Footer56 = (props: Props) => {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const sectionClassName = cn(
     regularBlockMobilePaddingClasses.default,
-    'md:py-32',
     appearanceClasses.className,
     className,
   )

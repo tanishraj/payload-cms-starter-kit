@@ -71,12 +71,6 @@ type ReviewSubmissionBlockLike = {
   title?: string | null
 }
 
-const sectionDesktopPaddingClasses = {
-  compact: 'md:py-20',
-  default: 'md:py-24',
-  comfortable: 'md:py-28',
-} as const
-
 const formPanelPaddingClasses = {
   compact: 'p-4 sm:p-6',
   default: 'p-5 sm:p-8',
@@ -353,11 +347,7 @@ export function ReviewSubmissionBlockComponent({
 
   return (
     <section
-      className={cn(
-        regularBlockMobilePaddingClasses[resolvedSize],
-        sectionDesktopPaddingClasses[resolvedSize],
-        appearanceClasses.className,
-      )}
+      className={cn(regularBlockMobilePaddingClasses[resolvedSize], appearanceClasses.className)}
       data-review-submission-background={appearance?.background ?? 'none'}
       data-review-submission-size={resolvedSize}
     >

@@ -132,7 +132,7 @@ describe('Gallery Showcase', () => {
     expect(html).toContain('data-gallery-showcase-size="compact"')
     expect(html).toContain('bg-muted')
     expect(html).toContain('border-y border-border')
-    expect(html).toContain('py-10')
+    expect(html).toContain('py-12 md:py-16')
     expect(html).toContain('mx-auto w-full max-w-screen-2xl px-4')
     expect(html).toContain('h-36 sm:h-48 lg:h-52')
     expect(html).toContain('size-16 sm:size-36 lg:size-40')

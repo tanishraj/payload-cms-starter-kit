@@ -9,7 +9,7 @@ describe('footer spacing', () => {
   it('uses the shared default mobile padding and content gutter', () => {
     const html = renderToStaticMarkup(createElement(Footer56))
 
-    expect(html).toContain('py-12 md:py-32')
+    expect(html).toContain('py-12 md:py-16')
     expect(html).toContain(regularBlockContainerClasses)
   })
 })
