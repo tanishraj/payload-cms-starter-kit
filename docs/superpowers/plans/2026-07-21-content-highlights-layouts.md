@@ -1,57 +1,337 @@
-# Content Highlights Layout Extensions Implementation Plan
+# Content Highlights Split and Alignment Controls Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Extend Content Highlights with responsive Simple Grid and automatically numbered Numbered Steps layouts.
+**Goal:** Make split composition independent of Content Highlights item presentation, add conditional horizontal and vertical alignment controls, and convert existing split content safely.
 
-**Architecture:** Keep the existing Payload block, data normalization, introduction, item model, appearance system, and action rendering. Extend the layout union and select options, then make the shared item renderer layout-aware so only the new layouts change presentation.
+**Architecture:** Keep the four item presentations independent from composition. Payload stores `enableSplitLayout`, `contentAlignment`, and `splitContentAlignment`; the presentation component selects stacked or split composition and resolves the appropriate alignment and grid classes. A temporary, tested migration utility updates current Page documents and Page versions before being removed.
 
-**Tech Stack:** Payload CMS, React, TypeScript, Tailwind CSS, Vitest, React DOM server rendering.
+**Tech Stack:** Payload CMS 3.85.2, MongoDB/Mongoose adapter, React, TypeScript, Tailwind CSS, Vitest, React DOM server rendering.
 
 ## Global Constraints
 
-- Preserve the `contentHighlights` block slug and all three existing layout values.
-- Support one to six items without a migration or compatibility adapter.
-- Generate step numbers from item order as `01`, `02`, and so on.
-- Use one column on mobile, two on medium screens, and up to four on large screens for Numbered Steps.
-- Use one column on mobile and two from the medium breakpoint for Simple Grid.
-- Use semantic theme colors, the project radius, the shared site container, and `py-12 md:py-16` outer spacing.
-- Compact, Default, and Comfortable affect internal gaps only.
-- Do not stage or commit any changes.
+- Preserve the `contentHighlights` block slug and all block content.
+- Layout offers only `editorialRow`, `highlightsGrid`, `simpleGrid`, and `numberedSteps`.
+- Split composition is an independent checkbox and defaults off.
+- Non-split Content Alignment offers Left, Center, and Right and defaults Left.
+- Split Content Vertical Alignment offers Top, Center, and Bottom and defaults Top.
+- Alignment affects the introduction, not individual item text.
+- Editorial Row retains its far-right desktop action slot only when split is disabled.
+- Split mode places introduction left and items right on large screens and stacks them on smaller screens.
+- Split item areas never exceed two columns.
+- Convert current Page documents and Page versions from `splitHighlights` to `highlightsGrid` plus enabled split before removing the legacy value.
+- Leave no runtime `splitHighlights` compatibility branch after conversion.
+- Keep shared `py-12 md:py-16`, container, typography, color, and radius behavior.
+- Do not stage or commit changes.
 
 ---
 
 ## File structure
 
-- Modify `src/blocks/ContentHighlights/config.ts` to expose the two layouts in Payload.
-- Modify `src/components/content-highlights.tsx` to extend the layout type and render the new presentations.
-- Modify `tests/int/content-highlights.int.spec.tsx` to verify the schema, rendering contracts, links, themes, and regressions.
+- Temporarily create `scripts/migrate-content-highlights-split.ts` to update current Pages and Page versions directly through Payload's Mongo adapter models.
+- Temporarily create `tests/int/content-highlights-split-migration.int.spec.ts` to verify the migration transform is exact and idempotent; remove both temporary files after database verification.
+- Modify `src/blocks/ContentHighlights/config.ts` for the checkbox and conditional selects.
+- Modify `src/blocks/ContentHighlights/Component.tsx` to normalize and forward composition and alignment values.
+- Modify `src/components/content-highlights.tsx` for stacked/split composition and layout-aware grid contracts.
+- Modify `tests/int/content-highlights.int.spec.tsx` for schema, alignment, split, responsive, action, and regression coverage.
+- Regenerate `src/payload-types.ts` after the schema is final.
 
-### Task 1: Extend the Payload and TypeScript layout contracts
+### Task 1: Convert existing split content
+
+**Files:**
+
+- Temporarily create: `scripts/migrate-content-highlights-split.ts`
+- Temporarily create: `tests/int/content-highlights-split-migration.int.spec.ts`
+- Delete both temporary files after successful verification.
+
+**Interfaces:**
+
+- Produces temporarily: `migrateContentHighlightBlocks(blocks: unknown): { blocks: unknown; changed: number }`.
+- Updates: `payload.db.collections.pages` at `layout`.
+- Updates: `payload.db.versions.pages` at `version.layout`.
+
+- [ ] **Step 1: Write the failing pure-transform test**
+
+Create `tests/int/content-highlights-split-migration.int.spec.ts`:
+
+```ts
+import { describe, expect, it } from 'vitest'
+
+import { migrateContentHighlightBlocks } from '../../scripts/migrate-content-highlights-split'
+
+describe('Content Highlights split migration', () => {
+  it('converts only legacy split blocks and is idempotent', () => {
+    const input = [
+      { blockType: 'heroBanner', title: 'Hero' },
+      {
+        blockType: 'contentHighlights',
+        id: 'legacy',
+        layout: 'splitHighlights',
+        title: 'Legacy split',
+      },
+      {
+        blockType: 'contentHighlights',
+        id: 'grid',
+        layout: 'simpleGrid',
+        title: 'Existing grid',
+      },
+    ]
+
+    const first = migrateContentHighlightBlocks(input)
+
+    expect(first.changed).toBe(1)
+    expect(first.blocks).toEqual([
+      input[0],
+      {
+        blockType: 'contentHighlights',
+        enableSplitLayout: true,
+        id: 'legacy',
+        layout: 'highlightsGrid',
+        splitContentAlignment: 'top',
+        title: 'Legacy split',
+      },
+      input[2],
+    ])
+
+    const second = migrateContentHighlightBlocks(first.blocks)
+    expect(second.changed).toBe(0)
+    expect(second.blocks).toEqual(first.blocks)
+  })
+
+  it('leaves non-array values unchanged', () => {
+    expect(migrateContentHighlightBlocks(null)).toEqual({ blocks: null, changed: 0 })
+  })
+})
+```
+
+- [ ] **Step 2: Run the migration test and verify it fails**
+
+Run:
+
+```bash
+pnpm exec vitest run --config ./vitest.config.mts tests/int/content-highlights-split-migration.int.spec.ts
+```
+
+Expected: FAIL because the temporary migration module does not exist.
+
+- [ ] **Step 3: Create the temporary idempotent migration utility**
+
+Create `scripts/migrate-content-highlights-split.ts`:
+
+```ts
+import 'dotenv/config'
+
+import { pathToFileURL } from 'node:url'
+
+import config from '@payload-config'
+import { getPayload } from 'payload'
+
+type BlockValue = Record<string, unknown>
+type DocumentValue = Record<string, unknown> & { _id: unknown }
+type MongoModel = {
+  find: (filter: Record<string, unknown>) => {
+    lean: () => Promise<DocumentValue[]>
+  }
+  updateOne: (
+    filter: Record<string, unknown>,
+    update: Record<string, unknown>,
+  ) => Promise<unknown>
+}
+
+export function migrateContentHighlightBlocks(blocks: unknown): {
+  blocks: unknown
+  changed: number
+} {
+  if (!Array.isArray(blocks)) {
+    return { blocks, changed: 0 }
+  }
+
+  let changed = 0
+  const migrated = blocks.map((value) => {
+    if (
+      value &&
+      typeof value === 'object' &&
+      (value as BlockValue).blockType === 'contentHighlights' &&
+      (value as BlockValue).layout === 'splitHighlights'
+    ) {
+      changed += 1
+      return {
+        ...(value as BlockValue),
+        enableSplitLayout: true,
+        layout: 'highlightsGrid',
+        splitContentAlignment: 'top',
+      }
+    }
+
+    return value
+  })
+
+  return { blocks: migrated, changed }
+}
+
+function getPath(document: DocumentValue, path: 'layout' | 'version.layout') {
+  return path === 'layout'
+    ? document.layout
+    : (document.version as Record<string, unknown> | undefined)?.layout
+}
+
+async function migrateModel({
+  dryRun,
+  model,
+  path,
+}: {
+  dryRun: boolean
+  model: MongoModel
+  path: 'layout' | 'version.layout'
+}) {
+  const documents = await model
+    .find({
+      [`${path}.blockType`]: 'contentHighlights',
+      [`${path}.layout`]: 'splitHighlights',
+    })
+    .lean()
+  let blocksChanged = 0
+  let documentsChanged = 0
+
+  for (const document of documents) {
+    const result = migrateContentHighlightBlocks(getPath(document, path))
+    if (!result.changed) continue
+
+    blocksChanged += result.changed
+    documentsChanged += 1
+    if (!dryRun) {
+      await model.updateOne({ _id: document._id }, { $set: { [path]: result.blocks } })
+    }
+  }
+
+  return { blocksChanged, documentsChanged }
+}
+
+async function main() {
+  const dryRun = process.argv.includes('--dry-run')
+  const verify = process.argv.includes('--verify')
+  const payload = await getPayload({ config })
+
+  try {
+    const pages = await migrateModel({
+      dryRun: dryRun || verify,
+      model: payload.db.collections.pages as unknown as MongoModel,
+      path: 'layout',
+    })
+    const versions = await migrateModel({
+      dryRun: dryRun || verify,
+      model: payload.db.versions.pages as unknown as MongoModel,
+      path: 'version.layout',
+    })
+
+    console.log(JSON.stringify({ dryRun, pages, verify, versions }, null, 2))
+
+    if (verify && (pages.blocksChanged || versions.blocksChanged)) {
+      throw new Error('Legacy splitHighlights values remain in the database.')
+    }
+  } finally {
+    await payload.destroy()
+  }
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  void main().catch((error: unknown) => {
+    console.error(error)
+    process.exitCode = 1
+  })
+}
+```
+
+- [ ] **Step 4: Run the pure-transform tests**
+
+Run:
+
+```bash
+pnpm exec vitest run --config ./vitest.config.mts tests/int/content-highlights-split-migration.int.spec.ts
+```
+
+Expected: both migration tests pass.
+
+- [ ] **Step 5: Preview, execute, and verify the database conversion**
+
+Run in order:
+
+```bash
+pnpm exec tsx scripts/migrate-content-highlights-split.ts --dry-run
+pnpm exec tsx scripts/migrate-content-highlights-split.ts
+pnpm exec tsx scripts/migrate-content-highlights-split.ts --verify
+```
+
+Expected: dry-run reports the legacy documents and blocks, execution reports the same updates, and verification reports zero remaining legacy blocks in both current Pages and Page versions.
+
+- [ ] **Step 6: Remove the temporary migration artifacts**
+
+Delete with `apply_patch`:
+
+```text
+scripts/migrate-content-highlights-split.ts
+tests/int/content-highlights-split-migration.int.spec.ts
+```
+
+Expected: no migration-only code remains after the local database has been verified.
+
+### Task 2: Refactor the Payload layout controls
 
 **Files:**
 
 - Modify: `tests/int/content-highlights.int.spec.tsx`
 - Modify: `src/blocks/ContentHighlights/config.ts`
-- Modify: `src/components/content-highlights.tsx`
 
 **Interfaces:**
 
-- Produces: `ContentHighlightsLayout = 'editorialRow' | 'highlightsGrid' | 'numberedSteps' | 'simpleGrid' | 'splitHighlights'`
-- Produces: Payload layout values `simpleGrid` and `numberedSteps`.
+- Produces: `layout` with four item presentations.
+- Produces: `enableSplitLayout?: boolean | null`.
+- Produces: `contentAlignment?: 'center' | 'left' | 'right' | null`.
+- Produces: `splitContentAlignment?: 'bottom' | 'center' | 'top' | null`.
 
-- [ ] **Step 1: Extend the schema expectation before changing production code**
+- [ ] **Step 1: Add failing schema assertions**
 
-Update the layout-options expectation in `tests/int/content-highlights.int.spec.tsx`:
+Extend `TestField` in `tests/int/content-highlights.int.spec.tsx`:
 
-```tsx
+```ts
+type TestField = {
+  admin?: {
+    condition?: (data: unknown, siblingData: Record<string, unknown>) => boolean
+  }
+  defaultValue?: unknown
+  fields?: TestField[]
+  maxRows?: number
+  minRows?: number
+  name?: string
+  options?: Array<{ label: string; value: string }>
+  required?: boolean
+  type?: string
+}
+```
+
+Replace the layout expectation and add the conditional-field assertions:
+
+```ts
 expect(getField(layout?.fields ?? [], 'layout')?.options?.map(({ value }) => value)).toEqual([
   'editorialRow',
   'highlightsGrid',
   'simpleGrid',
   'numberedSteps',
-  'splitHighlights',
 ])
+
+const split = getField(layout?.fields ?? [], 'enableSplitLayout')
+const horizontal = getField(layout?.fields ?? [], 'contentAlignment')
+const vertical = getField(layout?.fields ?? [], 'splitContentAlignment')
+
+expect(split).toMatchObject({ defaultValue: false, type: 'checkbox' })
+expect(horizontal).toMatchObject({ defaultValue: 'left', type: 'select' })
+expect(horizontal?.options?.map(({ value }) => value)).toEqual(['left', 'center', 'right'])
+expect(vertical).toMatchObject({ defaultValue: 'top', type: 'select' })
+expect(vertical?.options?.map(({ value }) => value)).toEqual(['top', 'center', 'bottom'])
+expect(horizontal?.admin?.condition?.({}, { enableSplitLayout: false })).toBe(true)
+expect(horizontal?.admin?.condition?.({}, { enableSplitLayout: true })).toBe(false)
+expect(vertical?.admin?.condition?.({}, { enableSplitLayout: false })).toBe(false)
+expect(vertical?.admin?.condition?.({}, { enableSplitLayout: true })).toBe(true)
 ```
 
 - [ ] **Step 2: Run the schema test and verify it fails**
@@ -62,11 +342,25 @@ Run:
 pnpm exec vitest run --config ./vitest.config.mts tests/int/content-highlights.int.spec.tsx
 ```
 
-Expected: FAIL because Payload exposes only the three existing values.
+Expected: FAIL because `splitHighlights` still exists and the new controls do not.
 
-- [ ] **Step 3: Add the two Payload options**
+- [ ] **Step 3: Add conditional fields and remove the legacy option**
 
-Update the `layout` options in `src/blocks/ContentHighlights/config.ts`:
+In `src/blocks/ContentHighlights/config.ts`, import `CheckboxField` and define:
+
+```ts
+type ContentHighlightsLayoutSiblingData = {
+  enableSplitLayout?: boolean | null
+}
+
+const isSplitEnabled = (_data: unknown, siblingData: ContentHighlightsLayoutSiblingData) =>
+  siblingData?.enableSplitLayout === true
+
+const isSplitDisabled = (_data: unknown, siblingData: ContentHighlightsLayoutSiblingData) =>
+  siblingData?.enableSplitLayout !== true
+```
+
+Replace the layout options and insert the controls immediately after `layout`:
 
 ```ts
 options: [
@@ -74,208 +368,348 @@ options: [
   { label: 'Highlights Grid', value: 'highlightsGrid' },
   { label: 'Simple Grid', value: 'simpleGrid' },
   { label: 'Numbered Steps', value: 'numberedSteps' },
-  { label: 'Split Highlights', value: 'splitHighlights' },
 ],
 ```
 
-- [ ] **Step 4: Extend the public layout type**
+```ts
+{
+  name: 'enableSplitLayout',
+  label: 'Enable Split Layout',
+  type: 'checkbox',
+  defaultValue: false,
+} satisfies CheckboxField,
+{
+  name: 'contentAlignment',
+  label: 'Content Alignment',
+  type: 'select',
+  defaultValue: 'left',
+  options: [
+    { label: 'Left', value: 'left' },
+    { label: 'Center', value: 'center' },
+    { label: 'Right', value: 'right' },
+  ],
+  required: true,
+  admin: { condition: isSplitDisabled },
+} satisfies SelectField,
+{
+  name: 'splitContentAlignment',
+  label: 'Content Vertical Alignment',
+  type: 'select',
+  defaultValue: 'top',
+  options: [
+    { label: 'Top', value: 'top' },
+    { label: 'Center', value: 'center' },
+    { label: 'Bottom', value: 'bottom' },
+  ],
+  required: true,
+  admin: { condition: isSplitEnabled },
+} satisfies SelectField,
+```
 
-Replace the layout union in `src/components/content-highlights.tsx` with:
+- [ ] **Step 4: Run the schema test**
+
+Run:
+
+```bash
+pnpm exec vitest run --config ./vitest.config.mts tests/int/content-highlights.int.spec.tsx
+```
+
+Expected: schema assertions pass; renderer assertions may still fail until Task 3.
+
+### Task 3: Implement independent split composition and alignment
+
+**Files:**
+
+- Modify: `tests/int/content-highlights.int.spec.tsx`
+- Modify: `src/blocks/ContentHighlights/Component.tsx`
+- Modify: `src/components/content-highlights.tsx`
+
+**Interfaces:**
+
+- Consumes: the four-value `ContentHighlightsLayout` union.
+- Produces: `ContentHighlightsAlignment = 'center' | 'left' | 'right'`.
+- Produces: `ContentHighlightsSplitAlignment = 'bottom' | 'center' | 'top'`.
+- Produces: independent `enableSplitLayout`, `contentAlignment`, and `splitContentAlignment` props.
+
+- [ ] **Step 1: Add failing composition and alignment tests**
+
+Add a table-driven test for all four layouts:
+
+```tsx
+it.each([
+  'editorialRow',
+  'highlightsGrid',
+  'simpleGrid',
+  'numberedSteps',
+] satisfies ContentHighlightsLayout[])('supports stacked and split composition for %s', (layout) => {
+  const items = [
+    { description: 'First description', title: 'First' },
+    { description: 'Second description', title: 'Second' },
+  ]
+  const stacked = renderToStaticMarkup(
+    <ContentHighlights
+      actions={<span>Explore</span>}
+      contentAlignment="right"
+      items={items}
+      layout={layout}
+      title="Highlights"
+    />,
+  )
+  const split = renderToStaticMarkup(
+    <ContentHighlights
+      actions={<span>Explore</span>}
+      enableSplitLayout
+      items={items}
+      layout={layout}
+      splitContentAlignment="bottom"
+      title="Highlights"
+    />,
+  )
+
+  expect(stacked).toContain('data-content-highlights-split="false"')
+  expect(stacked).toContain('data-content-highlights-alignment="right"')
+  expect(stacked).toContain('ml-auto items-end text-right')
+  expect(split).toContain('data-content-highlights-split="true"')
+  expect(split).toContain('data-content-highlights-split-alignment="bottom"')
+  expect(split).toContain('lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]')
+  expect(split).toContain('lg:self-end')
+  expect(split).not.toContain('lg:grid-cols-3')
+  expect(split).not.toContain('lg:grid-cols-4')
+})
+```
+
+Add focused Editorial Row assertions:
+
+```tsx
+it('keeps the Editorial Row action slot only in stacked composition', () => {
+  const props = {
+    actions: <span>All stories</span>,
+    items: [{ title: 'Story' }],
+    layout: 'editorialRow' as const,
+    title: 'Latest',
+  }
+  const stacked = renderToStaticMarkup(<ContentHighlights {...props} />)
+  const split = renderToStaticMarkup(<ContentHighlights {...props} enableSplitLayout />)
+
+  expect(stacked).toContain('data-content-highlights-action-slot="true"')
+  expect(split).not.toContain('data-content-highlights-action-slot="true"')
+  expect(split).toContain('All stories')
+})
+```
+
+Add a defensive fallback assertion:
+
+```tsx
+it('falls back to Highlights Grid for an unknown layout value', () => {
+  const html = renderToStaticMarkup(
+    <ContentHighlights
+      items={[{ title: 'Item' }]}
+      layout={'removed-layout' as ContentHighlightsLayout}
+      title="Highlights"
+    />,
+  )
+
+  expect(html).toContain('data-content-highlights-layout="highlightsGrid"')
+  expect(html).toContain('lg:grid-cols-3')
+})
+```
+
+- [ ] **Step 2: Run the renderer tests and verify they fail**
+
+Run:
+
+```bash
+pnpm exec vitest run --config ./vitest.config.mts tests/int/content-highlights.int.spec.tsx
+```
+
+Expected: FAIL because composition and alignment props are not implemented.
+
+- [ ] **Step 3: Extend component types and grid maps**
+
+In `src/components/content-highlights.tsx`, replace the layout union and add alignment types:
 
 ```ts
+export type ContentHighlightsAlignment = 'center' | 'left' | 'right'
 export type ContentHighlightsLayout =
   | 'editorialRow'
   | 'highlightsGrid'
   | 'numberedSteps'
   | 'simpleGrid'
-  | 'splitHighlights'
+export type ContentHighlightsSplitAlignment = 'bottom' | 'center' | 'top'
 ```
 
-Temporarily map both new values to valid grid classes so TypeScript remains exhaustive:
+Extend `ContentHighlightsProps`:
 
 ```ts
-const itemGridClasses = {
+contentAlignment?: ContentHighlightsAlignment
+enableSplitLayout?: boolean
+splitContentAlignment?: ContentHighlightsSplitAlignment
+```
+
+Replace the single grid map with:
+
+```ts
+const fullWidthItemGridClasses = {
   editorialRow: 'grid gap-x-8 gap-y-8 md:grid-cols-2 lg:grid-cols-3',
   highlightsGrid: 'grid gap-x-8 gap-y-8 md:grid-cols-2 lg:grid-cols-3',
   numberedSteps: 'grid gap-4 md:grid-cols-2 lg:grid-cols-4',
   simpleGrid: 'grid gap-x-16 gap-y-10 md:grid-cols-2',
-  splitHighlights: 'grid gap-x-8 gap-y-8 md:grid-cols-2',
 } as const satisfies Record<ContentHighlightsLayout, string>
-```
 
-- [ ] **Step 5: Run the schema test and type checker**
+const splitItemGridClasses = {
+  editorialRow: 'grid gap-x-8 gap-y-8 md:grid-cols-2',
+  highlightsGrid: 'grid gap-x-8 gap-y-8 md:grid-cols-2',
+  numberedSteps: 'grid gap-4 md:grid-cols-2',
+  simpleGrid: 'grid gap-x-8 gap-y-10 md:grid-cols-2',
+} as const satisfies Record<ContentHighlightsLayout, string>
 
-Run:
+const horizontalAlignmentClasses = {
+  center: 'mx-auto items-center text-center',
+  left: 'items-start text-left',
+  right: 'ml-auto items-end text-right',
+} as const satisfies Record<ContentHighlightsAlignment, string>
 
-```bash
-pnpm exec vitest run --config ./vitest.config.mts tests/int/content-highlights.int.spec.tsx
-pnpm exec tsc --noEmit
-```
+const splitAlignmentClasses = {
+  bottom: 'lg:self-end',
+  center: 'lg:self-center',
+  top: 'lg:self-start',
+} as const satisfies Record<ContentHighlightsSplitAlignment, string>
 
-Expected: the Content Highlights tests and type checker pass.
+const contentHighlightsLayouts = new Set<ContentHighlightsLayout>([
+  'editorialRow',
+  'highlightsGrid',
+  'numberedSteps',
+  'simpleGrid',
+])
 
-### Task 2: Implement Simple Grid and Numbered Steps rendering
-
-**Files:**
-
-- Modify: `tests/int/content-highlights.int.spec.tsx`
-- Modify: `src/components/content-highlights.tsx`
-
-**Interfaces:**
-
-- Consumes: the extended `ContentHighlightsLayout` union from Task 1.
-- Produces: layout-aware `ContentHighlightItemComponent` rendering with automatic `01`-style numbers.
-
-- [ ] **Step 1: Add failing responsive rendering tests**
-
-Add a test to `tests/int/content-highlights.int.spec.tsx` that renders both new layouts:
-
-```tsx
-it('renders simple and numbered layouts with their responsive contracts', () => {
-  const items = Array.from({ length: 6 }, (_, index) => ({
-    description: `Description ${index + 1}`,
-    metadata: index === 0 ? 'Required' : undefined,
-    title: `Item ${index + 1}`,
-  }))
-
-  const simpleHtml = renderToStaticMarkup(
-    <ContentHighlights items={items} layout="simpleGrid" title="What we look for" />,
-  )
-  const numberedHtml = renderToStaticMarkup(
-    <ContentHighlights items={items} layout="numberedSteps" title="How your application moves" />,
-  )
-
-  expect(simpleHtml).toContain('data-content-highlights-layout="simpleGrid"')
-  expect(simpleHtml).toContain('grid gap-x-16 gap-y-10 md:grid-cols-2')
-  expect(simpleHtml).toContain('data-content-highlight-presentation="simple"')
-  expect(simpleHtml).not.toContain('data-slot="separator"')
-  expect(simpleHtml).not.toContain('data-content-highlight-step=')
-
-  expect(numberedHtml).toContain('data-content-highlights-layout="numberedSteps"')
-  expect(numberedHtml).toContain('grid gap-4 md:grid-cols-2 lg:grid-cols-4')
-  expect(numberedHtml).toContain('data-content-highlight-presentation="numbered"')
-  expect(numberedHtml).toContain('rounded-md border border-border')
-  expect(numberedHtml).toContain('data-content-highlight-step="01"')
-  expect(numberedHtml).toContain('data-content-highlight-step="06"')
-  expect(numberedHtml).not.toContain('data-slot="separator"')
-
-  for (const html of [simpleHtml, numberedHtml]) {
-    expect(html).toContain('py-12 md:py-16')
-    expect(html).toContain('max-w-screen-2xl')
-  }
-})
-```
-
-- [ ] **Step 2: Run the test and verify the presentation assertions fail**
-
-Run:
-
-```bash
-pnpm exec vitest run --config ./vitest.config.mts tests/int/content-highlights.int.spec.tsx
-```
-
-Expected: FAIL because the new layouts still use the existing separated item renderer.
-
-- [ ] **Step 3: Make the item renderer layout-aware**
-
-Update `ContentHighlightItemComponent` in `src/components/content-highlights.tsx` to accept `index` and `layout`, preserve current link behavior, and select one of three presentations:
-
-```tsx
-function ContentHighlightItemComponent({
-  index,
-  item,
-  layout,
-}: {
-  index: number
-  item: ContentHighlightItem
-  layout: ContentHighlightsLayout
-}) {
-  const isNumbered = layout === 'numberedSteps'
-  const isSimple = layout === 'simpleGrid'
-  const step = String(index + 1).padStart(2, '0')
-  const titleClassName =
-    'rounded-sm text-md leading-tight font-semibold text-current underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current sm:text-lg'
-
-  const title = item.href ? (
-    <a
-      className={cn(titleClassName, 'transition-opacity hover:opacity-70 hover:underline')}
-      href={item.href}
-      rel={item.openInNewTab ? 'noreferrer' : undefined}
-      target={item.openInNewTab ? '_blank' : undefined}
-    >
-      {item.title}
-    </a>
-  ) : (
-    <p className={titleClassName}>{item.title}</p>
-  )
-
-  const content = (
-    <div className="flex flex-col gap-2">
-      {item.metadata ? (
-        <p className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-current/65">
-          {item.metadata}
-        </p>
-      ) : null}
-      {title}
-      {item.description ? (
-        <p className="text-sm leading-6 text-current/70">{item.description}</p>
-      ) : null}
-    </div>
-  )
-
-  if (isNumbered) {
-    return (
-      <article
-        className="flex min-w-0 flex-col gap-4 rounded-md border border-border p-6"
-        data-content-highlight-item="true"
-        data-content-highlight-presentation="numbered"
-      >
-        <p
-          className="text-2xl leading-none font-semibold text-primary"
-          data-content-highlight-step={step}
-        >
-          {step}
-        </p>
-        {content}
-      </article>
-    )
-  }
-
-  if (isSimple) {
-    return (
-      <article
-        className="flex min-w-0 flex-col"
-        data-content-highlight-item="true"
-        data-content-highlight-presentation="simple"
-      >
-        {content}
-      </article>
-    )
-  }
-
-  return (
-    <article className="flex min-w-0 flex-col gap-4" data-content-highlight-item="true">
-      <Separator />
-      {content}
-    </article>
-  )
+function resolveContentHighlightsLayout(layout?: ContentHighlightsLayout | null) {
+  return layout && contentHighlightsLayouts.has(layout) ? layout : 'highlightsGrid'
 }
 ```
 
-Update the item mapping in `ContentHighlightsItems`:
+- [ ] **Step 4: Make introduction and item-grid rendering composition-aware**
+
+Add `className?: string` to `ContentHighlightsIntro` and merge it into its root:
 
 ```tsx
-{items.map((item, index) => (
-  <ContentHighlightItemComponent
-    index={index}
-    item={item}
-    key={`${item.title}-${index}`}
-    layout={layout}
-  />
-))}
+<div className={cn('flex max-w-3xl flex-col gap-4', className)}>
 ```
 
-- [ ] **Step 4: Run the focused tests and verify they pass**
+Add `split: boolean` to `ContentHighlightsItems` and select its classes:
+
+```tsx
+<div
+  className={(split ? splitItemGridClasses : fullWidthItemGridClasses)[layout]}
+  data-content-highlights-items="true"
+>
+```
+
+Resolve props at the start of `ContentHighlights`:
+
+```ts
+const resolvedAlignment = contentAlignment ?? 'left'
+const resolvedLayout = resolveContentHighlightsLayout(layout)
+const resolvedSize = size ?? 'default'
+const resolvedSplitAlignment = splitContentAlignment ?? 'top'
+const isSplit = enableSplitLayout === true
+```
+
+Add the data attributes to the section:
+
+```tsx
+data-content-highlights-alignment={resolvedAlignment}
+data-content-highlights-split={String(isSplit)}
+data-content-highlights-split-alignment={resolvedSplitAlignment}
+```
+
+Replace the legacy `resolvedLayout === 'splitHighlights'` branch with:
+
+```tsx
+{isSplit ? (
+  <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16">
+    <ContentHighlightsIntro
+      actions={actions}
+      className={splitAlignmentClasses[resolvedSplitAlignment]}
+      description={description}
+      eyebrow={eyebrow}
+      title={title}
+    />
+    <ContentHighlightsItems items={items} layout={resolvedLayout} split />
+  </div>
+) : (
+  <div className={cn('flex flex-col', sectionGapClasses[resolvedSize])}>
+    {resolvedLayout === 'editorialRow' ? (
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <ContentHighlightsIntro
+          className={horizontalAlignmentClasses[resolvedAlignment]}
+          description={description}
+          eyebrow={eyebrow}
+          title={title}
+        />
+        {actions ? (
+          <div className="lg:shrink-0 lg:pb-1" data-content-highlights-action-slot="true">
+            {actions}
+          </div>
+        ) : null}
+      </div>
+    ) : (
+      <ContentHighlightsIntro
+        actions={actions}
+        className={horizontalAlignmentClasses[resolvedAlignment]}
+        description={description}
+        eyebrow={eyebrow}
+        title={title}
+      />
+    )}
+    <ContentHighlightsItems items={items} layout={resolvedLayout} split={false} />
+  </div>
+)}
+```
+
+- [ ] **Step 5: Forward the new CMS values and align actions**
+
+In `src/blocks/ContentHighlights/Component.tsx`, import the two alignment types, add the three fields to `ContentHighlightsBlockLike`, destructure their defaults, and resolve:
+
+```ts
+const isSplit = enableSplitLayout === true
+const resolvedAlignment = contentAlignment ?? 'left'
+```
+
+Build the action node with the resolved split and alignment values:
+
+```tsx
+const resolvedActionNode = resolvedActions.length ? (
+  <ContentActions
+    actions={resolvedActions}
+    alignment={isSplit ? 'left' : resolvedAlignment}
+    className={
+      resolvedLayout === 'editorialRow' && !isSplit
+        ? 'lg:w-auto lg:shrink-0 lg:items-end lg:justify-end'
+        : undefined
+    }
+    data-content-highlights-actions="true"
+    mode={actionMode ?? 'link'}
+  />
+) : null
+```
+
+```tsx
+<ContentHighlights
+  actions={resolvedActionNode}
+  appearance={appearance}
+  contentAlignment={resolvedAlignment}
+  description={description?.trim() || undefined}
+  enableSplitLayout={isSplit}
+  eyebrow={eyebrow?.trim() || undefined}
+  items={resolvedItems}
+  layout={resolvedLayout}
+  size={size ?? 'default'}
+  splitContentAlignment={splitContentAlignment ?? 'top'}
+  title={resolvedTitle}
+/>
+```
+
+- [ ] **Step 6: Run focused renderer tests**
 
 Run:
 
@@ -283,69 +717,45 @@ Run:
 pnpm exec vitest run --config ./vitest.config.mts tests/int/content-highlights.int.spec.tsx
 ```
 
-Expected: all Content Highlights tests pass.
+Expected: all Content Highlights schema and renderer tests pass.
 
-### Task 3: Verify links, appearance, regression safety, and production readiness
+### Task 4: Regenerate types and verify production readiness
 
 **Files:**
 
-- Modify: `tests/int/content-highlights.int.spec.tsx` only if an uncovered regression is found.
+- Regenerate: `src/payload-types.ts`
+- Modify only if formatting requires it: `src/blocks/ContentHighlights/config.ts`
+- Modify only if formatting requires it: `src/blocks/ContentHighlights/Component.tsx`
+- Modify only if formatting requires it: `src/components/content-highlights.tsx`
+- Modify only if formatting requires it: `tests/int/content-highlights.int.spec.tsx`
 
 **Interfaces:**
 
-- Consumes: all Content Highlights behavior completed by Tasks 1 and 2.
-- Produces: verified build-ready implementation with existing layouts unchanged.
+- Produces generated Payload types without `splitHighlights` and with the three new controls.
+- Produces a verified build-ready Content Highlights implementation.
 
-- [ ] **Step 1: Exercise item links and section actions in each new layout**
+- [ ] **Step 1: Regenerate Payload types**
 
-Add this table-driven test to `tests/int/content-highlights.int.spec.tsx`:
+Run:
 
-```tsx
-it.each(['simpleGrid', 'numberedSteps'] satisfies ContentHighlightsLayout[])(
-  'preserves normalized actions and item links in %s',
-  (layout) => {
-    const html = renderToStaticMarkup(
-      <ContentHighlightsBlockComponent
-        actionMode="button"
-        actions={[
-          {
-            label: 'Explore all',
-            linkType: 'custom',
-            url: '/explore',
-            variant: 'outline',
-          },
-        ]}
-        items={[
-          {
-            description: 'A linked item.',
-            linkType: 'custom',
-            openInNewTab: true,
-            title: 'Programs',
-            url: '/programs',
-          },
-          {
-            description: 'No destination is required.',
-            linkType: 'none',
-            title: 'Static item',
-          },
-        ]}
-        layout={layout}
-        title="Useful links"
-      />,
-    )
-
-    expect(html).toContain('data-action-mode="button"')
-    expect(html).toContain('href="/explore"')
-    expect(html).toContain('href="/programs"')
-    expect(html).toContain('target="_blank"')
-    expect(html).toContain('rel="noreferrer"')
-    expect(html).toContain('Static item')
-    expect(html).not.toContain('href=""')
-  },
-)
+```bash
+pnpm generate:types
 ```
 
-- [ ] **Step 2: Run Content Highlights and shared spacing tests**
+Expected: `ContentHighlightsBlock.layout` contains only the four approved values and includes `enableSplitLayout`, `contentAlignment`, and `splitContentAlignment`.
+
+- [ ] **Step 2: Format and lint changed files**
+
+Run:
+
+```bash
+pnpm exec prettier --write src/blocks/ContentHighlights/config.ts src/blocks/ContentHighlights/Component.tsx src/components/content-highlights.tsx tests/int/content-highlights.int.spec.tsx src/payload-types.ts
+pnpm exec eslint src/blocks/ContentHighlights/config.ts src/blocks/ContentHighlights/Component.tsx src/components/content-highlights.tsx tests/int/content-highlights.int.spec.tsx
+```
+
+Expected: Prettier completes and ESLint exits with no errors.
+
+- [ ] **Step 3: Run focused integration and spacing tests**
 
 Run:
 
@@ -355,18 +765,7 @@ pnpm exec vitest run --config ./vitest.config.mts tests/int/content-highlights.i
 
 Expected: all selected tests pass.
 
-- [ ] **Step 3: Format and lint the changed implementation**
-
-Run:
-
-```bash
-pnpm exec prettier --write src/blocks/ContentHighlights/config.ts src/components/content-highlights.tsx tests/int/content-highlights.int.spec.tsx
-pnpm exec eslint src/blocks/ContentHighlights/config.ts src/components/content-highlights.tsx tests/int/content-highlights.int.spec.tsx
-```
-
-Expected: Prettier completes and ESLint exits with no errors.
-
-- [ ] **Step 4: Run type checking and the production build**
+- [ ] **Step 4: Run TypeScript and production build checks**
 
 Run:
 
@@ -375,9 +774,19 @@ pnpm exec tsc --noEmit
 pnpm build
 ```
 
-Expected: both commands exit successfully.
+Expected: both commands exit successfully. The build may require access to the configured local MongoDB because sitemap generation reads Payload content.
 
-- [ ] **Step 5: Validate the unstaged diff**
+- [ ] **Step 5: Confirm legacy code and values are absent**
+
+Run:
+
+```bash
+rg -n "splitHighlights" src tests scripts
+```
+
+Expected: no matches.
+
+- [ ] **Step 6: Validate the final unstaged diff**
 
 Run:
 
@@ -386,4 +795,4 @@ git diff --check
 git status --short
 ```
 
-Expected: no whitespace errors; all work from this plan remains unstaged.
+Expected: no whitespace errors. Preserve any pre-existing staged changes and leave all new modifications unstaged.

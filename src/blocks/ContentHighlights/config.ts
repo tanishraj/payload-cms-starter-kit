@@ -11,6 +11,16 @@ type ItemLinkSiblingData = {
   linkType?: 'custom' | 'none' | 'page' | null
 }
 
+type ContentHighlightsLayoutSiblingData = {
+  enableSplitLayout?: boolean | null
+}
+
+const isSplitEnabled = (_data: unknown, siblingData: ContentHighlightsLayoutSiblingData) =>
+  siblingData?.enableSplitLayout === true
+
+const isSplitDisabled = (_data: unknown, siblingData: ContentHighlightsLayoutSiblingData) =>
+  siblingData?.enableSplitLayout !== true
+
 const isPageLink = (_data: unknown, siblingData: ItemLinkSiblingData) =>
   siblingData?.linkType === 'page'
 
@@ -130,9 +140,44 @@ export const ContentHighlightsBlock: Block = {
                 { label: 'Highlights Grid', value: 'highlightsGrid' },
                 { label: 'Simple Grid', value: 'simpleGrid' },
                 { label: 'Numbered Steps', value: 'numberedSteps' },
-                { label: 'Split Highlights', value: 'splitHighlights' },
               ],
               required: true,
+            } satisfies SelectField,
+            {
+              name: 'enableSplitLayout',
+              label: 'Enable Split Layout',
+              type: 'checkbox',
+              defaultValue: false,
+            } satisfies CheckboxField,
+            {
+              name: 'contentAlignment',
+              label: 'Content Alignment',
+              type: 'select',
+              defaultValue: 'left',
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+                { label: 'Right', value: 'right' },
+              ],
+              required: true,
+              admin: {
+                condition: isSplitDisabled,
+              },
+            } satisfies SelectField,
+            {
+              name: 'splitContentAlignment',
+              label: 'Content Vertical Alignment',
+              type: 'select',
+              defaultValue: 'top',
+              options: [
+                { label: 'Top', value: 'top' },
+                { label: 'Center', value: 'center' },
+                { label: 'Bottom', value: 'bottom' },
+              ],
+              required: true,
+              admin: {
+                condition: isSplitEnabled,
+              },
             } satisfies SelectField,
             {
               name: 'size',

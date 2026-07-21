@@ -6,6 +6,9 @@ import { ContentHighlightsBlock } from '@/blocks/ContentHighlights/config'
 import { ContentHighlights, type ContentHighlightsLayout } from '@/components/content-highlights'
 
 type TestField = {
+  admin?: {
+    condition?: (data: unknown, siblingData: Record<string, unknown>) => boolean
+  }
   defaultValue?: unknown
   fields?: TestField[]
   maxRows?: number
@@ -78,19 +81,32 @@ describe('Content Highlights', () => {
       'highlightsGrid',
       'simpleGrid',
       'numberedSteps',
-      'splitHighlights',
     ])
+    const split = getField(layout?.fields ?? [], 'enableSplitLayout')
+    const horizontal = getField(layout?.fields ?? [], 'contentAlignment')
+    const vertical = getField(layout?.fields ?? [], 'splitContentAlignment')
+
+    expect(split).toMatchObject({ defaultValue: false, type: 'checkbox' })
+    expect(horizontal).toMatchObject({ defaultValue: 'left', type: 'select' })
+    expect(horizontal?.options?.map(({ value }) => value)).toEqual(['left', 'center', 'right'])
+    expect(vertical).toMatchObject({ defaultValue: 'top', type: 'select' })
+    expect(vertical?.options?.map(({ value }) => value)).toEqual(['top', 'center', 'bottom'])
+    expect(horizontal?.admin?.condition?.({}, { enableSplitLayout: false })).toBe(true)
+    expect(horizontal?.admin?.condition?.({}, { enableSplitLayout: true })).toBe(false)
+    expect(vertical?.admin?.condition?.({}, { enableSplitLayout: false })).toBe(false)
+    expect(vertical?.admin?.condition?.({}, { enableSplitLayout: true })).toBe(true)
     expect(getField(layout?.fields ?? [], 'size')?.defaultValue).toBe('default')
   })
 
-  it('renders the three approved responsive layout contracts', () => {
-    const renderLayout = (layout: ContentHighlightsLayout) =>
+  it('renders the existing responsive presentation contracts', () => {
+    const renderLayout = (layout: ContentHighlightsLayout, enableSplitLayout = false) =>
       renderToStaticMarkup(
         <ContentHighlights
           actions={<span>All stories</span>}
           appearance={{ background: 'muted', border: 'topAndBottom' }}
           description="A concise introduction to the highlighted content."
           eyebrow="Latest"
+          enableSplitLayout={enableSplitLayout}
           items={[
             {
               description: 'A supporting description.',
@@ -108,7 +124,7 @@ describe('Content Highlights', () => {
 
     const editorialHtml = renderLayout('editorialRow')
     const gridHtml = renderLayout('highlightsGrid')
-    const splitHtml = renderLayout('splitHighlights')
+    const splitHtml = renderLayout('highlightsGrid', true)
 
     expect(editorialHtml).toContain('data-content-highlights-layout="editorialRow"')
     expect(editorialHtml).toContain('md:grid-cols-2')
@@ -120,7 +136,8 @@ describe('Content Highlights', () => {
     expect(gridHtml).toContain('md:grid-cols-2')
     expect(gridHtml).toContain('lg:grid-cols-3')
 
-    expect(splitHtml).toContain('data-content-highlights-layout="splitHighlights"')
+    expect(splitHtml).toContain('data-content-highlights-layout="highlightsGrid"')
+    expect(splitHtml).toContain('data-content-highlights-split="true"')
     expect(splitHtml).toContain('lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]')
     expect(splitHtml).toContain('md:grid-cols-2')
 
@@ -131,6 +148,78 @@ describe('Content Highlights', () => {
       expect(html).toContain('border-y border-border')
       expect(html).toContain('data-slot="separator"')
     }
+  })
+
+  it.each([
+    'editorialRow',
+    'highlightsGrid',
+    'simpleGrid',
+    'numberedSteps',
+  ] satisfies ContentHighlightsLayout[])(
+    'supports stacked and split composition for %s',
+    (layout) => {
+      const items = [
+        { description: 'First description', title: 'First' },
+        { description: 'Second description', title: 'Second' },
+      ]
+      const stacked = renderToStaticMarkup(
+        <ContentHighlights
+          actions={<span>Explore</span>}
+          contentAlignment="right"
+          items={items}
+          layout={layout}
+          title="Highlights"
+        />,
+      )
+      const split = renderToStaticMarkup(
+        <ContentHighlights
+          actions={<span>Explore</span>}
+          enableSplitLayout
+          items={items}
+          layout={layout}
+          splitContentAlignment="bottom"
+          title="Highlights"
+        />,
+      )
+
+      expect(stacked).toContain('data-content-highlights-split="false"')
+      expect(stacked).toContain('data-content-highlights-alignment="right"')
+      expect(stacked).toContain('ml-auto items-end text-right')
+      expect(split).toContain('data-content-highlights-split="true"')
+      expect(split).toContain('data-content-highlights-split-alignment="bottom"')
+      expect(split).toContain('lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]')
+      expect(split).toContain('lg:self-end')
+      expect(split).not.toContain('lg:grid-cols-3')
+      expect(split).not.toContain('lg:grid-cols-4')
+    },
+  )
+
+  it('keeps the Editorial Row action slot only in stacked composition', () => {
+    const props = {
+      actions: <span>All stories</span>,
+      items: [{ title: 'Story' }],
+      layout: 'editorialRow' as const,
+      title: 'Latest',
+    }
+    const stacked = renderToStaticMarkup(<ContentHighlights {...props} />)
+    const split = renderToStaticMarkup(<ContentHighlights {...props} enableSplitLayout />)
+
+    expect(stacked).toContain('data-content-highlights-action-slot="true"')
+    expect(split).not.toContain('data-content-highlights-action-slot="true"')
+    expect(split).toContain('All stories')
+  })
+
+  it('falls back to Highlights Grid for an unknown layout value', () => {
+    const html = renderToStaticMarkup(
+      <ContentHighlights
+        items={[{ title: 'Item' }]}
+        layout={'removed-layout' as ContentHighlightsLayout}
+        title="Highlights"
+      />,
+    )
+
+    expect(html).toContain('data-content-highlights-layout="highlightsGrid"')
+    expect(html).toContain('lg:grid-cols-3')
   })
 
   it('renders simple and numbered layouts with their responsive contracts', () => {

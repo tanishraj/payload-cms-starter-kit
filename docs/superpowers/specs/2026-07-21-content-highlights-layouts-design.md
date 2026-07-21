@@ -1,21 +1,89 @@
-# Content Highlights Layout Extensions
+# Content Highlights Layout and Split Controls
 
 ## Goal
 
-Extend the existing Content Highlights block with two additional presentation layouts without introducing another Payload block or duplicating its content model.
+Extend the existing Content Highlights block with Simple Grid and Numbered Steps presentations while making split composition and content alignment independent layout controls.
 
-## Scope
+## Layout presentations
 
-Add these values to the existing `layout` field:
+The `layout` field offers four item presentations:
 
+- `editorialRow`, labeled **Editorial Row**
+- `highlightsGrid`, labeled **Highlights Grid**
 - `simpleGrid`, labeled **Simple Grid**
 - `numberedSteps`, labeled **Numbered Steps**
 
-The existing `editorialRow`, `highlightsGrid`, and `splitHighlights` layouts remain available and retain their current rendering behavior.
+The former `splitHighlights` value is removed because split composition is controlled independently.
+
+### Simple Grid
+
+Simple Grid presents concise requirements, services, qualifications, or similar content without cards or item separators.
+
+- One column on mobile.
+- Two columns from the medium breakpoint upward when split is disabled.
+- Each item uses the shared Content Highlights item typography.
+- Optional metadata appears above the title.
+- Optional item destinations retain the existing linked-title interaction.
+
+### Numbered Steps
+
+Numbered Steps presents ordered processes in bordered cards.
+
+- Step numbers are generated from array order and formatted as `01`, `02`, and so on.
+- One column on mobile.
+- Two columns from the medium breakpoint.
+- Up to four columns from the large breakpoint when split is disabled.
+- Five or six items wrap naturally.
+- Cards use semantic theme colors and the project radius.
+- Each card contains the generated number, optional metadata, title, and optional description.
+- Optional item destinations retain the existing linked-title interaction.
+
+## Split composition
+
+Add an `enableSplitLayout` checkbox under Layout & Theme. It defaults to `false` and applies to every item presentation.
+
+When enabled:
+
+- The introduction occupies the left column and items occupy the right column on large screens.
+- The introduction appears above the items on smaller screens.
+- The item area uses no more than two columns because it occupies the narrower side of the split.
+- Editorial Row places its section actions inside the introduction column.
+- The chosen item presentation remains visually intact apart from its responsive column constraint.
+
+When disabled:
+
+- The introduction appears above the full-width item area.
+- Editorial Row retains its defining desktop behavior: introduction on the left and section actions independently placed on the far right.
+
+## Conditional alignment controls
+
+Payload exposes two conditional fields with distinct stored names.
+
+### Non-split alignment
+
+When `enableSplitLayout` is false, show `contentAlignment`, labeled **Content Alignment**, with:
+
+- `left`, default
+- `center`
+- `right`
+
+This horizontally aligns the eyebrow, title, description, and section actions. Item content remains left-aligned for readability. Editorial Row is the exception: its introduction follows the selected alignment, while its desktop action slot remains on the far right.
+
+### Split alignment
+
+When `enableSplitLayout` is true, show `splitContentAlignment`, labeled **Content Vertical Alignment**, with:
+
+- `top`, default
+- `center`
+- `bottom`
+
+This vertically aligns the introduction column relative to the items column. It does not alter item alignment.
+
+Only the relevant alignment field is visible in Payload at a time.
 
 ## Shared content and configuration
 
-Both new layouts reuse the current block fields:
+All layouts reuse the current block fields:
 
 - Eyebrow
 - Title
@@ -30,76 +98,72 @@ Both new layouts reuse the current block fields:
 - Action mode
 - Size
 
-No migration or backward-compatibility adapter is required because the block slug and all existing layout values remain unchanged.
+The block slug remains `contentHighlights`.
 
-## Simple Grid
+## Existing data conversion
 
-Simple Grid presents concise requirements, services, qualifications, or similar content without cards or item separators.
+Existing blocks with `layout: 'splitHighlights'` must be converted before the legacy value is removed:
 
-- One column on mobile.
-- Two columns from the medium breakpoint upward.
-- Each item uses the shared Content Highlights item typography.
-- Item title and description remain the primary content.
-- Optional metadata appears above the title when supplied.
-- Optional item destinations continue to make the title interactive using the existing link behavior.
-- Section-level actions remain below the introduction, consistent with Highlights Grid.
+```ts
+{
+  layout: 'highlightsGrid',
+  enableSplitLayout: true,
+  splitContentAlignment: 'top',
+}
+```
 
-## Numbered Steps
+The conversion is idempotent and updates Content Highlights blocks in current Page documents and stored Page draft/version data. All other block data remains unchanged. After verifying the conversion, remove the obsolete value from the Payload schema, public component type, renderer, and generated Payload types.
 
-Numbered Steps presents ordered processes in bordered cards.
-
-- Step numbers are generated from array order and formatted as `01`, `02`, and so on.
-- One column on mobile.
-- Two columns from the medium breakpoint.
-- Up to four columns from the large breakpoint.
-- Five or six items wrap naturally to another row.
-- Cards use theme tokens for border color, text color, background behavior, and radius.
-- Each card contains the generated number, optional metadata, title, and optional description.
-- Optional item destinations retain the existing linked-title interaction.
-- Section-level actions remain below the introduction, consistent with Highlights Grid.
+No runtime compatibility branch for `splitHighlights` remains after conversion.
 
 ## Styling and responsiveness
 
-- Both layouts use the shared regular-block outer spacing: `py-12 md:py-16`.
-- Both remain constrained to the shared website container.
+- All modes use the shared regular-block outer spacing: `py-12 md:py-16`.
+- All modes remain constrained to the shared website container.
 - Typography matches existing regular content blocks.
 - Light and dark modes derive colors from the existing block appearance and semantic theme tokens.
-- Compact, Default, and Comfortable continue to control internal section gaps only; their outer spacing remains identical.
-- Numbered cards use the project theme radius rather than a hard-coded radius.
+- Compact, Default, and Comfortable control internal section gaps only.
+- Item grids stack to one column on mobile.
+- Split composition activates only at the large breakpoint.
 
-## Component structure
+## Component responsibilities
 
-- Extend `ContentHighlightsLayout` with the two layout values.
-- Add layout-specific grid classes to the existing layout map.
-- Keep the current shared introduction component.
-- Keep the current item component for existing layouts and Simple Grid, with presentation flags where needed.
-- Add a focused numbered-item renderer, or a clear numbered presentation branch within the item component, so generated numbering does not leak into other layouts.
-- Keep Payload data normalization and link resolution unchanged.
+- `ContentHighlightsBlockComponent` normalizes CMS values, resolves links and actions, and passes split and alignment controls to the presentation component.
+- `ContentHighlights` chooses split or stacked composition, applies introduction alignment, and delegates item rendering.
+- The shared item renderer selects the existing, simple, or numbered item presentation.
+- Layout-specific grid maps independently resolve full-width and split column contracts.
+- Payload field conditions control which alignment select is visible.
 
 ## Validation and fallback behavior
 
-- The existing requirement for a non-empty block title and at least one usable item remains unchanged.
-- Invalid or missing item destinations render the item as non-interactive content through the existing normalization behavior.
-- Missing descriptions or metadata do not reserve empty space.
-- An unknown or null layout continues to fall back to `highlightsGrid`.
+- A non-empty block title and at least one usable item remain required for rendering.
+- Invalid or missing item destinations render non-interactive content through the existing normalization behavior.
+- Missing descriptions or metadata reserve no empty space.
+- A null or unknown layout falls back to `highlightsGrid`.
+- Missing split and alignment values resolve to non-split, left horizontal alignment, and top vertical alignment.
 
 ## Testing
 
-Integration tests will verify:
+Integration tests verify:
 
-- Payload exposes all five layout options.
-- Existing layout options and behavior remain unchanged.
-- Simple Grid uses the expected one- and two-column responsive contract without cards or separators.
-- Numbered Steps renders automatic zero-padded numbering.
-- Numbered Steps uses one, two, and four responsive columns and wraps up to six items.
-- Numbered cards use semantic border and radius classes.
-- Theme appearance, shared outer spacing, optional metadata, item links, and section actions remain functional.
-- Empty required display content still returns no block output.
+- Payload exposes four layout presentations and no `splitHighlights` option.
+- The split checkbox defaults off.
+- Horizontal and vertical alignment fields have the approved values, defaults, and complementary admin conditions.
+- Simple Grid and Numbered Steps retain their approved responsive presentation contracts.
+- Every layout works in split and non-split composition.
+- Split item grids use no more than two columns.
+- Horizontal alignment affects the introduction but not item text.
+- Vertical alignment applies top, center, and bottom positioning to the split introduction.
+- Editorial Row retains its non-split action slot and moves actions into the introduction when split.
+- Mobile split composition stacks introduction above items.
+- Theme appearance, shared spacing, metadata, item links, and section actions remain functional.
+- Data conversion changes only legacy Content Highlights blocks and is safe to run more than once.
 
 ## Out of scope
 
 - Manually editable step numbers.
-- Reordering controls beyond Payload's existing array reordering.
+- User-selectable left/right split placement.
+- Alignment controls for individual item text.
 - Layout-specific content fields.
 - A separate Requirements or Process block.
-- Changes to the three existing layouts.
+- Retaining `splitHighlights` as a hidden runtime compatibility value after data conversion.

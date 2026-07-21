@@ -491,7 +491,10 @@ export interface ContentHighlightsBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
-  layout: 'editorialRow' | 'highlightsGrid' | 'simpleGrid' | 'numberedSteps' | 'splitHighlights';
+  layout: 'editorialRow' | 'highlightsGrid' | 'simpleGrid' | 'numberedSteps';
+  enableSplitLayout?: boolean | null;
+  contentAlignment?: ('left' | 'center' | 'right') | null;
+  splitContentAlignment?: ('top' | 'center' | 'bottom') | null;
   size: 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
@@ -2264,6 +2267,9 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
       };
   actionMode?: T;
   layout?: T;
+  enableSplitLayout?: T;
+  contentAlignment?: T;
+  splitContentAlignment?: T;
   size?: T;
   id?: T;
   blockName?: T;

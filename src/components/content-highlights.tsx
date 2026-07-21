@@ -9,9 +9,11 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 
+export type ContentHighlightsAlignment = 'center' | 'left' | 'right'
 export type ContentHighlightsLayout =
-  'editorialRow' | 'highlightsGrid' | 'numberedSteps' | 'simpleGrid' | 'splitHighlights'
+  'editorialRow' | 'highlightsGrid' | 'numberedSteps' | 'simpleGrid'
 export type ContentHighlightsSize = 'comfortable' | 'compact' | 'default'
+export type ContentHighlightsSplitAlignment = 'bottom' | 'center' | 'top'
 
 export type ContentHighlightItem = {
   description?: string
@@ -24,21 +26,53 @@ export type ContentHighlightItem = {
 export type ContentHighlightsProps = {
   actions?: ReactNode
   appearance?: BlockAppearance | null
+  contentAlignment?: ContentHighlightsAlignment
   description?: string | null
+  enableSplitLayout?: boolean
   eyebrow?: string | null
   items: ContentHighlightItem[]
   layout?: ContentHighlightsLayout
   size?: ContentHighlightsSize
+  splitContentAlignment?: ContentHighlightsSplitAlignment
   title: string
 }
 
-const itemGridClasses = {
+const fullWidthItemGridClasses = {
   editorialRow: 'grid gap-x-8 gap-y-8 md:grid-cols-2 lg:grid-cols-3',
   highlightsGrid: 'grid gap-x-8 gap-y-8 md:grid-cols-2 lg:grid-cols-3',
   numberedSteps: 'grid gap-4 md:grid-cols-2 lg:grid-cols-4',
   simpleGrid: 'grid gap-x-16 gap-y-10 md:grid-cols-2',
-  splitHighlights: 'grid gap-x-8 gap-y-8 md:grid-cols-2',
 } as const satisfies Record<ContentHighlightsLayout, string>
+
+const splitItemGridClasses = {
+  editorialRow: 'grid gap-x-8 gap-y-8 md:grid-cols-2',
+  highlightsGrid: 'grid gap-x-8 gap-y-8 md:grid-cols-2',
+  numberedSteps: 'grid gap-4 md:grid-cols-2',
+  simpleGrid: 'grid gap-x-8 gap-y-10 md:grid-cols-2',
+} as const satisfies Record<ContentHighlightsLayout, string>
+
+const horizontalAlignmentClasses = {
+  center: 'mx-auto items-center text-center',
+  left: 'items-start text-left',
+  right: 'ml-auto items-end text-right',
+} as const satisfies Record<ContentHighlightsAlignment, string>
+
+const splitAlignmentClasses = {
+  bottom: 'lg:self-end',
+  center: 'lg:self-center',
+  top: 'lg:self-start',
+} as const satisfies Record<ContentHighlightsSplitAlignment, string>
+
+const contentHighlightsLayouts = new Set<ContentHighlightsLayout>([
+  'editorialRow',
+  'highlightsGrid',
+  'numberedSteps',
+  'simpleGrid',
+])
+
+function resolveContentHighlightsLayout(layout?: ContentHighlightsLayout | null) {
+  return layout && contentHighlightsLayouts.has(layout) ? layout : 'highlightsGrid'
+}
 
 const sectionGapClasses = {
   compact: 'gap-8',
@@ -48,12 +82,15 @@ const sectionGapClasses = {
 
 function ContentHighlightsIntro({
   actions,
+  className,
   description,
   eyebrow,
   title,
-}: Pick<ContentHighlightsProps, 'actions' | 'description' | 'eyebrow' | 'title'>) {
+}: Pick<ContentHighlightsProps, 'actions' | 'description' | 'eyebrow' | 'title'> & {
+  className?: string
+}) {
   return (
-    <div className="flex max-w-3xl flex-col gap-4">
+    <div className={cn('flex max-w-3xl flex-col gap-4', className)}>
       {eyebrow ? (
         <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
           {eyebrow}
@@ -153,12 +190,17 @@ function ContentHighlightItemComponent({
 function ContentHighlightsItems({
   items,
   layout,
+  split,
 }: {
   items: ContentHighlightItem[]
   layout: ContentHighlightsLayout
+  split: boolean
 }) {
   return (
-    <div className={itemGridClasses[layout]} data-content-highlights-items="true">
+    <div
+      className={(split ? splitItemGridClasses : fullWidthItemGridClasses)[layout]}
+      data-content-highlights-items="true"
+    >
       {items.map((item, index) => (
         <ContentHighlightItemComponent
           index={index}
@@ -174,41 +216,56 @@ function ContentHighlightsItems({
 export function ContentHighlights({
   actions,
   appearance,
+  contentAlignment = 'left',
   description,
+  enableSplitLayout = false,
   eyebrow,
   items,
   layout = 'highlightsGrid',
   size = 'default',
+  splitContentAlignment = 'top',
   title,
 }: ContentHighlightsProps) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
-  const resolvedLayout = layout ?? 'highlightsGrid'
+  const resolvedAlignment = contentAlignment ?? 'left'
+  const resolvedLayout = resolveContentHighlightsLayout(layout)
   const resolvedSize = size ?? 'default'
+  const resolvedSplitAlignment = splitContentAlignment ?? 'top'
+  const isSplit = enableSplitLayout === true
 
   return (
     <section
       className={cn(regularBlockMobilePaddingClasses[resolvedSize], appearanceClasses.className)}
       data-content-highlights="true"
+      data-content-highlights-alignment={resolvedAlignment}
       data-content-highlights-background={appearance?.background ?? 'none'}
       data-content-highlights-layout={resolvedLayout}
       data-content-highlights-size={resolvedSize}
+      data-content-highlights-split={String(isSplit)}
+      data-content-highlights-split-alignment={resolvedSplitAlignment}
     >
       <div className={regularBlockContainerClasses}>
-        {resolvedLayout === 'splitHighlights' ? (
+        {isSplit ? (
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16">
             <ContentHighlightsIntro
               actions={actions}
+              className={splitAlignmentClasses[resolvedSplitAlignment]}
               description={description}
               eyebrow={eyebrow}
               title={title}
             />
-            <ContentHighlightsItems items={items} layout={resolvedLayout} />
+            <ContentHighlightsItems items={items} layout={resolvedLayout} split />
           </div>
         ) : (
           <div className={cn('flex flex-col', sectionGapClasses[resolvedSize])}>
             {resolvedLayout === 'editorialRow' ? (
               <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-                <ContentHighlightsIntro description={description} eyebrow={eyebrow} title={title} />
+                <ContentHighlightsIntro
+                  className={horizontalAlignmentClasses[resolvedAlignment]}
+                  description={description}
+                  eyebrow={eyebrow}
+                  title={title}
+                />
                 {actions ? (
                   <div className="lg:shrink-0 lg:pb-1" data-content-highlights-action-slot="true">
                     {actions}
@@ -218,12 +275,13 @@ export function ContentHighlights({
             ) : (
               <ContentHighlightsIntro
                 actions={actions}
+                className={horizontalAlignmentClasses[resolvedAlignment]}
                 description={description}
                 eyebrow={eyebrow}
                 title={title}
               />
             )}
-            <ContentHighlightsItems items={items} layout={resolvedLayout} />
+            <ContentHighlightsItems items={items} layout={resolvedLayout} split={false} />
           </div>
         )}
       </div>
