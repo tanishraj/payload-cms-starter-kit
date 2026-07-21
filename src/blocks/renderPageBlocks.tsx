@@ -13,6 +13,7 @@ import { RatingSpotlightBlockComponent } from './RatingSpotlight/Component'
 import { ReviewFeedBlockComponent } from './ReviewFeed/Component'
 import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
+import { TeamShowcaseBlockComponent } from './TeamShowcase/Component'
 import { PageBlockStack } from './PageBlockStack'
 import { StatsStripBlockComponent } from './StatsStrip/Component'
 
@@ -121,6 +122,13 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
           case 'statsStrip':
             return (
               <StatsStripBlockComponent
+                key={block.id ?? `${block.blockType}-${index}`}
+                {...block}
+              />
+            )
+          case 'teamShowcase':
+            return (
+              <TeamShowcaseBlockComponent
                 key={block.id ?? `${block.blockType}-${index}`}
                 {...block}
               />

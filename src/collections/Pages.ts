@@ -13,6 +13,7 @@ import { RatingSpotlightBlock } from '@/blocks/RatingSpotlight/config'
 import { ReviewFeedBlock } from '@/blocks/ReviewFeed/config'
 import { ReviewSubmissionBlock } from '@/blocks/ReviewSubmission/config'
 import { StatsStripBlock } from '@/blocks/StatsStrip/config'
+import { TeamShowcaseBlock } from '@/blocks/TeamShowcase/config'
 import { FeatureSpotlightBlock } from '@/blocks/FeatureSpotlight/config'
 import type { Page } from '@/payload-types'
 import {
@@ -221,6 +222,7 @@ export const Pages: CollectionConfig = {
                 RatingSpotlightBlock,
                 ReviewFeedBlock,
                 ReviewSubmissionBlock,
+                TeamShowcaseBlock,
               ],
               required: false,
               admin: {

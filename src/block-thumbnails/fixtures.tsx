@@ -15,6 +15,7 @@ import { RatingSpotlightBlockComponent } from '@/blocks/RatingSpotlight/Componen
 import { ReviewSubmissionBlockComponent } from '@/blocks/ReviewSubmission/Component'
 import { FeatureSpotlightBlockComponent } from '@/blocks/FeatureSpotlight/Component'
 import { StatsStripBlockComponent } from '@/blocks/StatsStrip/Component'
+import { TeamShowcase } from '@/components/team-showcase'
 import { ReviewFeed } from '@/components/review-feed'
 import { System404BlockComponent } from '@/blocks/System404/Component'
 import { SystemComingSoonBlockComponent } from '@/blocks/SystemComingSoon/Component'
@@ -660,6 +661,37 @@ export const blockThumbnailFixtures = {
       ratingData={{ dataMode: 'manual', manualRating: 4.8, manualReviewCount: 1240 }}
       size="compact"
       title="Tell us how we're doing."
+    />
+  ),
+  teamShowcase: (
+    <TeamShowcase
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      contentAlignment="left"
+      description="Our team combines practical experience, community focus, and active mentorship."
+      heading="Meet the team"
+      members={[
+        {
+          description:
+            'Leads program design, curriculum planning, and student-facing support.',
+          image: editorialLandscape,
+          name: 'Jordan Lee',
+          role: 'Academic Director',
+        },
+        {
+          description:
+            'Builds partnerships, coordinates initiatives, and keeps teams aligned.',
+          image: collaboration,
+          name: 'Sam Rivera',
+          role: 'Community Lead',
+        },
+        {
+          description: 'Supports operations, accessibility, and day-to-day learning experiences.',
+          image: portrait,
+          name: 'Avery Chen',
+          role: 'Student Success Lead',
+        },
+      ]}
+      size="compact"
     />
   ),
   featureSpotlight: (

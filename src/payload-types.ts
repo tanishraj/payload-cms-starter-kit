@@ -194,6 +194,7 @@ export interface Page {
         | RatingSpotlightBlock
         | ReviewFeedBlock
         | ReviewSubmissionBlock
+        | TeamShowcaseBlock
       )[]
     | null;
   metaTitle?: string | null;
@@ -907,6 +908,45 @@ export interface Form {
   createdAt: string;
   deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeamShowcaseBlock".
+ */
+export interface TeamShowcaseBlock {
+  heading?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
+  members?:
+    | {
+        image: string | Media;
+        name: string;
+        role?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  actionMode: 'link' | 'button';
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'compact' | 'default' | 'comfortable';
+  showHeaderDivider?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'teamShowcase';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2066,6 +2106,7 @@ export interface PagesSelect<T extends boolean = true> {
         ratingSpotlight?: T | RatingSpotlightBlockSelect<T>;
         reviewFeed?: T | ReviewFeedBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
+        teamShowcase?: T | TeamShowcaseBlockSelect<T>;
       };
   metaTitle?: T;
   metaDescription?: T;
@@ -2622,6 +2663,46 @@ export interface ReviewSubmissionBlockSelect<T extends boolean = true> {
   actionMode?: T;
   contentAlignment?: T;
   size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeamShowcaseBlock_select".
+ */
+export interface TeamShowcaseBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
+  members?:
+    | T
+    | {
+        image?: T;
+        name?: T;
+        role?: T;
+        description?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  actionMode?: T;
+  contentAlignment?: T;
+  size?: T;
+  showHeaderDivider?: T;
   id?: T;
   blockName?: T;
 }

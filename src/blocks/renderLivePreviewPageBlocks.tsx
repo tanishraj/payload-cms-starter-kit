@@ -16,6 +16,7 @@ import { QaAccordionBlockComponent } from './QaAccordion/Component'
 import { RatingSpotlightPreviewBlockComponent } from './RatingSpotlight/PreviewComponent'
 import { ReviewFeedPreviewBlockComponent } from './ReviewFeed/PreviewComponent'
 import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
+import { TeamShowcaseBlockComponent } from './TeamShowcase/Component'
 import { StatsStripBlockComponent } from './StatsStrip/Component'
 
 export type LivePreviewPageBlock = NonNullable<Page['layout']>[number]
@@ -69,6 +70,8 @@ export function renderLivePreviewPageBlocks(
             return <FeatureSpotlightBlockComponent key={key} {...block} />
           case 'statsStrip':
             return <StatsStripBlockComponent key={key} {...block} />
+          case 'teamShowcase':
+            return <TeamShowcaseBlockComponent key={key} {...block} />
           default:
             return null
         }

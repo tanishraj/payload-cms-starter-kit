@@ -85,6 +85,13 @@ export const blockThumbnailDefinitions = [
     slug: 'statsStrip',
   }),
   defineThumbnail({
+    alt: 'Team Showcase block preview',
+    filename: 'team-showcase.jpg',
+    label: 'Team Showcase',
+    slug: 'teamShowcase',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Q&A Accordion block preview',
     filename: 'qa-accordion.jpg',
     label: 'Q&A Accordion',
