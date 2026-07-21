@@ -13,6 +13,7 @@ import { RatingSpotlightBlockComponent } from './RatingSpotlight/Component'
 import { ReviewFeedBlockComponent } from './ReviewFeed/Component'
 import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
+import { Cta39BlockComponent } from './Cta39/Component'
 import { TeamShowcaseBlockComponent } from './TeamShowcase/Component'
 import { PageBlockStack } from './PageBlockStack'
 import { StatsStripBlockComponent } from './StatsStrip/Component'
@@ -133,6 +134,8 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
                 {...block}
               />
             )
+          case 'cta39':
+            return <Cta39BlockComponent key={block.id ?? `${block.blockType}-${index}`} {...block} />
           default:
             return null
         }

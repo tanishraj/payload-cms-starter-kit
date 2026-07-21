@@ -6,6 +6,7 @@ import { AnnouncementBlockComponent } from './Announcement/Component'
 import { ContentHighlightsBlockComponent } from './ContentHighlights/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
+import { Cta39BlockComponent } from './Cta39/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
 import { HeroBannerBlockComponent } from './HeroBanner/Component'
 import { ImageMosaicBlockComponent } from './ImageMosaic/Component'
@@ -72,6 +73,8 @@ export function renderLivePreviewPageBlocks(
             return <StatsStripBlockComponent key={key} {...block} />
           case 'teamShowcase':
             return <TeamShowcaseBlockComponent key={key} {...block} />
+          case 'cta39':
+            return <Cta39BlockComponent key={key} {...block} />
           default:
             return null
         }

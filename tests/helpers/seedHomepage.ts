@@ -23,6 +23,25 @@ const homepagePageData = {
         },
       ],
     },
+    {
+      actionMode: 'button' as const,
+      actions: [
+        {
+          label: 'Get started',
+          linkType: 'custom' as const,
+          url: '/getting-started',
+          variant: 'default' as const,
+        },
+      ],
+      appearance: {
+        background: 'accent' as const,
+        border: 'topAndBottom' as const,
+      },
+      description: 'Use this section as a quick call-to-action at the end of the page.',
+      size: 'compact' as const,
+      blockType: 'cta39' as const,
+      title: 'Ready to explore more?',
+    },
   ],
   metaDescription: 'Seeded homepage description',
   metaTitle: 'E2E Homepage',

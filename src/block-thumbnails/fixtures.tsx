@@ -5,6 +5,7 @@ import { ContentHighlightsBlockComponent } from '@/blocks/ContentHighlights/Comp
 import { FeatureMatrixBlockComponent } from '@/blocks/FeatureMatrix/Component'
 import { Footer56BlockComponent } from '@/blocks/Footer56/Component'
 import { GalleryShowcaseBlockComponent } from '@/blocks/GalleryShowcase/Component'
+import { Cta39BlockComponent } from '@/blocks/Cta39/Component'
 import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
 import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
 import { ImageMosaicBlockComponent } from '@/blocks/ImageMosaic/Component'
@@ -306,6 +307,29 @@ export const blockThumbnailFixtures = {
       layout="highlightsGrid"
       size="compact"
       title="What students say matters"
+      />
+  ),
+  cta39: (
+    <Cta39BlockComponent
+      actionMode="button"
+      actions={[
+        {
+          label: 'Get started',
+          linkType: 'custom',
+          url: '/get-started',
+          variant: 'default',
+        },
+        {
+          label: 'Talk to our team',
+          linkType: 'custom',
+          url: '/contact',
+          variant: 'outline',
+        },
+      ]}
+      appearance={{ background: 'none', border: 'topAndBottom' }}
+      description="Learn quickly, build confidently, and deliver with quality using a modern production workflow."
+      size="compact"
+      title="Turn goals into action with focused execution."
     />
   ),
   newsEventsHighlights: (

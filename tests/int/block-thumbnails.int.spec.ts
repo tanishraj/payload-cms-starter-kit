@@ -45,6 +45,7 @@ describe('block thumbnail metadata', () => {
     expect(registeredSlugs.slice().sort()).toEqual([
       'announcement',
       'contentHighlights',
+      'cta39',
       'featureMatrix',
       'featureSpotlight',
       'footer56',
@@ -62,6 +63,7 @@ describe('block thumbnail metadata', () => {
       'system404',
       'systemComingSoon',
       'systemMaintenance',
+      'teamShowcase',
     ])
     expect(definitionSlugs.slice().sort()).toEqual(registeredSlugs.slice().sort())
     expect(new Set(definitionSlugs).size).toBe(definitionSlugs.length)

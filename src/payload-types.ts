@@ -181,6 +181,7 @@ export interface Page {
   layout?:
     | (
         | AnnouncementBlock
+        | Cta39Block
         | HeroBannerBlock
         | FeatureSpotlightBlock
         | FeatureMatrixBlock
@@ -262,6 +263,35 @@ export interface AnnouncementBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'announcement';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Cta39Block".
+ */
+export interface Cta39Block {
+  title: string;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  actionMode: 'link' | 'button';
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta39';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2093,6 +2123,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         announcement?: T | AnnouncementBlockSelect<T>;
+        cta39?: T | Cta39BlockSelect<T>;
         heroBanner?: T | HeroBannerBlockSelect<T>;
         featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
@@ -2153,6 +2184,36 @@ export interface AnnouncementBlockSelect<T extends boolean = true> {
   displayMode?: T;
   intervalMs?: T;
   marqueeDurationMs?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Cta39Block_select".
+ */
+export interface Cta39BlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  actionMode?: T;
+  contentAlignment?: T;
+  size?: T;
   id?: T;
   blockName?: T;
 }

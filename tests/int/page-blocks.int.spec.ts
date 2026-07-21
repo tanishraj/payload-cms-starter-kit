@@ -160,6 +160,7 @@ describe('page block pipeline', () => {
     expect(layoutField?.type).toBe('blocks')
     expect(layoutField?.blocks?.map((block) => block.slug)).toEqual([
       'announcement',
+      'cta39',
       'heroBanner',
       'featureSpotlight',
       'featureMatrix',
@@ -173,6 +174,7 @@ describe('page block pipeline', () => {
       'ratingSpotlight',
       'reviewFeed',
       'reviewSubmission',
+      'teamShowcase',
     ])
     expect(layoutField?.blocks?.map((block) => block.slug)).not.toContain('feature166')
   })
@@ -610,6 +612,87 @@ describe('page block pipeline', () => {
     expect(html).toContain('bg-secondary')
     expect(html).toContain('text-secondary-foreground')
     expect(html).toContain('border-y border-border')
+  })
+
+  it('defines the Call to Action schema with title, description, and shared actions', async () => {
+    const { Cta39Block } = await import('@/blocks/Cta39/config')
+    const tabsField = Cta39Block.fields[0] as
+      | {
+          tabs?: Array<{ fields: unknown[]; label: string }>
+          type?: string
+        }
+      | undefined
+    const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const titleField = getNamedField<{ required?: boolean; type?: string }>(
+      contentTab?.fields ?? [],
+      'title',
+    )
+    const descriptionField = getNamedField<{ type?: string }>(contentTab?.fields ?? [], 'description')
+    const sizeField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'size')
+    const contentAlignmentField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'contentAlignment')
+
+    expect(tabsField?.type).toBe('tabs')
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(titleField?.type).toBe('text')
+    expect(titleField?.required).toBe(true)
+    expect(descriptionField?.type).toBe('textarea')
+    expectContentActionsFieldSet(contentTab?.fields ?? [], layoutTab?.fields ?? [])
+    expect(sizeField?.type).toBe('select')
+    expect(sizeField?.defaultValue).toBe('default')
+    expect(sizeField?.options?.map((option) => option.value)).toEqual([
+      'compact',
+      'default',
+      'comfortable',
+    ])
+    expect(contentAlignmentField?.type).toBe('select')
+    expect(contentAlignmentField?.defaultValue).toBe('center')
+    expect(contentAlignmentField?.options?.map((option) => option.value)).toEqual([
+      'left',
+      'center',
+      'right',
+    ])
+  })
+
+  it('renders a cta39 page block through PageContent', () => {
+    const result = PageContent({
+      page: {
+        id: 'page-cta-1',
+        layout: [
+          {
+            actionMode: 'button',
+            appearance: {
+              background: 'accent',
+              border: 'topAndBottom',
+              textColor: 'auto',
+            },
+            actions: [{ label: 'Get started', linkType: 'custom', url: '/start', variant: 'default' }],
+            blockType: 'cta39',
+            description: 'Everything you need to launch your next website block.',
+            size: 'compact',
+            title: 'Ship better experiences faster.',
+          },
+        ],
+        slug: 'cta',
+        title: 'Call to Action',
+      } as never,
+    })
+
+    const html = renderToStaticMarkup(result)
+
+    expect(html).toContain('Ship better experiences faster.')
+    expect(html).toContain('Everything you need to launch your next website block.')
+    expect(html).toContain('href="/start"')
+    expect(html).toContain('Get started')
+    expect(html).toContain('data-cta39-background="accent"')
   })
 
   it('renders a heroBanner page block through PageContent', () => {

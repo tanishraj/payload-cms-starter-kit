@@ -31,6 +31,13 @@ export const blockThumbnailDefinitions = [
     slug: 'heroBanner',
   }),
   defineThumbnail({
+    alt: 'Call to Action block preview',
+    filename: 'cta-39.jpg',
+    label: 'Call to Action',
+    slug: 'cta39',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Feature Spotlight block preview',
     filename: 'feature-spotlight.jpg',
     label: 'Feature Spotlight',
