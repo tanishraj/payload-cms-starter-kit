@@ -128,6 +128,8 @@ export const ContentHighlightsBlock: Block = {
               options: [
                 { label: 'Editorial Row', value: 'editorialRow' },
                 { label: 'Highlights Grid', value: 'highlightsGrid' },
+                { label: 'Simple Grid', value: 'simpleGrid' },
+                { label: 'Numbered Steps', value: 'numberedSteps' },
                 { label: 'Split Highlights', value: 'splitHighlights' },
               ],
               required: true,

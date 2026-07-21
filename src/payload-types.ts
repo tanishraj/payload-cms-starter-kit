@@ -491,7 +491,7 @@ export interface ContentHighlightsBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
-  layout: 'editorialRow' | 'highlightsGrid' | 'splitHighlights';
+  layout: 'editorialRow' | 'highlightsGrid' | 'simpleGrid' | 'numberedSteps' | 'splitHighlights';
   size: 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;

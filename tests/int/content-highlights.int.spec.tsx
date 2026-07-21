@@ -76,6 +76,8 @@ describe('Content Highlights', () => {
     expect(getField(layout?.fields ?? [], 'layout')?.options?.map(({ value }) => value)).toEqual([
       'editorialRow',
       'highlightsGrid',
+      'simpleGrid',
+      'numberedSteps',
       'splitHighlights',
     ])
     expect(getField(layout?.fields ?? [], 'size')?.defaultValue).toBe('default')
@@ -131,6 +133,40 @@ describe('Content Highlights', () => {
     }
   })
 
+  it('renders simple and numbered layouts with their responsive contracts', () => {
+    const items = Array.from({ length: 6 }, (_, index) => ({
+      description: `Description ${index + 1}`,
+      metadata: index === 0 ? 'Required' : undefined,
+      title: `Item ${index + 1}`,
+    }))
+
+    const simpleHtml = renderToStaticMarkup(
+      <ContentHighlights items={items} layout="simpleGrid" title="What we look for" />,
+    )
+    const numberedHtml = renderToStaticMarkup(
+      <ContentHighlights items={items} layout="numberedSteps" title="How your application moves" />,
+    )
+
+    expect(simpleHtml).toContain('data-content-highlights-layout="simpleGrid"')
+    expect(simpleHtml).toContain('grid gap-x-16 gap-y-10 md:grid-cols-2')
+    expect(simpleHtml).toContain('data-content-highlight-presentation="simple"')
+    expect(simpleHtml).not.toContain('data-slot="separator"')
+    expect(simpleHtml).not.toContain('data-content-highlight-step=')
+
+    expect(numberedHtml).toContain('data-content-highlights-layout="numberedSteps"')
+    expect(numberedHtml).toContain('grid gap-4 md:grid-cols-2 lg:grid-cols-4')
+    expect(numberedHtml).toContain('data-content-highlight-presentation="numbered"')
+    expect(numberedHtml).toContain('rounded-md border border-border')
+    expect(numberedHtml).toContain('data-content-highlight-step="01"')
+    expect(numberedHtml).toContain('data-content-highlight-step="06"')
+    expect(numberedHtml).not.toContain('data-slot="separator"')
+
+    for (const html of [simpleHtml, numberedHtml]) {
+      expect(html).toContain('py-12 md:py-16')
+      expect(html).toContain('max-w-screen-2xl')
+    }
+  })
+
   it('resolves shared actions and optional item destinations defensively', () => {
     const html = renderToStaticMarkup(
       <ContentHighlightsBlockComponent
@@ -177,6 +213,49 @@ describe('Content Highlights', () => {
     expect(html).not.toContain('/missing')
     expect(html).not.toContain('href=""')
   })
+
+  it.each(['simpleGrid', 'numberedSteps'] satisfies ContentHighlightsLayout[])(
+    'preserves normalized actions and item links in %s',
+    (layout) => {
+      const html = renderToStaticMarkup(
+        <ContentHighlightsBlockComponent
+          actionMode="button"
+          actions={[
+            {
+              label: 'Explore all',
+              linkType: 'custom',
+              url: '/explore',
+              variant: 'outline',
+            },
+          ]}
+          items={[
+            {
+              description: 'A linked item.',
+              linkType: 'custom',
+              openInNewTab: true,
+              title: 'Programs',
+              url: '/programs',
+            },
+            {
+              description: 'No destination is required.',
+              linkType: 'none',
+              title: 'Static item',
+            },
+          ]}
+          layout={layout}
+          title="Useful links"
+        />,
+      )
+
+      expect(html).toContain('data-action-mode="button"')
+      expect(html).toContain('href="/explore"')
+      expect(html).toContain('href="/programs"')
+      expect(html).toContain('target="_blank"')
+      expect(html).toContain('rel="noreferrer"')
+      expect(html).toContain('Static item')
+      expect(html).not.toContain('href=""')
+    },
+  )
 
   it('renders nothing when required display content is unusable', () => {
     expect(

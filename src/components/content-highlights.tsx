@@ -9,7 +9,8 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 
-export type ContentHighlightsLayout = 'editorialRow' | 'highlightsGrid' | 'splitHighlights'
+export type ContentHighlightsLayout =
+  'editorialRow' | 'highlightsGrid' | 'numberedSteps' | 'simpleGrid' | 'splitHighlights'
 export type ContentHighlightsSize = 'comfortable' | 'compact' | 'default'
 
 export type ContentHighlightItem = {
@@ -34,6 +35,8 @@ export type ContentHighlightsProps = {
 const itemGridClasses = {
   editorialRow: 'grid gap-x-8 gap-y-8 md:grid-cols-2 lg:grid-cols-3',
   highlightsGrid: 'grid gap-x-8 gap-y-8 md:grid-cols-2 lg:grid-cols-3',
+  numberedSteps: 'grid gap-4 md:grid-cols-2 lg:grid-cols-4',
+  simpleGrid: 'grid gap-x-16 gap-y-10 md:grid-cols-2',
   splitHighlights: 'grid gap-x-8 gap-y-8 md:grid-cols-2',
 } as const satisfies Record<ContentHighlightsLayout, string>
 
@@ -67,35 +70,82 @@ function ContentHighlightsIntro({
   )
 }
 
-function ContentHighlightItemComponent({ item }: { item: ContentHighlightItem }) {
+function ContentHighlightItemComponent({
+  index,
+  item,
+  layout,
+}: {
+  index: number
+  item: ContentHighlightItem
+  layout: ContentHighlightsLayout
+}) {
+  const isNumbered = layout === 'numberedSteps'
+  const isSimple = layout === 'simpleGrid'
+  const step = String(index + 1).padStart(2, '0')
   const titleClassName =
-    'text-md leading-tight font-semibold text-current sm:text-lg rounded-sm underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current'
+    'rounded-sm text-md leading-tight font-semibold text-current underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current sm:text-lg'
+
+  const title = item.href ? (
+    <a
+      className={cn(titleClassName, 'transition-opacity hover:opacity-70 hover:underline')}
+      href={item.href}
+      rel={item.openInNewTab ? 'noreferrer' : undefined}
+      target={item.openInNewTab ? '_blank' : undefined}
+    >
+      {item.title}
+    </a>
+  ) : (
+    <p className={titleClassName}>{item.title}</p>
+  )
+
+  const content = (
+    <div className="flex flex-col gap-2">
+      {item.metadata ? (
+        <p className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-current/65">
+          {item.metadata}
+        </p>
+      ) : null}
+      {title}
+      {item.description ? (
+        <p className="text-sm leading-6 text-current/70">{item.description}</p>
+      ) : null}
+    </div>
+  )
+
+  if (isNumbered) {
+    return (
+      <article
+        className="flex min-w-0 flex-col gap-4 rounded-md border border-border p-6"
+        data-content-highlight-item="true"
+        data-content-highlight-presentation="numbered"
+      >
+        <p
+          className="text-2xl leading-none font-semibold text-primary"
+          data-content-highlight-step={step}
+        >
+          {step}
+        </p>
+        {content}
+      </article>
+    )
+  }
+
+  if (isSimple) {
+    return (
+      <article
+        className="flex min-w-0 flex-col"
+        data-content-highlight-item="true"
+        data-content-highlight-presentation="simple"
+      >
+        {content}
+      </article>
+    )
+  }
 
   return (
     <article className="flex min-w-0 flex-col gap-4" data-content-highlight-item="true">
       <Separator />
-      <div className="flex flex-col gap-2">
-        {item.metadata ? (
-          <p className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-current/65">
-            {item.metadata}
-          </p>
-        ) : null}
-        {item.href ? (
-          <a
-            className={cn(titleClassName, 'transition-opacity hover:opacity-70 hover:underline')}
-            href={item.href}
-            rel={item.openInNewTab ? 'noreferrer' : undefined}
-            target={item.openInNewTab ? '_blank' : undefined}
-          >
-            {item.title}
-          </a>
-        ) : (
-          <p className={titleClassName}>{item.title}</p>
-        )}
-        {item.description ? (
-          <p className="text-sm leading-6 text-current/70">{item.description}</p>
-        ) : null}
-      </div>
+      {content}
     </article>
   )
 }
@@ -110,7 +160,12 @@ function ContentHighlightsItems({
   return (
     <div className={itemGridClasses[layout]} data-content-highlights-items="true">
       {items.map((item, index) => (
-        <ContentHighlightItemComponent item={item} key={`${item.title}-${index}`} />
+        <ContentHighlightItemComponent
+          index={index}
+          item={item}
+          key={`${item.title}-${index}`}
+          layout={layout}
+        />
       ))}
     </div>
   )
