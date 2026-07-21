@@ -34,7 +34,8 @@ Numbered Steps presents ordered processes in bordered cards.
 - Two columns from the medium breakpoint.
 - Up to four columns from the large breakpoint when split is disabled.
 - Five or six items wrap naturally.
-- Cards use semantic theme colors and the project radius.
+- Cards use the project radius and `border-current/20`, deriving border contrast from the
+  resolved block foreground so borders remain visible on every configured background and mode.
 - Each card contains the generated number, optional metadata, title, and optional description.
 - Optional item destinations retain the existing linked-title interaction.
 
@@ -122,6 +123,8 @@ No runtime compatibility branch for `splitHighlights` remains after conversion.
 - All modes remain constrained to the shared website container.
 - Typography matches existing regular content blocks.
 - Light and dark modes derive colors from the existing block appearance and semantic theme tokens.
+- Numbered-card borders use the resolved foreground color at 20% opacity in both stacked and
+  split composition; they do not use the page-level `border-border` token.
 - Compact, Default, and Comfortable control internal section gaps only.
 - Item grids stack to one column on mobile.
 - Split composition activates only at the large breakpoint.
@@ -151,6 +154,8 @@ Integration tests verify:
 - Horizontal and vertical alignment fields have the approved values, defaults, and complementary admin conditions.
 - Simple Grid and Numbered Steps retain their approved responsive presentation contracts.
 - Every layout works in split and non-split composition.
+- Numbered cards retain visible `border-current/20` borders on colored backgrounds in both
+  split and non-split composition.
 - Split item grids use no more than two columns.
 - Horizontal alignment affects the introduction but not item text.
 - Vertical alignment applies top, center, and bottom positioning to the split introduction.

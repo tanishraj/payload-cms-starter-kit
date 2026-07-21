@@ -245,10 +245,26 @@ describe('Content Highlights', () => {
     expect(numberedHtml).toContain('data-content-highlights-layout="numberedSteps"')
     expect(numberedHtml).toContain('grid gap-4 md:grid-cols-2 lg:grid-cols-4')
     expect(numberedHtml).toContain('data-content-highlight-presentation="numbered"')
-    expect(numberedHtml).toContain('rounded-md border border-border')
+    expect(numberedHtml).toContain('rounded-md border border-current/20')
+    expect(numberedHtml).not.toContain('rounded-md border border-border')
     expect(numberedHtml).toContain('data-content-highlight-step="01"')
     expect(numberedHtml).toContain('data-content-highlight-step="06"')
     expect(numberedHtml).not.toContain('data-slot="separator"')
+
+    const splitNumberedHtml = renderToStaticMarkup(
+      <ContentHighlights
+        appearance={{ background: 'secondary' }}
+        enableSplitLayout
+        items={items}
+        layout="numberedSteps"
+        title="How your application moves"
+      />,
+    )
+
+    expect(splitNumberedHtml).toContain('bg-secondary')
+    expect(splitNumberedHtml).toContain('text-secondary-foreground')
+    expect(splitNumberedHtml).toContain('rounded-md border border-current/20')
+    expect(splitNumberedHtml).not.toContain('rounded-md border border-border')
 
     for (const html of [simpleHtml, numberedHtml]) {
       expect(html).toContain('py-12 md:py-16')

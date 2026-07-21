@@ -22,6 +22,7 @@
 - Convert current Page documents and Page versions from `splitHighlights` to `highlightsGrid` plus enabled split before removing the legacy value.
 - Leave no runtime `splitHighlights` compatibility branch after conversion.
 - Keep shared `py-12 md:py-16`, container, typography, color, and radius behavior.
+- Numbered cards use `border-current/20` in stacked and split composition so their borders follow the resolved block foreground on every background.
 - Do not stage or commit changes.
 
 ---
@@ -796,3 +797,81 @@ git status --short
 ```
 
 Expected: no whitespace errors. Preserve any pre-existing staged changes and leave all new modifications unstaged.
+
+### Task 5: Make numbered-card borders adaptive
+
+**Files:**
+
+- Modify: `tests/int/content-highlights.int.spec.tsx`
+- Modify: `src/components/content-highlights.tsx`
+
+**Interfaces:**
+
+- Consumes: the existing numbered item presentation and block appearance foreground classes.
+- Produces: numbered cards with `border-current/20` in stacked and split composition.
+
+- [ ] **Step 1: Add a failing colored-background border regression test**
+
+Replace the existing numbered border assertion with `border-current/20`, then render a split numbered block on a colored surface:
+
+```tsx
+expect(numberedHtml).toContain('rounded-md border border-current/20')
+expect(numberedHtml).not.toContain('rounded-md border border-border')
+
+const splitNumberedHtml = renderToStaticMarkup(
+  <ContentHighlights
+    appearance={{ background: 'secondary' }}
+    enableSplitLayout
+    items={items}
+    layout="numberedSteps"
+    title="How your application moves"
+  />,
+)
+
+expect(splitNumberedHtml).toContain('bg-secondary')
+expect(splitNumberedHtml).toContain('text-secondary-foreground')
+expect(splitNumberedHtml).toContain('rounded-md border border-current/20')
+expect(splitNumberedHtml).not.toContain('rounded-md border border-border')
+```
+
+- [ ] **Step 2: Run the focused test and verify it fails**
+
+Run:
+
+```bash
+pnpm exec vitest run --config ./vitest.config.mts tests/int/content-highlights.int.spec.tsx
+```
+
+Expected: FAIL because numbered cards still render `border-border`.
+
+- [ ] **Step 3: Use the resolved foreground for numbered-card borders**
+
+In `ContentHighlightItemComponent` within `src/components/content-highlights.tsx`, change only the numbered article class:
+
+```tsx
+className="flex min-w-0 flex-col gap-4 rounded-md border border-current/20 p-6"
+```
+
+- [ ] **Step 4: Run focused tests, lint, and type checking**
+
+Run:
+
+```bash
+pnpm exec vitest run --config ./vitest.config.mts tests/int/content-highlights.int.spec.tsx tests/int/regular-block-spacing.int.spec.tsx
+pnpm exec eslint src/components/content-highlights.tsx tests/int/content-highlights.int.spec.tsx
+pnpm exec tsc --noEmit
+```
+
+Expected: all selected tests pass; ESLint and TypeScript exit successfully.
+
+- [ ] **Step 5: Run the production build and validate the unstaged diff**
+
+Run:
+
+```bash
+pnpm build
+git diff --check
+git status --short
+```
+
+Expected: the production build passes, no whitespace errors are reported, and all new modifications remain unstaged.

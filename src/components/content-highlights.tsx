@@ -152,7 +152,7 @@ function ContentHighlightItemComponent({
   if (isNumbered) {
     return (
       <article
-        className="flex min-w-0 flex-col gap-4 rounded-md border border-border p-6"
+        className="flex min-w-0 flex-col gap-4 rounded-md border border-current/20 p-6"
         data-content-highlight-item="true"
         data-content-highlight-presentation="numbered"
       >
