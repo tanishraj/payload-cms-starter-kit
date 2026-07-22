@@ -19,6 +19,7 @@ import { ReviewFeedPreviewBlockComponent } from './ReviewFeed/PreviewComponent'
 import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
 import { TeamShowcaseBlockComponent } from './TeamShowcase/Component'
 import { StatsStripBlockComponent } from './StatsStrip/Component'
+import { Services21BlockComponent } from './Services21/Component'
 
 export type LivePreviewPageBlock = NonNullable<Page['layout']>[number]
 
@@ -73,6 +74,8 @@ export function renderLivePreviewPageBlocks(
             return <StatsStripBlockComponent key={key} {...block} />
           case 'teamShowcase':
             return <TeamShowcaseBlockComponent key={key} {...block} />
+          case 'services21':
+            return <Services21BlockComponent key={key} {...block} />
           case 'cta39':
             return <Cta39BlockComponent key={key} {...block} />
           default:

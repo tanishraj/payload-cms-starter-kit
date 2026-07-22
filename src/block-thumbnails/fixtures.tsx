@@ -18,6 +18,7 @@ import { FeatureSpotlightBlockComponent } from '@/blocks/FeatureSpotlight/Compon
 import { StatsStripBlockComponent } from '@/blocks/StatsStrip/Component'
 import { TeamShowcase } from '@/components/team-showcase'
 import { ReviewFeed } from '@/components/review-feed'
+import { Services21BlockComponent } from '@/blocks/Services21/Component'
 import { System404BlockComponent } from '@/blocks/System404/Component'
 import { SystemComingSoonBlockComponent } from '@/blocks/SystemComingSoon/Component'
 import { SystemMaintenanceBlockComponent } from '@/blocks/SystemMaintenance/Component'
@@ -666,6 +667,48 @@ export const blockThumbnailFixtures = {
       size="compact"
       summary={{ average: 4.7, count: 124, counts: [2, 3, 8, 19, 92] }}
       title="What our community is saying"
+      />
+  ),
+  services21: (
+    <Services21BlockComponent
+      actions={[
+        {
+          label: 'View all services',
+          linkType: 'custom',
+          openInNewTab: false,
+          url: '#',
+          variant: 'default',
+        },
+      ]}
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      description="Service-first design support for products, teams, and platforms from discovery to launch."
+      eyebrow="Capabilities"
+      services={[
+        {
+          description: 'From initial planning to execution, we shape products around user needs.',
+          image: {
+            alt: 'Design workshop',
+            url: editorialLandscape,
+            width: 1200,
+            height: 800,
+          },
+          code: '{01}',
+          title: 'Discovery',
+        },
+        {
+          description: 'Refine goals, priorities, and architecture before any implementation begins.',
+          image: { alt: 'Roadmap planning', url: collaboration, width: 1200, height: 800 },
+          code: '{02}',
+          title: 'Strategy',
+        },
+        {
+          description: 'Create polished visuals and interactions with clear execution standards.',
+          image: { alt: 'UI implementation', url: portrait, width: 1200, height: 800 },
+          code: '{03}',
+          title: 'Design & UX',
+        },
+      ]}
+      title="Services built to move ideas into impact"
     />
   ),
   ratingSpotlight: (

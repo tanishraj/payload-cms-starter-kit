@@ -175,6 +175,7 @@ describe('page block pipeline', () => {
       'reviewFeed',
       'reviewSubmission',
       'teamShowcase',
+      'services21',
     ])
     expect(layoutField?.blocks?.map((block) => block.slug)).not.toContain('feature166')
   })

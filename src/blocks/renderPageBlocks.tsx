@@ -17,6 +17,7 @@ import { Cta39BlockComponent } from './Cta39/Component'
 import { TeamShowcaseBlockComponent } from './TeamShowcase/Component'
 import { PageBlockStack } from './PageBlockStack'
 import { StatsStripBlockComponent } from './StatsStrip/Component'
+import { Services21BlockComponent } from './Services21/Component'
 
 export type PageBlock = NonNullable<Page['layout']>[number]
 
@@ -130,6 +131,13 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
           case 'teamShowcase':
             return (
               <TeamShowcaseBlockComponent
+                key={block.id ?? `${block.blockType}-${index}`}
+                {...block}
+              />
+            )
+          case 'services21':
+            return (
+              <Services21BlockComponent
                 key={block.id ?? `${block.blockType}-${index}`}
                 {...block}
               />

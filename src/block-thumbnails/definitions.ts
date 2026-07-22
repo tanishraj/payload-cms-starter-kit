@@ -126,6 +126,13 @@ export const blockThumbnailDefinitions = [
     slug: 'ratingSpotlight',
   }),
   defineThumbnail({
+    alt: 'Services block preview',
+    filename: 'services-21.jpg',
+    label: 'Services',
+    slug: 'services21',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Header Navbar 12 block preview',
     filename: 'header-navbar-12.jpg',
     label: 'Header Navbar 12',

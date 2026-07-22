@@ -143,6 +143,7 @@ describe('system page block schemas', () => {
   it('registers page, header, footer, and system blocks only on their intended collections', () => {
     expect(collectBlockSlugs(Pages.fields)).toEqual([
       'announcement',
+      'cta39',
       'heroBanner',
       'featureSpotlight',
       'featureMatrix',
@@ -156,6 +157,8 @@ describe('system page block schemas', () => {
       'ratingSpotlight',
       'reviewFeed',
       'reviewSubmission',
+      'teamShowcase',
+      'services21',
     ])
     expect(collectBlockSlugs(Pages.fields)).not.toContain('feature166')
     expect(collectBlockSlugs(Reviews.fields)).toEqual([])

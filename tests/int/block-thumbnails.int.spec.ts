@@ -59,6 +59,7 @@ describe('block thumbnail metadata', () => {
       'ratingSpotlight',
       'reviewFeed',
       'reviewSubmission',
+      'services21',
       'statsStrip',
       'system404',
       'systemComingSoon',
@@ -161,6 +162,12 @@ describe('block thumbnail metadata', () => {
       filename: 'hero-banner.jpg',
       label: 'Hero Banner',
       slug: 'heroBanner',
+    })
+    expect(getBlockThumbnailDefinition('services21')).toMatchObject({
+      filename: 'services-21.jpg',
+      label: 'Services',
+      slug: 'services21',
+      stageAlignment: 'top',
     })
     expect(definitionSlugs).not.toContain('feature166')
     expect(filenames).not.toContain('feature-166.jpg')
