@@ -88,7 +88,7 @@ export const Services21Block: Block = {
             {
               name: 'title',
               type: 'text',
-              required: true,
+              required: false,
             },
             {
               name: 'description',

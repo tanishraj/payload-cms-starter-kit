@@ -109,7 +109,7 @@ export function Services21BlockComponent({
     )
   ) : null
 
-  if (!resolvedTitle || !hasServices) {
+  if (!hasServices) {
     return null
   }
 

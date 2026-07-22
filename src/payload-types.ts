@@ -985,7 +985,7 @@ export interface TeamShowcaseBlock {
  */
 export interface Services21Block {
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
