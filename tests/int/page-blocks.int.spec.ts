@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+
 import { describe, expect, it } from 'vitest'
 import { renderToStaticMarkup } from 'react-dom/server'
 
@@ -174,6 +176,7 @@ describe('page block pipeline', () => {
       'ratingSpotlight',
       'reviewFeed',
       'reviewSubmission',
+      'contact33',
       'teamShowcase',
       'services21',
     ])
@@ -1090,5 +1093,90 @@ describe('page block pipeline', () => {
     expect(html).toContain('Student-to-faculty ratio')
     expect(html).toContain('$0M')
     expect(html).toContain('0%')
+  })
+
+  it('renders a contact33 page block through PageContent', () => {
+    const result = PageContent({
+      page: {
+        id: 'page-contact-1',
+        layout: [
+          {
+            appearance: {
+              background: 'muted',
+              border: 'topAndBottom',
+              textColor: 'auto',
+            },
+            blockType: 'contact33',
+            contentAlignment: 'left',
+            description: 'Our advisors are ready to help.',
+            eyebrow: 'Contact',
+            form: {
+              fields: [
+                {
+                  label: 'Name',
+                  name: 'name',
+                  required: true,
+                  type: 'text',
+                },
+                {
+                  label: 'Email',
+                  name: 'email',
+                  required: true,
+                  type: 'email',
+                },
+                {
+                  label: 'Subject',
+                  name: 'subject',
+                  options: [{ label: 'General', value: 'general' }],
+                  required: false,
+                  type: 'select',
+                },
+                {
+                  label: 'Message',
+                  name: 'message',
+                  required: true,
+                  type: 'textarea',
+                },
+              ],
+              slug: 'contact',
+              submitButtonLabel: 'Send',
+              successMessage: 'Thanks.',
+              title: 'Contact',
+            },
+            image: {
+              alt: 'Advisor',
+              height: 900,
+              url: '/contact.jpg',
+              width: 1200,
+            },
+            imageAlt: 'An advisor speaking with a visitor',
+            imagePosition: 'right',
+            size: 'default',
+            title: 'Start a conversation',
+          },
+        ],
+        slug: 'contact',
+        title: 'Contact',
+      } as never,
+    })
+    const html = renderToStaticMarkup(result)
+
+    expect(html).toContain('data-page-block-stack="true"')
+    expect(html).toContain('data-contact33-image-position="right"')
+    expect(html).toContain('data-contact33-background="muted"')
+    expect(html).toContain('Start a conversation')
+    expect(html).toContain('border-y border-border')
+  })
+
+  it('registers contact33 in live preview rendering', () => {
+    const source = readFileSync(
+      'src/blocks/renderLivePreviewPageBlocks.tsx',
+      'utf8',
+    )
+
+    expect(source).toContain(
+      "import { Contact33BlockComponent } from './Contact33/Component'",
+    )
+    expect(source).toContain("case 'contact33':")
   })
 })

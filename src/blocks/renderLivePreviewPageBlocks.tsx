@@ -17,6 +17,7 @@ import { QaAccordionBlockComponent } from './QaAccordion/Component'
 import { RatingSpotlightPreviewBlockComponent } from './RatingSpotlight/PreviewComponent'
 import { ReviewFeedPreviewBlockComponent } from './ReviewFeed/PreviewComponent'
 import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
+import { Contact33BlockComponent } from './Contact33/Component'
 import { TeamShowcaseBlockComponent } from './TeamShowcase/Component'
 import { StatsStripBlockComponent } from './StatsStrip/Component'
 import { Services21BlockComponent } from './Services21/Component'
@@ -64,6 +65,8 @@ export function renderLivePreviewPageBlocks(
             return <ImageMosaicBlockComponent key={key} {...block} />
           case 'reviewSubmission':
             return <ReviewSubmissionBlockComponent key={key} {...block} />
+          case 'contact33':
+            return <Contact33BlockComponent key={key} {...block} />
           case 'ratingSpotlight':
             return <RatingSpotlightPreviewBlockComponent key={key} snapshot={snapshot} {...block} />
           case 'reviewFeed':

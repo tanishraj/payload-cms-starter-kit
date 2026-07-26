@@ -12,6 +12,7 @@ import { ProfileCarouselBlockComponent } from './ProfileCarousel/Component'
 import { RatingSpotlightBlockComponent } from './RatingSpotlight/Component'
 import { ReviewFeedBlockComponent } from './ReviewFeed/Component'
 import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
+import { Contact33BlockComponent } from './Contact33/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
 import { Cta39BlockComponent } from './Cta39/Component'
 import { TeamShowcaseBlockComponent } from './TeamShowcase/Component'
@@ -96,6 +97,13 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
           case 'reviewSubmission':
             return (
               <ReviewSubmissionBlockComponent
+                key={block.id ?? `${block.blockType}-${index}`}
+                {...block}
+              />
+            )
+          case 'contact33':
+            return (
+              <Contact33BlockComponent
                 key={block.id ?? `${block.blockType}-${index}`}
                 {...block}
               />
