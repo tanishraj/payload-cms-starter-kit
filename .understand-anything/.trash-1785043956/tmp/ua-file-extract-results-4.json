@@ -1,0 +1,1942 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 26,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 26,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 26,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "src/access/adminCapabilities.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 472,
+      "nonEmptyLines": 405,
+      "functions": [
+        {
+          "name": "getCapabilityDescription",
+          "startLine": 140,
+          "endLine": 154,
+          "params": [
+            "{ label, value }"
+          ]
+        },
+        {
+          "name": "createCapabilityCheckbox",
+          "startLine": 156,
+          "endLine": 165,
+          "params": [
+            "{ label, value }"
+          ]
+        },
+        {
+          "name": "createCapabilityRows",
+          "startLine": 167,
+          "endLine": 183,
+          "params": [
+            "items"
+          ]
+        },
+        {
+          "name": "getCapabilityItem",
+          "startLine": 190,
+          "endLine": 198,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "createCapabilitySectionItems",
+          "startLine": 200,
+          "endLine": 201,
+          "params": [
+            "values"
+          ]
+        },
+        {
+          "name": "isAdminRole",
+          "startLine": 268,
+          "endLine": 270,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "normalizeAdminRole",
+          "startLine": 272,
+          "endLine": 277,
+          "params": [
+            "value",
+            "fallback"
+          ]
+        },
+        {
+          "name": "sanitizeAdminCapabilities",
+          "startLine": 279,
+          "endLine": 296,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "toAdminCapabilitiesMap",
+          "startLine": 298,
+          "endLine": 305,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "isAdminUser",
+          "startLine": 307,
+          "endLine": 309,
+          "params": [
+            "user"
+          ]
+        },
+        {
+          "name": "hasAdminCapability",
+          "startLine": 311,
+          "endLine": 320,
+          "params": [
+            "user",
+            "capability"
+          ]
+        },
+        {
+          "name": "adminOnlyAccess",
+          "startLine": 322,
+          "endLine": 324,
+          "params": [
+            "{ req }"
+          ]
+        },
+        {
+          "name": "adminOrFirstUserAccess",
+          "startLine": 326,
+          "endLine": 338,
+          "params": [
+            "{ req }"
+          ]
+        },
+        {
+          "name": "toCapabilitiesArray",
+          "startLine": 340,
+          "endLine": 344,
+          "params": [
+            "capability"
+          ]
+        },
+        {
+          "name": "requireCapability",
+          "startLine": 346,
+          "endLine": 354,
+          "params": [
+            "capability"
+          ]
+        },
+        {
+          "name": "allowPublicReadOrCapability",
+          "startLine": 356,
+          "endLine": 368,
+          "params": [
+            "capability"
+          ]
+        },
+        {
+          "name": "allowPublishedReadOrCapability",
+          "startLine": 370,
+          "endLine": 388,
+          "params": [
+            "capability"
+          ]
+        },
+        {
+          "name": "hideFromNonAdmin",
+          "startLine": 390,
+          "endLine": 392,
+          "params": [
+            "{ user }"
+          ]
+        },
+        {
+          "name": "hideFromUsersWithoutCapability",
+          "startLine": 394,
+          "endLine": 402,
+          "params": [
+            "capability"
+          ]
+        },
+        {
+          "name": "canPublishPages",
+          "startLine": 404,
+          "endLine": 406,
+          "params": [
+            "user"
+          ]
+        },
+        {
+          "name": "canPublishArticles",
+          "startLine": 408,
+          "endLine": 410,
+          "params": [
+            "user"
+          ]
+        },
+        {
+          "name": "canPublishNewsEvents",
+          "startLine": 412,
+          "endLine": 414,
+          "params": [
+            "user"
+          ]
+        },
+        {
+          "name": "canPublishReviews",
+          "startLine": 416,
+          "endLine": 418,
+          "params": [
+            "user"
+          ]
+        },
+        {
+          "name": "canPublishSystemPages",
+          "startLine": 420,
+          "endLine": 422,
+          "params": [
+            "user"
+          ]
+        },
+        {
+          "name": "canManageSystemModes",
+          "startLine": 424,
+          "endLine": 426,
+          "params": [
+            "user"
+          ]
+        },
+        {
+          "name": "canViewOperationalAudit",
+          "startLine": 428,
+          "endLine": 430,
+          "params": [
+            "user"
+          ]
+        },
+        {
+          "name": "requiresEditorialWorkflow",
+          "startLine": 432,
+          "endLine": 438,
+          "params": [
+            "user"
+          ]
+        },
+        {
+          "name": "canShowEditorialWorkflow",
+          "startLine": 440,
+          "endLine": 442,
+          "params": [
+            "user"
+          ]
+        },
+        {
+          "name": "canManageTaxonomy",
+          "startLine": 444,
+          "endLine": 446,
+          "params": [
+            "user"
+          ]
+        },
+        {
+          "name": "canReadTaxonomy",
+          "startLine": 448,
+          "endLine": 460,
+          "params": [
+            "user"
+          ]
+        },
+        {
+          "name": "allCapabilitiesEnabled",
+          "startLine": 462,
+          "endLine": 464,
+          "params": []
+        },
+        {
+          "name": "getCapabilitiesForRole",
+          "startLine": 466,
+          "endLine": 472,
+          "params": [
+            "role"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "getDefaultCapabilitiesForRole",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "adminRoleOptions",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "adminCapabilityFieldOptions",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "allAdminCapabilities",
+          "line": 136,
+          "isDefault": false
+        },
+        {
+          "name": "adminCapabilityCheckboxFields",
+          "line": 259,
+          "isDefault": false
+        },
+        {
+          "name": "isAdminRole",
+          "line": 268,
+          "isDefault": false
+        },
+        {
+          "name": "normalizeAdminRole",
+          "line": 272,
+          "isDefault": false
+        },
+        {
+          "name": "sanitizeAdminCapabilities",
+          "line": 279,
+          "isDefault": false
+        },
+        {
+          "name": "toAdminCapabilitiesMap",
+          "line": 298,
+          "isDefault": false
+        },
+        {
+          "name": "isAdminUser",
+          "line": 307,
+          "isDefault": false
+        },
+        {
+          "name": "hasAdminCapability",
+          "line": 311,
+          "isDefault": false
+        },
+        {
+          "name": "adminOnlyAccess",
+          "line": 322,
+          "isDefault": false
+        },
+        {
+          "name": "adminOrFirstUserAccess",
+          "line": 326,
+          "isDefault": false
+        },
+        {
+          "name": "requireCapability",
+          "line": 346,
+          "isDefault": false
+        },
+        {
+          "name": "allowPublicReadOrCapability",
+          "line": 356,
+          "isDefault": false
+        },
+        {
+          "name": "allowPublishedReadOrCapability",
+          "line": 370,
+          "isDefault": false
+        },
+        {
+          "name": "hideFromNonAdmin",
+          "line": 390,
+          "isDefault": false
+        },
+        {
+          "name": "hideFromUsersWithoutCapability",
+          "line": 394,
+          "isDefault": false
+        },
+        {
+          "name": "canPublishPages",
+          "line": 404,
+          "isDefault": false
+        },
+        {
+          "name": "canPublishArticles",
+          "line": 408,
+          "isDefault": false
+        },
+        {
+          "name": "canPublishNewsEvents",
+          "line": 412,
+          "isDefault": false
+        },
+        {
+          "name": "canPublishReviews",
+          "line": 416,
+          "isDefault": false
+        },
+        {
+          "name": "canPublishSystemPages",
+          "line": 420,
+          "isDefault": false
+        },
+        {
+          "name": "canManageSystemModes",
+          "line": 424,
+          "isDefault": false
+        },
+        {
+          "name": "canViewOperationalAudit",
+          "line": 428,
+          "isDefault": false
+        },
+        {
+          "name": "requiresEditorialWorkflow",
+          "line": 432,
+          "isDefault": false
+        },
+        {
+          "name": "canShowEditorialWorkflow",
+          "line": 440,
+          "isDefault": false
+        },
+        {
+          "name": "canManageTaxonomy",
+          "line": 444,
+          "isDefault": false
+        },
+        {
+          "name": "canReadTaxonomy",
+          "line": 448,
+          "isDefault": false
+        },
+        {
+          "name": "getCapabilitiesForRole",
+          "line": 466,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getCapabilityDescription",
+          "callee": "value.startsWith",
+          "lineNumber": 145
+        },
+        {
+          "caller": "getCapabilityDescription",
+          "callee": "label.replace",
+          "lineNumber": 146
+        },
+        {
+          "caller": "getCapabilityDescription",
+          "callee": "value.startsWith",
+          "lineNumber": 149
+        },
+        {
+          "caller": "getCapabilityDescription",
+          "callee": "label.replace",
+          "lineNumber": 150
+        },
+        {
+          "caller": "createCapabilityCheckbox",
+          "callee": "getCapabilityDescription",
+          "lineNumber": 162
+        },
+        {
+          "caller": "createCapabilityRows",
+          "callee": "items.reduce",
+          "lineNumber": 168
+        },
+        {
+          "caller": "createCapabilityRows",
+          "callee": "Math.floor",
+          "lineNumber": 170
+        },
+        {
+          "caller": "createCapabilityRows",
+          "callee": "rows[rowIndex].fields.push",
+          "lineNumber": 179
+        },
+        {
+          "caller": "createCapabilityRows",
+          "callee": "createCapabilityCheckbox",
+          "lineNumber": 179
+        },
+        {
+          "caller": "getCapabilityItem",
+          "callee": "capabilityItemsByValue.get",
+          "lineNumber": 191
+        },
+        {
+          "caller": "createCapabilitySectionItems",
+          "callee": "values.map",
+          "lineNumber": 201
+        },
+        {
+          "caller": "isAdminRole",
+          "callee": "normalizeEditorialRole",
+          "lineNumber": 269
+        },
+        {
+          "caller": "normalizeAdminRole",
+          "callee": "normalizeEditorialRole",
+          "lineNumber": 276
+        },
+        {
+          "caller": "sanitizeAdminCapabilities",
+          "callee": "Array.isArray",
+          "lineNumber": 280
+        },
+        {
+          "caller": "sanitizeAdminCapabilities",
+          "callee": "allAdminCapabilities.filter",
+          "lineNumber": 285
+        },
+        {
+          "caller": "sanitizeAdminCapabilities",
+          "callee": "Boolean",
+          "lineNumber": 288
+        },
+        {
+          "caller": "sanitizeAdminCapabilities",
+          "callee": "value.filter",
+          "lineNumber": 292
+        },
+        {
+          "caller": "sanitizeAdminCapabilities",
+          "callee": "validCapabilities.has",
+          "lineNumber": 294
+        },
+        {
+          "caller": "toAdminCapabilitiesMap",
+          "callee": "sanitizeAdminCapabilities",
+          "lineNumber": 299
+        },
+        {
+          "caller": "toAdminCapabilitiesMap",
+          "callee": "allAdminCapabilities.reduce",
+          "lineNumber": 301
+        },
+        {
+          "caller": "toAdminCapabilitiesMap",
+          "callee": "enabledCapabilities.has",
+          "lineNumber": 302
+        },
+        {
+          "caller": "isAdminUser",
+          "callee": "normalizeAdminRole",
+          "lineNumber": 308
+        },
+        {
+          "caller": "hasAdminCapability",
+          "callee": "isAdminUser",
+          "lineNumber": 315
+        },
+        {
+          "caller": "hasAdminCapability",
+          "callee": "sanitizeAdminCapabilities(user?.capabilities).includes",
+          "lineNumber": 319
+        },
+        {
+          "caller": "hasAdminCapability",
+          "callee": "sanitizeAdminCapabilities",
+          "lineNumber": 319
+        },
+        {
+          "caller": "adminOnlyAccess",
+          "callee": "isAdminUser",
+          "lineNumber": 323
+        },
+        {
+          "caller": "adminOrFirstUserAccess",
+          "callee": "isAdminUser",
+          "lineNumber": 327
+        },
+        {
+          "caller": "adminOrFirstUserAccess",
+          "callee": "req.payload.count",
+          "lineNumber": 331
+        },
+        {
+          "caller": "toCapabilitiesArray",
+          "callee": "Array.isArray",
+          "lineNumber": 343
+        },
+        {
+          "caller": "requireCapability",
+          "callee": "toCapabilitiesArray(capability).some",
+          "lineNumber": 351
+        },
+        {
+          "caller": "requireCapability",
+          "callee": "toCapabilitiesArray",
+          "lineNumber": 351
+        },
+        {
+          "caller": "requireCapability",
+          "callee": "hasAdminCapability",
+          "lineNumber": 352
+        },
+        {
+          "caller": "allowPublicReadOrCapability",
+          "callee": "toCapabilitiesArray(capability).some",
+          "lineNumber": 365
+        },
+        {
+          "caller": "allowPublicReadOrCapability",
+          "callee": "toCapabilitiesArray",
+          "lineNumber": 365
+        },
+        {
+          "caller": "allowPublicReadOrCapability",
+          "callee": "hasAdminCapability",
+          "lineNumber": 366
+        },
+        {
+          "caller": "allowPublishedReadOrCapability",
+          "callee": "toCapabilitiesArray(capability).some",
+          "lineNumber": 376
+        },
+        {
+          "caller": "allowPublishedReadOrCapability",
+          "callee": "toCapabilitiesArray",
+          "lineNumber": 376
+        },
+        {
+          "caller": "allowPublishedReadOrCapability",
+          "callee": "hasAdminCapability",
+          "lineNumber": 377
+        },
+        {
+          "caller": "hideFromNonAdmin",
+          "callee": "isAdminUser",
+          "lineNumber": 391
+        },
+        {
+          "caller": "hideFromUsersWithoutCapability",
+          "callee": "toCapabilitiesArray(capability).some",
+          "lineNumber": 399
+        },
+        {
+          "caller": "hideFromUsersWithoutCapability",
+          "callee": "toCapabilitiesArray",
+          "lineNumber": 399
+        },
+        {
+          "caller": "hideFromUsersWithoutCapability",
+          "callee": "hasAdminCapability",
+          "lineNumber": 400
+        },
+        {
+          "caller": "canPublishPages",
+          "callee": "hasAdminCapability",
+          "lineNumber": 405
+        },
+        {
+          "caller": "canPublishArticles",
+          "callee": "hasAdminCapability",
+          "lineNumber": 409
+        },
+        {
+          "caller": "canPublishNewsEvents",
+          "callee": "hasAdminCapability",
+          "lineNumber": 413
+        },
+        {
+          "caller": "canPublishReviews",
+          "callee": "hasAdminCapability",
+          "lineNumber": 417
+        },
+        {
+          "caller": "canPublishSystemPages",
+          "callee": "hasAdminCapability",
+          "lineNumber": 421
+        },
+        {
+          "caller": "canManageSystemModes",
+          "callee": "hasAdminCapability",
+          "lineNumber": 425
+        },
+        {
+          "caller": "canViewOperationalAudit",
+          "callee": "hasAdminCapability",
+          "lineNumber": 429
+        },
+        {
+          "caller": "requiresEditorialWorkflow",
+          "callee": "isAdminUser",
+          "lineNumber": 433
+        },
+        {
+          "caller": "requiresEditorialWorkflow",
+          "callee": "hasAdminCapability",
+          "lineNumber": 437
+        },
+        {
+          "caller": "canShowEditorialWorkflow",
+          "callee": "isAdminUser",
+          "lineNumber": 441
+        },
+        {
+          "caller": "canShowEditorialWorkflow",
+          "callee": "requiresEditorialWorkflow",
+          "lineNumber": 441
+        },
+        {
+          "caller": "canManageTaxonomy",
+          "callee": "hasAdminCapability",
+          "lineNumber": 445
+        },
+        {
+          "caller": "canReadTaxonomy",
+          "callee": "(\n    [\n      'manage_taxonomy',\n      'manage_articles',\n      'publish_articles',\n      'manage_news_events',\n      'publish_news_events',\n      'manage_reviews',\n      'publish_reviews',\n    ] as AdminCapability[]\n  ).some",
+          "lineNumber": 449
+        },
+        {
+          "caller": "canReadTaxonomy",
+          "callee": "hasAdminCapability",
+          "lineNumber": 459
+        },
+        {
+          "caller": "allCapabilitiesEnabled",
+          "callee": "toAdminCapabilitiesMap",
+          "lineNumber": 463
+        },
+        {
+          "caller": "getCapabilitiesForRole",
+          "callee": "allCapabilitiesEnabled",
+          "lineNumber": 468
+        },
+        {
+          "caller": "getCapabilitiesForRole",
+          "callee": "toAdminCapabilitiesMap",
+          "lineNumber": 471
+        },
+        {
+          "caller": "getCapabilitiesForRole",
+          "callee": "getDefaultCapabilitiesForRole",
+          "lineNumber": 471
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 30,
+        "functionCount": 32,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/access/editorialRoles.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 175,
+      "nonEmptyLines": 159,
+      "functions": [
+        {
+          "name": "withCapabilities",
+          "startLine": 60,
+          "endLine": 95,
+          "params": [
+            "enabled"
+          ]
+        },
+        {
+          "name": "isEditorialRole",
+          "startLine": 138,
+          "endLine": 140,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "toNormalizedEditorialRole",
+          "startLine": 142,
+          "endLine": 152,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "normalizeEditorialRole",
+          "startLine": 154,
+          "endLine": 159,
+          "params": [
+            "value",
+            "fallback"
+          ]
+        },
+        {
+          "name": "getDefaultCapabilitiesForRole",
+          "startLine": 161,
+          "endLine": 175,
+          "params": [
+            "role"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "editorialRoleOptions",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "isEditorialRole",
+          "line": 138,
+          "isDefault": false
+        },
+        {
+          "name": "normalizeEditorialRole",
+          "line": 154,
+          "isDefault": false
+        },
+        {
+          "name": "getDefaultCapabilitiesForRole",
+          "line": 161,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "isEditorialRole",
+          "callee": "validRoles.has",
+          "lineNumber": 139
+        },
+        {
+          "caller": "toNormalizedEditorialRole",
+          "callee": "isEditorialRole",
+          "lineNumber": 143
+        },
+        {
+          "caller": "normalizeEditorialRole",
+          "callee": "toNormalizedEditorialRole",
+          "lineNumber": 158
+        },
+        {
+          "caller": "normalizeEditorialRole",
+          "callee": "toNormalizedEditorialRole",
+          "lineNumber": 158
+        },
+        {
+          "caller": "getDefaultCapabilitiesForRole",
+          "callee": "withCapabilities",
+          "lineNumber": 164
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 4,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 24,
+      "nonEmptyLines": 19,
+      "functions": [
+        {
+          "name": "generateMetadata",
+          "startLine": 18,
+          "endLine": 19,
+          "params": [
+            "{ params, searchParams }"
+          ]
+        },
+        {
+          "name": "NotFound",
+          "startLine": 21,
+          "endLine": 22,
+          "params": [
+            "{ params, searchParams }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "generateMetadata",
+          "line": 18,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "generateMetadata",
+          "callee": "generatePageMetadata",
+          "lineNumber": 19
+        },
+        {
+          "caller": "NotFound",
+          "callee": "NotFoundPage",
+          "lineNumber": 22
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 24,
+      "nonEmptyLines": 19,
+      "functions": [
+        {
+          "name": "generateMetadata",
+          "startLine": 18,
+          "endLine": 19,
+          "params": [
+            "{ params, searchParams }"
+          ]
+        },
+        {
+          "name": "Page",
+          "startLine": 21,
+          "endLine": 22,
+          "params": [
+            "{ params, searchParams }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "generateMetadata",
+          "line": 18,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "generateMetadata",
+          "callee": "generatePageMetadata",
+          "lineNumber": 19
+        },
+        {
+          "caller": "Page",
+          "callee": "RootPage",
+          "lineNumber": 22
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/(payload)/admin/importMap.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 58,
+      "nonEmptyLines": 57,
+      "exports": [
+        {
+          "name": "importMap",
+          "line": 30,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/(payload)/api/[...slug]/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 19,
+      "nonEmptyLines": 18,
+      "exports": [
+        {
+          "name": "GET",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "POST",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "DELETE",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "PATCH",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "PUT",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "OPTIONS",
+          "line": 19,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 6,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/(payload)/api/graphql-playground/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "exports": [
+        {
+          "name": "GET",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/(payload)/api/graphql/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 8,
+      "nonEmptyLines": 6,
+      "exports": [
+        {
+          "name": "POST",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "OPTIONS",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/(payload)/layout.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 31,
+      "nonEmptyLines": 26,
+      "functions": [
+        {
+          "name": "serverFunction",
+          "startLine": 16,
+          "endLine": 23,
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "Layout",
+          "startLine": 25,
+          "endLine": 29,
+          "params": [
+            "{ children }"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "serverFunction",
+          "callee": "handleServerFunctions",
+          "lineNumber": 18
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/my-route/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 12,
+      "nonEmptyLines": 10,
+      "functions": [
+        {
+          "name": "GET",
+          "startLine": 4,
+          "endLine": 12,
+          "params": [
+            "_request"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GET",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GET",
+          "callee": "getPayload",
+          "lineNumber": 5
+        },
+        {
+          "caller": "GET",
+          "callee": "Response.json",
+          "lineNumber": 9
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/HeaderNavbar12/LogoHeightField.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 52,
+      "nonEmptyLines": 40,
+      "functions": [
+        {
+          "name": "getSiblingFieldPath",
+          "startLine": 14,
+          "endLine": 18,
+          "params": [
+            "path",
+            "siblingName"
+          ]
+        },
+        {
+          "name": "LogoHeightField",
+          "startLine": 20,
+          "endLine": 52,
+          "params": [
+            "props"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "LogoHeightField",
+          "line": 20,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getSiblingFieldPath",
+          "callee": "path.split",
+          "lineNumber": 15
+        },
+        {
+          "caller": "getSiblingFieldPath",
+          "callee": "parts.join",
+          "lineNumber": 17
+        },
+        {
+          "caller": "LogoHeightField",
+          "callee": "useField",
+          "lineNumber": 22
+        },
+        {
+          "caller": "LogoHeightField",
+          "callee": "useMemo",
+          "lineNumber": 23
+        },
+        {
+          "caller": "LogoHeightField",
+          "callee": "getSiblingFieldPath",
+          "lineNumber": 23
+        },
+        {
+          "caller": "LogoHeightField",
+          "callee": "useFormFields",
+          "lineNumber": 24
+        },
+        {
+          "caller": "LogoHeightField",
+          "callee": "useRef",
+          "lineNumber": 26
+        },
+        {
+          "caller": "LogoHeightField",
+          "callee": "useEffect",
+          "lineNumber": 28
+        },
+        {
+          "caller": "LogoHeightField",
+          "callee": "setValue",
+          "lineNumber": 39
+        },
+        {
+          "caller": "LogoHeightField",
+          "callee": "setValue",
+          "lineNumber": 47
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/collections/Articles.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 289,
+      "nonEmptyLines": 284,
+      "exports": [
+        {
+          "name": "Articles",
+          "line": 39,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 8,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/collections/Categories.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 83,
+      "nonEmptyLines": 81,
+      "exports": [
+        {
+          "name": "Categories",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/collections/Footers.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 64,
+      "nonEmptyLines": 62,
+      "exports": [
+        {
+          "name": "Footers",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/collections/FormSubmissions.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 187,
+      "nonEmptyLines": 185,
+      "exports": [
+        {
+          "name": "FormSubmissions",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/collections/Forms.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 229,
+      "nonEmptyLines": 226,
+      "exports": [
+        {
+          "name": "Forms",
+          "line": 19,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/collections/Headers.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 64,
+      "nonEmptyLines": 62,
+      "exports": [
+        {
+          "name": "Headers",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/collections/Media.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 280,
+      "nonEmptyLines": 263,
+      "functions": [
+        {
+          "name": "recordMediaDeletionAudit",
+          "startLine": 23,
+          "endLine": 34,
+          "params": [
+            "{ doc, req }"
+          ]
+        },
+        {
+          "name": "isImageMimeType",
+          "startLine": 64,
+          "endLine": 65,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "beforeValidate",
+          "startLine": 67,
+          "endLine": 91,
+          "params": [
+            "{ data, operation, originalDoc }"
+          ]
+        },
+        {
+          "name": "populateMediaUsage",
+          "startLine": 99,
+          "endLine": 113,
+          "params": [
+            "{ doc, findMany, req }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Media",
+          "line": 115,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "recordMediaDeletionAudit",
+          "callee": "recordOperationalAuditEvent",
+          "lineNumber": 24
+        },
+        {
+          "caller": "recordMediaDeletionAudit",
+          "callee": "String",
+          "lineNumber": 26
+        },
+        {
+          "caller": "recordMediaDeletionAudit",
+          "callee": "doc.title?.trim",
+          "lineNumber": 27
+        },
+        {
+          "caller": "recordMediaDeletionAudit",
+          "callee": "doc.filename?.trim",
+          "lineNumber": 27
+        },
+        {
+          "caller": "recordMediaDeletionAudit",
+          "callee": "doc.title?.trim",
+          "lineNumber": 30
+        },
+        {
+          "caller": "recordMediaDeletionAudit",
+          "callee": "doc.filename?.trim",
+          "lineNumber": 30
+        },
+        {
+          "caller": "isImageMimeType",
+          "callee": "value.startsWith",
+          "lineNumber": 65
+        },
+        {
+          "caller": "beforeValidate",
+          "callee": "imageOnlyAssetTypes.has",
+          "lineNumber": 76
+        },
+        {
+          "caller": "beforeValidate",
+          "callee": "isImageMimeType",
+          "lineNumber": 76
+        },
+        {
+          "caller": "beforeValidate",
+          "callee": "isImageMimeType",
+          "lineNumber": 86
+        },
+        {
+          "caller": "beforeValidate",
+          "callee": "alt.trim",
+          "lineNumber": 86
+        },
+        {
+          "caller": "populateMediaUsage",
+          "callee": "findMediaUsage",
+          "lineNumber": 104
+        },
+        {
+          "caller": "populateMediaUsage",
+          "callee": "buildMediaUsageSummary",
+          "lineNumber": 110
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/collections/NavigationLinks.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 146,
+      "nonEmptyLines": 141,
+      "functions": [
+        {
+          "name": "validateRequiredLinkField",
+          "startLine": 10,
+          "endLine": 18,
+          "params": [
+            "linkType",
+            "message"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "NavigationLinks",
+          "line": 109,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/collections/NewsEvents.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 393,
+      "nonEmptyLines": 376,
+      "functions": [
+        {
+          "name": "isEventEntry",
+          "startLine": 31,
+          "endLine": 31,
+          "params": [
+            "data"
+          ]
+        },
+        {
+          "name": "validateEventStart",
+          "startLine": 33,
+          "endLine": 45,
+          "params": [
+            "value",
+            "{ data }"
+          ]
+        },
+        {
+          "name": "validateEventEnd",
+          "startLine": 47,
+          "endLine": 62,
+          "params": [
+            "value",
+            "{ data }"
+          ]
+        },
+        {
+          "name": "validateEventLocation",
+          "startLine": 64,
+          "endLine": 72,
+          "params": [
+            "value",
+            "{ data }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "NewsEvents",
+          "line": 74,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "validateEventStart",
+          "callee": "isEventEntry",
+          "lineNumber": 36
+        },
+        {
+          "caller": "validateEventStart",
+          "callee": "Number.isNaN",
+          "lineNumber": 40
+        },
+        {
+          "caller": "validateEventStart",
+          "callee": "new Date(value).getTime",
+          "lineNumber": 40
+        },
+        {
+          "caller": "validateEventEnd",
+          "callee": "isEventEntry",
+          "lineNumber": 50
+        },
+        {
+          "caller": "validateEventEnd",
+          "callee": "Number.isNaN",
+          "lineNumber": 57
+        },
+        {
+          "caller": "validateEventEnd",
+          "callee": "start.getTime",
+          "lineNumber": 57
+        },
+        {
+          "caller": "validateEventEnd",
+          "callee": "Number.isNaN",
+          "lineNumber": 57
+        },
+        {
+          "caller": "validateEventEnd",
+          "callee": "end.getTime",
+          "lineNumber": 57
+        },
+        {
+          "caller": "validateEventEnd",
+          "callee": "end.getTime",
+          "lineNumber": 61
+        },
+        {
+          "caller": "validateEventEnd",
+          "callee": "start.getTime",
+          "lineNumber": 61
+        },
+        {
+          "caller": "validateEventLocation",
+          "callee": "isEventEntry",
+          "lineNumber": 65
+        },
+        {
+          "caller": "validateEventLocation",
+          "callee": "value.trim",
+          "lineNumber": 69
+        }
+      ],
+      "metrics": {
+        "importCount": 10,
+        "exportCount": 1,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/collections/OperationalAuditEvents.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 90,
+      "nonEmptyLines": 88,
+      "exports": [
+        {
+          "name": "OperationalAuditEvents",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/collections/Redirects.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 180,
+      "nonEmptyLines": 167,
+      "functions": [
+        {
+          "name": "validateRequiredDestinationField",
+          "startLine": 10,
+          "endLine": 18,
+          "params": [
+            "destinationType",
+            "message"
+          ]
+        },
+        {
+          "name": "normalizeRedirectPath",
+          "startLine": 20,
+          "endLine": 30,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "beforeValidate",
+          "startLine": 32,
+          "endLine": 42,
+          "params": [
+            "{ data, operation }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Redirects",
+          "line": 142,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "normalizeRedirectPath",
+          "callee": "value.trim().split",
+          "lineNumber": 21
+        },
+        {
+          "caller": "normalizeRedirectPath",
+          "callee": "value.trim",
+          "lineNumber": 21
+        },
+        {
+          "caller": "normalizeRedirectPath",
+          "callee": "rawPathname.trim",
+          "lineNumber": 22
+        },
+        {
+          "caller": "normalizeRedirectPath",
+          "callee": "pathname.startsWith",
+          "lineNumber": 28
+        },
+        {
+          "caller": "normalizeRedirectPath",
+          "callee": "withLeadingSlash.replace",
+          "lineNumber": 29
+        },
+        {
+          "caller": "beforeValidate",
+          "callee": "normalizeRedirectPath",
+          "lineNumber": 38
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/collections/Reviews.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 333,
+      "nonEmptyLines": 328,
+      "exports": [
+        {
+          "name": "Reviews",
+          "line": 39,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 9,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/collections/SystemPages.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 243,
+      "nonEmptyLines": 232,
+      "functions": [
+        {
+          "name": "validateSystemLayout",
+          "startLine": 33,
+          "endLine": 59,
+          "params": [
+            "value",
+            "{ data }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "SystemPages",
+          "line": 61,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "validateSystemLayout",
+          "callee": "Array.isArray",
+          "lineNumber": 37
+        }
+      ],
+      "metrics": {
+        "importCount": 13,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/collections/Tags.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 76,
+      "nonEmptyLines": 74,
+      "exports": [
+        {
+          "name": "Tags",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/collections/Users.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 162,
+      "nonEmptyLines": 140,
+      "functions": [
+        {
+          "name": "showOnlyForAuthenticatedAdminUser",
+          "startLine": 19,
+          "endLine": 25,
+          "params": [
+            "_",
+            "__",
+            "{ user }"
+          ]
+        },
+        {
+          "name": "showCapabilitiesForNonAdminRole",
+          "startLine": 27,
+          "endLine": 39,
+          "params": [
+            "data",
+            "siblingData",
+            "{ user }"
+          ]
+        },
+        {
+          "name": "normalizeUserAccessFields",
+          "startLine": 41,
+          "endLine": 101,
+          "params": [
+            "{\n  data,\n  operation,\n  originalDoc,\n  req,\n}"
+          ]
+        },
+        {
+          "name": "adminOrSubmissionOperatorReadAccess",
+          "startLine": 103,
+          "endLine": 114,
+          "params": [
+            "{ req }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Users",
+          "line": 116,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "showOnlyForAuthenticatedAdminUser",
+          "callee": "Boolean",
+          "lineNumber": 24
+        },
+        {
+          "caller": "showCapabilitiesForNonAdminRole",
+          "callee": "normalizeEditorialRole",
+          "lineNumber": 36
+        },
+        {
+          "caller": "normalizeUserAccessFields",
+          "callee": "req.payload.count",
+          "lineNumber": 52
+        },
+        {
+          "caller": "normalizeUserAccessFields",
+          "callee": "toAdminCapabilitiesMap",
+          "lineNumber": 60
+        },
+        {
+          "caller": "normalizeUserAccessFields",
+          "callee": "normalizeEditorialRole",
+          "lineNumber": 64
+        },
+        {
+          "caller": "normalizeUserAccessFields",
+          "callee": "toAdminCapabilitiesMap",
+          "lineNumber": 69
+        },
+        {
+          "caller": "normalizeUserAccessFields",
+          "callee": "getCapabilitiesForRole",
+          "lineNumber": 70
+        },
+        {
+          "caller": "normalizeUserAccessFields",
+          "callee": "normalizeEditorialRole",
+          "lineNumber": 75
+        },
+        {
+          "caller": "normalizeUserAccessFields",
+          "callee": "normalizeEditorialRole",
+          "lineNumber": 76
+        },
+        {
+          "caller": "normalizeUserAccessFields",
+          "callee": "toAdminCapabilitiesMap",
+          "lineNumber": 82
+        },
+        {
+          "caller": "normalizeUserAccessFields",
+          "callee": "getCapabilitiesForRole",
+          "lineNumber": 87
+        },
+        {
+          "caller": "normalizeUserAccessFields",
+          "callee": "toAdminCapabilitiesMap",
+          "lineNumber": 92
+        },
+        {
+          "caller": "normalizeUserAccessFields",
+          "callee": "toAdminCapabilitiesMap",
+          "lineNumber": 96
+        },
+        {
+          "caller": "normalizeUserAccessFields",
+          "callee": "getCapabilitiesForRole",
+          "lineNumber": 97
+        },
+        {
+          "caller": "adminOrSubmissionOperatorReadAccess",
+          "callee": "isAdminUser",
+          "lineNumber": 106
+        },
+        {
+          "caller": "adminOrSubmissionOperatorReadAccess",
+          "callee": "hasAdminCapability",
+          "lineNumber": 111
+        },
+        {
+          "caller": "adminOrSubmissionOperatorReadAccess",
+          "callee": "hasAdminCapability",
+          "lineNumber": 112
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    }
+  ]
+}

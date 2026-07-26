@@ -1,0 +1,109 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 3,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 3,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "tests/helpers/mongoMemoryServer.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 28,
+      "nonEmptyLines": 25,
+      "functions": [
+        {
+          "name": "createTestMongoServer",
+          "startLine": 7,
+          "endLine": 28,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "createTestMongoServer",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createTestMongoServer",
+          "callee": "mkdtempSync",
+          "lineNumber": 11
+        },
+        {
+          "caller": "createTestMongoServer",
+          "callee": "join",
+          "lineNumber": 11
+        },
+        {
+          "caller": "createTestMongoServer",
+          "callee": "tmpdir",
+          "lineNumber": 11
+        },
+        {
+          "caller": "createTestMongoServer",
+          "callee": "MongoMemoryServer.create",
+          "lineNumber": 12
+        },
+        {
+          "caller": "createTestMongoServer",
+          "callee": "server.stop",
+          "lineNumber": 20
+        },
+        {
+          "caller": "createTestMongoServer",
+          "callee": "rmSync",
+          "lineNumber": 21
+        },
+        {
+          "caller": "createTestMongoServer",
+          "callee": "server.getUri",
+          "lineNumber": 26
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/api.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 70,
+      "nonEmptyLines": 60,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/starter-productization.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 69,
+      "nonEmptyLines": 56,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    }
+  ]
+}

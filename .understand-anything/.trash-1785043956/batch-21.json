@@ -1,0 +1,938 @@
+{
+  "nodes": [
+    {
+      "id": "document:docs/superpowers/plans/2026-07-11-admin-ia-simplification.md",
+      "type": "document",
+      "name": "2026-07-11-admin-ia-simplification.md",
+      "filePath": "docs/superpowers/plans/2026-07-11-admin-ia-simplification.md",
+      "summary": "Implementation plan for Admin IA Simplification, organizing 4 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "admin-ui"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-11-system-mode-homepage-fallback.md",
+      "type": "document",
+      "name": "2026-07-11-system-mode-homepage-fallback.md",
+      "filePath": "docs/superpowers/plans/2026-07-11-system-mode-homepage-fallback.md",
+      "summary": "Implementation plan for System Mode Homepage Fallback, organizing 1 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "system-pages"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-11-system-page-block-architecture-refactor.md",
+      "type": "document",
+      "name": "2026-07-11-system-page-block-architecture-refactor.md",
+      "filePath": "docs/superpowers/plans/2026-07-11-system-page-block-architecture-refactor.md",
+      "summary": "Implementation plan for System Page Block Architecture Refactor, organizing 3 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "system-pages"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-11-system-page-default-blocks.md",
+      "type": "document",
+      "name": "2026-07-11-system-page-default-blocks.md",
+      "filePath": "docs/superpowers/plans/2026-07-11-system-page-default-blocks.md",
+      "summary": "Implementation plan for System Page Default Blocks, organizing 3 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "system-pages"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-12-block-cleanup.md",
+      "type": "document",
+      "name": "2026-07-12-block-cleanup.md",
+      "filePath": "docs/superpowers/plans/2026-07-12-block-cleanup.md",
+      "summary": "Implementation plan for Block Cleanup, organizing 3 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "content-block"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-13-feature-spotlight-block.md",
+      "type": "document",
+      "name": "2026-07-13-feature-spotlight-block.md",
+      "filePath": "docs/superpowers/plans/2026-07-13-feature-spotlight-block.md",
+      "summary": "Implementation plan for Feature Spotlight Block, organizing 5 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "feature-spotlight"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-13-footer56-footer-preset.md",
+      "type": "document",
+      "name": "2026-07-13-footer56-footer-preset.md",
+      "filePath": "docs/superpowers/plans/2026-07-13-footer56-footer-preset.md",
+      "summary": "Implementation plan for Footer56 Footer Preset, organizing 5 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "footer"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-13-footer56-legal-tab-terms.md",
+      "type": "document",
+      "name": "2026-07-13-footer56-legal-tab-terms.md",
+      "filePath": "docs/superpowers/plans/2026-07-13-footer56-legal-tab-terms.md",
+      "summary": "Implementation plan for Footer56 Legal Tab Terms Integration, organizing 1 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "footer"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-13-footer56-site-settings-integration.md",
+      "type": "document",
+      "name": "2026-07-13-footer56-site-settings-integration.md",
+      "filePath": "docs/superpowers/plans/2026-07-13-footer56-site-settings-integration.md",
+      "summary": "Implementation plan for Footer56 Site Settings Integration, organizing 3 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "footer"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-13-header-navbar-block.md",
+      "type": "document",
+      "name": "2026-07-13-header-navbar-block.md",
+      "filePath": "docs/superpowers/plans/2026-07-13-header-navbar-block.md",
+      "summary": "Implementation plan for Header Navbar Block, organizing 4 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "header"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-13-hero-institutional-block.md",
+      "type": "document",
+      "name": "2026-07-13-hero-institutional-block.md",
+      "filePath": "docs/superpowers/plans/2026-07-13-hero-institutional-block.md",
+      "summary": "Implementation plan for Hero Institutional Block, organizing 4 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "hero"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-13-stats-strip-block.md",
+      "type": "document",
+      "name": "2026-07-13-stats-strip-block.md",
+      "filePath": "docs/superpowers/plans/2026-07-13-stats-strip-block.md",
+      "summary": "Implementation plan for Stats Strip Block, organizing 3 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "stats"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-14-block-components-theme-normalization.md",
+      "type": "document",
+      "name": "2026-07-14-block-components-theme-normalization.md",
+      "filePath": "docs/superpowers/plans/2026-07-14-block-components-theme-normalization.md",
+      "summary": "Implementation plan for Block Components Theme Normalization, organizing 5 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "theming"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-14-shared-block-appearance-controls.md",
+      "type": "document",
+      "name": "2026-07-14-shared-block-appearance-controls.md",
+      "filePath": "docs/superpowers/plans/2026-07-14-shared-block-appearance-controls.md",
+      "summary": "Implementation plan for Shared Block Appearance Controls, organizing 5 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "content-block"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-14-website-theme-registry.md",
+      "type": "document",
+      "name": "2026-07-14-website-theme-registry.md",
+      "filePath": "docs/superpowers/plans/2026-07-14-website-theme-registry.md",
+      "summary": "Implementation plan for Website Theme Registry, organizing 2 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "theming"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-17-block-thumbnail-generation.md",
+      "type": "document",
+      "name": "2026-07-17-block-thumbnail-generation.md",
+      "filePath": "docs/superpowers/plans/2026-07-17-block-thumbnail-generation.md",
+      "summary": "Implementation plan for Block Thumbnail Generation, organizing 3 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "block-thumbnail"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-17-feature-matrix-block.md",
+      "type": "document",
+      "name": "2026-07-17-feature-matrix-block.md",
+      "filePath": "docs/superpowers/plans/2026-07-17-feature-matrix-block.md",
+      "summary": "Implementation plan for Feature Matrix Block, organizing 11 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "feature-matrix"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-18-feature-matrix-image-height.md",
+      "type": "document",
+      "name": "2026-07-18-feature-matrix-image-height.md",
+      "filePath": "docs/superpowers/plans/2026-07-18-feature-matrix-image-height.md",
+      "summary": "Implementation plan for Feature Matrix Responsive Image Height, organizing 1 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "feature-matrix"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-18-feature-matrix-rename.md",
+      "type": "document",
+      "name": "2026-07-18-feature-matrix-rename.md",
+      "filePath": "docs/superpowers/plans/2026-07-18-feature-matrix-rename.md",
+      "summary": "Implementation plan for Feature Matrix Complete Rename, organizing 4 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "feature-matrix"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-block.md",
+      "type": "document",
+      "name": "2026-07-18-gallery-showcase-block.md",
+      "filePath": "docs/superpowers/plans/2026-07-18-gallery-showcase-block.md",
+      "summary": "Implementation plan for Gallery Showcase Block, organizing 5 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "gallery"
+      ],
+      "complexity": "complex"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-admin-ia-simplification.md",
+      "target": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-admin-ia-simplification.md",
+      "target": "file:src/collections/Pages.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-admin-ia-simplification.md",
+      "target": "file:src/collections/Categories.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-admin-ia-simplification.md",
+      "target": "file:src/collections/Tags.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-admin-ia-simplification.md",
+      "target": "file:src/collections/Articles.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-system-mode-homepage-fallback.md",
+      "target": "file:tests/int/page-routing.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-system-mode-homepage-fallback.md",
+      "target": "file:src/app/(frontend)/pageData.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-system-mode-homepage-fallback.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-system-mode-homepage-fallback.md",
+      "target": "file:tests/int/page-settings-system-mode.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-system-page-block-architecture-refactor.md",
+      "target": "file:src/components/system-pages/types.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-system-page-block-architecture-refactor.md",
+      "target": "file:src/components/system-pages/primitives/SystemPageShell.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-system-page-block-architecture-refactor.md",
+      "target": "file:src/components/system-pages/primitives/SystemPageActions.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-system-page-block-architecture-refactor.md",
+      "target": "file:src/components/system-pages/primitives/SystemPageStatus.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-system-page-block-architecture-refactor.md",
+      "target": "file:src/components/system-pages/primitives/SystemPageCopy.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-system-page-default-blocks.md",
+      "target": "file:src/blocks/systemPageFields.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-system-page-default-blocks.md",
+      "target": "file:src/blocks/System404/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-system-page-default-blocks.md",
+      "target": "file:src/blocks/SystemMaintenance/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-system-page-default-blocks.md",
+      "target": "file:src/blocks/SystemComingSoon/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-11-system-page-default-blocks.md",
+      "target": "file:tests/int/system-page-blocks.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-12-block-cleanup.md",
+      "target": "file:src/styles/globals.css",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-12-block-cleanup.md",
+      "target": "file:src/collections/Pages.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-12-block-cleanup.md",
+      "target": "file:src/collections/Reviews.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-12-block-cleanup.md",
+      "target": "file:src/collections/Headers.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-12-block-cleanup.md",
+      "target": "file:src/collections/Footers.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-feature-spotlight-block.md",
+      "target": "file:src/blocks/FeatureSpotlight/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-feature-spotlight-block.md",
+      "target": "file:src/blocks/FeatureSpotlight/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-feature-spotlight-block.md",
+      "target": "file:src/collections/Pages.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-feature-spotlight-block.md",
+      "target": "file:src/blocks/renderPageBlocks.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-feature-spotlight-block.md",
+      "target": "file:tests/int/page-blocks.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-footer56-footer-preset.md",
+      "target": "file:src/blocks/Footer56/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-footer56-footer-preset.md",
+      "target": "file:src/collections/Footers.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-footer56-footer-preset.md",
+      "target": "file:tests/int/system-page-blocks.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-footer56-footer-preset.md",
+      "target": "file:tests/int/page-blocks.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-footer56-footer-preset.md",
+      "target": "file:src/blocks/HeaderNavbar12/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-footer56-legal-tab-terms.md",
+      "target": "file:src/globals/SiteSettings.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-footer56-legal-tab-terms.md",
+      "target": "file:src/blocks/Footer56/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-footer56-legal-tab-terms.md",
+      "target": "file:src/blocks/renderFooterBlocks.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-footer56-legal-tab-terms.md",
+      "target": "file:src/components/global/GlobalFooter.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-footer56-legal-tab-terms.md",
+      "target": "file:src/app/(frontend)/layout.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-footer56-site-settings-integration.md",
+      "target": "file:src/blocks/Footer56/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-footer56-site-settings-integration.md",
+      "target": "file:src/globals/SiteSettings.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-footer56-site-settings-integration.md",
+      "target": "file:tests/int/page-blocks.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-footer56-site-settings-integration.md",
+      "target": "file:src/blocks/Footer56/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-footer56-site-settings-integration.md",
+      "target": "file:src/blocks/renderFooterBlocks.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-header-navbar-block.md",
+      "target": "file:src/blocks/HeaderNavbar12/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-header-navbar-block.md",
+      "target": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-header-navbar-block.md",
+      "target": "file:src/blocks/renderHeaderBlocks.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-header-navbar-block.md",
+      "target": "file:src/components/site/SiteLogo.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-header-navbar-block.md",
+      "target": "file:src/components/header/HeaderNavbar.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-hero-institutional-block.md",
+      "target": "file:src/collections/Pages.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-hero-institutional-block.md",
+      "target": "file:src/blocks/renderPageBlocks.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-hero-institutional-block.md",
+      "target": "file:tests/int/page-blocks.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-hero-institutional-block.md",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-hero-institutional-block.md",
+      "target": "file:src/lib/media.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-stats-strip-block.md",
+      "target": "file:src/blocks/StatsStrip/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-stats-strip-block.md",
+      "target": "file:src/collections/Pages.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-stats-strip-block.md",
+      "target": "file:tests/int/page-blocks.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-stats-strip-block.md",
+      "target": "file:src/blocks/Announcement/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-13-stats-strip-block.md",
+      "target": "file:src/blocks/FeatureSpotlight/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-14-block-components-theme-normalization.md",
+      "target": "file:src/components/announcement/AnnouncementBar.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-14-block-components-theme-normalization.md",
+      "target": "file:src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-14-block-components-theme-normalization.md",
+      "target": "file:src/components/announcement/RotatingAnnouncementContent.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-14-block-components-theme-normalization.md",
+      "target": "file:tests/int/global-announcement.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-14-block-components-theme-normalization.md",
+      "target": "file:tests/int/marquee-announcement.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-14-shared-block-appearance-controls.md",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-14-shared-block-appearance-controls.md",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-14-shared-block-appearance-controls.md",
+      "target": "file:tests/int/page-blocks.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-14-shared-block-appearance-controls.md",
+      "target": "file:tests/int/system-page-blocks.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-14-shared-block-appearance-controls.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-14-website-theme-registry.md",
+      "target": "file:src/lib/themes/websiteThemes.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-14-website-theme-registry.md",
+      "target": "file:tests/int/theme-settings.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-14-website-theme-registry.md",
+      "target": "file:src/app/(frontend)/layout.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-14-website-theme-registry.md",
+      "target": "file:src/globals/ThemeSettings.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-17-block-thumbnail-generation.md",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-17-block-thumbnail-generation.md",
+      "target": "file:src/blocks/Announcement/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-17-block-thumbnail-generation.md",
+      "target": "file:src/blocks/FeatureSpotlight/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-17-block-thumbnail-generation.md",
+      "target": "file:src/blocks/StatsStrip/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-17-block-thumbnail-generation.md",
+      "target": "file:src/blocks/ReviewSubmission/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-17-feature-matrix-block.md",
+      "target": "file:src/styles/custom.css",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-17-feature-matrix-block.md",
+      "target": "file:src/components/feature-matrix.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-17-feature-matrix-block.md",
+      "target": "file:tests/int/feature-matrix.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-17-feature-matrix-block.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-17-feature-matrix-block.md",
+      "target": "file:src/blocks/FeatureMatrix/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-feature-matrix-image-height.md",
+      "target": "file:tests/int/feature-matrix.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-feature-matrix-image-height.md",
+      "target": "file:src/components/feature-matrix.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-feature-matrix-image-height.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-feature-matrix-rename.md",
+      "target": "file:src/styles/custom.css",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-feature-matrix-rename.md",
+      "target": "file:tests/int/feature-matrix.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-feature-matrix-rename.md",
+      "target": "file:tests/int/block-thumbnails.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-feature-matrix-rename.md",
+      "target": "file:tests/int/page-blocks.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-feature-matrix-rename.md",
+      "target": "file:tests/int/system-page-blocks.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-block.md",
+      "target": "file:src/blocks/GalleryShowcase/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-block.md",
+      "target": "file:src/blocks/GalleryShowcase/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-block.md",
+      "target": "file:src/components/gallery-showcase.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-block.md",
+      "target": "file:src/components/gallery-showcase-fan.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-block.md",
+      "target": "file:tests/int/gallery-showcase.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

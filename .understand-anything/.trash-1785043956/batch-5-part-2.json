@@ -1,0 +1,775 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/hooks/normalizeNewsEventFields.ts",
+      "type": "file",
+      "name": "normalizeNewsEventFields.ts",
+      "filePath": "src/hooks/normalizeNewsEventFields.ts",
+      "summary": "Normalizes news and event documents so fields that do not apply to the selected content type are cleared before persistence.",
+      "tags": [
+        "hook",
+        "validation",
+        "payload-cms"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/normalizeNewsEventFields.ts:normalizeNewsEventFields",
+      "type": "function",
+      "name": "normalizeNewsEventFields",
+      "filePath": "src/hooks/normalizeNewsEventFields.ts",
+      "lineRange": [
+        3,
+        14
+      ],
+      "summary": "Clears fields that do not apply to the selected news-or-event record type.",
+      "tags": [
+        "utility",
+        "normalization",
+        "data-transform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/hooks/preventMediaDeletionWhileInUse.ts",
+      "type": "file",
+      "name": "preventMediaDeletionWhileInUse.ts",
+      "filePath": "src/hooks/preventMediaDeletionWhileInUse.ts",
+      "summary": "Blocks deletion of media that is still referenced and reports the referencing locations to the administrator.",
+      "tags": [
+        "hook",
+        "validation",
+        "payload-cms"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/preventMediaDeletionWhileInUse.ts:preventMediaDeletionWhileInUse",
+      "type": "function",
+      "name": "preventMediaDeletionWhileInUse",
+      "filePath": "src/hooks/preventMediaDeletionWhileInUse.ts",
+      "lineRange": [
+        7,
+        28
+      ],
+      "summary": "Rejects media deletion when references to the asset still exist.",
+      "tags": [
+        "hook",
+        "validation",
+        "access-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "type": "file",
+      "name": "preventReferencedSystemPageInvalidation.ts",
+      "filePath": "src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "summary": "Prevents system pages from being deleted, unpublished, or retagged while global behavior settings still reference them.",
+      "tags": [
+        "hook",
+        "validation",
+        "payload-cms"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/hooks/preventReferencedSystemPageInvalidation.ts:getSystemPageID",
+      "type": "function",
+      "name": "getSystemPageID",
+      "filePath": "src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "lineRange": [
+        7,
+        17
+      ],
+      "summary": "Normalizes a system-page relationship to its scalar identifier.",
+      "tags": [
+        "utility",
+        "cms",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/preventReferencedSystemPageInvalidation.ts:getSystemBehaviorUsage",
+      "type": "function",
+      "name": "getSystemBehaviorUsage",
+      "filePath": "src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "lineRange": [
+        19,
+        51
+      ],
+      "summary": "Finds global behavior settings that reference a given system page.",
+      "tags": [
+        "utility",
+        "cms",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/preventReferencedSystemPageInvalidation.ts:preventReferencedSystemPageInvalidation",
+      "type": "function",
+      "name": "preventReferencedSystemPageInvalidation",
+      "filePath": "src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "lineRange": [
+        53,
+        100
+      ],
+      "summary": "Rejects changes that would invalidate a system page still used by global settings.",
+      "tags": [
+        "hook",
+        "validation",
+        "access-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/hooks/syncFormSubmissionToWorkQueue.ts",
+      "type": "file",
+      "name": "syncFormSubmissionToWorkQueue.ts",
+      "filePath": "src/hooks/syncFormSubmissionToWorkQueue.ts",
+      "summary": "Synchronizes actionable form-submission states into deduplicated operational work-queue conditions.",
+      "tags": [
+        "hook",
+        "work-queue",
+        "editorial-workflow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/hooks/syncFormSubmissionToWorkQueue.ts:syncFormSubmissionToWorkQueue",
+      "type": "function",
+      "name": "syncFormSubmissionToWorkQueue",
+      "filePath": "src/hooks/syncFormSubmissionToWorkQueue.ts",
+      "lineRange": [
+        15,
+        78
+      ],
+      "summary": "Maps a form submission to the currently active work-queue condition.",
+      "tags": [
+        "hook",
+        "synchronization",
+        "work-queue"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/hooks/syncMediaToWorkQueue.ts",
+      "type": "file",
+      "name": "syncMediaToWorkQueue.ts",
+      "filePath": "src/hooks/syncMediaToWorkQueue.ts",
+      "summary": "Synchronizes media review, replacement, and metadata issues into deduplicated operational work-queue conditions.",
+      "tags": [
+        "hook",
+        "work-queue",
+        "editorial-workflow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/hooks/syncMediaToWorkQueue.ts:syncMediaToWorkQueue",
+      "type": "function",
+      "name": "syncMediaToWorkQueue",
+      "filePath": "src/hooks/syncMediaToWorkQueue.ts",
+      "lineRange": [
+        14,
+        101
+      ],
+      "summary": "Maps media health and review states to active work-queue conditions.",
+      "tags": [
+        "hook",
+        "synchronization",
+        "work-queue"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/hooks/syncPrimaryCategoryMembership.ts",
+      "type": "file",
+      "name": "syncPrimaryCategoryMembership.ts",
+      "filePath": "src/hooks/syncPrimaryCategoryMembership.ts",
+      "summary": "Normalizes relationship identifiers and ensures a selected primary category is included in the complete category membership list.",
+      "tags": [
+        "hook",
+        "validation",
+        "payload-cms"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/syncPrimaryCategoryMembership.ts:toRelationshipID",
+      "type": "function",
+      "name": "toRelationshipID",
+      "filePath": "src/hooks/syncPrimaryCategoryMembership.ts",
+      "lineRange": [
+        3,
+        15
+      ],
+      "summary": "Normalizes a relationship value to its scalar identifier.",
+      "tags": [
+        "utility",
+        "cms",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/syncPrimaryCategoryMembership.ts:syncPrimaryCategoryMembership",
+      "type": "function",
+      "name": "syncPrimaryCategoryMembership",
+      "filePath": "src/hooks/syncPrimaryCategoryMembership.ts",
+      "lineRange": [
+        17,
+        50
+      ],
+      "summary": "Ensures primary-category membership is reflected in the category list.",
+      "tags": [
+        "hook",
+        "synchronization",
+        "work-queue"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/hooks/syncReviewToWorkQueue.ts",
+      "type": "file",
+      "name": "syncReviewToWorkQueue.ts",
+      "filePath": "src/hooks/syncReviewToWorkQueue.ts",
+      "summary": "Synchronizes moderation and publication issues from review records into the operational work queue.",
+      "tags": [
+        "hook",
+        "work-queue",
+        "editorial-workflow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/hooks/syncReviewToWorkQueue.ts:syncReviewToWorkQueue",
+      "type": "function",
+      "name": "syncReviewToWorkQueue",
+      "filePath": "src/hooks/syncReviewToWorkQueue.ts",
+      "lineRange": [
+        15,
+        80
+      ],
+      "summary": "Maps a review record to the currently active moderation work-queue condition.",
+      "tags": [
+        "hook",
+        "synchronization",
+        "work-queue"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/hooks/syncWorkQueueItem.ts",
+      "type": "file",
+      "name": "syncWorkQueueItem.ts",
+      "filePath": "src/hooks/syncWorkQueueItem.ts",
+      "summary": "Provides a request-context marker that prevents recursive work-queue synchronization while queue items are being updated.",
+      "tags": [
+        "hook",
+        "work-queue",
+        "editorial-workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/syncWorkQueueItem.ts:isWorkQueueSyncContext",
+      "type": "function",
+      "name": "isWorkQueueSyncContext",
+      "filePath": "src/hooks/syncWorkQueueItem.ts",
+      "lineRange": [
+        3,
+        5
+      ],
+      "summary": "Checks whether the request context marks an internal work-queue synchronization.",
+      "tags": [
+        "utility",
+        "cms",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/syncWorkQueueItem.ts:withWorkQueueSyncContext",
+      "type": "function",
+      "name": "withWorkQueueSyncContext",
+      "filePath": "src/hooks/syncWorkQueueItem.ts",
+      "lineRange": [
+        7,
+        14
+      ],
+      "summary": "Returns request context marked as an internal work-queue synchronization.",
+      "tags": [
+        "utility",
+        "cms",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "type": "file",
+      "name": "syncWorkflowStateToWorkQueue.ts",
+      "filePath": "src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "summary": "Builds reusable after-change hooks that translate editorial workflow or draft-publication states into work-queue conditions.",
+      "tags": [
+        "hook",
+        "work-queue",
+        "editorial-workflow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/hooks/syncWorkflowStateToWorkQueue.ts:createWorkflowQueueHook",
+      "type": "function",
+      "name": "createWorkflowQueueHook",
+      "filePath": "src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "lineRange": [
+        23,
+        85
+      ],
+      "summary": "Creates a hook that maps configured editorial states to work-queue conditions.",
+      "tags": [
+        "factory",
+        "payload-cms",
+        "configuration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/hooks/syncWorkflowStateToWorkQueue.ts:createDraftPublishQueueHook",
+      "type": "function",
+      "name": "createDraftPublishQueueHook",
+      "filePath": "src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "lineRange": [
+        87,
+        142
+      ],
+      "summary": "Creates a hook that tracks unpublished draft changes as a publication issue.",
+      "tags": [
+        "factory",
+        "payload-cms",
+        "configuration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/hooks/updateFormSubmissionActivity.ts",
+      "type": "file",
+      "name": "updateFormSubmissionActivity.ts",
+      "filePath": "src/hooks/updateFormSubmissionActivity.ts",
+      "summary": "Tracks form-submission activity timestamps when ownership or internal notes change.",
+      "tags": [
+        "hook",
+        "validation",
+        "payload-cms"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/updateFormSubmissionActivity.ts:normalizeOwnerID",
+      "type": "function",
+      "name": "normalizeOwnerID",
+      "filePath": "src/hooks/updateFormSubmissionActivity.ts",
+      "lineRange": [
+        11,
+        21
+      ],
+      "summary": "Normalizes a form-submission owner relationship to a finite numeric identifier.",
+      "tags": [
+        "utility",
+        "normalization",
+        "data-transform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/updateFormSubmissionActivity.ts:updateFormSubmissionActivity",
+      "type": "function",
+      "name": "updateFormSubmissionActivity",
+      "filePath": "src/hooks/updateFormSubmissionActivity.ts",
+      "lineRange": [
+        27,
+        55
+      ],
+      "summary": "Updates the activity timestamp when assignment or notes change.",
+      "tags": [
+        "utility",
+        "cms",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/hooks/validateSEOContract.ts",
+      "type": "file",
+      "name": "validateSEOContract.ts",
+      "filePath": "src/hooks/validateSEOContract.ts",
+      "summary": "Creates an SEO validation hook that normalizes canonical URLs and rejects robots settings that conflict with public-route requirements.",
+      "tags": [
+        "hook",
+        "validation",
+        "seo"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/hooks/validateSEOContract.ts:validateSEOContract",
+      "type": "function",
+      "name": "validateSEOContract",
+      "filePath": "src/hooks/validateSEOContract.ts",
+      "lineRange": [
+        23,
+        68
+      ],
+      "summary": "Creates a validation hook for canonical URL and robots-policy consistency.",
+      "tags": [
+        "validation",
+        "hook",
+        "business-rule"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/cmsSession.ts",
+      "type": "file",
+      "name": "cmsSession.ts",
+      "filePath": "src/lib/cmsSession.ts",
+      "summary": "Provides server-side helpers for resolving the current Payload CMS user, checking administrator status, and formatting role labels.",
+      "tags": [
+        "utility",
+        "cms",
+        "type-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/cmsSession.ts:formatCMSRoleLabel",
+      "type": "function",
+      "name": "formatCMSRoleLabel",
+      "filePath": "src/lib/cmsSession.ts",
+      "lineRange": [
+        28,
+        39
+      ],
+      "summary": "Formats a CMS role identifier as a human-readable label.",
+      "tags": [
+        "utility",
+        "cms",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/editorialWorkflow.ts",
+      "type": "file",
+      "name": "editorialWorkflow.ts",
+      "filePath": "src/lib/editorialWorkflow.ts",
+      "summary": "Declares the canonical editorial workflow states and their labels for reuse by collections, hooks, and admin controls.",
+      "tags": [
+        "utility",
+        "cms",
+        "type-definition"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/hooks/normalizeNewsEventFields.ts",
+      "target": "function:src/hooks/normalizeNewsEventFields.ts:normalizeNewsEventFields",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/normalizeNewsEventFields.ts",
+      "target": "function:src/hooks/normalizeNewsEventFields.ts:normalizeNewsEventFields",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/preventMediaDeletionWhileInUse.ts",
+      "target": "function:src/hooks/preventMediaDeletionWhileInUse.ts:preventMediaDeletionWhileInUse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/preventMediaDeletionWhileInUse.ts",
+      "target": "function:src/hooks/preventMediaDeletionWhileInUse.ts:preventMediaDeletionWhileInUse",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "target": "function:src/hooks/preventReferencedSystemPageInvalidation.ts:getSystemPageID",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "target": "function:src/hooks/preventReferencedSystemPageInvalidation.ts:getSystemBehaviorUsage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "target": "function:src/hooks/preventReferencedSystemPageInvalidation.ts:preventReferencedSystemPageInvalidation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "target": "function:src/hooks/preventReferencedSystemPageInvalidation.ts:preventReferencedSystemPageInvalidation",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/syncFormSubmissionToWorkQueue.ts",
+      "target": "function:src/hooks/syncFormSubmissionToWorkQueue.ts:syncFormSubmissionToWorkQueue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/syncFormSubmissionToWorkQueue.ts",
+      "target": "function:src/hooks/syncFormSubmissionToWorkQueue.ts:syncFormSubmissionToWorkQueue",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/syncMediaToWorkQueue.ts",
+      "target": "function:src/hooks/syncMediaToWorkQueue.ts:syncMediaToWorkQueue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/syncMediaToWorkQueue.ts",
+      "target": "function:src/hooks/syncMediaToWorkQueue.ts:syncMediaToWorkQueue",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/syncPrimaryCategoryMembership.ts",
+      "target": "function:src/hooks/syncPrimaryCategoryMembership.ts:toRelationshipID",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/syncPrimaryCategoryMembership.ts",
+      "target": "function:src/hooks/syncPrimaryCategoryMembership.ts:syncPrimaryCategoryMembership",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/syncPrimaryCategoryMembership.ts",
+      "target": "function:src/hooks/syncPrimaryCategoryMembership.ts:syncPrimaryCategoryMembership",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/syncReviewToWorkQueue.ts",
+      "target": "function:src/hooks/syncReviewToWorkQueue.ts:syncReviewToWorkQueue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/syncReviewToWorkQueue.ts",
+      "target": "function:src/hooks/syncReviewToWorkQueue.ts:syncReviewToWorkQueue",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/syncWorkQueueItem.ts",
+      "target": "function:src/hooks/syncWorkQueueItem.ts:isWorkQueueSyncContext",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/syncWorkQueueItem.ts",
+      "target": "function:src/hooks/syncWorkQueueItem.ts:isWorkQueueSyncContext",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/syncWorkQueueItem.ts",
+      "target": "function:src/hooks/syncWorkQueueItem.ts:withWorkQueueSyncContext",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/syncWorkQueueItem.ts",
+      "target": "function:src/hooks/syncWorkQueueItem.ts:withWorkQueueSyncContext",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "target": "function:src/hooks/syncWorkflowStateToWorkQueue.ts:createWorkflowQueueHook",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "target": "function:src/hooks/syncWorkflowStateToWorkQueue.ts:createWorkflowQueueHook",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "target": "function:src/hooks/syncWorkflowStateToWorkQueue.ts:createDraftPublishQueueHook",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "target": "function:src/hooks/syncWorkflowStateToWorkQueue.ts:createDraftPublishQueueHook",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/updateFormSubmissionActivity.ts",
+      "target": "function:src/hooks/updateFormSubmissionActivity.ts:normalizeOwnerID",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/updateFormSubmissionActivity.ts",
+      "target": "function:src/hooks/updateFormSubmissionActivity.ts:updateFormSubmissionActivity",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/updateFormSubmissionActivity.ts",
+      "target": "function:src/hooks/updateFormSubmissionActivity.ts:updateFormSubmissionActivity",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/validateSEOContract.ts",
+      "target": "function:src/hooks/validateSEOContract.ts:validateSEOContract",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/validateSEOContract.ts",
+      "target": "function:src/hooks/validateSEOContract.ts:validateSEOContract",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/cmsSession.ts",
+      "target": "function:src/lib/cmsSession.ts:formatCMSRoleLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/cmsSession.ts",
+      "target": "function:src/lib/cmsSession.ts:formatCMSRoleLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/preventMediaDeletionWhileInUse.ts",
+      "target": "file:src/lib/mediaUsage.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "target": "file:src/lib/systemPageTypes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/syncFormSubmissionToWorkQueue.ts",
+      "target": "file:src/lib/workQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/syncMediaToWorkQueue.ts",
+      "target": "file:src/lib/workQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/syncReviewToWorkQueue.ts",
+      "target": "file:src/lib/workQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "target": "file:src/lib/workQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/validateSEOContract.ts",
+      "target": "file:src/lib/seo.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/cmsSession.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/cmsSession.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

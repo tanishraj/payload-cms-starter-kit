@@ -1,0 +1,174 @@
+{
+  "nodes": [
+    {
+      "id": "document:docs/operations/editorial-governance.md",
+      "type": "document",
+      "name": "editorial-governance.md",
+      "filePath": "docs/operations/editorial-governance.md",
+      "summary": "Operational guide to editorial roles, workflow states, high-risk administration surfaces, and the version-and-audit recovery procedure.",
+      "tags": [
+        "documentation",
+        "operations",
+        "editorial-workflow",
+        "governance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/operations/mongodb-deployment.md",
+      "type": "document",
+      "name": "mongodb-deployment.md",
+      "filePath": "docs/operations/mongodb-deployment.md",
+      "summary": "Deployment runbook covering supported MongoDB environments, required database and media variables, local Docker startup, hosted storage guidance, and verification.",
+      "tags": [
+        "documentation",
+        "deployment",
+        "mongodb",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/operations/starter-clone-checklist.md",
+      "type": "document",
+      "name": "starter-clone-checklist.md",
+      "filePath": "docs/operations/starter-clone-checklist.md",
+      "summary": "Client handoff checklist for replacing identity defaults, selecting providers, reviewing CMS configuration, testing content workflows, and preserving safe customization boundaries.",
+      "tags": [
+        "documentation",
+        "operations",
+        "client-handoff",
+        "checklist"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:docs/operations/editorial-governance.md",
+      "target": "file:src/collections/Pages.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/editorial-governance.md",
+      "target": "file:src/collections/SystemPages.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/editorial-governance.md",
+      "target": "file:src/collections/OperationalAuditEvents.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/editorial-governance.md",
+      "target": "file:src/globals/SystemModeSettings.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/mongodb-deployment.md",
+      "target": "config:.env.example",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/mongodb-deployment.md",
+      "target": "service:docker-compose.yml",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/mongodb-deployment.md",
+      "target": "file:src/config/runtime.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/mongodb-deployment.md",
+      "target": "file:src/config/providers.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/starter-clone-checklist.md",
+      "target": "config:package.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/starter-clone-checklist.md",
+      "target": "document:docs/architecture/content-model-map.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/starter-clone-checklist.md",
+      "target": "file:src/config/runtime.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/starter-clone-checklist.md",
+      "target": "file:src/config/providers.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/starter-clone-checklist.md",
+      "target": "file:src/globals/SiteSettings.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/starter-clone-checklist.md",
+      "target": "file:src/globals/PageSettings.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/starter-clone-checklist.md",
+      "target": "file:src/globals/SEOSettings.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/starter-clone-checklist.md",
+      "target": "file:src/globals/ThemeSettings.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/starter-clone-checklist.md",
+      "target": "file:src/collections/SystemPages.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/operations/starter-clone-checklist.md",
+      "target": "file:src/lib/formSubmissionEvents.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

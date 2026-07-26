@@ -1,0 +1,147 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "docs/superpowers/plans/2026-07-07-cms-foundation-audit.md",
+      "language": "markdown",
+      "sizeLines": 467,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-07-cms-foundation-remediation-plan.md",
+      "language": "markdown",
+      "sizeLines": 679,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-08-articles-reviews-implementation-plan.md",
+      "language": "markdown",
+      "sizeLines": 1413,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-08-editorial-governance-plan.md",
+      "language": "markdown",
+      "sizeLines": 1771,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-08-review-intake-promotion.md",
+      "language": "markdown",
+      "sizeLines": 67,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-08-vercel-postgres-runtime-plan.md",
+      "language": "markdown",
+      "sizeLines": 655,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-form-submissions-lead-operations.md",
+      "language": "markdown",
+      "sizeLines": 67,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-homepage-e2e-seeding.md",
+      "language": "markdown",
+      "sizeLines": 81,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-media-governance.md",
+      "language": "markdown",
+      "sizeLines": 72,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-operator-guides.md",
+      "language": "markdown",
+      "sizeLines": 534,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-playwright-readiness-route.md",
+      "language": "markdown",
+      "sizeLines": 56,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-playwright-sqlite-worker-serialization.md",
+      "language": "markdown",
+      "sizeLines": 67,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-pnpm-startup-contract-fix.md",
+      "language": "markdown",
+      "sizeLines": 59,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-publish-queue-safety-implementation.md",
+      "language": "markdown",
+      "sizeLines": 385,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-role-capability-model.md",
+      "language": "markdown",
+      "sizeLines": 783,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-seo-operations-completeness.md",
+      "language": "markdown",
+      "sizeLines": 368,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-starter-productization-and-handoff.md",
+      "language": "markdown",
+      "sizeLines": 464,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-taxonomy-and-content-organization.md",
+      "language": "markdown",
+      "sizeLines": 325,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-work-queue-implementation.md",
+      "language": "markdown",
+      "sizeLines": 728,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-10-mongodb-runtime-reset.md",
+      "language": "markdown",
+      "sizeLines": 602,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "docs/superpowers/plans/2026-07-07-cms-foundation-audit.md": [],
+    "docs/superpowers/plans/2026-07-07-cms-foundation-remediation-plan.md": [],
+    "docs/superpowers/plans/2026-07-08-articles-reviews-implementation-plan.md": [],
+    "docs/superpowers/plans/2026-07-08-editorial-governance-plan.md": [],
+    "docs/superpowers/plans/2026-07-08-review-intake-promotion.md": [],
+    "docs/superpowers/plans/2026-07-08-vercel-postgres-runtime-plan.md": [],
+    "docs/superpowers/plans/2026-07-09-form-submissions-lead-operations.md": [],
+    "docs/superpowers/plans/2026-07-09-homepage-e2e-seeding.md": [],
+    "docs/superpowers/plans/2026-07-09-media-governance.md": [],
+    "docs/superpowers/plans/2026-07-09-operator-guides.md": [],
+    "docs/superpowers/plans/2026-07-09-playwright-readiness-route.md": [],
+    "docs/superpowers/plans/2026-07-09-playwright-sqlite-worker-serialization.md": [],
+    "docs/superpowers/plans/2026-07-09-pnpm-startup-contract-fix.md": [],
+    "docs/superpowers/plans/2026-07-09-publish-queue-safety-implementation.md": [],
+    "docs/superpowers/plans/2026-07-09-role-capability-model.md": [],
+    "docs/superpowers/plans/2026-07-09-seo-operations-completeness.md": [],
+    "docs/superpowers/plans/2026-07-09-starter-productization-and-handoff.md": [],
+    "docs/superpowers/plans/2026-07-09-taxonomy-and-content-organization.md": [],
+    "docs/superpowers/plans/2026-07-09-work-queue-implementation.md": [],
+    "docs/superpowers/plans/2026-07-10-mongodb-runtime-reset.md": []
+  }
+}

@@ -1,0 +1,311 @@
+{
+  "nodes": [
+    {
+      "id": "file:tests/e2e/admin.e2e.spec.ts",
+      "type": "file",
+      "name": "admin.e2e.spec.ts",
+      "filePath": "tests/e2e/admin.e2e.spec.ts",
+      "summary": "Playwright end-to-end coverage that authenticates a seeded administrator and verifies dashboard, user-list, and user-edit navigation.",
+      "tags": [
+        "test",
+        "e2e-test",
+        "playwright",
+        "admin-ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/e2e/frontend.e2e.spec.ts",
+      "type": "file",
+      "name": "frontend.e2e.spec.ts",
+      "filePath": "tests/e2e/frontend.e2e.spec.ts",
+      "summary": "Playwright end-to-end coverage that seeds a published homepage and verifies its title and announcement content on the public frontend.",
+      "tags": [
+        "test",
+        "e2e-test",
+        "playwright",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/helpers/login.ts",
+      "type": "file",
+      "name": "login.ts",
+      "filePath": "tests/helpers/login.ts",
+      "summary": "Provides a Playwright helper that authenticates a test user through the Payload admin login form.",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "payload-cms",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/helpers/login.ts:login",
+      "type": "function",
+      "name": "login",
+      "filePath": "tests/helpers/login.ts",
+      "lineRange": [
+        16,
+        31
+      ],
+      "summary": "Authenticates a supplied test user through the Payload admin login interface.",
+      "tags": [
+        "test-helper",
+        "authentication",
+        "playwright"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/helpers/seedHomepage.ts",
+      "type": "file",
+      "name": "seedHomepage.ts",
+      "filePath": "tests/helpers/seedHomepage.ts",
+      "summary": "Creates and removes the published homepage fixture used by frontend end-to-end tests, including representative Announcement and CTA blocks.",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "payload-cms",
+        "seeding"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/helpers/seedHomepage.ts:seedHomepage",
+      "type": "function",
+      "name": "seedHomepage",
+      "filePath": "tests/helpers/seedHomepage.ts",
+      "lineRange": [
+        53,
+        83
+      ],
+      "summary": "Creates the published homepage fixture and assigns it as the global homepage.",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/helpers/seedHomepage.ts:cleanupHomepage",
+      "type": "function",
+      "name": "cleanupHomepage",
+      "filePath": "tests/helpers/seedHomepage.ts",
+      "lineRange": [
+        85,
+        108
+      ],
+      "summary": "Clears the global homepage reference and deletes the seeded page fixture.",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/helpers/seedUser.ts",
+      "type": "file",
+      "name": "seedUser.ts",
+      "filePath": "tests/helpers/seedUser.ts",
+      "summary": "Creates, resolves, and removes the deterministic administrator fixture used across end-to-end tests.",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "payload-cms",
+        "seeding"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/helpers/seedUser.ts:seedTestUser",
+      "type": "function",
+      "name": "seedTestUser",
+      "filePath": "tests/helpers/seedUser.ts",
+      "lineRange": [
+        13,
+        31
+      ],
+      "summary": "Replaces any existing fixture account with a fresh administrator test user.",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/helpers/seedUser.ts:getTestUserDocument",
+      "type": "function",
+      "name": "getTestUserDocument",
+      "filePath": "tests/helpers/seedUser.ts",
+      "lineRange": [
+        33,
+        64
+      ],
+      "summary": "Loads the seeded test user and returns the identity fields needed for access-controlled fixture creation.",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/helpers/seedUser.ts:cleanupTestUser",
+      "type": "function",
+      "name": "cleanupTestUser",
+      "filePath": "tests/helpers/seedUser.ts",
+      "lineRange": [
+        69,
+        80
+      ],
+      "summary": "Deletes the deterministic test-user fixture after an end-to-end run.",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "database"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:tests/helpers/login.ts",
+      "target": "function:tests/helpers/login.ts:login",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/helpers/login.ts",
+      "target": "function:tests/helpers/login.ts:login",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/helpers/seedHomepage.ts",
+      "target": "function:tests/helpers/seedHomepage.ts:seedHomepage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/helpers/seedHomepage.ts",
+      "target": "function:tests/helpers/seedHomepage.ts:seedHomepage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/helpers/seedHomepage.ts",
+      "target": "function:tests/helpers/seedHomepage.ts:cleanupHomepage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/helpers/seedHomepage.ts",
+      "target": "function:tests/helpers/seedHomepage.ts:cleanupHomepage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/helpers/seedUser.ts",
+      "target": "function:tests/helpers/seedUser.ts:seedTestUser",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/helpers/seedUser.ts",
+      "target": "function:tests/helpers/seedUser.ts:seedTestUser",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/helpers/seedUser.ts",
+      "target": "function:tests/helpers/seedUser.ts:getTestUserDocument",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/helpers/seedUser.ts",
+      "target": "function:tests/helpers/seedUser.ts:getTestUserDocument",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/helpers/seedUser.ts",
+      "target": "function:tests/helpers/seedUser.ts:cleanupTestUser",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/helpers/seedUser.ts",
+      "target": "function:tests/helpers/seedUser.ts:cleanupTestUser",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/e2e/admin.e2e.spec.ts",
+      "target": "file:tests/helpers/login.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/e2e/admin.e2e.spec.ts",
+      "target": "file:tests/helpers/seedUser.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/e2e/frontend.e2e.spec.ts",
+      "target": "file:tests/helpers/seedHomepage.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/e2e/frontend.e2e.spec.ts",
+      "target": "file:tests/helpers/seedUser.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/helpers/seedHomepage.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/helpers/seedHomepage.ts",
+      "target": "file:tests/helpers/seedUser.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/helpers/seedUser.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "fixedSectionOk": true,
+  "nodesRecovered": 1,
+  "edgesRestored": 1,
+  "crossBatchEdgesAdded": 0,
+  "typesRemapped": 0,
+  "complexityRemapped": 0,
+  "notes": [
+    "Recovered exported cached function getNewsEventsHighlights, which the structural extractor omitted because it is wrapped in cache(...).",
+    "Restored the dropped call edge and added the function’s contains and exports structural edges.",
+    "All 915 importMap relationships already had exact imports edges; no cross-batch import gaps or extras were found.",
+    "The assembled graph had no missing IDs, duplicate node IDs, unknown node types, invalid complexity values, or dangling edges before recovery.",
+    "Merge normalization counts were reasonable; no systemic ID or complexity correction issue was reported."
+  ]
+}

@@ -1,0 +1,245 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "src/collections/WorkQueue.ts",
+      "language": "typescript",
+      "sizeLines": 428,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/config/providers.ts",
+      "language": "typescript",
+      "sizeLines": 51,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/config/runtime.ts",
+      "language": "typescript",
+      "sizeLines": 146,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/config/starterContract.ts",
+      "language": "typescript",
+      "sizeLines": 40,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/fields/buildSEOFields.ts",
+      "language": "typescript",
+      "sizeLines": 98,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/globals/NewsEventsSettings.ts",
+      "language": "typescript",
+      "sizeLines": 125,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/globals/PageSettings.ts",
+      "language": "typescript",
+      "sizeLines": 380,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/globals/SEOSettings.ts",
+      "language": "typescript",
+      "sizeLines": 62,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/globals/SiteSettings.ts",
+      "language": "typescript",
+      "sizeLines": 181,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/globals/SystemModeSettings.ts",
+      "language": "typescript",
+      "sizeLines": 170,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/globals/ThemeSettings.ts",
+      "language": "typescript",
+      "sizeLines": 62,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/enforceEditorialWorkflow.ts",
+      "language": "typescript",
+      "sizeLines": 196,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/logOperationalAuditEvent.ts",
+      "language": "typescript",
+      "sizeLines": 65,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/normalizeNewsEventFields.ts",
+      "language": "typescript",
+      "sizeLines": 14,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/preventMediaDeletionWhileInUse.ts",
+      "language": "typescript",
+      "sizeLines": 28,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "language": "typescript",
+      "sizeLines": 100,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/syncFormSubmissionToWorkQueue.ts",
+      "language": "typescript",
+      "sizeLines": 78,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/syncMediaToWorkQueue.ts",
+      "language": "typescript",
+      "sizeLines": 101,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/syncPrimaryCategoryMembership.ts",
+      "language": "typescript",
+      "sizeLines": 50,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/syncReviewToWorkQueue.ts",
+      "language": "typescript",
+      "sizeLines": 80,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/syncWorkQueueItem.ts",
+      "language": "typescript",
+      "sizeLines": 14,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "language": "typescript",
+      "sizeLines": 142,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/updateFormSubmissionActivity.ts",
+      "language": "typescript",
+      "sizeLines": 55,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/validateSEOContract.ts",
+      "language": "typescript",
+      "sizeLines": 68,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/cmsSession.ts",
+      "language": "typescript",
+      "sizeLines": 39,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/editorialWorkflow.ts",
+      "language": "typescript",
+      "sizeLines": 25,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "src/collections/WorkQueue.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/hooks/syncWorkQueueItem.ts",
+      "src/lib/operationalAudit.ts"
+    ],
+    "src/config/providers.ts": [
+      "src/config/runtime.ts"
+    ],
+    "src/config/runtime.ts": [],
+    "src/config/starterContract.ts": [
+      "src/config/runtime.ts"
+    ],
+    "src/fields/buildSEOFields.ts": [
+      "src/lib/seo.ts"
+    ],
+    "src/globals/NewsEventsSettings.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/logOperationalAuditEvent.ts"
+    ],
+    "src/globals/PageSettings.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/hooks/logOperationalAuditEvent.ts",
+      "src/lib/operationalAudit.ts"
+    ],
+    "src/globals/SEOSettings.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/lib/seo.ts"
+    ],
+    "src/globals/SiteSettings.ts": [
+      "src/access/adminCapabilities.ts"
+    ],
+    "src/globals/SystemModeSettings.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/hooks/logOperationalAuditEvent.ts",
+      "src/lib/systemPageTypes.ts"
+    ],
+    "src/globals/ThemeSettings.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/lib/themes/websiteThemes.ts"
+    ],
+    "src/hooks/enforceEditorialWorkflow.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/lib/editorialWorkflow.ts",
+      "src/lib/workQueue.ts"
+    ],
+    "src/hooks/logOperationalAuditEvent.ts": [
+      "src/lib/operationalAudit.ts"
+    ],
+    "src/hooks/normalizeNewsEventFields.ts": [],
+    "src/hooks/preventMediaDeletionWhileInUse.ts": [
+      "src/lib/mediaUsage.ts"
+    ],
+    "src/hooks/preventReferencedSystemPageInvalidation.ts": [
+      "src/lib/systemPageTypes.ts"
+    ],
+    "src/hooks/syncFormSubmissionToWorkQueue.ts": [
+      "src/lib/workQueue.ts"
+    ],
+    "src/hooks/syncMediaToWorkQueue.ts": [
+      "src/lib/workQueue.ts"
+    ],
+    "src/hooks/syncPrimaryCategoryMembership.ts": [],
+    "src/hooks/syncReviewToWorkQueue.ts": [
+      "src/lib/workQueue.ts"
+    ],
+    "src/hooks/syncWorkQueueItem.ts": [],
+    "src/hooks/syncWorkflowStateToWorkQueue.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/lib/workQueue.ts"
+    ],
+    "src/hooks/updateFormSubmissionActivity.ts": [],
+    "src/hooks/validateSEOContract.ts": [
+      "src/lib/seo.ts"
+    ],
+    "src/lib/cmsSession.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/payload.config.ts"
+    ],
+    "src/lib/editorialWorkflow.ts": []
+  }
+}

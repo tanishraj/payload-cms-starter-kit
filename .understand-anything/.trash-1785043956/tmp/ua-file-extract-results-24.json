@@ -1,0 +1,2658 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 20,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 20,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 0,
+      "failed": 0,
+      "skipped": 20
+    }
+  },
+  "results": [
+    {
+      "path": "docs/superpowers/specs/2026-07-10-mongodb-runtime-reset-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 251,
+      "nonEmptyLines": 149,
+      "sections": [
+        {
+          "heading": "MongoDB Runtime Reset Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Why This Change Exists",
+          "level": 2,
+          "line": 15
+        },
+        {
+          "heading": "Target Runtime Contract",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "Environment Contract",
+          "level": 3,
+          "line": 30
+        },
+        {
+          "heading": "Runtime Validation",
+          "level": 3,
+          "line": 48
+        },
+        {
+          "heading": "Adapter Selection",
+          "level": 3,
+          "line": 62
+        },
+        {
+          "heading": "Local Development Workflow",
+          "level": 2,
+          "line": 73
+        },
+        {
+          "heading": "Primary Local Flow",
+          "level": 3,
+          "line": 77
+        },
+        {
+          "heading": "Docker Scope",
+          "level": 3,
+          "line": 90
+        },
+        {
+          "heading": "Test Strategy",
+          "level": 2,
+          "line": 98
+        },
+        {
+          "heading": "Integration Tests",
+          "level": 3,
+          "line": 102
+        },
+        {
+          "heading": "SQLite Retry Removal",
+          "level": 3,
+          "line": 115
+        },
+        {
+          "heading": "E2E Tests",
+          "level": 3,
+          "line": 124
+        },
+        {
+          "heading": "Media Contract",
+          "level": 2,
+          "line": 132
+        },
+        {
+          "heading": "Code Changes In Scope",
+          "level": 2,
+          "line": 143
+        },
+        {
+          "heading": "Runtime Layer",
+          "level": 3,
+          "line": 145
+        },
+        {
+          "heading": "Dependencies",
+          "level": 3,
+          "line": 154
+        },
+        {
+          "heading": "Tests And Helpers",
+          "level": 3,
+          "line": 165
+        },
+        {
+          "heading": "Generated Artifacts",
+          "level": 3,
+          "line": 175
+        },
+        {
+          "heading": "Documentation Changes",
+          "level": 2,
+          "line": 183
+        },
+        {
+          "heading": "Must Update",
+          "level": 3,
+          "line": 187
+        },
+        {
+          "heading": "Deployment Doc Change",
+          "level": 3,
+          "line": 194
+        },
+        {
+          "heading": "Non-Goals",
+          "level": 2,
+          "line": 207
+        },
+        {
+          "heading": "Risks And Mitigations",
+          "level": 2,
+          "line": 217
+        },
+        {
+          "heading": "Risk: Test Harness Breakage",
+          "level": 3,
+          "line": 219
+        },
+        {
+          "heading": "Risk: Stale Generated SQLite Artifacts",
+          "level": 3,
+          "line": 228
+        },
+        {
+          "heading": "Risk: Local Confusion During Transition",
+          "level": 3,
+          "line": 237
+        },
+        {
+          "heading": "Recommendation",
+          "level": 2,
+          "line": 247
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 29
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-11-admin-ia-simplification-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 283,
+      "nonEmptyLines": 194,
+      "sections": [
+        {
+          "heading": "Admin IA Simplification Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Objective",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Current Problem",
+          "level": 2,
+          "line": 30
+        },
+        {
+          "heading": "Design Goals",
+          "level": 2,
+          "line": 44
+        },
+        {
+          "heading": "Recommended Approach",
+          "level": 2,
+          "line": 54
+        },
+        {
+          "heading": "Navigation Structure",
+          "level": 2,
+          "line": 68
+        },
+        {
+          "heading": "Website Content",
+          "level": 3,
+          "line": 70
+        },
+        {
+          "heading": "Website Structure",
+          "level": 3,
+          "line": 79
+        },
+        {
+          "heading": "Lead Capture",
+          "level": 3,
+          "line": 87
+        },
+        {
+          "heading": "Site Settings",
+          "level": 3,
+          "line": 92
+        },
+        {
+          "heading": "Operations",
+          "level": 3,
+          "line": 100
+        },
+        {
+          "heading": "Grouping Rules",
+          "level": 2,
+          "line": 106
+        },
+        {
+          "heading": "Label Strategy",
+          "level": 2,
+          "line": 114
+        },
+        {
+          "heading": "Labels To Change",
+          "level": 3,
+          "line": 116
+        },
+        {
+          "heading": "Labels To Keep",
+          "level": 3,
+          "line": 124
+        },
+        {
+          "heading": "Rationale",
+          "level": 3,
+          "line": 143
+        },
+        {
+          "heading": "Role Visibility Behavior",
+          "level": 2,
+          "line": 155
+        },
+        {
+          "heading": "Admin",
+          "level": 3,
+          "line": 157
+        },
+        {
+          "heading": "Site Manager And Content Manager",
+          "level": 3,
+          "line": 164
+        },
+        {
+          "heading": "Reviews Positioning",
+          "level": 2,
+          "line": 172
+        },
+        {
+          "heading": "Architecture Impact",
+          "level": 2,
+          "line": 184
+        },
+        {
+          "heading": "Testing Strategy",
+          "level": 2,
+          "line": 204
+        },
+        {
+          "heading": "Automated",
+          "level": 3,
+          "line": 206
+        },
+        {
+          "heading": "Manual",
+          "level": 3,
+          "line": 214
+        },
+        {
+          "heading": "Documentation Impact",
+          "level": 2,
+          "line": 223
+        },
+        {
+          "heading": "Risks",
+          "level": 2,
+          "line": 235
+        },
+        {
+          "heading": "Risk: Over-polishing labels",
+          "level": 3,
+          "line": 237
+        },
+        {
+          "heading": "Risk: Role-based nav feels inconsistent",
+          "level": 3,
+          "line": 246
+        },
+        {
+          "heading": "Risk: Docs drift from UI",
+          "level": 3,
+          "line": 256
+        },
+        {
+          "heading": "Out Of Scope",
+          "level": 2,
+          "line": 264
+        },
+        {
+          "heading": "Final Recommendation",
+          "level": 2,
+          "line": 274
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 31
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-11-optional-editorial-workflow-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 312,
+      "nonEmptyLines": 197,
+      "sections": [
+        {
+          "heading": "Optional Editorial Workflow Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Why This Change",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "Current Behavior",
+          "level": 2,
+          "line": 33
+        },
+        {
+          "heading": "Workflow-aware collections",
+          "level": 3,
+          "line": 35
+        },
+        {
+          "heading": "Enforcement behavior",
+          "level": 3,
+          "line": 54
+        },
+        {
+          "heading": "Work Queue behavior",
+          "level": 3,
+          "line": 66
+        },
+        {
+          "heading": "Design Principles",
+          "level": 2,
+          "line": 83
+        },
+        {
+          "heading": "Capability Model",
+          "level": 2,
+          "line": 93
+        },
+        {
+          "heading": "New capability",
+          "level": 3,
+          "line": 95
+        },
+        {
+          "heading": "Existing capabilities remain separate",
+          "level": 3,
+          "line": 107
+        },
+        {
+          "heading": "Role Defaults",
+          "level": 2,
+          "line": 128
+        },
+        {
+          "heading": "Admin",
+          "level": 3,
+          "line": 130
+        },
+        {
+          "heading": "Site Manager",
+          "level": 3,
+          "line": 143
+        },
+        {
+          "heading": "Content Manager",
+          "level": 3,
+          "line": 157
+        },
+        {
+          "heading": "Runtime Rules",
+          "level": 2,
+          "line": 171
+        },
+        {
+          "heading": "1. Admin bypass",
+          "level": 3,
+          "line": 173
+        },
+        {
+          "heading": "2. Users without `require_editorial_workflow`",
+          "level": 3,
+          "line": 183
+        },
+        {
+          "heading": "3. Users with `require_editorial_workflow`",
+          "level": 3,
+          "line": 194
+        },
+        {
+          "heading": "4. Publish blockers",
+          "level": 3,
+          "line": 206
+        },
+        {
+          "heading": "Work Queue Behavior",
+          "level": 2,
+          "line": 216
+        },
+        {
+          "heading": "Queue creation",
+          "level": 3,
+          "line": 218
+        },
+        {
+          "heading": "Assignment",
+          "level": 3,
+          "line": 232
+        },
+        {
+          "heading": "Admin UX",
+          "level": 2,
+          "line": 244
+        },
+        {
+          "heading": "Admin experience",
+          "level": 3,
+          "line": 246
+        },
+        {
+          "heading": "Non-workflow user experience",
+          "level": 3,
+          "line": 254
+        },
+        {
+          "heading": "Workflow-required user experience",
+          "level": 3,
+          "line": 262
+        },
+        {
+          "heading": "Capability UI",
+          "level": 3,
+          "line": 271
+        },
+        {
+          "heading": "What This Design Does Not Introduce",
+          "level": 2,
+          "line": 283
+        },
+        {
+          "heading": "Recommendation",
+          "level": 2,
+          "line": 294
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 30
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-11-system-page-block-architecture-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 327,
+      "nonEmptyLines": 211,
+      "sections": [
+        {
+          "heading": "System Page Block Architecture Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Problem Statement",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "Design Decision",
+          "level": 2,
+          "line": 19
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 30
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 46
+        },
+        {
+          "heading": "1. Payload block layer",
+          "level": 3,
+          "line": 48
+        },
+        {
+          "heading": "2. Adapter layer",
+          "level": 3,
+          "line": 58
+        },
+        {
+          "heading": "3. View layer",
+          "level": 3,
+          "line": 79
+        },
+        {
+          "heading": "4. Primitive layer",
+          "level": 3,
+          "line": 96
+        },
+        {
+          "heading": "5. Fallback page alignment",
+          "level": 3,
+          "line": 117
+        },
+        {
+          "heading": "Data Flow",
+          "level": 2,
+          "line": 127
+        },
+        {
+          "heading": "Schema Strategy",
+          "level": 2,
+          "line": 142
+        },
+        {
+          "heading": "Shared fields now",
+          "level": 3,
+          "line": 156
+        },
+        {
+          "heading": "Extensibility later",
+          "level": 3,
+          "line": 165
+        },
+        {
+          "heading": "Why This Is Better",
+          "level": 2,
+          "line": 175
+        },
+        {
+          "heading": "Extensibility",
+          "level": 3,
+          "line": 177
+        },
+        {
+          "heading": "Maintainability",
+          "level": 3,
+          "line": 188
+        },
+        {
+          "heading": "Testability",
+          "level": 3,
+          "line": 192
+        },
+        {
+          "heading": "Alignment with Payload",
+          "level": 3,
+          "line": 199
+        },
+        {
+          "heading": "Alternatives Considered",
+          "level": 2,
+          "line": 203
+        },
+        {
+          "heading": "Option 1. Keep one shared `SystemPageHero` with more variants",
+          "level": 3,
+          "line": 205
+        },
+        {
+          "heading": "Option 2. Separate views with shared primitives",
+          "level": 3,
+          "line": 220
+        },
+        {
+          "heading": "Option 3. Fully separate schemas, rendering, and fields",
+          "level": 3,
+          "line": 236
+        },
+        {
+          "heading": "Testing Strategy",
+          "level": 2,
+          "line": 250
+        },
+        {
+          "heading": "1. Schema tests",
+          "level": 3,
+          "line": 252
+        },
+        {
+          "heading": "2. Adapter tests",
+          "level": 3,
+          "line": 260
+        },
+        {
+          "heading": "3. View rendering tests",
+          "level": 3,
+          "line": 268
+        },
+        {
+          "heading": "4. Fallback tests",
+          "level": 3,
+          "line": 277
+        },
+        {
+          "heading": "Refactor Plan",
+          "level": 2,
+          "line": 281
+        },
+        {
+          "heading": "Naming Convention",
+          "level": 2,
+          "line": 294
+        },
+        {
+          "heading": "Error Handling and Operational Considerations",
+          "level": 2,
+          "line": 304
+        },
+        {
+          "heading": "Performance Considerations",
+          "level": 2,
+          "line": 311
+        },
+        {
+          "heading": "Success Criteria",
+          "level": 2,
+          "line": 318
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 34
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-11-system-page-default-blocks-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 282,
+      "nonEmptyLines": 188,
+      "sections": [
+        {
+          "heading": "System Page Default Blocks Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Objective",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Current Problem",
+          "level": 2,
+          "line": 21
+        },
+        {
+          "heading": "Design Goals",
+          "level": 2,
+          "line": 46
+        },
+        {
+          "heading": "Recommended Approach",
+          "level": 2,
+          "line": 55
+        },
+        {
+          "heading": "Layout Direction",
+          "level": 2,
+          "line": 72
+        },
+        {
+          "heading": "404",
+          "level": 3,
+          "line": 84
+        },
+        {
+          "heading": "Maintenance",
+          "level": 3,
+          "line": 97
+        },
+        {
+          "heading": "Coming Soon",
+          "level": 3,
+          "line": 111
+        },
+        {
+          "heading": "Shared Visual Rules",
+          "level": 2,
+          "line": 125
+        },
+        {
+          "heading": "Content Model",
+          "level": 2,
+          "line": 145
+        },
+        {
+          "heading": "Shared Fields",
+          "level": 3,
+          "line": 149
+        },
+        {
+          "heading": "Fields To Remove From This Direction",
+          "level": 3,
+          "line": 160
+        },
+        {
+          "heading": "Rendering Architecture",
+          "level": 2,
+          "line": 177
+        },
+        {
+          "heading": "Header And Footer Behavior",
+          "level": 2,
+          "line": 192
+        },
+        {
+          "heading": "Responsive Behavior",
+          "level": 2,
+          "line": 207
+        },
+        {
+          "heading": "Fallback Behavior",
+          "level": 2,
+          "line": 218
+        },
+        {
+          "heading": "shadcn Usage Strategy",
+          "level": 2,
+          "line": 227
+        },
+        {
+          "heading": "Non-Goals",
+          "level": 2,
+          "line": 244
+        },
+        {
+          "heading": "Testing Strategy",
+          "level": 2,
+          "line": 256
+        },
+        {
+          "heading": "Automated",
+          "level": 3,
+          "line": 258
+        },
+        {
+          "heading": "Manual",
+          "level": 3,
+          "line": 266
+        },
+        {
+          "heading": "Recommended Outcome",
+          "level": 2,
+          "line": 275
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 23
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-12-block-cleanup-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 37,
+      "nonEmptyLines": 21,
+      "sections": [
+        {
+          "heading": "Block Cleanup Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "Preserved Infrastructure",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "Data and Compatibility",
+          "level": 2,
+          "line": 19
+        },
+        {
+          "heading": "Verification",
+          "level": 2,
+          "line": 25
+        },
+        {
+          "heading": "Completion Criteria",
+          "level": 2,
+          "line": 35
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-feature-spotlight-block-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 305,
+      "nonEmptyLines": 216,
+      "sections": [
+        {
+          "heading": "Feature Spotlight Block Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Approved Direction",
+          "level": 2,
+          "line": 14
+        },
+        {
+          "heading": "Design Principles",
+          "level": 2,
+          "line": 29
+        },
+        {
+          "heading": "Block Identity",
+          "level": 2,
+          "line": 37
+        },
+        {
+          "heading": "Content Model",
+          "level": 2,
+          "line": 44
+        },
+        {
+          "heading": "Required fields",
+          "level": 3,
+          "line": 46
+        },
+        {
+          "heading": "Optional fields",
+          "level": 3,
+          "line": 52
+        },
+        {
+          "heading": "Layout fields",
+          "level": 3,
+          "line": 64
+        },
+        {
+          "heading": "CTA mode field",
+          "level": 3,
+          "line": 87
+        },
+        {
+          "heading": "Link CTA fields",
+          "level": 3,
+          "line": 95
+        },
+        {
+          "heading": "Button CTA fields",
+          "level": 3,
+          "line": 117
+        },
+        {
+          "heading": "Structure",
+          "level": 2,
+          "line": 134
+        },
+        {
+          "heading": "Media Behavior",
+          "level": 2,
+          "line": 155
+        },
+        {
+          "heading": "Content Behavior",
+          "level": 2,
+          "line": 162
+        },
+        {
+          "heading": "CTA Behavior",
+          "level": 2,
+          "line": 169
+        },
+        {
+          "heading": "Link mode",
+          "level": 3,
+          "line": 171
+        },
+        {
+          "heading": "Buttons mode",
+          "level": 3,
+          "line": 183
+        },
+        {
+          "heading": "Background Behavior",
+          "level": 2,
+          "line": 194
+        },
+        {
+          "heading": "Layout Behavior",
+          "level": 2,
+          "line": 202
+        },
+        {
+          "heading": "`split` mode",
+          "level": 3,
+          "line": 204
+        },
+        {
+          "heading": "`contentOnly` mode",
+          "level": 3,
+          "line": 212
+        },
+        {
+          "heading": "Mobile behavior",
+          "level": 3,
+          "line": 219
+        },
+        {
+          "heading": "Visual Tone",
+          "level": 2,
+          "line": 225
+        },
+        {
+          "heading": "Accessibility",
+          "level": 2,
+          "line": 242
+        },
+        {
+          "heading": "Files to Add",
+          "level": 2,
+          "line": 250
+        },
+        {
+          "heading": "Files to Update",
+          "level": 2,
+          "line": 256
+        },
+        {
+          "heading": "Testing and Verification",
+          "level": 2,
+          "line": 263
+        },
+        {
+          "heading": "Schema checks",
+          "level": 3,
+          "line": 265
+        },
+        {
+          "heading": "Render checks",
+          "level": 3,
+          "line": 272
+        },
+        {
+          "heading": "Responsive checks",
+          "level": 3,
+          "line": 283
+        },
+        {
+          "heading": "Non-Goals for v1",
+          "level": 2,
+          "line": 289
+        },
+        {
+          "heading": "Implementation Notes",
+          "level": 2,
+          "line": 300
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 33
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-footer56-footer-preset-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 289,
+      "nonEmptyLines": 203,
+      "sections": [
+        {
+          "heading": "Footer56 Footer Preset Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Approved Direction",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "Design Principles",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "Preset source",
+          "level": 3,
+          "line": 28
+        },
+        {
+          "heading": "Rendering path",
+          "level": 3,
+          "line": 34
+        },
+        {
+          "heading": "File pattern",
+          "level": 3,
+          "line": 41
+        },
+        {
+          "heading": "Block Identity",
+          "level": 2,
+          "line": 53
+        },
+        {
+          "heading": "Content Model",
+          "level": 2,
+          "line": 60
+        },
+        {
+          "heading": "Branding fields",
+          "level": 3,
+          "line": 62
+        },
+        {
+          "heading": "Link group fields",
+          "level": 3,
+          "line": 84
+        },
+        {
+          "heading": "CTA fields",
+          "level": 3,
+          "line": 111
+        },
+        {
+          "heading": "Bottom utility fields",
+          "level": 3,
+          "line": 130
+        },
+        {
+          "heading": "Display field",
+          "level": 3,
+          "line": 153
+        },
+        {
+          "heading": "Layout Structure",
+          "level": 2,
+          "line": 165
+        },
+        {
+          "heading": "Top band",
+          "level": 3,
+          "line": 169
+        },
+        {
+          "heading": "Middle band",
+          "level": 3,
+          "line": 177
+        },
+        {
+          "heading": "Bottom band",
+          "level": 3,
+          "line": 185
+        },
+        {
+          "heading": "Visual Direction",
+          "level": 2,
+          "line": 193
+        },
+        {
+          "heading": "Tone",
+          "level": 3,
+          "line": 201
+        },
+        {
+          "heading": "Visual behavior",
+          "level": 3,
+          "line": 208
+        },
+        {
+          "heading": "Divider system",
+          "level": 3,
+          "line": 215
+        },
+        {
+          "heading": "Typography",
+          "level": 3,
+          "line": 221
+        },
+        {
+          "heading": "Footer56 Adaptation Rules",
+          "level": 2,
+          "line": 228
+        },
+        {
+          "heading": "Theme Behavior",
+          "level": 2,
+          "line": 243
+        },
+        {
+          "heading": "Admin Experience",
+          "level": 2,
+          "line": 261
+        },
+        {
+          "heading": "Future Extension Boundary",
+          "level": 2,
+          "line": 269
+        },
+        {
+          "heading": "Testing Expectations",
+          "level": 2,
+          "line": 282
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 29
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-footer56-footer-preset-revision-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 162,
+      "nonEmptyLines": 116,
+      "sections": [
+        {
+          "heading": "Footer56 Footer Preset Revision Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Approved Direction",
+          "level": 2,
+          "line": 15
+        },
+        {
+          "heading": "Design Principles",
+          "level": 2,
+          "line": 24
+        },
+        {
+          "heading": "Revised Content Ownership",
+          "level": 2,
+          "line": 32
+        },
+        {
+          "heading": "Footer block owns",
+          "level": 3,
+          "line": 34
+        },
+        {
+          "heading": "Site Settings owns",
+          "level": 3,
+          "line": 47
+        },
+        {
+          "heading": "Schema Changes",
+          "level": 2,
+          "line": 59
+        },
+        {
+          "heading": "Add",
+          "level": 3,
+          "line": 61
+        },
+        {
+          "heading": "Remove",
+          "level": 3,
+          "line": 69
+        },
+        {
+          "heading": "Rendering Contract",
+          "level": 2,
+          "line": 76
+        },
+        {
+          "heading": "Left column order",
+          "level": 3,
+          "line": 78
+        },
+        {
+          "heading": "Logo behavior",
+          "level": 3,
+          "line": 89
+        },
+        {
+          "heading": "Contact behavior",
+          "level": 3,
+          "line": 97
+        },
+        {
+          "heading": "Social behavior",
+          "level": 3,
+          "line": 105
+        },
+        {
+          "heading": "Bottom row behavior",
+          "level": 3,
+          "line": 112
+        },
+        {
+          "heading": "Render Context Changes",
+          "level": 2,
+          "line": 118
+        },
+        {
+          "heading": "Visual Direction",
+          "level": 2,
+          "line": 140
+        },
+        {
+          "heading": "Testing Expectations",
+          "level": 2,
+          "line": 156
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 19
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-footer56-site-settings-integration-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 168,
+      "nonEmptyLines": 120,
+      "sections": [
+        {
+          "heading": "Footer56 Site Settings Integration Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Approved Direction",
+          "level": 2,
+          "line": 16
+        },
+        {
+          "heading": "Ownership Model",
+          "level": 2,
+          "line": 25
+        },
+        {
+          "heading": "Footer block owns",
+          "level": 3,
+          "line": 27
+        },
+        {
+          "heading": "Site Settings owns",
+          "level": 3,
+          "line": 40
+        },
+        {
+          "heading": "Schema Changes",
+          "level": 2,
+          "line": 53
+        },
+        {
+          "heading": "Footer56 block",
+          "level": 3,
+          "line": 55
+        },
+        {
+          "heading": "Site Settings",
+          "level": 3,
+          "line": 71
+        },
+        {
+          "heading": "Render Context Contract",
+          "level": 2,
+          "line": 80
+        },
+        {
+          "heading": "Rendering Contract",
+          "level": 2,
+          "line": 101
+        },
+        {
+          "heading": "Left column order",
+          "level": 3,
+          "line": 103
+        },
+        {
+          "heading": "Logo behavior",
+          "level": 3,
+          "line": 114
+        },
+        {
+          "heading": "Contact behavior",
+          "level": 3,
+          "line": 122
+        },
+        {
+          "heading": "Social behavior",
+          "level": 3,
+          "line": 129
+        },
+        {
+          "heading": "Bottom row behavior",
+          "level": 3,
+          "line": 136
+        },
+        {
+          "heading": "Visual Direction",
+          "level": 2,
+          "line": 145
+        },
+        {
+          "heading": "Testing Expectations",
+          "level": 2,
+          "line": 161
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 18
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-footer56-terms-site-settings-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 124,
+      "nonEmptyLines": 80,
+      "sections": [
+        {
+          "heading": "Footer56 Terms and Conditions Site Settings Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Approved Direction",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "Ownership Model",
+          "level": 2,
+          "line": 17
+        },
+        {
+          "heading": "Site Settings owns",
+          "level": 3,
+          "line": 19
+        },
+        {
+          "heading": "Footer block owns",
+          "level": 3,
+          "line": 24
+        },
+        {
+          "heading": "Schema Changes",
+          "level": 2,
+          "line": 32
+        },
+        {
+          "heading": "Site Settings",
+          "level": 3,
+          "line": 34
+        },
+        {
+          "heading": "Site Settings tabs",
+          "level": 3,
+          "line": 48
+        },
+        {
+          "heading": "Render Context Contract",
+          "level": 2,
+          "line": 66
+        },
+        {
+          "heading": "Rendering Contract",
+          "level": 2,
+          "line": 81
+        },
+        {
+          "heading": "Bottom row right side",
+          "level": 3,
+          "line": 83
+        },
+        {
+          "heading": "UX and Content Rules",
+          "level": 2,
+          "line": 95
+        },
+        {
+          "heading": "Testing Expectations",
+          "level": 2,
+          "line": 103
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 114
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 15
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-header-navbar-block-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 271,
+      "nonEmptyLines": 192,
+      "sections": [
+        {
+          "heading": "Header Navbar Block Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "Placement",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "Chosen model",
+          "level": 3,
+          "line": 20
+        },
+        {
+          "heading": "Rejected alternatives",
+          "level": 3,
+          "line": 28
+        },
+        {
+          "heading": "Existing constraints from the codebase",
+          "level": 2,
+          "line": 35
+        },
+        {
+          "heading": "Block scope",
+          "level": 2,
+          "line": 43
+        },
+        {
+          "heading": "Data model",
+          "level": 2,
+          "line": 61
+        },
+        {
+          "heading": "`Headers` collection",
+          "level": 3,
+          "line": 63
+        },
+        {
+          "heading": "Navbar block",
+          "level": 3,
+          "line": 71
+        },
+        {
+          "heading": "Navigation behavior",
+          "level": 2,
+          "line": 140
+        },
+        {
+          "heading": "Desktop",
+          "level": 3,
+          "line": 142
+        },
+        {
+          "heading": "Mobile",
+          "level": 3,
+          "line": 157
+        },
+        {
+          "heading": "Logo behavior",
+          "level": 2,
+          "line": 163
+        },
+        {
+          "heading": "Rendering architecture",
+          "level": 2,
+          "line": 178
+        },
+        {
+          "heading": "Server-side wrappers",
+          "level": 3,
+          "line": 180
+        },
+        {
+          "heading": "Shared component",
+          "level": 3,
+          "line": 188
+        },
+        {
+          "heading": "Presentational components",
+          "level": 3,
+          "line": 198
+        },
+        {
+          "heading": "Shadcn component strategy",
+          "level": 2,
+          "line": 207
+        },
+        {
+          "heading": "Sticky stacking behavior",
+          "level": 2,
+          "line": 218
+        },
+        {
+          "heading": "Testing plan",
+          "level": 2,
+          "line": 234
+        },
+        {
+          "heading": "Schema/config tests",
+          "level": 3,
+          "line": 236
+        },
+        {
+          "heading": "Rendering tests",
+          "level": 3,
+          "line": 242
+        },
+        {
+          "heading": "Global shell wiring tests",
+          "level": 3,
+          "line": 251
+        },
+        {
+          "heading": "Validation/type checks",
+          "level": 3,
+          "line": 257
+        },
+        {
+          "heading": "Scope limits",
+          "level": 2,
+          "line": 262
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 26
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-hero-institutional-block-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 220,
+      "nonEmptyLines": 153,
+      "sections": [
+        {
+          "heading": "Hero Institutional Block Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Approved Direction",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "Design Principles",
+          "level": 2,
+          "line": 17
+        },
+        {
+          "heading": "Block Identity",
+          "level": 2,
+          "line": 25
+        },
+        {
+          "heading": "Content Model",
+          "level": 2,
+          "line": 31
+        },
+        {
+          "heading": "Required fields",
+          "level": 3,
+          "line": 33
+        },
+        {
+          "heading": "Optional fields",
+          "level": 3,
+          "line": 44
+        },
+        {
+          "heading": "CTA fields",
+          "level": 3,
+          "line": 52
+        },
+        {
+          "heading": "Layout fields",
+          "level": 3,
+          "line": 67
+        },
+        {
+          "heading": "Overlay fields",
+          "level": 3,
+          "line": 87
+        },
+        {
+          "heading": "Rendering Behavior",
+          "level": 2,
+          "line": 98
+        },
+        {
+          "heading": "Structure",
+          "level": 3,
+          "line": 100
+        },
+        {
+          "heading": "Height",
+          "level": 3,
+          "line": 111
+        },
+        {
+          "heading": "Content alignment",
+          "level": 3,
+          "line": 117
+        },
+        {
+          "heading": "Horizontal",
+          "level": 4,
+          "line": 119
+        },
+        {
+          "heading": "Vertical",
+          "level": 4,
+          "line": 125
+        },
+        {
+          "heading": "Width behavior",
+          "level": 3,
+          "line": 131
+        },
+        {
+          "heading": "Overlay behavior",
+          "level": 3,
+          "line": 137
+        },
+        {
+          "heading": "Content collapse rules",
+          "level": 3,
+          "line": 145
+        },
+        {
+          "heading": "Typography and Interaction",
+          "level": 2,
+          "line": 152
+        },
+        {
+          "heading": "Responsive Rules",
+          "level": 2,
+          "line": 161
+        },
+        {
+          "heading": "Accessibility",
+          "level": 2,
+          "line": 169
+        },
+        {
+          "heading": "Files to Add",
+          "level": 2,
+          "line": 176
+        },
+        {
+          "heading": "Files to Update",
+          "level": 2,
+          "line": 182
+        },
+        {
+          "heading": "Testing and Verification",
+          "level": 2,
+          "line": 187
+        },
+        {
+          "heading": "Type and render checks",
+          "level": 3,
+          "line": 189
+        },
+        {
+          "heading": "Visual checks",
+          "level": 3,
+          "line": 197
+        },
+        {
+          "heading": "Non-Goals for v1",
+          "level": 2,
+          "line": 205
+        },
+        {
+          "heading": "Implementation Notes",
+          "level": 2,
+          "line": 214
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 30
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-stats-strip-block-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 207,
+      "nonEmptyLines": 144,
+      "sections": [
+        {
+          "heading": "Stats Strip Block Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Approved Direction",
+          "level": 2,
+          "line": 14
+        },
+        {
+          "heading": "Design Principles",
+          "level": 2,
+          "line": 24
+        },
+        {
+          "heading": "Block Identity",
+          "level": 2,
+          "line": 32
+        },
+        {
+          "heading": "Content Model",
+          "level": 2,
+          "line": 39
+        },
+        {
+          "heading": "Required fields",
+          "level": 3,
+          "line": 41
+        },
+        {
+          "heading": "Optional fields",
+          "level": 3,
+          "line": 58
+        },
+        {
+          "heading": "Display fields",
+          "level": 3,
+          "line": 68
+        },
+        {
+          "heading": "Animation fields",
+          "level": 3,
+          "line": 77
+        },
+        {
+          "heading": "Layout Rules",
+          "level": 2,
+          "line": 92
+        },
+        {
+          "heading": "Metric Formatting",
+          "level": 2,
+          "line": 103
+        },
+        {
+          "heading": "Rendering Behavior",
+          "level": 2,
+          "line": 120
+        },
+        {
+          "heading": "Section shell",
+          "level": 3,
+          "line": 122
+        },
+        {
+          "heading": "Grid behavior",
+          "level": 3,
+          "line": 127
+        },
+        {
+          "heading": "Item composition",
+          "level": 3,
+          "line": 134
+        },
+        {
+          "heading": "Separators",
+          "level": 3,
+          "line": 147
+        },
+        {
+          "heading": "Animation Behavior",
+          "level": 2,
+          "line": 153
+        },
+        {
+          "heading": "Theme Behavior",
+          "level": 2,
+          "line": 164
+        },
+        {
+          "heading": "Admin Experience",
+          "level": 2,
+          "line": 181
+        },
+        {
+          "heading": "Future Extension Boundary",
+          "level": 2,
+          "line": 188
+        },
+        {
+          "heading": "Testing Expectations",
+          "level": 2,
+          "line": 200
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 22
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-14-block-components-theme-normalization-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 199,
+      "nonEmptyLines": 134,
+      "sections": [
+        {
+          "heading": "Block Components Theme Normalization Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Approved Direction",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "In Scope",
+          "level": 2,
+          "line": 21
+        },
+        {
+          "heading": "Reusable block components",
+          "level": 3,
+          "line": 23
+        },
+        {
+          "heading": "System page blocks",
+          "level": 3,
+          "line": 32
+        },
+        {
+          "heading": "Related render shells only when necessary for token correctness",
+          "level": 3,
+          "line": 38
+        },
+        {
+          "heading": "Out of Scope",
+          "level": 2,
+          "line": 42
+        },
+        {
+          "heading": "Core Principles",
+          "level": 2,
+          "line": 50
+        },
+        {
+          "heading": "1. Semantic token usage first",
+          "level": 3,
+          "line": 52
+        },
+        {
+          "heading": "2. Visual normalization, not just token swap",
+          "level": 3,
+          "line": 67
+        },
+        {
+          "heading": "3. Preserve behavior",
+          "level": 3,
+          "line": 79
+        },
+        {
+          "heading": "Block-by-Block Expectations",
+          "level": 2,
+          "line": 88
+        },
+        {
+          "heading": "Announcement",
+          "level": 3,
+          "line": 90
+        },
+        {
+          "heading": "HeaderNavbar12",
+          "level": 3,
+          "line": 97
+        },
+        {
+          "heading": "HeroInstitutional",
+          "level": 3,
+          "line": 103
+        },
+        {
+          "heading": "FeatureSpotlight",
+          "level": 3,
+          "line": 110
+        },
+        {
+          "heading": "StatsStrip",
+          "level": 3,
+          "line": 116
+        },
+        {
+          "heading": "Footer56",
+          "level": 3,
+          "line": 122
+        },
+        {
+          "heading": "System404 / SystemMaintenance / SystemComingSoon",
+          "level": 3,
+          "line": 129
+        },
+        {
+          "heading": "Special Rule: Overlays and Media-Backed Sections",
+          "level": 2,
+          "line": 135
+        },
+        {
+          "heading": "Shadcn Alignment Rules",
+          "level": 2,
+          "line": 145
+        },
+        {
+          "heading": "Testing Expectations",
+          "level": 2,
+          "line": 155
+        },
+        {
+          "heading": "Success Criteria",
+          "level": 2,
+          "line": 166
+        },
+        {
+          "heading": "Risks and Constraints",
+          "level": 2,
+          "line": 176
+        },
+        {
+          "heading": "Risk: visual regressions while normalizing",
+          "level": 3,
+          "line": 178
+        },
+        {
+          "heading": "Risk: overlay sections cannot become fully token-native",
+          "level": 3,
+          "line": 186
+        },
+        {
+          "heading": "Risk: current tests do not assert theme behavior directly",
+          "level": 3,
+          "line": 193
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 28
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-14-shared-block-appearance-controls-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 260,
+      "nonEmptyLines": 176,
+      "sections": [
+        {
+          "heading": "Shared Block Appearance Controls Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Approved Direction",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 32
+        },
+        {
+          "heading": "In scope",
+          "level": 3,
+          "line": 34
+        },
+        {
+          "heading": "Out of scope",
+          "level": 3,
+          "line": 50
+        },
+        {
+          "heading": "Shared Field Contract",
+          "level": 2,
+          "line": 57
+        },
+        {
+          "heading": "Payload shape",
+          "level": 3,
+          "line": 61
+        },
+        {
+          "heading": "Editor defaults",
+          "level": 3,
+          "line": 71
+        },
+        {
+          "heading": "Rationale",
+          "level": 3,
+          "line": 77
+        },
+        {
+          "heading": "Runtime Mapping",
+          "level": 2,
+          "line": 85
+        },
+        {
+          "heading": "Background classes",
+          "level": 3,
+          "line": 89
+        },
+        {
+          "heading": "Auto text-color mapping",
+          "level": 3,
+          "line": 97
+        },
+        {
+          "heading": "Manual text-color override",
+          "level": 3,
+          "line": 105
+        },
+        {
+          "heading": "Border mapping",
+          "level": 3,
+          "line": 115
+        },
+        {
+          "heading": "Architectural Boundaries",
+          "level": 2,
+          "line": 122
+        },
+        {
+          "heading": "1. Shared Payload helper",
+          "level": 3,
+          "line": 124
+        },
+        {
+          "heading": "2. Shared runtime helper",
+          "level": 3,
+          "line": 133
+        },
+        {
+          "heading": "3. Block-level adoption",
+          "level": 3,
+          "line": 142
+        },
+        {
+          "heading": "Important Behavior Rule",
+          "level": 2,
+          "line": 152
+        },
+        {
+          "heading": "Block-by-Block Adoption Notes",
+          "level": 2,
+          "line": 171
+        },
+        {
+          "heading": "Announcement",
+          "level": 3,
+          "line": 173
+        },
+        {
+          "heading": "HeaderNavbar12",
+          "level": 3,
+          "line": 179
+        },
+        {
+          "heading": "HeroInstitutional",
+          "level": 3,
+          "line": 185
+        },
+        {
+          "heading": "FeatureSpotlight",
+          "level": 3,
+          "line": 191
+        },
+        {
+          "heading": "StatsStrip",
+          "level": 3,
+          "line": 196
+        },
+        {
+          "heading": "Footer56",
+          "level": 3,
+          "line": 202
+        },
+        {
+          "heading": "System Page Blocks",
+          "level": 3,
+          "line": 207
+        },
+        {
+          "heading": "Testing Expectations",
+          "level": 2,
+          "line": 212
+        },
+        {
+          "heading": "Risks",
+          "level": 2,
+          "line": 228
+        },
+        {
+          "heading": "Risk: conflicting legacy fields",
+          "level": 3,
+          "line": 230
+        },
+        {
+          "heading": "Risk: text override becomes a contrast footgun",
+          "level": 3,
+          "line": 238
+        },
+        {
+          "heading": "Risk: root-level text classes interfere with nested semantic descendants",
+          "level": 3,
+          "line": 245
+        },
+        {
+          "heading": "Success Criteria",
+          "level": 2,
+          "line": 252
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 34
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-14-website-theme-registry-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 226,
+      "nonEmptyLines": 148,
+      "sections": [
+        {
+          "heading": "Website Theme Registry Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Approved Direction",
+          "level": 2,
+          "line": 14
+        },
+        {
+          "heading": "Current Problems",
+          "level": 2,
+          "line": 22
+        },
+        {
+          "heading": "Duplicated theme definitions",
+          "level": 3,
+          "line": 24
+        },
+        {
+          "heading": "Runtime validation is local and brittle",
+          "level": 3,
+          "line": 33
+        },
+        {
+          "heading": "Theme extensibility is implicit, not designed",
+          "level": 3,
+          "line": 37
+        },
+        {
+          "heading": "Legacy compatibility logic is embedded in runtime",
+          "level": 3,
+          "line": 45
+        },
+        {
+          "heading": "In Scope",
+          "level": 2,
+          "line": 49
+        },
+        {
+          "heading": "Out of Scope",
+          "level": 2,
+          "line": 58
+        },
+        {
+          "heading": "Proposed Architecture",
+          "level": 2,
+          "line": 67
+        },
+        {
+          "heading": "Central registry",
+          "level": 3,
+          "line": 69
+        },
+        {
+          "heading": "Payload integration",
+          "level": 3,
+          "line": 90
+        },
+        {
+          "heading": "Frontend integration",
+          "level": 3,
+          "line": 96
+        },
+        {
+          "heading": "Theme CSS contract",
+          "level": 3,
+          "line": 107
+        },
+        {
+          "heading": "Data Flow",
+          "level": 2,
+          "line": 142
+        },
+        {
+          "heading": "Migration and Compatibility",
+          "level": 2,
+          "line": 152
+        },
+        {
+          "heading": "Existing content",
+          "level": 3,
+          "line": 154
+        },
+        {
+          "heading": "Legacy alias",
+          "level": 3,
+          "line": 164
+        },
+        {
+          "heading": "Implementation Notes",
+          "level": 2,
+          "line": 170
+        },
+        {
+          "heading": "Files to change",
+          "level": 3,
+          "line": 172
+        },
+        {
+          "heading": "Adding a new theme after this refactor",
+          "level": 3,
+          "line": 182
+        },
+        {
+          "heading": "Testing Expectations",
+          "level": 2,
+          "line": 192
+        },
+        {
+          "heading": "Success Criteria",
+          "level": 2,
+          "line": 202
+        },
+        {
+          "heading": "Risks",
+          "level": 2,
+          "line": 212
+        },
+        {
+          "heading": "Risk: saved historical values do not match new registry keys",
+          "level": 3,
+          "line": 214
+        },
+        {
+          "heading": "Risk: components still contain fixed visual styles",
+          "level": 3,
+          "line": 221
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 27
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-15-announcement-flicker-fix-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 23,
+      "nonEmptyLines": 15,
+      "sections": [
+        {
+          "heading": "Announcement Scroll Flicker Fix",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Cause",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "Design",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Verification",
+          "level": 2,
+          "line": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-15-dismissible-announcement-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 63,
+      "nonEmptyLines": 47,
+      "sections": [
+        {
+          "heading": "Dismissible Announcement Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "CMS configuration",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "Shared component architecture",
+          "level": 2,
+          "line": 14
+        },
+        {
+          "heading": "Dismissal behavior",
+          "level": 2,
+          "line": 21
+        },
+        {
+          "heading": "Scroll behavior",
+          "level": 2,
+          "line": 31
+        },
+        {
+          "heading": "Header offset",
+          "level": 2,
+          "line": 39
+        },
+        {
+          "heading": "Compatibility",
+          "level": 2,
+          "line": 47
+        },
+        {
+          "heading": "Verification",
+          "level": 2,
+          "line": 55
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 9
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-17-block-thumbnail-generation-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 172,
+      "nonEmptyLines": 116,
+      "sections": [
+        {
+          "heading": "Block Thumbnail Generation Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "Visual direction",
+          "level": 2,
+          "line": 25
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 39
+        },
+        {
+          "heading": "Thumbnail manifest",
+          "level": 3,
+          "line": 41
+        },
+        {
+          "heading": "Development-only preview route",
+          "level": 3,
+          "line": 57
+        },
+        {
+          "heading": "Preview stage",
+          "level": 3,
+          "line": 71
+        },
+        {
+          "heading": "Generator",
+          "level": 3,
+          "line": 79
+        },
+        {
+          "heading": "Payload integration",
+          "level": 2,
+          "line": 102
+        },
+        {
+          "heading": "Assets and repository organization",
+          "level": 2,
+          "line": 110
+        },
+        {
+          "heading": "Validation and testing",
+          "level": 2,
+          "line": 128
+        },
+        {
+          "heading": "Failure behavior",
+          "level": 2,
+          "line": 143
+        },
+        {
+          "heading": "Adding a future block",
+          "level": 2,
+          "line": 149
+        },
+        {
+          "heading": "Acceptance criteria",
+          "level": 2,
+          "line": 162
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 15
+      }
+    }
+  ]
+}

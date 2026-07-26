@@ -1,0 +1,1345 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 25,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 25,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 25,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "src/lib/mediaStorage.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 325,
+      "nonEmptyLines": 280,
+      "functions": [
+        {
+          "name": "buildS3Client",
+          "startLine": 37,
+          "endLine": 46,
+          "params": [
+            "config"
+          ]
+        },
+        {
+          "name": "getRequestLike",
+          "startLine": 48,
+          "endLine": 60,
+          "params": [
+            "{\n  payload,\n  req,\n}"
+          ]
+        },
+        {
+          "name": "getMediaTitle",
+          "startLine": 62,
+          "endLine": 63,
+          "params": [
+            "media"
+          ]
+        },
+        {
+          "name": "getMediaStorageObjectKey",
+          "startLine": 65,
+          "endLine": 100,
+          "params": [
+            "{\n  bucket,\n  media,\n}"
+          ]
+        },
+        {
+          "name": "isNotFoundStorageError",
+          "startLine": 102,
+          "endLine": 121,
+          "params": [
+            "error"
+          ]
+        },
+        {
+          "name": "getStorageErrorMessage",
+          "startLine": 123,
+          "endLine": 129,
+          "params": [
+            "error"
+          ]
+        },
+        {
+          "name": "reconcileMediaStorage",
+          "startLine": 131,
+          "endLine": 325,
+          "params": [
+            "{\n  media,\n  payload,\n  req,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "getMediaStorageObjectKey",
+          "line": 65,
+          "isDefault": false
+        },
+        {
+          "name": "reconcileMediaStorage",
+          "line": 131,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getMediaTitle",
+          "callee": "media.title?.trim",
+          "lineNumber": 63
+        },
+        {
+          "caller": "getMediaTitle",
+          "callee": "media.filename?.trim",
+          "lineNumber": 63
+        },
+        {
+          "caller": "getMediaStorageObjectKey",
+          "callee": "media.filename?.trim",
+          "lineNumber": 72
+        },
+        {
+          "caller": "getMediaStorageObjectKey",
+          "callee": "media.url?.trim",
+          "lineNumber": 78
+        },
+        {
+          "caller": "getMediaStorageObjectKey",
+          "callee": "parsed.pathname.split('/').filter",
+          "lineNumber": 86
+        },
+        {
+          "caller": "getMediaStorageObjectKey",
+          "callee": "parsed.pathname.split",
+          "lineNumber": 86
+        },
+        {
+          "caller": "getMediaStorageObjectKey",
+          "callee": "segments.slice(1).join",
+          "lineNumber": 93
+        },
+        {
+          "caller": "getMediaStorageObjectKey",
+          "callee": "segments.slice",
+          "lineNumber": 93
+        },
+        {
+          "caller": "getMediaStorageObjectKey",
+          "callee": "segments.join",
+          "lineNumber": 96
+        },
+        {
+          "caller": "getStorageErrorMessage",
+          "callee": "error.message.trim",
+          "lineNumber": 124
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "getRuntimeConfig",
+          "lineNumber": 136
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "getRequestLike",
+          "lineNumber": 137
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "payload.find",
+          "lineNumber": 154
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "payload.update",
+          "lineNumber": 177
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "new Date().toISOString",
+          "lineNumber": 181
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "payload.find",
+          "lineNumber": 199
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "buildS3Client",
+          "lineNumber": 207
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "getMediaStorageObjectKey",
+          "lineNumber": 215
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "doc.storageIssue?.includes",
+          "lineNumber": 223
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "payload.update",
+          "lineNumber": 227
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "new Date().toISOString",
+          "lineNumber": 231
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "client.send",
+          "lineNumber": 248
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "isNotFoundStorageError",
+          "lineNumber": 255
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "new Date().toISOString",
+          "lineNumber": 258
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "getStorageErrorMessage",
+          "lineNumber": 261
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "new Date().toISOString",
+          "lineNumber": 274
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "payload.update",
+          "lineNumber": 285
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "getMediaTitle",
+          "lineNumber": 299
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "recordOperationalAuditEvent",
+          "lineNumber": 302
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "String",
+          "lineNumber": 304
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "recordOperationalAuditEvent",
+          "lineNumber": 313
+        },
+        {
+          "caller": "reconcileMediaStorage",
+          "callee": "String",
+          "lineNumber": 315
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 2,
+        "functionCount": 7,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/mediaUsage.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 582,
+      "nonEmptyLines": 515,
+      "functions": [
+        {
+          "name": "getRelationshipID",
+          "startLine": 49,
+          "endLine": 63,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "matchesMedia",
+          "startLine": 65,
+          "endLine": 66,
+          "params": [
+            "value",
+            "mediaID"
+          ]
+        },
+        {
+          "name": "getDocumentID",
+          "startLine": 68,
+          "endLine": 76,
+          "params": [
+            "doc"
+          ]
+        },
+        {
+          "name": "getTextValue",
+          "startLine": 78,
+          "endLine": 79,
+          "params": [
+            "value",
+            "fallback"
+          ]
+        },
+        {
+          "name": "buildLocationLabel",
+          "startLine": 81,
+          "endLine": 89,
+          "params": [
+            "{\n  documentLabel,\n  fieldPath,\n  sourceLabel,\n}"
+          ]
+        },
+        {
+          "name": "createCollectionReference",
+          "startLine": 91,
+          "endLine": 117,
+          "params": [
+            "{\n  doc,\n  documentLabel,\n  fieldPath,\n  slug,\n}"
+          ]
+        },
+        {
+          "name": "createGlobalReference",
+          "startLine": 119,
+          "endLine": 142,
+          "params": [
+            "{\n  documentLabel,\n  fieldPath,\n  slug,\n}"
+          ]
+        },
+        {
+          "name": "pushIfMatched",
+          "startLine": 144,
+          "endLine": 158,
+          "params": [
+            "{\n  references,\n  reference,\n  value,\n  mediaID,\n}"
+          ]
+        },
+        {
+          "name": "findMediaUsage",
+          "startLine": 487,
+          "endLine": 537,
+          "params": [
+            "{\n  mediaID,\n  payload,\n}"
+          ]
+        },
+        {
+          "name": "buildMediaUsageSummary",
+          "startLine": 539,
+          "endLine": 558,
+          "params": [
+            "references"
+          ]
+        },
+        {
+          "name": "formatMediaUsageLocation",
+          "startLine": 560,
+          "endLine": 561,
+          "params": [
+            "reference"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "findMediaUsage",
+          "line": 487,
+          "isDefault": false
+        },
+        {
+          "name": "buildMediaUsageSummary",
+          "line": 539,
+          "isDefault": false
+        },
+        {
+          "name": "formatMediaUsageLocation",
+          "line": 560,
+          "isDefault": false
+        },
+        {
+          "name": "mediaUsageAdminFieldConfig",
+          "line": 563,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "matchesMedia",
+          "callee": "getRelationshipID",
+          "lineNumber": 66
+        },
+        {
+          "caller": "getTextValue",
+          "callee": "value.trim",
+          "lineNumber": 79
+        },
+        {
+          "caller": "createCollectionReference",
+          "callee": "getDocumentID",
+          "lineNumber": 105
+        },
+        {
+          "caller": "createCollectionReference",
+          "callee": "buildLocationLabel",
+          "lineNumber": 108
+        },
+        {
+          "caller": "createGlobalReference",
+          "callee": "buildLocationLabel",
+          "lineNumber": 133
+        },
+        {
+          "caller": "pushIfMatched",
+          "callee": "matchesMedia",
+          "lineNumber": 155
+        },
+        {
+          "caller": "pushIfMatched",
+          "callee": "references.push",
+          "lineNumber": 156
+        },
+        {
+          "caller": "findMediaUsage",
+          "callee": "find",
+          "lineNumber": 509
+        },
+        {
+          "caller": "findMediaUsage",
+          "callee": "references.push",
+          "lineNumber": 518
+        },
+        {
+          "caller": "findMediaUsage",
+          "callee": "source.resolve",
+          "lineNumber": 518
+        },
+        {
+          "caller": "findMediaUsage",
+          "callee": "findGlobal",
+          "lineNumber": 523
+        },
+        {
+          "caller": "findMediaUsage",
+          "callee": "references.push",
+          "lineNumber": 533
+        },
+        {
+          "caller": "findMediaUsage",
+          "callee": "source.resolve",
+          "lineNumber": 533
+        },
+        {
+          "caller": "buildMediaUsageSummary",
+          "callee": "references.map",
+          "lineNumber": 545
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 11,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/operationalAudit.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 84,
+      "nonEmptyLines": 74,
+      "functions": [
+        {
+          "name": "describeAuditValue",
+          "startLine": 19,
+          "endLine": 43,
+          "params": [
+            "value",
+            "fallback"
+          ]
+        },
+        {
+          "name": "recordOperationalAuditEvent",
+          "startLine": 45,
+          "endLine": 68,
+          "params": [
+            "{\n  action,\n  entityId,\n  entityTitle,\n  entityType,\n  req,\n  summary,\n}"
+          ]
+        },
+        {
+          "name": "recordWorkQueueAuditEvent",
+          "startLine": 70,
+          "endLine": 84,
+          "params": [
+            "{\n  action,\n  req,\n  summary,\n  workQueueID,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "describeAuditValue",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "recordOperationalAuditEvent",
+          "line": 45,
+          "isDefault": false
+        },
+        {
+          "name": "recordWorkQueueAuditEvent",
+          "line": 70,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "describeAuditValue",
+          "callee": "String",
+          "lineNumber": 25
+        },
+        {
+          "caller": "describeAuditValue",
+          "callee": "String",
+          "lineNumber": 38
+        },
+        {
+          "caller": "recordOperationalAuditEvent",
+          "callee": "req.payload.create",
+          "lineNumber": 53
+        },
+        {
+          "caller": "recordOperationalAuditEvent",
+          "callee": "new Date().toISOString",
+          "lineNumber": 62
+        },
+        {
+          "caller": "recordWorkQueueAuditEvent",
+          "callee": "recordOperationalAuditEvent",
+          "lineNumber": 76
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/seo.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 137,
+      "nonEmptyLines": 125,
+      "functions": [
+        {
+          "name": "getRobotsMetadata",
+          "startLine": 55,
+          "endLine": 67,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "resolveCanonicalURL",
+          "startLine": 69,
+          "endLine": 91,
+          "params": [
+            "{\n  canonicalURL,\n  resolvedPath,\n}"
+          ]
+        },
+        {
+          "name": "resolveRobotsMode",
+          "startLine": 93,
+          "endLine": 115,
+          "params": [
+            "{\n  inheritedRobots,\n  robotsMode,\n}"
+          ]
+        },
+        {
+          "name": "resolveSitemapInclusion",
+          "startLine": 117,
+          "endLine": 137,
+          "params": [
+            "{\n  includeInSitemap,\n  isIndexable,\n  isPublicRoute,\n  isPublished,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "robotsFieldOptions",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "robotsModeOptions",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "sitemapInclusionOptions",
+          "line": 37,
+          "isDefault": false
+        },
+        {
+          "name": "getRobotsMetadata",
+          "line": 55,
+          "isDefault": false
+        },
+        {
+          "name": "resolveCanonicalURL",
+          "line": 69,
+          "isDefault": false
+        },
+        {
+          "name": "resolveRobotsMode",
+          "line": 93,
+          "isDefault": false
+        },
+        {
+          "name": "resolveSitemapInclusion",
+          "line": 117,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "resolveCanonicalURL",
+          "callee": "canonicalURL?.trim",
+          "lineNumber": 76
+        },
+        {
+          "caller": "resolveCanonicalURL",
+          "callee": "trimmedCanonical.startsWith",
+          "lineNumber": 82
+        },
+        {
+          "caller": "resolveCanonicalURL",
+          "callee": "new URL(trimmedCanonical).toString",
+          "lineNumber": 87
+        },
+        {
+          "caller": "resolveRobotsMode",
+          "callee": "getRobotsMetadata",
+          "lineNumber": 113
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/systemPageTypes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 16,
+      "nonEmptyLines": 15,
+      "exports": [
+        {
+          "name": "systemPageTypeOptions",
+          "line": 1,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/workQueue.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 310,
+      "nonEmptyLines": 281,
+      "functions": [
+        {
+          "name": "buildWorkQueueDedupeKey",
+          "startLine": 71,
+          "endLine": 81,
+          "params": [
+            "{\n  sourceCollection,\n  sourceID,\n  queueType,\n  reasonCode,\n}"
+          ]
+        },
+        {
+          "name": "findWorkQueueRecord",
+          "startLine": 83,
+          "endLine": 104,
+          "params": [
+            "{\n  dedupeKey,\n  req,\n}"
+          ]
+        },
+        {
+          "name": "findBlockingPublishQueueItems",
+          "startLine": 106,
+          "endLine": 149,
+          "params": [
+            "{\n  req,\n  sourceCollection,\n  sourceID,\n}"
+          ]
+        },
+        {
+          "name": "formatBlockingPublishQueueMessage",
+          "startLine": 151,
+          "endLine": 164,
+          "params": [
+            "items"
+          ]
+        },
+        {
+          "name": "upsertWorkQueueItem",
+          "startLine": 166,
+          "endLine": 241,
+          "params": [
+            "{\n  dedupeKey,\n  details,\n  priority = 'normal',\n  queueType,\n  reasonCode,\n  req,\n  sourceAdminPath,\n  sourceCollection,\n  sourceID,\n  sourceSlug,\n  sourceTitle,\n  sourceUpdatedAt,\n  summary,\n}"
+          ]
+        },
+        {
+          "name": "resolveWorkQueueItem",
+          "startLine": 243,
+          "endLine": 276,
+          "params": [
+            "{\n  dedupeKey,\n  req,\n  resolutionSummary,\n  status = 'resolved',\n}"
+          ]
+        },
+        {
+          "name": "syncWorkQueueConditions",
+          "startLine": 278,
+          "endLine": 310,
+          "params": [
+            "{\n  activeCondition,\n  conditions,\n  req,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "buildWorkQueueDedupeKey",
+          "line": 71,
+          "isDefault": false
+        },
+        {
+          "name": "findBlockingPublishQueueItems",
+          "line": 106,
+          "isDefault": false
+        },
+        {
+          "name": "formatBlockingPublishQueueMessage",
+          "line": 151,
+          "isDefault": false
+        },
+        {
+          "name": "upsertWorkQueueItem",
+          "line": 166,
+          "isDefault": false
+        },
+        {
+          "name": "resolveWorkQueueItem",
+          "line": 243,
+          "isDefault": false
+        },
+        {
+          "name": "syncWorkQueueConditions",
+          "line": 278,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "findWorkQueueRecord",
+          "callee": "req.payload.find",
+          "lineNumber": 90
+        },
+        {
+          "caller": "findBlockingPublishQueueItems",
+          "callee": "req.payload.find",
+          "lineNumber": 115
+        },
+        {
+          "caller": "findBlockingPublishQueueItems",
+          "callee": "String",
+          "lineNumber": 131
+        },
+        {
+          "caller": "upsertWorkQueueItem",
+          "callee": "isWorkQueueSyncContext",
+          "lineNumber": 181
+        },
+        {
+          "caller": "upsertWorkQueueItem",
+          "callee": "findWorkQueueRecord",
+          "lineNumber": 185
+        },
+        {
+          "caller": "upsertWorkQueueItem",
+          "callee": "new Date().toISOString",
+          "lineNumber": 189
+        },
+        {
+          "caller": "upsertWorkQueueItem",
+          "callee": "String",
+          "lineNumber": 199
+        },
+        {
+          "caller": "upsertWorkQueueItem",
+          "callee": "req.payload.update",
+          "lineNumber": 209
+        },
+        {
+          "caller": "upsertWorkQueueItem",
+          "callee": "withWorkQueueSyncContext",
+          "lineNumber": 212
+        },
+        {
+          "caller": "upsertWorkQueueItem",
+          "callee": "req.payload.create",
+          "lineNumber": 229
+        },
+        {
+          "caller": "upsertWorkQueueItem",
+          "callee": "withWorkQueueSyncContext",
+          "lineNumber": 231
+        },
+        {
+          "caller": "resolveWorkQueueItem",
+          "callee": "isWorkQueueSyncContext",
+          "lineNumber": 249
+        },
+        {
+          "caller": "resolveWorkQueueItem",
+          "callee": "findWorkQueueRecord",
+          "lineNumber": 253
+        },
+        {
+          "caller": "resolveWorkQueueItem",
+          "callee": "req.payload.update",
+          "lineNumber": 262
+        },
+        {
+          "caller": "resolveWorkQueueItem",
+          "callee": "withWorkQueueSyncContext",
+          "lineNumber": 265
+        },
+        {
+          "caller": "resolveWorkQueueItem",
+          "callee": "new Date().toISOString",
+          "lineNumber": 268
+        },
+        {
+          "caller": "resolveWorkQueueItem",
+          "callee": "new Date().toISOString",
+          "lineNumber": 270
+        },
+        {
+          "caller": "syncWorkQueueConditions",
+          "callee": "upsertWorkQueueItem",
+          "lineNumber": 288
+        },
+        {
+          "caller": "syncWorkQueueConditions",
+          "callee": "resolveWorkQueueItem",
+          "lineNumber": 301
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 6,
+        "functionCount": 7,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/payload.config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 90,
+      "nonEmptyLines": 86,
+      "metrics": {
+        "importCount": 27,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/plugins/withTrash.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 25,
+      "nonEmptyLines": 21,
+      "functions": [
+        {
+          "name": "withTrash",
+          "startLine": 7,
+          "endLine": 25,
+          "params": [
+            "{ exclude = [] }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "withTrash",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "withTrash",
+          "callee": "config.collections?.map",
+          "lineNumber": 14
+        },
+        {
+          "caller": "withTrash",
+          "callee": "excludedSlugs.has",
+          "lineNumber": 15
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/admin-information-architecture.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 61,
+      "nonEmptyLines": 55,
+      "metrics": {
+        "importCount": 21,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/adminCapabilities.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 479,
+      "nonEmptyLines": 424,
+      "functions": [
+        {
+          "name": "createReq",
+          "startLine": 30,
+          "endLine": 39,
+          "params": [
+            "user"
+          ]
+        },
+        {
+          "name": "toAccessReq",
+          "startLine": 41,
+          "endLine": 44,
+          "params": [
+            "req"
+          ]
+        },
+        {
+          "name": "getUsersField",
+          "startLine": 46,
+          "endLine": 56,
+          "params": [
+            "name"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createReq",
+          "callee": "vi.fn",
+          "lineNumber": 34
+        },
+        {
+          "caller": "getUsersField",
+          "callee": "Users.fields?.find",
+          "lineNumber": 47
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/articles.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 81,
+      "nonEmptyLines": 69,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/block-thumbnails.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 198,
+      "nonEmptyLines": 179,
+      "functions": [
+        {
+          "name": "collectRegisteredBlocks",
+          "startLine": 19,
+          "endLine": 34,
+          "params": [
+            "fields"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "collectRegisteredBlocks",
+          "callee": "fields.flatMap",
+          "lineNumber": 20
+        },
+        {
+          "caller": "collectRegisteredBlocks",
+          "callee": "field.tabs.flatMap",
+          "lineNumber": 26
+        },
+        {
+          "caller": "collectRegisteredBlocks",
+          "callee": "collectRegisteredBlocks",
+          "lineNumber": 26
+        },
+        {
+          "caller": "collectRegisteredBlocks",
+          "callee": "Array.isArray",
+          "lineNumber": 29
+        },
+        {
+          "caller": "collectRegisteredBlocks",
+          "callee": "collectRegisteredBlocks",
+          "lineNumber": 30
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/editorial-workflow.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 325,
+      "nonEmptyLines": 303,
+      "functions": [
+        {
+          "name": "createReq",
+          "startLine": 5,
+          "endLine": 18,
+          "params": [
+            "user",
+            "payload"
+          ]
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/forms-submission.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 278,
+      "nonEmptyLines": 253,
+      "functions": [
+        {
+          "name": "getField",
+          "startLine": 69,
+          "endLine": 83,
+          "params": [
+            "fieldName"
+          ]
+        },
+        {
+          "name": "loadRouteModule",
+          "startLine": 85,
+          "endLine": 88,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getField",
+          "callee": "FormSubmissions.fields.find",
+          "lineNumber": 70
+        },
+        {
+          "caller": "loadRouteModule",
+          "callee": "vi.resetModules",
+          "lineNumber": 86
+        },
+        {
+          "caller": "loadRouteModule",
+          "callee": "import",
+          "lineNumber": 87
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/media-governance.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 331,
+      "nonEmptyLines": 317,
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/media-storage.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 169,
+      "nonEmptyLines": 154,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/news-events-collection.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 65,
+      "nonEmptyLines": 57,
+      "functions": [
+        {
+          "name": "getTabs",
+          "startLine": 8,
+          "endLine": 15,
+          "params": [
+            "fields"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getTabs",
+          "callee": "fields.find",
+          "lineNumber": 9
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/operational-audit.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 177,
+      "nonEmptyLines": 162,
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/page-settings-system-mode.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 126,
+      "nonEmptyLines": 106,
+      "functions": [
+        {
+          "name": "getNamedField",
+          "startLine": 39,
+          "endLine": 53,
+          "params": [
+            "fields",
+            "fieldName"
+          ]
+        },
+        {
+          "name": "loadPageData",
+          "startLine": 55,
+          "endLine": 58,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getNamedField",
+          "callee": "fields.find",
+          "lineNumber": 40
+        },
+        {
+          "caller": "loadPageData",
+          "callee": "vi.resetModules",
+          "lineNumber": 56
+        },
+        {
+          "caller": "loadPageData",
+          "callee": "import",
+          "lineNumber": 57
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/reviews.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 83,
+      "nonEmptyLines": 71,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/runtime-config.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 122,
+      "nonEmptyLines": 104,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/seo-contract.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 85,
+      "nonEmptyLines": 74,
+      "metrics": {
+        "importCount": 9,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/starter-contract.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 92,
+      "nonEmptyLines": 85,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/taxonomy.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 99,
+      "nonEmptyLines": 88,
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/work-queue.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 475,
+      "nonEmptyLines": 434,
+      "functions": [
+        {
+          "name": "createReq",
+          "startLine": 29,
+          "endLine": 53,
+          "params": [
+            "{\n  docs = [],\n  context,\n  user,\n}"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createReq",
+          "callee": "vi.fn",
+          "lineNumber": 38
+        },
+        {
+          "caller": "createReq",
+          "callee": "vi.fn",
+          "lineNumber": 39
+        },
+        {
+          "caller": "createReq",
+          "callee": "vi.fn",
+          "lineNumber": 42
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    }
+  ]
+}

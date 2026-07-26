@@ -1,0 +1,522 @@
+{
+  "nodes": [
+    {
+      "id": "file:.npmrc",
+      "type": "file",
+      "name": ".npmrc",
+      "filePath": ".npmrc",
+      "summary": "Reserved npm configuration file; currently empty.",
+      "tags": [
+        "configuration",
+        "tooling",
+        "repository"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.pnpmfile.mjs",
+      "type": "file",
+      "name": ".pnpmfile.mjs",
+      "filePath": ".pnpmfile.mjs",
+      "summary": "Exports the repository-level pnpm hook object used to preserve the package-manager startup contract.",
+      "tags": [
+        "configuration",
+        "tooling",
+        "repository"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.yarnrc",
+      "type": "file",
+      "name": ".yarnrc",
+      "filePath": ".yarnrc",
+      "summary": "Configures Yarn to ignore package engine constraints during installation.",
+      "tags": [
+        "configuration",
+        "tooling",
+        "repository"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/architecture/content-model-map.md",
+      "type": "document",
+      "name": "content-model-map.md",
+      "filePath": "docs/architecture/content-model-map.md",
+      "summary": "Maps the CMS collections, globals, ownership boundaries, relationships, and editorial workflows.",
+      "tags": [
+        "documentation",
+        "architecture",
+        "content-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/guides/users.md",
+      "type": "document",
+      "name": "users.md",
+      "filePath": "docs/guides/users.md",
+      "summary": "Operator guide to user roles, capabilities, account administration, and safe access changes.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "cms"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/guides/work-queue.md",
+      "type": "document",
+      "name": "work-queue.md",
+      "filePath": "docs/guides/work-queue.md",
+      "summary": "Operator guide to work-queue types, priorities, source links, resolution behavior, and audit coupling.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "cms"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-20-regular-block-responsive-spacing.md",
+      "type": "document",
+      "name": "2026-07-20-regular-block-responsive-spacing.md",
+      "filePath": "docs/superpowers/plans/2026-07-20-regular-block-responsive-spacing.md",
+      "summary": "Implementation plan for consistent responsive spacing across regular content blocks.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "frontend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-21-content-highlights-layouts.md",
+      "type": "document",
+      "name": "2026-07-21-content-highlights-layouts.md",
+      "filePath": "docs/superpowers/plans/2026-07-21-content-highlights-layouts.md",
+      "summary": "Implementation plan for Content Highlights layouts, split controls, schema conditions, rendering, and tests.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "frontend"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/reviews/2026-07-07-cms-foundation-audit.md",
+      "type": "document",
+      "name": "2026-07-07-cms-foundation-audit.md",
+      "filePath": "docs/superpowers/reviews/2026-07-07-cms-foundation-audit.md",
+      "summary": "Audit of the CMS foundation covering architecture, content models, editorial safety, marketing features, and priorities.",
+      "tags": [
+        "documentation",
+        "audit",
+        "cms-architecture"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:eslint.config.mjs",
+      "type": "file",
+      "name": "eslint.config.mjs",
+      "filePath": "eslint.config.mjs",
+      "summary": "Defines flat ESLint rules and ignores for the TypeScript and Next.js codebase.",
+      "tags": [
+        "configuration",
+        "build-system",
+        "tooling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:next.config.ts",
+      "type": "file",
+      "name": "next.config.ts",
+      "filePath": "next.config.ts",
+      "summary": "Configures Payload-aware Next.js builds, media image paths, extension aliases, and the Turbopack root.",
+      "tags": [
+        "configuration",
+        "build-system",
+        "tooling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:playwright.config.ts",
+      "type": "file",
+      "name": "playwright.config.ts",
+      "filePath": "playwright.config.ts",
+      "summary": "Configures serialized Chromium end-to-end tests, CI retries, tracing, reporting, and development-server readiness.",
+      "tags": [
+        "configuration",
+        "build-system",
+        "tooling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:postcss.config.mjs",
+      "type": "file",
+      "name": "postcss.config.mjs",
+      "filePath": "postcss.config.mjs",
+      "summary": "Configures the PostCSS processing plugins used by the frontend stylesheet build.",
+      "tags": [
+        "configuration",
+        "build-system",
+        "tooling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:public/block-thumbnails/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "public/block-thumbnails/README.md",
+      "summary": "Documents generated block-thumbnail assets, fixtures, capture behavior, regeneration, and focused verification.",
+      "tags": [
+        "documentation",
+        "architecture",
+        "content-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/(payload)/custom.scss",
+      "type": "file",
+      "name": "custom.scss",
+      "filePath": "src/app/(payload)/custom.scss",
+      "summary": "Reserved stylesheet entry point for Payload admin customizations; currently empty.",
+      "tags": [
+        "stylesheet",
+        "css",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/styles/custom.css",
+      "type": "file",
+      "name": "custom.css",
+      "filePath": "src/styles/custom.css",
+      "summary": "Defines focused Feature Matrix motion and Image Mosaic hover behavior with reduced-motion and input-aware fallbacks.",
+      "tags": [
+        "stylesheet",
+        "css",
+        "frontend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/styles/globals.css",
+      "type": "file",
+      "name": "globals.css",
+      "filePath": "src/styles/globals.css",
+      "summary": "Defines global Tailwind, shadcn, theme, typography, color, layout, and component utility styles for the frontend.",
+      "tags": [
+        "stylesheet",
+        "css",
+        "frontend"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tests/helpers/server-only.ts",
+      "type": "file",
+      "name": "server-only.ts",
+      "filePath": "tests/helpers/server-only.ts",
+      "summary": "Provides the server-only module stub used by the integration-test environment.",
+      "tags": [
+        "configuration",
+        "tooling",
+        "repository"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/admin-documentation.int.spec.ts",
+      "type": "file",
+      "name": "admin-documentation.int.spec.ts",
+      "filePath": "tests/int/admin-documentation.int.spec.ts",
+      "summary": "Verifies that administration documentation remains aligned with the registered CMS surfaces.",
+      "tags": [
+        "test",
+        "integration-test",
+        "regression"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/content-taxonomy.int.spec.ts",
+      "type": "file",
+      "name": "content-taxonomy.int.spec.ts",
+      "filePath": "tests/int/content-taxonomy.int.spec.ts",
+      "summary": "Integration coverage for category and tag relationships, archive behavior, and content taxonomy invariants.",
+      "tags": [
+        "test",
+        "integration-test",
+        "regression"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tests/int/live-preview-import-boundary.int.spec.ts",
+      "type": "file",
+      "name": "live-preview-import-boundary.int.spec.ts",
+      "filePath": "tests/int/live-preview-import-boundary.int.spec.ts",
+      "summary": "Checks the reachable module graph for live-preview client boundaries and rejects server-only runtime bindings.",
+      "tags": [
+        "test",
+        "integration-test",
+        "regression"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/int/live-preview-import-boundary.int.spec.ts:resolveLocalImport",
+      "type": "function",
+      "name": "resolveLocalImport",
+      "filePath": "tests/int/live-preview-import-boundary.int.spec.ts",
+      "lineRange": [
+        10,
+        36
+      ],
+      "summary": "Resolves a relative module specifier to an existing local source file.",
+      "tags": [
+        "test-helper",
+        "module-graph",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/int/live-preview-import-boundary.int.spec.ts:hasRuntimeBinding",
+      "type": "function",
+      "name": "hasRuntimeBinding",
+      "filePath": "tests/int/live-preview-import-boundary.int.spec.ts",
+      "lineRange": [
+        38,
+        58
+      ],
+      "summary": "Determines whether an import declaration creates a runtime binding.",
+      "tags": [
+        "test-helper",
+        "module-graph",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/int/live-preview-import-boundary.int.spec.ts:collectReachableRuntimeModules",
+      "type": "function",
+      "name": "collectReachableRuntimeModules",
+      "filePath": "tests/int/live-preview-import-boundary.int.spec.ts",
+      "lineRange": [
+        60,
+        101
+      ],
+      "summary": "Traverses local runtime imports to collect every module reachable from an entry point.",
+      "tags": [
+        "test-helper",
+        "module-graph",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/page-routing.int.spec.ts",
+      "type": "file",
+      "name": "page-routing.int.spec.ts",
+      "filePath": "tests/int/page-routing.int.spec.ts",
+      "summary": "Integration coverage for homepage, nested page, system-page, and not-found routing behavior.",
+      "tags": [
+        "test",
+        "integration-test",
+        "regression"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/provider-selection.int.spec.ts",
+      "type": "file",
+      "name": "provider-selection.int.spec.ts",
+      "filePath": "tests/int/provider-selection.int.spec.ts",
+      "summary": "Integration coverage for runtime database, email, and storage provider selection.",
+      "tags": [
+        "test",
+        "integration-test",
+        "regression"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/review-submission.int.spec.ts",
+      "type": "file",
+      "name": "review-submission.int.spec.ts",
+      "filePath": "tests/int/review-submission.int.spec.ts",
+      "summary": "Integration coverage for public review submission, validation, moderation intake, promotion, and notifications.",
+      "tags": [
+        "test",
+        "integration-test",
+        "regression"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tests/int/sitemap.int.spec.ts",
+      "type": "file",
+      "name": "sitemap.int.spec.ts",
+      "filePath": "tests/int/sitemap.int.spec.ts",
+      "summary": "Integration coverage for sitemap inclusion, canonical routes, taxonomy archives, and excluded content.",
+      "tags": [
+        "test",
+        "integration-test",
+        "regression"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:tests/int/live-preview-import-boundary.int.spec.ts",
+      "target": "function:tests/int/live-preview-import-boundary.int.spec.ts:resolveLocalImport",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/int/live-preview-import-boundary.int.spec.ts",
+      "target": "function:tests/int/live-preview-import-boundary.int.spec.ts:hasRuntimeBinding",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/int/live-preview-import-boundary.int.spec.ts",
+      "target": "function:tests/int/live-preview-import-boundary.int.spec.ts:collectReachableRuntimeModules",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-20-regular-block-responsive-spacing.md",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-20-regular-block-responsive-spacing.md",
+      "target": "file:tests/int/regular-block-spacing.int.spec.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-20-regular-block-responsive-spacing.md",
+      "target": "file:src/components/gallery-showcase.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-21-content-highlights-layouts.md",
+      "target": "file:src/blocks/ContentHighlights/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-21-content-highlights-layouts.md",
+      "target": "file:src/blocks/ContentHighlights/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-21-content-highlights-layouts.md",
+      "target": "file:src/components/content-highlights.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/reviews/2026-07-07-cms-foundation-audit.md",
+      "target": "file:src/payload.config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/reviews/2026-07-07-cms-foundation-audit.md",
+      "target": "file:src/app/(frontend)/pageData.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/reviews/2026-07-07-cms-foundation-audit.md",
+      "target": "file:src/globals/PageSettings.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:public/block-thumbnails/README.md",
+      "target": "file:src/block-thumbnails/fixtures.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:public/block-thumbnails/README.md",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:public/block-thumbnails/README.md",
+      "target": "file:tests/int/block-thumbnails.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/styles/globals.css",
+      "target": "file:src/styles/themes/theme-default.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/styles/globals.css",
+      "target": "file:src/styles/themes/theme-sunset.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/styles/globals.css",
+      "target": "file:src/styles/themes/theme-blue.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/styles/globals.css",
+      "target": "file:src/styles/themes/theme-kodama.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/styles/globals.css",
+      "target": "file:src/styles/custom.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

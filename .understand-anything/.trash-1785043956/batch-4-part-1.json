@@ -1,0 +1,1479 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/access/adminCapabilities.ts",
+      "type": "file",
+      "name": "adminCapabilities.ts",
+      "filePath": "src/access/adminCapabilities.ts",
+      "summary": "Defines the capability-based Payload admin authorization model, including capability fields, role defaults, access predicates, and UI visibility helpers.",
+      "tags": [
+        "access-control",
+        "authorization",
+        "capabilities",
+        "payload-admin",
+        "security"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:getCapabilityDescription",
+      "type": "function",
+      "name": "getCapabilityDescription",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        140,
+        154
+      ],
+      "summary": "Resolves capability description from the active role or capability definition.",
+      "tags": [
+        "function",
+        "access-control",
+        "factory"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:createCapabilityCheckbox",
+      "type": "function",
+      "name": "createCapabilityCheckbox",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        156,
+        165
+      ],
+      "summary": "Creates capability checkbox for the Payload admin configuration.",
+      "tags": [
+        "function",
+        "access-control",
+        "factory"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:createCapabilityRows",
+      "type": "function",
+      "name": "createCapabilityRows",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        167,
+        183
+      ],
+      "summary": "Creates capability rows for the Payload admin configuration.",
+      "tags": [
+        "function",
+        "access-control",
+        "factory"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:isAdminRole",
+      "type": "function",
+      "name": "isAdminRole",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        268,
+        270
+      ],
+      "summary": "Determines whether admin role satisfies the access model.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:normalizeAdminRole",
+      "type": "function",
+      "name": "normalizeAdminRole",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        272,
+        277
+      ],
+      "summary": "Normalizes admin role into its canonical stored representation.",
+      "tags": [
+        "function",
+        "access-control",
+        "normalization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:sanitizeAdminCapabilities",
+      "type": "function",
+      "name": "sanitizeAdminCapabilities",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        279,
+        296
+      ],
+      "summary": "Filters arbitrary capability input down to recognized boolean capability values.",
+      "tags": [
+        "function",
+        "access-control",
+        "normalization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:toAdminCapabilitiesMap",
+      "type": "function",
+      "name": "toAdminCapabilitiesMap",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        298,
+        305
+      ],
+      "summary": "Transforms admin capabilities map into the access model’s normalized representation.",
+      "tags": [
+        "function",
+        "access-control",
+        "normalization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:isAdminUser",
+      "type": "function",
+      "name": "isAdminUser",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        307,
+        309
+      ],
+      "summary": "Determines whether admin user satisfies the access model.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:hasAdminCapability",
+      "type": "function",
+      "name": "hasAdminCapability",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        311,
+        320
+      ],
+      "summary": "Checks whether the current authenticated user has a specific administrative capability.",
+      "tags": [
+        "function",
+        "access-control",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:adminOnlyAccess",
+      "type": "function",
+      "name": "adminOnlyAccess",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        322,
+        324
+      ],
+      "summary": "Allows access only to authenticated users with the administrator role.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:adminOrFirstUserAccess",
+      "type": "function",
+      "name": "adminOrFirstUserAccess",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        326,
+        338
+      ],
+      "summary": "Allows administrators while preserving Payload’s first-user bootstrap flow.",
+      "tags": [
+        "function",
+        "access-control",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:requireCapability",
+      "type": "function",
+      "name": "requireCapability",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        346,
+        354
+      ],
+      "summary": "Creates a Payload access predicate requiring one or more administrative capabilities.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:allowPublicReadOrCapability",
+      "type": "function",
+      "name": "allowPublicReadOrCapability",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        356,
+        368
+      ],
+      "summary": "Creates an access predicate that allows public read or capability.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:allowPublishedReadOrCapability",
+      "type": "function",
+      "name": "allowPublishedReadOrCapability",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        370,
+        388
+      ],
+      "summary": "Creates an access predicate that allows published read or capability.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:hideFromNonAdmin",
+      "type": "function",
+      "name": "hideFromNonAdmin",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        390,
+        392
+      ],
+      "summary": "Controls admin UI visibility by hide from non admin.",
+      "tags": [
+        "function",
+        "access-control",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:hideFromUsersWithoutCapability",
+      "type": "function",
+      "name": "hideFromUsersWithoutCapability",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        394,
+        402
+      ],
+      "summary": "Controls admin UI visibility by hide from users without capability.",
+      "tags": [
+        "function",
+        "access-control",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:canPublishPages",
+      "type": "function",
+      "name": "canPublishPages",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        404,
+        406
+      ],
+      "summary": "Checks whether the current user can publish pages.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:canPublishArticles",
+      "type": "function",
+      "name": "canPublishArticles",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        408,
+        410
+      ],
+      "summary": "Checks whether the current user can publish articles.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:canPublishNewsEvents",
+      "type": "function",
+      "name": "canPublishNewsEvents",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        412,
+        414
+      ],
+      "summary": "Checks whether the current user can publish news events.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:canPublishReviews",
+      "type": "function",
+      "name": "canPublishReviews",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        416,
+        418
+      ],
+      "summary": "Checks whether the current user can publish reviews.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:canPublishSystemPages",
+      "type": "function",
+      "name": "canPublishSystemPages",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        420,
+        422
+      ],
+      "summary": "Checks whether the current user can publish system pages.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:canManageSystemModes",
+      "type": "function",
+      "name": "canManageSystemModes",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        424,
+        426
+      ],
+      "summary": "Checks whether the current user can manage system modes.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:canViewOperationalAudit",
+      "type": "function",
+      "name": "canViewOperationalAudit",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        428,
+        430
+      ],
+      "summary": "Checks whether the current user can view operational audit.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:requiresEditorialWorkflow",
+      "type": "function",
+      "name": "requiresEditorialWorkflow",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        432,
+        438
+      ],
+      "summary": "Determines whether editorial workflow is required for the current user.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:canShowEditorialWorkflow",
+      "type": "function",
+      "name": "canShowEditorialWorkflow",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        440,
+        442
+      ],
+      "summary": "Checks whether the current user can show editorial workflow.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:canManageTaxonomy",
+      "type": "function",
+      "name": "canManageTaxonomy",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        444,
+        446
+      ],
+      "summary": "Checks whether the current user can manage taxonomy.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:canReadTaxonomy",
+      "type": "function",
+      "name": "canReadTaxonomy",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        448,
+        460
+      ],
+      "summary": "Checks whether the current user can read taxonomy.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/adminCapabilities.ts:getCapabilitiesForRole",
+      "type": "function",
+      "name": "getCapabilitiesForRole",
+      "filePath": "src/access/adminCapabilities.ts",
+      "lineRange": [
+        466,
+        472
+      ],
+      "summary": "Resolves the effective capability set for a normalized editorial role.",
+      "tags": [
+        "function",
+        "access-control",
+        "factory"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/access/editorialRoles.ts",
+      "type": "file",
+      "name": "editorialRoles.ts",
+      "filePath": "src/access/editorialRoles.ts",
+      "summary": "Defines editorial role identities and their default capability profiles, with normalization for legacy and current role values.",
+      "tags": [
+        "access-control",
+        "editorial-workflow",
+        "roles",
+        "capabilities"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/access/editorialRoles.ts:withCapabilities",
+      "type": "function",
+      "name": "withCapabilities",
+      "filePath": "src/access/editorialRoles.ts",
+      "lineRange": [
+        60,
+        95
+      ],
+      "summary": "Builds a complete role capability profile from explicit enabled capability keys.",
+      "tags": [
+        "function",
+        "access-control",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/editorialRoles.ts:isEditorialRole",
+      "type": "function",
+      "name": "isEditorialRole",
+      "filePath": "src/access/editorialRoles.ts",
+      "lineRange": [
+        138,
+        140
+      ],
+      "summary": "Determines whether editorial role satisfies the access model.",
+      "tags": [
+        "function",
+        "access-control",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/editorialRoles.ts:toNormalizedEditorialRole",
+      "type": "function",
+      "name": "toNormalizedEditorialRole",
+      "filePath": "src/access/editorialRoles.ts",
+      "lineRange": [
+        142,
+        152
+      ],
+      "summary": "Transforms normalized editorial role into the access model’s normalized representation.",
+      "tags": [
+        "function",
+        "access-control",
+        "normalization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/editorialRoles.ts:normalizeEditorialRole",
+      "type": "function",
+      "name": "normalizeEditorialRole",
+      "filePath": "src/access/editorialRoles.ts",
+      "lineRange": [
+        154,
+        159
+      ],
+      "summary": "Normalizes editorial role into its canonical stored representation.",
+      "tags": [
+        "function",
+        "access-control",
+        "normalization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/access/editorialRoles.ts:getDefaultCapabilitiesForRole",
+      "type": "function",
+      "name": "getDefaultCapabilitiesForRole",
+      "filePath": "src/access/editorialRoles.ts",
+      "lineRange": [
+        161,
+        175
+      ],
+      "summary": "Resolves default capabilities for role from the active role or capability definition.",
+      "tags": [
+        "function",
+        "access-control",
+        "factory"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "type": "file",
+      "name": "not-found.tsx",
+      "filePath": "src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "summary": "Adapts Payload’s generated admin not-found view and metadata to the Next.js catch-all admin route.",
+      "tags": [
+        "route",
+        "payload-admin",
+        "not-found",
+        "adapter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/(payload)/admin/[[...segments]]/not-found.tsx:generateMetadata",
+      "type": "function",
+      "name": "generateMetadata",
+      "filePath": "src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "lineRange": [
+        18,
+        19
+      ],
+      "summary": "Returns metadata for the generated Payload admin route.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "summary": "Adapts Payload’s generated admin page and metadata to the Next.js catch-all admin route.",
+      "tags": [
+        "route",
+        "payload-admin",
+        "server-component",
+        "adapter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/(payload)/admin/[[...segments]]/page.tsx:generateMetadata",
+      "type": "function",
+      "name": "generateMetadata",
+      "filePath": "src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "lineRange": [
+        18,
+        19
+      ],
+      "summary": "Returns metadata for the generated Payload admin route.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/(payload)/admin/importMap.js",
+      "type": "file",
+      "name": "importMap.js",
+      "filePath": "src/app/(payload)/admin/importMap.js",
+      "summary": "Generated Payload admin import map connecting configured custom admin components to runtime module loaders.",
+      "tags": [
+        "generated",
+        "payload-admin",
+        "import-map",
+        "configuration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/(payload)/api/[...slug]/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "src/app/(payload)/api/[...slug]/route.ts",
+      "summary": "Exposes Payload’s REST handlers through a Next.js catch-all API route for all supported HTTP methods.",
+      "tags": [
+        "api-handler",
+        "payload-api",
+        "rest",
+        "route"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/(payload)/api/graphql-playground/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "src/app/(payload)/api/graphql-playground/route.ts",
+      "summary": "Exposes Payload’s GraphQL Playground handler through a dedicated Next.js route.",
+      "tags": [
+        "api-handler",
+        "graphql",
+        "developer-tools",
+        "payload-api"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/(payload)/api/graphql/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "src/app/(payload)/api/graphql/route.ts",
+      "summary": "Exposes Payload’s GraphQL POST and OPTIONS handlers through the Next.js App Router.",
+      "tags": [
+        "api-handler",
+        "graphql",
+        "payload-api",
+        "route"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/(payload)/layout.tsx",
+      "type": "file",
+      "name": "layout.tsx",
+      "filePath": "src/app/(payload)/layout.tsx",
+      "summary": "Root layout for Payload’s admin and API route group, wiring generated imports, server functions, metadata, and custom admin styling.",
+      "tags": [
+        "layout",
+        "payload-admin",
+        "server-component",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/my-route/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "src/app/my-route/route.ts",
+      "summary": "Small custom API route demonstrating direct access to the initialized Payload instance.",
+      "tags": [
+        "api-handler",
+        "payload-api",
+        "example",
+        "route"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/my-route/route.ts:GET",
+      "type": "function",
+      "name": "GET",
+      "filePath": "src/app/my-route/route.ts",
+      "lineRange": [
+        4,
+        12
+      ],
+      "summary": "Handles the custom GET route using the initialized Payload API.",
+      "tags": [
+        "function",
+        "api-handler",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/HeaderNavbar12/LogoHeightField.tsx",
+      "type": "file",
+      "name": "LogoHeightField.tsx",
+      "filePath": "src/blocks/HeaderNavbar12/LogoHeightField.tsx",
+      "summary": "Custom Payload admin field that synchronizes header logo-height controls with sibling field state.",
+      "tags": [
+        "component",
+        "payload-admin",
+        "custom-field",
+        "form-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/HeaderNavbar12/LogoHeightField.tsx:LogoHeightField",
+      "type": "function",
+      "name": "LogoHeightField",
+      "filePath": "src/blocks/HeaderNavbar12/LogoHeightField.tsx",
+      "lineRange": [
+        20,
+        52
+      ],
+      "summary": "Renders and synchronizes the custom Payload admin control for header logo height.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/collections/Articles.ts",
+      "type": "file",
+      "name": "Articles.ts",
+      "filePath": "src/collections/Articles.ts",
+      "summary": "Payload collection schema for editorial articles, combining rich content, media, taxonomy, SEO, drafts, access controls, audit logging, and workflow hooks.",
+      "tags": [
+        "data-model",
+        "payload-collection",
+        "articles",
+        "editorial-workflow",
+        "seo"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses Payload CollectionConfig declarations to compose fields, access policies, hooks, admin metadata, and versioning."
+    },
+    {
+      "id": "file:src/collections/Categories.ts",
+      "type": "file",
+      "name": "Categories.ts",
+      "filePath": "src/collections/Categories.ts",
+      "summary": "Payload taxonomy collection for categories with managed slugs, SEO fields, public-read rules, and capability-gated editing.",
+      "tags": [
+        "data-model",
+        "payload-collection",
+        "taxonomy",
+        "seo"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses Payload CollectionConfig declarations to compose fields, access policies, hooks, admin metadata, and versioning."
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:getCapabilityDescription",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:createCapabilityCheckbox",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:createCapabilityRows",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:isAdminRole",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:isAdminRole",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:normalizeAdminRole",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:normalizeAdminRole",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:sanitizeAdminCapabilities",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:sanitizeAdminCapabilities",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:toAdminCapabilitiesMap",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:toAdminCapabilitiesMap",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:isAdminUser",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:isAdminUser",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:hasAdminCapability",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:hasAdminCapability",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:adminOnlyAccess",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:adminOnlyAccess",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:adminOrFirstUserAccess",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:adminOrFirstUserAccess",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:requireCapability",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:requireCapability",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:allowPublicReadOrCapability",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:allowPublicReadOrCapability",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:allowPublishedReadOrCapability",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:allowPublishedReadOrCapability",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:hideFromNonAdmin",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:hideFromNonAdmin",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:hideFromUsersWithoutCapability",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:hideFromUsersWithoutCapability",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canPublishPages",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canPublishPages",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canPublishArticles",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canPublishArticles",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canPublishNewsEvents",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canPublishNewsEvents",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canPublishReviews",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canPublishReviews",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canPublishSystemPages",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canPublishSystemPages",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canManageSystemModes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canManageSystemModes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canViewOperationalAudit",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canViewOperationalAudit",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:requiresEditorialWorkflow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:requiresEditorialWorkflow",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canShowEditorialWorkflow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canShowEditorialWorkflow",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canManageTaxonomy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canManageTaxonomy",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canReadTaxonomy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:canReadTaxonomy",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:getCapabilitiesForRole",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "function:src/access/adminCapabilities.ts:getCapabilitiesForRole",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/adminCapabilities.ts",
+      "target": "file:src/access/editorialRoles.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/access/editorialRoles.ts",
+      "target": "function:src/access/editorialRoles.ts:withCapabilities",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/editorialRoles.ts",
+      "target": "function:src/access/editorialRoles.ts:isEditorialRole",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/editorialRoles.ts",
+      "target": "function:src/access/editorialRoles.ts:isEditorialRole",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/editorialRoles.ts",
+      "target": "function:src/access/editorialRoles.ts:toNormalizedEditorialRole",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/editorialRoles.ts",
+      "target": "function:src/access/editorialRoles.ts:normalizeEditorialRole",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/editorialRoles.ts",
+      "target": "function:src/access/editorialRoles.ts:normalizeEditorialRole",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/editorialRoles.ts",
+      "target": "function:src/access/editorialRoles.ts:getDefaultCapabilitiesForRole",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/access/editorialRoles.ts",
+      "target": "function:src/access/editorialRoles.ts:getDefaultCapabilitiesForRole",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/access/editorialRoles.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "target": "function:src/app/(payload)/admin/[[...segments]]/not-found.tsx:generateMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "target": "function:src/app/(payload)/admin/[[...segments]]/not-found.tsx:generateMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "target": "file:src/app/(payload)/admin/importMap.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "target": "function:src/app/(payload)/admin/[[...segments]]/page.tsx:generateMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "target": "function:src/app/(payload)/admin/[[...segments]]/page.tsx:generateMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "target": "file:src/app/(payload)/admin/importMap.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/admin/importMap.js",
+      "target": "file:src/blocks/HeaderNavbar12/LogoHeightField.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/api/[...slug]/route.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/api/graphql-playground/route.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/api/graphql/route.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/layout.tsx",
+      "target": "file:src/app/(payload)/admin/importMap.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/layout.tsx",
+      "target": "file:src/app/(payload)/custom.scss",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(payload)/layout.tsx",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/my-route/route.ts",
+      "target": "function:src/app/my-route/route.ts:GET",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/my-route/route.ts",
+      "target": "function:src/app/my-route/route.ts:GET",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/my-route/route.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/LogoHeightField.tsx",
+      "target": "function:src/blocks/HeaderNavbar12/LogoHeightField.tsx:LogoHeightField",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/LogoHeightField.tsx",
+      "target": "function:src/blocks/HeaderNavbar12/LogoHeightField.tsx:LogoHeightField",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/collections/Articles.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Articles.ts",
+      "target": "file:src/fields/buildSEOFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Articles.ts",
+      "target": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Articles.ts",
+      "target": "file:src/hooks/logOperationalAuditEvent.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Articles.ts",
+      "target": "file:src/hooks/syncPrimaryCategoryMembership.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Articles.ts",
+      "target": "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Articles.ts",
+      "target": "file:src/hooks/validateSEOContract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Articles.ts",
+      "target": "file:src/lib/editorialWorkflow.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Categories.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Categories.ts",
+      "target": "file:src/fields/buildSEOFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Categories.ts",
+      "target": "file:src/hooks/validateSEOContract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

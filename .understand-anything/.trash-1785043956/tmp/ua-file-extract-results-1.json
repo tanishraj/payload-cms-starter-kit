@@ -1,0 +1,3896 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 31,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 31,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 31,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "src/app/(frontend)/articles/[slug]/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 35,
+      "nonEmptyLines": 27,
+      "functions": [
+        {
+          "name": "generateMetadata",
+          "startLine": 13,
+          "endLine": 17,
+          "params": [
+            "{ params }"
+          ]
+        },
+        {
+          "name": "ArticleEntryPage",
+          "startLine": 19,
+          "endLine": 35,
+          "params": [
+            "{ params }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "generateMetadata",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "ArticleEntryPage",
+          "line": 19,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "generateMetadata",
+          "callee": "getArticleMetadataBySlug",
+          "lineNumber": 16
+        },
+        {
+          "caller": "ArticleEntryPage",
+          "callee": "getArticleBySlug",
+          "lineNumber": 21
+        },
+        {
+          "caller": "ArticleEntryPage",
+          "callee": "notFound",
+          "lineNumber": 24
+        },
+        {
+          "caller": "ArticleEntryPage",
+          "callee": "getRelatedArticles",
+          "lineNumber": 27
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/(frontend)/articles/category/[slug]/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 37,
+      "nonEmptyLines": 30,
+      "functions": [
+        {
+          "name": "generateMetadata",
+          "startLine": 16,
+          "endLine": 20,
+          "params": [
+            "{ params }"
+          ]
+        },
+        {
+          "name": "ArticleCategoryArchiveEntryPage",
+          "startLine": 22,
+          "endLine": 37,
+          "params": [
+            "{ params }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "generateMetadata",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "ArticleCategoryArchiveEntryPage",
+          "line": 22,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "generateMetadata",
+          "callee": "getArticleCategoryArchiveMetadataBySlug",
+          "lineNumber": 19
+        },
+        {
+          "caller": "ArticleCategoryArchiveEntryPage",
+          "callee": "getArticleCategoryArchiveBySlug",
+          "lineNumber": 24
+        },
+        {
+          "caller": "ArticleCategoryArchiveEntryPage",
+          "callee": "notFound",
+          "lineNumber": 27
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/(frontend)/articles/tag/[slug]/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 34,
+      "nonEmptyLines": 27,
+      "functions": [
+        {
+          "name": "generateMetadata",
+          "startLine": 13,
+          "endLine": 17,
+          "params": [
+            "{ params }"
+          ]
+        },
+        {
+          "name": "ArticleTagArchiveEntryPage",
+          "startLine": 19,
+          "endLine": 34,
+          "params": [
+            "{ params }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "generateMetadata",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "ArticleTagArchiveEntryPage",
+          "line": 19,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "generateMetadata",
+          "callee": "getArticleTagArchiveMetadataBySlug",
+          "lineNumber": 16
+        },
+        {
+          "caller": "ArticleTagArchiveEntryPage",
+          "callee": "getArticleTagArchiveBySlug",
+          "lineNumber": 21
+        },
+        {
+          "caller": "ArticleTagArchiveEntryPage",
+          "callee": "notFound",
+          "lineNumber": 24
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/(frontend)/news-events/[slug]/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 60,
+      "nonEmptyLines": 48,
+      "functions": [
+        {
+          "name": "generateMetadata",
+          "startLine": 17,
+          "endLine": 22,
+          "params": [
+            "{ params }"
+          ]
+        },
+        {
+          "name": "NewsEventEntryPage",
+          "startLine": 24,
+          "endLine": 60,
+          "params": [
+            "{ params, searchParams }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "generateMetadata",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "NewsEventEntryPage",
+          "line": 24,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "generateMetadata",
+          "callee": "getNewsEventBySlug",
+          "lineNumber": 19
+        },
+        {
+          "caller": "generateMetadata",
+          "callee": "new Date().toISOString",
+          "lineNumber": 19
+        },
+        {
+          "caller": "generateMetadata",
+          "callee": "getNewsEventDetailMetadata",
+          "lineNumber": 21
+        },
+        {
+          "caller": "NewsEventEntryPage",
+          "callee": "Promise.all",
+          "lineNumber": 25
+        },
+        {
+          "caller": "NewsEventEntryPage",
+          "callee": "new Date().toISOString",
+          "lineNumber": 27
+        },
+        {
+          "caller": "NewsEventEntryPage",
+          "callee": "getPayload",
+          "lineNumber": 30
+        },
+        {
+          "caller": "NewsEventEntryPage",
+          "callee": "payload.auth",
+          "lineNumber": 31
+        },
+        {
+          "caller": "NewsEventEntryPage",
+          "callee": "getHeaders",
+          "lineNumber": 33
+        },
+        {
+          "caller": "NewsEventEntryPage",
+          "callee": "notFound",
+          "lineNumber": 36
+        },
+        {
+          "caller": "NewsEventEntryPage",
+          "callee": "getNewsEventPreviewBySlug",
+          "lineNumber": 38
+        },
+        {
+          "caller": "NewsEventEntryPage",
+          "callee": "notFound",
+          "lineNumber": 39
+        },
+        {
+          "caller": "NewsEventEntryPage",
+          "callee": "getNewsEventBySlug",
+          "lineNumber": 44
+        },
+        {
+          "caller": "NewsEventEntryPage",
+          "callee": "notFound",
+          "lineNumber": 45
+        },
+        {
+          "caller": "NewsEventEntryPage",
+          "callee": "getNewsEventStructuredData",
+          "lineNumber": 47
+        },
+        {
+          "caller": "NewsEventEntryPage",
+          "callee": "JSON.stringify(structuredData).replace",
+          "lineNumber": 53
+        },
+        {
+          "caller": "NewsEventEntryPage",
+          "callee": "JSON.stringify",
+          "lineNumber": 53
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/(frontend)/news-events/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 52,
+      "nonEmptyLines": 46,
+      "functions": [
+        {
+          "name": "generateMetadata",
+          "startLine": 19,
+          "endLine": 21,
+          "params": []
+        },
+        {
+          "name": "NewsEventsArchivePage",
+          "startLine": 23,
+          "endLine": 52,
+          "params": [
+            "{ searchParams }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "generateMetadata",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "NewsEventsArchivePage",
+          "line": 23,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "generateMetadata",
+          "callee": "getNewsEventsArchiveMetadata",
+          "lineNumber": 20
+        },
+        {
+          "caller": "generateMetadata",
+          "callee": "getNewsEventsSettings",
+          "lineNumber": 20
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "getNewsEventsSettings",
+          "lineNumber": 24
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "parseNewsEventsSearchParams",
+          "lineNumber": 25
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "normalizeNewsEventsPageSize",
+          "lineNumber": 26
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "new Date().toISOString",
+          "lineNumber": 27
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "Promise.all",
+          "lineNumber": 29
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "getNewsEventCategories().catch",
+          "lineNumber": 30
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "getNewsEventCategories",
+          "lineNumber": 30
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "Promise.resolve",
+          "lineNumber": 32
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "createEmptyNewsEventsPage",
+          "lineNumber": 32
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "getNewsEventsArchivePage(query, limit, nowISO).catch",
+          "lineNumber": 33
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "getNewsEventsArchivePage",
+          "lineNumber": 33
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "createEmptyNewsEventsPage",
+          "lineNumber": 33
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "getUpcomingEventsPage(query, limit, nowISO).catch",
+          "lineNumber": 35
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "getUpcomingEventsPage",
+          "lineNumber": 35
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "createEmptyNewsEventsPage",
+          "lineNumber": 35
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "Promise.resolve",
+          "lineNumber": 36
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "getPastEventsPage(query, limit, nowISO).catch",
+          "lineNumber": 38
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "getPastEventsPage",
+          "lineNumber": 38
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "createEmptyNewsEventsPage",
+          "lineNumber": 38
+        },
+        {
+          "caller": "NewsEventsArchivePage",
+          "callee": "Promise.resolve",
+          "lineNumber": 39
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/(frontend)/reviews/[slug]/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 35,
+      "nonEmptyLines": 27,
+      "functions": [
+        {
+          "name": "generateMetadata",
+          "startLine": 13,
+          "endLine": 17,
+          "params": [
+            "{ params }"
+          ]
+        },
+        {
+          "name": "ReviewEntryPage",
+          "startLine": 19,
+          "endLine": 35,
+          "params": [
+            "{ params }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "generateMetadata",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "ReviewEntryPage",
+          "line": 19,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "generateMetadata",
+          "callee": "getReviewMetadataBySlug",
+          "lineNumber": 16
+        },
+        {
+          "caller": "ReviewEntryPage",
+          "callee": "getReviewBySlug",
+          "lineNumber": 21
+        },
+        {
+          "caller": "ReviewEntryPage",
+          "callee": "notFound",
+          "lineNumber": 24
+        },
+        {
+          "caller": "ReviewEntryPage",
+          "callee": "getRelatedReviews",
+          "lineNumber": 27
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/(frontend)/reviews/category/[slug]/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 36,
+      "nonEmptyLines": 29,
+      "functions": [
+        {
+          "name": "generateMetadata",
+          "startLine": 16,
+          "endLine": 20,
+          "params": [
+            "{ params }"
+          ]
+        },
+        {
+          "name": "ReviewCategoryArchiveEntryPage",
+          "startLine": 22,
+          "endLine": 36,
+          "params": [
+            "{ params }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "generateMetadata",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "ReviewCategoryArchiveEntryPage",
+          "line": 22,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "generateMetadata",
+          "callee": "getReviewCategoryArchiveMetadataBySlug",
+          "lineNumber": 19
+        },
+        {
+          "caller": "ReviewCategoryArchiveEntryPage",
+          "callee": "getReviewCategoryArchiveBySlug",
+          "lineNumber": 24
+        },
+        {
+          "caller": "ReviewCategoryArchiveEntryPage",
+          "callee": "notFound",
+          "lineNumber": 27
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/api/forms/[slug]/submit/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 272,
+      "nonEmptyLines": 247,
+      "functions": [
+        {
+          "name": "toSimpleFields",
+          "startLine": 26,
+          "endLine": 39,
+          "params": [
+            "form"
+          ]
+        },
+        {
+          "name": "POST",
+          "startLine": 41,
+          "endLine": 272,
+          "params": [
+            "request",
+            "context"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "POST",
+          "line": 41,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "toSimpleFields",
+          "callee": "(form.fields ?? []).map",
+          "lineNumber": 27
+        },
+        {
+          "caller": "toSimpleFields",
+          "callee": "field.options?.map",
+          "lineNumber": 31
+        },
+        {
+          "caller": "POST",
+          "callee": "getPayload",
+          "lineNumber": 43
+        },
+        {
+          "caller": "POST",
+          "callee": "payload.find",
+          "lineNumber": 47
+        },
+        {
+          "caller": "POST",
+          "callee": "NextResponse.json",
+          "lineNumber": 70
+        },
+        {
+          "caller": "POST",
+          "callee": "request.json",
+          "lineNumber": 81
+        },
+        {
+          "caller": "POST",
+          "callee": "NextResponse.json",
+          "lineNumber": 83
+        },
+        {
+          "caller": "POST",
+          "callee": "normalizeFormSubmissionMetadata",
+          "lineNumber": 93
+        },
+        {
+          "caller": "POST",
+          "callee": "isSpamHoneypotTriggered",
+          "lineNumber": 95
+        },
+        {
+          "caller": "POST",
+          "callee": "NextResponse.json",
+          "lineNumber": 96
+        },
+        {
+          "caller": "POST",
+          "callee": "getClientIPAddress",
+          "lineNumber": 101
+        },
+        {
+          "caller": "POST",
+          "callee": "isRateLimited",
+          "lineNumber": 103
+        },
+        {
+          "caller": "POST",
+          "callee": "NextResponse.json",
+          "lineNumber": 104
+        },
+        {
+          "caller": "POST",
+          "callee": "recordSubmissionAttempt",
+          "lineNumber": 112
+        },
+        {
+          "caller": "POST",
+          "callee": "normalizeFormSubmissionIntent",
+          "lineNumber": 117
+        },
+        {
+          "caller": "POST",
+          "callee": "isReviewFormSubmissionIntent",
+          "lineNumber": 118
+        },
+        {
+          "caller": "POST",
+          "callee": "toSimpleFields",
+          "lineNumber": 119
+        },
+        {
+          "caller": "POST",
+          "callee": "formFields.map",
+          "lineNumber": 121
+        },
+        {
+          "caller": "POST",
+          "callee": "validateFormSubmission",
+          "lineNumber": 129
+        },
+        {
+          "caller": "POST",
+          "callee": "validateReviewSubmission",
+          "lineNumber": 134
+        },
+        {
+          "caller": "POST",
+          "callee": "Object.keys",
+          "lineNumber": 148
+        },
+        {
+          "caller": "POST",
+          "callee": "NextResponse.json",
+          "lineNumber": 149
+        },
+        {
+          "caller": "POST",
+          "callee": "getSubmissionContactMetadata",
+          "lineNumber": 165
+        },
+        {
+          "caller": "POST",
+          "callee": "payload.create",
+          "lineNumber": 167
+        },
+        {
+          "caller": "POST",
+          "callee": "submittedAt.toISOString",
+          "lineNumber": 178
+        },
+        {
+          "caller": "POST",
+          "callee": "upsertReviewFromSubmission",
+          "lineNumber": 187
+        },
+        {
+          "caller": "POST",
+          "callee": "payload.update",
+          "lineNumber": 194
+        },
+        {
+          "caller": "POST",
+          "callee": "payload.logger.error",
+          "lineNumber": 207
+        },
+        {
+          "caller": "POST",
+          "callee": "payload.update",
+          "lineNumber": 212
+        },
+        {
+          "caller": "POST",
+          "callee": "emitFormSubmissionEvent",
+          "lineNumber": 224
+        },
+        {
+          "caller": "POST",
+          "callee": "payload.logger.error",
+          "lineNumber": 239
+        },
+        {
+          "caller": "POST",
+          "callee": "getNotificationRecipients",
+          "lineNumber": 245
+        },
+        {
+          "caller": "POST",
+          "callee": "buildFormNotificationEmail",
+          "lineNumber": 248
+        },
+        {
+          "caller": "POST",
+          "callee": "payload.sendEmail",
+          "lineNumber": 255
+        },
+        {
+          "caller": "POST",
+          "callee": "payload.logger.error",
+          "lineNumber": 262
+        },
+        {
+          "caller": "POST",
+          "callee": "NextResponse.json",
+          "lineNumber": 269
+        }
+      ],
+      "metrics": {
+        "importCount": 7,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/robots.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 18,
+      "nonEmptyLines": 15,
+      "functions": [
+        {
+          "name": "robots",
+          "startLine": 7,
+          "endLine": 18,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "revalidate",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "robots",
+          "line": 7,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "robots",
+          "callee": "toAbsoluteSiteUrl",
+          "lineNumber": 16
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/sitemap.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 281,
+      "nonEmptyLines": 245,
+      "functions": [
+        {
+          "name": "isRouteEligibleForSitemap",
+          "startLine": 19,
+          "endLine": 52,
+          "params": [
+            "{\n  entry,\n  inheritedRobots,\n  isPublicRoute = true,\n  isPublished = true,\n}"
+          ]
+        },
+        {
+          "name": "addEntry",
+          "startLine": 54,
+          "endLine": 67,
+          "params": [
+            "{\n  entries,\n  lastModified,\n  pathname,\n}"
+          ]
+        },
+        {
+          "name": "sitemap",
+          "startLine": 69,
+          "endLine": 281,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "revalidate",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "sitemap",
+          "line": 69,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "isRouteEligibleForSitemap",
+          "callee": "resolveRobotsMode",
+          "lineNumber": 30
+        },
+        {
+          "caller": "isRouteEligibleForSitemap",
+          "callee": "resolveSitemapInclusion",
+          "lineNumber": 43
+        },
+        {
+          "caller": "addEntry",
+          "callee": "entries.set",
+          "lineNumber": 63
+        },
+        {
+          "caller": "addEntry",
+          "callee": "toAbsoluteSiteUrl",
+          "lineNumber": 65
+        },
+        {
+          "caller": "sitemap",
+          "callee": "getPayload",
+          "lineNumber": 70
+        },
+        {
+          "caller": "sitemap",
+          "callee": "Promise.all",
+          "lineNumber": 74
+        },
+        {
+          "caller": "sitemap",
+          "callee": "payload.findGlobal",
+          "lineNumber": 75
+        },
+        {
+          "caller": "sitemap",
+          "callee": "payload.findGlobal",
+          "lineNumber": 79
+        },
+        {
+          "caller": "sitemap",
+          "callee": "payload.findGlobal",
+          "lineNumber": 83
+        },
+        {
+          "caller": "sitemap",
+          "callee": "getPageID",
+          "lineNumber": 90
+        },
+        {
+          "caller": "resolvePageParent",
+          "callee": "payload.findByID",
+          "lineNumber": 93
+        },
+        {
+          "caller": "sitemap",
+          "callee": "payload.find",
+          "lineNumber": 100
+        },
+        {
+          "caller": "sitemap",
+          "callee": "getPageHrefFromSourceWithResolver",
+          "lineNumber": 113
+        },
+        {
+          "caller": "sitemap",
+          "callee": "isRouteEligibleForSitemap",
+          "lineNumber": 115
+        },
+        {
+          "caller": "sitemap",
+          "callee": "addEntry",
+          "lineNumber": 120
+        },
+        {
+          "caller": "sitemap",
+          "callee": "payload.find",
+          "lineNumber": 127
+        },
+        {
+          "caller": "sitemap",
+          "callee": "isRouteEligibleForSitemap",
+          "lineNumber": 140
+        },
+        {
+          "caller": "sitemap",
+          "callee": "addEntry",
+          "lineNumber": 144
+        },
+        {
+          "caller": "sitemap",
+          "callee": "payload.find",
+          "lineNumber": 151
+        },
+        {
+          "caller": "sitemap",
+          "callee": "isRouteEligibleForSitemap",
+          "lineNumber": 164
+        },
+        {
+          "caller": "sitemap",
+          "callee": "addEntry",
+          "lineNumber": 168
+        },
+        {
+          "caller": "sitemap",
+          "callee": "isRouteEligibleForSitemap",
+          "lineNumber": 175
+        },
+        {
+          "caller": "sitemap",
+          "callee": "addEntry",
+          "lineNumber": 176
+        },
+        {
+          "caller": "sitemap",
+          "callee": "payload.find",
+          "lineNumber": 183
+        },
+        {
+          "caller": "sitemap",
+          "callee": "isRouteEligibleForSitemap",
+          "lineNumber": 194
+        },
+        {
+          "caller": "sitemap",
+          "callee": "addEntry",
+          "lineNumber": 198
+        },
+        {
+          "caller": "sitemap",
+          "callee": "getTaxonomyTerm",
+          "lineNumber": 209
+        },
+        {
+          "caller": "sitemap",
+          "callee": "usedCategoryIDs.add",
+          "lineNumber": 212
+        },
+        {
+          "caller": "sitemap",
+          "callee": "getTaxonomyRelationshipIDs",
+          "lineNumber": 215
+        },
+        {
+          "caller": "sitemap",
+          "callee": "usedTagIDs.add",
+          "lineNumber": 216
+        },
+        {
+          "caller": "sitemap",
+          "callee": "getTaxonomyTerm",
+          "lineNumber": 221
+        },
+        {
+          "caller": "sitemap",
+          "callee": "usedCategoryIDs.add",
+          "lineNumber": 224
+        },
+        {
+          "caller": "sitemap",
+          "callee": "Promise.all",
+          "lineNumber": 228
+        },
+        {
+          "caller": "sitemap",
+          "callee": "payload.find",
+          "lineNumber": 229
+        },
+        {
+          "caller": "sitemap",
+          "callee": "payload.find",
+          "lineNumber": 235
+        },
+        {
+          "caller": "sitemap",
+          "callee": "usedCategoryIDs.has",
+          "lineNumber": 245
+        },
+        {
+          "caller": "sitemap",
+          "callee": "isRouteEligibleForSitemap",
+          "lineNumber": 247
+        },
+        {
+          "caller": "sitemap",
+          "callee": "addEntry",
+          "lineNumber": 252
+        },
+        {
+          "caller": "sitemap",
+          "callee": "addEntry",
+          "lineNumber": 257
+        },
+        {
+          "caller": "sitemap",
+          "callee": "usedTagIDs.has",
+          "lineNumber": 266
+        },
+        {
+          "caller": "sitemap",
+          "callee": "isRouteEligibleForSitemap",
+          "lineNumber": 268
+        },
+        {
+          "caller": "sitemap",
+          "callee": "addEntry",
+          "lineNumber": 273
+        },
+        {
+          "caller": "sitemap",
+          "callee": "entries.values",
+          "lineNumber": 280
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 2,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/NewsEventsHighlights/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 16,
+      "nonEmptyLines": 13,
+      "functions": [
+        {
+          "name": "NewsEventsHighlightsBlockComponent",
+          "startLine": 10,
+          "endLine": 16,
+          "params": [
+            "props"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "NewsEventsHighlightsBlockLike",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "NewsEventsHighlightsBlockComponent",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "NewsEventsHighlightsBlockComponent",
+          "callee": "normalizeHighlightsItemCount",
+          "lineNumber": 11
+        },
+        {
+          "caller": "NewsEventsHighlightsBlockComponent",
+          "callee": "new Date().toISOString",
+          "lineNumber": 12
+        },
+        {
+          "caller": "NewsEventsHighlightsBlockComponent",
+          "callee": "getNewsEventsHighlights(itemCount, nowISO).catch",
+          "lineNumber": 13
+        },
+        {
+          "caller": "NewsEventsHighlightsBlockComponent",
+          "callee": "getNewsEventsHighlights",
+          "lineNumber": 13
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/articles/ArticleArchivePage.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 47,
+      "nonEmptyLines": 45,
+      "functions": [
+        {
+          "name": "ArticleArchivePage",
+          "startLine": 5,
+          "endLine": 47,
+          "params": [
+            "{\n  archiveLabel,\n  articles,\n  archiveType,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ArticleArchivePage",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ArticleArchivePage",
+          "callee": "articles.map",
+          "lineNumber": 26
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/articles/ArticlePage.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 94,
+      "nonEmptyLines": 91,
+      "functions": [
+        {
+          "name": "ArticlePage",
+          "startLine": 8,
+          "endLine": 94,
+          "params": [
+            "{\n  article,\n  relatedArticles,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ArticlePage",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ArticlePage",
+          "callee": "getMediaImageProps",
+          "lineNumber": 15
+        },
+        {
+          "caller": "ArticlePage",
+          "callee": "getTaxonomyTerm",
+          "lineNumber": 21
+        },
+        {
+          "caller": "ArticlePage",
+          "callee": "getTaxonomyTerms",
+          "lineNumber": 22
+        },
+        {
+          "caller": "ArticlePage",
+          "callee": "new Date(publishedAt).toLocaleDateString",
+          "lineNumber": 38
+        },
+        {
+          "caller": "ArticlePage",
+          "callee": "tags.map",
+          "lineNumber": 58
+        },
+        {
+          "caller": "ArticlePage",
+          "callee": "relatedArticles.map",
+          "lineNumber": 77
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/live-preview/NewsEventLivePreview.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 28,
+      "nonEmptyLines": 23,
+      "functions": [
+        {
+          "name": "NewsEventLivePreview",
+          "startLine": 12,
+          "endLine": 28,
+          "params": [
+            "{\n  initialData,\n  nowISO,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "NewsEventLivePreview",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "NewsEventLivePreview",
+          "callee": "useRouter",
+          "lineNumber": 19
+        },
+        {
+          "caller": "NewsEventLivePreview",
+          "callee": "useLivePreview",
+          "lineNumber": 20
+        },
+        {
+          "caller": "NewsEventLivePreview",
+          "callee": "toPublicNewsEventDetail",
+          "lineNumber": 24
+        },
+        {
+          "caller": "NewsEventLivePreview",
+          "callee": "router.refresh",
+          "lineNumber": 25
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/news-events/NewsEventStory.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 106,
+      "nonEmptyLines": 101,
+      "functions": [
+        {
+          "name": "NewsEventStory",
+          "startLine": 15,
+          "endLine": 106,
+          "params": [
+            "{ entry }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "NewsEventStory",
+          "line": 15,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "NewsEventStory",
+          "callee": "cn",
+          "lineNumber": 18
+        },
+        {
+          "caller": "NewsEventStory",
+          "callee": "formatNewsEventDateTime",
+          "lineNumber": 43
+        },
+        {
+          "caller": "NewsEventStory",
+          "callee": "formatNewsEventDateTime",
+          "lineNumber": 44
+        },
+        {
+          "caller": "NewsEventStory",
+          "callee": "cn",
+          "lineNumber": 70
+        },
+        {
+          "caller": "NewsEventStory",
+          "callee": "entry.categories.map",
+          "lineNumber": 87
+        },
+        {
+          "caller": "NewsEventStory",
+          "callee": "entry.tags.map",
+          "lineNumber": 96
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/reviews/ReviewArchivePage.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 50,
+      "nonEmptyLines": 48,
+      "functions": [
+        {
+          "name": "ReviewArchivePage",
+          "startLine": 6,
+          "endLine": 50,
+          "params": [
+            "{\n  archiveLabel,\n  reviews,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ReviewArchivePage",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ReviewArchivePage",
+          "callee": "reviews.map",
+          "lineNumber": 25
+        },
+        {
+          "caller": "ReviewArchivePage",
+          "callee": "getReviewDisplayName",
+          "lineNumber": 32
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/reviews/ReviewPage.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 98,
+      "nonEmptyLines": 95,
+      "functions": [
+        {
+          "name": "ReviewPage",
+          "startLine": 8,
+          "endLine": 98,
+          "params": [
+            "{\n  review,\n  relatedReviews,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ReviewPage",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ReviewPage",
+          "callee": "getMediaImageProps",
+          "lineNumber": 15
+        },
+        {
+          "caller": "ReviewPage",
+          "callee": "getTaxonomyTerm",
+          "lineNumber": 20
+        },
+        {
+          "caller": "ReviewPage",
+          "callee": "getTaxonomyTerms",
+          "lineNumber": 21
+        },
+        {
+          "caller": "ReviewPage",
+          "callee": "getReviewDisplayName",
+          "lineNumber": 45
+        },
+        {
+          "caller": "ReviewPage",
+          "callee": "tags.map",
+          "lineNumber": 59
+        },
+        {
+          "caller": "ReviewPage",
+          "callee": "relatedReviews.map",
+          "lineNumber": 77
+        },
+        {
+          "caller": "ReviewPage",
+          "callee": "getReviewDisplayName",
+          "lineNumber": 84
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/contentEntries.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 525,
+      "nonEmptyLines": 464,
+      "functions": [
+        {
+          "name": "toTaxonomyArchiveTerm",
+          "startLine": 50,
+          "endLine": 75,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "toManagedEntryMetadata",
+          "startLine": 77,
+          "endLine": 137,
+          "params": [
+            "{\n  entry,\n  resolvedCanonicalPath,\n}"
+          ]
+        },
+        {
+          "name": "getArticleMetadataBySlug",
+          "startLine": 167,
+          "endLine": 182,
+          "params": [
+            "slug"
+          ]
+        },
+        {
+          "name": "toTaxonomyArchiveMetadata",
+          "startLine": 222,
+          "endLine": 282,
+          "params": [
+            "{\n  collectionLabel,\n  fallbackTitle,\n  path,\n  term,\n}"
+          ]
+        },
+        {
+          "name": "toUniqueEntries",
+          "startLine": 322,
+          "endLine": 333,
+          "params": [
+            "entries"
+          ]
+        },
+        {
+          "name": "getArticleCategoryArchiveMetadataBySlug",
+          "startLine": 355,
+          "endLine": 364,
+          "params": [
+            "slug"
+          ]
+        },
+        {
+          "name": "getArticleTagArchiveMetadataBySlug",
+          "startLine": 386,
+          "endLine": 395,
+          "params": [
+            "slug"
+          ]
+        },
+        {
+          "name": "getReviewMetadataBySlug",
+          "startLine": 452,
+          "endLine": 467,
+          "params": [
+            "slug"
+          ]
+        },
+        {
+          "name": "getReviewCategoryArchiveMetadataBySlug",
+          "startLine": 489,
+          "endLine": 498,
+          "params": [
+            "slug"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "getArticleBySlug",
+          "line": 139,
+          "isDefault": false
+        },
+        {
+          "name": "getArticleMetadataBySlug",
+          "line": 167,
+          "isDefault": false
+        },
+        {
+          "name": "getArticleCategoryArchiveBySlug",
+          "line": 335,
+          "isDefault": false
+        },
+        {
+          "name": "getArticleCategoryArchiveMetadataBySlug",
+          "line": 355,
+          "isDefault": false
+        },
+        {
+          "name": "getArticleTagArchiveBySlug",
+          "line": 366,
+          "isDefault": false
+        },
+        {
+          "name": "getArticleTagArchiveMetadataBySlug",
+          "line": 386,
+          "isDefault": false
+        },
+        {
+          "name": "getRelatedArticles",
+          "line": 397,
+          "isDefault": false
+        },
+        {
+          "name": "getReviewBySlug",
+          "line": 424,
+          "isDefault": false
+        },
+        {
+          "name": "getReviewMetadataBySlug",
+          "line": 452,
+          "isDefault": false
+        },
+        {
+          "name": "getReviewCategoryArchiveBySlug",
+          "line": 469,
+          "isDefault": false
+        },
+        {
+          "name": "getReviewCategoryArchiveMetadataBySlug",
+          "line": 489,
+          "isDefault": false
+        },
+        {
+          "name": "getRelatedReviews",
+          "line": 500,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "toTaxonomyArchiveTerm",
+          "callee": "getTaxonomyTerm",
+          "lineNumber": 51
+        },
+        {
+          "caller": "toManagedEntryMetadata",
+          "callee": "getSeoSettings",
+          "lineNumber": 84
+        },
+        {
+          "caller": "toManagedEntryMetadata",
+          "callee": "resolveCanonicalURL",
+          "lineNumber": 85
+        },
+        {
+          "caller": "toManagedEntryMetadata",
+          "callee": "toAbsoluteSiteUrl",
+          "lineNumber": 89
+        },
+        {
+          "caller": "toManagedEntryMetadata",
+          "callee": "getMediaAbsoluteUrl",
+          "lineNumber": 90
+        },
+        {
+          "caller": "toManagedEntryMetadata",
+          "callee": "getMediaAbsoluteUrl",
+          "lineNumber": 91
+        },
+        {
+          "caller": "toManagedEntryMetadata",
+          "callee": "resolveRobotsMode",
+          "lineNumber": 123
+        },
+        {
+          "caller": "getArticleMetadataBySlug",
+          "callee": "getArticleBySlug",
+          "lineNumber": 168
+        },
+        {
+          "caller": "getArticleMetadataBySlug",
+          "callee": "toManagedEntryMetadata",
+          "lineNumber": 174
+        },
+        {
+          "caller": "toTaxonomyArchiveMetadata",
+          "callee": "getSeoSettings",
+          "lineNumber": 233
+        },
+        {
+          "caller": "toTaxonomyArchiveMetadata",
+          "callee": "resolveCanonicalURL",
+          "lineNumber": 234
+        },
+        {
+          "caller": "toTaxonomyArchiveMetadata",
+          "callee": "toAbsoluteSiteUrl",
+          "lineNumber": 238
+        },
+        {
+          "caller": "toTaxonomyArchiveMetadata",
+          "callee": "term?.metaDescription?.trim",
+          "lineNumber": 241
+        },
+        {
+          "caller": "toTaxonomyArchiveMetadata",
+          "callee": "term?.description?.trim",
+          "lineNumber": 242
+        },
+        {
+          "caller": "toTaxonomyArchiveMetadata",
+          "callee": "collectionLabel.toLowerCase",
+          "lineNumber": 243
+        },
+        {
+          "caller": "toTaxonomyArchiveMetadata",
+          "callee": "getMediaAbsoluteUrl",
+          "lineNumber": 244
+        },
+        {
+          "caller": "toTaxonomyArchiveMetadata",
+          "callee": "getMediaAbsoluteUrl",
+          "lineNumber": 245
+        },
+        {
+          "caller": "toTaxonomyArchiveMetadata",
+          "callee": "resolveRobotsMode",
+          "lineNumber": 270
+        },
+        {
+          "caller": "toUniqueEntries",
+          "callee": "entries.filter",
+          "lineNumber": 325
+        },
+        {
+          "caller": "toUniqueEntries",
+          "callee": "seenIDs.has",
+          "lineNumber": 326
+        },
+        {
+          "caller": "toUniqueEntries",
+          "callee": "seenIDs.add",
+          "lineNumber": 330
+        },
+        {
+          "caller": "getArticleCategoryArchiveMetadataBySlug",
+          "callee": "getCategoryBySlug",
+          "lineNumber": 356
+        },
+        {
+          "caller": "getArticleCategoryArchiveMetadataBySlug",
+          "callee": "toTaxonomyArchiveMetadata",
+          "lineNumber": 358
+        },
+        {
+          "caller": "getArticleTagArchiveMetadataBySlug",
+          "callee": "getTagBySlug",
+          "lineNumber": 387
+        },
+        {
+          "caller": "getArticleTagArchiveMetadataBySlug",
+          "callee": "toTaxonomyArchiveMetadata",
+          "lineNumber": 389
+        },
+        {
+          "caller": "getReviewMetadataBySlug",
+          "callee": "getReviewBySlug",
+          "lineNumber": 453
+        },
+        {
+          "caller": "getReviewMetadataBySlug",
+          "callee": "toManagedEntryMetadata",
+          "lineNumber": 459
+        },
+        {
+          "caller": "getReviewCategoryArchiveMetadataBySlug",
+          "callee": "getCategoryBySlug",
+          "lineNumber": 490
+        },
+        {
+          "caller": "getReviewCategoryArchiveMetadataBySlug",
+          "callee": "toTaxonomyArchiveMetadata",
+          "lineNumber": 492
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 12,
+        "functionCount": 9,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/formNotifications.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 75,
+      "nonEmptyLines": 67,
+      "functions": [
+        {
+          "name": "escapeHTML",
+          "startLine": 3,
+          "endLine": 10,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "formatSubmissionValue",
+          "startLine": 12,
+          "endLine": 18,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "getNotificationRecipients",
+          "startLine": 20,
+          "endLine": 24,
+          "params": [
+            "form"
+          ]
+        },
+        {
+          "name": "buildFormNotificationEmail",
+          "startLine": 26,
+          "endLine": 75,
+          "params": [
+            "{\n  form,\n  submittedAt,\n  values,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "getNotificationRecipients",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "buildFormNotificationEmail",
+          "line": 26,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "escapeHTML",
+          "callee": "value\n    .replaceAll('&', '&amp;')\n    .replaceAll('<', '&lt;')\n    .replaceAll('>', '&gt;')\n    .replaceAll('\"', '&quot;')\n    .replaceAll",
+          "lineNumber": 4
+        },
+        {
+          "caller": "escapeHTML",
+          "callee": "value\n    .replaceAll('&', '&amp;')\n    .replaceAll('<', '&lt;')\n    .replaceAll('>', '&gt;')\n    .replaceAll",
+          "lineNumber": 4
+        },
+        {
+          "caller": "escapeHTML",
+          "callee": "value\n    .replaceAll('&', '&amp;')\n    .replaceAll('<', '&lt;')\n    .replaceAll",
+          "lineNumber": 4
+        },
+        {
+          "caller": "escapeHTML",
+          "callee": "value\n    .replaceAll('&', '&amp;')\n    .replaceAll",
+          "lineNumber": 4
+        },
+        {
+          "caller": "escapeHTML",
+          "callee": "value\n    .replaceAll",
+          "lineNumber": 4
+        },
+        {
+          "caller": "getNotificationRecipients",
+          "callee": "(form.notificationRecipients ?? [])\n    .map((recipient) => recipient.email?.trim())\n    .filter",
+          "lineNumber": 21
+        },
+        {
+          "caller": "getNotificationRecipients",
+          "callee": "(form.notificationRecipients ?? [])\n    .map",
+          "lineNumber": 21
+        },
+        {
+          "caller": "getNotificationRecipients",
+          "callee": "recipient.email?.trim",
+          "lineNumber": 22
+        },
+        {
+          "caller": "getNotificationRecipients",
+          "callee": "Boolean",
+          "lineNumber": 23
+        },
+        {
+          "caller": "buildFormNotificationEmail",
+          "callee": "(form.fields ?? []).map",
+          "lineNumber": 36
+        },
+        {
+          "caller": "buildFormNotificationEmail",
+          "callee": "formatSubmissionValue",
+          "lineNumber": 37
+        },
+        {
+          "caller": "buildFormNotificationEmail",
+          "callee": "[\n    `A new submission was received for \"${form.title}\".`,\n    '',\n    `Submitted at: ${submittedAt.toISOString()}`,\n    '',\n    ...lines,\n  ].join",
+          "lineNumber": 40
+        },
+        {
+          "caller": "buildFormNotificationEmail",
+          "callee": "submittedAt.toISOString",
+          "lineNumber": 43
+        },
+        {
+          "caller": "buildFormNotificationEmail",
+          "callee": "`\n    <div>\n      <p>A new submission was received for \"<strong>${escapeHTML(form.title)}</strong>\".</p>\n      <p><strong>Submitted at:</strong> ${escapeHTML(submittedAt.toISOString())}</p>\n      <table style=\"border-collapse: collapse; width: 100%; margin-top: 16px;\">\n        <tbody>\n          ${lines\n            .map((line) => {\n              const [label, ...rest] = line.split(': ')\n              return `\n                <tr>\n                  <td style=\"padding: 8px; border: 1px solid #ddd; font-weight: 600; width: 35%;\">${escapeHTML(label)}</td>\n                  <td style=\"padding: 8px; border: 1px solid #ddd;\">${escapeHTML(rest.join(': '))}</td>\n                </tr>\n              `\n            })\n            .join('')}\n        </tbody>\n      </table>\n    </div>\n  `.trim",
+          "lineNumber": 48
+        },
+        {
+          "caller": "buildFormNotificationEmail",
+          "callee": "escapeHTML",
+          "lineNumber": 50
+        },
+        {
+          "caller": "buildFormNotificationEmail",
+          "callee": "escapeHTML",
+          "lineNumber": 51
+        },
+        {
+          "caller": "buildFormNotificationEmail",
+          "callee": "submittedAt.toISOString",
+          "lineNumber": 51
+        },
+        {
+          "caller": "buildFormNotificationEmail",
+          "callee": "lines\n            .map((line) => {\n              const [label, ...rest] = line.split(': ')\n              return `\n                <tr>\n                  <td style=\"padding: 8px; border: 1px solid #ddd; font-weight: 600; width: 35%;\">${escapeHTML(label)}</td>\n                  <td style=\"padding: 8px; border: 1px solid #ddd;\">${escapeHTML(rest.join(': '))}</td>\n                </tr>\n              `\n            })\n            .join",
+          "lineNumber": 54
+        },
+        {
+          "caller": "buildFormNotificationEmail",
+          "callee": "lines\n            .map",
+          "lineNumber": 54
+        },
+        {
+          "caller": "buildFormNotificationEmail",
+          "callee": "line.split",
+          "lineNumber": 56
+        },
+        {
+          "caller": "buildFormNotificationEmail",
+          "callee": "escapeHTML",
+          "lineNumber": 59
+        },
+        {
+          "caller": "buildFormNotificationEmail",
+          "callee": "escapeHTML",
+          "lineNumber": 60
+        },
+        {
+          "caller": "buildFormNotificationEmail",
+          "callee": "rest.join",
+          "lineNumber": 60
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/formSpamProtection.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 85,
+      "nonEmptyLines": 69,
+      "functions": [
+        {
+          "name": "pruneExpiredAttempts",
+          "startLine": 10,
+          "endLine": 12,
+          "params": [
+            "timestamps",
+            "now"
+          ]
+        },
+        {
+          "name": "getRateLimitKey",
+          "startLine": 14,
+          "endLine": 22,
+          "params": [
+            "{\n  formSlug,\n  ipAddress,\n}"
+          ]
+        },
+        {
+          "name": "getClientIPAddress",
+          "startLine": 24,
+          "endLine": 42,
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "isSpamHoneypotTriggered",
+          "startLine": 44,
+          "endLine": 48,
+          "params": [
+            "values"
+          ]
+        },
+        {
+          "name": "isRateLimited",
+          "startLine": 50,
+          "endLine": 67,
+          "params": [
+            "{\n  formSlug,\n  ipAddress,\n}"
+          ]
+        },
+        {
+          "name": "recordSubmissionAttempt",
+          "startLine": 69,
+          "endLine": 85,
+          "params": [
+            "{\n  formSlug,\n  ipAddress,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "getClientIPAddress",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "isSpamHoneypotTriggered",
+          "line": 44,
+          "isDefault": false
+        },
+        {
+          "name": "isRateLimited",
+          "line": 50,
+          "isDefault": false
+        },
+        {
+          "name": "recordSubmissionAttempt",
+          "line": 69,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "pruneExpiredAttempts",
+          "callee": "timestamps.filter",
+          "lineNumber": 11
+        },
+        {
+          "caller": "getClientIPAddress",
+          "callee": "request.headers.get",
+          "lineNumber": 25
+        },
+        {
+          "caller": "getClientIPAddress",
+          "callee": "forwardedFor.split(',')[0]?.trim",
+          "lineNumber": 28
+        },
+        {
+          "caller": "getClientIPAddress",
+          "callee": "forwardedFor.split",
+          "lineNumber": 28
+        },
+        {
+          "caller": "getClientIPAddress",
+          "callee": "request.headers.get('x-real-ip')?.trim",
+          "lineNumber": 35
+        },
+        {
+          "caller": "getClientIPAddress",
+          "callee": "request.headers.get",
+          "lineNumber": 35
+        },
+        {
+          "caller": "isSpamHoneypotTriggered",
+          "callee": "honeypotValue.trim",
+          "lineNumber": 47
+        },
+        {
+          "caller": "isRateLimited",
+          "callee": "Date.now",
+          "lineNumber": 57
+        },
+        {
+          "caller": "isRateLimited",
+          "callee": "getRateLimitKey",
+          "lineNumber": 58
+        },
+        {
+          "caller": "isRateLimited",
+          "callee": "pruneExpiredAttempts",
+          "lineNumber": 62
+        },
+        {
+          "caller": "isRateLimited",
+          "callee": "submissionAttemptsByKey.get",
+          "lineNumber": 62
+        },
+        {
+          "caller": "isRateLimited",
+          "callee": "submissionAttemptsByKey.set",
+          "lineNumber": 64
+        },
+        {
+          "caller": "recordSubmissionAttempt",
+          "callee": "Date.now",
+          "lineNumber": 76
+        },
+        {
+          "caller": "recordSubmissionAttempt",
+          "callee": "getRateLimitKey",
+          "lineNumber": 77
+        },
+        {
+          "caller": "recordSubmissionAttempt",
+          "callee": "pruneExpiredAttempts",
+          "lineNumber": 81
+        },
+        {
+          "caller": "recordSubmissionAttempt",
+          "callee": "submissionAttemptsByKey.get",
+          "lineNumber": 81
+        },
+        {
+          "caller": "recordSubmissionAttempt",
+          "callee": "recentAttempts.push",
+          "lineNumber": 83
+        },
+        {
+          "caller": "recordSubmissionAttempt",
+          "callee": "submissionAttemptsByKey.set",
+          "lineNumber": 84
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 4,
+        "functionCount": 6,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/formSubmissionEvents.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 21,
+      "nonEmptyLines": 20,
+      "functions": [
+        {
+          "name": "emitFormSubmissionEvent",
+          "startLine": 17,
+          "endLine": 21,
+          "params": [
+            "_input"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "emitFormSubmissionEvent",
+          "line": 17,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/forms.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 283,
+      "nonEmptyLines": 226,
+      "functions": [
+        {
+          "name": "isTextLikeFormFieldType",
+          "startLine": 71,
+          "endLine": 73,
+          "params": [
+            "type"
+          ]
+        },
+        {
+          "name": "isSelectFormFieldType",
+          "startLine": 75,
+          "endLine": 77,
+          "params": [
+            "type"
+          ]
+        },
+        {
+          "name": "normalizeFormSubmissionIntent",
+          "startLine": 79,
+          "endLine": 85,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "isReviewFormSubmissionIntent",
+          "startLine": 87,
+          "endLine": 89,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "normalizeFormFieldName",
+          "startLine": 91,
+          "endLine": 93,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "isValidFormFieldName",
+          "startLine": 95,
+          "endLine": 97,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "validateFormFieldDefinitions",
+          "startLine": 99,
+          "endLine": 155,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "normalizeCheckboxValue",
+          "startLine": 157,
+          "endLine": 159,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "normalizeTextValue",
+          "startLine": 161,
+          "endLine": 163,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "validateFormSubmission",
+          "startLine": 165,
+          "endLine": 218,
+          "params": [
+            "{\n  fields,\n  values,\n}"
+          ]
+        },
+        {
+          "name": "getFirstNormalizedStringValue",
+          "startLine": 220,
+          "endLine": 239,
+          "params": [
+            "values",
+            "candidateKeys"
+          ]
+        },
+        {
+          "name": "getSubmissionContactMetadata",
+          "startLine": 241,
+          "endLine": 259,
+          "params": [
+            "values"
+          ]
+        },
+        {
+          "name": "normalizeOptionalMetadataValue",
+          "startLine": 261,
+          "endLine": 269,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "normalizeFormSubmissionMetadata",
+          "startLine": 271,
+          "endLine": 283,
+          "params": [
+            "value"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "formFieldTypeOptions",
+          "line": 1,
+          "isDefault": false
+        },
+        {
+          "name": "formSubmissionIntentOptions",
+          "line": 26,
+          "isDefault": false
+        },
+        {
+          "name": "FORM_HONEYPOT_FIELD_NAME",
+          "line": 65,
+          "isDefault": false
+        },
+        {
+          "name": "FORM_RATE_LIMIT_MAX_SUBMISSIONS",
+          "line": 66,
+          "isDefault": false
+        },
+        {
+          "name": "FORM_RATE_LIMIT_WINDOW_MS",
+          "line": 67,
+          "isDefault": false
+        },
+        {
+          "name": "isTextLikeFormFieldType",
+          "line": 71,
+          "isDefault": false
+        },
+        {
+          "name": "isSelectFormFieldType",
+          "line": 75,
+          "isDefault": false
+        },
+        {
+          "name": "normalizeFormSubmissionIntent",
+          "line": 79,
+          "isDefault": false
+        },
+        {
+          "name": "isReviewFormSubmissionIntent",
+          "line": 87,
+          "isDefault": false
+        },
+        {
+          "name": "normalizeFormFieldName",
+          "line": 91,
+          "isDefault": false
+        },
+        {
+          "name": "isValidFormFieldName",
+          "line": 95,
+          "isDefault": false
+        },
+        {
+          "name": "validateFormFieldDefinitions",
+          "line": 99,
+          "isDefault": false
+        },
+        {
+          "name": "validateFormSubmission",
+          "line": 165,
+          "isDefault": false
+        },
+        {
+          "name": "getSubmissionContactMetadata",
+          "line": 241,
+          "isDefault": false
+        },
+        {
+          "name": "normalizeFormSubmissionMetadata",
+          "line": 271,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "isReviewFormSubmissionIntent",
+          "callee": "normalizeFormSubmissionIntent",
+          "lineNumber": 88
+        },
+        {
+          "caller": "normalizeFormFieldName",
+          "callee": "value.trim",
+          "lineNumber": 92
+        },
+        {
+          "caller": "isValidFormFieldName",
+          "callee": "/^[A-Za-z][A-Za-z0-9_]*$/.test",
+          "lineNumber": 96
+        },
+        {
+          "caller": "validateFormFieldDefinitions",
+          "callee": "Array.isArray",
+          "lineNumber": 102
+        },
+        {
+          "caller": "validateFormFieldDefinitions",
+          "callee": "normalizeFormFieldName",
+          "lineNumber": 113
+        },
+        {
+          "caller": "validateFormFieldDefinitions",
+          "callee": "isValidFormFieldName",
+          "lineNumber": 119
+        },
+        {
+          "caller": "validateFormFieldDefinitions",
+          "callee": "seen.has",
+          "lineNumber": 123
+        },
+        {
+          "caller": "validateFormFieldDefinitions",
+          "callee": "seen.add",
+          "lineNumber": 127
+        },
+        {
+          "caller": "validateFormFieldDefinitions",
+          "callee": "Array.isArray",
+          "lineNumber": 130
+        },
+        {
+          "caller": "validateFormFieldDefinitions",
+          "callee": "option.value.trim",
+          "lineNumber": 139
+        },
+        {
+          "caller": "validateFormFieldDefinitions",
+          "callee": "optionValues.has",
+          "lineNumber": 145
+        },
+        {
+          "caller": "validateFormFieldDefinitions",
+          "callee": "optionValues.add",
+          "lineNumber": 149
+        },
+        {
+          "caller": "normalizeTextValue",
+          "callee": "value.trim",
+          "lineNumber": 162
+        },
+        {
+          "caller": "validateFormSubmission",
+          "callee": "normalizeCheckboxValue",
+          "lineNumber": 182
+        },
+        {
+          "caller": "validateFormSubmission",
+          "callee": "normalizeTextValue",
+          "lineNumber": 192
+        },
+        {
+          "caller": "validateFormSubmission",
+          "callee": "emailPattern.test",
+          "lineNumber": 200
+        },
+        {
+          "caller": "validateFormSubmission",
+          "callee": "(field.options ?? []).map",
+          "lineNumber": 206
+        },
+        {
+          "caller": "validateFormSubmission",
+          "callee": "allowedValues.has",
+          "lineNumber": 208
+        },
+        {
+          "caller": "getFirstNormalizedStringValue",
+          "callee": "rawValue.trim",
+          "lineNumber": 231
+        },
+        {
+          "caller": "getSubmissionContactMetadata",
+          "callee": "getFirstNormalizedStringValue",
+          "lineNumber": 247
+        },
+        {
+          "caller": "getSubmissionContactMetadata",
+          "callee": "getFirstNormalizedStringValue",
+          "lineNumber": 248
+        },
+        {
+          "caller": "normalizeOptionalMetadataValue",
+          "callee": "value.trim",
+          "lineNumber": 266
+        },
+        {
+          "caller": "normalizeFormSubmissionMetadata",
+          "callee": "normalizeOptionalMetadataValue",
+          "lineNumber": 279
+        },
+        {
+          "caller": "normalizeFormSubmissionMetadata",
+          "callee": "normalizeOptionalMetadataValue",
+          "lineNumber": 280
+        },
+        {
+          "caller": "normalizeFormSubmissionMetadata",
+          "callee": "normalizeOptionalMetadataValue",
+          "lineNumber": 281
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 15,
+        "functionCount": 14,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/newsEvents.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 336,
+      "nonEmptyLines": 300,
+      "functions": [
+        {
+          "name": "currentOrUpcomingEventWhere",
+          "startLine": 62,
+          "endLine": 69,
+          "params": [
+            "nowISO"
+          ]
+        },
+        {
+          "name": "pastEventWhere",
+          "startLine": 71,
+          "endLine": 78,
+          "params": [
+            "nowISO"
+          ]
+        },
+        {
+          "name": "categoryWhere",
+          "startLine": 80,
+          "endLine": 90,
+          "params": [
+            "category"
+          ]
+        },
+        {
+          "name": "toPublicPage",
+          "startLine": 92,
+          "endLine": 108,
+          "params": [
+            "result",
+            "requestedPage",
+            "nowISO"
+          ]
+        },
+        {
+          "name": "fetchNewsEventsHighlights",
+          "startLine": 110,
+          "endLine": 152,
+          "params": [
+            "payload",
+            "{ limit, nowISO }"
+          ]
+        },
+        {
+          "name": "fetchNewsEventsArchivePage",
+          "startLine": 154,
+          "endLine": 173,
+          "params": [
+            "payload",
+            "{ limit, nowISO, query }"
+          ]
+        },
+        {
+          "name": "fetchEventsPage",
+          "startLine": 175,
+          "endLine": 212,
+          "params": [
+            "payload",
+            "{\n    limit,\n    nowISO,\n    page,\n    query,\n    timeframe,\n  }"
+          ]
+        },
+        {
+          "name": "fetchNewsEventBySlug",
+          "startLine": 214,
+          "endLine": 232,
+          "params": [
+            "payload",
+            "slug",
+            "nowISO"
+          ]
+        },
+        {
+          "name": "getNewsEventPreviewBySlug",
+          "startLine": 285,
+          "endLine": 297,
+          "params": [
+            "slug"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "currentOrUpcomingEventWhere",
+          "line": 62,
+          "isDefault": false
+        },
+        {
+          "name": "pastEventWhere",
+          "line": 71,
+          "isDefault": false
+        },
+        {
+          "name": "fetchNewsEventsHighlights",
+          "line": 110,
+          "isDefault": false
+        },
+        {
+          "name": "fetchNewsEventsArchivePage",
+          "line": 154,
+          "isDefault": false
+        },
+        {
+          "name": "fetchNewsEventBySlug",
+          "line": 214,
+          "isDefault": false
+        },
+        {
+          "name": "getNewsEventsHighlights",
+          "line": 236,
+          "isDefault": false
+        },
+        {
+          "name": "getNewsEventsArchivePage",
+          "line": 247,
+          "isDefault": false
+        },
+        {
+          "name": "getUpcomingEventsPage",
+          "line": 254,
+          "isDefault": false
+        },
+        {
+          "name": "getPastEventsPage",
+          "line": 267,
+          "isDefault": false
+        },
+        {
+          "name": "getNewsEventBySlug",
+          "line": 280,
+          "isDefault": false
+        },
+        {
+          "name": "getNewsEventPreviewBySlug",
+          "line": 285,
+          "isDefault": false
+        },
+        {
+          "name": "getNewsEventsSettings",
+          "line": 299,
+          "isDefault": false
+        },
+        {
+          "name": "getNewsEventCategories",
+          "line": 307,
+          "isDefault": false
+        },
+        {
+          "name": "createEmptyNewsEventsPage",
+          "line": 336,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "toPublicPage",
+          "callee": "(result.docs as NewsEventCardRecord[]).map",
+          "lineNumber": 103
+        },
+        {
+          "caller": "toPublicPage",
+          "callee": "toPublicNewsEventCard",
+          "lineNumber": 103
+        },
+        {
+          "caller": "fetchNewsEventsHighlights",
+          "callee": "normalizeHighlightsItemCount",
+          "lineNumber": 114
+        },
+        {
+          "caller": "fetchNewsEventsHighlights",
+          "callee": "Promise.all",
+          "lineNumber": 115
+        },
+        {
+          "caller": "fetchNewsEventsHighlights",
+          "callee": "payload.find",
+          "lineNumber": 116
+        },
+        {
+          "caller": "fetchNewsEventsHighlights",
+          "callee": "payload.find",
+          "lineNumber": 127
+        },
+        {
+          "caller": "fetchNewsEventsHighlights",
+          "callee": "currentOrUpcomingEventWhere",
+          "lineNumber": 138
+        },
+        {
+          "caller": "fetchNewsEventsHighlights",
+          "callee": "(newsResult.docs as NewsEventCardRecord[]).map",
+          "lineNumber": 144
+        },
+        {
+          "caller": "fetchNewsEventsHighlights",
+          "callee": "toPublicNewsEventCard",
+          "lineNumber": 145
+        },
+        {
+          "caller": "fetchNewsEventsHighlights",
+          "callee": "(eventsResult.docs as NewsEventCardRecord[]).map",
+          "lineNumber": 147
+        },
+        {
+          "caller": "fetchNewsEventsHighlights",
+          "callee": "toPublicNewsEventCard",
+          "lineNumber": 148
+        },
+        {
+          "caller": "fetchNewsEventsHighlights",
+          "callee": "interleaveNewsEvents",
+          "lineNumber": 151
+        },
+        {
+          "caller": "fetchNewsEventsArchivePage",
+          "callee": "payload.find",
+          "lineNumber": 159
+        },
+        {
+          "caller": "fetchNewsEventsArchivePage",
+          "callee": "categoryWhere",
+          "lineNumber": 168
+        },
+        {
+          "caller": "fetchNewsEventsArchivePage",
+          "callee": "toPublicPage",
+          "lineNumber": 172
+        },
+        {
+          "caller": "fetchEventsPage",
+          "callee": "payload.find",
+          "lineNumber": 191
+        },
+        {
+          "caller": "fetchEventsPage",
+          "callee": "currentOrUpcomingEventWhere",
+          "lineNumber": 204
+        },
+        {
+          "caller": "fetchEventsPage",
+          "callee": "pastEventWhere",
+          "lineNumber": 205
+        },
+        {
+          "caller": "fetchEventsPage",
+          "callee": "categoryWhere",
+          "lineNumber": 206
+        },
+        {
+          "caller": "fetchEventsPage",
+          "callee": "toPublicPage",
+          "lineNumber": 211
+        },
+        {
+          "caller": "fetchNewsEventBySlug",
+          "callee": "payload.find",
+          "lineNumber": 219
+        },
+        {
+          "caller": "fetchNewsEventBySlug",
+          "callee": "toPublicNewsEventDetail",
+          "lineNumber": 231
+        },
+        {
+          "caller": "getNewsEventPreviewBySlug",
+          "callee": "loadPayload",
+          "lineNumber": 286
+        },
+        {
+          "caller": "getNewsEventPreviewBySlug",
+          "callee": "payload.find",
+          "lineNumber": 287
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 14,
+        "functionCount": 9,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/newsEventsMetadata.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 99,
+      "nonEmptyLines": 90,
+      "functions": [
+        {
+          "name": "absoluteCanonical",
+          "startLine": 9,
+          "endLine": 10,
+          "params": [
+            "canonicalURL"
+          ]
+        },
+        {
+          "name": "getNewsEventsArchiveMetadata",
+          "startLine": 12,
+          "endLine": 39,
+          "params": [
+            "settings"
+          ]
+        },
+        {
+          "name": "getNewsEventDetailMetadata",
+          "startLine": 41,
+          "endLine": 68,
+          "params": [
+            "entry"
+          ]
+        },
+        {
+          "name": "getNewsEventStructuredData",
+          "startLine": 70,
+          "endLine": 99,
+          "params": [
+            "entry"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "getNewsEventsArchiveMetadata",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "getNewsEventDetailMetadata",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "getNewsEventStructuredData",
+          "line": 70,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "absoluteCanonical",
+          "callee": "toAbsoluteSiteUrl",
+          "lineNumber": 10
+        },
+        {
+          "caller": "getNewsEventsArchiveMetadata",
+          "callee": "settings.metaTitle?.trim",
+          "lineNumber": 13
+        },
+        {
+          "caller": "getNewsEventsArchiveMetadata",
+          "callee": "settings.metaDescription?.trim",
+          "lineNumber": 14
+        },
+        {
+          "caller": "getNewsEventsArchiveMetadata",
+          "callee": "settings.description?.trim",
+          "lineNumber": 14
+        },
+        {
+          "caller": "getNewsEventsArchiveMetadata",
+          "callee": "absoluteCanonical",
+          "lineNumber": 15
+        },
+        {
+          "caller": "getNewsEventsArchiveMetadata",
+          "callee": "resolveCanonicalURL",
+          "lineNumber": 16
+        },
+        {
+          "caller": "getNewsEventsArchiveMetadata",
+          "callee": "getMediaAbsoluteUrl",
+          "lineNumber": 18
+        },
+        {
+          "caller": "getNewsEventsArchiveMetadata",
+          "callee": "settings.ogTitle?.trim",
+          "lineNumber": 25
+        },
+        {
+          "caller": "getNewsEventsArchiveMetadata",
+          "callee": "settings.ogDescription?.trim",
+          "lineNumber": 26
+        },
+        {
+          "caller": "getNewsEventsArchiveMetadata",
+          "callee": "resolveRobotsMode",
+          "lineNumber": 31
+        },
+        {
+          "caller": "getNewsEventsArchiveMetadata",
+          "callee": "settings.ogTitle?.trim",
+          "lineNumber": 34
+        },
+        {
+          "caller": "getNewsEventsArchiveMetadata",
+          "callee": "settings.ogDescription?.trim",
+          "lineNumber": 35
+        },
+        {
+          "caller": "getNewsEventDetailMetadata",
+          "callee": "absoluteCanonical",
+          "lineNumber": 44
+        },
+        {
+          "caller": "getNewsEventDetailMetadata",
+          "callee": "resolveCanonicalURL",
+          "lineNumber": 45
+        },
+        {
+          "caller": "getNewsEventDetailMetadata",
+          "callee": "resolveRobotsMode",
+          "lineNumber": 60
+        },
+        {
+          "caller": "getNewsEventStructuredData",
+          "callee": "toAbsoluteSiteUrl",
+          "lineNumber": 71
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 3,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/newsEventsShared.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 302,
+      "nonEmptyLines": 267,
+      "functions": [
+        {
+          "name": "firstSearchParam",
+          "startLine": 102,
+          "endLine": 103,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "parsePositiveInteger",
+          "startLine": 105,
+          "endLine": 106,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "formatDate",
+          "startLine": 108,
+          "endLine": 120,
+          "params": [
+            "value",
+            "includeTime"
+          ]
+        },
+        {
+          "name": "formatNewsEventDate",
+          "startLine": 122,
+          "endLine": 122,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "formatNewsEventDateTime",
+          "startLine": 124,
+          "endLine": 125,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "normalizeHighlightsItemCount",
+          "startLine": 127,
+          "endLine": 130,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "normalizeNewsEventsPageSize",
+          "startLine": 132,
+          "endLine": 135,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "parseNewsEventsSearchParams",
+          "startLine": 137,
+          "endLine": 156,
+          "params": [
+            "searchParams"
+          ]
+        },
+        {
+          "name": "interleaveNewsEvents",
+          "startLine": 158,
+          "endLine": 204,
+          "params": [
+            "news",
+            "events",
+            "limit"
+          ]
+        },
+        {
+          "name": "getEffectiveEventEnd",
+          "startLine": 206,
+          "endLine": 208,
+          "params": [
+            "entry"
+          ]
+        },
+        {
+          "name": "toPublicNewsEventCard",
+          "startLine": 210,
+          "endLine": 261,
+          "params": [
+            "entry",
+            "nowISO"
+          ]
+        },
+        {
+          "name": "toPublicNewsEventDetail",
+          "startLine": 263,
+          "endLine": 294,
+          "params": [
+            "entry",
+            "nowISO"
+          ]
+        },
+        {
+          "name": "createEmptyNewsEventsPage",
+          "startLine": 296,
+          "endLine": 302,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "NEWS_EVENTS_DEFAULT_PAGE_SIZE",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "NEWS_EVENTS_MAX_PAGE_SIZE",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "NEWS_EVENTS_DEFAULT_HIGHLIGHT_COUNT",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "NEWS_EVENTS_MAX_HIGHLIGHT_COUNT",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "newsEventObjectPositionClasses",
+          "line": 75,
+          "isDefault": false
+        },
+        {
+          "name": "formatNewsEventDate",
+          "line": 122,
+          "isDefault": false
+        },
+        {
+          "name": "formatNewsEventDateTime",
+          "line": 124,
+          "isDefault": false
+        },
+        {
+          "name": "normalizeHighlightsItemCount",
+          "line": 127,
+          "isDefault": false
+        },
+        {
+          "name": "normalizeNewsEventsPageSize",
+          "line": 132,
+          "isDefault": false
+        },
+        {
+          "name": "parseNewsEventsSearchParams",
+          "line": 137,
+          "isDefault": false
+        },
+        {
+          "name": "interleaveNewsEvents",
+          "line": 158,
+          "isDefault": false
+        },
+        {
+          "name": "toPublicNewsEventCard",
+          "line": 210,
+          "isDefault": false
+        },
+        {
+          "name": "toPublicNewsEventDetail",
+          "line": 263,
+          "isDefault": false
+        },
+        {
+          "name": "createEmptyNewsEventsPage",
+          "line": 296,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "firstSearchParam",
+          "callee": "Array.isArray",
+          "lineNumber": 103
+        },
+        {
+          "caller": "parsePositiveInteger",
+          "callee": "positiveIntegerPattern.test",
+          "lineNumber": 106
+        },
+        {
+          "caller": "parsePositiveInteger",
+          "callee": "Number",
+          "lineNumber": 106
+        },
+        {
+          "caller": "formatDate",
+          "callee": "Number.isNaN",
+          "lineNumber": 115
+        },
+        {
+          "caller": "formatDate",
+          "callee": "date.getTime",
+          "lineNumber": 115
+        },
+        {
+          "caller": "formatDate",
+          "callee": "eventDateFormatter.format",
+          "lineNumber": 119
+        },
+        {
+          "caller": "formatDate",
+          "callee": "cardDateFormatter.format",
+          "lineNumber": 119
+        },
+        {
+          "caller": "formatNewsEventDate",
+          "callee": "formatDate",
+          "lineNumber": 122
+        },
+        {
+          "caller": "formatNewsEventDateTime",
+          "callee": "formatDate",
+          "lineNumber": 125
+        },
+        {
+          "caller": "normalizeHighlightsItemCount",
+          "callee": "Number.isInteger",
+          "lineNumber": 128
+        },
+        {
+          "caller": "normalizeHighlightsItemCount",
+          "callee": "Math.min",
+          "lineNumber": 129
+        },
+        {
+          "caller": "normalizeHighlightsItemCount",
+          "callee": "Math.max",
+          "lineNumber": 129
+        },
+        {
+          "caller": "normalizeNewsEventsPageSize",
+          "callee": "Number.isInteger",
+          "lineNumber": 133
+        },
+        {
+          "caller": "normalizeNewsEventsPageSize",
+          "callee": "Math.min",
+          "lineNumber": 134
+        },
+        {
+          "caller": "normalizeNewsEventsPageSize",
+          "callee": "Math.max",
+          "lineNumber": 134
+        },
+        {
+          "caller": "parseNewsEventsSearchParams",
+          "callee": "firstSearchParam",
+          "lineNumber": 140
+        },
+        {
+          "caller": "parseNewsEventsSearchParams",
+          "callee": "firstSearchParam(searchParams.category)?.trim().toLowerCase",
+          "lineNumber": 141
+        },
+        {
+          "caller": "parseNewsEventsSearchParams",
+          "callee": "firstSearchParam(searchParams.category)?.trim",
+          "lineNumber": 141
+        },
+        {
+          "caller": "parseNewsEventsSearchParams",
+          "callee": "firstSearchParam",
+          "lineNumber": 141
+        },
+        {
+          "caller": "parseNewsEventsSearchParams",
+          "callee": "archiveTypeValues.has",
+          "lineNumber": 142
+        },
+        {
+          "caller": "parseNewsEventsSearchParams",
+          "callee": "categorySlugPattern.test",
+          "lineNumber": 148
+        },
+        {
+          "caller": "parseNewsEventsSearchParams",
+          "callee": "parsePositiveInteger",
+          "lineNumber": 151
+        },
+        {
+          "caller": "parseNewsEventsSearchParams",
+          "callee": "firstSearchParam",
+          "lineNumber": 151
+        },
+        {
+          "caller": "parseNewsEventsSearchParams",
+          "callee": "parsePositiveInteger",
+          "lineNumber": 152
+        },
+        {
+          "caller": "parseNewsEventsSearchParams",
+          "callee": "firstSearchParam",
+          "lineNumber": 152
+        },
+        {
+          "caller": "parseNewsEventsSearchParams",
+          "callee": "parsePositiveInteger",
+          "lineNumber": 154
+        },
+        {
+          "caller": "parseNewsEventsSearchParams",
+          "callee": "firstSearchParam",
+          "lineNumber": 154
+        },
+        {
+          "caller": "interleaveNewsEvents",
+          "callee": "seen.has",
+          "lineNumber": 182
+        },
+        {
+          "caller": "interleaveNewsEvents",
+          "callee": "seen.add",
+          "lineNumber": 183
+        },
+        {
+          "caller": "interleaveNewsEvents",
+          "callee": "result.push",
+          "lineNumber": 184
+        },
+        {
+          "caller": "interleaveNewsEvents",
+          "callee": "news.slice",
+          "lineNumber": 191
+        },
+        {
+          "caller": "interleaveNewsEvents",
+          "callee": "events.slice",
+          "lineNumber": 191
+        },
+        {
+          "caller": "interleaveNewsEvents",
+          "callee": "seen.has",
+          "lineNumber": 196
+        },
+        {
+          "caller": "interleaveNewsEvents",
+          "callee": "seen.add",
+          "lineNumber": 197
+        },
+        {
+          "caller": "interleaveNewsEvents",
+          "callee": "result.push",
+          "lineNumber": 198
+        },
+        {
+          "caller": "toPublicNewsEventCard",
+          "callee": "entry.title?.trim",
+          "lineNumber": 229
+        },
+        {
+          "caller": "toPublicNewsEventCard",
+          "callee": "entry.slug?.trim",
+          "lineNumber": 230
+        },
+        {
+          "caller": "toPublicNewsEventCard",
+          "callee": "getEffectiveEventEnd",
+          "lineNumber": 232
+        },
+        {
+          "caller": "toPublicNewsEventCard",
+          "callee": "getMediaImageProps",
+          "lineNumber": 233
+        },
+        {
+          "caller": "toPublicNewsEventCard",
+          "callee": "getTaxonomyTerm",
+          "lineNumber": 238
+        },
+        {
+          "caller": "toPublicNewsEventCard",
+          "callee": "formatNewsEventDate",
+          "lineNumber": 244
+        },
+        {
+          "caller": "toPublicNewsEventCard",
+          "callee": "entry.excerpt?.trim",
+          "lineNumber": 245
+        },
+        {
+          "caller": "toPublicNewsEventCard",
+          "callee": "String",
+          "lineNumber": 247
+        },
+        {
+          "caller": "toPublicNewsEventCard",
+          "callee": "new Date(effectiveEnd).getTime",
+          "lineNumber": 256
+        },
+        {
+          "caller": "toPublicNewsEventCard",
+          "callee": "new Date(nowISO).getTime",
+          "lineNumber": 256
+        },
+        {
+          "caller": "toPublicNewsEventDetail",
+          "callee": "toPublicNewsEventCard",
+          "lineNumber": 264
+        },
+        {
+          "caller": "toPublicNewsEventDetail",
+          "callee": "resolveCmsActions",
+          "lineNumber": 266
+        },
+        {
+          "caller": "toPublicNewsEventDetail",
+          "callee": "getMediaImageProps",
+          "lineNumber": 267
+        },
+        {
+          "caller": "toPublicNewsEventDetail",
+          "callee": "entry.authorName?.trim",
+          "lineNumber": 275
+        },
+        {
+          "caller": "toPublicNewsEventDetail",
+          "callee": "getTaxonomyTerms",
+          "lineNumber": 277
+        },
+        {
+          "caller": "toPublicNewsEventDetail",
+          "callee": "entry.eventLocation?.trim",
+          "lineNumber": 279
+        },
+        {
+          "caller": "toPublicNewsEventDetail",
+          "callee": "entry.canonicalURL?.trim",
+          "lineNumber": 283
+        },
+        {
+          "caller": "toPublicNewsEventDetail",
+          "callee": "entry.metaDescription?.trim",
+          "lineNumber": 284
+        },
+        {
+          "caller": "toPublicNewsEventDetail",
+          "callee": "entry.metaTitle?.trim",
+          "lineNumber": 285
+        },
+        {
+          "caller": "toPublicNewsEventDetail",
+          "callee": "entry.ogDescription?.trim",
+          "lineNumber": 286
+        },
+        {
+          "caller": "toPublicNewsEventDetail",
+          "callee": "entry.ogTitle?.trim",
+          "lineNumber": 288
+        },
+        {
+          "caller": "toPublicNewsEventDetail",
+          "callee": "getTaxonomyTerms",
+          "lineNumber": 291
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 14,
+        "functionCount": 13,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/reviewPromotion.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 74,
+      "nonEmptyLines": 62,
+      "functions": [
+        {
+          "name": "normalizeRelationshipID",
+          "startLine": 5,
+          "endLine": 27,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "upsertReviewFromSubmission",
+          "startLine": 29,
+          "endLine": 74,
+          "params": [
+            "{\n  existingReview,\n  payload,\n  sourceSubmissionID,\n  values,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "upsertReviewFromSubmission",
+          "line": 29,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "normalizeRelationshipID",
+          "callee": "Number.isFinite",
+          "lineNumber": 6
+        },
+        {
+          "caller": "normalizeRelationshipID",
+          "callee": "Number.isFinite",
+          "lineNumber": 17
+        },
+        {
+          "caller": "upsertReviewFromSubmission",
+          "callee": "normalizeRelationshipID",
+          "lineNumber": 40
+        },
+        {
+          "caller": "upsertReviewFromSubmission",
+          "callee": "String",
+          "lineNumber": 49
+        },
+        {
+          "caller": "upsertReviewFromSubmission",
+          "callee": "payload.update",
+          "lineNumber": 56
+        },
+        {
+          "caller": "upsertReviewFromSubmission",
+          "callee": "String",
+          "lineNumber": 63
+        },
+        {
+          "caller": "upsertReviewFromSubmission",
+          "callee": "payload.create",
+          "lineNumber": 66
+        },
+        {
+          "caller": "upsertReviewFromSubmission",
+          "callee": "String",
+          "lineNumber": 73
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/reviews.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 130,
+      "nonEmptyLines": 104,
+      "functions": [
+        {
+          "name": "normalizeReviewCheckboxValue",
+          "startLine": 27,
+          "endLine": 29,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "normalizeReviewTextValue",
+          "startLine": 31,
+          "endLine": 33,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "deriveReviewTitle",
+          "startLine": 35,
+          "endLine": 53,
+          "params": [
+            "{\n  reviewBody,\n  reviewTitle,\n  subjectLabel,\n}"
+          ]
+        },
+        {
+          "name": "getReviewDisplayName",
+          "startLine": 55,
+          "endLine": 73,
+          "params": [
+            "review"
+          ]
+        },
+        {
+          "name": "validateReviewSubmission",
+          "startLine": 75,
+          "endLine": 130,
+          "params": [
+            "{\n  values,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "reviewRatingOptions",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "getReviewDisplayName",
+          "line": 55,
+          "isDefault": false
+        },
+        {
+          "name": "validateReviewSubmission",
+          "line": 75,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "normalizeReviewTextValue",
+          "callee": "value.trim",
+          "lineNumber": 32
+        },
+        {
+          "caller": "deriveReviewTitle",
+          "callee": "reviewBody.replace(/\\s+/g, ' ').trim",
+          "lineNumber": 44
+        },
+        {
+          "caller": "deriveReviewTitle",
+          "callee": "reviewBody.replace",
+          "lineNumber": 44
+        },
+        {
+          "caller": "deriveReviewTitle",
+          "callee": "normalizedReviewBody.slice(0, 69).trimEnd",
+          "lineNumber": 48
+        },
+        {
+          "caller": "deriveReviewTitle",
+          "callee": "normalizedReviewBody.slice",
+          "lineNumber": 48
+        },
+        {
+          "caller": "getReviewDisplayName",
+          "callee": "review.displayName?.trim",
+          "lineNumber": 58
+        },
+        {
+          "caller": "getReviewDisplayName",
+          "callee": "review.reviewerName.trim",
+          "lineNumber": 64
+        },
+        {
+          "caller": "getReviewDisplayName",
+          "callee": "normalizedReviewerName.split",
+          "lineNumber": 70
+        },
+        {
+          "caller": "validateReviewSubmission",
+          "callee": "normalizeReviewCheckboxValue",
+          "lineNumber": 85
+        },
+        {
+          "caller": "validateReviewSubmission",
+          "callee": "normalizeReviewTextValue",
+          "lineNumber": 86
+        },
+        {
+          "caller": "validateReviewSubmission",
+          "callee": "normalizeReviewTextValue",
+          "lineNumber": 87
+        },
+        {
+          "caller": "validateReviewSubmission",
+          "callee": "normalizeReviewTextValue(values.reviewerEmail).toLowerCase",
+          "lineNumber": 88
+        },
+        {
+          "caller": "validateReviewSubmission",
+          "callee": "normalizeReviewTextValue",
+          "lineNumber": 88
+        },
+        {
+          "caller": "validateReviewSubmission",
+          "callee": "normalizeReviewTextValue",
+          "lineNumber": 89
+        },
+        {
+          "caller": "validateReviewSubmission",
+          "callee": "normalizeReviewTextValue",
+          "lineNumber": 90
+        },
+        {
+          "caller": "validateReviewSubmission",
+          "callee": "normalizeReviewTextValue",
+          "lineNumber": 91
+        },
+        {
+          "caller": "validateReviewSubmission",
+          "callee": "deriveReviewTitle",
+          "lineNumber": 95
+        },
+        {
+          "caller": "validateReviewSubmission",
+          "callee": "reviewRatingOptions.map",
+          "lineNumber": 98
+        },
+        {
+          "caller": "validateReviewSubmission",
+          "callee": "allowedRatings.has",
+          "lineNumber": 100
+        },
+        {
+          "caller": "validateReviewSubmission",
+          "callee": "emailPattern.test",
+          "lineNumber": 114
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/siteUrl.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 19,
+      "nonEmptyLines": 15,
+      "functions": [
+        {
+          "name": "getSiteURL",
+          "startLine": 3,
+          "endLine": 15,
+          "params": []
+        },
+        {
+          "name": "toAbsoluteSiteUrl",
+          "startLine": 17,
+          "endLine": 19,
+          "params": [
+            "pathname"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "getSiteURL",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "toAbsoluteSiteUrl",
+          "line": 17,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getSiteURL",
+          "callee": "process.env.NEXT_PUBLIC_SERVER_URL?.trim",
+          "lineNumber": 4
+        },
+        {
+          "caller": "getSiteURL",
+          "callee": "new URL(configuredURL).toString().replace",
+          "lineNumber": 11
+        },
+        {
+          "caller": "getSiteURL",
+          "callee": "new URL(configuredURL).toString",
+          "lineNumber": 11
+        },
+        {
+          "caller": "toAbsoluteSiteUrl",
+          "callee": "new URL(pathname, `${getSiteURL()}/`).toString",
+          "lineNumber": 18
+        },
+        {
+          "caller": "toAbsoluteSiteUrl",
+          "callee": "getSiteURL",
+          "lineNumber": 18
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/taxonomy.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 63,
+      "nonEmptyLines": 53,
+      "functions": [
+        {
+          "name": "getTaxonomyTerm",
+          "startLine": 10,
+          "endLine": 37,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "getTaxonomyTerms",
+          "startLine": 39,
+          "endLine": 47,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "getTaxonomyRelationshipIDs",
+          "startLine": 49,
+          "endLine": 63,
+          "params": [
+            "value"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "getTaxonomyTerm",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "getTaxonomyTerms",
+          "line": 39,
+          "isDefault": false
+        },
+        {
+          "name": "getTaxonomyRelationshipIDs",
+          "line": 49,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getTaxonomyTerms",
+          "callee": "Array.isArray",
+          "lineNumber": 42
+        },
+        {
+          "caller": "getTaxonomyTerms",
+          "callee": "values\n    .map((currentValue) => getTaxonomyTerm(currentValue))\n    .filter",
+          "lineNumber": 44
+        },
+        {
+          "caller": "getTaxonomyTerms",
+          "callee": "values\n    .map",
+          "lineNumber": 44
+        },
+        {
+          "caller": "getTaxonomyTerms",
+          "callee": "getTaxonomyTerm",
+          "lineNumber": 45
+        },
+        {
+          "caller": "getTaxonomyTerms",
+          "callee": "Boolean",
+          "lineNumber": 46
+        },
+        {
+          "caller": "getTaxonomyRelationshipIDs",
+          "callee": "Array.isArray",
+          "lineNumber": 52
+        },
+        {
+          "caller": "getTaxonomyRelationshipIDs",
+          "callee": "values.flatMap",
+          "lineNumber": 54
+        },
+        {
+          "caller": "getTaxonomyRelationshipIDs",
+          "callee": "getTaxonomyTerm",
+          "lineNumber": 59
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/news-event-story.int.spec.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 81,
+      "nonEmptyLines": 76,
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/news-events-data.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 51,
+      "nonEmptyLines": 47,
+      "functions": [
+        {
+          "name": "card",
+          "startLine": 10,
+          "endLine": 20,
+          "params": [
+            "id",
+            "contentType"
+          ]
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    }
+  ]
+}

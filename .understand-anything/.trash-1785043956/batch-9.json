@@ -1,0 +1,1366 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/app/(block-thumbnails)/layout.tsx",
+      "type": "file",
+      "name": "layout.tsx",
+      "filePath": "src/app/(block-thumbnails)/layout.tsx",
+      "summary": "Defines the lightweight Next.js layout for block-thumbnail routes, applying the shared website theme and global stylesheet around preview content.",
+      "tags": [
+        "layout",
+        "nextjs",
+        "payload-cms"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/(block-thumbnails)/layout.tsx:BlockThumbnailLayout",
+      "type": "function",
+      "name": "BlockThumbnailLayout",
+      "filePath": "src/app/(block-thumbnails)/layout.tsx",
+      "lineRange": [
+        7,
+        19
+      ],
+      "summary": "Wraps block-thumbnail pages with global styling and the default website theme attribute.",
+      "tags": [
+        "component",
+        "rendering",
+        "react"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/(frontend)/layout.tsx",
+      "type": "file",
+      "name": "layout.tsx",
+      "filePath": "src/app/(frontend)/layout.tsx",
+      "summary": "Builds the public Next.js root shell by loading Payload globals, metadata, theme settings, the current CMS session, and configured announcement, header, and footer content.",
+      "tags": [
+        "layout",
+        "nextjs",
+        "payload-cms"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses an async Next.js server layout to parallelize Payload global and CMS-session loading before rendering the document shell."
+    },
+    {
+      "id": "function:src/app/(frontend)/layout.tsx:getFrontendGlobals",
+      "type": "function",
+      "name": "getFrontendGlobals",
+      "filePath": "src/app/(frontend)/layout.tsx",
+      "lineRange": [
+        27,
+        122
+      ],
+      "summary": "Fetches public Payload globals plus the currently published active header and footer documents.",
+      "tags": [
+        "payload-cms",
+        "data-fetching",
+        "global-settings"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/app/(frontend)/layout.tsx:generateMetadata",
+      "type": "function",
+      "name": "generateMetadata",
+      "filePath": "src/app/(frontend)/layout.tsx",
+      "lineRange": [
+        127,
+        175
+      ],
+      "summary": "Builds Next.js metadata from SEO and site globals, including title templates, icons, robots, social images, and verification.",
+      "tags": [
+        "metadata",
+        "seo",
+        "nextjs"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/(frontend)/layout.tsx:RootLayout",
+      "type": "function",
+      "name": "RootLayout",
+      "filePath": "src/app/(frontend)/layout.tsx",
+      "lineRange": [
+        177,
+        268
+      ],
+      "summary": "Renders the themed public document shell with CMS session controls, global chrome, announcement offsets, and page content.",
+      "tags": [
+        "layout",
+        "nextjs",
+        "server-component"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/Announcement/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/Announcement/Component.tsx",
+      "summary": "Adapts Payload announcement-block fields into normalized items and chooses the marquee, rotating, or static announcement presentation.",
+      "tags": [
+        "component",
+        "payload-block",
+        "cms-adapter"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/Announcement/Component.tsx:normalizeAnnouncementItems",
+      "type": "function",
+      "name": "normalizeAnnouncementItems",
+      "filePath": "src/blocks/Announcement/Component.tsx",
+      "lineRange": [
+        19,
+        34
+      ],
+      "summary": "Trims configured announcement values and removes entries that lack usable description content.",
+      "tags": [
+        "validation",
+        "normalization",
+        "announcement"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/Announcement/Component.tsx:AnnouncementBlockComponent",
+      "type": "function",
+      "name": "AnnouncementBlockComponent",
+      "filePath": "src/blocks/Announcement/Component.tsx",
+      "lineRange": [
+        36,
+        72
+      ],
+      "summary": "Normalizes block settings and renders the configured announcement presentation with resolved appearance classes.",
+      "tags": [
+        "component",
+        "rendering",
+        "react"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/HeaderNavbar12/Component.tsx",
+      "summary": "Transforms a Payload header-navbar block into resolved navigation, logo, action, alignment, and appearance props for the reusable header component.",
+      "tags": [
+        "component",
+        "payload-block",
+        "cms-adapter"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/HeaderNavbar12/Component.tsx:HeaderNavbar12BlockComponent",
+      "type": "function",
+      "name": "HeaderNavbar12BlockComponent",
+      "filePath": "src/blocks/HeaderNavbar12/Component.tsx",
+      "lineRange": [
+        20,
+        77
+      ],
+      "summary": "Resolves CMS navigation and logo settings into props for the reusable header-navbar presentation.",
+      "tags": [
+        "component",
+        "rendering",
+        "react"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/renderFooterBlocks.tsx",
+      "type": "file",
+      "name": "renderFooterBlocks.tsx",
+      "filePath": "src/blocks/renderFooterBlocks.tsx",
+      "summary": "Dispatches configured footer layout blocks to their matching React renderers while supplying shared site identity and policy-page data.",
+      "tags": [
+        "dispatcher",
+        "payload-block",
+        "rendering"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/renderFooterBlocks.tsx:renderFooterBlocks",
+      "type": "function",
+      "name": "renderFooterBlocks",
+      "filePath": "src/blocks/renderFooterBlocks.tsx",
+      "lineRange": [
+        8,
+        55
+      ],
+      "summary": "Maps supported footer block discriminators to renderers and forwards common site configuration.",
+      "tags": [
+        "dispatcher",
+        "footer",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/renderHeaderBlocks.tsx",
+      "type": "file",
+      "name": "renderHeaderBlocks.tsx",
+      "filePath": "src/blocks/renderHeaderBlocks.tsx",
+      "summary": "Dispatches configured header layout blocks to their matching React renderer with the shared site logo, site name, and sticky offset.",
+      "tags": [
+        "dispatcher",
+        "payload-block",
+        "rendering"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/renderHeaderBlocks.tsx:renderHeaderBlocks",
+      "type": "function",
+      "name": "renderHeaderBlocks",
+      "filePath": "src/blocks/renderHeaderBlocks.tsx",
+      "lineRange": [
+        8,
+        35
+      ],
+      "summary": "Maps supported header block discriminators to renderers and forwards shared logo and offset configuration.",
+      "tags": [
+        "dispatcher",
+        "header",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/announcement/AnnouncementBar.tsx",
+      "type": "file",
+      "name": "AnnouncementBar.tsx",
+      "filePath": "src/components/announcement/AnnouncementBar.tsx",
+      "summary": "Renders a dismissible announcement bar with normalized content, sticky or scroll-away behavior, session-scoped dismissal, and marquee or rotating display modes.",
+      "tags": [
+        "component",
+        "announcement",
+        "client-component"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/announcement/AnnouncementBar.tsx:normalizeAnnouncementItems",
+      "type": "function",
+      "name": "normalizeAnnouncementItems",
+      "filePath": "src/components/announcement/AnnouncementBar.tsx",
+      "lineRange": [
+        48,
+        63
+      ],
+      "summary": "Trims configured announcement values and removes entries that lack usable description content.",
+      "tags": [
+        "validation",
+        "normalization",
+        "announcement"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/announcement/AnnouncementBar.tsx:AnnouncementBar",
+      "type": "function",
+      "name": "AnnouncementBar",
+      "filePath": "src/components/announcement/AnnouncementBar.tsx",
+      "lineRange": [
+        65,
+        161
+      ],
+      "summary": "Coordinates dismissal state, global header spacing, sticky behavior, and the selected announcement content mode.",
+      "tags": [
+        "component",
+        "announcement",
+        "accessibility",
+        "client-state"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "type": "file",
+      "name": "MarqueeAnnouncementContent.tsx",
+      "filePath": "src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "summary": "Renders accessible, continuously scrolling announcement tracks with duplicated content, sanitized timing, external-link handling, and hover-to-pause behavior.",
+      "tags": [
+        "component",
+        "announcement",
+        "client-component"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/announcement/MarqueeAnnouncementContent.tsx:MarqueeAnnouncementContent",
+      "type": "function",
+      "name": "MarqueeAnnouncementContent",
+      "filePath": "src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "lineRange": [
+        14,
+        49
+      ],
+      "summary": "Creates two synchronized marquee tracks and pauses their animation while the user hovers the content.",
+      "tags": [
+        "component",
+        "animation",
+        "announcement"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/announcement/MarqueeAnnouncementContent.tsx:MarqueeTrack",
+      "type": "function",
+      "name": "MarqueeTrack",
+      "filePath": "src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "lineRange": [
+        51,
+        82
+      ],
+      "summary": "Renders one primary or accessibility-hidden duplicate announcement track with configurable animation state.",
+      "tags": [
+        "component",
+        "animation",
+        "marquee"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/announcement/MarqueeAnnouncementContent.tsx:MarqueeItem",
+      "type": "function",
+      "name": "MarqueeItem",
+      "filePath": "src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "lineRange": [
+        84,
+        124
+      ],
+      "summary": "Renders one announcement as linked or plain content with safe external-link attributes.",
+      "tags": [
+        "component",
+        "link",
+        "announcement"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/announcement/RotatingAnnouncementContent.tsx",
+      "type": "file",
+      "name": "RotatingAnnouncementContent.tsx",
+      "filePath": "src/components/announcement/RotatingAnnouncementContent.tsx",
+      "summary": "Cycles through announcement items with horizontal or vertical transitions, interval sanitization, hover pause, and safe timer cleanup.",
+      "tags": [
+        "component",
+        "announcement",
+        "client-component"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/announcement/RotatingAnnouncementContent.tsx:RotatingAnnouncementContent",
+      "type": "function",
+      "name": "RotatingAnnouncementContent",
+      "filePath": "src/components/announcement/RotatingAnnouncementContent.tsx",
+      "lineRange": [
+        17,
+        124
+      ],
+      "summary": "Advances announcement items on a sanitized interval and renders directional enter and exit transitions.",
+      "tags": [
+        "component",
+        "animation",
+        "announcement",
+        "timer"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/announcement/RotatingAnnouncementContent.tsx:AnnouncementItem",
+      "type": "function",
+      "name": "AnnouncementItem",
+      "filePath": "src/components/announcement/RotatingAnnouncementContent.tsx",
+      "lineRange": [
+        126,
+        153
+      ],
+      "summary": "Renders a single rotating announcement with optional title and internal or external link behavior.",
+      "tags": [
+        "component",
+        "link",
+        "announcement"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/global/GlobalAnnouncement.tsx",
+      "type": "file",
+      "name": "GlobalAnnouncement.tsx",
+      "filePath": "src/components/global/GlobalAnnouncement.tsx",
+      "summary": "Connects global page settings to the announcement bar, resolving configured appearance and sticky offset behavior.",
+      "tags": [
+        "component",
+        "global-layout",
+        "payload-cms"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/global/GlobalAnnouncement.tsx:GlobalAnnouncement",
+      "type": "function",
+      "name": "GlobalAnnouncement",
+      "filePath": "src/components/global/GlobalAnnouncement.tsx",
+      "lineRange": [
+        20,
+        47
+      ],
+      "summary": "Applies global appearance settings and delegates configured announcement data to the announcement bar.",
+      "tags": [
+        "component",
+        "rendering",
+        "react"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/global/GlobalFooter.tsx",
+      "type": "file",
+      "name": "GlobalFooter.tsx",
+      "filePath": "src/components/global/GlobalFooter.tsx",
+      "summary": "Renders the active global footer layout through the shared footer dispatcher and omits the shell when no footer is configured.",
+      "tags": [
+        "component",
+        "global-layout",
+        "payload-cms"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/global/GlobalFooter.tsx:GlobalFooter",
+      "type": "function",
+      "name": "GlobalFooter",
+      "filePath": "src/components/global/GlobalFooter.tsx",
+      "lineRange": [
+        22,
+        51
+      ],
+      "summary": "Delegates the active global footer layout and common site data to the footer-block renderer.",
+      "tags": [
+        "component",
+        "rendering",
+        "react"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/global/GlobalHeader.tsx",
+      "type": "file",
+      "name": "GlobalHeader.tsx",
+      "filePath": "src/components/global/GlobalHeader.tsx",
+      "summary": "Renders the active global header layout through the shared header dispatcher and omits the shell when no header is configured.",
+      "tags": [
+        "component",
+        "global-layout",
+        "payload-cms"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/global/GlobalHeader.tsx:GlobalHeader",
+      "type": "function",
+      "name": "GlobalHeader",
+      "filePath": "src/components/global/GlobalHeader.tsx",
+      "lineRange": [
+        12,
+        34
+      ],
+      "summary": "Delegates the active global header layout and site identity data to the header-block renderer.",
+      "tags": [
+        "component",
+        "rendering",
+        "react"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/site/SiteLogo.tsx",
+      "type": "file",
+      "name": "SiteLogo.tsx",
+      "filePath": "src/components/site/SiteLogo.tsx",
+      "summary": "Resolves CMS logo media into a responsive site-logo link, falling back to the configured site name when no usable image is available.",
+      "tags": [
+        "component",
+        "site-branding",
+        "media"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/site/SiteLogo.tsx:getLogoImageProps",
+      "type": "function",
+      "name": "getLogoImageProps",
+      "filePath": "src/components/site/SiteLogo.tsx",
+      "lineRange": [
+        22,
+        40
+      ],
+      "summary": "Resolves usable light and dark logo media into image props with configured sizing and fallback alt text.",
+      "tags": [
+        "media",
+        "utility",
+        "site-branding"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/site/SiteLogo.tsx:SiteLogo",
+      "type": "function",
+      "name": "SiteLogo",
+      "filePath": "src/components/site/SiteLogo.tsx",
+      "lineRange": [
+        42,
+        71
+      ],
+      "summary": "Renders responsive theme-aware logo imagery or a textual site-name fallback inside a home link.",
+      "tags": [
+        "component",
+        "rendering",
+        "react"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/themes/websiteThemes.ts",
+      "type": "file",
+      "name": "websiteThemes.ts",
+      "filePath": "src/lib/themes/websiteThemes.ts",
+      "summary": "Defines the supported website theme registry, default theme, display labels, and a runtime guard for validating saved theme values.",
+      "tags": [
+        "theme",
+        "configuration",
+        "type-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/themes/websiteThemes.ts:isWebsiteTheme",
+      "type": "function",
+      "name": "isWebsiteTheme",
+      "filePath": "src/lib/themes/websiteThemes.ts",
+      "lineRange": [
+        36,
+        38
+      ],
+      "summary": "Checks whether an arbitrary value is one of the registered website theme identifiers.",
+      "tags": [
+        "type-guard",
+        "theme",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/global-announcement.int.spec.ts",
+      "type": "file",
+      "name": "global-announcement.int.spec.ts",
+      "filePath": "tests/int/global-announcement.int.spec.ts",
+      "summary": "Integration tests verify the global announcement schema, rendering, links, sticky and scroll-away modes, dismissal fallback, and frontend-layout wiring.",
+      "tags": [
+        "test",
+        "integration-test",
+        "global-announcement"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tests/int/global-footer.int.spec.ts",
+      "type": "file",
+      "name": "global-footer.int.spec.ts",
+      "filePath": "tests/int/global-footer.int.spec.ts",
+      "summary": "Integration tests verify footer empty states, block dispatch, active preset rendering, and Payload-driven frontend-shell wiring.",
+      "tags": [
+        "test",
+        "integration-test",
+        "global-footer"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/global-header.int.spec.ts",
+      "type": "file",
+      "name": "global-header.int.spec.ts",
+      "filePath": "tests/int/global-header.int.spec.ts",
+      "summary": "Integration tests verify header empty states, sticky offset propagation, active preset rendering, and frontend-shell wiring.",
+      "tags": [
+        "test",
+        "integration-test",
+        "global-header"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/header-navbar-render.int.spec.ts",
+      "type": "file",
+      "name": "header-navbar-render.int.spec.ts",
+      "filePath": "tests/int/header-navbar-render.int.spec.ts",
+      "summary": "Integration tests cover navigation resolution, logo fallbacks and variants, desktop and mobile menus, navbar adaptation, and shared header dispatch.",
+      "tags": [
+        "test",
+        "integration-test",
+        "header-navbar-render"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tests/int/marquee-announcement.int.spec.ts",
+      "type": "file",
+      "name": "marquee-announcement.int.spec.ts",
+      "filePath": "tests/int/marquee-announcement.int.spec.ts",
+      "summary": "Integration tests verify linked marquee items, duplicate tracks, animation timing, and hover-to-pause behavior.",
+      "tags": [
+        "test",
+        "integration-test",
+        "marquee-announcement"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/rotating-announcement.int.spec.ts",
+      "type": "file",
+      "name": "rotating-announcement.int.spec.ts",
+      "filePath": "tests/int/rotating-announcement.int.spec.ts",
+      "summary": "Integration tests verify single and multiple rotating announcements, interval progression, hover pause and resume, and horizontal transitions.",
+      "tags": [
+        "test",
+        "integration-test",
+        "rotating-announcement"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/theme-settings.int.spec.ts",
+      "type": "file",
+      "name": "theme-settings.int.spec.ts",
+      "filePath": "tests/int/theme-settings.int.spec.ts",
+      "summary": "Integration tests verify the website theme registry, Theme Settings field options, and frontend-layout default and validation behavior.",
+      "tags": [
+        "test",
+        "integration-test",
+        "theme-settings"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/int/theme-settings.int.spec.ts:getThemeField",
+      "type": "function",
+      "name": "getThemeField",
+      "filePath": "tests/int/theme-settings.int.spec.ts",
+      "lineRange": [
+        19,
+        33
+      ],
+      "summary": "Finds and validates a named field from the Theme Settings global during integration tests.",
+      "tags": [
+        "test-helper",
+        "configuration",
+        "validation"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/app/(block-thumbnails)/layout.tsx",
+      "target": "function:src/app/(block-thumbnails)/layout.tsx:BlockThumbnailLayout",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(block-thumbnails)/layout.tsx",
+      "target": "function:src/app/(block-thumbnails)/layout.tsx:BlockThumbnailLayout",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "function:src/app/(frontend)/layout.tsx:getFrontendGlobals",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "function:src/app/(frontend)/layout.tsx:generateMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "function:src/app/(frontend)/layout.tsx:generateMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "function:src/app/(frontend)/layout.tsx:RootLayout",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "function:src/app/(frontend)/layout.tsx:RootLayout",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/Announcement/Component.tsx",
+      "target": "function:src/blocks/Announcement/Component.tsx:normalizeAnnouncementItems",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/Announcement/Component.tsx",
+      "target": "function:src/blocks/Announcement/Component.tsx:AnnouncementBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/Announcement/Component.tsx",
+      "target": "function:src/blocks/Announcement/Component.tsx:AnnouncementBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "target": "function:src/blocks/HeaderNavbar12/Component.tsx:HeaderNavbar12BlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "target": "function:src/blocks/HeaderNavbar12/Component.tsx:HeaderNavbar12BlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/renderFooterBlocks.tsx",
+      "target": "function:src/blocks/renderFooterBlocks.tsx:renderFooterBlocks",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/renderFooterBlocks.tsx",
+      "target": "function:src/blocks/renderFooterBlocks.tsx:renderFooterBlocks",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/renderHeaderBlocks.tsx",
+      "target": "function:src/blocks/renderHeaderBlocks.tsx:renderHeaderBlocks",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/renderHeaderBlocks.tsx",
+      "target": "function:src/blocks/renderHeaderBlocks.tsx:renderHeaderBlocks",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/announcement/AnnouncementBar.tsx",
+      "target": "function:src/components/announcement/AnnouncementBar.tsx:normalizeAnnouncementItems",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/announcement/AnnouncementBar.tsx",
+      "target": "function:src/components/announcement/AnnouncementBar.tsx:AnnouncementBar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/announcement/AnnouncementBar.tsx",
+      "target": "function:src/components/announcement/AnnouncementBar.tsx:AnnouncementBar",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "target": "function:src/components/announcement/MarqueeAnnouncementContent.tsx:MarqueeAnnouncementContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "target": "function:src/components/announcement/MarqueeAnnouncementContent.tsx:MarqueeAnnouncementContent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "target": "function:src/components/announcement/MarqueeAnnouncementContent.tsx:MarqueeTrack",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "target": "function:src/components/announcement/MarqueeAnnouncementContent.tsx:MarqueeItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/announcement/RotatingAnnouncementContent.tsx",
+      "target": "function:src/components/announcement/RotatingAnnouncementContent.tsx:RotatingAnnouncementContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/announcement/RotatingAnnouncementContent.tsx",
+      "target": "function:src/components/announcement/RotatingAnnouncementContent.tsx:RotatingAnnouncementContent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/announcement/RotatingAnnouncementContent.tsx",
+      "target": "function:src/components/announcement/RotatingAnnouncementContent.tsx:AnnouncementItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/global/GlobalAnnouncement.tsx",
+      "target": "function:src/components/global/GlobalAnnouncement.tsx:GlobalAnnouncement",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/global/GlobalAnnouncement.tsx",
+      "target": "function:src/components/global/GlobalAnnouncement.tsx:GlobalAnnouncement",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/global/GlobalFooter.tsx",
+      "target": "function:src/components/global/GlobalFooter.tsx:GlobalFooter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/global/GlobalFooter.tsx",
+      "target": "function:src/components/global/GlobalFooter.tsx:GlobalFooter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/global/GlobalHeader.tsx",
+      "target": "function:src/components/global/GlobalHeader.tsx:GlobalHeader",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/global/GlobalHeader.tsx",
+      "target": "function:src/components/global/GlobalHeader.tsx:GlobalHeader",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/site/SiteLogo.tsx",
+      "target": "function:src/components/site/SiteLogo.tsx:getLogoImageProps",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/site/SiteLogo.tsx",
+      "target": "function:src/components/site/SiteLogo.tsx:SiteLogo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/site/SiteLogo.tsx",
+      "target": "function:src/components/site/SiteLogo.tsx:SiteLogo",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/themes/websiteThemes.ts",
+      "target": "function:src/lib/themes/websiteThemes.ts:isWebsiteTheme",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/themes/websiteThemes.ts",
+      "target": "function:src/lib/themes/websiteThemes.ts:isWebsiteTheme",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/int/theme-settings.int.spec.ts",
+      "target": "function:tests/int/theme-settings.int.spec.ts:getThemeField",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(block-thumbnails)/layout.tsx",
+      "target": "file:src/lib/themes/websiteThemes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(block-thumbnails)/layout.tsx",
+      "target": "file:src/styles/globals.css",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/components/admin/AdminSessionBar.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/components/global/GlobalAnnouncement.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/components/global/GlobalFooter.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/components/global/GlobalHeader.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/lib/cmsSession.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/lib/seo.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/lib/siteUrl.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/lib/themes/websiteThemes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/layout.tsx",
+      "target": "file:src/styles/globals.css",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Announcement/Component.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Announcement/Component.tsx",
+      "target": "file:src/components/announcement/AnnouncementBar.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Announcement/Component.tsx",
+      "target": "file:src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Announcement/Component.tsx",
+      "target": "file:src/components/announcement/RotatingAnnouncementContent.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "target": "file:src/components/header/HeaderNavbar.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "target": "file:src/components/site/SiteLogo.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "target": "file:src/lib/headerNavigation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderFooterBlocks.tsx",
+      "target": "file:src/blocks/Footer56/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderFooterBlocks.tsx",
+      "target": "file:src/components/site/SiteLogo.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderHeaderBlocks.tsx",
+      "target": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderHeaderBlocks.tsx",
+      "target": "file:src/components/site/SiteLogo.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/announcement/AnnouncementBar.tsx",
+      "target": "file:src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/announcement/AnnouncementBar.tsx",
+      "target": "file:src/components/announcement/RotatingAnnouncementContent.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/announcement/AnnouncementBar.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/announcement/AnnouncementBar.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/global/GlobalAnnouncement.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/global/GlobalAnnouncement.tsx",
+      "target": "file:src/components/announcement/AnnouncementBar.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/global/GlobalFooter.tsx",
+      "target": "file:src/blocks/renderFooterBlocks.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/global/GlobalFooter.tsx",
+      "target": "file:src/components/site/SiteLogo.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/global/GlobalHeader.tsx",
+      "target": "file:src/blocks/renderHeaderBlocks.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/global/GlobalHeader.tsx",
+      "target": "file:src/components/site/SiteLogo.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/global-announcement.int.spec.ts",
+      "target": "file:src/components/global/GlobalAnnouncement.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/global-announcement.int.spec.ts",
+      "target": "file:src/globals/PageSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/global-footer.int.spec.ts",
+      "target": "file:src/blocks/renderFooterBlocks.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/global-footer.int.spec.ts",
+      "target": "file:src/components/global/GlobalFooter.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/global-header.int.spec.ts",
+      "target": "file:src/components/global/GlobalHeader.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/header-navbar-render.int.spec.ts",
+      "target": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/header-navbar-render.int.spec.ts",
+      "target": "file:src/blocks/renderHeaderBlocks.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/header-navbar-render.int.spec.ts",
+      "target": "file:src/components/header/HeaderMobileMenu.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/header-navbar-render.int.spec.ts",
+      "target": "file:src/components/header/HeaderNavbar.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/header-navbar-render.int.spec.ts",
+      "target": "file:src/components/site/SiteLogo.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/header-navbar-render.int.spec.ts",
+      "target": "file:src/lib/headerNavigation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/marquee-announcement.int.spec.ts",
+      "target": "file:src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/rotating-announcement.int.spec.ts",
+      "target": "file:src/components/announcement/RotatingAnnouncementContent.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/theme-settings.int.spec.ts",
+      "target": "file:src/globals/ThemeSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/theme-settings.int.spec.ts",
+      "target": "file:src/lib/themes/websiteThemes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/global/GlobalAnnouncement.tsx",
+      "target": "file:tests/int/global-announcement.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/blocks/renderFooterBlocks.tsx",
+      "target": "file:tests/int/global-footer.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/components/global/GlobalFooter.tsx",
+      "target": "file:tests/int/global-footer.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/components/global/GlobalHeader.tsx",
+      "target": "file:tests/int/global-header.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "target": "file:tests/int/header-navbar-render.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/blocks/renderHeaderBlocks.tsx",
+      "target": "file:tests/int/header-navbar-render.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/components/site/SiteLogo.tsx",
+      "target": "file:tests/int/header-navbar-render.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "target": "file:tests/int/marquee-announcement.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/components/announcement/RotatingAnnouncementContent.tsx",
+      "target": "file:tests/int/rotating-announcement.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/lib/themes/websiteThemes.ts",
+      "target": "file:tests/int/theme-settings.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

@@ -1,0 +1,1026 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/blocks/ProfileCarousel/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/ProfileCarousel/Component.tsx",
+      "summary": "Converts CMS profile entries and media into carousel cards with normalized roles, links, actions, sizing, and presentation options.",
+      "tags": [
+        "component",
+        "payload-block",
+        "cms-adapter",
+        "profile-carousel"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/QaAccordion/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/QaAccordion/Component.tsx",
+      "summary": "Implements a configurable FAQ accordion block with Radix primitives, rich-text answers, split layouts, profile and contact side content, and CMS actions.",
+      "tags": [
+        "component",
+        "payload-block",
+        "accordion",
+        "rich-text"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/blocks/RatingSpotlight/Presentation.tsx",
+      "type": "file",
+      "name": "Presentation.tsx",
+      "filePath": "src/blocks/RatingSpotlight/Presentation.tsx",
+      "summary": "Combines live or manually configured review statistics with normalized copy and actions for the rating-spotlight presentation component.",
+      "tags": [
+        "component",
+        "payload-block",
+        "reviews",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/Services21/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/Services21/Component.tsx",
+      "summary": "Maps CMS service records into numbered, linked service cards with resolved media, actions, alignment, and block appearance.",
+      "tags": [
+        "component",
+        "payload-block",
+        "cms-adapter",
+        "services21"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/StatsStrip/AnimatedMetricValue.tsx",
+      "type": "file",
+      "name": "AnimatedMetricValue.tsx",
+      "filePath": "src/blocks/StatsStrip/AnimatedMetricValue.tsx",
+      "summary": "Animates numeric metric values when they enter the viewport while honoring reduced-motion preferences and one-shot triggering.",
+      "tags": [
+        "component",
+        "animation",
+        "accessibility",
+        "intersection-observer"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses React effects with matchMedia and IntersectionObserver to coordinate accessible client-side animation."
+    },
+    {
+      "id": "file:src/blocks/StatsStrip/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/StatsStrip/Component.tsx",
+      "summary": "Validates and groups CMS metrics into responsive rows, rendering optional animated values with configurable duration and block appearance.",
+      "tags": [
+        "component",
+        "payload-block",
+        "metrics",
+        "responsive-layout"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/TeamShowcase/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/TeamShowcase/Component.tsx",
+      "summary": "Transforms CMS team-member data and images into a team showcase with normalized heading, actions, alignment, and card sizing.",
+      "tags": [
+        "component",
+        "payload-block",
+        "cms-adapter",
+        "team-showcase"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "type": "file",
+      "name": "renderLivePreviewPageBlocks.tsx",
+      "filePath": "src/blocks/renderLivePreviewPageBlocks.tsx",
+      "summary": "Dispatches each Payload layout block to its live-preview renderer and injects review or news snapshot data where previews need external state.",
+      "tags": [
+        "dispatcher",
+        "live-preview",
+        "payload-block",
+        "rendering"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/renderPageBlocks.tsx",
+      "type": "file",
+      "name": "renderPageBlocks.tsx",
+      "filePath": "src/blocks/renderPageBlocks.tsx",
+      "summary": "Acts as the production page-block dispatcher, mapping every supported Payload block type to its corresponding React renderer.",
+      "tags": [
+        "dispatcher",
+        "payload-block",
+        "rendering",
+        "routing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "file",
+      "name": "blockAppearance.ts",
+      "filePath": "src/blocks/shared/blockAppearance.ts",
+      "summary": "Centralizes block appearance options and resolves background, foreground, and border selections into reusable CSS class strings.",
+      "tags": [
+        "utility",
+        "styling",
+        "theme",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "file",
+      "name": "blockSpacing.ts",
+      "filePath": "src/blocks/shared/blockSpacing.ts",
+      "summary": "Exports the shared container and mobile padding class constants used to keep regular page blocks vertically consistent.",
+      "tags": [
+        "configuration",
+        "styling",
+        "spacing",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/ProfileCarousel/Component.tsx:ProfileCarouselBlockComponent",
+      "type": "function",
+      "name": "ProfileCarouselBlockComponent",
+      "filePath": "src/blocks/ProfileCarousel/Component.tsx",
+      "lineRange": [
+        36,
+        98
+      ],
+      "summary": "Builds normalized carousel profiles from CMS content and resolved media.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/QaAccordion/Component.tsx:QaAccordionTrigger",
+      "type": "function",
+      "name": "QaAccordionTrigger",
+      "filePath": "src/blocks/QaAccordion/Component.tsx",
+      "lineRange": [
+        110,
+        136
+      ],
+      "summary": "Wraps the Radix accordion trigger with the block’s icon and responsive interaction styling.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/QaAccordion/Component.tsx:QaAccordionContent",
+      "type": "function",
+      "name": "QaAccordionContent",
+      "filePath": "src/blocks/QaAccordion/Component.tsx",
+      "lineRange": [
+        138,
+        151
+      ],
+      "summary": "Wraps expandable accordion content with animated layout and typography styling.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/QaAccordion/Component.tsx:QaAccordionBlockComponent",
+      "type": "function",
+      "name": "QaAccordionBlockComponent",
+      "filePath": "src/blocks/QaAccordion/Component.tsx",
+      "lineRange": [
+        153,
+        357
+      ],
+      "summary": "Validates FAQ entries and renders the accordion alongside optional profile, contact, and action content.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/blocks/RatingSpotlight/Presentation.tsx:resolveManualSummary",
+      "type": "function",
+      "name": "resolveManualSummary",
+      "filePath": "src/blocks/RatingSpotlight/Presentation.tsx",
+      "lineRange": [
+        32,
+        51
+      ],
+      "summary": "Normalizes manually configured rating totals and distributions into a presentation-ready review summary.",
+      "tags": [
+        "utility",
+        "data-transformation",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/RatingSpotlight/Presentation.tsx:RatingSpotlightBlockPresentation",
+      "type": "function",
+      "name": "RatingSpotlightBlockPresentation",
+      "filePath": "src/blocks/RatingSpotlight/Presentation.tsx",
+      "lineRange": [
+        53,
+        93
+      ],
+      "summary": "Chooses live or manual rating data and renders the rating spotlight with normalized actions and copy.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/Services21/Component.tsx:Services21BlockComponent",
+      "type": "function",
+      "name": "Services21BlockComponent",
+      "filePath": "src/blocks/Services21/Component.tsx",
+      "lineRange": [
+        45,
+        128
+      ],
+      "summary": "Normalizes service cards, codes, media, links, and actions for the services presentation.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/StatsStrip/AnimatedMetricValue.tsx:AnimatedMetricValue",
+      "type": "function",
+      "name": "AnimatedMetricValue",
+      "filePath": "src/blocks/StatsStrip/AnimatedMetricValue.tsx",
+      "lineRange": [
+        13,
+        124
+      ],
+      "summary": "Runs a viewport-triggered count animation with reduced-motion support and deterministic completion behavior.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/StatsStrip/Component.tsx:StatsStripBlockComponent",
+      "type": "function",
+      "name": "StatsStripBlockComponent",
+      "filePath": "src/blocks/StatsStrip/Component.tsx",
+      "lineRange": [
+        45,
+        138
+      ],
+      "summary": "Validates numeric metrics, chunks them into rows, and renders static or animated statistic values.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/TeamShowcase/Component.tsx:TeamShowcaseBlockComponent",
+      "type": "function",
+      "name": "TeamShowcaseBlockComponent",
+      "filePath": "src/blocks/TeamShowcase/Component.tsx",
+      "lineRange": [
+        29,
+        84
+      ],
+      "summary": "Normalizes team-member records and media before rendering the team showcase.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/renderLivePreviewPageBlocks.tsx:renderLivePreviewPageBlocks",
+      "type": "function",
+      "name": "renderLivePreviewPageBlocks",
+      "filePath": "src/blocks/renderLivePreviewPageBlocks.tsx",
+      "lineRange": [
+        26,
+        87
+      ],
+      "summary": "Maps live-preview layout blocks to renderers and supplies snapshot state to data-dependent preview components.",
+      "tags": [
+        "utility",
+        "data-transformation",
+        "payload-block"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/renderPageBlocks.tsx:renderPageBlocks",
+      "type": "function",
+      "name": "renderPageBlocks",
+      "filePath": "src/blocks/renderPageBlocks.tsx",
+      "lineRange": [
+        24,
+        153
+      ],
+      "summary": "Maps production Payload layout block discriminators to their React block components.",
+      "tags": [
+        "utility",
+        "data-transformation",
+        "payload-block"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/shared/blockAppearance.ts:resolveBlockAppearanceClasses",
+      "type": "function",
+      "name": "resolveBlockAppearanceClasses",
+      "filePath": "src/blocks/shared/blockAppearance.ts",
+      "lineRange": [
+        32,
+        48
+      ],
+      "summary": "Combines configured background, foreground, and border variants into the shared block class string.",
+      "tags": [
+        "utility",
+        "data-transformation",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/blocks/ProfileCarousel/Component.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ProfileCarousel/Component.tsx",
+      "target": "file:src/components/ContentActions.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ProfileCarousel/Component.tsx",
+      "target": "file:src/components/profile-carousel.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ProfileCarousel/Component.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ProfileCarousel/Component.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/QaAccordion/Component.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/QaAccordion/Component.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/QaAccordion/Component.tsx",
+      "target": "file:src/components/ContentActions.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/QaAccordion/Component.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/QaAccordion/Component.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/QaAccordion/Component.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/Presentation.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/Presentation.tsx",
+      "target": "file:src/components/ContentActions.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/Presentation.tsx",
+      "target": "file:src/components/rating-spotlight.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/Presentation.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/Presentation.tsx",
+      "target": "file:src/lib/reviewRatingShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Services21/Component.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Services21/Component.tsx",
+      "target": "file:src/components/ContentLink.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Services21/Component.tsx",
+      "target": "file:src/components/services21.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Services21/Component.tsx",
+      "target": "file:src/components/shadcnblocks/border-button.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Services21/Component.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Services21/Component.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/StatsStrip/Component.tsx",
+      "target": "file:src/blocks/StatsStrip/AnimatedMetricValue.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/StatsStrip/Component.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/StatsStrip/Component.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/TeamShowcase/Component.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/TeamShowcase/Component.tsx",
+      "target": "file:src/components/ContentActions.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/TeamShowcase/Component.tsx",
+      "target": "file:src/components/team-showcase.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/TeamShowcase/Component.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/TeamShowcase/Component.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/Announcement/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/ContentHighlights/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/Cta39/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/FeatureMatrix/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/FeatureSpotlight/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/GalleryShowcase/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/HeroBanner/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/ImageMosaic/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/NewsEventsHighlights/PreviewComponent.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/PageBlockStack.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/ProfileCarousel/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/QaAccordion/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/RatingSpotlight/PreviewComponent.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/ReviewFeed/PreviewComponent.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/ReviewSubmission/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/Services21/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/StatsStrip/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/blocks/TeamShowcase/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/lib/newsEventsPreviewShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "file:src/lib/reviewPreviewShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/Announcement/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/ContentHighlights/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/Cta39/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/FeatureMatrix/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/FeatureSpotlight/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/GalleryShowcase/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/HeroBanner/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/ImageMosaic/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/NewsEventsHighlights/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/PageBlockStack.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/ProfileCarousel/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/QaAccordion/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/RatingSpotlight/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/ReviewFeed/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/ReviewSubmission/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/Services21/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/StatsStrip/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "file:src/blocks/TeamShowcase/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/shared/blockAppearance.ts",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ProfileCarousel/Component.tsx",
+      "target": "function:src/blocks/ProfileCarousel/Component.tsx:ProfileCarouselBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/ProfileCarousel/Component.tsx",
+      "target": "function:src/blocks/ProfileCarousel/Component.tsx:ProfileCarouselBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/QaAccordion/Component.tsx",
+      "target": "function:src/blocks/QaAccordion/Component.tsx:QaAccordionTrigger",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/QaAccordion/Component.tsx",
+      "target": "function:src/blocks/QaAccordion/Component.tsx:QaAccordionContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/QaAccordion/Component.tsx",
+      "target": "function:src/blocks/QaAccordion/Component.tsx:QaAccordionBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/QaAccordion/Component.tsx",
+      "target": "function:src/blocks/QaAccordion/Component.tsx:QaAccordionBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/Presentation.tsx",
+      "target": "function:src/blocks/RatingSpotlight/Presentation.tsx:resolveManualSummary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/Presentation.tsx",
+      "target": "function:src/blocks/RatingSpotlight/Presentation.tsx:RatingSpotlightBlockPresentation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/Presentation.tsx",
+      "target": "function:src/blocks/RatingSpotlight/Presentation.tsx:RatingSpotlightBlockPresentation",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/Services21/Component.tsx",
+      "target": "function:src/blocks/Services21/Component.tsx:Services21BlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/Services21/Component.tsx",
+      "target": "function:src/blocks/Services21/Component.tsx:Services21BlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/StatsStrip/AnimatedMetricValue.tsx",
+      "target": "function:src/blocks/StatsStrip/AnimatedMetricValue.tsx:AnimatedMetricValue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/StatsStrip/AnimatedMetricValue.tsx",
+      "target": "function:src/blocks/StatsStrip/AnimatedMetricValue.tsx:AnimatedMetricValue",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/StatsStrip/Component.tsx",
+      "target": "function:src/blocks/StatsStrip/Component.tsx:StatsStripBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/StatsStrip/Component.tsx",
+      "target": "function:src/blocks/StatsStrip/Component.tsx:StatsStripBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/TeamShowcase/Component.tsx",
+      "target": "function:src/blocks/TeamShowcase/Component.tsx:TeamShowcaseBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/TeamShowcase/Component.tsx",
+      "target": "function:src/blocks/TeamShowcase/Component.tsx:TeamShowcaseBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "function:src/blocks/renderLivePreviewPageBlocks.tsx:renderLivePreviewPageBlocks",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "target": "function:src/blocks/renderLivePreviewPageBlocks.tsx:renderLivePreviewPageBlocks",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "function:src/blocks/renderPageBlocks.tsx:renderPageBlocks",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/renderPageBlocks.tsx",
+      "target": "function:src/blocks/renderPageBlocks.tsx:renderPageBlocks",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/shared/blockAppearance.ts",
+      "target": "function:src/blocks/shared/blockAppearance.ts:resolveBlockAppearanceClasses",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/shared/blockAppearance.ts",
+      "target": "function:src/blocks/shared/blockAppearance.ts:resolveBlockAppearanceClasses",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

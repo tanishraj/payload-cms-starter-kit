@@ -1,0 +1,1274 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 20,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 20,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 20,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "src/blocks/Services21/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 113,
+      "nonEmptyLines": 108,
+      "exports": [
+        {
+          "name": "Services21Block",
+          "line": 69,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/StatsStrip/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 76,
+      "nonEmptyLines": 73,
+      "exports": [
+        {
+          "name": "StatsStripBlock",
+          "line": 35,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/System404/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 17,
+      "nonEmptyLines": 14,
+      "exports": [
+        {
+          "name": "System404Block",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/SystemComingSoon/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 17,
+      "nonEmptyLines": 14,
+      "exports": [
+        {
+          "name": "SystemComingSoonBlock",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/SystemMaintenance/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 18,
+      "nonEmptyLines": 15,
+      "exports": [
+        {
+          "name": "SystemMaintenanceBlock",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/TeamShowcase/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 108,
+      "nonEmptyLines": 104,
+      "exports": [
+        {
+          "name": "TeamShowcaseBlock",
+          "line": 41,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/shared/blockAppearanceFields.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 65,
+      "nonEmptyLines": 60,
+      "functions": [
+        {
+          "name": "createBlockAppearanceFields",
+          "startLine": 51,
+          "endLine": 65,
+          "params": [
+            "{\n  includeTextOverride = true,\n  includeBackground = true,\n  includeBorder = true,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "createBlockAppearanceFields",
+          "line": 51,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/shared/contentActionsFields.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 170,
+      "nonEmptyLines": 159,
+      "functions": [
+        {
+          "name": "isPageLink",
+          "startLine": 32,
+          "endLine": 33,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        },
+        {
+          "name": "isCustomLink",
+          "startLine": 35,
+          "endLine": 36,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        },
+        {
+          "name": "isButtonMode",
+          "startLine": 38,
+          "endLine": 39,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        },
+        {
+          "name": "createActionLayoutFields",
+          "startLine": 82,
+          "endLine": 117,
+          "params": [
+            "includeDisplayMode"
+          ]
+        },
+        {
+          "name": "createContentActionModeField",
+          "startLine": 119,
+          "endLine": 140,
+          "params": [
+            "{\n  condition,\n  label = 'Action Mode',\n  name = 'actionMode',\n}"
+          ]
+        },
+        {
+          "name": "createContentActionsField",
+          "startLine": 142,
+          "endLine": 170,
+          "params": [
+            "{\n  includeDisplayMode = false,\n  label = 'Actions',\n  maxRows = 2,\n  name = 'actions',\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "createContentActionModeField",
+          "line": 119,
+          "isDefault": false
+        },
+        {
+          "name": "createContentActionsField",
+          "line": 142,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createContentActionsField",
+          "callee": "createActionLayoutFields",
+          "lineNumber": 165
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 6,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/systemPageFields.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 99,
+      "nonEmptyLines": 94,
+      "functions": [
+        {
+          "name": "createBaseSystemPageFields",
+          "startLine": 20,
+          "endLine": 76,
+          "params": [
+            "defaults"
+          ]
+        },
+        {
+          "name": "createSystemPageBlock",
+          "startLine": 78,
+          "endLine": 99,
+          "params": [
+            "{\n  fields,\n  pluralLabel,\n  singularLabel,\n  slug,\n  thumbnailAdmin,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "createBaseSystemPageFields",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "createSystemPageBlock",
+          "line": 78,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createBaseSystemPageFields",
+          "callee": "createBlockAppearanceFields",
+          "lineNumber": 72
+        },
+        {
+          "caller": "createSystemPageBlock",
+          "callee": "slug.charAt(0).toUpperCase",
+          "lineNumber": 92
+        },
+        {
+          "caller": "createSystemPageBlock",
+          "callee": "slug.charAt",
+          "lineNumber": 92
+        },
+        {
+          "caller": "createSystemPageBlock",
+          "callee": "slug.slice",
+          "lineNumber": 92
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/collections/Pages.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 353,
+      "nonEmptyLines": 333,
+      "functions": [
+        {
+          "name": "extractPageID",
+          "startLine": 42,
+          "endLine": 54,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "validateParentRelationship",
+          "startLine": 56,
+          "endLine": 93,
+          "params": [
+            "value",
+            "{ id, req }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Pages",
+          "line": 116,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "validateParentRelationship",
+          "callee": "extractPageID",
+          "lineNumber": 60
+        },
+        {
+          "caller": "validateParentRelationship",
+          "callee": "visited.has",
+          "lineNumber": 76
+        },
+        {
+          "caller": "validateParentRelationship",
+          "callee": "visited.add",
+          "lineNumber": 80
+        },
+        {
+          "caller": "validateParentRelationship",
+          "callee": "req.payload.findByID",
+          "lineNumber": 82
+        },
+        {
+          "caller": "validateParentRelationship",
+          "callee": "extractPageID",
+          "lineNumber": 89
+        }
+      ],
+      "metrics": {
+        "importCount": 28,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/fields/cmsLinkFields.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 20,
+      "nonEmptyLines": 19,
+      "functions": [
+        {
+          "name": "createCmsLinkFields",
+          "startLine": 3,
+          "endLine": 20,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "createCmsLinkFields",
+          "line": 3,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/hooks/migrateLegacyReusableLinks.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 112,
+      "nonEmptyLines": 93,
+      "functions": [
+        {
+          "name": "getRelationshipID",
+          "startLine": 17,
+          "endLine": 27,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "stripLegacyLinkFields",
+          "startLine": 29,
+          "endLine": 33,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "resolveLinkID",
+          "startLine": 35,
+          "endLine": 81,
+          "params": [
+            "{\n  fallbackTitle,\n  req,\n  value,\n}"
+          ]
+        },
+        {
+          "name": "migrateLegacySystemPageLinksBeforeChange",
+          "startLine": 83,
+          "endLine": 112,
+          "params": [
+            "{\n  data,\n  req,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "migrateLegacySystemPageLinksBeforeChange",
+          "line": 83,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "resolveLinkID",
+          "callee": "getRelationshipID",
+          "lineNumber": 44
+        },
+        {
+          "caller": "resolveLinkID",
+          "callee": "stripLegacyLinkFields",
+          "lineNumber": 47
+        },
+        {
+          "caller": "resolveLinkID",
+          "callee": "ensureSyncedNavigationLinkForPage",
+          "lineNumber": 53
+        },
+        {
+          "caller": "resolveLinkID",
+          "callee": "stripLegacyLinkFields",
+          "lineNumber": 61
+        },
+        {
+          "caller": "resolveLinkID",
+          "callee": "value.url?.trim",
+          "lineNumber": 66
+        },
+        {
+          "caller": "resolveLinkID",
+          "callee": "ensureManualNavigationLinkForURL",
+          "lineNumber": 67
+        },
+        {
+          "caller": "resolveLinkID",
+          "callee": "stripLegacyLinkFields",
+          "lineNumber": 75
+        },
+        {
+          "caller": "migrateLegacySystemPageLinksBeforeChange",
+          "callee": "Array.isArray",
+          "lineNumber": 87
+        },
+        {
+          "caller": "migrateLegacySystemPageLinksBeforeChange",
+          "callee": "resolveLinkID",
+          "lineNumber": 103
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/hooks/syncNavigationLinkForPage.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 52,
+      "nonEmptyLines": 43,
+      "functions": [
+        {
+          "name": "syncNavigationLinkAfterChange",
+          "startLine": 12,
+          "endLine": 22,
+          "params": [
+            "{\n  doc,\n  req,\n}"
+          ]
+        },
+        {
+          "name": "syncNavigationLinkAfterDelete",
+          "startLine": 24,
+          "endLine": 52,
+          "params": [
+            "{\n  doc,\n  req,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "syncNavigationLinkAfterChange",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "syncNavigationLinkAfterDelete",
+          "line": 24,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "syncNavigationLinkAfterChange",
+          "callee": "ensureSyncedNavigationLinkForPage",
+          "lineNumber": 16
+        },
+        {
+          "caller": "syncNavigationLinkAfterDelete",
+          "callee": "Number",
+          "lineNumber": 28
+        },
+        {
+          "caller": "syncNavigationLinkAfterDelete",
+          "callee": "findSyncedNavigationLink",
+          "lineNumber": 34
+        },
+        {
+          "caller": "syncNavigationLinkAfterDelete",
+          "callee": "req.payload.update",
+          "lineNumber": 40
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/navigationLinkSync.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 188,
+      "nonEmptyLines": 160,
+      "functions": [
+        {
+          "name": "getPageID",
+          "startLine": 5,
+          "endLine": 15,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "getPageTitle",
+          "startLine": 17,
+          "endLine": 33,
+          "params": [
+            "value",
+            "req"
+          ]
+        },
+        {
+          "name": "findSyncedNavigationLink",
+          "startLine": 35,
+          "endLine": 52,
+          "params": [
+            "pageID",
+            "req"
+          ]
+        },
+        {
+          "name": "findReusablePageLink",
+          "startLine": 54,
+          "endLine": 71,
+          "params": [
+            "pageID",
+            "req"
+          ]
+        },
+        {
+          "name": "findNavigationLinkByURL",
+          "startLine": 73,
+          "endLine": 105,
+          "params": [
+            "url",
+            "req"
+          ]
+        },
+        {
+          "name": "ensureSyncedNavigationLinkForPage",
+          "startLine": 107,
+          "endLine": 154,
+          "params": [
+            "{\n  page,\n  req,\n}"
+          ]
+        },
+        {
+          "name": "ensureManualNavigationLinkForURL",
+          "startLine": 156,
+          "endLine": 188,
+          "params": [
+            "{\n  req,\n  title,\n  url,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "findSyncedNavigationLink",
+          "line": 35,
+          "isDefault": false
+        },
+        {
+          "name": "findReusablePageLink",
+          "line": 54,
+          "isDefault": false
+        },
+        {
+          "name": "findNavigationLinkByURL",
+          "line": 73,
+          "isDefault": false
+        },
+        {
+          "name": "ensureSyncedNavigationLinkForPage",
+          "line": 107,
+          "isDefault": false
+        },
+        {
+          "name": "ensureManualNavigationLinkForURL",
+          "line": 156,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getPageTitle",
+          "callee": "req.payload.findByID",
+          "lineNumber": 25
+        },
+        {
+          "caller": "findSyncedNavigationLink",
+          "callee": "req.payload.find",
+          "lineNumber": 39
+        },
+        {
+          "caller": "findReusablePageLink",
+          "callee": "req.payload.find",
+          "lineNumber": 58
+        },
+        {
+          "caller": "findNavigationLinkByURL",
+          "callee": "url.trim",
+          "lineNumber": 77
+        },
+        {
+          "caller": "findNavigationLinkByURL",
+          "callee": "req.payload.find",
+          "lineNumber": 83
+        },
+        {
+          "caller": "ensureSyncedNavigationLinkForPage",
+          "callee": "getPageID",
+          "lineNumber": 114
+        },
+        {
+          "caller": "ensureSyncedNavigationLinkForPage",
+          "callee": "getPageTitle",
+          "lineNumber": 120
+        },
+        {
+          "caller": "ensureSyncedNavigationLinkForPage",
+          "callee": "findSyncedNavigationLink",
+          "lineNumber": 127
+        },
+        {
+          "caller": "ensureSyncedNavigationLinkForPage",
+          "callee": "findReusablePageLink",
+          "lineNumber": 128
+        },
+        {
+          "caller": "ensureSyncedNavigationLinkForPage",
+          "callee": "String",
+          "lineNumber": 132
+        },
+        {
+          "caller": "ensureSyncedNavigationLinkForPage",
+          "callee": "String",
+          "lineNumber": 134
+        },
+        {
+          "caller": "ensureSyncedNavigationLinkForPage",
+          "callee": "req.payload.update",
+          "lineNumber": 139
+        },
+        {
+          "caller": "ensureSyncedNavigationLinkForPage",
+          "callee": "req.payload.create",
+          "lineNumber": 148
+        },
+        {
+          "caller": "ensureManualNavigationLinkForURL",
+          "callee": "url.trim",
+          "lineNumber": 165
+        },
+        {
+          "caller": "ensureManualNavigationLinkForURL",
+          "callee": "findNavigationLinkByURL",
+          "lineNumber": 171
+        },
+        {
+          "caller": "ensureManualNavigationLinkForURL",
+          "callee": "req.payload.create",
+          "lineNumber": 177
+        },
+        {
+          "caller": "ensureManualNavigationLinkForURL",
+          "callee": "title?.trim",
+          "lineNumber": 182
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 7,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/block-thumbnail-fixtures.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 31,
+      "nonEmptyLines": 26,
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/header-presets.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 51,
+      "nonEmptyLines": 45,
+      "functions": [
+        {
+          "name": "getLayoutField",
+          "startLine": 6,
+          "endLine": 9,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getLayoutField",
+          "callee": "Headers.fields.find",
+          "lineNumber": 7
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/image-mosaic.int.spec.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 430,
+      "nonEmptyLines": 393,
+      "functions": [
+        {
+          "name": "getField",
+          "startLine": 33,
+          "endLine": 33,
+          "params": [
+            "fields",
+            "name"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getField",
+          "callee": "fields.find",
+          "lineNumber": 33
+        },
+        {
+          "caller": "getLayoutNames",
+          "callee": "tabsField.tabs\n          .find(({ label }) => label === 'Layout & Theme')\n          ?.fields.flatMap",
+          "lineNumber": 73
+        },
+        {
+          "caller": "getLayoutNames",
+          "callee": "tabsField.tabs\n          .find",
+          "lineNumber": 73
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/news-events-highlights.int.spec.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 107,
+      "nonEmptyLines": 96,
+      "functions": [
+        {
+          "name": "findNamedField",
+          "startLine": 7,
+          "endLine": 26,
+          "params": [
+            "value",
+            "name"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "findNamedField",
+          "callee": "Array.isArray",
+          "lineNumber": 8
+        },
+        {
+          "caller": "findNamedField",
+          "callee": "findNamedField",
+          "lineNumber": 10
+        },
+        {
+          "caller": "findNamedField",
+          "callee": "Object.values",
+          "lineNumber": 19
+        },
+        {
+          "caller": "findNamedField",
+          "callee": "findNamedField",
+          "lineNumber": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/page-blocks.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 1094,
+      "nonEmptyLines": 1015,
+      "functions": [
+        {
+          "name": "getLayoutField",
+          "startLine": 11,
+          "endLine": 22,
+          "params": []
+        },
+        {
+          "name": "getNamedField",
+          "startLine": 24,
+          "endLine": 28,
+          "params": [
+            "fields",
+            "fieldName"
+          ]
+        },
+        {
+          "name": "expectContentActionsFieldSet",
+          "startLine": 30,
+          "endLine": 96,
+          "params": [
+            "contentFields",
+            "layoutFields",
+            "{\n    actionsName = 'actions',\n    modeName = 'actionMode',\n  }"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getLayoutField",
+          "callee": "Pages.fields.find",
+          "lineNumber": 12
+        },
+        {
+          "caller": "getLayoutField",
+          "callee": "tabsField?.tabs.find",
+          "lineNumber": 16
+        },
+        {
+          "caller": "getLayoutField",
+          "callee": "contentTab?.fields.find",
+          "lineNumber": 18
+        },
+        {
+          "caller": "getNamedField",
+          "callee": "fields.find",
+          "lineNumber": 25
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "getNamedField",
+          "lineNumber": 38
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "getNamedField",
+          "lineNumber": 44
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "getNamedField",
+          "lineNumber": 48
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "getNamedField",
+          "lineNumber": 54
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "actionTabsField?.tabs?.find",
+          "lineNumber": 66
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "actionTabsField?.tabs?.find",
+          "lineNumber": 67
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "getNamedField",
+          "lineNumber": 68
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect(actionPresentationField).toBeUndefined",
+          "lineNumber": 75
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect",
+          "lineNumber": 75
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect(actionModeInContent).toBeUndefined",
+          "lineNumber": 76
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect",
+          "lineNumber": 76
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect(actionModeField?.type).toBe",
+          "lineNumber": 77
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect",
+          "lineNumber": 77
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect(actionModeField?.defaultValue).toBe",
+          "lineNumber": 78
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect",
+          "lineNumber": 78
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect(actionModeField?.options?.map((option) => option.value)).toEqual",
+          "lineNumber": 79
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect",
+          "lineNumber": 79
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "actionModeField?.options?.map",
+          "lineNumber": 79
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect(actionsField?.type).toBe",
+          "lineNumber": 80
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect",
+          "lineNumber": 80
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect(actionsField?.maxRows).toBe",
+          "lineNumber": 81
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect",
+          "lineNumber": 81
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect(actionTabsField?.type).toBe",
+          "lineNumber": 82
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect",
+          "lineNumber": 82
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect(actionTabsField?.tabs?.map((tab) => tab.label)).toEqual",
+          "lineNumber": 83
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect",
+          "lineNumber": 83
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "actionTabsField?.tabs?.map",
+          "lineNumber": 83
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect(\n    actionContentTab?.fields.map((field) =>\n      typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,\n    ),\n  ).toEqual",
+          "lineNumber": 84
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect",
+          "lineNumber": 84
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "actionContentTab?.fields.map",
+          "lineNumber": 85
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect(variantField?.type).toBe",
+          "lineNumber": 89
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect",
+          "lineNumber": 89
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect(variantField?.defaultValue).toBe",
+          "lineNumber": 90
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect",
+          "lineNumber": 90
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect(variantField?.options?.map((option) => option.value)).toEqual",
+          "lineNumber": 91
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "expect",
+          "lineNumber": 91
+        },
+        {
+          "caller": "expectContentActionsFieldSet",
+          "callee": "variantField?.options?.map",
+          "lineNumber": 91
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 0,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/system-page-blocks.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 266,
+      "nonEmptyLines": 238,
+      "functions": [
+        {
+          "name": "flattenNamedFields",
+          "startLine": 22,
+          "endLine": 51,
+          "params": [
+            "fields"
+          ]
+        },
+        {
+          "name": "getNamedField",
+          "startLine": 53,
+          "endLine": 61,
+          "params": [
+            "fields",
+            "fieldName"
+          ]
+        },
+        {
+          "name": "collectBlockSlugs",
+          "startLine": 63,
+          "endLine": 91,
+          "params": [
+            "fields"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "flattenNamedFields",
+          "callee": "fields.flatMap",
+          "lineNumber": 23
+        },
+        {
+          "caller": "flattenNamedFields",
+          "callee": "Array.isArray",
+          "lineNumber": 29
+        },
+        {
+          "caller": "flattenNamedFields",
+          "callee": "flattenNamedFields",
+          "lineNumber": 29
+        },
+        {
+          "caller": "flattenNamedFields",
+          "callee": "Array.isArray",
+          "lineNumber": 31
+        },
+        {
+          "caller": "flattenNamedFields",
+          "callee": "field.tabs.flatMap",
+          "lineNumber": 32
+        },
+        {
+          "caller": "flattenNamedFields",
+          "callee": "Array.isArray",
+          "lineNumber": 33
+        },
+        {
+          "caller": "flattenNamedFields",
+          "callee": "flattenNamedFields",
+          "lineNumber": 34
+        },
+        {
+          "caller": "getNamedField",
+          "callee": "flattenNamedFields(fields).find",
+          "lineNumber": 54
+        },
+        {
+          "caller": "getNamedField",
+          "callee": "flattenNamedFields",
+          "lineNumber": 54
+        },
+        {
+          "caller": "collectBlockSlugs",
+          "callee": "fields.flatMap",
+          "lineNumber": 64
+        },
+        {
+          "caller": "collectBlockSlugs",
+          "callee": "Array.isArray",
+          "lineNumber": 68
+        },
+        {
+          "caller": "collectBlockSlugs",
+          "callee": "field.blocks.flatMap",
+          "lineNumber": 69
+        },
+        {
+          "caller": "collectBlockSlugs",
+          "callee": "Array.isArray",
+          "lineNumber": 79
+        },
+        {
+          "caller": "collectBlockSlugs",
+          "callee": "collectBlockSlugs",
+          "lineNumber": 79
+        },
+        {
+          "caller": "collectBlockSlugs",
+          "callee": "Array.isArray",
+          "lineNumber": 81
+        },
+        {
+          "caller": "collectBlockSlugs",
+          "callee": "field.tabs.flatMap",
+          "lineNumber": 82
+        },
+        {
+          "caller": "collectBlockSlugs",
+          "callee": "Array.isArray",
+          "lineNumber": 83
+        },
+        {
+          "caller": "collectBlockSlugs",
+          "callee": "collectBlockSlugs",
+          "lineNumber": 84
+        }
+      ],
+      "metrics": {
+        "importCount": 10,
+        "exportCount": 0,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": ".env.example",
+      "language": "config",
+      "sizeLines": 33,
+      "fileCategory": "config"
+    },
+    {
+      "path": ".prettierrc.json",
+      "language": "json",
+      "sizeLines": 6,
+      "fileCategory": "config"
+    },
+    {
+      "path": "AGENTS.md",
+      "language": "markdown",
+      "sizeLines": 4,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "README.md",
+      "language": "markdown",
+      "sizeLines": 119,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "SKILL.md",
+      "language": "markdown",
+      "sizeLines": 18,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "components.json",
+      "language": "json",
+      "sizeLines": 32,
+      "fileCategory": "config"
+    },
+    {
+      "path": "package.json",
+      "language": "json",
+      "sizeLines": 75,
+      "fileCategory": "config"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "language": "yaml",
+      "sizeLines": 6,
+      "fileCategory": "config"
+    },
+    {
+      "path": "test.env",
+      "language": "config",
+      "sizeLines": 1,
+      "fileCategory": "config"
+    },
+    {
+      "path": "tsconfig.json",
+      "language": "json",
+      "sizeLines": 44,
+      "fileCategory": "config"
+    }
+  ],
+  "batchImportData": {
+    ".env.example": [],
+    ".prettierrc.json": [],
+    "AGENTS.md": [],
+    "README.md": [],
+    "SKILL.md": [],
+    "components.json": [],
+    "package.json": [],
+    "pnpm-workspace.yaml": [],
+    "test.env": [],
+    "tsconfig.json": []
+  }
+}

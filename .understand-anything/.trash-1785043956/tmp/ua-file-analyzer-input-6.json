@@ -1,0 +1,301 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "src/lib/mediaStorage.ts",
+      "language": "typescript",
+      "sizeLines": 325,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/mediaUsage.ts",
+      "language": "typescript",
+      "sizeLines": 582,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/operationalAudit.ts",
+      "language": "typescript",
+      "sizeLines": 84,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/seo.ts",
+      "language": "typescript",
+      "sizeLines": 137,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/systemPageTypes.ts",
+      "language": "typescript",
+      "sizeLines": 16,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/workQueue.ts",
+      "language": "typescript",
+      "sizeLines": 310,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/payload.config.ts",
+      "language": "typescript",
+      "sizeLines": 90,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/plugins/withTrash.ts",
+      "language": "typescript",
+      "sizeLines": 25,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/admin-information-architecture.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 61,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/adminCapabilities.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 479,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/articles.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 81,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/block-thumbnails.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 198,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/editorial-workflow.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 325,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/forms-submission.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 278,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/media-governance.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 331,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/media-storage.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 169,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/news-events-collection.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 65,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/operational-audit.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 177,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/page-settings-system-mode.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 126,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/reviews.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 83,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/runtime-config.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 122,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/seo-contract.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/starter-contract.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 92,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/taxonomy.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 99,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/work-queue.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 475,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "src/lib/mediaStorage.ts": [
+      "src/config/runtime.ts",
+      "src/lib/operationalAudit.ts"
+    ],
+    "src/lib/mediaUsage.ts": [],
+    "src/lib/operationalAudit.ts": [],
+    "src/lib/seo.ts": [],
+    "src/lib/systemPageTypes.ts": [],
+    "src/lib/workQueue.ts": [
+      "src/hooks/syncWorkQueueItem.ts"
+    ],
+    "src/payload.config.ts": [
+      "src/collections/Articles.ts",
+      "src/collections/Categories.ts",
+      "src/collections/Footers.ts",
+      "src/collections/FormSubmissions.ts",
+      "src/collections/Forms.ts",
+      "src/collections/Headers.ts",
+      "src/collections/Media.ts",
+      "src/collections/NavigationLinks.ts",
+      "src/collections/NewsEvents.ts",
+      "src/collections/OperationalAuditEvents.ts",
+      "src/collections/Pages.ts",
+      "src/collections/Redirects.ts",
+      "src/collections/Reviews.ts",
+      "src/collections/SystemPages.ts",
+      "src/collections/Tags.ts",
+      "src/collections/Users.ts",
+      "src/collections/WorkQueue.ts",
+      "src/config/providers.ts",
+      "src/config/runtime.ts",
+      "src/config/starterContract.ts",
+      "src/globals/NewsEventsSettings.ts",
+      "src/globals/PageSettings.ts",
+      "src/globals/SEOSettings.ts",
+      "src/globals/SiteSettings.ts",
+      "src/globals/SystemModeSettings.ts",
+      "src/globals/ThemeSettings.ts",
+      "src/plugins/withTrash.ts"
+    ],
+    "src/plugins/withTrash.ts": [],
+    "tests/int/admin-information-architecture.int.spec.ts": [
+      "src/collections/Articles.ts",
+      "src/collections/Categories.ts",
+      "src/collections/Footers.ts",
+      "src/collections/FormSubmissions.ts",
+      "src/collections/Forms.ts",
+      "src/collections/Headers.ts",
+      "src/collections/Media.ts",
+      "src/collections/NavigationLinks.ts",
+      "src/collections/OperationalAuditEvents.ts",
+      "src/collections/Pages.ts",
+      "src/collections/Redirects.ts",
+      "src/collections/Reviews.ts",
+      "src/collections/SystemPages.ts",
+      "src/collections/Tags.ts",
+      "src/collections/Users.ts",
+      "src/collections/WorkQueue.ts",
+      "src/globals/PageSettings.ts",
+      "src/globals/SEOSettings.ts",
+      "src/globals/SiteSettings.ts",
+      "src/globals/SystemModeSettings.ts",
+      "src/globals/ThemeSettings.ts"
+    ],
+    "tests/int/adminCapabilities.int.spec.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/access/editorialRoles.ts",
+      "src/collections/Users.ts"
+    ],
+    "tests/int/articles.int.spec.ts": [
+      "src/collections/Articles.ts"
+    ],
+    "tests/int/block-thumbnails.int.spec.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/collections/Footers.ts",
+      "src/collections/Headers.ts",
+      "src/collections/Pages.ts",
+      "src/collections/SystemPages.ts"
+    ],
+    "tests/int/editorial-workflow.int.spec.ts": [
+      "src/hooks/enforceEditorialWorkflow.ts"
+    ],
+    "tests/int/forms-submission.int.spec.ts": [
+      "src/collections/FormSubmissions.ts",
+      "src/hooks/updateFormSubmissionActivity.ts"
+    ],
+    "tests/int/media-governance.int.spec.ts": [
+      "src/collections/Media.ts",
+      "src/hooks/preventMediaDeletionWhileInUse.ts",
+      "src/lib/mediaUsage.ts"
+    ],
+    "tests/int/media-storage.int.spec.ts": [
+      "src/lib/mediaStorage.ts"
+    ],
+    "tests/int/news-events-collection.int.spec.ts": [
+      "src/collections/NewsEvents.ts",
+      "src/globals/NewsEventsSettings.ts",
+      "src/hooks/normalizeNewsEventFields.ts",
+      "src/payload.config.ts"
+    ],
+    "tests/int/operational-audit.int.spec.ts": [
+      "src/collections/OperationalAuditEvents.ts",
+      "src/collections/WorkQueue.ts",
+      "src/hooks/logOperationalAuditEvent.ts"
+    ],
+    "tests/int/page-settings-system-mode.int.spec.ts": [
+      "src/globals/PageSettings.ts",
+      "src/globals/SystemModeSettings.ts"
+    ],
+    "tests/int/reviews.int.spec.ts": [
+      "src/collections/Reviews.ts"
+    ],
+    "tests/int/runtime-config.int.spec.ts": [
+      "src/config/runtime.ts"
+    ],
+    "tests/int/seo-contract.int.spec.ts": [
+      "src/collections/Articles.ts",
+      "src/collections/Categories.ts",
+      "src/collections/Pages.ts",
+      "src/collections/Reviews.ts",
+      "src/collections/SystemPages.ts",
+      "src/collections/Tags.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/validateSEOContract.ts",
+      "src/lib/seo.ts"
+    ],
+    "tests/int/starter-contract.int.spec.ts": [
+      "src/config/starterContract.ts"
+    ],
+    "tests/int/taxonomy.int.spec.ts": [
+      "src/collections/Articles.ts",
+      "src/collections/Categories.ts",
+      "src/collections/Reviews.ts",
+      "src/collections/Tags.ts",
+      "src/hooks/syncPrimaryCategoryMembership.ts"
+    ],
+    "tests/int/work-queue.int.spec.ts": [
+      "src/collections/WorkQueue.ts",
+      "src/hooks/syncFormSubmissionToWorkQueue.ts",
+      "src/hooks/syncMediaToWorkQueue.ts",
+      "src/hooks/syncReviewToWorkQueue.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "src/lib/workQueue.ts"
+    ]
+  }
+}

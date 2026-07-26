@@ -1,0 +1,924 @@
+{
+  "nodes": [
+    {
+      "id": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-sizing.md",
+      "type": "document",
+      "name": "2026-07-18-gallery-showcase-mobile-sizing.md",
+      "filePath": "docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-sizing.md",
+      "summary": "Implementation plan for Gallery Showcase Mobile Sizing, organizing 1 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "gallery-showcase"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-three-card.md",
+      "type": "document",
+      "name": "2026-07-18-gallery-showcase-mobile-three-card.md",
+      "filePath": "docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-three-card.md",
+      "summary": "Implementation plan for Gallery Showcase Mobile Three-Card, organizing 1 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "gallery-showcase"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-18-hero-banner-rename.md",
+      "type": "document",
+      "name": "2026-07-18-hero-banner-rename.md",
+      "filePath": "docs/superpowers/plans/2026-07-18-hero-banner-rename.md",
+      "summary": "Implementation plan for Hero Banner Rename, organizing 5 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "hero-banner"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-18-mobile-block-container-spacing.md",
+      "type": "document",
+      "name": "2026-07-18-mobile-block-container-spacing.md",
+      "filePath": "docs/superpowers/plans/2026-07-18-mobile-block-container-spacing.md",
+      "summary": "Implementation plan for Mobile Block Container Spacing, organizing 4 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "responsive-layout"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-18-profile-carousel-block.md",
+      "type": "document",
+      "name": "2026-07-18-profile-carousel-block.md",
+      "filePath": "docs/superpowers/plans/2026-07-18-profile-carousel-block.md",
+      "summary": "Implementation plan for Profile Carousel Block, organizing 6 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "profile-carousel"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-18-qa-accordion-rename.md",
+      "type": "document",
+      "name": "2026-07-18-qa-accordion-rename.md",
+      "filePath": "docs/superpowers/plans/2026-07-18-qa-accordion-rename.md",
+      "summary": "Implementation plan for Q&A Accordion Rename, organizing 6 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "qa-accordion"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-18-rating-spotlight-block.md",
+      "type": "document",
+      "name": "2026-07-18-rating-spotlight-block.md",
+      "filePath": "docs/superpowers/plans/2026-07-18-rating-spotlight-block.md",
+      "summary": "Implementation plan for Rating Spotlight Block, organizing 3 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "rating-spotlight"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-18-review-feed-block.md",
+      "type": "document",
+      "name": "2026-07-18-review-feed-block.md",
+      "filePath": "docs/superpowers/plans/2026-07-18-review-feed-block.md",
+      "summary": "Implementation plan for Review Feed Block, organizing 5 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "review-feed"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-18-review-form-browser-hydration.md",
+      "type": "document",
+      "name": "2026-07-18-review-form-browser-hydration.md",
+      "filePath": "docs/superpowers/plans/2026-07-18-review-form-browser-hydration.md",
+      "summary": "Implementation plan for Review Form Browser Hydration, organizing 1 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "review-submission"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-19-content-highlights-block.md",
+      "type": "document",
+      "name": "2026-07-19-content-highlights-block.md",
+      "filePath": "docs/superpowers/plans/2026-07-19-content-highlights-block.md",
+      "summary": "Implementation plan for Content Highlights Block, organizing 5 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "content-highlights"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-19-image-mosaic-block.md",
+      "type": "document",
+      "name": "2026-07-19-image-mosaic-block.md",
+      "filePath": "docs/superpowers/plans/2026-07-19-image-mosaic-block.md",
+      "summary": "Implementation plan for Image Mosaic Block, organizing 6 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "image-mosaic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-19-image-mosaic-css-hover.md",
+      "type": "document",
+      "name": "2026-07-19-image-mosaic-css-hover.md",
+      "filePath": "docs/superpowers/plans/2026-07-19-image-mosaic-css-hover.md",
+      "summary": "Implementation plan for Image Mosaic CSS Hover, organizing 1 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "image-mosaic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-19-image-mosaic-hover-coverage.md",
+      "type": "document",
+      "name": "2026-07-19-image-mosaic-hover-coverage.md",
+      "filePath": "docs/superpowers/plans/2026-07-19-image-mosaic-hover-coverage.md",
+      "summary": "Implementation plan for Image Mosaic Hover Coverage, organizing 1 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "image-mosaic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-19-image-mosaic-mobile-overlay.md",
+      "type": "document",
+      "name": "2026-07-19-image-mosaic-mobile-overlay.md",
+      "filePath": "docs/superpowers/plans/2026-07-19-image-mosaic-mobile-overlay.md",
+      "summary": "Implementation plan for Image Mosaic Mobile Overlay, organizing 1 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "image-mosaic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-19-image-mosaic-optional-actions.md",
+      "type": "document",
+      "name": "2026-07-19-image-mosaic-optional-actions.md",
+      "filePath": "docs/superpowers/plans/2026-07-19-image-mosaic-optional-actions.md",
+      "summary": "Implementation plan for Image Mosaic Optional Actions, organizing 5 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "image-mosaic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-19-live-preview-server-boundary.md",
+      "type": "document",
+      "name": "2026-07-19-live-preview-server-boundary.md",
+      "filePath": "docs/superpowers/plans/2026-07-19-live-preview-server-boundary.md",
+      "summary": "Implementation plan for Live Preview Server Boundary, organizing 5 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "live-preview"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-19-review-feed-container-width.md",
+      "type": "document",
+      "name": "2026-07-19-review-feed-container-width.md",
+      "filePath": "docs/superpowers/plans/2026-07-19-review-feed-container-width.md",
+      "summary": "Implementation plan for Review Feed Container Width, organizing 1 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "review-feed"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-20-news-event-story-layout.md",
+      "type": "document",
+      "name": "2026-07-20-news-event-story-layout.md",
+      "filePath": "docs/superpowers/plans/2026-07-20-news-event-story-layout.md",
+      "summary": "Implementation plan for News Event Story Layout, organizing 1 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "news-events"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-20-news-events-highlights-presentation.md",
+      "type": "document",
+      "name": "2026-07-20-news-events-highlights-presentation.md",
+      "filePath": "docs/superpowers/plans/2026-07-20-news-events-highlights-presentation.md",
+      "summary": "Implementation plan for News & Events Highlights Presentation, organizing 1 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "news-events"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-20-news-events-system.md",
+      "type": "document",
+      "name": "2026-07-20-news-events-system.md",
+      "filePath": "docs/superpowers/plans/2026-07-20-news-events-system.md",
+      "summary": "Implementation plan for News & Events System, organizing 11 task groups across referenced code changes and verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "news-events"
+      ],
+      "complexity": "complex"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-sizing.md",
+      "target": "file:tests/int/gallery-showcase.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-sizing.md",
+      "target": "file:src/components/gallery-showcase-fan.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-sizing.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-sizing.md",
+      "target": "file:tests/int/block-thumbnails.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-sizing.md",
+      "target": "file:tests/int/block-thumbnail-fixtures.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-three-card.md",
+      "target": "file:src/components/gallery-showcase-fan.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-three-card.md",
+      "target": "file:src/components/gallery-showcase.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-three-card.md",
+      "target": "file:tests/int/gallery-showcase.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-three-card.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-three-card.md",
+      "target": "file:tests/int/block-thumbnails.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-hero-banner-rename.md",
+      "target": "file:tests/int/hero-banner-render.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-hero-banner-rename.md",
+      "target": "file:tests/int/page-blocks.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-hero-banner-rename.md",
+      "target": "file:tests/int/system-page-blocks.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-hero-banner-rename.md",
+      "target": "file:tests/int/block-thumbnails.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-hero-banner-rename.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-mobile-block-container-spacing.md",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-mobile-block-container-spacing.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-mobile-block-container-spacing.md",
+      "target": "file:src/blocks/FeatureSpotlight/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-mobile-block-container-spacing.md",
+      "target": "file:tests/int/feature-spotlight.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-mobile-block-container-spacing.md",
+      "target": "file:src/components/footer56.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-profile-carousel-block.md",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-profile-carousel-block.md",
+      "target": "file:src/blocks/ProfileCarousel/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-profile-carousel-block.md",
+      "target": "file:src/blocks/ProfileCarousel/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-profile-carousel-block.md",
+      "target": "file:src/components/profile-carousel.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-profile-carousel-block.md",
+      "target": "file:src/components/profile-carousel-client.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-qa-accordion-rename.md",
+      "target": "file:tests/int/qa-accordion.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-qa-accordion-rename.md",
+      "target": "file:tests/int/page-blocks.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-qa-accordion-rename.md",
+      "target": "file:tests/int/system-page-blocks.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-qa-accordion-rename.md",
+      "target": "file:tests/int/block-thumbnails.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-qa-accordion-rename.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-rating-spotlight-block.md",
+      "target": "file:src/lib/reviewRatingSummary.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-rating-spotlight-block.md",
+      "target": "file:src/blocks/RatingSpotlight/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-rating-spotlight-block.md",
+      "target": "file:src/components/rating-spotlight.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-rating-spotlight-block.md",
+      "target": "file:src/blocks/RatingSpotlight/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-rating-spotlight-block.md",
+      "target": "file:tests/int/review-rating-summary.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-review-feed-block.md",
+      "target": "file:src/components/ui/avatar.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-review-feed-block.md",
+      "target": "file:src/components/ui/progress.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-review-feed-block.md",
+      "target": "file:src/components/shadcnblocks/rating.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-review-feed-block.md",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-review-feed-block.md",
+      "target": "file:src/components/ui/separator.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-review-form-browser-hydration.md",
+      "target": "file:src/blocks/ReviewSubmission/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-review-form-browser-hydration.md",
+      "target": "file:tests/int/review-submission-render.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-review-form-browser-hydration.md",
+      "target": "document:docs/superpowers/specs/2026-07-18-review-form-browser-hydration-design.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-review-form-browser-hydration.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-18-review-form-browser-hydration.md",
+      "target": "file:tests/int/review-submission.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-content-highlights-block.md",
+      "target": "file:src/blocks/ContentHighlights/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-content-highlights-block.md",
+      "target": "file:tests/int/content-highlights.int.spec.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-content-highlights-block.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-content-highlights-block.md",
+      "target": "file:src/components/content-highlights.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-content-highlights-block.md",
+      "target": "file:src/blocks/ContentHighlights/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-block.md",
+      "target": "file:src/styles/custom.css",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-block.md",
+      "target": "file:src/styles/globals.css",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-block.md",
+      "target": "file:src/blocks/ImageMosaic/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-block.md",
+      "target": "file:src/blocks/ImageMosaic/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-block.md",
+      "target": "file:src/components/image-mosaic.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-css-hover.md",
+      "target": "file:tests/int/image-mosaic.int.spec.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-css-hover.md",
+      "target": "file:src/components/image-mosaic.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-css-hover.md",
+      "target": "file:src/styles/custom.css",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-css-hover.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-css-hover.md",
+      "target": "config:tsconfig.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-hover-coverage.md",
+      "target": "file:tests/int/image-mosaic.int.spec.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-hover-coverage.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-hover-coverage.md",
+      "target": "config:tsconfig.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-mobile-overlay.md",
+      "target": "file:tests/int/image-mosaic.int.spec.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-mobile-overlay.md",
+      "target": "file:src/styles/custom.css",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-mobile-overlay.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-mobile-overlay.md",
+      "target": "config:tsconfig.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-optional-actions.md",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-optional-actions.md",
+      "target": "file:tests/int/image-mosaic.int.spec.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-optional-actions.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-optional-actions.md",
+      "target": "file:src/blocks/ImageMosaic/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-image-mosaic-optional-actions.md",
+      "target": "file:src/blocks/ImageMosaic/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-live-preview-server-boundary.md",
+      "target": "file:src/lib/reviewRatingShared.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-live-preview-server-boundary.md",
+      "target": "file:src/lib/reviewFeedShared.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-live-preview-server-boundary.md",
+      "target": "file:src/lib/reviewFeed.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-live-preview-server-boundary.md",
+      "target": "file:src/lib/reviewRatingSummary.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-live-preview-server-boundary.md",
+      "target": "file:src/lib/reviewPreviewShared.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-review-feed-container-width.md",
+      "target": "file:tests/int/review-feed.int.spec.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-review-feed-container-width.md",
+      "target": "file:src/components/review-feed.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-review-feed-container-width.md",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-19-review-feed-container-width.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-20-news-event-story-layout.md",
+      "target": "file:src/components/news-events/NewsEventStory.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-20-news-event-story-layout.md",
+      "target": "file:tests/int/news-event-story.int.spec.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-20-news-event-story-layout.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-20-news-events-highlights-presentation.md",
+      "target": "file:src/blocks/NewsEventsHighlights/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-20-news-events-highlights-presentation.md",
+      "target": "file:src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-20-news-events-highlights-presentation.md",
+      "target": "file:src/components/news-events/NewsEventsHighlights.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-20-news-events-highlights-presentation.md",
+      "target": "file:tests/int/news-events-highlights.int.spec.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-20-news-events-highlights-presentation.md",
+      "target": "file:vitest.config.mts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-20-news-events-system.md",
+      "target": "file:src/collections/NewsEvents.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-20-news-events-system.md",
+      "target": "file:src/hooks/normalizeNewsEventFields.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-20-news-events-system.md",
+      "target": "file:src/globals/NewsEventsSettings.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-20-news-events-system.md",
+      "target": "file:src/lib/newsEventsShared.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-20-news-events-system.md",
+      "target": "file:src/lib/newsEvents.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

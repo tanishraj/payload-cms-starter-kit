@@ -1,0 +1,958 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 20,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 20,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 0,
+      "failed": 0,
+      "skipped": 20
+    }
+  },
+  "results": [
+    {
+      "path": "docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-sizing.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 137,
+      "nonEmptyLines": 94,
+      "sections": [
+        {
+          "heading": "Gallery Showcase Mobile Sizing Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 21
+        },
+        {
+          "heading": "Task 1: Reduce mobile fan and card sizes",
+          "level": 3,
+          "line": 29
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-three-card.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 248,
+      "nonEmptyLines": 178,
+      "sections": [
+        {
+          "heading": "Gallery Showcase Mobile Three-Card Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 25
+        },
+        {
+          "heading": "Task 1: Render and separate the mobile three-card fan",
+          "level": 3,
+          "line": 32
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-hero-banner-rename.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 273,
+      "nonEmptyLines": 198,
+      "sections": [
+        {
+          "heading": "Hero Banner Rename Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Establish the canonical test contract",
+          "level": 3,
+          "line": 26
+        },
+        {
+          "heading": "Task 2: Rename the Payload block and renderer",
+          "level": 3,
+          "line": 86
+        },
+        {
+          "heading": "Task 3: Rename the thumbnail identity",
+          "level": 3,
+          "line": 150
+        },
+        {
+          "heading": "Task 4: Regenerate types and rewrite local data",
+          "level": 3,
+          "line": 199
+        },
+        {
+          "heading": "Task 5: Complete verification",
+          "level": 3,
+          "line": 232
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-mobile-block-container-spacing.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 167,
+      "nonEmptyLines": 107,
+      "sections": [
+        {
+          "heading": "Mobile Block Container Spacing Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Shared mobile container contract",
+          "level": 3,
+          "line": 24
+        },
+        {
+          "heading": "Task 2: Normalize every Feature Spotlight mobile layout",
+          "level": 3,
+          "line": 58
+        },
+        {
+          "heading": "Task 3: Normalize Footer mobile padding",
+          "level": 3,
+          "line": 96
+        },
+        {
+          "heading": "Task 4: Cross-block verification",
+          "level": 3,
+          "line": 136
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-profile-carousel-block.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 323,
+      "nonEmptyLines": 206,
+      "sections": [
+        {
+          "heading": "Profile Carousel Block Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 25
+        },
+        {
+          "heading": "Task 1: Lock the schema and shared one-action contract",
+          "level": 3,
+          "line": 45
+        },
+        {
+          "heading": "Task 2: Install and preserve the shadcn source boundary",
+          "level": 3,
+          "line": 99
+        },
+        {
+          "heading": "Task 3: Implement the static grid and focused carousel presentation",
+          "level": 3,
+          "line": 142
+        },
+        {
+          "heading": "Task 4: Add the Payload adapter and page pipeline",
+          "level": 3,
+          "line": 209
+        },
+        {
+          "heading": "Task 5: Add the real-render thumbnail",
+          "level": 3,
+          "line": 249
+        },
+        {
+          "heading": "Task 6: Final quality gate",
+          "level": 3,
+          "line": 291
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 9
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-qa-accordion-rename.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 371,
+      "nonEmptyLines": 275,
+      "sections": [
+        {
+          "heading": "Q&A Accordion Rename Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Establish the canonical test contract",
+          "level": 3,
+          "line": 26
+        },
+        {
+          "heading": "Task 2: Rename the Payload block and renderer",
+          "level": 3,
+          "line": 89
+        },
+        {
+          "heading": "Task 3: Rename the thumbnail identity and asset",
+          "level": 3,
+          "line": 159
+        },
+        {
+          "heading": "Task 4: Regenerate Payload types",
+          "level": 3,
+          "line": 208
+        },
+        {
+          "heading": "Task 5: Rewrite local page documents and versions",
+          "level": 3,
+          "line": 234
+        },
+        {
+          "heading": "Task 6: Final runtime and repository verification",
+          "level": 3,
+          "line": 331
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-rating-spotlight-block.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 863,
+      "nonEmptyLines": 705,
+      "sections": [
+        {
+          "heading": "Rating Spotlight Block Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 27
+        },
+        {
+          "heading": "Task 1: Build the published-review rating aggregate",
+          "level": 3,
+          "line": 43
+        },
+        {
+          "heading": "Task 2: Add the Payload schema and pure themed presentation",
+          "level": 3,
+          "line": 212
+        },
+        {
+          "heading": "Task 3: Register the block, generate types, and add the real thumbnail",
+          "level": 3,
+          "line": 734
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-review-feed-block.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 462,
+      "nonEmptyLines": 336,
+      "sections": [
+        {
+          "heading": "Review Feed Block Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Acquire and normalize the shadcn source",
+          "level": 3,
+          "line": 25
+        },
+        {
+          "heading": "Task 2: Build the published rating distribution and public review page data layer",
+          "level": 3,
+          "line": 67
+        },
+        {
+          "heading": "Task 3: Add the published-only pagination endpoint",
+          "level": 3,
+          "line": 212
+        },
+        {
+          "heading": "Task 4: Build schema, server presentation, and client pagination",
+          "level": 3,
+          "line": 268
+        },
+        {
+          "heading": "Task 5: Register, type, thumbnail, and verify",
+          "level": 3,
+          "line": 375
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-review-form-browser-hydration.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 211,
+      "nonEmptyLines": 164,
+      "sections": [
+        {
+          "heading": "Review Form Browser Hydration Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 21
+        },
+        {
+          "heading": "Task 1: Suppress only the externally mutated review-form attributes",
+          "level": 3,
+          "line": 27
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-content-highlights-block.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 607,
+      "nonEmptyLines": 467,
+      "sections": [
+        {
+          "heading": "Content Highlights Block Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Define and test the Payload schema",
+          "level": 3,
+          "line": 24
+        },
+        {
+          "heading": "Task 2: Build the server-rendered presentation and block adapter",
+          "level": 3,
+          "line": 253
+        },
+        {
+          "heading": "Task 3: Register the block and regenerate Payload types",
+          "level": 3,
+          "line": 418
+        },
+        {
+          "heading": "Task 4: Add the real-render block thumbnail",
+          "level": 3,
+          "line": 484
+        },
+        {
+          "heading": "Task 5: Final quality and responsive verification",
+          "level": 3,
+          "line": 549
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-image-mosaic-block.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 1465,
+      "nonEmptyLines": 1185,
+      "sections": [
+        {
+          "heading": "Image Mosaic Block Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File structure",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "Create",
+          "level": 3,
+          "line": 28
+        },
+        {
+          "heading": "Modify",
+          "level": 3,
+          "line": 37
+        },
+        {
+          "heading": "Task 1: Define the Payload editor schema",
+          "level": 3,
+          "line": 53
+        },
+        {
+          "heading": "Task 2: Adapt Gallery31 into responsive presentation components",
+          "level": 3,
+          "line": 323
+        },
+        {
+          "heading": "Task 3: Resolve Payload media and item links on the server",
+          "level": 3,
+          "line": 850
+        },
+        {
+          "heading": "Task 4: Register the block and regenerate Payload types",
+          "level": 3,
+          "line": 1072
+        },
+        {
+          "heading": "Task 5: Add the real-render Payload thumbnail",
+          "level": 3,
+          "line": 1200
+        },
+        {
+          "heading": "Task 6: Complete quality and regression verification",
+          "level": 3,
+          "line": 1338
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 11
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-image-mosaic-css-hover.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 270,
+      "nonEmptyLines": 206,
+      "sections": [
+        {
+          "heading": "Image Mosaic CSS Hover Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Replace direction-aware motion with CSS zoom and fade",
+          "level": 3,
+          "line": 26
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-image-mosaic-hover-coverage.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 143,
+      "nonEmptyLines": 95,
+      "sections": [
+        {
+          "heading": "Image Mosaic Hover Coverage Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Keep directional image motion inside its overscan",
+          "level": 3,
+          "line": 22
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-image-mosaic-mobile-overlay.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 225,
+      "nonEmptyLines": 164,
+      "sections": [
+        {
+          "heading": "Image Mosaic Mobile Overlay Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Make overlays mobile-first and synchronize desktop motion",
+          "level": 3,
+          "line": 23
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-image-mosaic-optional-actions.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 501,
+      "nonEmptyLines": 369,
+      "sections": [
+        {
+          "heading": "Image Mosaic Optional Actions Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Add opt-in per-action mode to the shared action field factory",
+          "level": 3,
+          "line": 25
+        },
+        {
+          "heading": "Task 2: Replace direct image-link fields with the optional action row",
+          "level": 3,
+          "line": 158
+        },
+        {
+          "heading": "Task 3: Resolve and render one shared image action",
+          "level": 3,
+          "line": 217
+        },
+        {
+          "heading": "Task 4: Update Payload types and thumbnail fixture",
+          "level": 3,
+          "line": 365
+        },
+        {
+          "heading": "Task 5: Verify the unstaged revision",
+          "level": 3,
+          "line": 429
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-live-preview-server-boundary.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 621,
+      "nonEmptyLines": 450,
+      "sections": [
+        {
+          "heading": "Live Preview Server Boundary Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 25
+        },
+        {
+          "heading": "Task 1: Establish client-safe review primitives and explicit server boundaries",
+          "level": 3,
+          "line": 41
+        },
+        {
+          "heading": "Task 2: Build the server-fetched preview snapshot",
+          "level": 3,
+          "line": 155
+        },
+        {
+          "heading": "Task 3: Separate review presentation from server data loading",
+          "level": 3,
+          "line": 265
+        },
+        {
+          "heading": "Task 4: Add the client-safe live-preview renderer and route wiring",
+          "level": 3,
+          "line": 408
+        },
+        {
+          "heading": "Task 5: Run regression and production-build verification",
+          "level": 3,
+          "line": 538
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-review-feed-container-width.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 79,
+      "nonEmptyLines": 51,
+      "sections": [
+        {
+          "heading": "Review Feed Container Width Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Expand Review Feed within the shared site container",
+          "level": 3,
+          "line": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-20-news-event-story-layout.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 59,
+      "nonEmptyLines": 36,
+      "sections": [
+        {
+          "heading": "News Event Story Layout Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Normalize the individual story presentation",
+          "level": 3,
+          "line": 21
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-20-news-events-highlights-presentation.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 69,
+      "nonEmptyLines": 43,
+      "sections": [
+        {
+          "heading": "News & Events Highlights Presentation Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Add alignment and compact card presentation",
+          "level": 3,
+          "line": 22
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-20-news-events-system.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 1699,
+      "nonEmptyLines": 1314,
+      "sections": [
+        {
+          "heading": "News & Events System Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 28
+        },
+        {
+          "heading": "New files",
+          "level": 3,
+          "line": 30
+        },
+        {
+          "heading": "Modified files",
+          "level": 3,
+          "line": 56
+        },
+        {
+          "heading": "Registry files",
+          "level": 3,
+          "line": 71
+        },
+        {
+          "heading": "Task 1: Capture the Blog 37 Registry Baseline",
+          "level": 3,
+          "line": 79
+        },
+        {
+          "heading": "Task 2: Add News & Events Capabilities and Collection",
+          "level": 3,
+          "line": 138
+        },
+        {
+          "heading": "Task 3: Add the News & Events Settings Global",
+          "level": 3,
+          "line": 424
+        },
+        {
+          "heading": "Task 4: Build Client-Safe DTOs and Server Queries",
+          "level": 3,
+          "line": 593
+        },
+        {
+          "heading": "Task 5: Implement and Register News & Events Highlights",
+          "level": 3,
+          "line": 806
+        },
+        {
+          "heading": "Task 6: Add Snapshot-Backed Page Live Preview",
+          "level": 3,
+          "line": 1002
+        },
+        {
+          "heading": "Task 7: Implement the Server-Rendered Blog 37 Archive",
+          "level": 3,
+          "line": 1121
+        },
+        {
+          "heading": "Task 8: Implement News/Event Detail, Preview, Metadata, and JSON-LD",
+          "level": 3,
+          "line": 1291
+        },
+        {
+          "heading": "Task 9: Complete SEO, Sitemap, Taxonomy, Media Governance, and Operations",
+          "level": 3,
+          "line": 1429
+        },
+        {
+          "heading": "Task 10: Add Route-Level E2E Coverage",
+          "level": 3,
+          "line": 1523
+        },
+        {
+          "heading": "Task 11: Final Generation and Verification",
+          "level": 3,
+          "line": 1572
+        },
+        {
+          "heading": "Completion Criteria",
+          "level": 2,
+          "line": 1686
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 18
+      }
+    }
+  ]
+}

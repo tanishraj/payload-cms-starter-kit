@@ -1,0 +1,329 @@
+{
+  "nodes": [
+    {
+      "id": "document:docs/superpowers/specs/2026-07-17-feature-matrix-block-design.md",
+      "type": "document",
+      "name": "2026-07-17-feature-matrix-block-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-17-feature-matrix-block-design.md",
+      "summary": "Design specification for Feature Matrix Block, spanning 11 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "feature-matrix"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-18-feature-matrix-image-height-design.md",
+      "type": "document",
+      "name": "2026-07-18-feature-matrix-image-height-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-18-feature-matrix-image-height-design.md",
+      "summary": "Design specification for Feature Matrix Responsive Image Height, spanning 7 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "feature-matrix"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-18-feature-matrix-rename-design.md",
+      "type": "document",
+      "name": "2026-07-18-feature-matrix-rename-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-18-feature-matrix-rename-design.md",
+      "summary": "Design specification for Feature Matrix Complete Rename, spanning 9 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "feature-matrix"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-18-gallery-showcase-block-design.md",
+      "type": "document",
+      "name": "2026-07-18-gallery-showcase-block-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-18-gallery-showcase-block-design.md",
+      "summary": "Design specification for Gallery Showcase Block, spanning 14 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "gallery-showcase"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-18-gallery-showcase-mobile-three-card-design.md",
+      "type": "document",
+      "name": "2026-07-18-gallery-showcase-mobile-three-card-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-18-gallery-showcase-mobile-three-card-design.md",
+      "summary": "Design specification for Gallery Showcase Mobile Three-Card, spanning 7 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "gallery-showcase"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-18-hero-banner-rename-design.md",
+      "type": "document",
+      "name": "2026-07-18-hero-banner-rename-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-18-hero-banner-rename-design.md",
+      "summary": "Design specification for Hero Banner Rename, spanning 8 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "hero-banner"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-18-mobile-block-container-spacing-design.md",
+      "type": "document",
+      "name": "2026-07-18-mobile-block-container-spacing-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-18-mobile-block-container-spacing-design.md",
+      "summary": "Design specification for Mobile Block Container Spacing, spanning 9 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "responsive-layout"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-18-profile-carousel-block-design.md",
+      "type": "document",
+      "name": "2026-07-18-profile-carousel-block-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-18-profile-carousel-block-design.md",
+      "summary": "Design specification for Profile Carousel Block, spanning 11 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "profile-carousel"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-18-qa-accordion-rename-design.md",
+      "type": "document",
+      "name": "2026-07-18-qa-accordion-rename-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-18-qa-accordion-rename-design.md",
+      "summary": "Design specification for Q&A Accordion Rename, spanning 6 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "qa-accordion"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-18-rating-spotlight-block-design.md",
+      "type": "document",
+      "name": "2026-07-18-rating-spotlight-block-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-18-rating-spotlight-block-design.md",
+      "summary": "Design specification for Rating Spotlight Block, spanning 13 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "rating-spotlight"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-18-review-feed-block-design.md",
+      "type": "document",
+      "name": "2026-07-18-review-feed-block-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-18-review-feed-block-design.md",
+      "summary": "Design specification for Review Feed Block, spanning 20 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "review-feed"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-18-review-form-browser-hydration-design.md",
+      "type": "document",
+      "name": "2026-07-18-review-form-browser-hydration-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-18-review-form-browser-hydration-design.md",
+      "summary": "Design specification for Review Form Browser Hydration, spanning 7 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "review-submission"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-19-content-highlights-block-design.md",
+      "type": "document",
+      "name": "2026-07-19-content-highlights-block-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-19-content-highlights-block-design.md",
+      "summary": "Design specification for Content Highlights Block, spanning 15 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "content-highlights"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-19-image-mosaic-block-design.md",
+      "type": "document",
+      "name": "2026-07-19-image-mosaic-block-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-19-image-mosaic-block-design.md",
+      "summary": "Design specification for Image Mosaic Block, spanning 20 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "image-mosaic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-19-live-preview-server-boundary-design.md",
+      "type": "document",
+      "name": "2026-07-19-live-preview-server-boundary-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-19-live-preview-server-boundary-design.md",
+      "summary": "Design specification for Live Preview Server Boundary, spanning 17 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "live-preview"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-19-review-feed-container-width-design.md",
+      "type": "document",
+      "name": "2026-07-19-review-feed-container-width-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-19-review-feed-container-width-design.md",
+      "summary": "Design specification for Review Feed Container Width, spanning 4 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "review-feed"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-20-news-events-highlights-presentation-design.md",
+      "type": "document",
+      "name": "2026-07-20-news-events-highlights-presentation-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-20-news-events-highlights-presentation-design.md",
+      "summary": "Design specification for News & Events Highlights Presentation, spanning 8 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "news-events"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-20-news-events-system-design.md",
+      "type": "document",
+      "name": "2026-07-20-news-events-system-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-20-news-events-system-design.md",
+      "summary": "Design specification for News & Events System, spanning 58 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "news-events"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-20-regular-block-responsive-spacing-design.md",
+      "type": "document",
+      "name": "2026-07-20-regular-block-responsive-spacing-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-20-regular-block-responsive-spacing-design.md",
+      "summary": "Design specification for Regular Block Responsive Spacing, spanning 8 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "responsive-layout"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-21-content-highlights-layouts-design.md",
+      "type": "document",
+      "name": "2026-07-21-content-highlights-layouts-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-21-content-highlights-layouts-design.md",
+      "summary": "Design specification for Content Highlights Layout and Split Controls, spanning 16 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "content-highlights"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:docs/superpowers/specs/2026-07-17-feature-matrix-block-design.md",
+      "target": "file:src/styles/globals.css",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-17-feature-matrix-block-design.md",
+      "target": "file:src/styles/custom.css",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-18-feature-matrix-image-height-design.md",
+      "target": "file:src/components/feature-matrix.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-18-feature-matrix-image-height-design.md",
+      "target": "file:tests/int/feature-matrix.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-18-feature-matrix-rename-design.md",
+      "target": "file:src/components/feature-matrix.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-18-feature-matrix-rename-design.md",
+      "target": "file:src/styles/custom.css",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-18-feature-matrix-rename-design.md",
+      "target": "file:tests/int/feature-matrix.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-18-profile-carousel-block-design.md",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-19-image-mosaic-block-design.md",
+      "target": "file:src/blocks/ImageMosaic/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

@@ -1,0 +1,1599 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/lib/mediaStorage.ts",
+      "type": "file",
+      "name": "mediaStorage.ts",
+      "filePath": "src/lib/mediaStorage.ts",
+      "summary": "Reconciles Payload media records with S3-compatible object storage, tracking missing and restored objects and emitting operational audit events.",
+      "tags": [
+        "media",
+        "object-storage",
+        "reconciliation",
+        "audit"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/lib/mediaStorage.ts:buildS3Client",
+      "type": "function",
+      "name": "buildS3Client",
+      "filePath": "src/lib/mediaStorage.ts",
+      "lineRange": [
+        37,
+        46
+      ],
+      "summary": "Builds an S3 client from the project runtime storage configuration.",
+      "tags": [
+        "factory",
+        "object-storage",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/mediaStorage.ts:getRequestLike",
+      "type": "function",
+      "name": "getRequestLike",
+      "filePath": "src/lib/mediaStorage.ts",
+      "lineRange": [
+        48,
+        60
+      ],
+      "summary": "Normalizes Payload and request inputs into the request shape required by audit helpers.",
+      "tags": [
+        "utility",
+        "payload-cms",
+        "request-context"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/mediaStorage.ts:getMediaStorageObjectKey",
+      "type": "function",
+      "name": "getMediaStorageObjectKey",
+      "filePath": "src/lib/mediaStorage.ts",
+      "lineRange": [
+        65,
+        100
+      ],
+      "summary": "Derives the storage object key from a media filename or bucket-relative URL.",
+      "tags": [
+        "utility",
+        "media",
+        "object-storage"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/mediaStorage.ts:isNotFoundStorageError",
+      "type": "function",
+      "name": "isNotFoundStorageError",
+      "filePath": "src/lib/mediaStorage.ts",
+      "lineRange": [
+        102,
+        121
+      ],
+      "summary": "Recognizes S3-style missing-object responses across supported error shapes.",
+      "tags": [
+        "validation",
+        "object-storage",
+        "error-handling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/mediaStorage.ts:reconcileMediaStorage",
+      "type": "function",
+      "name": "reconcileMediaStorage",
+      "filePath": "src/lib/mediaStorage.ts",
+      "lineRange": [
+        131,
+        325
+      ],
+      "summary": "Scans media records against object storage, updates reconciliation state, and records missing or restored asset audits.",
+      "tags": [
+        "service",
+        "media",
+        "reconciliation",
+        "audit"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/lib/mediaUsage.ts",
+      "type": "file",
+      "name": "mediaUsage.ts",
+      "filePath": "src/lib/mediaUsage.ts",
+      "summary": "Discovers where a media asset is referenced across supported collections, globals, and nested content, then formats operator-facing usage summaries.",
+      "tags": [
+        "media",
+        "relationship-resolution",
+        "governance",
+        "utility"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/lib/mediaUsage.ts:getRelationshipID",
+      "type": "function",
+      "name": "getRelationshipID",
+      "filePath": "src/lib/mediaUsage.ts",
+      "lineRange": [
+        49,
+        63
+      ],
+      "summary": "Extracts a stable identifier from scalar or populated Payload relationship values.",
+      "tags": [
+        "utility",
+        "relationships",
+        "normalization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/mediaUsage.ts:createCollectionReference",
+      "type": "function",
+      "name": "createCollectionReference",
+      "filePath": "src/lib/mediaUsage.ts",
+      "lineRange": [
+        91,
+        117
+      ],
+      "summary": "Builds an operator-facing media usage reference for a collection document field.",
+      "tags": [
+        "factory",
+        "media",
+        "relationships"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/mediaUsage.ts:createGlobalReference",
+      "type": "function",
+      "name": "createGlobalReference",
+      "filePath": "src/lib/mediaUsage.ts",
+      "lineRange": [
+        119,
+        142
+      ],
+      "summary": "Builds an operator-facing media usage reference for a global field.",
+      "tags": [
+        "factory",
+        "media",
+        "relationships"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/mediaUsage.ts:pushIfMatched",
+      "type": "function",
+      "name": "pushIfMatched",
+      "filePath": "src/lib/mediaUsage.ts",
+      "lineRange": [
+        144,
+        158
+      ],
+      "summary": "Adds a usage reference when a field value resolves to the target media record.",
+      "tags": [
+        "utility",
+        "media",
+        "matching"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/mediaUsage.ts:findMediaUsage",
+      "type": "function",
+      "name": "findMediaUsage",
+      "filePath": "src/lib/mediaUsage.ts",
+      "lineRange": [
+        487,
+        537
+      ],
+      "summary": "Queries configured collection and global sources to locate all references to a media asset.",
+      "tags": [
+        "service",
+        "media",
+        "relationship-resolution"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/mediaUsage.ts:buildMediaUsageSummary",
+      "type": "function",
+      "name": "buildMediaUsageSummary",
+      "filePath": "src/lib/mediaUsage.ts",
+      "lineRange": [
+        539,
+        558
+      ],
+      "summary": "Condenses media usage references into a readable summary for operators.",
+      "tags": [
+        "utility",
+        "media",
+        "formatting"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/mediaUsage.ts:formatMediaUsageLocation",
+      "type": "function",
+      "name": "formatMediaUsageLocation",
+      "filePath": "src/lib/mediaUsage.ts",
+      "lineRange": [
+        560,
+        561
+      ],
+      "summary": "Formats a single media usage reference as an operator-facing location label.",
+      "tags": [
+        "utility",
+        "media",
+        "formatting"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/operationalAudit.ts",
+      "type": "file",
+      "name": "operationalAudit.ts",
+      "filePath": "src/lib/operationalAudit.ts",
+      "summary": "Provides helpers for human-readable operational audit records, including a specialized work-queue audit adapter.",
+      "tags": [
+        "audit",
+        "operations",
+        "service",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/operationalAudit.ts:describeAuditValue",
+      "type": "function",
+      "name": "describeAuditValue",
+      "filePath": "src/lib/operationalAudit.ts",
+      "lineRange": [
+        19,
+        43
+      ],
+      "summary": "Converts unknown audit values into concise human-readable text with a fallback.",
+      "tags": [
+        "utility",
+        "audit",
+        "serialization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/operationalAudit.ts:recordOperationalAuditEvent",
+      "type": "function",
+      "name": "recordOperationalAuditEvent",
+      "filePath": "src/lib/operationalAudit.ts",
+      "lineRange": [
+        45,
+        68
+      ],
+      "summary": "Persists an operational audit event with actor, entity, summary, and timestamp metadata.",
+      "tags": [
+        "service",
+        "audit",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/operationalAudit.ts:recordWorkQueueAuditEvent",
+      "type": "function",
+      "name": "recordWorkQueueAuditEvent",
+      "filePath": "src/lib/operationalAudit.ts",
+      "lineRange": [
+        70,
+        84
+      ],
+      "summary": "Adapts work-queue actions into the shared operational audit event format.",
+      "tags": [
+        "service",
+        "audit",
+        "work-queue"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/seo.ts",
+      "type": "file",
+      "name": "seo.ts",
+      "filePath": "src/lib/seo.ts",
+      "summary": "Defines reusable SEO option sets and resolves canonical URLs, robots directives, and sitemap eligibility for published routes.",
+      "tags": [
+        "seo",
+        "metadata",
+        "validation",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/seo.ts:getRobotsMetadata",
+      "type": "function",
+      "name": "getRobotsMetadata",
+      "filePath": "src/lib/seo.ts",
+      "lineRange": [
+        55,
+        67
+      ],
+      "summary": "Maps a robots mode into normalized index and follow metadata flags.",
+      "tags": [
+        "seo",
+        "metadata",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/seo.ts:resolveCanonicalURL",
+      "type": "function",
+      "name": "resolveCanonicalURL",
+      "filePath": "src/lib/seo.ts",
+      "lineRange": [
+        69,
+        91
+      ],
+      "summary": "Validates and resolves canonical URL overrides against the current route path.",
+      "tags": [
+        "seo",
+        "validation",
+        "url"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/seo.ts:resolveRobotsMode",
+      "type": "function",
+      "name": "resolveRobotsMode",
+      "filePath": "src/lib/seo.ts",
+      "lineRange": [
+        93,
+        115
+      ],
+      "summary": "Resolves explicit or inherited robots settings into normalized metadata.",
+      "tags": [
+        "seo",
+        "metadata",
+        "inheritance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/seo.ts:resolveSitemapInclusion",
+      "type": "function",
+      "name": "resolveSitemapInclusion",
+      "filePath": "src/lib/seo.ts",
+      "lineRange": [
+        117,
+        137
+      ],
+      "summary": "Determines sitemap eligibility from route visibility, publish state, indexability, and explicit policy.",
+      "tags": [
+        "seo",
+        "sitemap",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/systemPageTypes.ts",
+      "type": "file",
+      "name": "systemPageTypes.ts",
+      "filePath": "src/lib/systemPageTypes.ts",
+      "summary": "Declares the canonical set of managed system-page types used by collections, settings, and frontend resolution.",
+      "tags": [
+        "system-pages",
+        "configuration",
+        "type-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/workQueue.ts",
+      "type": "file",
+      "name": "workQueue.ts",
+      "filePath": "src/lib/workQueue.ts",
+      "summary": "Implements deduplicated operational work-queue lookup, blocking checks, upsert, resolution, and condition synchronization.",
+      "tags": [
+        "work-queue",
+        "operations",
+        "service",
+        "workflow"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/lib/workQueue.ts:buildWorkQueueDedupeKey",
+      "type": "function",
+      "name": "buildWorkQueueDedupeKey",
+      "filePath": "src/lib/workQueue.ts",
+      "lineRange": [
+        71,
+        81
+      ],
+      "summary": "Builds a stable identity key for a source record and queue condition.",
+      "tags": [
+        "work-queue",
+        "deduplication",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/workQueue.ts:findWorkQueueRecord",
+      "type": "function",
+      "name": "findWorkQueueRecord",
+      "filePath": "src/lib/workQueue.ts",
+      "lineRange": [
+        83,
+        104
+      ],
+      "summary": "Looks up a work-queue item by its stable deduplication key.",
+      "tags": [
+        "work-queue",
+        "query",
+        "service"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/workQueue.ts:findBlockingPublishQueueItems",
+      "type": "function",
+      "name": "findBlockingPublishQueueItems",
+      "filePath": "src/lib/workQueue.ts",
+      "lineRange": [
+        106,
+        149
+      ],
+      "summary": "Finds unresolved approval or remediation items that block publishing a source record.",
+      "tags": [
+        "work-queue",
+        "publishing",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/workQueue.ts:formatBlockingPublishQueueMessage",
+      "type": "function",
+      "name": "formatBlockingPublishQueueMessage",
+      "filePath": "src/lib/workQueue.ts",
+      "lineRange": [
+        151,
+        164
+      ],
+      "summary": "Formats blocking queue items into an actionable publishing error message.",
+      "tags": [
+        "work-queue",
+        "formatting",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/workQueue.ts:upsertWorkQueueItem",
+      "type": "function",
+      "name": "upsertWorkQueueItem",
+      "filePath": "src/lib/workQueue.ts",
+      "lineRange": [
+        166,
+        241
+      ],
+      "summary": "Creates, updates, or reopens a deduplicated work-queue item while preserving synchronization context.",
+      "tags": [
+        "work-queue",
+        "service",
+        "upsert",
+        "workflow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/workQueue.ts:resolveWorkQueueItem",
+      "type": "function",
+      "name": "resolveWorkQueueItem",
+      "filePath": "src/lib/workQueue.ts",
+      "lineRange": [
+        243,
+        276
+      ],
+      "summary": "Marks a matching work-queue item resolved without deleting its operational history.",
+      "tags": [
+        "work-queue",
+        "service",
+        "lifecycle"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/workQueue.ts:syncWorkQueueConditions",
+      "type": "function",
+      "name": "syncWorkQueueConditions",
+      "filePath": "src/lib/workQueue.ts",
+      "lineRange": [
+        278,
+        310
+      ],
+      "summary": "Synchronizes a set of queue conditions by activating matching items and resolving cleared ones.",
+      "tags": [
+        "work-queue",
+        "service",
+        "synchronization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/payload.config.ts",
+      "type": "file",
+      "name": "payload.config.ts",
+      "filePath": "src/payload.config.ts",
+      "summary": "Assembles the Payload CMS runtime by registering collections, globals, adapters, storage plugins, editor settings, and generated types.",
+      "tags": [
+        "entry-point",
+        "payload-cms",
+        "configuration",
+        "plugin-registration"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses Payload buildConfig composition to register the complete CMS schema and runtime adapters."
+    },
+    {
+      "id": "file:src/plugins/withTrash.ts",
+      "type": "file",
+      "name": "withTrash.ts",
+      "filePath": "src/plugins/withTrash.ts",
+      "summary": "Payload configuration plugin that enables trash support across collections except explicitly excluded slugs.",
+      "tags": [
+        "payload-cms",
+        "plugin",
+        "configuration",
+        "soft-delete"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/plugins/withTrash.ts:withTrash",
+      "type": "function",
+      "name": "withTrash",
+      "filePath": "src/plugins/withTrash.ts",
+      "lineRange": [
+        7,
+        25
+      ],
+      "summary": "Enables Payload trash support for all configured collections except an exclusion set.",
+      "tags": [
+        "payload-cms",
+        "plugin",
+        "soft-delete"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "type": "file",
+      "name": "admin-information-architecture.int.spec.ts",
+      "filePath": "tests/int/admin-information-architecture.int.spec.ts",
+      "summary": "Verifies that Payload collections and globals use the approved admin groups and operator-facing labels.",
+      "tags": [
+        "test",
+        "integration-test",
+        "admin-ui",
+        "information-architecture"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/adminCapabilities.int.spec.ts",
+      "type": "file",
+      "name": "adminCapabilities.int.spec.ts",
+      "filePath": "tests/int/adminCapabilities.int.spec.ts",
+      "summary": "Exercises editorial role presets, capability normalization, access helpers, first-user promotion, and Users admin visibility.",
+      "tags": [
+        "test",
+        "integration-test",
+        "access-control",
+        "roles"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:tests/int/adminCapabilities.int.spec.ts:createReq",
+      "type": "function",
+      "name": "createReq",
+      "filePath": "tests/int/adminCapabilities.int.spec.ts",
+      "lineRange": [
+        30,
+        39
+      ],
+      "summary": "Creates a typed request stub for exercising access or workflow behavior in integration tests.",
+      "tags": [
+        "test",
+        "test-helper",
+        "request-context"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/int/adminCapabilities.int.spec.ts:getUsersField",
+      "type": "function",
+      "name": "getUsersField",
+      "filePath": "tests/int/adminCapabilities.int.spec.ts",
+      "lineRange": [
+        46,
+        56
+      ],
+      "summary": "Locates a named Users collection field for assertions about admin configuration.",
+      "tags": [
+        "test",
+        "test-helper",
+        "admin-ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/articles.int.spec.ts",
+      "type": "file",
+      "name": "articles.int.spec.ts",
+      "filePath": "tests/int/articles.int.spec.ts",
+      "summary": "Checks the article editing model and confirms public slug queries expose only published articles.",
+      "tags": [
+        "test",
+        "integration-test",
+        "articles",
+        "publishing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/block-thumbnails.int.spec.ts",
+      "type": "file",
+      "name": "block-thumbnails.int.spec.ts",
+      "filePath": "tests/int/block-thumbnails.int.spec.ts",
+      "summary": "Validates block-thumbnail manifest coverage, Payload registration, environment gating, output uniqueness, and generated image dimensions.",
+      "tags": [
+        "test",
+        "integration-test",
+        "block-thumbnails",
+        "content-blocks"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/int/block-thumbnails.int.spec.ts:collectRegisteredBlocks",
+      "type": "function",
+      "name": "collectRegisteredBlocks",
+      "filePath": "tests/int/block-thumbnails.int.spec.ts",
+      "lineRange": [
+        19,
+        34
+      ],
+      "summary": "Recursively collects Payload block registrations from nested field and tab structures.",
+      "tags": [
+        "test",
+        "test-helper",
+        "content-blocks"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/editorial-workflow.int.spec.ts",
+      "type": "file",
+      "name": "editorial-workflow.int.spec.ts",
+      "filePath": "tests/int/editorial-workflow.int.spec.ts",
+      "summary": "Tests editorial workflow guardrails for direct publishing, review transitions, scheduling, blocking queue items, and publish metadata.",
+      "tags": [
+        "test",
+        "integration-test",
+        "editorial-workflow",
+        "publishing"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:tests/int/editorial-workflow.int.spec.ts:createReq",
+      "type": "function",
+      "name": "createReq",
+      "filePath": "tests/int/editorial-workflow.int.spec.ts",
+      "lineRange": [
+        5,
+        18
+      ],
+      "summary": "Creates a typed request stub for exercising access or workflow behavior in integration tests.",
+      "tags": [
+        "test",
+        "test-helper",
+        "request-context"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/lib/mediaStorage.ts",
+      "target": "function:src/lib/mediaStorage.ts:buildS3Client",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/mediaStorage.ts",
+      "target": "function:src/lib/mediaStorage.ts:getRequestLike",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/mediaStorage.ts",
+      "target": "function:src/lib/mediaStorage.ts:getMediaStorageObjectKey",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/mediaStorage.ts",
+      "target": "function:src/lib/mediaStorage.ts:getMediaStorageObjectKey",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/mediaStorage.ts",
+      "target": "function:src/lib/mediaStorage.ts:isNotFoundStorageError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/mediaStorage.ts",
+      "target": "function:src/lib/mediaStorage.ts:reconcileMediaStorage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/mediaStorage.ts",
+      "target": "function:src/lib/mediaStorage.ts:reconcileMediaStorage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/mediaUsage.ts",
+      "target": "function:src/lib/mediaUsage.ts:getRelationshipID",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/mediaUsage.ts",
+      "target": "function:src/lib/mediaUsage.ts:createCollectionReference",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/mediaUsage.ts",
+      "target": "function:src/lib/mediaUsage.ts:createGlobalReference",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/mediaUsage.ts",
+      "target": "function:src/lib/mediaUsage.ts:pushIfMatched",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/mediaUsage.ts",
+      "target": "function:src/lib/mediaUsage.ts:findMediaUsage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/mediaUsage.ts",
+      "target": "function:src/lib/mediaUsage.ts:findMediaUsage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/mediaUsage.ts",
+      "target": "function:src/lib/mediaUsage.ts:buildMediaUsageSummary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/mediaUsage.ts",
+      "target": "function:src/lib/mediaUsage.ts:buildMediaUsageSummary",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/mediaUsage.ts",
+      "target": "function:src/lib/mediaUsage.ts:formatMediaUsageLocation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/mediaUsage.ts",
+      "target": "function:src/lib/mediaUsage.ts:formatMediaUsageLocation",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/operationalAudit.ts",
+      "target": "function:src/lib/operationalAudit.ts:describeAuditValue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/operationalAudit.ts",
+      "target": "function:src/lib/operationalAudit.ts:describeAuditValue",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/operationalAudit.ts",
+      "target": "function:src/lib/operationalAudit.ts:recordOperationalAuditEvent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/operationalAudit.ts",
+      "target": "function:src/lib/operationalAudit.ts:recordOperationalAuditEvent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/operationalAudit.ts",
+      "target": "function:src/lib/operationalAudit.ts:recordWorkQueueAuditEvent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/operationalAudit.ts",
+      "target": "function:src/lib/operationalAudit.ts:recordWorkQueueAuditEvent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/seo.ts",
+      "target": "function:src/lib/seo.ts:getRobotsMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/seo.ts",
+      "target": "function:src/lib/seo.ts:getRobotsMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/seo.ts",
+      "target": "function:src/lib/seo.ts:resolveCanonicalURL",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/seo.ts",
+      "target": "function:src/lib/seo.ts:resolveCanonicalURL",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/seo.ts",
+      "target": "function:src/lib/seo.ts:resolveRobotsMode",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/seo.ts",
+      "target": "function:src/lib/seo.ts:resolveRobotsMode",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/seo.ts",
+      "target": "function:src/lib/seo.ts:resolveSitemapInclusion",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/seo.ts",
+      "target": "function:src/lib/seo.ts:resolveSitemapInclusion",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/workQueue.ts",
+      "target": "function:src/lib/workQueue.ts:buildWorkQueueDedupeKey",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/workQueue.ts",
+      "target": "function:src/lib/workQueue.ts:buildWorkQueueDedupeKey",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/workQueue.ts",
+      "target": "function:src/lib/workQueue.ts:findWorkQueueRecord",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/workQueue.ts",
+      "target": "function:src/lib/workQueue.ts:findBlockingPublishQueueItems",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/workQueue.ts",
+      "target": "function:src/lib/workQueue.ts:findBlockingPublishQueueItems",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/workQueue.ts",
+      "target": "function:src/lib/workQueue.ts:formatBlockingPublishQueueMessage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/workQueue.ts",
+      "target": "function:src/lib/workQueue.ts:formatBlockingPublishQueueMessage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/workQueue.ts",
+      "target": "function:src/lib/workQueue.ts:upsertWorkQueueItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/workQueue.ts",
+      "target": "function:src/lib/workQueue.ts:upsertWorkQueueItem",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/workQueue.ts",
+      "target": "function:src/lib/workQueue.ts:resolveWorkQueueItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/workQueue.ts",
+      "target": "function:src/lib/workQueue.ts:resolveWorkQueueItem",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/workQueue.ts",
+      "target": "function:src/lib/workQueue.ts:syncWorkQueueConditions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/workQueue.ts",
+      "target": "function:src/lib/workQueue.ts:syncWorkQueueConditions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/plugins/withTrash.ts",
+      "target": "function:src/plugins/withTrash.ts:withTrash",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/plugins/withTrash.ts",
+      "target": "function:src/plugins/withTrash.ts:withTrash",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/int/adminCapabilities.int.spec.ts",
+      "target": "function:tests/int/adminCapabilities.int.spec.ts:createReq",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/int/adminCapabilities.int.spec.ts",
+      "target": "function:tests/int/adminCapabilities.int.spec.ts:getUsersField",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/int/block-thumbnails.int.spec.ts",
+      "target": "function:tests/int/block-thumbnails.int.spec.ts:collectRegisteredBlocks",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/int/editorial-workflow.int.spec.ts",
+      "target": "function:tests/int/editorial-workflow.int.spec.ts:createReq",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/mediaStorage.ts",
+      "target": "file:src/config/runtime.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/mediaStorage.ts",
+      "target": "file:src/lib/operationalAudit.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/workQueue.ts",
+      "target": "file:src/hooks/syncWorkQueueItem.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Articles.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Categories.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Footers.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/FormSubmissions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Forms.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Headers.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/NavigationLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/NewsEvents.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/OperationalAuditEvents.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Redirects.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Reviews.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/SystemPages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Tags.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/Users.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/collections/WorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/config/providers.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/config/runtime.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/config/starterContract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/globals/NewsEventsSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/globals/PageSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/globals/SEOSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/globals/SiteSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/globals/SystemModeSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/globals/ThemeSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/payload.config.ts",
+      "target": "file:src/plugins/withTrash.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/collections/Articles.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/collections/Categories.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/collections/Footers.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/collections/FormSubmissions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/collections/Forms.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/collections/Headers.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/collections/Media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/collections/NavigationLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/collections/OperationalAuditEvents.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/collections/Pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/collections/Redirects.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/collections/Reviews.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/collections/SystemPages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/collections/Tags.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/collections/Users.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/collections/WorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/globals/PageSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/globals/SEOSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/globals/SiteSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/globals/SystemModeSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-information-architecture.int.spec.ts",
+      "target": "file:src/globals/ThemeSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/adminCapabilities.int.spec.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/adminCapabilities.int.spec.ts",
+      "target": "file:src/access/editorialRoles.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/adminCapabilities.int.spec.ts",
+      "target": "file:src/collections/Users.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/articles.int.spec.ts",
+      "target": "file:src/collections/Articles.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/block-thumbnails.int.spec.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/block-thumbnails.int.spec.ts",
+      "target": "file:src/collections/Footers.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/block-thumbnails.int.spec.ts",
+      "target": "file:src/collections/Headers.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/block-thumbnails.int.spec.ts",
+      "target": "file:src/collections/Pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/block-thumbnails.int.spec.ts",
+      "target": "file:src/collections/SystemPages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/editorial-workflow.int.spec.ts",
+      "target": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:src/lib/mediaStorage.ts:reconcileMediaStorage",
+      "target": "function:src/config/runtime.ts:getRuntimeConfig",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/mediaStorage.ts:reconcileMediaStorage",
+      "target": "function:src/lib/mediaStorage.ts:getRequestLike",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/mediaStorage.ts:reconcileMediaStorage",
+      "target": "function:src/lib/mediaStorage.ts:buildS3Client",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/mediaStorage.ts:reconcileMediaStorage",
+      "target": "function:src/lib/mediaStorage.ts:getMediaStorageObjectKey",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/mediaStorage.ts:reconcileMediaStorage",
+      "target": "function:src/lib/mediaStorage.ts:isNotFoundStorageError",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/operationalAudit.ts:recordWorkQueueAuditEvent",
+      "target": "function:src/lib/operationalAudit.ts:recordOperationalAuditEvent",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/seo.ts:resolveRobotsMode",
+      "target": "function:src/lib/seo.ts:getRobotsMetadata",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/workQueue.ts:upsertWorkQueueItem",
+      "target": "function:src/hooks/syncWorkQueueItem.ts:isWorkQueueSyncContext",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/workQueue.ts:upsertWorkQueueItem",
+      "target": "function:src/lib/workQueue.ts:findWorkQueueRecord",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/workQueue.ts:upsertWorkQueueItem",
+      "target": "function:src/hooks/syncWorkQueueItem.ts:withWorkQueueSyncContext",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/workQueue.ts:resolveWorkQueueItem",
+      "target": "function:src/hooks/syncWorkQueueItem.ts:isWorkQueueSyncContext",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/workQueue.ts:resolveWorkQueueItem",
+      "target": "function:src/lib/workQueue.ts:findWorkQueueRecord",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/workQueue.ts:resolveWorkQueueItem",
+      "target": "function:src/hooks/syncWorkQueueItem.ts:withWorkQueueSyncContext",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/workQueue.ts:syncWorkQueueConditions",
+      "target": "function:src/lib/workQueue.ts:upsertWorkQueueItem",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/workQueue.ts:syncWorkQueueConditions",
+      "target": "function:src/lib/workQueue.ts:resolveWorkQueueItem",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "docs/guides/README.md",
+      "language": "markdown",
+      "sizeLines": 79,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/articles.md",
+      "language": "markdown",
+      "sizeLines": 67,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/categories.md",
+      "language": "markdown",
+      "sizeLines": 59,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/footers.md",
+      "language": "markdown",
+      "sizeLines": 66,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/form-submissions.md",
+      "language": "markdown",
+      "sizeLines": 76,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/forms.md",
+      "language": "markdown",
+      "sizeLines": 78,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/headers.md",
+      "language": "markdown",
+      "sizeLines": 64,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/links.md",
+      "language": "markdown",
+      "sizeLines": 62,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/media.md",
+      "language": "markdown",
+      "sizeLines": 63,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/operational-audit-events.md",
+      "language": "markdown",
+      "sizeLines": 72,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/pages.md",
+      "language": "markdown",
+      "sizeLines": 62,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/redirects.md",
+      "language": "markdown",
+      "sizeLines": 65,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/reviews.md",
+      "language": "markdown",
+      "sizeLines": 65,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/seo-settings.md",
+      "language": "markdown",
+      "sizeLines": 74,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/site-defaults.md",
+      "language": "markdown",
+      "sizeLines": 72,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/site-settings.md",
+      "language": "markdown",
+      "sizeLines": 74,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/system-modes.md",
+      "language": "markdown",
+      "sizeLines": 71,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/system-pages.md",
+      "language": "markdown",
+      "sizeLines": 67,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/tags.md",
+      "language": "markdown",
+      "sizeLines": 58,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/theme-settings.md",
+      "language": "markdown",
+      "sizeLines": 63,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "docs/guides/README.md": [],
+    "docs/guides/articles.md": [],
+    "docs/guides/categories.md": [],
+    "docs/guides/footers.md": [],
+    "docs/guides/form-submissions.md": [],
+    "docs/guides/forms.md": [],
+    "docs/guides/headers.md": [],
+    "docs/guides/links.md": [],
+    "docs/guides/media.md": [],
+    "docs/guides/operational-audit-events.md": [],
+    "docs/guides/pages.md": [],
+    "docs/guides/redirects.md": [],
+    "docs/guides/reviews.md": [],
+    "docs/guides/seo-settings.md": [],
+    "docs/guides/site-defaults.md": [],
+    "docs/guides/site-settings.md": [],
+    "docs/guides/system-modes.md": [],
+    "docs/guides/system-pages.md": [],
+    "docs/guides/tags.md": [],
+    "docs/guides/theme-settings.md": []
+  }
+}

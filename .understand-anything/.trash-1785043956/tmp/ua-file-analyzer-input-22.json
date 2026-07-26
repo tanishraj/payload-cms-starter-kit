@@ -1,0 +1,147 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-sizing.md",
+      "language": "markdown",
+      "sizeLines": 137,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-three-card.md",
+      "language": "markdown",
+      "sizeLines": 248,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-hero-banner-rename.md",
+      "language": "markdown",
+      "sizeLines": 273,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-mobile-block-container-spacing.md",
+      "language": "markdown",
+      "sizeLines": 167,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-profile-carousel-block.md",
+      "language": "markdown",
+      "sizeLines": 323,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-qa-accordion-rename.md",
+      "language": "markdown",
+      "sizeLines": 371,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-rating-spotlight-block.md",
+      "language": "markdown",
+      "sizeLines": 863,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-review-feed-block.md",
+      "language": "markdown",
+      "sizeLines": 462,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-review-form-browser-hydration.md",
+      "language": "markdown",
+      "sizeLines": 211,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-content-highlights-block.md",
+      "language": "markdown",
+      "sizeLines": 607,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-image-mosaic-block.md",
+      "language": "markdown",
+      "sizeLines": 1465,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-image-mosaic-css-hover.md",
+      "language": "markdown",
+      "sizeLines": 270,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-image-mosaic-hover-coverage.md",
+      "language": "markdown",
+      "sizeLines": 143,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-image-mosaic-mobile-overlay.md",
+      "language": "markdown",
+      "sizeLines": 225,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-image-mosaic-optional-actions.md",
+      "language": "markdown",
+      "sizeLines": 501,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-live-preview-server-boundary.md",
+      "language": "markdown",
+      "sizeLines": 621,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-review-feed-container-width.md",
+      "language": "markdown",
+      "sizeLines": 79,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-20-news-event-story-layout.md",
+      "language": "markdown",
+      "sizeLines": 59,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-20-news-events-highlights-presentation.md",
+      "language": "markdown",
+      "sizeLines": 69,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-20-news-events-system.md",
+      "language": "markdown",
+      "sizeLines": 1699,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-sizing.md": [],
+    "docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-three-card.md": [],
+    "docs/superpowers/plans/2026-07-18-hero-banner-rename.md": [],
+    "docs/superpowers/plans/2026-07-18-mobile-block-container-spacing.md": [],
+    "docs/superpowers/plans/2026-07-18-profile-carousel-block.md": [],
+    "docs/superpowers/plans/2026-07-18-qa-accordion-rename.md": [],
+    "docs/superpowers/plans/2026-07-18-rating-spotlight-block.md": [],
+    "docs/superpowers/plans/2026-07-18-review-feed-block.md": [],
+    "docs/superpowers/plans/2026-07-18-review-form-browser-hydration.md": [],
+    "docs/superpowers/plans/2026-07-19-content-highlights-block.md": [],
+    "docs/superpowers/plans/2026-07-19-image-mosaic-block.md": [],
+    "docs/superpowers/plans/2026-07-19-image-mosaic-css-hover.md": [],
+    "docs/superpowers/plans/2026-07-19-image-mosaic-hover-coverage.md": [],
+    "docs/superpowers/plans/2026-07-19-image-mosaic-mobile-overlay.md": [],
+    "docs/superpowers/plans/2026-07-19-image-mosaic-optional-actions.md": [],
+    "docs/superpowers/plans/2026-07-19-live-preview-server-boundary.md": [],
+    "docs/superpowers/plans/2026-07-19-review-feed-container-width.md": [],
+    "docs/superpowers/plans/2026-07-20-news-event-story-layout.md": [],
+    "docs/superpowers/plans/2026-07-20-news-events-highlights-presentation.md": [],
+    "docs/superpowers/plans/2026-07-20-news-events-system.md": []
+  }
+}

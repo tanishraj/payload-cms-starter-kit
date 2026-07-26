@@ -1,0 +1,1011 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/collections/WorkQueue.ts",
+      "type": "file",
+      "name": "WorkQueue.ts",
+      "filePath": "src/collections/WorkQueue.ts",
+      "summary": "Defines the operational work-queue collection, including queue metadata, lifecycle controls, admin presentation, access rules, and audit hooks.",
+      "tags": [
+        "data-model",
+        "work-queue",
+        "payload-cms",
+        "operational-audit"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/config/providers.ts",
+      "type": "file",
+      "name": "providers.ts",
+      "filePath": "src/config/providers.ts",
+      "summary": "Builds the database, email, and media-storage adapters selected by validated runtime configuration.",
+      "tags": [
+        "configuration",
+        "runtime",
+        "provider-factory"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/config/providers.ts:createDatabaseAdapter",
+      "type": "function",
+      "name": "createDatabaseAdapter",
+      "filePath": "src/config/providers.ts",
+      "lineRange": [
+        8,
+        12
+      ],
+      "summary": "Creates the configured Payload database adapter.",
+      "tags": [
+        "factory",
+        "payload-cms",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/config/providers.ts:createEmailAdapter",
+      "type": "function",
+      "name": "createEmailAdapter",
+      "filePath": "src/config/providers.ts",
+      "lineRange": [
+        14,
+        25
+      ],
+      "summary": "Creates the configured email adapter, falling back to console delivery when email is disabled.",
+      "tags": [
+        "factory",
+        "payload-cms",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/config/providers.ts:createStoragePlugins",
+      "type": "function",
+      "name": "createStoragePlugins",
+      "filePath": "src/config/providers.ts",
+      "lineRange": [
+        27,
+        51
+      ],
+      "summary": "Creates media-storage plugins for the selected local or S3 provider.",
+      "tags": [
+        "factory",
+        "payload-cms",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/config/runtime.ts",
+      "type": "file",
+      "name": "runtime.ts",
+      "filePath": "src/config/runtime.ts",
+      "summary": "Validates environment variables and produces the normalized database, deployment, email, and media runtime configuration.",
+      "tags": [
+        "configuration",
+        "runtime",
+        "provider-factory"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses a discriminated union to make local-disk and S3 media configuration mutually exclusive."
+    },
+    {
+      "id": "function:src/config/runtime.ts:parseBooleanEnv",
+      "type": "function",
+      "name": "parseBooleanEnv",
+      "filePath": "src/config/runtime.ts",
+      "lineRange": [
+        35,
+        51
+      ],
+      "summary": "Parses a boolean environment value with an explicit default and rejects unsupported spellings.",
+      "tags": [
+        "utility",
+        "cms",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/config/runtime.ts:getMediaProvider",
+      "type": "function",
+      "name": "getMediaProvider",
+      "filePath": "src/config/runtime.ts",
+      "lineRange": [
+        53,
+        63
+      ],
+      "summary": "Validates and returns the configured media provider.",
+      "tags": [
+        "utility",
+        "cms",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/config/runtime.ts:getRuntimeConfig",
+      "type": "function",
+      "name": "getRuntimeConfig",
+      "filePath": "src/config/runtime.ts",
+      "lineRange": [
+        65,
+        146
+      ],
+      "summary": "Validates environment variables and returns a normalized runtime configuration.",
+      "tags": [
+        "utility",
+        "cms",
+        "business-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/config/starterContract.ts",
+      "type": "file",
+      "name": "starterContract.ts",
+      "filePath": "src/config/starterContract.ts",
+      "summary": "Exposes and validates the starter-kit contract version used to guard compatibility at application startup.",
+      "tags": [
+        "configuration",
+        "runtime",
+        "provider-factory"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/config/starterContract.ts:getStarterContract",
+      "type": "function",
+      "name": "getStarterContract",
+      "filePath": "src/config/starterContract.ts",
+      "lineRange": [
+        14,
+        34
+      ],
+      "summary": "Builds the public starter-kit compatibility contract from runtime configuration.",
+      "tags": [
+        "utility",
+        "cms",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/config/starterContract.ts:assertSupportedStarterContract",
+      "type": "function",
+      "name": "assertSupportedStarterContract",
+      "filePath": "src/config/starterContract.ts",
+      "lineRange": [
+        36,
+        40
+      ],
+      "summary": "Rejects startup when the configured starter contract version is unsupported.",
+      "tags": [
+        "validation",
+        "hook",
+        "business-rule"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/fields/buildSEOFields.ts",
+      "type": "file",
+      "name": "buildSEOFields.ts",
+      "filePath": "src/fields/buildSEOFields.ts",
+      "summary": "Builds the reusable Payload field group for canonical URLs, robots directives, sitemap inclusion, and social metadata.",
+      "tags": [
+        "field-builder",
+        "seo",
+        "payload-cms"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/fields/buildSEOFields.ts:buildSEOFields",
+      "type": "function",
+      "name": "buildSEOFields",
+      "filePath": "src/fields/buildSEOFields.ts",
+      "lineRange": [
+        10,
+        98
+      ],
+      "summary": "Builds the reusable set of Payload SEO fields.",
+      "tags": [
+        "factory",
+        "payload-cms",
+        "configuration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/globals/NewsEventsSettings.ts",
+      "type": "file",
+      "name": "NewsEventsSettings.ts",
+      "filePath": "src/globals/NewsEventsSettings.ts",
+      "summary": "Defines global defaults for news and event presentation, SEO behavior, and appearance with capability-gated administration.",
+      "tags": [
+        "configuration",
+        "payload-global",
+        "access-control",
+        "admin-settings"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/globals/PageSettings.ts",
+      "type": "file",
+      "name": "PageSettings.ts",
+      "filePath": "src/globals/PageSettings.ts",
+      "summary": "Defines site-wide page defaults, homepage selection, announcement behavior, appearance fields, validation, and operational auditing.",
+      "tags": [
+        "configuration",
+        "payload-global",
+        "access-control",
+        "admin-settings"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/globals/PageSettings.ts:extractPageID",
+      "type": "function",
+      "name": "extractPageID",
+      "filePath": "src/globals/PageSettings.ts",
+      "lineRange": [
+        12,
+        24
+      ],
+      "summary": "Normalizes a page relationship value to its scalar identifier.",
+      "tags": [
+        "utility",
+        "normalization",
+        "data-transform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/globals/PageSettings.ts:validatePublishedFrontPage",
+      "type": "function",
+      "name": "validatePublishedFrontPage",
+      "filePath": "src/globals/PageSettings.ts",
+      "lineRange": [
+        26,
+        59
+      ],
+      "summary": "Ensures the configured homepage references a published page.",
+      "tags": [
+        "validation",
+        "hook",
+        "business-rule"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/globals/PageSettings.ts:validateAnnouncementInterval",
+      "type": "function",
+      "name": "validateAnnouncementInterval",
+      "filePath": "src/globals/PageSettings.ts",
+      "lineRange": [
+        61,
+        79
+      ],
+      "summary": "Validates rotation timing for enabled non-marquee announcements.",
+      "tags": [
+        "validation",
+        "hook",
+        "business-rule"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/globals/PageSettings.ts:validateAnnouncementMarqueeDuration",
+      "type": "function",
+      "name": "validateAnnouncementMarqueeDuration",
+      "filePath": "src/globals/PageSettings.ts",
+      "lineRange": [
+        81,
+        99
+      ],
+      "summary": "Validates the duration of enabled marquee announcements.",
+      "tags": [
+        "validation",
+        "hook",
+        "business-rule"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/globals/PageSettings.ts:validateAnnouncementItems",
+      "type": "function",
+      "name": "validateAnnouncementItems",
+      "filePath": "src/globals/PageSettings.ts",
+      "lineRange": [
+        101,
+        124
+      ],
+      "summary": "Requires at least one meaningful announcement item when announcements are enabled.",
+      "tags": [
+        "validation",
+        "hook",
+        "business-rule"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/globals/SEOSettings.ts",
+      "type": "file",
+      "name": "SEOSettings.ts",
+      "filePath": "src/globals/SEOSettings.ts",
+      "summary": "Defines global SEO defaults and access rules used to control indexing and metadata behavior across public content.",
+      "tags": [
+        "configuration",
+        "payload-global",
+        "access-control",
+        "admin-settings"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/globals/SiteSettings.ts",
+      "type": "file",
+      "name": "SiteSettings.ts",
+      "filePath": "src/globals/SiteSettings.ts",
+      "summary": "Defines public site identity, contact, social-link, and footer settings with URL validation and capability-based access.",
+      "tags": [
+        "configuration",
+        "payload-global",
+        "access-control",
+        "admin-settings"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/globals/SiteSettings.ts:validateExternalSocialUrl",
+      "type": "function",
+      "name": "validateExternalSocialUrl",
+      "filePath": "src/globals/SiteSettings.ts",
+      "lineRange": [
+        9,
+        25
+      ],
+      "summary": "Validates that a social link uses an allowed external HTTP URL.",
+      "tags": [
+        "validation",
+        "hook",
+        "business-rule"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/globals/SystemModeSettings.ts",
+      "type": "file",
+      "name": "SystemModeSettings.ts",
+      "filePath": "src/globals/SystemModeSettings.ts",
+      "summary": "Defines system-mode configuration and validates that maintenance, not-found, and search references point to published pages of the required type.",
+      "tags": [
+        "configuration",
+        "payload-global",
+        "access-control",
+        "admin-settings"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/globals/SystemModeSettings.ts:extractPageID",
+      "type": "function",
+      "name": "extractPageID",
+      "filePath": "src/globals/SystemModeSettings.ts",
+      "lineRange": [
+        11,
+        23
+      ],
+      "summary": "Normalizes a page relationship value to its scalar identifier.",
+      "tags": [
+        "utility",
+        "normalization",
+        "data-transform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/globals/SystemModeSettings.ts:validatePublishedSystemPageType",
+      "type": "function",
+      "name": "validatePublishedSystemPageType",
+      "filePath": "src/globals/SystemModeSettings.ts",
+      "lineRange": [
+        25,
+        65
+      ],
+      "summary": "Validates that a referenced system page is published and has the required behavioral type.",
+      "tags": [
+        "validation",
+        "hook",
+        "business-rule"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/globals/ThemeSettings.ts",
+      "type": "file",
+      "name": "ThemeSettings.ts",
+      "filePath": "src/globals/ThemeSettings.ts",
+      "summary": "Defines the global website theme selector using the supported theme registry and capability-gated access.",
+      "tags": [
+        "configuration",
+        "payload-global",
+        "access-control",
+        "admin-settings"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "type": "file",
+      "name": "enforceEditorialWorkflow.ts",
+      "filePath": "src/hooks/enforceEditorialWorkflow.ts",
+      "summary": "Creates a before-change hook that enforces editorial states, publisher permissions, scheduling requirements, audit metadata, and blocking work-queue conditions.",
+      "tags": [
+        "hook",
+        "work-queue",
+        "editorial-workflow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/hooks/enforceEditorialWorkflow.ts:canPublish",
+      "type": "function",
+      "name": "canPublish",
+      "filePath": "src/hooks/enforceEditorialWorkflow.ts",
+      "lineRange": [
+        36,
+        50
+      ],
+      "summary": "Routes a publish-capability check to the appropriate collection-specific authorization helper.",
+      "tags": [
+        "utility",
+        "cms",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/enforceEditorialWorkflow.ts:normalizeUserID",
+      "type": "function",
+      "name": "normalizeUserID",
+      "filePath": "src/hooks/enforceEditorialWorkflow.ts",
+      "lineRange": [
+        52,
+        66
+      ],
+      "summary": "Normalizes a Payload user identifier to a finite number.",
+      "tags": [
+        "utility",
+        "normalization",
+        "data-transform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/enforceEditorialWorkflow.ts:resolveWorkflowState",
+      "type": "function",
+      "name": "resolveWorkflowState",
+      "filePath": "src/hooks/enforceEditorialWorkflow.ts",
+      "lineRange": [
+        68,
+        89
+      ],
+      "summary": "Derives the next workflow state when editorial workflow enforcement is active.",
+      "tags": [
+        "utility",
+        "normalization",
+        "data-transform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/enforceEditorialWorkflow.ts:resolveBypassedWorkflowState",
+      "type": "function",
+      "name": "resolveBypassedWorkflowState",
+      "filePath": "src/hooks/enforceEditorialWorkflow.ts",
+      "lineRange": [
+        91,
+        108
+      ],
+      "summary": "Derives a simplified draft or published state when workflow enforcement is bypassed.",
+      "tags": [
+        "utility",
+        "normalization",
+        "data-transform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/enforceEditorialWorkflow.ts:enforceEditorialWorkflow",
+      "type": "function",
+      "name": "enforceEditorialWorkflow",
+      "filePath": "src/hooks/enforceEditorialWorkflow.ts",
+      "lineRange": [
+        110,
+        196
+      ],
+      "summary": "Creates a before-change hook that validates and applies editorial transitions and publication metadata.",
+      "tags": [
+        "hook",
+        "validation",
+        "access-control"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/hooks/logOperationalAuditEvent.ts",
+      "type": "file",
+      "name": "logOperationalAuditEvent.ts",
+      "filePath": "src/hooks/logOperationalAuditEvent.ts",
+      "summary": "Provides collection and global after-change hook factories that record normalized operational audit events.",
+      "tags": [
+        "hook",
+        "validation",
+        "payload-cms"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/hooks/logOperationalAuditEvent.ts:createCollectionAuditHook",
+      "type": "function",
+      "name": "createCollectionAuditHook",
+      "filePath": "src/hooks/logOperationalAuditEvent.ts",
+      "lineRange": [
+        22,
+        42
+      ],
+      "summary": "Creates a collection hook that records an operational audit event after a change.",
+      "tags": [
+        "factory",
+        "payload-cms",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/logOperationalAuditEvent.ts:createGlobalAuditHook",
+      "type": "function",
+      "name": "createGlobalAuditHook",
+      "filePath": "src/hooks/logOperationalAuditEvent.ts",
+      "lineRange": [
+        44,
+        65
+      ],
+      "summary": "Creates a global hook that records an operational audit event after a change.",
+      "tags": [
+        "factory",
+        "payload-cms",
+        "configuration"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/config/providers.ts",
+      "target": "function:src/config/providers.ts:createDatabaseAdapter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/config/providers.ts",
+      "target": "function:src/config/providers.ts:createDatabaseAdapter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/config/providers.ts",
+      "target": "function:src/config/providers.ts:createEmailAdapter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/config/providers.ts",
+      "target": "function:src/config/providers.ts:createEmailAdapter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/config/providers.ts",
+      "target": "function:src/config/providers.ts:createStoragePlugins",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/config/providers.ts",
+      "target": "function:src/config/providers.ts:createStoragePlugins",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/config/runtime.ts",
+      "target": "function:src/config/runtime.ts:parseBooleanEnv",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/config/runtime.ts",
+      "target": "function:src/config/runtime.ts:getMediaProvider",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/config/runtime.ts",
+      "target": "function:src/config/runtime.ts:getRuntimeConfig",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/config/runtime.ts",
+      "target": "function:src/config/runtime.ts:getRuntimeConfig",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/config/starterContract.ts",
+      "target": "function:src/config/starterContract.ts:getStarterContract",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/config/starterContract.ts",
+      "target": "function:src/config/starterContract.ts:getStarterContract",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/config/starterContract.ts",
+      "target": "function:src/config/starterContract.ts:assertSupportedStarterContract",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/config/starterContract.ts",
+      "target": "function:src/config/starterContract.ts:assertSupportedStarterContract",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/fields/buildSEOFields.ts",
+      "target": "function:src/fields/buildSEOFields.ts:buildSEOFields",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/fields/buildSEOFields.ts",
+      "target": "function:src/fields/buildSEOFields.ts:buildSEOFields",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/globals/PageSettings.ts",
+      "target": "function:src/globals/PageSettings.ts:extractPageID",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/globals/PageSettings.ts",
+      "target": "function:src/globals/PageSettings.ts:validatePublishedFrontPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/globals/PageSettings.ts",
+      "target": "function:src/globals/PageSettings.ts:validateAnnouncementInterval",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/globals/PageSettings.ts",
+      "target": "function:src/globals/PageSettings.ts:validateAnnouncementMarqueeDuration",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/globals/PageSettings.ts",
+      "target": "function:src/globals/PageSettings.ts:validateAnnouncementItems",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/globals/SiteSettings.ts",
+      "target": "function:src/globals/SiteSettings.ts:validateExternalSocialUrl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/globals/SystemModeSettings.ts",
+      "target": "function:src/globals/SystemModeSettings.ts:extractPageID",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/globals/SystemModeSettings.ts",
+      "target": "function:src/globals/SystemModeSettings.ts:validatePublishedSystemPageType",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "target": "function:src/hooks/enforceEditorialWorkflow.ts:canPublish",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "target": "function:src/hooks/enforceEditorialWorkflow.ts:normalizeUserID",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "target": "function:src/hooks/enforceEditorialWorkflow.ts:resolveWorkflowState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "target": "function:src/hooks/enforceEditorialWorkflow.ts:resolveBypassedWorkflowState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "target": "function:src/hooks/enforceEditorialWorkflow.ts:enforceEditorialWorkflow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "target": "function:src/hooks/enforceEditorialWorkflow.ts:enforceEditorialWorkflow",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/logOperationalAuditEvent.ts",
+      "target": "function:src/hooks/logOperationalAuditEvent.ts:createCollectionAuditHook",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/logOperationalAuditEvent.ts",
+      "target": "function:src/hooks/logOperationalAuditEvent.ts:createCollectionAuditHook",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/logOperationalAuditEvent.ts",
+      "target": "function:src/hooks/logOperationalAuditEvent.ts:createGlobalAuditHook",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/logOperationalAuditEvent.ts",
+      "target": "function:src/hooks/logOperationalAuditEvent.ts:createGlobalAuditHook",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/collections/WorkQueue.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/WorkQueue.ts",
+      "target": "file:src/hooks/syncWorkQueueItem.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/WorkQueue.ts",
+      "target": "file:src/lib/operationalAudit.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/config/providers.ts",
+      "target": "file:src/config/runtime.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/config/starterContract.ts",
+      "target": "file:src/config/runtime.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/fields/buildSEOFields.ts",
+      "target": "file:src/lib/seo.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/NewsEventsSettings.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/NewsEventsSettings.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/NewsEventsSettings.ts",
+      "target": "file:src/fields/buildSEOFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/NewsEventsSettings.ts",
+      "target": "file:src/hooks/logOperationalAuditEvent.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/PageSettings.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/PageSettings.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/PageSettings.ts",
+      "target": "file:src/hooks/logOperationalAuditEvent.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/PageSettings.ts",
+      "target": "file:src/lib/operationalAudit.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/SEOSettings.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/SEOSettings.ts",
+      "target": "file:src/lib/seo.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/SiteSettings.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/SystemModeSettings.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/SystemModeSettings.ts",
+      "target": "file:src/hooks/logOperationalAuditEvent.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/SystemModeSettings.ts",
+      "target": "file:src/lib/systemPageTypes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/ThemeSettings.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/globals/ThemeSettings.ts",
+      "target": "file:src/lib/themes/websiteThemes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "target": "file:src/lib/editorialWorkflow.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "target": "file:src/lib/workQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/logOperationalAuditEvent.ts",
+      "target": "file:src/lib/operationalAudit.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

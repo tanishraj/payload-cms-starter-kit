@@ -1,0 +1,21 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "Dockerfile",
+      "language": "dockerfile",
+      "sizeLines": 71,
+      "fileCategory": "infra"
+    },
+    {
+      "path": "docker-compose.yml",
+      "language": "yaml",
+      "sizeLines": 41,
+      "fileCategory": "infra"
+    }
+  ],
+  "batchImportData": {
+    "Dockerfile": [],
+    "docker-compose.yml": []
+  }
+}

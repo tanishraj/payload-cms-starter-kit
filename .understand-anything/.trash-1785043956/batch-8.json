@@ -1,0 +1,1430 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/components/ContentActions.tsx",
+      "type": "file",
+      "name": "ContentActions.tsx",
+      "filePath": "src/components/ContentActions.tsx",
+      "summary": "Renders a responsive group of CMS-configured links using shared button variants and resolved internal or external destinations.",
+      "tags": [
+        "component",
+        "react",
+        "content-block",
+        "responsive-design"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/ContentActions.tsx:ContentActions",
+      "type": "function",
+      "name": "ContentActions",
+      "filePath": "src/components/ContentActions.tsx",
+      "lineRange": [
+        29,
+        80
+      ],
+      "summary": "Renders a responsive collection of resolved CMS actions as styled links.",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/content-highlights.tsx",
+      "type": "file",
+      "name": "content-highlights.tsx",
+      "filePath": "src/components/content-highlights.tsx",
+      "summary": "Renders a configurable editorial highlights section with multiple layouts, numbered items, dividers, and shared block appearance and spacing.",
+      "tags": [
+        "component",
+        "react",
+        "content-block",
+        "responsive-design"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/components/content-highlights.tsx:ContentHighlightsIntro",
+      "type": "function",
+      "name": "ContentHighlightsIntro",
+      "filePath": "src/components/content-highlights.tsx",
+      "lineRange": [
+        83,
+        108
+      ],
+      "summary": "Renders the introductory heading and description for a highlights section.",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/content-highlights.tsx:ContentHighlightItemComponent",
+      "type": "function",
+      "name": "ContentHighlightItemComponent",
+      "filePath": "src/components/content-highlights.tsx",
+      "lineRange": [
+        110,
+        188
+      ],
+      "summary": "Renders one numbered highlight item with its content and layout-specific decoration.",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/content-highlights.tsx:ContentHighlightsItems",
+      "type": "function",
+      "name": "ContentHighlightsItems",
+      "filePath": "src/components/content-highlights.tsx",
+      "lineRange": [
+        190,
+        214
+      ],
+      "summary": "Renders the collection of highlight items using the selected layout.",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/content-highlights.tsx:ContentHighlights",
+      "type": "function",
+      "name": "ContentHighlights",
+      "filePath": "src/components/content-highlights.tsx",
+      "lineRange": [
+        216,
+        290
+      ],
+      "summary": "Composes the complete configurable Content Highlights section.",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/feature-matrix.tsx",
+      "type": "file",
+      "name": "feature-matrix.tsx",
+      "filePath": "src/components/feature-matrix.tsx",
+      "summary": "Renders a responsive feature-comparison matrix with optional animated divider beams, headings, descriptions, and appearance controls.",
+      "tags": [
+        "component",
+        "react",
+        "content-block",
+        "responsive-design"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/components/feature-matrix.tsx:FeatureMatrixDividerBeam",
+      "type": "function",
+      "name": "FeatureMatrixDividerBeam",
+      "filePath": "src/components/feature-matrix.tsx",
+      "lineRange": [
+        98,
+        111
+      ],
+      "summary": "Renders the decorative animated beam used between feature columns.",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/feature-matrix.tsx:FeatureMatrix",
+      "type": "function",
+      "name": "FeatureMatrix",
+      "filePath": "src/components/feature-matrix.tsx",
+      "lineRange": [
+        113,
+        225
+      ],
+      "summary": "Renders the complete responsive feature-comparison matrix.",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/footer56.tsx",
+      "type": "file",
+      "name": "footer56.tsx",
+      "filePath": "src/components/footer56.tsx",
+      "summary": "Renders a structured marketing footer with brand content, navigation groups, social links, legal content, and block-level appearance settings.",
+      "tags": [
+        "component",
+        "react",
+        "content-block",
+        "responsive-design"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/components/footer56.tsx:Footer56",
+      "type": "function",
+      "name": "Footer56",
+      "filePath": "src/components/footer56.tsx",
+      "lineRange": [
+        125,
+        241
+      ],
+      "summary": "Renders the full Footer56 navigation and brand layout.",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/gallery-showcase-fan.tsx",
+      "type": "file",
+      "name": "gallery-showcase-fan.tsx",
+      "filePath": "src/components/gallery-showcase-fan.tsx",
+      "summary": "Implements the hydrated fan-style gallery layout, including responsive transforms and mobile visibility behavior.",
+      "tags": [
+        "component",
+        "react",
+        "content-block",
+        "responsive-design"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/gallery-showcase-fan.tsx:GalleryShowcaseFan",
+      "type": "function",
+      "name": "GalleryShowcaseFan",
+      "filePath": "src/components/gallery-showcase-fan.tsx",
+      "lineRange": [
+        65,
+        151
+      ],
+      "summary": "Renders a hydration-safe responsive fan arrangement for gallery images.",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/gallery-showcase.tsx",
+      "type": "file",
+      "name": "gallery-showcase.tsx",
+      "filePath": "src/components/gallery-showcase.tsx",
+      "summary": "Selects and renders gallery-showcase layouts while applying shared container spacing and appearance classes.",
+      "tags": [
+        "component",
+        "react",
+        "content-block",
+        "responsive-design"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/gallery-showcase.tsx:GalleryShowcase",
+      "type": "function",
+      "name": "GalleryShowcase",
+      "filePath": "src/components/gallery-showcase.tsx",
+      "lineRange": [
+        40,
+        85
+      ],
+      "summary": "Renders the selected gallery-showcase presentation with shared appearance controls.",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/image-mosaic.tsx",
+      "type": "file",
+      "name": "image-mosaic.tsx",
+      "filePath": "src/components/image-mosaic.tsx",
+      "summary": "Renders an asymmetric image mosaic with responsive layouts, optional calls to action, resolved CMS links, and configurable appearance.",
+      "tags": [
+        "component",
+        "react",
+        "content-block",
+        "responsive-design"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/image-mosaic.tsx:ImageMosaic",
+      "type": "function",
+      "name": "ImageMosaic",
+      "filePath": "src/components/image-mosaic.tsx",
+      "lineRange": [
+        101,
+        211
+      ],
+      "summary": "Renders the responsive image mosaic and its optional content actions.",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/profile-carousel.tsx",
+      "type": "file",
+      "name": "profile-carousel.tsx",
+      "filePath": "src/components/profile-carousel.tsx",
+      "summary": "Prepares profile-card data and renders a responsive interactive profile carousel with configurable sizing, alignment, and appearance.",
+      "tags": [
+        "component",
+        "react",
+        "content-block",
+        "responsive-design"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/profile-carousel.tsx:ProfileCarousel",
+      "type": "function",
+      "name": "ProfileCarousel",
+      "filePath": "src/components/profile-carousel.tsx",
+      "lineRange": [
+        57,
+        135
+      ],
+      "summary": "Normalizes profile data and composes the interactive profile carousel.",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/services21.tsx",
+      "type": "file",
+      "name": "services21.tsx",
+      "filePath": "src/components/services21.tsx",
+      "summary": "Renders an interactive services list whose active item controls supporting copy and visual emphasis across responsive layouts.",
+      "tags": [
+        "component",
+        "react",
+        "content-block",
+        "responsive-design"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/services21.tsx:usePrevious",
+      "type": "function",
+      "name": "usePrevious",
+      "filePath": "src/components/services21.tsx",
+      "lineRange": [
+        37,
+        47
+      ],
+      "summary": "Retains the previous value of component state for transition behavior.",
+      "tags": [
+        "hook",
+        "react",
+        "state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/services21.tsx:Services21",
+      "type": "function",
+      "name": "Services21",
+      "filePath": "src/components/services21.tsx",
+      "lineRange": [
+        49,
+        155
+      ],
+      "summary": "Renders the interactive Services21 presentation and active-service content.",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/team-showcase.tsx",
+      "type": "file",
+      "name": "team-showcase.tsx",
+      "filePath": "src/components/team-showcase.tsx",
+      "summary": "Renders a responsive team-member showcase with image positioning, alignment, sizing, and shared block appearance controls.",
+      "tags": [
+        "component",
+        "react",
+        "content-block",
+        "responsive-design"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/team-showcase.tsx:TeamShowcase",
+      "type": "function",
+      "name": "TeamShowcase",
+      "filePath": "src/components/team-showcase.tsx",
+      "lineRange": [
+        96,
+        185
+      ],
+      "summary": "Renders the responsive team showcase from normalized member data.",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/lib/cmsLinks.ts",
+      "type": "file",
+      "name": "cmsLinks.ts",
+      "filePath": "src/lib/cmsLinks.ts",
+      "summary": "Resolves CMS link records and action arrays into normalized frontend destinations using navigation-link and page-path helpers.",
+      "tags": [
+        "utility",
+        "cms-links",
+        "navigation",
+        "serialization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/cmsLinks.ts:resolveCmsLink",
+      "type": "function",
+      "name": "resolveCmsLink",
+      "filePath": "src/lib/cmsLinks.ts",
+      "lineRange": [
+        28,
+        41
+      ],
+      "summary": "Resolves a CMS link record to a normalized frontend href and presentation metadata.",
+      "tags": [
+        "utility",
+        "navigation",
+        "serialization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/cmsLinks.ts:resolveCmsActions",
+      "type": "function",
+      "name": "resolveCmsActions",
+      "filePath": "src/lib/cmsLinks.ts",
+      "lineRange": [
+        43,
+        58
+      ],
+      "summary": "Resolves and filters a list of CMS actions into renderable frontend links.",
+      "tags": [
+        "utility",
+        "navigation",
+        "serialization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/media.ts",
+      "type": "file",
+      "name": "media.ts",
+      "filePath": "src/lib/media.ts",
+      "summary": "Normalizes Payload media relationships into absolute image URLs, dimensions, and accessible alt-text properties.",
+      "tags": [
+        "utility",
+        "media",
+        "image",
+        "serialization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/media.ts:isMediaDoc",
+      "type": "function",
+      "name": "isMediaDoc",
+      "filePath": "src/lib/media.ts",
+      "lineRange": [
+        15,
+        17
+      ],
+      "summary": "Determines whether a Payload media relationship contains a populated media document.",
+      "tags": [
+        "utility",
+        "media",
+        "type-guard"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/media.ts:getMediaAbsoluteUrl",
+      "type": "function",
+      "name": "getMediaAbsoluteUrl",
+      "filePath": "src/lib/media.ts",
+      "lineRange": [
+        19,
+        37
+      ],
+      "summary": "Resolves a media URL to an absolute site URL while preserving remote URLs.",
+      "tags": [
+        "utility",
+        "media",
+        "type-guard"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/media.ts:getMediaAltFallback",
+      "type": "function",
+      "name": "getMediaAltFallback",
+      "filePath": "src/lib/media.ts",
+      "lineRange": [
+        39,
+        54
+      ],
+      "summary": "Chooses the best accessible alt-text fallback from media and caller-provided values.",
+      "tags": [
+        "utility",
+        "media",
+        "type-guard"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/media.ts:getMediaImageProps",
+      "type": "function",
+      "name": "getMediaImageProps",
+      "filePath": "src/lib/media.ts",
+      "lineRange": [
+        56,
+        80
+      ],
+      "summary": "Builds normalized image source, dimensions, and alt properties from a media relationship.",
+      "tags": [
+        "utility",
+        "media",
+        "type-guard"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/content-highlights.int.spec.tsx",
+      "type": "file",
+      "name": "content-highlights.int.spec.tsx",
+      "filePath": "tests/int/content-highlights.int.spec.tsx",
+      "summary": "Integration coverage for Content Highlights configuration and rendering across supported layouts, content, and appearance options.",
+      "tags": [
+        "test",
+        "integration-test",
+        "content-highlights",
+        "regression"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tests/int/feature-matrix.int.spec.ts",
+      "type": "file",
+      "name": "feature-matrix.int.spec.ts",
+      "filePath": "tests/int/feature-matrix.int.spec.ts",
+      "summary": "Integration coverage for Feature Matrix schema, component rendering, page-block dispatch, and collection registration.",
+      "tags": [
+        "test",
+        "integration-test",
+        "feature-matrix",
+        "regression"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tests/int/feature-spotlight.int.spec.ts",
+      "type": "file",
+      "name": "feature-spotlight.int.spec.ts",
+      "filePath": "tests/int/feature-spotlight.int.spec.ts",
+      "summary": "Integration coverage for Feature Spotlight configuration, rendering behavior, and regular block-spacing conventions.",
+      "tags": [
+        "test",
+        "integration-test",
+        "feature-spotlight",
+        "regression"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tests/int/footer-spacing.int.spec.ts",
+      "type": "file",
+      "name": "footer-spacing.int.spec.ts",
+      "filePath": "tests/int/footer-spacing.int.spec.ts",
+      "summary": "Guards the Footer component’s use of the shared regular-block spacing contract.",
+      "tags": [
+        "test",
+        "integration-test",
+        "footer-spacing",
+        "regression"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/gallery-showcase.int.spec.ts",
+      "type": "file",
+      "name": "gallery-showcase.int.spec.ts",
+      "filePath": "tests/int/gallery-showcase.int.spec.ts",
+      "summary": "Integration coverage for Gallery Showcase schema, fan presentation, block rendering, and Pages collection registration.",
+      "tags": [
+        "test",
+        "integration-test",
+        "gallery-showcase",
+        "regression"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tests/int/hero-banner-render.int.spec.ts",
+      "type": "file",
+      "name": "hero-banner-render.int.spec.ts",
+      "filePath": "tests/int/hero-banner-render.int.spec.ts",
+      "summary": "Integration coverage for Hero Banner rendering, media output, actions, and configured visual variants.",
+      "tags": [
+        "test",
+        "integration-test",
+        "hero-banner-render",
+        "regression"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/profile-carousel.int.spec.ts",
+      "type": "file",
+      "name": "profile-carousel.int.spec.ts",
+      "filePath": "tests/int/profile-carousel.int.spec.ts",
+      "summary": "Integration coverage for Profile Carousel schema, action fields, rendering, page-block dispatch, and collection registration.",
+      "tags": [
+        "test",
+        "integration-test",
+        "profile-carousel",
+        "regression"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tests/int/qa-accordion.int.spec.ts",
+      "type": "file",
+      "name": "qa-accordion.int.spec.ts",
+      "filePath": "tests/int/qa-accordion.int.spec.ts",
+      "summary": "Integration coverage for QA Accordion rich-text content, rendering, interaction markup, and shared spacing.",
+      "tags": [
+        "test",
+        "integration-test",
+        "qa-accordion",
+        "regression"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:tests/int/qa-accordion.int.spec.ts:createRichText",
+      "type": "function",
+      "name": "createRichText",
+      "filePath": "tests/int/qa-accordion.int.spec.ts",
+      "lineRange": [
+        8,
+        38
+      ],
+      "summary": "Creates the minimal rich-text fixture structure used by QA Accordion integration tests.",
+      "tags": [
+        "test-fixture",
+        "rich-text",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/regular-block-spacing.int.spec.tsx",
+      "type": "file",
+      "name": "regular-block-spacing.int.spec.tsx",
+      "filePath": "tests/int/regular-block-spacing.int.spec.tsx",
+      "summary": "Regression coverage ensuring regular content blocks share consistent container and mobile padding classes.",
+      "tags": [
+        "test",
+        "integration-test",
+        "regular-block-spacing",
+        "regression"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/stats-strip-render.int.spec.ts",
+      "type": "file",
+      "name": "stats-strip-render.int.spec.ts",
+      "filePath": "tests/int/stats-strip-render.int.spec.ts",
+      "summary": "Integration coverage for Stats Strip rendering and animated metric-value behavior.",
+      "tags": [
+        "test",
+        "integration-test",
+        "stats-strip-render",
+        "regression"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/components/ContentActions.tsx",
+      "target": "function:src/components/ContentActions.tsx:ContentActions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ContentActions.tsx",
+      "target": "function:src/components/ContentActions.tsx:ContentActions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/content-highlights.tsx",
+      "target": "function:src/components/content-highlights.tsx:ContentHighlightsIntro",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/content-highlights.tsx",
+      "target": "function:src/components/content-highlights.tsx:ContentHighlightItemComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/content-highlights.tsx",
+      "target": "function:src/components/content-highlights.tsx:ContentHighlightsItems",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/content-highlights.tsx",
+      "target": "function:src/components/content-highlights.tsx:ContentHighlights",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/content-highlights.tsx",
+      "target": "function:src/components/content-highlights.tsx:ContentHighlights",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/feature-matrix.tsx",
+      "target": "function:src/components/feature-matrix.tsx:FeatureMatrixDividerBeam",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/feature-matrix.tsx",
+      "target": "function:src/components/feature-matrix.tsx:FeatureMatrix",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/feature-matrix.tsx",
+      "target": "function:src/components/feature-matrix.tsx:FeatureMatrix",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/footer56.tsx",
+      "target": "function:src/components/footer56.tsx:Footer56",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/footer56.tsx",
+      "target": "function:src/components/footer56.tsx:Footer56",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/gallery-showcase-fan.tsx",
+      "target": "function:src/components/gallery-showcase-fan.tsx:GalleryShowcaseFan",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/gallery-showcase-fan.tsx",
+      "target": "function:src/components/gallery-showcase-fan.tsx:GalleryShowcaseFan",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/gallery-showcase.tsx",
+      "target": "function:src/components/gallery-showcase.tsx:GalleryShowcase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/gallery-showcase.tsx",
+      "target": "function:src/components/gallery-showcase.tsx:GalleryShowcase",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/image-mosaic.tsx",
+      "target": "function:src/components/image-mosaic.tsx:ImageMosaic",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/image-mosaic.tsx",
+      "target": "function:src/components/image-mosaic.tsx:ImageMosaic",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/profile-carousel.tsx",
+      "target": "function:src/components/profile-carousel.tsx:ProfileCarousel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/profile-carousel.tsx",
+      "target": "function:src/components/profile-carousel.tsx:ProfileCarousel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/services21.tsx",
+      "target": "function:src/components/services21.tsx:usePrevious",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/services21.tsx",
+      "target": "function:src/components/services21.tsx:Services21",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/services21.tsx",
+      "target": "function:src/components/services21.tsx:Services21",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/team-showcase.tsx",
+      "target": "function:src/components/team-showcase.tsx:TeamShowcase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/team-showcase.tsx",
+      "target": "function:src/components/team-showcase.tsx:TeamShowcase",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/cmsLinks.ts",
+      "target": "function:src/lib/cmsLinks.ts:resolveCmsLink",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/cmsLinks.ts",
+      "target": "function:src/lib/cmsLinks.ts:resolveCmsLink",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/cmsLinks.ts",
+      "target": "function:src/lib/cmsLinks.ts:resolveCmsActions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/cmsLinks.ts",
+      "target": "function:src/lib/cmsLinks.ts:resolveCmsActions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/media.ts",
+      "target": "function:src/lib/media.ts:isMediaDoc",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/media.ts",
+      "target": "function:src/lib/media.ts:isMediaDoc",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/media.ts",
+      "target": "function:src/lib/media.ts:getMediaAbsoluteUrl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/media.ts",
+      "target": "function:src/lib/media.ts:getMediaAbsoluteUrl",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/media.ts",
+      "target": "function:src/lib/media.ts:getMediaAltFallback",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/media.ts",
+      "target": "function:src/lib/media.ts:getMediaImageProps",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/media.ts",
+      "target": "function:src/lib/media.ts:getMediaImageProps",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/int/qa-accordion.int.spec.ts",
+      "target": "function:tests/int/qa-accordion.int.spec.ts:createRichText",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ContentActions.tsx",
+      "target": "file:src/components/ContentLink.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ContentActions.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ContentActions.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ContentActions.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/content-highlights.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/content-highlights.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/content-highlights.tsx",
+      "target": "file:src/components/ui/separator.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/content-highlights.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/feature-matrix.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/feature-matrix.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/feature-matrix.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/footer56.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/footer56.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/footer56.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/gallery-showcase-fan.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/gallery-showcase.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/gallery-showcase.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/gallery-showcase.tsx",
+      "target": "file:src/components/gallery-showcase-fan.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/gallery-showcase.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/image-mosaic.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/image-mosaic.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/image-mosaic.tsx",
+      "target": "file:src/components/ContentActions.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/image-mosaic.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/image-mosaic.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/profile-carousel.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/profile-carousel.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/profile-carousel.tsx",
+      "target": "file:src/components/profile-carousel-card.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/profile-carousel.tsx",
+      "target": "file:src/components/profile-carousel-client.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/profile-carousel.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/services21.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/services21.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/services21.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/team-showcase.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/team-showcase.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/team-showcase.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/cmsLinks.ts",
+      "target": "file:src/lib/navigationLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/cmsLinks.ts",
+      "target": "file:src/lib/pagePaths.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/media.ts",
+      "target": "file:src/lib/siteUrl.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/content-highlights.int.spec.tsx",
+      "target": "file:src/blocks/ContentHighlights/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/content-highlights.int.spec.tsx",
+      "target": "file:src/blocks/ContentHighlights/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/content-highlights.int.spec.tsx",
+      "target": "file:src/components/content-highlights.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/feature-matrix.int.spec.ts",
+      "target": "file:src/blocks/FeatureMatrix/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/feature-matrix.int.spec.ts",
+      "target": "file:src/blocks/FeatureMatrix/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/feature-matrix.int.spec.ts",
+      "target": "file:src/blocks/renderPageBlocks.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/feature-matrix.int.spec.ts",
+      "target": "file:src/collections/Pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/feature-matrix.int.spec.ts",
+      "target": "file:src/components/feature-matrix.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/feature-spotlight.int.spec.ts",
+      "target": "file:src/blocks/FeatureSpotlight/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/feature-spotlight.int.spec.ts",
+      "target": "file:src/blocks/FeatureSpotlight/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/feature-spotlight.int.spec.ts",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/footer-spacing.int.spec.ts",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/footer-spacing.int.spec.ts",
+      "target": "file:src/components/footer56.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/gallery-showcase.int.spec.ts",
+      "target": "file:src/blocks/GalleryShowcase/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/gallery-showcase.int.spec.ts",
+      "target": "file:src/blocks/GalleryShowcase/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/gallery-showcase.int.spec.ts",
+      "target": "file:src/blocks/renderPageBlocks.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/gallery-showcase.int.spec.ts",
+      "target": "file:src/collections/Pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/gallery-showcase.int.spec.ts",
+      "target": "file:src/components/gallery-showcase-fan.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/gallery-showcase.int.spec.ts",
+      "target": "file:src/components/gallery-showcase.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/hero-banner-render.int.spec.ts",
+      "target": "file:src/blocks/HeroBanner/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/profile-carousel.int.spec.ts",
+      "target": "file:src/blocks/ProfileCarousel/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/profile-carousel.int.spec.ts",
+      "target": "file:src/blocks/ProfileCarousel/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/profile-carousel.int.spec.ts",
+      "target": "file:src/blocks/renderPageBlocks.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/profile-carousel.int.spec.ts",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/profile-carousel.int.spec.ts",
+      "target": "file:src/collections/Pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/profile-carousel.int.spec.ts",
+      "target": "file:src/components/profile-carousel.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/qa-accordion.int.spec.ts",
+      "target": "file:src/blocks/QaAccordion/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/qa-accordion.int.spec.ts",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/regular-block-spacing.int.spec.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/stats-strip-render.int.spec.ts",
+      "target": "file:src/blocks/StatsStrip/AnimatedMetricValue.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/stats-strip-render.int.spec.ts",
+      "target": "file:src/blocks/StatsStrip/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

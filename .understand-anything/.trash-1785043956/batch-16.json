@@ -1,0 +1,189 @@
+{
+  "nodes": [
+    {
+      "id": "service:Dockerfile",
+      "type": "service",
+      "name": "Dockerfile",
+      "filePath": "Dockerfile",
+      "summary": "Defines a four-stage Alpine-based Node.js build that installs locked dependencies, compiles the Next.js standalone application, and runs it as a non-root user on port 3000.",
+      "tags": [
+        "containerization",
+        "infrastructure",
+        "deployment",
+        "nextjs"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses a multi-stage standalone Next.js build to separate dependencies, compilation, and the minimal non-root runtime."
+    },
+    {
+      "id": "service:Dockerfile:base",
+      "type": "service",
+      "name": "base",
+      "filePath": "Dockerfile",
+      "summary": "Pins the shared Node.js 22 Alpine image used by all later build stages.",
+      "tags": [
+        "container-stage",
+        "docker",
+        "base",
+        "build"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:Dockerfile:deps",
+      "type": "service",
+      "name": "deps",
+      "filePath": "Dockerfile",
+      "summary": "Installs libc compatibility and reproducible JavaScript dependencies using the available lockfile.",
+      "tags": [
+        "container-stage",
+        "docker",
+        "deps",
+        "build"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "service:Dockerfile:builder",
+      "type": "service",
+      "name": "builder",
+      "filePath": "Dockerfile",
+      "summary": "Copies dependencies and source code, then builds the standalone Next.js production output.",
+      "tags": [
+        "container-stage",
+        "docker",
+        "builder",
+        "build"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "service:Dockerfile:runner",
+      "type": "service",
+      "name": "runner",
+      "filePath": "Dockerfile",
+      "summary": "Creates the minimal non-root production runtime containing public assets and traced standalone output.",
+      "tags": [
+        "container-stage",
+        "docker",
+        "runner",
+        "runtime"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "service:docker-compose.yml",
+      "type": "service",
+      "name": "docker-compose.yml",
+      "filePath": "docker-compose.yml",
+      "summary": "Defines a local development environment with a hot-reloading Payload application, MongoDB persistence, environment injection, and named dependency volumes.",
+      "tags": [
+        "orchestration",
+        "infrastructure",
+        "development",
+        "mongodb"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:docker-compose.yml:payload",
+      "type": "service",
+      "name": "payload",
+      "filePath": "docker-compose.yml",
+      "summary": "Runs the Payload development server on Node.js 22 with source and dependency volumes, environment configuration, and a MongoDB dependency.",
+      "tags": [
+        "compose-service",
+        "payload-cms",
+        "development",
+        "nodejs"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:docker-compose.yml:mongo",
+      "type": "service",
+      "name": "mongo",
+      "filePath": "docker-compose.yml",
+      "summary": "Runs the MongoDB database with WiredTiger storage and a persistent named data volume.",
+      "tags": [
+        "compose-service",
+        "mongodb",
+        "database",
+        "persistence"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "service:Dockerfile",
+      "target": "service:Dockerfile:base",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "service:Dockerfile",
+      "target": "service:Dockerfile:deps",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "service:Dockerfile",
+      "target": "service:Dockerfile:builder",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "service:Dockerfile",
+      "target": "service:Dockerfile:runner",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "service:docker-compose.yml",
+      "target": "service:docker-compose.yml:payload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "service:docker-compose.yml",
+      "target": "service:docker-compose.yml:mongo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "service:Dockerfile:deps",
+      "target": "service:Dockerfile:base",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:Dockerfile:builder",
+      "target": "service:Dockerfile:deps",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:Dockerfile:runner",
+      "target": "service:Dockerfile:builder",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:docker-compose.yml:payload",
+      "target": "service:docker-compose.yml:mongo",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

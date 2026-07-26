@@ -1,0 +1,2054 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 31,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 31,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 31,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "src/app/(frontend)/preview/page/[id]/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 59,
+      "nonEmptyLines": 50,
+      "functions": [
+        {
+          "name": "AdminPreviewPage",
+          "startLine": 15,
+          "endLine": 59,
+          "params": [
+            "{ params }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "AdminPreviewPage",
+          "line": 15,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "AdminPreviewPage",
+          "callee": "getPayload",
+          "lineNumber": 17
+        },
+        {
+          "caller": "AdminPreviewPage",
+          "callee": "getHeaders",
+          "lineNumber": 20
+        },
+        {
+          "caller": "AdminPreviewPage",
+          "callee": "payload.auth",
+          "lineNumber": 21
+        },
+        {
+          "caller": "AdminPreviewPage",
+          "callee": "notFound",
+          "lineNumber": 27
+        },
+        {
+          "caller": "AdminPreviewPage",
+          "callee": "id?.trim",
+          "lineNumber": 30
+        },
+        {
+          "caller": "AdminPreviewPage",
+          "callee": "notFound",
+          "lineNumber": 33
+        },
+        {
+          "caller": "AdminPreviewPage",
+          "callee": "payload.findByID",
+          "lineNumber": 36
+        },
+        {
+          "caller": "AdminPreviewPage",
+          "callee": "notFound",
+          "lineNumber": 44
+        },
+        {
+          "caller": "AdminPreviewPage",
+          "callee": "Promise.all",
+          "lineNumber": 47
+        },
+        {
+          "caller": "AdminPreviewPage",
+          "callee": "loadReviewPreviewSnapshot",
+          "lineNumber": 48
+        },
+        {
+          "caller": "AdminPreviewPage",
+          "callee": "loadNewsEventsPreviewSnapshot",
+          "lineNumber": 49
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/api/review-feed/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 17,
+      "nonEmptyLines": 13,
+      "functions": [
+        {
+          "name": "GET",
+          "startLine": 5,
+          "endLine": 17,
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "dynamic",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "GET",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GET",
+          "callee": "parseReviewFeedPagination",
+          "lineNumber": 6
+        },
+        {
+          "caller": "GET",
+          "callee": "Response.json",
+          "lineNumber": 9
+        },
+        {
+          "caller": "GET",
+          "callee": "Response.json",
+          "lineNumber": 13
+        },
+        {
+          "caller": "GET",
+          "callee": "getPublishedReviewFeedPage",
+          "lineNumber": 13
+        },
+        {
+          "caller": "GET",
+          "callee": "Response.json",
+          "lineNumber": 15
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/RatingSpotlight/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 37,
+      "nonEmptyLines": 29,
+      "functions": [
+        {
+          "name": "LiveRatingSpotlight",
+          "startLine": 13,
+          "endLine": 19,
+          "params": [
+            "props"
+          ]
+        },
+        {
+          "name": "LiveRatingSpotlightBlock",
+          "startLine": 21,
+          "endLine": 25,
+          "params": [
+            "props"
+          ]
+        },
+        {
+          "name": "RatingSpotlightBlockComponent",
+          "startLine": 27,
+          "endLine": 37,
+          "params": [
+            "props"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "RatingSpotlightBlockLike",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "LiveRatingSpotlight",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "RatingSpotlightBlockComponent",
+          "line": 27,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "LiveRatingSpotlight",
+          "callee": "getPublishedReviewRatingSummary",
+          "lineNumber": 16
+        },
+        {
+          "caller": "LiveRatingSpotlightBlock",
+          "callee": "getPublishedReviewRatingSummary",
+          "lineNumber": 22
+        },
+        {
+          "caller": "RatingSpotlightBlockComponent",
+          "callee": "props.title?.trim",
+          "lineNumber": 28
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/RatingSpotlight/PreviewComponent.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 23,
+      "nonEmptyLines": 20,
+      "functions": [
+        {
+          "name": "RatingSpotlightPreviewBlockComponent",
+          "startLine": 11,
+          "endLine": 23,
+          "params": [
+            "{\n  snapshot,\n  ...props\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "RatingSpotlightPreviewBlockComponent",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/ReviewFeed/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 48,
+      "nonEmptyLines": 43,
+      "functions": [
+        {
+          "name": "ReviewFeedBlockComponent",
+          "startLine": 11,
+          "endLine": 48,
+          "params": [
+            "{\n  appearance,\n  description,\n  emptyStateMessage,\n  eyebrow,\n  loadMoreLabel,\n  pageSize,\n  size,\n  title,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ReviewFeedBlockLike",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "ReviewFeedBlockComponent",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ReviewFeedBlockComponent",
+          "callee": "title?.trim",
+          "lineNumber": 21
+        },
+        {
+          "caller": "ReviewFeedBlockComponent",
+          "callee": "normalizeReviewFeedPageSize",
+          "lineNumber": 27
+        },
+        {
+          "caller": "ReviewFeedBlockComponent",
+          "callee": "getPublishedReviewFeedPage(1, resolvedPageSize).catch",
+          "lineNumber": 28
+        },
+        {
+          "caller": "ReviewFeedBlockComponent",
+          "callee": "getPublishedReviewFeedPage",
+          "lineNumber": 28
+        },
+        {
+          "caller": "ReviewFeedBlockComponent",
+          "callee": "createEmptyReviewFeedPage",
+          "lineNumber": 29
+        },
+        {
+          "caller": "ReviewFeedBlockComponent",
+          "callee": "getPublishedReviewRatingDistribution",
+          "lineNumber": 31
+        },
+        {
+          "caller": "ReviewFeedBlockComponent",
+          "callee": "Promise.all",
+          "lineNumber": 32
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/ReviewFeed/Presentation.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 54,
+      "nonEmptyLines": 49,
+      "functions": [
+        {
+          "name": "ReviewFeedBlockPresentation",
+          "startLine": 22,
+          "endLine": 54,
+          "params": [
+            "{\n  appearance,\n  description,\n  emptyStateMessage,\n  eyebrow,\n  initialPage,\n  loadMoreLabel,\n  pageSize,\n  size,\n  summary,\n  title,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ReviewFeedBlockPresentation",
+          "line": 22,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ReviewFeedBlockPresentation",
+          "callee": "title?.trim",
+          "lineNumber": 34
+        },
+        {
+          "caller": "ReviewFeedBlockPresentation",
+          "callee": "description?.trim",
+          "lineNumber": 43
+        },
+        {
+          "caller": "ReviewFeedBlockPresentation",
+          "callee": "emptyStateMessage?.trim",
+          "lineNumber": 44
+        },
+        {
+          "caller": "ReviewFeedBlockPresentation",
+          "callee": "eyebrow?.trim",
+          "lineNumber": 45
+        },
+        {
+          "caller": "ReviewFeedBlockPresentation",
+          "callee": "loadMoreLabel?.trim",
+          "lineNumber": 47
+        },
+        {
+          "caller": "ReviewFeedBlockPresentation",
+          "callee": "normalizeReviewFeedPageSize",
+          "lineNumber": 48
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/ReviewFeed/PreviewComponent.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 29,
+      "nonEmptyLines": 26,
+      "functions": [
+        {
+          "name": "ReviewFeedPreviewBlockComponent",
+          "startLine": 12,
+          "endLine": 29,
+          "params": [
+            "{\n  pageSize,\n  snapshot,\n  ...props\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ReviewFeedPreviewBlockComponent",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ReviewFeedPreviewBlockComponent",
+          "callee": "normalizeReviewFeedPageSize",
+          "lineNumber": 17
+        },
+        {
+          "caller": "ReviewFeedPreviewBlockComponent",
+          "callee": "String",
+          "lineNumber": 23
+        },
+        {
+          "caller": "ReviewFeedPreviewBlockComponent",
+          "callee": "createEmptyReviewFeedPage",
+          "lineNumber": 23
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/live-preview/PageLivePreview.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 32,
+      "nonEmptyLines": 27,
+      "functions": [
+        {
+          "name": "PageLivePreview",
+          "startLine": 18,
+          "endLine": 32,
+          "params": [
+            "{ initialData, newsEventsSnapshot, reviewSnapshot }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "PageLivePreview",
+          "line": 18,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "PageLivePreview",
+          "callee": "useRouter",
+          "lineNumber": 19
+        },
+        {
+          "caller": "PageLivePreview",
+          "callee": "useLivePreview",
+          "lineNumber": 20
+        },
+        {
+          "caller": "PageLivePreview",
+          "callee": "renderLivePreviewPageBlocks",
+          "lineNumber": 28
+        },
+        {
+          "caller": "PageLivePreview",
+          "callee": "router.refresh",
+          "lineNumber": 29
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/rating-spotlight.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 119,
+      "nonEmptyLines": 110,
+      "functions": [
+        {
+          "name": "RatingSummary",
+          "startLine": 38,
+          "endLine": 70,
+          "params": [
+            "{ summary }"
+          ]
+        },
+        {
+          "name": "RatingSpotlight",
+          "startLine": 72,
+          "endLine": 119,
+          "params": [
+            "{\n  actions,\n  alignment = 'left',\n  appearance,\n  description,\n  eyebrow,\n  size = 'default',\n  summary,\n  title,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "RatingSpotlight",
+          "line": 72,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "RatingSummary",
+          "callee": "Math.min",
+          "lineNumber": 39
+        },
+        {
+          "caller": "RatingSummary",
+          "callee": "Math.max",
+          "lineNumber": 39
+        },
+        {
+          "caller": "RatingSummary",
+          "callee": "average.toFixed",
+          "lineNumber": 40
+        },
+        {
+          "caller": "RatingSummary",
+          "callee": "numberFormatter.format",
+          "lineNumber": 41
+        },
+        {
+          "caller": "RatingSummary",
+          "callee": "Math.round",
+          "lineNumber": 43
+        },
+        {
+          "caller": "RatingSummary",
+          "callee": "starIndexes.map",
+          "lineNumber": 52
+        },
+        {
+          "caller": "RatingSummary",
+          "callee": "cn",
+          "lineNumber": 54
+        },
+        {
+          "caller": "RatingSpotlight",
+          "callee": "resolveBlockAppearanceClasses",
+          "lineNumber": 82
+        },
+        {
+          "caller": "RatingSpotlight",
+          "callee": "cn",
+          "lineNumber": 86
+        },
+        {
+          "caller": "RatingSpotlight",
+          "callee": "cn",
+          "lineNumber": 94
+        },
+        {
+          "caller": "RatingSpotlight",
+          "callee": "cn",
+          "lineNumber": 99
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/review-feed-list.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 115,
+      "nonEmptyLines": 105,
+      "functions": [
+        {
+          "name": "getInitials",
+          "startLine": 12,
+          "endLine": 18,
+          "params": [
+            "name"
+          ]
+        },
+        {
+          "name": "ReviewFeedItem",
+          "startLine": 20,
+          "endLine": 44,
+          "params": [
+            "{ review }"
+          ]
+        },
+        {
+          "name": "ReviewFeedList",
+          "startLine": 46,
+          "endLine": 115,
+          "params": [
+            "{\n  emptyStateMessage,\n  initialPage,\n  loadMoreLabel,\n  pageSize,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ReviewFeedList",
+          "line": 46,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getInitials",
+          "callee": "name\n    .split(/\\s+/)\n    .filter(Boolean)\n    .slice(0, 2)\n    .map((part) => part[0]?.toUpperCase())\n    .join",
+          "lineNumber": 13
+        },
+        {
+          "caller": "getInitials",
+          "callee": "name\n    .split(/\\s+/)\n    .filter(Boolean)\n    .slice(0, 2)\n    .map",
+          "lineNumber": 13
+        },
+        {
+          "caller": "getInitials",
+          "callee": "name\n    .split(/\\s+/)\n    .filter(Boolean)\n    .slice",
+          "lineNumber": 13
+        },
+        {
+          "caller": "getInitials",
+          "callee": "name\n    .split(/\\s+/)\n    .filter",
+          "lineNumber": 13
+        },
+        {
+          "caller": "getInitials",
+          "callee": "name\n    .split",
+          "lineNumber": 13
+        },
+        {
+          "caller": "getInitials",
+          "callee": "part[0]?.toUpperCase",
+          "lineNumber": 17
+        },
+        {
+          "caller": "ReviewFeedItem",
+          "callee": "getInitials",
+          "lineNumber": 25
+        },
+        {
+          "caller": "ReviewFeedList",
+          "callee": "useState",
+          "lineNumber": 57
+        },
+        {
+          "caller": "ReviewFeedList",
+          "callee": "useState",
+          "lineNumber": 58
+        },
+        {
+          "caller": "ReviewFeedList",
+          "callee": "useState",
+          "lineNumber": 59
+        },
+        {
+          "caller": "ReviewFeedList",
+          "callee": "useState",
+          "lineNumber": 60
+        },
+        {
+          "caller": "ReviewFeedList",
+          "callee": "useTransition",
+          "lineNumber": 61
+        },
+        {
+          "caller": "loadNextPage",
+          "callee": "startTransition",
+          "lineNumber": 64
+        },
+        {
+          "caller": "loadNextPage",
+          "callee": "fetch",
+          "lineNumber": 66
+        },
+        {
+          "caller": "loadNextPage",
+          "callee": "response.json",
+          "lineNumber": 74
+        },
+        {
+          "caller": "loadNextPage",
+          "callee": "setReviews",
+          "lineNumber": 75
+        },
+        {
+          "caller": "loadNextPage",
+          "callee": "current.map",
+          "lineNumber": 76
+        },
+        {
+          "caller": "loadNextPage",
+          "callee": "nextPage.docs.filter",
+          "lineNumber": 77
+        },
+        {
+          "caller": "loadNextPage",
+          "callee": "ids.has",
+          "lineNumber": 77
+        },
+        {
+          "caller": "loadNextPage",
+          "callee": "setPage",
+          "lineNumber": 79
+        },
+        {
+          "caller": "loadNextPage",
+          "callee": "setHasNextPage",
+          "lineNumber": 80
+        },
+        {
+          "caller": "loadNextPage",
+          "callee": "setHasError",
+          "lineNumber": 81
+        },
+        {
+          "caller": "loadNextPage",
+          "callee": "setHasError",
+          "lineNumber": 83
+        },
+        {
+          "caller": "ReviewFeedList",
+          "callee": "reviews.map",
+          "lineNumber": 99
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/review-feed.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 116,
+      "nonEmptyLines": 110,
+      "functions": [
+        {
+          "name": "ReviewFeedSummary",
+          "startLine": 32,
+          "endLine": 67,
+          "params": [
+            "{ summary }"
+          ]
+        },
+        {
+          "name": "ReviewFeed",
+          "startLine": 69,
+          "endLine": 116,
+          "params": [
+            "{\n  appearance,\n  description,\n  emptyStateMessage,\n  eyebrow,\n  initialPage,\n  loadMoreLabel,\n  pageSize,\n  size = 'default',\n  summary,\n  title,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ReviewFeed",
+          "line": 69,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ReviewFeedSummary",
+          "callee": "summary.average.toFixed",
+          "lineNumber": 40
+        },
+        {
+          "caller": "ReviewFeedSummary",
+          "callee": "summary.count.toLocaleString",
+          "lineNumber": 44
+        },
+        {
+          "caller": "ReviewFeedSummary",
+          "callee": "ratingValues.map",
+          "lineNumber": 48
+        },
+        {
+          "caller": "ReviewFeedSummary",
+          "callee": "ratingValues.map",
+          "lineNumber": 55
+        },
+        {
+          "caller": "ReviewFeed",
+          "callee": "resolveBlockAppearanceClasses",
+          "lineNumber": 81
+        },
+        {
+          "caller": "ReviewFeed",
+          "callee": "cn",
+          "lineNumber": 85
+        }
+      ],
+      "metrics": {
+        "importCount": 9,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/shadcnblocks/rating.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 105,
+      "nonEmptyLines": 90,
+      "functions": [
+        {
+          "name": "Rating",
+          "startLine": 14,
+          "endLine": 103,
+          "params": [
+            "{ rate, className, showScore, description }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Rating",
+          "line": 105,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Rating",
+          "callee": "Math.min",
+          "lineNumber": 17
+        },
+        {
+          "caller": "Rating",
+          "callee": "Math.max",
+          "lineNumber": 17
+        },
+        {
+          "caller": "renderStars",
+          "callee": "Math.floor",
+          "lineNumber": 20
+        },
+        {
+          "caller": "renderStars",
+          "callee": "stars.push",
+          "lineNumber": 27
+        },
+        {
+          "caller": "renderStars",
+          "callee": "stars.push",
+          "lineNumber": 37
+        },
+        {
+          "caller": "renderStars",
+          "callee": "stars.push",
+          "lineNumber": 46
+        },
+        {
+          "caller": "Rating",
+          "callee": "normalizedRate.toFixed",
+          "lineNumber": 62
+        },
+        {
+          "caller": "Rating",
+          "callee": "cn",
+          "lineNumber": 63
+        },
+        {
+          "caller": "Rating",
+          "callee": "renderStars",
+          "lineNumber": 67
+        },
+        {
+          "caller": "Rating",
+          "callee": "normalizedRate.toFixed",
+          "lineNumber": 69
+        },
+        {
+          "caller": "Rating",
+          "callee": "normalizedRate.toFixed",
+          "lineNumber": 78
+        },
+        {
+          "caller": "Rating",
+          "callee": "cn",
+          "lineNumber": 79
+        },
+        {
+          "caller": "Rating",
+          "callee": "renderStars",
+          "lineNumber": 83
+        },
+        {
+          "caller": "Rating",
+          "callee": "normalizedRate.toFixed",
+          "lineNumber": 84
+        },
+        {
+          "caller": "Rating",
+          "callee": "normalizedRate.toFixed",
+          "lineNumber": 94
+        },
+        {
+          "caller": "Rating",
+          "callee": "cn",
+          "lineNumber": 95
+        },
+        {
+          "caller": "Rating",
+          "callee": "renderStars",
+          "lineNumber": 99
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/ui/avatar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 96,
+      "nonEmptyLines": 87,
+      "functions": [
+        {
+          "name": "Avatar",
+          "startLine": 8,
+          "endLine": 26,
+          "params": [
+            "{\n  className,\n  size = 'default',\n  ...props\n}"
+          ]
+        },
+        {
+          "name": "AvatarImage",
+          "startLine": 28,
+          "endLine": 36,
+          "params": [
+            "{ className, ...props }"
+          ]
+        },
+        {
+          "name": "AvatarFallback",
+          "startLine": 38,
+          "endLine": 52,
+          "params": [
+            "{\n  className,\n  ...props\n}"
+          ]
+        },
+        {
+          "name": "AvatarBadge",
+          "startLine": 54,
+          "endLine": 68,
+          "params": [
+            "{ className, ...props }"
+          ]
+        },
+        {
+          "name": "AvatarGroup",
+          "startLine": 70,
+          "endLine": 81,
+          "params": [
+            "{ className, ...props }"
+          ]
+        },
+        {
+          "name": "AvatarGroupCount",
+          "startLine": 83,
+          "endLine": 94,
+          "params": [
+            "{ className, ...props }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Avatar",
+          "line": 96,
+          "isDefault": false
+        },
+        {
+          "name": "AvatarImage",
+          "line": 96,
+          "isDefault": false
+        },
+        {
+          "name": "AvatarFallback",
+          "line": 96,
+          "isDefault": false
+        },
+        {
+          "name": "AvatarGroup",
+          "line": 96,
+          "isDefault": false
+        },
+        {
+          "name": "AvatarGroupCount",
+          "line": 96,
+          "isDefault": false
+        },
+        {
+          "name": "AvatarBadge",
+          "line": 96,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Avatar",
+          "callee": "cn",
+          "lineNumber": 19
+        },
+        {
+          "caller": "AvatarImage",
+          "callee": "cn",
+          "lineNumber": 32
+        },
+        {
+          "caller": "AvatarFallback",
+          "callee": "cn",
+          "lineNumber": 45
+        },
+        {
+          "caller": "AvatarBadge",
+          "callee": "cn",
+          "lineNumber": 58
+        },
+        {
+          "caller": "AvatarGroup",
+          "callee": "cn",
+          "lineNumber": 74
+        },
+        {
+          "caller": "AvatarGroupCount",
+          "callee": "cn",
+          "lineNumber": 87
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 6,
+        "functionCount": 6,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/ui/progress.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 31,
+      "nonEmptyLines": 27,
+      "functions": [
+        {
+          "name": "Progress",
+          "startLine": 8,
+          "endLine": 29,
+          "params": [
+            "{\n  className,\n  value,\n  ...props\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Progress",
+          "line": 31,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Progress",
+          "callee": "cn",
+          "lineNumber": 16
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/ui/separator.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 28,
+      "nonEmptyLines": 24,
+      "functions": [
+        {
+          "name": "Separator",
+          "startLine": 8,
+          "endLine": 26,
+          "params": [
+            "{\n  className,\n  orientation = \"horizontal\",\n  decorative = true,\n  ...props\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Separator",
+          "line": 28,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Separator",
+          "callee": "cn",
+          "lineNumber": 19
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/newsEventsPreviewShared.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 22,
+      "nonEmptyLines": 17,
+      "functions": [
+        {
+          "name": "getNewsEventsPreviewItemCounts",
+          "startLine": 12,
+          "endLine": 22,
+          "params": [
+            "layout"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "getNewsEventsPreviewItemCounts",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getNewsEventsPreviewItemCounts",
+          "callee": "counts.add",
+          "lineNumber": 17
+        },
+        {
+          "caller": "getNewsEventsPreviewItemCounts",
+          "callee": "normalizeHighlightsItemCount",
+          "lineNumber": 17
+        },
+        {
+          "caller": "getNewsEventsPreviewItemCounts",
+          "callee": "[...counts].sort",
+          "lineNumber": 21
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/newsEventsPreviewSnapshot.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 23,
+      "nonEmptyLines": 19,
+      "functions": [
+        {
+          "name": "loadNewsEventsPreviewSnapshot",
+          "startLine": 10,
+          "endLine": 23,
+          "params": [
+            "layout"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "loadNewsEventsPreviewSnapshot",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "loadNewsEventsPreviewSnapshot",
+          "callee": "new Date().toISOString",
+          "lineNumber": 13
+        },
+        {
+          "caller": "loadNewsEventsPreviewSnapshot",
+          "callee": "Promise.all",
+          "lineNumber": 14
+        },
+        {
+          "caller": "loadNewsEventsPreviewSnapshot",
+          "callee": "getNewsEventsPreviewItemCounts(layout).map",
+          "lineNumber": 15
+        },
+        {
+          "caller": "loadNewsEventsPreviewSnapshot",
+          "callee": "getNewsEventsPreviewItemCounts",
+          "lineNumber": 15
+        },
+        {
+          "caller": "loadNewsEventsPreviewSnapshot",
+          "callee": "getNewsEventsHighlights(count, nowISO).catch",
+          "lineNumber": 16
+        },
+        {
+          "caller": "loadNewsEventsPreviewSnapshot",
+          "callee": "getNewsEventsHighlights",
+          "lineNumber": 16
+        },
+        {
+          "caller": "loadNewsEventsPreviewSnapshot",
+          "callee": "String",
+          "lineNumber": 18
+        },
+        {
+          "caller": "loadNewsEventsPreviewSnapshot",
+          "callee": "Object.fromEntries",
+          "lineNumber": 22
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/reviewFeed.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 183,
+      "nonEmptyLines": 156,
+      "functions": [
+        {
+          "name": "parsePositiveInteger",
+          "startLine": 47,
+          "endLine": 73,
+          "params": [
+            "{\n  fallback,\n  label,\n  maximum,\n  value,\n}"
+          ]
+        },
+        {
+          "name": "parseReviewFeedPagination",
+          "startLine": 75,
+          "endLine": 100,
+          "params": [
+            "searchParams"
+          ]
+        },
+        {
+          "name": "formatPublishedDate",
+          "startLine": 102,
+          "endLine": 110,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "normalizeRating",
+          "startLine": 112,
+          "endLine": 120,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "toPublicReviewFeedItem",
+          "startLine": 122,
+          "endLine": 133,
+          "params": [
+            "review"
+          ]
+        },
+        {
+          "name": "fetchPublishedReviewFeedPage",
+          "startLine": 135,
+          "endLine": 169,
+          "params": [
+            "payload",
+            "{ limit, page }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "REVIEW_FEED_DEFAULT_PAGE_SIZE",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "REVIEW_FEED_MAX_PAGE_SIZE",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "PublicReviewFeedItem",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "PublicReviewFeedPage",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "parseReviewFeedPagination",
+          "line": 75,
+          "isDefault": false
+        },
+        {
+          "name": "toPublicReviewFeedItem",
+          "line": 122,
+          "isDefault": false
+        },
+        {
+          "name": "fetchPublishedReviewFeedPage",
+          "line": 135,
+          "isDefault": false
+        },
+        {
+          "name": "getPublishedReviewFeedPage",
+          "line": 171,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "parsePositiveInteger",
+          "callee": "positiveIntegerPattern.test",
+          "lineNumber": 62
+        },
+        {
+          "caller": "parsePositiveInteger",
+          "callee": "Number",
+          "lineNumber": 66
+        },
+        {
+          "caller": "parseReviewFeedPagination",
+          "callee": "parsePositiveInteger",
+          "lineNumber": 78
+        },
+        {
+          "caller": "parseReviewFeedPagination",
+          "callee": "searchParams.get",
+          "lineNumber": 81
+        },
+        {
+          "caller": "parseReviewFeedPagination",
+          "callee": "parsePositiveInteger",
+          "lineNumber": 88
+        },
+        {
+          "caller": "parseReviewFeedPagination",
+          "callee": "searchParams.get",
+          "lineNumber": 92
+        },
+        {
+          "caller": "formatPublishedDate",
+          "callee": "Number.isNaN",
+          "lineNumber": 109
+        },
+        {
+          "caller": "formatPublishedDate",
+          "callee": "date.getTime",
+          "lineNumber": 109
+        },
+        {
+          "caller": "formatPublishedDate",
+          "callee": "reviewDateFormatter.format",
+          "lineNumber": 109
+        },
+        {
+          "caller": "normalizeRating",
+          "callee": "Number",
+          "lineNumber": 113
+        },
+        {
+          "caller": "normalizeRating",
+          "callee": "Number.isFinite",
+          "lineNumber": 115
+        },
+        {
+          "caller": "normalizeRating",
+          "callee": "Math.min",
+          "lineNumber": 119
+        },
+        {
+          "caller": "normalizeRating",
+          "callee": "Math.max",
+          "lineNumber": 119
+        },
+        {
+          "caller": "normalizeRating",
+          "callee": "Math.round",
+          "lineNumber": 119
+        },
+        {
+          "caller": "toPublicReviewFeedItem",
+          "callee": "getReviewDisplayName",
+          "lineNumber": 123
+        },
+        {
+          "caller": "toPublicReviewFeedItem",
+          "callee": "review.reviewBody?.trim",
+          "lineNumber": 127
+        },
+        {
+          "caller": "toPublicReviewFeedItem",
+          "callee": "formatPublishedDate",
+          "lineNumber": 128
+        },
+        {
+          "caller": "toPublicReviewFeedItem",
+          "callee": "String",
+          "lineNumber": 129
+        },
+        {
+          "caller": "toPublicReviewFeedItem",
+          "callee": "normalizeRating",
+          "lineNumber": 130
+        },
+        {
+          "caller": "toPublicReviewFeedItem",
+          "callee": "review.reviewTitle?.trim",
+          "lineNumber": 131
+        },
+        {
+          "caller": "toPublicReviewFeedItem",
+          "callee": "review.title?.trim",
+          "lineNumber": 131
+        },
+        {
+          "caller": "fetchPublishedReviewFeedPage",
+          "callee": "payload.find",
+          "lineNumber": 139
+        },
+        {
+          "caller": "fetchPublishedReviewFeedPage",
+          "callee": "(result.docs as ReviewFeedRecord[]).map",
+          "lineNumber": 164
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 8,
+        "functionCount": 6,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/reviewFeedShared.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 31,
+      "nonEmptyLines": 27,
+      "functions": [
+        {
+          "name": "normalizeReviewFeedPageSize",
+          "startLine": 21,
+          "endLine": 24,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "createEmptyReviewFeedPage",
+          "startLine": 26,
+          "endLine": 31,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "REVIEW_FEED_DEFAULT_PAGE_SIZE",
+          "line": 1,
+          "isDefault": false
+        },
+        {
+          "name": "REVIEW_FEED_MAX_PAGE_SIZE",
+          "line": 2,
+          "isDefault": false
+        },
+        {
+          "name": "normalizeReviewFeedPageSize",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "createEmptyReviewFeedPage",
+          "line": 26,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "normalizeReviewFeedPageSize",
+          "callee": "Number.isInteger",
+          "lineNumber": 22
+        },
+        {
+          "caller": "normalizeReviewFeedPageSize",
+          "callee": "Math.min",
+          "lineNumber": 23
+        },
+        {
+          "caller": "normalizeReviewFeedPageSize",
+          "callee": "Math.max",
+          "lineNumber": 23
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/reviewPreviewShared.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 42,
+      "nonEmptyLines": 35,
+      "functions": [
+        {
+          "name": "getReviewPreviewRequirements",
+          "startLine": 20,
+          "endLine": 42,
+          "params": [
+            "layout"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "EMPTY_REVIEW_PREVIEW_SNAPSHOT",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "getReviewPreviewRequirements",
+          "line": 20,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getReviewPreviewRequirements",
+          "callee": "pageSizes.add",
+          "lineNumber": 28
+        },
+        {
+          "caller": "getReviewPreviewRequirements",
+          "callee": "normalizeReviewFeedPageSize",
+          "lineNumber": 28
+        },
+        {
+          "caller": "getReviewPreviewRequirements",
+          "callee": "[...pageSizes].sort",
+          "lineNumber": 40
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/reviewPreviewSnapshot.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 34,
+      "nonEmptyLines": 30,
+      "functions": [
+        {
+          "name": "loadReviewPreviewSnapshot",
+          "startLine": 9,
+          "endLine": 34,
+          "params": [
+            "layout"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "loadReviewPreviewSnapshot",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "loadReviewPreviewSnapshot",
+          "callee": "getReviewPreviewRequirements",
+          "lineNumber": 12
+        },
+        {
+          "caller": "loadReviewPreviewSnapshot",
+          "callee": "Promise.all",
+          "lineNumber": 13
+        },
+        {
+          "caller": "loadReviewPreviewSnapshot",
+          "callee": "requirements.pageSizes.map",
+          "lineNumber": 14
+        },
+        {
+          "caller": "loadReviewPreviewSnapshot",
+          "callee": "getPublishedReviewFeedPage(1, pageSize).catch",
+          "lineNumber": 15
+        },
+        {
+          "caller": "loadReviewPreviewSnapshot",
+          "callee": "getPublishedReviewFeedPage",
+          "lineNumber": 15
+        },
+        {
+          "caller": "loadReviewPreviewSnapshot",
+          "callee": "createEmptyReviewFeedPage",
+          "lineNumber": 16
+        },
+        {
+          "caller": "loadReviewPreviewSnapshot",
+          "callee": "String",
+          "lineNumber": 19
+        },
+        {
+          "caller": "loadReviewPreviewSnapshot",
+          "callee": "getPublishedReviewRatingDistribution().catch",
+          "lineNumber": 23
+        },
+        {
+          "caller": "loadReviewPreviewSnapshot",
+          "callee": "getPublishedReviewRatingDistribution",
+          "lineNumber": 23
+        },
+        {
+          "caller": "loadReviewPreviewSnapshot",
+          "callee": "Promise.resolve",
+          "lineNumber": 24
+        },
+        {
+          "caller": "loadReviewPreviewSnapshot",
+          "callee": "Promise.all",
+          "lineNumber": 25
+        },
+        {
+          "caller": "loadReviewPreviewSnapshot",
+          "callee": "Object.fromEntries",
+          "lineNumber": 31
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/reviewRatingShared.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 51,
+      "nonEmptyLines": 43,
+      "functions": [
+        {
+          "name": "toRatingCounts",
+          "startLine": 10,
+          "endLine": 16,
+          "params": [
+            "counts"
+          ]
+        },
+        {
+          "name": "calculatePublishedReviewRatingDistribution",
+          "startLine": 18,
+          "endLine": 38,
+          "params": [
+            "counts"
+          ]
+        },
+        {
+          "name": "calculatePublishedReviewRatingSummary",
+          "startLine": 40,
+          "endLine": 51,
+          "params": [
+            "counts"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "calculatePublishedReviewRatingDistribution",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "calculatePublishedReviewRatingSummary",
+          "line": 40,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "calculatePublishedReviewRatingDistribution",
+          "callee": "toRatingCounts",
+          "lineNumber": 21
+        },
+        {
+          "caller": "calculatePublishedReviewRatingDistribution",
+          "callee": "normalizedCounts.reduce",
+          "lineNumber": 22
+        },
+        {
+          "caller": "calculatePublishedReviewRatingDistribution",
+          "callee": "normalizedCounts.reduce",
+          "lineNumber": 28
+        },
+        {
+          "caller": "calculatePublishedReviewRatingSummary",
+          "callee": "calculatePublishedReviewRatingDistribution",
+          "lineNumber": 43
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/reviewRatingSummary.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 68,
+      "nonEmptyLines": 55,
+      "functions": [
+        {
+          "name": "fetchPublishedReviewRatingDistribution",
+          "startLine": 24,
+          "endLine": 48,
+          "params": [
+            "payload"
+          ]
+        },
+        {
+          "name": "fetchPublishedReviewRatingSummary",
+          "startLine": 50,
+          "endLine": 56,
+          "params": [
+            "payload"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "calculatePublishedReviewRatingDistribution",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "calculatePublishedReviewRatingSummary",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "PublishedReviewRatingDistribution",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "PublishedReviewRatingSummary",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "fetchPublishedReviewRatingDistribution",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "fetchPublishedReviewRatingSummary",
+          "line": 50,
+          "isDefault": false
+        },
+        {
+          "name": "getPublishedReviewRatingDistribution",
+          "line": 58,
+          "isDefault": false
+        },
+        {
+          "name": "getPublishedReviewRatingSummary",
+          "line": 64,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "fetchPublishedReviewRatingDistribution",
+          "callee": "Promise.all",
+          "lineNumber": 28
+        },
+        {
+          "caller": "fetchPublishedReviewRatingDistribution",
+          "callee": "ratingValues.map",
+          "lineNumber": 29
+        },
+        {
+          "caller": "fetchPublishedReviewRatingDistribution",
+          "callee": "payload.count",
+          "lineNumber": 30
+        },
+        {
+          "caller": "fetchPublishedReviewRatingDistribution",
+          "callee": "calculatePublishedReviewRatingDistribution",
+          "lineNumber": 40
+        },
+        {
+          "caller": "fetchPublishedReviewRatingDistribution",
+          "callee": "buckets.map",
+          "lineNumber": 40
+        },
+        {
+          "caller": "fetchPublishedReviewRatingDistribution",
+          "callee": "payload.logger.error",
+          "lineNumber": 42
+        },
+        {
+          "caller": "fetchPublishedReviewRatingSummary",
+          "callee": "fetchPublishedReviewRatingDistribution",
+          "lineNumber": 53
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 8,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/live-preview-renderer.int.spec.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 45,
+      "nonEmptyLines": 42,
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/rating-spotlight.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 251,
+      "nonEmptyLines": 226,
+      "functions": [
+        {
+          "name": "getField",
+          "startLine": 49,
+          "endLine": 49,
+          "params": [
+            "fields",
+            "name"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getField",
+          "callee": "fields.find",
+          "lineNumber": 49
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/review-feed-data.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 160,
+      "nonEmptyLines": 149,
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/review-feed-route.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 55,
+      "nonEmptyLines": 42,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/review-feed.int.spec.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 258,
+      "nonEmptyLines": 229,
+      "functions": [
+        {
+          "name": "getField",
+          "startLine": 76,
+          "endLine": 76,
+          "params": [
+            "fields",
+            "name"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getField",
+          "callee": "fields.find",
+          "lineNumber": 76
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/review-preview-blocks.int.spec.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 111,
+      "nonEmptyLines": 99,
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/review-preview-snapshot.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 127,
+      "nonEmptyLines": 110,
+      "functions": [
+        {
+          "name": "asLayout",
+          "startLine": 23,
+          "endLine": 23,
+          "params": [
+            "layout"
+          ]
+        },
+        {
+          "name": "pageFor",
+          "startLine": 25,
+          "endLine": 40,
+          "params": [
+            "pageSize"
+          ]
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/review-rating-summary.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 72,
+      "nonEmptyLines": 62,
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    }
+  ]
+}

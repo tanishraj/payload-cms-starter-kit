@@ -1,0 +1,139 @@
+[
+  {
+    "order": 1,
+    "title": "Starter Product Overview",
+    "description": "Begin with the project README to understand the one-client-per-deployment model, supported runtime contract, and the editorial and marketing capabilities included out of the box. It establishes the vocabulary for content ownership, admin roles, infrastructure, and verification used throughout the rest of the tour.",
+    "nodeIds": [
+      "document:README.md"
+    ]
+  },
+  {
+    "order": 2,
+    "title": "CMS Runtime Assembly",
+    "description": "Payload’s configuration is the application composition root: it brings together collections, globals, adapters, storage, editor behavior, and generated types. Read it alongside runtime validation, provider factories, and the environment template to see how MongoDB, local or S3 media, optional Resend email, and deployment settings become concrete services.",
+    "nodeIds": [
+      "file:src/payload.config.ts",
+      "file:src/config/runtime.ts",
+      "file:src/config/providers.ts",
+      "config:.env.example"
+    ],
+    "languageLesson": "TypeScript discriminated unions make the local-disk and S3 runtime branches mutually exclusive, while the Payload config acts as a typed composition root."
+  },
+  {
+    "order": 3,
+    "title": "Editorial Roles & Guardrails",
+    "description": "Building on the runtime shell, the access modules define editorial roles and translate them into explicit capabilities rather than broad role checks. The Users collection persists those choices, while the workflow hook enforces review, scheduling, publication authority, and blocking operational conditions at write time.",
+    "nodeIds": [
+      "file:src/access/editorialRoles.ts",
+      "file:src/access/adminCapabilities.ts",
+      "file:src/collections/Users.ts",
+      "file:src/hooks/enforceEditorialWorkflow.ts"
+    ]
+  },
+  {
+    "order": 4,
+    "title": "Managed Content Model",
+    "description": "The central collections show how the starter divides ownership between flexible pages, constrained system pages, editorial articles, moderated reviews, and form definitions. Together they demonstrate the repeated Payload pattern of schema fields, access control, drafts, hooks, SEO, and operational metadata.",
+    "nodeIds": [
+      "file:src/collections/Pages.ts",
+      "file:src/collections/SystemPages.ts",
+      "file:src/collections/Articles.ts",
+      "file:src/collections/Reviews.ts",
+      "file:src/collections/Forms.ts"
+    ]
+  },
+  {
+    "order": 5,
+    "title": "Composable Block System",
+    "description": "Pages become real interfaces through the block system: a Payload schema captures editor intent, a server adapter normalizes CMS records, and a presentation component renders the final section. The dispatcher connects every registered block to this pipeline, making Content Highlights a representative vertical slice.",
+    "nodeIds": [
+      "file:src/blocks/renderPageBlocks.tsx",
+      "file:src/blocks/ContentHighlights/config.ts",
+      "file:src/blocks/ContentHighlights/Component.tsx",
+      "file:src/components/content-highlights.tsx"
+    ],
+    "languageLesson": "React composition separates CMS-aware server adapters from reusable presentation components, keeping Payload record normalization out of visual layout code."
+  },
+  {
+    "order": 6,
+    "title": "Public Routing & Preview",
+    "description": "Next.js routes turn managed content into the public site: the homepage and catch-all route resolve normal pages, redirects, system modes, and not-found behavior through shared data access. Live preview crosses the server/client boundary by preferring server-loaded snapshots and then subscribing to draft updates in the browser.",
+    "nodeIds": [
+      "file:src/app/(frontend)/page.tsx",
+      "file:src/app/(frontend)/[...slug]/page.tsx",
+      "file:src/app/(frontend)/pageData.ts",
+      "file:src/components/live-preview/PageLivePreview.tsx"
+    ],
+    "languageLesson": "Next.js App Router files are Server Components by default; the live-preview client is isolated so interactive draft updates do not force the whole routing layer into the client bundle."
+  },
+  {
+    "order": 7,
+    "title": "Forms & Review Intake",
+    "description": "The public form endpoint is a complete intake boundary: it validates normalized values, applies spam controls, persists a submission, emits integration events, and sends notifications. Review submissions reuse that pipeline, with promotion logic converting approved intake into linked review drafts while the operational collection tracks ownership and activity.",
+    "nodeIds": [
+      "file:src/app/api/forms/[slug]/submit/route.ts",
+      "file:src/lib/forms.ts",
+      "file:src/lib/reviewPromotion.ts",
+      "file:src/collections/FormSubmissions.ts"
+    ]
+  },
+  {
+    "order": 8,
+    "title": "SEO & Discovery Contract",
+    "description": "SEO is treated as a shared content contract rather than page-specific metadata. Reusable fields and validation establish canonical, robots, and sitemap rules; the service resolves those rules, and Next.js metadata routes apply them consistently across managed content and taxonomy archives.",
+    "nodeIds": [
+      "file:src/fields/buildSEOFields.ts",
+      "file:src/hooks/validateSEOContract.ts",
+      "file:src/lib/seo.ts",
+      "file:src/app/sitemap.ts",
+      "file:src/app/robots.ts"
+    ]
+  },
+  {
+    "order": 9,
+    "title": "Work Queue & Audit",
+    "description": "Operational governance continues after editorial validation through a deduplicated work queue and human-readable audit records. Synchronization hooks translate workflow states into actionable queue conditions, while the operator guide explains priorities, source navigation, resolution, and audit coupling from the administrator’s perspective.",
+    "nodeIds": [
+      "file:src/collections/WorkQueue.ts",
+      "file:src/lib/workQueue.ts",
+      "file:src/lib/operationalAudit.ts",
+      "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "document:docs/guides/work-queue.md"
+    ]
+  },
+  {
+    "order": 10,
+    "title": "Executable Product Contracts",
+    "description": "The test suite verifies the starter as a product rather than a collection of isolated functions. Vitest boots Payload against in-memory MongoDB and exercises editorial and SEO invariants, while Playwright seeds a real homepage and confirms the public delivery path works end to end.",
+    "nodeIds": [
+      "file:vitest.config.mts",
+      "file:tests/int/api.int.spec.ts",
+      "file:tests/int/editorial-workflow.int.spec.ts",
+      "file:tests/int/seo-contract.int.spec.ts",
+      "file:tests/e2e/frontend.e2e.spec.ts"
+    ]
+  },
+  {
+    "order": 11,
+    "title": "Deployment & Media Storage",
+    "description": "The infrastructure stop connects runtime choices to deployment reality: Docker builds a standalone non-root Next.js image, while Compose runs the application with persistent MongoDB for local development. The media service reconciles Payload records with S3-compatible storage, and the deployment runbook explains the environment and verification steps required for hosted use.",
+    "nodeIds": [
+      "service:Dockerfile",
+      "service:docker-compose.yml",
+      "file:src/lib/mediaStorage.ts",
+      "document:docs/operations/mongodb-deployment.md"
+    ],
+    "languageLesson": "The Dockerfile uses multiple build stages to keep dependency installation and compilation separate from the minimal runtime image; Compose adds service dependency ordering and named volumes for local persistence."
+  },
+  {
+    "order": 12,
+    "title": "Operations & Client Handoff",
+    "description": "Finish with the durable knowledge around the code: the content-model map explains ownership, the governance runbook explains safe editorial recovery, and the operator manual teaches day-to-day administration. The clone checklist turns those ideas into a repeatable handoff process for replacing client identity and providers without breaking the starter contract.",
+    "nodeIds": [
+      "document:docs/architecture/content-model-map.md",
+      "document:docs/operations/editorial-governance.md",
+      "document:docs/guides/README.md",
+      "document:docs/operations/starter-clone-checklist.md"
+    ]
+  }
+]

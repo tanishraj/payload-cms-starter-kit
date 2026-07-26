@@ -1,0 +1,87 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/styles/themes/theme-blue.css",
+      "type": "file",
+      "name": "theme-blue.css",
+      "filePath": "src/styles/themes/theme-blue.css",
+      "summary": "Defines blue-accented light and dark theme tokens for surfaces, text, interactive colors, charts, sidebars, radii, and shadows.",
+      "tags": [
+        "theme",
+        "css-variables",
+        "design-tokens",
+        "blue"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses OKLCH color tokens under data-theme selectors with a paired `.dark` variant."
+    },
+    {
+      "id": "file:src/styles/themes/theme-default.css",
+      "type": "file",
+      "name": "theme-default.css",
+      "filePath": "src/styles/themes/theme-default.css",
+      "summary": "Defines the baseline neutral light and dark theme, including blue primary colors, chart and sidebar palettes, Inter typography, radii, and shadows.",
+      "tags": [
+        "theme",
+        "css-variables",
+        "design-tokens",
+        "default"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses OKLCH color tokens under data-theme selectors with a paired `.dark` variant."
+    },
+    {
+      "id": "file:src/styles/themes/theme-kodama.css",
+      "type": "file",
+      "name": "theme-kodama.css",
+      "filePath": "src/styles/themes/theme-kodama.css",
+      "summary": "Defines an earthy cream-and-green light and dark theme with serif typography, compact radii, and directional organic shadows.",
+      "tags": [
+        "theme",
+        "css-variables",
+        "design-tokens",
+        "kodama"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses OKLCH color tokens under data-theme selectors with a paired `.dark` variant."
+    },
+    {
+      "id": "file:src/styles/themes/theme-sunset.css",
+      "type": "file",
+      "name": "theme-sunset.css",
+      "filePath": "src/styles/themes/theme-sunset.css",
+      "summary": "Defines a warm orange-and-rose light and dark theme with Montserrat typography, rounded geometry, chart colors, and soft elevated shadows.",
+      "tags": [
+        "theme",
+        "css-variables",
+        "design-tokens",
+        "sunset"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses OKLCH color tokens under data-theme selectors with a paired `.dark` variant."
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/styles/themes/theme-blue.css",
+      "target": "file:src/styles/themes/theme-default.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/styles/themes/theme-kodama.css",
+      "target": "file:src/styles/themes/theme-default.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/styles/themes/theme-sunset.css",
+      "target": "file:src/styles/themes/theme-default.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

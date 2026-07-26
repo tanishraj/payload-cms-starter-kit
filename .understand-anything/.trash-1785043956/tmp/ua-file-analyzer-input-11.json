@@ -1,0 +1,237 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "src/blocks/Services21/config.ts",
+      "language": "typescript",
+      "sizeLines": 113,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/StatsStrip/config.ts",
+      "language": "typescript",
+      "sizeLines": 76,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/System404/config.ts",
+      "language": "typescript",
+      "sizeLines": 17,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/SystemComingSoon/config.ts",
+      "language": "typescript",
+      "sizeLines": 17,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/SystemMaintenance/config.ts",
+      "language": "typescript",
+      "sizeLines": 18,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/TeamShowcase/config.ts",
+      "language": "typescript",
+      "sizeLines": 108,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/shared/blockAppearanceFields.ts",
+      "language": "typescript",
+      "sizeLines": 65,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/shared/contentActionsFields.ts",
+      "language": "typescript",
+      "sizeLines": 170,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/systemPageFields.ts",
+      "language": "typescript",
+      "sizeLines": 99,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Pages.ts",
+      "language": "typescript",
+      "sizeLines": 353,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/fields/cmsLinkFields.ts",
+      "language": "typescript",
+      "sizeLines": 20,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/migrateLegacyReusableLinks.ts",
+      "language": "typescript",
+      "sizeLines": 112,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/syncNavigationLinkForPage.ts",
+      "language": "typescript",
+      "sizeLines": 52,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/navigationLinkSync.ts",
+      "language": "typescript",
+      "sizeLines": 188,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/block-thumbnail-fixtures.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 31,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/header-presets.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 51,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/image-mosaic.int.spec.tsx",
+      "language": "typescript",
+      "sizeLines": 430,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/news-events-highlights.int.spec.tsx",
+      "language": "typescript",
+      "sizeLines": 107,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/page-blocks.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 1094,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/system-page-blocks.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 266,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "src/blocks/Services21/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/shared/contentActionsFields.ts"
+    ],
+    "src/blocks/StatsStrip/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts"
+    ],
+    "src/blocks/System404/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/systemPageFields.ts"
+    ],
+    "src/blocks/SystemComingSoon/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/systemPageFields.ts"
+    ],
+    "src/blocks/SystemMaintenance/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/systemPageFields.ts"
+    ],
+    "src/blocks/TeamShowcase/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/shared/contentActionsFields.ts"
+    ],
+    "src/blocks/shared/blockAppearanceFields.ts": [],
+    "src/blocks/shared/contentActionsFields.ts": [],
+    "src/blocks/systemPageFields.ts": [
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/fields/cmsLinkFields.ts"
+    ],
+    "src/collections/Pages.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/blocks/Announcement/config.ts",
+      "src/blocks/ContentHighlights/config.ts",
+      "src/blocks/Cta39/config.ts",
+      "src/blocks/FeatureMatrix/config.ts",
+      "src/blocks/FeatureSpotlight/config.ts",
+      "src/blocks/GalleryShowcase/config.ts",
+      "src/blocks/HeroBanner/config.ts",
+      "src/blocks/ImageMosaic/config.ts",
+      "src/blocks/NewsEventsHighlights/config.ts",
+      "src/blocks/ProfileCarousel/config.ts",
+      "src/blocks/QaAccordion/config.ts",
+      "src/blocks/RatingSpotlight/config.ts",
+      "src/blocks/ReviewFeed/config.ts",
+      "src/blocks/ReviewSubmission/config.ts",
+      "src/blocks/Services21/config.ts",
+      "src/blocks/StatsStrip/config.ts",
+      "src/blocks/TeamShowcase/config.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/createRedirectsForChangedPagePath.ts",
+      "src/hooks/enforceEditorialWorkflow.ts",
+      "src/hooks/logOperationalAuditEvent.ts",
+      "src/hooks/populatePageUrlPreview.ts",
+      "src/hooks/preventReferencedPageUnpublish.ts",
+      "src/hooks/syncNavigationLinkForPage.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "src/hooks/validateSEOContract.ts",
+      "src/lib/editorialWorkflow.ts"
+    ],
+    "src/fields/cmsLinkFields.ts": [],
+    "src/hooks/migrateLegacyReusableLinks.ts": [
+      "src/lib/navigationLinkSync.ts"
+    ],
+    "src/hooks/syncNavigationLinkForPage.ts": [
+      "src/lib/navigationLinkSync.ts"
+    ],
+    "src/lib/navigationLinkSync.ts": [],
+    "tests/int/block-thumbnail-fixtures.int.spec.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/block-thumbnails/fixtures.tsx"
+    ],
+    "tests/int/header-presets.int.spec.ts": [
+      "src/blocks/HeaderNavbar12/config.ts",
+      "src/collections/Headers.ts"
+    ],
+    "tests/int/image-mosaic.int.spec.tsx": [
+      "src/blocks/ImageMosaic/Component.tsx",
+      "src/blocks/ImageMosaic/config.ts",
+      "src/blocks/renderPageBlocks.tsx",
+      "src/blocks/shared/contentActionsFields.ts",
+      "src/collections/Pages.ts",
+      "src/components/image-mosaic.tsx"
+    ],
+    "tests/int/news-events-highlights.int.spec.tsx": [
+      "src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "src/blocks/NewsEventsHighlights/config.ts"
+    ],
+    "tests/int/page-blocks.int.spec.ts": [
+      "src/app/(frontend)/PageContent.tsx",
+      "src/blocks/Announcement/config.ts",
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/collections/Pages.ts",
+      "src/globals/SiteSettings.ts"
+    ],
+    "tests/int/system-page-blocks.int.spec.ts": [
+      "src/blocks/System404/config.ts",
+      "src/blocks/SystemComingSoon/config.ts",
+      "src/blocks/SystemMaintenance/config.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/systemPageFields.ts",
+      "src/collections/Footers.ts",
+      "src/collections/Headers.ts",
+      "src/collections/Pages.ts",
+      "src/collections/Reviews.ts",
+      "src/collections/SystemPages.ts"
+    ]
+  }
+}

@@ -1,0 +1,1678 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 26,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 26,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 26,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "src/collections/WorkQueue.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 428,
+      "nonEmptyLines": 411,
+      "exports": [
+        {
+          "name": "WorkQueue",
+          "line": 79,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/config/providers.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 51,
+      "nonEmptyLines": 45,
+      "functions": [
+        {
+          "name": "createDatabaseAdapter",
+          "startLine": 8,
+          "endLine": 12,
+          "params": [
+            "config"
+          ]
+        },
+        {
+          "name": "createEmailAdapter",
+          "startLine": 14,
+          "endLine": 25,
+          "params": [
+            "config"
+          ]
+        },
+        {
+          "name": "createStoragePlugins",
+          "startLine": 27,
+          "endLine": 51,
+          "params": [
+            "config"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "createDatabaseAdapter",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "createEmailAdapter",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "createStoragePlugins",
+          "line": 27,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createDatabaseAdapter",
+          "callee": "mongooseAdapter",
+          "lineNumber": 9
+        },
+        {
+          "caller": "createEmailAdapter",
+          "callee": "resendAdapter",
+          "lineNumber": 19
+        },
+        {
+          "caller": "createStoragePlugins",
+          "callee": "s3Storage",
+          "lineNumber": 33
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/config/runtime.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 146,
+      "nonEmptyLines": 127,
+      "functions": [
+        {
+          "name": "isMongoConnectionString",
+          "startLine": 32,
+          "endLine": 33,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "parseBooleanEnv",
+          "startLine": 35,
+          "endLine": 51,
+          "params": [
+            "value",
+            "defaultValue"
+          ]
+        },
+        {
+          "name": "getMediaProvider",
+          "startLine": 53,
+          "endLine": 63,
+          "params": [
+            "env"
+          ]
+        },
+        {
+          "name": "getRuntimeConfig",
+          "startLine": 65,
+          "endLine": 146,
+          "params": [
+            "env"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "getRuntimeConfig",
+          "line": 65,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "isMongoConnectionString",
+          "callee": "value.startsWith",
+          "lineNumber": 33
+        },
+        {
+          "caller": "isMongoConnectionString",
+          "callee": "value.startsWith",
+          "lineNumber": 33
+        },
+        {
+          "caller": "parseBooleanEnv",
+          "callee": "value.trim",
+          "lineNumber": 36
+        },
+        {
+          "caller": "parseBooleanEnv",
+          "callee": "value.trim().toLowerCase",
+          "lineNumber": 40
+        },
+        {
+          "caller": "parseBooleanEnv",
+          "callee": "value.trim",
+          "lineNumber": 40
+        },
+        {
+          "caller": "parseBooleanEnv",
+          "callee": "['1', 'true', 'yes', 'on'].includes",
+          "lineNumber": 42
+        },
+        {
+          "caller": "parseBooleanEnv",
+          "callee": "['0', 'false', 'no', 'off'].includes",
+          "lineNumber": 46
+        },
+        {
+          "caller": "getRuntimeConfig",
+          "callee": "getMediaProvider",
+          "lineNumber": 66
+        },
+        {
+          "caller": "getRuntimeConfig",
+          "callee": "Boolean",
+          "lineNumber": 68
+        },
+        {
+          "caller": "getRuntimeConfig",
+          "callee": "env.DATABASE_URL?.trim",
+          "lineNumber": 69
+        },
+        {
+          "caller": "getRuntimeConfig",
+          "callee": "isMongoConnectionString",
+          "lineNumber": 75
+        },
+        {
+          "caller": "getRuntimeConfig",
+          "callee": "(() => {\n          const bucket = env.S3_BUCKET?.trim() || ''\n          const endpoint = env.S3_ENDPOINT?.trim() || ''\n          const region = env.S3_REGION?.trim() || ''\n          const accessKeyId = env.S3_ACCESS_KEY_ID?.trim() || ''\n          const secretAccessKey = env.S3_SECRET_ACCESS_KEY?.trim() || ''\n          const rawACL = env.S3_ACL?.trim() || 'public-read'\n\n          if (!bucket || !endpoint || !region || !accessKeyId || !secretAccessKey) {\n            throw new Error(\n              'Incomplete S3 media configuration. Set S3_BUCKET, S3_ENDPOINT, S3_REGION, S3_ACCESS_KEY_ID, and S3_SECRET_ACCESS_KEY.',\n            )\n          }\n\n          if (rawACL !== 'public-read' && rawACL !== 'private') {\n            throw new Error('Unsupported S3_ACL. Use \"public-read\" or \"private\".')\n          }\n\n          return {\n            provider: 's3' as const,\n            acl: rawACL as 'private' | 'public-read',\n            accessKeyId,\n            bucket,\n            clientUploads: parseBooleanEnv(env.S3_CLIENT_UPLOADS, false),\n            endpoint,\n            forcePathStyle: parseBooleanEnv(env.S3_FORCE_PATH_STYLE, true),\n            region,\n            secretAccessKey,\n          }\n        })",
+          "lineNumber": 96
+        },
+        {
+          "caller": "getRuntimeConfig",
+          "callee": "env.S3_BUCKET?.trim",
+          "lineNumber": 97
+        },
+        {
+          "caller": "getRuntimeConfig",
+          "callee": "env.S3_ENDPOINT?.trim",
+          "lineNumber": 98
+        },
+        {
+          "caller": "getRuntimeConfig",
+          "callee": "env.S3_REGION?.trim",
+          "lineNumber": 99
+        },
+        {
+          "caller": "getRuntimeConfig",
+          "callee": "env.S3_ACCESS_KEY_ID?.trim",
+          "lineNumber": 100
+        },
+        {
+          "caller": "getRuntimeConfig",
+          "callee": "env.S3_SECRET_ACCESS_KEY?.trim",
+          "lineNumber": 101
+        },
+        {
+          "caller": "getRuntimeConfig",
+          "callee": "env.S3_ACL?.trim",
+          "lineNumber": 102
+        },
+        {
+          "caller": "getRuntimeConfig",
+          "callee": "parseBooleanEnv",
+          "lineNumber": 119
+        },
+        {
+          "caller": "getRuntimeConfig",
+          "callee": "parseBooleanEnv",
+          "lineNumber": 121
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/config/starterContract.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 40,
+      "nonEmptyLines": 36,
+      "functions": [
+        {
+          "name": "getStarterContract",
+          "startLine": 14,
+          "endLine": 34,
+          "params": [
+            "config"
+          ]
+        },
+        {
+          "name": "assertSupportedStarterContract",
+          "startLine": 36,
+          "endLine": 40,
+          "params": [
+            "contract"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "getStarterContract",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "assertSupportedStarterContract",
+          "line": 36,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/fields/buildSEOFields.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 98,
+      "nonEmptyLines": 89,
+      "functions": [
+        {
+          "name": "buildSEOFields",
+          "startLine": 10,
+          "endLine": 98,
+          "params": [
+            "{\n  allowOpenGraph = true,\n  allowSitemap = true,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "buildSEOFields",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "buildSEOFields",
+          "callee": "seoRow.fields.push",
+          "lineNumber": 54
+        },
+        {
+          "caller": "buildSEOFields",
+          "callee": "fields.push",
+          "lineNumber": 71
+        },
+        {
+          "caller": "buildSEOFields",
+          "callee": "fields.push",
+          "lineNumber": 92
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/globals/NewsEventsSettings.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 125,
+      "nonEmptyLines": 121,
+      "exports": [
+        {
+          "name": "NewsEventsSettings",
+          "line": 39,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/globals/PageSettings.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 380,
+      "nonEmptyLines": 354,
+      "functions": [
+        {
+          "name": "extractPageID",
+          "startLine": 12,
+          "endLine": 24,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "validatePublishedFrontPage",
+          "startLine": 26,
+          "endLine": 59,
+          "params": [
+            "value",
+            "{ req }"
+          ]
+        },
+        {
+          "name": "validateAnnouncementInterval",
+          "startLine": 61,
+          "endLine": 79,
+          "params": [
+            "value",
+            "{\n    siblingData,\n  }"
+          ]
+        },
+        {
+          "name": "validateAnnouncementMarqueeDuration",
+          "startLine": 81,
+          "endLine": 99,
+          "params": [
+            "value",
+            "{\n    siblingData,\n  }"
+          ]
+        },
+        {
+          "name": "validateAnnouncementItems",
+          "startLine": 101,
+          "endLine": 124,
+          "params": [
+            "value",
+            "{ siblingData }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "PageSettings",
+          "line": 126,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "validatePublishedFrontPage",
+          "callee": "extractPageID",
+          "lineNumber": 27
+        },
+        {
+          "caller": "validatePublishedFrontPage",
+          "callee": "req.payload.find",
+          "lineNumber": 33
+        },
+        {
+          "caller": "validateAnnouncementInterval",
+          "callee": "Number.isFinite",
+          "lineNumber": 76
+        },
+        {
+          "caller": "validateAnnouncementMarqueeDuration",
+          "callee": "Number.isFinite",
+          "lineNumber": 96
+        },
+        {
+          "caller": "validateAnnouncementItems",
+          "callee": "Array.isArray",
+          "lineNumber": 109
+        },
+        {
+          "caller": "validateAnnouncementItems",
+          "callee": "value.some",
+          "lineNumber": 113
+        },
+        {
+          "caller": "validateAnnouncementItems",
+          "callee": "description.trim",
+          "lineNumber": 120
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/globals/SEOSettings.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 62,
+      "nonEmptyLines": 60,
+      "exports": [
+        {
+          "name": "SEOSettings",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/globals/SiteSettings.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 181,
+      "nonEmptyLines": 175,
+      "functions": [
+        {
+          "name": "validateExternalSocialUrl",
+          "startLine": 9,
+          "endLine": 25,
+          "params": [
+            "value"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "SiteSettings",
+          "line": 27,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "validateExternalSocialUrl",
+          "callee": "value.trim",
+          "lineNumber": 10
+        },
+        {
+          "caller": "validateExternalSocialUrl",
+          "callee": "value.trim",
+          "lineNumber": 15
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/globals/SystemModeSettings.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 170,
+      "nonEmptyLines": 159,
+      "functions": [
+        {
+          "name": "extractPageID",
+          "startLine": 11,
+          "endLine": 23,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "validatePublishedSystemPageType",
+          "startLine": 25,
+          "endLine": 65,
+          "params": [
+            "expectedType",
+            "fieldLabel"
+          ]
+        },
+        {
+          "name": "pageOfTypeFilter",
+          "startLine": 67,
+          "endLine": 71,
+          "params": [
+            "type"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "SystemModeSettings",
+          "line": 73,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "validatePublishedSystemPageType",
+          "callee": "extractPageID",
+          "lineNumber": 28
+        },
+        {
+          "caller": "validatePublishedSystemPageType",
+          "callee": "req.payload.find",
+          "lineNumber": 34
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/globals/ThemeSettings.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 62,
+      "nonEmptyLines": 60,
+      "exports": [
+        {
+          "name": "ThemeSettings",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/hooks/enforceEditorialWorkflow.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 196,
+      "nonEmptyLines": 164,
+      "functions": [
+        {
+          "name": "canPublish",
+          "startLine": 36,
+          "endLine": 50,
+          "params": [
+            "capability",
+            "user"
+          ]
+        },
+        {
+          "name": "normalizeUserID",
+          "startLine": 52,
+          "endLine": 66,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "resolveWorkflowState",
+          "startLine": 68,
+          "endLine": 89,
+          "params": [
+            "data",
+            "originalDoc"
+          ]
+        },
+        {
+          "name": "resolveBypassedWorkflowState",
+          "startLine": 91,
+          "endLine": 108,
+          "params": [
+            "data",
+            "originalDoc"
+          ]
+        },
+        {
+          "name": "enforceEditorialWorkflow",
+          "startLine": 110,
+          "endLine": 196,
+          "params": [
+            "publishCapability",
+            "sourceCollection"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "enforceEditorialWorkflow",
+          "line": 110,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "canPublish",
+          "callee": "canPublishArticles",
+          "lineNumber": 39
+        },
+        {
+          "caller": "canPublish",
+          "callee": "canPublishNewsEvents",
+          "lineNumber": 41
+        },
+        {
+          "caller": "canPublish",
+          "callee": "canPublishReviews",
+          "lineNumber": 43
+        },
+        {
+          "caller": "canPublish",
+          "callee": "canPublishSystemPages",
+          "lineNumber": 45
+        },
+        {
+          "caller": "canPublish",
+          "callee": "canPublishPages",
+          "lineNumber": 48
+        },
+        {
+          "caller": "normalizeUserID",
+          "callee": "Number.isFinite",
+          "lineNumber": 53
+        },
+        {
+          "caller": "normalizeUserID",
+          "callee": "Number",
+          "lineNumber": 58
+        },
+        {
+          "caller": "normalizeUserID",
+          "callee": "Number.isFinite",
+          "lineNumber": 60
+        },
+        {
+          "caller": "enforceEditorialWorkflow",
+          "callee": "new Date().toISOString",
+          "lineNumber": 119
+        },
+        {
+          "caller": "enforceEditorialWorkflow",
+          "callee": "normalizeUserID",
+          "lineNumber": 120
+        },
+        {
+          "caller": "enforceEditorialWorkflow",
+          "callee": "requiresEditorialWorkflow",
+          "lineNumber": 121
+        },
+        {
+          "caller": "enforceEditorialWorkflow",
+          "callee": "resolveWorkflowState",
+          "lineNumber": 123
+        },
+        {
+          "caller": "enforceEditorialWorkflow",
+          "callee": "resolveBypassedWorkflowState",
+          "lineNumber": 124
+        },
+        {
+          "caller": "enforceEditorialWorkflow",
+          "callee": "canPublish",
+          "lineNumber": 130
+        },
+        {
+          "caller": "enforceEditorialWorkflow",
+          "callee": "canPublish",
+          "lineNumber": 160
+        },
+        {
+          "caller": "enforceEditorialWorkflow",
+          "callee": "findBlockingPublishQueueItems",
+          "lineNumber": 177
+        },
+        {
+          "caller": "enforceEditorialWorkflow",
+          "callee": "formatBlockingPublishQueueMessage",
+          "lineNumber": 184
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/hooks/logOperationalAuditEvent.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 65,
+      "nonEmptyLines": 56,
+      "functions": [
+        {
+          "name": "createCollectionAuditHook",
+          "startLine": 22,
+          "endLine": 42,
+          "params": [
+            "config"
+          ]
+        },
+        {
+          "name": "createGlobalAuditHook",
+          "startLine": 44,
+          "endLine": 65,
+          "params": [
+            "config"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "createCollectionAuditHook",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "createGlobalAuditHook",
+          "line": 44,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createCollectionAuditHook",
+          "callee": "recordOperationalAuditEvent",
+          "lineNumber": 31
+        },
+        {
+          "caller": "createCollectionAuditHook",
+          "callee": "String",
+          "lineNumber": 33
+        },
+        {
+          "caller": "createCollectionAuditHook",
+          "callee": "String",
+          "lineNumber": 34
+        },
+        {
+          "caller": "createCollectionAuditHook",
+          "callee": "config.getSummary",
+          "lineNumber": 37
+        },
+        {
+          "caller": "createGlobalAuditHook",
+          "callee": "recordOperationalAuditEvent",
+          "lineNumber": 54
+        },
+        {
+          "caller": "createGlobalAuditHook",
+          "callee": "config.getSummary",
+          "lineNumber": 60
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/hooks/normalizeNewsEventFields.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 14,
+      "nonEmptyLines": 11,
+      "functions": [
+        {
+          "name": "normalizeNewsEventFields",
+          "startLine": 3,
+          "endLine": 14,
+          "params": [
+            "{ data }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "normalizeNewsEventFields",
+          "line": 3,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/hooks/preventMediaDeletionWhileInUse.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 28,
+      "nonEmptyLines": 21,
+      "functions": [
+        {
+          "name": "formatUsageList",
+          "startLine": 5,
+          "endLine": 5,
+          "params": [
+            "locations"
+          ]
+        },
+        {
+          "name": "preventMediaDeletionWhileInUse",
+          "startLine": 7,
+          "endLine": 28,
+          "params": [
+            "{ id, req }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "preventMediaDeletionWhileInUse",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "formatUsageList",
+          "callee": "locations.join",
+          "lineNumber": 5
+        },
+        {
+          "caller": "preventMediaDeletionWhileInUse",
+          "callee": "findMediaUsage",
+          "lineNumber": 14
+        },
+        {
+          "caller": "preventMediaDeletionWhileInUse",
+          "callee": "formatUsageList",
+          "lineNumber": 24
+        },
+        {
+          "caller": "preventMediaDeletionWhileInUse",
+          "callee": "references.map",
+          "lineNumber": 25
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 100,
+      "nonEmptyLines": 82,
+      "functions": [
+        {
+          "name": "getSystemPageID",
+          "startLine": 7,
+          "endLine": 17,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "getSystemBehaviorUsage",
+          "startLine": 19,
+          "endLine": 51,
+          "params": [
+            "pageSettings",
+            "pageID"
+          ]
+        },
+        {
+          "name": "preventReferencedSystemPageInvalidation",
+          "startLine": 53,
+          "endLine": 100,
+          "params": [
+            "{\n  data,\n  operation,\n  originalDoc,\n  req,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "preventReferencedSystemPageInvalidation",
+          "line": 53,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getSystemBehaviorUsage",
+          "callee": "getSystemPageID",
+          "lineNumber": 25
+        },
+        {
+          "caller": "getSystemBehaviorUsage",
+          "callee": "usage.push",
+          "lineNumber": 26
+        },
+        {
+          "caller": "getSystemBehaviorUsage",
+          "callee": "getSystemPageID",
+          "lineNumber": 33
+        },
+        {
+          "caller": "getSystemBehaviorUsage",
+          "callee": "usage.push",
+          "lineNumber": 35
+        },
+        {
+          "caller": "getSystemBehaviorUsage",
+          "callee": "getSystemPageID",
+          "lineNumber": 42
+        },
+        {
+          "caller": "getSystemBehaviorUsage",
+          "callee": "usage.push",
+          "lineNumber": 44
+        },
+        {
+          "caller": "preventReferencedSystemPageInvalidation",
+          "callee": "req.payload.findGlobal",
+          "lineNumber": 64
+        },
+        {
+          "caller": "preventReferencedSystemPageInvalidation",
+          "callee": "getSystemBehaviorUsage",
+          "lineNumber": 70
+        },
+        {
+          "caller": "preventReferencedSystemPageInvalidation",
+          "callee": "usage.map((entry) => entry.fieldLabel).join",
+          "lineNumber": 81
+        },
+        {
+          "caller": "preventReferencedSystemPageInvalidation",
+          "callee": "usage.map",
+          "lineNumber": 81
+        },
+        {
+          "caller": "preventReferencedSystemPageInvalidation",
+          "callee": "usage.filter",
+          "lineNumber": 88
+        },
+        {
+          "caller": "preventReferencedSystemPageInvalidation",
+          "callee": "invalidUsage.map((entry) => entry.fieldLabel).join",
+          "lineNumber": 92
+        },
+        {
+          "caller": "preventReferencedSystemPageInvalidation",
+          "callee": "invalidUsage.map",
+          "lineNumber": 92
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/hooks/syncFormSubmissionToWorkQueue.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 78,
+      "nonEmptyLines": 70,
+      "functions": [
+        {
+          "name": "syncFormSubmissionToWorkQueue",
+          "startLine": 15,
+          "endLine": 78,
+          "params": [
+            "{ doc, req }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "syncFormSubmissionToWorkQueue",
+          "line": 15,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "syncFormSubmissionToWorkQueue",
+          "callee": "buildWorkQueueDedupeKey",
+          "lineNumber": 25
+        },
+        {
+          "caller": "syncFormSubmissionToWorkQueue",
+          "callee": "buildWorkQueueDedupeKey",
+          "lineNumber": 44
+        },
+        {
+          "caller": "syncFormSubmissionToWorkQueue",
+          "callee": "syncWorkQueueConditions",
+          "lineNumber": 71
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/hooks/syncMediaToWorkQueue.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 101,
+      "nonEmptyLines": 93,
+      "functions": [
+        {
+          "name": "syncMediaToWorkQueue",
+          "startLine": 14,
+          "endLine": 101,
+          "params": [
+            "{ doc, req }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "syncMediaToWorkQueue",
+          "line": 14,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "syncMediaToWorkQueue",
+          "callee": "buildWorkQueueDedupeKey",
+          "lineNumber": 24
+        },
+        {
+          "caller": "syncMediaToWorkQueue",
+          "callee": "buildWorkQueueDedupeKey",
+          "lineNumber": 44
+        },
+        {
+          "caller": "syncMediaToWorkQueue",
+          "callee": "buildWorkQueueDedupeKey",
+          "lineNumber": 63
+        },
+        {
+          "caller": "syncMediaToWorkQueue",
+          "callee": "typedDoc.title.trim",
+          "lineNumber": 87
+        },
+        {
+          "caller": "syncMediaToWorkQueue",
+          "callee": "typedDoc.replacementNotes.trim",
+          "lineNumber": 90
+        },
+        {
+          "caller": "syncMediaToWorkQueue",
+          "callee": "syncWorkQueueConditions",
+          "lineNumber": 94
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/hooks/syncPrimaryCategoryMembership.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 50,
+      "nonEmptyLines": 39,
+      "functions": [
+        {
+          "name": "toRelationshipID",
+          "startLine": 3,
+          "endLine": 15,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "syncPrimaryCategoryMembership",
+          "startLine": 17,
+          "endLine": 50,
+          "params": [
+            "{ data, originalDoc }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "syncPrimaryCategoryMembership",
+          "line": 17,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "syncPrimaryCategoryMembership",
+          "callee": "toRelationshipID",
+          "lineNumber": 22
+        },
+        {
+          "caller": "syncPrimaryCategoryMembership",
+          "callee": "Array.isArray",
+          "lineNumber": 31
+        },
+        {
+          "caller": "syncPrimaryCategoryMembership",
+          "callee": "Array.isArray",
+          "lineNumber": 33
+        },
+        {
+          "caller": "syncPrimaryCategoryMembership",
+          "callee": "currentCategories\n    .map((category: number | string | { id?: number | string } | null) =>\n      toRelationshipID(category),\n    )\n    .filter",
+          "lineNumber": 37
+        },
+        {
+          "caller": "syncPrimaryCategoryMembership",
+          "callee": "currentCategories\n    .map",
+          "lineNumber": 37
+        },
+        {
+          "caller": "syncPrimaryCategoryMembership",
+          "callee": "toRelationshipID",
+          "lineNumber": 39
+        },
+        {
+          "caller": "syncPrimaryCategoryMembership",
+          "callee": "categoryIDs.includes",
+          "lineNumber": 43
+        },
+        {
+          "caller": "syncPrimaryCategoryMembership",
+          "callee": "categoryIDs.unshift",
+          "lineNumber": 44
+        },
+        {
+          "caller": "syncPrimaryCategoryMembership",
+          "callee": "Array.from",
+          "lineNumber": 47
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/hooks/syncReviewToWorkQueue.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 80,
+      "nonEmptyLines": 72,
+      "functions": [
+        {
+          "name": "syncReviewToWorkQueue",
+          "startLine": 15,
+          "endLine": 80,
+          "params": [
+            "{ doc, req }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "syncReviewToWorkQueue",
+          "line": 15,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "syncReviewToWorkQueue",
+          "callee": "buildWorkQueueDedupeKey",
+          "lineNumber": 25
+        },
+        {
+          "caller": "syncReviewToWorkQueue",
+          "callee": "buildWorkQueueDedupeKey",
+          "lineNumber": 45
+        },
+        {
+          "caller": "syncReviewToWorkQueue",
+          "callee": "syncWorkQueueConditions",
+          "lineNumber": 73
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/hooks/syncWorkQueueItem.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 14,
+      "nonEmptyLines": 12,
+      "functions": [
+        {
+          "name": "isWorkQueueSyncContext",
+          "startLine": 3,
+          "endLine": 5,
+          "params": [
+            "context"
+          ]
+        },
+        {
+          "name": "withWorkQueueSyncContext",
+          "startLine": 7,
+          "endLine": 14,
+          "params": [
+            "context"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "workQueueSyncContextKey",
+          "line": 1,
+          "isDefault": false
+        },
+        {
+          "name": "isWorkQueueSyncContext",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "withWorkQueueSyncContext",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 142,
+      "nonEmptyLines": 125,
+      "functions": [
+        {
+          "name": "toSourceTitle",
+          "startLine": 18,
+          "endLine": 21,
+          "params": [
+            "doc",
+            "titleField",
+            "fallback"
+          ]
+        },
+        {
+          "name": "createWorkflowQueueHook",
+          "startLine": 23,
+          "endLine": 85,
+          "params": [
+            "{\n  sourceCollection,\n  sourceAdminPathPrefix,\n  titleField,\n  states,\n}"
+          ]
+        },
+        {
+          "name": "createDraftPublishQueueHook",
+          "startLine": 87,
+          "endLine": 142,
+          "params": [
+            "{\n  isActionable,\n  sourceCollection,\n  sourceAdminPathPrefix,\n  summary,\n  titleField,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "createWorkflowQueueHook",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "createDraftPublishQueueHook",
+          "line": 87,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createWorkflowQueueHook",
+          "callee": "toSourceTitle",
+          "lineNumber": 50
+        },
+        {
+          "caller": "createWorkflowQueueHook",
+          "callee": "states.map",
+          "lineNumber": 51
+        },
+        {
+          "caller": "createWorkflowQueueHook",
+          "callee": "buildWorkQueueDedupeKey",
+          "lineNumber": 52
+        },
+        {
+          "caller": "createWorkflowQueueHook",
+          "callee": "state.details",
+          "lineNumber": 58
+        },
+        {
+          "caller": "createWorkflowQueueHook",
+          "callee": "state.priority",
+          "lineNumber": 59
+        },
+        {
+          "caller": "createWorkflowQueueHook",
+          "callee": "state.summary",
+          "lineNumber": 69
+        },
+        {
+          "caller": "createWorkflowQueueHook",
+          "callee": "requiresEditorialWorkflow",
+          "lineNumber": 72
+        },
+        {
+          "caller": "createWorkflowQueueHook",
+          "callee": "conditions.find",
+          "lineNumber": 74
+        },
+        {
+          "caller": "createWorkflowQueueHook",
+          "callee": "syncWorkQueueConditions",
+          "lineNumber": 77
+        },
+        {
+          "caller": "createDraftPublishQueueHook",
+          "callee": "toSourceTitle",
+          "lineNumber": 109
+        },
+        {
+          "caller": "createDraftPublishQueueHook",
+          "callee": "buildWorkQueueDedupeKey",
+          "lineNumber": 111
+        },
+        {
+          "caller": "createDraftPublishQueueHook",
+          "callee": "summary",
+          "lineNumber": 128
+        },
+        {
+          "caller": "createDraftPublishQueueHook",
+          "callee": "isActionable",
+          "lineNumber": 132
+        },
+        {
+          "caller": "createDraftPublishQueueHook",
+          "callee": "syncWorkQueueConditions",
+          "lineNumber": 134
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 2,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/hooks/updateFormSubmissionActivity.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 55,
+      "nonEmptyLines": 46,
+      "functions": [
+        {
+          "name": "normalizeOwnerID",
+          "startLine": 11,
+          "endLine": 21,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "normalizeNotes",
+          "startLine": 23,
+          "endLine": 25,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "updateFormSubmissionActivity",
+          "startLine": 27,
+          "endLine": 55,
+          "params": [
+            "{\n  data,\n  operation,\n  originalDoc,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "updateFormSubmissionActivity",
+          "line": 27,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "normalizeOwnerID",
+          "callee": "Number.isFinite",
+          "lineNumber": 12
+        },
+        {
+          "caller": "normalizeOwnerID",
+          "callee": "Number.isFinite",
+          "lineNumber": 16
+        },
+        {
+          "caller": "normalizeNotes",
+          "callee": "value.trim",
+          "lineNumber": 24
+        },
+        {
+          "caller": "updateFormSubmissionActivity",
+          "callee": "normalizeOwnerID",
+          "lineNumber": 38
+        },
+        {
+          "caller": "updateFormSubmissionActivity",
+          "callee": "normalizeOwnerID",
+          "lineNumber": 38
+        },
+        {
+          "caller": "updateFormSubmissionActivity",
+          "callee": "normalizeOwnerID",
+          "lineNumber": 39
+        },
+        {
+          "caller": "updateFormSubmissionActivity",
+          "callee": "normalizeNotes",
+          "lineNumber": 42
+        },
+        {
+          "caller": "updateFormSubmissionActivity",
+          "callee": "normalizeNotes",
+          "lineNumber": 43
+        },
+        {
+          "caller": "updateFormSubmissionActivity",
+          "callee": "normalizeNotes",
+          "lineNumber": 44
+        },
+        {
+          "caller": "updateFormSubmissionActivity",
+          "callee": "new Date().toISOString",
+          "lineNumber": 51
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/hooks/validateSEOContract.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 68,
+      "nonEmptyLines": 57,
+      "functions": [
+        {
+          "name": "validateSEOContract",
+          "startLine": 23,
+          "endLine": 68,
+          "params": [
+            "{ getIsPublicRoute }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "validateSEOContract",
+          "line": 23,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "validateSEOContract",
+          "callee": "nextData.canonicalURL?.trim",
+          "lineNumber": 31
+        },
+        {
+          "caller": "validateSEOContract",
+          "callee": "resolveCanonicalURL",
+          "lineNumber": 34
+        },
+        {
+          "caller": "validateSEOContract",
+          "callee": "getIsPublicRoute",
+          "lineNumber": 48
+        },
+        {
+          "caller": "validateSEOContract",
+          "callee": "resolveRobotsMode",
+          "lineNumber": 54
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/cmsSession.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 39,
+      "nonEmptyLines": 33,
+      "functions": [
+        {
+          "name": "formatCMSRoleLabel",
+          "startLine": 28,
+          "endLine": 39,
+          "params": [
+            "role"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "getCurrentCMSUser",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "isCurrentCMSAdmin",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "formatCMSRoleLabel",
+          "line": 28,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 3,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/editorialWorkflow.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 25,
+      "nonEmptyLines": 24,
+      "exports": [
+        {
+          "name": "editorialWorkflowStateOptions",
+          "line": 1,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    }
+  ]
+}

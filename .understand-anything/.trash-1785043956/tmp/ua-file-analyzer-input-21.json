@@ -1,0 +1,147 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "docs/superpowers/plans/2026-07-11-admin-ia-simplification.md",
+      "language": "markdown",
+      "sizeLines": 599,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-11-system-mode-homepage-fallback.md",
+      "language": "markdown",
+      "sizeLines": 160,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-11-system-page-block-architecture-refactor.md",
+      "language": "markdown",
+      "sizeLines": 630,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-11-system-page-default-blocks.md",
+      "language": "markdown",
+      "sizeLines": 107,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-12-block-cleanup.md",
+      "language": "markdown",
+      "sizeLines": 159,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-feature-spotlight-block.md",
+      "language": "markdown",
+      "sizeLines": 781,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-footer56-footer-preset.md",
+      "language": "markdown",
+      "sizeLines": 994,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-footer56-legal-tab-terms.md",
+      "language": "markdown",
+      "sizeLines": 248,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-footer56-site-settings-integration.md",
+      "language": "markdown",
+      "sizeLines": 507,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-header-navbar-block.md",
+      "language": "markdown",
+      "sizeLines": 862,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-hero-institutional-block.md",
+      "language": "markdown",
+      "sizeLines": 748,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-stats-strip-block.md",
+      "language": "markdown",
+      "sizeLines": 736,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-14-block-components-theme-normalization.md",
+      "language": "markdown",
+      "sizeLines": 119,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-14-shared-block-appearance-controls.md",
+      "language": "markdown",
+      "sizeLines": 643,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-14-website-theme-registry.md",
+      "language": "markdown",
+      "sizeLines": 336,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-17-block-thumbnail-generation.md",
+      "language": "markdown",
+      "sizeLines": 473,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-17-feature-matrix-block.md",
+      "language": "markdown",
+      "sizeLines": 520,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-feature-matrix-image-height.md",
+      "language": "markdown",
+      "sizeLines": 86,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-feature-matrix-rename.md",
+      "language": "markdown",
+      "sizeLines": 223,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-gallery-showcase-block.md",
+      "language": "markdown",
+      "sizeLines": 1137,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "docs/superpowers/plans/2026-07-11-admin-ia-simplification.md": [],
+    "docs/superpowers/plans/2026-07-11-system-mode-homepage-fallback.md": [],
+    "docs/superpowers/plans/2026-07-11-system-page-block-architecture-refactor.md": [],
+    "docs/superpowers/plans/2026-07-11-system-page-default-blocks.md": [],
+    "docs/superpowers/plans/2026-07-12-block-cleanup.md": [],
+    "docs/superpowers/plans/2026-07-13-feature-spotlight-block.md": [],
+    "docs/superpowers/plans/2026-07-13-footer56-footer-preset.md": [],
+    "docs/superpowers/plans/2026-07-13-footer56-legal-tab-terms.md": [],
+    "docs/superpowers/plans/2026-07-13-footer56-site-settings-integration.md": [],
+    "docs/superpowers/plans/2026-07-13-header-navbar-block.md": [],
+    "docs/superpowers/plans/2026-07-13-hero-institutional-block.md": [],
+    "docs/superpowers/plans/2026-07-13-stats-strip-block.md": [],
+    "docs/superpowers/plans/2026-07-14-block-components-theme-normalization.md": [],
+    "docs/superpowers/plans/2026-07-14-shared-block-appearance-controls.md": [],
+    "docs/superpowers/plans/2026-07-14-website-theme-registry.md": [],
+    "docs/superpowers/plans/2026-07-17-block-thumbnail-generation.md": [],
+    "docs/superpowers/plans/2026-07-17-feature-matrix-block.md": [],
+    "docs/superpowers/plans/2026-07-18-feature-matrix-image-height.md": [],
+    "docs/superpowers/plans/2026-07-18-feature-matrix-rename.md": [],
+    "docs/superpowers/plans/2026-07-18-gallery-showcase-block.md": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "vitest.config.mts",
+      "language": "mts",
+      "sizeLines": 17,
+      "fileCategory": "code"
+    },
+    {
+      "path": "vitest.setup.ts",
+      "language": "typescript",
+      "sizeLines": 4,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "vitest.config.mts": [],
+    "vitest.setup.ts": []
+  }
+}

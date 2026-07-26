@@ -1,0 +1,1344 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/app/(frontend)/articles/[slug]/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "src/app/(frontend)/articles/[slug]/page.tsx",
+      "summary": "Next.js route for published article detail pages, combining cached article data with entry-specific SEO metadata.",
+      "tags": [
+        "route",
+        "article",
+        "server-component",
+        "seo"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React server or client components within the Next.js App Router."
+    },
+    {
+      "id": "function:src/app/(frontend)/articles/[slug]/page.tsx:generateMetadata",
+      "type": "function",
+      "name": "generateMetadata",
+      "filePath": "src/app/(frontend)/articles/[slug]/page.tsx",
+      "lineRange": [
+        13,
+        17
+      ],
+      "summary": "Generates route metadata from the corresponding CMS entry or archive context.",
+      "tags": [
+        "function",
+        "component",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/(frontend)/articles/[slug]/page.tsx:ArticleEntryPage",
+      "type": "function",
+      "name": "ArticleEntryPage",
+      "filePath": "src/app/(frontend)/articles/[slug]/page.tsx",
+      "lineRange": [
+        19,
+        35
+      ],
+      "summary": "Renders the article entry route from resolved CMS data.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/(frontend)/articles/category/[slug]/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "src/app/(frontend)/articles/category/[slug]/page.tsx",
+      "summary": "Next.js route for category-filtered article archives, resolving the taxonomy term, archive entries, and page metadata.",
+      "tags": [
+        "route",
+        "article-archive",
+        "taxonomy",
+        "seo"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React server or client components within the Next.js App Router."
+    },
+    {
+      "id": "function:src/app/(frontend)/articles/category/[slug]/page.tsx:generateMetadata",
+      "type": "function",
+      "name": "generateMetadata",
+      "filePath": "src/app/(frontend)/articles/category/[slug]/page.tsx",
+      "lineRange": [
+        16,
+        20
+      ],
+      "summary": "Generates route metadata from the corresponding CMS entry or archive context.",
+      "tags": [
+        "function",
+        "component",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/(frontend)/articles/category/[slug]/page.tsx:ArticleCategoryArchiveEntryPage",
+      "type": "function",
+      "name": "ArticleCategoryArchiveEntryPage",
+      "filePath": "src/app/(frontend)/articles/category/[slug]/page.tsx",
+      "lineRange": [
+        22,
+        37
+      ],
+      "summary": "Renders the article category archive entry route from resolved CMS data.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/(frontend)/articles/tag/[slug]/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "src/app/(frontend)/articles/tag/[slug]/page.tsx",
+      "summary": "Next.js route for tag-filtered article archives, loading the selected taxonomy term, matching entries, and metadata.",
+      "tags": [
+        "route",
+        "article-archive",
+        "taxonomy",
+        "seo"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React server or client components within the Next.js App Router."
+    },
+    {
+      "id": "function:src/app/(frontend)/articles/tag/[slug]/page.tsx:generateMetadata",
+      "type": "function",
+      "name": "generateMetadata",
+      "filePath": "src/app/(frontend)/articles/tag/[slug]/page.tsx",
+      "lineRange": [
+        13,
+        17
+      ],
+      "summary": "Generates route metadata from the corresponding CMS entry or archive context.",
+      "tags": [
+        "function",
+        "component",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/(frontend)/articles/tag/[slug]/page.tsx:ArticleTagArchiveEntryPage",
+      "type": "function",
+      "name": "ArticleTagArchiveEntryPage",
+      "filePath": "src/app/(frontend)/articles/tag/[slug]/page.tsx",
+      "lineRange": [
+        19,
+        34
+      ],
+      "summary": "Renders the article tag archive entry route from resolved CMS data.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/(frontend)/news-events/[slug]/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "src/app/(frontend)/news-events/[slug]/page.tsx",
+      "summary": "Dynamic news and event detail route supporting published content, draft preview, structured data, and generated metadata.",
+      "tags": [
+        "route",
+        "news-events",
+        "live-preview",
+        "seo"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React server or client components within the Next.js App Router."
+    },
+    {
+      "id": "function:src/app/(frontend)/news-events/[slug]/page.tsx:generateMetadata",
+      "type": "function",
+      "name": "generateMetadata",
+      "filePath": "src/app/(frontend)/news-events/[slug]/page.tsx",
+      "lineRange": [
+        17,
+        22
+      ],
+      "summary": "Generates route metadata from the corresponding CMS entry or archive context.",
+      "tags": [
+        "function",
+        "component",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/(frontend)/news-events/[slug]/page.tsx:NewsEventEntryPage",
+      "type": "function",
+      "name": "NewsEventEntryPage",
+      "filePath": "src/app/(frontend)/news-events/[slug]/page.tsx",
+      "lineRange": [
+        24,
+        60
+      ],
+      "summary": "Renders the news event entry route from resolved CMS data.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/(frontend)/news-events/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "src/app/(frontend)/news-events/page.tsx",
+      "summary": "News and events archive route that parses filters, loads CMS settings and paginated entries, and renders the public feed.",
+      "tags": [
+        "route",
+        "news-events",
+        "archive",
+        "pagination"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React server or client components within the Next.js App Router."
+    },
+    {
+      "id": "function:src/app/(frontend)/news-events/page.tsx:generateMetadata",
+      "type": "function",
+      "name": "generateMetadata",
+      "filePath": "src/app/(frontend)/news-events/page.tsx",
+      "lineRange": [
+        19,
+        21
+      ],
+      "summary": "Generates route metadata from the corresponding CMS entry or archive context.",
+      "tags": [
+        "function",
+        "component",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/(frontend)/news-events/page.tsx:NewsEventsArchivePage",
+      "type": "function",
+      "name": "NewsEventsArchivePage",
+      "filePath": "src/app/(frontend)/news-events/page.tsx",
+      "lineRange": [
+        23,
+        52
+      ],
+      "summary": "Renders the news events archive route from resolved CMS data.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/(frontend)/reviews/[slug]/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "src/app/(frontend)/reviews/[slug]/page.tsx",
+      "summary": "Next.js route for published review detail pages with related-review data and managed SEO metadata.",
+      "tags": [
+        "route",
+        "reviews",
+        "server-component",
+        "seo"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React server or client components within the Next.js App Router."
+    },
+    {
+      "id": "function:src/app/(frontend)/reviews/[slug]/page.tsx:generateMetadata",
+      "type": "function",
+      "name": "generateMetadata",
+      "filePath": "src/app/(frontend)/reviews/[slug]/page.tsx",
+      "lineRange": [
+        13,
+        17
+      ],
+      "summary": "Generates route metadata from the corresponding CMS entry or archive context.",
+      "tags": [
+        "function",
+        "component",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/(frontend)/reviews/[slug]/page.tsx:ReviewEntryPage",
+      "type": "function",
+      "name": "ReviewEntryPage",
+      "filePath": "src/app/(frontend)/reviews/[slug]/page.tsx",
+      "lineRange": [
+        19,
+        35
+      ],
+      "summary": "Renders the review entry route from resolved CMS data.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/(frontend)/reviews/category/[slug]/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "src/app/(frontend)/reviews/category/[slug]/page.tsx",
+      "summary": "Next.js route for category-filtered review archives with taxonomy-aware titles, entries, and metadata.",
+      "tags": [
+        "route",
+        "review-archive",
+        "taxonomy",
+        "seo"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React server or client components within the Next.js App Router."
+    },
+    {
+      "id": "function:src/app/(frontend)/reviews/category/[slug]/page.tsx:generateMetadata",
+      "type": "function",
+      "name": "generateMetadata",
+      "filePath": "src/app/(frontend)/reviews/category/[slug]/page.tsx",
+      "lineRange": [
+        16,
+        20
+      ],
+      "summary": "Generates route metadata from the corresponding CMS entry or archive context.",
+      "tags": [
+        "function",
+        "component",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/(frontend)/reviews/category/[slug]/page.tsx:ReviewCategoryArchiveEntryPage",
+      "type": "function",
+      "name": "ReviewCategoryArchiveEntryPage",
+      "filePath": "src/app/(frontend)/reviews/category/[slug]/page.tsx",
+      "lineRange": [
+        22,
+        36
+      ],
+      "summary": "Renders the review category archive entry route from resolved CMS data.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/api/forms/[slug]/submit/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "src/app/api/forms/[slug]/submit/route.ts",
+      "summary": "Public form-submission API handler that validates input, applies spam controls, persists submissions, promotes review drafts, emits events, and sends notifications.",
+      "tags": [
+        "api-handler",
+        "forms",
+        "validation",
+        "spam-protection",
+        "notifications"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/app/api/forms/[slug]/submit/route.ts:toSimpleFields",
+      "type": "function",
+      "name": "toSimpleFields",
+      "filePath": "src/app/api/forms/[slug]/submit/route.ts",
+      "lineRange": [
+        26,
+        39
+      ],
+      "summary": "Transforms simple fields into the public application model.",
+      "tags": [
+        "function",
+        "api-handler",
+        "transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/api/forms/[slug]/submit/route.ts:POST",
+      "type": "function",
+      "name": "POST",
+      "filePath": "src/app/api/forms/[slug]/submit/route.ts",
+      "lineRange": [
+        41,
+        272
+      ],
+      "summary": "Handles validated public form submissions, persistence, review promotion, events, notifications, and HTTP responses.",
+      "tags": [
+        "function",
+        "api-handler",
+        "service"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/app/robots.ts",
+      "type": "file",
+      "name": "robots.ts",
+      "filePath": "src/app/robots.ts",
+      "summary": "Generates the site robots policy from the canonical public URL for Next.js metadata routes.",
+      "tags": [
+        "seo",
+        "robots",
+        "metadata-route",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/robots.ts:robots",
+      "type": "function",
+      "name": "robots",
+      "filePath": "src/app/robots.ts",
+      "lineRange": [
+        7,
+        18
+      ],
+      "summary": "Returns the public crawler policy and absolute sitemap URL.",
+      "tags": [
+        "function",
+        "utility",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/sitemap.ts",
+      "type": "file",
+      "name": "sitemap.ts",
+      "filePath": "src/app/sitemap.ts",
+      "summary": "Builds the public sitemap from managed pages, articles, reviews, news, events, and taxonomy archives while enforcing publication and robots rules.",
+      "tags": [
+        "seo",
+        "sitemap",
+        "metadata-route",
+        "content-query"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/app/sitemap.ts:isRouteEligibleForSitemap",
+      "type": "function",
+      "name": "isRouteEligibleForSitemap",
+      "filePath": "src/app/sitemap.ts",
+      "lineRange": [
+        19,
+        52
+      ],
+      "summary": "Determines whether route eligible for sitemap satisfies the required application rules.",
+      "tags": [
+        "function",
+        "utility",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/sitemap.ts:addEntry",
+      "type": "function",
+      "name": "addEntry",
+      "filePath": "src/app/sitemap.ts",
+      "lineRange": [
+        54,
+        67
+      ],
+      "summary": "Adds a canonical sitemap entry while deduplicating equivalent paths.",
+      "tags": [
+        "function",
+        "utility",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/sitemap.ts:sitemap",
+      "type": "function",
+      "name": "sitemap",
+      "filePath": "src/app/sitemap.ts",
+      "lineRange": [
+        69,
+        281
+      ],
+      "summary": "Queries all sitemap-eligible managed content and returns deduplicated canonical entries.",
+      "tags": [
+        "function",
+        "utility",
+        "seo"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/blocks/NewsEventsHighlights/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/NewsEventsHighlights/Component.tsx",
+      "summary": "Server-side Payload block component that fetches current news and event highlights and delegates rendering to its presentation component.",
+      "tags": [
+        "component",
+        "payload-block",
+        "news-events",
+        "server-component"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React server or client components within the Next.js App Router."
+    },
+    {
+      "id": "function:src/blocks/NewsEventsHighlights/Component.tsx:NewsEventsHighlightsBlockComponent",
+      "type": "function",
+      "name": "NewsEventsHighlightsBlockComponent",
+      "filePath": "src/blocks/NewsEventsHighlights/Component.tsx",
+      "lineRange": [
+        10,
+        16
+      ],
+      "summary": "Renders the news events highlights block component user interface from normalized content data.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/articles/ArticleArchivePage.tsx",
+      "type": "file",
+      "name": "ArticleArchivePage.tsx",
+      "filePath": "src/components/articles/ArticleArchivePage.tsx",
+      "summary": "Presentation component for category and tag article archives, rendering archive context and linked article cards.",
+      "tags": [
+        "component",
+        "article-archive",
+        "presentation",
+        "taxonomy"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React server or client components within the Next.js App Router."
+    },
+    {
+      "id": "function:src/components/articles/ArticleArchivePage.tsx:ArticleArchivePage",
+      "type": "function",
+      "name": "ArticleArchivePage",
+      "filePath": "src/components/articles/ArticleArchivePage.tsx",
+      "lineRange": [
+        5,
+        47
+      ],
+      "summary": "Renders the article archive route from resolved CMS data.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/articles/ArticlePage.tsx",
+      "type": "file",
+      "name": "ArticlePage.tsx",
+      "filePath": "src/components/articles/ArticlePage.tsx",
+      "summary": "Article-detail presentation component rendering hero media, taxonomy, rich content, publication metadata, and related articles.",
+      "tags": [
+        "component",
+        "article",
+        "rich-content",
+        "presentation"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React server or client components within the Next.js App Router."
+    },
+    {
+      "id": "function:src/components/articles/ArticlePage.tsx:ArticlePage",
+      "type": "function",
+      "name": "ArticlePage",
+      "filePath": "src/components/articles/ArticlePage.tsx",
+      "lineRange": [
+        8,
+        94
+      ],
+      "summary": "Renders the article route from resolved CMS data.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/live-preview/NewsEventLivePreview.tsx",
+      "type": "file",
+      "name": "NewsEventLivePreview.tsx",
+      "filePath": "src/components/live-preview/NewsEventLivePreview.tsx",
+      "summary": "Client live-preview adapter that receives Payload draft updates, transforms them to the public detail model, and rerenders the story.",
+      "tags": [
+        "component",
+        "live-preview",
+        "payload",
+        "client-component"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React server or client components within the Next.js App Router."
+    },
+    {
+      "id": "function:src/components/live-preview/NewsEventLivePreview.tsx:NewsEventLivePreview",
+      "type": "function",
+      "name": "NewsEventLivePreview",
+      "filePath": "src/components/live-preview/NewsEventLivePreview.tsx",
+      "lineRange": [
+        12,
+        28
+      ],
+      "summary": "Renders the news event live preview user interface from normalized content data.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/news-events/NewsEventStory.tsx",
+      "type": "file",
+      "name": "NewsEventStory.tsx",
+      "filePath": "src/components/news-events/NewsEventStory.tsx",
+      "summary": "Detailed news and event presentation component covering badges, schedule and venue data, content actions, media, and body content.",
+      "tags": [
+        "component",
+        "news-events",
+        "presentation",
+        "content-actions"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React server or client components within the Next.js App Router."
+    },
+    {
+      "id": "function:src/components/news-events/NewsEventStory.tsx:NewsEventStory",
+      "type": "function",
+      "name": "NewsEventStory",
+      "filePath": "src/components/news-events/NewsEventStory.tsx",
+      "lineRange": [
+        15,
+        106
+      ],
+      "summary": "Renders the news event story user interface from normalized content data.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/reviews/ReviewArchivePage.tsx",
+      "type": "file",
+      "name": "ReviewArchivePage.tsx",
+      "filePath": "src/components/reviews/ReviewArchivePage.tsx",
+      "summary": "Review archive presentation component rendering taxonomy context and a list of published review cards.",
+      "tags": [
+        "component",
+        "review-archive",
+        "presentation",
+        "taxonomy"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React server or client components within the Next.js App Router."
+    },
+    {
+      "id": "function:src/components/reviews/ReviewArchivePage.tsx:ReviewArchivePage",
+      "type": "function",
+      "name": "ReviewArchivePage",
+      "filePath": "src/components/reviews/ReviewArchivePage.tsx",
+      "lineRange": [
+        6,
+        50
+      ],
+      "summary": "Renders the review archive route from resolved CMS data.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/app/(frontend)/articles/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/articles/[slug]/page.tsx:generateMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/articles/[slug]/page.tsx:generateMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/articles/[slug]/page.tsx:ArticleEntryPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/articles/[slug]/page.tsx:ArticleEntryPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/[slug]/page.tsx",
+      "target": "file:src/components/articles/ArticlePage.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/[slug]/page.tsx",
+      "target": "file:src/lib/contentEntries.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/category/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/articles/category/[slug]/page.tsx:generateMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/category/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/articles/category/[slug]/page.tsx:generateMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/category/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/articles/category/[slug]/page.tsx:ArticleCategoryArchiveEntryPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/category/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/articles/category/[slug]/page.tsx:ArticleCategoryArchiveEntryPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/category/[slug]/page.tsx",
+      "target": "file:src/components/articles/ArticleArchivePage.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/category/[slug]/page.tsx",
+      "target": "file:src/lib/contentEntries.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/tag/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/articles/tag/[slug]/page.tsx:generateMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/tag/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/articles/tag/[slug]/page.tsx:generateMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/tag/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/articles/tag/[slug]/page.tsx:ArticleTagArchiveEntryPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/tag/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/articles/tag/[slug]/page.tsx:ArticleTagArchiveEntryPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/tag/[slug]/page.tsx",
+      "target": "file:src/components/articles/ArticleArchivePage.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/articles/tag/[slug]/page.tsx",
+      "target": "file:src/lib/contentEntries.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/news-events/[slug]/page.tsx:generateMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/news-events/[slug]/page.tsx:generateMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/news-events/[slug]/page.tsx:NewsEventEntryPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/news-events/[slug]/page.tsx:NewsEventEntryPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/[slug]/page.tsx",
+      "target": "file:src/components/live-preview/NewsEventLivePreview.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/[slug]/page.tsx",
+      "target": "file:src/components/news-events/NewsEventStory.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/[slug]/page.tsx",
+      "target": "file:src/lib/newsEvents.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/[slug]/page.tsx",
+      "target": "file:src/lib/newsEventsMetadata.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/[slug]/page.tsx",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/page.tsx",
+      "target": "function:src/app/(frontend)/news-events/page.tsx:generateMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/page.tsx",
+      "target": "function:src/app/(frontend)/news-events/page.tsx:generateMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/page.tsx",
+      "target": "function:src/app/(frontend)/news-events/page.tsx:NewsEventsArchivePage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/page.tsx",
+      "target": "function:src/app/(frontend)/news-events/page.tsx:NewsEventsArchivePage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/page.tsx",
+      "target": "file:src/components/news-events/NewsEventsFeed.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/page.tsx",
+      "target": "file:src/lib/newsEvents.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/page.tsx",
+      "target": "file:src/lib/newsEventsMetadata.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/news-events/page.tsx",
+      "target": "file:src/lib/newsEventsShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/reviews/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/reviews/[slug]/page.tsx:generateMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/reviews/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/reviews/[slug]/page.tsx:generateMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/reviews/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/reviews/[slug]/page.tsx:ReviewEntryPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/reviews/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/reviews/[slug]/page.tsx:ReviewEntryPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/reviews/[slug]/page.tsx",
+      "target": "file:src/components/reviews/ReviewPage.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/reviews/[slug]/page.tsx",
+      "target": "file:src/lib/contentEntries.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/reviews/category/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/reviews/category/[slug]/page.tsx:generateMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/reviews/category/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/reviews/category/[slug]/page.tsx:generateMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/reviews/category/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/reviews/category/[slug]/page.tsx:ReviewCategoryArchiveEntryPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/reviews/category/[slug]/page.tsx",
+      "target": "function:src/app/(frontend)/reviews/category/[slug]/page.tsx:ReviewCategoryArchiveEntryPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/reviews/category/[slug]/page.tsx",
+      "target": "file:src/components/reviews/ReviewArchivePage.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/reviews/category/[slug]/page.tsx",
+      "target": "file:src/lib/contentEntries.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/api/forms/[slug]/submit/route.ts",
+      "target": "function:src/app/api/forms/[slug]/submit/route.ts:toSimpleFields",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/api/forms/[slug]/submit/route.ts",
+      "target": "function:src/app/api/forms/[slug]/submit/route.ts:POST",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/api/forms/[slug]/submit/route.ts",
+      "target": "function:src/app/api/forms/[slug]/submit/route.ts:POST",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/api/forms/[slug]/submit/route.ts",
+      "target": "file:src/lib/formNotifications.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/api/forms/[slug]/submit/route.ts",
+      "target": "file:src/lib/formSpamProtection.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/api/forms/[slug]/submit/route.ts",
+      "target": "file:src/lib/formSubmissionEvents.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/api/forms/[slug]/submit/route.ts",
+      "target": "file:src/lib/forms.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/api/forms/[slug]/submit/route.ts",
+      "target": "file:src/lib/reviewPromotion.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/api/forms/[slug]/submit/route.ts",
+      "target": "file:src/lib/reviews.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/api/forms/[slug]/submit/route.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/robots.ts",
+      "target": "function:src/app/robots.ts:robots",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/robots.ts",
+      "target": "function:src/app/robots.ts:robots",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/robots.ts",
+      "target": "file:src/lib/siteUrl.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/sitemap.ts",
+      "target": "function:src/app/sitemap.ts:isRouteEligibleForSitemap",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/sitemap.ts",
+      "target": "function:src/app/sitemap.ts:addEntry",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/sitemap.ts",
+      "target": "function:src/app/sitemap.ts:sitemap",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/sitemap.ts",
+      "target": "function:src/app/sitemap.ts:sitemap",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/sitemap.ts",
+      "target": "file:src/lib/pagePaths.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/sitemap.ts",
+      "target": "file:src/lib/seo.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/sitemap.ts",
+      "target": "file:src/lib/siteUrl.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/sitemap.ts",
+      "target": "file:src/lib/taxonomy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/sitemap.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/Component.tsx",
+      "target": "function:src/blocks/NewsEventsHighlights/Component.tsx:NewsEventsHighlightsBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/Component.tsx",
+      "target": "function:src/blocks/NewsEventsHighlights/Component.tsx:NewsEventsHighlightsBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/Component.tsx",
+      "target": "file:src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/Component.tsx",
+      "target": "file:src/lib/newsEvents.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/Component.tsx",
+      "target": "file:src/lib/newsEventsShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/articles/ArticleArchivePage.tsx",
+      "target": "function:src/components/articles/ArticleArchivePage.tsx:ArticleArchivePage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/articles/ArticleArchivePage.tsx",
+      "target": "function:src/components/articles/ArticleArchivePage.tsx:ArticleArchivePage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/articles/ArticlePage.tsx",
+      "target": "function:src/components/articles/ArticlePage.tsx:ArticlePage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/articles/ArticlePage.tsx",
+      "target": "function:src/components/articles/ArticlePage.tsx:ArticlePage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/articles/ArticlePage.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/articles/ArticlePage.tsx",
+      "target": "file:src/lib/taxonomy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/live-preview/NewsEventLivePreview.tsx",
+      "target": "function:src/components/live-preview/NewsEventLivePreview.tsx:NewsEventLivePreview",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/live-preview/NewsEventLivePreview.tsx",
+      "target": "function:src/components/live-preview/NewsEventLivePreview.tsx:NewsEventLivePreview",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/live-preview/NewsEventLivePreview.tsx",
+      "target": "file:src/components/news-events/NewsEventStory.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/live-preview/NewsEventLivePreview.tsx",
+      "target": "file:src/lib/newsEventsShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/news-events/NewsEventStory.tsx",
+      "target": "function:src/components/news-events/NewsEventStory.tsx:NewsEventStory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/news-events/NewsEventStory.tsx",
+      "target": "function:src/components/news-events/NewsEventStory.tsx:NewsEventStory",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/news-events/NewsEventStory.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/news-events/NewsEventStory.tsx",
+      "target": "file:src/components/ContentActions.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/news-events/NewsEventStory.tsx",
+      "target": "file:src/components/ui/badge.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/news-events/NewsEventStory.tsx",
+      "target": "file:src/lib/newsEventsShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/news-events/NewsEventStory.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/reviews/ReviewArchivePage.tsx",
+      "target": "function:src/components/reviews/ReviewArchivePage.tsx:ReviewArchivePage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/reviews/ReviewArchivePage.tsx",
+      "target": "function:src/components/reviews/ReviewArchivePage.tsx:ReviewArchivePage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/reviews/ReviewArchivePage.tsx",
+      "target": "file:src/lib/reviews.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

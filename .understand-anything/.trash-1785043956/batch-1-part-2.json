@@ -1,0 +1,2196 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/components/reviews/ReviewPage.tsx",
+      "type": "file",
+      "name": "ReviewPage.tsx",
+      "filePath": "src/components/reviews/ReviewPage.tsx",
+      "summary": "Review-detail presentation component rendering rating, reviewer identity, subject metadata, rich content, and related reviews.",
+      "tags": [
+        "component",
+        "reviews",
+        "presentation",
+        "rich-content"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React server or client components within the Next.js App Router."
+    },
+    {
+      "id": "function:src/components/reviews/ReviewPage.tsx:ReviewPage",
+      "type": "function",
+      "name": "ReviewPage",
+      "filePath": "src/components/reviews/ReviewPage.tsx",
+      "lineRange": [
+        8,
+        98
+      ],
+      "summary": "Renders the review route from resolved CMS data.",
+      "tags": [
+        "function",
+        "component",
+        "workflow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/lib/contentEntries.ts",
+      "type": "file",
+      "name": "contentEntries.ts",
+      "filePath": "src/lib/contentEntries.ts",
+      "summary": "Cached Payload data-access and SEO layer for articles, reviews, related content, and taxonomy archive pages.",
+      "tags": [
+        "service",
+        "content-query",
+        "seo",
+        "taxonomy",
+        "cache"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/lib/contentEntries.ts:toTaxonomyArchiveTerm",
+      "type": "function",
+      "name": "toTaxonomyArchiveTerm",
+      "filePath": "src/lib/contentEntries.ts",
+      "lineRange": [
+        50,
+        75
+      ],
+      "summary": "Transforms taxonomy archive term into the public application model.",
+      "tags": [
+        "function",
+        "utility",
+        "transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/contentEntries.ts:toManagedEntryMetadata",
+      "type": "function",
+      "name": "toManagedEntryMetadata",
+      "filePath": "src/lib/contentEntries.ts",
+      "lineRange": [
+        77,
+        137
+      ],
+      "summary": "Transforms managed entry metadata into the public application model.",
+      "tags": [
+        "function",
+        "utility",
+        "seo"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/contentEntries.ts:getArticleMetadataBySlug",
+      "type": "function",
+      "name": "getArticleMetadataBySlug",
+      "filePath": "src/lib/contentEntries.ts",
+      "lineRange": [
+        167,
+        182
+      ],
+      "summary": "Resolves article metadata by slug for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/contentEntries.ts:toTaxonomyArchiveMetadata",
+      "type": "function",
+      "name": "toTaxonomyArchiveMetadata",
+      "filePath": "src/lib/contentEntries.ts",
+      "lineRange": [
+        222,
+        282
+      ],
+      "summary": "Transforms taxonomy archive metadata into the public application model.",
+      "tags": [
+        "function",
+        "utility",
+        "seo"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/contentEntries.ts:toUniqueEntries",
+      "type": "function",
+      "name": "toUniqueEntries",
+      "filePath": "src/lib/contentEntries.ts",
+      "lineRange": [
+        322,
+        333
+      ],
+      "summary": "Transforms unique entries into the public application model.",
+      "tags": [
+        "function",
+        "utility",
+        "transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/contentEntries.ts:getArticleCategoryArchiveMetadataBySlug",
+      "type": "function",
+      "name": "getArticleCategoryArchiveMetadataBySlug",
+      "filePath": "src/lib/contentEntries.ts",
+      "lineRange": [
+        355,
+        364
+      ],
+      "summary": "Resolves article category archive metadata by slug for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/contentEntries.ts:getArticleTagArchiveMetadataBySlug",
+      "type": "function",
+      "name": "getArticleTagArchiveMetadataBySlug",
+      "filePath": "src/lib/contentEntries.ts",
+      "lineRange": [
+        386,
+        395
+      ],
+      "summary": "Resolves article tag archive metadata by slug for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/contentEntries.ts:getReviewMetadataBySlug",
+      "type": "function",
+      "name": "getReviewMetadataBySlug",
+      "filePath": "src/lib/contentEntries.ts",
+      "lineRange": [
+        452,
+        467
+      ],
+      "summary": "Resolves review metadata by slug for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/contentEntries.ts:getReviewCategoryArchiveMetadataBySlug",
+      "type": "function",
+      "name": "getReviewCategoryArchiveMetadataBySlug",
+      "filePath": "src/lib/contentEntries.ts",
+      "lineRange": [
+        489,
+        498
+      ],
+      "summary": "Resolves review category archive metadata by slug for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/formNotifications.ts",
+      "type": "file",
+      "name": "formNotifications.ts",
+      "filePath": "src/lib/formNotifications.ts",
+      "summary": "Builds safe plain-text and HTML form-notification emails and resolves configured recipient addresses.",
+      "tags": [
+        "service",
+        "notifications",
+        "email",
+        "serialization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/formNotifications.ts:getNotificationRecipients",
+      "type": "function",
+      "name": "getNotificationRecipients",
+      "filePath": "src/lib/formNotifications.ts",
+      "lineRange": [
+        20,
+        24
+      ],
+      "summary": "Resolves notification recipients for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/formNotifications.ts:buildFormNotificationEmail",
+      "type": "function",
+      "name": "buildFormNotificationEmail",
+      "filePath": "src/lib/formNotifications.ts",
+      "lineRange": [
+        26,
+        75
+      ],
+      "summary": "Builds form notification email from normalized form and content values.",
+      "tags": [
+        "function",
+        "utility",
+        "workflow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/lib/formSpamProtection.ts",
+      "type": "file",
+      "name": "formSpamProtection.ts",
+      "filePath": "src/lib/formSpamProtection.ts",
+      "summary": "Provides form spam defenses through honeypot detection, client IP extraction, and in-memory per-form rate limiting.",
+      "tags": [
+        "security",
+        "spam-protection",
+        "rate-limiting",
+        "forms"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/formSpamProtection.ts:getClientIPAddress",
+      "type": "function",
+      "name": "getClientIPAddress",
+      "filePath": "src/lib/formSpamProtection.ts",
+      "lineRange": [
+        24,
+        42
+      ],
+      "summary": "Resolves client ipaddress for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/formSpamProtection.ts:isSpamHoneypotTriggered",
+      "type": "function",
+      "name": "isSpamHoneypotTriggered",
+      "filePath": "src/lib/formSpamProtection.ts",
+      "lineRange": [
+        44,
+        48
+      ],
+      "summary": "Determines whether spam honeypot triggered satisfies the required application rules.",
+      "tags": [
+        "function",
+        "utility",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/formSpamProtection.ts:isRateLimited",
+      "type": "function",
+      "name": "isRateLimited",
+      "filePath": "src/lib/formSpamProtection.ts",
+      "lineRange": [
+        50,
+        67
+      ],
+      "summary": "Determines whether rate limited satisfies the required application rules.",
+      "tags": [
+        "function",
+        "utility",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/formSpamProtection.ts:recordSubmissionAttempt",
+      "type": "function",
+      "name": "recordSubmissionAttempt",
+      "filePath": "src/lib/formSpamProtection.ts",
+      "lineRange": [
+        69,
+        85
+      ],
+      "summary": "Records submission attempt for subsequent request protection decisions.",
+      "tags": [
+        "function",
+        "utility",
+        "service"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/formSubmissionEvents.ts",
+      "type": "file",
+      "name": "formSubmissionEvents.ts",
+      "filePath": "src/lib/formSubmissionEvents.ts",
+      "summary": "Defines the form-submission event contract and emits submissions to an optional asynchronous integration handler.",
+      "tags": [
+        "event-handler",
+        "forms",
+        "integration",
+        "type-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/formSubmissionEvents.ts:emitFormSubmissionEvent",
+      "type": "function",
+      "name": "emitFormSubmissionEvent",
+      "filePath": "src/lib/formSubmissionEvents.ts",
+      "lineRange": [
+        17,
+        21
+      ],
+      "summary": "Emits form submission event to the configured integration boundary.",
+      "tags": [
+        "function",
+        "utility",
+        "service"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/forms.ts",
+      "type": "file",
+      "name": "forms.ts",
+      "filePath": "src/lib/forms.ts",
+      "summary": "Defines form field and submission contracts plus normalization and validation utilities for definitions, values, contact details, and attribution metadata.",
+      "tags": [
+        "validation",
+        "forms",
+        "normalization",
+        "type-definition"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/lib/forms.ts:isTextLikeFormFieldType",
+      "type": "function",
+      "name": "isTextLikeFormFieldType",
+      "filePath": "src/lib/forms.ts",
+      "lineRange": [
+        71,
+        73
+      ],
+      "summary": "Determines whether text like form field type satisfies the required application rules.",
+      "tags": [
+        "function",
+        "utility",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/forms.ts:isSelectFormFieldType",
+      "type": "function",
+      "name": "isSelectFormFieldType",
+      "filePath": "src/lib/forms.ts",
+      "lineRange": [
+        75,
+        77
+      ],
+      "summary": "Determines whether select form field type satisfies the required application rules.",
+      "tags": [
+        "function",
+        "utility",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/forms.ts:normalizeFormSubmissionIntent",
+      "type": "function",
+      "name": "normalizeFormSubmissionIntent",
+      "filePath": "src/lib/forms.ts",
+      "lineRange": [
+        79,
+        85
+      ],
+      "summary": "Normalizes form submission intent into the canonical application representation.",
+      "tags": [
+        "function",
+        "utility",
+        "transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/forms.ts:isReviewFormSubmissionIntent",
+      "type": "function",
+      "name": "isReviewFormSubmissionIntent",
+      "filePath": "src/lib/forms.ts",
+      "lineRange": [
+        87,
+        89
+      ],
+      "summary": "Determines whether review form submission intent satisfies the required application rules.",
+      "tags": [
+        "function",
+        "utility",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/forms.ts:normalizeFormFieldName",
+      "type": "function",
+      "name": "normalizeFormFieldName",
+      "filePath": "src/lib/forms.ts",
+      "lineRange": [
+        91,
+        93
+      ],
+      "summary": "Normalizes form field name into the canonical application representation.",
+      "tags": [
+        "function",
+        "utility",
+        "transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/forms.ts:isValidFormFieldName",
+      "type": "function",
+      "name": "isValidFormFieldName",
+      "filePath": "src/lib/forms.ts",
+      "lineRange": [
+        95,
+        97
+      ],
+      "summary": "Determines whether valid form field name satisfies the required application rules.",
+      "tags": [
+        "function",
+        "utility",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/forms.ts:validateFormFieldDefinitions",
+      "type": "function",
+      "name": "validateFormFieldDefinitions",
+      "filePath": "src/lib/forms.ts",
+      "lineRange": [
+        99,
+        155
+      ],
+      "summary": "Validates form field definitions and returns normalized data or actionable field errors.",
+      "tags": [
+        "function",
+        "utility",
+        "validation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/forms.ts:validateFormSubmission",
+      "type": "function",
+      "name": "validateFormSubmission",
+      "filePath": "src/lib/forms.ts",
+      "lineRange": [
+        165,
+        218
+      ],
+      "summary": "Validates form submission and returns normalized data or actionable field errors.",
+      "tags": [
+        "function",
+        "utility",
+        "validation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/forms.ts:getFirstNormalizedStringValue",
+      "type": "function",
+      "name": "getFirstNormalizedStringValue",
+      "filePath": "src/lib/forms.ts",
+      "lineRange": [
+        220,
+        239
+      ],
+      "summary": "Resolves first normalized string value for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/forms.ts:getSubmissionContactMetadata",
+      "type": "function",
+      "name": "getSubmissionContactMetadata",
+      "filePath": "src/lib/forms.ts",
+      "lineRange": [
+        241,
+        259
+      ],
+      "summary": "Resolves submission contact metadata for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/forms.ts:normalizeFormSubmissionMetadata",
+      "type": "function",
+      "name": "normalizeFormSubmissionMetadata",
+      "filePath": "src/lib/forms.ts",
+      "lineRange": [
+        271,
+        283
+      ],
+      "summary": "Normalizes form submission metadata into the canonical application representation.",
+      "tags": [
+        "function",
+        "utility",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/newsEvents.ts",
+      "type": "file",
+      "name": "newsEvents.ts",
+      "filePath": "src/lib/newsEvents.ts",
+      "summary": "Payload data-access service for news and events, including highlights, filtered archives, detail lookup, preview retrieval, settings, and categories.",
+      "tags": [
+        "service",
+        "news-events",
+        "content-query",
+        "pagination",
+        "payload"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/lib/newsEvents.ts:currentOrUpcomingEventWhere",
+      "type": "function",
+      "name": "currentOrUpcomingEventWhere",
+      "filePath": "src/lib/newsEvents.ts",
+      "lineRange": [
+        62,
+        69
+      ],
+      "summary": "Builds the Payload query constraint for current or upcoming event.",
+      "tags": [
+        "function",
+        "utility",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEvents.ts:pastEventWhere",
+      "type": "function",
+      "name": "pastEventWhere",
+      "filePath": "src/lib/newsEvents.ts",
+      "lineRange": [
+        71,
+        78
+      ],
+      "summary": "Builds the Payload query constraint for past event.",
+      "tags": [
+        "function",
+        "utility",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEvents.ts:categoryWhere",
+      "type": "function",
+      "name": "categoryWhere",
+      "filePath": "src/lib/newsEvents.ts",
+      "lineRange": [
+        80,
+        90
+      ],
+      "summary": "Builds the Payload query constraint for category.",
+      "tags": [
+        "function",
+        "utility",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEvents.ts:toPublicPage",
+      "type": "function",
+      "name": "toPublicPage",
+      "filePath": "src/lib/newsEvents.ts",
+      "lineRange": [
+        92,
+        108
+      ],
+      "summary": "Renders the to public route from resolved CMS data.",
+      "tags": [
+        "function",
+        "utility",
+        "transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEvents.ts:fetchNewsEventsHighlights",
+      "type": "function",
+      "name": "fetchNewsEventsHighlights",
+      "filePath": "src/lib/newsEvents.ts",
+      "lineRange": [
+        110,
+        152
+      ],
+      "summary": "Queries Payload for news events highlights using explicit publication and pagination constraints.",
+      "tags": [
+        "function",
+        "utility",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEvents.ts:fetchNewsEventsArchivePage",
+      "type": "function",
+      "name": "fetchNewsEventsArchivePage",
+      "filePath": "src/lib/newsEvents.ts",
+      "lineRange": [
+        154,
+        173
+      ],
+      "summary": "Renders the fetch news events archive route from resolved CMS data.",
+      "tags": [
+        "function",
+        "utility",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEvents.ts:fetchEventsPage",
+      "type": "function",
+      "name": "fetchEventsPage",
+      "filePath": "src/lib/newsEvents.ts",
+      "lineRange": [
+        175,
+        212
+      ],
+      "summary": "Renders the fetch events route from resolved CMS data.",
+      "tags": [
+        "function",
+        "utility",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEvents.ts:fetchNewsEventBySlug",
+      "type": "function",
+      "name": "fetchNewsEventBySlug",
+      "filePath": "src/lib/newsEvents.ts",
+      "lineRange": [
+        214,
+        232
+      ],
+      "summary": "Queries Payload for news event by slug using explicit publication and pagination constraints.",
+      "tags": [
+        "function",
+        "utility",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEvents.ts:getNewsEventPreviewBySlug",
+      "type": "function",
+      "name": "getNewsEventPreviewBySlug",
+      "filePath": "src/lib/newsEvents.ts",
+      "lineRange": [
+        285,
+        297
+      ],
+      "summary": "Resolves news event preview by slug for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/newsEventsMetadata.ts",
+      "type": "file",
+      "name": "newsEventsMetadata.ts",
+      "filePath": "src/lib/newsEventsMetadata.ts",
+      "summary": "Generates archive and detail metadata plus schema.org structured data for public news and event entries.",
+      "tags": [
+        "seo",
+        "metadata",
+        "structured-data",
+        "news-events"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/newsEventsMetadata.ts:getNewsEventsArchiveMetadata",
+      "type": "function",
+      "name": "getNewsEventsArchiveMetadata",
+      "filePath": "src/lib/newsEventsMetadata.ts",
+      "lineRange": [
+        12,
+        39
+      ],
+      "summary": "Resolves news events archive metadata for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEventsMetadata.ts:getNewsEventDetailMetadata",
+      "type": "function",
+      "name": "getNewsEventDetailMetadata",
+      "filePath": "src/lib/newsEventsMetadata.ts",
+      "lineRange": [
+        41,
+        68
+      ],
+      "summary": "Resolves news event detail metadata for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEventsMetadata.ts:getNewsEventStructuredData",
+      "type": "function",
+      "name": "getNewsEventStructuredData",
+      "filePath": "src/lib/newsEventsMetadata.ts",
+      "lineRange": [
+        70,
+        99
+      ],
+      "summary": "Resolves news event structured data for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/newsEventsShared.ts",
+      "type": "file",
+      "name": "newsEventsShared.ts",
+      "filePath": "src/lib/newsEventsShared.ts",
+      "summary": "Shared public news and event models and transformations for dates, filters, pagination, interleaving, cards, and detail views.",
+      "tags": [
+        "utility",
+        "news-events",
+        "transformation",
+        "pagination",
+        "type-definition"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/lib/newsEventsShared.ts:formatDate",
+      "type": "function",
+      "name": "formatDate",
+      "filePath": "src/lib/newsEventsShared.ts",
+      "lineRange": [
+        108,
+        120
+      ],
+      "summary": "Formats date for safe public presentation.",
+      "tags": [
+        "function",
+        "utility",
+        "transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEventsShared.ts:formatNewsEventDate",
+      "type": "function",
+      "name": "formatNewsEventDate",
+      "filePath": "src/lib/newsEventsShared.ts",
+      "lineRange": [
+        122,
+        122
+      ],
+      "summary": "Formats news event date for safe public presentation.",
+      "tags": [
+        "function",
+        "utility",
+        "transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEventsShared.ts:formatNewsEventDateTime",
+      "type": "function",
+      "name": "formatNewsEventDateTime",
+      "filePath": "src/lib/newsEventsShared.ts",
+      "lineRange": [
+        124,
+        125
+      ],
+      "summary": "Formats news event date time for safe public presentation.",
+      "tags": [
+        "function",
+        "utility",
+        "transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEventsShared.ts:normalizeHighlightsItemCount",
+      "type": "function",
+      "name": "normalizeHighlightsItemCount",
+      "filePath": "src/lib/newsEventsShared.ts",
+      "lineRange": [
+        127,
+        130
+      ],
+      "summary": "Normalizes highlights item count into the canonical application representation.",
+      "tags": [
+        "function",
+        "utility",
+        "transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEventsShared.ts:normalizeNewsEventsPageSize",
+      "type": "function",
+      "name": "normalizeNewsEventsPageSize",
+      "filePath": "src/lib/newsEventsShared.ts",
+      "lineRange": [
+        132,
+        135
+      ],
+      "summary": "Normalizes news events page size into the canonical application representation.",
+      "tags": [
+        "function",
+        "utility",
+        "transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEventsShared.ts:parseNewsEventsSearchParams",
+      "type": "function",
+      "name": "parseNewsEventsSearchParams",
+      "filePath": "src/lib/newsEventsShared.ts",
+      "lineRange": [
+        137,
+        156
+      ],
+      "summary": "Implements parse news events search params for this module's content workflow.",
+      "tags": [
+        "function",
+        "utility",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEventsShared.ts:interleaveNewsEvents",
+      "type": "function",
+      "name": "interleaveNewsEvents",
+      "filePath": "src/lib/newsEventsShared.ts",
+      "lineRange": [
+        158,
+        204
+      ],
+      "summary": "Interleaves news and event cards deterministically while respecting the requested result limit.",
+      "tags": [
+        "function",
+        "utility",
+        "transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEventsShared.ts:toPublicNewsEventCard",
+      "type": "function",
+      "name": "toPublicNewsEventCard",
+      "filePath": "src/lib/newsEventsShared.ts",
+      "lineRange": [
+        210,
+        261
+      ],
+      "summary": "Transforms public news event card into the public application model.",
+      "tags": [
+        "function",
+        "utility",
+        "transformation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/newsEventsShared.ts:toPublicNewsEventDetail",
+      "type": "function",
+      "name": "toPublicNewsEventDetail",
+      "filePath": "src/lib/newsEventsShared.ts",
+      "lineRange": [
+        263,
+        294
+      ],
+      "summary": "Transforms public news event detail into the public application model.",
+      "tags": [
+        "function",
+        "utility",
+        "transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEventsShared.ts:createEmptyNewsEventsPage",
+      "type": "function",
+      "name": "createEmptyNewsEventsPage",
+      "filePath": "src/lib/newsEventsShared.ts",
+      "lineRange": [
+        296,
+        302
+      ],
+      "summary": "Renders the create empty news events route from resolved CMS data.",
+      "tags": [
+        "function",
+        "utility",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/reviewPromotion.ts",
+      "type": "file",
+      "name": "reviewPromotion.ts",
+      "filePath": "src/lib/reviewPromotion.ts",
+      "summary": "Promotes validated review-form submissions into linked Payload review drafts, updating an existing review when appropriate.",
+      "tags": [
+        "service",
+        "reviews",
+        "forms",
+        "data-transformation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/reviewPromotion.ts:normalizeRelationshipID",
+      "type": "function",
+      "name": "normalizeRelationshipID",
+      "filePath": "src/lib/reviewPromotion.ts",
+      "lineRange": [
+        5,
+        27
+      ],
+      "summary": "Normalizes relationship id into the canonical application representation.",
+      "tags": [
+        "function",
+        "utility",
+        "transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/reviewPromotion.ts:upsertReviewFromSubmission",
+      "type": "function",
+      "name": "upsertReviewFromSubmission",
+      "filePath": "src/lib/reviewPromotion.ts",
+      "lineRange": [
+        29,
+        74
+      ],
+      "summary": "Creates or updates review from submission while preserving its source relationship.",
+      "tags": [
+        "function",
+        "utility",
+        "service"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/reviews.ts",
+      "type": "file",
+      "name": "reviews.ts",
+      "filePath": "src/lib/reviews.ts",
+      "summary": "Normalizes and validates public review submissions and derives safe display names and titles for review records.",
+      "tags": [
+        "validation",
+        "reviews",
+        "normalization",
+        "forms"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/reviews.ts:deriveReviewTitle",
+      "type": "function",
+      "name": "deriveReviewTitle",
+      "filePath": "src/lib/reviews.ts",
+      "lineRange": [
+        35,
+        53
+      ],
+      "summary": "Derives review title from normalized review values and fallbacks.",
+      "tags": [
+        "function",
+        "utility",
+        "transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/reviews.ts:getReviewDisplayName",
+      "type": "function",
+      "name": "getReviewDisplayName",
+      "filePath": "src/lib/reviews.ts",
+      "lineRange": [
+        55,
+        73
+      ],
+      "summary": "Resolves review display name for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/reviews.ts:validateReviewSubmission",
+      "type": "function",
+      "name": "validateReviewSubmission",
+      "filePath": "src/lib/reviews.ts",
+      "lineRange": [
+        75,
+        130
+      ],
+      "summary": "Validates review submission and returns normalized data or actionable field errors.",
+      "tags": [
+        "function",
+        "utility",
+        "validation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/lib/siteUrl.ts",
+      "type": "file",
+      "name": "siteUrl.ts",
+      "filePath": "src/lib/siteUrl.ts",
+      "summary": "Resolves the canonical site origin from environment settings and converts relative application paths into absolute URLs.",
+      "tags": [
+        "utility",
+        "url",
+        "configuration",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/siteUrl.ts:getSiteURL",
+      "type": "function",
+      "name": "getSiteURL",
+      "filePath": "src/lib/siteUrl.ts",
+      "lineRange": [
+        3,
+        15
+      ],
+      "summary": "Resolves site url for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/siteUrl.ts:toAbsoluteSiteUrl",
+      "type": "function",
+      "name": "toAbsoluteSiteUrl",
+      "filePath": "src/lib/siteUrl.ts",
+      "lineRange": [
+        17,
+        19
+      ],
+      "summary": "Transforms absolute site url into the public application model.",
+      "tags": [
+        "function",
+        "utility",
+        "transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/taxonomy.ts",
+      "type": "file",
+      "name": "taxonomy.ts",
+      "filePath": "src/lib/taxonomy.ts",
+      "summary": "Normalizes Payload taxonomy relationships into stable term objects, term lists, and relationship identifiers.",
+      "tags": [
+        "utility",
+        "taxonomy",
+        "normalization",
+        "payload"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/taxonomy.ts:getTaxonomyTerm",
+      "type": "function",
+      "name": "getTaxonomyTerm",
+      "filePath": "src/lib/taxonomy.ts",
+      "lineRange": [
+        10,
+        37
+      ],
+      "summary": "Resolves taxonomy term for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/taxonomy.ts:getTaxonomyTerms",
+      "type": "function",
+      "name": "getTaxonomyTerms",
+      "filePath": "src/lib/taxonomy.ts",
+      "lineRange": [
+        39,
+        47
+      ],
+      "summary": "Resolves taxonomy terms for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/taxonomy.ts:getTaxonomyRelationshipIDs",
+      "type": "function",
+      "name": "getTaxonomyRelationshipIDs",
+      "filePath": "src/lib/taxonomy.ts",
+      "lineRange": [
+        49,
+        63
+      ],
+      "summary": "Resolves taxonomy relationship ids for the current content or request context.",
+      "tags": [
+        "function",
+        "utility",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/news-event-story.int.spec.tsx",
+      "type": "file",
+      "name": "news-event-story.int.spec.tsx",
+      "filePath": "tests/int/news-event-story.int.spec.tsx",
+      "summary": "Integration tests for news and event story rendering, including event metadata, content actions, spacing, and news-specific behavior.",
+      "tags": [
+        "test",
+        "integration-test",
+        "news-events",
+        "component"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React server or client components within the Next.js App Router."
+    },
+    {
+      "id": "file:tests/int/news-events-data.int.spec.ts",
+      "type": "file",
+      "name": "news-events-data.int.spec.ts",
+      "filePath": "tests/int/news-events-data.int.spec.ts",
+      "summary": "Integration tests for public news and event data helpers, especially deterministic interleaving and content-type ordering.",
+      "tags": [
+        "test",
+        "integration-test",
+        "news-events",
+        "data-transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/int/news-events-data.int.spec.ts:card",
+      "type": "function",
+      "name": "card",
+      "filePath": "tests/int/news-events-data.int.spec.ts",
+      "lineRange": [
+        10,
+        20
+      ],
+      "summary": "Creates compact news or event card fixtures for integration tests.",
+      "tags": [
+        "function",
+        "test-helper",
+        "workflow"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/components/reviews/ReviewPage.tsx",
+      "target": "function:src/components/reviews/ReviewPage.tsx:ReviewPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/reviews/ReviewPage.tsx",
+      "target": "function:src/components/reviews/ReviewPage.tsx:ReviewPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/reviews/ReviewPage.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/reviews/ReviewPage.tsx",
+      "target": "file:src/lib/reviews.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/reviews/ReviewPage.tsx",
+      "target": "file:src/lib/taxonomy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "function:src/lib/contentEntries.ts:toTaxonomyArchiveTerm",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "function:src/lib/contentEntries.ts:toManagedEntryMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "function:src/lib/contentEntries.ts:getArticleMetadataBySlug",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "function:src/lib/contentEntries.ts:getArticleMetadataBySlug",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "function:src/lib/contentEntries.ts:toTaxonomyArchiveMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "function:src/lib/contentEntries.ts:toUniqueEntries",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "function:src/lib/contentEntries.ts:getArticleCategoryArchiveMetadataBySlug",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "function:src/lib/contentEntries.ts:getArticleCategoryArchiveMetadataBySlug",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "function:src/lib/contentEntries.ts:getArticleTagArchiveMetadataBySlug",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "function:src/lib/contentEntries.ts:getArticleTagArchiveMetadataBySlug",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "function:src/lib/contentEntries.ts:getReviewMetadataBySlug",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "function:src/lib/contentEntries.ts:getReviewMetadataBySlug",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "function:src/lib/contentEntries.ts:getReviewCategoryArchiveMetadataBySlug",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "function:src/lib/contentEntries.ts:getReviewCategoryArchiveMetadataBySlug",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "file:src/lib/seo.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "file:src/lib/siteUrl.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "file:src/lib/taxonomy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/contentEntries.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/formNotifications.ts",
+      "target": "function:src/lib/formNotifications.ts:getNotificationRecipients",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/formNotifications.ts",
+      "target": "function:src/lib/formNotifications.ts:getNotificationRecipients",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/formNotifications.ts",
+      "target": "function:src/lib/formNotifications.ts:buildFormNotificationEmail",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/formNotifications.ts",
+      "target": "function:src/lib/formNotifications.ts:buildFormNotificationEmail",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/formSpamProtection.ts",
+      "target": "function:src/lib/formSpamProtection.ts:getClientIPAddress",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/formSpamProtection.ts",
+      "target": "function:src/lib/formSpamProtection.ts:getClientIPAddress",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/formSpamProtection.ts",
+      "target": "function:src/lib/formSpamProtection.ts:isSpamHoneypotTriggered",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/formSpamProtection.ts",
+      "target": "function:src/lib/formSpamProtection.ts:isSpamHoneypotTriggered",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/formSpamProtection.ts",
+      "target": "function:src/lib/formSpamProtection.ts:isRateLimited",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/formSpamProtection.ts",
+      "target": "function:src/lib/formSpamProtection.ts:isRateLimited",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/formSpamProtection.ts",
+      "target": "function:src/lib/formSpamProtection.ts:recordSubmissionAttempt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/formSpamProtection.ts",
+      "target": "function:src/lib/formSpamProtection.ts:recordSubmissionAttempt",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/formSpamProtection.ts",
+      "target": "file:src/lib/forms.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/formSubmissionEvents.ts",
+      "target": "function:src/lib/formSubmissionEvents.ts:emitFormSubmissionEvent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/formSubmissionEvents.ts",
+      "target": "function:src/lib/formSubmissionEvents.ts:emitFormSubmissionEvent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:isTextLikeFormFieldType",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:isTextLikeFormFieldType",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:isSelectFormFieldType",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:isSelectFormFieldType",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:normalizeFormSubmissionIntent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:normalizeFormSubmissionIntent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:isReviewFormSubmissionIntent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:isReviewFormSubmissionIntent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:normalizeFormFieldName",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:normalizeFormFieldName",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:isValidFormFieldName",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:isValidFormFieldName",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:validateFormFieldDefinitions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:validateFormFieldDefinitions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:validateFormSubmission",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:validateFormSubmission",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:getFirstNormalizedStringValue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:getSubmissionContactMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:getSubmissionContactMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:normalizeFormSubmissionMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/forms.ts",
+      "target": "function:src/lib/forms.ts:normalizeFormSubmissionMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "function:src/lib/newsEvents.ts:currentOrUpcomingEventWhere",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "function:src/lib/newsEvents.ts:currentOrUpcomingEventWhere",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "function:src/lib/newsEvents.ts:pastEventWhere",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "function:src/lib/newsEvents.ts:pastEventWhere",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "function:src/lib/newsEvents.ts:categoryWhere",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "function:src/lib/newsEvents.ts:toPublicPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "function:src/lib/newsEvents.ts:fetchNewsEventsHighlights",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "function:src/lib/newsEvents.ts:fetchNewsEventsHighlights",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "function:src/lib/newsEvents.ts:fetchNewsEventsArchivePage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "function:src/lib/newsEvents.ts:fetchNewsEventsArchivePage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "function:src/lib/newsEvents.ts:fetchEventsPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "function:src/lib/newsEvents.ts:fetchNewsEventBySlug",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "function:src/lib/newsEvents.ts:fetchNewsEventBySlug",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "function:src/lib/newsEvents.ts:getNewsEventPreviewBySlug",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "function:src/lib/newsEvents.ts:getNewsEventPreviewBySlug",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "file:src/lib/newsEventsShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "file:src/lib/taxonomy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/newsEvents.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/newsEventsMetadata.ts",
+      "target": "function:src/lib/newsEventsMetadata.ts:getNewsEventsArchiveMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEventsMetadata.ts",
+      "target": "function:src/lib/newsEventsMetadata.ts:getNewsEventsArchiveMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEventsMetadata.ts",
+      "target": "function:src/lib/newsEventsMetadata.ts:getNewsEventDetailMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEventsMetadata.ts",
+      "target": "function:src/lib/newsEventsMetadata.ts:getNewsEventDetailMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEventsMetadata.ts",
+      "target": "function:src/lib/newsEventsMetadata.ts:getNewsEventStructuredData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEventsMetadata.ts",
+      "target": "function:src/lib/newsEventsMetadata.ts:getNewsEventStructuredData",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEventsMetadata.ts",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/newsEventsMetadata.ts",
+      "target": "file:src/lib/newsEventsShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/newsEventsMetadata.ts",
+      "target": "file:src/lib/seo.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/newsEventsMetadata.ts",
+      "target": "file:src/lib/siteUrl.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:formatDate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:formatNewsEventDate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:formatNewsEventDate",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:formatNewsEventDateTime",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:formatNewsEventDateTime",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:normalizeHighlightsItemCount",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:normalizeHighlightsItemCount",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:normalizeNewsEventsPageSize",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:normalizeNewsEventsPageSize",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:parseNewsEventsSearchParams",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:parseNewsEventsSearchParams",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:interleaveNewsEvents",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:interleaveNewsEvents",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:toPublicNewsEventCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:toPublicNewsEventCard",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:toPublicNewsEventDetail",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:toPublicNewsEventDetail",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:createEmptyNewsEventsPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "function:src/lib/newsEventsShared.ts:createEmptyNewsEventsPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/newsEventsShared.ts",
+      "target": "file:src/lib/taxonomy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/reviewPromotion.ts",
+      "target": "function:src/lib/reviewPromotion.ts:normalizeRelationshipID",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviewPromotion.ts",
+      "target": "function:src/lib/reviewPromotion.ts:upsertReviewFromSubmission",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviewPromotion.ts",
+      "target": "function:src/lib/reviewPromotion.ts:upsertReviewFromSubmission",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/reviewPromotion.ts",
+      "target": "file:src/lib/reviews.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/reviews.ts",
+      "target": "function:src/lib/reviews.ts:deriveReviewTitle",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviews.ts",
+      "target": "function:src/lib/reviews.ts:getReviewDisplayName",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviews.ts",
+      "target": "function:src/lib/reviews.ts:getReviewDisplayName",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/reviews.ts",
+      "target": "function:src/lib/reviews.ts:validateReviewSubmission",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviews.ts",
+      "target": "function:src/lib/reviews.ts:validateReviewSubmission",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/siteUrl.ts",
+      "target": "function:src/lib/siteUrl.ts:getSiteURL",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/siteUrl.ts",
+      "target": "function:src/lib/siteUrl.ts:getSiteURL",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/siteUrl.ts",
+      "target": "function:src/lib/siteUrl.ts:toAbsoluteSiteUrl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/siteUrl.ts",
+      "target": "function:src/lib/siteUrl.ts:toAbsoluteSiteUrl",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/taxonomy.ts",
+      "target": "function:src/lib/taxonomy.ts:getTaxonomyTerm",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/taxonomy.ts",
+      "target": "function:src/lib/taxonomy.ts:getTaxonomyTerm",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/taxonomy.ts",
+      "target": "function:src/lib/taxonomy.ts:getTaxonomyTerms",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/taxonomy.ts",
+      "target": "function:src/lib/taxonomy.ts:getTaxonomyTerms",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/taxonomy.ts",
+      "target": "function:src/lib/taxonomy.ts:getTaxonomyRelationshipIDs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/taxonomy.ts",
+      "target": "function:src/lib/taxonomy.ts:getTaxonomyRelationshipIDs",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/int/news-event-story.int.spec.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/news-event-story.int.spec.tsx",
+      "target": "file:src/components/news-events/NewsEventStory.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/news-event-story.int.spec.tsx",
+      "target": "file:src/lib/newsEventsShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/news-events-data.int.spec.ts",
+      "target": "function:tests/int/news-events-data.int.spec.ts:card",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/int/news-events-data.int.spec.ts",
+      "target": "file:src/lib/newsEventsShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

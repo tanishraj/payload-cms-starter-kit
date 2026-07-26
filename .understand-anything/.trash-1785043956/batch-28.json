@@ -1,0 +1,47 @@
+{
+  "nodes": [
+    {
+      "id": "file:vitest.config.mts",
+      "type": "file",
+      "name": "vitest.config.mts",
+      "filePath": "vitest.config.mts",
+      "summary": "Configures Vitest integration tests with jsdom, React and TypeScript path plugins, the setup module, and a server-only test alias.",
+      "tags": [
+        "configuration",
+        "test",
+        "vitest",
+        "jsdom"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:vitest.setup.ts",
+      "type": "file",
+      "name": "vitest.setup.ts",
+      "filePath": "vitest.setup.ts",
+      "summary": "Loads environment variables before Vitest integration suites execute.",
+      "tags": [
+        "test-setup",
+        "environment",
+        "vitest"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:vitest.config.mts",
+      "target": "file:vitest.setup.ts",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:vitest.config.mts",
+      "target": "file:tests/helpers/server-only.ts",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

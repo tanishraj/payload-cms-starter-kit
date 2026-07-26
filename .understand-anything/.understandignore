@@ -12,6 +12,7 @@ out/
 .vscode/
 .agents/
 .codex/
+.understand-anything/
 
 # Generated artifacts and lockfiles
 tsconfig.tsbuildinfo

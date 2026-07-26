@@ -1,220 +1,1184 @@
 {
-  "projectName": "payload-cms-next-tailwind-shadcn-starter-kit",
-  "description": "A blank template to get started with Payload 3.0",
+  "name": "payload-cms-next-tailwind-shadcn-starter-kit",
+  "description": "An editorial-first marketing CMS starter built on Payload CMS, Next.js, React, and Tailwind CSS for one client website at a time, with content modeling, forms, SEO, editorial governance, capability-based admin access, MongoDB, configurable media storage, and optional Resend email. Note: this project has over 100 source files; consider scoping analysis to a subdirectory for faster results.",
   "languages": [
-    "typescript",
+    "config",
     "css",
-    "markdown",
+    "dockerfile",
+    "javascript",
     "json",
+    "markdown",
+    "mts",
+    "typescript",
+    "unknown",
     "yaml"
   ],
   "frameworks": [
+    "Docker",
+    "Docker Compose",
     "Next.js",
     "Payload CMS",
     "React",
     "Tailwind CSS",
-    "shadcn/ui",
-    "SQLite",
-    "Vitest",
-    "Playwright"
+    "Vitest"
   ],
   "files": [
     {
       "path": ".env.example",
-      "language": "example",
-      "sizeLines": 8,
+      "language": "config",
+      "sizeLines": 33,
       "fileCategory": "config"
-    },
-    {
-      "path": ".gitignore",
-      "language": "unknown",
-      "sizeLines": 51,
-      "fileCategory": "code"
     },
     {
       "path": ".npmrc",
       "language": "unknown",
-      "sizeLines": 1,
-      "fileCategory": "config"
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": ".pnpmfile.mjs",
+      "language": "javascript",
+      "sizeLines": 3,
+      "fileCategory": "code"
     },
     {
       "path": ".prettierrc.json",
       "language": "json",
-      "sizeLines": 7,
+      "sizeLines": 6,
       "fileCategory": "config"
     },
     {
       "path": ".yarnrc",
       "language": "unknown",
-      "sizeLines": 2,
-      "fileCategory": "config"
+      "sizeLines": 1,
+      "fileCategory": "code"
     },
     {
       "path": "AGENTS.md",
       "language": "markdown",
-      "sizeLines": 5,
+      "sizeLines": 4,
       "fileCategory": "docs"
     },
     {
       "path": "Dockerfile",
       "language": "dockerfile",
-      "sizeLines": 72,
+      "sizeLines": 71,
       "fileCategory": "infra"
     },
     {
       "path": "README.md",
       "language": "markdown",
-      "sizeLines": 68,
+      "sizeLines": 119,
       "fileCategory": "docs"
     },
     {
       "path": "SKILL.md",
       "language": "markdown",
-      "sizeLines": 19,
+      "sizeLines": 18,
       "fileCategory": "docs"
     },
     {
       "path": "components.json",
       "language": "json",
-      "sizeLines": 33,
+      "sizeLines": 32,
       "fileCategory": "config"
     },
     {
       "path": "docker-compose.yml",
       "language": "yaml",
-      "sizeLines": 44,
+      "sizeLines": 41,
       "fileCategory": "infra"
+    },
+    {
+      "path": "docs/architecture/content-model-map.md",
+      "language": "markdown",
+      "sizeLines": 62,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/README.md",
+      "language": "markdown",
+      "sizeLines": 79,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/articles.md",
+      "language": "markdown",
+      "sizeLines": 67,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/categories.md",
+      "language": "markdown",
+      "sizeLines": 59,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/footers.md",
+      "language": "markdown",
+      "sizeLines": 66,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/form-submissions.md",
+      "language": "markdown",
+      "sizeLines": 76,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/forms.md",
+      "language": "markdown",
+      "sizeLines": 78,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/headers.md",
+      "language": "markdown",
+      "sizeLines": 64,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/links.md",
+      "language": "markdown",
+      "sizeLines": 62,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/media.md",
+      "language": "markdown",
+      "sizeLines": 63,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/operational-audit-events.md",
+      "language": "markdown",
+      "sizeLines": 72,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/pages.md",
+      "language": "markdown",
+      "sizeLines": 62,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/redirects.md",
+      "language": "markdown",
+      "sizeLines": 65,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/reviews.md",
+      "language": "markdown",
+      "sizeLines": 65,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/seo-settings.md",
+      "language": "markdown",
+      "sizeLines": 74,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/site-defaults.md",
+      "language": "markdown",
+      "sizeLines": 72,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/site-settings.md",
+      "language": "markdown",
+      "sizeLines": 74,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/system-modes.md",
+      "language": "markdown",
+      "sizeLines": 71,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/system-pages.md",
+      "language": "markdown",
+      "sizeLines": 67,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/tags.md",
+      "language": "markdown",
+      "sizeLines": 58,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/theme-settings.md",
+      "language": "markdown",
+      "sizeLines": 63,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/users.md",
+      "language": "markdown",
+      "sizeLines": 81,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/work-queue.md",
+      "language": "markdown",
+      "sizeLines": 77,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/operations/editorial-governance.md",
+      "language": "markdown",
+      "sizeLines": 28,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/operations/mongodb-deployment.md",
+      "language": "markdown",
+      "sizeLines": 52,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/operations/starter-clone-checklist.md",
+      "language": "markdown",
+      "sizeLines": 56,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-07-cms-foundation-audit.md",
+      "language": "markdown",
+      "sizeLines": 467,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-07-cms-foundation-remediation-plan.md",
+      "language": "markdown",
+      "sizeLines": 679,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-08-articles-reviews-implementation-plan.md",
+      "language": "markdown",
+      "sizeLines": 1413,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-08-editorial-governance-plan.md",
+      "language": "markdown",
+      "sizeLines": 1771,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-08-review-intake-promotion.md",
+      "language": "markdown",
+      "sizeLines": 67,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-08-vercel-postgres-runtime-plan.md",
+      "language": "markdown",
+      "sizeLines": 655,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-form-submissions-lead-operations.md",
+      "language": "markdown",
+      "sizeLines": 67,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-homepage-e2e-seeding.md",
+      "language": "markdown",
+      "sizeLines": 81,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-media-governance.md",
+      "language": "markdown",
+      "sizeLines": 72,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-operator-guides.md",
+      "language": "markdown",
+      "sizeLines": 534,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-playwright-readiness-route.md",
+      "language": "markdown",
+      "sizeLines": 56,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-playwright-sqlite-worker-serialization.md",
+      "language": "markdown",
+      "sizeLines": 67,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-pnpm-startup-contract-fix.md",
+      "language": "markdown",
+      "sizeLines": 59,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-publish-queue-safety-implementation.md",
+      "language": "markdown",
+      "sizeLines": 385,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-role-capability-model.md",
+      "language": "markdown",
+      "sizeLines": 783,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-seo-operations-completeness.md",
+      "language": "markdown",
+      "sizeLines": 368,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-starter-productization-and-handoff.md",
+      "language": "markdown",
+      "sizeLines": 464,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-taxonomy-and-content-organization.md",
+      "language": "markdown",
+      "sizeLines": 325,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-work-queue-implementation.md",
+      "language": "markdown",
+      "sizeLines": 728,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-10-mongodb-runtime-reset.md",
+      "language": "markdown",
+      "sizeLines": 602,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-11-admin-ia-simplification.md",
+      "language": "markdown",
+      "sizeLines": 599,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-11-system-mode-homepage-fallback.md",
+      "language": "markdown",
+      "sizeLines": 160,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-11-system-page-block-architecture-refactor.md",
+      "language": "markdown",
+      "sizeLines": 630,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-11-system-page-default-blocks.md",
+      "language": "markdown",
+      "sizeLines": 107,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-12-block-cleanup.md",
+      "language": "markdown",
+      "sizeLines": 159,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-feature-spotlight-block.md",
+      "language": "markdown",
+      "sizeLines": 781,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-footer56-footer-preset.md",
+      "language": "markdown",
+      "sizeLines": 994,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-footer56-legal-tab-terms.md",
+      "language": "markdown",
+      "sizeLines": 248,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-footer56-site-settings-integration.md",
+      "language": "markdown",
+      "sizeLines": 507,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-header-navbar-block.md",
+      "language": "markdown",
+      "sizeLines": 862,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-hero-institutional-block.md",
+      "language": "markdown",
+      "sizeLines": 748,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-stats-strip-block.md",
+      "language": "markdown",
+      "sizeLines": 736,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-14-block-components-theme-normalization.md",
+      "language": "markdown",
+      "sizeLines": 119,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-14-shared-block-appearance-controls.md",
+      "language": "markdown",
+      "sizeLines": 643,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-14-website-theme-registry.md",
+      "language": "markdown",
+      "sizeLines": 336,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-17-block-thumbnail-generation.md",
+      "language": "markdown",
+      "sizeLines": 473,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-17-feature-matrix-block.md",
+      "language": "markdown",
+      "sizeLines": 520,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-feature-matrix-image-height.md",
+      "language": "markdown",
+      "sizeLines": 86,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-feature-matrix-rename.md",
+      "language": "markdown",
+      "sizeLines": 223,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-gallery-showcase-block.md",
+      "language": "markdown",
+      "sizeLines": 1137,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-sizing.md",
+      "language": "markdown",
+      "sizeLines": 137,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-three-card.md",
+      "language": "markdown",
+      "sizeLines": 248,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-hero-banner-rename.md",
+      "language": "markdown",
+      "sizeLines": 273,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-mobile-block-container-spacing.md",
+      "language": "markdown",
+      "sizeLines": 167,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-profile-carousel-block.md",
+      "language": "markdown",
+      "sizeLines": 323,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-qa-accordion-rename.md",
+      "language": "markdown",
+      "sizeLines": 371,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-rating-spotlight-block.md",
+      "language": "markdown",
+      "sizeLines": 863,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-review-feed-block.md",
+      "language": "markdown",
+      "sizeLines": 462,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-review-form-browser-hydration.md",
+      "language": "markdown",
+      "sizeLines": 211,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-content-highlights-block.md",
+      "language": "markdown",
+      "sizeLines": 607,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-image-mosaic-block.md",
+      "language": "markdown",
+      "sizeLines": 1465,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-image-mosaic-css-hover.md",
+      "language": "markdown",
+      "sizeLines": 270,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-image-mosaic-hover-coverage.md",
+      "language": "markdown",
+      "sizeLines": 143,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-image-mosaic-mobile-overlay.md",
+      "language": "markdown",
+      "sizeLines": 225,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-image-mosaic-optional-actions.md",
+      "language": "markdown",
+      "sizeLines": 501,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-live-preview-server-boundary.md",
+      "language": "markdown",
+      "sizeLines": 621,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-19-review-feed-container-width.md",
+      "language": "markdown",
+      "sizeLines": 79,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-20-news-event-story-layout.md",
+      "language": "markdown",
+      "sizeLines": 59,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-20-news-events-highlights-presentation.md",
+      "language": "markdown",
+      "sizeLines": 69,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-20-news-events-system.md",
+      "language": "markdown",
+      "sizeLines": 1699,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-20-regular-block-responsive-spacing.md",
+      "language": "markdown",
+      "sizeLines": 192,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-21-content-highlights-layouts.md",
+      "language": "markdown",
+      "sizeLines": 877,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/reviews/2026-07-07-cms-foundation-audit.md",
+      "language": "markdown",
+      "sizeLines": 175,
+      "fileCategory": "docs"
     },
     {
       "path": "docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md",
       "language": "markdown",
-      "sizeLines": 264,
+      "sizeLines": 263,
       "fileCategory": "docs"
     },
     {
       "path": "docs/superpowers/specs/2026-07-04-navigation-links-and-menus-design.md",
       "language": "markdown",
-      "sizeLines": 412,
+      "sizeLines": 411,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-07-cms-foundation-audit-design.md",
+      "language": "markdown",
+      "sizeLines": 242,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-08-articles-reviews-design.md",
+      "language": "markdown",
+      "sizeLines": 415,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-08-editorial-first-cms-design.md",
+      "language": "markdown",
+      "sizeLines": 370,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-08-review-intake-promotion-design.md",
+      "language": "markdown",
+      "sizeLines": 290,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-08-vercel-postgres-runtime-design.md",
+      "language": "markdown",
+      "sizeLines": 229,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-form-submissions-lead-operations-design.md",
+      "language": "markdown",
+      "sizeLines": 352,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-homepage-e2e-seeding-design.md",
+      "language": "markdown",
+      "sizeLines": 146,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-media-governance-design.md",
+      "language": "markdown",
+      "sizeLines": 203,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-operator-guides-design.md",
+      "language": "markdown",
+      "sizeLines": 320,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-playwright-readiness-route-design.md",
+      "language": "markdown",
+      "sizeLines": 130,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-playwright-sqlite-worker-serialization-design.md",
+      "language": "markdown",
+      "sizeLines": 118,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-pnpm-startup-contract-fix-design.md",
+      "language": "markdown",
+      "sizeLines": 138,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-publish-queue-safety-design.md",
+      "language": "markdown",
+      "sizeLines": 263,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-role-and-capability-model-design.md",
+      "language": "markdown",
+      "sizeLines": 343,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-seo-operations-completeness-design.md",
+      "language": "markdown",
+      "sizeLines": 344,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-starter-productization-and-handoff-design.md",
+      "language": "markdown",
+      "sizeLines": 344,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-taxonomy-and-content-organization-design.md",
+      "language": "markdown",
+      "sizeLines": 374,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-work-queue-design.md",
+      "language": "markdown",
+      "sizeLines": 487,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-10-mongodb-runtime-reset-design.md",
+      "language": "markdown",
+      "sizeLines": 251,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-11-admin-ia-simplification-design.md",
+      "language": "markdown",
+      "sizeLines": 283,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-11-optional-editorial-workflow-design.md",
+      "language": "markdown",
+      "sizeLines": 312,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-11-system-page-block-architecture-design.md",
+      "language": "markdown",
+      "sizeLines": 327,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-11-system-page-default-blocks-design.md",
+      "language": "markdown",
+      "sizeLines": 282,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-12-block-cleanup-design.md",
+      "language": "markdown",
+      "sizeLines": 37,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-feature-spotlight-block-design.md",
+      "language": "markdown",
+      "sizeLines": 305,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-footer56-footer-preset-design.md",
+      "language": "markdown",
+      "sizeLines": 289,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-footer56-footer-preset-revision-design.md",
+      "language": "markdown",
+      "sizeLines": 162,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-footer56-site-settings-integration-design.md",
+      "language": "markdown",
+      "sizeLines": 168,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-footer56-terms-site-settings-design.md",
+      "language": "markdown",
+      "sizeLines": 124,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-header-navbar-block-design.md",
+      "language": "markdown",
+      "sizeLines": 271,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-hero-institutional-block-design.md",
+      "language": "markdown",
+      "sizeLines": 220,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-stats-strip-block-design.md",
+      "language": "markdown",
+      "sizeLines": 207,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-14-block-components-theme-normalization-design.md",
+      "language": "markdown",
+      "sizeLines": 199,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-14-shared-block-appearance-controls-design.md",
+      "language": "markdown",
+      "sizeLines": 260,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-14-website-theme-registry-design.md",
+      "language": "markdown",
+      "sizeLines": 226,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-15-announcement-flicker-fix-design.md",
+      "language": "markdown",
+      "sizeLines": 23,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-15-dismissible-announcement-design.md",
+      "language": "markdown",
+      "sizeLines": 63,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-17-block-thumbnail-generation-design.md",
+      "language": "markdown",
+      "sizeLines": 172,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-17-feature-matrix-block-design.md",
+      "language": "markdown",
+      "sizeLines": 129,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-feature-matrix-image-height-design.md",
+      "language": "markdown",
+      "sizeLines": 44,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-feature-matrix-rename-design.md",
+      "language": "markdown",
+      "sizeLines": 53,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-gallery-showcase-block-design.md",
+      "language": "markdown",
+      "sizeLines": 163,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-gallery-showcase-mobile-three-card-design.md",
+      "language": "markdown",
+      "sizeLines": 62,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-hero-banner-rename-design.md",
+      "language": "markdown",
+      "sizeLines": 69,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-mobile-block-container-spacing-design.md",
+      "language": "markdown",
+      "sizeLines": 52,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-profile-carousel-block-design.md",
+      "language": "markdown",
+      "sizeLines": 132,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-qa-accordion-rename-design.md",
+      "language": "markdown",
+      "sizeLines": 51,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-rating-spotlight-block-design.md",
+      "language": "markdown",
+      "sizeLines": 144,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-review-feed-block-design.md",
+      "language": "markdown",
+      "sizeLines": 182,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-review-form-browser-hydration-design.md",
+      "language": "markdown",
+      "sizeLines": 39,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-19-content-highlights-block-design.md",
+      "language": "markdown",
+      "sizeLines": 106,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-19-image-mosaic-block-design.md",
+      "language": "markdown",
+      "sizeLines": 208,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-19-live-preview-server-boundary-design.md",
+      "language": "markdown",
+      "sizeLines": 110,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-19-review-feed-container-width-design.md",
+      "language": "markdown",
+      "sizeLines": 18,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-20-news-events-highlights-presentation-design.md",
+      "language": "markdown",
+      "sizeLines": 50,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-20-news-events-system-design.md",
+      "language": "markdown",
+      "sizeLines": 528,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-20-regular-block-responsive-spacing-design.md",
+      "language": "markdown",
+      "sizeLines": 73,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-21-content-highlights-layouts-design.md",
+      "language": "markdown",
+      "sizeLines": 174,
       "fileCategory": "docs"
     },
     {
       "path": "eslint.config.mjs",
       "language": "javascript",
-      "sizeLines": 39,
-      "fileCategory": "config"
+      "sizeLines": 31,
+      "fileCategory": "code"
     },
     {
       "path": "next.config.ts",
       "language": "typescript",
-      "sizeLines": 32,
-      "fileCategory": "config"
+      "sizeLines": 31,
+      "fileCategory": "code"
     },
     {
       "path": "package.json",
       "language": "json",
-      "sizeLines": 76,
+      "sizeLines": 75,
       "fileCategory": "config"
     },
     {
       "path": "playwright.config.ts",
       "language": "typescript",
-      "sizeLines": 42,
+      "sizeLines": 41,
+      "fileCategory": "code"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "language": "yaml",
+      "sizeLines": 6,
       "fileCategory": "config"
     },
     {
       "path": "postcss.config.mjs",
       "language": "javascript",
-      "sizeLines": 6,
-      "fileCategory": "config"
+      "sizeLines": 5,
+      "fileCategory": "code"
+    },
+    {
+      "path": "public/block-thumbnails/README.md",
+      "language": "markdown",
+      "sizeLines": 25,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "scripts/generate-block-thumbnails.ts",
+      "language": "typescript",
+      "sizeLines": 264,
+      "fileCategory": "code"
     },
     {
       "path": "src/access/adminCapabilities.ts",
       "language": "typescript",
-      "sizeLines": 239,
+      "sizeLines": 472,
       "fileCategory": "code"
     },
     {
-      "path": "src/app/(frontend)/PageContent.tsx",
+      "path": "src/access/editorialRoles.ts",
       "language": "typescript",
-      "sizeLines": 7,
+      "sizeLines": 175,
       "fileCategory": "code"
     },
     {
-      "path": "src/app/(frontend)/SystemFallbackPage.tsx",
-      "language": "typescript",
-      "sizeLines": 45,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/app/(frontend)/[...slug]/page.tsx",
-      "language": "typescript",
-      "sizeLines": 62,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/app/(frontend)/layout.tsx",
-      "language": "typescript",
-      "sizeLines": 193,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/app/(frontend)/not-found.tsx",
-      "language": "typescript",
-      "sizeLines": 14,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/app/(frontend)/page.tsx",
+      "path": "src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx",
       "language": "typescript",
       "sizeLines": 33,
       "fileCategory": "code"
     },
     {
+      "path": "src/app/(block-thumbnails)/layout.tsx",
+      "language": "typescript",
+      "sizeLines": 19,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/PageContent.tsx",
+      "language": "typescript",
+      "sizeLines": 15,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/SystemFallbackPage.tsx",
+      "language": "typescript",
+      "sizeLines": 44,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/[...slug]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 61,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/articles/[slug]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 35,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/articles/category/[slug]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 37,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/articles/tag/[slug]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 34,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/layout.tsx",
+      "language": "typescript",
+      "sizeLines": 268,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/news-events/[slug]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 60,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/news-events/page.tsx",
+      "language": "typescript",
+      "sizeLines": 52,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/not-found.tsx",
+      "language": "typescript",
+      "sizeLines": 13,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/page.tsx",
+      "language": "typescript",
+      "sizeLines": 32,
+      "fileCategory": "code"
+    },
+    {
       "path": "src/app/(frontend)/pageData.ts",
       "language": "typescript",
-      "sizeLines": 450,
+      "sizeLines": 524,
       "fileCategory": "code"
     },
     {
       "path": "src/app/(frontend)/preview/page/[id]/page.tsx",
       "language": "typescript",
-      "sizeLines": 47,
+      "sizeLines": 59,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/reviews/[slug]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 35,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/reviews/category/[slug]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 36,
       "fileCategory": "code"
     },
     {
       "path": "src/app/(payload)/admin/[[...segments]]/not-found.tsx",
       "language": "typescript",
-      "sizeLines": 25,
+      "sizeLines": 24,
       "fileCategory": "code"
     },
     {
       "path": "src/app/(payload)/admin/[[...segments]]/page.tsx",
       "language": "typescript",
-      "sizeLines": 25,
+      "sizeLines": 24,
       "fileCategory": "code"
     },
     {
       "path": "src/app/(payload)/admin/importMap.js",
       "language": "javascript",
-      "sizeLines": 9,
+      "sizeLines": 58,
       "fileCategory": "code"
     },
     {
       "path": "src/app/(payload)/api/[...slug]/route.ts",
       "language": "typescript",
-      "sizeLines": 20,
+      "sizeLines": 19,
       "fileCategory": "code"
     },
     {
       "path": "src/app/(payload)/api/graphql-playground/route.ts",
       "language": "typescript",
-      "sizeLines": 8,
+      "sizeLines": 7,
       "fileCategory": "code"
     },
     {
       "path": "src/app/(payload)/api/graphql/route.ts",
       "language": "typescript",
-      "sizeLines": 9,
+      "sizeLines": 8,
       "fileCategory": "code"
     },
     {
@@ -226,341 +1190,1079 @@
     {
       "path": "src/app/(payload)/layout.tsx",
       "language": "typescript",
-      "sizeLines": 32,
+      "sizeLines": 31,
       "fileCategory": "code"
     },
     {
       "path": "src/app/api/forms/[slug]/submit/route.ts",
       "language": "typescript",
-      "sizeLines": 164,
+      "sizeLines": 272,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/api/review-feed/route.ts",
+      "language": "typescript",
+      "sizeLines": 17,
       "fileCategory": "code"
     },
     {
       "path": "src/app/my-route/route.ts",
       "language": "typescript",
-      "sizeLines": 13,
+      "sizeLines": 12,
       "fileCategory": "code"
     },
     {
       "path": "src/app/robots.ts",
       "language": "typescript",
-      "sizeLines": 19,
+      "sizeLines": 18,
       "fileCategory": "code"
     },
     {
       "path": "src/app/sitemap.ts",
       "language": "typescript",
-      "sizeLines": 70,
+      "sizeLines": 281,
       "fileCategory": "code"
     },
     {
-      "path": "src/blocks/Footer2/Component.tsx",
-      "language": "typescript",
-      "sizeLines": 61,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/blocks/Footer2/config.ts",
+      "path": "src/block-thumbnails/BlockThumbnailPreviewStage.tsx",
       "language": "typescript",
       "sizeLines": 126,
       "fileCategory": "code"
     },
     {
-      "path": "src/blocks/Form/ClientForm.tsx",
+      "path": "src/block-thumbnails/definitions.ts",
       "language": "typescript",
-      "sizeLines": 282,
+      "sizeLines": 197,
       "fileCategory": "code"
     },
     {
-      "path": "src/blocks/Form/Component.tsx",
+      "path": "src/block-thumbnails/fixtures.tsx",
       "language": "typescript",
-      "sizeLines": 79,
+      "sizeLines": 833,
       "fileCategory": "code"
     },
     {
-      "path": "src/blocks/Form/config.ts",
+      "path": "src/blocks/Announcement/Component.tsx",
       "language": "typescript",
-      "sizeLines": 22,
+      "sizeLines": 72,
       "fileCategory": "code"
     },
     {
-      "path": "src/blocks/HeaderNavbar12/Component.tsx",
+      "path": "src/blocks/Announcement/config.ts",
       "language": "typescript",
-      "sizeLines": 86,
+      "sizeLines": 105,
       "fileCategory": "code"
     },
     {
-      "path": "src/blocks/HeaderNavbar12/config.ts",
+      "path": "src/blocks/ContentHighlights/Component.tsx",
       "language": "typescript",
-      "sizeLines": 161,
+      "sizeLines": 117,
       "fileCategory": "code"
     },
     {
-      "path": "src/blocks/Hero36/Component.tsx",
+      "path": "src/blocks/ContentHighlights/config.ts",
       "language": "typescript",
-      "sizeLines": 36,
+      "sizeLines": 199,
       "fileCategory": "code"
     },
     {
-      "path": "src/blocks/Hero36/config.ts",
+      "path": "src/blocks/Cta39/Component.tsx",
       "language": "typescript",
-      "sizeLines": 125,
+      "sizeLines": 81,
       "fileCategory": "code"
     },
     {
-      "path": "src/blocks/RenderBlocks.tsx",
+      "path": "src/blocks/Cta39/config.ts",
       "language": "typescript",
-      "sizeLines": 63,
+      "sizeLines": 76,
       "fileCategory": "code"
     },
     {
-      "path": "src/blocks/System404/Component.tsx",
+      "path": "src/blocks/FeatureMatrix/Component.tsx",
       "language": "typescript",
-      "sizeLines": 41,
+      "sizeLines": 90,
       "fileCategory": "code"
     },
     {
-      "path": "src/blocks/System404/config.ts",
+      "path": "src/blocks/FeatureMatrix/config.ts",
       "language": "typescript",
-      "sizeLines": 8,
+      "sizeLines": 130,
       "fileCategory": "code"
     },
     {
-      "path": "src/blocks/SystemComingSoon/Component.tsx",
+      "path": "src/blocks/FeatureSpotlight/Component.tsx",
       "language": "typescript",
-      "sizeLines": 41,
+      "sizeLines": 293,
       "fileCategory": "code"
     },
     {
-      "path": "src/blocks/SystemComingSoon/config.ts",
+      "path": "src/blocks/FeatureSpotlight/config.ts",
       "language": "typescript",
-      "sizeLines": 8,
+      "sizeLines": 182,
       "fileCategory": "code"
     },
     {
-      "path": "src/blocks/SystemMaintenance/Component.tsx",
+      "path": "src/blocks/Footer56/Component.tsx",
       "language": "typescript",
-      "sizeLines": 41,
+      "sizeLines": 200,
       "fileCategory": "code"
     },
     {
-      "path": "src/blocks/SystemMaintenance/config.ts",
+      "path": "src/blocks/Footer56/config.ts",
       "language": "typescript",
-      "sizeLines": 8,
+      "sizeLines": 191,
       "fileCategory": "code"
     },
     {
-      "path": "src/blocks/renderFooter.tsx",
-      "language": "typescript",
-      "sizeLines": 32,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/blocks/renderHeader.tsx",
-      "language": "typescript",
-      "sizeLines": 32,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/blocks/systemPageFields.ts",
-      "language": "typescript",
-      "sizeLines": 78,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/collections/Footers.ts",
-      "language": "typescript",
-      "sizeLines": 58,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/collections/FormSubmissions.ts",
-      "language": "typescript",
-      "sizeLines": 46,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/collections/Forms.ts",
-      "language": "typescript",
-      "sizeLines": 218,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/collections/Headers.ts",
-      "language": "typescript",
-      "sizeLines": 58,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/collections/Media.ts",
-      "language": "typescript",
-      "sizeLines": 140,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/collections/NavigationLinks.ts",
-      "language": "typescript",
-      "sizeLines": 135,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/collections/Pages.ts",
-      "language": "typescript",
-      "sizeLines": 283,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/collections/Redirects.ts",
-      "language": "typescript",
-      "sizeLines": 172,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/collections/SystemPages.ts",
-      "language": "typescript",
-      "sizeLines": 147,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/collections/Users.ts",
-      "language": "typescript",
-      "sizeLines": 109,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/components/footer2.tsx",
-      "language": "typescript",
-      "sizeLines": 161,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/components/hero36.tsx",
-      "language": "typescript",
-      "sizeLines": 181,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/components/live-preview/PageLivePreview.tsx",
-      "language": "typescript",
-      "sizeLines": 128,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/components/navbar12.tsx",
-      "language": "typescript",
-      "sizeLines": 596,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/components/shadcnblocks/logo.tsx",
-      "language": "typescript",
-      "sizeLines": 168,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/components/system-page-hero.tsx",
-      "language": "typescript",
-      "sizeLines": 164,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/components/ui/accordion.tsx",
+      "path": "src/blocks/GalleryShowcase/Component.tsx",
       "language": "typescript",
       "sizeLines": 85,
       "fileCategory": "code"
     },
     {
-      "path": "src/components/ui/badge.tsx",
+      "path": "src/blocks/GalleryShowcase/config.ts",
       "language": "typescript",
-      "sizeLines": 50,
+      "sizeLines": 111,
       "fileCategory": "code"
     },
     {
-      "path": "src/components/ui/button.tsx",
+      "path": "src/blocks/HeaderNavbar12/Component.tsx",
       "language": "typescript",
-      "sizeLines": 66,
+      "sizeLines": 77,
       "fileCategory": "code"
     },
     {
-      "path": "src/components/ui/context-menu.tsx",
+      "path": "src/blocks/HeaderNavbar12/LogoHeightField.tsx",
       "language": "typescript",
-      "sizeLines": 264,
+      "sizeLines": 52,
       "fileCategory": "code"
     },
     {
-      "path": "src/components/ui/navigation-menu.tsx",
+      "path": "src/blocks/HeaderNavbar12/config.ts",
       "language": "typescript",
-      "sizeLines": 165,
+      "sizeLines": 215,
       "fileCategory": "code"
     },
     {
-      "path": "src/components/ui/separator.tsx",
+      "path": "src/blocks/HeroBanner/Component.tsx",
       "language": "typescript",
-      "sizeLines": 29,
+      "sizeLines": 296,
       "fileCategory": "code"
     },
     {
-      "path": "src/components/ui/sheet.tsx",
+      "path": "src/blocks/HeroBanner/config.ts",
       "language": "typescript",
-      "sizeLines": 148,
+      "sizeLines": 232,
       "fileCategory": "code"
     },
     {
-      "path": "src/fields/cmsLinkFields.ts",
+      "path": "src/blocks/ImageMosaic/Component.tsx",
       "language": "typescript",
-      "sizeLines": 21,
+      "sizeLines": 116,
       "fileCategory": "code"
     },
     {
-      "path": "src/globals/PageSettings.ts",
+      "path": "src/blocks/ImageMosaic/config.ts",
       "language": "typescript",
-      "sizeLines": 250,
+      "sizeLines": 126,
       "fileCategory": "code"
     },
     {
-      "path": "src/globals/SEOSettings.ts",
+      "path": "src/blocks/NewsEventsHighlights/Component.tsx",
       "language": "typescript",
-      "sizeLines": 59,
+      "sizeLines": 16,
       "fileCategory": "code"
     },
     {
-      "path": "src/globals/SiteSettings.ts",
+      "path": "src/blocks/NewsEventsHighlights/Presentation.tsx",
       "language": "typescript",
-      "sizeLines": 131,
+      "sizeLines": 72,
       "fileCategory": "code"
     },
     {
-      "path": "src/globals/ThemeSettings.ts",
-      "language": "typescript",
-      "sizeLines": 75,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/hooks/createRedirectsForChangedPagePath.ts",
-      "language": "typescript",
-      "sizeLines": 320,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/hooks/migrateLegacyReusableLinks.ts",
-      "language": "typescript",
-      "sizeLines": 146,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/hooks/populatePageUrlPreview.ts",
+      "path": "src/blocks/NewsEventsHighlights/PreviewComponent.tsx",
       "language": "typescript",
       "sizeLines": 24,
       "fileCategory": "code"
     },
     {
-      "path": "src/hooks/preventReferencedPageUnpublish.ts",
+      "path": "src/blocks/NewsEventsHighlights/config.ts",
+      "language": "typescript",
+      "sizeLines": 83,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/PageBlockStack.tsx",
+      "language": "typescript",
+      "sizeLines": 13,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/ProfileCarousel/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 98,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/ProfileCarousel/config.ts",
+      "language": "typescript",
+      "sizeLines": 147,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/QaAccordion/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 357,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/QaAccordion/config.ts",
+      "language": "typescript",
+      "sizeLines": 195,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/RatingSpotlight/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 37,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/RatingSpotlight/Presentation.tsx",
+      "language": "typescript",
+      "sizeLines": 93,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/RatingSpotlight/PreviewComponent.tsx",
+      "language": "typescript",
+      "sizeLines": 23,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/RatingSpotlight/config.ts",
+      "language": "typescript",
+      "sizeLines": 143,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/RenderBlocks.tsx",
+      "language": "typescript",
+      "sizeLines": 47,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/ReviewFeed/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 48,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/ReviewFeed/Presentation.tsx",
+      "language": "typescript",
+      "sizeLines": 54,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/ReviewFeed/PreviewComponent.tsx",
+      "language": "typescript",
+      "sizeLines": 29,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/ReviewFeed/config.ts",
+      "language": "typescript",
+      "sizeLines": 77,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/ReviewSubmission/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 600,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/ReviewSubmission/config.ts",
+      "language": "typescript",
+      "sizeLines": 95,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/Services21/Component.tsx",
       "language": "typescript",
       "sizeLines": 128,
       "fileCategory": "code"
     },
     {
+      "path": "src/blocks/Services21/config.ts",
+      "language": "typescript",
+      "sizeLines": 113,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/StatsStrip/AnimatedMetricValue.tsx",
+      "language": "typescript",
+      "sizeLines": 124,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/StatsStrip/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 138,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/StatsStrip/config.ts",
+      "language": "typescript",
+      "sizeLines": 76,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/System404/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 21,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/System404/config.ts",
+      "language": "typescript",
+      "sizeLines": 17,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/SystemComingSoon/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 21,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/SystemComingSoon/config.ts",
+      "language": "typescript",
+      "sizeLines": 17,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/SystemMaintenance/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 21,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/SystemMaintenance/config.ts",
+      "language": "typescript",
+      "sizeLines": 18,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/TeamShowcase/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 84,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/TeamShowcase/config.ts",
+      "language": "typescript",
+      "sizeLines": 108,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/renderFooterBlocks.tsx",
+      "language": "typescript",
+      "sizeLines": 55,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/renderHeaderBlocks.tsx",
+      "language": "typescript",
+      "sizeLines": 35,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/renderLivePreviewPageBlocks.tsx",
+      "language": "typescript",
+      "sizeLines": 87,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/renderPageBlocks.tsx",
+      "language": "typescript",
+      "sizeLines": 153,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/shared/blockAppearance.ts",
+      "language": "typescript",
+      "sizeLines": 48,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/shared/blockAppearanceFields.ts",
+      "language": "typescript",
+      "sizeLines": 65,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/shared/blockSpacing.ts",
+      "language": "typescript",
+      "sizeLines": 9,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/shared/contentActionsFields.ts",
+      "language": "typescript",
+      "sizeLines": 170,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/systemPageFields.ts",
+      "language": "typescript",
+      "sizeLines": 99,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Articles.ts",
+      "language": "typescript",
+      "sizeLines": 289,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Categories.ts",
+      "language": "typescript",
+      "sizeLines": 83,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Footers.ts",
+      "language": "typescript",
+      "sizeLines": 64,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/FormSubmissions.ts",
+      "language": "typescript",
+      "sizeLines": 187,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Forms.ts",
+      "language": "typescript",
+      "sizeLines": 229,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Headers.ts",
+      "language": "typescript",
+      "sizeLines": 64,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Media.ts",
+      "language": "typescript",
+      "sizeLines": 280,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/NavigationLinks.ts",
+      "language": "typescript",
+      "sizeLines": 146,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/NewsEvents.ts",
+      "language": "typescript",
+      "sizeLines": 393,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/OperationalAuditEvents.ts",
+      "language": "typescript",
+      "sizeLines": 90,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Pages.ts",
+      "language": "typescript",
+      "sizeLines": 353,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Redirects.ts",
+      "language": "typescript",
+      "sizeLines": 180,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Reviews.ts",
+      "language": "typescript",
+      "sizeLines": 333,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/SystemPages.ts",
+      "language": "typescript",
+      "sizeLines": 243,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Tags.ts",
+      "language": "typescript",
+      "sizeLines": 76,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Users.ts",
+      "language": "typescript",
+      "sizeLines": 162,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/WorkQueue.ts",
+      "language": "typescript",
+      "sizeLines": 428,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ContentActions.tsx",
+      "language": "typescript",
+      "sizeLines": 80,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ContentLink.tsx",
+      "language": "typescript",
+      "sizeLines": 39,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/admin/AdminSessionBar.tsx",
+      "language": "typescript",
+      "sizeLines": 66,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/admin/AdminUserMenu.tsx",
+      "language": "typescript",
+      "sizeLines": 117,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/announcement/AnnouncementBar.tsx",
+      "language": "typescript",
+      "sizeLines": 161,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "language": "typescript",
+      "sizeLines": 124,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/announcement/RotatingAnnouncementContent.tsx",
+      "language": "typescript",
+      "sizeLines": 153,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/articles/ArticleArchivePage.tsx",
+      "language": "typescript",
+      "sizeLines": 47,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/articles/ArticlePage.tsx",
+      "language": "typescript",
+      "sizeLines": 94,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/content-highlights.tsx",
+      "language": "typescript",
+      "sizeLines": 290,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/feature-matrix.tsx",
+      "language": "typescript",
+      "sizeLines": 225,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/footer56.tsx",
+      "language": "typescript",
+      "sizeLines": 243,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/gallery-showcase-fan.tsx",
+      "language": "typescript",
+      "sizeLines": 151,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/gallery-showcase.tsx",
+      "language": "typescript",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/global/GlobalAnnouncement.tsx",
+      "language": "typescript",
+      "sizeLines": 47,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/global/GlobalFooter.tsx",
+      "language": "typescript",
+      "sizeLines": 51,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/global/GlobalHeader.tsx",
+      "language": "typescript",
+      "sizeLines": 34,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/header/HeaderMobileMenu.tsx",
+      "language": "typescript",
+      "sizeLines": 195,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/header/HeaderNavMenu.tsx",
+      "language": "typescript",
+      "sizeLines": 106,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/header/HeaderNavbar.tsx",
+      "language": "typescript",
+      "sizeLines": 100,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/image-mosaic.tsx",
+      "language": "typescript",
+      "sizeLines": 211,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/live-preview/NewsEventLivePreview.tsx",
+      "language": "typescript",
+      "sizeLines": 28,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/live-preview/PageLivePreview.tsx",
+      "language": "typescript",
+      "sizeLines": 32,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/navbar12.tsx",
+      "language": "typescript",
+      "sizeLines": 499,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/news-events/NewsEventStory.tsx",
+      "language": "typescript",
+      "sizeLines": 106,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/news-events/NewsEventsFeed.tsx",
+      "language": "typescript",
+      "sizeLines": 340,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/news-events/NewsEventsHighlights.tsx",
+      "language": "typescript",
+      "sizeLines": 150,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/profile-carousel-card.tsx",
+      "language": "typescript",
+      "sizeLines": 112,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/profile-carousel-client.tsx",
+      "language": "typescript",
+      "sizeLines": 63,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/profile-carousel.tsx",
+      "language": "typescript",
+      "sizeLines": 135,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/rating-spotlight.tsx",
+      "language": "typescript",
+      "sizeLines": 119,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/review-feed-list.tsx",
+      "language": "typescript",
+      "sizeLines": 115,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/review-feed.tsx",
+      "language": "typescript",
+      "sizeLines": 116,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/reviews/ReviewArchivePage.tsx",
+      "language": "typescript",
+      "sizeLines": 50,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/reviews/ReviewPage.tsx",
+      "language": "typescript",
+      "sizeLines": 98,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/services21.tsx",
+      "language": "typescript",
+      "sizeLines": 157,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/shadcnblocks/border-button.tsx",
+      "language": "typescript",
+      "sizeLines": 107,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/shadcnblocks/rating.tsx",
+      "language": "typescript",
+      "sizeLines": 105,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/site/SiteLogo.tsx",
+      "language": "typescript",
+      "sizeLines": 71,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/system-pages/System404View.tsx",
+      "language": "typescript",
+      "sizeLines": 49,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/system-pages/SystemComingSoonView.tsx",
+      "language": "typescript",
+      "sizeLines": 43,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/system-pages/SystemMaintenanceView.tsx",
+      "language": "typescript",
+      "sizeLines": 39,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/system-pages/primitives/SystemPageActions.tsx",
+      "language": "typescript",
+      "sizeLines": 55,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/system-pages/primitives/SystemPageCopy.tsx",
+      "language": "typescript",
+      "sizeLines": 38,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/system-pages/primitives/SystemPageShell.tsx",
+      "language": "typescript",
+      "sizeLines": 33,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/system-pages/primitives/SystemPageStatus.tsx",
+      "language": "typescript",
+      "sizeLines": 20,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/system-pages/types.ts",
+      "language": "typescript",
+      "sizeLines": 20,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/team-showcase.tsx",
+      "language": "typescript",
+      "sizeLines": 188,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/accordion.tsx",
+      "language": "typescript",
+      "sizeLines": 84,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/avatar.tsx",
+      "language": "typescript",
+      "sizeLines": 96,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/badge.tsx",
+      "language": "typescript",
+      "sizeLines": 45,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/button.tsx",
+      "language": "typescript",
+      "sizeLines": 65,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/card.tsx",
+      "language": "typescript",
+      "sizeLines": 100,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/carousel.tsx",
+      "language": "typescript",
+      "sizeLines": 238,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/checkbox.tsx",
+      "language": "typescript",
+      "sizeLines": 33,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/empty.tsx",
+      "language": "typescript",
+      "sizeLines": 94,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/field.tsx",
+      "language": "typescript",
+      "sizeLines": 224,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/input.tsx",
+      "language": "typescript",
+      "sizeLines": 19,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/label.tsx",
+      "language": "typescript",
+      "sizeLines": 24,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/navigation-menu.tsx",
+      "language": "typescript",
+      "sizeLines": 160,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/pagination.tsx",
+      "language": "typescript",
+      "sizeLines": 112,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/progress.tsx",
+      "language": "typescript",
+      "sizeLines": 31,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/radio-group.tsx",
+      "language": "typescript",
+      "sizeLines": 46,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/select.tsx",
+      "language": "typescript",
+      "sizeLines": 195,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/separator.tsx",
+      "language": "typescript",
+      "sizeLines": 28,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/sheet.tsx",
+      "language": "typescript",
+      "sizeLines": 134,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/textarea.tsx",
+      "language": "typescript",
+      "sizeLines": 18,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/toggle-group.tsx",
+      "language": "typescript",
+      "sizeLines": 89,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/ui/toggle.tsx",
+      "language": "typescript",
+      "sizeLines": 47,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/config/providers.ts",
+      "language": "typescript",
+      "sizeLines": 51,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/config/runtime.ts",
+      "language": "typescript",
+      "sizeLines": 146,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/config/starterContract.ts",
+      "language": "typescript",
+      "sizeLines": 40,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/fields/buildSEOFields.ts",
+      "language": "typescript",
+      "sizeLines": 98,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/fields/cmsLinkFields.ts",
+      "language": "typescript",
+      "sizeLines": 20,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/globals/NewsEventsSettings.ts",
+      "language": "typescript",
+      "sizeLines": 125,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/globals/PageSettings.ts",
+      "language": "typescript",
+      "sizeLines": 380,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/globals/SEOSettings.ts",
+      "language": "typescript",
+      "sizeLines": 62,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/globals/SiteSettings.ts",
+      "language": "typescript",
+      "sizeLines": 181,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/globals/SystemModeSettings.ts",
+      "language": "typescript",
+      "sizeLines": 170,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/globals/ThemeSettings.ts",
+      "language": "typescript",
+      "sizeLines": 62,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/createRedirectsForChangedPagePath.ts",
+      "language": "typescript",
+      "sizeLines": 319,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/enforceEditorialWorkflow.ts",
+      "language": "typescript",
+      "sizeLines": 196,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/logOperationalAuditEvent.ts",
+      "language": "typescript",
+      "sizeLines": 65,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/migrateLegacyReusableLinks.ts",
+      "language": "typescript",
+      "sizeLines": 112,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/normalizeNewsEventFields.ts",
+      "language": "typescript",
+      "sizeLines": 14,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/populatePageUrlPreview.ts",
+      "language": "typescript",
+      "sizeLines": 23,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/preventMediaDeletionWhileInUse.ts",
+      "language": "typescript",
+      "sizeLines": 28,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/preventReferencedPageUnpublish.ts",
+      "language": "typescript",
+      "sizeLines": 127,
+      "fileCategory": "code"
+    },
+    {
       "path": "src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "language": "typescript",
+      "sizeLines": 100,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/syncFormSubmissionToWorkQueue.ts",
+      "language": "typescript",
+      "sizeLines": 78,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/syncMediaToWorkQueue.ts",
       "language": "typescript",
       "sizeLines": 101,
       "fileCategory": "code"
@@ -568,203 +2270,779 @@
     {
       "path": "src/hooks/syncNavigationLinkForPage.ts",
       "language": "typescript",
-      "sizeLines": 53,
+      "sizeLines": 52,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/syncPrimaryCategoryMembership.ts",
+      "language": "typescript",
+      "sizeLines": 50,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/syncReviewToWorkQueue.ts",
+      "language": "typescript",
+      "sizeLines": 80,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/syncWorkQueueItem.ts",
+      "language": "typescript",
+      "sizeLines": 14,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "language": "typescript",
+      "sizeLines": 142,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/updateFormSubmissionActivity.ts",
+      "language": "typescript",
+      "sizeLines": 55,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/hooks/validateSEOContract.ts",
+      "language": "typescript",
+      "sizeLines": 68,
       "fileCategory": "code"
     },
     {
       "path": "src/lib/cmsLinks.ts",
       "language": "typescript",
-      "sizeLines": 31,
+      "sizeLines": 58,
       "fileCategory": "code"
     },
     {
-      "path": "src/lib/formNotifications.ts",
-      "language": "typescript",
-      "sizeLines": 76,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/lib/formSpamProtection.ts",
-      "language": "typescript",
-      "sizeLines": 86,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/lib/forms.ts",
-      "language": "typescript",
-      "sizeLines": 185,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/lib/media.ts",
-      "language": "typescript",
-      "sizeLines": 67,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/lib/navigationLinkSync.ts",
-      "language": "typescript",
-      "sizeLines": 189,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/lib/navigationLinks.ts",
+      "path": "src/lib/cmsSession.ts",
       "language": "typescript",
       "sizeLines": 39,
       "fileCategory": "code"
     },
     {
-      "path": "src/lib/navigationStructures.ts",
+      "path": "src/lib/contentEntries.ts",
       "language": "typescript",
-      "sizeLines": 131,
+      "sizeLines": 525,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/editorialWorkflow.ts",
+      "language": "typescript",
+      "sizeLines": 25,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/formNotifications.ts",
+      "language": "typescript",
+      "sizeLines": 75,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/formSpamProtection.ts",
+      "language": "typescript",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/formSubmissionEvents.ts",
+      "language": "typescript",
+      "sizeLines": 21,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/forms.ts",
+      "language": "typescript",
+      "sizeLines": 283,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/headerNavigation.ts",
+      "language": "typescript",
+      "sizeLines": 72,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/media.ts",
+      "language": "typescript",
+      "sizeLines": 80,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/mediaStorage.ts",
+      "language": "typescript",
+      "sizeLines": 325,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/mediaUsage.ts",
+      "language": "typescript",
+      "sizeLines": 582,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/navigationLinkSync.ts",
+      "language": "typescript",
+      "sizeLines": 188,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/navigationLinks.ts",
+      "language": "typescript",
+      "sizeLines": 38,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/newsEvents.ts",
+      "language": "typescript",
+      "sizeLines": 336,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/newsEventsMetadata.ts",
+      "language": "typescript",
+      "sizeLines": 99,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/newsEventsPreviewShared.ts",
+      "language": "typescript",
+      "sizeLines": 22,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/newsEventsPreviewSnapshot.ts",
+      "language": "typescript",
+      "sizeLines": 23,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/newsEventsShared.ts",
+      "language": "typescript",
+      "sizeLines": 302,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/operationalAudit.ts",
+      "language": "typescript",
+      "sizeLines": 84,
       "fileCategory": "code"
     },
     {
       "path": "src/lib/pagePaths.ts",
       "language": "typescript",
-      "sizeLines": 88,
+      "sizeLines": 87,
       "fileCategory": "code"
     },
     {
       "path": "src/lib/redirects.ts",
       "language": "typescript",
-      "sizeLines": 138,
+      "sizeLines": 137,
       "fileCategory": "code"
     },
     {
-      "path": "src/lib/seo.ts",
+      "path": "src/lib/reviewFeed.ts",
       "language": "typescript",
-      "sizeLines": 37,
+      "sizeLines": 183,
       "fileCategory": "code"
     },
     {
-      "path": "src/lib/siteUrl.ts",
+      "path": "src/lib/reviewFeedShared.ts",
       "language": "typescript",
-      "sizeLines": 20,
+      "sizeLines": 31,
       "fileCategory": "code"
     },
     {
-      "path": "src/lib/systemPageTypes.ts",
-      "language": "typescript",
-      "sizeLines": 17,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/lib/utils.ts",
-      "language": "typescript",
-      "sizeLines": 7,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/payload.config.ts",
-      "language": "typescript",
-      "sizeLines": 82,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/plugins/withTrash.ts",
-      "language": "typescript",
-      "sizeLines": 26,
-      "fileCategory": "code"
-    },
-    {
-      "path": "src/styles/globals.css",
-      "language": "css",
-      "sizeLines": 858,
-      "fileCategory": "markup"
-    },
-    {
-      "path": "src/styles/themes/theme-blue.css",
-      "language": "css",
-      "sizeLines": 69,
-      "fileCategory": "markup"
-    },
-    {
-      "path": "src/styles/themes/theme-default.css",
-      "language": "css",
-      "sizeLines": 71,
-      "fileCategory": "markup"
-    },
-    {
-      "path": "src/styles/themes/theme-sera.css",
-      "language": "css",
-      "sizeLines": 69,
-      "fileCategory": "markup"
-    },
-    {
-      "path": "test.env",
-      "language": "config",
-      "sizeLines": 2,
-      "fileCategory": "config"
-    },
-    {
-      "path": "tests/e2e/admin.e2e.spec.ts",
+      "path": "src/lib/reviewPreviewShared.ts",
       "language": "typescript",
       "sizeLines": 42,
       "fileCategory": "code"
     },
     {
+      "path": "src/lib/reviewPreviewSnapshot.ts",
+      "language": "typescript",
+      "sizeLines": 34,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/reviewPromotion.ts",
+      "language": "typescript",
+      "sizeLines": 74,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/reviewRatingShared.ts",
+      "language": "typescript",
+      "sizeLines": 51,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/reviewRatingSummary.ts",
+      "language": "typescript",
+      "sizeLines": 68,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/reviews.ts",
+      "language": "typescript",
+      "sizeLines": 130,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/seo.ts",
+      "language": "typescript",
+      "sizeLines": 137,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/siteUrl.ts",
+      "language": "typescript",
+      "sizeLines": 19,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/systemPageActions.ts",
+      "language": "typescript",
+      "sizeLines": 41,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/systemPageTypes.ts",
+      "language": "typescript",
+      "sizeLines": 16,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/taxonomy.ts",
+      "language": "typescript",
+      "sizeLines": 63,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/themes/websiteThemes.ts",
+      "language": "typescript",
+      "sizeLines": 38,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/utils.ts",
+      "language": "typescript",
+      "sizeLines": 6,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/workQueue.ts",
+      "language": "typescript",
+      "sizeLines": 310,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/payload.config.ts",
+      "language": "typescript",
+      "sizeLines": 90,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/plugins/withTrash.ts",
+      "language": "typescript",
+      "sizeLines": 25,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/styles/custom.css",
+      "language": "css",
+      "sizeLines": 137,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "src/styles/globals.css",
+      "language": "css",
+      "sizeLines": 898,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "src/styles/themes/theme-blue.css",
+      "language": "css",
+      "sizeLines": 89,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "src/styles/themes/theme-default.css",
+      "language": "css",
+      "sizeLines": 87,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "src/styles/themes/theme-kodama.css",
+      "language": "css",
+      "sizeLines": 81,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "src/styles/themes/theme-sunset.css",
+      "language": "css",
+      "sizeLines": 81,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "test.env",
+      "language": "config",
+      "sizeLines": 1,
+      "fileCategory": "config"
+    },
+    {
+      "path": "tests/e2e/admin.e2e.spec.ts",
+      "language": "typescript",
+      "sizeLines": 41,
+      "fileCategory": "code"
+    },
+    {
       "path": "tests/e2e/frontend.e2e.spec.ts",
       "language": "typescript",
-      "sizeLines": 21,
+      "sizeLines": 30,
       "fileCategory": "code"
     },
     {
       "path": "tests/helpers/login.ts",
       "language": "typescript",
-      "sizeLines": 32,
+      "sizeLines": 31,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/helpers/mongoMemoryServer.ts",
+      "language": "typescript",
+      "sizeLines": 28,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/helpers/seedHomepage.ts",
+      "language": "typescript",
+      "sizeLines": 108,
       "fileCategory": "code"
     },
     {
       "path": "tests/helpers/seedUser.ts",
       "language": "typescript",
-      "sizeLines": 48,
+      "sizeLines": 80,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/helpers/server-only.ts",
+      "language": "typescript",
+      "sizeLines": 1,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/admin-documentation.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 39,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/admin-information-architecture.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 61,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/admin-session-bar.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 40,
       "fileCategory": "code"
     },
     {
       "path": "tests/int/adminCapabilities.int.spec.ts",
       "language": "typescript",
-      "sizeLines": 290,
+      "sizeLines": 479,
       "fileCategory": "code"
     },
     {
       "path": "tests/int/api.int.spec.ts",
       "language": "typescript",
-      "sizeLines": 21,
+      "sizeLines": 70,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/articles.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 81,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/block-thumbnail-fixtures.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 31,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/block-thumbnails.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 198,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/content-highlights.int.spec.tsx",
+      "language": "typescript",
+      "sizeLines": 393,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/content-taxonomy.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 255,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/editorial-workflow.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 325,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/feature-matrix.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 335,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/feature-spotlight.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 245,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/footer-spacing.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 15,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/forms-submission.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 278,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/gallery-showcase.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 319,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/global-announcement.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 223,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/global-footer.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 174,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/global-header.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/header-navbar-render.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 318,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/header-presets.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 51,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/hero-banner-render.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 137,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/image-mosaic.int.spec.tsx",
+      "language": "typescript",
+      "sizeLines": 430,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/live-preview-import-boundary.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 126,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/live-preview-renderer.int.spec.tsx",
+      "language": "typescript",
+      "sizeLines": 45,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/marquee-announcement.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 53,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/media-governance.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 331,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/media-storage.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 169,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/news-event-story.int.spec.tsx",
+      "language": "typescript",
+      "sizeLines": 81,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/news-events-collection.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 65,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/news-events-data.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 51,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/news-events-feed.int.spec.tsx",
+      "language": "typescript",
+      "sizeLines": 72,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/news-events-highlights.int.spec.tsx",
+      "language": "typescript",
+      "sizeLines": 107,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/operational-audit.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 177,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/page-blocks.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 1094,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/page-routing.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 183,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/page-settings-system-mode.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 126,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/profile-carousel.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 313,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/provider-selection.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 100,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/qa-accordion.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 211,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/rating-spotlight.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 251,
       "fileCategory": "code"
     },
     {
       "path": "tests/int/redirects.int.spec.ts",
       "language": "typescript",
-      "sizeLines": 321,
+      "sizeLines": 320,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/regular-block-spacing.int.spec.tsx",
+      "language": "typescript",
+      "sizeLines": 31,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/review-feed-data.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 160,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/review-feed-route.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 55,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/review-feed.int.spec.tsx",
+      "language": "typescript",
+      "sizeLines": 258,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/review-preview-blocks.int.spec.tsx",
+      "language": "typescript",
+      "sizeLines": 111,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/review-preview-snapshot.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 127,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/review-rating-summary.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 72,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/review-submission-render.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 156,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/review-submission.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 426,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/reviews.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 83,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/rotating-announcement.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 120,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/runtime-config.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 122,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/seo-contract.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/sitemap.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 204,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/starter-contract.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 92,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/starter-productization.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 69,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/stats-strip-render.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 145,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/system-page-blocks.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 266,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/system-page-rendering.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 99,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/taxonomy.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 99,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/theme-settings.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 76,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/work-queue.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 475,
       "fileCategory": "code"
     },
     {
       "path": "tsconfig.json",
       "language": "json",
-      "sizeLines": 45,
+      "sizeLines": 44,
       "fileCategory": "config"
     },
     {
       "path": "vitest.config.mts",
       "language": "mts",
-      "sizeLines": 13,
-      "fileCategory": "config"
+      "sizeLines": 17,
+      "fileCategory": "code"
     },
     {
       "path": "vitest.setup.ts",
       "language": "typescript",
-      "sizeLines": 5,
-      "fileCategory": "config"
+      "sizeLines": 4,
+      "fileCategory": "code"
     }
   ],
-  "totalFiles": 123,
-  "filteredByIgnore": 175,
-  "estimatedComplexity": "small",
+  "totalFiles": 502,
+  "filteredByIgnore": 192,
+  "estimatedComplexity": "very-large",
   "importMap": {
     ".env.example": [],
-    ".gitignore": [],
     ".npmrc": [],
+    ".pnpmfile.mjs": [],
     ".prettierrc.json": [],
     ".yarnrc": [],
     "AGENTS.md": [],
@@ -773,17 +3051,188 @@
     "SKILL.md": [],
     "components.json": [],
     "docker-compose.yml": [],
+    "docs/architecture/content-model-map.md": [],
+    "docs/guides/README.md": [],
+    "docs/guides/articles.md": [],
+    "docs/guides/categories.md": [],
+    "docs/guides/footers.md": [],
+    "docs/guides/form-submissions.md": [],
+    "docs/guides/forms.md": [],
+    "docs/guides/headers.md": [],
+    "docs/guides/links.md": [],
+    "docs/guides/media.md": [],
+    "docs/guides/operational-audit-events.md": [],
+    "docs/guides/pages.md": [],
+    "docs/guides/redirects.md": [],
+    "docs/guides/reviews.md": [],
+    "docs/guides/seo-settings.md": [],
+    "docs/guides/site-defaults.md": [],
+    "docs/guides/site-settings.md": [],
+    "docs/guides/system-modes.md": [],
+    "docs/guides/system-pages.md": [],
+    "docs/guides/tags.md": [],
+    "docs/guides/theme-settings.md": [],
+    "docs/guides/users.md": [],
+    "docs/guides/work-queue.md": [],
+    "docs/operations/editorial-governance.md": [],
+    "docs/operations/mongodb-deployment.md": [],
+    "docs/operations/starter-clone-checklist.md": [],
+    "docs/superpowers/plans/2026-07-07-cms-foundation-audit.md": [],
+    "docs/superpowers/plans/2026-07-07-cms-foundation-remediation-plan.md": [],
+    "docs/superpowers/plans/2026-07-08-articles-reviews-implementation-plan.md": [],
+    "docs/superpowers/plans/2026-07-08-editorial-governance-plan.md": [],
+    "docs/superpowers/plans/2026-07-08-review-intake-promotion.md": [],
+    "docs/superpowers/plans/2026-07-08-vercel-postgres-runtime-plan.md": [],
+    "docs/superpowers/plans/2026-07-09-form-submissions-lead-operations.md": [],
+    "docs/superpowers/plans/2026-07-09-homepage-e2e-seeding.md": [],
+    "docs/superpowers/plans/2026-07-09-media-governance.md": [],
+    "docs/superpowers/plans/2026-07-09-operator-guides.md": [],
+    "docs/superpowers/plans/2026-07-09-playwright-readiness-route.md": [],
+    "docs/superpowers/plans/2026-07-09-playwright-sqlite-worker-serialization.md": [],
+    "docs/superpowers/plans/2026-07-09-pnpm-startup-contract-fix.md": [],
+    "docs/superpowers/plans/2026-07-09-publish-queue-safety-implementation.md": [],
+    "docs/superpowers/plans/2026-07-09-role-capability-model.md": [],
+    "docs/superpowers/plans/2026-07-09-seo-operations-completeness.md": [],
+    "docs/superpowers/plans/2026-07-09-starter-productization-and-handoff.md": [],
+    "docs/superpowers/plans/2026-07-09-taxonomy-and-content-organization.md": [],
+    "docs/superpowers/plans/2026-07-09-work-queue-implementation.md": [],
+    "docs/superpowers/plans/2026-07-10-mongodb-runtime-reset.md": [],
+    "docs/superpowers/plans/2026-07-11-admin-ia-simplification.md": [],
+    "docs/superpowers/plans/2026-07-11-system-mode-homepage-fallback.md": [],
+    "docs/superpowers/plans/2026-07-11-system-page-block-architecture-refactor.md": [],
+    "docs/superpowers/plans/2026-07-11-system-page-default-blocks.md": [],
+    "docs/superpowers/plans/2026-07-12-block-cleanup.md": [],
+    "docs/superpowers/plans/2026-07-13-feature-spotlight-block.md": [],
+    "docs/superpowers/plans/2026-07-13-footer56-footer-preset.md": [],
+    "docs/superpowers/plans/2026-07-13-footer56-legal-tab-terms.md": [],
+    "docs/superpowers/plans/2026-07-13-footer56-site-settings-integration.md": [],
+    "docs/superpowers/plans/2026-07-13-header-navbar-block.md": [],
+    "docs/superpowers/plans/2026-07-13-hero-institutional-block.md": [],
+    "docs/superpowers/plans/2026-07-13-stats-strip-block.md": [],
+    "docs/superpowers/plans/2026-07-14-block-components-theme-normalization.md": [],
+    "docs/superpowers/plans/2026-07-14-shared-block-appearance-controls.md": [],
+    "docs/superpowers/plans/2026-07-14-website-theme-registry.md": [],
+    "docs/superpowers/plans/2026-07-17-block-thumbnail-generation.md": [],
+    "docs/superpowers/plans/2026-07-17-feature-matrix-block.md": [],
+    "docs/superpowers/plans/2026-07-18-feature-matrix-image-height.md": [],
+    "docs/superpowers/plans/2026-07-18-feature-matrix-rename.md": [],
+    "docs/superpowers/plans/2026-07-18-gallery-showcase-block.md": [],
+    "docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-sizing.md": [],
+    "docs/superpowers/plans/2026-07-18-gallery-showcase-mobile-three-card.md": [],
+    "docs/superpowers/plans/2026-07-18-hero-banner-rename.md": [],
+    "docs/superpowers/plans/2026-07-18-mobile-block-container-spacing.md": [],
+    "docs/superpowers/plans/2026-07-18-profile-carousel-block.md": [],
+    "docs/superpowers/plans/2026-07-18-qa-accordion-rename.md": [],
+    "docs/superpowers/plans/2026-07-18-rating-spotlight-block.md": [],
+    "docs/superpowers/plans/2026-07-18-review-feed-block.md": [],
+    "docs/superpowers/plans/2026-07-18-review-form-browser-hydration.md": [],
+    "docs/superpowers/plans/2026-07-19-content-highlights-block.md": [],
+    "docs/superpowers/plans/2026-07-19-image-mosaic-block.md": [],
+    "docs/superpowers/plans/2026-07-19-image-mosaic-css-hover.md": [],
+    "docs/superpowers/plans/2026-07-19-image-mosaic-hover-coverage.md": [],
+    "docs/superpowers/plans/2026-07-19-image-mosaic-mobile-overlay.md": [],
+    "docs/superpowers/plans/2026-07-19-image-mosaic-optional-actions.md": [],
+    "docs/superpowers/plans/2026-07-19-live-preview-server-boundary.md": [],
+    "docs/superpowers/plans/2026-07-19-review-feed-container-width.md": [],
+    "docs/superpowers/plans/2026-07-20-news-event-story-layout.md": [],
+    "docs/superpowers/plans/2026-07-20-news-events-highlights-presentation.md": [],
+    "docs/superpowers/plans/2026-07-20-news-events-system.md": [],
+    "docs/superpowers/plans/2026-07-20-regular-block-responsive-spacing.md": [],
+    "docs/superpowers/plans/2026-07-21-content-highlights-layouts.md": [],
+    "docs/superpowers/reviews/2026-07-07-cms-foundation-audit.md": [],
     "docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md": [],
     "docs/superpowers/specs/2026-07-04-navigation-links-and-menus-design.md": [],
+    "docs/superpowers/specs/2026-07-07-cms-foundation-audit-design.md": [],
+    "docs/superpowers/specs/2026-07-08-articles-reviews-design.md": [],
+    "docs/superpowers/specs/2026-07-08-editorial-first-cms-design.md": [],
+    "docs/superpowers/specs/2026-07-08-review-intake-promotion-design.md": [],
+    "docs/superpowers/specs/2026-07-08-vercel-postgres-runtime-design.md": [],
+    "docs/superpowers/specs/2026-07-09-form-submissions-lead-operations-design.md": [],
+    "docs/superpowers/specs/2026-07-09-homepage-e2e-seeding-design.md": [],
+    "docs/superpowers/specs/2026-07-09-media-governance-design.md": [],
+    "docs/superpowers/specs/2026-07-09-operator-guides-design.md": [],
+    "docs/superpowers/specs/2026-07-09-playwright-readiness-route-design.md": [],
+    "docs/superpowers/specs/2026-07-09-playwright-sqlite-worker-serialization-design.md": [],
+    "docs/superpowers/specs/2026-07-09-pnpm-startup-contract-fix-design.md": [],
+    "docs/superpowers/specs/2026-07-09-publish-queue-safety-design.md": [],
+    "docs/superpowers/specs/2026-07-09-role-and-capability-model-design.md": [],
+    "docs/superpowers/specs/2026-07-09-seo-operations-completeness-design.md": [],
+    "docs/superpowers/specs/2026-07-09-starter-productization-and-handoff-design.md": [],
+    "docs/superpowers/specs/2026-07-09-taxonomy-and-content-organization-design.md": [],
+    "docs/superpowers/specs/2026-07-09-work-queue-design.md": [],
+    "docs/superpowers/specs/2026-07-10-mongodb-runtime-reset-design.md": [],
+    "docs/superpowers/specs/2026-07-11-admin-ia-simplification-design.md": [],
+    "docs/superpowers/specs/2026-07-11-optional-editorial-workflow-design.md": [],
+    "docs/superpowers/specs/2026-07-11-system-page-block-architecture-design.md": [],
+    "docs/superpowers/specs/2026-07-11-system-page-default-blocks-design.md": [],
+    "docs/superpowers/specs/2026-07-12-block-cleanup-design.md": [],
+    "docs/superpowers/specs/2026-07-13-feature-spotlight-block-design.md": [],
+    "docs/superpowers/specs/2026-07-13-footer56-footer-preset-design.md": [],
+    "docs/superpowers/specs/2026-07-13-footer56-footer-preset-revision-design.md": [],
+    "docs/superpowers/specs/2026-07-13-footer56-site-settings-integration-design.md": [],
+    "docs/superpowers/specs/2026-07-13-footer56-terms-site-settings-design.md": [],
+    "docs/superpowers/specs/2026-07-13-header-navbar-block-design.md": [],
+    "docs/superpowers/specs/2026-07-13-hero-institutional-block-design.md": [],
+    "docs/superpowers/specs/2026-07-13-stats-strip-block-design.md": [],
+    "docs/superpowers/specs/2026-07-14-block-components-theme-normalization-design.md": [],
+    "docs/superpowers/specs/2026-07-14-shared-block-appearance-controls-design.md": [],
+    "docs/superpowers/specs/2026-07-14-website-theme-registry-design.md": [],
+    "docs/superpowers/specs/2026-07-15-announcement-flicker-fix-design.md": [],
+    "docs/superpowers/specs/2026-07-15-dismissible-announcement-design.md": [],
+    "docs/superpowers/specs/2026-07-17-block-thumbnail-generation-design.md": [],
+    "docs/superpowers/specs/2026-07-17-feature-matrix-block-design.md": [],
+    "docs/superpowers/specs/2026-07-18-feature-matrix-image-height-design.md": [],
+    "docs/superpowers/specs/2026-07-18-feature-matrix-rename-design.md": [],
+    "docs/superpowers/specs/2026-07-18-gallery-showcase-block-design.md": [],
+    "docs/superpowers/specs/2026-07-18-gallery-showcase-mobile-three-card-design.md": [],
+    "docs/superpowers/specs/2026-07-18-hero-banner-rename-design.md": [],
+    "docs/superpowers/specs/2026-07-18-mobile-block-container-spacing-design.md": [],
+    "docs/superpowers/specs/2026-07-18-profile-carousel-block-design.md": [],
+    "docs/superpowers/specs/2026-07-18-qa-accordion-rename-design.md": [],
+    "docs/superpowers/specs/2026-07-18-rating-spotlight-block-design.md": [],
+    "docs/superpowers/specs/2026-07-18-review-feed-block-design.md": [],
+    "docs/superpowers/specs/2026-07-18-review-form-browser-hydration-design.md": [],
+    "docs/superpowers/specs/2026-07-19-content-highlights-block-design.md": [],
+    "docs/superpowers/specs/2026-07-19-image-mosaic-block-design.md": [],
+    "docs/superpowers/specs/2026-07-19-live-preview-server-boundary-design.md": [],
+    "docs/superpowers/specs/2026-07-19-review-feed-container-width-design.md": [],
+    "docs/superpowers/specs/2026-07-20-news-events-highlights-presentation-design.md": [],
+    "docs/superpowers/specs/2026-07-20-news-events-system-design.md": [],
+    "docs/superpowers/specs/2026-07-20-regular-block-responsive-spacing-design.md": [],
+    "docs/superpowers/specs/2026-07-21-content-highlights-layouts-design.md": [],
     "eslint.config.mjs": [],
     "next.config.ts": [],
     "package.json": [],
     "playwright.config.ts": [],
+    "pnpm-workspace.yaml": [],
     "postcss.config.mjs": [],
-    "src/access/adminCapabilities.ts": [],
-    "src/app/(frontend)/PageContent.tsx": [],
+    "public/block-thumbnails/README.md": [],
+    "scripts/generate-block-thumbnails.ts": [
+      "src/block-thumbnails/definitions.ts"
+    ],
+    "src/access/adminCapabilities.ts": [
+      "src/access/editorialRoles.ts"
+    ],
+    "src/access/editorialRoles.ts": [
+      "src/access/adminCapabilities.ts"
+    ],
+    "src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx": [
+      "src/block-thumbnails/BlockThumbnailPreviewStage.tsx",
+      "src/block-thumbnails/definitions.ts",
+      "src/block-thumbnails/fixtures.tsx"
+    ],
+    "src/app/(block-thumbnails)/layout.tsx": [
+      "src/lib/themes/websiteThemes.ts",
+      "src/styles/globals.css"
+    ],
+    "src/app/(frontend)/PageContent.tsx": [
+      "src/blocks/RenderBlocks.tsx",
+      "src/blocks/renderPageBlocks.tsx"
+    ],
     "src/app/(frontend)/SystemFallbackPage.tsx": [
-      "src/components/system-page-hero.tsx"
+      "src/components/system-pages/System404View.tsx",
+      "src/components/system-pages/SystemComingSoonView.tsx",
+      "src/components/system-pages/SystemMaintenanceView.tsx"
     ],
     "src/app/(frontend)/[...slug]/page.tsx": [
       "src/app/(frontend)/PageContent.tsx",
@@ -791,14 +3240,44 @@
       "src/app/(frontend)/pageData.ts",
       "src/lib/redirects.ts"
     ],
+    "src/app/(frontend)/articles/[slug]/page.tsx": [
+      "src/components/articles/ArticlePage.tsx",
+      "src/lib/contentEntries.ts"
+    ],
+    "src/app/(frontend)/articles/category/[slug]/page.tsx": [
+      "src/components/articles/ArticleArchivePage.tsx",
+      "src/lib/contentEntries.ts"
+    ],
+    "src/app/(frontend)/articles/tag/[slug]/page.tsx": [
+      "src/components/articles/ArticleArchivePage.tsx",
+      "src/lib/contentEntries.ts"
+    ],
     "src/app/(frontend)/layout.tsx": [
-      "src/payload.config.ts",
-      "src/styles/globals.css",
-      "src/blocks/renderFooter.tsx",
-      "src/blocks/renderHeader.tsx",
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/admin/AdminSessionBar.tsx",
+      "src/components/global/GlobalAnnouncement.tsx",
+      "src/components/global/GlobalFooter.tsx",
+      "src/components/global/GlobalHeader.tsx",
+      "src/lib/cmsSession.ts",
       "src/lib/media.ts",
       "src/lib/seo.ts",
-      "src/lib/siteUrl.ts"
+      "src/lib/siteUrl.ts",
+      "src/lib/themes/websiteThemes.ts",
+      "src/payload.config.ts",
+      "src/styles/globals.css"
+    ],
+    "src/app/(frontend)/news-events/[slug]/page.tsx": [
+      "src/components/live-preview/NewsEventLivePreview.tsx",
+      "src/components/news-events/NewsEventStory.tsx",
+      "src/lib/newsEvents.ts",
+      "src/lib/newsEventsMetadata.ts",
+      "src/payload.config.ts"
+    ],
+    "src/app/(frontend)/news-events/page.tsx": [
+      "src/components/news-events/NewsEventsFeed.tsx",
+      "src/lib/newsEvents.ts",
+      "src/lib/newsEventsMetadata.ts",
+      "src/lib/newsEventsShared.ts"
     ],
     "src/app/(frontend)/not-found.tsx": [
       "src/app/(frontend)/PageContent.tsx",
@@ -806,32 +3285,45 @@
       "src/app/(frontend)/pageData.ts"
     ],
     "src/app/(frontend)/page.tsx": [
-      "src/styles/globals.css",
       "src/app/(frontend)/PageContent.tsx",
       "src/app/(frontend)/SystemFallbackPage.tsx",
-      "src/app/(frontend)/pageData.ts"
+      "src/app/(frontend)/pageData.ts",
+      "src/styles/globals.css"
     ],
     "src/app/(frontend)/pageData.ts": [
-      "src/payload.config.ts",
+      "src/lib/cmsSession.ts",
       "src/lib/media.ts",
+      "src/lib/pagePaths.ts",
       "src/lib/seo.ts",
       "src/lib/siteUrl.ts",
-      "src/lib/pagePaths.ts",
-      "src/lib/systemPageTypes.ts"
+      "src/lib/systemPageTypes.ts",
+      "src/payload.config.ts"
     ],
     "src/app/(frontend)/preview/page/[id]/page.tsx": [
       "src/components/live-preview/PageLivePreview.tsx",
+      "src/lib/newsEventsPreviewSnapshot.ts",
+      "src/lib/reviewPreviewSnapshot.ts",
       "src/payload.config.ts"
     ],
+    "src/app/(frontend)/reviews/[slug]/page.tsx": [
+      "src/components/reviews/ReviewPage.tsx",
+      "src/lib/contentEntries.ts"
+    ],
+    "src/app/(frontend)/reviews/category/[slug]/page.tsx": [
+      "src/components/reviews/ReviewArchivePage.tsx",
+      "src/lib/contentEntries.ts"
+    ],
     "src/app/(payload)/admin/[[...segments]]/not-found.tsx": [
-      "src/payload.config.ts",
-      "src/app/(payload)/admin/importMap.js"
+      "src/app/(payload)/admin/importMap.js",
+      "src/payload.config.ts"
     ],
     "src/app/(payload)/admin/[[...segments]]/page.tsx": [
-      "src/payload.config.ts",
-      "src/app/(payload)/admin/importMap.js"
+      "src/app/(payload)/admin/importMap.js",
+      "src/payload.config.ts"
     ],
-    "src/app/(payload)/admin/importMap.js": [],
+    "src/app/(payload)/admin/importMap.js": [
+      "src/blocks/HeaderNavbar12/LogoHeightField.tsx"
+    ],
     "src/app/(payload)/api/[...slug]/route.ts": [
       "src/payload.config.ts"
     ],
@@ -843,15 +3335,21 @@
     ],
     "src/app/(payload)/custom.scss": [],
     "src/app/(payload)/layout.tsx": [
-      "src/payload.config.ts",
       "src/app/(payload)/admin/importMap.js",
-      "src/app/(payload)/custom.scss"
+      "src/app/(payload)/custom.scss",
+      "src/payload.config.ts"
     ],
     "src/app/api/forms/[slug]/submit/route.ts": [
-      "src/payload.config.ts",
-      "src/lib/formSpamProtection.ts",
       "src/lib/formNotifications.ts",
-      "src/lib/forms.ts"
+      "src/lib/formSpamProtection.ts",
+      "src/lib/formSubmissionEvents.ts",
+      "src/lib/forms.ts",
+      "src/lib/reviewPromotion.ts",
+      "src/lib/reviews.ts",
+      "src/payload.config.ts"
+    ],
+    "src/app/api/review-feed/route.ts": [
+      "src/lib/reviewFeed.ts"
     ],
     "src/app/my-route/route.ts": [
       "src/payload.config.ts"
@@ -860,90 +3358,416 @@
       "src/lib/siteUrl.ts"
     ],
     "src/app/sitemap.ts": [
-      "src/payload.config.ts",
       "src/lib/pagePaths.ts",
-      "src/lib/siteUrl.ts"
+      "src/lib/seo.ts",
+      "src/lib/siteUrl.ts",
+      "src/lib/taxonomy.ts",
+      "src/payload.config.ts"
     ],
-    "src/blocks/Footer2/Component.tsx": [
-      "src/components/footer2.tsx",
-      "src/lib/media.ts",
-      "src/lib/navigationLinks.ts",
-      "src/lib/navigationStructures.ts"
+    "src/block-thumbnails/BlockThumbnailPreviewStage.tsx": [],
+    "src/block-thumbnails/definitions.ts": [],
+    "src/block-thumbnails/fixtures.tsx": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/Announcement/Component.tsx",
+      "src/blocks/ContentHighlights/Component.tsx",
+      "src/blocks/Cta39/Component.tsx",
+      "src/blocks/FeatureMatrix/Component.tsx",
+      "src/blocks/FeatureSpotlight/Component.tsx",
+      "src/blocks/Footer56/Component.tsx",
+      "src/blocks/GalleryShowcase/Component.tsx",
+      "src/blocks/HeaderNavbar12/Component.tsx",
+      "src/blocks/HeroBanner/Component.tsx",
+      "src/blocks/ImageMosaic/Component.tsx",
+      "src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "src/blocks/ProfileCarousel/Component.tsx",
+      "src/blocks/QaAccordion/Component.tsx",
+      "src/blocks/RatingSpotlight/Component.tsx",
+      "src/blocks/ReviewSubmission/Component.tsx",
+      "src/blocks/Services21/Component.tsx",
+      "src/blocks/StatsStrip/Component.tsx",
+      "src/blocks/System404/Component.tsx",
+      "src/blocks/SystemComingSoon/Component.tsx",
+      "src/blocks/SystemMaintenance/Component.tsx",
+      "src/components/review-feed.tsx",
+      "src/components/team-showcase.tsx"
     ],
-    "src/blocks/Footer2/config.ts": [],
-    "src/blocks/Form/ClientForm.tsx": [
-      "src/components/ui/button.tsx",
-      "src/lib/forms.ts",
+    "src/blocks/Announcement/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/announcement/AnnouncementBar.tsx",
+      "src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "src/components/announcement/RotatingAnnouncementContent.tsx"
+    ],
+    "src/blocks/Announcement/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts"
+    ],
+    "src/blocks/ContentHighlights/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/content-highlights.tsx",
+      "src/lib/cmsLinks.ts"
+    ],
+    "src/blocks/ContentHighlights/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/shared/contentActionsFields.ts"
+    ],
+    "src/blocks/Cta39/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/ContentActions.tsx",
+      "src/lib/cmsLinks.ts",
       "src/lib/utils.ts"
     ],
-    "src/blocks/Form/Component.tsx": [
-      "src/payload.config.ts",
-      "src/blocks/Form/ClientForm.tsx",
-      "src/lib/forms.ts"
+    "src/blocks/Cta39/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/shared/contentActionsFields.ts"
     ],
-    "src/blocks/Form/config.ts": [],
-    "src/blocks/HeaderNavbar12/Component.tsx": [
-      "src/components/navbar12.tsx",
-      "src/lib/media.ts",
-      "src/lib/navigationLinks.ts",
-      "src/lib/navigationStructures.ts"
-    ],
-    "src/blocks/HeaderNavbar12/config.ts": [],
-    "src/blocks/Hero36/Component.tsx": [
-      "src/components/hero36.tsx",
+    "src/blocks/FeatureMatrix/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/feature-matrix.tsx",
       "src/lib/cmsLinks.ts",
       "src/lib/media.ts"
     ],
-    "src/blocks/Hero36/config.ts": [
-      "src/components/hero36.tsx",
-      "src/fields/cmsLinkFields.ts"
+    "src/blocks/FeatureMatrix/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/shared/contentActionsFields.ts"
+    ],
+    "src/blocks/FeatureSpotlight/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/ContentActions.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/blocks/FeatureSpotlight/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/shared/contentActionsFields.ts"
+    ],
+    "src/blocks/Footer56/Component.tsx": [
+      "src/components/footer56.tsx",
+      "src/components/site/SiteLogo.tsx",
+      "src/lib/headerNavigation.ts",
+      "src/lib/media.ts",
+      "src/lib/pagePaths.ts"
+    ],
+    "src/blocks/Footer56/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts"
+    ],
+    "src/blocks/GalleryShowcase/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/gallery-showcase.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts"
+    ],
+    "src/blocks/GalleryShowcase/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/shared/contentActionsFields.ts"
+    ],
+    "src/blocks/HeaderNavbar12/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/header/HeaderNavbar.tsx",
+      "src/components/site/SiteLogo.tsx",
+      "src/lib/headerNavigation.ts"
+    ],
+    "src/blocks/HeaderNavbar12/LogoHeightField.tsx": [],
+    "src/blocks/HeaderNavbar12/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts"
+    ],
+    "src/blocks/HeroBanner/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ui/button.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/blocks/HeroBanner/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts"
+    ],
+    "src/blocks/ImageMosaic/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/image-mosaic.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts"
+    ],
+    "src/blocks/ImageMosaic/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/shared/contentActionsFields.ts"
+    ],
+    "src/blocks/NewsEventsHighlights/Component.tsx": [
+      "src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "src/lib/newsEvents.ts",
+      "src/lib/newsEventsShared.ts"
+    ],
+    "src/blocks/NewsEventsHighlights/Presentation.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/news-events/NewsEventsHighlights.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/newsEventsShared.ts"
+    ],
+    "src/blocks/NewsEventsHighlights/PreviewComponent.tsx": [
+      "src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "src/lib/newsEventsPreviewShared.ts",
+      "src/lib/newsEventsShared.ts"
+    ],
+    "src/blocks/NewsEventsHighlights/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/shared/contentActionsFields.ts"
+    ],
+    "src/blocks/PageBlockStack.tsx": [],
+    "src/blocks/ProfileCarousel/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/profile-carousel.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts"
+    ],
+    "src/blocks/ProfileCarousel/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/shared/contentActionsFields.ts"
+    ],
+    "src/blocks/QaAccordion/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/ContentActions.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/blocks/QaAccordion/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/shared/contentActionsFields.ts"
+    ],
+    "src/blocks/RatingSpotlight/Component.tsx": [
+      "src/blocks/RatingSpotlight/Presentation.tsx",
+      "src/components/rating-spotlight.tsx",
+      "src/lib/reviewRatingSummary.ts"
+    ],
+    "src/blocks/RatingSpotlight/Presentation.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/rating-spotlight.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/reviewRatingShared.ts"
+    ],
+    "src/blocks/RatingSpotlight/PreviewComponent.tsx": [
+      "src/blocks/RatingSpotlight/Presentation.tsx",
+      "src/lib/reviewPreviewShared.ts"
+    ],
+    "src/blocks/RatingSpotlight/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/shared/contentActionsFields.ts"
     ],
     "src/blocks/RenderBlocks.tsx": [
-      "src/blocks/Form/Component.tsx",
-      "src/blocks/Hero36/Component.tsx",
+      "src/blocks/PageBlockStack.tsx",
       "src/blocks/System404/Component.tsx",
       "src/blocks/SystemComingSoon/Component.tsx",
       "src/blocks/SystemMaintenance/Component.tsx"
     ],
-    "src/blocks/System404/Component.tsx": [
-      "src/components/system-page-hero.tsx",
+    "src/blocks/ReviewFeed/Component.tsx": [
+      "src/blocks/ReviewFeed/Presentation.tsx",
+      "src/lib/reviewFeed.ts",
+      "src/lib/reviewFeedShared.ts",
+      "src/lib/reviewRatingSummary.ts"
+    ],
+    "src/blocks/ReviewFeed/Presentation.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/review-feed.tsx",
+      "src/lib/reviewFeedShared.ts",
+      "src/lib/reviewRatingShared.ts"
+    ],
+    "src/blocks/ReviewFeed/PreviewComponent.tsx": [
+      "src/blocks/ReviewFeed/Presentation.tsx",
+      "src/lib/reviewFeedShared.ts",
+      "src/lib/reviewPreviewShared.ts"
+    ],
+    "src/blocks/ReviewFeed/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/lib/reviewFeedShared.ts"
+    ],
+    "src/blocks/ReviewSubmission/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/ui/button.tsx",
+      "src/components/ui/field.tsx",
+      "src/components/ui/input.tsx",
+      "src/components/ui/radio-group.tsx",
+      "src/components/ui/textarea.tsx",
+      "src/components/ui/toggle-group.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/forms.ts",
+      "src/lib/reviews.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/blocks/ReviewSubmission/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/shared/contentActionsFields.ts"
+    ],
+    "src/blocks/Services21/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ContentLink.tsx",
+      "src/components/services21.tsx",
+      "src/components/shadcnblocks/border-button.tsx",
       "src/lib/cmsLinks.ts",
       "src/lib/media.ts"
     ],
+    "src/blocks/Services21/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/shared/contentActionsFields.ts"
+    ],
+    "src/blocks/StatsStrip/AnimatedMetricValue.tsx": [],
+    "src/blocks/StatsStrip/Component.tsx": [
+      "src/blocks/StatsStrip/AnimatedMetricValue.tsx",
+      "src/blocks/shared/blockAppearance.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/blocks/StatsStrip/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts"
+    ],
+    "src/blocks/System404/Component.tsx": [
+      "src/components/system-pages/System404View.tsx",
+      "src/lib/systemPageActions.ts"
+    ],
     "src/blocks/System404/config.ts": [
+      "src/block-thumbnails/definitions.ts",
       "src/blocks/systemPageFields.ts"
     ],
     "src/blocks/SystemComingSoon/Component.tsx": [
-      "src/components/system-page-hero.tsx",
-      "src/lib/cmsLinks.ts",
-      "src/lib/media.ts"
+      "src/components/system-pages/SystemComingSoonView.tsx",
+      "src/lib/systemPageActions.ts"
     ],
     "src/blocks/SystemComingSoon/config.ts": [
+      "src/block-thumbnails/definitions.ts",
       "src/blocks/systemPageFields.ts"
     ],
     "src/blocks/SystemMaintenance/Component.tsx": [
-      "src/components/system-page-hero.tsx",
+      "src/components/system-pages/SystemMaintenanceView.tsx",
+      "src/lib/systemPageActions.ts"
+    ],
+    "src/blocks/SystemMaintenance/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/systemPageFields.ts"
+    ],
+    "src/blocks/TeamShowcase/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/team-showcase.tsx",
       "src/lib/cmsLinks.ts",
       "src/lib/media.ts"
     ],
-    "src/blocks/SystemMaintenance/config.ts": [
-      "src/blocks/systemPageFields.ts"
+    "src/blocks/TeamShowcase/config.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/shared/contentActionsFields.ts"
     ],
-    "src/blocks/renderFooter.tsx": [
-      "src/blocks/Footer2/Component.tsx"
+    "src/blocks/renderFooterBlocks.tsx": [
+      "src/blocks/Footer56/Component.tsx",
+      "src/components/site/SiteLogo.tsx"
     ],
-    "src/blocks/renderHeader.tsx": [
-      "src/blocks/HeaderNavbar12/Component.tsx"
+    "src/blocks/renderHeaderBlocks.tsx": [
+      "src/blocks/HeaderNavbar12/Component.tsx",
+      "src/components/site/SiteLogo.tsx"
     ],
+    "src/blocks/renderLivePreviewPageBlocks.tsx": [
+      "src/blocks/Announcement/Component.tsx",
+      "src/blocks/ContentHighlights/Component.tsx",
+      "src/blocks/Cta39/Component.tsx",
+      "src/blocks/FeatureMatrix/Component.tsx",
+      "src/blocks/FeatureSpotlight/Component.tsx",
+      "src/blocks/GalleryShowcase/Component.tsx",
+      "src/blocks/HeroBanner/Component.tsx",
+      "src/blocks/ImageMosaic/Component.tsx",
+      "src/blocks/NewsEventsHighlights/PreviewComponent.tsx",
+      "src/blocks/PageBlockStack.tsx",
+      "src/blocks/ProfileCarousel/Component.tsx",
+      "src/blocks/QaAccordion/Component.tsx",
+      "src/blocks/RatingSpotlight/PreviewComponent.tsx",
+      "src/blocks/ReviewFeed/PreviewComponent.tsx",
+      "src/blocks/ReviewSubmission/Component.tsx",
+      "src/blocks/Services21/Component.tsx",
+      "src/blocks/StatsStrip/Component.tsx",
+      "src/blocks/TeamShowcase/Component.tsx",
+      "src/lib/newsEventsPreviewShared.ts",
+      "src/lib/reviewPreviewShared.ts"
+    ],
+    "src/blocks/renderPageBlocks.tsx": [
+      "src/blocks/Announcement/Component.tsx",
+      "src/blocks/ContentHighlights/Component.tsx",
+      "src/blocks/Cta39/Component.tsx",
+      "src/blocks/FeatureMatrix/Component.tsx",
+      "src/blocks/FeatureSpotlight/Component.tsx",
+      "src/blocks/GalleryShowcase/Component.tsx",
+      "src/blocks/HeroBanner/Component.tsx",
+      "src/blocks/ImageMosaic/Component.tsx",
+      "src/blocks/NewsEventsHighlights/Component.tsx",
+      "src/blocks/PageBlockStack.tsx",
+      "src/blocks/ProfileCarousel/Component.tsx",
+      "src/blocks/QaAccordion/Component.tsx",
+      "src/blocks/RatingSpotlight/Component.tsx",
+      "src/blocks/ReviewFeed/Component.tsx",
+      "src/blocks/ReviewSubmission/Component.tsx",
+      "src/blocks/Services21/Component.tsx",
+      "src/blocks/StatsStrip/Component.tsx",
+      "src/blocks/TeamShowcase/Component.tsx"
+    ],
+    "src/blocks/shared/blockAppearance.ts": [
+      "src/lib/utils.ts"
+    ],
+    "src/blocks/shared/blockAppearanceFields.ts": [],
+    "src/blocks/shared/blockSpacing.ts": [],
+    "src/blocks/shared/contentActionsFields.ts": [],
     "src/blocks/systemPageFields.ts": [
+      "src/blocks/shared/blockAppearanceFields.ts",
       "src/fields/cmsLinkFields.ts"
+    ],
+    "src/collections/Articles.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/enforceEditorialWorkflow.ts",
+      "src/hooks/logOperationalAuditEvent.ts",
+      "src/hooks/syncPrimaryCategoryMembership.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "src/hooks/validateSEOContract.ts",
+      "src/lib/editorialWorkflow.ts"
+    ],
+    "src/collections/Categories.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/validateSEOContract.ts"
     ],
     "src/collections/Footers.ts": [
       "src/access/adminCapabilities.ts",
-      "src/blocks/Footer2/config.ts"
+      "src/blocks/Footer56/config.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts"
     ],
     "src/collections/FormSubmissions.ts": [
-      "src/access/adminCapabilities.ts"
+      "src/access/adminCapabilities.ts",
+      "src/hooks/syncFormSubmissionToWorkQueue.ts",
+      "src/hooks/updateFormSubmissionActivity.ts",
+      "src/lib/forms.ts"
     ],
     "src/collections/Forms.ts": [
       "src/access/adminCapabilities.ts",
@@ -951,54 +3775,211 @@
     ],
     "src/collections/Headers.ts": [
       "src/access/adminCapabilities.ts",
-      "src/blocks/HeaderNavbar12/config.ts"
+      "src/blocks/HeaderNavbar12/config.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts"
     ],
     "src/collections/Media.ts": [
-      "src/access/adminCapabilities.ts"
+      "src/access/adminCapabilities.ts",
+      "src/hooks/preventMediaDeletionWhileInUse.ts",
+      "src/hooks/syncMediaToWorkQueue.ts",
+      "src/lib/mediaUsage.ts",
+      "src/lib/operationalAudit.ts"
     ],
     "src/collections/NavigationLinks.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts"
+    ],
+    "src/collections/NewsEvents.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/blocks/shared/contentActionsFields.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/enforceEditorialWorkflow.ts",
+      "src/hooks/logOperationalAuditEvent.ts",
+      "src/hooks/normalizeNewsEventFields.ts",
+      "src/hooks/syncPrimaryCategoryMembership.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "src/hooks/validateSEOContract.ts",
+      "src/lib/editorialWorkflow.ts"
+    ],
+    "src/collections/OperationalAuditEvents.ts": [
       "src/access/adminCapabilities.ts"
     ],
     "src/collections/Pages.ts": [
       "src/access/adminCapabilities.ts",
-      "src/lib/seo.ts",
-      "src/blocks/Form/config.ts",
-      "src/blocks/Hero36/config.ts",
+      "src/blocks/Announcement/config.ts",
+      "src/blocks/ContentHighlights/config.ts",
+      "src/blocks/Cta39/config.ts",
+      "src/blocks/FeatureMatrix/config.ts",
+      "src/blocks/FeatureSpotlight/config.ts",
+      "src/blocks/GalleryShowcase/config.ts",
+      "src/blocks/HeroBanner/config.ts",
+      "src/blocks/ImageMosaic/config.ts",
+      "src/blocks/NewsEventsHighlights/config.ts",
+      "src/blocks/ProfileCarousel/config.ts",
+      "src/blocks/QaAccordion/config.ts",
+      "src/blocks/RatingSpotlight/config.ts",
+      "src/blocks/ReviewFeed/config.ts",
+      "src/blocks/ReviewSubmission/config.ts",
+      "src/blocks/Services21/config.ts",
+      "src/blocks/StatsStrip/config.ts",
+      "src/blocks/TeamShowcase/config.ts",
+      "src/fields/buildSEOFields.ts",
       "src/hooks/createRedirectsForChangedPagePath.ts",
-      "src/hooks/migrateLegacyReusableLinks.ts",
+      "src/hooks/enforceEditorialWorkflow.ts",
+      "src/hooks/logOperationalAuditEvent.ts",
       "src/hooks/populatePageUrlPreview.ts",
       "src/hooks/preventReferencedPageUnpublish.ts",
-      "src/hooks/syncNavigationLinkForPage.ts"
+      "src/hooks/syncNavigationLinkForPage.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "src/hooks/validateSEOContract.ts",
+      "src/lib/editorialWorkflow.ts"
     ],
     "src/collections/Redirects.ts": [
-      "src/access/adminCapabilities.ts"
+      "src/access/adminCapabilities.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts"
+    ],
+    "src/collections/Reviews.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/enforceEditorialWorkflow.ts",
+      "src/hooks/logOperationalAuditEvent.ts",
+      "src/hooks/syncPrimaryCategoryMembership.ts",
+      "src/hooks/syncReviewToWorkQueue.ts",
+      "src/hooks/validateSEOContract.ts",
+      "src/lib/editorialWorkflow.ts",
+      "src/lib/reviews.ts"
     ],
     "src/collections/SystemPages.ts": [
       "src/access/adminCapabilities.ts",
-      "src/lib/systemPageTypes.ts",
       "src/blocks/System404/config.ts",
       "src/blocks/SystemComingSoon/config.ts",
       "src/blocks/SystemMaintenance/config.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/enforceEditorialWorkflow.ts",
+      "src/hooks/logOperationalAuditEvent.ts",
       "src/hooks/migrateLegacyReusableLinks.ts",
-      "src/hooks/preventReferencedSystemPageInvalidation.ts"
+      "src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "src/hooks/validateSEOContract.ts",
+      "src/lib/editorialWorkflow.ts",
+      "src/lib/systemPageTypes.ts"
+    ],
+    "src/collections/Tags.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/validateSEOContract.ts"
     ],
     "src/collections/Users.ts": [
-      "src/access/adminCapabilities.ts"
+      "src/access/adminCapabilities.ts",
+      "src/access/editorialRoles.ts"
     ],
-    "src/components/footer2.tsx": [
-      "src/components/shadcnblocks/logo.tsx",
+    "src/collections/WorkQueue.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/hooks/syncWorkQueueItem.ts",
+      "src/lib/operationalAudit.ts"
+    ],
+    "src/components/ContentActions.tsx": [
+      "src/components/ContentLink.tsx",
+      "src/components/ui/button.tsx",
+      "src/lib/cmsLinks.ts",
       "src/lib/utils.ts"
     ],
-    "src/components/hero36.tsx": [
-      "src/components/ui/badge.tsx",
+    "src/components/ContentLink.tsx": [
+      "src/components/ui/button.tsx",
       "src/lib/utils.ts"
+    ],
+    "src/components/admin/AdminSessionBar.tsx": [
+      "src/components/admin/AdminUserMenu.tsx",
+      "src/components/ui/button.tsx",
+      "src/lib/cmsSession.ts"
+    ],
+    "src/components/admin/AdminUserMenu.tsx": [
+      "src/components/ui/button.tsx"
+    ],
+    "src/components/announcement/AnnouncementBar.tsx": [
+      "src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "src/components/announcement/RotatingAnnouncementContent.tsx",
+      "src/components/ui/button.tsx",
+      "src/lib/utils.ts"
+    ],
+    "src/components/announcement/MarqueeAnnouncementContent.tsx": [],
+    "src/components/announcement/RotatingAnnouncementContent.tsx": [],
+    "src/components/articles/ArticleArchivePage.tsx": [],
+    "src/components/articles/ArticlePage.tsx": [
+      "src/lib/media.ts",
+      "src/lib/taxonomy.ts"
+    ],
+    "src/components/content-highlights.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/ui/separator.tsx",
+      "src/lib/utils.ts"
+    ],
+    "src/components/feature-matrix.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/components/footer56.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/components/gallery-showcase-fan.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/gallery-showcase.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/gallery-showcase-fan.tsx",
+      "src/lib/utils.ts"
+    ],
+    "src/components/global/GlobalAnnouncement.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/announcement/AnnouncementBar.tsx"
+    ],
+    "src/components/global/GlobalFooter.tsx": [
+      "src/blocks/renderFooterBlocks.tsx",
+      "src/components/site/SiteLogo.tsx"
+    ],
+    "src/components/global/GlobalHeader.tsx": [
+      "src/blocks/renderHeaderBlocks.tsx",
+      "src/components/site/SiteLogo.tsx"
+    ],
+    "src/components/header/HeaderMobileMenu.tsx": [
+      "src/components/ui/accordion.tsx",
+      "src/components/ui/button.tsx",
+      "src/components/ui/sheet.tsx",
+      "src/lib/headerNavigation.ts"
+    ],
+    "src/components/header/HeaderNavMenu.tsx": [
+      "src/components/ui/navigation-menu.tsx",
+      "src/lib/headerNavigation.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/components/header/HeaderNavbar.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/header/HeaderMobileMenu.tsx",
+      "src/components/header/HeaderNavMenu.tsx",
+      "src/components/ui/button.tsx",
+      "src/lib/headerNavigation.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/components/image-mosaic.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/ContentActions.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/components/live-preview/NewsEventLivePreview.tsx": [
+      "src/components/news-events/NewsEventStory.tsx",
+      "src/lib/newsEventsShared.ts"
     ],
     "src/components/live-preview/PageLivePreview.tsx": [
-      "src/blocks/Form/ClientForm.tsx",
-      "src/components/hero36.tsx",
-      "src/lib/cmsLinks.ts",
-      "src/lib/forms.ts",
-      "src/lib/media.ts"
+      "src/blocks/renderLivePreviewPageBlocks.tsx",
+      "src/lib/newsEventsPreviewShared.ts",
+      "src/lib/reviewPreviewShared.ts"
     ],
     "src/components/navbar12.tsx": [
       "src/components/ui/accordion.tsx",
@@ -1008,16 +3989,133 @@
       "src/components/ui/sheet.tsx",
       "src/lib/utils.ts"
     ],
-    "src/components/shadcnblocks/logo.tsx": [
-      "src/lib/utils.ts",
-      "src/components/ui/context-menu.tsx"
-    ],
-    "src/components/system-page-hero.tsx": [
+    "src/components/news-events/NewsEventStory.tsx": [
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/ContentActions.tsx",
       "src/components/ui/badge.tsx",
+      "src/lib/newsEventsShared.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/components/news-events/NewsEventsFeed.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/ContentLink.tsx",
+      "src/components/ui/badge.tsx",
+      "src/components/ui/empty.tsx",
+      "src/components/ui/pagination.tsx",
+      "src/lib/newsEventsShared.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/components/news-events/NewsEventsHighlights.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/ContentLink.tsx",
+      "src/components/ui/badge.tsx",
+      "src/components/ui/card.tsx",
+      "src/lib/newsEventsShared.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/components/profile-carousel-card.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/profile-carousel-client.tsx": [
+      "src/components/profile-carousel-card.tsx",
+      "src/components/ui/carousel.tsx"
+    ],
+    "src/components/profile-carousel.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/profile-carousel-card.tsx",
+      "src/components/profile-carousel-client.tsx",
+      "src/lib/utils.ts"
+    ],
+    "src/components/rating-spotlight.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/lib/reviewRatingSummary.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/components/review-feed-list.tsx": [
+      "src/components/shadcnblocks/rating.tsx",
+      "src/components/ui/avatar.tsx",
+      "src/components/ui/button.tsx",
+      "src/components/ui/separator.tsx",
+      "src/lib/reviewFeedShared.ts"
+    ],
+    "src/components/review-feed.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/review-feed-list.tsx",
+      "src/components/shadcnblocks/rating.tsx",
+      "src/components/ui/progress.tsx",
+      "src/components/ui/separator.tsx",
+      "src/lib/reviewFeedShared.ts",
+      "src/lib/reviewRatingShared.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/components/reviews/ReviewArchivePage.tsx": [
+      "src/lib/reviews.ts"
+    ],
+    "src/components/reviews/ReviewPage.tsx": [
+      "src/lib/media.ts",
+      "src/lib/reviews.ts",
+      "src/lib/taxonomy.ts"
+    ],
+    "src/components/services21.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/components/shadcnblocks/border-button.tsx": [
       "src/components/ui/button.tsx",
       "src/lib/utils.ts"
     ],
+    "src/components/shadcnblocks/rating.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/site/SiteLogo.tsx": [],
+    "src/components/system-pages/System404View.tsx": [
+      "src/components/system-pages/primitives/SystemPageActions.tsx",
+      "src/components/system-pages/primitives/SystemPageShell.tsx",
+      "src/components/system-pages/types.ts"
+    ],
+    "src/components/system-pages/SystemComingSoonView.tsx": [
+      "src/components/system-pages/primitives/SystemPageActions.tsx",
+      "src/components/system-pages/primitives/SystemPageCopy.tsx",
+      "src/components/system-pages/primitives/SystemPageShell.tsx",
+      "src/components/system-pages/primitives/SystemPageStatus.tsx",
+      "src/components/system-pages/types.ts"
+    ],
+    "src/components/system-pages/SystemMaintenanceView.tsx": [
+      "src/components/system-pages/primitives/SystemPageActions.tsx",
+      "src/components/system-pages/primitives/SystemPageCopy.tsx",
+      "src/components/system-pages/primitives/SystemPageShell.tsx",
+      "src/components/system-pages/primitives/SystemPageStatus.tsx",
+      "src/components/system-pages/types.ts"
+    ],
+    "src/components/system-pages/primitives/SystemPageActions.tsx": [
+      "src/components/system-pages/types.ts",
+      "src/components/ui/button.tsx"
+    ],
+    "src/components/system-pages/primitives/SystemPageCopy.tsx": [],
+    "src/components/system-pages/primitives/SystemPageShell.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/system-pages/types.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/components/system-pages/primitives/SystemPageStatus.tsx": [],
+    "src/components/system-pages/types.ts": [
+      "src/blocks/shared/blockAppearance.ts"
+    ],
+    "src/components/team-showcase.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/lib/utils.ts"
+    ],
     "src/components/ui/accordion.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/avatar.tsx": [
       "src/lib/utils.ts"
     ],
     "src/components/ui/badge.tsx": [
@@ -1026,23 +4124,85 @@
     "src/components/ui/button.tsx": [
       "src/lib/utils.ts"
     ],
-    "src/components/ui/context-menu.tsx": [
+    "src/components/ui/card.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/carousel.tsx": [
+      "src/components/ui/button.tsx",
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/checkbox.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/empty.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/field.tsx": [
+      "src/components/ui/label.tsx",
+      "src/components/ui/separator.tsx",
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/input.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/label.tsx": [
       "src/lib/utils.ts"
     ],
     "src/components/ui/navigation-menu.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/pagination.tsx": [
+      "src/components/ui/button.tsx",
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/progress.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/radio-group.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/select.tsx": [
       "src/lib/utils.ts"
     ],
     "src/components/ui/separator.tsx": [
       "src/lib/utils.ts"
     ],
     "src/components/ui/sheet.tsx": [
-      "src/lib/utils.ts",
-      "src/components/ui/button.tsx"
+      "src/components/ui/button.tsx",
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/textarea.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/toggle-group.tsx": [
+      "src/components/ui/toggle.tsx",
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/toggle.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/config/providers.ts": [
+      "src/config/runtime.ts"
+    ],
+    "src/config/runtime.ts": [],
+    "src/config/starterContract.ts": [
+      "src/config/runtime.ts"
+    ],
+    "src/fields/buildSEOFields.ts": [
+      "src/lib/seo.ts"
     ],
     "src/fields/cmsLinkFields.ts": [],
+    "src/globals/NewsEventsSettings.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/logOperationalAuditEvent.ts"
+    ],
     "src/globals/PageSettings.ts": [
       "src/access/adminCapabilities.ts",
-      "src/lib/systemPageTypes.ts"
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/hooks/logOperationalAuditEvent.ts",
+      "src/lib/operationalAudit.ts"
     ],
     "src/globals/SEOSettings.ts": [
       "src/access/adminCapabilities.ts",
@@ -1051,18 +4211,36 @@
     "src/globals/SiteSettings.ts": [
       "src/access/adminCapabilities.ts"
     ],
+    "src/globals/SystemModeSettings.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/hooks/logOperationalAuditEvent.ts",
+      "src/lib/systemPageTypes.ts"
+    ],
     "src/globals/ThemeSettings.ts": [
-      "src/access/adminCapabilities.ts"
+      "src/access/adminCapabilities.ts",
+      "src/lib/themes/websiteThemes.ts"
     ],
     "src/hooks/createRedirectsForChangedPagePath.ts": [
-      "src/lib/redirects.ts",
-      "src/lib/pagePaths.ts"
+      "src/lib/pagePaths.ts",
+      "src/lib/redirects.ts"
+    ],
+    "src/hooks/enforceEditorialWorkflow.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/lib/editorialWorkflow.ts",
+      "src/lib/workQueue.ts"
+    ],
+    "src/hooks/logOperationalAuditEvent.ts": [
+      "src/lib/operationalAudit.ts"
     ],
     "src/hooks/migrateLegacyReusableLinks.ts": [
       "src/lib/navigationLinkSync.ts"
     ],
+    "src/hooks/normalizeNewsEventFields.ts": [],
     "src/hooks/populatePageUrlPreview.ts": [
       "src/lib/pagePaths.ts"
+    ],
+    "src/hooks/preventMediaDeletionWhileInUse.ts": [
+      "src/lib/mediaUsage.ts"
     ],
     "src/hooks/preventReferencedPageUnpublish.ts": [
       "src/lib/pagePaths.ts"
@@ -1070,91 +4248,490 @@
     "src/hooks/preventReferencedSystemPageInvalidation.ts": [
       "src/lib/systemPageTypes.ts"
     ],
+    "src/hooks/syncFormSubmissionToWorkQueue.ts": [
+      "src/lib/workQueue.ts"
+    ],
+    "src/hooks/syncMediaToWorkQueue.ts": [
+      "src/lib/workQueue.ts"
+    ],
     "src/hooks/syncNavigationLinkForPage.ts": [
       "src/lib/navigationLinkSync.ts"
+    ],
+    "src/hooks/syncPrimaryCategoryMembership.ts": [],
+    "src/hooks/syncReviewToWorkQueue.ts": [
+      "src/lib/workQueue.ts"
+    ],
+    "src/hooks/syncWorkQueueItem.ts": [],
+    "src/hooks/syncWorkflowStateToWorkQueue.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/lib/workQueue.ts"
+    ],
+    "src/hooks/updateFormSubmissionActivity.ts": [],
+    "src/hooks/validateSEOContract.ts": [
+      "src/lib/seo.ts"
     ],
     "src/lib/cmsLinks.ts": [
       "src/lib/navigationLinks.ts",
       "src/lib/pagePaths.ts"
     ],
+    "src/lib/cmsSession.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/payload.config.ts"
+    ],
+    "src/lib/contentEntries.ts": [
+      "src/lib/media.ts",
+      "src/lib/seo.ts",
+      "src/lib/siteUrl.ts",
+      "src/lib/taxonomy.ts",
+      "src/payload.config.ts"
+    ],
+    "src/lib/editorialWorkflow.ts": [],
     "src/lib/formNotifications.ts": [],
     "src/lib/formSpamProtection.ts": [
       "src/lib/forms.ts"
     ],
+    "src/lib/formSubmissionEvents.ts": [],
     "src/lib/forms.ts": [],
+    "src/lib/headerNavigation.ts": [
+      "src/lib/pagePaths.ts"
+    ],
     "src/lib/media.ts": [
       "src/lib/siteUrl.ts"
     ],
+    "src/lib/mediaStorage.ts": [
+      "src/config/runtime.ts",
+      "src/lib/operationalAudit.ts"
+    ],
+    "src/lib/mediaUsage.ts": [],
     "src/lib/navigationLinkSync.ts": [],
     "src/lib/navigationLinks.ts": [
       "src/lib/pagePaths.ts"
     ],
-    "src/lib/navigationStructures.ts": [
-      "src/lib/navigationLinks.ts"
+    "src/lib/newsEvents.ts": [
+      "src/lib/newsEventsShared.ts",
+      "src/lib/taxonomy.ts",
+      "src/payload.config.ts"
     ],
+    "src/lib/newsEventsMetadata.ts": [
+      "src/lib/media.ts",
+      "src/lib/newsEventsShared.ts",
+      "src/lib/seo.ts",
+      "src/lib/siteUrl.ts"
+    ],
+    "src/lib/newsEventsPreviewShared.ts": [
+      "src/lib/newsEventsShared.ts"
+    ],
+    "src/lib/newsEventsPreviewSnapshot.ts": [
+      "src/lib/newsEvents.ts",
+      "src/lib/newsEventsPreviewShared.ts"
+    ],
+    "src/lib/newsEventsShared.ts": [
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts",
+      "src/lib/taxonomy.ts"
+    ],
+    "src/lib/operationalAudit.ts": [],
     "src/lib/pagePaths.ts": [],
     "src/lib/redirects.ts": [
-      "src/payload.config.ts",
       "src/lib/pagePaths.ts"
     ],
+    "src/lib/reviewFeed.ts": [
+      "src/lib/reviewFeedShared.ts",
+      "src/lib/reviews.ts",
+      "src/payload.config.ts"
+    ],
+    "src/lib/reviewFeedShared.ts": [],
+    "src/lib/reviewPreviewShared.ts": [
+      "src/lib/reviewFeedShared.ts",
+      "src/lib/reviewRatingShared.ts"
+    ],
+    "src/lib/reviewPreviewSnapshot.ts": [
+      "src/lib/reviewFeed.ts",
+      "src/lib/reviewFeedShared.ts",
+      "src/lib/reviewPreviewShared.ts",
+      "src/lib/reviewRatingSummary.ts"
+    ],
+    "src/lib/reviewPromotion.ts": [
+      "src/lib/reviews.ts"
+    ],
+    "src/lib/reviewRatingShared.ts": [],
+    "src/lib/reviewRatingSummary.ts": [
+      "src/lib/reviewRatingShared.ts",
+      "src/payload.config.ts"
+    ],
+    "src/lib/reviews.ts": [],
     "src/lib/seo.ts": [],
     "src/lib/siteUrl.ts": [],
+    "src/lib/systemPageActions.ts": [
+      "src/components/system-pages/types.ts",
+      "src/lib/cmsLinks.ts"
+    ],
     "src/lib/systemPageTypes.ts": [],
+    "src/lib/taxonomy.ts": [],
+    "src/lib/themes/websiteThemes.ts": [],
     "src/lib/utils.ts": [],
+    "src/lib/workQueue.ts": [
+      "src/hooks/syncWorkQueueItem.ts"
+    ],
     "src/payload.config.ts": [
-      "src/collections/Users.ts",
+      "src/collections/Articles.ts",
+      "src/collections/Categories.ts",
       "src/collections/Footers.ts",
       "src/collections/FormSubmissions.ts",
       "src/collections/Forms.ts",
+      "src/collections/Headers.ts",
       "src/collections/Media.ts",
       "src/collections/NavigationLinks.ts",
+      "src/collections/NewsEvents.ts",
+      "src/collections/OperationalAuditEvents.ts",
       "src/collections/Pages.ts",
       "src/collections/Redirects.ts",
-      "src/collections/Headers.ts",
+      "src/collections/Reviews.ts",
       "src/collections/SystemPages.ts",
+      "src/collections/Tags.ts",
+      "src/collections/Users.ts",
+      "src/collections/WorkQueue.ts",
+      "src/config/providers.ts",
+      "src/config/runtime.ts",
+      "src/config/starterContract.ts",
+      "src/globals/NewsEventsSettings.ts",
       "src/globals/PageSettings.ts",
       "src/globals/SEOSettings.ts",
       "src/globals/SiteSettings.ts",
+      "src/globals/SystemModeSettings.ts",
       "src/globals/ThemeSettings.ts",
       "src/plugins/withTrash.ts"
     ],
     "src/plugins/withTrash.ts": [],
+    "src/styles/custom.css": [],
     "src/styles/globals.css": [],
     "src/styles/themes/theme-blue.css": [],
     "src/styles/themes/theme-default.css": [],
-    "src/styles/themes/theme-sera.css": [],
+    "src/styles/themes/theme-kodama.css": [],
+    "src/styles/themes/theme-sunset.css": [],
     "test.env": [],
     "tests/e2e/admin.e2e.spec.ts": [
       "tests/helpers/login.ts",
       "tests/helpers/seedUser.ts"
     ],
-    "tests/e2e/frontend.e2e.spec.ts": [],
+    "tests/e2e/frontend.e2e.spec.ts": [
+      "tests/helpers/seedHomepage.ts",
+      "tests/helpers/seedUser.ts"
+    ],
     "tests/helpers/login.ts": [],
-    "tests/helpers/seedUser.ts": [],
+    "tests/helpers/mongoMemoryServer.ts": [],
+    "tests/helpers/seedHomepage.ts": [
+      "src/payload.config.ts",
+      "tests/helpers/seedUser.ts"
+    ],
+    "tests/helpers/seedUser.ts": [
+      "src/payload.config.ts"
+    ],
+    "tests/helpers/server-only.ts": [],
+    "tests/int/admin-documentation.int.spec.ts": [],
+    "tests/int/admin-information-architecture.int.spec.ts": [
+      "src/collections/Articles.ts",
+      "src/collections/Categories.ts",
+      "src/collections/Footers.ts",
+      "src/collections/FormSubmissions.ts",
+      "src/collections/Forms.ts",
+      "src/collections/Headers.ts",
+      "src/collections/Media.ts",
+      "src/collections/NavigationLinks.ts",
+      "src/collections/OperationalAuditEvents.ts",
+      "src/collections/Pages.ts",
+      "src/collections/Redirects.ts",
+      "src/collections/Reviews.ts",
+      "src/collections/SystemPages.ts",
+      "src/collections/Tags.ts",
+      "src/collections/Users.ts",
+      "src/collections/WorkQueue.ts",
+      "src/globals/PageSettings.ts",
+      "src/globals/SEOSettings.ts",
+      "src/globals/SiteSettings.ts",
+      "src/globals/SystemModeSettings.ts",
+      "src/globals/ThemeSettings.ts"
+    ],
+    "tests/int/admin-session-bar.int.spec.ts": [
+      "src/components/admin/AdminSessionBar.tsx"
+    ],
     "tests/int/adminCapabilities.int.spec.ts": [
       "src/access/adminCapabilities.ts",
-      "src/collections/Media.ts",
-      "src/collections/Users.ts",
-      "src/globals/PageSettings.ts"
+      "src/access/editorialRoles.ts",
+      "src/collections/Users.ts"
     ],
     "tests/int/api.int.spec.ts": [
+      "tests/helpers/mongoMemoryServer.ts"
+    ],
+    "tests/int/articles.int.spec.ts": [
+      "src/collections/Articles.ts"
+    ],
+    "tests/int/block-thumbnail-fixtures.int.spec.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/block-thumbnails/fixtures.tsx"
+    ],
+    "tests/int/block-thumbnails.int.spec.ts": [
+      "src/block-thumbnails/definitions.ts",
+      "src/collections/Footers.ts",
+      "src/collections/Headers.ts",
+      "src/collections/Pages.ts",
+      "src/collections/SystemPages.ts"
+    ],
+    "tests/int/content-highlights.int.spec.tsx": [
+      "src/blocks/ContentHighlights/Component.tsx",
+      "src/blocks/ContentHighlights/config.ts",
+      "src/components/content-highlights.tsx"
+    ],
+    "tests/int/content-taxonomy.int.spec.ts": [],
+    "tests/int/editorial-workflow.int.spec.ts": [
+      "src/hooks/enforceEditorialWorkflow.ts"
+    ],
+    "tests/int/feature-matrix.int.spec.ts": [
+      "src/blocks/FeatureMatrix/Component.tsx",
+      "src/blocks/FeatureMatrix/config.ts",
+      "src/blocks/renderPageBlocks.tsx",
+      "src/collections/Pages.ts",
+      "src/components/feature-matrix.tsx"
+    ],
+    "tests/int/feature-spotlight.int.spec.ts": [
+      "src/blocks/FeatureSpotlight/Component.tsx",
+      "src/blocks/FeatureSpotlight/config.ts",
+      "src/blocks/shared/blockSpacing.ts"
+    ],
+    "tests/int/footer-spacing.int.spec.ts": [
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/footer56.tsx"
+    ],
+    "tests/int/forms-submission.int.spec.ts": [
+      "src/collections/FormSubmissions.ts",
+      "src/hooks/updateFormSubmissionActivity.ts"
+    ],
+    "tests/int/gallery-showcase.int.spec.ts": [
+      "src/blocks/GalleryShowcase/Component.tsx",
+      "src/blocks/GalleryShowcase/config.ts",
+      "src/blocks/renderPageBlocks.tsx",
+      "src/collections/Pages.ts",
+      "src/components/gallery-showcase-fan.tsx",
+      "src/components/gallery-showcase.tsx"
+    ],
+    "tests/int/global-announcement.int.spec.ts": [
+      "src/components/global/GlobalAnnouncement.tsx",
+      "src/globals/PageSettings.ts"
+    ],
+    "tests/int/global-footer.int.spec.ts": [
+      "src/blocks/renderFooterBlocks.tsx",
+      "src/components/global/GlobalFooter.tsx"
+    ],
+    "tests/int/global-header.int.spec.ts": [
+      "src/components/global/GlobalHeader.tsx"
+    ],
+    "tests/int/header-navbar-render.int.spec.ts": [
+      "src/blocks/HeaderNavbar12/Component.tsx",
+      "src/blocks/renderHeaderBlocks.tsx",
+      "src/components/header/HeaderMobileMenu.tsx",
+      "src/components/header/HeaderNavbar.tsx",
+      "src/components/site/SiteLogo.tsx",
+      "src/lib/headerNavigation.ts"
+    ],
+    "tests/int/header-presets.int.spec.ts": [
+      "src/blocks/HeaderNavbar12/config.ts",
+      "src/collections/Headers.ts"
+    ],
+    "tests/int/hero-banner-render.int.spec.ts": [
+      "src/blocks/HeroBanner/Component.tsx"
+    ],
+    "tests/int/image-mosaic.int.spec.tsx": [
+      "src/blocks/ImageMosaic/Component.tsx",
+      "src/blocks/ImageMosaic/config.ts",
+      "src/blocks/renderPageBlocks.tsx",
+      "src/blocks/shared/contentActionsFields.ts",
+      "src/collections/Pages.ts",
+      "src/components/image-mosaic.tsx"
+    ],
+    "tests/int/live-preview-import-boundary.int.spec.ts": [],
+    "tests/int/live-preview-renderer.int.spec.tsx": [
+      "src/blocks/renderLivePreviewPageBlocks.tsx",
+      "src/lib/newsEventsPreviewShared.ts",
+      "src/lib/reviewPreviewShared.ts"
+    ],
+    "tests/int/marquee-announcement.int.spec.ts": [
+      "src/components/announcement/MarqueeAnnouncementContent.tsx"
+    ],
+    "tests/int/media-governance.int.spec.ts": [
+      "src/collections/Media.ts",
+      "src/hooks/preventMediaDeletionWhileInUse.ts",
+      "src/lib/mediaUsage.ts"
+    ],
+    "tests/int/media-storage.int.spec.ts": [
+      "src/lib/mediaStorage.ts"
+    ],
+    "tests/int/news-event-story.int.spec.tsx": [
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/news-events/NewsEventStory.tsx",
+      "src/lib/newsEventsShared.ts"
+    ],
+    "tests/int/news-events-collection.int.spec.ts": [
+      "src/collections/NewsEvents.ts",
+      "src/globals/NewsEventsSettings.ts",
+      "src/hooks/normalizeNewsEventFields.ts",
       "src/payload.config.ts"
+    ],
+    "tests/int/news-events-data.int.spec.ts": [
+      "src/lib/newsEventsShared.ts"
+    ],
+    "tests/int/news-events-feed.int.spec.tsx": [
+      "src/components/news-events/NewsEventsFeed.tsx"
+    ],
+    "tests/int/news-events-highlights.int.spec.tsx": [
+      "src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "src/blocks/NewsEventsHighlights/config.ts"
+    ],
+    "tests/int/operational-audit.int.spec.ts": [
+      "src/collections/OperationalAuditEvents.ts",
+      "src/collections/WorkQueue.ts",
+      "src/hooks/logOperationalAuditEvent.ts"
+    ],
+    "tests/int/page-blocks.int.spec.ts": [
+      "src/app/(frontend)/PageContent.tsx",
+      "src/blocks/Announcement/config.ts",
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/collections/Pages.ts",
+      "src/globals/SiteSettings.ts"
+    ],
+    "tests/int/page-routing.int.spec.ts": [],
+    "tests/int/page-settings-system-mode.int.spec.ts": [
+      "src/globals/PageSettings.ts",
+      "src/globals/SystemModeSettings.ts"
+    ],
+    "tests/int/profile-carousel.int.spec.ts": [
+      "src/blocks/ProfileCarousel/Component.tsx",
+      "src/blocks/ProfileCarousel/config.ts",
+      "src/blocks/renderPageBlocks.tsx",
+      "src/blocks/shared/contentActionsFields.ts",
+      "src/collections/Pages.ts",
+      "src/components/profile-carousel.tsx"
+    ],
+    "tests/int/provider-selection.int.spec.ts": [],
+    "tests/int/qa-accordion.int.spec.ts": [
+      "src/blocks/QaAccordion/Component.tsx",
+      "src/blocks/shared/blockSpacing.ts"
+    ],
+    "tests/int/rating-spotlight.int.spec.ts": [
+      "src/blocks/RatingSpotlight/Component.tsx",
+      "src/blocks/RatingSpotlight/config.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/rating-spotlight.tsx"
     ],
     "tests/int/redirects.int.spec.ts": [
       "src/hooks/createRedirectsForChangedPagePath.ts"
     ],
+    "tests/int/regular-block-spacing.int.spec.tsx": [
+      "src/blocks/shared/blockSpacing.ts"
+    ],
+    "tests/int/review-feed-data.int.spec.ts": [
+      "src/lib/reviewFeed.ts",
+      "src/lib/reviewFeedShared.ts"
+    ],
+    "tests/int/review-feed-route.int.spec.ts": [
+      "src/app/api/review-feed/route.ts"
+    ],
+    "tests/int/review-feed.int.spec.tsx": [
+      "src/blocks/ReviewFeed/Component.tsx",
+      "src/blocks/ReviewFeed/config.ts",
+      "src/components/review-feed-list.tsx",
+      "src/components/review-feed.tsx",
+      "src/lib/reviewFeed.ts"
+    ],
+    "tests/int/review-preview-blocks.int.spec.tsx": [
+      "src/blocks/RatingSpotlight/PreviewComponent.tsx",
+      "src/blocks/ReviewFeed/PreviewComponent.tsx",
+      "src/lib/reviewPreviewShared.ts",
+      "src/lib/reviewRatingShared.ts"
+    ],
+    "tests/int/review-preview-snapshot.int.spec.ts": [
+      "src/lib/reviewFeedShared.ts",
+      "src/lib/reviewPreviewShared.ts",
+      "src/lib/reviewPreviewSnapshot.ts"
+    ],
+    "tests/int/review-rating-summary.int.spec.ts": [
+      "src/lib/reviewRatingShared.ts",
+      "src/lib/reviewRatingSummary.ts"
+    ],
+    "tests/int/review-submission-render.int.spec.ts": [
+      "src/blocks/ReviewSubmission/Component.tsx"
+    ],
+    "tests/int/review-submission.int.spec.ts": [],
+    "tests/int/reviews.int.spec.ts": [
+      "src/collections/Reviews.ts"
+    ],
+    "tests/int/rotating-announcement.int.spec.ts": [
+      "src/components/announcement/RotatingAnnouncementContent.tsx"
+    ],
+    "tests/int/runtime-config.int.spec.ts": [
+      "src/config/runtime.ts"
+    ],
+    "tests/int/seo-contract.int.spec.ts": [
+      "src/collections/Articles.ts",
+      "src/collections/Categories.ts",
+      "src/collections/Pages.ts",
+      "src/collections/Reviews.ts",
+      "src/collections/SystemPages.ts",
+      "src/collections/Tags.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/validateSEOContract.ts",
+      "src/lib/seo.ts"
+    ],
+    "tests/int/sitemap.int.spec.ts": [],
+    "tests/int/starter-contract.int.spec.ts": [
+      "src/config/starterContract.ts"
+    ],
+    "tests/int/starter-productization.int.spec.ts": [
+      "tests/helpers/mongoMemoryServer.ts"
+    ],
+    "tests/int/stats-strip-render.int.spec.ts": [
+      "src/blocks/StatsStrip/AnimatedMetricValue.tsx",
+      "src/blocks/StatsStrip/Component.tsx"
+    ],
+    "tests/int/system-page-blocks.int.spec.ts": [
+      "src/blocks/System404/config.ts",
+      "src/blocks/SystemComingSoon/config.ts",
+      "src/blocks/SystemMaintenance/config.ts",
+      "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/systemPageFields.ts",
+      "src/collections/Footers.ts",
+      "src/collections/Headers.ts",
+      "src/collections/Pages.ts",
+      "src/collections/Reviews.ts",
+      "src/collections/SystemPages.ts"
+    ],
+    "tests/int/system-page-rendering.int.spec.ts": [
+      "src/app/(frontend)/SystemFallbackPage.tsx",
+      "src/blocks/System404/Component.tsx",
+      "src/blocks/SystemComingSoon/Component.tsx",
+      "src/blocks/SystemMaintenance/Component.tsx"
+    ],
+    "tests/int/taxonomy.int.spec.ts": [
+      "src/collections/Articles.ts",
+      "src/collections/Categories.ts",
+      "src/collections/Reviews.ts",
+      "src/collections/Tags.ts",
+      "src/hooks/syncPrimaryCategoryMembership.ts"
+    ],
+    "tests/int/theme-settings.int.spec.ts": [
+      "src/globals/ThemeSettings.ts",
+      "src/lib/themes/websiteThemes.ts"
+    ],
+    "tests/int/work-queue.int.spec.ts": [
+      "src/collections/WorkQueue.ts",
+      "src/hooks/syncFormSubmissionToWorkQueue.ts",
+      "src/hooks/syncMediaToWorkQueue.ts",
+      "src/hooks/syncReviewToWorkQueue.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "src/lib/workQueue.ts"
+    ],
     "tsconfig.json": [],
     "vitest.config.mts": [],
     "vitest.setup.ts": []
-  },
-  "stats": {
-    "filesScanned": 123,
-    "byCategory": {
-      "config": 14,
-      "code": 97,
-      "docs": 5,
-      "infra": 2,
-      "markup": 5
-    }
   }
 }

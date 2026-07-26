@@ -1,0 +1,910 @@
+{
+  "nodes": [
+    {
+      "id": "document:docs/superpowers/plans/2026-07-07-cms-foundation-audit.md",
+      "type": "document",
+      "name": "2026-07-07-cms-foundation-audit.md",
+      "filePath": "docs/superpowers/plans/2026-07-07-cms-foundation-audit.md",
+      "summary": "Implementation plan for auditing the CMS foundation across platform structure, content modeling, editorial controls, marketing capabilities, reuse, and remediation priorities.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "starter-kit"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-07-cms-foundation-remediation-plan.md",
+      "type": "document",
+      "name": "2026-07-07-cms-foundation-remediation-plan.md",
+      "filePath": "docs/superpowers/plans/2026-07-07-cms-foundation-remediation-plan.md",
+      "summary": "Remediation plan for productizing documentation, separating runtime providers, raising test coverage, hardening system modes, and adding a lead-handling seam.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "media"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-08-articles-reviews-implementation-plan.md",
+      "type": "document",
+      "name": "2026-07-08-articles-reviews-implementation-plan.md",
+      "filePath": "docs/superpowers/plans/2026-07-08-articles-reviews-implementation-plan.md",
+      "summary": "Implementation plan for article and review collections, editorial permissions, routed public pages, reusable layouts, and public review submission.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "reviews"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-08-editorial-governance-plan.md",
+      "type": "document",
+      "name": "2026-07-08-editorial-governance-plan.md",
+      "filePath": "docs/superpowers/plans/2026-07-08-editorial-governance-plan.md",
+      "summary": "Implementation plan for editorial roles, capability boundaries, system-wide settings, workflow guardrails, audit events, and operational verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "editorial-governance"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-08-review-intake-promotion.md",
+      "type": "document",
+      "name": "2026-07-08-review-intake-promotion.md",
+      "filePath": "docs/superpowers/plans/2026-07-08-review-intake-promotion.md",
+      "summary": "Focused plan for separating review-intake schemas and helpers, refactoring submission routing, and verifying promotion into review content.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "reviews"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-08-vercel-postgres-runtime-plan.md",
+      "type": "document",
+      "name": "2026-07-08-vercel-postgres-runtime-plan.md",
+      "filePath": "docs/superpowers/plans/2026-07-08-vercel-postgres-runtime-plan.md",
+      "summary": "Historical implementation plan for hardened runtime parsing, SQLite/Postgres provider selection, and the documented Vercel deployment contract.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "runtime"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-09-form-submissions-lead-operations.md",
+      "type": "document",
+      "name": "2026-07-09-form-submissions-lead-operations.md",
+      "filePath": "docs/superpowers/plans/2026-07-09-form-submissions-lead-operations.md",
+      "summary": "Implementation plan for lead-intent metadata, form-submission operational fields, enriched events, route behavior, and integration verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "forms"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-09-homepage-e2e-seeding.md",
+      "type": "document",
+      "name": "2026-07-09-homepage-e2e-seeding.md",
+      "filePath": "docs/superpowers/plans/2026-07-09-homepage-e2e-seeding.md",
+      "summary": "Implementation plan for deterministic homepage fixtures, frontend Playwright setup, cleanup, and end-to-end verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "testing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-09-media-governance.md",
+      "type": "document",
+      "name": "2026-07-09-media-governance.md",
+      "filePath": "docs/superpowers/plans/2026-07-09-media-governance.md",
+      "summary": "Implementation plan for resolving media usage, adding governance metadata, blocking unsafe deletion, and covering regressions.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "media"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-09-operator-guides.md",
+      "type": "document",
+      "name": "2026-07-09-operator-guides.md",
+      "filePath": "docs/superpowers/plans/2026-07-09-operator-guides.md",
+      "summary": "Implementation plan for a structured operator-guide library spanning content, taxonomy, navigation, media, forms, admin operations, and settings.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "operations"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-09-playwright-readiness-route.md",
+      "type": "document",
+      "name": "2026-07-09-playwright-readiness-route.md",
+      "filePath": "docs/superpowers/plans/2026-07-09-playwright-readiness-route.md",
+      "summary": "Focused plan for pointing Playwright readiness checks at an always-live route and verifying the complete end-to-end workflow.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "testing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-09-playwright-sqlite-worker-serialization.md",
+      "type": "document",
+      "name": "2026-07-09-playwright-sqlite-worker-serialization.md",
+      "filePath": "docs/superpowers/plans/2026-07-09-playwright-sqlite-worker-serialization.md",
+      "summary": "Focused historical plan for serializing Playwright workers around a shared SQLite test database.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "testing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-09-pnpm-startup-contract-fix.md",
+      "type": "document",
+      "name": "2026-07-09-pnpm-startup-contract-fix.md",
+      "filePath": "docs/superpowers/plans/2026-07-09-pnpm-startup-contract-fix.md",
+      "summary": "Focused plan for restoring repository-level pnpm startup behavior and verifying existing integration and end-to-end test entry points.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "operations"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-09-publish-queue-safety-implementation.md",
+      "type": "document",
+      "name": "2026-07-09-publish-queue-safety-implementation.md",
+      "filePath": "docs/superpowers/plans/2026-07-09-publish-queue-safety-implementation.md",
+      "summary": "Implementation plan for blocking publication when unresolved work-queue items exist and wiring collection-aware workflow guards with tests.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "work-queue"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-09-role-capability-model.md",
+      "type": "document",
+      "name": "2026-07-09-role-capability-model.md",
+      "filePath": "docs/superpowers/plans/2026-07-09-role-capability-model.md",
+      "summary": "Implementation plan for role naming, default capability presets, persisted user capabilities, admin presentation, operator documentation, and regression tests.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "editorial-governance"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-09-seo-operations-completeness.md",
+      "type": "document",
+      "name": "2026-07-09-seo-operations-completeness.md",
+      "filePath": "docs/superpowers/plans/2026-07-09-seo-operations-completeness.md",
+      "summary": "Implementation plan for shared SEO fields and validation, content-model adoption, metadata and sitemap resolution, and structural guardrails.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "seo"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-09-starter-productization-and-handoff.md",
+      "type": "document",
+      "name": "2026-07-09-starter-productization-and-handoff.md",
+      "filePath": "docs/superpowers/plans/2026-07-09-starter-productization-and-handoff.md",
+      "summary": "Implementation plan for codifying the starter runtime contract, rewriting handoff documentation, and adding executable clone-safety verification.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "starter-kit"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-09-taxonomy-and-content-organization.md",
+      "type": "document",
+      "name": "2026-07-09-taxonomy-and-content-organization.md",
+      "filePath": "docs/superpowers/plans/2026-07-09-taxonomy-and-content-organization.md",
+      "summary": "Implementation plan for reusable categories and tags, content relationships, archive and related-content queries, and public taxonomy pages.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "taxonomy"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-09-work-queue-implementation.md",
+      "type": "document",
+      "name": "2026-07-09-work-queue-implementation.md",
+      "filePath": "docs/superpowers/plans/2026-07-09-work-queue-implementation.md",
+      "summary": "Implementation plan for the operational work queue, shared synchronization and audit helpers, workflow integrations, admin behavior, and coverage.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "work-queue"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-07-10-mongodb-runtime-reset.md",
+      "type": "document",
+      "name": "2026-07-10-mongodb-runtime-reset.md",
+      "filePath": "docs/superpowers/plans/2026-07-10-mongodb-runtime-reset.md",
+      "summary": "Implementation plan for resetting providers to MongoDB, replacing the SQLite test harness, cleaning local runtime workflows, and updating active documentation.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "runtime"
+      ],
+      "complexity": "complex"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:docs/superpowers/plans/2026-07-07-cms-foundation-audit.md",
+      "target": "document:docs/superpowers/reviews/2026-07-07-cms-foundation-audit.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-07-cms-foundation-audit.md",
+      "target": "document:docs/superpowers/specs/2026-07-07-cms-foundation-audit-design.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-07-cms-foundation-audit.md",
+      "target": "document:README.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-07-cms-foundation-audit.md",
+      "target": "file:src/payload.config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-07-cms-foundation-audit.md",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-07-cms-foundation-remediation-plan.md",
+      "target": "file:src/config/runtime.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-07-cms-foundation-remediation-plan.md",
+      "target": "file:src/config/providers.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-07-cms-foundation-remediation-plan.md",
+      "target": "file:tests/int/runtime-config.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-07-cms-foundation-remediation-plan.md",
+      "target": "file:tests/int/page-settings-system-mode.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-07-cms-foundation-remediation-plan.md",
+      "target": "file:tests/int/page-routing.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-articles-reviews-implementation-plan.md",
+      "target": "file:src/collections/Articles.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-articles-reviews-implementation-plan.md",
+      "target": "file:src/collections/Reviews.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-articles-reviews-implementation-plan.md",
+      "target": "file:src/components/articles/ArticlePage.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-articles-reviews-implementation-plan.md",
+      "target": "file:src/components/reviews/ReviewPage.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-articles-reviews-implementation-plan.md",
+      "target": "file:src/lib/contentEntries.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-editorial-governance-plan.md",
+      "target": "file:src/access/editorialRoles.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-editorial-governance-plan.md",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-editorial-governance-plan.md",
+      "target": "file:src/collections/Users.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-editorial-governance-plan.md",
+      "target": "file:src/globals/SystemModeSettings.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-editorial-governance-plan.md",
+      "target": "file:src/globals/PageSettings.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-review-intake-promotion.md",
+      "target": "file:src/collections/Forms.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-review-intake-promotion.md",
+      "target": "file:src/collections/FormSubmissions.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-review-intake-promotion.md",
+      "target": "file:src/collections/Reviews.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-review-intake-promotion.md",
+      "target": "file:src/lib/reviews.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-review-intake-promotion.md",
+      "target": "file:src/lib/reviewPromotion.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-vercel-postgres-runtime-plan.md",
+      "target": "config:package.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-vercel-postgres-runtime-plan.md",
+      "target": "config:.env.example",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-vercel-postgres-runtime-plan.md",
+      "target": "document:README.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-vercel-postgres-runtime-plan.md",
+      "target": "file:src/config/runtime.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-08-vercel-postgres-runtime-plan.md",
+      "target": "file:src/config/providers.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-form-submissions-lead-operations.md",
+      "target": "file:src/collections/Forms.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-form-submissions-lead-operations.md",
+      "target": "file:src/collections/FormSubmissions.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-form-submissions-lead-operations.md",
+      "target": "file:src/lib/forms.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-form-submissions-lead-operations.md",
+      "target": "file:src/hooks/updateFormSubmissionActivity.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-form-submissions-lead-operations.md",
+      "target": "file:src/app/api/forms/[slug]/submit/route.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-homepage-e2e-seeding.md",
+      "target": "file:tests/helpers/seedHomepage.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-homepage-e2e-seeding.md",
+      "target": "file:tests/helpers/seedUser.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-homepage-e2e-seeding.md",
+      "target": "file:tests/e2e/frontend.e2e.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-homepage-e2e-seeding.md",
+      "target": "file:playwright.config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-media-governance.md",
+      "target": "file:src/lib/mediaUsage.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-media-governance.md",
+      "target": "file:tests/int/media-governance.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-media-governance.md",
+      "target": "file:src/collections/Media.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-media-governance.md",
+      "target": "file:src/collections/Pages.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-media-governance.md",
+      "target": "file:src/collections/Articles.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-operator-guides.md",
+      "target": "document:docs/guides/README.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-operator-guides.md",
+      "target": "document:README.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-operator-guides.md",
+      "target": "document:docs/guides/pages.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-operator-guides.md",
+      "target": "document:docs/guides/categories.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-operator-guides.md",
+      "target": "document:docs/guides/tags.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-playwright-readiness-route.md",
+      "target": "file:playwright.config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-playwright-readiness-route.md",
+      "target": "file:tests/e2e/frontend.e2e.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-playwright-readiness-route.md",
+      "target": "file:tests/helpers/seedHomepage.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-playwright-readiness-route.md",
+      "target": "file:tests/helpers/seedUser.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-playwright-sqlite-worker-serialization.md",
+      "target": "file:playwright.config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-pnpm-startup-contract-fix.md",
+      "target": "file:.pnpmfile.mjs",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-pnpm-startup-contract-fix.md",
+      "target": "config:package.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-pnpm-startup-contract-fix.md",
+      "target": "file:playwright.config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-publish-queue-safety-implementation.md",
+      "target": "file:src/lib/workQueue.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-publish-queue-safety-implementation.md",
+      "target": "file:tests/int/work-queue.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-publish-queue-safety-implementation.md",
+      "target": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-publish-queue-safety-implementation.md",
+      "target": "file:tests/int/editorial-workflow.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-publish-queue-safety-implementation.md",
+      "target": "file:src/collections/Pages.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-role-capability-model.md",
+      "target": "file:src/access/editorialRoles.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-role-capability-model.md",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-role-capability-model.md",
+      "target": "file:src/collections/Users.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-role-capability-model.md",
+      "target": "file:tests/int/adminCapabilities.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-role-capability-model.md",
+      "target": "document:README.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-seo-operations-completeness.md",
+      "target": "file:src/fields/buildSEOFields.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-seo-operations-completeness.md",
+      "target": "file:src/hooks/validateSEOContract.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-seo-operations-completeness.md",
+      "target": "file:src/lib/seo.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-seo-operations-completeness.md",
+      "target": "file:tests/int/seo-contract.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-seo-operations-completeness.md",
+      "target": "file:src/collections/Pages.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-starter-productization-and-handoff.md",
+      "target": "file:src/config/starterContract.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-starter-productization-and-handoff.md",
+      "target": "file:src/payload.config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-starter-productization-and-handoff.md",
+      "target": "config:.env.example",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-starter-productization-and-handoff.md",
+      "target": "file:tests/int/starter-contract.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-starter-productization-and-handoff.md",
+      "target": "document:README.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-taxonomy-and-content-organization.md",
+      "target": "file:src/lib/contentEntries.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-taxonomy-and-content-organization.md",
+      "target": "file:src/collections/Categories.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-taxonomy-and-content-organization.md",
+      "target": "file:src/collections/Tags.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-taxonomy-and-content-organization.md",
+      "target": "file:src/payload.config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-taxonomy-and-content-organization.md",
+      "target": "file:tests/int/adminCapabilities.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-work-queue-implementation.md",
+      "target": "file:src/collections/WorkQueue.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-work-queue-implementation.md",
+      "target": "file:src/payload.config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-work-queue-implementation.md",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-work-queue-implementation.md",
+      "target": "file:src/access/editorialRoles.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-09-work-queue-implementation.md",
+      "target": "file:src/collections/Users.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-10-mongodb-runtime-reset.md",
+      "target": "file:src/config/runtime.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-10-mongodb-runtime-reset.md",
+      "target": "file:src/config/providers.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-10-mongodb-runtime-reset.md",
+      "target": "file:src/config/starterContract.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-10-mongodb-runtime-reset.md",
+      "target": "file:src/payload.config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-07-10-mongodb-runtime-reset.md",
+      "target": "config:package.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

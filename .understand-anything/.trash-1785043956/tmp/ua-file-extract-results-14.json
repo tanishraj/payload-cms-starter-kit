@@ -1,0 +1,294 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 5,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 5,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 5,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "tests/e2e/admin.e2e.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 41,
+      "nonEmptyLines": 33,
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/e2e/frontend.e2e.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 30,
+      "nonEmptyLines": 22,
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/helpers/login.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 31,
+      "nonEmptyLines": 26,
+      "functions": [
+        {
+          "name": "login",
+          "startLine": 16,
+          "endLine": 31,
+          "params": [
+            "{\n  page,\n  serverURL = 'http://localhost:3000',\n  user,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "login",
+          "line": 16,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "login",
+          "callee": "page.goto",
+          "lineNumber": 21
+        },
+        {
+          "caller": "login",
+          "callee": "page.fill",
+          "lineNumber": 23
+        },
+        {
+          "caller": "login",
+          "callee": "page.fill",
+          "lineNumber": 24
+        },
+        {
+          "caller": "login",
+          "callee": "page.click",
+          "lineNumber": 25
+        },
+        {
+          "caller": "login",
+          "callee": "page.waitForURL",
+          "lineNumber": 27
+        },
+        {
+          "caller": "login",
+          "callee": "page.locator",
+          "lineNumber": 29
+        },
+        {
+          "caller": "login",
+          "callee": "expect(dashboardArtifact).toBeVisible",
+          "lineNumber": 30
+        },
+        {
+          "caller": "login",
+          "callee": "expect",
+          "lineNumber": 30
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/helpers/seedHomepage.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 108,
+      "nonEmptyLines": 98,
+      "functions": [
+        {
+          "name": "seedHomepage",
+          "startLine": 53,
+          "endLine": 83,
+          "params": []
+        },
+        {
+          "name": "cleanupHomepage",
+          "startLine": 85,
+          "endLine": 108,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "seedHomepage",
+          "line": 53,
+          "isDefault": false
+        },
+        {
+          "name": "cleanupHomepage",
+          "line": 85,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "seedHomepage",
+          "callee": "getPayload",
+          "lineNumber": 54
+        },
+        {
+          "caller": "seedHomepage",
+          "callee": "getTestUserDocument",
+          "lineNumber": 55
+        },
+        {
+          "caller": "seedHomepage",
+          "callee": "payload.delete",
+          "lineNumber": 57
+        },
+        {
+          "caller": "seedHomepage",
+          "callee": "payload.create",
+          "lineNumber": 68
+        },
+        {
+          "caller": "seedHomepage",
+          "callee": "payload.updateGlobal",
+          "lineNumber": 75
+        },
+        {
+          "caller": "cleanupHomepage",
+          "callee": "getPayload",
+          "lineNumber": 86
+        },
+        {
+          "caller": "cleanupHomepage",
+          "callee": "getTestUserDocument",
+          "lineNumber": 87
+        },
+        {
+          "caller": "cleanupHomepage",
+          "callee": "payload.updateGlobal",
+          "lineNumber": 89
+        },
+        {
+          "caller": "cleanupHomepage",
+          "callee": "payload.delete",
+          "lineNumber": 98
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/helpers/seedUser.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 80,
+      "nonEmptyLines": 70,
+      "functions": [
+        {
+          "name": "seedTestUser",
+          "startLine": 13,
+          "endLine": 31,
+          "params": []
+        },
+        {
+          "name": "getTestUserDocument",
+          "startLine": 33,
+          "endLine": 64,
+          "params": []
+        },
+        {
+          "name": "cleanupTestUser",
+          "startLine": 69,
+          "endLine": 80,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "testUser",
+          "line": 4,
+          "isDefault": false
+        },
+        {
+          "name": "seedTestUser",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "getTestUserDocument",
+          "line": 33,
+          "isDefault": false
+        },
+        {
+          "name": "cleanupTestUser",
+          "line": 69,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "seedTestUser",
+          "callee": "getPayload",
+          "lineNumber": 14
+        },
+        {
+          "caller": "seedTestUser",
+          "callee": "payload.delete",
+          "lineNumber": 17
+        },
+        {
+          "caller": "seedTestUser",
+          "callee": "payload.create",
+          "lineNumber": 27
+        },
+        {
+          "caller": "getTestUserDocument",
+          "callee": "getPayload",
+          "lineNumber": 39
+        },
+        {
+          "caller": "getTestUserDocument",
+          "callee": "payload.find",
+          "lineNumber": 40
+        },
+        {
+          "caller": "cleanupTestUser",
+          "callee": "getPayload",
+          "lineNumber": 70
+        },
+        {
+          "caller": "cleanupTestUser",
+          "callee": "payload.delete",
+          "lineNumber": 72
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 4,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    }
+  ]
+}

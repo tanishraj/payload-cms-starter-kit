@@ -1,0 +1,147 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md",
+      "language": "markdown",
+      "sizeLines": 263,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-04-navigation-links-and-menus-design.md",
+      "language": "markdown",
+      "sizeLines": 411,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-07-cms-foundation-audit-design.md",
+      "language": "markdown",
+      "sizeLines": 242,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-08-articles-reviews-design.md",
+      "language": "markdown",
+      "sizeLines": 415,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-08-editorial-first-cms-design.md",
+      "language": "markdown",
+      "sizeLines": 370,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-08-review-intake-promotion-design.md",
+      "language": "markdown",
+      "sizeLines": 290,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-08-vercel-postgres-runtime-design.md",
+      "language": "markdown",
+      "sizeLines": 229,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-form-submissions-lead-operations-design.md",
+      "language": "markdown",
+      "sizeLines": 352,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-homepage-e2e-seeding-design.md",
+      "language": "markdown",
+      "sizeLines": 146,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-media-governance-design.md",
+      "language": "markdown",
+      "sizeLines": 203,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-operator-guides-design.md",
+      "language": "markdown",
+      "sizeLines": 320,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-playwright-readiness-route-design.md",
+      "language": "markdown",
+      "sizeLines": 130,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-playwright-sqlite-worker-serialization-design.md",
+      "language": "markdown",
+      "sizeLines": 118,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-pnpm-startup-contract-fix-design.md",
+      "language": "markdown",
+      "sizeLines": 138,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-publish-queue-safety-design.md",
+      "language": "markdown",
+      "sizeLines": 263,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-role-and-capability-model-design.md",
+      "language": "markdown",
+      "sizeLines": 343,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-seo-operations-completeness-design.md",
+      "language": "markdown",
+      "sizeLines": 344,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-starter-productization-and-handoff-design.md",
+      "language": "markdown",
+      "sizeLines": 344,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-taxonomy-and-content-organization-design.md",
+      "language": "markdown",
+      "sizeLines": 374,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-work-queue-design.md",
+      "language": "markdown",
+      "sizeLines": 487,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md": [],
+    "docs/superpowers/specs/2026-07-04-navigation-links-and-menus-design.md": [],
+    "docs/superpowers/specs/2026-07-07-cms-foundation-audit-design.md": [],
+    "docs/superpowers/specs/2026-07-08-articles-reviews-design.md": [],
+    "docs/superpowers/specs/2026-07-08-editorial-first-cms-design.md": [],
+    "docs/superpowers/specs/2026-07-08-review-intake-promotion-design.md": [],
+    "docs/superpowers/specs/2026-07-08-vercel-postgres-runtime-design.md": [],
+    "docs/superpowers/specs/2026-07-09-form-submissions-lead-operations-design.md": [],
+    "docs/superpowers/specs/2026-07-09-homepage-e2e-seeding-design.md": [],
+    "docs/superpowers/specs/2026-07-09-media-governance-design.md": [],
+    "docs/superpowers/specs/2026-07-09-operator-guides-design.md": [],
+    "docs/superpowers/specs/2026-07-09-playwright-readiness-route-design.md": [],
+    "docs/superpowers/specs/2026-07-09-playwright-sqlite-worker-serialization-design.md": [],
+    "docs/superpowers/specs/2026-07-09-pnpm-startup-contract-fix-design.md": [],
+    "docs/superpowers/specs/2026-07-09-publish-queue-safety-design.md": [],
+    "docs/superpowers/specs/2026-07-09-role-and-capability-model-design.md": [],
+    "docs/superpowers/specs/2026-07-09-seo-operations-completeness-design.md": [],
+    "docs/superpowers/specs/2026-07-09-starter-productization-and-handoff-design.md": [],
+    "docs/superpowers/specs/2026-07-09-taxonomy-and-content-organization-design.md": [],
+    "docs/superpowers/specs/2026-07-09-work-queue-design.md": []
+  }
+}

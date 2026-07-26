@@ -1,0 +1,53 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "tests/e2e/admin.e2e.spec.ts",
+      "language": "typescript",
+      "sizeLines": 41,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/e2e/frontend.e2e.spec.ts",
+      "language": "typescript",
+      "sizeLines": 30,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/helpers/login.ts",
+      "language": "typescript",
+      "sizeLines": 31,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/helpers/seedHomepage.ts",
+      "language": "typescript",
+      "sizeLines": 108,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/helpers/seedUser.ts",
+      "language": "typescript",
+      "sizeLines": 80,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "tests/e2e/admin.e2e.spec.ts": [
+      "tests/helpers/login.ts",
+      "tests/helpers/seedUser.ts"
+    ],
+    "tests/e2e/frontend.e2e.spec.ts": [
+      "tests/helpers/seedHomepage.ts",
+      "tests/helpers/seedUser.ts"
+    ],
+    "tests/helpers/login.ts": [],
+    "tests/helpers/seedHomepage.ts": [
+      "src/payload.config.ts",
+      "tests/helpers/seedUser.ts"
+    ],
+    "tests/helpers/seedUser.ts": [
+      "src/payload.config.ts"
+    ]
+  }
+}

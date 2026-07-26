@@ -1,0 +1,166 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 3,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 0,
+      "failed": 0,
+      "skipped": 3
+    }
+  },
+  "results": [
+    {
+      "path": "docs/operations/editorial-governance.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 28,
+      "nonEmptyLines": 20,
+      "sections": [
+        {
+          "heading": "Editorial Governance",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Editorial Roles",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Workflow States",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "High-Risk Surfaces",
+          "level": 2,
+          "line": 17
+        },
+        {
+          "heading": "Recovery Path",
+          "level": 2,
+          "line": 23
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "docs/operations/mongodb-deployment.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 52,
+      "nonEmptyLines": 40,
+      "sections": [
+        {
+          "heading": "MongoDB Deployment",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Supported Profile",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Required Environment Variables",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "Optional Email Variables",
+          "level": 2,
+          "line": 20
+        },
+        {
+          "heading": "Local Development",
+          "level": 2,
+          "line": 28
+        },
+        {
+          "heading": "Hosted Deployment Notes",
+          "level": 2,
+          "line": 35
+        },
+        {
+          "heading": "Verification",
+          "level": 2,
+          "line": 43
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "docs/operations/starter-clone-checklist.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 56,
+      "nonEmptyLines": 41,
+      "sections": [
+        {
+          "heading": "Starter Clone Checklist",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Replace Client Identity",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "Confirm Runtime And Provider Choices",
+          "level": 2,
+          "line": 12
+        },
+        {
+          "heading": "Review CMS Defaults",
+          "level": 2,
+          "line": 21
+        },
+        {
+          "heading": "Verify Content And Intake Workflows",
+          "level": 2,
+          "line": 29
+        },
+        {
+          "heading": "Verify Deployment Assumptions",
+          "level": 2,
+          "line": 37
+        },
+        {
+          "heading": "Run Starter Verification",
+          "level": 2,
+          "line": 44
+        },
+        {
+          "heading": "Safe Customization Boundaries",
+          "level": 2,
+          "line": 51
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    }
+  ]
+}

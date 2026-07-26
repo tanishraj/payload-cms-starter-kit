@@ -1,0 +1,764 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/components/ui/sheet.tsx",
+      "type": "file",
+      "name": "sheet.tsx",
+      "filePath": "src/components/ui/sheet.tsx",
+      "summary": "Provides an animated Radix dialog-based sheet with configurable side placement, overlay, close control, and semantic content sections.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "dialog",
+        "sheet"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React composition and data-attribute-driven Tailwind styling around accessible UI primitives."
+    },
+    {
+      "id": "function:src/components/ui/sheet.tsx:Sheet",
+      "type": "function",
+      "name": "Sheet",
+      "filePath": "src/components/ui/sheet.tsx",
+      "lineRange": [
+        10,
+        12
+      ],
+      "summary": "Renders the Sheet primitive within the sheet component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "sheet",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/sheet.tsx:SheetTrigger",
+      "type": "function",
+      "name": "SheetTrigger",
+      "filePath": "src/components/ui/sheet.tsx",
+      "lineRange": [
+        14,
+        16
+      ],
+      "summary": "Renders the SheetTrigger primitive within the sheet component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "sheet",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/sheet.tsx:SheetClose",
+      "type": "function",
+      "name": "SheetClose",
+      "filePath": "src/components/ui/sheet.tsx",
+      "lineRange": [
+        18,
+        20
+      ],
+      "summary": "Renders the SheetClose primitive within the sheet component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "sheet",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/sheet.tsx:SheetOverlay",
+      "type": "function",
+      "name": "SheetOverlay",
+      "filePath": "src/components/ui/sheet.tsx",
+      "lineRange": [
+        26,
+        40
+      ],
+      "summary": "Renders the animated backdrop used behind open sheet content.",
+      "tags": [
+        "component",
+        "sheet",
+        "overlay",
+        "animation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/sheet.tsx:SheetContent",
+      "type": "function",
+      "name": "SheetContent",
+      "filePath": "src/components/ui/sheet.tsx",
+      "lineRange": [
+        42,
+        80
+      ],
+      "summary": "Renders side-positioned sheet content with optional overlay and close button.",
+      "tags": [
+        "component",
+        "sheet",
+        "dialog",
+        "overlay"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/sheet.tsx:SheetHeader",
+      "type": "function",
+      "name": "SheetHeader",
+      "filePath": "src/components/ui/sheet.tsx",
+      "lineRange": [
+        82,
+        90
+      ],
+      "summary": "Renders the SheetHeader primitive within the sheet component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "sheet",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/sheet.tsx:SheetFooter",
+      "type": "function",
+      "name": "SheetFooter",
+      "filePath": "src/components/ui/sheet.tsx",
+      "lineRange": [
+        92,
+        100
+      ],
+      "summary": "Renders the SheetFooter primitive within the sheet component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "sheet",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/sheet.tsx:SheetTitle",
+      "type": "function",
+      "name": "SheetTitle",
+      "filePath": "src/components/ui/sheet.tsx",
+      "lineRange": [
+        102,
+        110
+      ],
+      "summary": "Renders the SheetTitle primitive within the sheet component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "sheet",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/sheet.tsx:SheetDescription",
+      "type": "function",
+      "name": "SheetDescription",
+      "filePath": "src/components/ui/sheet.tsx",
+      "lineRange": [
+        112,
+        123
+      ],
+      "summary": "Renders the SheetDescription primitive within the sheet component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "sheet",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/textarea.tsx",
+      "type": "file",
+      "name": "textarea.tsx",
+      "filePath": "src/components/ui/textarea.tsx",
+      "summary": "Provides the styled native textarea primitive shared by project forms.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "form-control",
+        "textarea"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React composition and data-attribute-driven Tailwind styling around accessible UI primitives."
+    },
+    {
+      "id": "function:src/components/ui/textarea.tsx:Textarea",
+      "type": "function",
+      "name": "Textarea",
+      "filePath": "src/components/ui/textarea.tsx",
+      "lineRange": [
+        5,
+        16
+      ],
+      "summary": "Renders the Textarea primitive within the textarea component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "textarea",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/toggle-group.tsx",
+      "type": "file",
+      "name": "toggle-group.tsx",
+      "filePath": "src/components/ui/toggle-group.tsx",
+      "summary": "Composes Radix toggle-group primitives with shared size, variant, spacing, and orientation context.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "form-control",
+        "toggle-group"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React composition and data-attribute-driven Tailwind styling around accessible UI primitives."
+    },
+    {
+      "id": "function:src/components/ui/toggle-group.tsx:ToggleGroup",
+      "type": "function",
+      "name": "ToggleGroup",
+      "filePath": "src/components/ui/toggle-group.tsx",
+      "lineRange": [
+        22,
+        56
+      ],
+      "summary": "Provides shared toggle-group presentation through context and renders the Radix group root.",
+      "tags": [
+        "component",
+        "toggle-group",
+        "form-control",
+        "context"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/toggle-group.tsx:ToggleGroupItem",
+      "type": "function",
+      "name": "ToggleGroupItem",
+      "filePath": "src/components/ui/toggle-group.tsx",
+      "lineRange": [
+        58,
+        87
+      ],
+      "summary": "Renders a toggle-group item using inherited or locally supplied style variants.",
+      "tags": [
+        "component",
+        "toggle-group",
+        "form-control",
+        "context"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/toggle.tsx",
+      "type": "file",
+      "name": "toggle.tsx",
+      "filePath": "src/components/ui/toggle.tsx",
+      "summary": "Wraps the Radix toggle primitive with reusable visual variants and size options.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "form-control",
+        "toggle"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React composition and data-attribute-driven Tailwind styling around accessible UI primitives."
+    },
+    {
+      "id": "function:src/components/ui/toggle.tsx:Toggle",
+      "type": "function",
+      "name": "Toggle",
+      "filePath": "src/components/ui/toggle.tsx",
+      "lineRange": [
+        31,
+        45
+      ],
+      "summary": "Renders the Toggle primitive within the toggle component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "toggle",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/headerNavigation.ts",
+      "type": "file",
+      "name": "headerNavigation.ts",
+      "filePath": "src/lib/headerNavigation.ts",
+      "summary": "Normalizes configured header links and nested menu items into render-ready navigation models with resolved page URLs.",
+      "tags": [
+        "navigation",
+        "normalization",
+        "utility",
+        "header"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/headerNavigation.ts:resolveHeaderLink",
+      "type": "function",
+      "name": "resolveHeaderLink",
+      "filePath": "src/lib/headerNavigation.ts",
+      "lineRange": [
+        27,
+        45
+      ],
+      "summary": "Normalizes a header link label and resolves page relationships or explicit URLs into a usable destination.",
+      "tags": [
+        "navigation",
+        "normalization",
+        "utility",
+        "url"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/headerNavigation.ts:resolveHeaderMenuItem",
+      "type": "function",
+      "name": "resolveHeaderMenuItem",
+      "filePath": "src/lib/headerNavigation.ts",
+      "lineRange": [
+        47,
+        66
+      ],
+      "summary": "Normalizes one header menu item and filters invalid child links.",
+      "tags": [
+        "navigation",
+        "normalization",
+        "utility",
+        "menu"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/headerNavigation.ts:resolveHeaderMenuItems",
+      "type": "function",
+      "name": "resolveHeaderMenuItems",
+      "filePath": "src/lib/headerNavigation.ts",
+      "lineRange": [
+        68,
+        72
+      ],
+      "summary": "Normalizes and filters an optional list of configured header menu items.",
+      "tags": [
+        "navigation",
+        "normalization",
+        "utility",
+        "menu"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/utils.ts",
+      "type": "file",
+      "name": "utils.ts",
+      "filePath": "src/lib/utils.ts",
+      "summary": "Provides the shared Tailwind class-name merger used throughout the component library.",
+      "tags": [
+        "utility",
+        "styling",
+        "tailwind",
+        "serialization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/utils.ts:cn",
+      "type": "function",
+      "name": "cn",
+      "filePath": "src/lib/utils.ts",
+      "lineRange": [
+        4,
+        6
+      ],
+      "summary": "Combines conditional class values and resolves conflicting Tailwind utility classes.",
+      "tags": [
+        "utility",
+        "tailwind",
+        "styling",
+        "serialization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/admin-session-bar.int.spec.ts",
+      "type": "file",
+      "name": "admin-session-bar.int.spec.ts",
+      "filePath": "tests/int/admin-session-bar.int.spec.ts",
+      "summary": "Verifies that the admin session bar stays hidden for anonymous visitors and renders authenticated branding, actions, and user controls.",
+      "tags": [
+        "test",
+        "integration-test",
+        "admin-ui",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/news-events-feed.int.spec.tsx",
+      "type": "file",
+      "name": "news-events-feed.int.spec.tsx",
+      "filePath": "tests/int/news-events-feed.int.spec.tsx",
+      "summary": "Verifies the News & Events archive feed renders compact attachment-style rows with responsive imagery.",
+      "tags": [
+        "test",
+        "integration-test",
+        "news-events",
+        "rendering"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/review-submission-render.int.spec.ts",
+      "type": "file",
+      "name": "review-submission-render.int.spec.ts",
+      "filePath": "tests/int/review-submission-render.int.spec.ts",
+      "summary": "Tests review-submission hydration safety, content-header alignment, shared typography, and theme-aware action rendering.",
+      "tags": [
+        "test",
+        "integration-test",
+        "reviews",
+        "rendering"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:Sheet",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:Sheet",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:SheetTrigger",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:SheetTrigger",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:SheetClose",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:SheetClose",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:SheetOverlay",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:SheetContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:SheetContent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:SheetHeader",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:SheetHeader",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:SheetFooter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:SheetFooter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:SheetTitle",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:SheetTitle",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:SheetDescription",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "function:src/components/ui/sheet.tsx:SheetDescription",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/textarea.tsx",
+      "target": "function:src/components/ui/textarea.tsx:Textarea",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/textarea.tsx",
+      "target": "function:src/components/ui/textarea.tsx:Textarea",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/toggle-group.tsx",
+      "target": "function:src/components/ui/toggle-group.tsx:ToggleGroup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/toggle-group.tsx",
+      "target": "function:src/components/ui/toggle-group.tsx:ToggleGroup",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/toggle-group.tsx",
+      "target": "function:src/components/ui/toggle-group.tsx:ToggleGroupItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/toggle-group.tsx",
+      "target": "function:src/components/ui/toggle-group.tsx:ToggleGroupItem",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/toggle.tsx",
+      "target": "function:src/components/ui/toggle.tsx:Toggle",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/toggle.tsx",
+      "target": "function:src/components/ui/toggle.tsx:Toggle",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/headerNavigation.ts",
+      "target": "function:src/lib/headerNavigation.ts:resolveHeaderLink",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/headerNavigation.ts",
+      "target": "function:src/lib/headerNavigation.ts:resolveHeaderLink",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/headerNavigation.ts",
+      "target": "function:src/lib/headerNavigation.ts:resolveHeaderMenuItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/headerNavigation.ts",
+      "target": "function:src/lib/headerNavigation.ts:resolveHeaderMenuItem",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/headerNavigation.ts",
+      "target": "function:src/lib/headerNavigation.ts:resolveHeaderMenuItems",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/headerNavigation.ts",
+      "target": "function:src/lib/headerNavigation.ts:resolveHeaderMenuItems",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/utils.ts",
+      "target": "function:src/lib/utils.ts:cn",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/utils.ts",
+      "target": "function:src/lib/utils.ts:cn",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/sheet.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/textarea.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/toggle-group.tsx",
+      "target": "file:src/components/ui/toggle.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/toggle-group.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/toggle.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/headerNavigation.ts",
+      "target": "file:src/lib/pagePaths.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/admin-session-bar.int.spec.ts",
+      "target": "file:src/components/admin/AdminSessionBar.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/news-events-feed.int.spec.tsx",
+      "target": "file:src/components/news-events/NewsEventsFeed.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-submission-render.int.spec.ts",
+      "target": "file:src/blocks/ReviewSubmission/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:src/lib/headerNavigation.ts:resolveHeaderLink",
+      "target": "function:src/lib/pagePaths.ts:getPageHref",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/headerNavigation.ts:resolveHeaderMenuItem",
+      "target": "function:src/lib/headerNavigation.ts:resolveHeaderLink",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/headerNavigation.ts:resolveHeaderMenuItems",
+      "target": "function:src/lib/headerNavigation.ts:resolveHeaderMenuItem",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

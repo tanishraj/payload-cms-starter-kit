@@ -1,0 +1,2184 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 18,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 18,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 18,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "src/blocks/ReviewSubmission/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 600,
+      "nonEmptyLines": 554,
+      "functions": [
+        {
+          "name": "resolveFormRecord",
+          "startLine": 149,
+          "endLine": 155,
+          "params": [
+            "form"
+          ]
+        },
+        {
+          "name": "getFieldDefinition",
+          "startLine": 157,
+          "endLine": 192,
+          "params": [
+            "formRecord",
+            "name"
+          ]
+        },
+        {
+          "name": "getSubmissionMetadata",
+          "startLine": 194,
+          "endLine": 216,
+          "params": []
+        },
+        {
+          "name": "ReviewSubmissionBlockComponent",
+          "startLine": 218,
+          "endLine": 600,
+          "params": [
+            "{\n  actionMode = 'link',\n  actions,\n  appearance,\n  contentAlignment = 'left',\n  description,\n  eyebrow,\n  form,\n  formDescription,\n  formEyebrow,\n  formHeading,\n  size = 'default',\n  title,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ReviewSubmissionBlockComponent",
+          "line": 218,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getFieldDefinition",
+          "callee": "formRecord?.fields?.find",
+          "lineNumber": 162
+        },
+        {
+          "caller": "getFieldDefinition",
+          "callee": "rawField.options?.flatMap",
+          "lineNumber": 169
+        },
+        {
+          "caller": "getFieldDefinition",
+          "callee": "option?.label?.trim",
+          "lineNumber": 170
+        },
+        {
+          "caller": "getFieldDefinition",
+          "callee": "option?.value?.trim",
+          "lineNumber": 171
+        },
+        {
+          "caller": "getFieldDefinition",
+          "callee": "rawField.label?.trim",
+          "lineNumber": 179
+        },
+        {
+          "caller": "getFieldDefinition",
+          "callee": "rawField.placeholder?.trim",
+          "lineNumber": 181
+        },
+        {
+          "caller": "getSubmissionMetadata",
+          "callee": "url.searchParams.get",
+          "lineNumber": 201
+        },
+        {
+          "caller": "getSubmissionMetadata",
+          "callee": "url.searchParams.get",
+          "lineNumber": 212
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "resolveBlockAppearanceClasses",
+          "lineNumber": 232
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "resolveFormRecord",
+          "lineNumber": 235
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "formRecord?.slug?.trim",
+          "lineNumber": 236
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "Boolean",
+          "lineNumber": 237
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "getFieldDefinition",
+          "lineNumber": 238
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "getFieldDefinition",
+          "lineNumber": 239
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "getFieldDefinition",
+          "lineNumber": 240
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "getFieldDefinition",
+          "lineNumber": 241
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "getFieldDefinition",
+          "lineNumber": 242
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "formRecord?.submitButtonLabel?.trim",
+          "lineNumber": 243
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "eyebrow?.trim",
+          "lineNumber": 244
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "formEyebrow?.trim",
+          "lineNumber": 244
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "title?.trim",
+          "lineNumber": 246
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "formHeading?.trim",
+          "lineNumber": 246
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "formRecord?.title?.trim",
+          "lineNumber": 246
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "description?.trim",
+          "lineNumber": 247
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "formDescription?.trim",
+          "lineNumber": 247
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "resolveCmsActions",
+          "lineNumber": 248
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "useState",
+          "lineNumber": 251
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "useState",
+          "lineNumber": 255
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "useState",
+          "lineNumber": 256
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "useState",
+          "lineNumber": 257
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "useState",
+          "lineNumber": 258
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "useState",
+          "lineNumber": 259
+        },
+        {
+          "caller": "updateValue",
+          "callee": "setValues",
+          "lineNumber": 265
+        },
+        {
+          "caller": "updateValue",
+          "callee": "setErrors",
+          "lineNumber": 269
+        },
+        {
+          "caller": "updateValue",
+          "callee": "setHoveredRating",
+          "lineNumber": 279
+        },
+        {
+          "caller": "updateValue",
+          "callee": "setMessage",
+          "lineNumber": 281
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "event.preventDefault",
+          "lineNumber": 285
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setIsPending",
+          "lineNumber": 291
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setErrors",
+          "lineNumber": 292
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setMessage",
+          "lineNumber": 293
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "fetch",
+          "lineNumber": 296
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "JSON.stringify",
+          "lineNumber": 297
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "getSubmissionMetadata",
+          "lineNumber": 298
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "response.json",
+          "lineNumber": 311
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setErrors",
+          "lineNumber": 317
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setMessage",
+          "lineNumber": 318
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setMessageTone",
+          "lineNumber": 319
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setValues",
+          "lineNumber": 323
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setErrors",
+          "lineNumber": 327
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setMessage",
+          "lineNumber": 328
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "formRecord?.successMessage?.trim",
+          "lineNumber": 330
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setMessageTone",
+          "lineNumber": 333
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setMessage",
+          "lineNumber": 335
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setMessageTone",
+          "lineNumber": 336
+        },
+        {
+          "caller": "handleSubmit",
+          "callee": "setIsPending",
+          "lineNumber": 338
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "cn",
+          "lineNumber": 350
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "cn",
+          "lineNumber": 356
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "cn",
+          "lineNumber": 384
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "cn",
+          "lineNumber": 401
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "Boolean",
+          "lineNumber": 406
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "Boolean",
+          "lineNumber": 408
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "setHoveredRating",
+          "lineNumber": 413
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "updateValue",
+          "lineNumber": 414
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "(ratingField.options ?? reviewRatingOptions).map",
+          "lineNumber": 416
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "Number",
+          "lineNumber": 417
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "Number",
+          "lineNumber": 418
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "cn",
+          "lineNumber": 425
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "setHoveredRating",
+          "lineNumber": 431
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "setHoveredRating",
+          "lineNumber": 432
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "setHoveredRating",
+          "lineNumber": 433
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "cn",
+          "lineNumber": 437
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "cn",
+          "lineNumber": 440
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "Boolean",
+          "lineNumber": 457
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "Boolean",
+          "lineNumber": 459
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "updateValue",
+          "lineNumber": 467
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "subjectField.options.map",
+          "lineNumber": 471
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "Boolean",
+          "lineNumber": 490
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "Boolean",
+          "lineNumber": 496
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "updateValue",
+          "lineNumber": 504
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "Boolean",
+          "lineNumber": 511
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "Boolean",
+          "lineNumber": 520
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "updateValue",
+          "lineNumber": 528
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "Boolean",
+          "lineNumber": 534
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "Boolean",
+          "lineNumber": 539
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "updateValue",
+          "lineNumber": 548
+        },
+        {
+          "caller": "ReviewSubmissionBlockComponent",
+          "callee": "cn",
+          "lineNumber": 578
+        }
+      ],
+      "metrics": {
+        "importCount": 13,
+        "exportCount": 1,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/ContentLink.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 39,
+      "nonEmptyLines": 36,
+      "functions": [
+        {
+          "name": "ContentLink",
+          "startLine": 13,
+          "endLine": 39,
+          "params": [
+            "{\n  className,\n  href,\n  label,\n  openInNewTab,\n  ...anchorProps\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ContentLink",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ContentLink",
+          "callee": "cn",
+          "lineNumber": 23
+        },
+        {
+          "caller": "ContentLink",
+          "callee": "buttonVariants",
+          "lineNumber": 24
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/admin/AdminSessionBar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 66,
+      "nonEmptyLines": 61,
+      "functions": [
+        {
+          "name": "AdminSessionBar",
+          "startLine": 10,
+          "endLine": 66,
+          "params": [
+            "{\n  user,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "AdminSessionBar",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "AdminSessionBar",
+          "callee": "formatCMSRoleLabel",
+          "lineNumber": 19
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/admin/AdminUserMenu.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 117,
+      "nonEmptyLines": 100,
+      "functions": [
+        {
+          "name": "toInitial",
+          "startLine": 13,
+          "endLine": 19,
+          "params": [
+            "email"
+          ]
+        },
+        {
+          "name": "AdminUserMenu",
+          "startLine": 21,
+          "endLine": 117,
+          "params": [
+            "{\n  email,\n  roleLabel,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "AdminUserMenu",
+          "line": 21,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "toInitial",
+          "callee": "email.trim().charAt(0).toUpperCase",
+          "lineNumber": 18
+        },
+        {
+          "caller": "toInitial",
+          "callee": "email.trim().charAt",
+          "lineNumber": 18
+        },
+        {
+          "caller": "toInitial",
+          "callee": "email.trim",
+          "lineNumber": 18
+        },
+        {
+          "caller": "AdminUserMenu",
+          "callee": "useState",
+          "lineNumber": 25
+        },
+        {
+          "caller": "AdminUserMenu",
+          "callee": "useTransition",
+          "lineNumber": 26
+        },
+        {
+          "caller": "AdminUserMenu",
+          "callee": "useRef",
+          "lineNumber": 27
+        },
+        {
+          "caller": "AdminUserMenu",
+          "callee": "useEffect",
+          "lineNumber": 29
+        },
+        {
+          "caller": "handlePointerDown",
+          "callee": "rootRef.current?.contains",
+          "lineNumber": 35
+        },
+        {
+          "caller": "handlePointerDown",
+          "callee": "setOpen",
+          "lineNumber": 36
+        },
+        {
+          "caller": "handleEscape",
+          "callee": "setOpen",
+          "lineNumber": 42
+        },
+        {
+          "caller": "AdminUserMenu",
+          "callee": "window.addEventListener",
+          "lineNumber": 46
+        },
+        {
+          "caller": "AdminUserMenu",
+          "callee": "window.addEventListener",
+          "lineNumber": 47
+        },
+        {
+          "caller": "AdminUserMenu",
+          "callee": "window.removeEventListener",
+          "lineNumber": 50
+        },
+        {
+          "caller": "AdminUserMenu",
+          "callee": "window.removeEventListener",
+          "lineNumber": 51
+        },
+        {
+          "caller": "handleLogout",
+          "callee": "startTransition",
+          "lineNumber": 56
+        },
+        {
+          "caller": "handleLogout",
+          "callee": "fetch",
+          "lineNumber": 57
+        },
+        {
+          "caller": "handleLogout",
+          "callee": "window.location.assign",
+          "lineNumber": 63
+        },
+        {
+          "caller": "handleLogout",
+          "callee": "window.location.reload",
+          "lineNumber": 67
+        },
+        {
+          "caller": "AdminUserMenu",
+          "callee": "setOpen",
+          "lineNumber": 78
+        },
+        {
+          "caller": "AdminUserMenu",
+          "callee": "toInitial",
+          "lineNumber": 82
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/header/HeaderMobileMenu.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 195,
+      "nonEmptyLines": 172,
+      "functions": [
+        {
+          "name": "HeaderMobileMenu",
+          "startLine": 27,
+          "endLine": 195,
+          "params": [
+            "{ ctas, menuItems }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "HeaderMobileMenu",
+          "line": 27,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "useState",
+          "lineNumber": 28
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "useState",
+          "lineNumber": 29
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "useRef",
+          "lineNumber": 30
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "useEffect",
+          "lineNumber": 32
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "triggerElement?.closest",
+          "lineNumber": 38
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "setSheetTopOffset",
+          "lineNumber": 41
+        },
+        {
+          "caller": "updateOffset",
+          "callee": "setSheetTopOffset",
+          "lineNumber": 49
+        },
+        {
+          "caller": "updateOffset",
+          "callee": "Math.max",
+          "lineNumber": 49
+        },
+        {
+          "caller": "updateOffset",
+          "callee": "headerElement.getBoundingClientRect",
+          "lineNumber": 49
+        },
+        {
+          "caller": "scheduleUpdate",
+          "callee": "window.requestAnimationFrame",
+          "lineNumber": 57
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "updateOffset",
+          "lineNumber": 60
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "window.addEventListener",
+          "lineNumber": 62
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "window.addEventListener",
+          "lineNumber": 63
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "scheduleUpdate",
+          "lineNumber": 69
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "observer?.observe",
+          "lineNumber": 72
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "window.cancelAnimationFrame",
+          "lineNumber": 76
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "window.removeEventListener",
+          "lineNumber": 78
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "window.removeEventListener",
+          "lineNumber": 79
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "observer?.disconnect",
+          "lineNumber": 80
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "menuItems.map",
+          "lineNumber": 120
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "item.children.map",
+          "lineNumber": 132
+        },
+        {
+          "caller": "HeaderMobileMenu",
+          "callee": "ctas.map",
+          "lineNumber": 171
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/header/HeaderNavMenu.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 106,
+      "nonEmptyLines": 96,
+      "functions": [
+        {
+          "name": "HeaderNavMenu",
+          "startLine": 48,
+          "endLine": 106,
+          "params": [
+            "{ menuItems, size }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "HeaderNavMenu",
+          "line": 48,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "HeaderNavMenu",
+          "callee": "menuItems.map",
+          "lineNumber": 57
+        },
+        {
+          "caller": "HeaderNavMenu",
+          "callee": "Boolean",
+          "lineNumber": 58
+        },
+        {
+          "caller": "HeaderNavMenu",
+          "callee": "item.children?.map",
+          "lineNumber": 70
+        },
+        {
+          "caller": "HeaderNavMenu",
+          "callee": "cn",
+          "lineNumber": 87
+        },
+        {
+          "caller": "HeaderNavMenu",
+          "callee": "navigationMenuTriggerStyle",
+          "lineNumber": 88
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/header/HeaderNavbar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 100,
+      "nonEmptyLines": 90,
+      "functions": [
+        {
+          "name": "HeaderNavbar",
+          "startLine": 40,
+          "endLine": 100,
+          "params": [
+            "{\n  appearance,\n  ctas,\n  logo,\n  menuItems,\n  navAlignment,\n  size,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "HeaderNavbar",
+          "line": 40,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "HeaderNavbar",
+          "callee": "resolveBlockAppearanceClasses",
+          "lineNumber": 48
+        },
+        {
+          "caller": "HeaderNavbar",
+          "callee": "cn",
+          "lineNumber": 53
+        },
+        {
+          "caller": "HeaderNavbar",
+          "callee": "cn",
+          "lineNumber": 64
+        },
+        {
+          "caller": "HeaderNavbar",
+          "callee": "cn",
+          "lineNumber": 71
+        },
+        {
+          "caller": "HeaderNavbar",
+          "callee": "ctas.map",
+          "lineNumber": 76
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/navbar12.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 499,
+      "nonEmptyLines": 470,
+      "functions": [
+        {
+          "name": "Navbar12",
+          "startLine": 230,
+          "endLine": 268,
+          "params": [
+            "{ className }"
+          ]
+        },
+        {
+          "name": "DesktopNavigationMenu",
+          "startLine": 270,
+          "endLine": 340,
+          "params": [
+            "{\n  handleMobileMenu,\n  open,\n}"
+          ]
+        },
+        {
+          "name": "MobileNavigationMenu",
+          "startLine": 342,
+          "endLine": 389,
+          "params": [
+            "{ open }"
+          ]
+        },
+        {
+          "name": "renderMobileMenuItem",
+          "startLine": 391,
+          "endLine": 416,
+          "params": [
+            "item",
+            "index"
+          ]
+        },
+        {
+          "name": "renderDesktopMenuItem",
+          "startLine": 418,
+          "endLine": 450,
+          "params": [
+            "item",
+            "index"
+          ]
+        },
+        {
+          "name": "MobileSubMenuLink",
+          "startLine": 452,
+          "endLine": 470,
+          "params": [
+            "{ item }"
+          ]
+        },
+        {
+          "name": "DesktopSubMenuLink",
+          "startLine": 472,
+          "endLine": 497,
+          "params": [
+            "{ item }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Navbar12",
+          "line": 499,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Navbar12",
+          "callee": "useState",
+          "lineNumber": 231
+        },
+        {
+          "caller": "Navbar12",
+          "callee": "useEffect",
+          "lineNumber": 233
+        },
+        {
+          "caller": "handleResize",
+          "callee": "setOpen",
+          "lineNumber": 236
+        },
+        {
+          "caller": "Navbar12",
+          "callee": "handleResize",
+          "lineNumber": 240
+        },
+        {
+          "caller": "Navbar12",
+          "callee": "window.addEventListener",
+          "lineNumber": 242
+        },
+        {
+          "caller": "Navbar12",
+          "callee": "window.removeEventListener",
+          "lineNumber": 244
+        },
+        {
+          "caller": "Navbar12",
+          "callee": "useEffect",
+          "lineNumber": 248
+        },
+        {
+          "caller": "handleMobileMenu",
+          "callee": "setOpen",
+          "lineNumber": 254
+        },
+        {
+          "caller": "Navbar12",
+          "callee": "cn",
+          "lineNumber": 258
+        },
+        {
+          "caller": "DesktopNavigationMenu",
+          "callee": "DESKTOP_NAVIGATION.map",
+          "lineNumber": 286
+        },
+        {
+          "caller": "DesktopNavigationMenu",
+          "callee": "renderDesktopMenuItem",
+          "lineNumber": 287
+        },
+        {
+          "caller": "MobileNavigationMenu",
+          "callee": "MOBILE_NAVIGATION.map",
+          "lineNumber": 361
+        },
+        {
+          "caller": "MobileNavigationMenu",
+          "callee": "renderMobileMenuItem",
+          "lineNumber": 362
+        },
+        {
+          "caller": "renderMobileMenuItem",
+          "callee": "item.items.map",
+          "lineNumber": 399
+        },
+        {
+          "caller": "renderDesktopMenuItem",
+          "callee": "item.items.map",
+          "lineNumber": 427
+        },
+        {
+          "caller": "renderDesktopMenuItem",
+          "callee": "navigationMenuTriggerStyle",
+          "lineNumber": 444
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 7,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/news-events/NewsEventsFeed.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 340,
+      "nonEmptyLines": 322,
+      "functions": [
+        {
+          "name": "buildArchiveHref",
+          "startLine": 56,
+          "endLine": 68,
+          "params": [
+            "query",
+            "updates"
+          ]
+        },
+        {
+          "name": "FeedRow",
+          "startLine": 70,
+          "endLine": 116,
+          "params": [
+            "{ item, readMoreLabel }"
+          ]
+        },
+        {
+          "name": "FeedPagination",
+          "startLine": 118,
+          "endLine": 160,
+          "params": [
+            "{\n  page,\n  pageKey,\n  query,\n  totalPages,\n}"
+          ]
+        },
+        {
+          "name": "FeedSection",
+          "startLine": 162,
+          "endLine": 195,
+          "params": [
+            "{\n  label,\n  page,\n  pageKey,\n  query,\n  readMoreLabel,\n}"
+          ]
+        },
+        {
+          "name": "NewsEventsFeed",
+          "startLine": 197,
+          "endLine": 340,
+          "params": [
+            "{\n  archiveData,\n  categories,\n  pastEvents,\n  query,\n  settings,\n  upcomingEvents,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "NewsEventsFeed",
+          "line": 197,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "buildArchiveHref",
+          "callee": "params.set",
+          "lineNumber": 60
+        },
+        {
+          "caller": "buildArchiveHref",
+          "callee": "params.set",
+          "lineNumber": 61
+        },
+        {
+          "caller": "buildArchiveHref",
+          "callee": "params.set",
+          "lineNumber": 62
+        },
+        {
+          "caller": "buildArchiveHref",
+          "callee": "String",
+          "lineNumber": 62
+        },
+        {
+          "caller": "buildArchiveHref",
+          "callee": "params.set",
+          "lineNumber": 63
+        },
+        {
+          "caller": "buildArchiveHref",
+          "callee": "String",
+          "lineNumber": 63
+        },
+        {
+          "caller": "buildArchiveHref",
+          "callee": "params.set",
+          "lineNumber": 64
+        },
+        {
+          "caller": "buildArchiveHref",
+          "callee": "String",
+          "lineNumber": 64
+        },
+        {
+          "caller": "buildArchiveHref",
+          "callee": "params.toString",
+          "lineNumber": 66
+        },
+        {
+          "caller": "FeedRow",
+          "callee": "cn",
+          "lineNumber": 82
+        },
+        {
+          "caller": "FeedRow",
+          "callee": "cn",
+          "lineNumber": 94
+        },
+        {
+          "caller": "FeedPagination",
+          "callee": "Math.max",
+          "lineNumber": 131
+        },
+        {
+          "caller": "FeedPagination",
+          "callee": "Math.min",
+          "lineNumber": 131
+        },
+        {
+          "caller": "FeedPagination",
+          "callee": "Array.from",
+          "lineNumber": 132
+        },
+        {
+          "caller": "FeedPagination",
+          "callee": "Math.min",
+          "lineNumber": 132
+        },
+        {
+          "caller": "FeedPagination",
+          "callee": "buildArchiveHref",
+          "lineNumber": 139
+        },
+        {
+          "caller": "FeedPagination",
+          "callee": "pages.map",
+          "lineNumber": 142
+        },
+        {
+          "caller": "FeedPagination",
+          "callee": "buildArchiveHref",
+          "lineNumber": 145
+        },
+        {
+          "caller": "FeedPagination",
+          "callee": "buildArchiveHref",
+          "lineNumber": 154
+        },
+        {
+          "caller": "FeedSection",
+          "callee": "page.docs.map",
+          "lineNumber": 183
+        },
+        {
+          "caller": "NewsEventsFeed",
+          "callee": "resolveBlockAppearanceClasses",
+          "lineNumber": 207
+        },
+        {
+          "caller": "NewsEventsFeed",
+          "callee": "cn",
+          "lineNumber": 219
+        },
+        {
+          "caller": "NewsEventsFeed",
+          "callee": "cn",
+          "lineNumber": 220
+        },
+        {
+          "caller": "NewsEventsFeed",
+          "callee": "typeFilters.map",
+          "lineNumber": 242
+        },
+        {
+          "caller": "NewsEventsFeed",
+          "callee": "cn",
+          "lineNumber": 244
+        },
+        {
+          "caller": "NewsEventsFeed",
+          "callee": "buildArchiveHref",
+          "lineNumber": 250
+        },
+        {
+          "caller": "NewsEventsFeed",
+          "callee": "cn",
+          "lineNumber": 265
+        },
+        {
+          "caller": "NewsEventsFeed",
+          "callee": "buildArchiveHref",
+          "lineNumber": 269
+        },
+        {
+          "caller": "NewsEventsFeed",
+          "callee": "categories.map",
+          "lineNumber": 278
+        },
+        {
+          "caller": "NewsEventsFeed",
+          "callee": "cn",
+          "lineNumber": 280
+        },
+        {
+          "caller": "NewsEventsFeed",
+          "callee": "buildArchiveHref",
+          "lineNumber": 284
+        }
+      ],
+      "metrics": {
+        "importCount": 8,
+        "exportCount": 1,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/news-events/NewsEventsHighlights.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 150,
+      "nonEmptyLines": 142,
+      "functions": [
+        {
+          "name": "NewsEventHighlightCard",
+          "startLine": 42,
+          "endLine": 89,
+          "params": [
+            "{ item }"
+          ]
+        },
+        {
+          "name": "NewsEventsHighlights",
+          "startLine": 91,
+          "endLine": 150,
+          "params": [
+            "{\n  actions,\n  alignment = 'left',\n  appearance,\n  description,\n  emptyStateMessage,\n  eyebrow,\n  items,\n  size = 'default',\n  title,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "NewsEventsHighlights",
+          "line": 91,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "NewsEventHighlightCard",
+          "callee": "cn",
+          "lineNumber": 54
+        },
+        {
+          "caller": "NewsEventsHighlights",
+          "callee": "resolveBlockAppearanceClasses",
+          "lineNumber": 104
+        },
+        {
+          "caller": "NewsEventsHighlights",
+          "callee": "cn",
+          "lineNumber": 108
+        },
+        {
+          "caller": "NewsEventsHighlights",
+          "callee": "cn",
+          "lineNumber": 114
+        },
+        {
+          "caller": "NewsEventsHighlights",
+          "callee": "cn",
+          "lineNumber": 117
+        },
+        {
+          "caller": "NewsEventsHighlights",
+          "callee": "items.map",
+          "lineNumber": 137
+        }
+      ],
+      "metrics": {
+        "importCount": 7,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/profile-carousel-card.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 112,
+      "nonEmptyLines": 103,
+      "functions": [
+        {
+          "name": "ProfileCarouselCard",
+          "startLine": 47,
+          "endLine": 112,
+          "params": [
+            "{\n  overlayAlignment,\n  profile,\n  size,\n  variant,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ProfileCarouselCard",
+          "line": 47,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ProfileCarouselCard",
+          "callee": "cn",
+          "lineNumber": 56
+        },
+        {
+          "caller": "ProfileCarouselCard",
+          "callee": "cn",
+          "lineNumber": 62
+        },
+        {
+          "caller": "ProfileCarouselCard",
+          "callee": "cn",
+          "lineNumber": 74
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/profile-carousel-client.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 63,
+      "nonEmptyLines": 60,
+      "functions": [
+        {
+          "name": "ProfileCarouselClient",
+          "startLine": 25,
+          "endLine": 63,
+          "params": [
+            "{\n  cardVariant,\n  overlayAlignment,\n  profiles,\n  size,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ProfileCarouselClient",
+          "line": 25,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ProfileCarouselClient",
+          "callee": "profiles.map",
+          "lineNumber": 50
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/shadcnblocks/border-button.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 107,
+      "nonEmptyLines": 97,
+      "functions": [
+        {
+          "name": "CornerArt",
+          "startLine": 59,
+          "endLine": 78,
+          "params": [
+            "{\n  style,\n  className,\n}"
+          ]
+        },
+        {
+          "name": "BorderButton",
+          "startLine": 90,
+          "endLine": 107,
+          "params": [
+            "{\n  children,\n  variant = 'outline',\n  corners = 'l',\n  className,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "BorderButton",
+          "line": 90,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "CornerArt",
+          "callee": "cn",
+          "lineNumber": 69
+        },
+        {
+          "caller": "BorderButton",
+          "callee": "cn",
+          "lineNumber": 98
+        },
+        {
+          "caller": "BorderButton",
+          "callee": "cornerPlacements.map",
+          "lineNumber": 102
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/ui/accordion.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 84,
+      "nonEmptyLines": 77,
+      "functions": [
+        {
+          "name": "Accordion",
+          "startLine": 9,
+          "endLine": 23,
+          "params": [
+            "{\n  className,\n  ...props\n}"
+          ]
+        },
+        {
+          "name": "AccordionItem",
+          "startLine": 25,
+          "endLine": 36,
+          "params": [
+            "{\n  className,\n  ...props\n}"
+          ]
+        },
+        {
+          "name": "AccordionTrigger",
+          "startLine": 38,
+          "endLine": 59,
+          "params": [
+            "{\n  className,\n  children,\n  ...props\n}"
+          ]
+        },
+        {
+          "name": "AccordionContent",
+          "startLine": 61,
+          "endLine": 82,
+          "params": [
+            "{\n  className,\n  children,\n  ...props\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Accordion",
+          "line": 84,
+          "isDefault": false
+        },
+        {
+          "name": "AccordionItem",
+          "line": 84,
+          "isDefault": false
+        },
+        {
+          "name": "AccordionTrigger",
+          "line": 84,
+          "isDefault": false
+        },
+        {
+          "name": "AccordionContent",
+          "line": 84,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Accordion",
+          "callee": "cn",
+          "lineNumber": 16
+        },
+        {
+          "caller": "AccordionItem",
+          "callee": "cn",
+          "lineNumber": 32
+        },
+        {
+          "caller": "AccordionTrigger",
+          "callee": "cn",
+          "lineNumber": 47
+        },
+        {
+          "caller": "AccordionContent",
+          "callee": "cn",
+          "lineNumber": 73
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 4,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/ui/badge.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 45,
+      "nonEmptyLines": 40,
+      "functions": [
+        {
+          "name": "Badge",
+          "startLine": 27,
+          "endLine": 43,
+          "params": [
+            "{\n  className,\n  variant = 'default',\n  asChild = false,\n  ...props\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Badge",
+          "line": 45,
+          "isDefault": false
+        },
+        {
+          "name": "badgeVariants",
+          "line": 45,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Badge",
+          "callee": "cn",
+          "lineNumber": 39
+        },
+        {
+          "caller": "Badge",
+          "callee": "badgeVariants",
+          "lineNumber": 39
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/ui/button.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 65,
+      "nonEmptyLines": 60,
+      "functions": [
+        {
+          "name": "Button",
+          "startLine": 42,
+          "endLine": 63,
+          "params": [
+            "{\n  className,\n  variant = 'default',\n  size = 'default',\n  asChild = false,\n  ...props\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Button",
+          "line": 65,
+          "isDefault": false
+        },
+        {
+          "name": "buttonVariants",
+          "line": 65,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Button",
+          "callee": "cn",
+          "lineNumber": 59
+        },
+        {
+          "caller": "Button",
+          "callee": "buttonVariants",
+          "lineNumber": 59
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/ui/card.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 100,
+      "nonEmptyLines": 91,
+      "functions": [
+        {
+          "name": "Card",
+          "startLine": 5,
+          "endLine": 21,
+          "params": [
+            "{\n  className,\n  size = \"default\",\n  ...props\n}"
+          ]
+        },
+        {
+          "name": "CardHeader",
+          "startLine": 23,
+          "endLine": 34,
+          "params": [
+            "{ className, ...props }"
+          ]
+        },
+        {
+          "name": "CardTitle",
+          "startLine": 36,
+          "endLine": 44,
+          "params": [
+            "{ className, ...props }"
+          ]
+        },
+        {
+          "name": "CardDescription",
+          "startLine": 46,
+          "endLine": 54,
+          "params": [
+            "{ className, ...props }"
+          ]
+        },
+        {
+          "name": "CardAction",
+          "startLine": 56,
+          "endLine": 67,
+          "params": [
+            "{ className, ...props }"
+          ]
+        },
+        {
+          "name": "CardContent",
+          "startLine": 69,
+          "endLine": 77,
+          "params": [
+            "{ className, ...props }"
+          ]
+        },
+        {
+          "name": "CardFooter",
+          "startLine": 79,
+          "endLine": 90,
+          "params": [
+            "{ className, ...props }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Card",
+          "line": 92,
+          "isDefault": false
+        },
+        {
+          "name": "CardHeader",
+          "line": 92,
+          "isDefault": false
+        },
+        {
+          "name": "CardFooter",
+          "line": 92,
+          "isDefault": false
+        },
+        {
+          "name": "CardTitle",
+          "line": 92,
+          "isDefault": false
+        },
+        {
+          "name": "CardAction",
+          "line": 92,
+          "isDefault": false
+        },
+        {
+          "name": "CardDescription",
+          "line": 92,
+          "isDefault": false
+        },
+        {
+          "name": "CardContent",
+          "line": 92,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Card",
+          "callee": "cn",
+          "lineNumber": 14
+        },
+        {
+          "caller": "CardHeader",
+          "callee": "cn",
+          "lineNumber": 27
+        },
+        {
+          "caller": "CardTitle",
+          "callee": "cn",
+          "lineNumber": 40
+        },
+        {
+          "caller": "CardDescription",
+          "callee": "cn",
+          "lineNumber": 50
+        },
+        {
+          "caller": "CardAction",
+          "callee": "cn",
+          "lineNumber": 60
+        },
+        {
+          "caller": "CardContent",
+          "callee": "cn",
+          "lineNumber": 73
+        },
+        {
+          "caller": "CardFooter",
+          "callee": "cn",
+          "lineNumber": 83
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 7,
+        "functionCount": 7,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/ui/carousel.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 238,
+      "nonEmptyLines": 210,
+      "functions": [
+        {
+          "name": "useCarousel",
+          "startLine": 33,
+          "endLine": 41,
+          "params": []
+        },
+        {
+          "name": "Carousel",
+          "startLine": 43,
+          "endLine": 133,
+          "params": [
+            "{\n  orientation = 'horizontal',\n  opts,\n  setApi,\n  plugins,\n  className,\n  children,\n  ...props\n}"
+          ]
+        },
+        {
+          "name": "CarouselContent",
+          "startLine": 135,
+          "endLine": 150,
+          "params": [
+            "{ className, ...props }"
+          ]
+        },
+        {
+          "name": "CarouselItem",
+          "startLine": 152,
+          "endLine": 168,
+          "params": [
+            "{ className, ...props }"
+          ]
+        },
+        {
+          "name": "CarouselPrevious",
+          "startLine": 170,
+          "endLine": 198,
+          "params": [
+            "{\n  className,\n  variant = 'outline',\n  size = 'icon-sm',\n  ...props\n}"
+          ]
+        },
+        {
+          "name": "CarouselNext",
+          "startLine": 200,
+          "endLine": 228,
+          "params": [
+            "{\n  className,\n  variant = 'outline',\n  size = 'icon-sm',\n  ...props\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "CarouselApi",
+          "line": 230,
+          "isDefault": false
+        },
+        {
+          "name": "Carousel",
+          "line": 230,
+          "isDefault": false
+        },
+        {
+          "name": "CarouselContent",
+          "line": 230,
+          "isDefault": false
+        },
+        {
+          "name": "CarouselItem",
+          "line": 230,
+          "isDefault": false
+        },
+        {
+          "name": "CarouselPrevious",
+          "line": 230,
+          "isDefault": false
+        },
+        {
+          "name": "CarouselNext",
+          "line": 230,
+          "isDefault": false
+        },
+        {
+          "name": "useCarousel",
+          "line": 230,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "useCarousel",
+          "callee": "React.useContext",
+          "lineNumber": 34
+        },
+        {
+          "caller": "Carousel",
+          "callee": "useEmblaCarousel",
+          "lineNumber": 52
+        },
+        {
+          "caller": "Carousel",
+          "callee": "React.useState",
+          "lineNumber": 59
+        },
+        {
+          "caller": "Carousel",
+          "callee": "React.useState",
+          "lineNumber": 60
+        },
+        {
+          "caller": "Carousel",
+          "callee": "React.useCallback",
+          "lineNumber": 62
+        },
+        {
+          "caller": "Carousel",
+          "callee": "setCanScrollPrev",
+          "lineNumber": 64
+        },
+        {
+          "caller": "Carousel",
+          "callee": "api.canScrollPrev",
+          "lineNumber": 64
+        },
+        {
+          "caller": "Carousel",
+          "callee": "setCanScrollNext",
+          "lineNumber": 65
+        },
+        {
+          "caller": "Carousel",
+          "callee": "api.canScrollNext",
+          "lineNumber": 65
+        },
+        {
+          "caller": "Carousel",
+          "callee": "React.useCallback",
+          "lineNumber": 68
+        },
+        {
+          "caller": "Carousel",
+          "callee": "api?.scrollPrev",
+          "lineNumber": 69
+        },
+        {
+          "caller": "Carousel",
+          "callee": "React.useCallback",
+          "lineNumber": 72
+        },
+        {
+          "caller": "Carousel",
+          "callee": "api?.scrollNext",
+          "lineNumber": 73
+        },
+        {
+          "caller": "Carousel",
+          "callee": "React.useCallback",
+          "lineNumber": 76
+        },
+        {
+          "caller": "Carousel",
+          "callee": "event.preventDefault",
+          "lineNumber": 79
+        },
+        {
+          "caller": "Carousel",
+          "callee": "scrollPrev",
+          "lineNumber": 80
+        },
+        {
+          "caller": "Carousel",
+          "callee": "event.preventDefault",
+          "lineNumber": 82
+        },
+        {
+          "caller": "Carousel",
+          "callee": "scrollNext",
+          "lineNumber": 83
+        },
+        {
+          "caller": "Carousel",
+          "callee": "React.useEffect",
+          "lineNumber": 89
+        },
+        {
+          "caller": "Carousel",
+          "callee": "setApi",
+          "lineNumber": 91
+        },
+        {
+          "caller": "Carousel",
+          "callee": "React.useEffect",
+          "lineNumber": 94
+        },
+        {
+          "caller": "Carousel",
+          "callee": "window.requestAnimationFrame",
+          "lineNumber": 97
+        },
+        {
+          "caller": "Carousel",
+          "callee": "onSelect",
+          "lineNumber": 97
+        },
+        {
+          "caller": "Carousel",
+          "callee": "api.on",
+          "lineNumber": 98
+        },
+        {
+          "caller": "Carousel",
+          "callee": "api.on",
+          "lineNumber": 99
+        },
+        {
+          "caller": "Carousel",
+          "callee": "window.cancelAnimationFrame",
+          "lineNumber": 102
+        },
+        {
+          "caller": "Carousel",
+          "callee": "api.off",
+          "lineNumber": 103
+        },
+        {
+          "caller": "Carousel",
+          "callee": "api.off",
+          "lineNumber": 104
+        },
+        {
+          "caller": "Carousel",
+          "callee": "cn",
+          "lineNumber": 123
+        },
+        {
+          "caller": "CarouselContent",
+          "callee": "useCarousel",
+          "lineNumber": 136
+        },
+        {
+          "caller": "CarouselContent",
+          "callee": "cn",
+          "lineNumber": 141
+        },
+        {
+          "caller": "CarouselItem",
+          "callee": "useCarousel",
+          "lineNumber": 153
+        },
+        {
+          "caller": "CarouselItem",
+          "callee": "cn",
+          "lineNumber": 160
+        },
+        {
+          "caller": "CarouselPrevious",
+          "callee": "useCarousel",
+          "lineNumber": 176
+        },
+        {
+          "caller": "CarouselPrevious",
+          "callee": "cn",
+          "lineNumber": 183
+        },
+        {
+          "caller": "CarouselNext",
+          "callee": "useCarousel",
+          "lineNumber": 206
+        },
+        {
+          "caller": "CarouselNext",
+          "callee": "cn",
+          "lineNumber": 213
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 7,
+        "functionCount": 6,
+        "classCount": 0
+      }
+    }
+  ]
+}

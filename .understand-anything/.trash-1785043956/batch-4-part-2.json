@@ -1,0 +1,886 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/collections/Footers.ts",
+      "type": "file",
+      "name": "Footers.ts",
+      "filePath": "src/collections/Footers.ts",
+      "summary": "Payload collection for reusable footer configurations built from the approved footer block and synchronized into editorial workflow.",
+      "tags": [
+        "data-model",
+        "payload-collection",
+        "footer",
+        "editorial-workflow"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses Payload CollectionConfig declarations to compose fields, access policies, hooks, admin metadata, and versioning."
+    },
+    {
+      "id": "file:src/collections/FormSubmissions.ts",
+      "type": "file",
+      "name": "FormSubmissions.ts",
+      "filePath": "src/collections/FormSubmissions.ts",
+      "summary": "Operational Payload collection for captured form submissions, review promotion state, attribution, assignees, and activity/work-queue synchronization.",
+      "tags": [
+        "data-model",
+        "payload-collection",
+        "forms",
+        "work-queue",
+        "operations"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses Payload CollectionConfig declarations to compose fields, access policies, hooks, admin metadata, and versioning."
+    },
+    {
+      "id": "file:src/collections/Forms.ts",
+      "type": "file",
+      "name": "Forms.ts",
+      "filePath": "src/collections/Forms.ts",
+      "summary": "Payload form-builder collection defining validated field schemas, submission intents, notification recipients, and public form configuration.",
+      "tags": [
+        "data-model",
+        "payload-collection",
+        "forms",
+        "validation"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses Payload CollectionConfig declarations to compose fields, access policies, hooks, admin metadata, and versioning."
+    },
+    {
+      "id": "file:src/collections/Headers.ts",
+      "type": "file",
+      "name": "Headers.ts",
+      "filePath": "src/collections/Headers.ts",
+      "summary": "Payload collection for reusable header configurations built from the approved navbar block and synchronized into editorial workflow.",
+      "tags": [
+        "data-model",
+        "payload-collection",
+        "header",
+        "editorial-workflow"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses Payload CollectionConfig declarations to compose fields, access policies, hooks, admin metadata, and versioning."
+    },
+    {
+      "id": "file:src/collections/Media.ts",
+      "type": "file",
+      "name": "Media.ts",
+      "filePath": "src/collections/Media.ts",
+      "summary": "Governed Payload media library with image processing, focal-point controls, usage reporting, deletion safeguards, work-queue sync, and audit logging.",
+      "tags": [
+        "data-model",
+        "payload-collection",
+        "media",
+        "governance",
+        "audit"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses Payload CollectionConfig declarations to compose fields, access policies, hooks, admin metadata, and versioning."
+    },
+    {
+      "id": "function:src/collections/Media.ts:recordMediaDeletionAudit",
+      "type": "function",
+      "name": "recordMediaDeletionAudit",
+      "filePath": "src/collections/Media.ts",
+      "lineRange": [
+        23,
+        34
+      ],
+      "summary": "Records an operational audit event when a governed media asset is deleted.",
+      "tags": [
+        "function",
+        "payload-hook",
+        "lifecycle"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/collections/Media.ts:beforeValidate",
+      "type": "function",
+      "name": "beforeValidate",
+      "filePath": "src/collections/Media.ts",
+      "lineRange": [
+        67,
+        91
+      ],
+      "summary": "Normalizes collection input before Payload validates and persists it.",
+      "tags": [
+        "function",
+        "payload-hook",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/collections/Media.ts:populateMediaUsage",
+      "type": "function",
+      "name": "populateMediaUsage",
+      "filePath": "src/collections/Media.ts",
+      "lineRange": [
+        99,
+        113
+      ],
+      "summary": "Populates derived media-usage details for administrative visibility.",
+      "tags": [
+        "function",
+        "payload-hook",
+        "lifecycle"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/collections/NavigationLinks.ts",
+      "type": "file",
+      "name": "NavigationLinks.ts",
+      "filePath": "src/collections/NavigationLinks.ts",
+      "summary": "Payload collection for reusable internal and external navigation links with validation, ordering, and editorial workflow support.",
+      "tags": [
+        "data-model",
+        "payload-collection",
+        "navigation",
+        "editorial-workflow"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses Payload CollectionConfig declarations to compose fields, access policies, hooks, admin metadata, and versioning."
+    },
+    {
+      "id": "file:src/collections/NewsEvents.ts",
+      "type": "file",
+      "name": "NewsEvents.ts",
+      "filePath": "src/collections/NewsEvents.ts",
+      "summary": "Unified Payload collection for news and event entries with event validation, taxonomy, content actions, SEO, drafts, audit, and editorial workflow.",
+      "tags": [
+        "data-model",
+        "payload-collection",
+        "news-events",
+        "editorial-workflow",
+        "seo"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses Payload CollectionConfig declarations to compose fields, access policies, hooks, admin metadata, and versioning."
+    },
+    {
+      "id": "function:src/collections/NewsEvents.ts:validateEventStart",
+      "type": "function",
+      "name": "validateEventStart",
+      "filePath": "src/collections/NewsEvents.ts",
+      "lineRange": [
+        33,
+        45
+      ],
+      "summary": "Validates event start against this collection’s business rules.",
+      "tags": [
+        "function",
+        "payload-hook",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/collections/NewsEvents.ts:validateEventEnd",
+      "type": "function",
+      "name": "validateEventEnd",
+      "filePath": "src/collections/NewsEvents.ts",
+      "lineRange": [
+        47,
+        62
+      ],
+      "summary": "Validates event end against this collection’s business rules.",
+      "tags": [
+        "function",
+        "payload-hook",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/collections/OperationalAuditEvents.ts",
+      "type": "file",
+      "name": "OperationalAuditEvents.ts",
+      "filePath": "src/collections/OperationalAuditEvents.ts",
+      "summary": "Read-focused Payload collection storing operational audit events for privileged administrative inspection.",
+      "tags": [
+        "data-model",
+        "payload-collection",
+        "audit",
+        "operations",
+        "security"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses Payload CollectionConfig declarations to compose fields, access policies, hooks, admin metadata, and versioning."
+    },
+    {
+      "id": "file:src/collections/Redirects.ts",
+      "type": "file",
+      "name": "Redirects.ts",
+      "filePath": "src/collections/Redirects.ts",
+      "summary": "Payload collection for managed redirects with normalized source paths, validated destinations, ordering, and workflow synchronization.",
+      "tags": [
+        "data-model",
+        "payload-collection",
+        "redirects",
+        "routing",
+        "validation"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses Payload CollectionConfig declarations to compose fields, access policies, hooks, admin metadata, and versioning."
+    },
+    {
+      "id": "function:src/collections/Redirects.ts:normalizeRedirectPath",
+      "type": "function",
+      "name": "normalizeRedirectPath",
+      "filePath": "src/collections/Redirects.ts",
+      "lineRange": [
+        20,
+        30
+      ],
+      "summary": "Normalizes redirect path into its canonical stored representation.",
+      "tags": [
+        "function",
+        "payload-hook",
+        "normalization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/collections/Redirects.ts:beforeValidate",
+      "type": "function",
+      "name": "beforeValidate",
+      "filePath": "src/collections/Redirects.ts",
+      "lineRange": [
+        32,
+        42
+      ],
+      "summary": "Normalizes collection input before Payload validates and persists it.",
+      "tags": [
+        "function",
+        "payload-hook",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/collections/Reviews.ts",
+      "type": "file",
+      "name": "Reviews.ts",
+      "filePath": "src/collections/Reviews.ts",
+      "summary": "Payload collection for moderated reviews with ratings, reviewer attribution, taxonomy, SEO, drafts, audit logging, and work-queue synchronization.",
+      "tags": [
+        "data-model",
+        "payload-collection",
+        "reviews",
+        "moderation",
+        "seo"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses Payload CollectionConfig declarations to compose fields, access policies, hooks, admin metadata, and versioning."
+    },
+    {
+      "id": "file:src/collections/SystemPages.ts",
+      "type": "file",
+      "name": "SystemPages.ts",
+      "filePath": "src/collections/SystemPages.ts",
+      "summary": "Payload collection for managed 404, maintenance, and coming-soon pages with constrained block layouts, SEO, references, drafts, and workflow safeguards.",
+      "tags": [
+        "data-model",
+        "payload-collection",
+        "system-pages",
+        "editorial-workflow",
+        "seo"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses Payload CollectionConfig declarations to compose fields, access policies, hooks, admin metadata, and versioning."
+    },
+    {
+      "id": "function:src/collections/SystemPages.ts:validateSystemLayout",
+      "type": "function",
+      "name": "validateSystemLayout",
+      "filePath": "src/collections/SystemPages.ts",
+      "lineRange": [
+        33,
+        59
+      ],
+      "summary": "Ensures a system page uses only the block type permitted for its selected system-page role.",
+      "tags": [
+        "function",
+        "payload-hook",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/collections/Tags.ts",
+      "type": "file",
+      "name": "Tags.ts",
+      "filePath": "src/collections/Tags.ts",
+      "summary": "Payload taxonomy collection for tags with managed slugs, SEO fields, public-read rules, and capability-gated editing.",
+      "tags": [
+        "data-model",
+        "payload-collection",
+        "taxonomy",
+        "seo"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses Payload CollectionConfig declarations to compose fields, access policies, hooks, admin metadata, and versioning."
+    },
+    {
+      "id": "file:src/collections/Users.ts",
+      "type": "file",
+      "name": "Users.ts",
+      "filePath": "src/collections/Users.ts",
+      "summary": "Authenticated Payload user collection implementing editorial roles, per-user capability overrides, protected access fields, and administrative read controls.",
+      "tags": [
+        "data-model",
+        "payload-collection",
+        "authentication",
+        "authorization",
+        "users"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses Payload CollectionConfig declarations to compose fields, access policies, hooks, admin metadata, and versioning."
+    },
+    {
+      "id": "function:src/collections/Users.ts:showCapabilitiesForNonAdminRole",
+      "type": "function",
+      "name": "showCapabilitiesForNonAdminRole",
+      "filePath": "src/collections/Users.ts",
+      "lineRange": [
+        27,
+        39
+      ],
+      "summary": "Controls admin UI visibility by show capabilities for non admin role.",
+      "tags": [
+        "function",
+        "payload-hook",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/collections/Users.ts:normalizeUserAccessFields",
+      "type": "function",
+      "name": "normalizeUserAccessFields",
+      "filePath": "src/collections/Users.ts",
+      "lineRange": [
+        41,
+        101
+      ],
+      "summary": "Normalizes user access fields into its canonical stored representation.",
+      "tags": [
+        "function",
+        "payload-hook",
+        "normalization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/collections/Users.ts:adminOrSubmissionOperatorReadAccess",
+      "type": "function",
+      "name": "adminOrSubmissionOperatorReadAccess",
+      "filePath": "src/collections/Users.ts",
+      "lineRange": [
+        103,
+        114
+      ],
+      "summary": "Implements admin or submission operator read access for the collection or authorization workflow.",
+      "tags": [
+        "function",
+        "payload-hook",
+        "validation"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/collections/Footers.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Footers.ts",
+      "target": "file:src/blocks/Footer56/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Footers.ts",
+      "target": "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/FormSubmissions.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/FormSubmissions.ts",
+      "target": "file:src/hooks/syncFormSubmissionToWorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/FormSubmissions.ts",
+      "target": "file:src/hooks/updateFormSubmissionActivity.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/FormSubmissions.ts",
+      "target": "file:src/lib/forms.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Forms.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Forms.ts",
+      "target": "file:src/lib/forms.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Headers.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Headers.ts",
+      "target": "file:src/blocks/HeaderNavbar12/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Headers.ts",
+      "target": "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Media.ts",
+      "target": "function:src/collections/Media.ts:recordMediaDeletionAudit",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/Media.ts",
+      "target": "function:src/collections/Media.ts:beforeValidate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/Media.ts",
+      "target": "function:src/collections/Media.ts:populateMediaUsage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/Media.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Media.ts",
+      "target": "file:src/hooks/preventMediaDeletionWhileInUse.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Media.ts",
+      "target": "file:src/hooks/syncMediaToWorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Media.ts",
+      "target": "file:src/lib/mediaUsage.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Media.ts",
+      "target": "file:src/lib/operationalAudit.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/NavigationLinks.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/NavigationLinks.ts",
+      "target": "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/NewsEvents.ts",
+      "target": "function:src/collections/NewsEvents.ts:validateEventStart",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/NewsEvents.ts",
+      "target": "function:src/collections/NewsEvents.ts:validateEventEnd",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/NewsEvents.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/NewsEvents.ts",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/NewsEvents.ts",
+      "target": "file:src/fields/buildSEOFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/NewsEvents.ts",
+      "target": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/NewsEvents.ts",
+      "target": "file:src/hooks/logOperationalAuditEvent.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/NewsEvents.ts",
+      "target": "file:src/hooks/normalizeNewsEventFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/NewsEvents.ts",
+      "target": "file:src/hooks/syncPrimaryCategoryMembership.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/NewsEvents.ts",
+      "target": "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/NewsEvents.ts",
+      "target": "file:src/hooks/validateSEOContract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/NewsEvents.ts",
+      "target": "file:src/lib/editorialWorkflow.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/OperationalAuditEvents.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Redirects.ts",
+      "target": "function:src/collections/Redirects.ts:normalizeRedirectPath",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/Redirects.ts",
+      "target": "function:src/collections/Redirects.ts:beforeValidate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/Redirects.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Redirects.ts",
+      "target": "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Reviews.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Reviews.ts",
+      "target": "file:src/fields/buildSEOFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Reviews.ts",
+      "target": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Reviews.ts",
+      "target": "file:src/hooks/logOperationalAuditEvent.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Reviews.ts",
+      "target": "file:src/hooks/syncPrimaryCategoryMembership.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Reviews.ts",
+      "target": "file:src/hooks/syncReviewToWorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Reviews.ts",
+      "target": "file:src/hooks/validateSEOContract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Reviews.ts",
+      "target": "file:src/lib/editorialWorkflow.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Reviews.ts",
+      "target": "file:src/lib/reviews.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "function:src/collections/SystemPages.ts:validateSystemLayout",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/blocks/System404/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/blocks/SystemComingSoon/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/blocks/SystemMaintenance/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/fields/buildSEOFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/hooks/logOperationalAuditEvent.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/hooks/migrateLegacyReusableLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/hooks/validateSEOContract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/lib/editorialWorkflow.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/SystemPages.ts",
+      "target": "file:src/lib/systemPageTypes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Tags.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Tags.ts",
+      "target": "file:src/fields/buildSEOFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Tags.ts",
+      "target": "file:src/hooks/validateSEOContract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Users.ts",
+      "target": "function:src/collections/Users.ts:showCapabilitiesForNonAdminRole",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/Users.ts",
+      "target": "function:src/collections/Users.ts:normalizeUserAccessFields",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/Users.ts",
+      "target": "function:src/collections/Users.ts:adminOrSubmissionOperatorReadAccess",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/Users.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Users.ts",
+      "target": "file:src/access/editorialRoles.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

@@ -1,0 +1,441 @@
+{
+  "nodes": [
+    {
+      "id": "document:docs/superpowers/specs/2026-07-10-mongodb-runtime-reset-design.md",
+      "type": "document",
+      "name": "2026-07-10-mongodb-runtime-reset-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-10-mongodb-runtime-reset-design.md",
+      "summary": "Design specification for MongoDB Runtime Reset, spanning 29 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "runtime"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-11-admin-ia-simplification-design.md",
+      "type": "document",
+      "name": "2026-07-11-admin-ia-simplification-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-11-admin-ia-simplification-design.md",
+      "summary": "Design specification for Admin IA Simplification, spanning 31 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "admin-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-11-optional-editorial-workflow-design.md",
+      "type": "document",
+      "name": "2026-07-11-optional-editorial-workflow-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-11-optional-editorial-workflow-design.md",
+      "summary": "Design specification for Optional Editorial Workflow, spanning 30 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "editorial-workflow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-11-system-page-block-architecture-design.md",
+      "type": "document",
+      "name": "2026-07-11-system-page-block-architecture-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-11-system-page-block-architecture-design.md",
+      "summary": "Design specification for System Page Block Architecture, spanning 34 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "system-pages"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-11-system-page-default-blocks-design.md",
+      "type": "document",
+      "name": "2026-07-11-system-page-default-blocks-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-11-system-page-default-blocks-design.md",
+      "summary": "Design specification for System Page Default Blocks, spanning 23 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "system-pages"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-12-block-cleanup-design.md",
+      "type": "document",
+      "name": "2026-07-12-block-cleanup-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-12-block-cleanup-design.md",
+      "summary": "Design specification for Block Cleanup, spanning 7 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "content-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-13-feature-spotlight-block-design.md",
+      "type": "document",
+      "name": "2026-07-13-feature-spotlight-block-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-13-feature-spotlight-block-design.md",
+      "summary": "Design specification for Feature Spotlight Block, spanning 33 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "feature-spotlight"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-13-footer56-footer-preset-design.md",
+      "type": "document",
+      "name": "2026-07-13-footer56-footer-preset-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-13-footer56-footer-preset-design.md",
+      "summary": "Design specification for Footer56 Footer Preset, spanning 29 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "footer"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-13-footer56-footer-preset-revision-design.md",
+      "type": "document",
+      "name": "2026-07-13-footer56-footer-preset-revision-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-13-footer56-footer-preset-revision-design.md",
+      "summary": "Design specification for Footer56 Footer Preset Revision, spanning 19 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "footer"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-13-footer56-site-settings-integration-design.md",
+      "type": "document",
+      "name": "2026-07-13-footer56-site-settings-integration-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-13-footer56-site-settings-integration-design.md",
+      "summary": "Design specification for Footer56 Site Settings Integration, spanning 18 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "footer"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-13-footer56-terms-site-settings-design.md",
+      "type": "document",
+      "name": "2026-07-13-footer56-terms-site-settings-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-13-footer56-terms-site-settings-design.md",
+      "summary": "Design specification for Footer56 Terms and Conditions Site Settings, spanning 15 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "footer"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-13-header-navbar-block-design.md",
+      "type": "document",
+      "name": "2026-07-13-header-navbar-block-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-13-header-navbar-block-design.md",
+      "summary": "Design specification for Header Navbar Block, spanning 26 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "header"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-13-hero-institutional-block-design.md",
+      "type": "document",
+      "name": "2026-07-13-hero-institutional-block-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-13-hero-institutional-block-design.md",
+      "summary": "Design specification for Hero Institutional Block, spanning 30 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "hero"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-13-stats-strip-block-design.md",
+      "type": "document",
+      "name": "2026-07-13-stats-strip-block-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-13-stats-strip-block-design.md",
+      "summary": "Design specification for Stats Strip Block, spanning 22 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "stats"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-14-block-components-theme-normalization-design.md",
+      "type": "document",
+      "name": "2026-07-14-block-components-theme-normalization-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-14-block-components-theme-normalization-design.md",
+      "summary": "Design specification for Block Components Theme Normalization, spanning 28 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "theming"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-14-shared-block-appearance-controls-design.md",
+      "type": "document",
+      "name": "2026-07-14-shared-block-appearance-controls-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-14-shared-block-appearance-controls-design.md",
+      "summary": "Design specification for Shared Block Appearance Controls, spanning 34 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "content-block"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-14-website-theme-registry-design.md",
+      "type": "document",
+      "name": "2026-07-14-website-theme-registry-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-14-website-theme-registry-design.md",
+      "summary": "Design specification for Website Theme Registry, spanning 27 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "theming"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-15-announcement-flicker-fix-design.md",
+      "type": "document",
+      "name": "2026-07-15-announcement-flicker-fix-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-15-announcement-flicker-fix-design.md",
+      "summary": "Design specification for Announcement Scroll Flicker Fix, spanning 5 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "announcement"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-15-dismissible-announcement-design.md",
+      "type": "document",
+      "name": "2026-07-15-dismissible-announcement-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-15-dismissible-announcement-design.md",
+      "summary": "Design specification for Dismissible Announcement, spanning 9 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "announcement"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-17-block-thumbnail-generation-design.md",
+      "type": "document",
+      "name": "2026-07-17-block-thumbnail-generation-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-17-block-thumbnail-generation-design.md",
+      "summary": "Design specification for Block Thumbnail Generation, spanning 15 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "block-thumbnail"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:docs/superpowers/specs/2026-07-10-mongodb-runtime-reset-design.md",
+      "target": "file:src/config/runtime.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-10-mongodb-runtime-reset-design.md",
+      "target": "file:src/config/providers.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-10-mongodb-runtime-reset-design.md",
+      "target": "service:docker-compose.yml",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-10-mongodb-runtime-reset-design.md",
+      "target": "file:src/payload.config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-10-mongodb-runtime-reset-design.md",
+      "target": "file:src/config/starterContract.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-11-system-page-block-architecture-design.md",
+      "target": "file:src/blocks/System404/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-11-system-page-block-architecture-design.md",
+      "target": "file:src/blocks/SystemMaintenance/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-11-system-page-block-architecture-design.md",
+      "target": "file:src/blocks/SystemComingSoon/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-11-system-page-block-architecture-design.md",
+      "target": "file:src/blocks/System404/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-11-system-page-block-architecture-design.md",
+      "target": "file:src/blocks/SystemMaintenance/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-12-block-cleanup-design.md",
+      "target": "file:src/styles/globals.css",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-13-feature-spotlight-block-design.md",
+      "target": "file:src/blocks/FeatureSpotlight/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-13-feature-spotlight-block-design.md",
+      "target": "file:src/blocks/FeatureSpotlight/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-13-feature-spotlight-block-design.md",
+      "target": "file:src/collections/Pages.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-13-feature-spotlight-block-design.md",
+      "target": "file:src/blocks/renderPageBlocks.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-13-footer56-footer-preset-design.md",
+      "target": "file:src/blocks/Footer56/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-13-footer56-footer-preset-design.md",
+      "target": "file:src/blocks/Footer56/Component.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-13-footer56-footer-preset-design.md",
+      "target": "file:src/blocks/renderFooterBlocks.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-13-footer56-footer-preset-design.md",
+      "target": "file:src/components/global/GlobalFooter.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-13-hero-institutional-block-design.md",
+      "target": "file:src/blocks/renderPageBlocks.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-14-website-theme-registry-design.md",
+      "target": "file:src/globals/ThemeSettings.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-14-website-theme-registry-design.md",
+      "target": "file:src/app/(frontend)/layout.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-14-website-theme-registry-design.md",
+      "target": "file:src/lib/themes/websiteThemes.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-14-website-theme-registry-design.md",
+      "target": "file:src/styles/globals.css",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-17-block-thumbnail-generation-design.md",
+      "target": "config:package.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

@@ -1,0 +1,222 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "src/app/(block-thumbnails)/layout.tsx",
+      "language": "typescript",
+      "sizeLines": 19,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/layout.tsx",
+      "language": "typescript",
+      "sizeLines": 268,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/Announcement/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 72,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/HeaderNavbar12/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 77,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/renderFooterBlocks.tsx",
+      "language": "typescript",
+      "sizeLines": 55,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/renderHeaderBlocks.tsx",
+      "language": "typescript",
+      "sizeLines": 35,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/announcement/AnnouncementBar.tsx",
+      "language": "typescript",
+      "sizeLines": 161,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "language": "typescript",
+      "sizeLines": 124,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/announcement/RotatingAnnouncementContent.tsx",
+      "language": "typescript",
+      "sizeLines": 153,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/global/GlobalAnnouncement.tsx",
+      "language": "typescript",
+      "sizeLines": 47,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/global/GlobalFooter.tsx",
+      "language": "typescript",
+      "sizeLines": 51,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/global/GlobalHeader.tsx",
+      "language": "typescript",
+      "sizeLines": 34,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/site/SiteLogo.tsx",
+      "language": "typescript",
+      "sizeLines": 71,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/themes/websiteThemes.ts",
+      "language": "typescript",
+      "sizeLines": 38,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/global-announcement.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 223,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/global-footer.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 174,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/global-header.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/header-navbar-render.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 318,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/marquee-announcement.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 53,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/rotating-announcement.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 120,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/theme-settings.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 76,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "src/app/(block-thumbnails)/layout.tsx": [
+      "src/lib/themes/websiteThemes.ts",
+      "src/styles/globals.css"
+    ],
+    "src/app/(frontend)/layout.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/admin/AdminSessionBar.tsx",
+      "src/components/global/GlobalAnnouncement.tsx",
+      "src/components/global/GlobalFooter.tsx",
+      "src/components/global/GlobalHeader.tsx",
+      "src/lib/cmsSession.ts",
+      "src/lib/media.ts",
+      "src/lib/seo.ts",
+      "src/lib/siteUrl.ts",
+      "src/lib/themes/websiteThemes.ts",
+      "src/payload.config.ts",
+      "src/styles/globals.css"
+    ],
+    "src/blocks/Announcement/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/announcement/AnnouncementBar.tsx",
+      "src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "src/components/announcement/RotatingAnnouncementContent.tsx"
+    ],
+    "src/blocks/HeaderNavbar12/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/header/HeaderNavbar.tsx",
+      "src/components/site/SiteLogo.tsx",
+      "src/lib/headerNavigation.ts"
+    ],
+    "src/blocks/renderFooterBlocks.tsx": [
+      "src/blocks/Footer56/Component.tsx",
+      "src/components/site/SiteLogo.tsx"
+    ],
+    "src/blocks/renderHeaderBlocks.tsx": [
+      "src/blocks/HeaderNavbar12/Component.tsx",
+      "src/components/site/SiteLogo.tsx"
+    ],
+    "src/components/announcement/AnnouncementBar.tsx": [
+      "src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "src/components/announcement/RotatingAnnouncementContent.tsx",
+      "src/components/ui/button.tsx",
+      "src/lib/utils.ts"
+    ],
+    "src/components/announcement/MarqueeAnnouncementContent.tsx": [],
+    "src/components/announcement/RotatingAnnouncementContent.tsx": [],
+    "src/components/global/GlobalAnnouncement.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/announcement/AnnouncementBar.tsx"
+    ],
+    "src/components/global/GlobalFooter.tsx": [
+      "src/blocks/renderFooterBlocks.tsx",
+      "src/components/site/SiteLogo.tsx"
+    ],
+    "src/components/global/GlobalHeader.tsx": [
+      "src/blocks/renderHeaderBlocks.tsx",
+      "src/components/site/SiteLogo.tsx"
+    ],
+    "src/components/site/SiteLogo.tsx": [],
+    "src/lib/themes/websiteThemes.ts": [],
+    "tests/int/global-announcement.int.spec.ts": [
+      "src/components/global/GlobalAnnouncement.tsx",
+      "src/globals/PageSettings.ts"
+    ],
+    "tests/int/global-footer.int.spec.ts": [
+      "src/blocks/renderFooterBlocks.tsx",
+      "src/components/global/GlobalFooter.tsx"
+    ],
+    "tests/int/global-header.int.spec.ts": [
+      "src/components/global/GlobalHeader.tsx"
+    ],
+    "tests/int/header-navbar-render.int.spec.ts": [
+      "src/blocks/HeaderNavbar12/Component.tsx",
+      "src/blocks/renderHeaderBlocks.tsx",
+      "src/components/header/HeaderMobileMenu.tsx",
+      "src/components/header/HeaderNavbar.tsx",
+      "src/components/site/SiteLogo.tsx",
+      "src/lib/headerNavigation.ts"
+    ],
+    "tests/int/marquee-announcement.int.spec.ts": [
+      "src/components/announcement/MarqueeAnnouncementContent.tsx"
+    ],
+    "tests/int/rotating-announcement.int.spec.ts": [
+      "src/components/announcement/RotatingAnnouncementContent.tsx"
+    ],
+    "tests/int/theme-settings.int.spec.ts": [
+      "src/globals/ThemeSettings.ts",
+      "src/lib/themes/websiteThemes.ts"
+    ]
+  }
+}

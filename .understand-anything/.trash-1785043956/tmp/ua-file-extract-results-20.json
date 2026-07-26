@@ -1,0 +1,1053 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 20,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 20,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 0,
+      "failed": 0,
+      "skipped": 20
+    }
+  },
+  "results": [
+    {
+      "path": "docs/superpowers/plans/2026-07-07-cms-foundation-audit.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 467,
+      "nonEmptyLines": 333,
+      "sections": [
+        {
+          "heading": "CMS Foundation Audit Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 24
+        },
+        {
+          "heading": "Task 1: Scaffold The Audit Report",
+          "level": 3,
+          "line": 45
+        },
+        {
+          "heading": "Task 2: Write Platform And Content Findings",
+          "level": 3,
+          "line": 159
+        },
+        {
+          "heading": "Task 3: Write Editorial And Marketing Findings",
+          "level": 3,
+          "line": 249
+        },
+        {
+          "heading": "Task 4: Write Reusability, Target State, And Roadmap",
+          "level": 3,
+          "line": 329
+        },
+        {
+          "heading": "Task 5: Final Consistency Review And Publish",
+          "level": 3,
+          "line": 409
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-07-cms-foundation-remediation-plan.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 679,
+      "nonEmptyLines": 495,
+      "sections": [
+        {
+          "heading": "CMS Foundation Remediation Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 24
+        },
+        {
+          "heading": "Task 1: Productize Starter Documentation",
+          "level": 3,
+          "line": 46
+        },
+        {
+          "heading": "Task 2: Extract Runtime Provider Boundaries",
+          "level": 3,
+          "line": 176
+        },
+        {
+          "heading": "Task 3: Raise The Starter Test Baseline",
+          "level": 3,
+          "line": 323
+        },
+        {
+          "heading": "Task 4: Fix System-Mode Bypass Safety",
+          "level": 3,
+          "line": 417
+        },
+        {
+          "heading": "Task 5: Add A Starter-Level Lead Handling Seam",
+          "level": 3,
+          "line": 491
+        },
+        {
+          "heading": "Task 6: Formalize Starter Extension Conventions",
+          "level": 3,
+          "line": 608
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 9
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-08-articles-reviews-implementation-plan.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 1413,
+      "nonEmptyLines": 1187,
+      "sections": [
+        {
+          "heading": "Articles And Reviews Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Scope Check",
+          "level": 2,
+          "line": 36
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 40
+        },
+        {
+          "heading": "Task 1: Extend Capabilities And Workflow Enforcement",
+          "level": 3,
+          "line": 85
+        },
+        {
+          "heading": "Task 2: Add The Articles Collection And Routed Article Rendering",
+          "level": 3,
+          "line": 284
+        },
+        {
+          "heading": "Task 3: Add Review Layout Blocks, Review Collection, And Routed Review Rendering",
+          "level": 3,
+          "line": 632
+        },
+        {
+          "heading": "Task 4: Add The Dedicated Public Review Submission Flow",
+          "level": 3,
+          "line": 1092
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-08-editorial-governance-plan.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 1771,
+      "nonEmptyLines": 1488,
+      "sections": [
+        {
+          "heading": "Editorial Governance Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Scope Check",
+          "level": 2,
+          "line": 29
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 33
+        },
+        {
+          "heading": "Task 1: Replace The Role Model With Editorial Roles And Safer Defaults",
+          "level": 3,
+          "line": 56
+        },
+        {
+          "heading": "Task 2: Separate System-Wide Controls From Normal Site Defaults",
+          "level": 3,
+          "line": 540
+        },
+        {
+          "heading": "Task 3: Add Workflow States And Publish Guardrails To Pages And System Pages",
+          "level": 3,
+          "line": 932
+        },
+        {
+          "heading": "Task 4: Add A Read-Only Operational Audit Surface",
+          "level": 3,
+          "line": 1329
+        },
+        {
+          "heading": "Task 5: Document The Editorial Governance Contract And Run The Full Governance Suite",
+          "level": 3,
+          "line": 1659
+        },
+        {
+          "heading": "Follow-On Plans",
+          "level": 2,
+          "line": 1765
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 10
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-08-review-intake-promotion.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 67,
+      "nonEmptyLines": 48,
+      "sections": [
+        {
+          "heading": "Review Intake Promotion Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Schema And Helper Boundaries",
+          "level": 3,
+          "line": 21
+        },
+        {
+          "heading": "Task 2: Route Refactor",
+          "level": 3,
+          "line": 38
+        },
+        {
+          "heading": "Task 3: Verification",
+          "level": 3,
+          "line": 52
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-08-vercel-postgres-runtime-plan.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 655,
+      "nonEmptyLines": 514,
+      "sections": [
+        {
+          "heading": "Vercel Postgres Runtime Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 28
+        },
+        {
+          "heading": "Task 1: Harden Runtime Contract Parsing",
+          "level": 3,
+          "line": 42
+        },
+        {
+          "heading": "Task 2: Add SQLite/Postgres Provider Branching",
+          "level": 3,
+          "line": 273
+        },
+        {
+          "heading": "Task 3: Publish The Supported Vercel Deployment Contract",
+          "level": 3,
+          "line": 482
+        },
+        {
+          "heading": "Self-Review",
+          "level": 2,
+          "line": 645
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-form-submissions-lead-operations.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 67,
+      "nonEmptyLines": 48,
+      "sections": [
+        {
+          "heading": "Form Submissions Lead Operations Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Intent And Operations Schema",
+          "level": 3,
+          "line": 21
+        },
+        {
+          "heading": "Task 2: Route And Event Enrichment",
+          "level": 3,
+          "line": 37
+        },
+        {
+          "heading": "Task 3: Verification And Artifact Refresh",
+          "level": 3,
+          "line": 52
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-homepage-e2e-seeding.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 81,
+      "nonEmptyLines": 60,
+      "sections": [
+        {
+          "heading": "Homepage E2E Seeding Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Add Homepage Seed Helper",
+          "level": 3,
+          "line": 21
+        },
+        {
+          "heading": "Task 2: Use Homepage Seeding In Frontend E2E",
+          "level": 3,
+          "line": 48
+        },
+        {
+          "heading": "Task 3: Verify Full Behavior And Record Follow-Up Issues",
+          "level": 3,
+          "line": 65
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-media-governance.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 72,
+      "nonEmptyLines": 53,
+      "sections": [
+        {
+          "heading": "Media Governance Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Build The Media Usage Resolver",
+          "level": 3,
+          "line": 21
+        },
+        {
+          "heading": "Task 2: Wire Governance Fields And Delete Guard",
+          "level": 3,
+          "line": 38
+        },
+        {
+          "heading": "Task 3: Refresh Generated Artifacts And Regressions",
+          "level": 3,
+          "line": 55
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-operator-guides.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 534,
+      "nonEmptyLines": 377,
+      "sections": [
+        {
+          "heading": "Operator Guides Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 22
+        },
+        {
+          "heading": "Task 1: Create The Guide System Entry Point",
+          "level": 2,
+          "line": 54
+        },
+        {
+          "heading": "Task 2: Write The Content Guides",
+          "level": 2,
+          "line": 188
+        },
+        {
+          "heading": "Task 3: Write The Site Structure Guides",
+          "level": 2,
+          "line": 313
+        },
+        {
+          "heading": "Task 4: Write The Forms And Admin Operation Guides",
+          "level": 2,
+          "line": 362
+        },
+        {
+          "heading": "Task 5: Write The Defaults And Settings Guides",
+          "level": 2,
+          "line": 427
+        },
+        {
+          "heading": "Task 6: Final Consistency Sweep And Manual Verification",
+          "level": 2,
+          "line": 474
+        },
+        {
+          "heading": "Spec Coverage Check",
+          "level": 2,
+          "line": 517
+        },
+        {
+          "heading": "Placeholder Scan",
+          "level": 2,
+          "line": 526
+        },
+        {
+          "heading": "Type Consistency Check",
+          "level": 2,
+          "line": 530
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-playwright-readiness-route.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 56,
+      "nonEmptyLines": 39,
+      "sections": [
+        {
+          "heading": "Playwright Readiness Route Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Point Playwright Readiness At An Always-Live Route",
+          "level": 3,
+          "line": 21
+        },
+        {
+          "heading": "Task 2: Verify Full Test Behavior And Capture Any Follow-Up",
+          "level": 3,
+          "line": 40
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-playwright-sqlite-worker-serialization.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 67,
+      "nonEmptyLines": 46,
+      "sections": [
+        {
+          "heading": "Playwright SQLite Worker Serialization Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Serialize Playwright Workers",
+          "level": 3,
+          "line": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-pnpm-startup-contract-fix.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 59,
+      "nonEmptyLines": 39,
+      "sections": [
+        {
+          "heading": "pnpm Startup Contract Fix Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Restore The Repo-Level pnpm Contract",
+          "level": 3,
+          "line": 21
+        },
+        {
+          "heading": "Task 2: Verify The Existing Test Entry Points",
+          "level": 3,
+          "line": 43
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-publish-queue-safety-implementation.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 385,
+      "nonEmptyLines": 303,
+      "sections": [
+        {
+          "heading": "Publish Queue Safety Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Add blocking Work Queue lookup helpers",
+          "level": 3,
+          "line": 24
+        },
+        {
+          "heading": "Task 2: Extend editorial workflow enforcement with queue publish safety",
+          "level": 3,
+          "line": 147
+        },
+        {
+          "heading": "Task 3: Wire collection callers to the collection-aware workflow guard",
+          "level": 3,
+          "line": 276
+        },
+        {
+          "heading": "Task 4: Regenerate types and run the focused verification set",
+          "level": 3,
+          "line": 338
+        },
+        {
+          "heading": "Self-Review",
+          "level": 2,
+          "line": 366
+        },
+        {
+          "heading": "Spec coverage",
+          "level": 3,
+          "line": 368
+        },
+        {
+          "heading": "Placeholder scan",
+          "level": 3,
+          "line": 377
+        },
+        {
+          "heading": "Type consistency",
+          "level": 3,
+          "line": 381
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 10
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-role-capability-model.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 783,
+      "nonEmptyLines": 634,
+      "sections": [
+        {
+          "heading": "Role Capability Model Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 22
+        },
+        {
+          "heading": "Task 1: Replace Role Names And Legacy Normalization",
+          "level": 2,
+          "line": 37
+        },
+        {
+          "heading": "Task 2: Rebuild Default Capability Presets For The New Roles",
+          "level": 2,
+          "line": 195
+        },
+        {
+          "heading": "Task 3: Update Users Role Persistence And Capability-Preset Behavior",
+          "level": 2,
+          "line": 374
+        },
+        {
+          "heading": "Task 4: Reorganize Capability Presentation And Update Operator Docs",
+          "level": 2,
+          "line": 556
+        },
+        {
+          "heading": "Task 5: Final Verification Sweep",
+          "level": 2,
+          "line": 728
+        },
+        {
+          "heading": "Spec Coverage Check",
+          "level": 2,
+          "line": 763
+        },
+        {
+          "heading": "Placeholder Scan",
+          "level": 2,
+          "line": 775
+        },
+        {
+          "heading": "Type Consistency Check",
+          "level": 2,
+          "line": 779
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 11
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-seo-operations-completeness.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 368,
+      "nonEmptyLines": 290,
+      "sections": [
+        {
+          "heading": "SEO Operations Completeness Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Build Shared SEO Contract Primitives",
+          "level": 3,
+          "line": 24
+        },
+        {
+          "heading": "Task 2: Apply The SEO Contract To Public Content Models",
+          "level": 3,
+          "line": 128
+        },
+        {
+          "heading": "Task 3: Resolve Metadata And Sitemap From The Shared Contract",
+          "level": 3,
+          "line": 213
+        },
+        {
+          "heading": "Task 4: Enforce Structural SEO Guardrails And Verify The Full Contract",
+          "level": 3,
+          "line": 293
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-starter-productization-and-handoff.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 464,
+      "nonEmptyLines": 360,
+      "sections": [
+        {
+          "heading": "Starter Productization And Handoff Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 24
+        },
+        {
+          "heading": "Task 1: Codify The Starter Runtime And Storage Contract",
+          "level": 3,
+          "line": 49
+        },
+        {
+          "heading": "Task 2: Rewrite The Starter Handoff Docs Around The Actual CMS Product",
+          "level": 3,
+          "line": 206
+        },
+        {
+          "heading": "Task 3: Add Executable Clone-Safety Checks For The Documented Starter Profile",
+          "level": 3,
+          "line": 294
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-taxonomy-and-content-organization.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 325,
+      "nonEmptyLines": 255,
+      "sections": [
+        {
+          "heading": "Taxonomy And Content Organization Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Add Reusable Taxonomy Collections",
+          "level": 3,
+          "line": 28
+        },
+        {
+          "heading": "Task 2: Attach Taxonomy To Articles And Reviews",
+          "level": 3,
+          "line": 114
+        },
+        {
+          "heading": "Task 3: Add Archive And Related-Content Retrieval",
+          "level": 3,
+          "line": 187
+        },
+        {
+          "heading": "Task 4: Add Frontend Archive Pages And Related Content UI",
+          "level": 3,
+          "line": 261
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-09-work-queue-implementation.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 728,
+      "nonEmptyLines": 606,
+      "sections": [
+        {
+          "heading": "Work Queue Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Add the Work Queue collection and capability surface",
+          "level": 3,
+          "line": 24
+        },
+        {
+          "heading": "Task 2: Build the shared work queue sync and audit helpers",
+          "level": 3,
+          "line": 168
+        },
+        {
+          "heading": "Task 3: Connect editorial workflow collections to the queue",
+          "level": 3,
+          "line": 379
+        },
+        {
+          "heading": "Task 4: Connect reviews, form submissions, and media governance to the queue",
+          "level": 3,
+          "line": 517
+        },
+        {
+          "heading": "Task 5: Lock admin behavior, audit coupling, and integration coverage",
+          "level": 3,
+          "line": 635
+        },
+        {
+          "heading": "Self-Review",
+          "level": 2,
+          "line": 707
+        },
+        {
+          "heading": "Spec coverage",
+          "level": 3,
+          "line": 709
+        },
+        {
+          "heading": "Placeholder scan",
+          "level": 3,
+          "line": 719
+        },
+        {
+          "heading": "Type consistency",
+          "level": 3,
+          "line": 723
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 11
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-10-mongodb-runtime-reset.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 602,
+      "nonEmptyLines": 470,
+      "sections": [
+        {
+          "heading": "MongoDB Runtime Reset Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 27
+        },
+        {
+          "heading": "Task 1: Reset Runtime And Provider Contract To MongoDB",
+          "level": 3,
+          "line": 72
+        },
+        {
+          "heading": "Task 2: Replace SQLite Test Harness With In-Memory MongoDB",
+          "level": 3,
+          "line": 277
+        },
+        {
+          "heading": "Task 3: Clean Local Runtime Workflow And Remove SQLite Artifacts",
+          "level": 3,
+          "line": 413
+        },
+        {
+          "heading": "Task 4: Rewrite Active Docs For The MongoDB-Only Contract And Re-verify The Starter",
+          "level": 3,
+          "line": 502
+        },
+        {
+          "heading": "Self-Review",
+          "level": 2,
+          "line": 598
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    }
+  ]
+}

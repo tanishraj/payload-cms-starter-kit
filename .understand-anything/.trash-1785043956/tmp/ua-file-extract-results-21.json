@@ -1,0 +1,1023 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 20,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 20,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 0,
+      "failed": 0,
+      "skipped": 20
+    }
+  },
+  "results": [
+    {
+      "path": "docs/superpowers/plans/2026-07-11-admin-ia-simplification.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 599,
+      "nonEmptyLines": 477,
+      "sections": [
+        {
+          "heading": "Admin IA Simplification Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Re-group Collections And Globals Into The Approved Admin IA",
+          "level": 3,
+          "line": 27
+        },
+        {
+          "heading": "Task 2: Align Capability Vocabulary And Capability Grouping With The New IA",
+          "level": 3,
+          "line": 209
+        },
+        {
+          "heading": "Task 3: Update Operator Guides And Documentation To Match The New IA",
+          "level": 3,
+          "line": 352
+        },
+        {
+          "heading": "Task 4: Run Full Verification And Manual Admin Smoke Checks",
+          "level": 3,
+          "line": 475
+        },
+        {
+          "heading": "Self-Review",
+          "level": 2,
+          "line": 564
+        },
+        {
+          "heading": "Spec coverage",
+          "level": 3,
+          "line": 566
+        },
+        {
+          "heading": "Placeholder scan",
+          "level": 3,
+          "line": 577
+        },
+        {
+          "heading": "Type consistency",
+          "level": 3,
+          "line": 584
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 10
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-11-system-mode-homepage-fallback.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 160,
+      "nonEmptyLines": 120,
+      "sections": [
+        {
+          "heading": "System Mode Homepage Fallback Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Add Homepage Fallback For Bypassed System Modes",
+          "level": 3,
+          "line": 21
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-11-system-page-block-architecture-refactor.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 630,
+      "nonEmptyLines": 535,
+      "sections": [
+        {
+          "heading": "System Page Block Architecture Refactor Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Introduce shared system-page primitives and move maintenance / coming-soon to dedicated views",
+          "level": 3,
+          "line": 23
+        },
+        {
+          "heading": "Task 2: Move 404 to a dedicated view and delete the variant-based shared hero",
+          "level": 3,
+          "line": 337
+        },
+        {
+          "heading": "Task 3: Split the shared field factory responsibilities and update schema tests",
+          "level": 3,
+          "line": 494
+        },
+        {
+          "heading": "Self-Review",
+          "level": 2,
+          "line": 616
+        },
+        {
+          "heading": "Execution Handoff",
+          "level": 2,
+          "line": 622
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-11-system-page-default-blocks.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 107,
+      "nonEmptyLines": 88,
+      "sections": [
+        {
+          "heading": "System Page Default Blocks Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Simplify The System Page Block Schema",
+          "level": 3,
+          "line": 22
+        },
+        {
+          "heading": "Task 2: Replace The Rich Layouts With One Minimal Full-Page Renderer",
+          "level": 3,
+          "line": 53
+        },
+        {
+          "heading": "Task 3: Hide Header/Footer For System Screens And Re-verify Regressions",
+          "level": 3,
+          "line": 82
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-12-block-cleanup.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 159,
+      "nonEmptyLines": 104,
+      "sections": [
+        {
+          "heading": "Block Cleanup Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Remove legacy block schemas",
+          "level": 3,
+          "line": 21
+        },
+        {
+          "heading": "Task 2: Remove legacy renderers and files",
+          "level": 3,
+          "line": 70
+        },
+        {
+          "heading": "Task 3: Verify the clean foundation",
+          "level": 3,
+          "line": 126
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-feature-spotlight-block.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 781,
+      "nonEmptyLines": 653,
+      "sections": [
+        {
+          "heading": "Feature Spotlight Block Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Map",
+          "level": 2,
+          "line": 29
+        },
+        {
+          "heading": "Interfaces",
+          "level": 2,
+          "line": 48
+        },
+        {
+          "heading": "Task 1: Add schema coverage for the new block",
+          "level": 3,
+          "line": 56
+        },
+        {
+          "heading": "Task 2: Implement the Payload block schema and register it on Pages",
+          "level": 3,
+          "line": 157
+        },
+        {
+          "heading": "Task 3: Add render coverage for the split feature component",
+          "level": 3,
+          "line": 408
+        },
+        {
+          "heading": "Task 4: Implement the split feature renderer and wire it into the page block pipeline",
+          "level": 3,
+          "line": 498
+        },
+        {
+          "heading": "Task 5: Regenerate types and run the final verification suite",
+          "level": 3,
+          "line": 718
+        },
+        {
+          "heading": "Self-Review",
+          "level": 2,
+          "line": 768
+        },
+        {
+          "heading": "Execution Handoff",
+          "level": 2,
+          "line": 774
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 11
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-footer56-footer-preset.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 994,
+      "nonEmptyLines": 830,
+      "sections": [
+        {
+          "heading": "Footer56 Footer Preset Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Add the footer block schema and register it in `Footers`",
+          "level": 3,
+          "line": 29
+        },
+        {
+          "heading": "Task 2: Build the footer renderer and global footer shell",
+          "level": 3,
+          "line": 349
+        },
+        {
+          "heading": "Task 3: Wire the active footer into the frontend layout and generate Payload types",
+          "level": 3,
+          "line": 695
+        },
+        {
+          "heading": "Task 4: Update media governance and stale footer references",
+          "level": 3,
+          "line": 816
+        },
+        {
+          "heading": "Task 5: Run the full focused footer verification",
+          "level": 3,
+          "line": 947
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-footer56-legal-tab-terms.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 248,
+      "nonEmptyLines": 194,
+      "sections": [
+        {
+          "heading": "Footer56 Legal Tab Terms Integration Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Map",
+          "level": 2,
+          "line": 33
+        },
+        {
+          "heading": "Task 1: Move legal ownership into Site Settings > Legal and wire footer terms rendering",
+          "level": 3,
+          "line": 52
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-footer56-site-settings-integration.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 507,
+      "nonEmptyLines": 405,
+      "sections": [
+        {
+          "heading": "Footer56 Site Settings Integration Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Map",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "Task 1: Lock the footer schema and site settings contract",
+          "level": 3,
+          "line": 47
+        },
+        {
+          "heading": "Task 2: Render contact, social, privacy, and logo height from shared footer context",
+          "level": 3,
+          "line": 146
+        },
+        {
+          "heading": "Task 3: Wire site settings into the frontend shell and regenerate types",
+          "level": 3,
+          "line": 417
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-header-navbar-block.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 862,
+      "nonEmptyLines": 726,
+      "sections": [
+        {
+          "heading": "Header Navbar Block Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "Task 1: Register the header navbar block in `Headers`",
+          "level": 3,
+          "line": 65
+        },
+        {
+          "heading": "Task 2: Add shared header normalization and logo/media tracking",
+          "level": 3,
+          "line": 314
+        },
+        {
+          "heading": "Task 3: Build the header navbar UI from shadcn/navbar sources",
+          "level": 3,
+          "line": 523
+        },
+        {
+          "heading": "Task 4: Wire the active header into the frontend shell",
+          "level": 3,
+          "line": 735
+        },
+        {
+          "heading": "Self-Review",
+          "level": 2,
+          "line": 849
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-hero-institutional-block.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 748,
+      "nonEmptyLines": 626,
+      "sections": [
+        {
+          "heading": "Hero Institutional Block Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Map",
+          "level": 2,
+          "line": 30
+        },
+        {
+          "heading": "Interfaces",
+          "level": 2,
+          "line": 47
+        },
+        {
+          "heading": "Task 1: Register the Payload block schema",
+          "level": 3,
+          "line": 55
+        },
+        {
+          "heading": "Task 2: Implement hero rendering and interaction behavior",
+          "level": 3,
+          "line": 326
+        },
+        {
+          "heading": "Task 3: Wire the page renderer and verify end-to-end page-block output",
+          "level": 3,
+          "line": 568
+        },
+        {
+          "heading": "Task 4: Polish admin thumbnail and final verification",
+          "level": 3,
+          "line": 686
+        },
+        {
+          "heading": "Self-Review",
+          "level": 2,
+          "line": 725
+        },
+        {
+          "heading": "Spec coverage",
+          "level": 3,
+          "line": 727
+        },
+        {
+          "heading": "Placeholder scan",
+          "level": 3,
+          "line": 737
+        },
+        {
+          "heading": "Type consistency",
+          "level": 3,
+          "line": 742
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-13-stats-strip-block.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 736,
+      "nonEmptyLines": 600,
+      "sections": [
+        {
+          "heading": "Stats Strip Block Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Add the Payload block schema and register it on Pages",
+          "level": 3,
+          "line": 27
+        },
+        {
+          "heading": "Task 2: Build the stats strip renderer and the animated value primitive",
+          "level": 3,
+          "line": 244
+        },
+        {
+          "heading": "Task 3: Wire the block into page rendering, regenerate types, and verify the full block pipeline",
+          "level": 3,
+          "line": 607
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-14-block-components-theme-normalization.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 119,
+      "nonEmptyLines": 82,
+      "sections": [
+        {
+          "heading": "Block Components Theme Normalization Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Normalize announcement surfaces and token inheritance",
+          "level": 3,
+          "line": 21
+        },
+        {
+          "heading": "Task 2: Normalize header and navigation surfaces without changing behavior",
+          "level": 3,
+          "line": 42
+        },
+        {
+          "heading": "Task 3: Normalize hero and feature-spotlight content surfaces",
+          "level": 3,
+          "line": 61
+        },
+        {
+          "heading": "Task 4: Normalize stats, footer, and system page supporting primitives",
+          "level": 3,
+          "line": 81
+        },
+        {
+          "heading": "Task 5: Run focused verification for the normalization pass",
+          "level": 3,
+          "line": 105
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-14-shared-block-appearance-controls.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 643,
+      "nonEmptyLines": 461,
+      "sections": [
+        {
+          "heading": "Shared Block Appearance Controls Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Add the shared appearance field factory and class resolver",
+          "level": 3,
+          "line": 23
+        },
+        {
+          "heading": "Task 2: Migrate page blocks to the shared appearance contract",
+          "level": 3,
+          "line": 206
+        },
+        {
+          "heading": "Task 3: Migrate header and footer blocks to the shared appearance contract",
+          "level": 3,
+          "line": 358
+        },
+        {
+          "heading": "Task 4: Migrate system page blocks and shared system field factory",
+          "level": 3,
+          "line": 482
+        },
+        {
+          "heading": "Task 5: Regenerate types and run the full focused regression surface",
+          "level": 3,
+          "line": 597
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-14-website-theme-registry.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 336,
+      "nonEmptyLines": 260,
+      "sections": [
+        {
+          "heading": "Website Theme Registry Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Add the shared website theme registry",
+          "level": 3,
+          "line": 21
+        },
+        {
+          "heading": "Task 2: Wire Payload Theme Settings and frontend layout to the registry",
+          "level": 3,
+          "line": 172
+        },
+        {
+          "heading": "Self-Review",
+          "level": 2,
+          "line": 332
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-17-block-thumbnail-generation.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 473,
+      "nonEmptyLines": 363,
+      "sections": [
+        {
+          "heading": "Block Thumbnail Generation Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Centralize native Payload thumbnail metadata and enforce coverage",
+          "level": 3,
+          "line": 24
+        },
+        {
+          "heading": "Task 2: Render deterministic fixtures in a development-only capture stage",
+          "level": 3,
+          "line": 246
+        },
+        {
+          "heading": "Task 3: Add the self-starting Playwright generator and replace placeholders",
+          "level": 3,
+          "line": 377
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-17-feature-matrix-block.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 520,
+      "nonEmptyLines": 321,
+      "sections": [
+        {
+          "heading": "Feature Matrix Block Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Install and adapt the registry component",
+          "level": 3,
+          "line": 23
+        },
+        {
+          "heading": "Task 2: Add the Payload schema and CMS wrapper",
+          "level": 3,
+          "line": 51
+        },
+        {
+          "heading": "Task 3: Register Feature Matrix as a page block",
+          "level": 3,
+          "line": 80
+        },
+        {
+          "heading": "Task 4: Add the real-render thumbnail",
+          "level": 3,
+          "line": 114
+        },
+        {
+          "heading": "Task 5: Final verification",
+          "level": 3,
+          "line": 144
+        },
+        {
+          "heading": "Task 6: Normalize feature image heights",
+          "level": 3,
+          "line": 171
+        },
+        {
+          "heading": "Task 7: Normalize panel content typography",
+          "level": 3,
+          "line": 214
+        },
+        {
+          "heading": "Task 8: Correct matrix radius, borders, and text spacing",
+          "level": 3,
+          "line": 259
+        },
+        {
+          "heading": "Task 9: Add a configurable matrix outer border",
+          "level": 3,
+          "line": 303
+        },
+        {
+          "heading": "Task 10: Animate the internal matrix dividers",
+          "level": 3,
+          "line": 349
+        },
+        {
+          "heading": "Task 11: Add per-image positioning and protect custom CSS",
+          "level": 3,
+          "line": 430
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 13
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-feature-matrix-image-height.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 86,
+      "nonEmptyLines": 59,
+      "sections": [
+        {
+          "heading": "Feature Matrix Responsive Image Height Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Apply and verify responsive image heights",
+          "level": 3,
+          "line": 23
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-feature-matrix-rename.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 223,
+      "nonEmptyLines": 143,
+      "sections": [
+        {
+          "heading": "Feature Matrix Complete Rename Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Establish the failing rename contract",
+          "level": 3,
+          "line": 23
+        },
+        {
+          "heading": "Task 2: Rename source paths, exports, markup, and CSS",
+          "level": 3,
+          "line": 77
+        },
+        {
+          "heading": "Task 3: Rename registration, thumbnails, fixtures, and generated types",
+          "level": 3,
+          "line": 132
+        },
+        {
+          "heading": "Task 4: Rename implementation documentation and complete the absence audit",
+          "level": 3,
+          "line": 181
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-18-gallery-showcase-block.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 1137,
+      "nonEmptyLines": 935,
+      "sections": [
+        {
+          "heading": "Gallery Showcase Block Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File Structure",
+          "level": 2,
+          "line": 25
+        },
+        {
+          "heading": "Task 1: Lock the Payload editor contract",
+          "level": 3,
+          "line": 43
+        },
+        {
+          "heading": "Task 2: Install and adapt Gallery 20 into a server section plus client fan",
+          "level": 3,
+          "line": 290
+        },
+        {
+          "heading": "Task 3: Resolve Payload values and register the runtime pipeline",
+          "level": 3,
+          "line": 698
+        },
+        {
+          "heading": "Task 4: Add deterministic block-thumbnail coverage",
+          "level": 3,
+          "line": 931
+        },
+        {
+          "heading": "Task 5: Complete responsive, reduced-motion, and repository quality gates",
+          "level": 3,
+          "line": 1037
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    }
+  ]
+}

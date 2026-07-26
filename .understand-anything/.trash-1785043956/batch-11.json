@@ -1,0 +1,1508 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/blocks/Services21/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/Services21/config.ts",
+      "summary": "Defines the Payload schema for the Services block, including service media and copy, content actions, alignment, sizing, appearance, and thumbnail metadata.",
+      "tags": [
+        "payload-block",
+        "configuration",
+        "content-model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/StatsStrip/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/StatsStrip/config.ts",
+      "summary": "Defines the Payload schema for metric rows and the Stats Strip’s animation, timing, triggering, appearance, and thumbnail settings.",
+      "tags": [
+        "payload-block",
+        "configuration",
+        "content-model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/System404/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/System404/config.ts",
+      "summary": "Registers the reusable 404 system-page block from shared system content fields, defaults, appearance, labels, and thumbnail metadata.",
+      "tags": [
+        "payload-block",
+        "configuration",
+        "content-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/SystemComingSoon/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/SystemComingSoon/config.ts",
+      "summary": "Registers the reusable coming-soon system-page block from shared system content fields, defaults, appearance, labels, and thumbnail metadata.",
+      "tags": [
+        "payload-block",
+        "configuration",
+        "content-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/SystemMaintenance/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/SystemMaintenance/config.ts",
+      "summary": "Registers the reusable maintenance system-page block from shared system content fields, defaults, appearance, labels, and thumbnail metadata.",
+      "tags": [
+        "payload-block",
+        "configuration",
+        "content-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/TeamShowcase/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/TeamShowcase/config.ts",
+      "summary": "Defines the Payload Team Showcase schema with member media and copy, content actions, alignment, sizing, dividers, appearance, and thumbnail metadata.",
+      "tags": [
+        "payload-block",
+        "configuration",
+        "content-model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "file",
+      "name": "blockAppearanceFields.ts",
+      "filePath": "src/blocks/shared/blockAppearanceFields.ts",
+      "summary": "Provides a configurable factory for Payload appearance groups containing background, text-color, and border select fields.",
+      "tags": [
+        "field-factory",
+        "payload-cms",
+        "block-config"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/shared/blockAppearanceFields.ts:createBlockAppearanceFields",
+      "type": "function",
+      "name": "createBlockAppearanceFields",
+      "filePath": "src/blocks/shared/blockAppearanceFields.ts",
+      "lineRange": [
+        51,
+        65
+      ],
+      "summary": "Creates a Payload appearance group with optional background, text override, and border controls.",
+      "tags": [
+        "field-factory",
+        "payload-cms",
+        "appearance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "file",
+      "name": "contentActionsFields.ts",
+      "filePath": "src/blocks/shared/contentActionsFields.ts",
+      "summary": "Provides reusable Payload field factories for CMS actions, page or custom links, button variants, and action presentation modes.",
+      "tags": [
+        "field-factory",
+        "payload-cms",
+        "block-config"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/shared/contentActionsFields.ts:createActionLayoutFields",
+      "type": "function",
+      "name": "createActionLayoutFields",
+      "filePath": "src/blocks/shared/contentActionsFields.ts",
+      "lineRange": [
+        82,
+        117
+      ],
+      "summary": "Builds action layout fields for link or button presentation and conditionally exposes button variants.",
+      "tags": [
+        "field-factory",
+        "payload-cms",
+        "content-actions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/shared/contentActionsFields.ts:createContentActionModeField",
+      "type": "function",
+      "name": "createContentActionModeField",
+      "filePath": "src/blocks/shared/contentActionsFields.ts",
+      "lineRange": [
+        119,
+        140
+      ],
+      "summary": "Creates a reusable Payload select field for choosing link or button action presentation.",
+      "tags": [
+        "field-factory",
+        "payload-cms",
+        "content-actions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/shared/contentActionsFields.ts:createContentActionsField",
+      "type": "function",
+      "name": "createContentActionsField",
+      "filePath": "src/blocks/shared/contentActionsFields.ts",
+      "lineRange": [
+        142,
+        170
+      ],
+      "summary": "Creates a reusable actions array with content-link fields and a separate layout-and-theme tab.",
+      "tags": [
+        "field-factory",
+        "payload-cms",
+        "content-actions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/systemPageFields.ts",
+      "type": "file",
+      "name": "systemPageFields.ts",
+      "filePath": "src/blocks/systemPageFields.ts",
+      "summary": "Builds shared system-page content and appearance fields and wraps them into consistently labeled Payload block definitions.",
+      "tags": [
+        "field-factory",
+        "payload-cms",
+        "system-page"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/systemPageFields.ts:createBaseSystemPageFields",
+      "type": "function",
+      "name": "createBaseSystemPageFields",
+      "filePath": "src/blocks/systemPageFields.ts",
+      "lineRange": [
+        20,
+        76
+      ],
+      "summary": "Builds the shared content, action, and appearance tabs used by all system-page block variants.",
+      "tags": [
+        "field-factory",
+        "payload-cms",
+        "system-page"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/systemPageFields.ts:createSystemPageBlock",
+      "type": "function",
+      "name": "createSystemPageBlock",
+      "filePath": "src/blocks/systemPageFields.ts",
+      "lineRange": [
+        78,
+        99
+      ],
+      "summary": "Creates a consistently named Payload block definition from system-page fields, labels, slug, and thumbnail metadata.",
+      "tags": [
+        "factory",
+        "payload-block",
+        "system-page"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/collections/Pages.ts",
+      "type": "file",
+      "name": "Pages.ts",
+      "filePath": "src/collections/Pages.ts",
+      "summary": "Defines the central Payload Pages collection with hierarchical validation, flexible content blocks, SEO, live preview, editorial workflow, access control, audit, redirects, and navigation synchronization.",
+      "tags": [
+        "payload-collection",
+        "pages",
+        "editorial-workflow",
+        "content-model"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses Payload’s typed CollectionConfig with hook factories, relationship validation, versioned drafts, and a discriminated block layout."
+    },
+    {
+      "id": "function:src/collections/Pages.ts:extractPageID",
+      "type": "function",
+      "name": "extractPageID",
+      "filePath": "src/collections/Pages.ts",
+      "lineRange": [
+        42,
+        54
+      ],
+      "summary": "Normalizes a scalar or populated Page relationship into its stable identifier.",
+      "tags": [
+        "utility",
+        "relationship",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/collections/Pages.ts:validateParentRelationship",
+      "type": "function",
+      "name": "validateParentRelationship",
+      "filePath": "src/collections/Pages.ts",
+      "lineRange": [
+        56,
+        93
+      ],
+      "summary": "Rejects self-parenting and traverses ancestors to prevent circular page hierarchies.",
+      "tags": [
+        "validation",
+        "page-hierarchy",
+        "payload-cms"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/fields/cmsLinkFields.ts",
+      "type": "file",
+      "name": "cmsLinkFields.ts",
+      "filePath": "src/fields/cmsLinkFields.ts",
+      "summary": "Creates the shared Payload relationship and new-tab fields used for reusable CMS navigation links.",
+      "tags": [
+        "field-factory",
+        "payload-cms",
+        "navigation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/fields/cmsLinkFields.ts:createCmsLinkFields",
+      "type": "function",
+      "name": "createCmsLinkFields",
+      "filePath": "src/fields/cmsLinkFields.ts",
+      "lineRange": [
+        3,
+        20
+      ],
+      "summary": "Creates the shared reusable-link relationship and open-in-new-tab fields.",
+      "tags": [
+        "field-factory",
+        "payload-cms",
+        "navigation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/hooks/migrateLegacyReusableLinks.ts",
+      "type": "file",
+      "name": "migrateLegacyReusableLinks.ts",
+      "filePath": "src/hooks/migrateLegacyReusableLinks.ts",
+      "summary": "Migrates legacy system-page action fields into reusable Navigation Link relationships before saving, creating synchronized page links or manual URL links as needed.",
+      "tags": [
+        "hook",
+        "payload-cms",
+        "navigation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/hooks/migrateLegacyReusableLinks.ts:getRelationshipID",
+      "type": "function",
+      "name": "getRelationshipID",
+      "filePath": "src/hooks/migrateLegacyReusableLinks.ts",
+      "lineRange": [
+        17,
+        27
+      ],
+      "summary": "Normalizes a scalar or populated Navigation Link relationship into its identifier.",
+      "tags": [
+        "utility",
+        "relationship",
+        "migration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/migrateLegacyReusableLinks.ts:resolveLinkID",
+      "type": "function",
+      "name": "resolveLinkID",
+      "filePath": "src/hooks/migrateLegacyReusableLinks.ts",
+      "lineRange": [
+        35,
+        81
+      ],
+      "summary": "Reuses or creates the appropriate navigation-link record for a legacy page or custom URL action.",
+      "tags": [
+        "migration",
+        "navigation",
+        "data-transformation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/migrateLegacyReusableLinks.ts:migrateLegacySystemPageLinksBeforeChange",
+      "type": "function",
+      "name": "migrateLegacySystemPageLinksBeforeChange",
+      "filePath": "src/hooks/migrateLegacyReusableLinks.ts",
+      "lineRange": [
+        83,
+        112
+      ],
+      "summary": "Migrates primary and secondary system-page actions from legacy inline link fields to reusable link relationships.",
+      "tags": [
+        "hook",
+        "migration",
+        "navigation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/hooks/syncNavigationLinkForPage.ts",
+      "type": "file",
+      "name": "syncNavigationLinkForPage.ts",
+      "filePath": "src/hooks/syncNavigationLinkForPage.ts",
+      "summary": "Keeps page-synchronized Navigation Link records updated after page changes and safely converts them to manual records after page deletion.",
+      "tags": [
+        "hook",
+        "payload-cms",
+        "navigation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/syncNavigationLinkForPage.ts:syncNavigationLinkAfterChange",
+      "type": "function",
+      "name": "syncNavigationLinkAfterChange",
+      "filePath": "src/hooks/syncNavigationLinkForPage.ts",
+      "lineRange": [
+        12,
+        22
+      ],
+      "summary": "Upserts the navigation-link record synchronized to a page after the page changes.",
+      "tags": [
+        "hook",
+        "navigation",
+        "synchronization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/hooks/syncNavigationLinkForPage.ts:syncNavigationLinkAfterDelete",
+      "type": "function",
+      "name": "syncNavigationLinkAfterDelete",
+      "filePath": "src/hooks/syncNavigationLinkForPage.ts",
+      "lineRange": [
+        24,
+        52
+      ],
+      "summary": "Detaches and converts a synchronized navigation link to a manual record after its page is deleted.",
+      "tags": [
+        "hook",
+        "navigation",
+        "cleanup"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/navigationLinkSync.ts",
+      "type": "file",
+      "name": "navigationLinkSync.ts",
+      "filePath": "src/lib/navigationLinkSync.ts",
+      "summary": "Implements lookup and upsert helpers for page-synchronized and manually entered Navigation Link records through the Payload local API.",
+      "tags": [
+        "service",
+        "navigation",
+        "payload-cms"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/navigationLinkSync.ts:getPageID",
+      "type": "function",
+      "name": "getPageID",
+      "filePath": "src/lib/navigationLinkSync.ts",
+      "lineRange": [
+        5,
+        15
+      ],
+      "summary": "Normalizes a scalar or populated Page value into its identifier.",
+      "tags": [
+        "utility",
+        "relationship",
+        "navigation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/navigationLinkSync.ts:getPageTitle",
+      "type": "function",
+      "name": "getPageTitle",
+      "filePath": "src/lib/navigationLinkSync.ts",
+      "lineRange": [
+        17,
+        33
+      ],
+      "summary": "Returns a populated page title or fetches the page record needed to resolve it.",
+      "tags": [
+        "utility",
+        "data-fetching",
+        "navigation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/navigationLinkSync.ts:findSyncedNavigationLink",
+      "type": "function",
+      "name": "findSyncedNavigationLink",
+      "filePath": "src/lib/navigationLinkSync.ts",
+      "lineRange": [
+        35,
+        52
+      ],
+      "summary": "Finds the navigation-link record explicitly synchronized to a page.",
+      "tags": [
+        "query",
+        "navigation",
+        "payload-cms"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/navigationLinkSync.ts:findReusablePageLink",
+      "type": "function",
+      "name": "findReusablePageLink",
+      "filePath": "src/lib/navigationLinkSync.ts",
+      "lineRange": [
+        54,
+        71
+      ],
+      "summary": "Finds an existing reusable navigation link that already targets a page.",
+      "tags": [
+        "query",
+        "navigation",
+        "payload-cms"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/navigationLinkSync.ts:findNavigationLinkByURL",
+      "type": "function",
+      "name": "findNavigationLinkByURL",
+      "filePath": "src/lib/navigationLinkSync.ts",
+      "lineRange": [
+        73,
+        105
+      ],
+      "summary": "Finds an existing manual navigation link matching a normalized custom URL.",
+      "tags": [
+        "query",
+        "navigation",
+        "payload-cms"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/navigationLinkSync.ts:ensureSyncedNavigationLinkForPage",
+      "type": "function",
+      "name": "ensureSyncedNavigationLinkForPage",
+      "filePath": "src/lib/navigationLinkSync.ts",
+      "lineRange": [
+        107,
+        154
+      ],
+      "summary": "Creates or updates the canonical navigation link synchronized to a page and its current title.",
+      "tags": [
+        "service",
+        "navigation",
+        "synchronization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/navigationLinkSync.ts:ensureManualNavigationLinkForURL",
+      "type": "function",
+      "name": "ensureManualNavigationLinkForURL",
+      "filePath": "src/lib/navigationLinkSync.ts",
+      "lineRange": [
+        156,
+        188
+      ],
+      "summary": "Returns an existing manual URL link or creates one with a normalized URL and fallback title.",
+      "tags": [
+        "service",
+        "navigation",
+        "persistence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/block-thumbnail-fixtures.int.spec.ts",
+      "type": "file",
+      "name": "block-thumbnail-fixtures.int.spec.ts",
+      "filePath": "tests/int/block-thumbnail-fixtures.int.spec.ts",
+      "summary": "Integration tests verify that every registered block thumbnail has a matching render fixture and that declared fixture assets are valid.",
+      "tags": [
+        "test",
+        "integration-test",
+        "block-thumbnail-fixtures"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/header-presets.int.spec.ts",
+      "type": "file",
+      "name": "header-presets.int.spec.ts",
+      "filePath": "tests/int/header-presets.int.spec.ts",
+      "summary": "Integration tests verify that header presets and the Headers collection expose the expected layout block configuration.",
+      "tags": [
+        "test",
+        "integration-test",
+        "header-presets"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/image-mosaic.int.spec.tsx",
+      "type": "file",
+      "name": "image-mosaic.int.spec.tsx",
+      "filePath": "tests/int/image-mosaic.int.spec.tsx",
+      "summary": "Integration tests cover the Image Mosaic schema, renderer mapping, content actions, link behavior, responsive presentation, and Pages collection registration.",
+      "tags": [
+        "test",
+        "integration-test",
+        "image-mosaic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tests/int/news-events-highlights.int.spec.tsx",
+      "type": "file",
+      "name": "news-events-highlights.int.spec.tsx",
+      "filePath": "tests/int/news-events-highlights.int.spec.tsx",
+      "summary": "Integration tests verify the News and Events Highlights schema and presentation behavior for configured cards, actions, and empty states.",
+      "tags": [
+        "test",
+        "integration-test",
+        "news-events-highlights"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/int/news-events-highlights.int.spec.tsx:findNamedField",
+      "type": "function",
+      "name": "findNamedField",
+      "filePath": "tests/int/news-events-highlights.int.spec.tsx",
+      "lineRange": [
+        7,
+        26
+      ],
+      "summary": "Recursively finds a named Payload field in the schema under test.",
+      "tags": [
+        "test-helper",
+        "schema",
+        "payload-cms"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/page-blocks.int.spec.ts",
+      "type": "file",
+      "name": "page-blocks.int.spec.ts",
+      "filePath": "tests/int/page-blocks.int.spec.ts",
+      "summary": "Comprehensive integration tests validate the Pages collection block catalog, shared appearance and action fields, rendering wiring, site settings, and block-specific contracts.",
+      "tags": [
+        "test",
+        "integration-test",
+        "page-blocks"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:tests/int/page-blocks.int.spec.ts:getLayoutField",
+      "type": "function",
+      "name": "getLayoutField",
+      "filePath": "tests/int/page-blocks.int.spec.ts",
+      "lineRange": [
+        11,
+        22
+      ],
+      "summary": "Retrieves the Pages layout field and asserts the expected block-field shape for tests.",
+      "tags": [
+        "test-helper",
+        "schema",
+        "payload-cms"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/int/page-blocks.int.spec.ts:expectContentActionsFieldSet",
+      "type": "function",
+      "name": "expectContentActionsFieldSet",
+      "filePath": "tests/int/page-blocks.int.spec.ts",
+      "lineRange": [
+        30,
+        96
+      ],
+      "summary": "Asserts the complete shared action field contract across Payload block configurations.",
+      "tags": [
+        "test-helper",
+        "schema",
+        "content-actions"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/system-page-blocks.int.spec.ts",
+      "type": "file",
+      "name": "system-page-blocks.int.spec.ts",
+      "filePath": "tests/int/system-page-blocks.int.spec.ts",
+      "summary": "Integration tests verify system-page block schemas, shared field factories, collection restrictions, references, and the supported 404, coming-soon, and maintenance layouts.",
+      "tags": [
+        "test",
+        "integration-test",
+        "system-page-blocks"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:tests/int/system-page-blocks.int.spec.ts:flattenNamedFields",
+      "type": "function",
+      "name": "flattenNamedFields",
+      "filePath": "tests/int/system-page-blocks.int.spec.ts",
+      "lineRange": [
+        22,
+        51
+      ],
+      "summary": "Recursively flattens named fields from nested Payload groups, rows, tabs, and arrays for schema assertions.",
+      "tags": [
+        "test-helper",
+        "schema",
+        "traversal"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/int/system-page-blocks.int.spec.ts:collectBlockSlugs",
+      "type": "function",
+      "name": "collectBlockSlugs",
+      "filePath": "tests/int/system-page-blocks.int.spec.ts",
+      "lineRange": [
+        63,
+        91
+      ],
+      "summary": "Collects nested Payload block slugs from fields to validate allowed system-page layouts.",
+      "tags": [
+        "test-helper",
+        "payload-block",
+        "schema"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "target": "function:src/blocks/shared/blockAppearanceFields.ts:createBlockAppearanceFields",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "target": "function:src/blocks/shared/blockAppearanceFields.ts:createBlockAppearanceFields",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/shared/contentActionsFields.ts",
+      "target": "function:src/blocks/shared/contentActionsFields.ts:createActionLayoutFields",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/shared/contentActionsFields.ts",
+      "target": "function:src/blocks/shared/contentActionsFields.ts:createContentActionModeField",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/shared/contentActionsFields.ts",
+      "target": "function:src/blocks/shared/contentActionsFields.ts:createContentActionModeField",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/shared/contentActionsFields.ts",
+      "target": "function:src/blocks/shared/contentActionsFields.ts:createContentActionsField",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/shared/contentActionsFields.ts",
+      "target": "function:src/blocks/shared/contentActionsFields.ts:createContentActionsField",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/systemPageFields.ts",
+      "target": "function:src/blocks/systemPageFields.ts:createBaseSystemPageFields",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/systemPageFields.ts",
+      "target": "function:src/blocks/systemPageFields.ts:createBaseSystemPageFields",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/systemPageFields.ts",
+      "target": "function:src/blocks/systemPageFields.ts:createSystemPageBlock",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/systemPageFields.ts",
+      "target": "function:src/blocks/systemPageFields.ts:createSystemPageBlock",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "function:src/collections/Pages.ts:extractPageID",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "function:src/collections/Pages.ts:validateParentRelationship",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/fields/cmsLinkFields.ts",
+      "target": "function:src/fields/cmsLinkFields.ts:createCmsLinkFields",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/fields/cmsLinkFields.ts",
+      "target": "function:src/fields/cmsLinkFields.ts:createCmsLinkFields",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/migrateLegacyReusableLinks.ts",
+      "target": "function:src/hooks/migrateLegacyReusableLinks.ts:getRelationshipID",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/migrateLegacyReusableLinks.ts",
+      "target": "function:src/hooks/migrateLegacyReusableLinks.ts:resolveLinkID",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/migrateLegacyReusableLinks.ts",
+      "target": "function:src/hooks/migrateLegacyReusableLinks.ts:migrateLegacySystemPageLinksBeforeChange",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/migrateLegacyReusableLinks.ts",
+      "target": "function:src/hooks/migrateLegacyReusableLinks.ts:migrateLegacySystemPageLinksBeforeChange",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/syncNavigationLinkForPage.ts",
+      "target": "function:src/hooks/syncNavigationLinkForPage.ts:syncNavigationLinkAfterChange",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/syncNavigationLinkForPage.ts",
+      "target": "function:src/hooks/syncNavigationLinkForPage.ts:syncNavigationLinkAfterChange",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/hooks/syncNavigationLinkForPage.ts",
+      "target": "function:src/hooks/syncNavigationLinkForPage.ts:syncNavigationLinkAfterDelete",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/hooks/syncNavigationLinkForPage.ts",
+      "target": "function:src/hooks/syncNavigationLinkForPage.ts:syncNavigationLinkAfterDelete",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:getPageID",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:getPageTitle",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:findSyncedNavigationLink",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:findSyncedNavigationLink",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:findReusablePageLink",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:findReusablePageLink",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:findNavigationLinkByURL",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:findNavigationLinkByURL",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:ensureSyncedNavigationLinkForPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:ensureSyncedNavigationLinkForPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:ensureManualNavigationLinkForURL",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/navigationLinkSync.ts",
+      "target": "function:src/lib/navigationLinkSync.ts:ensureManualNavigationLinkForURL",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/int/news-events-highlights.int.spec.tsx",
+      "target": "function:tests/int/news-events-highlights.int.spec.tsx:findNamedField",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/int/page-blocks.int.spec.ts",
+      "target": "function:tests/int/page-blocks.int.spec.ts:getLayoutField",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/int/page-blocks.int.spec.ts",
+      "target": "function:tests/int/page-blocks.int.spec.ts:expectContentActionsFieldSet",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/int/system-page-blocks.int.spec.ts",
+      "target": "function:tests/int/system-page-blocks.int.spec.ts:flattenNamedFields",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/int/system-page-blocks.int.spec.ts",
+      "target": "function:tests/int/system-page-blocks.int.spec.ts:collectBlockSlugs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/Services21/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Services21/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Services21/config.ts",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/StatsStrip/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/StatsStrip/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/System404/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/System404/config.ts",
+      "target": "file:src/blocks/systemPageFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/SystemComingSoon/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/SystemComingSoon/config.ts",
+      "target": "file:src/blocks/systemPageFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/SystemMaintenance/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/SystemMaintenance/config.ts",
+      "target": "file:src/blocks/systemPageFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/TeamShowcase/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/TeamShowcase/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/TeamShowcase/config.ts",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/systemPageFields.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/systemPageFields.ts",
+      "target": "file:src/fields/cmsLinkFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/Announcement/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/ContentHighlights/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/Cta39/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/FeatureMatrix/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/FeatureSpotlight/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/GalleryShowcase/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/HeroBanner/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/ImageMosaic/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/NewsEventsHighlights/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/ProfileCarousel/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/QaAccordion/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/RatingSpotlight/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/ReviewFeed/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/ReviewSubmission/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/Services21/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/StatsStrip/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/blocks/TeamShowcase/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/fields/buildSEOFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/hooks/createRedirectsForChangedPagePath.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/hooks/enforceEditorialWorkflow.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/hooks/logOperationalAuditEvent.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/hooks/populatePageUrlPreview.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/hooks/preventReferencedPageUnpublish.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/hooks/syncNavigationLinkForPage.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/hooks/validateSEOContract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/collections/Pages.ts",
+      "target": "file:src/lib/editorialWorkflow.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/migrateLegacyReusableLinks.ts",
+      "target": "file:src/lib/navigationLinkSync.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/hooks/syncNavigationLinkForPage.ts",
+      "target": "file:src/lib/navigationLinkSync.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/block-thumbnail-fixtures.int.spec.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/block-thumbnail-fixtures.int.spec.ts",
+      "target": "file:src/block-thumbnails/fixtures.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/header-presets.int.spec.ts",
+      "target": "file:src/blocks/HeaderNavbar12/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/header-presets.int.spec.ts",
+      "target": "file:src/collections/Headers.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/image-mosaic.int.spec.tsx",
+      "target": "file:src/blocks/ImageMosaic/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/image-mosaic.int.spec.tsx",
+      "target": "file:src/blocks/ImageMosaic/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/image-mosaic.int.spec.tsx",
+      "target": "file:src/blocks/renderPageBlocks.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/image-mosaic.int.spec.tsx",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/image-mosaic.int.spec.tsx",
+      "target": "file:src/collections/Pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/image-mosaic.int.spec.tsx",
+      "target": "file:src/components/image-mosaic.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/news-events-highlights.int.spec.tsx",
+      "target": "file:src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/news-events-highlights.int.spec.tsx",
+      "target": "file:src/blocks/NewsEventsHighlights/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/page-blocks.int.spec.ts",
+      "target": "file:src/app/(frontend)/PageContent.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/page-blocks.int.spec.ts",
+      "target": "file:src/blocks/Announcement/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/page-blocks.int.spec.ts",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/page-blocks.int.spec.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/page-blocks.int.spec.ts",
+      "target": "file:src/collections/Pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/page-blocks.int.spec.ts",
+      "target": "file:src/globals/SiteSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/system-page-blocks.int.spec.ts",
+      "target": "file:src/blocks/System404/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/system-page-blocks.int.spec.ts",
+      "target": "file:src/blocks/SystemComingSoon/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/system-page-blocks.int.spec.ts",
+      "target": "file:src/blocks/SystemMaintenance/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/system-page-blocks.int.spec.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/system-page-blocks.int.spec.ts",
+      "target": "file:src/blocks/systemPageFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/system-page-blocks.int.spec.ts",
+      "target": "file:src/collections/Footers.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/system-page-blocks.int.spec.ts",
+      "target": "file:src/collections/Headers.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/system-page-blocks.int.spec.ts",
+      "target": "file:src/collections/Pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/system-page-blocks.int.spec.ts",
+      "target": "file:src/collections/Reviews.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/system-page-blocks.int.spec.ts",
+      "target": "file:src/collections/SystemPages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

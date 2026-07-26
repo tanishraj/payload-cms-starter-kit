@@ -1,0 +1,1429 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/app/(frontend)/preview/page/[id]/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "src/app/(frontend)/preview/page/[id]/page.tsx",
+      "summary": "Authenticated Payload admin preview route that loads a draft page plus review and news/event snapshots before mounting the live-preview client.",
+      "tags": [
+        "entry-point",
+        "live-preview",
+        "payload-cms",
+        "server-component"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "function:src/app/(frontend)/preview/page/[id]/page.tsx:AdminPreviewPage",
+      "type": "function",
+      "name": "AdminPreviewPage",
+      "filePath": "src/app/(frontend)/preview/page/[id]/page.tsx",
+      "lineRange": [
+        15,
+        59
+      ],
+      "summary": "Authenticates the admin request, loads a draft page and its preview snapshots, and renders the live-preview client.",
+      "tags": [
+        "entry-point",
+        "live-preview",
+        "authentication",
+        "server-component"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/api/review-feed/route.ts",
+      "type": "file",
+      "name": "route.ts",
+      "filePath": "src/app/api/review-feed/route.ts",
+      "summary": "Dynamic GET endpoint for paginated published reviews, including strict query validation and defensive server-error responses.",
+      "tags": [
+        "api-handler",
+        "review-feed",
+        "pagination",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/api/review-feed/route.ts:GET",
+      "type": "function",
+      "name": "GET",
+      "filePath": "src/app/api/review-feed/route.ts",
+      "lineRange": [
+        5,
+        17
+      ],
+      "summary": "Validates review-feed pagination parameters and returns either a paginated JSON feed or an appropriate error response.",
+      "tags": [
+        "api-handler",
+        "review-feed",
+        "pagination",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/RatingSpotlight/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/RatingSpotlight/Component.tsx",
+      "summary": "Server-side Payload block adapter that resolves live or manual review-rating data and delegates rendering to the spotlight presentation.",
+      "tags": [
+        "component",
+        "payload-block",
+        "server-component",
+        "ratings"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "function:src/blocks/RatingSpotlight/Component.tsx:LiveRatingSpotlight",
+      "type": "function",
+      "name": "LiveRatingSpotlight",
+      "filePath": "src/blocks/RatingSpotlight/Component.tsx",
+      "lineRange": [
+        13,
+        19
+      ],
+      "summary": "Fetches the cached published review summary and renders the rating spotlight presentation.",
+      "tags": [
+        "component",
+        "ratings",
+        "data-fetching"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/RatingSpotlight/Component.tsx:RatingSpotlightBlockComponent",
+      "type": "function",
+      "name": "RatingSpotlightBlockComponent",
+      "filePath": "src/blocks/RatingSpotlight/Component.tsx",
+      "lineRange": [
+        27,
+        37
+      ],
+      "summary": "Chooses manual or live rating data for a Payload block and forwards the resolved content to its presentation.",
+      "tags": [
+        "component",
+        "payload-block",
+        "ratings"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/RatingSpotlight/PreviewComponent.tsx",
+      "type": "file",
+      "name": "PreviewComponent.tsx",
+      "filePath": "src/blocks/RatingSpotlight/PreviewComponent.tsx",
+      "summary": "Live-preview adapter that supplies snapshot-backed rating data to the shared rating spotlight presentation.",
+      "tags": [
+        "component",
+        "live-preview",
+        "payload-block",
+        "ratings"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "function:src/blocks/RatingSpotlight/PreviewComponent.tsx:RatingSpotlightPreviewBlockComponent",
+      "type": "function",
+      "name": "RatingSpotlightPreviewBlockComponent",
+      "filePath": "src/blocks/RatingSpotlight/PreviewComponent.tsx",
+      "lineRange": [
+        11,
+        23
+      ],
+      "summary": "Renders a Rating Spotlight preview using the editor snapshot unless manual rating data is configured.",
+      "tags": [
+        "component",
+        "live-preview",
+        "ratings"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/ReviewFeed/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/ReviewFeed/Component.tsx",
+      "summary": "Server-side Review Feed block that normalizes editor settings and concurrently loads the first review page and rating distribution.",
+      "tags": [
+        "component",
+        "payload-block",
+        "server-component",
+        "review-feed"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "function:src/blocks/ReviewFeed/Component.tsx:ReviewFeedBlockComponent",
+      "type": "function",
+      "name": "ReviewFeedBlockComponent",
+      "filePath": "src/blocks/ReviewFeed/Component.tsx",
+      "lineRange": [
+        11,
+        48
+      ],
+      "summary": "Normalizes Review Feed settings, loads feed and rating data concurrently, and renders the presentation adapter.",
+      "tags": [
+        "component",
+        "review-feed",
+        "data-fetching"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/ReviewFeed/Presentation.tsx",
+      "type": "file",
+      "name": "Presentation.tsx",
+      "filePath": "src/blocks/ReviewFeed/Presentation.tsx",
+      "summary": "Presentation adapter that sanitizes Review Feed block copy and passes normalized data, appearance, and pagination settings to the UI.",
+      "tags": [
+        "component",
+        "presentation",
+        "payload-block",
+        "review-feed"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "function:src/blocks/ReviewFeed/Presentation.tsx:ReviewFeedBlockPresentation",
+      "type": "function",
+      "name": "ReviewFeedBlockPresentation",
+      "filePath": "src/blocks/ReviewFeed/Presentation.tsx",
+      "lineRange": [
+        22,
+        54
+      ],
+      "summary": "Trims editor-provided copy, normalizes page size, resolves appearance, and renders the Review Feed UI.",
+      "tags": [
+        "component",
+        "presentation",
+        "review-feed"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/ReviewFeed/PreviewComponent.tsx",
+      "type": "file",
+      "name": "PreviewComponent.tsx",
+      "filePath": "src/blocks/ReviewFeed/PreviewComponent.tsx",
+      "summary": "Live-preview adapter that selects a snapshot page by normalized size and falls back to an empty review page.",
+      "tags": [
+        "component",
+        "live-preview",
+        "payload-block",
+        "review-feed"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "function:src/blocks/ReviewFeed/PreviewComponent.tsx:ReviewFeedPreviewBlockComponent",
+      "type": "function",
+      "name": "ReviewFeedPreviewBlockComponent",
+      "filePath": "src/blocks/ReviewFeed/PreviewComponent.tsx",
+      "lineRange": [
+        12,
+        29
+      ],
+      "summary": "Selects preview feed data for the normalized page size and renders the Review Feed presentation.",
+      "tags": [
+        "component",
+        "live-preview",
+        "review-feed"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/live-preview/PageLivePreview.tsx",
+      "type": "file",
+      "name": "PageLivePreview.tsx",
+      "filePath": "src/components/live-preview/PageLivePreview.tsx",
+      "summary": "Client component that subscribes to Payload live-preview updates and rerenders page blocks with prefetched review and news/event snapshots.",
+      "tags": [
+        "component",
+        "live-preview",
+        "payload-cms",
+        "client-component"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "function:src/components/live-preview/PageLivePreview.tsx:PageLivePreview",
+      "type": "function",
+      "name": "PageLivePreview",
+      "filePath": "src/components/live-preview/PageLivePreview.tsx",
+      "lineRange": [
+        18,
+        32
+      ],
+      "summary": "Subscribes to Payload draft updates and renders live page blocks while preserving prefetched snapshot data.",
+      "tags": [
+        "component",
+        "live-preview",
+        "client-component"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/rating-spotlight.tsx",
+      "type": "file",
+      "name": "rating-spotlight.tsx",
+      "filePath": "src/components/rating-spotlight.tsx",
+      "summary": "Responsive rating spotlight UI with configurable alignment, size, appearance, calls to action, and an accessible aggregate star summary.",
+      "tags": [
+        "component",
+        "ratings",
+        "accessibility",
+        "presentation"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "function:src/components/rating-spotlight.tsx:RatingSummary",
+      "type": "function",
+      "name": "RatingSummary",
+      "filePath": "src/components/rating-spotlight.tsx",
+      "lineRange": [
+        38,
+        70
+      ],
+      "summary": "Clamps and formats aggregate ratings into an accessible five-star summary with localized review counts.",
+      "tags": [
+        "component",
+        "ratings",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/rating-spotlight.tsx:RatingSpotlight",
+      "type": "function",
+      "name": "RatingSpotlight",
+      "filePath": "src/components/rating-spotlight.tsx",
+      "lineRange": [
+        72,
+        119
+      ],
+      "summary": "Renders the responsive spotlight section with themed appearance, editorial copy, optional rating summary, and actions.",
+      "tags": [
+        "component",
+        "ratings",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/review-feed-list.tsx",
+      "type": "file",
+      "name": "review-feed-list.tsx",
+      "filePath": "src/components/review-feed-list.tsx",
+      "summary": "Interactive client-side review list that renders reviewer details and incrementally fetches deduplicated pages with retry feedback.",
+      "tags": [
+        "component",
+        "review-feed",
+        "pagination",
+        "client-component"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "function:src/components/review-feed-list.tsx:ReviewFeedItem",
+      "type": "function",
+      "name": "ReviewFeedItem",
+      "filePath": "src/components/review-feed-list.tsx",
+      "lineRange": [
+        20,
+        44
+      ],
+      "summary": "Renders one review with initials, verification status, date, star rating, title, and body copy.",
+      "tags": [
+        "component",
+        "review-feed",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/review-feed-list.tsx:ReviewFeedList",
+      "type": "function",
+      "name": "ReviewFeedList",
+      "filePath": "src/components/review-feed-list.tsx",
+      "lineRange": [
+        46,
+        115
+      ],
+      "summary": "Maintains paginated review state and loads, deduplicates, retries, and renders additional review pages.",
+      "tags": [
+        "component",
+        "review-feed",
+        "pagination",
+        "client-component"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/review-feed.tsx",
+      "type": "file",
+      "name": "review-feed.tsx",
+      "filePath": "src/components/review-feed.tsx",
+      "summary": "Review Feed section UI that combines editorial copy, aggregate score and distribution visuals, and the paginated review list.",
+      "tags": [
+        "component",
+        "review-feed",
+        "ratings",
+        "presentation"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "function:src/components/review-feed.tsx:ReviewFeedSummary",
+      "type": "function",
+      "name": "ReviewFeedSummary",
+      "filePath": "src/components/review-feed.tsx",
+      "lineRange": [
+        32,
+        67
+      ],
+      "summary": "Visualizes an aggregate review score with stars and per-rating percentage bars.",
+      "tags": [
+        "component",
+        "ratings",
+        "visualization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/review-feed.tsx:ReviewFeed",
+      "type": "function",
+      "name": "ReviewFeed",
+      "filePath": "src/components/review-feed.tsx",
+      "lineRange": [
+        69,
+        116
+      ],
+      "summary": "Composes Review Feed copy, rating analytics, separators, and the interactive paginated list.",
+      "tags": [
+        "component",
+        "review-feed",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/shadcnblocks/rating.tsx",
+      "type": "file",
+      "name": "rating.tsx",
+      "filePath": "src/components/shadcnblocks/rating.tsx",
+      "summary": "Reusable accessible star-rating renderer supporting full and half stars, optional numeric scores, descriptions, and custom styling.",
+      "tags": [
+        "component",
+        "ratings",
+        "accessibility",
+        "shadcn"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "function:src/components/shadcnblocks/rating.tsx:Rating",
+      "type": "function",
+      "name": "Rating",
+      "filePath": "src/components/shadcnblocks/rating.tsx",
+      "lineRange": [
+        14,
+        103
+      ],
+      "summary": "Normalizes a numeric score and renders accessible full, half, and empty stars in several display modes.",
+      "tags": [
+        "component",
+        "ratings",
+        "accessibility",
+        "shadcn"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/ui/avatar.tsx",
+      "type": "file",
+      "name": "avatar.tsx",
+      "filePath": "src/components/ui/avatar.tsx",
+      "summary": "Radix-based avatar primitives for images, fallbacks, badges, grouped avatars, counts, and responsive size variants.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "radix-ui",
+        "avatar"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "function:src/components/ui/avatar.tsx:Avatar",
+      "type": "function",
+      "name": "Avatar",
+      "filePath": "src/components/ui/avatar.tsx",
+      "lineRange": [
+        8,
+        26
+      ],
+      "summary": "Wraps the Radix avatar root with size variants, clipping, border treatment, and slot metadata.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "avatar"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/avatar.tsx:AvatarImage",
+      "type": "function",
+      "name": "AvatarImage",
+      "filePath": "src/components/ui/avatar.tsx",
+      "lineRange": [
+        28,
+        36
+      ],
+      "summary": "Styles the Radix avatar image to fill and crop within its avatar container.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "avatar"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/avatar.tsx:AvatarFallback",
+      "type": "function",
+      "name": "AvatarFallback",
+      "filePath": "src/components/ui/avatar.tsx",
+      "lineRange": [
+        38,
+        52
+      ],
+      "summary": "Provides a centered muted fallback when an avatar image is unavailable.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "avatar"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/avatar.tsx:AvatarBadge",
+      "type": "function",
+      "name": "AvatarBadge",
+      "filePath": "src/components/ui/avatar.tsx",
+      "lineRange": [
+        54,
+        68
+      ],
+      "summary": "Positions a themed status badge over the avatar with size-aware icon styling.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "avatar"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/avatar.tsx:AvatarGroup",
+      "type": "function",
+      "name": "AvatarGroup",
+      "filePath": "src/components/ui/avatar.tsx",
+      "lineRange": [
+        70,
+        81
+      ],
+      "summary": "Arranges multiple avatars as an overlapping, ring-separated group.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "avatar"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/avatar.tsx:AvatarGroupCount",
+      "type": "function",
+      "name": "AvatarGroupCount",
+      "filePath": "src/components/ui/avatar.tsx",
+      "lineRange": [
+        83,
+        94
+      ],
+      "summary": "Displays an additional-avatar count that follows the active avatar group size.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "avatar"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/progress.tsx",
+      "type": "file",
+      "name": "progress.tsx",
+      "filePath": "src/components/ui/progress.tsx",
+      "summary": "Styled Radix progress primitive that exposes a percentage-driven indicator for reusable progress visualizations.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "radix-ui",
+        "progress"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "function:src/components/ui/progress.tsx:Progress",
+      "type": "function",
+      "name": "Progress",
+      "filePath": "src/components/ui/progress.tsx",
+      "lineRange": [
+        8,
+        29
+      ],
+      "summary": "Renders a styled progress track and translates the numeric value into the indicator position.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "progress"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/separator.tsx",
+      "type": "file",
+      "name": "separator.tsx",
+      "filePath": "src/components/ui/separator.tsx",
+      "summary": "Styled Radix separator primitive with horizontal and vertical orientations and accessible decorative defaults.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "radix-ui",
+        "separator"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "function:src/components/ui/separator.tsx:Separator",
+      "type": "function",
+      "name": "Separator",
+      "filePath": "src/components/ui/separator.tsx",
+      "lineRange": [
+        8,
+        26
+      ],
+      "summary": "Renders a styled Radix separator with orientation-aware dimensions and decorative semantics.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "separator"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/newsEventsPreviewShared.ts",
+      "type": "file",
+      "name": "newsEventsPreviewShared.ts",
+      "filePath": "src/lib/newsEventsPreviewShared.ts",
+      "summary": "Shared preview contracts and layout analysis that derive the distinct news/event highlight counts needed for a page snapshot.",
+      "tags": [
+        "utility",
+        "live-preview",
+        "news-events",
+        "type-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEventsPreviewShared.ts:getNewsEventsPreviewItemCounts",
+      "type": "function",
+      "name": "getNewsEventsPreviewItemCounts",
+      "filePath": "src/lib/newsEventsPreviewShared.ts",
+      "lineRange": [
+        12,
+        22
+      ],
+      "summary": "Scans page layout blocks and returns sorted unique highlight counts required by news/event previews.",
+      "tags": [
+        "utility",
+        "live-preview",
+        "news-events"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/app/(frontend)/preview/page/[id]/page.tsx",
+      "target": "function:src/app/(frontend)/preview/page/[id]/page.tsx:AdminPreviewPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(frontend)/preview/page/[id]/page.tsx",
+      "target": "function:src/app/(frontend)/preview/page/[id]/page.tsx:AdminPreviewPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/api/review-feed/route.ts",
+      "target": "function:src/app/api/review-feed/route.ts:GET",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/api/review-feed/route.ts",
+      "target": "function:src/app/api/review-feed/route.ts:GET",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/Component.tsx",
+      "target": "function:src/blocks/RatingSpotlight/Component.tsx:LiveRatingSpotlight",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/Component.tsx",
+      "target": "function:src/blocks/RatingSpotlight/Component.tsx:LiveRatingSpotlight",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/Component.tsx",
+      "target": "function:src/blocks/RatingSpotlight/Component.tsx:RatingSpotlightBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/Component.tsx",
+      "target": "function:src/blocks/RatingSpotlight/Component.tsx:RatingSpotlightBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/PreviewComponent.tsx",
+      "target": "function:src/blocks/RatingSpotlight/PreviewComponent.tsx:RatingSpotlightPreviewBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/PreviewComponent.tsx",
+      "target": "function:src/blocks/RatingSpotlight/PreviewComponent.tsx:RatingSpotlightPreviewBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/Component.tsx",
+      "target": "function:src/blocks/ReviewFeed/Component.tsx:ReviewFeedBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/Component.tsx",
+      "target": "function:src/blocks/ReviewFeed/Component.tsx:ReviewFeedBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/Presentation.tsx",
+      "target": "function:src/blocks/ReviewFeed/Presentation.tsx:ReviewFeedBlockPresentation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/Presentation.tsx",
+      "target": "function:src/blocks/ReviewFeed/Presentation.tsx:ReviewFeedBlockPresentation",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/PreviewComponent.tsx",
+      "target": "function:src/blocks/ReviewFeed/PreviewComponent.tsx:ReviewFeedPreviewBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/PreviewComponent.tsx",
+      "target": "function:src/blocks/ReviewFeed/PreviewComponent.tsx:ReviewFeedPreviewBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/live-preview/PageLivePreview.tsx",
+      "target": "function:src/components/live-preview/PageLivePreview.tsx:PageLivePreview",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/live-preview/PageLivePreview.tsx",
+      "target": "function:src/components/live-preview/PageLivePreview.tsx:PageLivePreview",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/rating-spotlight.tsx",
+      "target": "function:src/components/rating-spotlight.tsx:RatingSummary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/rating-spotlight.tsx",
+      "target": "function:src/components/rating-spotlight.tsx:RatingSpotlight",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/rating-spotlight.tsx",
+      "target": "function:src/components/rating-spotlight.tsx:RatingSpotlight",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/review-feed-list.tsx",
+      "target": "function:src/components/review-feed-list.tsx:ReviewFeedItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/review-feed-list.tsx",
+      "target": "function:src/components/review-feed-list.tsx:ReviewFeedList",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/review-feed-list.tsx",
+      "target": "function:src/components/review-feed-list.tsx:ReviewFeedList",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/review-feed.tsx",
+      "target": "function:src/components/review-feed.tsx:ReviewFeedSummary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/review-feed.tsx",
+      "target": "function:src/components/review-feed.tsx:ReviewFeed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/review-feed.tsx",
+      "target": "function:src/components/review-feed.tsx:ReviewFeed",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/shadcnblocks/rating.tsx",
+      "target": "function:src/components/shadcnblocks/rating.tsx:Rating",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/shadcnblocks/rating.tsx",
+      "target": "function:src/components/shadcnblocks/rating.tsx:Rating",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/avatar.tsx",
+      "target": "function:src/components/ui/avatar.tsx:Avatar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/avatar.tsx",
+      "target": "function:src/components/ui/avatar.tsx:Avatar",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/avatar.tsx",
+      "target": "function:src/components/ui/avatar.tsx:AvatarImage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/avatar.tsx",
+      "target": "function:src/components/ui/avatar.tsx:AvatarImage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/avatar.tsx",
+      "target": "function:src/components/ui/avatar.tsx:AvatarFallback",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/avatar.tsx",
+      "target": "function:src/components/ui/avatar.tsx:AvatarFallback",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/avatar.tsx",
+      "target": "function:src/components/ui/avatar.tsx:AvatarBadge",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/avatar.tsx",
+      "target": "function:src/components/ui/avatar.tsx:AvatarBadge",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/avatar.tsx",
+      "target": "function:src/components/ui/avatar.tsx:AvatarGroup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/avatar.tsx",
+      "target": "function:src/components/ui/avatar.tsx:AvatarGroup",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/avatar.tsx",
+      "target": "function:src/components/ui/avatar.tsx:AvatarGroupCount",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/avatar.tsx",
+      "target": "function:src/components/ui/avatar.tsx:AvatarGroupCount",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/progress.tsx",
+      "target": "function:src/components/ui/progress.tsx:Progress",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/progress.tsx",
+      "target": "function:src/components/ui/progress.tsx:Progress",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/separator.tsx",
+      "target": "function:src/components/ui/separator.tsx:Separator",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/separator.tsx",
+      "target": "function:src/components/ui/separator.tsx:Separator",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEventsPreviewShared.ts",
+      "target": "function:src/lib/newsEventsPreviewShared.ts:getNewsEventsPreviewItemCounts",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEventsPreviewShared.ts",
+      "target": "function:src/lib/newsEventsPreviewShared.ts:getNewsEventsPreviewItemCounts",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/app/(frontend)/preview/page/[id]/page.tsx",
+      "target": "file:src/components/live-preview/PageLivePreview.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/preview/page/[id]/page.tsx",
+      "target": "file:src/lib/newsEventsPreviewSnapshot.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/preview/page/[id]/page.tsx",
+      "target": "file:src/lib/reviewPreviewSnapshot.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(frontend)/preview/page/[id]/page.tsx",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/api/review-feed/route.ts",
+      "target": "file:src/lib/reviewFeed.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/Component.tsx",
+      "target": "file:src/blocks/RatingSpotlight/Presentation.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/Component.tsx",
+      "target": "file:src/components/rating-spotlight.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/Component.tsx",
+      "target": "file:src/lib/reviewRatingSummary.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/PreviewComponent.tsx",
+      "target": "file:src/blocks/RatingSpotlight/Presentation.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/PreviewComponent.tsx",
+      "target": "file:src/lib/reviewPreviewShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/Component.tsx",
+      "target": "file:src/blocks/ReviewFeed/Presentation.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/Component.tsx",
+      "target": "file:src/lib/reviewFeed.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/Component.tsx",
+      "target": "file:src/lib/reviewFeedShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/Component.tsx",
+      "target": "file:src/lib/reviewRatingSummary.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/Presentation.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/Presentation.tsx",
+      "target": "file:src/components/review-feed.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/Presentation.tsx",
+      "target": "file:src/lib/reviewFeedShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/Presentation.tsx",
+      "target": "file:src/lib/reviewRatingShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/PreviewComponent.tsx",
+      "target": "file:src/blocks/ReviewFeed/Presentation.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/PreviewComponent.tsx",
+      "target": "file:src/lib/reviewFeedShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/PreviewComponent.tsx",
+      "target": "file:src/lib/reviewPreviewShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/live-preview/PageLivePreview.tsx",
+      "target": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/live-preview/PageLivePreview.tsx",
+      "target": "file:src/lib/newsEventsPreviewShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/live-preview/PageLivePreview.tsx",
+      "target": "file:src/lib/reviewPreviewShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/rating-spotlight.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/rating-spotlight.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/rating-spotlight.tsx",
+      "target": "file:src/lib/reviewRatingSummary.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/rating-spotlight.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/review-feed-list.tsx",
+      "target": "file:src/components/shadcnblocks/rating.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/review-feed-list.tsx",
+      "target": "file:src/components/ui/avatar.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/review-feed-list.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/review-feed-list.tsx",
+      "target": "file:src/components/ui/separator.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/review-feed-list.tsx",
+      "target": "file:src/lib/reviewFeedShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/review-feed.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/review-feed.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/review-feed.tsx",
+      "target": "file:src/components/review-feed-list.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/review-feed.tsx",
+      "target": "file:src/components/shadcnblocks/rating.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/review-feed.tsx",
+      "target": "file:src/components/ui/progress.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/review-feed.tsx",
+      "target": "file:src/components/ui/separator.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/review-feed.tsx",
+      "target": "file:src/lib/reviewFeedShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/review-feed.tsx",
+      "target": "file:src/lib/reviewRatingShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/review-feed.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/shadcnblocks/rating.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/avatar.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/progress.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/separator.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/newsEventsPreviewShared.ts",
+      "target": "file:src/lib/newsEventsShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:src/components/live-preview/PageLivePreview.tsx:PageLivePreview",
+      "target": "function:src/blocks/renderLivePreviewPageBlocks.tsx:renderLivePreviewPageBlocks",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/components/rating-spotlight.tsx:RatingSummary",
+      "target": "function:src/lib/utils.ts:cn",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/components/rating-spotlight.tsx:RatingSpotlight",
+      "target": "function:src/blocks/shared/blockAppearance.ts:resolveBlockAppearanceClasses",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/components/rating-spotlight.tsx:RatingSpotlight",
+      "target": "function:src/lib/utils.ts:cn",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/components/shadcnblocks/rating.tsx:Rating",
+      "target": "function:src/lib/utils.ts:cn",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/newsEventsPreviewShared.ts",
+      "target": "file:tests/int/live-preview-renderer.int.spec.tsx",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/Component.tsx",
+      "target": "file:tests/int/rating-spotlight.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/components/rating-spotlight.tsx",
+      "target": "file:tests/int/rating-spotlight.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/app/api/review-feed/route.ts",
+      "target": "file:tests/int/review-feed-route.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/Component.tsx",
+      "target": "file:tests/int/review-feed.int.spec.tsx",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/components/review-feed-list.tsx",
+      "target": "file:tests/int/review-feed.int.spec.tsx",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/components/review-feed.tsx",
+      "target": "file:tests/int/review-feed.int.spec.tsx",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/PreviewComponent.tsx",
+      "target": "file:tests/int/review-preview-blocks.int.spec.tsx",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/PreviewComponent.tsx",
+      "target": "file:tests/int/review-preview-blocks.int.spec.tsx",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

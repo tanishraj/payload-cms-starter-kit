@@ -1,0 +1,512 @@
+{
+  "nodes": [
+    {
+      "id": "file:tests/int/forms-submission.int.spec.ts",
+      "type": "file",
+      "name": "forms-submission.int.spec.ts",
+      "filePath": "tests/int/forms-submission.int.spec.ts",
+      "summary": "Validates the form-submission operator model, persisted enrichment, event dispatch, and activity timestamp updates.",
+      "tags": [
+        "test",
+        "integration-test",
+        "forms",
+        "submissions"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:tests/int/forms-submission.int.spec.ts:getField",
+      "type": "function",
+      "name": "getField",
+      "filePath": "tests/int/forms-submission.int.spec.ts",
+      "lineRange": [
+        69,
+        83
+      ],
+      "summary": "Locates a named form-submission field for integration assertions.",
+      "tags": [
+        "test",
+        "test-helper",
+        "forms"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/media-governance.int.spec.ts",
+      "type": "file",
+      "name": "media-governance.int.spec.ts",
+      "filePath": "tests/int/media-governance.int.spec.ts",
+      "summary": "Tests media usage discovery, governance fields, conditional alt-text validation, and deletion protection for referenced assets.",
+      "tags": [
+        "test",
+        "integration-test",
+        "media",
+        "governance"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tests/int/media-storage.int.spec.ts",
+      "type": "file",
+      "name": "media-storage.int.spec.ts",
+      "filePath": "tests/int/media-storage.int.spec.ts",
+      "summary": "Tests media object-key derivation and S3 reconciliation behavior for missing and restored objects with audit recording.",
+      "tags": [
+        "test",
+        "integration-test",
+        "media",
+        "object-storage"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/news-events-collection.int.spec.ts",
+      "type": "file",
+      "name": "news-events-collection.int.spec.ts",
+      "filePath": "tests/int/news-events-collection.int.spec.ts",
+      "summary": "Verifies News & Events collection registration, editorial tab organization, and normalization when entries change content type.",
+      "tags": [
+        "test",
+        "integration-test",
+        "news-events",
+        "content-model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/operational-audit.int.spec.ts",
+      "type": "file",
+      "name": "operational-audit.int.spec.ts",
+      "filePath": "tests/int/operational-audit.int.spec.ts",
+      "summary": "Tests read-only operational audit configuration and human-readable collection, global, and work-queue audit entries.",
+      "tags": [
+        "test",
+        "integration-test",
+        "audit",
+        "operations"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/page-settings-system-mode.int.spec.ts",
+      "type": "file",
+      "name": "page-settings-system-mode.int.spec.ts",
+      "filePath": "tests/int/page-settings-system-mode.int.spec.ts",
+      "summary": "Verifies system-mode controls live in their dedicated global and that maintenance mode applies correctly to authenticated non-admin users.",
+      "tags": [
+        "test",
+        "integration-test",
+        "system-mode",
+        "settings"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/int/page-settings-system-mode.int.spec.ts:getNamedField",
+      "type": "function",
+      "name": "getNamedField",
+      "filePath": "tests/int/page-settings-system-mode.int.spec.ts",
+      "lineRange": [
+        39,
+        53
+      ],
+      "summary": "Recursively locates a named field within nested Payload field definitions.",
+      "tags": [
+        "test",
+        "test-helper",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/reviews.int.spec.ts",
+      "type": "file",
+      "name": "reviews.int.spec.ts",
+      "filePath": "tests/int/reviews.int.spec.ts",
+      "summary": "Checks the structured review rating model and ensures public slug queries return published reviews only.",
+      "tags": [
+        "test",
+        "integration-test",
+        "reviews",
+        "publishing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/runtime-config.int.spec.ts",
+      "type": "file",
+      "name": "runtime-config.int.spec.ts",
+      "filePath": "tests/int/runtime-config.int.spec.ts",
+      "summary": "Tests local and hosted runtime configuration parsing, including MongoDB URLs and required S3-compatible media settings.",
+      "tags": [
+        "test",
+        "integration-test",
+        "runtime-config",
+        "validation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/seo-contract.int.spec.ts",
+      "type": "file",
+      "name": "seo-contract.int.spec.ts",
+      "filePath": "tests/int/seo-contract.int.spec.ts",
+      "summary": "Validates reusable SEO fields, robots and sitemap consistency, canonical URL rules, and collection-wide SEO contract adoption.",
+      "tags": [
+        "test",
+        "integration-test",
+        "seo",
+        "validation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/starter-contract.int.spec.ts",
+      "type": "file",
+      "name": "starter-contract.int.spec.ts",
+      "filePath": "tests/int/starter-contract.int.spec.ts",
+      "summary": "Tests supported deployment profiles and rejects production environments whose media persistence configuration is unsafe.",
+      "tags": [
+        "test",
+        "integration-test",
+        "deployment",
+        "configuration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/taxonomy.int.spec.ts",
+      "type": "file",
+      "name": "taxonomy.int.spec.ts",
+      "filePath": "tests/int/taxonomy.int.spec.ts",
+      "summary": "Tests taxonomy access, content collection field registration, and primary-category membership synchronization.",
+      "tags": [
+        "test",
+        "integration-test",
+        "taxonomy",
+        "relationships"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/work-queue.int.spec.ts",
+      "type": "file",
+      "name": "work-queue.int.spec.ts",
+      "filePath": "tests/int/work-queue.int.spec.ts",
+      "summary": "Exercises work-queue configuration, stable deduplication, blocking queries, lifecycle updates, and hooks for editorial and operational conditions.",
+      "tags": [
+        "test",
+        "integration-test",
+        "work-queue",
+        "workflow"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:tests/int/work-queue.int.spec.ts:createReq",
+      "type": "function",
+      "name": "createReq",
+      "filePath": "tests/int/work-queue.int.spec.ts",
+      "lineRange": [
+        29,
+        53
+      ],
+      "summary": "Creates a typed request stub for exercising access or workflow behavior in integration tests.",
+      "tags": [
+        "test",
+        "test-helper",
+        "request-context"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:tests/int/forms-submission.int.spec.ts",
+      "target": "function:tests/int/forms-submission.int.spec.ts:getField",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/int/page-settings-system-mode.int.spec.ts",
+      "target": "function:tests/int/page-settings-system-mode.int.spec.ts:getNamedField",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/int/work-queue.int.spec.ts",
+      "target": "function:tests/int/work-queue.int.spec.ts:createReq",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/int/forms-submission.int.spec.ts",
+      "target": "file:src/collections/FormSubmissions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/forms-submission.int.spec.ts",
+      "target": "file:src/hooks/updateFormSubmissionActivity.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/media-governance.int.spec.ts",
+      "target": "file:src/collections/Media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/media-governance.int.spec.ts",
+      "target": "file:src/hooks/preventMediaDeletionWhileInUse.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/media-governance.int.spec.ts",
+      "target": "file:src/lib/mediaUsage.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/media-storage.int.spec.ts",
+      "target": "file:src/lib/mediaStorage.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/news-events-collection.int.spec.ts",
+      "target": "file:src/collections/NewsEvents.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/news-events-collection.int.spec.ts",
+      "target": "file:src/globals/NewsEventsSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/news-events-collection.int.spec.ts",
+      "target": "file:src/hooks/normalizeNewsEventFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/news-events-collection.int.spec.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/operational-audit.int.spec.ts",
+      "target": "file:src/collections/OperationalAuditEvents.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/operational-audit.int.spec.ts",
+      "target": "file:src/collections/WorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/operational-audit.int.spec.ts",
+      "target": "file:src/hooks/logOperationalAuditEvent.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/page-settings-system-mode.int.spec.ts",
+      "target": "file:src/globals/PageSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/page-settings-system-mode.int.spec.ts",
+      "target": "file:src/globals/SystemModeSettings.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/reviews.int.spec.ts",
+      "target": "file:src/collections/Reviews.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/runtime-config.int.spec.ts",
+      "target": "file:src/config/runtime.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/seo-contract.int.spec.ts",
+      "target": "file:src/collections/Articles.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/seo-contract.int.spec.ts",
+      "target": "file:src/collections/Categories.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/seo-contract.int.spec.ts",
+      "target": "file:src/collections/Pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/seo-contract.int.spec.ts",
+      "target": "file:src/collections/Reviews.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/seo-contract.int.spec.ts",
+      "target": "file:src/collections/SystemPages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/seo-contract.int.spec.ts",
+      "target": "file:src/collections/Tags.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/seo-contract.int.spec.ts",
+      "target": "file:src/fields/buildSEOFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/seo-contract.int.spec.ts",
+      "target": "file:src/hooks/validateSEOContract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/seo-contract.int.spec.ts",
+      "target": "file:src/lib/seo.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/starter-contract.int.spec.ts",
+      "target": "file:src/config/starterContract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/taxonomy.int.spec.ts",
+      "target": "file:src/collections/Articles.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/taxonomy.int.spec.ts",
+      "target": "file:src/collections/Categories.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/taxonomy.int.spec.ts",
+      "target": "file:src/collections/Reviews.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/taxonomy.int.spec.ts",
+      "target": "file:src/collections/Tags.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/taxonomy.int.spec.ts",
+      "target": "file:src/hooks/syncPrimaryCategoryMembership.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/work-queue.int.spec.ts",
+      "target": "file:src/collections/WorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/work-queue.int.spec.ts",
+      "target": "file:src/hooks/syncFormSubmissionToWorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/work-queue.int.spec.ts",
+      "target": "file:src/hooks/syncMediaToWorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/work-queue.int.spec.ts",
+      "target": "file:src/hooks/syncReviewToWorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/work-queue.int.spec.ts",
+      "target": "file:src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/work-queue.int.spec.ts",
+      "target": "file:src/lib/workQueue.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

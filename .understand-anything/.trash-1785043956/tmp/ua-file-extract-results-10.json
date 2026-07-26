@@ -1,0 +1,1286 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 20,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 20,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 20,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "scripts/generate-block-thumbnails.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 264,
+      "nonEmptyLines": 219,
+      "functions": [
+        {
+          "name": "delay",
+          "startLine": 28,
+          "endLine": 29,
+          "params": [
+            "durationMs"
+          ]
+        },
+        {
+          "name": "startServer",
+          "startLine": 31,
+          "endLine": 61,
+          "params": []
+        },
+        {
+          "name": "getPreviewUrl",
+          "startLine": 63,
+          "endLine": 64,
+          "params": [
+            "baseUrl",
+            "slug"
+          ]
+        },
+        {
+          "name": "hasReadyPreviewServer",
+          "startLine": 66,
+          "endLine": 73,
+          "params": [
+            "baseUrl",
+            "slug"
+          ]
+        },
+        {
+          "name": "waitForServer",
+          "startLine": 75,
+          "endLine": 108,
+          "params": [
+            "child",
+            "logs",
+            "baseUrl",
+            "slug"
+          ]
+        },
+        {
+          "name": "stopServer",
+          "startLine": 110,
+          "endLine": 142,
+          "params": [
+            "child"
+          ]
+        },
+        {
+          "name": "launchBrowser",
+          "startLine": 144,
+          "endLine": 159,
+          "params": []
+        },
+        {
+          "name": "generateThumbnails",
+          "startLine": 161,
+          "endLine": 258,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "delay",
+          "callee": "setTimeout",
+          "lineNumber": 29
+        },
+        {
+          "caller": "startServer",
+          "callee": "spawn",
+          "lineNumber": 33
+        },
+        {
+          "caller": "startServer",
+          "callee": "String",
+          "lineNumber": 35
+        },
+        {
+          "caller": "startServer",
+          "callee": "process.cwd",
+          "lineNumber": 37
+        },
+        {
+          "caller": "collectLog",
+          "callee": "logs.push",
+          "lineNumber": 50
+        },
+        {
+          "caller": "collectLog",
+          "callee": "chunk.toString",
+          "lineNumber": 50
+        },
+        {
+          "caller": "collectLog",
+          "callee": "logs.shift",
+          "lineNumber": 53
+        },
+        {
+          "caller": "startServer",
+          "callee": "child.stdout?.on",
+          "lineNumber": 57
+        },
+        {
+          "caller": "startServer",
+          "callee": "child.stderr?.on",
+          "lineNumber": 58
+        },
+        {
+          "caller": "hasReadyPreviewServer",
+          "callee": "fetch",
+          "lineNumber": 68
+        },
+        {
+          "caller": "hasReadyPreviewServer",
+          "callee": "getPreviewUrl",
+          "lineNumber": 68
+        },
+        {
+          "caller": "waitForServer",
+          "callee": "Date.now",
+          "lineNumber": 81
+        },
+        {
+          "caller": "waitForServer",
+          "callee": "Date.now",
+          "lineNumber": 84
+        },
+        {
+          "caller": "waitForServer",
+          "callee": "logs.join('').trim",
+          "lineNumber": 87
+        },
+        {
+          "caller": "waitForServer",
+          "callee": "logs.join",
+          "lineNumber": 87
+        },
+        {
+          "caller": "waitForServer",
+          "callee": "fetch",
+          "lineNumber": 92
+        },
+        {
+          "caller": "waitForServer",
+          "callee": "getPreviewUrl",
+          "lineNumber": 92
+        },
+        {
+          "caller": "waitForServer",
+          "callee": "delay",
+          "lineNumber": 103
+        },
+        {
+          "caller": "waitForServer",
+          "callee": "String",
+          "lineNumber": 106
+        },
+        {
+          "caller": "stopServer",
+          "callee": "spawn",
+          "lineNumber": 116
+        },
+        {
+          "caller": "stopServer",
+          "callee": "String",
+          "lineNumber": 116
+        },
+        {
+          "caller": "stopServer",
+          "callee": "terminator.once",
+          "lineNumber": 120
+        },
+        {
+          "caller": "stopServer",
+          "callee": "resolve",
+          "lineNumber": 120
+        },
+        {
+          "caller": "stopServer",
+          "callee": "process.kill",
+          "lineNumber": 125
+        },
+        {
+          "caller": "stopServer",
+          "callee": "child.kill",
+          "lineNumber": 127
+        },
+        {
+          "caller": "stopServer",
+          "callee": "Promise.race",
+          "lineNumber": 130
+        },
+        {
+          "caller": "stopServer",
+          "callee": "child.once",
+          "lineNumber": 131
+        },
+        {
+          "caller": "stopServer",
+          "callee": "resolve",
+          "lineNumber": 131
+        },
+        {
+          "caller": "stopServer",
+          "callee": "delay",
+          "lineNumber": 132
+        },
+        {
+          "caller": "stopServer",
+          "callee": "process.kill",
+          "lineNumber": 137
+        },
+        {
+          "caller": "stopServer",
+          "callee": "child.kill",
+          "lineNumber": 139
+        },
+        {
+          "caller": "launchBrowser",
+          "callee": "chromium.launch",
+          "lineNumber": 146
+        },
+        {
+          "caller": "launchBrowser",
+          "callee": "console.log",
+          "lineNumber": 150
+        },
+        {
+          "caller": "launchBrowser",
+          "callee": "chromium.launch",
+          "lineNumber": 151
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "Number.isInteger",
+          "lineNumber": 162
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "mkdir",
+          "lineNumber": 166
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "hasReadyPreviewServer",
+          "lineNumber": 174
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "console.log",
+          "lineNumber": 175
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "startServer",
+          "lineNumber": 177
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "waitForServer",
+          "lineNumber": 179
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "launchBrowser",
+          "lineNumber": 182
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "browser.newContext",
+          "lineNumber": 183
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "context.newPage",
+          "lineNumber": 191
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "page.on",
+          "lineNumber": 194
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "browserErrors.push",
+          "lineNumber": 194
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "page.on",
+          "lineNumber": 195
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "message.type",
+          "lineNumber": 196
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "browserErrors.push",
+          "lineNumber": 197
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "message.text",
+          "lineNumber": 197
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "page.goto",
+          "lineNumber": 202
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "getPreviewUrl",
+          "lineNumber": 202
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "response?.ok",
+          "lineNumber": 207
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "response?.status",
+          "lineNumber": 208
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "page\n          .locator('[data-block-thumbnail-ready=\"true\"]')\n          .waitFor",
+          "lineNumber": 211
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "page\n          .locator",
+          "lineNumber": 211
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "browserErrors.join",
+          "lineNumber": 216
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "path.join",
+          "lineNumber": 219
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "page.screenshot",
+          "lineNumber": 220
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "sharp(outputPath).metadata",
+          "lineNumber": 228
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "sharp",
+          "lineNumber": 228
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "console.log",
+          "lineNumber": 236
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "failures.push",
+          "lineNumber": 238
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "String",
+          "lineNumber": 239
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "console.error",
+          "lineNumber": 240
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "page.close",
+          "lineNumber": 242
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "context.close",
+          "lineNumber": 246
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "browser?.close",
+          "lineNumber": 248
+        },
+        {
+          "caller": "generateThumbnails",
+          "callee": "stopServer",
+          "lineNumber": 251
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 8,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 33,
+      "nonEmptyLines": 26,
+      "functions": [
+        {
+          "name": "BlockThumbnailPage",
+          "startLine": 15,
+          "endLine": 33,
+          "params": [
+            "{ params }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "BlockThumbnailPage",
+          "line": 15,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "BlockThumbnailPage",
+          "callee": "isBlockThumbnailPreviewEnabled",
+          "lineNumber": 16
+        },
+        {
+          "caller": "BlockThumbnailPage",
+          "callee": "notFound",
+          "lineNumber": 17
+        },
+        {
+          "caller": "BlockThumbnailPage",
+          "callee": "isBlockThumbnailSlug",
+          "lineNumber": 22
+        },
+        {
+          "caller": "BlockThumbnailPage",
+          "callee": "notFound",
+          "lineNumber": 23
+        },
+        {
+          "caller": "BlockThumbnailPage",
+          "callee": "getBlockThumbnailDefinition",
+          "lineNumber": 26
+        },
+        {
+          "caller": "BlockThumbnailPage",
+          "callee": "getBlockThumbnailFixture",
+          "lineNumber": 30
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/block-thumbnails/BlockThumbnailPreviewStage.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 126,
+      "nonEmptyLines": 106,
+      "functions": [
+        {
+          "name": "waitForImage",
+          "startLine": 11,
+          "endLine": 28,
+          "params": [
+            "image"
+          ]
+        },
+        {
+          "name": "afterAnimationFrame",
+          "startLine": 30,
+          "endLine": 31,
+          "params": []
+        },
+        {
+          "name": "BlockThumbnailPreviewStage",
+          "startLine": 39,
+          "endLine": 126,
+          "params": [
+            "{\n  alignment,\n  children,\n  label,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "BlockThumbnailPreviewStage",
+          "line": 39,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "waitForImage",
+          "callee": "Promise.resolve",
+          "lineNumber": 14
+        },
+        {
+          "caller": "waitForImage",
+          "callee": "Promise.reject",
+          "lineNumber": 15
+        },
+        {
+          "caller": "waitForImage",
+          "callee": "image.addEventListener",
+          "lineNumber": 21
+        },
+        {
+          "caller": "waitForImage",
+          "callee": "resolve",
+          "lineNumber": 21
+        },
+        {
+          "caller": "waitForImage",
+          "callee": "image.addEventListener",
+          "lineNumber": 22
+        },
+        {
+          "caller": "waitForImage",
+          "callee": "reject",
+          "lineNumber": 24
+        },
+        {
+          "caller": "afterAnimationFrame",
+          "callee": "requestAnimationFrame",
+          "lineNumber": 31
+        },
+        {
+          "caller": "afterAnimationFrame",
+          "callee": "resolve",
+          "lineNumber": 31
+        },
+        {
+          "caller": "BlockThumbnailPreviewStage",
+          "callee": "useRef",
+          "lineNumber": 44
+        },
+        {
+          "caller": "BlockThumbnailPreviewStage",
+          "callee": "useState",
+          "lineNumber": 45
+        },
+        {
+          "caller": "BlockThumbnailPreviewStage",
+          "callee": "useState",
+          "lineNumber": 46
+        },
+        {
+          "caller": "BlockThumbnailPreviewStage",
+          "callee": "useState",
+          "lineNumber": 47
+        },
+        {
+          "caller": "BlockThumbnailPreviewStage",
+          "callee": "useLayoutEffect",
+          "lineNumber": 49
+        },
+        {
+          "caller": "prepare",
+          "callee": "Promise.all",
+          "lineNumber": 60
+        },
+        {
+          "caller": "prepare",
+          "callee": "Array.from(content.querySelectorAll('img')).map",
+          "lineNumber": 60
+        },
+        {
+          "caller": "prepare",
+          "callee": "Array.from",
+          "lineNumber": 60
+        },
+        {
+          "caller": "prepare",
+          "callee": "content.querySelectorAll",
+          "lineNumber": 60
+        },
+        {
+          "caller": "prepare",
+          "callee": "afterAnimationFrame",
+          "lineNumber": 61
+        },
+        {
+          "caller": "prepare",
+          "callee": "afterAnimationFrame",
+          "lineNumber": 62
+        },
+        {
+          "caller": "prepare",
+          "callee": "Math.max",
+          "lineNumber": 68
+        },
+        {
+          "caller": "prepare",
+          "callee": "content.getBoundingClientRect",
+          "lineNumber": 68
+        },
+        {
+          "caller": "prepare",
+          "callee": "Math.min",
+          "lineNumber": 69
+        },
+        {
+          "caller": "prepare",
+          "callee": "setScale",
+          "lineNumber": 71
+        },
+        {
+          "caller": "prepare",
+          "callee": "setReady",
+          "lineNumber": 72
+        },
+        {
+          "caller": "BlockThumbnailPreviewStage",
+          "callee": "prepare().catch",
+          "lineNumber": 75
+        },
+        {
+          "caller": "BlockThumbnailPreviewStage",
+          "callee": "prepare",
+          "lineNumber": 75
+        },
+        {
+          "caller": "BlockThumbnailPreviewStage",
+          "callee": "String",
+          "lineNumber": 80
+        },
+        {
+          "caller": "BlockThumbnailPreviewStage",
+          "callee": "setError",
+          "lineNumber": 82
+        },
+        {
+          "caller": "BlockThumbnailPreviewStage",
+          "callee": "console.error",
+          "lineNumber": 83
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/block-thumbnails/definitions.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 197,
+      "nonEmptyLines": 186,
+      "functions": [
+        {
+          "name": "defineThumbnail",
+          "startLine": 11,
+          "endLine": 18,
+          "params": [
+            "{\n  stageAlignment = 'center',\n  ...definition\n}"
+          ]
+        },
+        {
+          "name": "isBlockThumbnailSlug",
+          "startLine": 170,
+          "endLine": 171,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "getBlockThumbnailDefinition",
+          "startLine": 173,
+          "endLine": 181,
+          "params": [
+            "slug"
+          ]
+        },
+        {
+          "name": "getBlockThumbnailAdmin",
+          "startLine": 183,
+          "endLine": 194,
+          "params": [
+            "slug"
+          ]
+        },
+        {
+          "name": "isBlockThumbnailPreviewEnabled",
+          "startLine": 196,
+          "endLine": 197,
+          "params": [
+            "nodeEnv"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "blockThumbnailDefinitions",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "isBlockThumbnailSlug",
+          "line": 170,
+          "isDefault": false
+        },
+        {
+          "name": "getBlockThumbnailDefinition",
+          "line": 173,
+          "isDefault": false
+        },
+        {
+          "name": "getBlockThumbnailAdmin",
+          "line": 183,
+          "isDefault": false
+        },
+        {
+          "name": "isBlockThumbnailPreviewEnabled",
+          "line": 196,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "isBlockThumbnailSlug",
+          "callee": "blockThumbnailDefinitions.some",
+          "lineNumber": 171
+        },
+        {
+          "caller": "getBlockThumbnailDefinition",
+          "callee": "blockThumbnailDefinitions.find",
+          "lineNumber": 174
+        },
+        {
+          "caller": "getBlockThumbnailAdmin",
+          "callee": "getBlockThumbnailDefinition",
+          "lineNumber": 184
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/Announcement/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 105,
+      "nonEmptyLines": 104,
+      "exports": [
+        {
+          "name": "AnnouncementBlock",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/ContentHighlights/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 199,
+      "nonEmptyLines": 189,
+      "functions": [
+        {
+          "name": "isSplitEnabled",
+          "startLine": 18,
+          "endLine": 19,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        },
+        {
+          "name": "isSplitDisabled",
+          "startLine": 21,
+          "endLine": 22,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        },
+        {
+          "name": "isPageLink",
+          "startLine": 24,
+          "endLine": 25,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        },
+        {
+          "name": "isCustomLink",
+          "startLine": 27,
+          "endLine": 28,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        },
+        {
+          "name": "hasItemLink",
+          "startLine": 30,
+          "endLine": 31,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ContentHighlightsBlock",
+          "line": 96,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/Cta39/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 76,
+      "nonEmptyLines": 72,
+      "exports": [
+        {
+          "name": "Cta39Block",
+          "line": 36,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/FeatureMatrix/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 130,
+      "nonEmptyLines": 127,
+      "exports": [
+        {
+          "name": "FeatureMatrixBlock",
+          "line": 52,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/FeatureSpotlight/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 182,
+      "nonEmptyLines": 175,
+      "functions": [
+        {
+          "name": "isSplitMode",
+          "startLine": 21,
+          "endLine": 22,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "FeatureSpotlightBlock",
+          "line": 24,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/Footer56/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 191,
+      "nonEmptyLines": 184,
+      "functions": [
+        {
+          "name": "isPageLink",
+          "startLine": 17,
+          "endLine": 18,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        },
+        {
+          "name": "isCustomLink",
+          "startLine": 20,
+          "endLine": 21,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        },
+        {
+          "name": "isCustomLogo",
+          "startLine": 23,
+          "endLine": 24,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        },
+        {
+          "name": "createLinkFields",
+          "startLine": 26,
+          "endLine": 65,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "Footer56Block",
+          "line": 67,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/GalleryShowcase/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 111,
+      "nonEmptyLines": 107,
+      "exports": [
+        {
+          "name": "GalleryShowcaseBlock",
+          "line": 45,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/HeaderNavbar12/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 215,
+      "nonEmptyLines": 202,
+      "functions": [
+        {
+          "name": "linkTypeCondition",
+          "startLine": 18,
+          "endLine": 19,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        },
+        {
+          "name": "customUrlCondition",
+          "startLine": 21,
+          "endLine": 22,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        },
+        {
+          "name": "customLogoCondition",
+          "startLine": 24,
+          "endLine": 25,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        },
+        {
+          "name": "createLinkFields",
+          "startLine": 27,
+          "endLine": 66,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "HeaderNavbar12Block",
+          "line": 151,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/HeroBanner/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 232,
+      "nonEmptyLines": 219,
+      "functions": [
+        {
+          "name": "pageCondition",
+          "startLine": 16,
+          "endLine": 17,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        },
+        {
+          "name": "customUrlCondition",
+          "startLine": 19,
+          "endLine": 20,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        },
+        {
+          "name": "createLinkFields",
+          "startLine": 22,
+          "endLine": 61,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "HeroBannerBlock",
+          "line": 179,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/ImageMosaic/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 126,
+      "nonEmptyLines": 123,
+      "exports": [
+        {
+          "name": "ImageMosaicBlock",
+          "line": 54,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/NewsEventsHighlights/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 83,
+      "nonEmptyLines": 81,
+      "exports": [
+        {
+          "name": "NewsEventsHighlightsBlock",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/ProfileCarousel/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 147,
+      "nonEmptyLines": 143,
+      "exports": [
+        {
+          "name": "ProfileCarouselBlock",
+          "line": 55,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/QaAccordion/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 195,
+      "nonEmptyLines": 188,
+      "functions": [
+        {
+          "name": "hasSplitLayout",
+          "startLine": 14,
+          "endLine": 15,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "QaAccordionBlock",
+          "line": 89,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/RatingSpotlight/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 143,
+      "nonEmptyLines": 134,
+      "functions": [
+        {
+          "name": "isManualMode",
+          "startLine": 14,
+          "endLine": 15,
+          "params": [
+            "_data",
+            "siblingData"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "RatingSpotlightBlock",
+          "line": 99,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/ReviewFeed/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 77,
+      "nonEmptyLines": 73,
+      "exports": [
+        {
+          "name": "ReviewFeedBlock",
+          "line": 37,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/ReviewSubmission/config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 95,
+      "nonEmptyLines": 91,
+      "exports": [
+        {
+          "name": "ReviewSubmissionBlock",
+          "line": 36,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,1697 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/components/ui/checkbox.tsx",
+      "type": "file",
+      "name": "checkbox.tsx",
+      "filePath": "src/components/ui/checkbox.tsx",
+      "summary": "Wraps the Radix checkbox primitive with project styling, focus states, and a checked indicator.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "form-control",
+        "checkbox"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React composition and data-attribute-driven Tailwind styling around accessible UI primitives."
+    },
+    {
+      "id": "function:src/components/ui/checkbox.tsx:Checkbox",
+      "type": "function",
+      "name": "Checkbox",
+      "filePath": "src/components/ui/checkbox.tsx",
+      "lineRange": [
+        9,
+        31
+      ],
+      "summary": "Renders the Checkbox primitive within the checkbox component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "checkbox",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/empty.tsx",
+      "type": "file",
+      "name": "empty.tsx",
+      "filePath": "src/components/ui/empty.tsx",
+      "summary": "Provides composable empty-state layout primitives for media, headings, descriptions, and actions.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "empty-state",
+        "layout"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React composition and data-attribute-driven Tailwind styling around accessible UI primitives."
+    },
+    {
+      "id": "function:src/components/ui/empty.tsx:Empty",
+      "type": "function",
+      "name": "Empty",
+      "filePath": "src/components/ui/empty.tsx",
+      "lineRange": [
+        5,
+        16
+      ],
+      "summary": "Renders the Empty primitive within the empty component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "empty",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/empty.tsx:EmptyHeader",
+      "type": "function",
+      "name": "EmptyHeader",
+      "filePath": "src/components/ui/empty.tsx",
+      "lineRange": [
+        18,
+        26
+      ],
+      "summary": "Renders the EmptyHeader primitive within the empty component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "empty",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/empty.tsx:EmptyMedia",
+      "type": "function",
+      "name": "EmptyMedia",
+      "filePath": "src/components/ui/empty.tsx",
+      "lineRange": [
+        43,
+        56
+      ],
+      "summary": "Renders the EmptyMedia primitive within the empty component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "empty",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/empty.tsx:EmptyTitle",
+      "type": "function",
+      "name": "EmptyTitle",
+      "filePath": "src/components/ui/empty.tsx",
+      "lineRange": [
+        58,
+        66
+      ],
+      "summary": "Renders the EmptyTitle primitive within the empty component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "empty",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/empty.tsx:EmptyDescription",
+      "type": "function",
+      "name": "EmptyDescription",
+      "filePath": "src/components/ui/empty.tsx",
+      "lineRange": [
+        68,
+        79
+      ],
+      "summary": "Renders the EmptyDescription primitive within the empty component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "empty",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/empty.tsx:EmptyContent",
+      "type": "function",
+      "name": "EmptyContent",
+      "filePath": "src/components/ui/empty.tsx",
+      "lineRange": [
+        81,
+        92
+      ],
+      "summary": "Renders the EmptyContent primitive within the empty component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "empty",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/field.tsx",
+      "type": "file",
+      "name": "field.tsx",
+      "filePath": "src/components/ui/field.tsx",
+      "summary": "Provides a composable form-field system covering groups, labels, descriptions, separators, and deduplicated validation errors.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "form-control",
+        "validation"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses typed React composition and data-attribute-driven Tailwind styling around accessible UI primitives."
+    },
+    {
+      "id": "function:src/components/ui/field.tsx:FieldSet",
+      "type": "function",
+      "name": "FieldSet",
+      "filePath": "src/components/ui/field.tsx",
+      "lineRange": [
+        10,
+        21
+      ],
+      "summary": "Renders the FieldSet primitive within the field component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "field",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/field.tsx:FieldLegend",
+      "type": "function",
+      "name": "FieldLegend",
+      "filePath": "src/components/ui/field.tsx",
+      "lineRange": [
+        23,
+        39
+      ],
+      "summary": "Renders the FieldLegend primitive within the field component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "field",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/field.tsx:FieldGroup",
+      "type": "function",
+      "name": "FieldGroup",
+      "filePath": "src/components/ui/field.tsx",
+      "lineRange": [
+        41,
+        52
+      ],
+      "summary": "Renders the FieldGroup primitive within the field component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "field",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/field.tsx:Field",
+      "type": "function",
+      "name": "Field",
+      "filePath": "src/components/ui/field.tsx",
+      "lineRange": [
+        69,
+        83
+      ],
+      "summary": "Renders the Field primitive within the field component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "field",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/field.tsx:FieldContent",
+      "type": "function",
+      "name": "FieldContent",
+      "filePath": "src/components/ui/field.tsx",
+      "lineRange": [
+        85,
+        93
+      ],
+      "summary": "Renders the FieldContent primitive within the field component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "field",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/field.tsx:FieldLabel",
+      "type": "function",
+      "name": "FieldLabel",
+      "filePath": "src/components/ui/field.tsx",
+      "lineRange": [
+        95,
+        107
+      ],
+      "summary": "Renders the FieldLabel primitive within the field component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "field",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/field.tsx:FieldTitle",
+      "type": "function",
+      "name": "FieldTitle",
+      "filePath": "src/components/ui/field.tsx",
+      "lineRange": [
+        109,
+        120
+      ],
+      "summary": "Renders the FieldTitle primitive within the field component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "field",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/field.tsx:FieldDescription",
+      "type": "function",
+      "name": "FieldDescription",
+      "filePath": "src/components/ui/field.tsx",
+      "lineRange": [
+        122,
+        135
+      ],
+      "summary": "Renders the FieldDescription primitive within the field component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "field",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/field.tsx:FieldSeparator",
+      "type": "function",
+      "name": "FieldSeparator",
+      "filePath": "src/components/ui/field.tsx",
+      "lineRange": [
+        137,
+        165
+      ],
+      "summary": "Renders a field-group separator with optional centered descriptive content.",
+      "tags": [
+        "component",
+        "layout",
+        "separator",
+        "form-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/field.tsx:FieldError",
+      "type": "function",
+      "name": "FieldError",
+      "filePath": "src/components/ui/field.tsx",
+      "lineRange": [
+        167,
+        211
+      ],
+      "summary": "Renders deduplicated validation messages or supplied fallback content for a field.",
+      "tags": [
+        "component",
+        "validation",
+        "error-handling",
+        "form-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/input.tsx",
+      "type": "file",
+      "name": "input.tsx",
+      "filePath": "src/components/ui/input.tsx",
+      "summary": "Provides the styled native input primitive shared by project forms.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "form-control",
+        "input"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React composition and data-attribute-driven Tailwind styling around accessible UI primitives."
+    },
+    {
+      "id": "function:src/components/ui/input.tsx:Input",
+      "type": "function",
+      "name": "Input",
+      "filePath": "src/components/ui/input.tsx",
+      "lineRange": [
+        5,
+        17
+      ],
+      "summary": "Renders the Input primitive within the input component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "input",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/label.tsx",
+      "type": "file",
+      "name": "label.tsx",
+      "filePath": "src/components/ui/label.tsx",
+      "summary": "Wraps the Radix label primitive with consistent project typography and disabled-state styling.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "form-control",
+        "label"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React composition and data-attribute-driven Tailwind styling around accessible UI primitives."
+    },
+    {
+      "id": "function:src/components/ui/label.tsx:Label",
+      "type": "function",
+      "name": "Label",
+      "filePath": "src/components/ui/label.tsx",
+      "lineRange": [
+        8,
+        22
+      ],
+      "summary": "Renders the Label primitive within the label component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "label",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/navigation-menu.tsx",
+      "type": "file",
+      "name": "navigation-menu.tsx",
+      "filePath": "src/components/ui/navigation-menu.tsx",
+      "summary": "Wraps Radix navigation-menu primitives into a styled, composable desktop navigation system with optional viewport behavior.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "navigation",
+        "menu"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React composition and data-attribute-driven Tailwind styling around accessible UI primitives."
+    },
+    {
+      "id": "function:src/components/ui/navigation-menu.tsx:NavigationMenu",
+      "type": "function",
+      "name": "NavigationMenu",
+      "filePath": "src/components/ui/navigation-menu.tsx",
+      "lineRange": [
+        8,
+        30
+      ],
+      "summary": "Creates the navigation-menu root and conditionally mounts its animated viewport.",
+      "tags": [
+        "component",
+        "navigation",
+        "menu",
+        "ui-primitive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/navigation-menu.tsx:NavigationMenuList",
+      "type": "function",
+      "name": "NavigationMenuList",
+      "filePath": "src/components/ui/navigation-menu.tsx",
+      "lineRange": [
+        32,
+        43
+      ],
+      "summary": "Renders the NavigationMenuList primitive within the navigation-menu component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "navigation-menu",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/navigation-menu.tsx:NavigationMenuItem",
+      "type": "function",
+      "name": "NavigationMenuItem",
+      "filePath": "src/components/ui/navigation-menu.tsx",
+      "lineRange": [
+        45,
+        56
+      ],
+      "summary": "Renders the NavigationMenuItem primitive within the navigation-menu component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "navigation-menu",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/navigation-menu.tsx:NavigationMenuTrigger",
+      "type": "function",
+      "name": "NavigationMenuTrigger",
+      "filePath": "src/components/ui/navigation-menu.tsx",
+      "lineRange": [
+        62,
+        80
+      ],
+      "summary": "Renders the NavigationMenuTrigger primitive within the navigation-menu component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "navigation-menu",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/navigation-menu.tsx:NavigationMenuContent",
+      "type": "function",
+      "name": "NavigationMenuContent",
+      "filePath": "src/components/ui/navigation-menu.tsx",
+      "lineRange": [
+        82,
+        96
+      ],
+      "summary": "Renders the NavigationMenuContent primitive within the navigation-menu component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "navigation-menu",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/navigation-menu.tsx:NavigationMenuViewport",
+      "type": "function",
+      "name": "NavigationMenuViewport",
+      "filePath": "src/components/ui/navigation-menu.tsx",
+      "lineRange": [
+        98,
+        114
+      ],
+      "summary": "Renders the NavigationMenuViewport primitive within the navigation-menu component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "navigation-menu",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/navigation-menu.tsx:NavigationMenuLink",
+      "type": "function",
+      "name": "NavigationMenuLink",
+      "filePath": "src/components/ui/navigation-menu.tsx",
+      "lineRange": [
+        116,
+        130
+      ],
+      "summary": "Renders the NavigationMenuLink primitive within the navigation-menu component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "navigation-menu",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/navigation-menu.tsx:NavigationMenuIndicator",
+      "type": "function",
+      "name": "NavigationMenuIndicator",
+      "filePath": "src/components/ui/navigation-menu.tsx",
+      "lineRange": [
+        132,
+        148
+      ],
+      "summary": "Renders the NavigationMenuIndicator primitive within the navigation-menu component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "navigation-menu",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/pagination.tsx",
+      "type": "file",
+      "name": "pagination.tsx",
+      "filePath": "src/components/ui/pagination.tsx",
+      "summary": "Provides accessible pagination containers, links, previous and next controls, and ellipsis indicators.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "pagination",
+        "navigation"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React composition and data-attribute-driven Tailwind styling around accessible UI primitives."
+    },
+    {
+      "id": "function:src/components/ui/pagination.tsx:Pagination",
+      "type": "function",
+      "name": "Pagination",
+      "filePath": "src/components/ui/pagination.tsx",
+      "lineRange": [
+        7,
+        17
+      ],
+      "summary": "Renders the Pagination primitive within the pagination component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "pagination",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/pagination.tsx:PaginationContent",
+      "type": "function",
+      "name": "PaginationContent",
+      "filePath": "src/components/ui/pagination.tsx",
+      "lineRange": [
+        19,
+        27
+      ],
+      "summary": "Renders the PaginationContent primitive within the pagination component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "pagination",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/pagination.tsx:PaginationItem",
+      "type": "function",
+      "name": "PaginationItem",
+      "filePath": "src/components/ui/pagination.tsx",
+      "lineRange": [
+        29,
+        31
+      ],
+      "summary": "Renders the PaginationItem primitive within the pagination component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "pagination",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/pagination.tsx:PaginationLink",
+      "type": "function",
+      "name": "PaginationLink",
+      "filePath": "src/components/ui/pagination.tsx",
+      "lineRange": [
+        38,
+        49
+      ],
+      "summary": "Renders a pagination anchor with button variants and current-page accessibility state.",
+      "tags": [
+        "component",
+        "pagination",
+        "navigation",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/pagination.tsx:PaginationPrevious",
+      "type": "function",
+      "name": "PaginationPrevious",
+      "filePath": "src/components/ui/pagination.tsx",
+      "lineRange": [
+        51,
+        67
+      ],
+      "summary": "Renders the previous-page link with an icon and configurable accessible label.",
+      "tags": [
+        "component",
+        "pagination",
+        "navigation",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/pagination.tsx:PaginationNext",
+      "type": "function",
+      "name": "PaginationNext",
+      "filePath": "src/components/ui/pagination.tsx",
+      "lineRange": [
+        69,
+        85
+      ],
+      "summary": "Renders the next-page link with an icon and configurable accessible label.",
+      "tags": [
+        "component",
+        "pagination",
+        "navigation",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/pagination.tsx:PaginationEllipsis",
+      "type": "function",
+      "name": "PaginationEllipsis",
+      "filePath": "src/components/ui/pagination.tsx",
+      "lineRange": [
+        87,
+        102
+      ],
+      "summary": "Renders the PaginationEllipsis primitive within the pagination component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "pagination",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/radio-group.tsx",
+      "type": "file",
+      "name": "radio-group.tsx",
+      "filePath": "src/components/ui/radio-group.tsx",
+      "summary": "Wraps Radix radio-group primitives with project spacing, focus styling, and item indicators.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "form-control",
+        "radio-group"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React composition and data-attribute-driven Tailwind styling around accessible UI primitives."
+    },
+    {
+      "id": "function:src/components/ui/radio-group.tsx:RadioGroup",
+      "type": "function",
+      "name": "RadioGroup",
+      "filePath": "src/components/ui/radio-group.tsx",
+      "lineRange": [
+        8,
+        19
+      ],
+      "summary": "Renders the RadioGroup primitive within the radio-group component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "radio-group",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/radio-group.tsx:RadioGroupItem",
+      "type": "function",
+      "name": "RadioGroupItem",
+      "filePath": "src/components/ui/radio-group.tsx",
+      "lineRange": [
+        21,
+        44
+      ],
+      "summary": "Renders the RadioGroupItem primitive within the radio-group component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "radio-group",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/select.tsx",
+      "type": "file",
+      "name": "select.tsx",
+      "filePath": "src/components/ui/select.tsx",
+      "summary": "Provides a complete styled select control composed from Radix triggers, portals, items, labels, separators, and scroll controls.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "form-control",
+        "select"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React composition and data-attribute-driven Tailwind styling around accessible UI primitives."
+    },
+    {
+      "id": "function:src/components/ui/select.tsx:Select",
+      "type": "function",
+      "name": "Select",
+      "filePath": "src/components/ui/select.tsx",
+      "lineRange": [
+        9,
+        13
+      ],
+      "summary": "Renders the Select primitive within the select component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "select",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/select.tsx:SelectGroup",
+      "type": "function",
+      "name": "SelectGroup",
+      "filePath": "src/components/ui/select.tsx",
+      "lineRange": [
+        15,
+        26
+      ],
+      "summary": "Renders the SelectGroup primitive within the select component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "select",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/select.tsx:SelectValue",
+      "type": "function",
+      "name": "SelectValue",
+      "filePath": "src/components/ui/select.tsx",
+      "lineRange": [
+        28,
+        32
+      ],
+      "summary": "Renders the SelectValue primitive within the select component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "select",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/select.tsx:SelectTrigger",
+      "type": "function",
+      "name": "SelectTrigger",
+      "filePath": "src/components/ui/select.tsx",
+      "lineRange": [
+        34,
+        58
+      ],
+      "summary": "Renders the SelectTrigger primitive within the select component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "select",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/select.tsx:SelectContent",
+      "type": "function",
+      "name": "SelectContent",
+      "filePath": "src/components/ui/select.tsx",
+      "lineRange": [
+        60,
+        91
+      ],
+      "summary": "Renders select options inside a portal with positioned content and scroll controls.",
+      "tags": [
+        "component",
+        "select",
+        "form-control",
+        "portal"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/select.tsx:SelectLabel",
+      "type": "function",
+      "name": "SelectLabel",
+      "filePath": "src/components/ui/select.tsx",
+      "lineRange": [
+        93,
+        104
+      ],
+      "summary": "Renders the SelectLabel primitive within the select component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "select",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/select.tsx:SelectItem",
+      "type": "function",
+      "name": "SelectItem",
+      "filePath": "src/components/ui/select.tsx",
+      "lineRange": [
+        106,
+        128
+      ],
+      "summary": "Renders a selectable option with indicator, text, focus, and disabled states.",
+      "tags": [
+        "component",
+        "select",
+        "form-control",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/select.tsx:SelectSeparator",
+      "type": "function",
+      "name": "SelectSeparator",
+      "filePath": "src/components/ui/select.tsx",
+      "lineRange": [
+        130,
+        144
+      ],
+      "summary": "Renders the SelectSeparator primitive within the select component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "select",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/select.tsx:SelectScrollUpButton",
+      "type": "function",
+      "name": "SelectScrollUpButton",
+      "filePath": "src/components/ui/select.tsx",
+      "lineRange": [
+        146,
+        163
+      ],
+      "summary": "Renders the SelectScrollUpButton primitive within the select component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "select",
+        "styling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/select.tsx:SelectScrollDownButton",
+      "type": "function",
+      "name": "SelectScrollDownButton",
+      "filePath": "src/components/ui/select.tsx",
+      "lineRange": [
+        165,
+        182
+      ],
+      "summary": "Renders the SelectScrollDownButton primitive within the select component suite while forwarding props and merging project styles.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "select",
+        "styling"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/components/ui/checkbox.tsx",
+      "target": "function:src/components/ui/checkbox.tsx:Checkbox",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/checkbox.tsx",
+      "target": "function:src/components/ui/checkbox.tsx:Checkbox",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/empty.tsx",
+      "target": "function:src/components/ui/empty.tsx:Empty",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/empty.tsx",
+      "target": "function:src/components/ui/empty.tsx:Empty",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/empty.tsx",
+      "target": "function:src/components/ui/empty.tsx:EmptyHeader",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/empty.tsx",
+      "target": "function:src/components/ui/empty.tsx:EmptyHeader",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/empty.tsx",
+      "target": "function:src/components/ui/empty.tsx:EmptyMedia",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/empty.tsx",
+      "target": "function:src/components/ui/empty.tsx:EmptyMedia",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/empty.tsx",
+      "target": "function:src/components/ui/empty.tsx:EmptyTitle",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/empty.tsx",
+      "target": "function:src/components/ui/empty.tsx:EmptyTitle",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/empty.tsx",
+      "target": "function:src/components/ui/empty.tsx:EmptyDescription",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/empty.tsx",
+      "target": "function:src/components/ui/empty.tsx:EmptyDescription",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/empty.tsx",
+      "target": "function:src/components/ui/empty.tsx:EmptyContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/empty.tsx",
+      "target": "function:src/components/ui/empty.tsx:EmptyContent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldSet",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldSet",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldLegend",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldLegend",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldGroup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldGroup",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:Field",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:Field",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldContent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldTitle",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldTitle",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldDescription",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldDescription",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldSeparator",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldSeparator",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "function:src/components/ui/field.tsx:FieldError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/input.tsx",
+      "target": "function:src/components/ui/input.tsx:Input",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/input.tsx",
+      "target": "function:src/components/ui/input.tsx:Input",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/label.tsx",
+      "target": "function:src/components/ui/label.tsx:Label",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/label.tsx",
+      "target": "function:src/components/ui/label.tsx:Label",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "function:src/components/ui/navigation-menu.tsx:NavigationMenu",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "function:src/components/ui/navigation-menu.tsx:NavigationMenu",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "function:src/components/ui/navigation-menu.tsx:NavigationMenuList",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "function:src/components/ui/navigation-menu.tsx:NavigationMenuList",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "function:src/components/ui/navigation-menu.tsx:NavigationMenuItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "function:src/components/ui/navigation-menu.tsx:NavigationMenuItem",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "function:src/components/ui/navigation-menu.tsx:NavigationMenuTrigger",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "function:src/components/ui/navigation-menu.tsx:NavigationMenuTrigger",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "function:src/components/ui/navigation-menu.tsx:NavigationMenuContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "function:src/components/ui/navigation-menu.tsx:NavigationMenuContent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "function:src/components/ui/navigation-menu.tsx:NavigationMenuViewport",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "function:src/components/ui/navigation-menu.tsx:NavigationMenuViewport",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "function:src/components/ui/navigation-menu.tsx:NavigationMenuLink",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "function:src/components/ui/navigation-menu.tsx:NavigationMenuLink",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "function:src/components/ui/navigation-menu.tsx:NavigationMenuIndicator",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "function:src/components/ui/navigation-menu.tsx:NavigationMenuIndicator",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/pagination.tsx",
+      "target": "function:src/components/ui/pagination.tsx:Pagination",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/pagination.tsx",
+      "target": "function:src/components/ui/pagination.tsx:Pagination",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/pagination.tsx",
+      "target": "function:src/components/ui/pagination.tsx:PaginationContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/pagination.tsx",
+      "target": "function:src/components/ui/pagination.tsx:PaginationContent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/pagination.tsx",
+      "target": "function:src/components/ui/pagination.tsx:PaginationItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/pagination.tsx",
+      "target": "function:src/components/ui/pagination.tsx:PaginationItem",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/pagination.tsx",
+      "target": "function:src/components/ui/pagination.tsx:PaginationLink",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/pagination.tsx",
+      "target": "function:src/components/ui/pagination.tsx:PaginationLink",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/pagination.tsx",
+      "target": "function:src/components/ui/pagination.tsx:PaginationPrevious",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/pagination.tsx",
+      "target": "function:src/components/ui/pagination.tsx:PaginationPrevious",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/pagination.tsx",
+      "target": "function:src/components/ui/pagination.tsx:PaginationNext",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/pagination.tsx",
+      "target": "function:src/components/ui/pagination.tsx:PaginationNext",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/pagination.tsx",
+      "target": "function:src/components/ui/pagination.tsx:PaginationEllipsis",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/pagination.tsx",
+      "target": "function:src/components/ui/pagination.tsx:PaginationEllipsis",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/radio-group.tsx",
+      "target": "function:src/components/ui/radio-group.tsx:RadioGroup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/radio-group.tsx",
+      "target": "function:src/components/ui/radio-group.tsx:RadioGroup",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/radio-group.tsx",
+      "target": "function:src/components/ui/radio-group.tsx:RadioGroupItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/radio-group.tsx",
+      "target": "function:src/components/ui/radio-group.tsx:RadioGroupItem",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:Select",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:Select",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectGroup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectGroup",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectValue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectValue",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectTrigger",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectTrigger",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectContent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectItem",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectSeparator",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectSeparator",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectScrollUpButton",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectScrollUpButton",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectScrollDownButton",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "function:src/components/ui/select.tsx:SelectScrollDownButton",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/checkbox.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/empty.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "file:src/components/ui/label.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "file:src/components/ui/separator.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/field.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/input.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/label.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/navigation-menu.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/pagination.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/pagination.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/radio-group.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/select.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

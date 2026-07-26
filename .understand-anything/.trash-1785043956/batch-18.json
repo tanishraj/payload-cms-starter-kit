@@ -1,0 +1,265 @@
+{
+  "nodes": [
+    {
+      "id": "document:docs/guides/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "docs/guides/README.md",
+      "summary": "Introduces the CMS operator manual, its audience, admin grouping, reading order, and usage conventions.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "README"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/guides/articles.md",
+      "type": "document",
+      "name": "articles.md",
+      "filePath": "docs/guides/articles.md",
+      "summary": "Operator guide for Articles, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "articles"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/guides/categories.md",
+      "type": "document",
+      "name": "categories.md",
+      "filePath": "docs/guides/categories.md",
+      "summary": "Operator guide for Categories, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "categories"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/guides/footers.md",
+      "type": "document",
+      "name": "footers.md",
+      "filePath": "docs/guides/footers.md",
+      "summary": "Operator guide for Footers, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "footers"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/guides/form-submissions.md",
+      "type": "document",
+      "name": "form-submissions.md",
+      "filePath": "docs/guides/form-submissions.md",
+      "summary": "Operator guide for Form Submissions, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "form-submissions"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/guides/forms.md",
+      "type": "document",
+      "name": "forms.md",
+      "filePath": "docs/guides/forms.md",
+      "summary": "Operator guide for Forms, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "forms"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/guides/headers.md",
+      "type": "document",
+      "name": "headers.md",
+      "filePath": "docs/guides/headers.md",
+      "summary": "Operator guide for Headers, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "headers"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/guides/links.md",
+      "type": "document",
+      "name": "links.md",
+      "filePath": "docs/guides/links.md",
+      "summary": "Operator guide for Navigation Links, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "links"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/guides/media.md",
+      "type": "document",
+      "name": "media.md",
+      "filePath": "docs/guides/media.md",
+      "summary": "Operator guide for Media, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "media"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/guides/operational-audit-events.md",
+      "type": "document",
+      "name": "operational-audit-events.md",
+      "filePath": "docs/guides/operational-audit-events.md",
+      "summary": "Operator guide for Activity Log, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "operational-audit-events"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/guides/pages.md",
+      "type": "document",
+      "name": "pages.md",
+      "filePath": "docs/guides/pages.md",
+      "summary": "Operator guide for Pages, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "pages"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/guides/redirects.md",
+      "type": "document",
+      "name": "redirects.md",
+      "filePath": "docs/guides/redirects.md",
+      "summary": "Operator guide for Redirects, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "redirects"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/guides/reviews.md",
+      "type": "document",
+      "name": "reviews.md",
+      "filePath": "docs/guides/reviews.md",
+      "summary": "Operator guide for Reviews, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "reviews"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/guides/seo-settings.md",
+      "type": "document",
+      "name": "seo-settings.md",
+      "filePath": "docs/guides/seo-settings.md",
+      "summary": "Operator guide for SEO Settings, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "seo-settings"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/guides/site-defaults.md",
+      "type": "document",
+      "name": "site-defaults.md",
+      "filePath": "docs/guides/site-defaults.md",
+      "summary": "Operator guide for Website Defaults, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "site-defaults"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/guides/site-settings.md",
+      "type": "document",
+      "name": "site-settings.md",
+      "filePath": "docs/guides/site-settings.md",
+      "summary": "Operator guide for Site Settings, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "site-settings"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/guides/system-modes.md",
+      "type": "document",
+      "name": "system-modes.md",
+      "filePath": "docs/guides/system-modes.md",
+      "summary": "Operator guide for Website Modes, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "system-modes"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/guides/system-pages.md",
+      "type": "document",
+      "name": "system-pages.md",
+      "filePath": "docs/guides/system-pages.md",
+      "summary": "Operator guide for System Pages, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "system-pages"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/guides/tags.md",
+      "type": "document",
+      "name": "tags.md",
+      "filePath": "docs/guides/tags.md",
+      "summary": "Operator guide for Tags, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "tags"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/guides/theme-settings.md",
+      "type": "document",
+      "name": "theme-settings.md",
+      "filePath": "docs/guides/theme-settings.md",
+      "summary": "Operator guide for Theme Settings, covering usage, website integration, examples, best practices, and recovery.",
+      "tags": [
+        "documentation",
+        "operator-guide",
+        "theme-settings"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

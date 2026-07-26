@@ -1,0 +1,298 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "src/access/adminCapabilities.ts",
+      "language": "typescript",
+      "sizeLines": 472,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/access/editorialRoles.ts",
+      "language": "typescript",
+      "sizeLines": 175,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(payload)/admin/[[...segments]]/not-found.tsx",
+      "language": "typescript",
+      "sizeLines": 24,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(payload)/admin/[[...segments]]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 24,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(payload)/admin/importMap.js",
+      "language": "javascript",
+      "sizeLines": 58,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(payload)/api/[...slug]/route.ts",
+      "language": "typescript",
+      "sizeLines": 19,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(payload)/api/graphql-playground/route.ts",
+      "language": "typescript",
+      "sizeLines": 7,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(payload)/api/graphql/route.ts",
+      "language": "typescript",
+      "sizeLines": 8,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(payload)/layout.tsx",
+      "language": "typescript",
+      "sizeLines": 31,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/my-route/route.ts",
+      "language": "typescript",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/HeaderNavbar12/LogoHeightField.tsx",
+      "language": "typescript",
+      "sizeLines": 52,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Articles.ts",
+      "language": "typescript",
+      "sizeLines": 289,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Categories.ts",
+      "language": "typescript",
+      "sizeLines": 83,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Footers.ts",
+      "language": "typescript",
+      "sizeLines": 64,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/FormSubmissions.ts",
+      "language": "typescript",
+      "sizeLines": 187,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Forms.ts",
+      "language": "typescript",
+      "sizeLines": 229,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Headers.ts",
+      "language": "typescript",
+      "sizeLines": 64,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Media.ts",
+      "language": "typescript",
+      "sizeLines": 280,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/NavigationLinks.ts",
+      "language": "typescript",
+      "sizeLines": 146,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/NewsEvents.ts",
+      "language": "typescript",
+      "sizeLines": 393,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/OperationalAuditEvents.ts",
+      "language": "typescript",
+      "sizeLines": 90,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Redirects.ts",
+      "language": "typescript",
+      "sizeLines": 180,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Reviews.ts",
+      "language": "typescript",
+      "sizeLines": 333,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/SystemPages.ts",
+      "language": "typescript",
+      "sizeLines": 243,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Tags.ts",
+      "language": "typescript",
+      "sizeLines": 76,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/collections/Users.ts",
+      "language": "typescript",
+      "sizeLines": 162,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "src/access/adminCapabilities.ts": [
+      "src/access/editorialRoles.ts"
+    ],
+    "src/access/editorialRoles.ts": [
+      "src/access/adminCapabilities.ts"
+    ],
+    "src/app/(payload)/admin/[[...segments]]/not-found.tsx": [
+      "src/app/(payload)/admin/importMap.js",
+      "src/payload.config.ts"
+    ],
+    "src/app/(payload)/admin/[[...segments]]/page.tsx": [
+      "src/app/(payload)/admin/importMap.js",
+      "src/payload.config.ts"
+    ],
+    "src/app/(payload)/admin/importMap.js": [
+      "src/blocks/HeaderNavbar12/LogoHeightField.tsx"
+    ],
+    "src/app/(payload)/api/[...slug]/route.ts": [
+      "src/payload.config.ts"
+    ],
+    "src/app/(payload)/api/graphql-playground/route.ts": [
+      "src/payload.config.ts"
+    ],
+    "src/app/(payload)/api/graphql/route.ts": [
+      "src/payload.config.ts"
+    ],
+    "src/app/(payload)/layout.tsx": [
+      "src/app/(payload)/admin/importMap.js",
+      "src/app/(payload)/custom.scss",
+      "src/payload.config.ts"
+    ],
+    "src/app/my-route/route.ts": [
+      "src/payload.config.ts"
+    ],
+    "src/blocks/HeaderNavbar12/LogoHeightField.tsx": [],
+    "src/collections/Articles.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/enforceEditorialWorkflow.ts",
+      "src/hooks/logOperationalAuditEvent.ts",
+      "src/hooks/syncPrimaryCategoryMembership.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "src/hooks/validateSEOContract.ts",
+      "src/lib/editorialWorkflow.ts"
+    ],
+    "src/collections/Categories.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/validateSEOContract.ts"
+    ],
+    "src/collections/Footers.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/blocks/Footer56/config.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts"
+    ],
+    "src/collections/FormSubmissions.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/hooks/syncFormSubmissionToWorkQueue.ts",
+      "src/hooks/updateFormSubmissionActivity.ts",
+      "src/lib/forms.ts"
+    ],
+    "src/collections/Forms.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/lib/forms.ts"
+    ],
+    "src/collections/Headers.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/blocks/HeaderNavbar12/config.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts"
+    ],
+    "src/collections/Media.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/hooks/preventMediaDeletionWhileInUse.ts",
+      "src/hooks/syncMediaToWorkQueue.ts",
+      "src/lib/mediaUsage.ts",
+      "src/lib/operationalAudit.ts"
+    ],
+    "src/collections/NavigationLinks.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts"
+    ],
+    "src/collections/NewsEvents.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/blocks/shared/contentActionsFields.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/enforceEditorialWorkflow.ts",
+      "src/hooks/logOperationalAuditEvent.ts",
+      "src/hooks/normalizeNewsEventFields.ts",
+      "src/hooks/syncPrimaryCategoryMembership.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "src/hooks/validateSEOContract.ts",
+      "src/lib/editorialWorkflow.ts"
+    ],
+    "src/collections/OperationalAuditEvents.ts": [
+      "src/access/adminCapabilities.ts"
+    ],
+    "src/collections/Redirects.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts"
+    ],
+    "src/collections/Reviews.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/enforceEditorialWorkflow.ts",
+      "src/hooks/logOperationalAuditEvent.ts",
+      "src/hooks/syncPrimaryCategoryMembership.ts",
+      "src/hooks/syncReviewToWorkQueue.ts",
+      "src/hooks/validateSEOContract.ts",
+      "src/lib/editorialWorkflow.ts",
+      "src/lib/reviews.ts"
+    ],
+    "src/collections/SystemPages.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/blocks/System404/config.ts",
+      "src/blocks/SystemComingSoon/config.ts",
+      "src/blocks/SystemMaintenance/config.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/enforceEditorialWorkflow.ts",
+      "src/hooks/logOperationalAuditEvent.ts",
+      "src/hooks/migrateLegacyReusableLinks.ts",
+      "src/hooks/preventReferencedSystemPageInvalidation.ts",
+      "src/hooks/syncWorkflowStateToWorkQueue.ts",
+      "src/hooks/validateSEOContract.ts",
+      "src/lib/editorialWorkflow.ts",
+      "src/lib/systemPageTypes.ts"
+    ],
+    "src/collections/Tags.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/fields/buildSEOFields.ts",
+      "src/hooks/validateSEOContract.ts"
+    ],
+    "src/collections/Users.ts": [
+      "src/access/adminCapabilities.ts",
+      "src/access/editorialRoles.ts"
+    ]
+  }
+}

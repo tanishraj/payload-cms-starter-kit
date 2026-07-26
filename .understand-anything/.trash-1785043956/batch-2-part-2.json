@@ -1,0 +1,1050 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/lib/newsEventsPreviewSnapshot.ts",
+      "type": "file",
+      "name": "newsEventsPreviewSnapshot.ts",
+      "filePath": "src/lib/newsEventsPreviewSnapshot.ts",
+      "summary": "Server-only loader that fetches news/event highlight sets for each count required by the current preview layout.",
+      "tags": [
+        "service",
+        "live-preview",
+        "news-events",
+        "data-fetching"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/newsEventsPreviewSnapshot.ts:loadNewsEventsPreviewSnapshot",
+      "type": "function",
+      "name": "loadNewsEventsPreviewSnapshot",
+      "filePath": "src/lib/newsEventsPreviewSnapshot.ts",
+      "lineRange": [
+        10,
+        23
+      ],
+      "summary": "Loads each required news/event highlight set concurrently and indexes results by requested item count.",
+      "tags": [
+        "service",
+        "live-preview",
+        "news-events"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/reviewFeed.ts",
+      "type": "file",
+      "name": "reviewFeed.ts",
+      "filePath": "src/lib/reviewFeed.ts",
+      "summary": "Server-only review feed service that validates pagination, queries published Payload reviews, normalizes public fields, and caches page retrieval.",
+      "tags": [
+        "service",
+        "review-feed",
+        "payload-cms",
+        "validation",
+        "serialization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/reviewFeed.ts:parsePositiveInteger",
+      "type": "function",
+      "name": "parsePositiveInteger",
+      "filePath": "src/lib/reviewFeed.ts",
+      "lineRange": [
+        47,
+        73
+      ],
+      "summary": "Parses a positive integer query value with a fallback, label-specific errors, and an optional maximum.",
+      "tags": [
+        "utility",
+        "validation",
+        "pagination"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/reviewFeed.ts:parseReviewFeedPagination",
+      "type": "function",
+      "name": "parseReviewFeedPagination",
+      "filePath": "src/lib/reviewFeed.ts",
+      "lineRange": [
+        75,
+        100
+      ],
+      "summary": "Validates review feed page and limit search parameters and returns a discriminated success or error result.",
+      "tags": [
+        "utility",
+        "validation",
+        "pagination"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/reviewFeed.ts:toPublicReviewFeedItem",
+      "type": "function",
+      "name": "toPublicReviewFeedItem",
+      "filePath": "src/lib/reviewFeed.ts",
+      "lineRange": [
+        122,
+        133
+      ],
+      "summary": "Maps a Payload review record into the stable public feed shape with normalized author, date, rating, and title fields.",
+      "tags": [
+        "serialization",
+        "review-feed",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/reviewFeed.ts:fetchPublishedReviewFeedPage",
+      "type": "function",
+      "name": "fetchPublishedReviewFeedPage",
+      "filePath": "src/lib/reviewFeed.ts",
+      "lineRange": [
+        135,
+        169
+      ],
+      "summary": "Queries published reviews with a restricted projection and maps Payload pagination metadata into the public feed contract.",
+      "tags": [
+        "service",
+        "review-feed",
+        "payload-cms",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/reviewFeedShared.ts",
+      "type": "file",
+      "name": "reviewFeedShared.ts",
+      "filePath": "src/lib/reviewFeedShared.ts",
+      "summary": "Runtime-safe review feed contracts, pagination bounds, normalization, and empty-page construction shared by server and client code.",
+      "tags": [
+        "utility",
+        "review-feed",
+        "pagination",
+        "type-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/reviewFeedShared.ts:normalizeReviewFeedPageSize",
+      "type": "function",
+      "name": "normalizeReviewFeedPageSize",
+      "filePath": "src/lib/reviewFeedShared.ts",
+      "lineRange": [
+        21,
+        24
+      ],
+      "summary": "Clamps integer page sizes to shared review-feed bounds and applies the default for invalid values.",
+      "tags": [
+        "utility",
+        "review-feed",
+        "pagination"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/reviewFeedShared.ts:createEmptyReviewFeedPage",
+      "type": "function",
+      "name": "createEmptyReviewFeedPage",
+      "filePath": "src/lib/reviewFeedShared.ts",
+      "lineRange": [
+        26,
+        31
+      ],
+      "summary": "Creates the canonical empty first page used by review-feed fallbacks.",
+      "tags": [
+        "factory",
+        "review-feed",
+        "fallback"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/reviewPreviewShared.ts",
+      "type": "file",
+      "name": "reviewPreviewShared.ts",
+      "filePath": "src/lib/reviewPreviewShared.ts",
+      "summary": "Shared preview snapshot contracts and layout inspection that determine required review feed sizes and rating aggregates.",
+      "tags": [
+        "utility",
+        "live-preview",
+        "review-feed",
+        "type-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/reviewPreviewShared.ts:getReviewPreviewRequirements",
+      "type": "function",
+      "name": "getReviewPreviewRequirements",
+      "filePath": "src/lib/reviewPreviewShared.ts",
+      "lineRange": [
+        20,
+        42
+      ],
+      "summary": "Scans page blocks to collect unique review feed sizes and determine whether rating distribution data is required.",
+      "tags": [
+        "utility",
+        "live-preview",
+        "review-feed"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/reviewPreviewSnapshot.ts",
+      "type": "file",
+      "name": "reviewPreviewSnapshot.ts",
+      "filePath": "src/lib/reviewPreviewSnapshot.ts",
+      "summary": "Server-only snapshot loader that concurrently gathers every review feed page and optional rating distribution needed for live preview.",
+      "tags": [
+        "service",
+        "live-preview",
+        "review-feed",
+        "data-fetching"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/reviewPreviewSnapshot.ts:loadReviewPreviewSnapshot",
+      "type": "function",
+      "name": "loadReviewPreviewSnapshot",
+      "filePath": "src/lib/reviewPreviewSnapshot.ts",
+      "lineRange": [
+        9,
+        34
+      ],
+      "summary": "Fetches all required review pages and optional rating data concurrently, substituting safe fallbacks on failure.",
+      "tags": [
+        "service",
+        "live-preview",
+        "review-feed",
+        "data-fetching"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/reviewRatingShared.ts",
+      "type": "file",
+      "name": "reviewRatingShared.ts",
+      "filePath": "src/lib/reviewRatingShared.ts",
+      "summary": "Pure review-rating aggregation helpers that normalize five rating buckets and calculate totals, distributions, and weighted averages.",
+      "tags": [
+        "utility",
+        "ratings",
+        "aggregation",
+        "type-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/reviewRatingShared.ts:calculatePublishedReviewRatingDistribution",
+      "type": "function",
+      "name": "calculatePublishedReviewRatingDistribution",
+      "filePath": "src/lib/reviewRatingShared.ts",
+      "lineRange": [
+        18,
+        38
+      ],
+      "summary": "Converts five rating counts into normalized buckets, total review count, and a weighted average.",
+      "tags": [
+        "utility",
+        "ratings",
+        "aggregation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/reviewRatingShared.ts:calculatePublishedReviewRatingSummary",
+      "type": "function",
+      "name": "calculatePublishedReviewRatingSummary",
+      "filePath": "src/lib/reviewRatingShared.ts",
+      "lineRange": [
+        40,
+        51
+      ],
+      "summary": "Projects the full rating distribution into its average-and-count summary or returns null for no reviews.",
+      "tags": [
+        "utility",
+        "ratings",
+        "aggregation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/reviewRatingSummary.ts",
+      "type": "file",
+      "name": "reviewRatingSummary.ts",
+      "filePath": "src/lib/reviewRatingSummary.ts",
+      "summary": "Server-only Payload aggregation service that counts published reviews per rating, logs failures, and exposes cached distributions and summaries.",
+      "tags": [
+        "service",
+        "ratings",
+        "payload-cms",
+        "aggregation",
+        "caching"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/reviewRatingSummary.ts:fetchPublishedReviewRatingDistribution",
+      "type": "function",
+      "name": "fetchPublishedReviewRatingDistribution",
+      "filePath": "src/lib/reviewRatingSummary.ts",
+      "lineRange": [
+        24,
+        48
+      ],
+      "summary": "Counts published reviews for each rating concurrently and converts the buckets into a distribution with logged failure handling.",
+      "tags": [
+        "service",
+        "ratings",
+        "payload-cms",
+        "aggregation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/reviewRatingSummary.ts:fetchPublishedReviewRatingSummary",
+      "type": "function",
+      "name": "fetchPublishedReviewRatingSummary",
+      "filePath": "src/lib/reviewRatingSummary.ts",
+      "lineRange": [
+        50,
+        56
+      ],
+      "summary": "Fetches the rating distribution and narrows it to the average and total-count summary.",
+      "tags": [
+        "service",
+        "ratings",
+        "aggregation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/live-preview-renderer.int.spec.tsx",
+      "type": "file",
+      "name": "live-preview-renderer.int.spec.tsx",
+      "filePath": "tests/int/live-preview-renderer.int.spec.tsx",
+      "summary": "Integration coverage for live-preview block rendering with review and news/event snapshot data.",
+      "tags": [
+        "test",
+        "integration-test",
+        "live-preview",
+        "rendering"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "file:tests/int/rating-spotlight.int.spec.ts",
+      "type": "file",
+      "name": "rating-spotlight.int.spec.ts",
+      "filePath": "tests/int/rating-spotlight.int.spec.ts",
+      "summary": "Integration suite for Rating Spotlight schema defaults, component data modes, action rendering, responsive layout, and accessibility.",
+      "tags": [
+        "test",
+        "integration-test",
+        "ratings",
+        "payload-block"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tests/int/review-feed-data.int.spec.ts",
+      "type": "file",
+      "name": "review-feed-data.int.spec.ts",
+      "filePath": "tests/int/review-feed-data.int.spec.ts",
+      "summary": "Integration suite for review pagination validation, published-record filtering, public serialization, sorting, and failure behavior.",
+      "tags": [
+        "test",
+        "integration-test",
+        "review-feed",
+        "data-access"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/review-feed-route.int.spec.ts",
+      "type": "file",
+      "name": "review-feed-route.int.spec.ts",
+      "filePath": "tests/int/review-feed-route.int.spec.ts",
+      "summary": "Integration tests for the review-feed API route, covering valid pages, invalid query parameters, and server failures.",
+      "tags": [
+        "test",
+        "integration-test",
+        "api-handler",
+        "review-feed"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/review-feed.int.spec.tsx",
+      "type": "file",
+      "name": "review-feed.int.spec.tsx",
+      "filePath": "tests/int/review-feed.int.spec.tsx",
+      "summary": "Integration suite for Review Feed schema and rendering, client pagination, duplicate suppression, loading, retry, and empty states.",
+      "tags": [
+        "test",
+        "integration-test",
+        "review-feed",
+        "component"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "file:tests/int/review-preview-blocks.int.spec.tsx",
+      "type": "file",
+      "name": "review-preview-blocks.int.spec.tsx",
+      "filePath": "tests/int/review-preview-blocks.int.spec.tsx",
+      "summary": "Integration tests ensuring Review Feed and Rating Spotlight preview adapters consume snapshot data without server-side refetching.",
+      "tags": [
+        "test",
+        "integration-test",
+        "live-preview",
+        "payload-block"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses typed React components and JSX composition; server/client boundaries are explicit where runtime behavior requires them."
+    },
+    {
+      "id": "file:tests/int/review-preview-snapshot.int.spec.ts",
+      "type": "file",
+      "name": "review-preview-snapshot.int.spec.ts",
+      "filePath": "tests/int/review-preview-snapshot.int.spec.ts",
+      "summary": "Integration suite for preview requirement discovery, multi-size feed snapshots, fallbacks, and conditional rating aggregation.",
+      "tags": [
+        "test",
+        "integration-test",
+        "live-preview",
+        "data-fetching"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/int/review-preview-snapshot.int.spec.ts:pageFor",
+      "type": "function",
+      "name": "pageFor",
+      "filePath": "tests/int/review-preview-snapshot.int.spec.ts",
+      "lineRange": [
+        25,
+        40
+      ],
+      "summary": "Builds a deterministic review-feed page fixture for preview snapshot tests.",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "review-feed"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/review-rating-summary.int.spec.ts",
+      "type": "file",
+      "name": "review-rating-summary.int.spec.ts",
+      "filePath": "tests/int/review-rating-summary.int.spec.ts",
+      "summary": "Integration coverage for rating distribution mathematics and Payload-backed published-review aggregation.",
+      "tags": [
+        "test",
+        "integration-test",
+        "ratings",
+        "aggregation"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/lib/newsEventsPreviewSnapshot.ts",
+      "target": "function:src/lib/newsEventsPreviewSnapshot.ts:loadNewsEventsPreviewSnapshot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEventsPreviewSnapshot.ts",
+      "target": "function:src/lib/newsEventsPreviewSnapshot.ts:loadNewsEventsPreviewSnapshot",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/reviewFeed.ts",
+      "target": "function:src/lib/reviewFeed.ts:parsePositiveInteger",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviewFeed.ts",
+      "target": "function:src/lib/reviewFeed.ts:parseReviewFeedPagination",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviewFeed.ts",
+      "target": "function:src/lib/reviewFeed.ts:parseReviewFeedPagination",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/reviewFeed.ts",
+      "target": "function:src/lib/reviewFeed.ts:toPublicReviewFeedItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviewFeed.ts",
+      "target": "function:src/lib/reviewFeed.ts:toPublicReviewFeedItem",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/reviewFeed.ts",
+      "target": "function:src/lib/reviewFeed.ts:fetchPublishedReviewFeedPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviewFeed.ts",
+      "target": "function:src/lib/reviewFeed.ts:fetchPublishedReviewFeedPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/reviewFeedShared.ts",
+      "target": "function:src/lib/reviewFeedShared.ts:normalizeReviewFeedPageSize",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviewFeedShared.ts",
+      "target": "function:src/lib/reviewFeedShared.ts:normalizeReviewFeedPageSize",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/reviewFeedShared.ts",
+      "target": "function:src/lib/reviewFeedShared.ts:createEmptyReviewFeedPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviewFeedShared.ts",
+      "target": "function:src/lib/reviewFeedShared.ts:createEmptyReviewFeedPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/reviewPreviewShared.ts",
+      "target": "function:src/lib/reviewPreviewShared.ts:getReviewPreviewRequirements",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviewPreviewShared.ts",
+      "target": "function:src/lib/reviewPreviewShared.ts:getReviewPreviewRequirements",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/reviewPreviewSnapshot.ts",
+      "target": "function:src/lib/reviewPreviewSnapshot.ts:loadReviewPreviewSnapshot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviewPreviewSnapshot.ts",
+      "target": "function:src/lib/reviewPreviewSnapshot.ts:loadReviewPreviewSnapshot",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/reviewRatingShared.ts",
+      "target": "function:src/lib/reviewRatingShared.ts:calculatePublishedReviewRatingDistribution",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviewRatingShared.ts",
+      "target": "function:src/lib/reviewRatingShared.ts:calculatePublishedReviewRatingDistribution",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/reviewRatingShared.ts",
+      "target": "function:src/lib/reviewRatingShared.ts:calculatePublishedReviewRatingSummary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviewRatingShared.ts",
+      "target": "function:src/lib/reviewRatingShared.ts:calculatePublishedReviewRatingSummary",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/reviewRatingSummary.ts",
+      "target": "function:src/lib/reviewRatingSummary.ts:fetchPublishedReviewRatingDistribution",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviewRatingSummary.ts",
+      "target": "function:src/lib/reviewRatingSummary.ts:fetchPublishedReviewRatingDistribution",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/reviewRatingSummary.ts",
+      "target": "function:src/lib/reviewRatingSummary.ts:fetchPublishedReviewRatingSummary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/reviewRatingSummary.ts",
+      "target": "function:src/lib/reviewRatingSummary.ts:fetchPublishedReviewRatingSummary",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/int/review-preview-snapshot.int.spec.ts",
+      "target": "function:tests/int/review-preview-snapshot.int.spec.ts:pageFor",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib/newsEventsPreviewSnapshot.ts",
+      "target": "file:src/lib/newsEvents.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/newsEventsPreviewSnapshot.ts",
+      "target": "file:src/lib/newsEventsPreviewShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/reviewFeed.ts",
+      "target": "file:src/lib/reviewFeedShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/reviewFeed.ts",
+      "target": "file:src/lib/reviews.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/reviewFeed.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/reviewPreviewShared.ts",
+      "target": "file:src/lib/reviewFeedShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/reviewPreviewShared.ts",
+      "target": "file:src/lib/reviewRatingShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/reviewPreviewSnapshot.ts",
+      "target": "file:src/lib/reviewFeed.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/reviewPreviewSnapshot.ts",
+      "target": "file:src/lib/reviewFeedShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/reviewPreviewSnapshot.ts",
+      "target": "file:src/lib/reviewPreviewShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/reviewPreviewSnapshot.ts",
+      "target": "file:src/lib/reviewRatingSummary.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/reviewRatingSummary.ts",
+      "target": "file:src/lib/reviewRatingShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/reviewRatingSummary.ts",
+      "target": "file:src/payload.config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/live-preview-renderer.int.spec.tsx",
+      "target": "file:src/blocks/renderLivePreviewPageBlocks.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/live-preview-renderer.int.spec.tsx",
+      "target": "file:src/lib/newsEventsPreviewShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/live-preview-renderer.int.spec.tsx",
+      "target": "file:src/lib/reviewPreviewShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/rating-spotlight.int.spec.ts",
+      "target": "file:src/blocks/RatingSpotlight/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/rating-spotlight.int.spec.ts",
+      "target": "file:src/blocks/RatingSpotlight/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/rating-spotlight.int.spec.ts",
+      "target": "file:src/components/ContentActions.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/rating-spotlight.int.spec.ts",
+      "target": "file:src/components/rating-spotlight.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-feed-data.int.spec.ts",
+      "target": "file:src/lib/reviewFeed.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-feed-data.int.spec.ts",
+      "target": "file:src/lib/reviewFeedShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-feed-route.int.spec.ts",
+      "target": "file:src/app/api/review-feed/route.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-feed.int.spec.tsx",
+      "target": "file:src/blocks/ReviewFeed/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-feed.int.spec.tsx",
+      "target": "file:src/blocks/ReviewFeed/config.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-feed.int.spec.tsx",
+      "target": "file:src/components/review-feed-list.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-feed.int.spec.tsx",
+      "target": "file:src/components/review-feed.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-feed.int.spec.tsx",
+      "target": "file:src/lib/reviewFeed.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-preview-blocks.int.spec.tsx",
+      "target": "file:src/blocks/RatingSpotlight/PreviewComponent.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-preview-blocks.int.spec.tsx",
+      "target": "file:src/blocks/ReviewFeed/PreviewComponent.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-preview-blocks.int.spec.tsx",
+      "target": "file:src/lib/reviewPreviewShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-preview-blocks.int.spec.tsx",
+      "target": "file:src/lib/reviewRatingShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-preview-snapshot.int.spec.ts",
+      "target": "file:src/lib/reviewFeedShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-preview-snapshot.int.spec.ts",
+      "target": "file:src/lib/reviewPreviewShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-preview-snapshot.int.spec.ts",
+      "target": "file:src/lib/reviewPreviewSnapshot.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-rating-summary.int.spec.ts",
+      "target": "file:src/lib/reviewRatingShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/review-rating-summary.int.spec.ts",
+      "target": "file:src/lib/reviewRatingSummary.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:src/lib/newsEventsPreviewSnapshot.ts:loadNewsEventsPreviewSnapshot",
+      "target": "function:src/lib/newsEvents.ts:getNewsEventsHighlights",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/reviewFeed.ts:parseReviewFeedPagination",
+      "target": "function:src/lib/reviewFeed.ts:parsePositiveInteger",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/reviewFeed.ts:toPublicReviewFeedItem",
+      "target": "function:src/lib/reviews.ts:getReviewDisplayName",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/reviewFeed.ts:fetchPublishedReviewFeedPage",
+      "target": "function:src/lib/reviewFeed.ts:toPublicReviewFeedItem",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/reviewPreviewShared.ts:getReviewPreviewRequirements",
+      "target": "function:src/lib/reviewFeedShared.ts:normalizeReviewFeedPageSize",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/reviewPreviewSnapshot.ts:loadReviewPreviewSnapshot",
+      "target": "function:src/lib/reviewPreviewShared.ts:getReviewPreviewRequirements",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/reviewPreviewSnapshot.ts:loadReviewPreviewSnapshot",
+      "target": "function:src/lib/reviewFeedShared.ts:createEmptyReviewFeedPage",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/reviewRatingShared.ts:calculatePublishedReviewRatingSummary",
+      "target": "function:src/lib/reviewRatingShared.ts:calculatePublishedReviewRatingDistribution",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/reviewRatingSummary.ts:fetchPublishedReviewRatingDistribution",
+      "target": "function:src/lib/reviewRatingShared.ts:calculatePublishedReviewRatingDistribution",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/reviewRatingSummary.ts:fetchPublishedReviewRatingSummary",
+      "target": "function:src/lib/reviewRatingSummary.ts:fetchPublishedReviewRatingDistribution",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/reviewPreviewShared.ts",
+      "target": "file:tests/int/live-preview-renderer.int.spec.tsx",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/lib/reviewFeed.ts",
+      "target": "file:tests/int/review-feed-data.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/lib/reviewFeedShared.ts",
+      "target": "file:tests/int/review-feed-data.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/lib/reviewFeed.ts",
+      "target": "file:tests/int/review-feed.int.spec.tsx",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/lib/reviewPreviewShared.ts",
+      "target": "file:tests/int/review-preview-blocks.int.spec.tsx",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/lib/reviewRatingShared.ts",
+      "target": "file:tests/int/review-preview-blocks.int.spec.tsx",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/lib/reviewFeedShared.ts",
+      "target": "file:tests/int/review-preview-snapshot.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/lib/reviewPreviewShared.ts",
+      "target": "file:tests/int/review-preview-snapshot.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/lib/reviewPreviewSnapshot.ts",
+      "target": "file:tests/int/review-preview-snapshot.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/lib/reviewRatingShared.ts",
+      "target": "file:tests/int/review-rating-summary.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/lib/reviewRatingSummary.ts",
+      "target": "file:tests/int/review-rating-summary.int.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

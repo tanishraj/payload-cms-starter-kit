@@ -1,0 +1,1025 @@
+{
+  "nodes": [
+    {
+      "id": "file:scripts/generate-block-thumbnails.ts",
+      "type": "file",
+      "name": "generate-block-thumbnails.ts",
+      "filePath": "scripts/generate-block-thumbnails.ts",
+      "summary": "Automates block-thumbnail capture by starting or reusing the preview server, launching a browser, visiting each registered preview, and saving screenshots.",
+      "tags": [
+        "script",
+        "thumbnail-generation",
+        "browser-automation",
+        "build-system"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/generate-block-thumbnails.ts:startServer",
+      "type": "function",
+      "name": "startServer",
+      "filePath": "scripts/generate-block-thumbnails.ts",
+      "lineRange": [
+        31,
+        61
+      ],
+      "summary": "Starts the thumbnail preview server and returns the managed child process.",
+      "tags": [
+        "automation",
+        "browser",
+        "thumbnail-generation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/generate-block-thumbnails.ts:waitForServer",
+      "type": "function",
+      "name": "waitForServer",
+      "filePath": "scripts/generate-block-thumbnails.ts",
+      "lineRange": [
+        75,
+        108
+      ],
+      "summary": "Polls the preview origin until it becomes available or the readiness timeout expires.",
+      "tags": [
+        "automation",
+        "browser",
+        "thumbnail-generation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/generate-block-thumbnails.ts:stopServer",
+      "type": "function",
+      "name": "stopServer",
+      "filePath": "scripts/generate-block-thumbnails.ts",
+      "lineRange": [
+        110,
+        142
+      ],
+      "summary": "Terminates the managed preview server and waits for its process to exit.",
+      "tags": [
+        "automation",
+        "browser",
+        "thumbnail-generation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/generate-block-thumbnails.ts:launchBrowser",
+      "type": "function",
+      "name": "launchBrowser",
+      "filePath": "scripts/generate-block-thumbnails.ts",
+      "lineRange": [
+        144,
+        159
+      ],
+      "summary": "Launches the browser instance used to capture block-preview screenshots.",
+      "tags": [
+        "automation",
+        "browser",
+        "thumbnail-generation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/generate-block-thumbnails.ts:generateThumbnails",
+      "type": "function",
+      "name": "generateThumbnails",
+      "filePath": "scripts/generate-block-thumbnails.ts",
+      "lineRange": [
+        161,
+        258
+      ],
+      "summary": "Coordinates server readiness, browser navigation, preview validation, and screenshot generation for every registered block.",
+      "tags": [
+        "automation",
+        "browser",
+        "thumbnail-generation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx",
+      "summary": "Provides the dynamic Next.js preview route that resolves a thumbnail definition and fixture before rendering its isolated preview stage.",
+      "tags": [
+        "nextjs-route",
+        "block-thumbnail",
+        "preview",
+        "developer-tooling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx:BlockThumbnailPage",
+      "type": "function",
+      "name": "BlockThumbnailPage",
+      "filePath": "src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx",
+      "lineRange": [
+        15,
+        33
+      ],
+      "summary": "Resolves a preview slug and fixture, then renders the isolated thumbnail preview route.",
+      "tags": [
+        "component",
+        "preview",
+        "block-thumbnail"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/block-thumbnails/BlockThumbnailPreviewStage.tsx",
+      "type": "file",
+      "name": "BlockThumbnailPreviewStage.tsx",
+      "filePath": "src/block-thumbnails/BlockThumbnailPreviewStage.tsx",
+      "summary": "Coordinates browser-ready thumbnail capture by waiting for images and animation frames before marking the isolated preview stage ready.",
+      "tags": [
+        "block-thumbnail",
+        "preview",
+        "developer-tooling",
+        "payload-cms"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/block-thumbnails/BlockThumbnailPreviewStage.tsx:waitForImage",
+      "type": "function",
+      "name": "waitForImage",
+      "filePath": "src/block-thumbnails/BlockThumbnailPreviewStage.tsx",
+      "lineRange": [
+        11,
+        28
+      ],
+      "summary": "Waits for an image element to load or fail before capture continues.",
+      "tags": [
+        "async",
+        "synchronization",
+        "preview"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/block-thumbnails/BlockThumbnailPreviewStage.tsx:BlockThumbnailPreviewStage",
+      "type": "function",
+      "name": "BlockThumbnailPreviewStage",
+      "filePath": "src/block-thumbnails/BlockThumbnailPreviewStage.tsx",
+      "lineRange": [
+        39,
+        126
+      ],
+      "summary": "Waits for preview assets and paint frames before exposing a screenshot-ready stage.",
+      "tags": [
+        "component",
+        "preview",
+        "block-thumbnail"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/block-thumbnails/definitions.ts",
+      "type": "file",
+      "name": "definitions.ts",
+      "filePath": "src/block-thumbnails/definitions.ts",
+      "summary": "Declares the canonical thumbnail registry, validates preview slugs, and exposes helpers for resolving block thumbnail metadata and feature flags.",
+      "tags": [
+        "block-thumbnail",
+        "preview",
+        "developer-tooling",
+        "payload-cms"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses a const registry plus derived union types to keep thumbnail slugs and metadata type-safe."
+    },
+    {
+      "id": "function:src/block-thumbnails/definitions.ts:isBlockThumbnailSlug",
+      "type": "function",
+      "name": "isBlockThumbnailSlug",
+      "filePath": "src/block-thumbnails/definitions.ts",
+      "lineRange": [
+        170,
+        171
+      ],
+      "summary": "Checks whether a string is a registered block-thumbnail slug.",
+      "tags": [
+        "type-guard",
+        "validation",
+        "block-thumbnail"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/block-thumbnails/definitions.ts:getBlockThumbnailDefinition",
+      "type": "function",
+      "name": "getBlockThumbnailDefinition",
+      "filePath": "src/block-thumbnails/definitions.ts",
+      "lineRange": [
+        173,
+        181
+      ],
+      "summary": "Returns the registered thumbnail definition for a candidate slug.",
+      "tags": [
+        "registry",
+        "lookup",
+        "block-thumbnail"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/block-thumbnails/definitions.ts:getBlockThumbnailAdmin",
+      "type": "function",
+      "name": "getBlockThumbnailAdmin",
+      "filePath": "src/block-thumbnails/definitions.ts",
+      "lineRange": [
+        183,
+        194
+      ],
+      "summary": "Returns Payload admin thumbnail metadata for a registered block.",
+      "tags": [
+        "registry",
+        "lookup",
+        "block-thumbnail"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/block-thumbnails/definitions.ts:isBlockThumbnailPreviewEnabled",
+      "type": "function",
+      "name": "isBlockThumbnailPreviewEnabled",
+      "filePath": "src/block-thumbnails/definitions.ts",
+      "lineRange": [
+        196,
+        197
+      ],
+      "summary": "Reports whether thumbnail preview routes are enabled in the current environment.",
+      "tags": [
+        "type-guard",
+        "validation",
+        "block-thumbnail"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/Announcement/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/Announcement/config.ts",
+      "summary": "Defines the Payload Announcement block schema, including message content, actions, display behavior, and reusable appearance controls.",
+      "tags": [
+        "configuration",
+        "payload-block",
+        "schema-definition",
+        "admin-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/ContentHighlights/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/ContentHighlights/config.ts",
+      "summary": "Defines the Content Highlights block schema with layout-aware fields, item links, calls to action, and reusable appearance controls.",
+      "tags": [
+        "configuration",
+        "payload-block",
+        "schema-definition",
+        "admin-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/Cta39/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/Cta39/config.ts",
+      "summary": "Defines the CTA 39 block schema for promotional copy, actions, alignment, and configurable block appearance.",
+      "tags": [
+        "configuration",
+        "payload-block",
+        "schema-definition",
+        "admin-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/FeatureMatrix/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/FeatureMatrix/config.ts",
+      "summary": "Defines the Feature Matrix block schema for comparison columns, feature rows, actions, and responsive presentation options.",
+      "tags": [
+        "configuration",
+        "payload-block",
+        "schema-definition",
+        "admin-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/FeatureSpotlight/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/FeatureSpotlight/config.ts",
+      "summary": "Defines the Feature Spotlight block schema with split-layout content, media, actions, and conditional appearance fields.",
+      "tags": [
+        "configuration",
+        "payload-block",
+        "schema-definition",
+        "admin-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/Footer56/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/Footer56/config.ts",
+      "summary": "Defines the Footer 56 block schema for brand identity, grouped navigation, social links, legal content, and appearance.",
+      "tags": [
+        "configuration",
+        "payload-block",
+        "schema-definition",
+        "admin-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/Footer56/config.ts:createLinkFields",
+      "type": "function",
+      "name": "createLinkFields",
+      "filePath": "src/blocks/Footer56/config.ts",
+      "lineRange": [
+        26,
+        65
+      ],
+      "summary": "Builds the conditional Payload fields for page-backed or custom navigation links.",
+      "tags": [
+        "field-builder",
+        "configuration",
+        "navigation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/GalleryShowcase/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/GalleryShowcase/config.ts",
+      "summary": "Defines the Gallery Showcase block schema for images, gallery layout, sizing, actions, and reusable appearance settings.",
+      "tags": [
+        "configuration",
+        "payload-block",
+        "schema-definition",
+        "admin-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/HeaderNavbar12/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/HeaderNavbar12/config.ts",
+      "summary": "Defines the Header Navbar 12 schema with conditional navigation-link fields, logo selection, calls to action, and appearance controls.",
+      "tags": [
+        "configuration",
+        "payload-block",
+        "schema-definition",
+        "admin-ui"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/blocks/HeaderNavbar12/config.ts:createLinkFields",
+      "type": "function",
+      "name": "createLinkFields",
+      "filePath": "src/blocks/HeaderNavbar12/config.ts",
+      "lineRange": [
+        27,
+        66
+      ],
+      "summary": "Builds the conditional Payload fields for page-backed or custom navigation links.",
+      "tags": [
+        "field-builder",
+        "configuration",
+        "navigation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/HeroBanner/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/HeroBanner/config.ts",
+      "summary": "Defines the Hero Banner block schema with responsive media, page or custom actions, content alignment, and appearance options.",
+      "tags": [
+        "configuration",
+        "payload-block",
+        "schema-definition",
+        "admin-ui"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/blocks/HeroBanner/config.ts:createLinkFields",
+      "type": "function",
+      "name": "createLinkFields",
+      "filePath": "src/blocks/HeroBanner/config.ts",
+      "lineRange": [
+        22,
+        61
+      ],
+      "summary": "Builds the conditional Payload fields for page-backed or custom navigation links.",
+      "tags": [
+        "field-builder",
+        "configuration",
+        "navigation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/ImageMosaic/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/ImageMosaic/config.ts",
+      "summary": "Defines the Image Mosaic block schema for responsive image arrangements, supporting content, actions, and appearance.",
+      "tags": [
+        "configuration",
+        "payload-block",
+        "schema-definition",
+        "admin-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/NewsEventsHighlights/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/NewsEventsHighlights/config.ts",
+      "summary": "Defines the News and Events Highlights block schema for filtered editorial cards, item limits, calls to action, and appearance.",
+      "tags": [
+        "configuration",
+        "payload-block",
+        "schema-definition",
+        "admin-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/ProfileCarousel/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/ProfileCarousel/config.ts",
+      "summary": "Defines the Profile Carousel block schema for profile cards, image treatments, actions, sizing, alignment, and appearance.",
+      "tags": [
+        "configuration",
+        "payload-block",
+        "schema-definition",
+        "admin-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/QaAccordion/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/QaAccordion/config.ts",
+      "summary": "Defines the QA Accordion block schema for rich-text questions and answers, split layouts, actions, and appearance.",
+      "tags": [
+        "configuration",
+        "payload-block",
+        "schema-definition",
+        "admin-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/RatingSpotlight/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/RatingSpotlight/config.ts",
+      "summary": "Defines the Rating Spotlight block schema for manual or sourced ratings, supporting content, actions, and appearance.",
+      "tags": [
+        "configuration",
+        "payload-block",
+        "schema-definition",
+        "admin-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/ReviewFeed/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/ReviewFeed/config.ts",
+      "summary": "Defines the Review Feed block schema for paginated review selection, feed sizing, filtering, and appearance.",
+      "tags": [
+        "configuration",
+        "payload-block",
+        "schema-definition",
+        "admin-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/ReviewSubmission/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/blocks/ReviewSubmission/config.ts",
+      "summary": "Defines the Review Submission block schema for form presentation, supporting content, actions, and appearance.",
+      "tags": [
+        "configuration",
+        "payload-block",
+        "schema-definition",
+        "admin-ui"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:scripts/generate-block-thumbnails.ts",
+      "target": "function:scripts/generate-block-thumbnails.ts:startServer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:scripts/generate-block-thumbnails.ts",
+      "target": "function:scripts/generate-block-thumbnails.ts:waitForServer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:scripts/generate-block-thumbnails.ts",
+      "target": "function:scripts/generate-block-thumbnails.ts:stopServer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:scripts/generate-block-thumbnails.ts",
+      "target": "function:scripts/generate-block-thumbnails.ts:launchBrowser",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:scripts/generate-block-thumbnails.ts",
+      "target": "function:scripts/generate-block-thumbnails.ts:generateThumbnails",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx",
+      "target": "function:src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx:BlockThumbnailPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx",
+      "target": "function:src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx:BlockThumbnailPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/block-thumbnails/BlockThumbnailPreviewStage.tsx",
+      "target": "function:src/block-thumbnails/BlockThumbnailPreviewStage.tsx:waitForImage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/block-thumbnails/BlockThumbnailPreviewStage.tsx",
+      "target": "function:src/block-thumbnails/BlockThumbnailPreviewStage.tsx:BlockThumbnailPreviewStage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/block-thumbnails/BlockThumbnailPreviewStage.tsx",
+      "target": "function:src/block-thumbnails/BlockThumbnailPreviewStage.tsx:BlockThumbnailPreviewStage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/block-thumbnails/definitions.ts",
+      "target": "function:src/block-thumbnails/definitions.ts:isBlockThumbnailSlug",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/block-thumbnails/definitions.ts",
+      "target": "function:src/block-thumbnails/definitions.ts:isBlockThumbnailSlug",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/block-thumbnails/definitions.ts",
+      "target": "function:src/block-thumbnails/definitions.ts:getBlockThumbnailDefinition",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/block-thumbnails/definitions.ts",
+      "target": "function:src/block-thumbnails/definitions.ts:getBlockThumbnailDefinition",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/block-thumbnails/definitions.ts",
+      "target": "function:src/block-thumbnails/definitions.ts:getBlockThumbnailAdmin",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/block-thumbnails/definitions.ts",
+      "target": "function:src/block-thumbnails/definitions.ts:getBlockThumbnailAdmin",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/block-thumbnails/definitions.ts",
+      "target": "function:src/block-thumbnails/definitions.ts:isBlockThumbnailPreviewEnabled",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/block-thumbnails/definitions.ts",
+      "target": "function:src/block-thumbnails/definitions.ts:isBlockThumbnailPreviewEnabled",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/Footer56/config.ts",
+      "target": "function:src/blocks/Footer56/config.ts:createLinkFields",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/config.ts",
+      "target": "function:src/blocks/HeaderNavbar12/config.ts:createLinkFields",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/HeroBanner/config.ts",
+      "target": "function:src/blocks/HeroBanner/config.ts:createLinkFields",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:scripts/generate-block-thumbnails.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx",
+      "target": "file:src/block-thumbnails/BlockThumbnailPreviewStage.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx",
+      "target": "file:src/block-thumbnails/fixtures.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Announcement/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Announcement/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ContentHighlights/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ContentHighlights/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ContentHighlights/config.ts",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Cta39/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Cta39/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Cta39/config.ts",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureMatrix/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureMatrix/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureMatrix/config.ts",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureSpotlight/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureSpotlight/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureSpotlight/config.ts",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Footer56/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Footer56/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/GalleryShowcase/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/GalleryShowcase/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/GalleryShowcase/config.ts",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeaderNavbar12/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeroBanner/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeroBanner/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ImageMosaic/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ImageMosaic/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ImageMosaic/config.ts",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/config.ts",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ProfileCarousel/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ProfileCarousel/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ProfileCarousel/config.ts",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/QaAccordion/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/QaAccordion/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/QaAccordion/config.ts",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/RatingSpotlight/config.ts",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewFeed/config.ts",
+      "target": "file:src/lib/reviewFeedShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewSubmission/config.ts",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewSubmission/config.ts",
+      "target": "file:src/blocks/shared/blockAppearanceFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ReviewSubmission/config.ts",
+      "target": "file:src/blocks/shared/contentActionsFields.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

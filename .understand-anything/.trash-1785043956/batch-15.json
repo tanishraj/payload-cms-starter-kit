@@ -1,0 +1,94 @@
+{
+  "nodes": [
+    {
+      "id": "file:tests/helpers/mongoMemoryServer.ts",
+      "type": "file",
+      "name": "mongoMemoryServer.ts",
+      "filePath": "tests/helpers/mongoMemoryServer.ts",
+      "summary": "Creates an isolated in-memory MongoDB instance for integration tests and removes both the server and temporary binary directory during cleanup.",
+      "tags": [
+        "test-helper",
+        "mongodb",
+        "fixture",
+        "resource-lifecycle"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/helpers/mongoMemoryServer.ts:createTestMongoServer",
+      "type": "function",
+      "name": "createTestMongoServer",
+      "filePath": "tests/helpers/mongoMemoryServer.ts",
+      "lineRange": [
+        7,
+        28
+      ],
+      "summary": "Starts an isolated MongoDB test server and returns its connection URI with an asynchronous cleanup function.",
+      "tags": [
+        "test-helper",
+        "mongodb",
+        "factory",
+        "resource-lifecycle"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/int/api.int.spec.ts",
+      "type": "file",
+      "name": "api.int.spec.ts",
+      "filePath": "tests/int/api.int.spec.ts",
+      "summary": "Boots Payload against an in-memory MongoDB database and verifies that the starter’s core collections are queryable through the local API.",
+      "tags": [
+        "test",
+        "integration-test",
+        "payload-cms",
+        "api"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/int/starter-productization.int.spec.ts",
+      "type": "file",
+      "name": "starter-productization.int.spec.ts",
+      "filePath": "tests/int/starter-productization.int.spec.ts",
+      "summary": "Verifies documented environment defaults and confirms that a clean starter boot exposes its promised core collections and globals.",
+      "tags": [
+        "test",
+        "integration-test",
+        "payload-cms",
+        "contract"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:tests/helpers/mongoMemoryServer.ts",
+      "target": "function:tests/helpers/mongoMemoryServer.ts:createTestMongoServer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/helpers/mongoMemoryServer.ts",
+      "target": "function:tests/helpers/mongoMemoryServer.ts:createTestMongoServer",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/int/api.int.spec.ts",
+      "target": "file:tests/helpers/mongoMemoryServer.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/int/starter-productization.int.spec.ts",
+      "target": "file:tests/helpers/mongoMemoryServer.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

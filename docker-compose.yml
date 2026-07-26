@@ -2,7 +2,7 @@ version: '3'
 
 services:
   payload:
-    image: node:20-alpine
+    image: node:22-alpine
     ports:
       - '3000:3000'
     volumes:
@@ -14,6 +14,8 @@ services:
       - mongo
     env_file:
       - .env
+    environment:
+      DATABASE_URL: mongodb://mongo:27017/payload-cms-starter-kit
 
   # Use DATABASE_URL=mongodb://mongo:27017/payload-cms-starter-kit when the app runs in Docker.
   mongo:

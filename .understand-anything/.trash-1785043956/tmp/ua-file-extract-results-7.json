@@ -1,0 +1,1986 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 23,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 23,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 23,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "src/block-thumbnails/fixtures.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 833,
+      "nonEmptyLines": 820,
+      "functions": [
+        {
+          "name": "richTextParagraph",
+          "startLine": 38,
+          "endLine": 68,
+          "params": [
+            "text"
+          ]
+        },
+        {
+          "name": "getBlockThumbnailFixture",
+          "startLine": 825,
+          "endLine": 833,
+          "params": [
+            "slug"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "blockThumbnailAssetPaths",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "blockThumbnailFixtures",
+          "line": 179,
+          "isDefault": false
+        },
+        {
+          "name": "getBlockThumbnailFixture",
+          "line": 825,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 23,
+        "exportCount": 3,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/ContentHighlights/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 117,
+      "nonEmptyLines": 108,
+      "functions": [
+        {
+          "name": "ContentHighlightsBlockComponent",
+          "startLine": 40,
+          "endLine": 117,
+          "params": [
+            "{\n  actionMode = 'link',\n  actions,\n  appearance,\n  contentAlignment = 'left',\n  description,\n  enableSplitLayout = false,\n  eyebrow,\n  items,\n  layout = 'highlightsGrid',\n  size = 'default',\n  splitContentAlignment = 'top',\n  title,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ContentHighlightsBlockComponent",
+          "line": 40,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ContentHighlightsBlockComponent",
+          "callee": "title?.trim",
+          "lineNumber": 54
+        },
+        {
+          "caller": "ContentHighlightsBlockComponent",
+          "callee": "(items ?? []).flatMap",
+          "lineNumber": 55
+        },
+        {
+          "caller": "ContentHighlightsBlockComponent",
+          "callee": "item.title?.trim",
+          "lineNumber": 56
+        },
+        {
+          "caller": "ContentHighlightsBlockComponent",
+          "callee": "resolveCmsLink",
+          "lineNumber": 62
+        },
+        {
+          "caller": "ContentHighlightsBlockComponent",
+          "callee": "item.description?.trim",
+          "lineNumber": 71
+        },
+        {
+          "caller": "ContentHighlightsBlockComponent",
+          "callee": "item.metadata?.trim",
+          "lineNumber": 73
+        },
+        {
+          "caller": "ContentHighlightsBlockComponent",
+          "callee": "resolveCmsActions",
+          "lineNumber": 85
+        },
+        {
+          "caller": "ContentHighlightsBlockComponent",
+          "callee": "description?.trim",
+          "lineNumber": 107
+        },
+        {
+          "caller": "ContentHighlightsBlockComponent",
+          "callee": "eyebrow?.trim",
+          "lineNumber": 109
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/Cta39/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 81,
+      "nonEmptyLines": 75,
+      "functions": [
+        {
+          "name": "Cta39BlockComponent",
+          "startLine": 29,
+          "endLine": 81,
+          "params": [
+            "{\n  actionMode = 'link',\n  actions,\n  appearance,\n  contentAlignment = 'center',\n  description,\n  size = 'default',\n  title,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Cta39BlockComponent",
+          "line": 29,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Cta39BlockComponent",
+          "callee": "title?.trim",
+          "lineNumber": 38
+        },
+        {
+          "caller": "Cta39BlockComponent",
+          "callee": "description?.trim",
+          "lineNumber": 39
+        },
+        {
+          "caller": "Cta39BlockComponent",
+          "callee": "resolveCmsActions",
+          "lineNumber": 41
+        },
+        {
+          "caller": "Cta39BlockComponent",
+          "callee": "resolveBlockAppearanceClasses",
+          "lineNumber": 42
+        },
+        {
+          "caller": "Cta39BlockComponent",
+          "callee": "cn",
+          "lineNumber": 51
+        },
+        {
+          "caller": "Cta39BlockComponent",
+          "callee": "cn",
+          "lineNumber": 59
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/FeatureMatrix/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 90,
+      "nonEmptyLines": 86,
+      "functions": [
+        {
+          "name": "FeatureMatrixBlockComponent",
+          "startLine": 34,
+          "endLine": 90,
+          "params": [
+            "{\n  actionMode = 'link',\n  actions,\n  appearance,\n  borderAnimationEnabled = true,\n  contentAlignment = 'center',\n  description,\n  eyebrow,\n  features,\n  showOuterBorder = true,\n  size = 'default',\n  title,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "FeatureMatrixBlockComponent",
+          "line": 34,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "FeatureMatrixBlockComponent",
+          "callee": "(features ?? []).flatMap",
+          "lineNumber": 47
+        },
+        {
+          "caller": "FeatureMatrixBlockComponent",
+          "callee": "feature.title?.trim",
+          "lineNumber": 48
+        },
+        {
+          "caller": "FeatureMatrixBlockComponent",
+          "callee": "getMediaImageProps",
+          "lineNumber": 49
+        },
+        {
+          "caller": "FeatureMatrixBlockComponent",
+          "callee": "resolveCmsActions",
+          "lineNumber": 66
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/FeatureSpotlight/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 293,
+      "nonEmptyLines": 280,
+      "functions": [
+        {
+          "name": "FeatureSpotlightBlockComponent",
+          "startLine": 69,
+          "endLine": 293,
+          "params": [
+            "{\n  actionMode = 'link',\n  actions,\n  appearance,\n  contentVerticalAlignment = 'center',\n  description,\n  eyebrow,\n  image,\n  imagePosition = 'center',\n  layoutMode = 'split',\n  mediaFillMode = 'contained',\n  mediaPosition = 'left',\n  size = 'default',\n  title,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "FeatureSpotlightBlockComponent",
+          "line": 69,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "resolveBlockAppearanceClasses",
+          "lineNumber": 84
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "getMediaImageProps",
+          "lineNumber": 85
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "resolveCmsActions",
+          "lineNumber": 93
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "Boolean",
+          "lineNumber": 101
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 112
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 116
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 117
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 120
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 121
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 128
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 155
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 169
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 176
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 186
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 194
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 198
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 209
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 223
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 228
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 233
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 241
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 243
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 256
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 262
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 263
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 268
+        },
+        {
+          "caller": "FeatureSpotlightBlockComponent",
+          "callee": "cn",
+          "lineNumber": 277
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/Footer56/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 200,
+      "nonEmptyLines": 176,
+      "functions": [
+        {
+          "name": "resolveSections",
+          "startLine": 54,
+          "endLine": 74,
+          "params": [
+            "linkGroups"
+          ]
+        },
+        {
+          "name": "resolveSocialLinks",
+          "startLine": 76,
+          "endLine": 107,
+          "params": [
+            "siteSocialLinks"
+          ]
+        },
+        {
+          "name": "resolveLegalLinks",
+          "startLine": 109,
+          "endLine": 127,
+          "params": [
+            "bottomLinks",
+            "privacyPolicyPage",
+            "termsAndConditionsPage"
+          ]
+        },
+        {
+          "name": "Footer56BlockComponent",
+          "startLine": 129,
+          "endLine": 200,
+          "params": [
+            "{\n  bottomLinks,\n  copyrightText,\n  customLogoDark,\n  customLogoLight,\n  linkGroups,\n  appearance,\n  logoHeight,\n  logoMode = 'siteDefault',\n  privacyPolicyPage,\n  siteAddress,\n  siteEmail,\n  siteLogo,\n  siteName,\n  sitePhone,\n  termsAndConditionsPage,\n  siteSocialLinks,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Footer56BlockComponent",
+          "line": 129,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "resolveSections",
+          "callee": "(linkGroups ?? [])\n    .map((group) => {\n      const links = (group.links ?? [])\n        .map((link) => resolveHeaderLink(link))\n        .map((resolved) => (resolved ? { name: resolved.label, href: resolved.href } : null))\n        .filter((link): link is { name: string; href: string } => Boolean(link))\n\n      if (!group.title?.trim() || links.length === 0) {\n        return null\n      }\n\n      return {\n        title: group.title,\n        links,\n      }\n    })\n    .filter",
+          "lineNumber": 57
+        },
+        {
+          "caller": "resolveSections",
+          "callee": "(linkGroups ?? [])\n    .map",
+          "lineNumber": 57
+        },
+        {
+          "caller": "resolveSections",
+          "callee": "(group.links ?? [])\n        .map((link) => resolveHeaderLink(link))\n        .map((resolved) => (resolved ? { name: resolved.label, href: resolved.href } : null))\n        .filter",
+          "lineNumber": 59
+        },
+        {
+          "caller": "resolveSections",
+          "callee": "(group.links ?? [])\n        .map((link) => resolveHeaderLink(link))\n        .map",
+          "lineNumber": 59
+        },
+        {
+          "caller": "resolveSections",
+          "callee": "(group.links ?? [])\n        .map",
+          "lineNumber": 59
+        },
+        {
+          "caller": "resolveSections",
+          "callee": "resolveHeaderLink",
+          "lineNumber": 60
+        },
+        {
+          "caller": "resolveSections",
+          "callee": "Boolean",
+          "lineNumber": 62
+        },
+        {
+          "caller": "resolveSections",
+          "callee": "group.title?.trim",
+          "lineNumber": 64
+        },
+        {
+          "caller": "resolveSocialLinks",
+          "callee": "Object.entries",
+          "lineNumber": 79
+        },
+        {
+          "caller": "resolveSocialLinks",
+          "callee": "socialEntries\n    .map<FooterSocialLink | null>(([platform, href]) => {\n      if (typeof href !== 'string') {\n        return null\n      }\n\n      const trimmed = href.trim()\n\n      if (!trimmed.length) {\n        return null\n      }\n\n      const Icon = socialIconByPlatformComponent[platform]\n\n      return {\n        icon: <Icon className=\"size-5\" />,\n        href: trimmed,\n        label: socialIconByPlatform[platform] as string,\n      }\n    })\n    .filter",
+          "lineNumber": 86
+        },
+        {
+          "caller": "resolveSocialLinks",
+          "callee": "socialEntries\n    .map",
+          "lineNumber": 86
+        },
+        {
+          "caller": "resolveSocialLinks",
+          "callee": "href.trim",
+          "lineNumber": 92
+        },
+        {
+          "caller": "resolveLegalLinks",
+          "callee": "(bottomLinks ?? [])\n    .map((link) => resolveHeaderLink(link))\n    .filter((link): link is NonNullable<ReturnType<typeof resolveHeaderLink>> => Boolean(link))\n    .map",
+          "lineNumber": 114
+        },
+        {
+          "caller": "resolveLegalLinks",
+          "callee": "(bottomLinks ?? [])\n    .map((link) => resolveHeaderLink(link))\n    .filter",
+          "lineNumber": 114
+        },
+        {
+          "caller": "resolveLegalLinks",
+          "callee": "(bottomLinks ?? [])\n    .map",
+          "lineNumber": 114
+        },
+        {
+          "caller": "resolveLegalLinks",
+          "callee": "resolveHeaderLink",
+          "lineNumber": 115
+        },
+        {
+          "caller": "resolveLegalLinks",
+          "callee": "Boolean",
+          "lineNumber": 116
+        },
+        {
+          "caller": "resolveLegalLinks",
+          "callee": "getPageHref",
+          "lineNumber": 119
+        },
+        {
+          "caller": "resolveLegalLinks",
+          "callee": "getPageHref",
+          "lineNumber": 120
+        },
+        {
+          "caller": "Footer56BlockComponent",
+          "callee": "siteName?.trim",
+          "lineNumber": 147
+        },
+        {
+          "caller": "Footer56BlockComponent",
+          "callee": "(() => {\n    const media = logoMode === 'customLogo' ? (customLogoLight ?? customLogoDark) : siteLogo\n\n    const mediaProps = getMediaImageProps({\n      media: media as never,\n      preset: 'logo',\n      fallbackAlt: siteName ?? 'Logo',\n    })\n\n    if (!mediaProps) {\n      return undefined\n    }\n\n      return {\n        alt: mediaProps.alt,\n        src: mediaProps.src,\n        title: resolvedSiteName,\n        url: fallbackLogoHref,\n        width: mediaProps.width,\n        height: resolvedLogoHeight,\n      }\n    })",
+          "lineNumber": 151
+        },
+        {
+          "caller": "Footer56BlockComponent",
+          "callee": "getMediaImageProps",
+          "lineNumber": 154
+        },
+        {
+          "caller": "Footer56BlockComponent",
+          "callee": "siteAddress?.split('\\n').map((line) => line.trim()).filter",
+          "lineNumber": 176
+        },
+        {
+          "caller": "Footer56BlockComponent",
+          "callee": "siteAddress?.split('\\n').map",
+          "lineNumber": 176
+        },
+        {
+          "caller": "Footer56BlockComponent",
+          "callee": "siteAddress?.split",
+          "lineNumber": 176
+        },
+        {
+          "caller": "Footer56BlockComponent",
+          "callee": "line.trim",
+          "lineNumber": 176
+        },
+        {
+          "caller": "Footer56BlockComponent",
+          "callee": "resolveLegalLinks",
+          "lineNumber": 178
+        },
+        {
+          "caller": "Footer56BlockComponent",
+          "callee": "resolveSections",
+          "lineNumber": 186
+        },
+        {
+          "caller": "Footer56BlockComponent",
+          "callee": "resolveSocialLinks",
+          "lineNumber": 187
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/GalleryShowcase/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 85,
+      "nonEmptyLines": 78,
+      "functions": [
+        {
+          "name": "GalleryShowcaseBlockComponent",
+          "startLine": 31,
+          "endLine": 85,
+          "params": [
+            "{\n  actionMode = 'link',\n  actions,\n  appearance,\n  contentAlignment = 'center',\n  description,\n  eyebrow,\n  images,\n  size = 'default',\n  title,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GalleryShowcaseBlockComponent",
+          "line": 31,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GalleryShowcaseBlockComponent",
+          "callee": "title?.trim",
+          "lineNumber": 42
+        },
+        {
+          "caller": "GalleryShowcaseBlockComponent",
+          "callee": "(images ?? []).flatMap",
+          "lineNumber": 43
+        },
+        {
+          "caller": "GalleryShowcaseBlockComponent",
+          "callee": "getMediaImageProps",
+          "lineNumber": 45
+        },
+        {
+          "caller": "GalleryShowcaseBlockComponent",
+          "callee": "isMediaDoc",
+          "lineNumber": 54
+        },
+        {
+          "caller": "GalleryShowcaseBlockComponent",
+          "callee": "resolveCmsActions(actions).slice",
+          "lineNumber": 70
+        },
+        {
+          "caller": "GalleryShowcaseBlockComponent",
+          "callee": "resolveCmsActions",
+          "lineNumber": 70
+        },
+        {
+          "caller": "GalleryShowcaseBlockComponent",
+          "callee": "description?.trim",
+          "lineNumber": 78
+        },
+        {
+          "caller": "GalleryShowcaseBlockComponent",
+          "callee": "eyebrow?.trim",
+          "lineNumber": 79
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/HeroBanner/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 296,
+      "nonEmptyLines": 276,
+      "functions": [
+        {
+          "name": "HeroBannerBlockComponent",
+          "startLine": 128,
+          "endLine": 296,
+          "params": [
+            "{\n  appearance,\n  backgroundImage,\n  buttons,\n  contentWidth = 'default',\n  description,\n  eyebrow,\n  height = 'default',\n  horizontalAlignment = 'left',\n  overlayStyle = 'dark',\n  themeMode = 'auto',\n  title,\n  verticalAlignment = 'center',\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "HeroBannerBlockComponent",
+          "line": 128,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "HeroBannerBlockComponent",
+          "callee": "resolveBlockAppearanceClasses",
+          "lineNumber": 142
+        },
+        {
+          "caller": "HeroBannerBlockComponent",
+          "callee": "getMediaImageProps",
+          "lineNumber": 164
+        },
+        {
+          "caller": "HeroBannerBlockComponent",
+          "callee": "(buttons ?? []).flatMap",
+          "lineNumber": 174
+        },
+        {
+          "caller": "HeroBannerBlockComponent",
+          "callee": "button.label?.trim",
+          "lineNumber": 175
+        },
+        {
+          "caller": "HeroBannerBlockComponent",
+          "callee": "resolveCmsLink",
+          "lineNumber": 176
+        },
+        {
+          "caller": "HeroBannerBlockComponent",
+          "callee": "cn",
+          "lineNumber": 193
+        },
+        {
+          "caller": "HeroBannerBlockComponent",
+          "callee": "cn",
+          "lineNumber": 202
+        },
+        {
+          "caller": "HeroBannerBlockComponent",
+          "callee": "cn",
+          "lineNumber": 207
+        },
+        {
+          "caller": "HeroBannerBlockComponent",
+          "callee": "cn",
+          "lineNumber": 211
+        },
+        {
+          "caller": "HeroBannerBlockComponent",
+          "callee": "cn",
+          "lineNumber": 220
+        },
+        {
+          "caller": "HeroBannerBlockComponent",
+          "callee": "cn",
+          "lineNumber": 230
+        },
+        {
+          "caller": "HeroBannerBlockComponent",
+          "callee": "cn",
+          "lineNumber": 240
+        },
+        {
+          "caller": "HeroBannerBlockComponent",
+          "callee": "cn",
+          "lineNumber": 251
+        },
+        {
+          "caller": "HeroBannerBlockComponent",
+          "callee": "cn",
+          "lineNumber": 266
+        },
+        {
+          "caller": "HeroBannerBlockComponent",
+          "callee": "actions.map",
+          "lineNumber": 272
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/ImageMosaic/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 116,
+      "nonEmptyLines": 104,
+      "functions": [
+        {
+          "name": "ImageMosaicBlockComponent",
+          "startLine": 38,
+          "endLine": 116,
+          "params": [
+            "{\n  actionMode = 'link',\n  actions,\n  appearance,\n  contentAlignment = 'center',\n  description,\n  eyebrow,\n  items,\n  showImageOverlays = true,\n  size = 'default',\n  title,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ImageMosaicBlockComponent",
+          "line": 38,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ImageMosaicBlockComponent",
+          "callee": "title?.trim",
+          "lineNumber": 50
+        },
+        {
+          "caller": "ImageMosaicBlockComponent",
+          "callee": "(items ?? [])\n    .flatMap((item): ImageMosaicItem[] => {\n      const itemTitle = item.title?.trim()\n      const media = item.image as Media | number | string | null | undefined\n      const image = getMediaImageProps({\n        fallbackAlt: itemTitle,\n        media,\n        preset: 'generic',\n      })\n\n      if (!image) {\n        return []\n      }\n\n      const actionValue = item.action?.[0]\n      const resolvedAction = resolveCmsActions(actionValue ? [actionValue] : [])[0]\n\n      return [\n        {\n          id: isMediaDoc(media) ? media.id : image.src,\n          image,\n          imagePosition: item.imagePosition ?? 'center',\n          action: resolvedAction\n            ? {\n                ...resolvedAction,\n                mode: actionValue?.mode ?? 'link',\n              }\n            : undefined,\n          title: itemTitle,\n        },\n      ]\n    })\n    .slice",
+          "lineNumber": 56
+        },
+        {
+          "caller": "ImageMosaicBlockComponent",
+          "callee": "(items ?? [])\n    .flatMap",
+          "lineNumber": 56
+        },
+        {
+          "caller": "ImageMosaicBlockComponent",
+          "callee": "item.title?.trim",
+          "lineNumber": 58
+        },
+        {
+          "caller": "ImageMosaicBlockComponent",
+          "callee": "getMediaImageProps",
+          "lineNumber": 60
+        },
+        {
+          "caller": "ImageMosaicBlockComponent",
+          "callee": "resolveCmsActions",
+          "lineNumber": 71
+        },
+        {
+          "caller": "ImageMosaicBlockComponent",
+          "callee": "isMediaDoc",
+          "lineNumber": 75
+        },
+        {
+          "caller": "ImageMosaicBlockComponent",
+          "callee": "resolveCmsActions(actions).slice",
+          "lineNumber": 100
+        },
+        {
+          "caller": "ImageMosaicBlockComponent",
+          "callee": "resolveCmsActions",
+          "lineNumber": 100
+        },
+        {
+          "caller": "ImageMosaicBlockComponent",
+          "callee": "description?.trim",
+          "lineNumber": 108
+        },
+        {
+          "caller": "ImageMosaicBlockComponent",
+          "callee": "eyebrow?.trim",
+          "lineNumber": 109
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 72,
+      "nonEmptyLines": 66,
+      "functions": [
+        {
+          "name": "NewsEventsHighlightsBlockPresentation",
+          "startLine": 29,
+          "endLine": 72,
+          "params": [
+            "{\n  actionMode = 'link',\n  actions,\n  appearance,\n  contentAlignment = 'left',\n  description,\n  emptyStateMessage,\n  eyebrow,\n  items,\n  size = 'default',\n  title,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "NewsEventsHighlightsBlockPresentation",
+          "line": 29,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "NewsEventsHighlightsBlockPresentation",
+          "callee": "title?.trim",
+          "lineNumber": 41
+        },
+        {
+          "caller": "NewsEventsHighlightsBlockPresentation",
+          "callee": "resolveCmsActions",
+          "lineNumber": 48
+        },
+        {
+          "caller": "NewsEventsHighlightsBlockPresentation",
+          "callee": "description?.trim",
+          "lineNumber": 64
+        },
+        {
+          "caller": "NewsEventsHighlightsBlockPresentation",
+          "callee": "emptyStateMessage?.trim",
+          "lineNumber": 65
+        },
+        {
+          "caller": "NewsEventsHighlightsBlockPresentation",
+          "callee": "eyebrow?.trim",
+          "lineNumber": 66
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/NewsEventsHighlights/PreviewComponent.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 24,
+      "nonEmptyLines": 21,
+      "functions": [
+        {
+          "name": "NewsEventsHighlightsPreviewBlockComponent",
+          "startLine": 12,
+          "endLine": 24,
+          "params": [
+            "{\n  snapshot,\n  ...props\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "NewsEventsHighlightsPreviewBlockComponent",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "NewsEventsHighlightsPreviewBlockComponent",
+          "callee": "normalizeHighlightsItemCount",
+          "lineNumber": 16
+        },
+        {
+          "caller": "NewsEventsHighlightsPreviewBlockComponent",
+          "callee": "String",
+          "lineNumber": 21
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/PageBlockStack.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 13,
+      "nonEmptyLines": 11,
+      "functions": [
+        {
+          "name": "PageBlockStack",
+          "startLine": 7,
+          "endLine": 13,
+          "params": [
+            "{ children }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "PageBlockStack",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/ProfileCarousel/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 98,
+      "nonEmptyLines": 92,
+      "functions": [
+        {
+          "name": "ProfileCarouselBlockComponent",
+          "startLine": 36,
+          "endLine": 98,
+          "params": [
+            "{\n  actionMode = 'link',\n  actions,\n  appearance,\n  cardVariant = 'stacked',\n  contentAlignment = 'left',\n  description,\n  eyebrow,\n  overlayAlignment = 'left',\n  profiles,\n  size = 'default',\n  title,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ProfileCarouselBlockComponent",
+          "line": 36,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ProfileCarouselBlockComponent",
+          "callee": "title?.trim",
+          "lineNumber": 49
+        },
+        {
+          "caller": "ProfileCarouselBlockComponent",
+          "callee": "(profiles ?? []).flatMap",
+          "lineNumber": 50
+        },
+        {
+          "caller": "ProfileCarouselBlockComponent",
+          "callee": "profile.name?.trim",
+          "lineNumber": 51
+        },
+        {
+          "caller": "ProfileCarouselBlockComponent",
+          "callee": "getMediaImageProps",
+          "lineNumber": 52
+        },
+        {
+          "caller": "ProfileCarouselBlockComponent",
+          "callee": "profile.role?.trim",
+          "lineNumber": 64
+        },
+        {
+          "caller": "ProfileCarouselBlockComponent",
+          "callee": "resolveCmsActions(actions).slice",
+          "lineNumber": 75
+        },
+        {
+          "caller": "ProfileCarouselBlockComponent",
+          "callee": "resolveCmsActions",
+          "lineNumber": 75
+        },
+        {
+          "caller": "ProfileCarouselBlockComponent",
+          "callee": "description?.trim",
+          "lineNumber": 90
+        },
+        {
+          "caller": "ProfileCarouselBlockComponent",
+          "callee": "eyebrow?.trim",
+          "lineNumber": 91
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/QaAccordion/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 357,
+      "nonEmptyLines": 328,
+      "functions": [
+        {
+          "name": "QaAccordion",
+          "startLine": 96,
+          "endLine": 101,
+          "params": [
+            "{\n  className,\n  ...props\n}"
+          ]
+        },
+        {
+          "name": "QaAccordionItem",
+          "startLine": 103,
+          "endLine": 108,
+          "params": [
+            "{\n  className,\n  ...props\n}"
+          ]
+        },
+        {
+          "name": "QaAccordionTrigger",
+          "startLine": 110,
+          "endLine": 136,
+          "params": [
+            "{\n  className,\n  children,\n  ...props\n}"
+          ]
+        },
+        {
+          "name": "QaAccordionContent",
+          "startLine": 138,
+          "endLine": 151,
+          "params": [
+            "{\n  className,\n  children,\n  ...props\n}"
+          ]
+        },
+        {
+          "name": "QaAccordionBlockComponent",
+          "startLine": 153,
+          "endLine": 357,
+          "params": [
+            "{\n  appearance,\n  contentAlignment = 'left',\n  defaultOpenFirst = true,\n  description,\n  accordionPlacement = 'right',\n  heading,\n  headerActionMode = 'link',\n  headerActions,\n  items,\n  layoutMode = 'fiftyFifty',\n  sideActionMode = 'link',\n  sideColumn,\n  size = 'default',\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "QaAccordionBlockComponent",
+          "line": 153,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "QaAccordion",
+          "callee": "cn",
+          "lineNumber": 100
+        },
+        {
+          "caller": "QaAccordionTrigger",
+          "callee": "cn",
+          "lineNumber": 118
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "resolveBlockAppearanceClasses",
+          "lineNumber": 168
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "(items ?? []).flatMap",
+          "lineNumber": 173
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "item?.question?.trim",
+          "lineNumber": 174
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "getMediaImageProps",
+          "lineNumber": 194
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "profile?.name?.trim",
+          "lineNumber": 197
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "resolveCmsActions",
+          "lineNumber": 199
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "resolveCmsActions",
+          "lineNumber": 200
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "Boolean",
+          "lineNumber": 202
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "profile?.name?.trim",
+          "lineNumber": 202
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "profile?.title?.trim",
+          "lineNumber": 202
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "Boolean",
+          "lineNumber": 203
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "contact?.title?.trim",
+          "lineNumber": 204
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "contact?.description?.trim",
+          "lineNumber": 204
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "cn",
+          "lineNumber": 212
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "cn",
+          "lineNumber": 220
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "description?.trim",
+          "lineNumber": 228
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "description.trim",
+          "lineNumber": 230
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "validItems.map",
+          "lineNumber": 247
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "cn",
+          "lineNumber": 249
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "cn",
+          "lineNumber": 272
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "profile?.name?.trim",
+          "lineNumber": 293
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "profile.name.trim",
+          "lineNumber": 295
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "profile?.title?.trim",
+          "lineNumber": 298
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "profile.title.trim",
+          "lineNumber": 299
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "contact?.title?.trim",
+          "lineNumber": 307
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "contact.title.trim",
+          "lineNumber": 309
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "contact?.description?.trim",
+          "lineNumber": 312
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "contact.description.trim",
+          "lineNumber": 314
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "cn",
+          "lineNumber": 333
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "cn",
+          "lineNumber": 344
+        },
+        {
+          "caller": "QaAccordionBlockComponent",
+          "callee": "cn",
+          "lineNumber": 347
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/RatingSpotlight/Presentation.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 93,
+      "nonEmptyLines": 84,
+      "functions": [
+        {
+          "name": "resolveManualSummary",
+          "startLine": 32,
+          "endLine": 51,
+          "params": [
+            "ratingData"
+          ]
+        },
+        {
+          "name": "RatingSpotlightBlockPresentation",
+          "startLine": 53,
+          "endLine": 93,
+          "params": [
+            "{\n  actionMode = 'link',\n  actions,\n  appearance,\n  contentAlignment = 'left',\n  description,\n  eyebrow,\n  liveSummary,\n  ratingData,\n  size = 'default',\n  title,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "RatingSpotlightBlockPresentation",
+          "line": 53,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "resolveManualSummary",
+          "callee": "Number.isFinite",
+          "lineNumber": 40
+        },
+        {
+          "caller": "resolveManualSummary",
+          "callee": "Number.isInteger",
+          "lineNumber": 44
+        },
+        {
+          "caller": "RatingSpotlightBlockPresentation",
+          "callee": "title?.trim",
+          "lineNumber": 65
+        },
+        {
+          "caller": "RatingSpotlightBlockPresentation",
+          "callee": "resolveCmsActions",
+          "lineNumber": 72
+        },
+        {
+          "caller": "RatingSpotlightBlockPresentation",
+          "callee": "resolveManualSummary",
+          "lineNumber": 73
+        },
+        {
+          "caller": "RatingSpotlightBlockPresentation",
+          "callee": "description?.trim",
+          "lineNumber": 85
+        },
+        {
+          "caller": "RatingSpotlightBlockPresentation",
+          "callee": "eyebrow?.trim",
+          "lineNumber": 86
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/Services21/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 128,
+      "nonEmptyLines": 115,
+      "functions": [
+        {
+          "name": "resolveServiceCode",
+          "startLine": 32,
+          "endLine": 37,
+          "params": [
+            "code",
+            "index"
+          ]
+        },
+        {
+          "name": "Services21BlockComponent",
+          "startLine": 45,
+          "endLine": 128,
+          "params": [
+            "{\n  actionMode = 'link',\n  actions,\n  appearance,\n  description,\n  eyebrow,\n  contentAlignment = 'left',\n  services,\n  size = 'default',\n  title,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Services21BlockComponent",
+          "line": 45,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "resolveServiceCode",
+          "callee": "code?.trim",
+          "lineNumber": 33
+        },
+        {
+          "caller": "resolveServiceCode",
+          "callee": "String(index + 1).padStart",
+          "lineNumber": 34
+        },
+        {
+          "caller": "resolveServiceCode",
+          "callee": "String",
+          "lineNumber": 34
+        },
+        {
+          "caller": "Services21BlockComponent",
+          "callee": "(services ?? []).flatMap",
+          "lineNumber": 56
+        },
+        {
+          "caller": "Services21BlockComponent",
+          "callee": "service.title?.trim",
+          "lineNumber": 57
+        },
+        {
+          "caller": "Services21BlockComponent",
+          "callee": "getMediaImageProps",
+          "lineNumber": 58
+        },
+        {
+          "caller": "Services21BlockComponent",
+          "callee": "service.description?.trim",
+          "lineNumber": 70
+        },
+        {
+          "caller": "Services21BlockComponent",
+          "callee": "resolveServiceCode",
+          "lineNumber": 71
+        },
+        {
+          "caller": "Services21BlockComponent",
+          "callee": "resolveCmsActions(actions).slice",
+          "lineNumber": 78
+        },
+        {
+          "caller": "Services21BlockComponent",
+          "callee": "resolveCmsActions",
+          "lineNumber": 78
+        },
+        {
+          "caller": "Services21BlockComponent",
+          "callee": "title?.trim",
+          "lineNumber": 79
+        },
+        {
+          "caller": "Services21BlockComponent",
+          "callee": "description?.trim",
+          "lineNumber": 80
+        },
+        {
+          "caller": "Services21BlockComponent",
+          "callee": "eyebrow?.trim",
+          "lineNumber": 81
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/StatsStrip/AnimatedMetricValue.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 124,
+      "nonEmptyLines": 99,
+      "functions": [
+        {
+          "name": "AnimatedMetricValue",
+          "startLine": 13,
+          "endLine": 124,
+          "params": [
+            "{\n  durationMs = 1200,\n  prefix,\n  suffix,\n  triggerOnce = true,\n  value,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "AnimatedMetricValue",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "useState",
+          "lineNumber": 20
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "useState",
+          "lineNumber": 21
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "useState",
+          "lineNumber": 22
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "useRef",
+          "lineNumber": 23
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "useEffect",
+          "lineNumber": 25
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "window.matchMedia",
+          "lineNumber": 30
+        },
+        {
+          "caller": "syncPreference",
+          "callee": "setPrefersReducedMotion",
+          "lineNumber": 32
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "syncPreference",
+          "lineNumber": 35
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "mediaQuery.addEventListener",
+          "lineNumber": 36
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "mediaQuery.removeEventListener",
+          "lineNumber": 39
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "useEffect",
+          "lineNumber": 43
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "setDisplayValue",
+          "lineNumber": 45
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "setHasStarted",
+          "lineNumber": 50
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "setHasStarted",
+          "lineNumber": 66
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "observer.disconnect",
+          "lineNumber": 69
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "observer.observe",
+          "lineNumber": 77
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "observer.disconnect",
+          "lineNumber": 80
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "useEffect",
+          "lineNumber": 84
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "setDisplayValue",
+          "lineNumber": 86
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "Math.max",
+          "lineNumber": 94
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "Math.max",
+          "lineNumber": 96
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "Math.ceil",
+          "lineNumber": 96
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "window.setInterval",
+          "lineNumber": 99
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "Math.min",
+          "lineNumber": 102
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "setDisplayValue",
+          "lineNumber": 103
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "Math.round",
+          "lineNumber": 103
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "window.clearInterval",
+          "lineNumber": 106
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "window.clearInterval",
+          "lineNumber": 111
+        },
+        {
+          "caller": "AnimatedMetricValue",
+          "callee": "useMemo",
+          "lineNumber": 115
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/StatsStrip/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 138,
+      "nonEmptyLines": 122,
+      "functions": [
+        {
+          "name": "chunkItems",
+          "startLine": 26,
+          "endLine": 34,
+          "params": [
+            "items"
+          ]
+        },
+        {
+          "name": "StatsStripBlockComponent",
+          "startLine": 45,
+          "endLine": 138,
+          "params": [
+            "{\n  animationDuration = 1200,\n  animationEnabled = true,\n  appearance,\n  items,\n  triggerOnce = true,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "StatsStripBlockComponent",
+          "line": 45,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "chunkItems",
+          "callee": "rows.push",
+          "lineNumber": 30
+        },
+        {
+          "caller": "chunkItems",
+          "callee": "items.slice",
+          "lineNumber": 30
+        },
+        {
+          "caller": "StatsStripBlockComponent",
+          "callee": "resolveBlockAppearanceClasses",
+          "lineNumber": 52
+        },
+        {
+          "caller": "StatsStripBlockComponent",
+          "callee": "(items ?? []).flatMap",
+          "lineNumber": 53
+        },
+        {
+          "caller": "StatsStripBlockComponent",
+          "callee": "item?.label?.trim",
+          "lineNumber": 54
+        },
+        {
+          "caller": "StatsStripBlockComponent",
+          "callee": "Number.isNaN",
+          "lineNumber": 56
+        },
+        {
+          "caller": "StatsStripBlockComponent",
+          "callee": "chunkItems",
+          "lineNumber": 73
+        },
+        {
+          "caller": "StatsStripBlockComponent",
+          "callee": "rows.map",
+          "lineNumber": 82
+        },
+        {
+          "caller": "StatsStripBlockComponent",
+          "callee": "cn",
+          "lineNumber": 91
+        },
+        {
+          "caller": "StatsStripBlockComponent",
+          "callee": "row.map",
+          "lineNumber": 96
+        },
+        {
+          "caller": "StatsStripBlockComponent",
+          "callee": "cn",
+          "lineNumber": 104
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/TeamShowcase/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 84,
+      "nonEmptyLines": 78,
+      "functions": [
+        {
+          "name": "TeamShowcaseBlockComponent",
+          "startLine": 29,
+          "endLine": 84,
+          "params": [
+            "{\n  showHeaderDivider = true,\n  actionMode = 'link',\n  actions,\n  appearance,\n  contentAlignment = 'left',\n  description,\n  heading,\n  members,\n  size = 'default',\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "TeamShowcaseBlockComponent",
+          "line": 29,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "TeamShowcaseBlockComponent",
+          "callee": "(members ?? []).flatMap",
+          "lineNumber": 40
+        },
+        {
+          "caller": "TeamShowcaseBlockComponent",
+          "callee": "member.name?.trim",
+          "lineNumber": 41
+        },
+        {
+          "caller": "TeamShowcaseBlockComponent",
+          "callee": "getMediaImageProps",
+          "lineNumber": 43
+        },
+        {
+          "caller": "TeamShowcaseBlockComponent",
+          "callee": "member.role?.trim",
+          "lineNumber": 54
+        },
+        {
+          "caller": "TeamShowcaseBlockComponent",
+          "callee": "member.description?.trim",
+          "lineNumber": 55
+        },
+        {
+          "caller": "TeamShowcaseBlockComponent",
+          "callee": "resolveCmsActions",
+          "lineNumber": 69
+        },
+        {
+          "caller": "TeamShowcaseBlockComponent",
+          "callee": "description?.trim",
+          "lineNumber": 78
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/renderLivePreviewPageBlocks.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 87,
+      "nonEmptyLines": 82,
+      "functions": [
+        {
+          "name": "renderLivePreviewPageBlocks",
+          "startLine": 26,
+          "endLine": 87,
+          "params": [
+            "blocks",
+            "snapshot",
+            "newsEventsSnapshot"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "renderLivePreviewPageBlocks",
+          "line": 26,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "renderLivePreviewPageBlocks",
+          "callee": "blocks.map",
+          "lineNumber": 37
+        }
+      ],
+      "metrics": {
+        "importCount": 20,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/renderPageBlocks.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 153,
+      "nonEmptyLines": 149,
+      "functions": [
+        {
+          "name": "renderPageBlocks",
+          "startLine": 24,
+          "endLine": 153,
+          "params": [
+            "blocks"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "renderPageBlocks",
+          "line": 24,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "renderPageBlocks",
+          "callee": "blocks.map",
+          "lineNumber": 31
+        }
+      ],
+      "metrics": {
+        "importCount": 18,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/shared/blockAppearance.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 48,
+      "nonEmptyLines": 41,
+      "functions": [
+        {
+          "name": "resolveBlockAppearanceClasses",
+          "startLine": 32,
+          "endLine": 48,
+          "params": [
+            "appearance"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "resolveBlockAppearanceClasses",
+          "line": 32,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "resolveBlockAppearanceClasses",
+          "callee": "cn",
+          "lineNumber": 46
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/shared/blockSpacing.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 9,
+      "nonEmptyLines": 7,
+      "exports": [
+        {
+          "name": "regularBlockContainerClasses",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "regularBlockMobilePaddingClasses",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    }
+  ]
+}

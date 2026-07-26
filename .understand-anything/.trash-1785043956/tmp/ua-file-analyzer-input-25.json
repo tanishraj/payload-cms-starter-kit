@@ -1,0 +1,147 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "docs/superpowers/specs/2026-07-17-feature-matrix-block-design.md",
+      "language": "markdown",
+      "sizeLines": 129,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-feature-matrix-image-height-design.md",
+      "language": "markdown",
+      "sizeLines": 44,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-feature-matrix-rename-design.md",
+      "language": "markdown",
+      "sizeLines": 53,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-gallery-showcase-block-design.md",
+      "language": "markdown",
+      "sizeLines": 163,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-gallery-showcase-mobile-three-card-design.md",
+      "language": "markdown",
+      "sizeLines": 62,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-hero-banner-rename-design.md",
+      "language": "markdown",
+      "sizeLines": 69,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-mobile-block-container-spacing-design.md",
+      "language": "markdown",
+      "sizeLines": 52,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-profile-carousel-block-design.md",
+      "language": "markdown",
+      "sizeLines": 132,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-qa-accordion-rename-design.md",
+      "language": "markdown",
+      "sizeLines": 51,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-rating-spotlight-block-design.md",
+      "language": "markdown",
+      "sizeLines": 144,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-review-feed-block-design.md",
+      "language": "markdown",
+      "sizeLines": 182,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-18-review-form-browser-hydration-design.md",
+      "language": "markdown",
+      "sizeLines": 39,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-19-content-highlights-block-design.md",
+      "language": "markdown",
+      "sizeLines": 106,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-19-image-mosaic-block-design.md",
+      "language": "markdown",
+      "sizeLines": 208,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-19-live-preview-server-boundary-design.md",
+      "language": "markdown",
+      "sizeLines": 110,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-19-review-feed-container-width-design.md",
+      "language": "markdown",
+      "sizeLines": 18,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-20-news-events-highlights-presentation-design.md",
+      "language": "markdown",
+      "sizeLines": 50,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-20-news-events-system-design.md",
+      "language": "markdown",
+      "sizeLines": 528,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-20-regular-block-responsive-spacing-design.md",
+      "language": "markdown",
+      "sizeLines": 73,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-21-content-highlights-layouts-design.md",
+      "language": "markdown",
+      "sizeLines": 174,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "docs/superpowers/specs/2026-07-17-feature-matrix-block-design.md": [],
+    "docs/superpowers/specs/2026-07-18-feature-matrix-image-height-design.md": [],
+    "docs/superpowers/specs/2026-07-18-feature-matrix-rename-design.md": [],
+    "docs/superpowers/specs/2026-07-18-gallery-showcase-block-design.md": [],
+    "docs/superpowers/specs/2026-07-18-gallery-showcase-mobile-three-card-design.md": [],
+    "docs/superpowers/specs/2026-07-18-hero-banner-rename-design.md": [],
+    "docs/superpowers/specs/2026-07-18-mobile-block-container-spacing-design.md": [],
+    "docs/superpowers/specs/2026-07-18-profile-carousel-block-design.md": [],
+    "docs/superpowers/specs/2026-07-18-qa-accordion-rename-design.md": [],
+    "docs/superpowers/specs/2026-07-18-rating-spotlight-block-design.md": [],
+    "docs/superpowers/specs/2026-07-18-review-feed-block-design.md": [],
+    "docs/superpowers/specs/2026-07-18-review-form-browser-hydration-design.md": [],
+    "docs/superpowers/specs/2026-07-19-content-highlights-block-design.md": [],
+    "docs/superpowers/specs/2026-07-19-image-mosaic-block-design.md": [],
+    "docs/superpowers/specs/2026-07-19-live-preview-server-boundary-design.md": [],
+    "docs/superpowers/specs/2026-07-19-review-feed-container-width-design.md": [],
+    "docs/superpowers/specs/2026-07-20-news-events-highlights-presentation-design.md": [],
+    "docs/superpowers/specs/2026-07-20-news-events-system-design.md": [],
+    "docs/superpowers/specs/2026-07-20-regular-block-responsive-spacing-design.md": [],
+    "docs/superpowers/specs/2026-07-21-content-highlights-layouts-design.md": []
+  }
+}

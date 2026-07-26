@@ -1,0 +1,804 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 20,
+  "filesSkipped": [
+    ".npmrc",
+    ".yarnrc",
+    "src/app/(payload)/custom.scss",
+    "src/styles/custom.css",
+    "src/styles/globals.css"
+  ],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 20,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 13,
+      "failed": 0,
+      "skipped": 7
+    }
+  },
+  "results": [
+    {
+      "path": ".pnpmfile.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 3,
+      "nonEmptyLines": 2,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "docs/architecture/content-model-map.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 62,
+      "nonEmptyLines": 33,
+      "sections": [
+        {
+          "heading": "Content Model Map",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Pages",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "Navigation Links",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "Headers And Footers",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "System Pages",
+          "level": 2,
+          "line": 17
+        },
+        {
+          "heading": "Editorial Inventory",
+          "level": 2,
+          "line": 21
+        },
+        {
+          "heading": "Intake And Lead Operations",
+          "level": 2,
+          "line": 29
+        },
+        {
+          "heading": "Website Defaults",
+          "level": 2,
+          "line": 37
+        },
+        {
+          "heading": "Website Modes",
+          "level": 2,
+          "line": 41
+        },
+        {
+          "heading": "Site Settings",
+          "level": 2,
+          "line": 45
+        },
+        {
+          "heading": "SEO Settings",
+          "level": 2,
+          "line": 49
+        },
+        {
+          "heading": "Theme Settings",
+          "level": 2,
+          "line": 53
+        },
+        {
+          "heading": "Extension Rules",
+          "level": 2,
+          "line": 57
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 13
+      }
+    },
+    {
+      "path": "docs/guides/users.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 81,
+      "nonEmptyLines": 54,
+      "sections": [
+        {
+          "heading": "Users Guide",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "What This Section Is",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "When To Use It",
+          "level": 2,
+          "line": 15
+        },
+        {
+          "heading": "How It Connects To The Website",
+          "level": 2,
+          "line": 28
+        },
+        {
+          "heading": "Step-By-Step Medical College Example",
+          "level": 2,
+          "line": 40
+        },
+        {
+          "heading": "Best Practices",
+          "level": 2,
+          "line": 59
+        },
+        {
+          "heading": "Common Mistakes And Recovery",
+          "level": 2,
+          "line": 67
+        },
+        {
+          "heading": "Related Guides",
+          "level": 2,
+          "line": 76
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "docs/guides/work-queue.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 77,
+      "nonEmptyLines": 53,
+      "sections": [
+        {
+          "heading": "Action Queue Guide",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "What This Section Is",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "When To Use It",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "How It Connects To The Website",
+          "level": 2,
+          "line": 21
+        },
+        {
+          "heading": "Step-By-Step Medical College Example",
+          "level": 2,
+          "line": 35
+        },
+        {
+          "heading": "Best Practices",
+          "level": 2,
+          "line": 55
+        },
+        {
+          "heading": "Common Mistakes And Recovery",
+          "level": 2,
+          "line": 63
+        },
+        {
+          "heading": "Related Guides",
+          "level": 2,
+          "line": 72
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-20-regular-block-responsive-spacing.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 192,
+      "nonEmptyLines": 121,
+      "sections": [
+        {
+          "heading": "Regular Block Responsive Spacing Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Task 1: Centralize the shared regular-block spacing contract",
+          "level": 3,
+          "line": 23
+        },
+        {
+          "heading": "Task 2: Remove oversized regular-section overrides",
+          "level": 3,
+          "line": 88
+        },
+        {
+          "heading": "Task 3: Normalize Feature Spotlight without breaking filled media",
+          "level": 3,
+          "line": 128
+        },
+        {
+          "heading": "Task 4: Verify the normalized page-block system",
+          "level": 3,
+          "line": 160
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-21-content-highlights-layouts.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 877,
+      "nonEmptyLines": 684,
+      "sections": [
+        {
+          "heading": "Content Highlights Split and Alignment Controls Implementation Plan",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Global Constraints",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "File structure",
+          "level": 2,
+          "line": 30
+        },
+        {
+          "heading": "Task 1: Convert existing split content",
+          "level": 3,
+          "line": 40
+        },
+        {
+          "heading": "Task 2: Refactor the Payload layout controls",
+          "level": 3,
+          "line": 279
+        },
+        {
+          "heading": "Task 3: Implement independent split composition and alignment",
+          "level": 3,
+          "line": 420
+        },
+        {
+          "heading": "Task 4: Regenerate types and verify production readiness",
+          "level": 3,
+          "line": 723
+        },
+        {
+          "heading": "Task 5: Make numbered-card borders adaptive",
+          "level": 3,
+          "line": 801
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "docs/superpowers/reviews/2026-07-07-cms-foundation-audit.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 175,
+      "nonEmptyLines": 141,
+      "sections": [
+        {
+          "heading": "CMS Foundation Audit",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Executive Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Audit Scope",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "In Scope",
+          "level": 3,
+          "line": 11
+        },
+        {
+          "heading": "Out of Scope",
+          "level": 3,
+          "line": 17
+        },
+        {
+          "heading": "Current Strengths",
+          "level": 2,
+          "line": 25
+        },
+        {
+          "heading": "Prioritized Gap Audit",
+          "level": 2,
+          "line": 36
+        },
+        {
+          "heading": "Platform Foundation",
+          "level": 3,
+          "line": 38
+        },
+        {
+          "heading": "Content Architecture",
+          "level": 3,
+          "line": 56
+        },
+        {
+          "heading": "Editorial Workflows",
+          "level": 3,
+          "line": 74
+        },
+        {
+          "heading": "Marketing Operations",
+          "level": 3,
+          "line": 92
+        },
+        {
+          "heading": "Starter-Kit Reusability",
+          "level": 3,
+          "line": 110
+        },
+        {
+          "heading": "Target State",
+          "level": 2,
+          "line": 128
+        },
+        {
+          "heading": "Phased Roadmap",
+          "level": 2,
+          "line": 132
+        },
+        {
+          "heading": "Phase 1: Foundation And Safety",
+          "level": 3,
+          "line": 134
+        },
+        {
+          "heading": "Phase 2: Operational CMS Gaps",
+          "level": 3,
+          "line": 141
+        },
+        {
+          "heading": "Phase 3: Reusability And Handoff",
+          "level": 3,
+          "line": 147
+        },
+        {
+          "heading": "Phase 4: Block Expansion Readiness",
+          "level": 3,
+          "line": 153
+        },
+        {
+          "heading": "Appendix: Evidence Base",
+          "level": 2,
+          "line": 157
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 19
+      }
+    },
+    {
+      "path": "eslint.config.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 31,
+      "nonEmptyLines": 29,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "next.config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 31,
+      "nonEmptyLines": 27,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "playwright.config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 41,
+      "nonEmptyLines": 38,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "postcss.config.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 6,
+      "nonEmptyLines": 6,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "public/block-thumbnails/README.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 25,
+      "nonEmptyLines": 16,
+      "sections": [
+        {
+          "heading": "Block thumbnail images",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": "tests/helpers/server-only.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 1,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/admin-documentation.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 39,
+      "nonEmptyLines": 34,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/content-taxonomy.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 255,
+      "nonEmptyLines": 227,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/live-preview-import-boundary.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 126,
+      "nonEmptyLines": 99,
+      "functions": [
+        {
+          "name": "resolveLocalImport",
+          "startLine": 10,
+          "endLine": 36,
+          "params": [
+            "fromPath",
+            "specifier"
+          ]
+        },
+        {
+          "name": "hasRuntimeBinding",
+          "startLine": 38,
+          "endLine": 58,
+          "params": [
+            "declaration"
+          ]
+        },
+        {
+          "name": "collectReachableRuntimeModules",
+          "startLine": 60,
+          "endLine": 101,
+          "params": [
+            "entry"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "resolveLocalImport",
+          "callee": "specifier.startsWith",
+          "lineNumber": 11
+        },
+        {
+          "caller": "resolveLocalImport",
+          "callee": "path.join",
+          "lineNumber": 12
+        },
+        {
+          "caller": "resolveLocalImport",
+          "callee": "specifier.slice",
+          "lineNumber": 12
+        },
+        {
+          "caller": "resolveLocalImport",
+          "callee": "specifier.startsWith",
+          "lineNumber": 13
+        },
+        {
+          "caller": "resolveLocalImport",
+          "callee": "path.resolve",
+          "lineNumber": 14
+        },
+        {
+          "caller": "resolveLocalImport",
+          "callee": "path.dirname",
+          "lineNumber": 14
+        },
+        {
+          "caller": "resolveLocalImport",
+          "callee": "existsSync",
+          "lineNumber": 24
+        },
+        {
+          "caller": "resolveLocalImport",
+          "callee": "path.join",
+          "lineNumber": 28
+        },
+        {
+          "caller": "resolveLocalImport",
+          "callee": "existsSync",
+          "lineNumber": 30
+        },
+        {
+          "caller": "hasRuntimeBinding",
+          "callee": "ts.isNamespaceImport",
+          "lineNumber": 53
+        },
+        {
+          "caller": "hasRuntimeBinding",
+          "callee": "clause.namedBindings.elements.some",
+          "lineNumber": 57
+        },
+        {
+          "caller": "collectReachableRuntimeModules",
+          "callee": "pending.pop",
+          "lineNumber": 65
+        },
+        {
+          "caller": "collectReachableRuntimeModules",
+          "callee": "visited.has",
+          "lineNumber": 67
+        },
+        {
+          "caller": "collectReachableRuntimeModules",
+          "callee": "visited.add",
+          "lineNumber": 71
+        },
+        {
+          "caller": "collectReachableRuntimeModules",
+          "callee": "readFileSync",
+          "lineNumber": 72
+        },
+        {
+          "caller": "collectReachableRuntimeModules",
+          "callee": "ts.createSourceFile",
+          "lineNumber": 73
+        },
+        {
+          "caller": "collectReachableRuntimeModules",
+          "callee": "current.endsWith",
+          "lineNumber": 78
+        },
+        {
+          "caller": "collectReachableRuntimeModules",
+          "callee": "ts.isImportDeclaration",
+          "lineNumber": 82
+        },
+        {
+          "caller": "collectReachableRuntimeModules",
+          "callee": "hasRuntimeBinding",
+          "lineNumber": 82
+        },
+        {
+          "caller": "collectReachableRuntimeModules",
+          "callee": "ts.isStringLiteral",
+          "lineNumber": 86
+        },
+        {
+          "caller": "collectReachableRuntimeModules",
+          "callee": "resolveLocalImport",
+          "lineNumber": 90
+        },
+        {
+          "caller": "collectReachableRuntimeModules",
+          "callee": "visited.has",
+          "lineNumber": 92
+        },
+        {
+          "caller": "collectReachableRuntimeModules",
+          "callee": "pending.push",
+          "lineNumber": 93
+        },
+        {
+          "caller": "collectReachableRuntimeModules",
+          "callee": "[...visited].map",
+          "lineNumber": 99
+        },
+        {
+          "caller": "collectReachableRuntimeModules",
+          "callee": "path.relative(projectRoot, filePath).split(path.sep).join",
+          "lineNumber": 99
+        },
+        {
+          "caller": "collectReachableRuntimeModules",
+          "callee": "path.relative(projectRoot, filePath).split",
+          "lineNumber": 99
+        },
+        {
+          "caller": "collectReachableRuntimeModules",
+          "callee": "path.relative",
+          "lineNumber": 99
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/page-routing.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 183,
+      "nonEmptyLines": 157,
+      "functions": [
+        {
+          "name": "loadPageData",
+          "startLine": 27,
+          "endLine": 30,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "loadPageData",
+          "callee": "vi.resetModules",
+          "lineNumber": 28
+        },
+        {
+          "caller": "loadPageData",
+          "callee": "import",
+          "lineNumber": 29
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/provider-selection.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 100,
+      "nonEmptyLines": 90,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/review-submission.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 426,
+      "nonEmptyLines": 401,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/sitemap.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 204,
+      "nonEmptyLines": 186,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    }
+  ]
+}

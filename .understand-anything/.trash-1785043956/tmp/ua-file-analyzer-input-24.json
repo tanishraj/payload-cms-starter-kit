@@ -1,0 +1,147 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "docs/superpowers/specs/2026-07-10-mongodb-runtime-reset-design.md",
+      "language": "markdown",
+      "sizeLines": 251,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-11-admin-ia-simplification-design.md",
+      "language": "markdown",
+      "sizeLines": 283,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-11-optional-editorial-workflow-design.md",
+      "language": "markdown",
+      "sizeLines": 312,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-11-system-page-block-architecture-design.md",
+      "language": "markdown",
+      "sizeLines": 327,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-11-system-page-default-blocks-design.md",
+      "language": "markdown",
+      "sizeLines": 282,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-12-block-cleanup-design.md",
+      "language": "markdown",
+      "sizeLines": 37,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-feature-spotlight-block-design.md",
+      "language": "markdown",
+      "sizeLines": 305,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-footer56-footer-preset-design.md",
+      "language": "markdown",
+      "sizeLines": 289,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-footer56-footer-preset-revision-design.md",
+      "language": "markdown",
+      "sizeLines": 162,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-footer56-site-settings-integration-design.md",
+      "language": "markdown",
+      "sizeLines": 168,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-footer56-terms-site-settings-design.md",
+      "language": "markdown",
+      "sizeLines": 124,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-header-navbar-block-design.md",
+      "language": "markdown",
+      "sizeLines": 271,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-hero-institutional-block-design.md",
+      "language": "markdown",
+      "sizeLines": 220,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-13-stats-strip-block-design.md",
+      "language": "markdown",
+      "sizeLines": 207,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-14-block-components-theme-normalization-design.md",
+      "language": "markdown",
+      "sizeLines": 199,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-14-shared-block-appearance-controls-design.md",
+      "language": "markdown",
+      "sizeLines": 260,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-14-website-theme-registry-design.md",
+      "language": "markdown",
+      "sizeLines": 226,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-15-announcement-flicker-fix-design.md",
+      "language": "markdown",
+      "sizeLines": 23,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-15-dismissible-announcement-design.md",
+      "language": "markdown",
+      "sizeLines": 63,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-17-block-thumbnail-generation-design.md",
+      "language": "markdown",
+      "sizeLines": 172,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "docs/superpowers/specs/2026-07-10-mongodb-runtime-reset-design.md": [],
+    "docs/superpowers/specs/2026-07-11-admin-ia-simplification-design.md": [],
+    "docs/superpowers/specs/2026-07-11-optional-editorial-workflow-design.md": [],
+    "docs/superpowers/specs/2026-07-11-system-page-block-architecture-design.md": [],
+    "docs/superpowers/specs/2026-07-11-system-page-default-blocks-design.md": [],
+    "docs/superpowers/specs/2026-07-12-block-cleanup-design.md": [],
+    "docs/superpowers/specs/2026-07-13-feature-spotlight-block-design.md": [],
+    "docs/superpowers/specs/2026-07-13-footer56-footer-preset-design.md": [],
+    "docs/superpowers/specs/2026-07-13-footer56-footer-preset-revision-design.md": [],
+    "docs/superpowers/specs/2026-07-13-footer56-site-settings-integration-design.md": [],
+    "docs/superpowers/specs/2026-07-13-footer56-terms-site-settings-design.md": [],
+    "docs/superpowers/specs/2026-07-13-header-navbar-block-design.md": [],
+    "docs/superpowers/specs/2026-07-13-hero-institutional-block-design.md": [],
+    "docs/superpowers/specs/2026-07-13-stats-strip-block-design.md": [],
+    "docs/superpowers/specs/2026-07-14-block-components-theme-normalization-design.md": [],
+    "docs/superpowers/specs/2026-07-14-shared-block-appearance-controls-design.md": [],
+    "docs/superpowers/specs/2026-07-14-website-theme-registry-design.md": [],
+    "docs/superpowers/specs/2026-07-15-announcement-flicker-fix-design.md": [],
+    "docs/superpowers/specs/2026-07-15-dismissible-announcement-design.md": [],
+    "docs/superpowers/specs/2026-07-17-block-thumbnail-generation-design.md": []
+  }
+}

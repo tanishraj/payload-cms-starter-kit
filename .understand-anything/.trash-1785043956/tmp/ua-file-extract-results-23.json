@@ -1,0 +1,3028 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 20,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 20,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 0,
+      "failed": 0,
+      "skipped": 20
+    }
+  },
+  "results": [
+    {
+      "path": "docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 263,
+      "nonEmptyLines": 187,
+      "sections": [
+        {
+          "heading": "Headers Collection With Active Global Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "Recommended Approach",
+          "level": 2,
+          "line": 30
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 43
+        },
+        {
+          "heading": "Headers Collection",
+          "level": 3,
+          "line": 45
+        },
+        {
+          "heading": "Header Settings Global",
+          "level": 3,
+          "line": 71
+        },
+        {
+          "heading": "Header Navbar12 Block",
+          "level": 3,
+          "line": 88
+        },
+        {
+          "heading": "Frontend Rendering",
+          "level": 2,
+          "line": 130
+        },
+        {
+          "heading": "Fetching",
+          "level": 3,
+          "line": 132
+        },
+        {
+          "heading": "Rendering Dispatcher",
+          "level": 3,
+          "line": 154
+        },
+        {
+          "heading": "Component Boundary",
+          "level": 3,
+          "line": 168
+        },
+        {
+          "heading": "Data Flow",
+          "level": 2,
+          "line": 183
+        },
+        {
+          "heading": "Error Handling",
+          "level": 2,
+          "line": 193
+        },
+        {
+          "heading": "File Plan",
+          "level": 2,
+          "line": 202
+        },
+        {
+          "heading": "Rollout Plan",
+          "level": 2,
+          "line": 215
+        },
+        {
+          "heading": "Testing",
+          "level": 2,
+          "line": 227
+        },
+        {
+          "heading": "Non-Goals and Future Extension",
+          "level": 2,
+          "line": 248
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 18
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-04-navigation-links-and-menus-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 411,
+      "nonEmptyLines": 286,
+      "sections": [
+        {
+          "heading": "Navigation Links And Menus Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 21
+        },
+        {
+          "heading": "User Decisions Captured",
+          "level": 2,
+          "line": 43
+        },
+        {
+          "heading": "Recommended Approach",
+          "level": 2,
+          "line": 52
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 68
+        },
+        {
+          "heading": "Keep Existing High-Level Boundaries",
+          "level": 3,
+          "line": 70
+        },
+        {
+          "heading": "Add `NavigationLinks` Collection",
+          "level": 3,
+          "line": 84
+        },
+        {
+          "heading": "Add `NavigationMenus` Collection",
+          "level": 3,
+          "line": 126
+        },
+        {
+          "heading": "Update `Pages`",
+          "level": 3,
+          "line": 168
+        },
+        {
+          "heading": "Update `Headers`",
+          "level": 3,
+          "line": 201
+        },
+        {
+          "heading": "Update `Footers`",
+          "level": 3,
+          "line": 220
+        },
+        {
+          "heading": "Data Flow",
+          "level": 2,
+          "line": 238
+        },
+        {
+          "heading": "Page Sync Flow",
+          "level": 3,
+          "line": 240
+        },
+        {
+          "heading": "Header Rendering Flow",
+          "level": 3,
+          "line": 254
+        },
+        {
+          "heading": "Footer Rendering Flow",
+          "level": 3,
+          "line": 262
+        },
+        {
+          "heading": "Sync Rules",
+          "level": 2,
+          "line": 270
+        },
+        {
+          "heading": "Creation",
+          "level": 3,
+          "line": 274
+        },
+        {
+          "heading": "Updates",
+          "level": 3,
+          "line": 279
+        },
+        {
+          "heading": "Unsync",
+          "level": 3,
+          "line": 288
+        },
+        {
+          "heading": "Deletion",
+          "level": 3,
+          "line": 298
+        },
+        {
+          "heading": "Admin Experience",
+          "level": 2,
+          "line": 308
+        },
+        {
+          "heading": "Pages",
+          "level": 3,
+          "line": 310
+        },
+        {
+          "heading": "Navigation Links",
+          "level": 3,
+          "line": 320
+        },
+        {
+          "heading": "Navigation Menus",
+          "level": 3,
+          "line": 328
+        },
+        {
+          "heading": "Headers And Footers",
+          "level": 3,
+          "line": 337
+        },
+        {
+          "heading": "Migration Strategy",
+          "level": 2,
+          "line": 345
+        },
+        {
+          "heading": "Error Handling",
+          "level": 2,
+          "line": 364
+        },
+        {
+          "heading": "Testing",
+          "level": 2,
+          "line": 372
+        },
+        {
+          "heading": "Risks",
+          "level": 2,
+          "line": 391
+        },
+        {
+          "heading": "Recommendation Summary",
+          "level": 2,
+          "line": 402
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 31
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-07-cms-foundation-audit-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 242,
+      "nonEmptyLines": 167,
+      "sections": [
+        {
+          "heading": "CMS Foundation Audit Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Product Target",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "Current Project Baseline",
+          "level": 2,
+          "line": 27
+        },
+        {
+          "heading": "Deliverable Shape",
+          "level": 2,
+          "line": 45
+        },
+        {
+          "heading": "Non-Goals",
+          "level": 2,
+          "line": 61
+        },
+        {
+          "heading": "Audit Categories",
+          "level": 2,
+          "line": 73
+        },
+        {
+          "heading": "1. Platform Foundation",
+          "level": 3,
+          "line": 75
+        },
+        {
+          "heading": "2. Content Architecture",
+          "level": 3,
+          "line": 93
+        },
+        {
+          "heading": "3. Editorial Workflows",
+          "level": 3,
+          "line": 110
+        },
+        {
+          "heading": "4. Marketing Operations",
+          "level": 3,
+          "line": 129
+        },
+        {
+          "heading": "5. Starter-Kit Reusability",
+          "level": 3,
+          "line": 146
+        },
+        {
+          "heading": "Evaluation Method",
+          "level": 2,
+          "line": 162
+        },
+        {
+          "heading": "Pass 1: Current-State Audit",
+          "level": 3,
+          "line": 166
+        },
+        {
+          "heading": "Pass 2: Starter-Kit Fitness Test",
+          "level": 3,
+          "line": 186
+        },
+        {
+          "heading": "Prioritization Rules",
+          "level": 2,
+          "line": 198
+        },
+        {
+          "heading": "Roadmap Ordering Principle",
+          "level": 2,
+          "line": 204
+        },
+        {
+          "heading": "Initial Review Focus Areas",
+          "level": 2,
+          "line": 213
+        },
+        {
+          "heading": "Output Quality Bar",
+          "level": 2,
+          "line": 225
+        },
+        {
+          "heading": "Acceptance Criteria",
+          "level": 2,
+          "line": 234
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 20
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-08-articles-reviews-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 415,
+      "nonEmptyLines": 269,
+      "sections": [
+        {
+          "heading": "Articles And Reviews Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Why This Direction",
+          "level": 2,
+          "line": 19
+        },
+        {
+          "heading": "1. Two First-Class Collections",
+          "level": 3,
+          "line": 23
+        },
+        {
+          "heading": "2. Articles As Content, Reviews As Form-Like Records",
+          "level": 3,
+          "line": 34
+        },
+        {
+          "heading": "3. One Generic Entry Model",
+          "level": 3,
+          "line": 40
+        },
+        {
+          "heading": "Decision",
+          "level": 3,
+          "line": 46
+        },
+        {
+          "heading": "Product Contract",
+          "level": 2,
+          "line": 50
+        },
+        {
+          "heading": "Collection Architecture",
+          "level": 2,
+          "line": 63
+        },
+        {
+          "heading": "Articles",
+          "level": 3,
+          "line": 65
+        },
+        {
+          "heading": "Reviews",
+          "level": 3,
+          "line": 83
+        },
+        {
+          "heading": "Field Model",
+          "level": 2,
+          "line": 98
+        },
+        {
+          "heading": "Articles Fields",
+          "level": 3,
+          "line": 100
+        },
+        {
+          "heading": "Reviews Fields",
+          "level": 3,
+          "line": 116
+        },
+        {
+          "heading": "Review Submission Flow",
+          "level": 2,
+          "line": 141
+        },
+        {
+          "heading": "Dedicated Route",
+          "level": 3,
+          "line": 143
+        },
+        {
+          "heading": "Validation Rules",
+          "level": 3,
+          "line": 153
+        },
+        {
+          "heading": "Anti-Spam",
+          "level": 3,
+          "line": 164
+        },
+        {
+          "heading": "Persistence",
+          "level": 3,
+          "line": 173
+        },
+        {
+          "heading": "Moderation",
+          "level": 3,
+          "line": 186
+        },
+        {
+          "heading": "Sample Block Strategy",
+          "level": 2,
+          "line": 196
+        },
+        {
+          "heading": "Admin Capability Model",
+          "level": 2,
+          "line": 218
+        },
+        {
+          "heading": "Admin Behavior",
+          "level": 3,
+          "line": 227
+        },
+        {
+          "heading": "Non-Admin Behavior",
+          "level": 3,
+          "line": 233
+        },
+        {
+          "heading": "Role Defaults",
+          "level": 3,
+          "line": 248
+        },
+        {
+          "heading": "Routing And Frontend Model",
+          "level": 2,
+          "line": 261
+        },
+        {
+          "heading": "Articles Routes",
+          "level": 3,
+          "line": 263
+        },
+        {
+          "heading": "Reviews Routes",
+          "level": 3,
+          "line": 273
+        },
+        {
+          "heading": "Shared Data Helpers",
+          "level": 3,
+          "line": 285
+        },
+        {
+          "heading": "Rendering Model",
+          "level": 2,
+          "line": 297
+        },
+        {
+          "heading": "Articles Rendering",
+          "level": 3,
+          "line": 299
+        },
+        {
+          "heading": "Reviews Rendering",
+          "level": 3,
+          "line": 312
+        },
+        {
+          "heading": "Payload Integration",
+          "level": 2,
+          "line": 326
+        },
+        {
+          "heading": "Testing Strategy",
+          "level": 2,
+          "line": 339
+        },
+        {
+          "heading": "Scope Guardrails",
+          "level": 2,
+          "line": 357
+        },
+        {
+          "heading": "Implementation Boundaries",
+          "level": 2,
+          "line": 370
+        },
+        {
+          "heading": "Sequencing",
+          "level": 2,
+          "line": 394
+        },
+        {
+          "heading": "Success Criteria",
+          "level": 2,
+          "line": 406
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 38
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-08-editorial-first-cms-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 370,
+      "nonEmptyLines": 242,
+      "sections": [
+        {
+          "heading": "Editorial-First CMS Architecture Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Product Position",
+          "level": 2,
+          "line": 20
+        },
+        {
+          "heading": "Primary User Model",
+          "level": 2,
+          "line": 36
+        },
+        {
+          "heading": "Current Status",
+          "level": 2,
+          "line": 52
+        },
+        {
+          "heading": "Architectural Goal",
+          "level": 2,
+          "line": 77
+        },
+        {
+          "heading": "Recommended Approach",
+          "level": 2,
+          "line": 89
+        },
+        {
+          "heading": "1. Expand Features Broadly",
+          "level": 3,
+          "line": 93
+        },
+        {
+          "heading": "2. Productize Infrastructure First",
+          "level": 3,
+          "line": 99
+        },
+        {
+          "heading": "3. Editorial-First CMS Hardening",
+          "level": 3,
+          "line": 105
+        },
+        {
+          "heading": "Decision",
+          "level": 3,
+          "line": 111
+        },
+        {
+          "heading": "Architecture Tracks",
+          "level": 2,
+          "line": 115
+        },
+        {
+          "heading": "Track 1: Editorial Governance",
+          "level": 3,
+          "line": 119
+        },
+        {
+          "heading": "Track 2: Content And Marketing Operations",
+          "level": 3,
+          "line": 149
+        },
+        {
+          "heading": "Track 3: Starter Productization Layer",
+          "level": 3,
+          "line": 229
+        },
+        {
+          "heading": "Track 4: Block Expansion",
+          "level": 3,
+          "line": 271
+        },
+        {
+          "heading": "Ordering",
+          "level": 2,
+          "line": 285
+        },
+        {
+          "heading": "System Boundaries",
+          "level": 2,
+          "line": 298
+        },
+        {
+          "heading": "Non-Goals",
+          "level": 2,
+          "line": 309
+        },
+        {
+          "heading": "Testing Strategy",
+          "level": 2,
+          "line": 321
+        },
+        {
+          "heading": "Documentation Strategy",
+          "level": 2,
+          "line": 338
+        },
+        {
+          "heading": "Success Criteria",
+          "level": 2,
+          "line": 355
+        },
+        {
+          "heading": "Immediate Next Step",
+          "level": 2,
+          "line": 366
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 23
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-08-review-intake-promotion-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 290,
+      "nonEmptyLines": 183,
+      "sections": [
+        {
+          "heading": "Review Intake Promotion Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Why This Direction",
+          "level": 2,
+          "line": 15
+        },
+        {
+          "heading": "1. Recommended: forms for intake, reviews for published content",
+          "level": 3,
+          "line": 19
+        },
+        {
+          "heading": "2. Dual review systems",
+          "level": 3,
+          "line": 28
+        },
+        {
+          "heading": "3. Reviews-only intake",
+          "level": 3,
+          "line": 34
+        },
+        {
+          "heading": "Decision",
+          "level": 3,
+          "line": 40
+        },
+        {
+          "heading": "Product Contract",
+          "level": 2,
+          "line": 44
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 57
+        },
+        {
+          "heading": "Intake Side",
+          "level": 3,
+          "line": 59
+        },
+        {
+          "heading": "Operations Side",
+          "level": 3,
+          "line": 69
+        },
+        {
+          "heading": "Content Side",
+          "level": 3,
+          "line": 79
+        },
+        {
+          "heading": "Data Flow",
+          "level": 2,
+          "line": 91
+        },
+        {
+          "heading": "Schema Changes",
+          "level": 2,
+          "line": 104
+        },
+        {
+          "heading": "Forms",
+          "level": 3,
+          "line": 106
+        },
+        {
+          "heading": "Form Submissions",
+          "level": 3,
+          "line": 116
+        },
+        {
+          "heading": "Reviews",
+          "level": 3,
+          "line": 131
+        },
+        {
+          "heading": "Validation And Mapping",
+          "level": 2,
+          "line": 140
+        },
+        {
+          "heading": "Review Validation",
+          "level": 3,
+          "line": 142
+        },
+        {
+          "heading": "Submission-To-Review Mapping",
+          "level": 3,
+          "line": 158
+        },
+        {
+          "heading": "Idempotency And Failure Handling",
+          "level": 2,
+          "line": 176
+        },
+        {
+          "heading": "Idempotent Promotion",
+          "level": 3,
+          "line": 178
+        },
+        {
+          "heading": "Failure Behavior",
+          "level": 3,
+          "line": 188
+        },
+        {
+          "heading": "Admin Surface",
+          "level": 2,
+          "line": 200
+        },
+        {
+          "heading": "Form Submissions",
+          "level": 3,
+          "line": 204
+        },
+        {
+          "heading": "Reviews",
+          "level": 3,
+          "line": 213
+        },
+        {
+          "heading": "Routing And Frontend Contract",
+          "level": 2,
+          "line": 232
+        },
+        {
+          "heading": "Migration",
+          "level": 2,
+          "line": 245
+        },
+        {
+          "heading": "Verification",
+          "level": 2,
+          "line": 258
+        },
+        {
+          "heading": "Non-Goals",
+          "level": 2,
+          "line": 270
+        },
+        {
+          "heading": "Recommendation",
+          "level": 2,
+          "line": 280
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 31
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-08-vercel-postgres-runtime-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 229,
+      "nonEmptyLines": 142,
+      "sections": [
+        {
+          "heading": "Vercel Postgres Runtime Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Why This Direction",
+          "level": 2,
+          "line": 17
+        },
+        {
+          "heading": "Product Contract",
+          "level": 2,
+          "line": 33
+        },
+        {
+          "heading": "Current Baseline",
+          "level": 2,
+          "line": 48
+        },
+        {
+          "heading": "Recommended Approach",
+          "level": 2,
+          "line": 60
+        },
+        {
+          "heading": "1. SQLite Everywhere",
+          "level": 3,
+          "line": 64
+        },
+        {
+          "heading": "2. SQLite Local, Postgres On Vercel",
+          "level": 3,
+          "line": 70
+        },
+        {
+          "heading": "3. Postgres Everywhere",
+          "level": 3,
+          "line": 76
+        },
+        {
+          "heading": "Decision",
+          "level": 3,
+          "line": 82
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 86
+        },
+        {
+          "heading": "Runtime Configuration",
+          "level": 3,
+          "line": 88
+        },
+        {
+          "heading": "Provider Boundary",
+          "level": 3,
+          "line": 101
+        },
+        {
+          "heading": "Payload Config Integration",
+          "level": 3,
+          "line": 113
+        },
+        {
+          "heading": "Deployment Contract",
+          "level": 3,
+          "line": 119
+        },
+        {
+          "heading": "Validation Rules",
+          "level": 2,
+          "line": 129
+        },
+        {
+          "heading": "Database Rules",
+          "level": 3,
+          "line": 133
+        },
+        {
+          "heading": "Email Rules",
+          "level": 3,
+          "line": 140
+        },
+        {
+          "heading": "Toolchain Contract",
+          "level": 2,
+          "line": 148
+        },
+        {
+          "heading": "Documentation Changes",
+          "level": 2,
+          "line": 160
+        },
+        {
+          "heading": "Testing Strategy",
+          "level": 2,
+          "line": 180
+        },
+        {
+          "heading": "Rollout",
+          "level": 2,
+          "line": 194
+        },
+        {
+          "heading": "Non-Goals",
+          "level": 2,
+          "line": 208
+        },
+        {
+          "heading": "Success Criteria",
+          "level": 2,
+          "line": 221
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 24
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-form-submissions-lead-operations-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 352,
+      "nonEmptyLines": 233,
+      "sections": [
+        {
+          "heading": "Form Submissions Lead Operations Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Why This Direction",
+          "level": 2,
+          "line": 17
+        },
+        {
+          "heading": "1. Recommended: one common operations model for all form submissions",
+          "level": 3,
+          "line": 21
+        },
+        {
+          "heading": "2. Mixed submission models",
+          "level": 3,
+          "line": 27
+        },
+        {
+          "heading": "3. CRM-like workflow now",
+          "level": 3,
+          "line": 33
+        },
+        {
+          "heading": "Decision",
+          "level": 3,
+          "line": 39
+        },
+        {
+          "heading": "Product Contract",
+          "level": 2,
+          "line": 43
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 56
+        },
+        {
+          "heading": "Single Submission Surface",
+          "level": 3,
+          "line": 58
+        },
+        {
+          "heading": "Intent-Driven Behavior",
+          "level": 3,
+          "line": 71
+        },
+        {
+          "heading": "Operator Surface",
+          "level": 3,
+          "line": 85
+        },
+        {
+          "heading": "Schema Changes",
+          "level": 2,
+          "line": 99
+        },
+        {
+          "heading": "Forms",
+          "level": 3,
+          "line": 101
+        },
+        {
+          "heading": "Form Submissions",
+          "level": 3,
+          "line": 114
+        },
+        {
+          "heading": "Submission Lifecycle",
+          "level": 2,
+          "line": 155
+        },
+        {
+          "heading": "General",
+          "level": 3,
+          "line": 168
+        },
+        {
+          "heading": "Lead",
+          "level": 3,
+          "line": 174
+        },
+        {
+          "heading": "Review",
+          "level": 3,
+          "line": 180
+        },
+        {
+          "heading": "Manual Assignment Constraint",
+          "level": 2,
+          "line": 186
+        },
+        {
+          "heading": "Metadata Capture",
+          "level": 2,
+          "line": 199
+        },
+        {
+          "heading": "Event And Integration Seam",
+          "level": 2,
+          "line": 218
+        },
+        {
+          "heading": "Admin UX",
+          "level": 2,
+          "line": 242
+        },
+        {
+          "heading": "Field Behavior",
+          "level": 2,
+          "line": 265
+        },
+        {
+          "heading": "Immutable Intake Fields",
+          "level": 3,
+          "line": 267
+        },
+        {
+          "heading": "Operator-Managed Fields",
+          "level": 3,
+          "line": 280
+        },
+        {
+          "heading": "Derived Operator Activity",
+          "level": 3,
+          "line": 288
+        },
+        {
+          "heading": "Review Compatibility",
+          "level": 2,
+          "line": 301
+        },
+        {
+          "heading": "Verification",
+          "level": 2,
+          "line": 314
+        },
+        {
+          "heading": "Non-Goals",
+          "level": 2,
+          "line": 328
+        },
+        {
+          "heading": "Recommendation",
+          "level": 2,
+          "line": 341
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 31
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-homepage-e2e-seeding-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 146,
+      "nonEmptyLines": 88,
+      "sections": [
+        {
+          "heading": "Homepage E2E Seeding Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Why This Direction",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "1. Recommended: seed a published homepage in e2e setup and point `PageSettings.homepage` to it",
+          "level": 3,
+          "line": 15
+        },
+        {
+          "heading": "2. Seed only the homepage reference and assume a page already exists",
+          "level": 3,
+          "line": 21
+        },
+        {
+          "heading": "3. Add runtime fallback behavior for `/`",
+          "level": 3,
+          "line": 27
+        },
+        {
+          "heading": "Decision",
+          "level": 3,
+          "line": 33
+        },
+        {
+          "heading": "Product Contract",
+          "level": 2,
+          "line": 37
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 49
+        },
+        {
+          "heading": "Test-Owned Homepage State",
+          "level": 3,
+          "line": 51
+        },
+        {
+          "heading": "Dedicated Seed Helper",
+          "level": 3,
+          "line": 64
+        },
+        {
+          "heading": "Keep Admin E2E Scope Stable",
+          "level": 3,
+          "line": 79
+        },
+        {
+          "heading": "Seeded Homepage Content",
+          "level": 2,
+          "line": 91
+        },
+        {
+          "heading": "Verification Strategy",
+          "level": 2,
+          "line": 106
+        },
+        {
+          "heading": "Error Handling",
+          "level": 2,
+          "line": 117
+        },
+        {
+          "heading": "Non-Goals",
+          "level": 2,
+          "line": 129
+        },
+        {
+          "heading": "Testing",
+          "level": 2,
+          "line": 139
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 17
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-media-governance-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 203,
+      "nonEmptyLines": 126,
+      "sections": [
+        {
+          "heading": "Media Governance Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Why This Direction",
+          "level": 2,
+          "line": 16
+        },
+        {
+          "heading": "1. Recommended: explicit usage resolver over known structured references",
+          "level": 3,
+          "line": 20
+        },
+        {
+          "heading": "2. Generic recursive reference scanning",
+          "level": 3,
+          "line": 26
+        },
+        {
+          "heading": "3. Database-heavy join logic",
+          "level": 3,
+          "line": 32
+        },
+        {
+          "heading": "Decision",
+          "level": 3,
+          "line": 38
+        },
+        {
+          "heading": "Product Contract",
+          "level": 2,
+          "line": 42
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 55
+        },
+        {
+          "heading": "One Media Collection",
+          "level": 3,
+          "line": 57
+        },
+        {
+          "heading": "Explicit Usage Resolver",
+          "level": 3,
+          "line": 69
+        },
+        {
+          "heading": "Field-Level Visibility",
+          "level": 3,
+          "line": 87
+        },
+        {
+          "heading": "Schema Changes",
+          "level": 2,
+          "line": 98
+        },
+        {
+          "heading": "Media Governance Fields",
+          "level": 3,
+          "line": 100
+        },
+        {
+          "heading": "Admin-Facing Usage Fields",
+          "level": 3,
+          "line": 113
+        },
+        {
+          "heading": "Deletion Safety Model",
+          "level": 2,
+          "line": 124
+        },
+        {
+          "heading": "Operator Workflow",
+          "level": 2,
+          "line": 142
+        },
+        {
+          "heading": "Resolver Coverage",
+          "level": 2,
+          "line": 154
+        },
+        {
+          "heading": "Explicit Limits",
+          "level": 2,
+          "line": 168
+        },
+        {
+          "heading": "Error Handling",
+          "level": 2,
+          "line": 181
+        },
+        {
+          "heading": "Testing",
+          "level": 2,
+          "line": 193
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 21
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-operator-guides-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 320,
+      "nonEmptyLines": 221,
+      "sections": [
+        {
+          "heading": "Operator Guides Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Why This Work Matters",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 20
+        },
+        {
+          "heading": "Audience",
+          "level": 2,
+          "line": 39
+        },
+        {
+          "heading": "Documentation Architecture",
+          "level": 2,
+          "line": 56
+        },
+        {
+          "heading": "Guide Template",
+          "level": 2,
+          "line": 95
+        },
+        {
+          "heading": "1. What This Section Is",
+          "level": 3,
+          "line": 99
+        },
+        {
+          "heading": "2. When To Use It",
+          "level": 3,
+          "line": 107
+        },
+        {
+          "heading": "3. How It Connects To The Website",
+          "level": 3,
+          "line": 115
+        },
+        {
+          "heading": "4. Step-By-Step Medical College Example",
+          "level": 3,
+          "line": 123
+        },
+        {
+          "heading": "5. Best Practices",
+          "level": 3,
+          "line": 131
+        },
+        {
+          "heading": "6. Common Mistakes And Recovery",
+          "level": 3,
+          "line": 139
+        },
+        {
+          "heading": "7. Related Guides",
+          "level": 3,
+          "line": 147
+        },
+        {
+          "heading": "Shared Example Website",
+          "level": 2,
+          "line": 154
+        },
+        {
+          "heading": "Example mappings",
+          "level": 3,
+          "line": 162
+        },
+        {
+          "heading": "Index Guide Responsibilities",
+          "level": 2,
+          "line": 207
+        },
+        {
+          "heading": "Writing Style",
+          "level": 2,
+          "line": 230
+        },
+        {
+          "heading": "Relationship To Existing Docs",
+          "level": 2,
+          "line": 245
+        },
+        {
+          "heading": "Risks And Design Choices",
+          "level": 2,
+          "line": 256
+        },
+        {
+          "heading": "Option 1: short per-section notes",
+          "level": 3,
+          "line": 258
+        },
+        {
+          "heading": "Option 2: full operator manual with per-section guides",
+          "level": 3,
+          "line": 270
+        },
+        {
+          "heading": "Option 3: one large handbook",
+          "level": 3,
+          "line": 284
+        },
+        {
+          "heading": "Decision",
+          "level": 2,
+          "line": 296
+        },
+        {
+          "heading": "Success Criteria",
+          "level": 2,
+          "line": 302
+        },
+        {
+          "heading": "Testing And Review Impact",
+          "level": 2,
+          "line": 312
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 26
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-playwright-readiness-route-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 130,
+      "nonEmptyLines": 77,
+      "sections": [
+        {
+          "heading": "Playwright Readiness Route Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Why This Direction",
+          "level": 2,
+          "line": 17
+        },
+        {
+          "heading": "1. Recommended: point Playwright `webServer.url` at an always-live route such as `/admin`",
+          "level": 3,
+          "line": 21
+        },
+        {
+          "heading": "2. Keep readiness on `/` and move homepage seeding earlier",
+          "level": 3,
+          "line": 27
+        },
+        {
+          "heading": "3. Add runtime fallback behavior for `/`",
+          "level": 3,
+          "line": 33
+        },
+        {
+          "heading": "Decision",
+          "level": 3,
+          "line": 39
+        },
+        {
+          "heading": "Product Contract",
+          "level": 2,
+          "line": 43
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 53
+        },
+        {
+          "heading": "Separate Startup Health From Content Readiness",
+          "level": 3,
+          "line": 55
+        },
+        {
+          "heading": "Use An Always-Live Payload Route",
+          "level": 3,
+          "line": 66
+        },
+        {
+          "heading": "Preserve Homepage Seeding",
+          "level": 3,
+          "line": 80
+        },
+        {
+          "heading": "Verification Strategy",
+          "level": 2,
+          "line": 90
+        },
+        {
+          "heading": "Error Handling",
+          "level": 2,
+          "line": 101
+        },
+        {
+          "heading": "Non-Goals",
+          "level": 2,
+          "line": 113
+        },
+        {
+          "heading": "Testing",
+          "level": 2,
+          "line": 123
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 16
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-playwright-sqlite-worker-serialization-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 118,
+      "nonEmptyLines": 71,
+      "sections": [
+        {
+          "heading": "Playwright SQLite Worker Serialization Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Why This Direction",
+          "level": 2,
+          "line": 16
+        },
+        {
+          "heading": "1. Recommended: run Playwright with `workers: 1`",
+          "level": 3,
+          "line": 20
+        },
+        {
+          "heading": "2. Per-worker isolated databases",
+          "level": 3,
+          "line": 26
+        },
+        {
+          "heading": "3. Switch local e2e to Postgres",
+          "level": 3,
+          "line": 32
+        },
+        {
+          "heading": "Decision",
+          "level": 3,
+          "line": 38
+        },
+        {
+          "heading": "Product Contract",
+          "level": 2,
+          "line": 42
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 53
+        },
+        {
+          "heading": "Serialize Browser Workers",
+          "level": 3,
+          "line": 55
+        },
+        {
+          "heading": "Keep Existing Test Ownership",
+          "level": 3,
+          "line": 66
+        },
+        {
+          "heading": "Verification Strategy",
+          "level": 2,
+          "line": 78
+        },
+        {
+          "heading": "Error Handling",
+          "level": 2,
+          "line": 89
+        },
+        {
+          "heading": "Non-Goals",
+          "level": 2,
+          "line": 101
+        },
+        {
+          "heading": "Testing",
+          "level": 2,
+          "line": 111
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 15
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-pnpm-startup-contract-fix-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 138,
+      "nonEmptyLines": 83,
+      "sections": [
+        {
+          "heading": "pnpm Startup Contract Fix Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Why This Direction",
+          "level": 2,
+          "line": 17
+        },
+        {
+          "heading": "1. Recommended: commit a no-op root `.pnpmfile.mjs`",
+          "level": 3,
+          "line": 21
+        },
+        {
+          "heading": "2. Bypass pnpm only inside Playwright",
+          "level": 3,
+          "line": 31
+        },
+        {
+          "heading": "3. Remove the expectation indirectly",
+          "level": 3,
+          "line": 37
+        },
+        {
+          "heading": "Decision",
+          "level": 3,
+          "line": 43
+        },
+        {
+          "heading": "Product Contract",
+          "level": 2,
+          "line": 47
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 60
+        },
+        {
+          "heading": "Repo-Level Compatibility File",
+          "level": 3,
+          "line": 62
+        },
+        {
+          "heading": "No-Op Behavior",
+          "level": 3,
+          "line": 72
+        },
+        {
+          "heading": "Keep Existing Commands",
+          "level": 3,
+          "line": 86
+        },
+        {
+          "heading": "Verification Strategy",
+          "level": 2,
+          "line": 97
+        },
+        {
+          "heading": "Error Handling",
+          "level": 2,
+          "line": 107
+        },
+        {
+          "heading": "Non-Goals",
+          "level": 2,
+          "line": 119
+        },
+        {
+          "heading": "Testing",
+          "level": 2,
+          "line": 129
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 16
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-publish-queue-safety-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 263,
+      "nonEmptyLines": 162,
+      "sections": [
+        {
+          "heading": "Publish Queue Safety Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Why This Direction",
+          "level": 2,
+          "line": 17
+        },
+        {
+          "heading": "1. Recommended: publish guard inside the existing workflow enforcement hook",
+          "level": 3,
+          "line": 21
+        },
+        {
+          "heading": "2. Separate queue-blocking hook after workflow enforcement",
+          "level": 3,
+          "line": 33
+        },
+        {
+          "heading": "3. No hard block, only admin warnings",
+          "level": 3,
+          "line": 39
+        },
+        {
+          "heading": "Decision",
+          "level": 3,
+          "line": 45
+        },
+        {
+          "heading": "Product Contract",
+          "level": 2,
+          "line": 49
+        },
+        {
+          "heading": "In Scope",
+          "level": 2,
+          "line": 62
+        },
+        {
+          "heading": "Explicit Non-Goals",
+          "level": 2,
+          "line": 73
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 84
+        },
+        {
+          "heading": "Guard Placement",
+          "level": 3,
+          "line": 86
+        },
+        {
+          "heading": "Blocking Rule",
+          "level": 3,
+          "line": 102
+        },
+        {
+          "heading": "Why `in_progress` Does Not Block",
+          "level": 3,
+          "line": 126
+        },
+        {
+          "heading": "Source Mapping",
+          "level": 3,
+          "line": 137
+        },
+        {
+          "heading": "Error Contract",
+          "level": 2,
+          "line": 148
+        },
+        {
+          "heading": "Query Behavior",
+          "level": 2,
+          "line": 165
+        },
+        {
+          "heading": "Safety Boundaries",
+          "level": 2,
+          "line": 180
+        },
+        {
+          "heading": "Scheduling Is Still Allowed",
+          "level": 3,
+          "line": 182
+        },
+        {
+          "heading": "Unsupported Collections Stay Unchanged",
+          "level": 3,
+          "line": 188
+        },
+        {
+          "heading": "Queue Presence Alone Is Not Enough",
+          "level": 3,
+          "line": 201
+        },
+        {
+          "heading": "Relationship To Existing Workflow Rules",
+          "level": 2,
+          "line": 212
+        },
+        {
+          "heading": "Testing Strategy",
+          "level": 2,
+          "line": 224
+        },
+        {
+          "heading": "Migration And Rollout Notes",
+          "level": 2,
+          "line": 244
+        },
+        {
+          "heading": "Success Criteria",
+          "level": 2,
+          "line": 254
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 25
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-role-and-capability-model-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 343,
+      "nonEmptyLines": 232,
+      "sections": [
+        {
+          "heading": "Role And Capability Model Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Why This Change",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 32
+        },
+        {
+          "heading": "User Model",
+          "level": 2,
+          "line": 47
+        },
+        {
+          "heading": "1. Admin",
+          "level": 3,
+          "line": 49
+        },
+        {
+          "heading": "2. Site Manager",
+          "level": 3,
+          "line": 62
+        },
+        {
+          "heading": "3. Content Manager",
+          "level": 3,
+          "line": 78
+        },
+        {
+          "heading": "Recommended Access Boundaries",
+          "level": 2,
+          "line": 92
+        },
+        {
+          "heading": "Admin default",
+          "level": 3,
+          "line": 94
+        },
+        {
+          "heading": "Site Manager default",
+          "level": 3,
+          "line": 107
+        },
+        {
+          "heading": "Content Manager default",
+          "level": 3,
+          "line": 137
+        },
+        {
+          "heading": "Capability Strategy",
+          "level": 2,
+          "line": 170
+        },
+        {
+          "heading": "Recommended behavior",
+          "level": 3,
+          "line": 174
+        },
+        {
+          "heading": "Why this model",
+          "level": 3,
+          "line": 182
+        },
+        {
+          "heading": "Capability Presentation",
+          "level": 2,
+          "line": 194
+        },
+        {
+          "heading": "Content",
+          "level": 3,
+          "line": 200
+        },
+        {
+          "heading": "Structure",
+          "level": 3,
+          "line": 208
+        },
+        {
+          "heading": "Site Controls",
+          "level": 3,
+          "line": 215
+        },
+        {
+          "heading": "Operations",
+          "level": 3,
+          "line": 224
+        },
+        {
+          "heading": "Publishing",
+          "level": 3,
+          "line": 231
+        },
+        {
+          "heading": "Naming Recommendation",
+          "level": 2,
+          "line": 240
+        },
+        {
+          "heading": "Operational Rules",
+          "level": 2,
+          "line": 256
+        },
+        {
+          "heading": "Recommended Migration Mapping",
+          "level": 2,
+          "line": 265
+        },
+        {
+          "heading": "Trade-Offs Considered",
+          "level": 2,
+          "line": 279
+        },
+        {
+          "heading": "Option 1: strict role presets",
+          "level": 3,
+          "line": 281
+        },
+        {
+          "heading": "Option 2: preset roles with full capability overrides",
+          "level": 3,
+          "line": 293
+        },
+        {
+          "heading": "Option 3: capabilities-first model",
+          "level": 3,
+          "line": 305
+        },
+        {
+          "heading": "Decision",
+          "level": 2,
+          "line": 317
+        },
+        {
+          "heading": "Testing Impact",
+          "level": 2,
+          "line": 323
+        },
+        {
+          "heading": "Success Criteria",
+          "level": 2,
+          "line": 335
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 31
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-seo-operations-completeness-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 344,
+      "nonEmptyLines": 224,
+      "sections": [
+        {
+          "heading": "SEO Operations Completeness Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "Why This Phase Now",
+          "level": 2,
+          "line": 22
+        },
+        {
+          "heading": "Product Direction",
+          "level": 2,
+          "line": 35
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 52
+        },
+        {
+          "heading": "In Scope",
+          "level": 3,
+          "line": 54
+        },
+        {
+          "heading": "Out Of Scope",
+          "level": 3,
+          "line": 63
+        },
+        {
+          "heading": "Current-State Assessment",
+          "level": 2,
+          "line": 72
+        },
+        {
+          "heading": "What Exists Already",
+          "level": 3,
+          "line": 74
+        },
+        {
+          "heading": "What Is Missing",
+          "level": 3,
+          "line": 82
+        },
+        {
+          "heading": "Recommended Approach",
+          "level": 2,
+          "line": 92
+        },
+        {
+          "heading": "SEO Ownership Model",
+          "level": 2,
+          "line": 105
+        },
+        {
+          "heading": "Public Content Ownership",
+          "level": 3,
+          "line": 109
+        },
+        {
+          "heading": "Fallback Order",
+          "level": 3,
+          "line": 121
+        },
+        {
+          "heading": "Operational Controls",
+          "level": 3,
+          "line": 132
+        },
+        {
+          "heading": "Field Model",
+          "level": 2,
+          "line": 143
+        },
+        {
+          "heading": "Reusable SEO Field Group",
+          "level": 3,
+          "line": 145
+        },
+        {
+          "heading": "Robots Mode",
+          "level": 3,
+          "line": 160
+        },
+        {
+          "heading": "Sitemap Inclusion Mode",
+          "level": 3,
+          "line": 172
+        },
+        {
+          "heading": "Route Behavior",
+          "level": 2,
+          "line": 188
+        },
+        {
+          "heading": "Pages And Homepage",
+          "level": 3,
+          "line": 190
+        },
+        {
+          "heading": "System Pages",
+          "level": 3,
+          "line": 196
+        },
+        {
+          "heading": "Articles And Reviews",
+          "level": 3,
+          "line": 202
+        },
+        {
+          "heading": "Taxonomy Archives",
+          "level": 3,
+          "line": 206
+        },
+        {
+          "heading": "Sitemap Behavior",
+          "level": 2,
+          "line": 222
+        },
+        {
+          "heading": "Default Inclusion Rules",
+          "level": 3,
+          "line": 226
+        },
+        {
+          "heading": "Included Route Families",
+          "level": 3,
+          "line": 234
+        },
+        {
+          "heading": "Excluded Route Families",
+          "level": 3,
+          "line": 246
+        },
+        {
+          "heading": "Override Rules",
+          "level": 3,
+          "line": 256
+        },
+        {
+          "heading": "Guardrails And Validation",
+          "level": 2,
+          "line": 262
+        },
+        {
+          "heading": "Blocking Rules",
+          "level": 3,
+          "line": 266
+        },
+        {
+          "heading": "Warning Rules",
+          "level": 3,
+          "line": 274
+        },
+        {
+          "heading": "Admin Clarity",
+          "level": 3,
+          "line": 283
+        },
+        {
+          "heading": "Implementation Shape",
+          "level": 2,
+          "line": 293
+        },
+        {
+          "heading": "Testing",
+          "level": 2,
+          "line": 306
+        },
+        {
+          "heading": "Required Coverage",
+          "level": 3,
+          "line": 310
+        },
+        {
+          "heading": "Verification Goal",
+          "level": 3,
+          "line": 319
+        },
+        {
+          "heading": "Risks And Constraints",
+          "level": 2,
+          "line": 328
+        },
+        {
+          "heading": "Non-Goals",
+          "level": 2,
+          "line": 335
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 40
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-starter-productization-and-handoff-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 344,
+      "nonEmptyLines": 229,
+      "sections": [
+        {
+          "heading": "Starter Productization And Handoff Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 19
+        },
+        {
+          "heading": "Why This Phase Now",
+          "level": 2,
+          "line": 23
+        },
+        {
+          "heading": "Product Direction",
+          "level": 2,
+          "line": 36
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 53
+        },
+        {
+          "heading": "In Scope",
+          "level": 3,
+          "line": 55
+        },
+        {
+          "heading": "Out Of Scope",
+          "level": 3,
+          "line": 64
+        },
+        {
+          "heading": "Current-State Assessment",
+          "level": 2,
+          "line": 73
+        },
+        {
+          "heading": "What Exists Already",
+          "level": 3,
+          "line": 75
+        },
+        {
+          "heading": "What Is Missing",
+          "level": 3,
+          "line": 83
+        },
+        {
+          "heading": "Recommended Approach",
+          "level": 2,
+          "line": 91
+        },
+        {
+          "heading": "Productization Artifacts",
+          "level": 2,
+          "line": 104
+        },
+        {
+          "heading": "1. Starter-Specific README",
+          "level": 3,
+          "line": 108
+        },
+        {
+          "heading": "2. Starter Clone Checklist",
+          "level": 3,
+          "line": 122
+        },
+        {
+          "heading": "3. Content Model Map",
+          "level": 3,
+          "line": 139
+        },
+        {
+          "heading": "4. Runtime And Storage Contract",
+          "level": 3,
+          "line": 171
+        },
+        {
+          "heading": "5. Executable Clone-Safety Checks",
+          "level": 3,
+          "line": 185
+        },
+        {
+          "heading": "Runtime Contract Boundaries",
+          "level": 2,
+          "line": 196
+        },
+        {
+          "heading": "Database",
+          "level": 3,
+          "line": 198
+        },
+        {
+          "heading": "Email",
+          "level": 3,
+          "line": 207
+        },
+        {
+          "heading": "Media / Storage",
+          "level": 3,
+          "line": 213
+        },
+        {
+          "heading": "Documentation Model",
+          "level": 2,
+          "line": 225
+        },
+        {
+          "heading": "Developer-Facing Docs",
+          "level": 3,
+          "line": 229
+        },
+        {
+          "heading": "Operator-Facing Docs",
+          "level": 3,
+          "line": 235
+        },
+        {
+          "heading": "Verification Strategy",
+          "level": 2,
+          "line": 248
+        },
+        {
+          "heading": "Required Verification Coverage",
+          "level": 3,
+          "line": 252
+        },
+        {
+          "heading": "Verification Boundaries",
+          "level": 3,
+          "line": 260
+        },
+        {
+          "heading": "Implementation Shape",
+          "level": 2,
+          "line": 274
+        },
+        {
+          "heading": "1. Contract Layer",
+          "level": 3,
+          "line": 278
+        },
+        {
+          "heading": "2. Handoff Docs Layer",
+          "level": 3,
+          "line": 289
+        },
+        {
+          "heading": "3. Executable Verification Layer",
+          "level": 3,
+          "line": 300
+        },
+        {
+          "heading": "Guardrails",
+          "level": 2,
+          "line": 311
+        },
+        {
+          "heading": "Risks And Constraints",
+          "level": 2,
+          "line": 318
+        },
+        {
+          "heading": "Non-Goals",
+          "level": 2,
+          "line": 325
+        },
+        {
+          "heading": "Success Criteria",
+          "level": 2,
+          "line": 336
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 36
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-taxonomy-and-content-organization-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 374,
+      "nonEmptyLines": 241,
+      "sections": [
+        {
+          "heading": "Taxonomy And Content Organization Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Goal",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "Why This Phase Now",
+          "level": 2,
+          "line": 22
+        },
+        {
+          "heading": "Product Direction",
+          "level": 2,
+          "line": 35
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 51
+        },
+        {
+          "heading": "In Scope",
+          "level": 3,
+          "line": 53
+        },
+        {
+          "heading": "Out Of Scope",
+          "level": 3,
+          "line": 64
+        },
+        {
+          "heading": "Current-State Assessment",
+          "level": 2,
+          "line": 74
+        },
+        {
+          "heading": "What Exists Already",
+          "level": 3,
+          "line": 76
+        },
+        {
+          "heading": "What Is Missing",
+          "level": 3,
+          "line": 85
+        },
+        {
+          "heading": "Recommended Approach",
+          "level": 2,
+          "line": 93
+        },
+        {
+          "heading": "Taxonomy Model",
+          "level": 2,
+          "line": 110
+        },
+        {
+          "heading": "Categories",
+          "level": 3,
+          "line": 112
+        },
+        {
+          "heading": "Tags",
+          "level": 3,
+          "line": 136
+        },
+        {
+          "heading": "Relationships On Articles And Reviews",
+          "level": 3,
+          "line": 158
+        },
+        {
+          "heading": "Content-Type Boundaries",
+          "level": 2,
+          "line": 177
+        },
+        {
+          "heading": "Articles",
+          "level": 3,
+          "line": 179
+        },
+        {
+          "heading": "Reviews",
+          "level": 3,
+          "line": 190
+        },
+        {
+          "heading": "Pages",
+          "level": 3,
+          "line": 206
+        },
+        {
+          "heading": "Public-Site Behavior",
+          "level": 2,
+          "line": 218
+        },
+        {
+          "heading": "Archive Routes",
+          "level": 3,
+          "line": 220
+        },
+        {
+          "heading": "Archive Content Rules",
+          "level": 3,
+          "line": 232
+        },
+        {
+          "heading": "Related Content",
+          "level": 3,
+          "line": 242
+        },
+        {
+          "heading": "No Search In This Phase",
+          "level": 3,
+          "line": 255
+        },
+        {
+          "heading": "Editorial Workflow Behavior",
+          "level": 2,
+          "line": 261
+        },
+        {
+          "heading": "Admin Experience",
+          "level": 2,
+          "line": 278
+        },
+        {
+          "heading": "Taxonomy Collections",
+          "level": 3,
+          "line": 280
+        },
+        {
+          "heading": "Article And Review Lists",
+          "level": 3,
+          "line": 293
+        },
+        {
+          "heading": "Architecture Boundaries",
+          "level": 2,
+          "line": 302
+        },
+        {
+          "heading": "Data Ownership",
+          "level": 3,
+          "line": 304
+        },
+        {
+          "heading": "Retrieval Layer",
+          "level": 3,
+          "line": 312
+        },
+        {
+          "heading": "Published-Only Contract",
+          "level": 3,
+          "line": 318
+        },
+        {
+          "heading": "SEO Behavior",
+          "level": 3,
+          "line": 322
+        },
+        {
+          "heading": "Testing Strategy",
+          "level": 2,
+          "line": 328
+        },
+        {
+          "heading": "Success Criteria",
+          "level": 2,
+          "line": 342
+        },
+        {
+          "heading": "Non-Goals",
+          "level": 2,
+          "line": 352
+        },
+        {
+          "heading": "Recommendation",
+          "level": 2,
+          "line": 364
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 38
+      }
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-09-work-queue-design.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 487,
+      "nonEmptyLines": 327,
+      "sections": [
+        {
+          "heading": "Work Queue Design",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Why This Direction",
+          "level": 2,
+          "line": 20
+        },
+        {
+          "heading": "1. Recommended: persisted queue collection with hook-driven sync",
+          "level": 3,
+          "line": 24
+        },
+        {
+          "heading": "2. Computed admin dashboard with no stored queue records",
+          "level": 3,
+          "line": 38
+        },
+        {
+          "heading": "3. Partial queue for only a few collections",
+          "level": 3,
+          "line": 44
+        },
+        {
+          "heading": "Decision",
+          "level": 3,
+          "line": 50
+        },
+        {
+          "heading": "Product Contract",
+          "level": 2,
+          "line": 54
+        },
+        {
+          "heading": "In Scope",
+          "level": 2,
+          "line": 69
+        },
+        {
+          "heading": "Explicit Non-Goals",
+          "level": 2,
+          "line": 93
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 107
+        },
+        {
+          "heading": "Core Model",
+          "level": 3,
+          "line": 109
+        },
+        {
+          "heading": "Queue Creation Model",
+          "level": 3,
+          "line": 128
+        },
+        {
+          "heading": "Collection Coverage Model",
+          "level": 3,
+          "line": 142
+        },
+        {
+          "heading": "Content And Structure Collections",
+          "level": 3,
+          "line": 144
+        },
+        {
+          "heading": "Reviews",
+          "level": 3,
+          "line": 163
+        },
+        {
+          "heading": "Form Submissions",
+          "level": 3,
+          "line": 173
+        },
+        {
+          "heading": "Media",
+          "level": 3,
+          "line": 183
+        },
+        {
+          "heading": "Data Model",
+          "level": 2,
+          "line": 194
+        },
+        {
+          "heading": "Source Identity Fields",
+          "level": 3,
+          "line": 198
+        },
+        {
+          "heading": "Queue Classification Fields",
+          "level": 3,
+          "line": 208
+        },
+        {
+          "heading": "Editable Operational Fields",
+          "level": 3,
+          "line": 229
+        },
+        {
+          "heading": "System Integrity Fields",
+          "level": 3,
+          "line": 245
+        },
+        {
+          "heading": "Admin Experience",
+          "level": 2,
+          "line": 256
+        },
+        {
+          "heading": "Placement",
+          "level": 3,
+          "line": 258
+        },
+        {
+          "heading": "List View",
+          "level": 3,
+          "line": 270
+        },
+        {
+          "heading": "Edit View",
+          "level": 3,
+          "line": 297
+        },
+        {
+          "heading": "Deep Linking",
+          "level": 3,
+          "line": 321
+        },
+        {
+          "heading": "Sync Behavior",
+          "level": 2,
+          "line": 332
+        },
+        {
+          "heading": "Upsert Model",
+          "level": 3,
+          "line": 334
+        },
+        {
+          "heading": "Auto-Resolution",
+          "level": 3,
+          "line": 348
+        },
+        {
+          "heading": "Source Snapshot Updates",
+          "level": 3,
+          "line": 366
+        },
+        {
+          "heading": "Hook Safety",
+          "level": 3,
+          "line": 377
+        },
+        {
+          "heading": "Access Model",
+          "level": 2,
+          "line": 388
+        },
+        {
+          "heading": "Relationship To Operational Audit Events",
+          "level": 2,
+          "line": 406
+        },
+        {
+          "heading": "Testing Strategy",
+          "level": 2,
+          "line": 430
+        },
+        {
+          "heading": "Queue Collection Tests",
+          "level": 3,
+          "line": 432
+        },
+        {
+          "heading": "Source Integration Tests",
+          "level": 3,
+          "line": 444
+        },
+        {
+          "heading": "Admin Behavior Tests",
+          "level": 3,
+          "line": 460
+        },
+        {
+          "heading": "Migration And Rollout Notes",
+          "level": 2,
+          "line": 469
+        },
+        {
+          "heading": "Success Criteria",
+          "level": 2,
+          "line": 477
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 41
+      }
+    }
+  ]
+}

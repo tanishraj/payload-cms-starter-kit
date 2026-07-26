@@ -1,0 +1,1146 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/block-thumbnails/fixtures.tsx",
+      "type": "file",
+      "name": "fixtures.tsx",
+      "filePath": "src/block-thumbnails/fixtures.tsx",
+      "summary": "Defines representative JSX fixtures and media assets used to render thumbnail previews for the project’s page-block catalog.",
+      "tags": [
+        "fixtures",
+        "preview",
+        "component-catalog",
+        "payload-block"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/blocks/ContentHighlights/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/ContentHighlights/Component.tsx",
+      "summary": "Adapts Payload content-highlight block data into validated highlight items, resolved links, actions, and appearance props for the presentation component.",
+      "tags": [
+        "component",
+        "payload-block",
+        "cms-adapter",
+        "content-highlights"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/Cta39/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/Cta39/Component.tsx",
+      "summary": "Renders a centered call-to-action block by normalizing CMS copy, actions, spacing, and theme-aware appearance classes.",
+      "tags": [
+        "component",
+        "payload-block",
+        "cms-adapter",
+        "cta39"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/FeatureMatrix/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/FeatureMatrix/Component.tsx",
+      "summary": "Transforms CMS feature rows and media into the reusable feature-matrix presentation, including optional borders, alignment, and actions.",
+      "tags": [
+        "component",
+        "payload-block",
+        "cms-adapter",
+        "feature-matrix"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/FeatureSpotlight/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/FeatureSpotlight/Component.tsx",
+      "summary": "Renders a configurable feature spotlight with split or stacked layouts, responsive media placement, CMS actions, and theme-aware styling.",
+      "tags": [
+        "component",
+        "payload-block",
+        "cms-adapter",
+        "feature-spotlight"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/blocks/Footer56/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/Footer56/Component.tsx",
+      "summary": "Builds footer presentation data from site identity, navigation groups, legal pages, contact details, social links, and configured logo media.",
+      "tags": [
+        "component",
+        "payload-block",
+        "navigation",
+        "site-footer"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/GalleryShowcase/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/GalleryShowcase/Component.tsx",
+      "summary": "Normalizes CMS gallery images, captions, positions, header copy, and actions for the gallery-showcase presentation component.",
+      "tags": [
+        "component",
+        "payload-block",
+        "cms-adapter",
+        "gallery-showcase"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/HeroBanner/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/HeroBanner/Component.tsx",
+      "summary": "Renders the hero banner across responsive heights, alignments, overlays, themes, background media, and linked call-to-action buttons.",
+      "tags": [
+        "component",
+        "payload-block",
+        "hero",
+        "responsive-layout"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/blocks/ImageMosaic/Component.tsx",
+      "type": "file",
+      "name": "Component.tsx",
+      "filePath": "src/blocks/ImageMosaic/Component.tsx",
+      "summary": "Maps CMS image-mosaic entries into resolved image and link data while applying block appearance, overlay, alignment, and action settings.",
+      "tags": [
+        "component",
+        "payload-block",
+        "cms-adapter",
+        "image-mosaic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "type": "file",
+      "name": "Presentation.tsx",
+      "filePath": "src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "summary": "Presents prepared news and event cards with normalized heading content, actions, empty-state copy, alignment, size, and block appearance.",
+      "tags": [
+        "component",
+        "payload-block",
+        "news-events",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/blocks/NewsEventsHighlights/PreviewComponent.tsx",
+      "type": "file",
+      "name": "PreviewComponent.tsx",
+      "filePath": "src/blocks/NewsEventsHighlights/PreviewComponent.tsx",
+      "summary": "Adapts live-preview news-event snapshots into the standard highlights presentation using configured preview item counts.",
+      "tags": [
+        "component",
+        "payload-block",
+        "live-preview",
+        "news-events"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/blocks/PageBlockStack.tsx",
+      "type": "file",
+      "name": "PageBlockStack.tsx",
+      "filePath": "src/blocks/PageBlockStack.tsx",
+      "summary": "Provides the shared wrapper that stacks rendered Payload page blocks in document order.",
+      "tags": [
+        "component",
+        "layout",
+        "payload-block",
+        "wrapper"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/block-thumbnails/fixtures.tsx:richTextParagraph",
+      "type": "function",
+      "name": "richTextParagraph",
+      "filePath": "src/block-thumbnails/fixtures.tsx",
+      "lineRange": [
+        38,
+        68
+      ],
+      "summary": "Creates a minimal Lexical paragraph document from plain text for use in preview fixtures.",
+      "tags": [
+        "utility",
+        "data-transformation",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/block-thumbnails/fixtures.tsx:getBlockThumbnailFixture",
+      "type": "function",
+      "name": "getBlockThumbnailFixture",
+      "filePath": "src/block-thumbnails/fixtures.tsx",
+      "lineRange": [
+        825,
+        833
+      ],
+      "summary": "Returns the registered thumbnail fixture for a requested block slug.",
+      "tags": [
+        "utility",
+        "data-transformation",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/ContentHighlights/Component.tsx:ContentHighlightsBlockComponent",
+      "type": "function",
+      "name": "ContentHighlightsBlockComponent",
+      "filePath": "src/blocks/ContentHighlights/Component.tsx",
+      "lineRange": [
+        40,
+        117
+      ],
+      "summary": "Validates highlight items and resolves their links and actions before rendering the content-highlights view.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/Cta39/Component.tsx:Cta39BlockComponent",
+      "type": "function",
+      "name": "Cta39BlockComponent",
+      "filePath": "src/blocks/Cta39/Component.tsx",
+      "lineRange": [
+        29,
+        81
+      ],
+      "summary": "Normalizes call-to-action content and renders the CTA with configured appearance and alignment.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/FeatureMatrix/Component.tsx:FeatureMatrixBlockComponent",
+      "type": "function",
+      "name": "FeatureMatrixBlockComponent",
+      "filePath": "src/blocks/FeatureMatrix/Component.tsx",
+      "lineRange": [
+        34,
+        90
+      ],
+      "summary": "Builds presentation-ready feature rows from CMS media and content and renders the feature matrix.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/FeatureSpotlight/Component.tsx:FeatureSpotlightBlockComponent",
+      "type": "function",
+      "name": "FeatureSpotlightBlockComponent",
+      "filePath": "src/blocks/FeatureSpotlight/Component.tsx",
+      "lineRange": [
+        69,
+        293
+      ],
+      "summary": "Coordinates responsive spotlight layouts, media behavior, actions, and theme-aware visual treatments.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/blocks/Footer56/Component.tsx:resolveSections",
+      "type": "function",
+      "name": "resolveSections",
+      "filePath": "src/blocks/Footer56/Component.tsx",
+      "lineRange": [
+        54,
+        74
+      ],
+      "summary": "Converts configured footer link groups into titled sections containing only valid resolved links.",
+      "tags": [
+        "utility",
+        "data-transformation",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/Footer56/Component.tsx:resolveSocialLinks",
+      "type": "function",
+      "name": "resolveSocialLinks",
+      "filePath": "src/blocks/Footer56/Component.tsx",
+      "lineRange": [
+        76,
+        107
+      ],
+      "summary": "Transforms configured social URLs into labeled footer links paired with the correct platform icons.",
+      "tags": [
+        "utility",
+        "data-transformation",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/Footer56/Component.tsx:resolveLegalLinks",
+      "type": "function",
+      "name": "resolveLegalLinks",
+      "filePath": "src/blocks/Footer56/Component.tsx",
+      "lineRange": [
+        109,
+        127
+      ],
+      "summary": "Combines custom bottom links with privacy and terms pages into normalized footer legal links.",
+      "tags": [
+        "utility",
+        "data-transformation",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/Footer56/Component.tsx:Footer56BlockComponent",
+      "type": "function",
+      "name": "Footer56BlockComponent",
+      "filePath": "src/blocks/Footer56/Component.tsx",
+      "lineRange": [
+        129,
+        200
+      ],
+      "summary": "Assembles site identity, navigation, social, legal, and contact data for the footer presentation.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/GalleryShowcase/Component.tsx:GalleryShowcaseBlockComponent",
+      "type": "function",
+      "name": "GalleryShowcaseBlockComponent",
+      "filePath": "src/blocks/GalleryShowcase/Component.tsx",
+      "lineRange": [
+        31,
+        85
+      ],
+      "summary": "Normalizes gallery media records and actions before rendering the showcase layout.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/HeroBanner/Component.tsx:HeroBannerBlockComponent",
+      "type": "function",
+      "name": "HeroBannerBlockComponent",
+      "filePath": "src/blocks/HeroBanner/Component.tsx",
+      "lineRange": [
+        128,
+        296
+      ],
+      "summary": "Renders responsive hero content, media overlays, alignment, theme behavior, and CMS-linked actions.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/ImageMosaic/Component.tsx:ImageMosaicBlockComponent",
+      "type": "function",
+      "name": "ImageMosaicBlockComponent",
+      "filePath": "src/blocks/ImageMosaic/Component.tsx",
+      "lineRange": [
+        38,
+        116
+      ],
+      "summary": "Converts CMS mosaic entries into presentation-ready images, overlays, links, and actions.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/blocks/NewsEventsHighlights/Presentation.tsx:NewsEventsHighlightsBlockPresentation",
+      "type": "function",
+      "name": "NewsEventsHighlightsBlockPresentation",
+      "filePath": "src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "lineRange": [
+        29,
+        72
+      ],
+      "summary": "Renders prepared news and event cards with normalized header content, actions, and empty-state behavior.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/NewsEventsHighlights/PreviewComponent.tsx:NewsEventsHighlightsPreviewBlockComponent",
+      "type": "function",
+      "name": "NewsEventsHighlightsPreviewBlockComponent",
+      "filePath": "src/blocks/NewsEventsHighlights/PreviewComponent.tsx",
+      "lineRange": [
+        12,
+        24
+      ],
+      "summary": "Selects preview news and event items from snapshot data and delegates to the shared presentation.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/blocks/PageBlockStack.tsx:PageBlockStack",
+      "type": "function",
+      "name": "PageBlockStack",
+      "filePath": "src/blocks/PageBlockStack.tsx",
+      "lineRange": [
+        7,
+        13
+      ],
+      "summary": "Wraps rendered page blocks in the common page-layout stack.",
+      "tags": [
+        "component",
+        "rendering",
+        "payload-block"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/block-thumbnails/definitions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/Announcement/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/ContentHighlights/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/Cta39/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/FeatureMatrix/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/FeatureSpotlight/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/Footer56/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/GalleryShowcase/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/HeaderNavbar12/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/HeroBanner/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/ImageMosaic/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/ProfileCarousel/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/QaAccordion/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/RatingSpotlight/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/ReviewSubmission/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/Services21/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/StatsStrip/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/System404/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/SystemComingSoon/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/blocks/SystemMaintenance/Component.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/components/review-feed.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "file:src/components/team-showcase.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ContentHighlights/Component.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ContentHighlights/Component.tsx",
+      "target": "file:src/components/ContentActions.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ContentHighlights/Component.tsx",
+      "target": "file:src/components/content-highlights.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ContentHighlights/Component.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Cta39/Component.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Cta39/Component.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Cta39/Component.tsx",
+      "target": "file:src/components/ContentActions.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Cta39/Component.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Cta39/Component.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureMatrix/Component.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureMatrix/Component.tsx",
+      "target": "file:src/components/ContentActions.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureMatrix/Component.tsx",
+      "target": "file:src/components/feature-matrix.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureMatrix/Component.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureMatrix/Component.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureSpotlight/Component.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureSpotlight/Component.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureSpotlight/Component.tsx",
+      "target": "file:src/components/ContentActions.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureSpotlight/Component.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureSpotlight/Component.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/FeatureSpotlight/Component.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Footer56/Component.tsx",
+      "target": "file:src/components/footer56.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Footer56/Component.tsx",
+      "target": "file:src/components/site/SiteLogo.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Footer56/Component.tsx",
+      "target": "file:src/lib/headerNavigation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Footer56/Component.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/Footer56/Component.tsx",
+      "target": "file:src/lib/pagePaths.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/GalleryShowcase/Component.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/GalleryShowcase/Component.tsx",
+      "target": "file:src/components/ContentActions.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/GalleryShowcase/Component.tsx",
+      "target": "file:src/components/gallery-showcase.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/GalleryShowcase/Component.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/GalleryShowcase/Component.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeroBanner/Component.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeroBanner/Component.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeroBanner/Component.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeroBanner/Component.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/HeroBanner/Component.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ImageMosaic/Component.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ImageMosaic/Component.tsx",
+      "target": "file:src/components/ContentActions.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ImageMosaic/Component.tsx",
+      "target": "file:src/components/image-mosaic.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ImageMosaic/Component.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/ImageMosaic/Component.tsx",
+      "target": "file:src/lib/media.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "target": "file:src/components/ContentActions.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "target": "file:src/components/news-events/NewsEventsHighlights.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "target": "file:src/lib/cmsLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "target": "file:src/lib/newsEventsShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/PreviewComponent.tsx",
+      "target": "file:src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/PreviewComponent.tsx",
+      "target": "file:src/lib/newsEventsPreviewShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/PreviewComponent.tsx",
+      "target": "file:src/lib/newsEventsShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "function:src/block-thumbnails/fixtures.tsx:richTextParagraph",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "function:src/block-thumbnails/fixtures.tsx:getBlockThumbnailFixture",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/block-thumbnails/fixtures.tsx",
+      "target": "function:src/block-thumbnails/fixtures.tsx:getBlockThumbnailFixture",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/ContentHighlights/Component.tsx",
+      "target": "function:src/blocks/ContentHighlights/Component.tsx:ContentHighlightsBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/ContentHighlights/Component.tsx",
+      "target": "function:src/blocks/ContentHighlights/Component.tsx:ContentHighlightsBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/Cta39/Component.tsx",
+      "target": "function:src/blocks/Cta39/Component.tsx:Cta39BlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/Cta39/Component.tsx",
+      "target": "function:src/blocks/Cta39/Component.tsx:Cta39BlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/FeatureMatrix/Component.tsx",
+      "target": "function:src/blocks/FeatureMatrix/Component.tsx:FeatureMatrixBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/FeatureMatrix/Component.tsx",
+      "target": "function:src/blocks/FeatureMatrix/Component.tsx:FeatureMatrixBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/FeatureSpotlight/Component.tsx",
+      "target": "function:src/blocks/FeatureSpotlight/Component.tsx:FeatureSpotlightBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/FeatureSpotlight/Component.tsx",
+      "target": "function:src/blocks/FeatureSpotlight/Component.tsx:FeatureSpotlightBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/Footer56/Component.tsx",
+      "target": "function:src/blocks/Footer56/Component.tsx:resolveSections",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/Footer56/Component.tsx",
+      "target": "function:src/blocks/Footer56/Component.tsx:resolveSocialLinks",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/Footer56/Component.tsx",
+      "target": "function:src/blocks/Footer56/Component.tsx:resolveLegalLinks",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/Footer56/Component.tsx",
+      "target": "function:src/blocks/Footer56/Component.tsx:Footer56BlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/Footer56/Component.tsx",
+      "target": "function:src/blocks/Footer56/Component.tsx:Footer56BlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/GalleryShowcase/Component.tsx",
+      "target": "function:src/blocks/GalleryShowcase/Component.tsx:GalleryShowcaseBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/GalleryShowcase/Component.tsx",
+      "target": "function:src/blocks/GalleryShowcase/Component.tsx:GalleryShowcaseBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/HeroBanner/Component.tsx",
+      "target": "function:src/blocks/HeroBanner/Component.tsx:HeroBannerBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/HeroBanner/Component.tsx",
+      "target": "function:src/blocks/HeroBanner/Component.tsx:HeroBannerBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/ImageMosaic/Component.tsx",
+      "target": "function:src/blocks/ImageMosaic/Component.tsx:ImageMosaicBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/ImageMosaic/Component.tsx",
+      "target": "function:src/blocks/ImageMosaic/Component.tsx:ImageMosaicBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "target": "function:src/blocks/NewsEventsHighlights/Presentation.tsx:NewsEventsHighlightsBlockPresentation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "target": "function:src/blocks/NewsEventsHighlights/Presentation.tsx:NewsEventsHighlightsBlockPresentation",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/PreviewComponent.tsx",
+      "target": "function:src/blocks/NewsEventsHighlights/PreviewComponent.tsx:NewsEventsHighlightsPreviewBlockComponent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/NewsEventsHighlights/PreviewComponent.tsx",
+      "target": "function:src/blocks/NewsEventsHighlights/PreviewComponent.tsx:NewsEventsHighlightsPreviewBlockComponent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/blocks/PageBlockStack.tsx",
+      "target": "function:src/blocks/PageBlockStack.tsx:PageBlockStack",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/blocks/PageBlockStack.tsx",
+      "target": "function:src/blocks/PageBlockStack.tsx:PageBlockStack",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

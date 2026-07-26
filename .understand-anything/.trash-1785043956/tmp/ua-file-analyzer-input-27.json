@@ -1,0 +1,182 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": ".npmrc",
+      "language": "unknown",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": ".pnpmfile.mjs",
+      "language": "javascript",
+      "sizeLines": 3,
+      "fileCategory": "code"
+    },
+    {
+      "path": ".yarnrc",
+      "language": "unknown",
+      "sizeLines": 1,
+      "fileCategory": "code"
+    },
+    {
+      "path": "docs/architecture/content-model-map.md",
+      "language": "markdown",
+      "sizeLines": 62,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/users.md",
+      "language": "markdown",
+      "sizeLines": 81,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/guides/work-queue.md",
+      "language": "markdown",
+      "sizeLines": 77,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-20-regular-block-responsive-spacing.md",
+      "language": "markdown",
+      "sizeLines": 192,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-21-content-highlights-layouts.md",
+      "language": "markdown",
+      "sizeLines": 877,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/superpowers/reviews/2026-07-07-cms-foundation-audit.md",
+      "language": "markdown",
+      "sizeLines": 175,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "eslint.config.mjs",
+      "language": "javascript",
+      "sizeLines": 31,
+      "fileCategory": "code"
+    },
+    {
+      "path": "next.config.ts",
+      "language": "typescript",
+      "sizeLines": 31,
+      "fileCategory": "code"
+    },
+    {
+      "path": "playwright.config.ts",
+      "language": "typescript",
+      "sizeLines": 41,
+      "fileCategory": "code"
+    },
+    {
+      "path": "postcss.config.mjs",
+      "language": "javascript",
+      "sizeLines": 5,
+      "fileCategory": "code"
+    },
+    {
+      "path": "public/block-thumbnails/README.md",
+      "language": "markdown",
+      "sizeLines": 25,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "src/app/(payload)/custom.scss",
+      "language": "css",
+      "sizeLines": 0,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "src/styles/custom.css",
+      "language": "css",
+      "sizeLines": 137,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "src/styles/globals.css",
+      "language": "css",
+      "sizeLines": 898,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "tests/helpers/server-only.ts",
+      "language": "typescript",
+      "sizeLines": 1,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/admin-documentation.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 39,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/content-taxonomy.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 255,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/live-preview-import-boundary.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 126,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/page-routing.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 183,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/provider-selection.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 100,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/review-submission.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 426,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/sitemap.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 204,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    ".npmrc": [],
+    ".pnpmfile.mjs": [],
+    ".yarnrc": [],
+    "docs/architecture/content-model-map.md": [],
+    "docs/guides/users.md": [],
+    "docs/guides/work-queue.md": [],
+    "docs/superpowers/plans/2026-07-20-regular-block-responsive-spacing.md": [],
+    "docs/superpowers/plans/2026-07-21-content-highlights-layouts.md": [],
+    "docs/superpowers/reviews/2026-07-07-cms-foundation-audit.md": [],
+    "eslint.config.mjs": [],
+    "next.config.ts": [],
+    "playwright.config.ts": [],
+    "postcss.config.mjs": [],
+    "public/block-thumbnails/README.md": [],
+    "src/app/(payload)/custom.scss": [],
+    "src/styles/custom.css": [],
+    "src/styles/globals.css": [],
+    "tests/helpers/server-only.ts": [],
+    "tests/int/admin-documentation.int.spec.ts": [],
+    "tests/int/content-taxonomy.int.spec.ts": [],
+    "tests/int/live-preview-import-boundary.int.spec.ts": [],
+    "tests/int/page-routing.int.spec.ts": [],
+    "tests/int/provider-selection.int.spec.ts": [],
+    "tests/int/review-submission.int.spec.ts": [],
+    "tests/int/sitemap.int.spec.ts": []
+  }
+}

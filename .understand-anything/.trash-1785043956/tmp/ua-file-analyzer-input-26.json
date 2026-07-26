@@ -1,0 +1,35 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "src/styles/themes/theme-blue.css",
+      "language": "css",
+      "sizeLines": 89,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "src/styles/themes/theme-default.css",
+      "language": "css",
+      "sizeLines": 87,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "src/styles/themes/theme-kodama.css",
+      "language": "css",
+      "sizeLines": 81,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "src/styles/themes/theme-sunset.css",
+      "language": "css",
+      "sizeLines": 81,
+      "fileCategory": "markup"
+    }
+  ],
+  "batchImportData": {
+    "src/styles/themes/theme-blue.css": [],
+    "src/styles/themes/theme-default.css": [],
+    "src/styles/themes/theme-kodama.css": [],
+    "src/styles/themes/theme-sunset.css": []
+  }
+}

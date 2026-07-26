@@ -1,0 +1,1010 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/components/news-events/NewsEventsHighlights.tsx",
+      "type": "file",
+      "name": "NewsEventsHighlights.tsx",
+      "filePath": "src/components/news-events/NewsEventsHighlights.tsx",
+      "summary": "Renders a themed grid of featured news and event cards with media, metadata, actions, alignment, and an optional empty state.",
+      "tags": [
+        "component",
+        "news-events",
+        "content-listing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/news-events/NewsEventsHighlights.tsx:NewsEventHighlightCard",
+      "type": "function",
+      "name": "NewsEventHighlightCard",
+      "filePath": "src/components/news-events/NewsEventsHighlights.tsx",
+      "lineRange": [
+        42,
+        89
+      ],
+      "summary": "Renders one featured news or event card with media, metadata, summary, and detail action.",
+      "tags": [
+        "component",
+        "rendering",
+        "react"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/news-events/NewsEventsHighlights.tsx:NewsEventsHighlights",
+      "type": "function",
+      "name": "NewsEventsHighlights",
+      "filePath": "src/components/news-events/NewsEventsHighlights.tsx",
+      "lineRange": [
+        91,
+        150
+      ],
+      "summary": "Renders the highlights header, optional actions, responsive card grid, and empty-state copy.",
+      "tags": [
+        "component",
+        "rendering",
+        "react"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/profile-carousel-card.tsx",
+      "type": "file",
+      "name": "profile-carousel-card.tsx",
+      "filePath": "src/components/profile-carousel-card.tsx",
+      "summary": "Renders a profile-carousel card with responsive image placement, overlay variants, copy, and accessible presentation styling.",
+      "tags": [
+        "component",
+        "carousel",
+        "profile"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/profile-carousel-card.tsx:ProfileCarouselCard",
+      "type": "function",
+      "name": "ProfileCarouselCard",
+      "filePath": "src/components/profile-carousel-card.tsx",
+      "lineRange": [
+        47,
+        112
+      ],
+      "summary": "Renders one profile card using the configured image position, overlay, size, and content treatment.",
+      "tags": [
+        "component",
+        "carousel",
+        "interaction"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/profile-carousel-client.tsx",
+      "type": "file",
+      "name": "profile-carousel-client.tsx",
+      "filePath": "src/components/profile-carousel-client.tsx",
+      "summary": "Provides the client-side carousel shell and navigation for profile cards using the shared carousel primitives.",
+      "tags": [
+        "component",
+        "carousel",
+        "profile"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/profile-carousel-client.tsx:ProfileCarouselClient",
+      "type": "function",
+      "name": "ProfileCarouselClient",
+      "filePath": "src/components/profile-carousel-client.tsx",
+      "lineRange": [
+        25,
+        63
+      ],
+      "summary": "Renders profile cards inside the interactive carousel with previous and next controls.",
+      "tags": [
+        "component",
+        "carousel",
+        "interaction"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/shadcnblocks/border-button.tsx",
+      "type": "file",
+      "name": "border-button.tsx",
+      "filePath": "src/components/shadcnblocks/border-button.tsx",
+      "summary": "Extends the shared button with decorative corner artwork and border treatments used by premium block compositions.",
+      "tags": [
+        "component",
+        "shadcn-blocks",
+        "visual-treatment"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/shadcnblocks/border-button.tsx:CornerArt",
+      "type": "function",
+      "name": "CornerArt",
+      "filePath": "src/components/shadcnblocks/border-button.tsx",
+      "lineRange": [
+        59,
+        78
+      ],
+      "summary": "Renders one decorative corner accent for the bordered button treatment.",
+      "tags": [
+        "component",
+        "rendering",
+        "react"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/shadcnblocks/border-button.tsx:BorderButton",
+      "type": "function",
+      "name": "BorderButton",
+      "filePath": "src/components/shadcnblocks/border-button.tsx",
+      "lineRange": [
+        90,
+        107
+      ],
+      "summary": "Renders the shared Button with decorative border and corner artwork.",
+      "tags": [
+        "component",
+        "rendering",
+        "react"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/accordion.tsx",
+      "type": "file",
+      "name": "accordion.tsx",
+      "filePath": "src/components/ui/accordion.tsx",
+      "summary": "Wraps Radix Accordion primitives with the project’s consistent item, trigger, icon, content, and animation styling.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/ui/accordion.tsx:Accordion",
+      "type": "function",
+      "name": "Accordion",
+      "filePath": "src/components/ui/accordion.tsx",
+      "lineRange": [
+        9,
+        23
+      ],
+      "summary": "Wraps the Radix Accordion root while preserving its typed props.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/accordion.tsx:AccordionItem",
+      "type": "function",
+      "name": "AccordionItem",
+      "filePath": "src/components/ui/accordion.tsx",
+      "lineRange": [
+        25,
+        36
+      ],
+      "summary": "Renders a styled Radix accordion item container.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/accordion.tsx:AccordionTrigger",
+      "type": "function",
+      "name": "AccordionTrigger",
+      "filePath": "src/components/ui/accordion.tsx",
+      "lineRange": [
+        38,
+        59
+      ],
+      "summary": "Renders the accordion trigger with focus treatment and animated disclosure icon.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/accordion.tsx:AccordionContent",
+      "type": "function",
+      "name": "AccordionContent",
+      "filePath": "src/components/ui/accordion.tsx",
+      "lineRange": [
+        61,
+        82
+      ],
+      "summary": "Renders animated accordion content with consistent inner spacing.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/badge.tsx",
+      "type": "file",
+      "name": "badge.tsx",
+      "filePath": "src/components/ui/badge.tsx",
+      "summary": "Defines the variant-driven Badge primitive with slot composition and shared utility-class merging.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/badge.tsx:Badge",
+      "type": "function",
+      "name": "Badge",
+      "filePath": "src/components/ui/badge.tsx",
+      "lineRange": [
+        27,
+        43
+      ],
+      "summary": "Renders a badge using the selected visual variant and optional slot composition.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/button.tsx",
+      "type": "file",
+      "name": "button.tsx",
+      "filePath": "src/components/ui/button.tsx",
+      "summary": "Defines the variant and size-driven Button primitive with optional slot composition and accessible focus styling.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/ui/button.tsx:Button",
+      "type": "function",
+      "name": "Button",
+      "filePath": "src/components/ui/button.tsx",
+      "lineRange": [
+        42,
+        63
+      ],
+      "summary": "Renders a button or slotted child using the selected visual variant and size.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/card.tsx",
+      "type": "file",
+      "name": "card.tsx",
+      "filePath": "src/components/ui/card.tsx",
+      "summary": "Provides composable Card primitives for container, header, title, description, action, content, and footer regions.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/ui/card.tsx:Card",
+      "type": "function",
+      "name": "Card",
+      "filePath": "src/components/ui/card.tsx",
+      "lineRange": [
+        5,
+        21
+      ],
+      "summary": "Renders the styled root container for a card composition.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/card.tsx:CardHeader",
+      "type": "function",
+      "name": "CardHeader",
+      "filePath": "src/components/ui/card.tsx",
+      "lineRange": [
+        23,
+        34
+      ],
+      "summary": "Renders the card header grid for title, description, and optional action content.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/card.tsx:CardTitle",
+      "type": "function",
+      "name": "CardTitle",
+      "filePath": "src/components/ui/card.tsx",
+      "lineRange": [
+        36,
+        44
+      ],
+      "summary": "Renders the semantic card title region.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/card.tsx:CardDescription",
+      "type": "function",
+      "name": "CardDescription",
+      "filePath": "src/components/ui/card.tsx",
+      "lineRange": [
+        46,
+        54
+      ],
+      "summary": "Renders secondary descriptive text in a card.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/card.tsx:CardAction",
+      "type": "function",
+      "name": "CardAction",
+      "filePath": "src/components/ui/card.tsx",
+      "lineRange": [
+        56,
+        67
+      ],
+      "summary": "Renders an action aligned within the card header grid.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/card.tsx:CardContent",
+      "type": "function",
+      "name": "CardContent",
+      "filePath": "src/components/ui/card.tsx",
+      "lineRange": [
+        69,
+        77
+      ],
+      "summary": "Renders the primary body-content region of a card.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/card.tsx:CardFooter",
+      "type": "function",
+      "name": "CardFooter",
+      "filePath": "src/components/ui/card.tsx",
+      "lineRange": [
+        79,
+        90
+      ],
+      "summary": "Renders the card footer region for actions or supporting content.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/ui/carousel.tsx",
+      "type": "file",
+      "name": "carousel.tsx",
+      "filePath": "src/components/ui/carousel.tsx",
+      "summary": "Wraps Embla Carousel with context, orientation-aware keyboard controls, content and item primitives, and previous and next navigation buttons.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/components/ui/carousel.tsx:useCarousel",
+      "type": "function",
+      "name": "useCarousel",
+      "filePath": "src/components/ui/carousel.tsx",
+      "lineRange": [
+        33,
+        41
+      ],
+      "summary": "Reads the carousel context and throws when used outside a Carousel provider.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/carousel.tsx:Carousel",
+      "type": "function",
+      "name": "Carousel",
+      "filePath": "src/components/ui/carousel.tsx",
+      "lineRange": [
+        43,
+        133
+      ],
+      "summary": "Creates the Embla carousel instance, context, keyboard controls, state, and accessibility region.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/ui/carousel.tsx:CarouselContent",
+      "type": "function",
+      "name": "CarouselContent",
+      "filePath": "src/components/ui/carousel.tsx",
+      "lineRange": [
+        135,
+        150
+      ],
+      "summary": "Renders the orientation-aware viewport and sliding content track.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/carousel.tsx:CarouselItem",
+      "type": "function",
+      "name": "CarouselItem",
+      "filePath": "src/components/ui/carousel.tsx",
+      "lineRange": [
+        152,
+        168
+      ],
+      "summary": "Renders one accessible carousel slide with orientation-aware sizing.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/carousel.tsx:CarouselPrevious",
+      "type": "function",
+      "name": "CarouselPrevious",
+      "filePath": "src/components/ui/carousel.tsx",
+      "lineRange": [
+        170,
+        198
+      ],
+      "summary": "Renders a previous-slide control connected to carousel availability state.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/ui/carousel.tsx:CarouselNext",
+      "type": "function",
+      "name": "CarouselNext",
+      "filePath": "src/components/ui/carousel.tsx",
+      "lineRange": [
+        200,
+        228
+      ],
+      "summary": "Renders a next-slide control connected to carousel availability state.",
+      "tags": [
+        "component",
+        "ui-primitive",
+        "shadcn"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/components/news-events/NewsEventsHighlights.tsx",
+      "target": "function:src/components/news-events/NewsEventsHighlights.tsx:NewsEventHighlightCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/news-events/NewsEventsHighlights.tsx",
+      "target": "function:src/components/news-events/NewsEventsHighlights.tsx:NewsEventsHighlights",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/news-events/NewsEventsHighlights.tsx",
+      "target": "function:src/components/news-events/NewsEventsHighlights.tsx:NewsEventsHighlights",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/profile-carousel-card.tsx",
+      "target": "function:src/components/profile-carousel-card.tsx:ProfileCarouselCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/profile-carousel-card.tsx",
+      "target": "function:src/components/profile-carousel-card.tsx:ProfileCarouselCard",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/profile-carousel-client.tsx",
+      "target": "function:src/components/profile-carousel-client.tsx:ProfileCarouselClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/profile-carousel-client.tsx",
+      "target": "function:src/components/profile-carousel-client.tsx:ProfileCarouselClient",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/shadcnblocks/border-button.tsx",
+      "target": "function:src/components/shadcnblocks/border-button.tsx:CornerArt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/shadcnblocks/border-button.tsx",
+      "target": "function:src/components/shadcnblocks/border-button.tsx:BorderButton",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/shadcnblocks/border-button.tsx",
+      "target": "function:src/components/shadcnblocks/border-button.tsx:BorderButton",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/accordion.tsx",
+      "target": "function:src/components/ui/accordion.tsx:Accordion",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/accordion.tsx",
+      "target": "function:src/components/ui/accordion.tsx:Accordion",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/accordion.tsx",
+      "target": "function:src/components/ui/accordion.tsx:AccordionItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/accordion.tsx",
+      "target": "function:src/components/ui/accordion.tsx:AccordionItem",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/accordion.tsx",
+      "target": "function:src/components/ui/accordion.tsx:AccordionTrigger",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/accordion.tsx",
+      "target": "function:src/components/ui/accordion.tsx:AccordionTrigger",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/accordion.tsx",
+      "target": "function:src/components/ui/accordion.tsx:AccordionContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/accordion.tsx",
+      "target": "function:src/components/ui/accordion.tsx:AccordionContent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/badge.tsx",
+      "target": "function:src/components/ui/badge.tsx:Badge",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/badge.tsx",
+      "target": "function:src/components/ui/badge.tsx:Badge",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/button.tsx",
+      "target": "function:src/components/ui/button.tsx:Button",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/button.tsx",
+      "target": "function:src/components/ui/button.tsx:Button",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/card.tsx",
+      "target": "function:src/components/ui/card.tsx:Card",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/card.tsx",
+      "target": "function:src/components/ui/card.tsx:Card",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/card.tsx",
+      "target": "function:src/components/ui/card.tsx:CardHeader",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/card.tsx",
+      "target": "function:src/components/ui/card.tsx:CardHeader",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/card.tsx",
+      "target": "function:src/components/ui/card.tsx:CardTitle",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/card.tsx",
+      "target": "function:src/components/ui/card.tsx:CardTitle",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/card.tsx",
+      "target": "function:src/components/ui/card.tsx:CardDescription",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/card.tsx",
+      "target": "function:src/components/ui/card.tsx:CardDescription",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/card.tsx",
+      "target": "function:src/components/ui/card.tsx:CardAction",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/card.tsx",
+      "target": "function:src/components/ui/card.tsx:CardAction",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/card.tsx",
+      "target": "function:src/components/ui/card.tsx:CardContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/card.tsx",
+      "target": "function:src/components/ui/card.tsx:CardContent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/card.tsx",
+      "target": "function:src/components/ui/card.tsx:CardFooter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/card.tsx",
+      "target": "function:src/components/ui/card.tsx:CardFooter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/carousel.tsx",
+      "target": "function:src/components/ui/carousel.tsx:useCarousel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/carousel.tsx",
+      "target": "function:src/components/ui/carousel.tsx:useCarousel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/carousel.tsx",
+      "target": "function:src/components/ui/carousel.tsx:Carousel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/carousel.tsx",
+      "target": "function:src/components/ui/carousel.tsx:Carousel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/carousel.tsx",
+      "target": "function:src/components/ui/carousel.tsx:CarouselContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/carousel.tsx",
+      "target": "function:src/components/ui/carousel.tsx:CarouselContent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/carousel.tsx",
+      "target": "function:src/components/ui/carousel.tsx:CarouselItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/carousel.tsx",
+      "target": "function:src/components/ui/carousel.tsx:CarouselItem",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/carousel.tsx",
+      "target": "function:src/components/ui/carousel.tsx:CarouselPrevious",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/carousel.tsx",
+      "target": "function:src/components/ui/carousel.tsx:CarouselPrevious",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/ui/carousel.tsx",
+      "target": "function:src/components/ui/carousel.tsx:CarouselNext",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/components/ui/carousel.tsx",
+      "target": "function:src/components/ui/carousel.tsx:CarouselNext",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/components/news-events/NewsEventsHighlights.tsx",
+      "target": "file:src/blocks/shared/blockAppearance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/news-events/NewsEventsHighlights.tsx",
+      "target": "file:src/blocks/shared/blockSpacing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/news-events/NewsEventsHighlights.tsx",
+      "target": "file:src/components/ContentLink.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/news-events/NewsEventsHighlights.tsx",
+      "target": "file:src/components/ui/badge.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/news-events/NewsEventsHighlights.tsx",
+      "target": "file:src/components/ui/card.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/news-events/NewsEventsHighlights.tsx",
+      "target": "file:src/lib/newsEventsShared.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/news-events/NewsEventsHighlights.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/profile-carousel-card.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/profile-carousel-client.tsx",
+      "target": "file:src/components/profile-carousel-card.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/profile-carousel-client.tsx",
+      "target": "file:src/components/ui/carousel.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/shadcnblocks/border-button.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/shadcnblocks/border-button.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/accordion.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/badge.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/button.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/card.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/carousel.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/components/ui/carousel.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

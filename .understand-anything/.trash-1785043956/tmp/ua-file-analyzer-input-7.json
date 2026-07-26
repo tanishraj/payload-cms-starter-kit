@@ -1,0 +1,329 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "src/block-thumbnails/fixtures.tsx",
+      "language": "typescript",
+      "sizeLines": 833,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/ContentHighlights/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 117,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/Cta39/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 81,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/FeatureMatrix/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 90,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/FeatureSpotlight/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 293,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/Footer56/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 200,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/GalleryShowcase/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/HeroBanner/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 296,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/ImageMosaic/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 116,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "language": "typescript",
+      "sizeLines": 72,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/NewsEventsHighlights/PreviewComponent.tsx",
+      "language": "typescript",
+      "sizeLines": 24,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/PageBlockStack.tsx",
+      "language": "typescript",
+      "sizeLines": 13,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/ProfileCarousel/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 98,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/QaAccordion/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 357,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/RatingSpotlight/Presentation.tsx",
+      "language": "typescript",
+      "sizeLines": 93,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/Services21/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 128,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/StatsStrip/AnimatedMetricValue.tsx",
+      "language": "typescript",
+      "sizeLines": 124,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/StatsStrip/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 138,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/TeamShowcase/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 84,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/renderLivePreviewPageBlocks.tsx",
+      "language": "typescript",
+      "sizeLines": 87,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/renderPageBlocks.tsx",
+      "language": "typescript",
+      "sizeLines": 153,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/shared/blockAppearance.ts",
+      "language": "typescript",
+      "sizeLines": 48,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/shared/blockSpacing.ts",
+      "language": "typescript",
+      "sizeLines": 9,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "src/block-thumbnails/fixtures.tsx": [
+      "src/block-thumbnails/definitions.ts",
+      "src/blocks/Announcement/Component.tsx",
+      "src/blocks/ContentHighlights/Component.tsx",
+      "src/blocks/Cta39/Component.tsx",
+      "src/blocks/FeatureMatrix/Component.tsx",
+      "src/blocks/FeatureSpotlight/Component.tsx",
+      "src/blocks/Footer56/Component.tsx",
+      "src/blocks/GalleryShowcase/Component.tsx",
+      "src/blocks/HeaderNavbar12/Component.tsx",
+      "src/blocks/HeroBanner/Component.tsx",
+      "src/blocks/ImageMosaic/Component.tsx",
+      "src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "src/blocks/ProfileCarousel/Component.tsx",
+      "src/blocks/QaAccordion/Component.tsx",
+      "src/blocks/RatingSpotlight/Component.tsx",
+      "src/blocks/ReviewSubmission/Component.tsx",
+      "src/blocks/Services21/Component.tsx",
+      "src/blocks/StatsStrip/Component.tsx",
+      "src/blocks/System404/Component.tsx",
+      "src/blocks/SystemComingSoon/Component.tsx",
+      "src/blocks/SystemMaintenance/Component.tsx",
+      "src/components/review-feed.tsx",
+      "src/components/team-showcase.tsx"
+    ],
+    "src/blocks/ContentHighlights/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/content-highlights.tsx",
+      "src/lib/cmsLinks.ts"
+    ],
+    "src/blocks/Cta39/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/ContentActions.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/blocks/FeatureMatrix/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/feature-matrix.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts"
+    ],
+    "src/blocks/FeatureSpotlight/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/ContentActions.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/blocks/Footer56/Component.tsx": [
+      "src/components/footer56.tsx",
+      "src/components/site/SiteLogo.tsx",
+      "src/lib/headerNavigation.ts",
+      "src/lib/media.ts",
+      "src/lib/pagePaths.ts"
+    ],
+    "src/blocks/GalleryShowcase/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/gallery-showcase.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts"
+    ],
+    "src/blocks/HeroBanner/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ui/button.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/blocks/ImageMosaic/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/image-mosaic.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts"
+    ],
+    "src/blocks/NewsEventsHighlights/Presentation.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/news-events/NewsEventsHighlights.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/newsEventsShared.ts"
+    ],
+    "src/blocks/NewsEventsHighlights/PreviewComponent.tsx": [
+      "src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "src/lib/newsEventsPreviewShared.ts",
+      "src/lib/newsEventsShared.ts"
+    ],
+    "src/blocks/PageBlockStack.tsx": [],
+    "src/blocks/ProfileCarousel/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/profile-carousel.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts"
+    ],
+    "src/blocks/QaAccordion/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/ContentActions.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/blocks/RatingSpotlight/Presentation.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/rating-spotlight.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/reviewRatingShared.ts"
+    ],
+    "src/blocks/Services21/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ContentLink.tsx",
+      "src/components/services21.tsx",
+      "src/components/shadcnblocks/border-button.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts"
+    ],
+    "src/blocks/StatsStrip/AnimatedMetricValue.tsx": [],
+    "src/blocks/StatsStrip/Component.tsx": [
+      "src/blocks/StatsStrip/AnimatedMetricValue.tsx",
+      "src/blocks/shared/blockAppearance.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/blocks/TeamShowcase/Component.tsx": [
+      "src/blocks/shared/blockAppearance.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/team-showcase.tsx",
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts"
+    ],
+    "src/blocks/renderLivePreviewPageBlocks.tsx": [
+      "src/blocks/Announcement/Component.tsx",
+      "src/blocks/ContentHighlights/Component.tsx",
+      "src/blocks/Cta39/Component.tsx",
+      "src/blocks/FeatureMatrix/Component.tsx",
+      "src/blocks/FeatureSpotlight/Component.tsx",
+      "src/blocks/GalleryShowcase/Component.tsx",
+      "src/blocks/HeroBanner/Component.tsx",
+      "src/blocks/ImageMosaic/Component.tsx",
+      "src/blocks/NewsEventsHighlights/PreviewComponent.tsx",
+      "src/blocks/PageBlockStack.tsx",
+      "src/blocks/ProfileCarousel/Component.tsx",
+      "src/blocks/QaAccordion/Component.tsx",
+      "src/blocks/RatingSpotlight/PreviewComponent.tsx",
+      "src/blocks/ReviewFeed/PreviewComponent.tsx",
+      "src/blocks/ReviewSubmission/Component.tsx",
+      "src/blocks/Services21/Component.tsx",
+      "src/blocks/StatsStrip/Component.tsx",
+      "src/blocks/TeamShowcase/Component.tsx",
+      "src/lib/newsEventsPreviewShared.ts",
+      "src/lib/reviewPreviewShared.ts"
+    ],
+    "src/blocks/renderPageBlocks.tsx": [
+      "src/blocks/Announcement/Component.tsx",
+      "src/blocks/ContentHighlights/Component.tsx",
+      "src/blocks/Cta39/Component.tsx",
+      "src/blocks/FeatureMatrix/Component.tsx",
+      "src/blocks/FeatureSpotlight/Component.tsx",
+      "src/blocks/GalleryShowcase/Component.tsx",
+      "src/blocks/HeroBanner/Component.tsx",
+      "src/blocks/ImageMosaic/Component.tsx",
+      "src/blocks/NewsEventsHighlights/Component.tsx",
+      "src/blocks/PageBlockStack.tsx",
+      "src/blocks/ProfileCarousel/Component.tsx",
+      "src/blocks/QaAccordion/Component.tsx",
+      "src/blocks/RatingSpotlight/Component.tsx",
+      "src/blocks/ReviewFeed/Component.tsx",
+      "src/blocks/ReviewSubmission/Component.tsx",
+      "src/blocks/Services21/Component.tsx",
+      "src/blocks/StatsStrip/Component.tsx",
+      "src/blocks/TeamShowcase/Component.tsx"
+    ],
+    "src/blocks/shared/blockAppearance.ts": [
+      "src/lib/utils.ts"
+    ],
+    "src/blocks/shared/blockSpacing.ts": []
+  }
+}

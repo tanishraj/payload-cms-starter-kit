@@ -1,0 +1,317 @@
+{
+  "projectRoot": "/Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit",
+  "batchFiles": [
+    {
+      "path": "src/app/(frontend)/articles/[slug]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 35,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/articles/category/[slug]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 37,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/articles/tag/[slug]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 34,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/news-events/[slug]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 60,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/news-events/page.tsx",
+      "language": "typescript",
+      "sizeLines": 52,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/reviews/[slug]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 35,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/(frontend)/reviews/category/[slug]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 36,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/api/forms/[slug]/submit/route.ts",
+      "language": "typescript",
+      "sizeLines": 272,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/robots.ts",
+      "language": "typescript",
+      "sizeLines": 18,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/app/sitemap.ts",
+      "language": "typescript",
+      "sizeLines": 281,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/blocks/NewsEventsHighlights/Component.tsx",
+      "language": "typescript",
+      "sizeLines": 16,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/articles/ArticleArchivePage.tsx",
+      "language": "typescript",
+      "sizeLines": 47,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/articles/ArticlePage.tsx",
+      "language": "typescript",
+      "sizeLines": 94,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/live-preview/NewsEventLivePreview.tsx",
+      "language": "typescript",
+      "sizeLines": 28,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/news-events/NewsEventStory.tsx",
+      "language": "typescript",
+      "sizeLines": 106,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/reviews/ReviewArchivePage.tsx",
+      "language": "typescript",
+      "sizeLines": 50,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/components/reviews/ReviewPage.tsx",
+      "language": "typescript",
+      "sizeLines": 98,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/contentEntries.ts",
+      "language": "typescript",
+      "sizeLines": 525,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/formNotifications.ts",
+      "language": "typescript",
+      "sizeLines": 75,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/formSpamProtection.ts",
+      "language": "typescript",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/formSubmissionEvents.ts",
+      "language": "typescript",
+      "sizeLines": 21,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/forms.ts",
+      "language": "typescript",
+      "sizeLines": 283,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/newsEvents.ts",
+      "language": "typescript",
+      "sizeLines": 336,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/newsEventsMetadata.ts",
+      "language": "typescript",
+      "sizeLines": 99,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/newsEventsShared.ts",
+      "language": "typescript",
+      "sizeLines": 302,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/reviewPromotion.ts",
+      "language": "typescript",
+      "sizeLines": 74,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/reviews.ts",
+      "language": "typescript",
+      "sizeLines": 130,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/siteUrl.ts",
+      "language": "typescript",
+      "sizeLines": 19,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/lib/taxonomy.ts",
+      "language": "typescript",
+      "sizeLines": 63,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/news-event-story.int.spec.tsx",
+      "language": "typescript",
+      "sizeLines": 81,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/int/news-events-data.int.spec.ts",
+      "language": "typescript",
+      "sizeLines": 51,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "src/app/(frontend)/articles/[slug]/page.tsx": [
+      "src/components/articles/ArticlePage.tsx",
+      "src/lib/contentEntries.ts"
+    ],
+    "src/app/(frontend)/articles/category/[slug]/page.tsx": [
+      "src/components/articles/ArticleArchivePage.tsx",
+      "src/lib/contentEntries.ts"
+    ],
+    "src/app/(frontend)/articles/tag/[slug]/page.tsx": [
+      "src/components/articles/ArticleArchivePage.tsx",
+      "src/lib/contentEntries.ts"
+    ],
+    "src/app/(frontend)/news-events/[slug]/page.tsx": [
+      "src/components/live-preview/NewsEventLivePreview.tsx",
+      "src/components/news-events/NewsEventStory.tsx",
+      "src/lib/newsEvents.ts",
+      "src/lib/newsEventsMetadata.ts",
+      "src/payload.config.ts"
+    ],
+    "src/app/(frontend)/news-events/page.tsx": [
+      "src/components/news-events/NewsEventsFeed.tsx",
+      "src/lib/newsEvents.ts",
+      "src/lib/newsEventsMetadata.ts",
+      "src/lib/newsEventsShared.ts"
+    ],
+    "src/app/(frontend)/reviews/[slug]/page.tsx": [
+      "src/components/reviews/ReviewPage.tsx",
+      "src/lib/contentEntries.ts"
+    ],
+    "src/app/(frontend)/reviews/category/[slug]/page.tsx": [
+      "src/components/reviews/ReviewArchivePage.tsx",
+      "src/lib/contentEntries.ts"
+    ],
+    "src/app/api/forms/[slug]/submit/route.ts": [
+      "src/lib/formNotifications.ts",
+      "src/lib/formSpamProtection.ts",
+      "src/lib/formSubmissionEvents.ts",
+      "src/lib/forms.ts",
+      "src/lib/reviewPromotion.ts",
+      "src/lib/reviews.ts",
+      "src/payload.config.ts"
+    ],
+    "src/app/robots.ts": [
+      "src/lib/siteUrl.ts"
+    ],
+    "src/app/sitemap.ts": [
+      "src/lib/pagePaths.ts",
+      "src/lib/seo.ts",
+      "src/lib/siteUrl.ts",
+      "src/lib/taxonomy.ts",
+      "src/payload.config.ts"
+    ],
+    "src/blocks/NewsEventsHighlights/Component.tsx": [
+      "src/blocks/NewsEventsHighlights/Presentation.tsx",
+      "src/lib/newsEvents.ts",
+      "src/lib/newsEventsShared.ts"
+    ],
+    "src/components/articles/ArticleArchivePage.tsx": [],
+    "src/components/articles/ArticlePage.tsx": [
+      "src/lib/media.ts",
+      "src/lib/taxonomy.ts"
+    ],
+    "src/components/live-preview/NewsEventLivePreview.tsx": [
+      "src/components/news-events/NewsEventStory.tsx",
+      "src/lib/newsEventsShared.ts"
+    ],
+    "src/components/news-events/NewsEventStory.tsx": [
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/ContentActions.tsx",
+      "src/components/ui/badge.tsx",
+      "src/lib/newsEventsShared.ts",
+      "src/lib/utils.ts"
+    ],
+    "src/components/reviews/ReviewArchivePage.tsx": [
+      "src/lib/reviews.ts"
+    ],
+    "src/components/reviews/ReviewPage.tsx": [
+      "src/lib/media.ts",
+      "src/lib/reviews.ts",
+      "src/lib/taxonomy.ts"
+    ],
+    "src/lib/contentEntries.ts": [
+      "src/lib/media.ts",
+      "src/lib/seo.ts",
+      "src/lib/siteUrl.ts",
+      "src/lib/taxonomy.ts",
+      "src/payload.config.ts"
+    ],
+    "src/lib/formNotifications.ts": [],
+    "src/lib/formSpamProtection.ts": [
+      "src/lib/forms.ts"
+    ],
+    "src/lib/formSubmissionEvents.ts": [],
+    "src/lib/forms.ts": [],
+    "src/lib/newsEvents.ts": [
+      "src/lib/newsEventsShared.ts",
+      "src/lib/taxonomy.ts",
+      "src/payload.config.ts"
+    ],
+    "src/lib/newsEventsMetadata.ts": [
+      "src/lib/media.ts",
+      "src/lib/newsEventsShared.ts",
+      "src/lib/seo.ts",
+      "src/lib/siteUrl.ts"
+    ],
+    "src/lib/newsEventsShared.ts": [
+      "src/lib/cmsLinks.ts",
+      "src/lib/media.ts",
+      "src/lib/taxonomy.ts"
+    ],
+    "src/lib/reviewPromotion.ts": [
+      "src/lib/reviews.ts"
+    ],
+    "src/lib/reviews.ts": [],
+    "src/lib/siteUrl.ts": [],
+    "src/lib/taxonomy.ts": [],
+    "tests/int/news-event-story.int.spec.tsx": [
+      "src/blocks/shared/blockSpacing.ts",
+      "src/components/news-events/NewsEventStory.tsx",
+      "src/lib/newsEventsShared.ts"
+    ],
+    "tests/int/news-events-data.int.spec.ts": [
+      "src/lib/newsEventsShared.ts"
+    ]
+  }
+}

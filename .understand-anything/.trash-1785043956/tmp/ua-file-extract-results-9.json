@@ -1,0 +1,1136 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 21,
+  "filesSkipped": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 21,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 21,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "src/app/(block-thumbnails)/layout.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 19,
+      "nonEmptyLines": 16,
+      "functions": [
+        {
+          "name": "BlockThumbnailLayout",
+          "startLine": 7,
+          "endLine": 19,
+          "params": [
+            "{ children }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "BlockThumbnailLayout",
+          "line": 7,
+          "isDefault": true
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/app/(frontend)/layout.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 268,
+      "nonEmptyLines": 250,
+      "functions": [
+        {
+          "name": "getFrontendGlobals",
+          "startLine": 27,
+          "endLine": 122,
+          "params": []
+        },
+        {
+          "name": "generateMetadata",
+          "startLine": 127,
+          "endLine": 175,
+          "params": []
+        },
+        {
+          "name": "RootLayout",
+          "startLine": 177,
+          "endLine": 268,
+          "params": [
+            "props"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "dynamic",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "generateMetadata",
+          "line": 127,
+          "isDefault": false
+        },
+        {
+          "name": "RootLayout",
+          "line": 177,
+          "isDefault": true
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getFrontendGlobals",
+          "callee": "getPayload",
+          "lineNumber": 28
+        },
+        {
+          "caller": "getFrontendGlobals",
+          "callee": "Promise.all",
+          "lineNumber": 32
+        },
+        {
+          "caller": "getFrontendGlobals",
+          "callee": "payload.findGlobal",
+          "lineNumber": 33
+        },
+        {
+          "caller": "getFrontendGlobals",
+          "callee": "payload.findGlobal",
+          "lineNumber": 37
+        },
+        {
+          "caller": "getFrontendGlobals",
+          "callee": "payload.findGlobal",
+          "lineNumber": 41
+        },
+        {
+          "caller": "getFrontendGlobals",
+          "callee": "payload.findGlobal",
+          "lineNumber": 45
+        },
+        {
+          "caller": "getFrontendGlobals",
+          "callee": "payload.find",
+          "lineNumber": 61
+        },
+        {
+          "caller": "getFrontendGlobals",
+          "callee": "payload.find",
+          "lineNumber": 92
+        },
+        {
+          "caller": "generateMetadata",
+          "callee": "getFrontendGlobals",
+          "lineNumber": 128
+        },
+        {
+          "caller": "generateMetadata",
+          "callee": "getMediaAbsoluteUrl",
+          "lineNumber": 136
+        },
+        {
+          "caller": "generateMetadata",
+          "callee": "getMediaAbsoluteUrl",
+          "lineNumber": 137
+        },
+        {
+          "caller": "generateMetadata",
+          "callee": "getRobotsMetadata",
+          "lineNumber": 164
+        },
+        {
+          "caller": "RootLayout",
+          "callee": "Promise.all",
+          "lineNumber": 179
+        },
+        {
+          "caller": "RootLayout",
+          "callee": "getFrontendGlobals",
+          "lineNumber": 180
+        },
+        {
+          "caller": "RootLayout",
+          "callee": "getCurrentCMSUser",
+          "lineNumber": 181
+        },
+        {
+          "caller": "RootLayout",
+          "callee": "String",
+          "lineNumber": 186
+        },
+        {
+          "caller": "RootLayout",
+          "callee": "isWebsiteTheme",
+          "lineNumber": 188
+        },
+        {
+          "caller": "RootLayout",
+          "callee": "resolveBlockAppearanceClasses",
+          "lineNumber": 213
+        },
+        {
+          "caller": "RootLayout",
+          "callee": "Boolean",
+          "lineNumber": 218
+        }
+      ],
+      "metrics": {
+        "importCount": 12,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/Announcement/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 72,
+      "nonEmptyLines": 66,
+      "functions": [
+        {
+          "name": "normalizeAnnouncementItems",
+          "startLine": 19,
+          "endLine": 34,
+          "params": [
+            "items"
+          ]
+        },
+        {
+          "name": "AnnouncementBlockComponent",
+          "startLine": 36,
+          "endLine": 72,
+          "params": [
+            "props"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "AnnouncementBlockComponent",
+          "line": 36,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "normalizeAnnouncementItems",
+          "callee": "(items ?? []).flatMap",
+          "lineNumber": 20
+        },
+        {
+          "caller": "normalizeAnnouncementItems",
+          "callee": "item.description?.trim",
+          "lineNumber": 21
+        },
+        {
+          "caller": "normalizeAnnouncementItems",
+          "callee": "item.title?.trim",
+          "lineNumber": 22
+        },
+        {
+          "caller": "normalizeAnnouncementItems",
+          "callee": "item.url?.trim",
+          "lineNumber": 23
+        },
+        {
+          "caller": "AnnouncementBlockComponent",
+          "callee": "normalizeAnnouncementItems",
+          "lineNumber": 37
+        },
+        {
+          "caller": "AnnouncementBlockComponent",
+          "callee": "props.label?.trim",
+          "lineNumber": 39
+        },
+        {
+          "caller": "AnnouncementBlockComponent",
+          "callee": "resolveBlockAppearanceClasses",
+          "lineNumber": 40
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/HeaderNavbar12/Component.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 77,
+      "nonEmptyLines": 70,
+      "functions": [
+        {
+          "name": "HeaderNavbar12BlockComponent",
+          "startLine": 20,
+          "endLine": 77,
+          "params": [
+            "{\n  appearance,\n  ctaButtons,\n  customLogoDark,\n  customLogoLight,\n  logoHeight,\n  logoMode,\n  menuItems,\n  navAlignment,\n  siteLogo,\n  siteName,\n  size,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "HeaderNavbar12BlockComponent",
+          "line": 20,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "HeaderNavbar12BlockComponent",
+          "callee": "resolveHeaderMenuItems",
+          "lineNumber": 34
+        },
+        {
+          "caller": "HeaderNavbar12BlockComponent",
+          "callee": "(ctaButtons ?? [])\n    .map((item) => {\n      const link = resolveHeaderLink(item)\n\n      if (!link) {\n        return null\n      }\n\n      return {\n        ...link,\n        variant: item.variant ?? 'default',\n      }\n    })\n    .filter",
+          "lineNumber": 35
+        },
+        {
+          "caller": "HeaderNavbar12BlockComponent",
+          "callee": "(ctaButtons ?? [])\n    .map",
+          "lineNumber": 35
+        },
+        {
+          "caller": "HeaderNavbar12BlockComponent",
+          "callee": "resolveHeaderLink",
+          "lineNumber": 37
+        },
+        {
+          "caller": "HeaderNavbar12BlockComponent",
+          "callee": "siteName?.trim",
+          "lineNumber": 52
+        },
+        {
+          "caller": "HeaderNavbar12BlockComponent",
+          "callee": "siteName?.trim",
+          "lineNumber": 59
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/renderFooterBlocks.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 55,
+      "nonEmptyLines": 51,
+      "functions": [
+        {
+          "name": "renderFooterBlocks",
+          "startLine": 8,
+          "endLine": 55,
+          "params": [
+            "blocks",
+            "context"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "renderFooterBlocks",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "renderFooterBlocks",
+          "callee": "blocks.map",
+          "lineNumber": 32
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/blocks/renderHeaderBlocks.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 35,
+      "nonEmptyLines": 31,
+      "functions": [
+        {
+          "name": "renderHeaderBlocks",
+          "startLine": 8,
+          "endLine": 35,
+          "params": [
+            "blocks",
+            "context"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "renderHeaderBlocks",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "renderHeaderBlocks",
+          "callee": "blocks.map",
+          "lineNumber": 18
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/announcement/AnnouncementBar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 161,
+      "nonEmptyLines": 142,
+      "functions": [
+        {
+          "name": "noopSubscribe",
+          "startLine": 36,
+          "endLine": 36,
+          "params": []
+        },
+        {
+          "name": "getServerFalse",
+          "startLine": 37,
+          "endLine": 37,
+          "params": []
+        },
+        {
+          "name": "getDismissSnapshot",
+          "startLine": 39,
+          "endLine": 46,
+          "params": []
+        },
+        {
+          "name": "normalizeAnnouncementItems",
+          "startLine": 48,
+          "endLine": 63,
+          "params": [
+            "items"
+          ]
+        },
+        {
+          "name": "AnnouncementBar",
+          "startLine": 65,
+          "endLine": 161,
+          "params": [
+            "{\n  displayMode = 'vertical',\n  intervalMs,\n  items,\n  label,\n  marqueeDurationMs,\n  sticky = false,\n  topOffset = '0px',\n  className,\n  dismissible = false,\n  hideOnScroll = false,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "AnnouncementBar",
+          "line": 65,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getDismissSnapshot",
+          "callee": "window.sessionStorage.getItem",
+          "lineNumber": 41
+        },
+        {
+          "caller": "normalizeAnnouncementItems",
+          "callee": "(items ?? []).flatMap",
+          "lineNumber": 49
+        },
+        {
+          "caller": "normalizeAnnouncementItems",
+          "callee": "item.description?.trim",
+          "lineNumber": 50
+        },
+        {
+          "caller": "normalizeAnnouncementItems",
+          "callee": "item.title?.trim",
+          "lineNumber": 51
+        },
+        {
+          "caller": "normalizeAnnouncementItems",
+          "callee": "item.url?.trim",
+          "lineNumber": 52
+        },
+        {
+          "caller": "AnnouncementBar",
+          "callee": "normalizeAnnouncementItems",
+          "lineNumber": 77
+        },
+        {
+          "caller": "AnnouncementBar",
+          "callee": "label?.trim",
+          "lineNumber": 79
+        },
+        {
+          "caller": "AnnouncementBar",
+          "callee": "cn",
+          "lineNumber": 80
+        },
+        {
+          "caller": "AnnouncementBar",
+          "callee": "useSyncExternalStore",
+          "lineNumber": 86
+        },
+        {
+          "caller": "AnnouncementBar",
+          "callee": "useState",
+          "lineNumber": 87
+        },
+        {
+          "caller": "AnnouncementBar",
+          "callee": "Boolean",
+          "lineNumber": 88
+        },
+        {
+          "caller": "handleDismiss",
+          "callee": "setLocallyDismissed",
+          "lineNumber": 91
+        },
+        {
+          "caller": "handleDismiss",
+          "callee": "window.sessionStorage.setItem",
+          "lineNumber": 93
+        },
+        {
+          "caller": "AnnouncementBar",
+          "callee": "useEffect",
+          "lineNumber": 102
+        },
+        {
+          "caller": "AnnouncementBar",
+          "callee": "root.style.removeProperty",
+          "lineNumber": 105
+        },
+        {
+          "caller": "AnnouncementBar",
+          "callee": "root.style.setProperty",
+          "lineNumber": 107
+        },
+        {
+          "caller": "AnnouncementBar",
+          "callee": "root.style.removeProperty",
+          "lineNumber": 111
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/announcement/MarqueeAnnouncementContent.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 124,
+      "nonEmptyLines": 114,
+      "functions": [
+        {
+          "name": "MarqueeAnnouncementContent",
+          "startLine": 14,
+          "endLine": 49,
+          "params": [
+            "{\n  durationMs,\n  items,\n}"
+          ]
+        },
+        {
+          "name": "MarqueeTrack",
+          "startLine": 51,
+          "endLine": 82,
+          "params": [
+            "{\n  animationDuration,\n  duplicate = false,\n  isPaused,\n  items,\n}"
+          ]
+        },
+        {
+          "name": "MarqueeItem",
+          "startLine": 84,
+          "endLine": 124,
+          "params": [
+            "{\n  duplicate = false,\n  item,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "MarqueeAnnouncementContent",
+          "line": 14,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "MarqueeAnnouncementContent",
+          "callee": "useState",
+          "lineNumber": 21
+        },
+        {
+          "caller": "MarqueeAnnouncementContent",
+          "callee": "useMemo",
+          "lineNumber": 22
+        },
+        {
+          "caller": "MarqueeAnnouncementContent",
+          "callee": "Math.max",
+          "lineNumber": 23
+        },
+        {
+          "caller": "MarqueeAnnouncementContent",
+          "callee": "setIsPaused",
+          "lineNumber": 35
+        },
+        {
+          "caller": "MarqueeAnnouncementContent",
+          "callee": "setIsPaused",
+          "lineNumber": 36
+        },
+        {
+          "caller": "MarqueeTrack",
+          "callee": "items.map",
+          "lineNumber": 72
+        },
+        {
+          "caller": "MarqueeItem",
+          "callee": "item.url?.startsWith",
+          "lineNumber": 91
+        },
+        {
+          "caller": "MarqueeItem",
+          "callee": "item.url?.startsWith",
+          "lineNumber": 91
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/announcement/RotatingAnnouncementContent.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 153,
+      "nonEmptyLines": 135,
+      "functions": [
+        {
+          "name": "RotatingAnnouncementContent",
+          "startLine": 17,
+          "endLine": 124,
+          "params": [
+            "{\n  intervalMs,\n  items,\n  mode = 'vertical',\n}"
+          ]
+        },
+        {
+          "name": "AnnouncementItem",
+          "startLine": 126,
+          "endLine": 153,
+          "params": [
+            "{ item }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "RotatingAnnouncementContent",
+          "line": 17,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "useMemo",
+          "lineNumber": 26
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "Math.max",
+          "lineNumber": 27
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "useState",
+          "lineNumber": 30
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "useState",
+          "lineNumber": 31
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "useState",
+          "lineNumber": 32
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "useRef",
+          "lineNumber": 33
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "useRef",
+          "lineNumber": 34
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "useEffect",
+          "lineNumber": 36
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "useEffect",
+          "lineNumber": 40
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "window.setInterval",
+          "lineNumber": 45
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "setPreviousIndex",
+          "lineNumber": 48
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "setCurrentIndex",
+          "lineNumber": 49
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "window.clearTimeout",
+          "lineNumber": 53
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "window.setTimeout",
+          "lineNumber": 56
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "setPreviousIndex",
+          "lineNumber": 57
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "window.clearInterval",
+          "lineNumber": 63
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "window.clearTimeout",
+          "lineNumber": 66
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "setIsPaused",
+          "lineNumber": 90
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "setIsPaused",
+          "lineNumber": 91
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "setIsPaused",
+          "lineNumber": 102
+        },
+        {
+          "caller": "RotatingAnnouncementContent",
+          "callee": "setIsPaused",
+          "lineNumber": 103
+        },
+        {
+          "caller": "AnnouncementItem",
+          "callee": "item.url?.startsWith",
+          "lineNumber": 127
+        },
+        {
+          "caller": "AnnouncementItem",
+          "callee": "item.url?.startsWith",
+          "lineNumber": 127
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/global/GlobalAnnouncement.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 47,
+      "nonEmptyLines": 44,
+      "functions": [
+        {
+          "name": "GlobalAnnouncement",
+          "startLine": 20,
+          "endLine": 47,
+          "params": [
+            "{\n  displayMode,\n  appearance,\n  intervalMs,\n  items,\n  label,\n  marqueeDurationMs,\n  stickyTopOffset = '0px',\n  dismissible,\n  hideOnScroll,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GlobalAnnouncement",
+          "line": 20,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GlobalAnnouncement",
+          "callee": "resolveBlockAppearanceClasses",
+          "lineNumber": 31
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/global/GlobalFooter.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 51,
+      "nonEmptyLines": 48,
+      "functions": [
+        {
+          "name": "GlobalFooter",
+          "startLine": 22,
+          "endLine": 51,
+          "params": [
+            "{\n  footer,\n  privacyPolicyPage,\n  termsAndConditionsPage,\n  siteAddress,\n  siteEmail,\n  siteLogo,\n  siteName,\n  sitePhone,\n  siteSocialLinks,\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GlobalFooter",
+          "line": 22,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GlobalFooter",
+          "callee": "renderFooterBlocks",
+          "lineNumber": 39
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/global/GlobalHeader.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 34,
+      "nonEmptyLines": 31,
+      "functions": [
+        {
+          "name": "GlobalHeader",
+          "startLine": 12,
+          "endLine": 34,
+          "params": [
+            "{\n  header,\n  siteLogo,\n  siteName,\n  stickyTopOffset = '0px',\n}"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GlobalHeader",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GlobalHeader",
+          "callee": "renderHeaderBlocks",
+          "lineNumber": 31
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/components/site/SiteLogo.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 71,
+      "nonEmptyLines": 60,
+      "functions": [
+        {
+          "name": "getLogoImageProps",
+          "startLine": 22,
+          "endLine": 40,
+          "params": [
+            "media",
+            "fallbackText"
+          ]
+        },
+        {
+          "name": "SiteLogo",
+          "startLine": 42,
+          "endLine": 71,
+          "params": [
+            "{ customDark, customLight, fallbackText, height, mode, siteLogo }"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "SiteLogo",
+          "line": 42,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getLogoImageProps",
+          "callee": "media.url.trim",
+          "lineNumber": 27
+        },
+        {
+          "caller": "getLogoImageProps",
+          "callee": "media.alt.trim",
+          "lineNumber": 34
+        },
+        {
+          "caller": "getLogoImageProps",
+          "callee": "media.alt.trim",
+          "lineNumber": 34
+        },
+        {
+          "caller": "SiteLogo",
+          "callee": "getLogoImageProps",
+          "lineNumber": 46
+        },
+        {
+          "caller": "SiteLogo",
+          "callee": "getLogoImageProps",
+          "lineNumber": 47
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "src/lib/themes/websiteThemes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 38,
+      "nonEmptyLines": 33,
+      "functions": [
+        {
+          "name": "isWebsiteTheme",
+          "startLine": 36,
+          "endLine": 38,
+          "params": [
+            "value"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "websiteThemes",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "defaultWebsiteTheme",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "websiteThemeValues",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "websiteThemeOptions",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "isWebsiteTheme",
+          "line": 36,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "isWebsiteTheme",
+          "callee": "websiteThemeValues.includes",
+          "lineNumber": 37
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/global-announcement.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 223,
+      "nonEmptyLines": 201,
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/global-footer.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 174,
+      "nonEmptyLines": 162,
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/global-header.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 85,
+      "nonEmptyLines": 77,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/header-navbar-render.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 318,
+      "nonEmptyLines": 299,
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/marquee-announcement.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 53,
+      "nonEmptyLines": 43,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/rotating-announcement.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 120,
+      "nonEmptyLines": 97,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/int/theme-settings.int.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 76,
+      "nonEmptyLines": 66,
+      "functions": [
+        {
+          "name": "getThemeField",
+          "startLine": 19,
+          "endLine": 33,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getThemeField",
+          "callee": "ThemeSettings.fields.find",
+          "lineNumber": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    }
+  ]
+}

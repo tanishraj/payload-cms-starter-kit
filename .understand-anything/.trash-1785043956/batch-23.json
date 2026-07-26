@@ -1,0 +1,553 @@
+{
+  "nodes": [
+    {
+      "id": "document:docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md",
+      "type": "document",
+      "name": "2026-07-04-headers-collection-active-global-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md",
+      "summary": "Design specification for Headers Collection With Active Global, spanning 18 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "navigation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-04-navigation-links-and-menus-design.md",
+      "type": "document",
+      "name": "2026-07-04-navigation-links-and-menus-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-04-navigation-links-and-menus-design.md",
+      "summary": "Design specification for Navigation Links And Menus, spanning 31 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "navigation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-07-cms-foundation-audit-design.md",
+      "type": "document",
+      "name": "2026-07-07-cms-foundation-audit-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-07-cms-foundation-audit-design.md",
+      "summary": "Design specification for CMS Foundation Audit, spanning 20 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "cms-architecture"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-08-articles-reviews-design.md",
+      "type": "document",
+      "name": "2026-07-08-articles-reviews-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-08-articles-reviews-design.md",
+      "summary": "Design specification for Articles And Reviews, spanning 38 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "content-model"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-08-editorial-first-cms-design.md",
+      "type": "document",
+      "name": "2026-07-08-editorial-first-cms-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-08-editorial-first-cms-design.md",
+      "summary": "Design specification for Editorial-First CMS Architecture, spanning 23 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "editorial-governance"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-08-review-intake-promotion-design.md",
+      "type": "document",
+      "name": "2026-07-08-review-intake-promotion-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-08-review-intake-promotion-design.md",
+      "summary": "Design specification for Review Intake Promotion, spanning 31 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "reviews"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-08-vercel-postgres-runtime-design.md",
+      "type": "document",
+      "name": "2026-07-08-vercel-postgres-runtime-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-08-vercel-postgres-runtime-design.md",
+      "summary": "Design specification for Vercel Postgres Runtime, spanning 24 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "runtime"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-09-form-submissions-lead-operations-design.md",
+      "type": "document",
+      "name": "2026-07-09-form-submissions-lead-operations-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-09-form-submissions-lead-operations-design.md",
+      "summary": "Design specification for Form Submissions Lead Operations, spanning 31 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "forms"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-09-homepage-e2e-seeding-design.md",
+      "type": "document",
+      "name": "2026-07-09-homepage-e2e-seeding-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-09-homepage-e2e-seeding-design.md",
+      "summary": "Design specification for Homepage E2E Seeding, spanning 17 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "testing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-09-media-governance-design.md",
+      "type": "document",
+      "name": "2026-07-09-media-governance-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-09-media-governance-design.md",
+      "summary": "Design specification for Media Governance, spanning 21 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "media"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-09-operator-guides-design.md",
+      "type": "document",
+      "name": "2026-07-09-operator-guides-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-09-operator-guides-design.md",
+      "summary": "Design specification for Operator Guides, spanning 26 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "documentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-09-playwright-readiness-route-design.md",
+      "type": "document",
+      "name": "2026-07-09-playwright-readiness-route-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-09-playwright-readiness-route-design.md",
+      "summary": "Design specification for Playwright Readiness Route, spanning 16 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "testing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-09-playwright-sqlite-worker-serialization-design.md",
+      "type": "document",
+      "name": "2026-07-09-playwright-sqlite-worker-serialization-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-09-playwright-sqlite-worker-serialization-design.md",
+      "summary": "Design specification for Playwright SQLite Worker Serialization, spanning 15 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "testing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-09-pnpm-startup-contract-fix-design.md",
+      "type": "document",
+      "name": "2026-07-09-pnpm-startup-contract-fix-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-09-pnpm-startup-contract-fix-design.md",
+      "summary": "Design specification for pnpm Startup Contract Fix, spanning 16 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "runtime"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-09-publish-queue-safety-design.md",
+      "type": "document",
+      "name": "2026-07-09-publish-queue-safety-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-09-publish-queue-safety-design.md",
+      "summary": "Design specification for Publish Queue Safety, spanning 25 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "work-queue"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-09-role-and-capability-model-design.md",
+      "type": "document",
+      "name": "2026-07-09-role-and-capability-model-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-09-role-and-capability-model-design.md",
+      "summary": "Design specification for Role And Capability Model, spanning 31 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "editorial-governance"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-09-seo-operations-completeness-design.md",
+      "type": "document",
+      "name": "2026-07-09-seo-operations-completeness-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-09-seo-operations-completeness-design.md",
+      "summary": "Design specification for SEO Operations Completeness, spanning 40 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "seo"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-09-starter-productization-and-handoff-design.md",
+      "type": "document",
+      "name": "2026-07-09-starter-productization-and-handoff-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-09-starter-productization-and-handoff-design.md",
+      "summary": "Design specification for Starter Productization And Handoff, spanning 36 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "starter-kit"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-09-taxonomy-and-content-organization-design.md",
+      "type": "document",
+      "name": "2026-07-09-taxonomy-and-content-organization-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-09-taxonomy-and-content-organization-design.md",
+      "summary": "Design specification for Taxonomy And Content Organization, spanning 38 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "content-model"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-07-09-work-queue-design.md",
+      "type": "document",
+      "name": "2026-07-09-work-queue-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-09-work-queue-design.md",
+      "summary": "Design specification for Work Queue, spanning 41 structured sections that document architecture, constraints, and implementation boundaries.",
+      "tags": [
+        "documentation",
+        "design-specification",
+        "work-queue"
+      ],
+      "complexity": "complex"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md",
+      "target": "file:src/collections/Headers.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md",
+      "target": "file:src/blocks/HeaderNavbar12/config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md",
+      "target": "file:src/payload.config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md",
+      "target": "file:src/app/(frontend)/layout.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-04-headers-collection-active-global-design.md",
+      "target": "file:src/components/navbar12.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-07-cms-foundation-audit-design.md",
+      "target": "file:src/app/(frontend)/pageData.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-07-cms-foundation-audit-design.md",
+      "target": "file:src/access/adminCapabilities.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-07-cms-foundation-audit-design.md",
+      "target": "file:src/collections/Users.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-07-cms-foundation-audit-design.md",
+      "target": "file:src/payload.config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-08-articles-reviews-design.md",
+      "target": "file:src/app/(frontend)/articles/[slug]/page.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-08-articles-reviews-design.md",
+      "target": "file:src/app/(frontend)/reviews/[slug]/page.tsx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-08-articles-reviews-design.md",
+      "target": "file:src/app/(frontend)/pageData.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-08-articles-reviews-design.md",
+      "target": "file:src/lib/contentEntries.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-08-articles-reviews-design.md",
+      "target": "file:src/payload.config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-08-vercel-postgres-runtime-design.md",
+      "target": "file:src/config/runtime.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-08-vercel-postgres-runtime-design.md",
+      "target": "file:src/config/providers.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-08-vercel-postgres-runtime-design.md",
+      "target": "config:package.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-08-vercel-postgres-runtime-design.md",
+      "target": "file:src/payload.config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-08-vercel-postgres-runtime-design.md",
+      "target": "document:README.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-homepage-e2e-seeding-design.md",
+      "target": "file:tests/helpers/seedHomepage.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-homepage-e2e-seeding-design.md",
+      "target": "file:tests/e2e/frontend.e2e.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-operator-guides-design.md",
+      "target": "document:docs/guides/README.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-operator-guides-design.md",
+      "target": "document:README.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-operator-guides-design.md",
+      "target": "document:docs/guides/pages.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-operator-guides-design.md",
+      "target": "document:docs/guides/categories.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-operator-guides-design.md",
+      "target": "document:docs/guides/tags.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-pnpm-startup-contract-fix-design.md",
+      "target": "file:.pnpmfile.mjs",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-pnpm-startup-contract-fix-design.md",
+      "target": "config:package.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-seo-operations-completeness-design.md",
+      "target": "file:src/globals/SEOSettings.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-seo-operations-completeness-design.md",
+      "target": "file:src/app/(frontend)/pageData.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-seo-operations-completeness-design.md",
+      "target": "file:src/lib/contentEntries.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-seo-operations-completeness-design.md",
+      "target": "file:src/app/sitemap.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-seo-operations-completeness-design.md",
+      "target": "file:src/app/robots.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-starter-productization-and-handoff-design.md",
+      "target": "file:src/config/runtime.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-starter-productization-and-handoff-design.md",
+      "target": "file:src/config/providers.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-starter-productization-and-handoff-design.md",
+      "target": "file:src/payload.config.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-starter-productization-and-handoff-design.md",
+      "target": "file:tests/int/runtime-config.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-starter-productization-and-handoff-design.md",
+      "target": "file:tests/int/provider-selection.int.spec.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-taxonomy-and-content-organization-design.md",
+      "target": "file:src/collections/Articles.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-taxonomy-and-content-organization-design.md",
+      "target": "file:src/collections/Reviews.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-07-09-taxonomy-and-content-organization-design.md",
+      "target": "file:src/lib/contentEntries.ts",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}
