@@ -1,0 +1,143 @@
+# Contact 24 Office Layout Refresh
+
+## Goal
+
+Ensure every complete Site Settings office appears in Contact 24 and refresh the office
+presentation so maps lead into clear, square-cornered contact details. A single office must use the
+full available width, while multiple offices remain readable in a maximum two-column layout.
+
+## Current-state diagnosis
+
+The published Site Settings document contains four office rows. Only the first row has an
+Interactive Map Embed URL; the other three rows have empty embed URLs. The shared office
+normalizer rejects incomplete rows, so only the first office reaches the Contact 24 presentation.
+
+This is expected validation behavior rather than a grid rendering defect. The missing embed URLs
+must be completed in Site Settings before all four interactive maps can render. External map share
+links are not used as iframe fallbacks because map providers do not guarantee that short or
+navigation URLs are embeddable.
+
+## Selected approach
+
+Use a count-aware grid capped at two columns:
+
+- one office: one full-width column
+- two or more offices: two equal columns from the medium breakpoint
+- every office: one column on smaller screens
+
+Each office is a vertical composition with an interactive map followed by a separate details
+panel. The map and panel have square corners. The details panel uses a light semantic background,
+a thin four-sided border, and short decorative border strokes extending beyond all four corners.
+
+This approach keeps maps large enough to interact with, makes the single-office case intentional,
+and concentrates the visual signature around the contact information instead of enclosing the
+entire map.
+
+Alternatives rejected:
+
+- A four-column desktop grid makes maps and wrapped addresses too narrow.
+- A single border around both the map and details boxes the map in and weakens the requested
+  details treatment.
+- A details panel overlapping the map reduces usable map space and creates uneven alignment when
+  contact content wraps.
+
+## Visual design
+
+The block retains the existing shared container, outer spacing, heading scale, font families, and
+theme appearance behavior.
+
+Each office renders in this order:
+
+1. interactive map
+2. region eyebrow
+3. city heading
+4. address
+5. phone
+6. email
+7. external map action
+
+The map has a consistent aspect ratio and no gradient or text overlay. The details panel sits
+directly below it and uses semantic theme tokens equivalent to a light muted surface, the standard
+foreground, muted foreground, and border color. No custom palette or new global design tokens are
+introduced.
+
+The panel has no border radius. Its four regular borders define the information surface. Each
+corner gains two short, absolutely positioned strokes that extend slightly beyond the panel:
+one horizontal and one vertical. These strokes are decorative, ignore pointer events, and use the
+same semantic border color. The restrained corner treatment is the block's single visual
+signature.
+
+The existing project typography remains authoritative:
+
+- the block eyebrow keeps the project mono uppercase treatment
+- the block title keeps the shared regular-block heading scale
+- region uses the compact mono uppercase treatment
+- city uses a clear semibold display size
+- contact details retain readable base sizing and line height
+
+## Component changes
+
+`src/components/contact24.tsx` remains the pure presentation component.
+
+It will:
+
+- select a full-width single-column grid when `offices.length === 1`
+- select a two-column medium-breakpoint grid when more offices exist
+- render every received office in source order
+- replace the current rounded Card composition and map overlay with a square map/details
+  composition
+- keep the existing accessible iframe, telephone link, email link, and external map anchor
+- use a small internal decorative wrapper for the extended corner borders
+
+The Payload block configuration, Site Settings schema, server loader, live-preview adapter, and
+public data flow do not change.
+
+## Data behavior
+
+The office normalizer remains strict. A public office requires:
+
+- region
+- city
+- address
+- phone
+- email
+- valid HTTPS interactive map embed URL
+- valid HTTPS external map URL
+- accessible map title
+
+Incomplete offices remain excluded so the public page never renders a broken or unsafe iframe.
+Valid offices continue to render even when another row is incomplete. Site Settings array order
+continues to control public display order.
+
+The three currently hidden office rows require editor updates to their Interactive Map Embed URL
+fields. This design does not invent or migrate map URLs.
+
+## Responsive and accessibility behavior
+
+- Mobile and narrow tablet layouts use one column.
+- A single office stays full width at every breakpoint.
+- Multiple offices use two columns from the medium breakpoint.
+- Maps remain keyboard-interactive and retain accessible titles, lazy loading, fullscreen support,
+  and the conservative referrer policy.
+- Decorative corner strokes are hidden from assistive technology through their non-semantic CSS
+  implementation.
+- Phone, email, and View on Map remain real links with visible focus treatment inherited from the
+  project components and styles.
+- Wrapped addresses and long email values remain inside the panel without changing map height.
+
+## Verification
+
+Focused tests will verify:
+
+- one office uses a full-width one-column grid
+- two and four offices use the capped two-column desktop grid
+- all valid offices render in source order
+- the map precedes the details
+- region and city no longer overlay the map
+- the details panel has a light semantic background, four-sided border, and no radius
+- decorative extended corner strokes are present
+- iframe accessibility and contact link semantics remain intact
+- incomplete rows remain filtered while valid siblings render
+
+Focused lint and the Contact 24 integration tests will run after implementation. The local
+Contact 24 preview will be checked against the running Payload/Next development server.
