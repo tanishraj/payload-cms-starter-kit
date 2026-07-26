@@ -44,6 +44,7 @@ describe('block thumbnail metadata', () => {
 
     expect(registeredSlugs.slice().sort()).toEqual([
       'announcement',
+      'contact33',
       'contentHighlights',
       'cta39',
       'featureMatrix',
@@ -151,6 +152,13 @@ describe('block thumbnail metadata', () => {
       filename: 'review-feed.jpg',
       label: 'Review Feed',
       slug: 'reviewFeed',
+      stageAlignment: 'top',
+    })
+    expect(getBlockThumbnailDefinition('contact33')).toMatchObject({
+      alt: 'Contact 33 block preview',
+      filename: 'contact-33.jpg',
+      label: 'Contact 33',
+      slug: 'contact33',
       stageAlignment: 'top',
     })
     expect(getBlockThumbnailDefinition('qaAccordion')).toMatchObject({

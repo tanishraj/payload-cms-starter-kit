@@ -14,6 +14,7 @@ import { ProfileCarouselBlockComponent } from '@/blocks/ProfileCarousel/Componen
 import { QaAccordionBlockComponent } from '@/blocks/QaAccordion/Component'
 import { RatingSpotlightBlockComponent } from '@/blocks/RatingSpotlight/Component'
 import { ReviewSubmissionBlockComponent } from '@/blocks/ReviewSubmission/Component'
+import { Contact33BlockComponent } from '@/blocks/Contact33/Component'
 import { FeatureSpotlightBlockComponent } from '@/blocks/FeatureSpotlight/Component'
 import { StatsStripBlockComponent } from '@/blocks/StatsStrip/Component'
 import { TeamShowcase } from '@/components/team-showcase'
@@ -143,6 +144,50 @@ const reviewFormFixture: Pick<
   submitButtonLabel: 'Submit review',
   successMessage: 'Thank you for sharing your experience.',
   title: 'Review form',
+}
+
+const contactFormFixture: Pick<
+  Form,
+  'fields' | 'slug' | 'submitButtonLabel' | 'successMessage' | 'title'
+> = {
+  fields: [
+    {
+      label: 'Name',
+      name: 'name',
+      placeholder: 'Your name',
+      required: true,
+      type: 'text',
+    },
+    {
+      label: 'Email',
+      name: 'email',
+      placeholder: 'you@example.com',
+      required: true,
+      type: 'email',
+    },
+    {
+      label: 'Subject',
+      name: 'subject',
+      options: [
+        { label: 'Programs', value: 'programs' },
+        { label: 'Admissions', value: 'admissions' },
+        { label: 'Partnerships', value: 'partnerships' },
+      ],
+      required: false,
+      type: 'select',
+    },
+    {
+      label: 'Message',
+      name: 'message',
+      placeholder: 'How can we help?',
+      required: true,
+      type: 'textarea',
+    },
+  ],
+  slug: 'thumbnail-contact-form',
+  submitButtonLabel: 'Send message',
+  successMessage: 'Thanks. Our team will be in touch.',
+  title: 'Contact form',
 }
 
 const headerMenuFixture = [
@@ -620,6 +665,19 @@ export const blockThumbnailFixtures = {
       form={reviewFormFixture}
       size="compact"
       title="Tell us about your experience."
+    />
+  ),
+  contact33: (
+    <Contact33BlockComponent
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      description="Tell us what you need and our team will help you find the right next step."
+      eyebrow="Contact"
+      form={contactFormFixture}
+      image={{ alt: 'Modern learning environment', url: editorialLandscape }}
+      imageAlt="A welcoming modern learning environment"
+      imagePosition="right"
+      size="compact"
+      title="Start a conversation."
     />
   ),
   reviewFeed: (
