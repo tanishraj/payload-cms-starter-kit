@@ -57,14 +57,10 @@ function CornerBorderAccents() {
       className="pointer-events-none absolute inset-0"
       data-contact24-corner-accents
     >
-      <span className="absolute -left-2 top-0 h-px w-2 -translate-y-1/2 bg-border" />
-      <span className="absolute -top-2 left-0 h-2 w-px -translate-x-1/2 bg-border" />
-      <span className="absolute -right-2 top-0 h-px w-2 -translate-y-1/2 bg-border" />
-      <span className="absolute -top-2 right-0 h-2 w-px translate-x-1/2 bg-border" />
-      <span className="absolute -bottom-2 left-0 h-2 w-px -translate-x-1/2 bg-border" />
-      <span className="absolute -left-2 bottom-0 h-px w-2 translate-y-1/2 bg-border" />
-      <span className="absolute -right-2 bottom-0 h-px w-2 translate-y-1/2 bg-border" />
-      <span className="absolute -bottom-2 right-0 h-2 w-px translate-x-1/2 bg-border" />
+      <span className="absolute -left-1 -top-1 size-3 border-l border-t border-border" />
+      <span className="absolute -right-1 -top-1 size-3 border-r border-t border-border" />
+      <span className="absolute -bottom-1 -left-1 size-3 border-b border-l border-border" />
+      <span className="absolute -bottom-1 -right-1 size-3 border-b border-r border-border" />
     </span>
   )
 }

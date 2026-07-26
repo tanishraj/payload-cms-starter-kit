@@ -90,8 +90,10 @@ describe('contact24 presentation', () => {
     expect(html).toContain('sm:aspect-[5/2]')
     expect(html).not.toContain('bg-muted/40')
     expect(html).not.toContain('rounded-none bg-muted')
-    expect(html.match(/h-px w-2/g)).toHaveLength(4)
-    expect(html.match(/h-2 w-px/g)).toHaveLength(4)
+    expect(html).toContain('-left-1 -top-1 size-3 border-l border-t border-border')
+    expect(html).toContain('-right-1 -top-1 size-3 border-r border-t border-border')
+    expect(html).toContain('-bottom-1 -left-1 size-3 border-b border-l border-border')
+    expect(html).toContain('-bottom-1 -right-1 size-3 border-b border-r border-border')
     expect(html).not.toContain('bg-gradient-to-t')
     expect(html.indexOf('data-contact24-map')).toBeLessThan(
       html.indexOf('data-contact24-details'),
