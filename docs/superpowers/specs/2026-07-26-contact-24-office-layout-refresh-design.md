@@ -27,8 +27,8 @@ Use a count-aware grid capped at two columns:
 
 Each office is a vertical composition with an interactive map followed by a separate details
 panel, separated by a 16px gap. The map and panel have square corners. The details panel uses a
-light semantic background, a thin four-sided border, and crossing decorative border strokes
-extending beyond all four corners.
+transparent background, a thin four-sided border, and restrained decorative border extensions
+outside all four corners.
 
 This approach keeps maps large enough to interact with, makes the single-office case intentional,
 and concentrates the visual signature around the contact information instead of enclosing the
@@ -59,15 +59,16 @@ Each office renders in this order:
 
 The map uses a 16:9 aspect ratio on narrow mobile screens and a shorter 5:2 aspect ratio from the
 small breakpoint. It has no gradient or text overlay. The details panel sits below it with a 16px
-gap and uses semantic theme tokens equivalent to a light muted surface, the standard foreground,
-muted foreground, and border color. No custom palette or new global design tokens are introduced.
+gap and inherits the block background without adding its own fill. It uses the standard foreground,
+muted foreground, and border color. The map wrapper also adds no background. No custom palette or
+new global design tokens are introduced.
 
 The panel has no border radius. Its four regular borders define the information surface. At each
-corner, one short horizontal stroke and one short vertical stroke cross at the exact panel corner.
-Both strokes extend approximately 8px beyond the panel and continue approximately 8px inside it,
-making the intersection visibly cross instead of forming an L shape. These strokes are
-decorative, ignore pointer events, and use the same semantic border color. The restrained corner
-treatment is the block's single visual signature.
+corner, one short horizontal stroke and one short vertical stroke continue approximately 8px
+outward from the panel. The strokes stop at the corner instead of continuing inward, forming a
+quiet outward extension rather than a plus sign. These strokes are decorative, ignore pointer
+events, and use the same semantic border color. The restrained corner treatment is the block's
+single visual signature.
 
 The existing project typography remains authoritative:
 
@@ -90,7 +91,7 @@ It will:
   composition
 - use a 16px map-to-details gap and a shorter responsive map aspect ratio
 - keep the existing accessible iframe, telephone link, email link, and external map anchor
-- use a small internal decorative wrapper for crossing corner borders
+- use a small internal decorative wrapper for outward-only corner extensions
 
 The Payload block configuration, Site Settings schema, server loader, live-preview adapter, and
 public data flow do not change.
@@ -140,8 +141,9 @@ Focused tests will verify:
 - the map precedes the details
 - the map uses the shorter responsive aspect ratio and a 16px content gap
 - region and city no longer overlay the map
-- the details panel has a light semantic background, four-sided border, and no radius
-- crossing horizontal and vertical strokes are present at every corner
+- the map wrapper and details panel add no background
+- the details panel has a four-sided border and no radius
+- outward-only horizontal and vertical extensions are present at every corner
 - iframe accessibility and contact link semantics remain intact
 - incomplete rows remain filtered while valid siblings render
 
