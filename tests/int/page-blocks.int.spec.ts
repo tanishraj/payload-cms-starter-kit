@@ -177,6 +177,7 @@ describe('page block pipeline', () => {
       'reviewFeed',
       'reviewSubmission',
       'contact33',
+      'contact24',
       'teamShowcase',
       'services21',
     ])
@@ -1178,5 +1179,14 @@ describe('page block pipeline', () => {
       "import { Contact33BlockComponent } from './Contact33/Component'",
     )
     expect(source).toContain("case 'contact33':")
+  })
+
+  it('registers contact24 in public page rendering', () => {
+    const source = readFileSync('src/blocks/renderPageBlocks.tsx', 'utf8')
+
+    expect(source).toContain(
+      "import { Contact24BlockComponent } from './Contact24/Component'",
+    )
+    expect(source).toContain("case 'contact24':")
   })
 })

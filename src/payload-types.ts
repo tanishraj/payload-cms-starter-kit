@@ -196,6 +196,7 @@ export interface Page {
         | ReviewFeedBlock
         | ReviewSubmissionBlock
         | Contact33Block
+        | Contact24Block
         | TeamShowcaseBlock
         | Services21Block
       )[]
@@ -965,6 +966,24 @@ export interface Contact33Block {
   id?: string | null;
   blockName?: string | null;
   blockType: 'contact33';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Contact24Block".
+ */
+export interface Contact24Block {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contact24';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2204,6 +2223,7 @@ export interface PagesSelect<T extends boolean = true> {
         reviewFeed?: T | ReviewFeedBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
         contact33?: T | Contact33BlockSelect<T>;
+        contact24?: T | Contact24BlockSelect<T>;
         teamShowcase?: T | TeamShowcaseBlockSelect<T>;
         services21?: T | Services21BlockSelect<T>;
       };
@@ -2815,6 +2835,25 @@ export interface Contact33BlockSelect<T extends boolean = true> {
   contentAlignment?: T;
   size?: T;
   imagePosition?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Contact24Block_select".
+ */
+export interface Contact24BlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  size?: T;
   id?: T;
   blockName?: T;
 }

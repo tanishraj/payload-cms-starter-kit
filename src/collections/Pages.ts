@@ -13,6 +13,7 @@ import { HeroBannerBlock } from '@/blocks/HeroBanner/config'
 import { RatingSpotlightBlock } from '@/blocks/RatingSpotlight/config'
 import { ReviewFeedBlock } from '@/blocks/ReviewFeed/config'
 import { ReviewSubmissionBlock } from '@/blocks/ReviewSubmission/config'
+import { Contact24Block } from '@/blocks/Contact24/config'
 import { Contact33Block } from '@/blocks/Contact33/config'
 import { StatsStripBlock } from '@/blocks/StatsStrip/config'
 import { Services21Block } from '@/blocks/Services21/config'
@@ -227,6 +228,7 @@ export const Pages: CollectionConfig = {
                 ReviewFeedBlock,
                 ReviewSubmissionBlock,
                 Contact33Block,
+                Contact24Block,
                 TeamShowcaseBlock,
                 Services21Block,
               ],

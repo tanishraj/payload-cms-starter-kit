@@ -127,6 +127,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Contact 24 block preview',
+    filename: 'contact-24.jpg',
+    label: 'Contact 24',
+    slug: 'contact24',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Rating Spotlight block preview',
     filename: 'rating-spotlight.jpg',
     label: 'Rating Spotlight',
