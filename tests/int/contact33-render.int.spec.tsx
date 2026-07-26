@@ -1,6 +1,6 @@
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { cleanup } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { Contact33BlockComponent } from '@/blocks/Contact33/Component'
@@ -47,6 +47,7 @@ const contactForm = {
 
 afterEach(() => {
   cleanup()
+  window.history.replaceState({}, '', '/')
   vi.restoreAllMocks()
   vi.unstubAllGlobals()
 })
@@ -148,5 +149,115 @@ describe('contact33 block', () => {
 
     expect(html).toContain('This contact form is currently unavailable.')
     expect(html).not.toContain('<form')
+  })
+
+  it('submits values and attribution metadata through the existing endpoint', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/contact?utm_source=newsletter&utm_campaign=summer',
+    )
+    const fetchMock = vi.fn().mockResolvedValue({
+      json: vi.fn().mockResolvedValue({
+        message: 'Thanks. We will reply soon.',
+      }),
+      ok: true,
+    })
+    vi.stubGlobal('fetch', fetchMock)
+
+    render(
+      <Contact33BlockComponent
+        form={contactForm as never}
+        image={{ alt: 'Contact', url: '/contact.jpg' } as never}
+        imageAlt="Contact team"
+        title="Contact us"
+      />,
+    )
+
+    fireEvent.change(screen.getByLabelText(/Full name/), {
+      target: { value: 'Jane Doe' },
+    })
+    fireEvent.change(screen.getByLabelText(/Work email/), {
+      target: { value: 'jane@example.com' },
+    })
+    fireEvent.change(screen.getByLabelText(/Your message/), {
+      target: { value: 'I would like to learn more.' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Send inquiry' }))
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledOnce())
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/forms/contact/submit',
+      expect.objectContaining({
+        method: 'POST',
+      }),
+    )
+
+    const request = JSON.parse(fetchMock.mock.calls[0][1].body as string)
+    expect(request).toEqual({
+      metadata: {
+        campaign: 'summer',
+        landingPage: '/contact?utm_source=newsletter&utm_campaign=summer',
+        source: 'newsletter',
+      },
+      values: {
+        email: 'jane@example.com',
+        message: 'I would like to learn more.',
+        name: 'Jane Doe',
+        subject: '',
+        website: '',
+      },
+    })
+    expect((await screen.findByRole('status')).textContent).toContain(
+      'Thanks. We will reply soon.',
+    )
+    expect((screen.getByLabelText(/Full name/) as HTMLInputElement).value).toBe('')
+  })
+
+  it('maps endpoint errors to fields and restores the submit action', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        json: vi.fn().mockResolvedValue({
+          errors: {
+            email: 'Work email must be a valid email address.',
+          },
+          message: 'Please correct the highlighted fields and try again.',
+        }),
+        ok: false,
+      }),
+    )
+
+    render(
+      <Contact33BlockComponent
+        form={contactForm as never}
+        image={{ alt: 'Contact', url: '/contact.jpg' } as never}
+        imageAlt="Contact team"
+        title="Contact us"
+      />,
+    )
+
+    fireEvent.change(screen.getByLabelText(/Full name/), {
+      target: { value: 'Jane' },
+    })
+    fireEvent.change(screen.getByLabelText(/Work email/), {
+      target: { value: 'jane@example.com' },
+    })
+    fireEvent.change(screen.getByLabelText(/Your message/), {
+      target: { value: 'Hello' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Send inquiry' }))
+
+    expect(
+      await screen.findByText('Work email must be a valid email address.'),
+    ).toBeTruthy()
+    expect(
+      screen.getByText('Please correct the highlighted fields and try again.')
+        .textContent,
+    ).toContain('Please correct the highlighted fields and try again.')
+    expect(
+      (screen.getByRole('button', { name: 'Send inquiry' }) as HTMLButtonElement)
+        .disabled,
+    ).toBe(false)
   })
 })
