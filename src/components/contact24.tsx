@@ -57,14 +57,14 @@ function CornerBorderAccents() {
       className="pointer-events-none absolute inset-0"
       data-contact24-corner-accents
     >
-      <span className="absolute -left-2 top-0 h-px w-4 -translate-y-1/2 bg-border" />
-      <span className="absolute -top-2 left-0 h-4 w-px -translate-x-1/2 bg-border" />
-      <span className="absolute -right-2 top-0 h-px w-4 -translate-y-1/2 bg-border" />
-      <span className="absolute -top-2 right-0 h-4 w-px translate-x-1/2 bg-border" />
-      <span className="absolute -bottom-2 left-0 h-4 w-px -translate-x-1/2 bg-border" />
-      <span className="absolute -left-2 bottom-0 h-px w-4 translate-y-1/2 bg-border" />
-      <span className="absolute -right-2 bottom-0 h-px w-4 translate-y-1/2 bg-border" />
-      <span className="absolute -bottom-2 right-0 h-4 w-px translate-x-1/2 bg-border" />
+      <span className="absolute -left-2 top-0 h-px w-2 -translate-y-1/2 bg-border" />
+      <span className="absolute -top-2 left-0 h-2 w-px -translate-x-1/2 bg-border" />
+      <span className="absolute -right-2 top-0 h-px w-2 -translate-y-1/2 bg-border" />
+      <span className="absolute -top-2 right-0 h-2 w-px translate-x-1/2 bg-border" />
+      <span className="absolute -bottom-2 left-0 h-2 w-px -translate-x-1/2 bg-border" />
+      <span className="absolute -left-2 bottom-0 h-px w-2 translate-y-1/2 bg-border" />
+      <span className="absolute -right-2 bottom-0 h-px w-2 translate-y-1/2 bg-border" />
+      <span className="absolute -bottom-2 right-0 h-2 w-px translate-x-1/2 bg-border" />
     </span>
   )
 }
@@ -136,7 +136,7 @@ export function Contact24({
                 key={office.id}
               >
                 <div
-                  className="relative aspect-video w-full overflow-hidden rounded-none bg-muted sm:aspect-[5/2]"
+                  className="relative aspect-video w-full overflow-hidden rounded-none sm:aspect-[5/2]"
                   data-contact24-map
                 >
                   <iframe
@@ -150,7 +150,7 @@ export function Contact24({
                 </div>
 
                 <div
-                  className="relative flex flex-1 flex-col rounded-none border border-border bg-muted/40 p-6 sm:p-8"
+                  className="relative flex flex-1 flex-col rounded-none border border-border p-6 sm:p-8"
                   data-contact24-details
                 >
                   <CornerBorderAccents />
