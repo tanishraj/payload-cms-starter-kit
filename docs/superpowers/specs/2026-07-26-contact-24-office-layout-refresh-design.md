@@ -26,8 +26,9 @@ Use a count-aware grid capped at two columns:
 - every office: one column on smaller screens
 
 Each office is a vertical composition with an interactive map followed by a separate details
-panel. The map and panel have square corners. The details panel uses a light semantic background,
-a thin four-sided border, and short decorative border strokes extending beyond all four corners.
+panel, separated by a 16px gap. The map and panel have square corners. The details panel uses a
+light semantic background, a thin four-sided border, and crossing decorative border strokes
+extending beyond all four corners.
 
 This approach keeps maps large enough to interact with, makes the single-office case intentional,
 and concentrates the visual signature around the contact information instead of enclosing the
@@ -56,16 +57,17 @@ Each office renders in this order:
 6. email
 7. external map action
 
-The map has a consistent aspect ratio and no gradient or text overlay. The details panel sits
-directly below it and uses semantic theme tokens equivalent to a light muted surface, the standard
-foreground, muted foreground, and border color. No custom palette or new global design tokens are
-introduced.
+The map uses a 16:9 aspect ratio on narrow mobile screens and a shorter 5:2 aspect ratio from the
+small breakpoint. It has no gradient or text overlay. The details panel sits below it with a 16px
+gap and uses semantic theme tokens equivalent to a light muted surface, the standard foreground,
+muted foreground, and border color. No custom palette or new global design tokens are introduced.
 
-The panel has no border radius. Its four regular borders define the information surface. Each
-corner gains two short, absolutely positioned strokes that extend slightly beyond the panel:
-one horizontal and one vertical. These strokes are decorative, ignore pointer events, and use the
-same semantic border color. The restrained corner treatment is the block's single visual
-signature.
+The panel has no border radius. Its four regular borders define the information surface. At each
+corner, one short horizontal stroke and one short vertical stroke cross at the exact panel corner.
+Both strokes extend approximately 8px beyond the panel and continue approximately 8px inside it,
+making the intersection visibly cross instead of forming an L shape. These strokes are
+decorative, ignore pointer events, and use the same semantic border color. The restrained corner
+treatment is the block's single visual signature.
 
 The existing project typography remains authoritative:
 
@@ -86,8 +88,9 @@ It will:
 - render every received office in source order
 - replace the current rounded Card composition and map overlay with a square map/details
   composition
+- use a 16px map-to-details gap and a shorter responsive map aspect ratio
 - keep the existing accessible iframe, telephone link, email link, and external map anchor
-- use a small internal decorative wrapper for the extended corner borders
+- use a small internal decorative wrapper for crossing corner borders
 
 The Payload block configuration, Site Settings schema, server loader, live-preview adapter, and
 public data flow do not change.
@@ -117,6 +120,8 @@ fields. This design does not invent or migrate map URLs.
 - Mobile and narrow tablet layouts use one column.
 - A single office stays full width at every breakpoint.
 - Multiple offices use two columns from the medium breakpoint.
+- Maps use 16:9 on narrow mobile screens and 5:2 from the small breakpoint.
+- A 16px gap separates each map from its details panel.
 - Maps remain keyboard-interactive and retain accessible titles, lazy loading, fullscreen support,
   and the conservative referrer policy.
 - Decorative corner strokes are hidden from assistive technology through their non-semantic CSS
@@ -133,9 +138,10 @@ Focused tests will verify:
 - two and four offices use the capped two-column desktop grid
 - all valid offices render in source order
 - the map precedes the details
+- the map uses the shorter responsive aspect ratio and a 16px content gap
 - region and city no longer overlay the map
 - the details panel has a light semantic background, four-sided border, and no radius
-- decorative extended corner strokes are present
+- crossing horizontal and vertical strokes are present at every corner
 - iframe accessibility and contact link semantics remain intact
 - incomplete rows remain filtered while valid siblings render
 
