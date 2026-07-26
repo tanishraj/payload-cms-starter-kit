@@ -64,11 +64,11 @@ muted foreground, and border color. The map wrapper also adds no background. No 
 new global design tokens are introduced.
 
 The panel has no border radius. Its four regular borders define the information surface. At each
-corner, one short horizontal stroke and one short vertical stroke continue approximately 8px
-outward from the panel. The strokes stop at the corner instead of continuing inward, forming a
-quiet outward extension rather than a plus sign. These strokes are decorative, ignore pointer
-events, and use the same semantic border color. The restrained corner treatment is the block's
-single visual signature.
+corner, a separate 12px L-shaped bracket sits 4px outside the panel border. Because the bracket is
+offset on both axes, neither of its strokes intersects the panel's horizontal or vertical border,
+so the corner cannot read as a plus sign. The brackets are decorative, ignore pointer events, and
+use the same semantic border color. The restrained corner treatment is the block's single visual
+signature.
 
 The existing project typography remains authoritative:
 
@@ -91,7 +91,7 @@ It will:
   composition
 - use a 16px map-to-details gap and a shorter responsive map aspect ratio
 - keep the existing accessible iframe, telephone link, email link, and external map anchor
-- use a small internal decorative wrapper for outward-only corner extensions
+- use a small internal decorative wrapper for four offset L-shaped corner brackets
 
 The Payload block configuration, Site Settings schema, server loader, live-preview adapter, and
 public data flow do not change.
@@ -143,7 +143,7 @@ Focused tests will verify:
 - region and city no longer overlay the map
 - the map wrapper and details panel add no background
 - the details panel has a four-sided border and no radius
-- outward-only horizontal and vertical extensions are present at every corner
+- a separate offset L-shaped bracket is present at every corner
 - iframe accessibility and contact link semantics remain intact
 - incomplete rows remain filtered while valid siblings render
 
