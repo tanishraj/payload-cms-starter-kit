@@ -92,9 +92,14 @@ It will:
 - use a 16px map-to-details gap and a shorter responsive map aspect ratio
 - keep the existing accessible iframe, telephone link, email link, and external map anchor
 - use a small internal decorative wrapper for four offset L-shaped corner brackets
+- accept a details alignment independent from the block heading alignment
+- align the region, city, contact rows, and map action left, center, or right
+- render the map action as a compact content-width small button
 
-The Payload block configuration, Site Settings schema, server loader, live-preview adapter, and
-public data flow do not change.
+The Payload block adds a required `detailsAlignment` select under Layout & Theme with Left, Center,
+and Right options and a Left default. The existing `contentAlignment` continues to control only
+the block eyebrow, title, and description. The Site Settings schema, server loader, live-preview
+adapter, and public office data flow do not change.
 
 ## Data behavior
 
@@ -113,8 +118,9 @@ Incomplete offices remain excluded so the public page never renders a broken or 
 Valid offices continue to render even when another row is incomplete. Site Settings array order
 continues to control public display order.
 
-The three currently hidden office rows require editor updates to their Interactive Map Embed URL
-fields. This design does not invent or migrate map URLs.
+Every published office currently has an Interactive Map Embed URL, so all four pass normalization.
+This design keeps strict validation and does not invent, migrate, or provide fallbacks for map
+URLs.
 
 ## Responsive and accessibility behavior
 
@@ -130,6 +136,8 @@ fields. This design does not invent or migrate map URLs.
 - Phone, email, and View on Map remain real links with visible focus treatment inherited from the
   project components and styles.
 - Wrapped addresses and long email values remain inside the panel without changing map height.
+- Details alignment can be left, center, or right without changing the block heading alignment.
+- The View on Map action uses the small Button size and content width at the selected alignment.
 
 ## Verification
 
@@ -144,6 +152,9 @@ Focused tests will verify:
 - the map wrapper and details panel add no background
 - the details panel has a four-sided border and no radius
 - a separate offset L-shaped bracket is present at every corner
+- details alignment is independent from heading alignment
+- centered details center the heading, address rows, links, and map action
+- the View on Map action uses the small Button size and does not stretch to panel width
 - iframe accessibility and contact link semantics remain intact
 - incomplete rows remain filtered while valid siblings render
 

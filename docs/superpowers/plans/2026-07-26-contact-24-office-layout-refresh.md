@@ -27,7 +27,11 @@
 ## File structure
 
 - Modify `src/components/contact24.tsx`: responsive office grid and square map/details presentation.
+- Modify `src/blocks/Contact24/config.ts`: independent details alignment field.
+- Modify `src/blocks/Contact24/Presentation.tsx`: pass details alignment into the presentation.
+- Modify `src/payload-types.ts`: generated `detailsAlignment` block type.
 - Modify `tests/int/contact24-render.int.spec.tsx`: count-aware grid, multi-office rendering, content order, and visual-semantic regression coverage.
+- Modify `tests/int/contact24-data.int.spec.ts`: Payload details-alignment schema coverage.
 - Reuse `tests/int/site-offices.int.spec.ts`: existing strict normalization and valid-sibling behavior coverage; no file change required.
 
 ### Task 1: Refactor the Contact 24 office presentation
@@ -338,3 +342,215 @@ git commit -m "feat: refine contact 24 office layout"
 ```
 
 Expected: one focused implementation commit with no unrelated files.
+
+### Task 2: Add independent details alignment and a compact map action
+
+**Files:**
+
+- Modify: `tests/int/contact24-data.int.spec.ts`
+- Modify: `tests/int/contact24-render.int.spec.tsx`
+- Modify: `src/blocks/Contact24/config.ts`
+- Modify: `src/blocks/Contact24/Presentation.tsx`
+- Modify: `src/components/contact24.tsx`
+- Modify: `src/payload-types.ts`
+
+**Interfaces:**
+
+- Produces: `Contact24DetailsAlignment = 'center' | 'left' | 'right'`.
+- Extends: `Contact24Props.detailsAlignment?: Contact24DetailsAlignment`.
+- Extends: `Contact24BlockLike.detailsAlignment?: Contact24DetailsAlignment | null`.
+- Preserves: strict `normalizeSiteOfficeLocations()` behavior.
+
+- [ ] **Step 1: Write the failing Payload block schema test**
+
+Extend the Layout & Theme assertions in `tests/int/contact24-data.int.spec.ts`:
+
+```tsx
+expect(byName(layout?.fields ?? [], 'detailsAlignment')).toMatchObject({
+  defaultValue: 'left',
+  options: [
+    { label: 'Left', value: 'left' },
+    { label: 'Center', value: 'center' },
+    { label: 'Right', value: 'right' },
+  ],
+  required: true,
+  type: 'select',
+})
+```
+
+- [ ] **Step 2: Write the failing centered-details and compact-button test**
+
+Add to `tests/int/contact24-render.int.spec.tsx`:
+
+```tsx
+it('centers office details independently and keeps the map action compact', () => {
+  const html = renderToStaticMarkup(
+    <Contact24
+      contentAlignment="left"
+      detailsAlignment="center"
+      offices={offices.slice(0, 1)}
+      title="Our offices"
+    />,
+  )
+  const buttonClass = html.match(/data-slot="button"[^>]*class="([^"]+)"/)?.[1]
+
+  expect(html).toContain('data-contact24-content-alignment="left"')
+  expect(html).toContain('data-contact24-details-alignment="center"')
+  expect(html).toContain('items-center text-center')
+  expect(html).toContain('self-center')
+  expect(html).toContain('data-size="sm"')
+  expect(buttonClass).not.toContain('w-full')
+})
+```
+
+- [ ] **Step 3: Run the focused tests and verify they fail**
+
+Run:
+
+```bash
+pnpm exec vitest run --config ./vitest.config.mts \
+  tests/int/contact24-render.int.spec.tsx \
+  tests/int/contact24-data.int.spec.ts
+```
+
+Expected: FAIL because the block schema, presentation props, alignment data attribute, and compact
+button do not exist.
+
+- [ ] **Step 4: Add the Payload details alignment field**
+
+In `src/blocks/Contact24/config.ts`, add:
+
+```tsx
+const detailsAlignmentField = {
+  name: 'detailsAlignment',
+  label: 'Details Alignment',
+  type: 'select',
+  defaultValue: 'left',
+  options: [
+    { label: 'Left', value: 'left' },
+    { label: 'Center', value: 'center' },
+    { label: 'Right', value: 'right' },
+  ],
+  required: true,
+} satisfies SelectField
+```
+
+Add `detailsAlignmentField` after `contentAlignmentField` in the Layout & Theme tab.
+
+- [ ] **Step 5: Pass details alignment through the presentation adapter**
+
+In `src/blocks/Contact24/Presentation.tsx`, import `Contact24DetailsAlignment`, add:
+
+```tsx
+detailsAlignment?: Contact24DetailsAlignment | null
+```
+
+to `Contact24BlockLike`, destructure `detailsAlignment = 'left'`, and pass:
+
+```tsx
+detailsAlignment={detailsAlignment ?? 'left'}
+```
+
+to `Contact24`.
+
+- [ ] **Step 6: Implement details alignment classes**
+
+In `src/components/contact24.tsx`, add:
+
+```tsx
+export type Contact24DetailsAlignment = 'center' | 'left' | 'right'
+```
+
+Add `detailsAlignment?: Contact24DetailsAlignment` to `Contact24Props`, default it to `left`, and
+define:
+
+```tsx
+const detailsAlignmentClasses = {
+  left: {
+    content: 'items-start text-left',
+    action: 'self-start',
+  },
+  center: {
+    content: 'items-center text-center',
+    action: 'self-center',
+  },
+  right: {
+    content: 'items-end text-right',
+    action: 'self-end',
+  },
+} as const
+```
+
+- [ ] **Step 7: Apply alignment and compact Button sizing**
+
+Add `data-contact24-details-alignment={detailsAlignment}` to the details panel.
+
+Apply `detailsAlignmentClasses[detailsAlignment].content` with `cn()` to the region/city wrapper
+and the `address` element. Keep every address row content-width with `max-w-full`.
+
+Replace the action wrapper and Button with:
+
+```tsx
+<div className={cn('mt-auto pt-6', detailsAlignmentClasses[detailsAlignment].action)}>
+  <Button asChild size="sm" variant="outline">
+    <a href={office.mapUrl} rel="noreferrer" target="_blank">
+      View on Map
+      <ExternalLink data-icon="inline-end" />
+    </a>
+  </Button>
+</div>
+```
+
+- [ ] **Step 8: Generate Payload types**
+
+Run:
+
+```bash
+pnpm generate:types
+```
+
+Expected: `Contact24Block` and `Contact24BlockSelect` include `detailsAlignment`.
+
+- [ ] **Step 9: Run focused verification**
+
+Run:
+
+```bash
+pnpm exec vitest run --config ./vitest.config.mts \
+  tests/int/contact24-render.int.spec.tsx \
+  tests/int/contact24-data.int.spec.ts \
+  tests/int/site-offices.int.spec.ts
+pnpm exec eslint \
+  src/components/contact24.tsx \
+  src/blocks/Contact24/config.ts \
+  src/blocks/Contact24/Presentation.tsx \
+  tests/int/contact24-render.int.spec.tsx \
+  tests/int/contact24-data.int.spec.ts
+```
+
+Expected: all focused tests and lint PASS.
+
+- [ ] **Step 10: Review live preview and commit**
+
+Open:
+
+```text
+http://localhost:3000/block-thumbnail-previews/contact24
+```
+
+Expected: default left alignment remains backward compatible. A page block configured for Center
+centers its office content while its header alignment remains independent. The small map action
+uses content width.
+
+Commit:
+
+```bash
+git add \
+  src/blocks/Contact24/config.ts \
+  src/blocks/Contact24/Presentation.tsx \
+  src/components/contact24.tsx \
+  src/payload-types.ts \
+  tests/int/contact24-data.int.spec.ts \
+  tests/int/contact24-render.int.spec.tsx
+git commit -m "feat: align contact 24 office details"
+```
