@@ -28,8 +28,8 @@
 
 - Modify `src/components/contact24.tsx`: responsive office grid and square map/details presentation.
 - Modify `src/blocks/Contact24/config.ts`: independent details alignment field.
-- Modify `src/blocks/Contact24/Presentation.tsx`: pass details alignment into the presentation.
-- Modify `src/payload-types.ts`: generated `detailsAlignment` block type.
+- Modify `src/blocks/Contact24/Presentation.tsx`: pass details alignment and address-detail visibility into the presentation.
+- Modify `src/payload-types.ts`: generated `detailsAlignment` and `showAddressDetails` block types.
 - Modify `tests/int/contact24-render.int.spec.tsx`: count-aware grid, multi-office rendering, content order, and visual-semantic regression coverage.
 - Modify `tests/int/contact24-data.int.spec.ts`: Payload details-alignment schema coverage.
 - Reuse `tests/int/site-offices.int.spec.ts`: existing strict normalization and valid-sibling behavior coverage; no file change required.
@@ -553,4 +553,204 @@ git add \
   tests/int/contact24-data.int.spec.ts \
   tests/int/contact24-render.int.spec.tsx
 git commit -m "feat: align contact 24 office details"
+```
+
+### Task 3: Add address-details visibility control
+
+**Files:**
+
+- Modify: `tests/int/contact24-data.int.spec.ts`
+- Modify: `tests/int/contact24-render.int.spec.tsx`
+- Modify: `src/blocks/Contact24/config.ts`
+- Modify: `src/blocks/Contact24/Presentation.tsx`
+- Modify: `src/components/contact24.tsx`
+- Modify: `src/payload-types.ts`
+
+**Interfaces:**
+
+- Extends: `Contact24Props.showAddressDetails?: boolean`.
+- Extends: `Contact24BlockLike.showAddressDetails?: boolean | null`.
+- Default: address details remain visible when the field is absent or `null`.
+- Hides: address, telephone link, and email link as one semantic `address` unit.
+- Preserves: region, city, interactive map, and external View on Map action.
+
+- [ ] **Step 1: Write the failing Payload schema test**
+
+Extend the Layout & Theme assertions in `tests/int/contact24-data.int.spec.ts`:
+
+```tsx
+expect(byName(layout?.fields ?? [], 'showAddressDetails')).toMatchObject({
+  defaultValue: true,
+  label: 'Show Address Details',
+  type: 'checkbox',
+})
+```
+
+- [ ] **Step 2: Write the failing visibility test**
+
+Add to `tests/int/contact24-render.int.spec.tsx`:
+
+```tsx
+it('can hide address details without removing the office identity or map action', () => {
+  const office = offices[0]!
+  const html = renderToStaticMarkup(
+    <Contact24
+      offices={[office]}
+      showAddressDetails={false}
+      title="Our offices"
+    />,
+  )
+
+  expect(html).toContain('data-contact24-address-details="hidden"')
+  expect(html).toContain(office.region)
+  expect(html).toContain(office.city)
+  expect(html).toContain(office.mapEmbedUrl)
+  expect(html).toContain(office.mapUrl)
+  expect(html).toContain('View on Map')
+  expect(html).not.toContain(office.address)
+  expect(html).not.toContain(`href="${office.phoneHref}"`)
+  expect(html).not.toContain(`href="mailto:${office.email}"`)
+})
+```
+
+- [ ] **Step 3: Run the focused tests and verify they fail**
+
+Run:
+
+```bash
+pnpm exec vitest run --config ./vitest.config.mts \
+  tests/int/contact24-render.int.spec.tsx \
+  tests/int/contact24-data.int.spec.ts
+```
+
+Expected: FAIL because the Payload field, component prop, visibility data attribute, and
+conditional address rendering do not exist.
+
+- [ ] **Step 4: Add the Payload visibility field**
+
+In `src/blocks/Contact24/config.ts`, add this field after `detailsAlignmentField`:
+
+```tsx
+const showAddressDetailsField = {
+  name: 'showAddressDetails',
+  label: 'Show Address Details',
+  type: 'checkbox',
+  defaultValue: true,
+} satisfies CheckboxField
+```
+
+Import `CheckboxField` from `payload` and add `showAddressDetailsField` after
+`detailsAlignmentField` in Layout & Theme.
+
+- [ ] **Step 5: Pass visibility through the presentation adapter**
+
+In `src/blocks/Contact24/Presentation.tsx`, add:
+
+```tsx
+showAddressDetails?: boolean | null
+```
+
+to `Contact24BlockLike`, destructure `showAddressDetails = true`, and pass:
+
+```tsx
+showAddressDetails={showAddressDetails ?? true}
+```
+
+to `Contact24`.
+
+- [ ] **Step 6: Conditionally render the semantic address unit**
+
+In `src/components/contact24.tsx`, add `showAddressDetails?: boolean` to `Contact24Props` and
+default it to `true`.
+
+Add this data attribute to the details panel:
+
+```tsx
+data-contact24-address-details={showAddressDetails ? 'visible' : 'hidden'}
+```
+
+Wrap the existing `address` element:
+
+```tsx
+{showAddressDetails ? (
+  <address
+    className={cn(
+      'mt-6 flex w-full flex-col gap-3 not-italic',
+      detailsAlignmentClasses[detailsAlignment].content,
+    )}
+  >
+    <div className="flex max-w-full min-w-0 items-start gap-3">
+      <MapPin
+        aria-hidden="true"
+        className="mt-0.5 size-4 shrink-0 text-muted-foreground"
+      />
+      <span>{office.address}</span>
+    </div>
+    <a
+      className="flex max-w-full min-w-0 items-center gap-3 hover:underline"
+      href={office.phoneHref}
+    >
+      <Phone
+        aria-hidden="true"
+        className="size-4 shrink-0 text-muted-foreground"
+      />
+      {office.phone}
+    </a>
+    <a
+      className="flex max-w-full min-w-0 items-center gap-3 break-all hover:underline"
+      href={`mailto:${office.email}`}
+    >
+      <Mail
+        aria-hidden="true"
+        className="size-4 shrink-0 text-muted-foreground"
+      />
+      {office.email}
+    </a>
+  </address>
+) : null}
+```
+
+The action wrapper retains `mt-auto pt-6`, creating consistent spacing whether the address unit is
+visible or hidden.
+
+- [ ] **Step 7: Generate Payload types**
+
+Run:
+
+```bash
+pnpm generate:types
+```
+
+Expected: `Contact24Block` and `Contact24BlockSelect` include `showAddressDetails`.
+
+- [ ] **Step 8: Run focused verification**
+
+Run:
+
+```bash
+pnpm exec vitest run --config ./vitest.config.mts \
+  tests/int/contact24-render.int.spec.tsx \
+  tests/int/contact24-data.int.spec.ts \
+  tests/int/site-offices.int.spec.ts
+pnpm exec eslint \
+  src/components/contact24.tsx \
+  src/blocks/Contact24/config.ts \
+  src/blocks/Contact24/Presentation.tsx \
+  tests/int/contact24-render.int.spec.tsx \
+  tests/int/contact24-data.int.spec.ts
+```
+
+Expected: all focused tests and lint PASS.
+
+- [ ] **Step 9: Commit**
+
+```bash
+git add \
+  src/blocks/Contact24/config.ts \
+  src/blocks/Contact24/Presentation.tsx \
+  src/components/contact24.tsx \
+  src/payload-types.ts \
+  tests/int/contact24-data.int.spec.ts \
+  tests/int/contact24-render.int.spec.tsx
+git commit -m "feat: toggle contact 24 address details"
 ```

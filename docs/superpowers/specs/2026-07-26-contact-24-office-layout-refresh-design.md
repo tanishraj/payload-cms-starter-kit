@@ -95,11 +95,19 @@ It will:
 - accept a details alignment independent from the block heading alignment
 - align the region, city, contact rows, and map action left, center, or right
 - render the map action as a compact content-width small button
+- optionally hide the address, phone, and email while retaining the location heading and map action
 
 The Payload block adds a required `detailsAlignment` select under Layout & Theme with Left, Center,
 and Right options and a Left default. The existing `contentAlignment` continues to control only
-the block eyebrow, title, and description. The Site Settings schema, server loader, live-preview
-adapter, and public office data flow do not change.
+the block eyebrow, title, and description.
+
+Layout & Theme also adds a `showAddressDetails` checkbox labeled `Show Address Details`, enabled by
+default. Turning it off hides the address, phone, and email for every office in that block. Region,
+city, interactive map, and View on Map remain visible. The positive field name and true default
+keep existing saved blocks backward compatible through the presentation fallback.
+
+The Site Settings schema, server loader, live-preview adapter, and public office data flow do not
+change.
 
 ## Data behavior
 
@@ -138,6 +146,8 @@ URLs.
 - Wrapped addresses and long email values remain inside the panel without changing map height.
 - Details alignment can be left, center, or right without changing the block heading alignment.
 - The View on Map action uses the small Button size and content width at the selected alignment.
+- Hiding address details removes address, phone, and email together without removing the office
+  identity, interactive map, or external map action.
 
 ## Verification
 
@@ -155,6 +165,9 @@ Focused tests will verify:
 - details alignment is independent from heading alignment
 - centered details center the heading, address rows, links, and map action
 - the View on Map action uses the small Button size and does not stretch to panel width
+- address details are shown by default for backward compatibility
+- disabling address details removes address, phone, and email but preserves region, city, map, and
+  View on Map
 - iframe accessibility and contact link semantics remain intact
 - incomplete rows remain filtered while valid siblings render
 
