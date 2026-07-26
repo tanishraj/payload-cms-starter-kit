@@ -1,6 +1,7 @@
 import type { Page } from '@/payload-types'
 import type { ReviewPreviewSnapshot } from '@/lib/reviewPreviewShared'
 import type { NewsEventsPreviewSnapshot } from '@/lib/newsEventsPreviewShared'
+import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
 
 import { AnnouncementBlockComponent } from './Announcement/Component'
 import { ContentHighlightsBlockComponent } from './ContentHighlights/Component'
@@ -17,6 +18,7 @@ import { QaAccordionBlockComponent } from './QaAccordion/Component'
 import { RatingSpotlightPreviewBlockComponent } from './RatingSpotlight/PreviewComponent'
 import { ReviewFeedPreviewBlockComponent } from './ReviewFeed/PreviewComponent'
 import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
+import { Contact24PreviewBlockComponent } from './Contact24/PreviewComponent'
 import { Contact33BlockComponent } from './Contact33/Component'
 import { TeamShowcaseBlockComponent } from './TeamShowcase/Component'
 import { StatsStripBlockComponent } from './StatsStrip/Component'
@@ -28,6 +30,7 @@ export function renderLivePreviewPageBlocks(
   blocks: Page['layout'] | null | undefined,
   snapshot: ReviewPreviewSnapshot,
   newsEventsSnapshot: NewsEventsPreviewSnapshot,
+  officeLocations: SiteOfficeLocation[],
 ) {
   if (!blocks?.length) {
     return null
@@ -67,6 +70,14 @@ export function renderLivePreviewPageBlocks(
             return <ReviewSubmissionBlockComponent key={key} {...block} />
           case 'contact33':
             return <Contact33BlockComponent key={key} {...block} />
+          case 'contact24':
+            return (
+              <Contact24PreviewBlockComponent
+                key={key}
+                officeLocations={officeLocations}
+                {...block}
+              />
+            )
           case 'ratingSpotlight':
             return <RatingSpotlightPreviewBlockComponent key={key} snapshot={snapshot} {...block} />
           case 'reviewFeed':

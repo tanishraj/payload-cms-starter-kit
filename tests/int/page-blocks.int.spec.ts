@@ -1179,6 +1179,10 @@ describe('page block pipeline', () => {
       "import { Contact33BlockComponent } from './Contact33/Component'",
     )
     expect(source).toContain("case 'contact33':")
+    expect(source).toContain(
+      "import { Contact24PreviewBlockComponent } from './Contact24/PreviewComponent'",
+    )
+    expect(source).toContain("case 'contact24':")
   })
 
   it('registers contact24 in public page rendering', () => {

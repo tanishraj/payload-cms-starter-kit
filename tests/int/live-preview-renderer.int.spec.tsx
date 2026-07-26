@@ -34,12 +34,54 @@ describe('live-preview page block renderer', () => {
       { blockType: 'reviewFeed', pageSize: 8, title: 'Reviews' },
     ] as unknown as NonNullable<Page['layout']>
     const html = renderToStaticMarkup(
-      renderLivePreviewPageBlocks(layout, snapshot, EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT),
+      renderLivePreviewPageBlocks(layout, snapshot, EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT, []),
     )
 
     expect(html).toContain('Live rating')
     expect(html).toContain('4.5 / 5')
     expect(html).toContain('Reviews')
     expect(html).toContain('Review loaded for page size eight')
+  })
+
+  it('renders contact24 from the server-provided draft office snapshot', () => {
+    const offices = [
+      {
+        id: 'draft-office',
+        region: 'Middle East',
+        city: 'Draft Dubai',
+        address: 'DIFC',
+        phone: '+971 4 555 0123',
+        phoneHref: 'tel:+97145550123',
+        email: 'dubai@example.com',
+        mapEmbedUrl: 'https://www.google.com/maps/embed?pb=draft',
+        mapUrl: 'https://maps.google.com/?q=Dubai',
+        mapTitle: 'Interactive map for the draft Dubai office',
+      },
+    ]
+    const layout = [
+      {
+        blockType: 'contact24',
+        title: 'Global offices',
+      },
+    ] as unknown as NonNullable<Page['layout']>
+    const html = renderToStaticMarkup(
+      renderLivePreviewPageBlocks(
+        layout,
+        {
+          feedPagesBySize: {},
+          ratingDistribution: {
+            average: 0,
+            count: 0,
+            counts: [0, 0, 0, 0, 0],
+          },
+        },
+        EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT,
+        offices,
+      ),
+    )
+
+    expect(html).toContain('Global offices')
+    expect(html).toContain('Draft Dubai')
+    expect(html).toContain('data-contact24-size="default"')
   })
 })

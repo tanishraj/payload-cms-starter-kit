@@ -119,6 +119,7 @@ describe('live-preview client import boundary', () => {
       'src/blocks/RatingSpotlight/Component.tsx',
       'src/lib/newsEvents.ts',
       'src/blocks/NewsEventsHighlights/Component.tsx',
+      'src/lib/siteOffices.ts',
     ]) {
       expect(reachablePaths.has(serverPath), `${serverPath} entered the client graph`).toBe(false)
     }
