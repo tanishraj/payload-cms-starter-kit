@@ -121,6 +121,25 @@ describe('contact24 presentation', () => {
     expect(html).toContain('View on Map')
   })
 
+  it('centers office details independently and keeps the map action compact', () => {
+    const html = renderToStaticMarkup(
+      <Contact24
+        contentAlignment="left"
+        detailsAlignment="center"
+        offices={offices.slice(0, 1)}
+        title="Our offices"
+      />,
+    )
+    const buttonClass = html.match(/data-slot="button"[^>]*class="([^"]+)"/)?.[1]
+
+    expect(html).toContain('data-contact24-content-alignment="left"')
+    expect(html).toContain('data-contact24-details-alignment="center"')
+    expect(html).toContain('items-center text-center')
+    expect(html).toContain('self-center')
+    expect(html).toContain('data-size="sm"')
+    expect(buttonClass).not.toContain('w-full')
+  })
+
   it('renders nothing without a title or complete office data', () => {
     expect(renderToStaticMarkup(<Contact24 offices={[]} title="Our offices" />)).toBe('')
     expect(renderToStaticMarkup(<Contact24 offices={offices} title="" />)).toBe('')

@@ -14,12 +14,14 @@ import { cn } from '@/lib/utils'
 
 export type Contact24Size = 'comfortable' | 'compact' | 'default'
 export type Contact24Alignment = 'center' | 'left' | 'right'
+export type Contact24DetailsAlignment = 'center' | 'left' | 'right'
 
 export type Contact24Props = {
   appearance?: BlockAppearance | null
   className?: string
   contentAlignment?: Contact24Alignment
   description?: string | null
+  detailsAlignment?: Contact24DetailsAlignment
   eyebrow?: string | null
   offices: SiteOfficeLocation[]
   size?: Contact24Size
@@ -50,6 +52,21 @@ const alignmentClasses = {
   right: 'items-end text-right',
 } as const
 
+const detailsAlignmentClasses = {
+  left: {
+    action: 'self-start',
+    content: 'items-start text-left',
+  },
+  center: {
+    action: 'self-center',
+    content: 'items-center text-center',
+  },
+  right: {
+    action: 'self-end',
+    content: 'items-end text-right',
+  },
+} as const
+
 function CornerBorderAccents() {
   return (
     <span
@@ -70,6 +87,7 @@ export function Contact24({
   className,
   contentAlignment = 'left',
   description,
+  detailsAlignment = 'left',
   eyebrow,
   offices,
   size = 'default',
@@ -148,10 +166,16 @@ export function Contact24({
                 <div
                   className="relative flex flex-1 flex-col rounded-none border border-border p-6 sm:p-8"
                   data-contact24-details
+                  data-contact24-details-alignment={detailsAlignment}
                 >
                   <CornerBorderAccents />
 
-                  <div className="flex flex-col gap-2">
+                  <div
+                    className={cn(
+                      'flex flex-col gap-2',
+                      detailsAlignmentClasses[detailsAlignment].content,
+                    )}
+                  >
                     <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                       {office.region}
                     </p>
@@ -160,15 +184,23 @@ export function Contact24({
                     </h3>
                   </div>
 
-                  <address className="mt-6 flex flex-col gap-3 not-italic">
-                    <div className="flex items-start gap-3">
+                  <address
+                    className={cn(
+                      'mt-6 flex w-full flex-col gap-3 not-italic',
+                      detailsAlignmentClasses[detailsAlignment].content,
+                    )}
+                  >
+                    <div className="flex max-w-full min-w-0 items-start gap-3">
                       <MapPin
                         aria-hidden="true"
                         className="mt-0.5 size-4 shrink-0 text-muted-foreground"
                       />
                       <span>{office.address}</span>
                     </div>
-                    <a className="flex items-center gap-3 hover:underline" href={office.phoneHref}>
+                    <a
+                      className="flex max-w-full min-w-0 items-center gap-3 hover:underline"
+                      href={office.phoneHref}
+                    >
                       <Phone
                         aria-hidden="true"
                         className="size-4 shrink-0 text-muted-foreground"
@@ -176,7 +208,7 @@ export function Contact24({
                       {office.phone}
                     </a>
                     <a
-                      className="flex min-w-0 items-center gap-3 break-all hover:underline"
+                      className="flex max-w-full min-w-0 items-center gap-3 break-all hover:underline"
                       href={`mailto:${office.email}`}
                     >
                       <Mail
@@ -187,8 +219,13 @@ export function Contact24({
                     </a>
                   </address>
 
-                  <div className="mt-auto pt-6">
-                    <Button asChild className="w-full" variant="outline">
+                  <div
+                    className={cn(
+                      'mt-auto pt-6',
+                      detailsAlignmentClasses[detailsAlignment].action,
+                    )}
+                  >
+                    <Button asChild size="sm" variant="outline">
                       <a href={office.mapUrl} rel="noreferrer" target="_blank">
                         View on Map
                         <ExternalLink data-icon="inline-end" />

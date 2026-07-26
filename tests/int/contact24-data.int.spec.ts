@@ -92,6 +92,16 @@ describe('contact24 data path', () => {
       defaultValue: 'left',
       type: 'select',
     })
+    expect(byName(layout?.fields ?? [], 'detailsAlignment')).toMatchObject({
+      defaultValue: 'left',
+      options: [
+        { label: 'Left', value: 'left' },
+        { label: 'Center', value: 'center' },
+        { label: 'Right', value: 'right' },
+      ],
+      required: true,
+      type: 'select',
+    })
     expect(byName(layout?.fields ?? [], 'size')).toMatchObject({
       defaultValue: 'default',
       type: 'select',

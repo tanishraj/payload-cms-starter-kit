@@ -16,6 +16,19 @@ const contentAlignmentField = {
   required: true,
 } satisfies SelectField
 
+const detailsAlignmentField = {
+  name: 'detailsAlignment',
+  label: 'Details Alignment',
+  type: 'select',
+  defaultValue: 'left',
+  options: [
+    { label: 'Left', value: 'left' },
+    { label: 'Center', value: 'center' },
+    { label: 'Right', value: 'right' },
+  ],
+  required: true,
+} satisfies SelectField
+
 const sizeField = {
   name: 'size',
   label: 'Size',
@@ -64,6 +77,7 @@ export const Contact24Block: Block = {
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             contentAlignmentField,
+            detailsAlignmentField,
             sizeField,
           ],
         },
