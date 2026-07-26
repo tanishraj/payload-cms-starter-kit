@@ -555,7 +555,7 @@ git add \
 git commit -m "feat: align contact 24 office details"
 ```
 
-### Task 3: Add address-details visibility control
+### Task 3: Add location-details visibility control
 
 **Files:**
 
@@ -568,11 +568,12 @@ git commit -m "feat: align contact 24 office details"
 
 **Interfaces:**
 
-- Extends: `Contact24Props.showAddressDetails?: boolean`.
-- Extends: `Contact24BlockLike.showAddressDetails?: boolean | null`.
-- Default: address details remain visible when the field is absent or `null`.
-- Hides: address, telephone link, and email link as one semantic `address` unit.
-- Preserves: region, city, interactive map, and external View on Map action.
+- Preserves stored Payload key: `Contact24BlockLike.showAddressDetails?: boolean | null`.
+- Produces presentation prop: `Contact24Props.showLocationDetails?: boolean`.
+- Default: the full location-details panel remains visible when the field is absent or `null`.
+- Hides: bordered details panel, corner brackets, region, city, address, telephone, email, and map
+  action.
+- Preserves: interactive map.
 
 - [ ] **Step 1: Write the failing Payload schema test**
 
@@ -581,7 +582,7 @@ Extend the Layout & Theme assertions in `tests/int/contact24-data.int.spec.ts`:
 ```tsx
 expect(byName(layout?.fields ?? [], 'showAddressDetails')).toMatchObject({
   defaultValue: true,
-  label: 'Show Address Details',
+  label: 'Show Location Details',
   type: 'checkbox',
 })
 ```
@@ -591,25 +592,26 @@ expect(byName(layout?.fields ?? [], 'showAddressDetails')).toMatchObject({
 Add to `tests/int/contact24-render.int.spec.tsx`:
 
 ```tsx
-it('can hide address details without removing the office identity or map action', () => {
+it('can hide the entire location-details panel and retain the interactive map', () => {
   const office = offices[0]!
   const html = renderToStaticMarkup(
     <Contact24
       offices={[office]}
-      showAddressDetails={false}
+      showLocationDetails={false}
       title="Our offices"
     />,
   )
 
-  expect(html).toContain('data-contact24-address-details="hidden"')
-  expect(html).toContain(office.region)
-  expect(html).toContain(office.city)
+  expect(html).toContain('data-contact24-location-details="hidden"')
   expect(html).toContain(office.mapEmbedUrl)
-  expect(html).toContain(office.mapUrl)
-  expect(html).toContain('View on Map')
+  expect(html).not.toContain('data-contact24-details')
+  expect(html).not.toContain('data-contact24-corner-accents')
+  expect(html).not.toContain(office.region)
   expect(html).not.toContain(office.address)
   expect(html).not.toContain(`href="${office.phoneHref}"`)
   expect(html).not.toContain(`href="mailto:${office.email}"`)
+  expect(html).not.toContain(`href="${office.mapUrl}"`)
+  expect(html).not.toContain('View on Map')
 })
 ```
 
@@ -623,8 +625,8 @@ pnpm exec vitest run --config ./vitest.config.mts \
   tests/int/contact24-data.int.spec.ts
 ```
 
-Expected: FAIL because the Payload field, component prop, visibility data attribute, and
-conditional address rendering do not exist.
+Expected: FAIL because the Payload label still refers to address details and the component still
+renders the panel when the location-details presentation prop is false.
 
 - [ ] **Step 4: Add the Payload visibility field**
 
@@ -633,7 +635,7 @@ In `src/blocks/Contact24/config.ts`, add this field after `detailsAlignmentField
 ```tsx
 const showAddressDetailsField = {
   name: 'showAddressDetails',
-  label: 'Show Address Details',
+  label: 'Show Location Details',
   type: 'checkbox',
   defaultValue: true,
 } satisfies CheckboxField
@@ -650,70 +652,104 @@ In `src/blocks/Contact24/Presentation.tsx`, add:
 showAddressDetails?: boolean | null
 ```
 
-to `Contact24BlockLike`, destructure `showAddressDetails = true`, and pass:
+to `Contact24BlockLike`, destructure `showAddressDetails = true`, and map the stable stored field to
+the clearer presentation prop:
 
 ```tsx
-showAddressDetails={showAddressDetails ?? true}
+showLocationDetails={showAddressDetails ?? true}
 ```
 
 to `Contact24`.
 
-- [ ] **Step 6: Conditionally render the semantic address unit**
+- [ ] **Step 6: Conditionally render the complete details panel**
 
-In `src/components/contact24.tsx`, add `showAddressDetails?: boolean` to `Contact24Props` and
+In `src/components/contact24.tsx`, add `showLocationDetails?: boolean` to `Contact24Props` and
 default it to `true`.
 
-Add this data attribute to the details panel:
+Add this data attribute to the office article:
 
 ```tsx
-data-contact24-address-details={showAddressDetails ? 'visible' : 'hidden'}
+data-contact24-location-details={showLocationDetails ? 'visible' : 'hidden'}
 ```
 
-Wrap the existing `address` element:
+Wrap the existing complete details panel:
 
 ```tsx
-{showAddressDetails ? (
-  <address
-    className={cn(
-      'mt-6 flex w-full flex-col gap-3 not-italic',
-      detailsAlignmentClasses[detailsAlignment].content,
-    )}
+{showLocationDetails ? (
+  <div
+    className="relative flex flex-1 flex-col rounded-none border border-border p-6 sm:p-8"
+    data-contact24-details
+    data-contact24-details-alignment={detailsAlignment}
   >
-    <div className="flex max-w-full min-w-0 items-start gap-3">
-      <MapPin
-        aria-hidden="true"
-        className="mt-0.5 size-4 shrink-0 text-muted-foreground"
-      />
-      <span>{office.address}</span>
+    <CornerBorderAccents />
+
+    <div
+      className={cn(
+        'flex flex-col gap-2',
+        detailsAlignmentClasses[detailsAlignment].content,
+      )}
+    >
+      <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+        {office.region}
+      </p>
+      <h3 className="text-2xl font-semibold tracking-tight">{office.city}</h3>
     </div>
-    <a
-      className="flex max-w-full min-w-0 items-center gap-3 hover:underline"
-      href={office.phoneHref}
+
+    <address
+      className={cn(
+        'mt-6 flex w-full flex-col gap-3 not-italic',
+        detailsAlignmentClasses[detailsAlignment].content,
+      )}
     >
-      <Phone
-        aria-hidden="true"
-        className="size-4 shrink-0 text-muted-foreground"
-      />
-      {office.phone}
-    </a>
-    <a
-      className="flex max-w-full min-w-0 items-center gap-3 break-all hover:underline"
-      href={`mailto:${office.email}`}
+      <div className="flex max-w-full min-w-0 items-start gap-3">
+        <MapPin
+          aria-hidden="true"
+          className="mt-0.5 size-4 shrink-0 text-muted-foreground"
+        />
+        <span>{office.address}</span>
+      </div>
+      <a
+        className="flex max-w-full min-w-0 items-center gap-3 hover:underline"
+        href={office.phoneHref}
+      >
+        <Phone
+          aria-hidden="true"
+          className="size-4 shrink-0 text-muted-foreground"
+        />
+        {office.phone}
+      </a>
+      <a
+        className="flex max-w-full min-w-0 items-center gap-3 break-all hover:underline"
+        href={`mailto:${office.email}`}
+      >
+        <Mail
+          aria-hidden="true"
+          className="size-4 shrink-0 text-muted-foreground"
+        />
+        {office.email}
+      </a>
+    </address>
+
+    <div
+      className={cn(
+        'mt-auto pt-6',
+        detailsAlignmentClasses[detailsAlignment].action,
+      )}
     >
-      <Mail
-        aria-hidden="true"
-        className="size-4 shrink-0 text-muted-foreground"
-      />
-      {office.email}
-    </a>
-  </address>
+      <Button asChild size="sm" variant="outline">
+        <a href={office.mapUrl} rel="noreferrer" target="_blank">
+          View on Map
+          <ExternalLink data-icon="inline-end" />
+        </a>
+      </Button>
+    </div>
+  </div>
 ) : null}
 ```
 
-The action wrapper retains `mt-auto pt-6`, creating consistent spacing whether the address unit is
-visible or hidden.
+The office article retains `gap-4`; CSS gap does not add space when the map is its only child.
 
-- [ ] **Step 7: Generate Payload types**
+- [ ] **Step 7: Confirm the stored Payload type remains compatible**
 
 Run:
 
@@ -721,7 +757,8 @@ Run:
 pnpm generate:types
 ```
 
-Expected: `Contact24Block` and `Contact24BlockSelect` include `showAddressDetails`.
+Expected: `Contact24Block` and `Contact24BlockSelect` continue to include the stored
+`showAddressDetails` key. No content migration is required.
 
 - [ ] **Step 8: Run focused verification**
 
@@ -740,7 +777,8 @@ pnpm exec eslint \
   tests/int/contact24-data.int.spec.ts
 ```
 
-Expected: all focused tests and lint PASS.
+Expected: all focused tests and lint PASS. The hidden state contains one iframe per office and no
+details panel markup.
 
 - [ ] **Step 9: Commit**
 
@@ -752,5 +790,5 @@ git add \
   src/payload-types.ts \
   tests/int/contact24-data.int.spec.ts \
   tests/int/contact24-render.int.spec.tsx
-git commit -m "feat: toggle contact 24 address details"
+git commit -m "fix: hide contact 24 location details"
 ```
