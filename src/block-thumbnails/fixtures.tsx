@@ -23,6 +23,8 @@ import { Services21BlockComponent } from '@/blocks/Services21/Component'
 import { System404BlockComponent } from '@/blocks/System404/Component'
 import { SystemComingSoonBlockComponent } from '@/blocks/SystemComingSoon/Component'
 import { SystemMaintenanceBlockComponent } from '@/blocks/SystemMaintenance/Component'
+import { Contact24 } from '@/components/contact24'
+import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
 import type { Form } from '@/payload-types'
 
 import type { BlockThumbnailSlug } from './definitions'
@@ -32,9 +34,11 @@ export const blockThumbnailAssetPaths = [
   '/block-thumbnail-assets/collaboration.svg',
   '/block-thumbnail-assets/portrait.svg',
   '/block-thumbnail-assets/brand-mark.svg',
+  '/block-thumbnail-assets/office-map.svg',
 ] as const
 
-const [editorialLandscape, collaboration, portrait, brandMark] = blockThumbnailAssetPaths
+const [editorialLandscape, collaboration, portrait, brandMark, officeMap] =
+  blockThumbnailAssetPaths
 
 const richTextParagraph = (text: string) => ({
   root: {
@@ -189,6 +193,33 @@ const contactFormFixture: Pick<
   successMessage: 'Thanks. Our team will be in touch.',
   title: 'Contact form',
 }
+
+const contact24OfficeFixtures: SiteOfficeLocation[] = [
+  {
+    id: 'new-york',
+    region: 'North America',
+    city: 'New York',
+    address: '350 Fifth Avenue, New York, NY 10118',
+    phone: '+1 (212) 555-0123',
+    phoneHref: 'tel:+12125550123',
+    email: 'nyc@northstar.example',
+    mapEmbedUrl: officeMap,
+    mapUrl: 'https://maps.google.com/?q=New+York',
+    mapTitle: 'Interactive map for the New York office',
+  },
+  {
+    id: 'dubai',
+    region: 'Middle East',
+    city: 'Dubai',
+    address: 'DIFC, Gate Building, Level 13, Dubai, UAE',
+    phone: '+971 4 555 0123',
+    phoneHref: 'tel:+97145550123',
+    email: 'dubai@northstar.example',
+    mapEmbedUrl: officeMap,
+    mapUrl: 'https://maps.google.com/?q=Dubai',
+    mapTitle: 'Interactive map for the Dubai office',
+  },
+]
 
 const headerMenuFixture = [
   {
@@ -678,6 +709,16 @@ export const blockThumbnailFixtures = {
       imagePosition="right"
       size="compact"
       title="Start a conversation."
+    />
+  ),
+  contact24: (
+    <Contact24
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      description="Regional teams provide local support wherever your work takes you."
+      eyebrow="Global presence"
+      offices={contact24OfficeFixtures}
+      size="compact"
+      title="Our offices"
     />
   ),
   reviewFeed: (
