@@ -123,6 +123,10 @@ describe('contact33 form contract', () => {
       validate?: (value: unknown, context: unknown) => Promise<true | string>
     }>(content?.fields ?? [], 'form')
 
+    expect(Contact33Block.labels).toEqual({
+      plural: 'Contact Forms',
+      singular: 'Contact Form',
+    })
     expect(tabs?.type).toBe('tabs')
     expect(tabs?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
     expect(

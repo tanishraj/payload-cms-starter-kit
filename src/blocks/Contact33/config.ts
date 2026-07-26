@@ -71,8 +71,8 @@ export const Contact33Block: Block = {
   interfaceName: 'Contact33Block',
   admin: getBlockThumbnailAdmin('contact33'),
   labels: {
-    singular: 'Contact 33',
-    plural: 'Contact 33 Blocks',
+    singular: 'Contact Form',
+    plural: 'Contact Forms',
   },
   fields: [
     {

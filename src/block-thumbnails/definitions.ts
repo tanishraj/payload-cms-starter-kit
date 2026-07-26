@@ -120,9 +120,9 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
-    alt: 'Contact 33 block preview',
+    alt: 'Contact Form block preview',
     filename: 'contact-33.jpg',
-    label: 'Contact 33',
+    label: 'Contact Form',
     slug: 'contact33',
     stageAlignment: 'top',
   }),
