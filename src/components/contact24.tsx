@@ -9,14 +9,6 @@ import {
   regularBlockMobilePaddingClasses,
 } from '@/blocks/shared/blockSpacing'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
 import { cn } from '@/lib/utils'
 
@@ -57,6 +49,21 @@ const alignmentClasses = {
   center: 'items-center text-center',
   right: 'items-end text-right',
 } as const
+
+function CornerBorderAccents() {
+  return (
+    <span
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0"
+      data-contact24-corner-accents
+    >
+      <span className="absolute -left-1.5 -top-1.5 size-3 border-l border-t border-border" />
+      <span className="absolute -right-1.5 -top-1.5 size-3 border-r border-t border-border" />
+      <span className="absolute -bottom-1.5 -left-1.5 size-3 border-b border-l border-border" />
+      <span className="absolute -bottom-1.5 -right-1.5 size-3 border-b border-r border-border" />
+    </span>
+  )
+}
 
 export function Contact24({
   appearance,
@@ -110,10 +117,24 @@ export function Contact24({
             ) : null}
           </header>
 
-          <div className={cn('grid grid-cols-1 md:grid-cols-2', gridGapClasses[size])}>
+          <div
+            className={cn(
+              'grid grid-cols-1',
+              offices.length > 1 && 'md:grid-cols-2',
+              gridGapClasses[size],
+            )}
+            data-contact24-office-count={offices.length}
+          >
             {offices.map((office) => (
-              <Card className="gap-0 py-0" key={office.id}>
-                <div className="relative aspect-video overflow-hidden">
+              <article
+                className="flex min-w-0 flex-col"
+                data-contact24-office
+                key={office.id}
+              >
+                <div
+                  className="relative aspect-video w-full overflow-hidden rounded-none bg-muted"
+                  data-contact24-map
+                >
                   <iframe
                     allowFullScreen
                     className="size-full border-0"
@@ -122,22 +143,24 @@ export function Contact24({
                     src={office.mapEmbedUrl}
                     title={office.mapTitle}
                   />
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent"
-                  />
-                  <CardHeader className="pointer-events-none absolute inset-x-0 bottom-0">
-                    <CardDescription className="font-mono text-xs font-semibold uppercase tracking-[0.18em]">
-                      {office.region}
-                    </CardDescription>
-                    <CardTitle className="text-2xl font-semibold tracking-tight">
-                      {office.city}
-                    </CardTitle>
-                  </CardHeader>
                 </div>
 
-                <CardContent className="flex flex-1 flex-col pt-(--card-spacing)">
-                  <address className="flex flex-col gap-3 not-italic">
+                <div
+                  className="relative flex flex-1 flex-col rounded-none border border-border bg-muted/40 p-6 sm:p-8"
+                  data-contact24-details
+                >
+                  <CornerBorderAccents />
+
+                  <div className="flex flex-col gap-2">
+                    <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                      {office.region}
+                    </p>
+                    <h3 className="text-2xl font-semibold tracking-tight">
+                      {office.city}
+                    </h3>
+                  </div>
+
+                  <address className="mt-6 flex flex-col gap-3 not-italic">
                     <div className="flex items-start gap-3">
                       <MapPin
                         aria-hidden="true"
@@ -153,7 +176,7 @@ export function Contact24({
                       {office.phone}
                     </a>
                     <a
-                      className="flex items-center gap-3 hover:underline"
+                      className="flex min-w-0 items-center gap-3 break-all hover:underline"
                       href={`mailto:${office.email}`}
                     >
                       <Mail
@@ -163,17 +186,17 @@ export function Contact24({
                       {office.email}
                     </a>
                   </address>
-                </CardContent>
 
-                <CardFooter className="pb-(--card-spacing)">
-                  <Button asChild className="w-full" variant="outline">
-                    <a href={office.mapUrl} rel="noreferrer" target="_blank">
-                      View on Map
-                      <ExternalLink data-icon="inline-end" />
-                    </a>
-                  </Button>
-                </CardFooter>
-              </Card>
+                  <div className="mt-auto pt-6">
+                    <Button asChild className="w-full" variant="outline">
+                      <a href={office.mapUrl} rel="noreferrer" target="_blank">
+                        View on Map
+                        <ExternalLink data-icon="inline-end" />
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </article>
             ))}
           </div>
         </div>
