@@ -104,7 +104,7 @@ describe('contact24 data path', () => {
     })
     expect(byName(layout?.fields ?? [], 'showAddressDetails')).toMatchObject({
       defaultValue: true,
-      label: 'Show Address Details',
+      label: 'Show Location Details',
       type: 'checkbox',
     })
     expect(byName(layout?.fields ?? [], 'size')).toMatchObject({

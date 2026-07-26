@@ -31,7 +31,7 @@ const detailsAlignmentField = {
 
 const showAddressDetailsField = {
   name: 'showAddressDetails',
-  label: 'Show Address Details',
+  label: 'Show Location Details',
   type: 'checkbox',
   defaultValue: true,
 } satisfies CheckboxField

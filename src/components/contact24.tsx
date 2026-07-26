@@ -24,7 +24,7 @@ export type Contact24Props = {
   detailsAlignment?: Contact24DetailsAlignment
   eyebrow?: string | null
   offices: SiteOfficeLocation[]
-  showAddressDetails?: boolean
+  showLocationDetails?: boolean
   size?: Contact24Size
   title: string
 }
@@ -91,7 +91,7 @@ export function Contact24({
   detailsAlignment = 'left',
   eyebrow,
   offices,
-  showAddressDetails = true,
+  showLocationDetails = true,
   size = 'default',
   title,
 }: Contact24Props) {
@@ -149,6 +149,7 @@ export function Contact24({
               <article
                 className="flex min-w-0 flex-col gap-4"
                 data-contact24-office
+                data-contact24-location-details={showLocationDetails ? 'visible' : 'hidden'}
                 key={office.id}
               >
                 <div
@@ -165,29 +166,28 @@ export function Contact24({
                   />
                 </div>
 
-                <div
-                  className="relative flex flex-1 flex-col rounded-none border border-border p-6 sm:p-8"
-                  data-contact24-details
-                  data-contact24-details-alignment={detailsAlignment}
-                  data-contact24-address-details={showAddressDetails ? 'visible' : 'hidden'}
-                >
-                  <CornerBorderAccents />
-
+                {showLocationDetails ? (
                   <div
-                    className={cn(
-                      'flex flex-col gap-2',
-                      detailsAlignmentClasses[detailsAlignment].content,
-                    )}
+                    className="relative flex flex-1 flex-col rounded-none border border-border p-6 sm:p-8"
+                    data-contact24-details
+                    data-contact24-details-alignment={detailsAlignment}
                   >
-                    <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      {office.region}
-                    </p>
-                    <h3 className="text-2xl font-semibold tracking-tight">
-                      {office.city}
-                    </h3>
-                  </div>
+                    <CornerBorderAccents />
 
-                  {showAddressDetails ? (
+                    <div
+                      className={cn(
+                        'flex flex-col gap-2',
+                        detailsAlignmentClasses[detailsAlignment].content,
+                      )}
+                    >
+                      <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                        {office.region}
+                      </p>
+                      <h3 className="text-2xl font-semibold tracking-tight">
+                        {office.city}
+                      </h3>
+                    </div>
+
                     <address
                       className={cn(
                         'mt-6 flex w-full flex-col gap-3 not-italic',
@@ -222,22 +222,22 @@ export function Contact24({
                         {office.email}
                       </a>
                     </address>
-                  ) : null}
 
-                  <div
-                    className={cn(
-                      'mt-auto pt-6',
-                      detailsAlignmentClasses[detailsAlignment].action,
-                    )}
-                  >
-                    <Button asChild size="sm" variant="outline">
-                      <a href={office.mapUrl} rel="noreferrer" target="_blank">
-                        View on Map
-                        <ExternalLink data-icon="inline-end" />
-                      </a>
-                    </Button>
+                    <div
+                      className={cn(
+                        'mt-auto pt-6',
+                        detailsAlignmentClasses[detailsAlignment].action,
+                      )}
+                    >
+                      <Button asChild size="sm" variant="outline">
+                        <a href={office.mapUrl} rel="noreferrer" target="_blank">
+                          View on Map
+                          <ExternalLink data-icon="inline-end" />
+                        </a>
+                      </Button>
+                    </div>
                   </div>
-                </div>
+                ) : null}
               </article>
             ))}
           </div>

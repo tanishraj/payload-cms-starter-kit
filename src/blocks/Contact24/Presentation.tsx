@@ -38,7 +38,7 @@ export function Contact24BlockPresentation({
       detailsAlignment={detailsAlignment ?? 'left'}
       eyebrow={eyebrow?.trim()}
       offices={offices}
-      showAddressDetails={showAddressDetails ?? true}
+      showLocationDetails={showAddressDetails ?? true}
       size={size ?? 'default'}
       title={resolvedTitle}
     />
