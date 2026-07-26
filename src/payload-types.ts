@@ -981,6 +981,7 @@ export interface Contact24Block {
   };
   contentAlignment: 'left' | 'center' | 'right';
   detailsAlignment: 'left' | 'center' | 'right';
+  showAddressDetails?: boolean | null;
   size: 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
@@ -2855,6 +2856,7 @@ export interface Contact24BlockSelect<T extends boolean = true> {
       };
   contentAlignment?: T;
   detailsAlignment?: T;
+  showAddressDetails?: T;
   size?: T;
   id?: T;
   blockName?: T;

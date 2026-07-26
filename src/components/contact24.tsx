@@ -24,6 +24,7 @@ export type Contact24Props = {
   detailsAlignment?: Contact24DetailsAlignment
   eyebrow?: string | null
   offices: SiteOfficeLocation[]
+  showAddressDetails?: boolean
   size?: Contact24Size
   title: string
 }
@@ -90,6 +91,7 @@ export function Contact24({
   detailsAlignment = 'left',
   eyebrow,
   offices,
+  showAddressDetails = true,
   size = 'default',
   title,
 }: Contact24Props) {
@@ -167,6 +169,7 @@ export function Contact24({
                   className="relative flex flex-1 flex-col rounded-none border border-border p-6 sm:p-8"
                   data-contact24-details
                   data-contact24-details-alignment={detailsAlignment}
+                  data-contact24-address-details={showAddressDetails ? 'visible' : 'hidden'}
                 >
                   <CornerBorderAccents />
 
@@ -184,40 +187,42 @@ export function Contact24({
                     </h3>
                   </div>
 
-                  <address
-                    className={cn(
-                      'mt-6 flex w-full flex-col gap-3 not-italic',
-                      detailsAlignmentClasses[detailsAlignment].content,
-                    )}
-                  >
-                    <div className="flex max-w-full min-w-0 items-start gap-3">
-                      <MapPin
-                        aria-hidden="true"
-                        className="mt-0.5 size-4 shrink-0 text-muted-foreground"
-                      />
-                      <span>{office.address}</span>
-                    </div>
-                    <a
-                      className="flex max-w-full min-w-0 items-center gap-3 hover:underline"
-                      href={office.phoneHref}
+                  {showAddressDetails ? (
+                    <address
+                      className={cn(
+                        'mt-6 flex w-full flex-col gap-3 not-italic',
+                        detailsAlignmentClasses[detailsAlignment].content,
+                      )}
                     >
-                      <Phone
-                        aria-hidden="true"
-                        className="size-4 shrink-0 text-muted-foreground"
-                      />
-                      {office.phone}
-                    </a>
-                    <a
-                      className="flex max-w-full min-w-0 items-center gap-3 break-all hover:underline"
-                      href={`mailto:${office.email}`}
-                    >
-                      <Mail
-                        aria-hidden="true"
-                        className="size-4 shrink-0 text-muted-foreground"
-                      />
-                      {office.email}
-                    </a>
-                  </address>
+                      <div className="flex max-w-full min-w-0 items-start gap-3">
+                        <MapPin
+                          aria-hidden="true"
+                          className="mt-0.5 size-4 shrink-0 text-muted-foreground"
+                        />
+                        <span>{office.address}</span>
+                      </div>
+                      <a
+                        className="flex max-w-full min-w-0 items-center gap-3 hover:underline"
+                        href={office.phoneHref}
+                      >
+                        <Phone
+                          aria-hidden="true"
+                          className="size-4 shrink-0 text-muted-foreground"
+                        />
+                        {office.phone}
+                      </a>
+                      <a
+                        className="flex max-w-full min-w-0 items-center gap-3 break-all hover:underline"
+                        href={`mailto:${office.email}`}
+                      >
+                        <Mail
+                          aria-hidden="true"
+                          className="size-4 shrink-0 text-muted-foreground"
+                        />
+                        {office.email}
+                      </a>
+                    </address>
+                  ) : null}
 
                   <div
                     className={cn(

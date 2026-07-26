@@ -140,6 +140,27 @@ describe('contact24 presentation', () => {
     expect(buttonClass).not.toContain('w-full')
   })
 
+  it('can hide address details without removing the office identity or map action', () => {
+    const office = offices[0]!
+    const html = renderToStaticMarkup(
+      <Contact24
+        offices={[office]}
+        showAddressDetails={false}
+        title="Our offices"
+      />,
+    )
+
+    expect(html).toContain('data-contact24-address-details="hidden"')
+    expect(html).toContain(office.region)
+    expect(html).toContain(office.city)
+    expect(html).toContain(office.mapEmbedUrl)
+    expect(html).toContain(office.mapUrl)
+    expect(html).toContain('View on Map')
+    expect(html).not.toContain(office.address)
+    expect(html).not.toContain(`href="${office.phoneHref}"`)
+    expect(html).not.toContain(`href="mailto:${office.email}"`)
+  })
+
   it('renders nothing without a title or complete office data', () => {
     expect(renderToStaticMarkup(<Contact24 offices={[]} title="Our offices" />)).toBe('')
     expect(renderToStaticMarkup(<Contact24 offices={offices} title="" />)).toBe('')

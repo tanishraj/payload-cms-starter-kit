@@ -8,6 +8,7 @@ export type Contact24BlockLike = {
   description?: string | null
   detailsAlignment?: Contact24DetailsAlignment | null
   eyebrow?: string | null
+  showAddressDetails?: boolean | null
   size?: 'comfortable' | 'compact' | 'default' | null
   title?: string | null
 }
@@ -19,6 +20,7 @@ export function Contact24BlockPresentation({
   detailsAlignment = 'left',
   eyebrow,
   offices,
+  showAddressDetails = true,
   size = 'default',
   title,
 }: Contact24BlockLike & { offices: SiteOfficeLocation[] }) {
@@ -36,6 +38,7 @@ export function Contact24BlockPresentation({
       detailsAlignment={detailsAlignment ?? 'left'}
       eyebrow={eyebrow?.trim()}
       offices={offices}
+      showAddressDetails={showAddressDetails ?? true}
       size={size ?? 'default'}
       title={resolvedTitle}
     />

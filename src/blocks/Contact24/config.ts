@@ -1,4 +1,4 @@
-import type { Block, SelectField, TabsField } from 'payload'
+import type { Block, CheckboxField, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
@@ -28,6 +28,13 @@ const detailsAlignmentField = {
   ],
   required: true,
 } satisfies SelectField
+
+const showAddressDetailsField = {
+  name: 'showAddressDetails',
+  label: 'Show Address Details',
+  type: 'checkbox',
+  defaultValue: true,
+} satisfies CheckboxField
 
 const sizeField = {
   name: 'size',
@@ -78,6 +85,7 @@ export const Contact24Block: Block = {
             createBlockAppearanceFields({ includeTextOverride: false }),
             contentAlignmentField,
             detailsAlignmentField,
+            showAddressDetailsField,
             sizeField,
           ],
         },
