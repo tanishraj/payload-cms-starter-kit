@@ -151,6 +151,21 @@ describe('contact33 block', () => {
     expect(html).not.toContain('<form')
   })
 
+  it('matches Review Submission control height and radius', () => {
+    const html = renderToStaticMarkup(
+      createElement(Contact33BlockComponent, {
+        form: contactForm,
+        image: { alt: 'Contact', url: '/contact.jpg' },
+        imageAlt: 'Contact team',
+        title: 'Contact us',
+      } as never),
+    )
+
+    expect(html.match(/h-11 rounded-md/g)).toHaveLength(2)
+    expect(html).toContain('h-11 w-full rounded-md')
+    expect(html).toContain('min-h-32 rounded-md')
+  })
+
   it('submits values and attribution metadata through the existing endpoint', async () => {
     window.history.replaceState(
       {},

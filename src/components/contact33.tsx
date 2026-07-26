@@ -314,6 +314,7 @@ export function Contact33({
                           <Input
                             {...field}
                             aria-invalid={fieldState.invalid || undefined}
+                            className="h-11 rounded-md"
                             id="contact33-name"
                             placeholder={fieldDefinitions.name.placeholder}
                             required={fieldDefinitions.name.required}
@@ -344,6 +345,7 @@ export function Contact33({
                           <Input
                             {...field}
                             aria-invalid={fieldState.invalid || undefined}
+                            className="h-11 rounded-md"
                             id="contact33-email"
                             placeholder={fieldDefinitions.email.placeholder}
                             required={fieldDefinitions.email.required}
@@ -382,7 +384,7 @@ export function Contact33({
                         >
                           <SelectTrigger
                             aria-invalid={fieldState.invalid || undefined}
-                            className="w-full"
+                            className="h-11 w-full rounded-md"
                             id="contact33-subject"
                           >
                             <SelectValue
@@ -423,7 +425,7 @@ export function Contact33({
                         <Textarea
                           {...field}
                           aria-invalid={fieldState.invalid || undefined}
-                          className="min-h-32"
+                          className="min-h-32 rounded-md"
                           id="contact33-message"
                           placeholder={fieldDefinitions.message.placeholder}
                           required={fieldDefinitions.message.required}
