@@ -195,6 +195,7 @@ export interface Page {
         | RatingSpotlightBlock
         | ReviewFeedBlock
         | ReviewSubmissionBlock
+        | Contact33Block
         | TeamShowcaseBlock
         | Services21Block
       )[]
@@ -939,6 +940,31 @@ export interface Form {
   createdAt: string;
   deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Contact33Block".
+ */
+export interface Contact33Block {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  image: string | Media;
+  imageAlt: string;
+  /**
+   * Select a published general or lead form with name (Text), email (Email), subject (Select), and message (Textarea) fields.
+   */
+  form: string | Form;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'compact' | 'default' | 'comfortable';
+  imagePosition: 'left' | 'right';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contact33';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2177,6 +2203,7 @@ export interface PagesSelect<T extends boolean = true> {
         ratingSpotlight?: T | RatingSpotlightBlockSelect<T>;
         reviewFeed?: T | ReviewFeedBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
+        contact33?: T | Contact33BlockSelect<T>;
         teamShowcase?: T | TeamShowcaseBlockSelect<T>;
         services21?: T | Services21BlockSelect<T>;
       };
@@ -2765,6 +2792,29 @@ export interface ReviewSubmissionBlockSelect<T extends boolean = true> {
   actionMode?: T;
   contentAlignment?: T;
   size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Contact33Block_select".
+ */
+export interface Contact33BlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  image?: T;
+  imageAlt?: T;
+  form?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  size?: T;
+  imagePosition?: T;
   id?: T;
   blockName?: T;
 }

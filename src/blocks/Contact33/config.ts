@@ -48,15 +48,20 @@ const validateContactForm: RelationshipFieldSingleValidation = async (value, { r
     return true
   }
 
-  const form =
-    typeof value === 'object' && value !== null && 'fields' in value
-      ? (value as Form)
-      : await req.payload.findByID({
-          collection: 'forms',
-          depth: 0,
-          id: value as string | number,
-          req,
-        })
+  if (typeof value === 'object' && value !== null && 'fields' in value) {
+    return validateContact33FormDefinition(value as unknown as Form)
+  }
+
+  const formID =
+    typeof value === 'object' && value !== null && 'value' in value
+      ? value.value
+      : value
+  const form = await req.payload.findByID({
+    collection: 'forms',
+    depth: 0,
+    id: formID as string | number,
+    req,
+  })
 
   return validateContact33FormDefinition(form)
 }

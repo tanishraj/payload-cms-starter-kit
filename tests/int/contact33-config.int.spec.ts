@@ -170,11 +170,33 @@ describe('contact33 form contract', () => {
         },
       }),
     ).resolves.toBe(true)
+    await expect(
+      form?.validate?.(
+        {
+          relationTo: 'forms',
+          value: 'related-form-id',
+        },
+        {
+          req: {
+            payload: {
+              findByID,
+            },
+          },
+        },
+      ),
+    ).resolves.toBe(true)
     expect(findByID).toHaveBeenCalledWith(
       expect.objectContaining({
         collection: 'forms',
         depth: 0,
         id: 'form-id',
+      }),
+    )
+    expect(findByID).toHaveBeenCalledWith(
+      expect.objectContaining({
+        collection: 'forms',
+        depth: 0,
+        id: 'related-form-id',
       }),
     )
   })

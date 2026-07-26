@@ -10,7 +10,7 @@ type Contact33BlockLike = {
   description?: string | null
   eyebrow?: string | null
   form?: Contact33FormLike | number | string | null
-  image?: Media | number | string | null
+  image?: unknown
   imageAlt?: string | null
   imagePosition?: 'left' | 'right' | null
   size?: 'comfortable' | 'compact' | 'default' | null
@@ -33,7 +33,7 @@ export function Contact33BlockComponent({
   const resolvedImageAlt = imageAlt?.trim()
   const resolvedImage = getMediaImageProps({
     fallbackAlt: resolvedImageAlt || resolvedTitle,
-    media: image,
+    media: image as Media | number | string | null,
     preset: 'generic',
   })
   const resolvedForm =
