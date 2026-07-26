@@ -116,7 +116,7 @@ export const SiteSettings: GlobalConfig = {
               type: 'array',
               admin: {
                 description:
-                  'Shared office directory used by Contact 24 blocks. Drag rows to control display order.',
+                  'Shared office directory used by Regional Offices blocks. Drag rows to control display order.',
                 initCollapsed: true,
               },
               fields: [

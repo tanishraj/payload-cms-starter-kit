@@ -163,9 +163,9 @@ describe('block thumbnail metadata', () => {
       stageAlignment: 'top',
     })
     expect(getBlockThumbnailDefinition('contact24')).toMatchObject({
-      alt: 'Contact 24 block preview',
+      alt: 'Regional Offices block preview',
       filename: 'contact-24.jpg',
-      label: 'Contact 24',
+      label: 'Regional Offices',
       slug: 'contact24',
       stageAlignment: 'top',
     })

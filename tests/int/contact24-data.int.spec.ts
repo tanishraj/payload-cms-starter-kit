@@ -80,6 +80,10 @@ describe('contact24 data path', () => {
     const byName = (fields: Array<Record<string, unknown>>, name: string) =>
       fields.find((field) => field.name === name)
 
+    expect(Contact24Block.labels).toEqual({
+      plural: 'Regional Offices',
+      singular: 'Regional Offices',
+    })
     expect(tabs.type).toBe('tabs')
     expect(content?.fields.map((field) => field.name)).toEqual([
       'eyebrow',

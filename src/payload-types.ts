@@ -3821,7 +3821,7 @@ export interface SiteSetting {
   address?: string | null;
   googleMapEmbedUrl?: string | null;
   /**
-   * Shared office directory used by Contact 24 blocks. Drag rows to control display order.
+   * Shared office directory used by Regional Offices blocks. Drag rows to control display order.
    */
   officeLocations?:
     | {

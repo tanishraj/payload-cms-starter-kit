@@ -54,8 +54,8 @@ export const Contact24Block: Block = {
   interfaceName: 'Contact24Block',
   admin: getBlockThumbnailAdmin('contact24'),
   labels: {
-    singular: 'Contact 24',
-    plural: 'Contact 24 Blocks',
+    singular: 'Regional Offices',
+    plural: 'Regional Offices',
   },
   fields: [
     {
