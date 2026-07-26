@@ -162,7 +162,7 @@ describe('contact33 block', () => {
     )
 
     expect(html.match(/h-11 rounded-md/g)).toHaveLength(2)
-    expect(html).toContain('h-11 w-full rounded-md')
+    expect(html).toContain('data-[size=default]:h-11 w-full rounded-md')
     expect(html).toContain('min-h-32 rounded-md')
   })
 

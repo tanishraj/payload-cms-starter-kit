@@ -384,7 +384,7 @@ export function Contact33({
                         >
                           <SelectTrigger
                             aria-invalid={fieldState.invalid || undefined}
-                            className="h-11 w-full rounded-md"
+                            className="data-[size=default]:h-11 w-full rounded-md"
                             id="contact33-subject"
                           >
                             <SelectValue
