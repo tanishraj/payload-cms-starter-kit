@@ -3777,6 +3777,31 @@ export interface SiteSetting {
   contactPhone?: string | null;
   address?: string | null;
   googleMapEmbedUrl?: string | null;
+  /**
+   * Shared office directory used by Contact 24 blocks. Drag rows to control display order.
+   */
+  officeLocations?:
+    | {
+        region: string;
+        city: string;
+        address: string;
+        phone: string;
+        email: string;
+        /**
+         * Paste the HTTPS URL from the map provider embed code.
+         */
+        mapEmbedUrl: string;
+        /**
+         * Full HTTPS destination opened by View on Map.
+         */
+        mapUrl: string;
+        /**
+         * For example: Interactive map for the Dubai office.
+         */
+        mapTitle: string;
+        id?: string | null;
+      }[]
+    | null;
   privacyPolicyPage?: (string | null) | Page;
   termsAndConditionsPage?: (string | null) | Page;
   socialLinks?: {
@@ -3950,6 +3975,19 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   contactPhone?: T;
   address?: T;
   googleMapEmbedUrl?: T;
+  officeLocations?:
+    | T
+    | {
+        region?: T;
+        city?: T;
+        address?: T;
+        phone?: T;
+        email?: T;
+        mapEmbedUrl?: T;
+        mapUrl?: T;
+        mapTitle?: T;
+        id?: T;
+      };
   privacyPolicyPage?: T;
   termsAndConditionsPage?: T;
   socialLinks?:

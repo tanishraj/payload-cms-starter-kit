@@ -5,6 +5,7 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { validateHttpsUrl } from '@/lib/siteOfficesShared'
 
 const validateExternalSocialUrl = (value: unknown) => {
   if (typeof value !== 'string' || !value.trim()) {
@@ -108,6 +109,72 @@ export const SiteSettings: GlobalConfig = {
               name: 'googleMapEmbedUrl',
               label: 'Google Map Embed URL',
               type: 'text',
+            },
+            {
+              name: 'officeLocations',
+              label: 'Office Locations',
+              type: 'array',
+              admin: {
+                description:
+                  'Shared office directory used by Contact 24 blocks. Drag rows to control display order.',
+                initCollapsed: true,
+              },
+              fields: [
+                {
+                  name: 'region',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'city',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'address',
+                  type: 'textarea',
+                  required: true,
+                },
+                {
+                  name: 'phone',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'email',
+                  type: 'email',
+                  required: true,
+                },
+                {
+                  name: 'mapEmbedUrl',
+                  label: 'Interactive Map Embed URL',
+                  type: 'text',
+                  required: true,
+                  validate: validateHttpsUrl,
+                  admin: {
+                    description: 'Paste the HTTPS URL from the map provider embed code.',
+                  },
+                },
+                {
+                  name: 'mapUrl',
+                  label: 'External Map URL',
+                  type: 'text',
+                  required: true,
+                  validate: validateHttpsUrl,
+                  admin: {
+                    description: 'Full HTTPS destination opened by View on Map.',
+                  },
+                },
+                {
+                  name: 'mapTitle',
+                  label: 'Accessible Map Title',
+                  type: 'text',
+                  required: true,
+                  admin: {
+                    description: 'For example: Interactive map for the Dubai office.',
+                  },
+                },
+              ],
             },
           ],
         },
