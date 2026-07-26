@@ -1,0 +1,136 @@
+import type { Block, RelationshipFieldSingleValidation, SelectField, TabsField } from 'payload'
+
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
+import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { validateContact33FormDefinition } from '@/lib/contact33Form'
+import type { Form } from '@/payload-types'
+
+const sizeField = {
+  name: 'size',
+  label: 'Size',
+  type: 'select',
+  defaultValue: 'default',
+  options: [
+    { label: 'Compact', value: 'compact' },
+    { label: 'Default', value: 'default' },
+    { label: 'Comfortable', value: 'comfortable' },
+  ],
+  required: true,
+} satisfies SelectField
+
+const contentAlignmentField = {
+  name: 'contentAlignment',
+  label: 'Content Alignment',
+  type: 'select',
+  defaultValue: 'left',
+  options: [
+    { label: 'Left', value: 'left' },
+    { label: 'Center', value: 'center' },
+    { label: 'Right', value: 'right' },
+  ],
+  required: true,
+} satisfies SelectField
+
+const imagePositionField = {
+  name: 'imagePosition',
+  label: 'Image Position',
+  type: 'select',
+  defaultValue: 'right',
+  options: [
+    { label: 'Left', value: 'left' },
+    { label: 'Right', value: 'right' },
+  ],
+  required: true,
+} satisfies SelectField
+
+const validateContactForm: RelationshipFieldSingleValidation = async (value, { req }) => {
+  if (value == null) {
+    return true
+  }
+
+  const form =
+    typeof value === 'object' && value !== null && 'fields' in value
+      ? (value as Form)
+      : await req.payload.findByID({
+          collection: 'forms',
+          depth: 0,
+          id: value as string | number,
+          req,
+        })
+
+  return validateContact33FormDefinition(form)
+}
+
+export const Contact33Block: Block = {
+  slug: 'contact33',
+  interfaceName: 'Contact33Block',
+  admin: getBlockThumbnailAdmin('contact33'),
+  labels: {
+    singular: 'Contact 33',
+    plural: 'Contact 33 Blocks',
+  },
+  fields: [
+    {
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'eyebrow',
+              type: 'text',
+            },
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+            },
+            {
+              name: 'image',
+              type: 'upload',
+              relationTo: 'media',
+              required: true,
+            },
+            {
+              name: 'imageAlt',
+              label: 'Image Alt Text',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'form',
+              label: 'Contact Form',
+              type: 'relationship',
+              relationTo: 'forms',
+              required: true,
+              filterOptions: {
+                and: [
+                  { _status: { equals: 'published' } },
+                  { submissionIntent: { in: ['general', 'lead'] } },
+                ],
+              },
+              validate: validateContactForm,
+              admin: {
+                description:
+                  'Select a published general or lead form with name (Text), email (Email), subject (Select), and message (Textarea) fields.',
+              },
+            },
+          ],
+        },
+        {
+          label: 'Layout & Theme',
+          fields: [
+            createBlockAppearanceFields({ includeTextOverride: false }),
+            contentAlignmentField,
+            sizeField,
+            imagePositionField,
+          ],
+        },
+      ],
+    } satisfies TabsField,
+  ],
+}
