@@ -57,10 +57,14 @@ function CornerBorderAccents() {
       className="pointer-events-none absolute inset-0"
       data-contact24-corner-accents
     >
-      <span className="absolute -left-1.5 -top-1.5 size-3 border-l border-t border-border" />
-      <span className="absolute -right-1.5 -top-1.5 size-3 border-r border-t border-border" />
-      <span className="absolute -bottom-1.5 -left-1.5 size-3 border-b border-l border-border" />
-      <span className="absolute -bottom-1.5 -right-1.5 size-3 border-b border-r border-border" />
+      <span className="absolute -left-2 top-0 h-px w-4 -translate-y-1/2 bg-border" />
+      <span className="absolute -top-2 left-0 h-4 w-px -translate-x-1/2 bg-border" />
+      <span className="absolute -right-2 top-0 h-px w-4 -translate-y-1/2 bg-border" />
+      <span className="absolute -top-2 right-0 h-4 w-px translate-x-1/2 bg-border" />
+      <span className="absolute -bottom-2 left-0 h-4 w-px -translate-x-1/2 bg-border" />
+      <span className="absolute -left-2 bottom-0 h-px w-4 translate-y-1/2 bg-border" />
+      <span className="absolute -right-2 bottom-0 h-px w-4 translate-y-1/2 bg-border" />
+      <span className="absolute -bottom-2 right-0 h-4 w-px translate-x-1/2 bg-border" />
     </span>
   )
 }
@@ -127,12 +131,12 @@ export function Contact24({
           >
             {offices.map((office) => (
               <article
-                className="flex min-w-0 flex-col"
+                className="flex min-w-0 flex-col gap-4"
                 data-contact24-office
                 key={office.id}
               >
                 <div
-                  className="relative aspect-video w-full overflow-hidden rounded-none bg-muted"
+                  className="relative aspect-video w-full overflow-hidden rounded-none bg-muted sm:aspect-[5/2]"
                   data-contact24-map
                 >
                   <iframe
