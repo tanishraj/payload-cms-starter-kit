@@ -658,6 +658,11 @@ export interface EventGalleryBlock {
   eyebrow?: string | null;
   title: string;
   description?: string | null;
+  /**
+   * Select the albums displayed by this block. Create an album here or reorder selected albums for Manual display order.
+   */
+  galleryAlbums: (string | GalleryAlbum)[];
+  displayOrder: 'latestEventDate' | 'manual';
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
@@ -667,6 +672,35 @@ export interface EventGalleryBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'eventGallery';
+}
+/**
+ * Ordered image albums displayed by the Event Gallery block.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery-albums".
+ */
+export interface GalleryAlbum {
+  id: string;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  description?: string | null;
+  eventDate?: string | null;
+  /**
+   * The first image is used as the album cover. Drag rows to change the viewer order.
+   */
+  images: {
+    image: string | Media;
+    caption?: string | null;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1975,35 +2009,6 @@ export interface SystemComingSoonBlock {
   blockType: 'systemComingSoon';
 }
 /**
- * Ordered image albums displayed by the Event Gallery block.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "gallery-albums".
- */
-export interface GalleryAlbum {
-  id: string;
-  title: string;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  description?: string | null;
-  eventDate?: string | null;
-  /**
-   * The first image is used as the album cover. Drag rows to change the viewer order.
-   */
-  images: {
-    image: string | Media;
-    caption?: string | null;
-    id?: string | null;
-  }[];
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
-}
-/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "operational-audit-events".
  */
@@ -2642,6 +2647,8 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
+  galleryAlbums?: T;
+  displayOrder?: T;
   appearance?:
     | T
     | {

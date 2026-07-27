@@ -185,7 +185,7 @@ describe('page block pipeline', () => {
     expect(layoutField?.blocks?.map((block) => block.slug)).not.toContain('feature166')
   })
 
-  it('defines the eventGallery schema without a per-page album selector', async () => {
+  it('defines the eventGallery album selection and ordering fields', async () => {
     const { EventGalleryBlock } = await import('@/blocks/EventGallery/config')
     const tabsField = EventGalleryBlock.fields[0] as
       | {
@@ -195,6 +195,22 @@ describe('page block pipeline', () => {
       | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
     const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const galleryAlbums = getNamedField<{
+      admin?: {
+        allowCreate?: boolean
+        isSortable?: boolean
+      }
+      hasMany?: boolean
+      relationTo?: string
+      required?: boolean
+      type?: string
+    }>(contentTab?.fields ?? [], 'galleryAlbums')
+    const displayOrder = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      required?: boolean
+      type?: string
+    }>(contentTab?.fields ?? [], 'displayOrder')
     const contentAlignment = getNamedField<{
       defaultValue?: string
       options?: Array<{ value: string }>
@@ -212,7 +228,26 @@ describe('page block pipeline', () => {
       contentTab?.fields.map((field) =>
         typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,
       ),
-    ).toEqual(['eyebrow', 'title', 'description'])
+    ).toEqual(['eyebrow', 'title', 'description', 'galleryAlbums', 'displayOrder'])
+    expect(galleryAlbums).toMatchObject({
+      admin: {
+        allowCreate: true,
+        isSortable: true,
+      },
+      hasMany: true,
+      relationTo: 'gallery-albums',
+      required: true,
+      type: 'relationship',
+    })
+    expect(displayOrder).toMatchObject({
+      defaultValue: 'latestEventDate',
+      required: true,
+      type: 'select',
+    })
+    expect(displayOrder?.options?.map((option) => option.value)).toEqual([
+      'latestEventDate',
+      'manual',
+    ])
     expect(contentAlignment).toMatchObject({
       defaultValue: 'left',
       type: 'select',
@@ -231,7 +266,6 @@ describe('page block pipeline', () => {
       'default',
       'comfortable',
     ])
-    expect(JSON.stringify(EventGalleryBlock.fields)).not.toContain('relationTo')
   })
 
   it('defines the statsStrip schema with metric items, background, and animation fields', async () => {
