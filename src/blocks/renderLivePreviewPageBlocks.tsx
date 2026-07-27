@@ -2,6 +2,7 @@ import type { Page } from '@/payload-types'
 import type { ReviewPreviewSnapshot } from '@/lib/reviewPreviewShared'
 import type { NewsEventsPreviewSnapshot } from '@/lib/newsEventsPreviewShared'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
+import type { EventGalleryAlbum } from '@/lib/eventGalleryShared'
 
 import { AnnouncementBlockComponent } from './Announcement/Component'
 import { ContentHighlightsBlockComponent } from './ContentHighlights/Component'
@@ -9,6 +10,7 @@ import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
 import { Cta39BlockComponent } from './Cta39/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
+import { EventGalleryPreviewBlockComponent } from './EventGallery/PreviewComponent'
 import { HeroBannerBlockComponent } from './HeroBanner/Component'
 import { ImageMosaicBlockComponent } from './ImageMosaic/Component'
 import { NewsEventsHighlightsPreviewBlockComponent } from './NewsEventsHighlights/PreviewComponent'
@@ -31,6 +33,7 @@ export function renderLivePreviewPageBlocks(
   snapshot: ReviewPreviewSnapshot,
   newsEventsSnapshot: NewsEventsPreviewSnapshot,
   officeLocations: SiteOfficeLocation[],
+  eventGalleryAlbums: EventGalleryAlbum[],
 ) {
   if (!blocks?.length) {
     return null
@@ -64,6 +67,14 @@ export function renderLivePreviewPageBlocks(
             return <ProfileCarouselBlockComponent key={key} {...block} />
           case 'galleryShowcase':
             return <GalleryShowcaseBlockComponent key={key} {...block} />
+          case 'eventGallery':
+            return (
+              <EventGalleryPreviewBlockComponent
+                albums={eventGalleryAlbums}
+                key={key}
+                {...block}
+              />
+            )
           case 'imageMosaic':
             return <ImageMosaicBlockComponent key={key} {...block} />
           case 'reviewSubmission':

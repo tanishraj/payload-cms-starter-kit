@@ -32,6 +32,7 @@ type GlobalUsageSource = {
 
 const mediaUsageSourceLabelByCollection: Record<string, string> = {
   articles: 'Articles',
+  'gallery-albums': 'Gallery Albums',
   'news-events': 'News & Events',
   footers: 'Footers',
   headers: 'Headers',
@@ -272,6 +273,36 @@ const collectionSources: CollectionUsageSource[] = [
           value: doc[fieldPath] as RelationshipValue,
         })
       }
+
+      return references
+    },
+  },
+  {
+    slug: 'gallery-albums',
+    sourceLabel: 'Gallery Albums',
+    getDocumentLabel: (doc) => getTextValue(doc.title, 'Untitled Gallery Album'),
+    resolve: (doc, mediaID) => {
+      const documentLabel = getTextValue(doc.title, 'Untitled Gallery Album')
+      const references: MediaUsageReference[] = []
+      const images = Array.isArray(doc.images) ? doc.images : []
+
+      images.forEach((row, index) => {
+        if (!row || typeof row !== 'object') {
+          return
+        }
+
+        pushIfMatched({
+          mediaID,
+          reference: createCollectionReference({
+            doc,
+            documentLabel,
+            fieldPath: `images[${index}].image`,
+            slug: 'gallery-albums',
+          }),
+          references,
+          value: row.image as RelationshipValue,
+        })
+      })
 
       return references
     },

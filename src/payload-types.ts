@@ -81,6 +81,7 @@ export interface Config {
     forms: Form;
     'form-submissions': FormSubmission;
     media: Media;
+    'gallery-albums': GalleryAlbum;
     'operational-audit-events': OperationalAuditEvent;
     'work-queue': WorkQueue;
     users: User;
@@ -105,6 +106,7 @@ export interface Config {
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'gallery-albums': GalleryAlbumsSelect<false> | GalleryAlbumsSelect<true>;
     'operational-audit-events': OperationalAuditEventsSelect<false> | OperationalAuditEventsSelect<true>;
     'work-queue': WorkQueueSelect<false> | WorkQueueSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -189,6 +191,7 @@ export interface Page {
         | NewsEventsHighlightsBlock
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
+        | EventGalleryBlock
         | ImageMosaicBlock
         | StatsStripBlock
         | QaAccordionBlock
@@ -646,6 +649,24 @@ export interface GalleryShowcaseBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'galleryShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EventGalleryBlock".
+ */
+export interface EventGalleryBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'eventGallery';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1954,6 +1975,35 @@ export interface SystemComingSoonBlock {
   blockType: 'systemComingSoon';
 }
 /**
+ * Ordered image albums displayed by the Event Gallery block.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery-albums".
+ */
+export interface GalleryAlbum {
+  id: string;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  description?: string | null;
+  eventDate?: string | null;
+  /**
+   * The first image is used as the album cover. Drag rows to change the viewer order.
+   */
+  images: {
+    image: string | Media;
+    caption?: string | null;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "operational-audit-events".
  */
@@ -2145,6 +2195,10 @@ export interface PayloadLockedDocument {
         value: string | Media;
       } | null)
     | ({
+        relationTo: 'gallery-albums';
+        value: string | GalleryAlbum;
+      } | null)
+    | ({
         relationTo: 'operational-audit-events';
         value: string | OperationalAuditEvent;
       } | null)
@@ -2218,6 +2272,7 @@ export interface PagesSelect<T extends boolean = true> {
         newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
+        eventGallery?: T | EventGalleryBlockSelect<T>;
         imageMosaic?: T | ImageMosaicBlockSelect<T>;
         statsStrip?: T | StatsStripBlockSelect<T>;
         qaAccordion?: T | QaAccordionBlockSelect<T>;
@@ -2574,6 +2629,25 @@ export interface GalleryShowcaseBlockSelect<T extends boolean = true> {
         border?: T;
       };
   actionMode?: T;
+  contentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EventGalleryBlock_select".
+ */
+export interface EventGalleryBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
   contentAlignment?: T;
   size?: T;
   id?: T;
@@ -3527,6 +3601,28 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery-albums_select".
+ */
+export interface GalleryAlbumsSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  description?: T;
+  eventDate?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

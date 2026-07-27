@@ -170,6 +170,7 @@ describe('page block pipeline', () => {
       'newsEventsHighlights',
       'profileCarousel',
       'galleryShowcase',
+      'eventGallery',
       'imageMosaic',
       'statsStrip',
       'qaAccordion',
@@ -182,6 +183,55 @@ describe('page block pipeline', () => {
       'services21',
     ])
     expect(layoutField?.blocks?.map((block) => block.slug)).not.toContain('feature166')
+  })
+
+  it('defines the eventGallery schema without a per-page album selector', async () => {
+    const { EventGalleryBlock } = await import('@/blocks/EventGallery/config')
+    const tabsField = EventGalleryBlock.fields[0] as
+      | {
+          tabs?: Array<{ fields: unknown[]; label: string }>
+          type?: string
+        }
+      | undefined
+    const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const contentAlignment = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'contentAlignment')
+    const size = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'size')
+
+    expect(tabsField?.type).toBe('tabs')
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(
+      contentTab?.fields.map((field) =>
+        typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,
+      ),
+    ).toEqual(['eyebrow', 'title', 'description'])
+    expect(contentAlignment).toMatchObject({
+      defaultValue: 'left',
+      type: 'select',
+    })
+    expect(contentAlignment?.options?.map((option) => option.value)).toEqual([
+      'left',
+      'center',
+      'right',
+    ])
+    expect(size).toMatchObject({
+      defaultValue: 'default',
+      type: 'select',
+    })
+    expect(size?.options?.map((option) => option.value)).toEqual([
+      'compact',
+      'default',
+      'comfortable',
+    ])
+    expect(JSON.stringify(EventGalleryBlock.fields)).not.toContain('relationTo')
   })
 
   it('defines the statsStrip schema with metric items, background, and animation fields', async () => {

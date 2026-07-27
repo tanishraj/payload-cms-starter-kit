@@ -1,0 +1,85 @@
+import { slugField, type CollectionConfig } from 'payload'
+
+import {
+  allowPublicReadOrCapability,
+  hideFromUsersWithoutCapability,
+  requireCapability,
+} from '@/access/adminCapabilities'
+
+export const GalleryAlbums: CollectionConfig = {
+  slug: 'gallery-albums',
+  labels: {
+    singular: 'Gallery Album',
+    plural: 'Gallery Albums',
+  },
+  admin: {
+    group: 'Website Content',
+    hidden: hideFromUsersWithoutCapability('manage_media'),
+    useAsTitle: 'title',
+    defaultColumns: ['title', 'eventDate', 'createdAt', 'updatedAt'],
+    description: 'Ordered image albums displayed by the Event Gallery block.',
+  },
+  access: {
+    create: requireCapability('manage_media'),
+    delete: requireCapability('manage_media'),
+    read: allowPublicReadOrCapability('manage_media'),
+    readVersions: requireCapability('manage_media'),
+    update: requireCapability('manage_media'),
+  },
+  versions: {
+    drafts: true,
+  },
+  timestamps: true,
+  fields: [
+    {
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+            },
+            slugField({
+              useAsSlug: 'title',
+            }),
+            {
+              name: 'description',
+              type: 'textarea',
+            },
+            {
+              name: 'eventDate',
+              label: 'Event Date',
+              type: 'date',
+            },
+            {
+              name: 'images',
+              type: 'array',
+              required: true,
+              minRows: 1,
+              admin: {
+                description:
+                  'The first image is used as the album cover. Drag rows to change the viewer order.',
+                initCollapsed: true,
+              },
+              fields: [
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                },
+                {
+                  name: 'caption',
+                  type: 'textarea',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+}

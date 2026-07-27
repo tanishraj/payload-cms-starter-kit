@@ -4,6 +4,7 @@ import { renderLivePreviewPageBlocks } from '@/blocks/renderLivePreviewPageBlock
 import type { ReviewPreviewSnapshot } from '@/lib/reviewPreviewShared'
 import type { NewsEventsPreviewSnapshot } from '@/lib/newsEventsPreviewShared'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
+import type { EventGalleryAlbum } from '@/lib/eventGalleryShared'
 import type { Page } from '@/payload-types'
 import { RefreshRouteOnSave, useLivePreview } from '@payloadcms/live-preview-react'
 import { useRouter } from 'next/navigation'
@@ -11,6 +12,7 @@ import { useRouter } from 'next/navigation'
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 
 type Props = {
+  eventGalleryAlbums: EventGalleryAlbum[]
   initialData: Page
   newsEventsSnapshot: NewsEventsPreviewSnapshot
   officeLocations: SiteOfficeLocation[]
@@ -18,6 +20,7 @@ type Props = {
 }
 
 export function PageLivePreview({
+  eventGalleryAlbums,
   initialData,
   newsEventsSnapshot,
   officeLocations,
@@ -37,6 +40,7 @@ export function PageLivePreview({
         reviewSnapshot,
         newsEventsSnapshot,
         officeLocations,
+        eventGalleryAlbums,
       )}
       <RefreshRouteOnSave depth={2} refresh={() => router.refresh()} serverURL={serverURL} />
     </>

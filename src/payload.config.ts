@@ -10,6 +10,7 @@ import { Users } from './collections/Users'
 import { Footers } from './collections/Footers'
 import { FormSubmissions } from './collections/FormSubmissions'
 import { Forms } from './collections/Forms'
+import { GalleryAlbums } from './collections/GalleryAlbums'
 import { Media } from './collections/Media'
 import { NavigationLinks } from './collections/NavigationLinks'
 import { NewsEvents } from './collections/NewsEvents'
@@ -66,6 +67,7 @@ export default buildConfig({
     Forms,
     FormSubmissions,
     Media,
+    GalleryAlbums,
     OperationalAuditEvents,
     WorkQueue,
     Users,

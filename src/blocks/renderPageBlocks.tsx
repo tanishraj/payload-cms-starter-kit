@@ -5,6 +5,7 @@ import { ContentHighlightsBlockComponent } from './ContentHighlights/Component'
 import { QaAccordionBlockComponent } from './QaAccordion/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
+import { EventGalleryBlockComponent } from './EventGallery/Component'
 import { HeroBannerBlockComponent } from './HeroBanner/Component'
 import { ImageMosaicBlockComponent } from './ImageMosaic/Component'
 import { NewsEventsHighlightsBlockComponent } from './NewsEventsHighlights/Component'
@@ -84,6 +85,13 @@ export function renderPageBlocks(blocks?: PageBlock[] | null) {
           case 'galleryShowcase':
             return (
               <GalleryShowcaseBlockComponent
+                key={block.id ?? `${block.blockType}-${index}`}
+                {...block}
+              />
+            )
+          case 'eventGallery':
+            return (
+              <EventGalleryBlockComponent
                 key={block.id ?? `${block.blockType}-${index}`}
                 {...block}
               />

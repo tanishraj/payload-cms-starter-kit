@@ -2,6 +2,7 @@ import { PageLivePreview } from '@/components/live-preview/PageLivePreview'
 import { loadReviewPreviewSnapshot } from '@/lib/reviewPreviewSnapshot'
 import { loadNewsEventsPreviewSnapshot } from '@/lib/newsEventsPreviewSnapshot'
 import { getDraftSiteOfficeLocations } from '@/lib/siteOffices'
+import { getDraftEventGalleryAlbums } from '@/lib/eventGallery'
 import configPromise from '@payload-config'
 import { headers as getHeaders } from 'next/headers'
 import { notFound } from 'next/navigation'
@@ -46,14 +47,19 @@ export default async function AdminPreviewPage({ params }: PageProps) {
   }
 
   const hasContact24 = page.layout?.some((block) => block.blockType === 'contact24') ?? false
-  const [reviewSnapshot, newsEventsSnapshot, officeLocations] = await Promise.all([
+  const hasEventGallery =
+    page.layout?.some((block) => block.blockType === 'eventGallery') ?? false
+  const [reviewSnapshot, newsEventsSnapshot, officeLocations, eventGalleryAlbums] =
+    await Promise.all([
     loadReviewPreviewSnapshot(page.layout),
     loadNewsEventsPreviewSnapshot(page.layout),
     hasContact24 ? getDraftSiteOfficeLocations() : Promise.resolve([]),
+    hasEventGallery ? getDraftEventGalleryAlbums() : Promise.resolve([]),
   ])
 
   return (
     <PageLivePreview
+      eventGalleryAlbums={eventGalleryAlbums}
       initialData={page}
       newsEventsSnapshot={newsEventsSnapshot}
       officeLocations={officeLocations}

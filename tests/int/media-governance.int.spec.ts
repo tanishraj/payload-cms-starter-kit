@@ -73,6 +73,19 @@ describe('media governance resolver', () => {
                 },
               ],
             }
+          case 'gallery-albums':
+            return {
+              docs: [
+                {
+                  id: 38,
+                  images: [
+                    { id: 'cover', image: 7 },
+                    { id: 'other', image: 99 },
+                  ],
+                  title: 'Yoga Day',
+                },
+              ],
+            }
           case 'headers':
             return {
               docs: [
@@ -182,6 +195,14 @@ describe('media governance resolver', () => {
           sourceType: 'collection',
         }),
         expect.objectContaining({
+          documentID: 38,
+          documentLabel: 'Yoga Day',
+          fieldPath: 'images[0].image',
+          locationLabel: 'Gallery Albums > Yoga Day > images[0].image',
+          sourceSlug: 'gallery-albums',
+          sourceType: 'collection',
+        }),
+        expect.objectContaining({
           documentLabel: 'News & Events Settings',
           fieldPath: 'ogImage',
           sourceSlug: 'news-events-settings',
@@ -236,8 +257,8 @@ describe('media governance resolver', () => {
       ]),
     )
 
-    expect(references).toHaveLength(12)
-    expect(buildMediaUsageSummary(references)).toBe('Used in 12 locations across 9 entries.')
+    expect(references).toHaveLength(13)
+    expect(buildMediaUsageSummary(references)).toBe('Used in 13 locations across 10 entries.')
     expect(buildMediaUsageSummary([])).toBe('Unused asset.')
   })
 

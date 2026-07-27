@@ -34,7 +34,7 @@ describe('live-preview page block renderer', () => {
       { blockType: 'reviewFeed', pageSize: 8, title: 'Reviews' },
     ] as unknown as NonNullable<Page['layout']>
     const html = renderToStaticMarkup(
-      renderLivePreviewPageBlocks(layout, snapshot, EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT, []),
+      renderLivePreviewPageBlocks(layout, snapshot, EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT, [], []),
     )
 
     expect(html).toContain('Live rating')
@@ -77,11 +77,65 @@ describe('live-preview page block renderer', () => {
         },
         EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT,
         offices,
+        [],
       ),
     )
 
     expect(html).toContain('Global offices')
     expect(html).toContain('Draft Dubai')
     expect(html).toContain('data-contact24-size="default"')
+  })
+
+  it('renders eventGallery from the server-provided draft album snapshot', () => {
+    const layout = [
+      {
+        blockType: 'eventGallery',
+        title: 'Event gallery',
+      },
+    ] as unknown as NonNullable<Page['layout']>
+    const albums = [
+      {
+        cover: {
+          alt: 'Draft event',
+          height: 900,
+          id: 'draft-image',
+          src: '/media/draft-event.jpg',
+          width: 1600,
+        },
+        createdAt: '2026-07-27T00:00:00.000Z',
+        id: 'draft-album',
+        imageCount: 1,
+        images: [
+          {
+            alt: 'Draft event',
+            height: 900,
+            id: 'draft-image',
+            src: '/media/draft-event.jpg',
+            width: 1600,
+          },
+        ],
+        title: 'Draft Yoga Day',
+      },
+    ]
+    const html = renderToStaticMarkup(
+      renderLivePreviewPageBlocks(
+        layout,
+        {
+          feedPagesBySize: {},
+          ratingDistribution: {
+            average: 0,
+            count: 0,
+            counts: [0, 0, 0, 0, 0],
+          },
+        },
+        EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT,
+        [],
+        albums,
+      ),
+    )
+
+    expect(html).toContain('Event gallery')
+    expect(html).toContain('Draft Yoga Day')
+    expect(html).toContain('data-event-gallery="true"')
   })
 })

@@ -24,6 +24,7 @@ import { System404BlockComponent } from '@/blocks/System404/Component'
 import { SystemComingSoonBlockComponent } from '@/blocks/SystemComingSoon/Component'
 import { SystemMaintenanceBlockComponent } from '@/blocks/SystemMaintenance/Component'
 import { Contact24 } from '@/components/contact24'
+import { EventGallery } from '@/components/event-gallery'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
 import type { Form } from '@/payload-types'
 
@@ -547,6 +548,86 @@ export const blockThumbnailFixtures = {
       ]}
       size="compact"
       title="A closer look at life here"
+    />
+  ),
+  eventGallery: (
+    <EventGallery
+      albums={[
+        {
+          cover: {
+            alt: 'Community gathering',
+            height: 900,
+            id: 'event-cover-1',
+            src: collaboration,
+            width: 1600,
+          },
+          createdAt: '2026-07-25T00:00:00.000Z',
+          description: 'A day of workshops, performances, and shared experiences.',
+          eventDate: '2026-07-25T00:00:00.000Z',
+          id: 'event-album-1',
+          imageCount: 3,
+          images: [
+            {
+              alt: 'Community gathering',
+              height: 900,
+              id: 'event-cover-1',
+              src: collaboration,
+              width: 1600,
+            },
+            {
+              alt: 'Learning environment',
+              height: 900,
+              id: 'event-image-2',
+              src: editorialLandscape,
+              width: 1600,
+            },
+            {
+              alt: 'Community portrait',
+              height: 900,
+              id: 'event-image-3',
+              src: portrait,
+              width: 1600,
+            },
+          ],
+          title: 'Community Day',
+        },
+        {
+          cover: {
+            alt: 'Editorial landscape',
+            height: 900,
+            id: 'event-cover-2',
+            src: editorialLandscape,
+            width: 1600,
+          },
+          createdAt: '2026-06-21T00:00:00.000Z',
+          eventDate: '2026-06-21T00:00:00.000Z',
+          id: 'event-album-2',
+          imageCount: 2,
+          images: [
+            {
+              alt: 'Editorial landscape',
+              height: 900,
+              id: 'event-cover-2',
+              src: editorialLandscape,
+              width: 1600,
+            },
+            {
+              alt: 'Community gathering',
+              height: 900,
+              id: 'event-image-4',
+              src: collaboration,
+              width: 1600,
+            },
+          ],
+          title: 'Yoga Day',
+        },
+      ]}
+      alignment="left"
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      description="Browse recent celebrations, programs, and community events."
+      eyebrow="Moments"
+      size="compact"
+      title="Event gallery"
     />
   ),
   imageMosaic: (

@@ -48,6 +48,7 @@ describe('block thumbnail metadata', () => {
       'contact33',
       'contentHighlights',
       'cta39',
+      'eventGallery',
       'featureMatrix',
       'featureSpotlight',
       'footer56',

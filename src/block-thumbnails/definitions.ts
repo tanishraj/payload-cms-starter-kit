@@ -79,6 +79,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Event Gallery block preview',
+    filename: 'event-gallery.jpg',
+    label: 'Event Gallery',
+    slug: 'eventGallery',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Image Mosaic block preview',
     filename: 'image-mosaic.jpg',
     label: 'Image Mosaic',
