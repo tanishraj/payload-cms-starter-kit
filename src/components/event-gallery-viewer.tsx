@@ -2,10 +2,12 @@
 
 import 'photoswipe/style.css'
 
-import PhotoSwipeLightbox from 'photoswipe/lightbox'
 import type PhotoSwipe from 'photoswipe'
-import { useEffect } from 'react'
+import PhotoSwipeLightbox from 'photoswipe/lightbox'
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 
+import { EventGalleryViewerOverlay } from '@/components/event-gallery-viewer-overlay'
 import type {
   EventGalleryAlbum,
   EventGalleryImage,
@@ -19,86 +21,39 @@ export const createEventGalleryDataSource = (images: EventGalleryImage[]) =>
     width: image.width,
   }))
 
-const updateThumbnailState = (container: HTMLElement, currentIndex: number) => {
-  container.querySelectorAll<HTMLButtonElement>('[data-event-gallery-thumbnail]').forEach(
-    (button, index) => {
-      const isCurrent = index === currentIndex
-
-      button.dataset.active = String(isCurrent)
-      button.setAttribute('aria-current', isCurrent ? 'true' : 'false')
-
-      if (isCurrent) {
-        button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
-      }
-    },
-  )
+type EventGalleryViewerSnapshot = {
+  currentIndex: number
+  isZoomable: boolean
+  isZoomed: boolean
 }
 
-const registerViewerUI = ({
-  album,
-  pswp,
-}: {
-  album: EventGalleryAlbum
+type EventGalleryViewerPortal = EventGalleryViewerSnapshot & {
+  element: HTMLElement
   pswp: PhotoSwipe
-}) => {
-  pswp.ui?.registerElement({
-    appendTo: 'root',
-    className:
-      'pointer-events-none absolute inset-x-16 bottom-24 z-10 text-center text-sm text-white drop-shadow-md',
-    name: 'event-gallery-caption',
-    onInit: (element, instance) => {
-      const updateCaption = () => {
-        const image = album.images[instance.currIndex]
+}
 
-        element.textContent = image?.caption || image?.alt || album.title
-      }
+export const getEventGalleryViewerSnapshot = (
+  pswp: PhotoSwipe,
+): EventGalleryViewerSnapshot => {
+  const slide = pswp.currSlide
 
-      instance.on('change', updateCaption)
-      updateCaption()
-    },
-    order: 8,
-  })
+  if (!slide) {
+    return {
+      currentIndex: pswp.currIndex,
+      isZoomable: false,
+      isZoomed: false,
+    }
+  }
 
-  pswp.ui?.registerElement({
-    appendTo: 'root',
-    className:
-      'absolute inset-x-0 bottom-0 z-10 flex h-20 items-center justify-center border-t border-border bg-background/95 px-4 backdrop-blur',
-    name: 'event-gallery-thumbnails',
-    onInit: (element, instance) => {
-      const strip = document.createElement('div')
+  const zoomDifference = Math.abs(
+    slide.zoomLevels.secondary - slide.zoomLevels.initial,
+  )
 
-      strip.className =
-        'flex max-w-full items-center gap-2 overflow-x-auto px-1 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
-
-      album.images.forEach((image, index) => {
-        const button = document.createElement('button')
-        const thumbnail = document.createElement('img')
-
-        button.type = 'button'
-        button.dataset.eventGalleryThumbnail = String(index)
-        button.className =
-          'relative size-14 shrink-0 overflow-hidden rounded-md border-2 border-transparent opacity-60 transition hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring data-[active=true]:border-primary data-[active=true]:opacity-100'
-        button.setAttribute('aria-label', `View image ${index + 1} of ${album.images.length}`)
-        button.addEventListener('click', () => instance.goTo(index))
-
-        thumbnail.alt = ''
-        thumbnail.className = 'pointer-events-none size-full object-cover'
-        thumbnail.decoding = 'async'
-        thumbnail.src = image.src
-
-        button.append(thumbnail)
-        strip.append(button)
-      })
-
-      element.append(strip)
-
-      const updateThumbnails = () => updateThumbnailState(strip, instance.currIndex)
-
-      instance.on('change', updateThumbnails)
-      updateThumbnails()
-    },
-    order: 9,
-  })
+  return {
+    currentIndex: pswp.currIndex,
+    isZoomable: slide.isZoomable() && zoomDifference >= 0.01,
+    isZoomed: slide.currZoomLevel > slide.zoomLevels.initial + 0.01,
+  }
 }
 
 type EventGalleryViewerProps = {
@@ -112,28 +67,73 @@ export function EventGalleryViewer({
   initialIndex = 0,
   onClose,
 }: EventGalleryViewerProps) {
+  const [viewerPortal, setViewerPortal] =
+    useState<EventGalleryViewerPortal | null>(null)
+
   useEffect(() => {
+    const hasMultipleImages = album.images.length > 1
     const lightbox = new PhotoSwipeLightbox({
-      bgOpacity: 0.98,
+      arrowNext: false,
+      arrowPrev: false,
+      bgOpacity: 1,
+      close: false,
       closeOnVerticalDrag: true,
+      counter: false,
       dataSource: createEventGalleryDataSource(album.images),
-      loop: album.images.length > 1,
+      hideAnimationDuration: 160,
+      loop: hasMultipleImages,
       mainClass: 'event-gallery-lightbox',
-      paddingFn: () => ({
-        bottom: 116,
-        left: 16,
-        right: 16,
-        top: 52,
-      }),
+      paddingFn: (viewportSize) => {
+        const showSidePreviewLane = hasMultipleImages && viewportSize.x >= 1024
+
+        return {
+          bottom: hasMultipleImages ? (viewportSize.x < 640 ? 116 : 128) : 24,
+          left: showSidePreviewLane ? 132 : 16,
+          right: showSidePreviewLane ? 132 : 16,
+          top: 72,
+        }
+      },
       pswpModule: () => import('photoswipe'),
       returnFocus: true,
+      showAnimationDuration: 180,
+      showHideAnimationType: 'fade',
       wheelToZoom: true,
+      zoom: false,
     })
 
     lightbox.on('uiRegister', () => {
-      if (lightbox.pswp) {
-        registerViewerUI({ album, pswp: lightbox.pswp })
-      }
+      lightbox.pswp?.ui?.registerElement({
+        appendTo: 'root',
+        className: 'event-gallery-overlay',
+        name: 'event-gallery-overlay',
+        onInit: (element, pswp) => {
+          const syncViewerPortal = () => {
+            const snapshot = getEventGalleryViewerSnapshot(pswp)
+
+            setViewerPortal((currentPortal) => {
+              if (
+                currentPortal?.element === element &&
+                currentPortal.currentIndex === snapshot.currentIndex &&
+                currentPortal.isZoomable === snapshot.isZoomable &&
+                currentPortal.isZoomed === snapshot.isZoomed
+              ) {
+                return currentPortal
+              }
+
+              return {
+                element,
+                pswp,
+                ...snapshot,
+              }
+            })
+          }
+
+          pswp.on('change', syncViewerPortal)
+          pswp.on('zoomPanUpdate', syncViewerPortal)
+          syncViewerPortal()
+        },
+        order: 10,
+      })
     })
     lightbox.on('close', onClose)
     lightbox.init()
@@ -146,5 +146,24 @@ export function EventGalleryViewer({
     }
   }, [album, initialIndex, onClose])
 
-  return null
+  if (!viewerPortal) {
+    return null
+  }
+
+  const { currentIndex, element, isZoomable, isZoomed, pswp } = viewerPortal
+
+  return createPortal(
+    <EventGalleryViewerOverlay
+      album={album}
+      currentIndex={currentIndex}
+      isZoomable={isZoomable}
+      isZoomed={isZoomed}
+      onClose={() => pswp.close()}
+      onNext={() => pswp.next()}
+      onPrevious={() => pswp.prev()}
+      onSelect={(index) => pswp.goTo(index)}
+      onToggleZoom={() => pswp.currSlide?.toggleZoom()}
+    />,
+    element,
+  )
 }

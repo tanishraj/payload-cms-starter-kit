@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { renderToStaticMarkup } from 'react-dom/server'
 
@@ -11,9 +11,18 @@ vi.mock('@/components/event-gallery-viewer', async (importOriginal) => {
     ...original,
     EventGalleryViewer: ({
       album,
+      onClose,
     }: {
       album: { title: string }
-    }) => <div data-testid="event-gallery-viewer">{album.title}</div>,
+      onClose: () => void
+    }) => (
+      <div data-testid="event-gallery-viewer">
+        {album.title}
+        <button onClick={onClose} type="button">
+          Close test viewer
+        </button>
+      </div>
+    ),
   }
 })
 
@@ -117,16 +126,22 @@ describe('event gallery presentation', () => {
     expect(html).toContain('Open Yoga Day gallery with 2 images')
   })
 
-  it('opens the selected album viewer from a keyboard-accessible button', () => {
+  it('opens the selected album viewer and restores focus when it closes', async () => {
     render(<EventGallery albums={albums} title="Event gallery" />)
 
-    fireEvent.click(
-      screen.getByRole('button', {
-        name: 'Open Yoga Day gallery with 2 images',
-      }),
-    )
+    const opener = screen.getByRole('button', {
+      name: 'Open Yoga Day gallery with 2 images',
+    })
 
-    expect(screen.getByTestId('event-gallery-viewer').textContent).toBe('Yoga Day')
+    fireEvent.click(opener)
+
+    expect(screen.getByTestId('event-gallery-viewer').textContent).toContain('Yoga Day')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Close test viewer' }))
+
+    await waitFor(() => {
+      expect(document.activeElement).toBe(opener)
+    })
   })
 
   it('returns no section without albums and creates PhotoSwipe image data', () => {
