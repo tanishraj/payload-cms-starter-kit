@@ -4,13 +4,18 @@ import {
   type EventGalleryAlignment,
   type EventGallerySize,
 } from '@/components/event-gallery'
-import type { EventGalleryAlbum } from '@/lib/eventGalleryShared'
+import type {
+  EventGalleryAlbum,
+  EventGalleryDisplayOrder,
+} from '@/lib/eventGalleryShared'
 
 export type EventGalleryBlockLike = {
   appearance?: BlockAppearance | null
   contentAlignment?: EventGalleryAlignment | null
   description?: string | null
+  displayOrder?: EventGalleryDisplayOrder | null
   eyebrow?: string | null
+  galleryAlbums?: unknown
   size?: EventGallerySize | null
   title?: string | null
 }
