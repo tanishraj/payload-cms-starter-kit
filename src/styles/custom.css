@@ -138,14 +138,22 @@
 
 /* Event Gallery focused carousel */
 .event-gallery-lightbox {
-  --background: oklch(0.16 0.006 250 / 78%);
+  --event-gallery-surface: oklch(0.16 0.006 250 / 78%);
+  --event-gallery-stage: oklch(0.135 0.006 250);
+  --background: var(--event-gallery-surface);
   --foreground: oklch(0.985 0 0);
   --muted: oklch(0.28 0.008 250);
   --muted-foreground: oklch(0.74 0.008 250);
   --border: oklch(1 0 0 / 16%);
   --input: oklch(1 0 0 / 12%);
   --ring: oklch(0.92 0.01 250);
-  --event-gallery-stage: oklch(0.135 0.006 250);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
   color-scheme: dark;
 }
 
