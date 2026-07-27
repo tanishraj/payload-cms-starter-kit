@@ -9,19 +9,47 @@ import {
   type EventGalleryAlbum,
 } from '@/lib/eventGalleryShared'
 
-const loadEventGalleryAlbums = cache(async (draft: boolean): Promise<EventGalleryAlbum[]> => {
-  const payload = await getPayload({ config: configPromise })
-  const result = await payload.find({
-    collection: 'gallery-albums',
-    depth: 1,
-    draft,
-    pagination: false,
-    sort: '-createdAt',
-    ...(draft ? {} : { where: { _status: { equals: 'published' as const } } }),
-  })
+const loadEventGalleryAlbums = cache(
+  async (draft: boolean, ...selectedAlbumIDs: string[]): Promise<EventGalleryAlbum[]> => {
+    if (!selectedAlbumIDs.length) {
+      return []
+    }
 
-  return normalizeEventGalleryAlbums(result.docs)
-})
+    const payload = await getPayload({ config: configPromise })
+    const result = await payload.find({
+      collection: 'gallery-albums',
+      depth: 1,
+      draft,
+      pagination: false,
+      sort: '-createdAt',
+      where: draft
+        ? {
+            id: {
+              in: selectedAlbumIDs,
+            },
+          }
+        : {
+            and: [
+              {
+                id: {
+                  in: selectedAlbumIDs,
+                },
+              },
+              {
+                _status: {
+                  equals: 'published',
+                },
+              },
+            ],
+          },
+    })
 
-export const getPublishedEventGalleryAlbums = () => loadEventGalleryAlbums(false)
-export const getDraftEventGalleryAlbums = () => loadEventGalleryAlbums(true)
+    return normalizeEventGalleryAlbums(result.docs)
+  },
+)
+
+export const getPublishedEventGalleryAlbums = (selectedAlbumIDs: string[]) =>
+  loadEventGalleryAlbums(false, ...selectedAlbumIDs)
+
+export const getDraftEventGalleryAlbums = (selectedAlbumIDs: string[]) =>
+  loadEventGalleryAlbums(true, ...selectedAlbumIDs)

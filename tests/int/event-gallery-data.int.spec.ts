@@ -211,9 +211,9 @@ describe('event gallery data path', () => {
     ).toEqual([])
   })
 
-  it('queries published and draft albums newest first without pagination', async () => {
-    await getPublishedEventGalleryAlbums()
-    await getDraftEventGalleryAlbums()
+  it('queries only selected published and draft albums without pagination', async () => {
+    await getPublishedEventGalleryAlbums(['album-2', 'album-1'])
+    await getDraftEventGalleryAlbums(['album-3'])
 
     expect(mocks.find).toHaveBeenNthCalledWith(
       1,
@@ -223,7 +223,12 @@ describe('event gallery data path', () => {
         draft: false,
         pagination: false,
         sort: '-createdAt',
-        where: { _status: { equals: 'published' } },
+        where: {
+          and: [
+            { id: { in: ['album-2', 'album-1'] } },
+            { _status: { equals: 'published' } },
+          ],
+        },
       }),
     )
     expect(mocks.find).toHaveBeenNthCalledWith(
@@ -234,7 +239,16 @@ describe('event gallery data path', () => {
         draft: true,
         pagination: false,
         sort: '-createdAt',
+        where: { id: { in: ['album-3'] } },
       }),
     )
+  })
+
+  it('returns an empty result without querying Payload when nothing is selected', async () => {
+    await expect(getPublishedEventGalleryAlbums([])).resolves.toEqual([])
+    await expect(getDraftEventGalleryAlbums([])).resolves.toEqual([])
+
+    expect(mocks.getPayload).not.toHaveBeenCalled()
+    expect(mocks.find).not.toHaveBeenCalled()
   })
 })
