@@ -2,11 +2,24 @@ import {
   EventGalleryBlockPresentation,
   type EventGalleryBlockLike,
 } from '@/blocks/EventGallery/Presentation'
-import type { EventGalleryAlbum } from '@/lib/eventGalleryShared'
+import {
+  getEventGalleryAlbumRelationshipIDs,
+  selectAndOrderEventGalleryAlbums,
+  type EventGalleryAlbum,
+} from '@/lib/eventGalleryShared'
 
 export function EventGalleryPreviewBlockComponent({
   albums,
+  displayOrder = 'latestEventDate',
+  galleryAlbums,
   ...props
 }: EventGalleryBlockLike & { albums: EventGalleryAlbum[] }) {
-  return <EventGalleryBlockPresentation {...props} albums={albums} />
+  const selectedAlbumIDs = getEventGalleryAlbumRelationshipIDs(galleryAlbums)
+  const selectedAlbums = selectAndOrderEventGalleryAlbums({
+    albums,
+    displayOrder: displayOrder ?? 'latestEventDate',
+    selectedAlbumIDs,
+  })
+
+  return <EventGalleryBlockPresentation {...props} albums={selectedAlbums} />
 }

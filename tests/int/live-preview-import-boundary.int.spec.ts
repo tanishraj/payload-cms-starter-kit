@@ -124,5 +124,7 @@ describe('live-preview client import boundary', () => {
     ]) {
       expect(reachablePaths.has(serverPath), `${serverPath} entered the client graph`).toBe(false)
     }
+
+    expect(reachablePaths.has('src/lib/eventGalleryShared.ts')).toBe(true)
   })
 })

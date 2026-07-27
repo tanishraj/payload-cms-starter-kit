@@ -90,6 +90,8 @@ describe('live-preview page block renderer', () => {
     const layout = [
       {
         blockType: 'eventGallery',
+        displayOrder: 'manual',
+        galleryAlbums: ['draft-album'],
         title: 'Event gallery',
       },
     ] as unknown as NonNullable<Page['layout']>
@@ -137,5 +139,96 @@ describe('live-preview page block renderer', () => {
     expect(html).toContain('Event gallery')
     expect(html).toContain('Draft Yoga Day')
     expect(html).toContain('data-event-gallery="true"')
+  })
+
+  it('filters a shared album snapshot independently for multiple blocks', () => {
+    const sharedAlbums = [
+      {
+        cover: {
+          alt: 'Yoga Day',
+          height: 900,
+          id: 'yoga-image',
+          src: '/media/yoga.jpg',
+          width: 1600,
+        },
+        createdAt: '2026-07-27T00:00:00.000Z',
+        eventDate: '2026-06-21T00:00:00.000Z',
+        id: 'yoga',
+        imageCount: 1,
+        images: [
+          {
+            alt: 'Yoga Day',
+            height: 900,
+            id: 'yoga-image',
+            src: '/media/yoga.jpg',
+            width: 1600,
+          },
+        ],
+        title: 'Yoga Day',
+      },
+      {
+        cover: {
+          alt: 'Independence Day',
+          height: 900,
+          id: 'independence-image',
+          src: '/media/independence.jpg',
+          width: 1600,
+        },
+        createdAt: '2026-07-20T00:00:00.000Z',
+        eventDate: '2026-08-15T00:00:00.000Z',
+        id: 'independence',
+        imageCount: 1,
+        images: [
+          {
+            alt: 'Independence Day',
+            height: 900,
+            id: 'independence-image',
+            src: '/media/independence.jpg',
+            width: 1600,
+          },
+        ],
+        title: 'Independence Day',
+      },
+    ]
+    const layout = [
+      {
+        blockType: 'eventGallery',
+        displayOrder: 'manual',
+        galleryAlbums: ['yoga'],
+        title: 'Manual gallery',
+      },
+      {
+        blockType: 'eventGallery',
+        displayOrder: 'latestEventDate',
+        galleryAlbums: ['yoga', 'independence'],
+        title: 'Latest gallery',
+      },
+    ] as unknown as NonNullable<Page['layout']>
+    const html = renderToStaticMarkup(
+      renderLivePreviewPageBlocks(
+        layout,
+        {
+          feedPagesBySize: {},
+          ratingDistribution: {
+            average: 0,
+            count: 0,
+            counts: [0, 0, 0, 0, 0],
+          },
+        },
+        EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT,
+        [],
+        sharedAlbums,
+      ),
+    )
+    const firstBlockStart = html.indexOf('Manual gallery')
+    const secondBlockStart = html.indexOf('Latest gallery')
+    const firstBlockHTML = html.slice(firstBlockStart, secondBlockStart)
+    const secondBlockHTML = html.slice(secondBlockStart)
+
+    expect(firstBlockHTML).toContain('Yoga Day')
+    expect(firstBlockHTML).not.toContain('Independence Day')
+    expect(secondBlockHTML.indexOf('Independence Day')).toBeLessThan(
+      secondBlockHTML.indexOf('Yoga Day'),
+    )
   })
 })
