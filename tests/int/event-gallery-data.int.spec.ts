@@ -12,7 +12,13 @@ import {
   getDraftEventGalleryAlbums,
   getPublishedEventGalleryAlbums,
 } from '@/lib/eventGallery'
-import { normalizeEventGalleryAlbums } from '@/lib/eventGalleryShared'
+import {
+  getEventGalleryAlbumIDsFromBlocks,
+  getEventGalleryAlbumRelationshipIDs,
+  normalizeEventGalleryAlbums,
+  selectAndOrderEventGalleryAlbums,
+  type EventGalleryAlbum,
+} from '@/lib/eventGalleryShared'
 
 beforeEach(() => {
   mocks.find.mockReset()
@@ -22,6 +28,109 @@ beforeEach(() => {
 })
 
 describe('event gallery data path', () => {
+  it('extracts unique IDs from raw and populated relationships', () => {
+    expect(
+      getEventGalleryAlbumRelationshipIDs([
+        'album-2',
+        { id: 'album-1', title: 'Yoga Day' },
+        null,
+        { title: 'Missing ID' },
+        'album-2',
+      ]),
+    ).toEqual(['album-2', 'album-1'])
+  })
+
+  it('collects the selected album union across Event Gallery blocks', () => {
+    expect(
+      getEventGalleryAlbumIDsFromBlocks([
+        {
+          blockType: 'eventGallery',
+          galleryAlbums: ['album-2', { id: 'album-1' }],
+        },
+        {
+          blockType: 'cta39',
+          galleryAlbums: ['ignored'],
+        },
+        {
+          blockType: 'eventGallery',
+          galleryAlbums: ['album-3', 'album-2'],
+        },
+      ]),
+    ).toEqual(['album-2', 'album-1', 'album-3'])
+  })
+
+  it('preserves relationship order in manual mode', () => {
+    const albums = [
+      {
+        id: 'album-1',
+        title: 'New Batch Day',
+        createdAt: '2026-07-25T00:00:00.000Z',
+        eventDate: '2026-07-25T00:00:00.000Z',
+      },
+      {
+        id: 'album-2',
+        title: 'Yoga Day',
+        createdAt: '2026-07-26T00:00:00.000Z',
+        eventDate: '2026-06-21T00:00:00.000Z',
+      },
+    ] as EventGalleryAlbum[]
+
+    expect(
+      selectAndOrderEventGalleryAlbums({
+        albums,
+        displayOrder: 'manual',
+        selectedAlbumIDs: ['album-2', 'album-1'],
+      }).map((album) => album.id),
+    ).toEqual(['album-2', 'album-1'])
+  })
+
+  it('sorts by Event Date with deterministic missing-date and tie behavior', () => {
+    const albums = [
+      {
+        id: 'missing-new',
+        title: 'Missing New',
+        createdAt: '2026-07-27T00:00:00.000Z',
+      },
+      {
+        id: 'same-older',
+        title: 'Same Older',
+        createdAt: '2026-07-20T00:00:00.000Z',
+        eventDate: '2026-08-15T00:00:00.000Z',
+      },
+      {
+        id: 'latest',
+        title: 'Latest',
+        createdAt: '2026-07-18T00:00:00.000Z',
+        eventDate: '2026-09-01T00:00:00.000Z',
+      },
+      {
+        id: 'same-newer',
+        title: 'Same Newer',
+        createdAt: '2026-07-25T00:00:00.000Z',
+        eventDate: '2026-08-15T00:00:00.000Z',
+      },
+      {
+        id: 'missing-old',
+        title: 'Missing Old',
+        createdAt: '2026-07-01T00:00:00.000Z',
+      },
+    ] as EventGalleryAlbum[]
+
+    expect(
+      selectAndOrderEventGalleryAlbums({
+        albums,
+        displayOrder: 'latestEventDate',
+        selectedAlbumIDs: [
+          'missing-old',
+          'same-older',
+          'latest',
+          'same-newer',
+          'missing-new',
+        ],
+      }).map((album) => album.id),
+    ).toEqual(['latest', 'same-newer', 'same-older', 'missing-new', 'missing-old'])
+  })
+
   it('normalizes valid images, uses the first as cover, and sorts newest first', () => {
     const albums = normalizeEventGalleryAlbums([
       {
