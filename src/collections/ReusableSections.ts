@@ -20,6 +20,8 @@ import { StatsStripBlock } from '@/blocks/StatsStrip/config'
 import { Services21Block } from '@/blocks/Services21/config'
 import { TeamShowcaseBlock } from '@/blocks/TeamShowcase/config'
 import { FeatureSpotlightBlock } from '@/blocks/FeatureSpotlight/config'
+import { RichTextBlock } from '@/blocks/RichTextBlock/config'
+import { VideoEmbedBlock } from '@/blocks/VideoEmbed/config'
 import {
   allowPublicReadOrCapability,
   hideFromUsersWithoutCapability,
@@ -95,6 +97,8 @@ export const ReusableSections: CollectionConfig = {
         Contact24Block,
         TeamShowcaseBlock,
         Services21Block,
+        RichTextBlock,
+        VideoEmbedBlock,
       ],
     },
   ],

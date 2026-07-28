@@ -1232,6 +1232,8 @@ export interface ReusableSection {
         | Contact24Block
         | TeamShowcaseBlock
         | Services21Block
+        | RichTextBlock
+        | VideoEmbedBlock
       )[]
     | null;
   updatedAt: string;
@@ -3395,6 +3397,8 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         contact24?: T | Contact24BlockSelect<T>;
         teamShowcase?: T | TeamShowcaseBlockSelect<T>;
         services21?: T | Services21BlockSelect<T>;
+        richText?: T | RichTextBlockSelect<T>;
+        videoEmbed?: T | VideoEmbedBlockSelect<T>;
       };
   updatedAt?: T;
   createdAt?: T;

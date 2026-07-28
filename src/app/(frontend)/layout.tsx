@@ -1,12 +1,14 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
+import { cookies } from 'next/headers'
 import React from 'react'
 
 import '../../styles/globals.css'
 
 import type { Metadata } from 'next'
 import { AdminSessionBar } from '@/components/admin/AdminSessionBar'
+import { CookieConsentBanner } from '@/components/global/CookieConsentBanner'
 import { GlobalAnnouncement } from '@/components/global/GlobalAnnouncement'
 import { GlobalFooter } from '@/components/global/GlobalFooter'
 import { GlobalHeader } from '@/components/global/GlobalHeader'
@@ -19,7 +21,7 @@ import { getMediaAbsoluteUrl } from '@/lib/media'
 import { getRobotsMetadata } from '@/lib/seo'
 import { getSiteURL } from '@/lib/siteUrl'
 import { defaultWebsiteTheme, isWebsiteTheme } from '@/lib/themes/websiteThemes'
-import type { Footer, Header } from '@/payload-types'
+import type { Footer, Header, Page } from '@/payload-types'
 import { CMS_CACHE_TAGS } from '@/hooks/revalidateCmsContent'
 
 export const dynamic = 'force-dynamic'
@@ -174,12 +176,17 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
+  const cookieStore = await cookies()
+  const analyticsConsent = cookieStore.get('analytics_consent')?.value
+  const hasAnalyticsConsent = analyticsConsent === 'granted'
+
   const [frontendGlobals, currentUser] = await Promise.all([
     getFrontendGlobals(),
     getCurrentCMSUser(),
   ])
   const { activeFooter, activeHeader, analyticsSettings, pageSettings, siteSettings, themeSettings } =
     frontendGlobals
+
 
   const colorScheme = themeSettings.colorScheme ?? 'system'
   const rawThemeColor = String(themeSettings.themeColor ?? defaultWebsiteTheme)
@@ -198,6 +205,10 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const privacyPolicyPage =
     typeof siteSettings.privacyPolicyPage === 'object' && siteSettings.privacyPolicyPage !== null
       ? siteSettings.privacyPolicyPage
+      : null
+  const privacyPolicyUrl =
+    privacyPolicyPage && typeof privacyPolicyPage === 'object' && 'slug' in privacyPolicyPage
+      ? `/${(privacyPolicyPage as Page).slug}`
       : null
   const termsAndConditionsPage =
     typeof siteSettings.termsAndConditionsPage === 'object' &&
@@ -228,16 +239,16 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       suppressHydrationWarning
     >
       <head>
-        {/* Google Tag Manager */}
-        {analyticsSettings?.gtmEnabled && analyticsSettings.gtmContainerId ? (
+        {/* Google Tag Manager — only injected after analytics consent */}
+        {hasAnalyticsConsent && analyticsSettings?.gtmEnabled && analyticsSettings.gtmContainerId ? (
           <script
             dangerouslySetInnerHTML={{
               __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${analyticsSettings.gtmContainerId}');`,
             }}
           />
         ) : null}
-        {/* GA4 standalone (only when GTM is not enabled) */}
-        {!analyticsSettings?.gtmEnabled && analyticsSettings?.ga4Enabled && analyticsSettings.ga4MeasurementId ? (
+        {/* GA4 standalone — only when GTM is off and consent is granted */}
+        {hasAnalyticsConsent && !analyticsSettings?.gtmEnabled && analyticsSettings?.ga4Enabled && analyticsSettings.ga4MeasurementId ? (
           <>
             <script
               async
@@ -303,6 +314,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
             siteSocialLinks={siteSettings.socialLinks}
           />
         </div>
+        <CookieConsentBanner privacyPolicyUrl={privacyPolicyUrl} />
       </body>
     </html>
   )
