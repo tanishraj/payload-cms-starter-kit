@@ -23,6 +23,7 @@ That shared example shows how pages, content, structure, forms, settings, and op
 ### Website Content
 
 - [Pages](./pages.md)
+- [Reusable Sections](./reusable-sections.md)
 - [Categories](./categories.md)
 - [Tags](./tags.md)
 - [Articles](./articles.md)
@@ -48,6 +49,7 @@ That shared example shows how pages, content, structure, forms, settings, and op
 - [Site Settings](./site-settings.md)
 - [Theme Settings](./theme-settings.md)
 - [SEO Settings](./seo-settings.md)
+- [Analytics Settings](./analytics.md)
 - [Website Modes](./system-modes.md)
 
 ### Operations
@@ -56,11 +58,15 @@ That shared example shows how pages, content, structure, forms, settings, and op
 - [Action Queue](./work-queue.md)
 - [Users](./users.md)
 
+## Other Features
+
+- [Site Search](./search.md)
+
 ## Recommended Reading Order
 
-1. [Site Settings](./site-settings.md), [Theme Settings](./theme-settings.md), [SEO Settings](./seo-settings.md)
+1. [Site Settings](./site-settings.md), [Theme Settings](./theme-settings.md), [SEO Settings](./seo-settings.md), [Analytics Settings](./analytics.md)
 2. [Website Defaults](./site-defaults.md), [Headers](./headers.md), [Footers](./footers.md), [Navigation Links](./links.md)
-3. [Pages](./pages.md), [Media](./media.md), [Articles](./articles.md), [Categories](./categories.md), [Tags](./tags.md), [Reviews](./reviews.md)
+3. [Pages](./pages.md), [Reusable Sections](./reusable-sections.md), [Media](./media.md), [Articles](./articles.md), [Categories](./categories.md), [Tags](./tags.md), [Reviews](./reviews.md)
 4. [Forms](./forms.md), [Form Submissions](./form-submissions.md)
 5. [Redirects](./redirects.md), [System Pages](./system-pages.md), [Website Modes](./system-modes.md), [Activity Log](./operational-audit-events.md), [Action Queue](./work-queue.md), [Users](./users.md)
 

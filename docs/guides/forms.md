@@ -53,6 +53,21 @@ Expected website result:
 - the CMS stores the submission automatically
 - the admissions team can review it in `Form Submissions`
 
+## Submitter Confirmation Email
+
+Each form can optionally send an automatic confirmation email to the person who submitted it. Enable this under **Submitter Confirmation** when the visitor should receive an immediate acknowledgment.
+
+To configure it:
+
+1. Open the form.
+2. Expand the **Submitter Confirmation** section.
+3. Turn on `Send confirmation email to submitter`.
+4. Enter an email subject such as `We have received your enquiry`.
+5. Write a plain-text message body confirming receipt and next steps.
+6. Save and publish the form.
+
+The CMS identifies the submitter's email address from the first field named `email` in the form. If no email field is present, no confirmation is sent even when the feature is enabled.
+
 ## Best Practices
 
 - keep field names machine-safe and stable because they are used in stored submission data
@@ -60,6 +75,7 @@ Expected website result:
 - choose the correct `submissionIntent` before launch because it affects downstream handling
 - keep success messages short and reassuring
 - add notification recipients only when someone is expected to monitor them
+- write confirmation email messages in plain language that reassures the submitter about next steps
 
 ## Common Mistakes And Recovery
 

@@ -19,6 +19,8 @@ Do not use it to build navigation. That belongs in `Navigation Links`, `Headers`
 
 Redirects affect real frontend routing. When a visitor opens a matching path, the public website sends them to the configured destination before the normal page lookup completes.
 
+Redirects are runtime — publishing a redirect takes effect within approximately 60 seconds without a rebuild or server restart. There is no need to deploy the website again after adding or changing a redirect.
+
 This section has site-wide impact because a bad redirect can send all users of one path to the wrong place, create loops, or hide the intended page. Redirects depend on stable destination pages, careful slug changes, and coordination with `Pages` and `Navigation Links`.
 
 ## Step-By-Step Medical College Example

@@ -54,6 +54,22 @@ Review intake starts in `forms` and `form-submissions`; public-facing reviews on
 
 `theme-settings` owns presentation defaults that apply site-wide, including the chosen theme preset and color-scheme behavior. Treat it as the place for client-wide visual defaults, not page-specific design decisions.
 
+## Reusable Sections
+
+`reusable-sections` stores named block collections that can be referenced from any page layout. A single edit to a reusable section propagates automatically to every page that references it. Use it for shared content that appears on multiple pages and must stay in sync: accreditation strips, seasonal CTAs, recurring disclaimers.
+
+## Analytics Settings
+
+`analytics-settings` owns the GTM container ID and GA4 measurement ID for the public website. All analytics scripts are injected only after a visitor grants cookie consent. This global is the sole place for third-party analytics configuration — do not paste tracking scripts into page content or blocks.
+
+## Site Search
+
+The website exposes a built-in search surface at `/search` and via a `Cmd+K` overlay. Search is always active and requires no CMS configuration. It queries pages, articles, and news-events in real time. A `WebSite` JSON-LD schema with `SearchAction` is emitted in the layout `<head>` to register the search endpoint with Google.
+
+## RSS Feeds
+
+The website automatically generates RSS 2.0 and Atom feeds at `/articles/feed.xml` and `/news-events/feed.xml`. These are linked via `<link rel="alternate">` autodiscovery tags in the layout `<head>` so feed readers detect them automatically. No CMS configuration is needed.
+
 ## Extension Rules
 
 - Add client-specific collections beside the core starter collections instead of overloading `pages`, `system-pages`, or `navigation-links`.
