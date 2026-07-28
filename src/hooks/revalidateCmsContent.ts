@@ -12,6 +12,7 @@ export const CMS_CACHE_TAGS = {
   reviews: 'cms-reviews',
   newsEvents: 'cms-news-events',
   sitemap: 'cms-sitemap',
+  redirects: 'cms-redirects',
 } as const
 
 // In Next.js 16+, revalidateTag requires a second `profile` argument.
@@ -87,5 +88,17 @@ export const revalidateGlobalsCache: CollectionAfterChangeHook = ({ doc }) => {
 export const revalidateGlobalsCacheForGlobal: GlobalAfterChangeHook = ({ doc }) => {
   revalidateTag(CMS_CACHE_TAGS.globals, REVALIDATE_PROFILE)
   revalidateTag(CMS_CACHE_TAGS.pages, REVALIDATE_PROFILE)
+  return doc
+}
+
+/**
+ * Revalidates the redirects API cache when a redirect is created, updated, or deleted.
+ */
+export const revalidateRedirectsCache: CollectionAfterChangeHook = ({ doc }) => {
+  const isPublished = doc._status === 'published'
+  const wasPublished = doc._status !== 'draft'
+  if (isPublished || wasPublished) {
+    revalidateTag(CMS_CACHE_TAGS.redirects, REVALIDATE_PROFILE)
+  }
   return doc
 }
