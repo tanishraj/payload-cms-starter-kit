@@ -1,3 +1,4 @@
+import React from 'react'
 import type { Page } from '@/payload-types'
 import type { ReviewPreviewSnapshot } from '@/lib/reviewPreviewShared'
 import type { NewsEventsPreviewSnapshot } from '@/lib/newsEventsPreviewShared'
@@ -28,6 +29,97 @@ import { Services21BlockComponent } from './Services21/Component'
 
 export type LivePreviewPageBlock = NonNullable<Page['layout']>[number]
 
+type PopulatedReusableSection = {
+  id: string | number
+  title: string
+  layout?: LivePreviewPageBlock[] | null
+}
+
+type SnapshotArgs = {
+  snapshot: ReviewPreviewSnapshot
+  newsEventsSnapshot: NewsEventsPreviewSnapshot
+  officeLocations: SiteOfficeLocation[]
+  eventGalleryAlbums: EventGalleryAlbum[]
+}
+
+function renderSingleLivePreviewBlock(
+  block: LivePreviewPageBlock,
+  index: number,
+  args: SnapshotArgs,
+  depth = 0,
+): React.ReactNode {
+  if (depth > 10) return null
+
+  const key = block.id ?? `${block.blockType}-${index}`
+  const { snapshot, newsEventsSnapshot, officeLocations, eventGalleryAlbums } = args
+
+  switch (block.blockType) {
+    case 'announcement':
+      return <AnnouncementBlockComponent key={key} {...block} />
+    case 'heroBanner':
+      return <HeroBannerBlockComponent key={key} {...block} />
+    case 'qaAccordion':
+      return <QaAccordionBlockComponent key={key} {...block} />
+    case 'featureMatrix':
+      return <FeatureMatrixBlockComponent key={key} {...block} />
+    case 'contentHighlights':
+      return <ContentHighlightsBlockComponent key={key} {...block} />
+    case 'newsEventsHighlights':
+      return (
+        <NewsEventsHighlightsPreviewBlockComponent
+          key={key}
+          snapshot={newsEventsSnapshot}
+          {...block}
+        />
+      )
+    case 'profileCarousel':
+      return <ProfileCarouselBlockComponent key={key} {...block} />
+    case 'galleryShowcase':
+      return <GalleryShowcaseBlockComponent key={key} {...block} />
+    case 'eventGallery':
+      return (
+        <EventGalleryPreviewBlockComponent albums={eventGalleryAlbums} key={key} {...block} />
+      )
+    case 'imageMosaic':
+      return <ImageMosaicBlockComponent key={key} {...block} />
+    case 'reviewSubmission':
+      return <ReviewSubmissionBlockComponent key={key} {...block} />
+    case 'contact33':
+      return <Contact33BlockComponent key={key} {...block} />
+    case 'contact24':
+      return (
+        <Contact24PreviewBlockComponent key={key} officeLocations={officeLocations} {...block} />
+      )
+    case 'ratingSpotlight':
+      return <RatingSpotlightPreviewBlockComponent key={key} snapshot={snapshot} {...block} />
+    case 'reviewFeed':
+      return <ReviewFeedPreviewBlockComponent key={key} snapshot={snapshot} {...block} />
+    case 'featureSpotlight':
+      return <FeatureSpotlightBlockComponent key={key} {...block} />
+    case 'statsStrip':
+      return <StatsStripBlockComponent key={key} {...block} />
+    case 'teamShowcase':
+      return <TeamShowcaseBlockComponent key={key} {...block} />
+    case 'services21':
+      return <Services21BlockComponent key={key} {...block} />
+    case 'cta39':
+      return <Cta39BlockComponent key={key} {...block} />
+    case 'reusableSection': {
+      const populated = block.section as PopulatedReusableSection | string | null | undefined
+      if (!populated || typeof populated === 'string') return null
+      const innerBlocks = populated.layout ?? []
+      if (!innerBlocks.length) return null
+      return (
+        <React.Fragment key={key}>
+          {innerBlocks.map((inner, i) => renderSingleLivePreviewBlock(inner, i, args, depth + 1))}
+        </React.Fragment>
+      )
+    }
+    default:
+      return null
+  }
+}
+
 export function renderLivePreviewPageBlocks(
   blocks: Page['layout'] | null | undefined,
   snapshot: ReviewPreviewSnapshot,
@@ -39,74 +131,11 @@ export function renderLivePreviewPageBlocks(
     return null
   }
 
+  const args: SnapshotArgs = { snapshot, newsEventsSnapshot, officeLocations, eventGalleryAlbums }
+
   return (
     <PageBlockStack>
-      {blocks.map((block, index) => {
-        const key = block.id ?? `${block.blockType}-${index}`
-
-        switch (block.blockType) {
-          case 'announcement':
-            return <AnnouncementBlockComponent key={key} {...block} />
-          case 'heroBanner':
-            return <HeroBannerBlockComponent key={key} {...block} />
-          case 'qaAccordion':
-            return <QaAccordionBlockComponent key={key} {...block} />
-          case 'featureMatrix':
-            return <FeatureMatrixBlockComponent key={key} {...block} />
-          case 'contentHighlights':
-            return <ContentHighlightsBlockComponent key={key} {...block} />
-          case 'newsEventsHighlights':
-            return (
-              <NewsEventsHighlightsPreviewBlockComponent
-                key={key}
-                snapshot={newsEventsSnapshot}
-                {...block}
-              />
-            )
-          case 'profileCarousel':
-            return <ProfileCarouselBlockComponent key={key} {...block} />
-          case 'galleryShowcase':
-            return <GalleryShowcaseBlockComponent key={key} {...block} />
-          case 'eventGallery':
-            return (
-              <EventGalleryPreviewBlockComponent
-                albums={eventGalleryAlbums}
-                key={key}
-                {...block}
-              />
-            )
-          case 'imageMosaic':
-            return <ImageMosaicBlockComponent key={key} {...block} />
-          case 'reviewSubmission':
-            return <ReviewSubmissionBlockComponent key={key} {...block} />
-          case 'contact33':
-            return <Contact33BlockComponent key={key} {...block} />
-          case 'contact24':
-            return (
-              <Contact24PreviewBlockComponent
-                key={key}
-                officeLocations={officeLocations}
-                {...block}
-              />
-            )
-          case 'ratingSpotlight':
-            return <RatingSpotlightPreviewBlockComponent key={key} snapshot={snapshot} {...block} />
-          case 'reviewFeed':
-            return <ReviewFeedPreviewBlockComponent key={key} snapshot={snapshot} {...block} />
-          case 'featureSpotlight':
-            return <FeatureSpotlightBlockComponent key={key} {...block} />
-          case 'statsStrip':
-            return <StatsStripBlockComponent key={key} {...block} />
-          case 'teamShowcase':
-            return <TeamShowcaseBlockComponent key={key} {...block} />
-          case 'services21':
-            return <Services21BlockComponent key={key} {...block} />
-          case 'cta39':
-            return <Cta39BlockComponent key={key} {...block} />
-          default:
-            return null
-        }
-      })}
+      {blocks.map((block, index) => renderSingleLivePreviewBlock(block, index, args))}
     </PageBlockStack>
   )
 }

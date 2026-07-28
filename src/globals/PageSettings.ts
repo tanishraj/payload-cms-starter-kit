@@ -8,6 +8,7 @@ import {
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createGlobalAuditHook } from '@/hooks/logOperationalAuditEvent'
 import { describeAuditValue } from '@/lib/operationalAudit'
+import { revalidateGlobalsCacheForGlobal } from '@/hooks/revalidateCmsContent'
 
 const extractPageID = (
   value: number | { id: number | string } | null | undefined,
@@ -140,6 +141,7 @@ export const PageSettings: GlobalConfig = {
   },
   hooks: {
     afterChange: [
+      revalidateGlobalsCacheForGlobal,
       createGlobalAuditHook({
         entityType: 'page_settings',
         getSummary: ({ doc, previousDoc }) =>

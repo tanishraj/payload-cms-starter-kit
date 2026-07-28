@@ -6,6 +6,7 @@ import {
   requireCapability,
 } from '@/access/adminCapabilities'
 import { defaultWebsiteTheme, websiteThemeOptions } from '@/lib/themes/websiteThemes'
+import { revalidateGlobalsCacheForGlobal } from '@/hooks/revalidateCmsContent'
 
 export const ThemeSettings: GlobalConfig = {
   slug: 'theme-settings',
@@ -22,6 +23,9 @@ export const ThemeSettings: GlobalConfig = {
   },
   versions: {
     drafts: true,
+  },
+  hooks: {
+    afterChange: [revalidateGlobalsCacheForGlobal],
   },
   fields: [
     {

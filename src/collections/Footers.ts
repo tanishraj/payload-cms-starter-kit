@@ -7,6 +7,7 @@ import {
 } from '@/access/adminCapabilities'
 import { Footer56Block } from '@/blocks/Footer56/config'
 import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
+import { revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 
 export const Footers: CollectionConfig = {
   slug: 'footers',
@@ -31,6 +32,7 @@ export const Footers: CollectionConfig = {
   },
   hooks: {
     afterChange: [
+      revalidateGlobalsCache,
       createDraftPublishQueueHook({
         sourceAdminPathPrefix: '/admin/collections/footers',
         sourceCollection: 'footers',

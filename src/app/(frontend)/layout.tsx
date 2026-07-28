@@ -1,5 +1,6 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import { unstable_cache } from 'next/cache'
 import React from 'react'
 
 import '../../styles/globals.css'
@@ -19,12 +20,13 @@ import { getRobotsMetadata } from '@/lib/seo'
 import { getSiteURL } from '@/lib/siteUrl'
 import { defaultWebsiteTheme, isWebsiteTheme } from '@/lib/themes/websiteThemes'
 import type { Footer, Header } from '@/payload-types'
+import { CMS_CACHE_TAGS } from '@/hooks/revalidateCmsContent'
 
 export const dynamic = 'force-dynamic'
 
 const defaultSiteURL = getSiteURL()
 
-const getFrontendGlobals = async () => {
+const _getFrontendGlobals = async () => {
   const payload = await getPayload({
     config: configPromise,
   })
@@ -120,6 +122,11 @@ const getFrontendGlobals = async () => {
     themeSettings,
   }
 }
+
+const getFrontendGlobals = unstable_cache(_getFrontendGlobals, ['frontend-globals'], {
+  tags: [CMS_CACHE_TAGS.globals],
+  revalidate: false,
+})
 
 const defaultSiteTitle = 'Payload Blank Template'
 const defaultSiteDescription = 'A blank template using Payload in a Next.js app.'

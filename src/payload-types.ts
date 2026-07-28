@@ -73,6 +73,7 @@ export interface Config {
     articles: Article;
     'news-events': NewsEvent;
     reviews: Review;
+    'reusable-sections': ReusableSection;
     'navigation-links': NavigationLink;
     redirects: Redirect;
     headers: Header;
@@ -98,6 +99,7 @@ export interface Config {
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     'news-events': NewsEventsSelect<false> | NewsEventsSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
+    'reusable-sections': ReusableSectionsSelect<false> | ReusableSectionsSelect<true>;
     'navigation-links': NavigationLinksSelect<false> | NavigationLinksSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     headers: HeadersSelect<false> | HeadersSelect<true>;
@@ -202,6 +204,15 @@ export interface Page {
         | Contact24Block
         | TeamShowcaseBlock
         | Services21Block
+        | {
+            /**
+             * Select a reusable section to embed on this page.
+             */
+            section: string | ReusableSection;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'reusableSection';
+          }
       )[]
     | null;
   metaTitle?: string | null;
@@ -1119,6 +1130,47 @@ export interface Services21Block {
   id?: string | null;
   blockName?: string | null;
   blockType: 'services21';
+}
+/**
+ * Define a block layout once and embed it on any number of pages. Updates here are reflected everywhere the section is used.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reusable-sections".
+ */
+export interface ReusableSection {
+  id: string;
+  /**
+   * Internal name shown in the admin and in the block picker.
+   */
+  title: string;
+  layout?:
+    | (
+        | AnnouncementBlock
+        | Cta39Block
+        | HeroBannerBlock
+        | FeatureSpotlightBlock
+        | FeatureMatrixBlock
+        | ContentHighlightsBlock
+        | NewsEventsHighlightsBlock
+        | ProfileCarouselBlock
+        | GalleryShowcaseBlock
+        | EventGalleryBlock
+        | ImageMosaicBlock
+        | StatsStripBlock
+        | QaAccordionBlock
+        | RatingSpotlightBlock
+        | ReviewFeedBlock
+        | ReviewSubmissionBlock
+        | Contact33Block
+        | Contact24Block
+        | TeamShowcaseBlock
+        | Services21Block
+      )[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2168,6 +2220,10 @@ export interface PayloadLockedDocument {
         value: string | Review;
       } | null)
     | ({
+        relationTo: 'reusable-sections';
+        value: string | ReusableSection;
+      } | null)
+    | ({
         relationTo: 'navigation-links';
         value: string | NavigationLink;
       } | null)
@@ -2288,6 +2344,13 @@ export interface PagesSelect<T extends boolean = true> {
         contact24?: T | Contact24BlockSelect<T>;
         teamShowcase?: T | TeamShowcaseBlockSelect<T>;
         services21?: T | Services21BlockSelect<T>;
+        reusableSection?:
+          | T
+          | {
+              section?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   metaTitle?: T;
   metaDescription?: T;
@@ -3190,6 +3253,41 @@ export interface ReviewsSelect<T extends boolean = true> {
   lastReviewedBy?: T;
   publishedAt?: T;
   publishedBy?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reusable-sections_select".
+ */
+export interface ReusableSectionsSelect<T extends boolean = true> {
+  title?: T;
+  layout?:
+    | T
+    | {
+        announcement?: T | AnnouncementBlockSelect<T>;
+        cta39?: T | Cta39BlockSelect<T>;
+        heroBanner?: T | HeroBannerBlockSelect<T>;
+        featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
+        featureMatrix?: T | FeatureMatrixBlockSelect<T>;
+        contentHighlights?: T | ContentHighlightsBlockSelect<T>;
+        newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
+        profileCarousel?: T | ProfileCarouselBlockSelect<T>;
+        galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
+        eventGallery?: T | EventGalleryBlockSelect<T>;
+        imageMosaic?: T | ImageMosaicBlockSelect<T>;
+        statsStrip?: T | StatsStripBlockSelect<T>;
+        qaAccordion?: T | QaAccordionBlockSelect<T>;
+        ratingSpotlight?: T | RatingSpotlightBlockSelect<T>;
+        reviewFeed?: T | ReviewFeedBlockSelect<T>;
+        reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
+        contact33?: T | Contact33BlockSelect<T>;
+        contact24?: T | Contact24BlockSelect<T>;
+        teamShowcase?: T | TeamShowcaseBlockSelect<T>;
+        services21?: T | Services21BlockSelect<T>;
+      };
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;

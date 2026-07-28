@@ -14,6 +14,7 @@ import { createWorkflowQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { syncPrimaryCategoryMembership } from '@/hooks/syncPrimaryCategoryMembership'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
+import { revalidateArticlesCache } from '@/hooks/revalidateCmsContent'
 
 const previewBreakpoints = [
   {
@@ -71,6 +72,7 @@ export const Articles: CollectionConfig = {
   },
   hooks: {
     afterChange: [
+      revalidateArticlesCache,
       createWorkflowQueueHook({
         sourceAdminPathPrefix: '/admin/collections/articles',
         sourceCollection: 'articles',

@@ -20,6 +20,7 @@ import { StatsStripBlock } from '@/blocks/StatsStrip/config'
 import { Services21Block } from '@/blocks/Services21/config'
 import { TeamShowcaseBlock } from '@/blocks/TeamShowcase/config'
 import { FeatureSpotlightBlock } from '@/blocks/FeatureSpotlight/config'
+import { ReusableSectionBlock } from '@/blocks/ReusableSection/config'
 import type { Page } from '@/payload-types'
 import {
   allowPublicReadOrCapability,
@@ -41,6 +42,7 @@ import {
   syncNavigationLinkAfterChange,
   syncNavigationLinkAfterDelete,
 } from '../hooks/syncNavigationLinkForPage'
+import { revalidatePagesCache } from '../hooks/revalidateCmsContent'
 
 const extractPageID = (
   value: string | number | Page | null | undefined,
@@ -153,6 +155,7 @@ export const Pages: CollectionConfig = {
   hooks: {
     afterRead: [populatePageUrlPreview],
     afterChange: [
+      revalidatePagesCache,
       syncNavigationLinkAfterChange,
       createRedirectsForChangedPagePath,
       createWorkflowQueueHook({
@@ -233,6 +236,7 @@ export const Pages: CollectionConfig = {
                 Contact24Block,
                 TeamShowcaseBlock,
                 Services21Block,
+                ReusableSectionBlock,
               ],
               required: false,
               admin: {

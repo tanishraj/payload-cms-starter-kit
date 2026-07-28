@@ -31,6 +31,7 @@ import { SiteSettings } from './globals/SiteSettings'
 import { SystemModeSettings } from './globals/SystemModeSettings'
 import { ThemeSettings } from './globals/ThemeSettings'
 import { NewsEventsSettings } from './globals/NewsEventsSettings'
+import { ReusableSections } from './collections/ReusableSections'
 import { withTrash } from './plugins/withTrash'
 
 const filename = fileURLToPath(import.meta.url)
@@ -59,6 +60,7 @@ export default buildConfig({
     Articles,
     NewsEvents,
     Reviews,
+    ReusableSections,
     NavigationLinks,
     Redirects,
     Headers,

@@ -6,6 +6,7 @@ import {
   requireCapability,
 } from '@/access/adminCapabilities'
 import { robotsFieldOptions } from '@/lib/seo'
+import { revalidateGlobalsCacheForGlobal } from '@/hooks/revalidateCmsContent'
 
 export const SEOSettings: GlobalConfig = {
   slug: 'seo-settings',
@@ -23,6 +24,9 @@ export const SEOSettings: GlobalConfig = {
   },
   versions: {
     drafts: true,
+  },
+  hooks: {
+    afterChange: [revalidateGlobalsCacheForGlobal],
   },
   fields: [
     {

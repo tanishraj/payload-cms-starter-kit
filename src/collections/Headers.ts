@@ -7,6 +7,7 @@ import {
 } from '@/access/adminCapabilities'
 import { HeaderNavbar12Block } from '@/blocks/HeaderNavbar12/config'
 import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
+import { revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 
 export const Headers: CollectionConfig = {
   slug: 'headers',
@@ -31,6 +32,7 @@ export const Headers: CollectionConfig = {
   },
   hooks: {
     afterChange: [
+      revalidateGlobalsCache,
       createDraftPublishQueueHook({
         sourceAdminPathPrefix: '/admin/collections/headers',
         sourceCollection: 'headers',

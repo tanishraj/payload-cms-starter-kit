@@ -6,6 +6,7 @@ import {
   requireCapability,
 } from '@/access/adminCapabilities'
 import { validateHttpsUrl } from '@/lib/siteOfficesShared'
+import { revalidateGlobalsCacheForGlobal } from '@/hooks/revalidateCmsContent'
 
 const validateExternalSocialUrl = (value: unknown) => {
   if (typeof value !== 'string' || !value.trim()) {
@@ -39,6 +40,9 @@ export const SiteSettings: GlobalConfig = {
   },
   versions: {
     drafts: true,
+  },
+  hooks: {
+    afterChange: [revalidateGlobalsCacheForGlobal],
   },
   fields: [
     {

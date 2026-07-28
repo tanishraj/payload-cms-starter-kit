@@ -66,181 +66,147 @@ const addEntry = ({
   })
 }
 
+/**
+ * Fetches all documents from a Payload collection across all pages.
+ * Replaces the previous hard limit of 100 items per collection.
+ */
+async function fetchAllDocs<T>(
+  fetchPage: (page: number) => Promise<{ docs: T[]; hasNextPage: boolean }>,
+): Promise<T[]> {
+  const allDocs: T[] = []
+  let page = 1
+
+  while (true) {
+    const result = await fetchPage(page)
+    allDocs.push(...result.docs)
+    if (!result.hasNextPage) break
+    page++
+  }
+
+  return allDocs
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const payload = await getPayload({
     config: configPromise,
   })
 
   const [pageSettings, seoSettings, newsEventsSettings] = await Promise.all([
-    payload.findGlobal({
-      slug: 'page-settings',
-      depth: 0,
-    }),
-    payload.findGlobal({
-      slug: 'seo-settings',
-      depth: 0,
-    }),
-    payload.findGlobal({
-      slug: 'news-events-settings',
-      depth: 0,
-    }),
+    payload.findGlobal({ slug: 'page-settings', depth: 0 }),
+    payload.findGlobal({ slug: 'seo-settings', depth: 0 }),
+    payload.findGlobal({ slug: 'news-events-settings', depth: 0 }),
   ])
 
   const inheritedRobots = seoSettings.robots
   const homepageID = getPageID(pageSettings.homepage)
   const entries = new Map<string, MetadataRoute.Sitemap[number]>()
   const resolvePageParent = async (id: string | number) => {
-    return payload.findByID({
-      collection: 'pages',
-      id,
-      depth: 0,
-    })
+    return payload.findByID({ collection: 'pages', id, depth: 0 })
   }
 
-  const pagesResult = await payload.find({
-    collection: 'pages',
-    where: {
-      _status: {
-        equals: 'published',
-      },
-    },
-    depth: 1,
-    limit: 100,
-    sort: 'createdAt',
-  })
+  // ─── Pages ─────────────────────────────────────────────────────────────────
+  const pages = await fetchAllDocs((page) =>
+    payload.find({
+      collection: 'pages',
+      where: { _status: { equals: 'published' } },
+      depth: 1,
+      limit: 500,
+      page,
+      sort: 'createdAt',
+    }),
+  )
 
-  for (const page of pagesResult.docs) {
+  for (const page of pages) {
     const pagePath = await getPageHrefFromSourceWithResolver(page, resolvePageParent)
-
-    if (!pagePath || !isRouteEligibleForSitemap({ entry: page, inheritedRobots })) {
-      continue
-    }
+    if (!pagePath || !isRouteEligibleForSitemap({ entry: page, inheritedRobots })) continue
 
     const isHomepage = homepageID != null && page.id === homepageID
-    addEntry({
-      entries,
-      lastModified: page.updatedAt,
-      pathname: isHomepage ? '/' : pagePath,
-    })
+    addEntry({ entries, lastModified: page.updatedAt, pathname: isHomepage ? '/' : pagePath })
   }
 
-  const articlesResult = await payload.find({
-    collection: 'articles',
-    where: {
-      _status: {
-        equals: 'published',
-      },
-    },
-    depth: 1,
-    limit: 100,
-    sort: 'createdAt',
-  })
+  // ─── Articles ──────────────────────────────────────────────────────────────
+  const articles = await fetchAllDocs((page) =>
+    payload.find({
+      collection: 'articles',
+      where: { _status: { equals: 'published' } },
+      depth: 1,
+      limit: 500,
+      page,
+      sort: 'createdAt',
+    }),
+  )
 
-  for (const article of articlesResult.docs) {
-    if (!article.slug || !isRouteEligibleForSitemap({ entry: article, inheritedRobots })) {
-      continue
-    }
-
-    addEntry({
-      entries,
-      lastModified: article.updatedAt,
-      pathname: `/articles/${article.slug}`,
-    })
+  for (const article of articles) {
+    if (!article.slug || !isRouteEligibleForSitemap({ entry: article, inheritedRobots })) continue
+    addEntry({ entries, lastModified: article.updatedAt, pathname: `/articles/${article.slug}` })
   }
 
-  const reviewsResult = await payload.find({
-    collection: 'reviews',
-    where: {
-      _status: {
-        equals: 'published',
-      },
-    },
-    depth: 1,
-    limit: 100,
-    sort: 'createdAt',
-  })
+  // ─── Reviews ───────────────────────────────────────────────────────────────
+  const reviews = await fetchAllDocs((page) =>
+    payload.find({
+      collection: 'reviews',
+      where: { _status: { equals: 'published' } },
+      depth: 1,
+      limit: 500,
+      page,
+      sort: 'createdAt',
+    }),
+  )
 
-  for (const review of reviewsResult.docs) {
-    if (!review.slug || !isRouteEligibleForSitemap({ entry: review, inheritedRobots })) {
-      continue
-    }
-
-    addEntry({
-      entries,
-      lastModified: review.updatedAt,
-      pathname: `/reviews/${review.slug}`,
-    })
+  for (const review of reviews) {
+    if (!review.slug || !isRouteEligibleForSitemap({ entry: review, inheritedRobots })) continue
+    addEntry({ entries, lastModified: review.updatedAt, pathname: `/reviews/${review.slug}` })
   }
 
+  // ─── News & Events index ────────────────────────────────────────────────────
   if (isRouteEligibleForSitemap({ entry: newsEventsSettings, inheritedRobots })) {
-    addEntry({
-      entries,
-      lastModified: newsEventsSettings.updatedAt,
-      pathname: '/news-events',
-    })
+    addEntry({ entries, lastModified: newsEventsSettings.updatedAt, pathname: '/news-events' })
   }
 
-  const newsEventsResult = await payload.find({
-    collection: 'news-events',
-    where: {
-      and: [{ _status: { equals: 'published' } }, { workflowState: { equals: 'published' } }],
-    },
-    depth: 1,
-    limit: 100,
-    sort: 'createdAt',
-  })
+  // ─── News & Events entries ──────────────────────────────────────────────────
+  const newsEvents = await fetchAllDocs((page) =>
+    payload.find({
+      collection: 'news-events',
+      where: {
+        and: [{ _status: { equals: 'published' } }, { workflowState: { equals: 'published' } }],
+      },
+      depth: 1,
+      limit: 500,
+      page,
+      sort: 'createdAt',
+    }),
+  )
 
-  for (const entry of newsEventsResult.docs) {
-    if (!entry.slug || !isRouteEligibleForSitemap({ entry, inheritedRobots })) {
-      continue
-    }
-
-    addEntry({
-      entries,
-      lastModified: entry.updatedAt,
-      pathname: `/news-events/${entry.slug}`,
-    })
+  for (const entry of newsEvents) {
+    if (!entry.slug || !isRouteEligibleForSitemap({ entry, inheritedRobots })) continue
+    addEntry({ entries, lastModified: entry.updatedAt, pathname: `/news-events/${entry.slug}` })
   }
 
+  // ─── Categories & Tags ─────────────────────────────────────────────────────
   const usedCategoryIDs = new Set<number | string>()
   const usedTagIDs = new Set<number | string>()
 
-  for (const article of articlesResult.docs) {
+  for (const article of articles) {
     const primaryCategory = getTaxonomyTerm(article.primaryCategory)
-
-    if (primaryCategory) {
-      usedCategoryIDs.add(primaryCategory.id)
-    }
-
-    for (const tagID of getTaxonomyRelationshipIDs(article.tags)) {
-      usedTagIDs.add(tagID)
-    }
+    if (primaryCategory) usedCategoryIDs.add(primaryCategory.id)
+    for (const tagID of getTaxonomyRelationshipIDs(article.tags)) usedTagIDs.add(tagID)
   }
 
-  for (const review of reviewsResult.docs) {
+  for (const review of reviews) {
     const primaryCategory = getTaxonomyTerm(review.primaryCategory)
-
-    if (primaryCategory) {
-      usedCategoryIDs.add(primaryCategory.id)
-    }
+    if (primaryCategory) usedCategoryIDs.add(primaryCategory.id)
   }
 
-  const [categoriesResult, tagsResult] = await Promise.all([
-    payload.find({
-      collection: 'categories',
-      depth: 0,
-      limit: 100,
-      sort: 'createdAt',
-    }),
-    payload.find({
-      collection: 'tags',
-      depth: 0,
-      limit: 100,
-      sort: 'createdAt',
-    }),
+  const [allCategories, allTags] = await Promise.all([
+    fetchAllDocs((page) =>
+      payload.find({ collection: 'categories', depth: 0, limit: 500, page, sort: 'createdAt' }),
+    ),
+    fetchAllDocs((page) =>
+      payload.find({ collection: 'tags', depth: 0, limit: 500, page, sort: 'createdAt' }),
+    ),
   ])
 
-  for (const category of categoriesResult.docs) {
+  for (const category of allCategories) {
     if (
       !usedCategoryIDs.has(category.id) ||
       !category.slug ||
@@ -249,19 +215,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       continue
     }
 
-    addEntry({
-      entries,
-      lastModified: category.updatedAt,
-      pathname: `/articles/category/${category.slug}`,
-    })
-    addEntry({
-      entries,
-      lastModified: category.updatedAt,
-      pathname: `/reviews/category/${category.slug}`,
-    })
+    addEntry({ entries, lastModified: category.updatedAt, pathname: `/articles/category/${category.slug}` })
+    addEntry({ entries, lastModified: category.updatedAt, pathname: `/reviews/category/${category.slug}` })
   }
 
-  for (const tag of tagsResult.docs) {
+  for (const tag of allTags) {
     if (
       !usedTagIDs.has(tag.id) ||
       !tag.slug ||
@@ -270,11 +228,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       continue
     }
 
-    addEntry({
-      entries,
-      lastModified: tag.updatedAt,
-      pathname: `/articles/tag/${tag.slug}`,
-    })
+    addEntry({ entries, lastModified: tag.updatedAt, pathname: `/articles/tag/${tag.slug}` })
   }
 
   return [...entries.values()]

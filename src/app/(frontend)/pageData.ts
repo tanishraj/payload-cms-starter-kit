@@ -1,5 +1,6 @@
 import configPromise from '@payload-config'
 import { getPayload, type Where } from 'payload'
+import { unstable_cache } from 'next/cache'
 
 import type { Metadata } from 'next'
 import { isCurrentCMSAdmin } from '@/lib/cmsSession'
@@ -9,6 +10,7 @@ import { toAbsoluteSiteUrl } from '@/lib/siteUrl'
 import type { Media, Page, SeoSetting, SystemPage } from '@/payload-types'
 import { getPageHref, getPageSlugSegments } from '@/lib/pagePaths'
 import type { SystemPageType } from '@/lib/systemPageTypes'
+import { CMS_CACHE_TAGS } from '@/hooks/revalidateCmsContent'
 
 const extractRelationshipID = (
   value: string | number | Page | SystemPage | null | undefined,
@@ -24,38 +26,35 @@ const extractRelationshipID = (
   return null
 }
 
-const getPageSettings = async () => {
-  const payload = await getPayload({
-    config: configPromise,
-  })
-
-  return payload.findGlobal({
-    slug: 'page-settings',
-    depth: 0,
-  })
+const _getPageSettings = async () => {
+  const payload = await getPayload({ config: configPromise })
+  return payload.findGlobal({ slug: 'page-settings', depth: 0 })
 }
 
-const getSystemModeSettings = async () => {
-  const payload = await getPayload({
-    config: configPromise,
-  })
+const getPageSettings = unstable_cache(_getPageSettings, ['page-settings'], {
+  tags: [CMS_CACHE_TAGS.globals],
+  revalidate: false,
+})
 
-  return payload.findGlobal({
-    slug: 'system-mode-settings',
-    depth: 0,
-  })
+const _getSystemModeSettings = async () => {
+  const payload = await getPayload({ config: configPromise })
+  return payload.findGlobal({ slug: 'system-mode-settings', depth: 0 })
 }
 
-const getSeoSettings = async (): Promise<SeoSetting> => {
-  const payload = await getPayload({
-    config: configPromise,
-  })
+const getSystemModeSettings = unstable_cache(_getSystemModeSettings, ['system-mode-settings'], {
+  tags: [CMS_CACHE_TAGS.globals],
+  revalidate: false,
+})
 
-  return payload.findGlobal({
-    slug: 'seo-settings',
-    depth: 1,
-  })
+const _getSeoSettings = async (): Promise<SeoSetting> => {
+  const payload = await getPayload({ config: configPromise })
+  return payload.findGlobal({ slug: 'seo-settings', depth: 1 })
 }
+
+const getSeoSettings = unstable_cache(_getSeoSettings, ['seo-settings'], {
+  tags: [CMS_CACHE_TAGS.globals],
+  revalidate: false,
+})
 
 const canCurrentRequestBypassSystemModes = async (): Promise<boolean> => {
   const systemModeSettings = await getSystemModeSettings()
@@ -67,32 +66,19 @@ const canCurrentRequestBypassSystemModes = async (): Promise<boolean> => {
   return isCurrentCMSAdmin()
 }
 
-const getPublishedPageByID = async ({
+const _getPublishedPageByID = async ({
   depth = 2,
   id,
 }: {
   depth?: number
   id: string | number
 }): Promise<Page | null> => {
-  const payload = await getPayload({
-    config: configPromise,
-  })
+  const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
     collection: 'pages',
     where: {
-      and: [
-        {
-          id: {
-            equals: id,
-          },
-        },
-        {
-          _status: {
-            equals: 'published',
-          },
-        },
-      ],
+      and: [{ id: { equals: id } }, { _status: { equals: 'published' } }],
     },
     depth,
     limit: 1,
@@ -101,26 +87,19 @@ const getPublishedPageByID = async ({
   return result.docs[0] ?? null
 }
 
-export const getPageBySlug = async (slug: string): Promise<Page | null> => {
-  const payload = await getPayload({
-    config: configPromise,
-  })
+const getPublishedPageByID = unstable_cache(
+  _getPublishedPageByID,
+  ['published-page-by-id'],
+  { tags: [CMS_CACHE_TAGS.pages], revalidate: false },
+)
+
+const _getPageBySlug = async (slug: string): Promise<Page | null> => {
+  const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
     collection: 'pages',
     where: {
-      and: [
-        {
-          slug: {
-            equals: slug,
-          },
-        },
-        {
-          _status: {
-            equals: 'published',
-          },
-        },
-      ],
+      and: [{ slug: { equals: slug } }, { _status: { equals: 'published' } }],
     },
     depth: 2,
     limit: 1,
@@ -129,33 +108,25 @@ export const getPageBySlug = async (slug: string): Promise<Page | null> => {
   return result.docs[0] ?? null
 }
 
-const getPageByPathname = async (pathname: string): Promise<Page | null> => {
+export const getPageBySlug = unstable_cache(_getPageBySlug, ['page-by-slug'], {
+  tags: [CMS_CACHE_TAGS.pages],
+  revalidate: false,
+})
+
+const _getPageByPathname = async (pathname: string): Promise<Page | null> => {
   const segments = pathname.split('/').filter(Boolean)
 
   if (!segments.length) {
     return null
   }
 
-  const payload = await getPayload({
-    config: configPromise,
-  })
+  const payload = await getPayload({ config: configPromise })
 
   const leafSlug = segments[segments.length - 1]
   const result = await payload.find({
     collection: 'pages',
     where: {
-      and: [
-        {
-          slug: {
-            equals: leafSlug,
-          },
-        },
-        {
-          _status: {
-            equals: 'published',
-          },
-        },
-      ],
+      and: [{ slug: { equals: leafSlug } }, { _status: { equals: 'published' } }],
     },
     depth: Math.max(segments.length, 2),
     limit: 1,
@@ -171,6 +142,11 @@ const getPageByPathname = async (pathname: string): Promise<Page | null> => {
 
   return resolvedSegments.join('/') === pathname ? page : null
 }
+
+const getPageByPathname = unstable_cache(_getPageByPathname, ['page-by-pathname'], {
+  tags: [CMS_CACHE_TAGS.pages],
+  revalidate: false,
+})
 
 export async function getPageByPath(segments: string[]): Promise<Page | null> {
   return getPageByPathname(segments.join('/'))

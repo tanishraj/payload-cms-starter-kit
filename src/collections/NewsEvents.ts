@@ -21,6 +21,7 @@ import { syncPrimaryCategoryMembership } from '@/hooks/syncPrimaryCategoryMember
 import { createWorkflowQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
+import { revalidateNewsEventsCache } from '@/hooks/revalidateCmsContent'
 
 const previewBreakpoints = [
   { name: 'desktop', label: 'Desktop', width: 1440, height: 900 },
@@ -106,6 +107,7 @@ export const NewsEvents: CollectionConfig = {
   },
   hooks: {
     afterChange: [
+      revalidateNewsEventsCache,
       createWorkflowQueueHook({
         sourceAdminPathPrefix: '/admin/collections/news-events',
         sourceCollection: 'news-events',
