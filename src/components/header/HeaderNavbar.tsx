@@ -6,6 +6,7 @@ import {
 } from '@/blocks/shared/blockAppearance'
 import { HeaderMobileMenu } from '@/components/header/HeaderMobileMenu'
 import { HeaderNavMenu } from '@/components/header/HeaderNavMenu'
+import { SearchTriggerButton } from '@/components/header/SearchTriggerButton'
 import { Button } from '@/components/ui/button'
 import type { ResolvedHeaderLink, ResolvedHeaderMenuItem } from '@/lib/headerNavigation'
 import { cn } from '@/lib/utils'
@@ -73,6 +74,7 @@ export function HeaderNavbar({
         </div>
 
         <div className="ml-auto hidden items-center gap-2.5 lg:flex">
+          <SearchTriggerButton size={size} />
           {ctas.map((item) => (
             <Button
               asChild
@@ -91,7 +93,8 @@ export function HeaderNavbar({
           ))}
         </div>
 
-        <div className="ml-auto lg:hidden">
+        <div className="ml-auto flex items-center gap-1 lg:hidden">
+          <SearchTriggerButton size="compact" />
           <HeaderMobileMenu ctas={ctas} menuItems={menuItems} />
         </div>
       </div>

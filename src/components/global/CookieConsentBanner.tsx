@@ -41,12 +41,13 @@ export function CookieConsentBanner({
   return (
     <div
       role="dialog"
+      aria-modal="false"
       aria-label="Cookie consent"
-      aria-live="polite"
+      aria-describedby="cookie-consent-description"
       className="fixed inset-x-0 bottom-0 z-50 p-4 md:p-6"
     >
       <div className="mx-auto max-w-4xl rounded-2xl border border-border/80 bg-background/95 px-5 py-4 shadow-xl backdrop-blur-sm md:flex md:items-center md:gap-8 md:px-7 md:py-5">
-        <p className="flex-1 text-sm leading-6 text-muted-foreground">
+        <p id="cookie-consent-description" className="flex-1 text-sm leading-6 text-muted-foreground">
           We use cookies to analyse site performance and improve your experience. You can choose
           which cookies to allow.{' '}
           {privacyPolicyUrl ? (
@@ -62,14 +63,16 @@ export function CookieConsentBanner({
           <button
             type="button"
             onClick={() => setConsent(false)}
-            className="inline-flex items-center rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
+            aria-label="Reject non-essential cookies"
+            className="inline-flex items-center rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           >
             Reject non-essential
           </button>
           <button
             type="button"
             onClick={() => setConsent(true)}
-            className="inline-flex items-center rounded-lg bg-foreground px-4 py-2 text-sm font-medium text-background transition hover:opacity-90"
+            aria-label="Accept all cookies"
+            className="inline-flex items-center rounded-lg bg-foreground px-4 py-2 text-sm font-medium text-background transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
           >
             Accept all
           </button>

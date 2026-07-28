@@ -115,19 +115,22 @@ export default async function SearchPage({ searchParams }: PageProps) {
       <h1 className="mb-8 text-3xl font-semibold tracking-tight">Search</h1>
 
       {/* Search form */}
-      <form method="GET" action="/search" className="mb-10">
+      <form method="GET" action="/search" className="mb-10" role="search" aria-label="Site search">
         <div className="flex gap-3">
           <input
             type="search"
             name="q"
+            id="search-input"
             defaultValue={query}
             placeholder="Search pages, articles, news & events…"
+            aria-label="Search query"
             autoFocus
             autoComplete="off"
             className="h-11 w-full rounded-lg border border-border bg-background px-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           />
           <button
             type="submit"
+            aria-label="Submit search"
             className="h-11 rounded-lg bg-foreground px-5 text-sm font-medium text-background transition hover:opacity-90"
           >
             Search
@@ -136,6 +139,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
       </form>
 
       {/* Results */}
+      <div aria-live="polite" aria-atomic="true">
       {!hasQuery ? (
         <p className="text-sm text-muted-foreground">
           Enter at least {MIN_QUERY_LENGTH} characters to search.
@@ -178,6 +182,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
           </ul>
         </div>
       )}
+      </div>
     </div>
   )
 }

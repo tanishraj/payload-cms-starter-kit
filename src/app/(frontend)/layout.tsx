@@ -9,6 +9,7 @@ import '../../styles/globals.css'
 import type { Metadata } from 'next'
 import { AdminSessionBar } from '@/components/admin/AdminSessionBar'
 import { CookieConsentBanner } from '@/components/global/CookieConsentBanner'
+import { SearchDialog } from '@/components/global/SearchDialog'
 import { GlobalAnnouncement } from '@/components/global/GlobalAnnouncement'
 import { GlobalFooter } from '@/components/global/GlobalFooter'
 import { GlobalHeader } from '@/components/global/GlobalHeader'
@@ -293,6 +294,26 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
             }).replace(/</g, '\\u003c'),
           }}
         />
+        {/* WebSite JSON-LD with SearchAction — enables Google Sitelinks search box */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: siteSettings.siteName,
+              url: defaultSiteURL,
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: {
+                  '@type': 'EntryPoint',
+                  urlTemplate: `${defaultSiteURL}/search?q={search_term_string}`,
+                },
+                'query-input': 'required name=search_term_string',
+              },
+            }).replace(/</g, '\\u003c'),
+          }}
+        />
       </head>
       <body className={pageBodyClassName}>
         {/* Skip navigation — visually hidden until focused */}
@@ -335,6 +356,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
           />
         </div>
         <CookieConsentBanner privacyPolicyUrl={privacyPolicyUrl} />
+        <SearchDialog />
       </body>
     </html>
   )
