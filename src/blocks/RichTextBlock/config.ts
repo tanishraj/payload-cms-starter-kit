@@ -1,0 +1,64 @@
+import type { Block, SelectField, TabsField } from 'payload'
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
+
+import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+
+const sizeField = {
+  name: 'size',
+  label: 'Size',
+  type: 'select',
+  defaultValue: 'default',
+  options: [
+    { label: 'Compact', value: 'compact' },
+    { label: 'Default', value: 'default' },
+    { label: 'Comfortable', value: 'comfortable' },
+  ],
+  required: true,
+} satisfies SelectField
+
+const maxWidthField = {
+  name: 'maxWidth',
+  label: 'Max Width',
+  type: 'select',
+  defaultValue: 'prose',
+  options: [
+    { label: 'Prose (65ch)', value: 'prose' },
+    { label: 'Medium (768px)', value: 'md' },
+    { label: 'Wide (1024px)', value: 'lg' },
+    { label: 'Full', value: 'full' },
+  ],
+  required: true,
+} satisfies SelectField
+
+export const RichTextBlock: Block = {
+  slug: 'richText',
+  interfaceName: 'RichTextBlock',
+  labels: {
+    singular: 'Rich Text',
+    plural: 'Rich Text Blocks',
+  },
+  admin: {},
+  fields: [
+    {
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'content',
+              label: 'Content',
+              type: 'richText',
+              required: true,
+              editor: lexicalEditor({}),
+            },
+          ],
+        },
+        {
+          label: 'Layout & Theme',
+          fields: [createBlockAppearanceFields(), sizeField, maxWidthField],
+        },
+      ],
+    } satisfies TabsField,
+  ],
+}

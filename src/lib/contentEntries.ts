@@ -181,6 +181,24 @@ export async function getArticleMetadataBySlug(slug: string): Promise<Metadata> 
   })
 }
 
+export function getArticleStructuredData(article: Article) {
+  const url = toAbsoluteSiteUrl(`/articles/${article.slug}`)
+  const image = getMediaAbsoluteUrl(article.featuredImage) || undefined
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    author: { '@type': 'Person', name: article.authorName },
+    dateModified: article.updatedAt,
+    datePublished: article.publishedAt || article.createdAt,
+    description: article.excerpt,
+    headline: article.title,
+    image,
+    mainEntityOfPage: url,
+    url,
+  }
+}
+
 const getCategoryBySlug = cache(async (slug: string): Promise<TaxonomyArchiveTerm | null> => {
   const payload = await getPayload({
     config: configPromise,

@@ -10,6 +10,7 @@ import {
   getSystemPageRenderState,
 } from '../pageData'
 import { getRedirectByPath } from '@/lib/redirects'
+import { toAbsoluteSiteUrl } from '@/lib/siteUrl'
 
 type PageProps = {
   params: Promise<{
@@ -57,5 +58,44 @@ export default async function CmsPage({ params }: PageProps) {
     notFound()
   }
 
-  return <PageContent page={page} />
+  const pageUrl = toAbsoluteSiteUrl(`/${slug.join('/')}`)
+  const breadcrumbItems = slug.map((segment, i) => ({
+    '@type': 'ListItem',
+    item: toAbsoluteSiteUrl(`/${slug.slice(0, i + 1).join('/')}`),
+    name: segment.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+    position: i + 2,
+  }))
+
+  const structuredData = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: page.title,
+      url: pageUrl,
+    },
+    ...(breadcrumbItems.length > 0
+      ? [
+          {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', item: toAbsoluteSiteUrl('/'), name: 'Home', position: 1 },
+              ...breadcrumbItems,
+            ],
+          },
+        ]
+      : []),
+  ]
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replace(/</g, '\\u003c'),
+        }}
+      />
+      <PageContent page={page} />
+    </>
+  )
 }

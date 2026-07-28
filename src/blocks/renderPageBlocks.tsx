@@ -22,11 +22,12 @@ import { TeamShowcaseBlockComponent } from './TeamShowcase/Component'
 import { PageBlockStack } from './PageBlockStack'
 import { StatsStripBlockComponent } from './StatsStrip/Component'
 import { Services21BlockComponent } from './Services21/Component'
+import { RichTextBlockComponent } from './RichTextBlock/Component'
+import { VideoEmbedBlockComponent } from './VideoEmbed/Component'
+import { BlockErrorBoundary } from './shared/BlockErrorBoundary'
 
 export type PageBlock = NonNullable<Page['layout']>[number]
 
-// Populated shape of a reusable section document (after depth resolution).
-// Full types are generated after `pnpm generate:types`.
 type PopulatedReusableSection = {
   id: string | number
   title: string
@@ -34,52 +35,60 @@ type PopulatedReusableSection = {
 }
 
 function renderSingleBlock(block: PageBlock, index: number, depth = 0): React.ReactNode {
-  // Guard against unexpected circular nesting at the data level.
   if (depth > 10) return null
 
   const key = block.id ?? `${block.blockType}-${index}`
+  const wrap = (element: React.ReactNode) => (
+    <BlockErrorBoundary key={key} blockType={block.blockType}>
+      {element}
+    </BlockErrorBoundary>
+  )
 
   switch (block.blockType) {
     case 'announcement':
-      return <AnnouncementBlockComponent key={key} {...block} />
+      return wrap(<AnnouncementBlockComponent {...block} />)
     case 'heroBanner':
-      return <HeroBannerBlockComponent key={key} {...block} />
+      return wrap(<HeroBannerBlockComponent {...block} />)
     case 'qaAccordion':
-      return <QaAccordionBlockComponent key={key} {...block} />
+      return wrap(<QaAccordionBlockComponent {...block} />)
     case 'featureMatrix':
-      return <FeatureMatrixBlockComponent key={key} {...block} />
+      return wrap(<FeatureMatrixBlockComponent {...block} />)
     case 'contentHighlights':
-      return <ContentHighlightsBlockComponent key={key} {...block} />
+      return wrap(<ContentHighlightsBlockComponent {...block} />)
     case 'newsEventsHighlights':
-      return <NewsEventsHighlightsBlockComponent key={key} {...block} />
+      return wrap(<NewsEventsHighlightsBlockComponent {...block} />)
     case 'profileCarousel':
-      return <ProfileCarouselBlockComponent key={key} {...block} />
+      return wrap(<ProfileCarouselBlockComponent {...block} />)
     case 'galleryShowcase':
-      return <GalleryShowcaseBlockComponent key={key} {...block} />
+      return wrap(<GalleryShowcaseBlockComponent {...block} />)
     case 'eventGallery':
-      return <EventGalleryBlockComponent key={key} {...block} />
+      return wrap(<EventGalleryBlockComponent {...block} />)
     case 'imageMosaic':
-      return <ImageMosaicBlockComponent key={key} {...block} />
+      return wrap(<ImageMosaicBlockComponent {...block} />)
     case 'reviewSubmission':
-      return <ReviewSubmissionBlockComponent key={key} {...block} />
+      return wrap(<ReviewSubmissionBlockComponent {...block} />)
     case 'contact33':
-      return <Contact33BlockComponent key={key} {...block} />
+      return wrap(<Contact33BlockComponent {...block} />)
     case 'contact24':
-      return <Contact24BlockComponent key={key} {...block} />
+      return wrap(<Contact24BlockComponent {...block} />)
     case 'ratingSpotlight':
-      return <RatingSpotlightBlockComponent key={key} {...block} />
+      return wrap(<RatingSpotlightBlockComponent {...block} />)
     case 'reviewFeed':
-      return <ReviewFeedBlockComponent key={key} {...block} />
+      return wrap(<ReviewFeedBlockComponent {...block} />)
     case 'featureSpotlight':
-      return <FeatureSpotlightBlockComponent key={key} {...block} />
+      return wrap(<FeatureSpotlightBlockComponent {...block} />)
     case 'statsStrip':
-      return <StatsStripBlockComponent key={key} {...block} />
+      return wrap(<StatsStripBlockComponent {...block} />)
     case 'teamShowcase':
-      return <TeamShowcaseBlockComponent key={key} {...block} />
+      return wrap(<TeamShowcaseBlockComponent {...block} />)
     case 'services21':
-      return <Services21BlockComponent key={key} {...block} />
+      return wrap(<Services21BlockComponent {...block} />)
     case 'cta39':
-      return <Cta39BlockComponent key={key} {...block} />
+      return wrap(<Cta39BlockComponent {...block} />)
+    case 'richText':
+      return wrap(<RichTextBlockComponent {...block} />)
+    case 'videoEmbed':
+      return wrap(<VideoEmbedBlockComponent {...block} />)
     case 'reusableSection': {
       const populated = block.section as PopulatedReusableSection | string | null | undefined
       if (!populated || typeof populated === 'string') return null

@@ -128,6 +128,7 @@ export interface Config {
     'site-settings': SiteSetting;
     'theme-settings': ThemeSetting;
     'seo-settings': SeoSetting;
+    'analytics-settings': AnalyticsSetting;
   };
   globalsSelect: {
     'page-settings': PageSettingsSelect<false> | PageSettingsSelect<true>;
@@ -136,6 +137,7 @@ export interface Config {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'theme-settings': ThemeSettingsSelect<false> | ThemeSettingsSelect<true>;
     'seo-settings': SeoSettingsSelect<false> | SeoSettingsSelect<true>;
+    'analytics-settings': AnalyticsSettingsSelect<false> | AnalyticsSettingsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -204,6 +206,8 @@ export interface Page {
         | Contact24Block
         | TeamShowcaseBlock
         | Services21Block
+        | RichTextBlock
+        | VideoEmbedBlock
         | {
             /**
              * Select a reusable section to embed on this page.
@@ -1130,6 +1134,69 @@ export interface Services21Block {
   id?: string | null;
   blockName?: string | null;
   blockType: 'services21';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock".
+ */
+export interface RichTextBlock {
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  size: 'compact' | 'default' | 'comfortable';
+  maxWidth: 'prose' | 'md' | 'lg' | 'full';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'richText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoEmbedBlock".
+ */
+export interface VideoEmbedBlock {
+  /**
+   * Paste a YouTube, Vimeo, or direct .mp4/.webm URL. YouTube and Vimeo links are automatically embedded as iframes.
+   */
+  url: string;
+  /**
+   * Used as the iframe title for accessibility.
+   */
+  title?: string | null;
+  /**
+   * Optional caption displayed below the video.
+   */
+  caption?: string | null;
+  /**
+   * Autoplay is always muted to comply with browser policies.
+   */
+  autoplay?: boolean | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  aspectRatio: '16/9' | '4/3' | '1/1' | '9/16';
+  maxWidth: 'md' | 'lg' | 'full';
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'videoEmbed';
 }
 /**
  * Define a block layout once and embed it on any number of pages. Updates here are reflected everywhere the section is used.
@@ -2344,6 +2411,8 @@ export interface PagesSelect<T extends boolean = true> {
         contact24?: T | Contact24BlockSelect<T>;
         teamShowcase?: T | TeamShowcaseBlockSelect<T>;
         services21?: T | Services21BlockSelect<T>;
+        richText?: T | RichTextBlockSelect<T>;
+        videoEmbed?: T | VideoEmbedBlockSelect<T>;
         reusableSection?:
           | T
           | {
@@ -3081,6 +3150,45 @@ export interface Services21BlockSelect<T extends boolean = true> {
       };
   actionMode?: T;
   contentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock_select".
+ */
+export interface RichTextBlockSelect<T extends boolean = true> {
+  content?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
+  size?: T;
+  maxWidth?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoEmbedBlock_select".
+ */
+export interface VideoEmbedBlockSelect<T extends boolean = true> {
+  url?: T;
+  title?: T;
+  caption?: T;
+  autoplay?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  aspectRatio?: T;
+  maxWidth?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -4115,6 +4223,34 @@ export interface SeoSetting {
   createdAt?: string | null;
 }
 /**
+ * Configure Google Tag Manager and GA4 tracking for the site.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "analytics-settings".
+ */
+export interface AnalyticsSetting {
+  id: string;
+  /**
+   * Injects the GTM snippet into every page of the site.
+   */
+  gtmEnabled?: boolean | null;
+  /**
+   * Your GTM container ID, e.g. GTM-XXXXXX.
+   */
+  gtmContainerId?: string | null;
+  /**
+   * Use this only if you are NOT using GTM. If GTM is enabled, configure GA4 inside your GTM container instead.
+   */
+  ga4Enabled?: boolean | null;
+  /**
+   * Your GA4 measurement ID, e.g. G-XXXXXXXXXX.
+   */
+  ga4MeasurementId?: string | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "page-settings_select".
  */
@@ -4270,6 +4406,20 @@ export interface SeoSettingsSelect<T extends boolean = true> {
   defaultImage?: T;
   robots?: T;
   googleSiteVerification?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "analytics-settings_select".
+ */
+export interface AnalyticsSettingsSelect<T extends boolean = true> {
+  gtmEnabled?: T;
+  gtmContainerId?: T;
+  ga4Enabled?: T;
+  ga4MeasurementId?: T;
   _status?: T;
   updatedAt?: T;
   createdAt?: T;

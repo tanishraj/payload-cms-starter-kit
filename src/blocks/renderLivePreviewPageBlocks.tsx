@@ -26,6 +26,8 @@ import { Contact33BlockComponent } from './Contact33/Component'
 import { TeamShowcaseBlockComponent } from './TeamShowcase/Component'
 import { StatsStripBlockComponent } from './StatsStrip/Component'
 import { Services21BlockComponent } from './Services21/Component'
+import { RichTextBlockComponent } from './RichTextBlock/Component'
+import { VideoEmbedBlockComponent } from './VideoEmbed/Component'
 
 export type LivePreviewPageBlock = NonNullable<Page['layout']>[number]
 
@@ -104,6 +106,10 @@ function renderSingleLivePreviewBlock(
       return <Services21BlockComponent key={key} {...block} />
     case 'cta39':
       return <Cta39BlockComponent key={key} {...block} />
+    case 'richText':
+      return <RichTextBlockComponent key={key} {...block} />
+    case 'videoEmbed':
+      return <VideoEmbedBlockComponent key={key} {...block} />
     case 'reusableSection': {
       const populated = block.section as PopulatedReusableSection | string | null | undefined
       if (!populated || typeof populated === 'string') return null

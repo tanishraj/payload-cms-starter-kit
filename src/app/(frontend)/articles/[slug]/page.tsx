@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { ArticlePage } from '@/components/articles/ArticlePage'
-import { getArticleBySlug, getArticleMetadataBySlug, getRelatedArticles } from '@/lib/contentEntries'
+import { getArticleBySlug, getArticleMetadataBySlug, getArticleStructuredData, getRelatedArticles } from '@/lib/contentEntries'
 
 type PageProps = {
   params: Promise<{
@@ -24,12 +24,20 @@ export default async function ArticleEntryPage({ params }: PageProps) {
     notFound()
   }
 
-  const relatedArticles = await getRelatedArticles(article)
+  const [relatedArticles, structuredData] = await Promise.all([
+    getRelatedArticles(article),
+    Promise.resolve(getArticleStructuredData(article)),
+  ])
 
   return (
-    <ArticlePage
-      article={article}
-      relatedArticles={relatedArticles}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replace(/</g, '\\u003c'),
+        }}
+      />
+      <ArticlePage article={article} relatedArticles={relatedArticles} />
+    </>
   )
 }

@@ -31,6 +31,7 @@ import { SiteSettings } from './globals/SiteSettings'
 import { SystemModeSettings } from './globals/SystemModeSettings'
 import { ThemeSettings } from './globals/ThemeSettings'
 import { NewsEventsSettings } from './globals/NewsEventsSettings'
+import { AnalyticsSettings } from './globals/AnalyticsSettings'
 import { ReusableSections } from './collections/ReusableSections'
 import { withTrash } from './plugins/withTrash'
 
@@ -81,6 +82,7 @@ export default buildConfig({
     SiteSettings,
     ThemeSettings,
     SEOSettings,
+    AnalyticsSettings,
   ],
   editor: lexicalEditor(),
   email,

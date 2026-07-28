@@ -21,6 +21,8 @@ import { Services21Block } from '@/blocks/Services21/config'
 import { TeamShowcaseBlock } from '@/blocks/TeamShowcase/config'
 import { FeatureSpotlightBlock } from '@/blocks/FeatureSpotlight/config'
 import { ReusableSectionBlock } from '@/blocks/ReusableSection/config'
+import { RichTextBlock } from '@/blocks/RichTextBlock/config'
+import { VideoEmbedBlock } from '@/blocks/VideoEmbed/config'
 import type { Page } from '@/payload-types'
 import {
   allowPublicReadOrCapability,
@@ -236,6 +238,8 @@ export const Pages: CollectionConfig = {
                 Contact24Block,
                 TeamShowcaseBlock,
                 Services21Block,
+                RichTextBlock,
+                VideoEmbedBlock,
                 ReusableSectionBlock,
               ],
               required: false,

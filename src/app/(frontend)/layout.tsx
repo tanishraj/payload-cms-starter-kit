@@ -31,24 +31,14 @@ const _getFrontendGlobals = async () => {
     config: configPromise,
   })
 
-  const [themeSettings, seoSettings, siteSettings, pageSettings] = await Promise.all([
-    payload.findGlobal({
-      slug: 'theme-settings',
-      depth: 0,
-    }),
-    payload.findGlobal({
-      slug: 'seo-settings',
-      depth: 1,
-    }),
-    payload.findGlobal({
-      slug: 'site-settings',
-      depth: 2,
-    }),
-    payload.findGlobal({
-      slug: 'page-settings',
-      depth: 0,
-    }),
-  ])
+  const [themeSettings, seoSettings, siteSettings, pageSettings, analyticsSettings] =
+    await Promise.all([
+      payload.findGlobal({ slug: 'theme-settings', depth: 0 }),
+      payload.findGlobal({ slug: 'seo-settings', depth: 1 }),
+      payload.findGlobal({ slug: 'site-settings', depth: 2 }),
+      payload.findGlobal({ slug: 'page-settings', depth: 0 }),
+      payload.findGlobal({ slug: 'analytics-settings', depth: 0 }),
+    ])
 
   const activeHeaderID =
     typeof pageSettings?.activeHeader === 'string' || typeof pageSettings?.activeHeader === 'number'
@@ -116,6 +106,7 @@ const _getFrontendGlobals = async () => {
   return {
     activeFooter,
     activeHeader,
+    analyticsSettings,
     pageSettings,
     seoSettings,
     siteSettings,
@@ -187,7 +178,8 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     getFrontendGlobals(),
     getCurrentCMSUser(),
   ])
-  const { activeFooter, activeHeader, pageSettings, siteSettings, themeSettings } = frontendGlobals
+  const { activeFooter, activeHeader, analyticsSettings, pageSettings, siteSettings, themeSettings } =
+    frontendGlobals
 
   const colorScheme = themeSettings.colorScheme ?? 'system'
   const rawThemeColor = String(themeSettings.themeColor ?? defaultWebsiteTheme)
@@ -235,7 +227,49 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       style={htmlStyle}
       suppressHydrationWarning
     >
-      <head />
+      <head>
+        {/* Google Tag Manager */}
+        {analyticsSettings?.gtmEnabled && analyticsSettings.gtmContainerId ? (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${analyticsSettings.gtmContainerId}');`,
+            }}
+          />
+        ) : null}
+        {/* GA4 standalone (only when GTM is not enabled) */}
+        {!analyticsSettings?.gtmEnabled && analyticsSettings?.ga4Enabled && analyticsSettings.ga4MeasurementId ? (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${analyticsSettings.ga4MeasurementId}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${analyticsSettings.ga4MeasurementId}');`,
+              }}
+            />
+          </>
+        ) : null}
+        {/* Organization JSON-LD */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: siteSettings.siteName,
+              description: siteSettings.siteDescription || undefined,
+              url: defaultSiteURL,
+              logo: getMediaAbsoluteUrl(siteSettings.logo) || undefined,
+              email: siteSettings.contactEmail || undefined,
+              telephone: siteSettings.contactPhone || undefined,
+              address: siteSettings.address
+                ? { '@type': 'PostalAddress', streetAddress: siteSettings.address }
+                : undefined,
+            }).replace(/</g, '\\u003c'),
+          }}
+        />
+      </head>
       <body className={pageBodyClassName}>
         <AdminSessionBar user={currentUser} />
         <div style={contentShellStyle}>
