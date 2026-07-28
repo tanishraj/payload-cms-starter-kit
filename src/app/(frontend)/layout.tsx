@@ -261,6 +261,19 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
             />
           </>
         ) : null}
+        {/* RSS feed autodiscovery */}
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={`${siteSettings.siteName} — Articles`}
+          href="/articles/feed.xml"
+        />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={`${siteSettings.siteName} — News & Events`}
+          href="/news-events/feed.xml"
+        />
         {/* Organization JSON-LD */}
         <script
           type="application/ld+json"
@@ -282,6 +295,13 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         />
       </head>
       <body className={pageBodyClassName}>
+        {/* Skip navigation — visually hidden until focused */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-9999 focus:rounded-lg focus:bg-background focus:px-4 focus:py-2.5 focus:text-sm focus:font-medium focus:shadow-lg focus:ring-2 focus:ring-ring focus:outline-none"
+        >
+          Skip to main content
+        </a>
         <AdminSessionBar user={currentUser} />
         <div style={contentShellStyle}>
           <GlobalAnnouncement
@@ -301,7 +321,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
             siteName={siteSettings.siteName}
             stickyTopOffset={headerTopOffset}
           />
-          <main data-site-main="true">{children}</main>
+          <main id="main-content" data-site-main="true">{children}</main>
           <GlobalFooter
             footer={activeFooter}
             privacyPolicyPage={privacyPolicyPage}
