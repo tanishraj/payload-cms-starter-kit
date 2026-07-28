@@ -73,3 +73,29 @@ export const buildFormNotificationEmail = ({
     text,
   }
 }
+
+export const buildSubmitterConfirmationEmail = ({
+  form,
+  submitterName,
+}: {
+  form: Form
+  submitterName: string | null | undefined
+}) => {
+  const subject = form.submitterReply?.subject?.trim() || 'Thanks for getting in touch'
+  const message =
+    form.submitterReply?.message?.trim() ||
+    'We have received your message and will be in touch shortly.'
+  const greeting = submitterName ? `Hi ${escapeHTML(submitterName)},` : 'Hello,'
+
+  const html = `
+    <div style="font-family: system-ui, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; color: #111;">
+      <p style="margin: 0 0 16px;">${greeting}</p>
+      <p style="margin: 0 0 32px; line-height: 1.6;">${escapeHTML(message)}</p>
+      <p style="margin: 0; font-size: 13px; color: #888;">— ${escapeHTML(form.title)}</p>
+    </div>
+  `.trim()
+
+  const text = [greeting, '', message].join('\n')
+
+  return { html, subject, text }
+}

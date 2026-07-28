@@ -8,7 +8,11 @@ import {
   isSpamHoneypotTriggered,
   recordSubmissionAttempt,
 } from '@/lib/formSpamProtection'
-import { buildFormNotificationEmail, getNotificationRecipients } from '@/lib/formNotifications'
+import {
+  buildFormNotificationEmail,
+  buildSubmitterConfirmationEmail,
+  getNotificationRecipients,
+} from '@/lib/formNotifications'
 import { emitFormSubmissionEvent } from '@/lib/formSubmissionEvents'
 import {
   getSubmissionContactMetadata,
@@ -262,6 +266,23 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
       payload.logger.error({
         err: error,
         msg: `Failed to send form notification email for form "${form.slug}".`,
+      })
+    }
+  }
+
+  if (form.submitterReply?.enabled && submitterEmail) {
+    const replyEmail = buildSubmitterConfirmationEmail({ form, submitterName })
+    try {
+      await payload.sendEmail({
+        html: replyEmail.html,
+        subject: replyEmail.subject,
+        text: replyEmail.text,
+        to: submitterEmail,
+      })
+    } catch (error) {
+      payload.logger.error({
+        err: error,
+        msg: `Failed to send submitter confirmation email for form "${form.slug}".`,
       })
     }
   }

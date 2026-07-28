@@ -136,6 +136,19 @@ const toManagedEntryMetadata = async ({
   }
 }
 
+export async function getArticlePreviewBySlug(slug: string): Promise<Article | null> {
+  const payload = await getPayload({ config: configPromise })
+  const result = await payload.find({
+    collection: 'articles',
+    depth: 2,
+    draft: true,
+    limit: 1,
+    overrideAccess: true,
+    where: { slug: { equals: slug } },
+  })
+  return result.docs[0] ?? null
+}
+
 export const getArticleBySlug = cache(async (slug: string): Promise<Article | null> => {
   const payload = await getPayload({
     config: configPromise,

@@ -989,6 +989,17 @@ export interface Form {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Optional confirmation email sent automatically to the person who submitted the form.
+   */
+  submitterReply?: {
+    enabled?: boolean | null;
+    subject?: string | null;
+    /**
+     * Plain text shown in the confirmation email.
+     */
+    message?: string | null;
+  };
   fields: {
     /**
      * Machine key used in stored submission data.
@@ -3734,6 +3745,13 @@ export interface FormsSelect<T extends boolean = true> {
     | {
         email?: T;
         id?: T;
+      };
+  submitterReply?:
+    | T
+    | {
+        enabled?: T;
+        subject?: T;
+        message?: T;
       };
   fields?:
     | T

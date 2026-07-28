@@ -114,6 +114,42 @@ export const Forms: CollectionConfig = {
       ],
     },
     {
+      name: 'submitterReply',
+      label: 'Submitter Confirmation',
+      type: 'group',
+      admin: {
+        description:
+          'Optional confirmation email sent automatically to the person who submitted the form.',
+      },
+      fields: [
+        {
+          name: 'enabled',
+          label: 'Send confirmation email to submitter',
+          type: 'checkbox',
+          defaultValue: false,
+        },
+        {
+          name: 'subject',
+          label: 'Subject',
+          type: 'text',
+          defaultValue: 'Thanks for getting in touch',
+          admin: {
+            condition: (_, siblingData) => Boolean(siblingData?.enabled),
+          },
+        },
+        {
+          name: 'message',
+          label: 'Message body',
+          type: 'textarea',
+          defaultValue: 'We have received your message and will be in touch shortly.',
+          admin: {
+            condition: (_, siblingData) => Boolean(siblingData?.enabled),
+            description: 'Plain text shown in the confirmation email.',
+          },
+        },
+      ],
+    },
+    {
       name: 'fields',
       type: 'array',
       required: true,
