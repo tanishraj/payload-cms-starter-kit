@@ -28,14 +28,15 @@ import {
 import { cn } from '@/lib/utils'
 import type { NewsEventsSetting } from '@/payload-types'
 
-type ArchiveCategory = { id: number | string; slug: string; title: string }
+type ArchiveTaxonomyTerm = { id: number | string; slug: string; title: string }
 
 type NewsEventsFeedProps = {
   archiveData: PublicNewsEventsPage
-  categories: ArchiveCategory[]
+  categories: ArchiveTaxonomyTerm[]
   pastEvents?: PublicNewsEventsPage
   query: NewsEventsArchiveQuery
   settings: NewsEventsSetting
+  tags: ArchiveTaxonomyTerm[]
   upcomingEvents?: PublicNewsEventsPage
 }
 
@@ -49,6 +50,7 @@ type ArchiveHrefUpdates = Partial<{
   category: string | undefined
   page: number
   pastPage: number
+  tag: string | undefined
   type: NewsEventsArchiveType
   upcomingPage: number
 }>
@@ -59,6 +61,7 @@ function buildArchiveHref(query: NewsEventsArchiveQuery, updates: ArchiveHrefUpd
 
   if (next.type !== 'all') params.set('type', next.type)
   if (next.category) params.set('category', next.category)
+  if (next.tag) params.set('tag', next.tag)
   if (next.page > 1) params.set('page', String(next.page))
   if (next.upcomingPage > 1) params.set('upcomingPage', String(next.upcomingPage))
   if (next.pastPage > 1) params.set('pastPage', String(next.pastPage))
@@ -67,7 +70,15 @@ function buildArchiveHref(query: NewsEventsArchiveQuery, updates: ArchiveHrefUpd
   return search ? `/news-events?${search}` : '/news-events'
 }
 
-function FeedRow({ item, readMoreLabel }: { item: PublicNewsEventCard; readMoreLabel: string }) {
+function FeedRow({
+  item,
+  query,
+  readMoreLabel,
+}: {
+  item: PublicNewsEventCard
+  query: NewsEventsArchiveQuery
+  readMoreLabel: string
+}) {
   return (
     <article
       className="grid gap-6 border-b border-border pb-8 md:grid-cols-[minmax(14rem,26rem)_minmax(0,1fr)] md:gap-8"
@@ -98,7 +109,19 @@ function FeedRow({ item, readMoreLabel }: { item: PublicNewsEventCard; readMoreL
       >
         <div className="flex flex-wrap items-center gap-2 text-sm text-current/70">
           <Badge variant="secondary">{item.contentType === 'event' ? 'Event' : 'News'}</Badge>
-          {item.category ? <span>{item.category.title}</span> : null}
+          {item.category ? (
+            <Link
+              className="underline-offset-4 hover:underline"
+              href={buildArchiveHref(query, {
+                category: item.category.slug,
+                page: 1,
+                pastPage: 1,
+                upcomingPage: 1,
+              })}
+            >
+              {item.category.title}
+            </Link>
+          ) : null}
           {item.isPastEvent ? <Badge variant="outline">Past</Badge> : null}
           <span aria-hidden="true">·</span>
           <time dateTime={item.dateISO}>{item.dateLabel}</time>
@@ -181,7 +204,7 @@ function FeedSection({
       ) : null}
       <div className="grid gap-6">
         {page.docs.map((item) => (
-          <FeedRow item={item} key={item.id} readMoreLabel={readMoreLabel} />
+          <FeedRow item={item} key={item.id} query={query} readMoreLabel={readMoreLabel} />
         ))}
       </div>
       <FeedPagination
@@ -200,6 +223,7 @@ export function NewsEventsFeed({
   pastEvents,
   query,
   settings,
+  tags,
   upcomingEvents,
 }: NewsEventsFeedProps) {
   const size = (settings.size ?? 'default') as RegularBlockSize
@@ -290,6 +314,42 @@ export function NewsEventsFeed({
                   key={category.id}
                 >
                   {category.title}
+                </Link>
+              ))}
+            </div>
+          ) : null}
+          {tags.length ? (
+            <div className="flex flex-wrap gap-2">
+              {query.tag ? (
+                <Link
+                  className="shrink-0 rounded-full border border-border px-3 py-0.5 text-xs font-medium transition-colors hover:bg-muted"
+                  href={buildArchiveHref(query, {
+                    page: 1,
+                    pastPage: 1,
+                    tag: undefined,
+                    upcomingPage: 1,
+                  })}
+                >
+                  Clear tag
+                </Link>
+              ) : null}
+              {tags.map((tag) => (
+                <Link
+                  className={cn(
+                    'shrink-0 rounded-full border px-3 py-0.5 text-xs font-medium transition-colors hover:bg-muted',
+                    query.tag === tag.slug
+                      ? 'border-primary bg-primary text-primary-foreground hover:bg-primary/90'
+                      : 'border-border',
+                  )}
+                  href={buildArchiveHref(query, {
+                    page: 1,
+                    pastPage: 1,
+                    tag: tag.slug,
+                    upcomingPage: 1,
+                  })}
+                  key={tag.id}
+                >
+                  {tag.title}
                 </Link>
               ))}
             </div>

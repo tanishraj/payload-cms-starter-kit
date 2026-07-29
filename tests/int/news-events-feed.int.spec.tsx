@@ -56,6 +56,7 @@ describe('News & Events archive feed', () => {
         categories={[]}
         query={{ page: 1, pastPage: 1, type: 'all', upcomingPage: 1 }}
         settings={settings}
+        tags={[]}
       />,
     )
 

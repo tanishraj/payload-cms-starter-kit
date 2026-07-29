@@ -89,6 +89,7 @@ export async function GET(request: Request) {
       where: {
         and: [
           { _status: { equals: 'published' } },
+          { workflowState: { equals: 'published' } },
           { or: [{ title: textLike }, { excerpt: textLike }] },
         ],
       },

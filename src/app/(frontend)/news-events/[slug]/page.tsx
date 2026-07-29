@@ -9,6 +9,25 @@ import { NewsEventStory } from '@/components/news-events/NewsEventStory'
 import { getNewsEventBySlug, getNewsEventPreviewBySlug } from '@/lib/newsEvents'
 import { getNewsEventDetailMetadata, getNewsEventStructuredData } from '@/lib/newsEventsMetadata'
 
+export async function generateStaticParams() {
+  const payload = await getPayload({ config: configPromise })
+  const result = await payload.find({
+    collection: 'news-events',
+    depth: 0,
+    limit: 1000,
+    overrideAccess: true,
+    pagination: false,
+    select: { slug: true },
+    where: {
+      and: [
+        { _status: { equals: 'published' } },
+        { workflowState: { equals: 'published' } },
+      ],
+    },
+  })
+  return result.docs.map((entry) => ({ slug: entry.slug }))
+}
+
 type PageProps = {
   params: Promise<{ slug: string }>
   searchParams: Promise<{ preview?: string | string[] }>

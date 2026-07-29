@@ -68,6 +68,7 @@ export type NewsEventsArchiveQuery = {
   category?: string
   page: number
   pastPage: number
+  tag?: string
   type: NewsEventsArchiveType
   upcomingPage: number
 }
@@ -82,6 +83,7 @@ export const newsEventObjectPositionClasses = {
 
 const archiveTypeValues = new Set<NewsEventsArchiveType>(['all', 'event', 'news'])
 const categorySlugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
+const tagSlugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 const positiveIntegerPattern = /^[1-9]\d*$/
 const cardDateFormatter = new Intl.DateTimeFormat('en-US', {
   day: 'numeric',
@@ -139,6 +141,7 @@ export function parseNewsEventsSearchParams(
 ): NewsEventsArchiveQuery {
   const requestedType = firstSearchParam(searchParams.type)
   const requestedCategory = firstSearchParam(searchParams.category)?.trim().toLowerCase()
+  const requestedTag = firstSearchParam(searchParams.tag)?.trim().toLowerCase()
   const type = archiveTypeValues.has(requestedType as NewsEventsArchiveType)
     ? (requestedType as NewsEventsArchiveType)
     : 'all'
@@ -150,6 +153,7 @@ export function parseNewsEventsSearchParams(
         : undefined,
     page: parsePositiveInteger(firstSearchParam(searchParams.page)),
     pastPage: parsePositiveInteger(firstSearchParam(searchParams.pastPage)),
+    tag: requestedTag && tagSlugPattern.test(requestedTag) ? requestedTag : undefined,
     type,
     upcomingPage: parsePositiveInteger(firstSearchParam(searchParams.upcomingPage)),
   }

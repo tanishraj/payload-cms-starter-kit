@@ -62,8 +62,11 @@ export const revalidateReviewsCache: CollectionAfterChangeHook = ({ doc }) => {
 /**
  * Revalidates the news-events cache when a news/event entry changes.
  */
-export const revalidateNewsEventsCache: CollectionAfterChangeHook = ({ doc }) => {
-  if (doc._status === 'published') {
+export const revalidateNewsEventsCache: CollectionAfterChangeHook = ({ doc, previousDoc }) => {
+  const isPublished = doc._status === 'published'
+  const wasPublished = previousDoc?._status === 'published'
+
+  if (isPublished || wasPublished) {
     revalidateTag(CMS_CACHE_TAGS.newsEvents, REVALIDATE_PROFILE)
     revalidateTag(CMS_CACHE_TAGS.sitemap, REVALIDATE_PROFILE)
   }

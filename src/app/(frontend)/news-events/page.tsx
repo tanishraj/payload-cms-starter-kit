@@ -4,6 +4,7 @@ import { NewsEventsFeed } from '@/components/news-events/NewsEventsFeed'
 import {
   createEmptyNewsEventsPage,
   getNewsEventCategories,
+  getNewsEventTags,
   getNewsEventsArchivePage,
   getNewsEventsSettings,
   getPastEventsPage,
@@ -26,8 +27,9 @@ export default async function NewsEventsArchivePage({ searchParams }: PageProps)
   const limit = normalizeNewsEventsPageSize(settings.entriesPerPage)
   const nowISO = new Date().toISOString()
 
-  const [categories, archiveData, upcomingEvents, pastEvents] = await Promise.all([
+  const [categories, tags, archiveData, upcomingEvents, pastEvents] = await Promise.all([
     getNewsEventCategories().catch(() => []),
+    getNewsEventTags().catch(() => []),
     query.type === 'event'
       ? Promise.resolve(createEmptyNewsEventsPage())
       : getNewsEventsArchivePage(query, limit, nowISO).catch(() => createEmptyNewsEventsPage()),
@@ -46,6 +48,7 @@ export default async function NewsEventsArchivePage({ searchParams }: PageProps)
       pastEvents={pastEvents}
       query={query}
       settings={settings}
+      tags={tags}
       upcomingEvents={upcomingEvents}
     />
   )

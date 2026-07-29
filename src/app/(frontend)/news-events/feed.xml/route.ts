@@ -15,7 +15,12 @@ export async function GET() {
       depth: 1,
       limit: 50,
       sort: '-publishedAt',
-      where: { _status: { equals: 'published' } },
+      where: {
+        and: [
+          { _status: { equals: 'published' } },
+          { workflowState: { equals: 'published' } },
+        ],
+      },
     }),
     payload.findGlobal({ slug: 'site-settings', depth: 1 }),
   ])
@@ -41,7 +46,7 @@ export async function GET() {
       <pubDate>${pubDate}</pubDate>
       <category><![CDATA[${label}]]></category>
       ${entry.authorName ? `<author><![CDATA[${entry.authorName}]]></author>` : ''}
-      ${image ? `<enclosure url="${image}" type="image/jpeg" length="0" />` : ''}
+      ${image ? `<enclosure url="${image}" type="${typeof entry.featuredImage === 'object' && entry.featuredImage?.mimeType ? entry.featuredImage.mimeType : 'image/jpeg'}" length="0" />` : ''}
     </item>`
     })
     .join('\n')

@@ -53,6 +53,7 @@ async function runSearch(query: string): Promise<SearchItem[]> {
       where: {
         and: [
           { _status: { equals: 'published' } },
+          { workflowState: { equals: 'published' } },
           { or: [{ title: textLike }, { excerpt: textLike }] },
         ],
       },

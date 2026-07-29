@@ -68,23 +68,23 @@ export interface Config {
   blocks: {};
   collections: {
     pages: Page;
-    categories: Category;
-    tags: Tag;
     articles: Article;
     'news-events': NewsEvent;
     reviews: Review;
     'reusable-sections': ReusableSection;
+    categories: Category;
+    tags: Tag;
     'navigation-links': NavigationLink;
-    redirects: Redirect;
     headers: Header;
     footers: Footer;
+    redirects: Redirect;
     'system-pages': SystemPage;
-    forms: Form;
-    'form-submissions': FormSubmission;
     media: Media;
     'gallery-albums': GalleryAlbum;
-    'operational-audit-events': OperationalAuditEvent;
+    forms: Form;
+    'form-submissions': FormSubmission;
     'work-queue': WorkQueue;
+    'operational-audit-events': OperationalAuditEvent;
     users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -94,23 +94,23 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
-    categories: CategoriesSelect<false> | CategoriesSelect<true>;
-    tags: TagsSelect<false> | TagsSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     'news-events': NewsEventsSelect<false> | NewsEventsSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     'reusable-sections': ReusableSectionsSelect<false> | ReusableSectionsSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
     'navigation-links': NavigationLinksSelect<false> | NavigationLinksSelect<true>;
-    redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     headers: HeadersSelect<false> | HeadersSelect<true>;
     footers: FootersSelect<false> | FootersSelect<true>;
+    redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     'system-pages': SystemPagesSelect<false> | SystemPagesSelect<true>;
-    forms: FormsSelect<false> | FormsSelect<true>;
-    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'gallery-albums': GalleryAlbumsSelect<false> | GalleryAlbumsSelect<true>;
-    'operational-audit-events': OperationalAuditEventsSelect<false> | OperationalAuditEventsSelect<true>;
+    forms: FormsSelect<false> | FormsSelect<true>;
+    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'work-queue': WorkQueueSelect<false> | WorkQueueSelect<true>;
+    'operational-audit-events': OperationalAuditEventsSelect<false> | OperationalAuditEventsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -122,22 +122,22 @@ export interface Config {
   };
   fallbackLocale: null;
   globals: {
-    'page-settings': PageSetting;
-    'news-events-settings': NewsEventsSetting;
-    'system-mode-settings': SystemModeSetting;
     'site-settings': SiteSetting;
     'theme-settings': ThemeSetting;
     'seo-settings': SeoSetting;
     'analytics-settings': AnalyticsSetting;
+    'page-settings': PageSetting;
+    'news-events-settings': NewsEventsSetting;
+    'system-mode-settings': SystemModeSetting;
   };
   globalsSelect: {
-    'page-settings': PageSettingsSelect<false> | PageSettingsSelect<true>;
-    'news-events-settings': NewsEventsSettingsSelect<false> | NewsEventsSettingsSelect<true>;
-    'system-mode-settings': SystemModeSettingsSelect<false> | SystemModeSettingsSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'theme-settings': ThemeSettingsSelect<false> | ThemeSettingsSelect<true>;
     'seo-settings': SeoSettingsSelect<false> | SeoSettingsSelect<true>;
     'analytics-settings': AnalyticsSettingsSelect<false> | AnalyticsSettingsSelect<true>;
+    'page-settings': PageSettingsSelect<false> | PageSettingsSelect<true>;
+    'news-events-settings': NewsEventsSettingsSelect<false> | NewsEventsSettingsSelect<true>;
+    'system-mode-settings': SystemModeSettingsSelect<false> | SystemModeSettingsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -2033,88 +2033,6 @@ export interface User {
   collection: 'users';
 }
 /**
- * Reusable hierarchical content categories for articles, reviews, news, and events.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: string;
-  title: string;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  /**
-   * Optional parent category for building a reusable category tree.
-   */
-  parent?: (string | null) | Category;
-  /**
-   * Optional short description for archive pages and editorial context.
-   */
-  description?: string | null;
-  metaTitle?: string | null;
-  metaDescription?: string | null;
-  /**
-   * Optional. Leave empty to use the resolved public URL. Supports site-relative paths or full URLs.
-   */
-  canonicalURL?: string | null;
-  /**
-   * Default inherits the global robots setting.
-   */
-  robotsMode?: ('default' | 'index' | 'noindex') | null;
-  /**
-   * Default includes public published routes that remain indexable.
-   */
-  includeInSitemap?: ('default' | 'include' | 'exclude') | null;
-  ogTitle?: string | null;
-  ogImage?: (string | null) | Media;
-  ogDescription?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-}
-/**
- * Reusable topical labels for cross-linking articles, news, events, and related content.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tags".
- */
-export interface Tag {
-  id: string;
-  title: string;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  /**
-   * Optional short description for editorial context and tag archive metadata.
-   */
-  description?: string | null;
-  metaTitle?: string | null;
-  metaDescription?: string | null;
-  /**
-   * Optional. Leave empty to use the resolved public URL. Supports site-relative paths or full URLs.
-   */
-  canonicalURL?: string | null;
-  /**
-   * Default inherits the global robots setting.
-   */
-  robotsMode?: ('default' | 'index' | 'noindex') | null;
-  /**
-   * Default includes public published routes that remain indexable.
-   */
-  includeInSitemap?: ('default' | 'include' | 'exclude') | null;
-  ogTitle?: string | null;
-  ogImage?: (string | null) | Media;
-  ogDescription?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-}
-/**
  * Editorial long-form content with writing-first authoring and SEO controls.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2129,7 +2047,7 @@ export interface Article {
   generateSlug?: boolean | null;
   slug: string;
   /**
-   * Primary category that owns article archive placement and related-content priority.
+   * Main editorial topic — owns the archive placement and related-content priority.
    */
   primaryCategory: string | Category;
   /**
@@ -2137,7 +2055,7 @@ export interface Article {
    */
   tags?: (string | Tag)[] | null;
   /**
-   * Supporting categories for cross-linking. The primary category is always included automatically.
+   * Additional topics for cross-linking. The primary topic is always included automatically.
    */
   categories?: (string | Category)[] | null;
   excerpt: string;
@@ -2198,6 +2116,88 @@ export interface Article {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Hierarchical editorial sections — e.g. Admissions, Research, Campus Life. Each topic can own an archive page and have child topics.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: string;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Optional parent topic — e.g. "Research" could sit under "Academics".
+   */
+  parent?: (string | null) | Category;
+  /**
+   * Optional short description for archive pages and editorial context.
+   */
+  description?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  /**
+   * Optional. Leave empty to use the resolved public URL. Supports site-relative paths or full URLs.
+   */
+  canonicalURL?: string | null;
+  /**
+   * Default inherits the global robots setting.
+   */
+  robotsMode?: ('default' | 'index' | 'noindex') | null;
+  /**
+   * Default includes public published routes that remain indexable.
+   */
+  includeInSitemap?: ('default' | 'include' | 'exclude') | null;
+  ogTitle?: string | null;
+  ogImage?: (string | null) | Media;
+  ogDescription?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
+ * Flat keyword labels for cross-linking content — e.g. "scholarship", "AI research", "graduation". Unlike Topics, tags have no hierarchy.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: string;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Optional short description for editorial context and tag archive metadata.
+   */
+  description?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  /**
+   * Optional. Leave empty to use the resolved public URL. Supports site-relative paths or full URLs.
+   */
+  canonicalURL?: string | null;
+  /**
+   * Default inherits the global robots setting.
+   */
+  robotsMode?: ('default' | 'index' | 'noindex') | null;
+  /**
+   * Default includes public published routes that remain indexable.
+   */
+  includeInSitemap?: ('default' | 'include' | 'exclude') | null;
+  ogTitle?: string | null;
+  ogImage?: (string | null) | Media;
+  ogDescription?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
  * Published news stories and scheduled events for the public website.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2236,15 +2236,15 @@ export interface NewsEvent {
     [k: string]: unknown;
   };
   /**
-   * Primary archive category.
+   * Main editorial topic for archive placement.
    */
   primaryCategory?: (string | null) | Category;
   /**
-   * Optional topical tags.
+   * Keyword tags for cross-linking.
    */
   tags?: (string | Tag)[] | null;
   /**
-   * Supporting categories. The primary category is included automatically.
+   * Additional topics for cross-linking. The primary topic is included automatically.
    */
   categories?: (string | Category)[] | null;
   eventStart?: string | null;
@@ -2311,15 +2311,15 @@ export interface Review {
   generateSlug?: boolean | null;
   slug: string;
   /**
-   * Primary category that owns review archive placement and related-content priority.
+   * Main editorial topic — owns the archive placement and related-content priority.
    */
   primaryCategory: string | Category;
   /**
-   * Optional topical tags used for related-content matching and editorial organization.
+   * Keyword tags for related-content matching and cross-linking.
    */
   tags?: (string | Tag)[] | null;
   /**
-   * Supporting categories for cross-linking. The primary category is always included automatically.
+   * Additional topics for cross-linking. The primary topic is always included automatically.
    */
   categories?: (string | Category)[] | null;
   rating: '1' | '2' | '3' | '4' | '5';
@@ -2441,37 +2441,6 @@ export interface NavigationLink {
    * The page that currently owns this synced reusable link.
    */
   syncPage?: (string | null) | Page;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * URL redirects managed from the CMS — changes go live within 60 seconds, no rebuild needed. Auto-generated when a published page URL changes.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "redirects".
- */
-export interface Redirect {
-  id: string;
-  /**
-   * The old incoming path to redirect, for example /old-page or /services/web-design.html.
-   */
-  fromPath: string;
-  destinationType: 'page' | 'custom';
-  /**
-   * Choose the page this old path should redirect to.
-   */
-  page?: (string | null) | Page;
-  /**
-   * Enter an internal path or full external URL to redirect to.
-   */
-  url?: string | null;
-  /**
-   * Use 301 for permanent site migrations. Use 302 only for temporary routing changes.
-   */
-  statusCode: '301' | '302';
-  enabled?: boolean | null;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -2632,6 +2601,37 @@ export interface Footer56Block {
   blockType: 'footer56';
 }
 /**
+ * URL redirects managed from the CMS — changes go live within 60 seconds, no rebuild needed. Auto-generated when a published page URL changes.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects".
+ */
+export interface Redirect {
+  id: string;
+  /**
+   * The old incoming path to redirect, for example /old-page or /services/web-design.html.
+   */
+  fromPath: string;
+  destinationType: 'page' | 'custom';
+  /**
+   * Choose the page this old path should redirect to.
+   */
+  page?: (string | null) | Page;
+  /**
+   * Enter an internal path or full external URL to redirect to.
+   */
+  url?: string | null;
+  /**
+   * Use 301 for permanent site migrations. Use 302 only for temporary routing changes.
+   */
+  statusCode: '301' | '302';
+  enabled?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * The 404, maintenance, and coming soon pages — activated from Site Modes in Configuration.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2782,26 +2782,6 @@ export interface SystemComingSoonBlock {
   blockType: 'systemComingSoon';
 }
 /**
- * Read-only record of every publish, delete, status change, and role update across the CMS.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "operational-audit-events".
- */
-export interface OperationalAuditEvent {
-  id: string;
-  entityType: string;
-  entityId: string;
-  entityTitle: string;
-  action: string;
-  summary: string;
-  actorEmail?: string | null;
-  actorRole?: string | null;
-  occurredAt: string;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-}
-/**
  * Pending tasks and scheduled actions generated by the CMS. Items clear automatically once resolved.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2895,6 +2875,26 @@ export interface WorkQueue {
   deletedAt?: string | null;
 }
 /**
+ * Read-only record of every publish, delete, status change, and role update across the CMS.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "operational-audit-events".
+ */
+export interface OperationalAuditEvent {
+  id: string;
+  entityType: string;
+  entityId: string;
+  entityTitle: string;
+  action: string;
+  summary: string;
+  actorEmail?: string | null;
+  actorRole?: string | null;
+  occurredAt: string;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -2923,14 +2923,6 @@ export interface PayloadLockedDocument {
         value: string | Page;
       } | null)
     | ({
-        relationTo: 'categories';
-        value: string | Category;
-      } | null)
-    | ({
-        relationTo: 'tags';
-        value: string | Tag;
-      } | null)
-    | ({
         relationTo: 'articles';
         value: string | Article;
       } | null)
@@ -2947,12 +2939,16 @@ export interface PayloadLockedDocument {
         value: string | ReusableSection;
       } | null)
     | ({
-        relationTo: 'navigation-links';
-        value: string | NavigationLink;
+        relationTo: 'categories';
+        value: string | Category;
       } | null)
     | ({
-        relationTo: 'redirects';
-        value: string | Redirect;
+        relationTo: 'tags';
+        value: string | Tag;
+      } | null)
+    | ({
+        relationTo: 'navigation-links';
+        value: string | NavigationLink;
       } | null)
     | ({
         relationTo: 'headers';
@@ -2963,16 +2959,12 @@ export interface PayloadLockedDocument {
         value: string | Footer;
       } | null)
     | ({
+        relationTo: 'redirects';
+        value: string | Redirect;
+      } | null)
+    | ({
         relationTo: 'system-pages';
         value: string | SystemPage;
-      } | null)
-    | ({
-        relationTo: 'forms';
-        value: string | Form;
-      } | null)
-    | ({
-        relationTo: 'form-submissions';
-        value: string | FormSubmission;
       } | null)
     | ({
         relationTo: 'media';
@@ -2983,12 +2975,20 @@ export interface PayloadLockedDocument {
         value: string | GalleryAlbum;
       } | null)
     | ({
-        relationTo: 'operational-audit-events';
-        value: string | OperationalAuditEvent;
+        relationTo: 'forms';
+        value: string | Form;
+      } | null)
+    | ({
+        relationTo: 'form-submissions';
+        value: string | FormSubmission;
       } | null)
     | ({
         relationTo: 'work-queue';
         value: string | WorkQueue;
+      } | null)
+    | ({
+        relationTo: 'operational-audit-events';
+        value: string | OperationalAuditEvent;
       } | null)
     | ({
         relationTo: 'users';
@@ -4253,49 +4253,6 @@ export interface BentoGridBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories_select".
- */
-export interface CategoriesSelect<T extends boolean = true> {
-  title?: T;
-  generateSlug?: T;
-  slug?: T;
-  parent?: T;
-  description?: T;
-  metaTitle?: T;
-  metaDescription?: T;
-  canonicalURL?: T;
-  robotsMode?: T;
-  includeInSitemap?: T;
-  ogTitle?: T;
-  ogImage?: T;
-  ogDescription?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  deletedAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tags_select".
- */
-export interface TagsSelect<T extends boolean = true> {
-  title?: T;
-  generateSlug?: T;
-  slug?: T;
-  description?: T;
-  metaTitle?: T;
-  metaDescription?: T;
-  canonicalURL?: T;
-  robotsMode?: T;
-  includeInSitemap?: T;
-  ogTitle?: T;
-  ogImage?: T;
-  ogDescription?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  deletedAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "articles_select".
  */
 export interface ArticlesSelect<T extends boolean = true> {
@@ -4474,6 +4431,49 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  parent?: T;
+  description?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  canonicalURL?: T;
+  robotsMode?: T;
+  includeInSitemap?: T;
+  ogTitle?: T;
+  ogImage?: T;
+  ogDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  description?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  canonicalURL?: T;
+  robotsMode?: T;
+  includeInSitemap?: T;
+  ogTitle?: T;
+  ogImage?: T;
+  ogDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "navigation-links_select".
  */
 export interface NavigationLinksSelect<T extends boolean = true> {
@@ -4485,22 +4485,6 @@ export interface NavigationLinksSelect<T extends boolean = true> {
   openInNewTab?: T;
   sourceType?: T;
   syncPage?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  deletedAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "redirects_select".
- */
-export interface RedirectsSelect<T extends boolean = true> {
-  fromPath?: T;
-  destinationType?: T;
-  page?: T;
-  url?: T;
-  statusCode?: T;
-  enabled?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -4654,6 +4638,22 @@ export interface Footer56BlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects_select".
+ */
+export interface RedirectsSelect<T extends boolean = true> {
+  fromPath?: T;
+  destinationType?: T;
+  page?: T;
+  url?: T;
+  statusCode?: T;
+  enabled?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "system-pages_select".
  */
 export interface SystemPagesSelect<T extends boolean = true> {
@@ -4786,6 +4786,65 @@ export interface SystemComingSoonBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  storageStatus?: T;
+  storageCheckedAt?: T;
+  storageMissingSince?: T;
+  storageIssue?: T;
+  title?: T;
+  assetType?: T;
+  alt?: T;
+  tags?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  notes?: T;
+  isCriticalAsset?: T;
+  replacementNotes?: T;
+  usageSummary?: T;
+  usageDetails?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery-albums_select".
+ */
+export interface GalleryAlbumsSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  description?: T;
+  eventDate?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "forms_select".
  */
 export interface FormsSelect<T extends boolean = true> {
@@ -4858,82 +4917,6 @@ export interface FormSubmissionsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
- */
-export interface MediaSelect<T extends boolean = true> {
-  storageStatus?: T;
-  storageCheckedAt?: T;
-  storageMissingSince?: T;
-  storageIssue?: T;
-  title?: T;
-  assetType?: T;
-  alt?: T;
-  tags?:
-    | T
-    | {
-        value?: T;
-        id?: T;
-      };
-  notes?: T;
-  isCriticalAsset?: T;
-  replacementNotes?: T;
-  usageSummary?: T;
-  usageDetails?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  deletedAt?: T;
-  _status?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "gallery-albums_select".
- */
-export interface GalleryAlbumsSelect<T extends boolean = true> {
-  title?: T;
-  generateSlug?: T;
-  slug?: T;
-  description?: T;
-  eventDate?: T;
-  images?:
-    | T
-    | {
-        image?: T;
-        caption?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  deletedAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "operational-audit-events_select".
- */
-export interface OperationalAuditEventsSelect<T extends boolean = true> {
-  entityType?: T;
-  entityId?: T;
-  entityTitle?: T;
-  action?: T;
-  summary?: T;
-  actorEmail?: T;
-  actorRole?: T;
-  occurredAt?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  deletedAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "work-queue_select".
  */
 export interface WorkQueueSelect<T extends boolean = true> {
@@ -4958,6 +4941,23 @@ export interface WorkQueueSelect<T extends boolean = true> {
   firstOpenedAt?: T;
   lastSyncedAt?: T;
   resolvedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "operational-audit-events_select".
+ */
+export interface OperationalAuditEventsSelect<T extends boolean = true> {
+  entityType?: T;
+  entityId?: T;
+  entityTitle?: T;
+  action?: T;
+  summary?: T;
+  actorEmail?: T;
+  actorRole?: T;
+  occurredAt?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -5055,6 +5055,141 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: string;
+  siteName: string;
+  siteDescription?: string | null;
+  logo?: (string | null) | Media;
+  favicon?: (string | null) | Media;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  address?: string | null;
+  googleMapEmbedUrl?: string | null;
+  /**
+   * Shared office directory used by Regional Offices blocks. Drag rows to control display order.
+   */
+  officeLocations?:
+    | {
+        region: string;
+        city: string;
+        address: string;
+        phone: string;
+        email: string;
+        /**
+         * Paste the HTTPS URL from the map provider embed code.
+         */
+        mapEmbedUrl: string;
+        /**
+         * Full HTTPS destination opened by View on Map.
+         */
+        mapUrl: string;
+        /**
+         * For example: Interactive map for the Dubai office.
+         */
+        mapTitle: string;
+        id?: string | null;
+      }[]
+    | null;
+  privacyPolicyPage?: (string | null) | Page;
+  termsAndConditionsPage?: (string | null) | Page;
+  socialLinks?: {
+    /**
+     * Must be a full external URL, for example https://facebook.com/your-page.
+     */
+    facebook?: string | null;
+    /**
+     * Must be a full external URL, for example https://instagram.com/your-handle.
+     */
+    instagram?: string | null;
+    /**
+     * Must be a full external URL, for example https://linkedin.com/company/your-org.
+     */
+    linkedin?: string | null;
+    /**
+     * Must be a full external URL, for example https://youtube.com/@your-channel.
+     */
+    youtube?: string | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Control the frontend theme preset and light or dark mode behavior.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "theme-settings".
+ */
+export interface ThemeSetting {
+  id: string;
+  /**
+   * Select which frontend theme preset is loaded for the site.
+   */
+  themeColor: 'default' | 'sunset' | 'blue' | 'kodama';
+  /**
+   * Choose whether the site follows the system preference or forces light/dark mode.
+   */
+  colorScheme: 'system' | 'light' | 'dark';
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Default SEO values inherited by public routes when local SEO fields stay on Default or empty.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seo-settings".
+ */
+export interface SeoSetting {
+  id: string;
+  defaultTitle?: string | null;
+  /**
+   * Example: %s | Your Site Name
+   */
+  titleTemplate?: string | null;
+  defaultDescription?: string | null;
+  defaultImage?: (string | null) | Media;
+  /**
+   * Inherited when a route keeps its local robots mode on Default.
+   */
+  robots?: ('index,follow' | 'noindex,follow' | 'index,nofollow' | 'noindex,nofollow') | null;
+  googleSiteVerification?: string | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Configure Google Tag Manager and GA4 tracking for the site.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "analytics-settings".
+ */
+export interface AnalyticsSetting {
+  id: string;
+  /**
+   * Injects the GTM snippet into every page of the site.
+   */
+  gtmEnabled?: boolean | null;
+  /**
+   * Your GTM container ID, e.g. GTM-XXXXXX.
+   */
+  gtmContainerId?: string | null;
+  /**
+   * Use this only if you are NOT using GTM. If GTM is enabled, configure GA4 inside your GTM container instead.
+   */
+  ga4Enabled?: boolean | null;
+  /**
+   * Your GA4 measurement ID, e.g. G-XXXXXXXXXX.
+   */
+  ga4MeasurementId?: string | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -5195,138 +5330,86 @@ export interface SystemModeSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "site-settings".
+ * via the `definition` "site-settings_select".
  */
-export interface SiteSetting {
-  id: string;
-  siteName: string;
-  siteDescription?: string | null;
-  logo?: (string | null) | Media;
-  favicon?: (string | null) | Media;
-  contactEmail?: string | null;
-  contactPhone?: string | null;
-  address?: string | null;
-  googleMapEmbedUrl?: string | null;
-  /**
-   * Shared office directory used by Regional Offices blocks. Drag rows to control display order.
-   */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  siteName?: T;
+  siteDescription?: T;
+  logo?: T;
+  favicon?: T;
+  contactEmail?: T;
+  contactPhone?: T;
+  address?: T;
+  googleMapEmbedUrl?: T;
   officeLocations?:
+    | T
     | {
-        region: string;
-        city: string;
-        address: string;
-        phone: string;
-        email: string;
-        /**
-         * Paste the HTTPS URL from the map provider embed code.
-         */
-        mapEmbedUrl: string;
-        /**
-         * Full HTTPS destination opened by View on Map.
-         */
-        mapUrl: string;
-        /**
-         * For example: Interactive map for the Dubai office.
-         */
-        mapTitle: string;
-        id?: string | null;
-      }[]
-    | null;
-  privacyPolicyPage?: (string | null) | Page;
-  termsAndConditionsPage?: (string | null) | Page;
-  socialLinks?: {
-    /**
-     * Must be a full external URL, for example https://facebook.com/your-page.
-     */
-    facebook?: string | null;
-    /**
-     * Must be a full external URL, for example https://instagram.com/your-handle.
-     */
-    instagram?: string | null;
-    /**
-     * Must be a full external URL, for example https://linkedin.com/company/your-org.
-     */
-    linkedin?: string | null;
-    /**
-     * Must be a full external URL, for example https://youtube.com/@your-channel.
-     */
-    youtube?: string | null;
-  };
-  _status?: ('draft' | 'published') | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
+        region?: T;
+        city?: T;
+        address?: T;
+        phone?: T;
+        email?: T;
+        mapEmbedUrl?: T;
+        mapUrl?: T;
+        mapTitle?: T;
+        id?: T;
+      };
+  privacyPolicyPage?: T;
+  termsAndConditionsPage?: T;
+  socialLinks?:
+    | T
+    | {
+        facebook?: T;
+        instagram?: T;
+        linkedin?: T;
+        youtube?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
- * Control the frontend theme preset and light or dark mode behavior.
- *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "theme-settings".
+ * via the `definition` "theme-settings_select".
  */
-export interface ThemeSetting {
-  id: string;
-  /**
-   * Select which frontend theme preset is loaded for the site.
-   */
-  themeColor: 'default' | 'sunset' | 'blue' | 'kodama';
-  /**
-   * Choose whether the site follows the system preference or forces light/dark mode.
-   */
-  colorScheme: 'system' | 'light' | 'dark';
-  _status?: ('draft' | 'published') | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
+export interface ThemeSettingsSelect<T extends boolean = true> {
+  themeColor?: T;
+  colorScheme?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
- * Default SEO values inherited by public routes when local SEO fields stay on Default or empty.
- *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "seo-settings".
+ * via the `definition` "seo-settings_select".
  */
-export interface SeoSetting {
-  id: string;
-  defaultTitle?: string | null;
-  /**
-   * Example: %s | Your Site Name
-   */
-  titleTemplate?: string | null;
-  defaultDescription?: string | null;
-  defaultImage?: (string | null) | Media;
-  /**
-   * Inherited when a route keeps its local robots mode on Default.
-   */
-  robots?: ('index,follow' | 'noindex,follow' | 'index,nofollow' | 'noindex,nofollow') | null;
-  googleSiteVerification?: string | null;
-  _status?: ('draft' | 'published') | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
+export interface SeoSettingsSelect<T extends boolean = true> {
+  defaultTitle?: T;
+  titleTemplate?: T;
+  defaultDescription?: T;
+  defaultImage?: T;
+  robots?: T;
+  googleSiteVerification?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
- * Configure Google Tag Manager and GA4 tracking for the site.
- *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "analytics-settings".
+ * via the `definition` "analytics-settings_select".
  */
-export interface AnalyticsSetting {
-  id: string;
-  /**
-   * Injects the GTM snippet into every page of the site.
-   */
-  gtmEnabled?: boolean | null;
-  /**
-   * Your GTM container ID, e.g. GTM-XXXXXX.
-   */
-  gtmContainerId?: string | null;
-  /**
-   * Use this only if you are NOT using GTM. If GTM is enabled, configure GA4 inside your GTM container instead.
-   */
-  ga4Enabled?: boolean | null;
-  /**
-   * Your GA4 measurement ID, e.g. G-XXXXXXXXXX.
-   */
-  ga4MeasurementId?: string | null;
-  _status?: ('draft' | 'published') | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
+export interface AnalyticsSettingsSelect<T extends boolean = true> {
+  gtmEnabled?: T;
+  gtmContainerId?: T;
+  ga4Enabled?: T;
+  ga4MeasurementId?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -5415,89 +5498,6 @@ export interface SystemModeSettingsSelect<T extends boolean = true> {
   comingSoonPage?: T;
   bypassForLoggedInAdmins?: T;
   siteMode?: T;
-  _status?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "site-settings_select".
- */
-export interface SiteSettingsSelect<T extends boolean = true> {
-  siteName?: T;
-  siteDescription?: T;
-  logo?: T;
-  favicon?: T;
-  contactEmail?: T;
-  contactPhone?: T;
-  address?: T;
-  googleMapEmbedUrl?: T;
-  officeLocations?:
-    | T
-    | {
-        region?: T;
-        city?: T;
-        address?: T;
-        phone?: T;
-        email?: T;
-        mapEmbedUrl?: T;
-        mapUrl?: T;
-        mapTitle?: T;
-        id?: T;
-      };
-  privacyPolicyPage?: T;
-  termsAndConditionsPage?: T;
-  socialLinks?:
-    | T
-    | {
-        facebook?: T;
-        instagram?: T;
-        linkedin?: T;
-        youtube?: T;
-      };
-  _status?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "theme-settings_select".
- */
-export interface ThemeSettingsSelect<T extends boolean = true> {
-  themeColor?: T;
-  colorScheme?: T;
-  _status?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "seo-settings_select".
- */
-export interface SeoSettingsSelect<T extends boolean = true> {
-  defaultTitle?: T;
-  titleTemplate?: T;
-  defaultDescription?: T;
-  defaultImage?: T;
-  robots?: T;
-  googleSiteVerification?: T;
-  _status?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "analytics-settings_select".
- */
-export interface AnalyticsSettingsSelect<T extends boolean = true> {
-  gtmEnabled?: T;
-  gtmContainerId?: T;
-  ga4Enabled?: T;
-  ga4MeasurementId?: T;
   _status?: T;
   updatedAt?: T;
   createdAt?: T;

@@ -1,9 +1,11 @@
 import 'server-only'
 
 import configPromise from '@payload-config'
+import { unstable_cache } from 'next/cache'
 import { getPayload, type Payload, type Where } from 'payload'
 import { cache } from 'react'
 
+import { CMS_CACHE_TAGS } from '@/hooks/revalidateCmsContent'
 import {
   createEmptyNewsEventsPage,
   interleaveNewsEvents,
@@ -89,6 +91,9 @@ const categoryWhere = (category?: string): Where[] =>
       ]
     : []
 
+const tagWhere = (tag?: string): Where[] =>
+  tag ? [{ 'tags.slug': { equals: tag } }] : []
+
 const toPublicPage = (
   result: {
     docs: unknown[]
@@ -165,7 +170,12 @@ export async function fetchNewsEventsArchivePage(
     select: cardSelect,
     sort: ['-publishedAt', '-id'],
     where: {
-      and: [...publishedWhere, ...typeWhere, ...categoryWhere(query.category)],
+      and: [
+        ...publishedWhere,
+        ...typeWhere,
+        ...categoryWhere(query.category),
+        ...tagWhere(query.tag),
+      ],
     },
   })
 
@@ -204,6 +214,7 @@ async function fetchEventsPage(
           ? [currentOrUpcomingEventWhere(nowISO)]
           : [pastEventWhere(nowISO)]),
         ...categoryWhere(query.category),
+        ...tagWhere(query.tag),
       ],
     },
   })
@@ -296,41 +307,80 @@ export async function getNewsEventPreviewBySlug(slug: string): Promise<NewsEvent
   return result.docs[0] ?? null
 }
 
-export const getNewsEventsSettings = cache(async (): Promise<NewsEventsSetting> => {
+const _getNewsEventsSettings = async (): Promise<NewsEventsSetting> => {
   const payload = await loadPayload()
-  return payload.findGlobal({
-    slug: 'news-events-settings',
+  return payload.findGlobal({ slug: 'news-events-settings', depth: 1 })
+}
+
+export const getNewsEventsSettings = unstable_cache(
+  _getNewsEventsSettings,
+  ['news-events-settings'],
+  { tags: [CMS_CACHE_TAGS.newsEvents], revalidate: false },
+)
+
+const _getNewsEventCategories = async (): Promise<
+  Array<{ id: number | string; slug: string; title: string }>
+> => {
+  const payload = await loadPayload()
+  const result = await payload.find({
+    collection: 'news-events',
     depth: 1,
+    limit: 1000,
+    overrideAccess: true,
+    pagination: false,
+    select: { categories: true, primaryCategory: true },
+    where: { and: publishedWhere },
   })
-})
+  const categories = new Map<string, { id: number | string; slug: string; title: string }>()
 
-export const getNewsEventCategories = cache(
-  async (): Promise<Array<{ id: number | string; slug: string; title: string }>> => {
-    const payload = await loadPayload()
-    const result = await payload.find({
-      collection: 'news-events',
-      depth: 1,
-      limit: 1000,
-      overrideAccess: true,
-      pagination: false,
-      select: { categories: true, primaryCategory: true },
-      where: { and: publishedWhere },
-    })
-    const categories = new Map<string, { id: number | string; slug: string; title: string }>()
+  for (const entry of result.docs) {
+    const primaryCategory = getTaxonomyTerm(entry.primaryCategory)
 
-    for (const entry of result.docs) {
-      const primaryCategory = getTaxonomyTerm(entry.primaryCategory)
-
-      for (const category of [
-        ...(primaryCategory ? [primaryCategory] : []),
-        ...getTaxonomyTerms(entry.categories),
-      ]) {
-        categories.set(String(category.id), category)
-      }
+    for (const category of [
+      ...(primaryCategory ? [primaryCategory] : []),
+      ...getTaxonomyTerms(entry.categories),
+    ]) {
+      categories.set(String(category.id), category)
     }
+  }
 
-    return [...categories.values()].sort((left, right) => left.title.localeCompare(right.title))
-  },
+  return [...categories.values()].sort((left, right) => left.title.localeCompare(right.title))
+}
+
+export const getNewsEventCategories = unstable_cache(
+  _getNewsEventCategories,
+  ['news-events-categories'],
+  { tags: [CMS_CACHE_TAGS.newsEvents], revalidate: false },
+)
+
+const _getNewsEventTags = async (): Promise<
+  Array<{ id: number | string; slug: string; title: string }>
+> => {
+  const payload = await loadPayload()
+  const result = await payload.find({
+    collection: 'news-events',
+    depth: 1,
+    limit: 1000,
+    overrideAccess: true,
+    pagination: false,
+    select: { tags: true },
+    where: { and: publishedWhere },
+  })
+  const tags = new Map<string, { id: number | string; slug: string; title: string }>()
+
+  for (const entry of result.docs) {
+    for (const tag of getTaxonomyTerms(entry.tags)) {
+      tags.set(String(tag.id), tag)
+    }
+  }
+
+  return [...tags.values()].sort((left, right) => left.title.localeCompare(right.title))
+}
+
+export const getNewsEventTags = unstable_cache(
+  _getNewsEventTags,
+  ['news-events-tags'],
+  { tags: [CMS_CACHE_TAGS.newsEvents], revalidate: false },
 )
 
 export { createEmptyNewsEventsPage }

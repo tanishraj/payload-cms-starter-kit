@@ -42,7 +42,7 @@ const alignmentClasses = {
 function NewsEventHighlightCard({ item }: { item: PublicNewsEventCard }) {
   return (
     <Card
-      className="h-full gap-0 rounded-md bg-card py-0 text-card-foreground shadow-none ring-1 ring-border"
+      className="group/card h-full gap-0 rounded-md bg-card py-0 text-card-foreground shadow-none ring-1 ring-border"
       data-news-event-highlight-card="true"
     >
       {item.image ? (

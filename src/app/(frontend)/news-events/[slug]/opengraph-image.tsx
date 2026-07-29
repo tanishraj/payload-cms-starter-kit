@@ -19,7 +19,13 @@ export default async function NewsEventOgImage({ params }: Props) {
       collection: 'news-events',
       depth: 0,
       limit: 1,
-      where: { slug: { equals: slug }, _status: { equals: 'published' } },
+      where: {
+        and: [
+          { slug: { equals: slug } },
+          { _status: { equals: 'published' } },
+          { workflowState: { equals: 'published' } },
+        ],
+      },
     }),
     payload.findGlobal({ slug: 'site-settings', depth: 1 }),
   ])

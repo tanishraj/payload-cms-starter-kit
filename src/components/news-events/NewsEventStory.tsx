@@ -94,9 +94,13 @@ export function NewsEventStory({ entry }: { entry: PublicNewsEventDetail }) {
               </Link>
             ))}
             {entry.tags.map((tag) => (
-              <Badge key={`tag-${tag.id}`} variant="outline">
+              <Link
+                className="rounded-md border border-border px-3 py-1 text-sm text-current/70 transition-colors hover:bg-muted hover:text-current"
+                href={`/news-events?tag=${tag.slug}`}
+                key={`tag-${tag.id}`}
+              >
                 {tag.title}
-              </Badge>
+              </Link>
             ))}
           </footer>
         ) : null}
