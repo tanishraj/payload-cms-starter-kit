@@ -29,6 +29,10 @@ import { PageHeaderBlock } from '@/blocks/PageHeader/config'
 import { TimelineBlock } from '@/blocks/Timeline/config'
 import { IconGridBlock } from '@/blocks/IconGrid/config'
 import { QuoteBlockBlock } from '@/blocks/QuoteBlock/config'
+import { TabsContentBlock } from '@/blocks/TabsContent/config'
+import { DownloadListBlock } from '@/blocks/DownloadList/config'
+import { NumberedStepsBlock } from '@/blocks/NumberedSteps/config'
+import { BentoGridBlock } from '@/blocks/BentoGrid/config'
 import {
   allowPublicReadOrCapability,
   hideFromUsersWithoutCapability,
@@ -112,6 +116,10 @@ export const ReusableSections: CollectionConfig = {
         TimelineBlock,
         IconGridBlock,
         QuoteBlockBlock,
+        TabsContentBlock,
+        DownloadListBlock,
+        NumberedStepsBlock,
+        BentoGridBlock,
       ],
     },
   ],

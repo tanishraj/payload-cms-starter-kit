@@ -215,6 +215,10 @@ export interface Page {
         | TimelineBlock
         | IconGridBlock
         | QuoteBlockBlock
+        | TabsContentBlock
+        | DownloadListBlock
+        | NumberedStepsBlock
+        | BentoGridBlock
         | {
             /**
              * Select a reusable section to embed on this page.
@@ -1626,6 +1630,216 @@ export interface QuoteBlockBlock {
   blockType: 'quoteBlock';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TabsContentBlock".
+ */
+export interface TabsContentBlock {
+  /**
+   * Optional small label above the section title.
+   */
+  eyebrow?: string | null;
+  title?: string | null;
+  /**
+   * Optional subtitle shown above the tab bar.
+   */
+  description?: string | null;
+  /**
+   * Each tab has a label and its own content.
+   */
+  tabs?:
+    | {
+        /**
+         * Short tab label shown in the tab bar.
+         */
+        label: string;
+        eyebrow?: string | null;
+        title?: string | null;
+        description?: string | null;
+        image?: (string | null) | Media;
+        actions?:
+          | {
+              label: string;
+              linkType?: ('page' | 'custom') | null;
+              page?: (string | null) | Page;
+              url?: string | null;
+              openInNewTab?: boolean | null;
+              variant: 'default' | 'secondary' | 'outline';
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  tabStyle?: ('underline' | 'pills' | 'boxed') | null;
+  contentLayout?: ('imageRight' | 'imageLeft' | 'imageTop' | 'textOnly') | null;
+  contentAlignment?: ('left' | 'center') | null;
+  size?: ('compact' | 'default' | 'comfortable') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'tabsContent';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DownloadListBlock".
+ */
+export interface DownloadListBlock {
+  eyebrow?: string | null;
+  title?: string | null;
+  description?: string | null;
+  /**
+   * Files or links available for download.
+   */
+  downloads?:
+    | {
+        title: string;
+        /**
+         * Brief note about the file (e.g. "Application form for 2025 intake").
+         */
+        description?: string | null;
+        /**
+         * Optional group label (e.g. "Prospectus", "Forms", "Reports").
+         */
+        category?: string | null;
+        /**
+         * Upload a file to Payload media. Takes priority over external URL.
+         */
+        file?: (string | null) | Media;
+        /**
+         * Used when file is hosted externally. Ignored if a file is uploaded above.
+         */
+        externalUrl?: string | null;
+        /**
+         * Override auto-detected type (e.g. "PDF", "XLSX"). Shown as a badge.
+         */
+        fileType?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  displayMode?: ('list' | 'cards' | 'compact') | null;
+  /**
+   * Show filter buttons when items have different categories.
+   */
+  showFilter?: boolean | null;
+  contentAlignment?: ('left' | 'center') | null;
+  size?: ('compact' | 'default' | 'comfortable') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'downloadList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NumberedStepsBlock".
+ */
+export interface NumberedStepsBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  /**
+   * Each step has a number (auto-assigned), title, and optional description.
+   */
+  steps?:
+    | {
+        title: string;
+        description?: string | null;
+        /**
+         * Optional image shown alongside this step.
+         */
+        image?: (string | null) | Media;
+        /**
+         * Optional small label (e.g. "Required", "Optional", "New").
+         */
+        badge?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  variant?: ('vertical' | 'cards' | 'alternating') | null;
+  numberStyle?: ('circle' | 'outlined' | 'serif') | null;
+  contentAlignment?: ('left' | 'center') | null;
+  size?: ('compact' | 'default' | 'comfortable') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'numberedSteps';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BentoGridBlock".
+ */
+export interface BentoGridBlock {
+  eyebrow?: string | null;
+  title?: string | null;
+  description?: string | null;
+  /**
+   * Each item is a bento cell. Size controls how much grid space it occupies.
+   */
+  items?:
+    | {
+        size?: ('full' | 'large' | 'medium' | 'small') | null;
+        eyebrow?: string | null;
+        title: string;
+        description?: string | null;
+        /**
+         * Icon shown when no image is set.
+         */
+        icon?:
+          | (
+              | 'Star'
+              | 'Zap'
+              | 'Eye'
+              | 'Shield'
+              | 'Globe'
+              | 'Code2'
+              | 'Layers'
+              | 'Settings2'
+              | 'Users'
+              | 'BarChart2'
+              | 'Lock'
+              | 'Rocket'
+              | 'Sparkles'
+              | 'Target'
+              | 'Award'
+              | 'Lightbulb'
+              | 'GraduationCap'
+              | 'BookOpen'
+              | 'FlaskConical'
+              | 'Building2'
+            )
+          | null;
+        image?: (string | null) | Media;
+        accentColor?: ('none' | 'primary' | 'secondary' | 'accent') | null;
+        /**
+         * Optional — makes the entire cell a clickable link.
+         */
+        linkUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  contentAlignment?: ('left' | 'center') | null;
+  size?: ('compact' | 'default' | 'comfortable') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bentoGrid';
+}
+/**
  * Shared block groups that sync across every page that references them. Edit once, update everywhere.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1668,6 +1882,10 @@ export interface ReusableSection {
         | TimelineBlock
         | IconGridBlock
         | QuoteBlockBlock
+        | TabsContentBlock
+        | DownloadListBlock
+        | NumberedStepsBlock
+        | BentoGridBlock
       )[]
     | null;
   updatedAt: string;
@@ -2858,6 +3076,10 @@ export interface PagesSelect<T extends boolean = true> {
         timeline?: T | TimelineBlockSelect<T>;
         iconGrid?: T | IconGridBlockSelect<T>;
         quoteBlock?: T | QuoteBlockBlockSelect<T>;
+        tabsContent?: T | TabsContentBlockSelect<T>;
+        downloadList?: T | DownloadListBlockSelect<T>;
+        numberedSteps?: T | NumberedStepsBlockSelect<T>;
+        bentoGrid?: T | BentoGridBlockSelect<T>;
         reusableSection?:
           | T
           | {
@@ -3891,6 +4113,146 @@ export interface QuoteBlockBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TabsContentBlock_select".
+ */
+export interface TabsContentBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  tabs?:
+    | T
+    | {
+        label?: T;
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        image?: T;
+        actions?:
+          | T
+          | {
+              label?: T;
+              linkType?: T;
+              page?: T;
+              url?: T;
+              openInNewTab?: T;
+              variant?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
+  tabStyle?: T;
+  contentLayout?: T;
+  contentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DownloadListBlock_select".
+ */
+export interface DownloadListBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  downloads?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        category?: T;
+        file?: T;
+        externalUrl?: T;
+        fileType?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
+  displayMode?: T;
+  showFilter?: T;
+  contentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NumberedStepsBlock_select".
+ */
+export interface NumberedStepsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        badge?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
+  variant?: T;
+  numberStyle?: T;
+  contentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BentoGridBlock_select".
+ */
+export interface BentoGridBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  items?:
+    | T
+    | {
+        size?: T;
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        icon?: T;
+        image?: T;
+        accentColor?: T;
+        linkUrl?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories_select".
  */
 export interface CategoriesSelect<T extends boolean = true> {
@@ -4100,6 +4462,10 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         timeline?: T | TimelineBlockSelect<T>;
         iconGrid?: T | IconGridBlockSelect<T>;
         quoteBlock?: T | QuoteBlockBlockSelect<T>;
+        tabsContent?: T | TabsContentBlockSelect<T>;
+        downloadList?: T | DownloadListBlockSelect<T>;
+        numberedSteps?: T | NumberedStepsBlockSelect<T>;
+        bentoGrid?: T | BentoGridBlockSelect<T>;
       };
   updatedAt?: T;
   createdAt?: T;

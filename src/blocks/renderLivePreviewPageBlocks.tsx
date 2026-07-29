@@ -35,6 +35,10 @@ import { PageHeaderBlockComponent } from './PageHeader/Component'
 import { TimelineBlockComponent } from './Timeline/Component'
 import { IconGridBlockComponent } from './IconGrid/Component'
 import { QuoteBlockBlockComponent } from './QuoteBlock/Component'
+import { TabsContentBlockComponent } from './TabsContent/Component'
+import { DownloadListBlockComponent } from './DownloadList/Component'
+import { NumberedStepsBlockComponent } from './NumberedSteps/Component'
+import { BentoGridBlockComponent } from './BentoGrid/Component'
 
 export type LivePreviewPageBlock = NonNullable<Page['layout']>[number]
 
@@ -131,6 +135,14 @@ function renderSingleLivePreviewBlock(
       return <IconGridBlockComponent key={key} {...block} />
     case 'quoteBlock':
       return <QuoteBlockBlockComponent key={key} {...block} />
+    case 'tabsContent':
+      return <TabsContentBlockComponent key={key} {...block} />
+    case 'downloadList':
+      return <DownloadListBlockComponent key={key} {...block} />
+    case 'numberedSteps':
+      return <NumberedStepsBlockComponent key={key} {...block} />
+    case 'bentoGrid':
+      return <BentoGridBlockComponent key={key} {...block} />
     case 'reusableSection': {
       const populated = block.section as PopulatedReusableSection | string | null | undefined
       if (!populated || typeof populated === 'string') return null

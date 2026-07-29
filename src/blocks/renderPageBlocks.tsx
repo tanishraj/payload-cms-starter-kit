@@ -31,6 +31,10 @@ import { PageHeaderBlockComponent } from './PageHeader/Component'
 import { TimelineBlockComponent } from './Timeline/Component'
 import { IconGridBlockComponent } from './IconGrid/Component'
 import { QuoteBlockBlockComponent } from './QuoteBlock/Component'
+import { TabsContentBlockComponent } from './TabsContent/Component'
+import { DownloadListBlockComponent } from './DownloadList/Component'
+import { NumberedStepsBlockComponent } from './NumberedSteps/Component'
+import { BentoGridBlockComponent } from './BentoGrid/Component'
 import { BlockErrorBoundary } from './shared/BlockErrorBoundary'
 
 export type PageBlock = NonNullable<Page['layout']>[number]
@@ -110,6 +114,14 @@ function renderSingleBlock(block: PageBlock, index: number, depth = 0): React.Re
       return wrap(<IconGridBlockComponent {...block} />)
     case 'quoteBlock':
       return wrap(<QuoteBlockBlockComponent {...block} />)
+    case 'tabsContent':
+      return wrap(<TabsContentBlockComponent {...block} />)
+    case 'downloadList':
+      return wrap(<DownloadListBlockComponent {...block} />)
+    case 'numberedSteps':
+      return wrap(<NumberedStepsBlockComponent {...block} />)
+    case 'bentoGrid':
+      return wrap(<BentoGridBlockComponent {...block} />)
     case 'reusableSection': {
       const populated = block.section as PopulatedReusableSection | string | null | undefined
       if (!populated || typeof populated === 'string') return null
