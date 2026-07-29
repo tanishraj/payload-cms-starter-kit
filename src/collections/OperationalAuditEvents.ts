@@ -12,6 +12,7 @@ export const OperationalAuditEvents: CollectionConfig = {
     plural: 'Audit Log',
   },
   admin: {
+    description: 'Read-only record of every publish, delete, status change, and role update across the CMS.',
     group: 'Administration',
     hidden: hideFromUsersWithoutCapability('view_operational_audit'),
     useAsTitle: 'summary',

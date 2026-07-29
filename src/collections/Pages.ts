@@ -130,7 +130,7 @@ export const Pages: CollectionConfig = {
     group: 'Content',
     hidden: hideFromUsersWithoutCapability('manage_pages'),
     useAsTitle: 'title',
-    defaultColumns: ['title', 'slug', 'updatedAt'],
+    defaultColumns: ['title', 'slug', '_status', 'workflowState', 'updatedAt'],
     description:
       'Flexible website pages with reusable layout blocks, SEO controls, and publishing settings.',
     listSearchableFields: ['title', 'slug'],

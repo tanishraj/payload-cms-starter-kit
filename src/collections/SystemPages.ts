@@ -65,11 +65,11 @@ export const SystemPages: CollectionConfig = {
     plural: 'System Pages',
   },
   admin: {
+    description: 'The 404, maintenance, and coming soon pages — activated from Site Modes in Configuration.',
     group: 'Site Structure',
     hidden: hideFromUsersWithoutCapability('manage_system_pages'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'type', 'updatedAt'],
-    description: 'Reusable presets for 404, maintenance, and coming soon experiences.',
     listSearchableFields: ['title', 'slug'],
   },
   access: {

@@ -153,7 +153,7 @@ export const Redirects: CollectionConfig = {
     defaultColumns: ['fromPath', 'destinationType', 'statusCode', 'enabled', 'updatedAt'],
     listSearchableFields: ['fromPath', 'url'],
     description:
-      'Map old URLs to new destinations during migrations and ongoing URL changes. Some redirects may be auto-generated when a published page URL changes.',
+      'URL redirects managed from the CMS — changes go live within 60 seconds, no rebuild needed. Auto-generated when a published page URL changes.',
   },
   access: {
     create: requireCapability('manage_redirects'),

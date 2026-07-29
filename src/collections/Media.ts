@@ -118,7 +118,7 @@ export const Media: CollectionConfig = {
     group: 'Media',
     hidden: hideFromUsersWithoutCapability('manage_media'),
     useAsTitle: 'title',
-    defaultColumns: ['title', 'assetType', 'alt', 'updatedAt'],
+    defaultColumns: ['filename', 'alt', 'assetType', 'updatedAt'],
     listSearchableFields: ['title', 'alt', 'filename'],
   },
   access: {

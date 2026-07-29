@@ -1,89 +1,312 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 
-type StatCardProps = {
-  label: string
-  value: number | string
-  href: string
-  accent?: string
+// ── Shared style helpers ───────────────────────────────────────────────────────
+
+const sectionLabel: React.CSSProperties = {
+  fontSize: '11px',
+  fontWeight: 700,
+  textTransform: 'uppercase',
+  letterSpacing: '0.08em',
+  color: 'var(--theme-elevation-500)',
+  marginBottom: '10px',
 }
 
-function StatCard({ label, value, href, accent = '#6366f1' }: StatCardProps) {
+const card: React.CSSProperties = {
+  background: 'var(--theme-elevation-100)',
+  border: '1px solid var(--theme-elevation-200)',
+  borderRadius: '8px',
+}
+
+// ── Attention stat card ────────────────────────────────────────────────────────
+
+type AttentionCardProps = {
+  label: string
+  value: number
+  href: string
+  accent: string
+  alert?: boolean
+}
+
+function AttentionCard({ label, value, href, accent, alert = false }: AttentionCardProps) {
+  const active = alert && value > 0
   return (
     <a
       href={href}
       style={{
+        ...card,
         display: 'flex',
         flexDirection: 'column',
         gap: '6px',
-        background: 'var(--theme-elevation-100)',
-        border: '1px solid var(--theme-elevation-200)',
-        borderRadius: '8px',
         padding: '20px 24px',
         textDecoration: 'none',
         color: 'inherit',
-        transition: 'border-color 0.15s',
+        borderColor: active ? accent : 'var(--theme-elevation-200)',
       }}
     >
-      <span
-        style={{
-          fontSize: '28px',
-          fontWeight: 700,
-          color: accent,
-          lineHeight: 1,
-        }}
-      >
+      <span style={{ fontSize: '28px', fontWeight: 700, color: accent, lineHeight: 1 }}>
         {value}
       </span>
       <span style={{ fontSize: '13px', color: 'var(--theme-elevation-600)', fontWeight: 500 }}>
         {label}
       </span>
+      {active && (
+        <span style={{ fontSize: '11px', color: accent, fontWeight: 600, marginTop: '2px' }}>
+          Needs attention →
+        </span>
+      )}
     </a>
   )
 }
 
+// ── Mini stat (context row) ────────────────────────────────────────────────────
+
+function MiniStat({ label, value, href }: { label: string; value: number; href: string }) {
+  return (
+    <a
+      href={href}
+      style={{
+        ...card,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '12px 16px',
+        textDecoration: 'none',
+        color: 'inherit',
+        gap: '12px',
+      }}
+    >
+      <span style={{ fontSize: '13px', color: 'var(--theme-elevation-700)', fontWeight: 500 }}>
+        {label}
+      </span>
+      <span
+        style={{
+          fontSize: '18px',
+          fontWeight: 700,
+          color: 'var(--theme-elevation-800)',
+          lineHeight: 1,
+        }}
+      >
+        {value}
+      </span>
+    </a>
+  )
+}
+
+// ── Recently edited row ────────────────────────────────────────────────────────
+
+const TYPE_COLORS: Record<string, string> = {
+  Page: '#6366f1',
+  Article: '#0ea5e9',
+  'News & Event': '#10b981',
+  Review: '#f59e0b',
+}
+
+const STATUS_STYLES: Record<string, { bg: string; color: string; label: string }> = {
+  published: { bg: '#d1fae5', color: '#065f46', label: 'Published' },
+  draft: { bg: '#f3f4f6', color: '#374151', label: 'Draft' },
+  in_review: { bg: '#fef3c7', color: '#92400e', label: 'In Review' },
+  scheduled: { bg: '#dbeafe', color: '#1e40af', label: 'Scheduled' },
+}
+
+function formatRelativeTime(iso: string): string {
+  const diffMs = Date.now() - new Date(iso).getTime()
+  const mins = Math.floor(diffMs / 60_000)
+  if (mins < 1) return 'just now'
+  if (mins < 60) return `${mins}m ago`
+  const hours = Math.floor(mins / 60)
+  if (hours < 24) return `${hours}h ago`
+  const days = Math.floor(hours / 24)
+  if (days < 7) return `${days}d ago`
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+}
+
+type RecentItem = {
+  id: string
+  title: string
+  type: string
+  collection: string
+  updatedAt: string
+  status: string | null | undefined
+}
+
+function RecentEditRow({ item }: { item: RecentItem }) {
+  const typeColor = TYPE_COLORS[item.type] ?? '#6366f1'
+  const statusStyle = STATUS_STYLES[item.status ?? 'draft'] ?? STATUS_STYLES.draft
+  return (
+    <a
+      href={`/admin/collections/${item.collection}/${item.id}`}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        padding: '10px 16px',
+        textDecoration: 'none',
+        color: 'inherit',
+        borderBottom: '1px solid var(--theme-elevation-150)',
+      }}
+    >
+      {/* Type badge */}
+      <span
+        style={{
+          flexShrink: 0,
+          fontSize: '10px',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '0.06em',
+          color: typeColor,
+          background: typeColor + '18',
+          padding: '2px 7px',
+          borderRadius: '4px',
+          minWidth: '68px',
+          textAlign: 'center',
+        }}
+      >
+        {item.type}
+      </span>
+
+      {/* Title */}
+      <span
+        style={{
+          flex: 1,
+          fontSize: '13px',
+          fontWeight: 500,
+          color: 'var(--theme-text)',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {item.title}
+      </span>
+
+      {/* Status badge */}
+      <span
+        style={{
+          flexShrink: 0,
+          fontSize: '11px',
+          fontWeight: 600,
+          background: statusStyle.bg,
+          color: statusStyle.color,
+          padding: '2px 8px',
+          borderRadius: '99px',
+        }}
+      >
+        {statusStyle.label}
+      </span>
+
+      {/* Time */}
+      <span
+        style={{
+          flexShrink: 0,
+          fontSize: '12px',
+          color: 'var(--theme-elevation-500)',
+          whiteSpace: 'nowrap',
+          minWidth: '60px',
+          textAlign: 'right',
+        }}
+      >
+        {formatRelativeTime(item.updatedAt)}
+      </span>
+    </a>
+  )
+}
+
+// ── Main dashboard ─────────────────────────────────────────────────────────────
+
 export async function DashboardOverview() {
   const payload = await getPayload({ config: configPromise })
+  const now = new Date().toISOString()
 
-  const [pages, articles, newsEvents, submissions, workQueue, recentSubmissionsResult] =
-    await Promise.all([
-      payload.count({ collection: 'pages', overrideAccess: true }).catch(() => ({ totalDocs: 0 })),
-      payload
-        .count({ collection: 'articles', overrideAccess: true })
-        .catch(() => ({ totalDocs: 0 })),
-      payload
-        .count({ collection: 'news-events', overrideAccess: true })
-        .catch(() => ({ totalDocs: 0 })),
-      payload
-        .count({
-          collection: 'form-submissions',
-          overrideAccess: true,
-          where: { status: { in: ['new', 'in_review'] } },
-        })
-        .catch(() => ({ totalDocs: 0 })),
-      payload
-        .count({
-          collection: 'work-queue',
-          overrideAccess: true,
-          where: { resolvedAt: { exists: false } },
-        })
-        .catch(() => ({ totalDocs: 0 })),
-      payload
-        .find({
-          collection: 'form-submissions',
-          overrideAccess: true,
-          depth: 0,
-          limit: 5,
-          sort: '-submittedAt',
-        })
-        .catch(() => ({ docs: [] })),
-    ])
+  const [
+    pagesTotal,
+    articlesTotal,
+    newsTotal,
+    reviewsTotal,
+    inReviewPages,
+    inReviewArticles,
+    inReviewNews,
+    inReviewReviews,
+    scheduledPages,
+    scheduledArticles,
+    scheduledNews,
+    openSubmissions,
+    actionQueue,
+    recentPages,
+    recentArticles,
+    recentNews,
+    recentSubmissionsResult,
+  ] = await Promise.all([
+    // Content totals
+    payload.count({ collection: 'pages', overrideAccess: true }).catch(() => ({ totalDocs: 0 })),
+    payload.count({ collection: 'articles', overrideAccess: true }).catch(() => ({ totalDocs: 0 })),
+    payload.count({ collection: 'news-events', overrideAccess: true }).catch(() => ({ totalDocs: 0 })),
+    payload.count({ collection: 'reviews', overrideAccess: true }).catch(() => ({ totalDocs: 0 })),
+    // In review
+    payload.count({ collection: 'pages', overrideAccess: true, where: { workflowState: { equals: 'in_review' } } }).catch(() => ({ totalDocs: 0 })),
+    payload.count({ collection: 'articles', overrideAccess: true, where: { workflowState: { equals: 'in_review' } } }).catch(() => ({ totalDocs: 0 })),
+    payload.count({ collection: 'news-events', overrideAccess: true, where: { workflowState: { equals: 'in_review' } } }).catch(() => ({ totalDocs: 0 })),
+    payload.count({ collection: 'reviews', overrideAccess: true, where: { workflowState: { equals: 'in_review' } } }).catch(() => ({ totalDocs: 0 })),
+    // Scheduled
+    payload.count({ collection: 'pages', overrideAccess: true, where: { and: [{ scheduledPublishAt: { exists: true } }, { scheduledPublishAt: { greater_than: now } }] } }).catch(() => ({ totalDocs: 0 })),
+    payload.count({ collection: 'articles', overrideAccess: true, where: { and: [{ scheduledPublishAt: { exists: true } }, { scheduledPublishAt: { greater_than: now } }] } }).catch(() => ({ totalDocs: 0 })),
+    payload.count({ collection: 'news-events', overrideAccess: true, where: { and: [{ scheduledPublishAt: { exists: true } }, { scheduledPublishAt: { greater_than: now } }] } }).catch(() => ({ totalDocs: 0 })),
+    // Lead / ops
+    payload.count({ collection: 'form-submissions', overrideAccess: true, where: { status: { in: ['new', 'in_review'] } } }).catch(() => ({ totalDocs: 0 })),
+    payload.count({ collection: 'work-queue', overrideAccess: true, where: { resolvedAt: { exists: false } } }).catch(() => ({ totalDocs: 0 })),
+    // Recently edited
+    payload.find({ collection: 'pages', overrideAccess: true, depth: 0, limit: 5, sort: '-updatedAt' }).catch(() => ({ docs: [] })),
+    payload.find({ collection: 'articles', overrideAccess: true, depth: 0, limit: 5, sort: '-updatedAt' }).catch(() => ({ docs: [] })),
+    payload.find({ collection: 'news-events', overrideAccess: true, depth: 0, limit: 5, sort: '-updatedAt' }).catch(() => ({ docs: [] })),
+    // Recent submissions
+    payload.find({ collection: 'form-submissions', overrideAccess: true, depth: 0, limit: 5, sort: '-submittedAt' }).catch(() => ({ docs: [] })),
+  ])
+
+  const totalInReview =
+    inReviewPages.totalDocs +
+    inReviewArticles.totalDocs +
+    inReviewNews.totalDocs +
+    inReviewReviews.totalDocs
+
+  const totalScheduled =
+    scheduledPages.totalDocs + scheduledArticles.totalDocs + scheduledNews.totalDocs
+
+  const recentEdits: RecentItem[] = [
+    ...recentPages.docs.map((d) => ({
+      id: String(d.id),
+      title: String(d.title ?? 'Untitled'),
+      type: 'Page',
+      collection: 'pages',
+      updatedAt: String(d.updatedAt),
+      status: d._status,
+    })),
+    ...recentArticles.docs.map((d) => ({
+      id: String(d.id),
+      title: String(d.title ?? 'Untitled'),
+      type: 'Article',
+      collection: 'articles',
+      updatedAt: String(d.updatedAt),
+      status: d._status,
+    })),
+    ...recentNews.docs.map((d) => ({
+      id: String(d.id),
+      title: String(d.title ?? 'Untitled'),
+      type: 'News & Event',
+      collection: 'news-events',
+      updatedAt: String(d.updatedAt),
+      status: d._status,
+    })),
+  ]
+    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+    .slice(0, 6)
 
   const recentSubmissions = recentSubmissionsResult.docs
 
   return (
-    <div style={{ padding: '0 0 40px' }}>
-      {/* Stats row */}
+    <div style={{ padding: '0 0 48px' }}>
+
+      {/* ── Needs Attention ───────────────────────────────────────────────── */}
+      <p style={sectionLabel}>Needs Attention</p>
       <div
         style={{
           display: 'grid',
@@ -92,107 +315,107 @@ export async function DashboardOverview() {
           marginBottom: '32px',
         }}
       >
-        <StatCard
-          label="Published Pages"
-          value={pages.totalDocs}
-          href="/admin/collections/pages"
-          accent="#6366f1"
+        <AttentionCard
+          label="In Review"
+          value={totalInReview}
+          href="/admin/collections/pages?where[workflowState][equals]=in_review"
+          accent="#f59e0b"
+          alert
         />
-        <StatCard
-          label="Articles"
-          value={articles.totalDocs}
-          href="/admin/collections/articles"
-          accent="#0ea5e9"
-        />
-        <StatCard
-          label="News & Events"
-          value={newsEvents.totalDocs}
-          href="/admin/collections/news-events"
+        <AttentionCard
+          label="Scheduled"
+          value={totalScheduled}
+          href="/admin/collections/pages?where[scheduledPublishAt][exists]=true"
           accent="#10b981"
         />
-        <StatCard
+        <AttentionCard
           label="Open Submissions"
-          value={submissions.totalDocs}
+          value={openSubmissions.totalDocs}
           href="/admin/collections/form-submissions"
           accent="#f59e0b"
+          alert
         />
-        <StatCard
-          label="Work Queue"
-          value={workQueue.totalDocs}
+        <AttentionCard
+          label="Action Queue"
+          value={actionQueue.totalDocs}
           href="/admin/collections/work-queue"
           accent="#ef4444"
+          alert
         />
       </div>
 
-      {/* Quick actions */}
-      <div style={{ marginBottom: '32px' }}>
-        <h2
-          style={{
-            fontSize: '13px',
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            letterSpacing: '0.08em',
-            color: 'var(--theme-elevation-500)',
-            marginBottom: '12px',
-          }}
-        >
-          Quick Actions
-        </h2>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-          {[
-            { label: '+ New Page', href: '/admin/collections/pages/create' },
-            { label: '+ New Article', href: '/admin/collections/articles/create' },
-            { label: '+ New News / Event', href: '/admin/collections/news-events/create' },
-            { label: '+ New Reusable Section', href: '/admin/collections/reusable-sections/create' },
-          ].map(({ label, href }) => (
-            <a
-              key={href}
-              href={href}
-              style={{
-                display: 'inline-block',
-                padding: '7px 14px',
-                background: 'var(--theme-elevation-100)',
-                border: '1px solid var(--theme-elevation-200)',
-                borderRadius: '6px',
-                fontSize: '13px',
-                fontWeight: 500,
-                color: 'var(--theme-text)',
-                textDecoration: 'none',
-              }}
-            >
-              {label}
-            </a>
-          ))}
-        </div>
+      {/* ── Content Overview ──────────────────────────────────────────────── */}
+      <p style={sectionLabel}>Content Overview</p>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+          gap: '10px',
+          marginBottom: '32px',
+        }}
+      >
+        <MiniStat label="Pages" value={pagesTotal.totalDocs} href="/admin/collections/pages" />
+        <MiniStat label="Articles" value={articlesTotal.totalDocs} href="/admin/collections/articles" />
+        <MiniStat label="News & Events" value={newsTotal.totalDocs} href="/admin/collections/news-events" />
+        <MiniStat label="Reviews" value={reviewsTotal.totalDocs} href="/admin/collections/reviews" />
       </div>
 
-      {/* Recent submissions */}
-      {recentSubmissions.length > 0 ? (
-        <div>
-          <h2
+      {/* ── Quick Actions ─────────────────────────────────────────────────── */}
+      <p style={{ ...sectionLabel, marginBottom: '10px' }}>Quick Actions</p>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '32px' }}>
+        {[
+          { label: '+ New Page', href: '/admin/collections/pages/create' },
+          { label: '+ New Article', href: '/admin/collections/articles/create' },
+          { label: '+ New News / Event', href: '/admin/collections/news-events/create' },
+          { label: '+ New Reusable Section', href: '/admin/collections/reusable-sections/create' },
+          { label: '+ Upload Media', href: '/admin/collections/media/create' },
+        ].map(({ label, href }) => (
+          <a
+            key={href}
+            href={href}
             style={{
-              fontSize: '13px',
-              fontWeight: 600,
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-              color: 'var(--theme-elevation-500)',
-              marginBottom: '12px',
-            }}
-          >
-            Recent Submissions
-          </h2>
-          <div
-            style={{
+              display: 'inline-block',
+              padding: '7px 14px',
               background: 'var(--theme-elevation-100)',
               border: '1px solid var(--theme-elevation-200)',
-              borderRadius: '8px',
-              overflow: 'hidden',
+              borderRadius: '6px',
+              fontSize: '13px',
+              fontWeight: 500,
+              color: 'var(--theme-text)',
+              textDecoration: 'none',
             }}
           >
+            {label}
+          </a>
+        ))}
+      </div>
+
+      {/* ── Recently Edited ───────────────────────────────────────────────── */}
+      {recentEdits.length > 0 && (
+        <div style={{ marginBottom: '32px' }}>
+          <p style={sectionLabel}>Recently Edited</p>
+          <div style={{ ...card, overflow: 'hidden' }}>
+            {recentEdits.map((item, i) => (
+              <div
+                key={`${item.collection}-${item.id}`}
+                style={i === recentEdits.length - 1 ? { borderBottom: 'none' } : {}}
+              >
+                <RecentEditRow item={item} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── Recent Submissions ────────────────────────────────────────────── */}
+      {recentSubmissions.length > 0 && (
+        <div>
+          <p style={sectionLabel}>Recent Submissions</p>
+          <div style={{ ...card, overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid var(--theme-elevation-200)' }}>
-                  {['From', 'Form intent', 'Status', 'Submitted'].map((h) => (
+                  {['From', 'Form Intent', 'Status', 'Submitted'].map((h) => (
                     <th
                       key={h}
                       style={{
@@ -211,6 +434,12 @@ export async function DashboardOverview() {
               <tbody>
                 {recentSubmissions.map((sub, i) => {
                   const isLast = i === recentSubmissions.length - 1
+                  const statusStyle =
+                    sub.status === 'new'
+                      ? { bg: '#fef3c7', color: '#92400e' }
+                      : sub.status === 'in_review'
+                        ? { bg: '#dbeafe', color: '#1e40af' }
+                        : { bg: '#f3f4f6', color: '#374151' }
                   return (
                     <tr
                       key={sub.id}
@@ -235,18 +464,8 @@ export async function DashboardOverview() {
                             borderRadius: '99px',
                             fontSize: '11px',
                             fontWeight: 600,
-                            background:
-                              sub.status === 'new'
-                                ? '#fef3c7'
-                                : sub.status === 'in_review'
-                                  ? '#dbeafe'
-                                  : '#f3f4f6',
-                            color:
-                              sub.status === 'new'
-                                ? '#92400e'
-                                : sub.status === 'in_review'
-                                  ? '#1e40af'
-                                  : '#374151',
+                            background: statusStyle.bg,
+                            color: statusStyle.color,
                           }}
                         >
                           {sub.status}
@@ -260,7 +479,7 @@ export async function DashboardOverview() {
                         }}
                       >
                         {sub.submittedAt
-                          ? new Date(sub.submittedAt).toLocaleDateString()
+                          ? new Date(sub.submittedAt as string).toLocaleDateString()
                           : '—'}
                       </td>
                     </tr>
@@ -270,7 +489,7 @@ export async function DashboardOverview() {
             </table>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   )
 }

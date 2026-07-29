@@ -47,7 +47,7 @@ export const Articles: CollectionConfig = {
     group: 'Content',
     hidden: hideFromUsersWithoutCapability('manage_articles'),
     useAsTitle: 'title',
-    defaultColumns: ['title', 'primaryCategory', 'slug', 'workflowState', 'updatedAt'],
+    defaultColumns: ['title', 'primaryCategory', '_status', 'workflowState', 'updatedAt'],
     description: 'Editorial long-form content with writing-first authoring and SEO controls.',
     listSearchableFields: ['title', 'slug', 'authorName'],
     livePreview: {

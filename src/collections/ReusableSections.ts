@@ -37,12 +37,11 @@ export const ReusableSections: CollectionConfig = {
     plural: 'Reusable Sections',
   },
   admin: {
+    description: 'Shared block groups that sync across every page that references them. Edit once, update everywhere.',
     group: 'Site Structure',
     hidden: hideFromUsersWithoutCapability('manage_pages'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'updatedAt'],
-    description:
-      'Define a block layout once and embed it on any number of pages. Updates here are reflected everywhere the section is used.',
   },
   access: {
     create: requireCapability('manage_pages'),
