@@ -65,7 +65,7 @@ export const SystemPages: CollectionConfig = {
     plural: 'System Pages',
   },
   admin: {
-    group: 'Website Structure',
+    group: 'Site Structure',
     hidden: hideFromUsersWithoutCapability('manage_system_pages'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'type', 'updatedAt'],

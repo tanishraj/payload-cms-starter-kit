@@ -13,7 +13,7 @@ export const GalleryAlbums: CollectionConfig = {
     plural: 'Gallery Albums',
   },
   admin: {
-    group: 'Website Content',
+    group: 'Media',
     hidden: hideFromUsersWithoutCapability('manage_media'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'eventDate', 'createdAt', 'updatedAt'],

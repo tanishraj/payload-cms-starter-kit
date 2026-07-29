@@ -1319,23 +1319,23 @@ export interface User {
      */
     manage_form_submissions?: boolean | null;
     /**
-     * Allow access to Website Defaults.
+     * Allow access to Routing Defaults.
      */
     manage_page_settings?: boolean | null;
     /**
-     * Allow access to Site Settings.
+     * Allow access to Site Identity.
      */
     manage_site_settings?: boolean | null;
     /**
-     * Allow access to Theme Settings.
+     * Allow access to Appearance.
      */
     manage_theme_settings?: boolean | null;
     /**
-     * Allow access to SEO Settings.
+     * Allow access to SEO & Metadata.
      */
     manage_seo_settings?: boolean | null;
     /**
-     * Allow access to Website Modes.
+     * Allow access to Site Modes.
      */
     manage_system_modes?: boolean | null;
     /**
@@ -1343,7 +1343,7 @@ export interface User {
      */
     manage_work_queue?: boolean | null;
     /**
-     * Allow access to Activity Log.
+     * Allow access to Audit Log.
      */
     view_operational_audit?: boolean | null;
     /**

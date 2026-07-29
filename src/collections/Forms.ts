@@ -23,7 +23,7 @@ export const Forms: CollectionConfig = {
     plural: 'Forms',
   },
   admin: {
-    group: 'Lead Capture',
+    group: 'Lead Management',
     hidden: hideFromUsersWithoutCapability('manage_forms'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],

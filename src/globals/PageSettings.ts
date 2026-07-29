@@ -126,9 +126,9 @@ const validateAnnouncementItems = (
 
 export const PageSettings: GlobalConfig = {
   slug: 'page-settings',
-  label: 'Website Defaults',
+  label: 'Routing Defaults',
   admin: {
-    group: 'Site Settings',
+    group: 'Configuration',
     hidden: hideFromUsersWithoutCapability(['manage_page_settings', 'manage_site_settings']),
   },
   access: {

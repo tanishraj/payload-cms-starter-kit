@@ -127,7 +127,7 @@ export const Pages: CollectionConfig = {
     plural: 'Pages',
   },
   admin: {
-    group: 'Website Content',
+    group: 'Content',
     hidden: hideFromUsersWithoutCapability('manage_pages'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],

@@ -83,7 +83,7 @@ export const WorkQueue: CollectionConfig = {
     plural: 'Action Queue',
   },
   admin: {
-    group: 'Operations',
+    group: 'Administration',
     hidden: hideFromUsersWithoutCapability('manage_work_queue'),
     useAsTitle: 'summary',
     defaultColumns: [

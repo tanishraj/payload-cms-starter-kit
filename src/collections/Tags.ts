@@ -15,7 +15,7 @@ export const Tags: CollectionConfig = {
     plural: 'Tags',
   },
   admin: {
-    group: 'Website Content',
+    group: 'Content',
     hidden: hideFromUsersWithoutCapability('manage_taxonomy'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],

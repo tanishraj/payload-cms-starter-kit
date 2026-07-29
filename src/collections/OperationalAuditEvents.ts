@@ -8,11 +8,11 @@ import {
 export const OperationalAuditEvents: CollectionConfig = {
   slug: 'operational-audit-events',
   labels: {
-    singular: 'Activity Log Entry',
-    plural: 'Activity Log',
+    singular: 'Audit Log Entry',
+    plural: 'Audit Log',
   },
   admin: {
-    group: 'Operations',
+    group: 'Administration',
     hidden: hideFromUsersWithoutCapability('view_operational_audit'),
     useAsTitle: 'summary',
     defaultColumns: ['occurredAt', 'entityType', 'entityTitle', 'actorEmail', 'action'],

@@ -44,7 +44,7 @@ export const Articles: CollectionConfig = {
     plural: 'Articles',
   },
   admin: {
-    group: 'Website Content',
+    group: 'Content',
     hidden: hideFromUsersWithoutCapability('manage_articles'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'primaryCategory', 'slug', 'workflowState', 'updatedAt'],

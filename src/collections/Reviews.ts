@@ -44,7 +44,7 @@ export const Reviews: CollectionConfig = {
     plural: 'Reviews',
   },
   admin: {
-    group: 'Website Content',
+    group: 'Content',
     hidden: hideFromUsersWithoutCapability('manage_reviews'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'primaryCategory', 'rating', 'workflowState', 'updatedAt'],

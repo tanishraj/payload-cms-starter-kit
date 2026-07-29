@@ -38,9 +38,9 @@ const sizeField = {
 
 export const NewsEventsSettings: GlobalConfig = {
   slug: 'news-events-settings',
-  label: 'News & Events Settings',
+  label: 'Content Settings',
   admin: {
-    group: 'Site Settings',
+    group: 'Configuration',
     hidden: hideFromUsersWithoutCapability('manage_news_events'),
   },
   access: {

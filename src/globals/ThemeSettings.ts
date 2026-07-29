@@ -10,9 +10,9 @@ import { revalidateGlobalsCacheForGlobal } from '@/hooks/revalidateCmsContent'
 
 export const ThemeSettings: GlobalConfig = {
   slug: 'theme-settings',
-  label: 'Theme Settings',
+  label: 'Appearance',
   admin: {
-    group: 'Site Settings',
+    group: 'Configuration',
     description: 'Control the frontend theme preset and light or dark mode behavior.',
     hidden: hideFromUsersWithoutCapability('manage_theme_settings'),
   },

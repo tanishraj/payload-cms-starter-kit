@@ -15,7 +15,7 @@ export const FormSubmissions: CollectionConfig = {
     plural: 'Form Submissions',
   },
   admin: {
-    group: 'Lead Capture',
+    group: 'Lead Management',
     hidden: hideFromUsersWithoutCapability('manage_form_submissions'),
     useAsTitle: 'submitterEmail',
     defaultColumns: [

@@ -59,23 +59,23 @@ export const adminCapabilityFieldOptions = [
     value: 'manage_system_pages',
   },
   {
-    label: 'Website Defaults',
+    label: 'Routing Defaults',
     value: 'manage_page_settings',
   },
   {
-    label: 'Site Settings',
+    label: 'Site Identity',
     value: 'manage_site_settings',
   },
   {
-    label: 'Theme Settings',
+    label: 'Appearance',
     value: 'manage_theme_settings',
   },
   {
-    label: 'SEO Settings',
+    label: 'SEO & Metadata',
     value: 'manage_seo_settings',
   },
   {
-    label: 'Website Modes',
+    label: 'Site Modes',
     value: 'manage_system_modes',
   },
   {
@@ -91,7 +91,7 @@ export const adminCapabilityFieldOptions = [
     value: 'manage_work_queue',
   },
   {
-    label: 'Activity Log',
+    label: 'Audit Log',
     value: 'view_operational_audit',
   },
   {
@@ -202,7 +202,7 @@ const createCapabilitySectionItems = (values: readonly AdminCapability[]) =>
 
 const capabilitySections = [
   {
-    label: 'Website Content',
+    label: 'Content',
     items: createCapabilitySectionItems([
       'manage_pages',
       'manage_articles',
@@ -213,7 +213,7 @@ const capabilitySections = [
     ] as const),
   },
   {
-    label: 'Website Structure',
+    label: 'Site Structure',
     items: createCapabilitySectionItems([
       'manage_navigation',
       'manage_redirects',
@@ -223,11 +223,11 @@ const capabilitySections = [
     ] as const),
   },
   {
-    label: 'Lead Capture',
+    label: 'Lead Management',
     items: createCapabilitySectionItems(['manage_forms', 'manage_form_submissions'] as const),
   },
   {
-    label: 'Site Settings',
+    label: 'Configuration',
     items: createCapabilitySectionItems([
       'manage_page_settings',
       'manage_site_settings',
@@ -237,7 +237,7 @@ const capabilitySections = [
     ] as const),
   },
   {
-    label: 'Operations',
+    label: 'Administration',
     items: createCapabilitySectionItems([
       'manage_work_queue',
       'view_operational_audit',

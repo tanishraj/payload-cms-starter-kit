@@ -113,7 +113,7 @@ export const NavigationLinks: CollectionConfig = {
     plural: 'Navigation Links',
   },
   admin: {
-    group: 'Website Structure',
+    group: 'Site Structure',
     hidden: hideFromUsersWithoutCapability('manage_navigation'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'linkType', 'sourceType', 'updatedAt'],

@@ -116,7 +116,7 @@ const adminOrSubmissionOperatorReadAccess = ({ req }: { req: { user?: unknown } 
 export const Users: CollectionConfig = {
   slug: 'users',
   admin: {
-    group: 'Operations',
+    group: 'Administration',
     hidden: hideFromNonAdmin,
     useAsTitle: 'email',
   },

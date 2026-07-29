@@ -28,9 +28,9 @@ const validateExternalSocialUrl = (value: unknown) => {
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
-  label: 'Site Settings',
+  label: 'Site Identity',
   admin: {
-    group: 'Site Settings',
+    group: 'Configuration',
     hidden: hideFromUsersWithoutCapability('manage_site_settings'),
   },
   access: {

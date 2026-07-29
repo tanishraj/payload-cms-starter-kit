@@ -37,7 +37,7 @@ export const ReusableSections: CollectionConfig = {
     plural: 'Reusable Sections',
   },
   admin: {
-    group: 'Website Structure',
+    group: 'Site Structure',
     hidden: hideFromUsersWithoutCapability('manage_pages'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'updatedAt'],

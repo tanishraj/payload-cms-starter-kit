@@ -79,7 +79,7 @@ export const NewsEvents: CollectionConfig = {
     plural: 'News & Events',
   },
   admin: {
-    group: 'Website Content',
+    group: 'Content',
     hidden: hideFromUsersWithoutCapability('manage_news_events'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'contentType', 'workflowState', 'eventStart', 'updatedAt'],

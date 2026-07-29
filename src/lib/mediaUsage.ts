@@ -42,9 +42,9 @@ const mediaUsageSourceLabelByCollection: Record<string, string> = {
 }
 
 const mediaUsageSourceLabelByGlobal: Record<string, string> = {
-  'seo-settings': 'SEO Settings',
+  'seo-settings': 'SEO & Metadata',
   'news-events-settings': 'News & Events Settings',
-  'site-settings': 'Site Settings',
+  'site-settings': 'Site Identity',
 }
 
 const getRelationshipID = (value: RelationshipValue): number | string | null => {
@@ -464,14 +464,14 @@ const globalSources: GlobalUsageSource[] = [
   },
   {
     slug: 'site-settings',
-    sourceLabel: 'Site Settings',
+    sourceLabel: 'Site Identity',
     resolve: (doc, mediaID) => {
       const references: MediaUsageReference[] = []
 
       pushIfMatched({
         mediaID,
         reference: createGlobalReference({
-          documentLabel: 'Site Settings',
+          documentLabel: 'Site Identity',
           fieldPath: 'logo',
           slug: 'site-settings',
         }),
@@ -482,7 +482,7 @@ const globalSources: GlobalUsageSource[] = [
       pushIfMatched({
         mediaID,
         reference: createGlobalReference({
-          documentLabel: 'Site Settings',
+          documentLabel: 'Site Identity',
           fieldPath: 'favicon',
           slug: 'site-settings',
         }),
@@ -495,14 +495,14 @@ const globalSources: GlobalUsageSource[] = [
   },
   {
     slug: 'seo-settings',
-    sourceLabel: 'SEO Settings',
+    sourceLabel: 'SEO & Metadata',
     resolve: (doc, mediaID) => {
       const references: MediaUsageReference[] = []
 
       pushIfMatched({
         mediaID,
         reference: createGlobalReference({
-          documentLabel: 'SEO Settings',
+          documentLabel: 'SEO & Metadata',
           fieldPath: 'defaultImage',
           slug: 'seo-settings',
         }),

@@ -10,9 +10,9 @@ import { revalidateGlobalsCacheForGlobal } from '@/hooks/revalidateCmsContent'
 
 export const SEOSettings: GlobalConfig = {
   slug: 'seo-settings',
-  label: 'SEO Settings',
+  label: 'SEO & Metadata',
   admin: {
-    group: 'Site Settings',
+    group: 'Configuration',
     description:
       'Default SEO values inherited by public routes when local SEO fields stay on Default or empty.',
     hidden: hideFromUsersWithoutCapability('manage_seo_settings'),
