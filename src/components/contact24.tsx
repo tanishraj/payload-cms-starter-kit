@@ -1,4 +1,4 @@
-import { ExternalLink, Mail, MapPin, Phone } from 'lucide-react'
+import { Mail, MapPin, Phone } from 'lucide-react'
 
 import {
   resolveBlockAppearanceClasses,
@@ -9,12 +9,16 @@ import {
   regularBlockMobilePaddingClasses,
 } from '@/blocks/shared/blockSpacing'
 import { Button } from '@/components/ui/button'
+import { ContentLink } from '@/components/ContentLink'
+import type { CmsActionVariant } from '@/lib/cmsLinks'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
 import { cn } from '@/lib/utils'
 
 export type Contact24Size = 'comfortable' | 'compact' | 'default'
 export type Contact24Alignment = 'center' | 'left' | 'right'
 export type Contact24DetailsAlignment = 'center' | 'left' | 'right'
+export type Contact24MapActionMode = 'button' | 'link'
+export type Contact24MapActionVariant = CmsActionVariant
 
 export type Contact24Props = {
   appearance?: BlockAppearance | null
@@ -23,6 +27,9 @@ export type Contact24Props = {
   description?: string | null
   detailsAlignment?: Contact24DetailsAlignment
   eyebrow?: string | null
+  mapActionLabel?: string
+  mapActionMode?: Contact24MapActionMode
+  mapActionVariant?: Contact24MapActionVariant
   offices: SiteOfficeLocation[]
   showLocationDetails?: boolean
   size?: Contact24Size
@@ -68,20 +75,6 @@ const detailsAlignmentClasses = {
   },
 } as const
 
-function CornerBorderAccents() {
-  return (
-    <span
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0"
-      data-contact24-corner-accents
-    >
-      <span className="absolute -left-1 -top-1 size-3 border-l border-t border-border" />
-      <span className="absolute -right-1 -top-1 size-3 border-r border-t border-border" />
-      <span className="absolute -bottom-1 -left-1 size-3 border-b border-l border-border" />
-      <span className="absolute -bottom-1 -right-1 size-3 border-b border-r border-border" />
-    </span>
-  )
-}
 
 export function Contact24({
   appearance,
@@ -90,6 +83,9 @@ export function Contact24({
   description,
   detailsAlignment = 'left',
   eyebrow,
+  mapActionLabel = 'View on Map',
+  mapActionMode = 'link',
+  mapActionVariant = 'outline',
   offices,
   showLocationDetails = true,
   size = 'default',
@@ -147,13 +143,13 @@ export function Contact24({
           >
             {offices.map((office) => (
               <article
-                className="flex min-w-0 flex-col gap-4"
+                className="flex min-w-0 flex-col overflow-hidden rounded-xl border border-border"
                 data-contact24-office
                 data-contact24-location-details={showLocationDetails ? 'visible' : 'hidden'}
                 key={office.id}
               >
                 <div
-                  className="relative aspect-video w-full overflow-hidden rounded-none sm:aspect-[5/2]"
+                  className="relative aspect-video w-full overflow-hidden sm:aspect-5/2"
                   data-contact24-map
                 >
                   <iframe
@@ -168,11 +164,10 @@ export function Contact24({
 
                 {showLocationDetails && office.showAddressDetails ? (
                   <div
-                    className="relative flex flex-1 flex-col rounded-none border border-border p-6 sm:p-8"
+                    className="flex flex-1 flex-col border-t border-border p-6 sm:p-8"
                     data-contact24-details
                     data-contact24-details-alignment={detailsAlignment}
                   >
-                    <CornerBorderAccents />
 
                     {(office.region || office.city) && (
                       <div
@@ -241,12 +236,19 @@ export function Contact24({
                         detailsAlignmentClasses[detailsAlignment].action,
                       )}
                     >
-                      <Button asChild size="sm" variant="outline">
-                        <a href={office.mapUrl} rel="noreferrer" target="_blank">
-                          View on Map
-                          <ExternalLink data-icon="inline-end" />
-                        </a>
-                      </Button>
+                      {mapActionMode === 'button' ? (
+                        <Button asChild size="lg" variant={mapActionVariant}>
+                          <a href={office.mapUrl} rel="noreferrer" target="_blank">
+                            {mapActionLabel}
+                          </a>
+                        </Button>
+                      ) : (
+                        <ContentLink
+                          href={office.mapUrl}
+                          label={mapActionLabel}
+                          openInNewTab
+                        />
+                      )}
                     </div>
                   </div>
                 ) : null}

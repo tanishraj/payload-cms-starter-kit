@@ -2,6 +2,7 @@ import type { Block, CheckboxField, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createContentActionModeField } from '@/blocks/shared/contentActionsFields'
 
 const contentAlignmentField = {
   name: 'contentAlignment',
@@ -99,6 +100,33 @@ export const Contact24Block: Block = {
             detailsAlignmentField,
             showAddressDetailsField,
             sizeField,
+            {
+              name: 'mapActionLabel',
+              label: 'Map Action Label',
+              type: 'text',
+              defaultValue: 'View on Map',
+              admin: {
+                description: 'Label for the map link shown on each office card.',
+              },
+            },
+            createContentActionModeField({
+              name: 'mapActionMode',
+              label: 'Map Action Style',
+            }),
+            {
+              name: 'mapActionVariant',
+              label: 'Map Button Variant',
+              type: 'select',
+              defaultValue: 'outline',
+              options: [
+                { label: 'Primary', value: 'default' },
+                { label: 'Secondary', value: 'secondary' },
+                { label: 'Outline', value: 'outline' },
+              ],
+              admin: {
+                condition: (_, siblingData) => siblingData?.mapActionMode === 'button',
+              },
+            } satisfies SelectField,
           ],
         },
       ],

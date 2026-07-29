@@ -1,5 +1,6 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
-import { Contact24, type Contact24DetailsAlignment } from '@/components/contact24'
+import { Contact24, type Contact24DetailsAlignment, type Contact24MapActionMode, type Contact24MapActionVariant } from '@/components/contact24'
+import type { CmsActionVariant } from '@/lib/cmsLinks'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
 
 export type Contact24BlockLike = {
@@ -8,6 +9,9 @@ export type Contact24BlockLike = {
   description?: string | null
   detailsAlignment?: Contact24DetailsAlignment | null
   eyebrow?: string | null
+  mapActionLabel?: string | null
+  mapActionMode?: 'button' | 'link' | null
+  mapActionVariant?: CmsActionVariant | null
   offices?: (string | { id: string })[] | null
   showAddressDetails?: boolean | null
   size?: 'comfortable' | 'compact' | 'default' | null
@@ -20,6 +24,9 @@ export function Contact24BlockPresentation({
   description,
   detailsAlignment = 'left',
   eyebrow,
+  mapActionLabel,
+  mapActionMode,
+  mapActionVariant,
   offices,
   showAddressDetails = true,
   size = 'default',
@@ -38,6 +45,9 @@ export function Contact24BlockPresentation({
       description={description?.trim()}
       detailsAlignment={detailsAlignment ?? 'left'}
       eyebrow={eyebrow?.trim()}
+      mapActionLabel={mapActionLabel?.trim() || 'View on Map'}
+      mapActionMode={(mapActionMode as Contact24MapActionMode) ?? 'link'}
+      mapActionVariant={(mapActionVariant as Contact24MapActionVariant) ?? 'outline'}
       offices={offices}
       showLocationDetails={showAddressDetails ?? true}
       size={size ?? 'default'}

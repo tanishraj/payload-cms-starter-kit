@@ -1084,6 +1084,12 @@ export interface Contact24Block {
   detailsAlignment: 'left' | 'center' | 'right';
   showAddressDetails?: boolean | null;
   size: 'compact' | 'default' | 'comfortable';
+  /**
+   * Label for the map link shown on each office card.
+   */
+  mapActionLabel?: string | null;
+  mapActionMode: 'link' | 'button';
+  mapActionVariant?: ('default' | 'secondary' | 'outline') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'contact24';
@@ -3929,6 +3935,9 @@ export interface Contact24BlockSelect<T extends boolean = true> {
   detailsAlignment?: T;
   showAddressDetails?: T;
   size?: T;
+  mapActionLabel?: T;
+  mapActionMode?: T;
+  mapActionVariant?: T;
   id?: T;
   blockName?: T;
 }
