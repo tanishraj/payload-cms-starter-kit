@@ -204,11 +204,12 @@ export const NewsEvents: CollectionConfig = {
               fields: [
                 {
                   name: 'primaryCategory',
+                  label: 'Primary Topic',
                   type: 'relationship',
                   relationTo: 'categories',
                   admin: {
                     width: '50%',
-                    description: 'Primary archive category.',
+                    description: 'Main editorial topic for archive placement.',
                   },
                 },
                 {
@@ -218,19 +219,20 @@ export const NewsEvents: CollectionConfig = {
                   hasMany: true,
                   admin: {
                     width: '50%',
-                    description: 'Optional topical tags.',
+                    description: 'Keyword tags for cross-linking.',
                   },
                 },
               ],
             },
             {
               name: 'categories',
+              label: 'Additional Topics',
               type: 'relationship',
               relationTo: 'categories',
               hasMany: true,
               admin: {
                 description:
-                  'Supporting categories. The primary category is included automatically.',
+                  'Additional topics for cross-linking. The primary topic is included automatically.',
               },
             },
           ],

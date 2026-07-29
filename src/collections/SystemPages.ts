@@ -66,7 +66,7 @@ export const SystemPages: CollectionConfig = {
   },
   admin: {
     description: 'The 404, maintenance, and coming soon pages — activated from Site Modes in Configuration.',
-    group: 'Site Structure',
+    group: 'Navigation',
     hidden: hideFromUsersWithoutCapability('manage_system_pages'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'type', 'updatedAt'],

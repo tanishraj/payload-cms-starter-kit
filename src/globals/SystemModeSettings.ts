@@ -72,7 +72,7 @@ const pageOfTypeFilter = (type: SystemPageType) => ({
 
 export const SystemModeSettings: GlobalConfig = {
   slug: 'system-mode-settings',
-  label: 'Site Modes',
+  label: 'Maintenance & Modes',
   admin: {
     group: 'Configuration',
     hidden: hideFromUsersWithoutCapability('manage_system_modes'),

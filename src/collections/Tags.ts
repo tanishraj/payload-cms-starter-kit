@@ -15,12 +15,12 @@ export const Tags: CollectionConfig = {
     plural: 'Tags',
   },
   admin: {
-    group: 'Content',
+    group: 'Taxonomy',
     hidden: hideFromUsersWithoutCapability('manage_taxonomy'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],
     description:
-      'Reusable topical labels for cross-linking articles, news, events, and related content.',
+      'Flat keyword labels for cross-linking content — e.g. "scholarship", "AI research", "graduation". Unlike Topics, tags have no hierarchy.',
     listSearchableFields: ['title', 'slug'],
   },
   access: {

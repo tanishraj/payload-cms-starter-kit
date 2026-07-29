@@ -49,7 +49,7 @@ export const ReusableSections: CollectionConfig = {
   },
   admin: {
     description: 'Shared block groups that sync across every page that references them. Edit once, update everywhere.',
-    group: 'Site Structure',
+    group: 'Content',
     hidden: hideFromUsersWithoutCapability('manage_pages'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'updatedAt'],

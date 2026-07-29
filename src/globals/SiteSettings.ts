@@ -30,7 +30,7 @@ export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   label: 'Site Identity',
   admin: {
-    group: 'Configuration',
+    group: 'Settings',
     hidden: hideFromUsersWithoutCapability('manage_site_settings'),
   },
   access: {

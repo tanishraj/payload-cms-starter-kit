@@ -58,34 +58,42 @@ export default buildConfig({
     },
   },
   collections: [
+    // Content
     Pages,
-    Categories,
-    Tags,
     Articles,
     NewsEvents,
     Reviews,
     ReusableSections,
+    // Taxonomy
+    Categories,
+    Tags,
+    // Navigation
     NavigationLinks,
-    Redirects,
     Headers,
     Footers,
+    Redirects,
     SystemPages,
-    Forms,
-    FormSubmissions,
+    // Media
     Media,
     GalleryAlbums,
-    OperationalAuditEvents,
+    // Forms
+    Forms,
+    FormSubmissions,
+    // Administration
     WorkQueue,
+    OperationalAuditEvents,
     Users,
   ],
   globals: [
-    PageSettings,
-    NewsEventsSettings,
-    SystemModeSettings,
+    // Settings (frequently adjusted)
     SiteSettings,
     ThemeSettings,
     SEOSettings,
     AnalyticsSettings,
+    // Configuration (set-and-forget)
+    PageSettings,
+    NewsEventsSettings,
+    SystemModeSettings,
   ],
   editor: lexicalEditor(),
   email,

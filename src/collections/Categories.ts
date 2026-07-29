@@ -11,16 +11,16 @@ import { validateSEOContract } from '@/hooks/validateSEOContract'
 export const Categories: CollectionConfig = {
   slug: 'categories',
   labels: {
-    singular: 'Category',
-    plural: 'Categories',
+    singular: 'Topic',
+    plural: 'Topics',
   },
   admin: {
-    group: 'Content',
+    group: 'Taxonomy',
     hidden: hideFromUsersWithoutCapability('manage_taxonomy'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],
     description:
-      'Reusable hierarchical content categories for articles, reviews, news, and events.',
+      'Hierarchical editorial sections — e.g. Admissions, Research, Campus Life. Each topic can own an archive page and have child topics.',
     listSearchableFields: ['title', 'slug'],
   },
   access: {
@@ -60,8 +60,9 @@ export const Categories: CollectionConfig = {
               name: 'parent',
               type: 'relationship',
               relationTo: 'categories',
+              label: 'Parent Topic',
               admin: {
-                description: 'Optional parent category for building a reusable category tree.',
+                description: 'Optional parent topic — e.g. "Research" could sit under "Academics".',
               },
             },
             {

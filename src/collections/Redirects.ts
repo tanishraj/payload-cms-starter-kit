@@ -147,7 +147,7 @@ export const Redirects: CollectionConfig = {
     plural: 'Redirects',
   },
   admin: {
-    group: 'Site Structure',
+    group: 'Navigation',
     hidden: hideFromUsersWithoutCapability('manage_redirects'),
     useAsTitle: 'fromPath',
     defaultColumns: ['fromPath', 'destinationType', 'statusCode', 'enabled', 'updatedAt'],

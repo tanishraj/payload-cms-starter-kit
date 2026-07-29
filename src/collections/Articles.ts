@@ -130,12 +130,13 @@ export const Articles: CollectionConfig = {
               fields: [
                 {
                   name: 'primaryCategory',
+                  label: 'Primary Topic',
                   type: 'relationship',
                   relationTo: 'categories',
                   required: true,
                   admin: {
                     description:
-                      'Primary category that owns article archive placement and related-content priority.',
+                      'Main editorial topic — owns the archive placement and related-content priority.',
                     width: '50%',
                   },
                 },
@@ -153,12 +154,13 @@ export const Articles: CollectionConfig = {
             },
             {
               name: 'categories',
+              label: 'Additional Topics',
               type: 'relationship',
               relationTo: 'categories',
               hasMany: true,
               admin: {
                 description:
-                  'Supporting categories for cross-linking. The primary category is always included automatically.',
+                  'Additional topics for cross-linking. The primary topic is always included automatically.',
               },
             },
             {

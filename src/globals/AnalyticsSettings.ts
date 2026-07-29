@@ -11,7 +11,7 @@ export const AnalyticsSettings: GlobalConfig = {
   slug: 'analytics-settings',
   label: 'Analytics & Tracking',
   admin: {
-    group: 'Configuration',
+    group: 'Settings',
     hidden: hideFromUsersWithoutCapability('manage_site_settings'),
     description: 'Configure Google Tag Manager and GA4 tracking for the site.',
   },
