@@ -145,8 +145,8 @@ importers:
         specifier: ^3.4.2
         version: 3.9.4
       shadcn:
-        specifier: ^4.13.0
-        version: 4.13.0(babel-plugin-macros@3.1.0)(supports-color@7.2.0)(typescript@5.7.3)
+        specifier: ^4.16.0
+        version: 4.16.0(babel-plugin-macros@3.1.0)(supports-color@7.2.0)(typescript@5.7.3)
       tsx:
         specifier: 4.21.0
         version: 4.21.0
@@ -5626,8 +5626,8 @@ packages:
   setprototypeof@1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}
 
-  shadcn@4.13.0:
-    resolution: {integrity: sha512-5fuJ4jI/GcPeA/iTL4cJivCZuYQGXz/N3bIzyd+Gd/FM6xUCy2MxGG+LaDQuw2cjNy9zGPSFPTEmI048UwPTZA==}
+  shadcn@4.16.0:
+    resolution: {integrity: sha512-kPr4RrQmbbZeAjwBYeBSpFvAHV8rkTlNPUluIxkRriq5TpevfFelVO5xvcF6oguHPVn0R6wPuVer4HudfcLy/A==}
     engines: {node: '>=20.18.1'}
     hasBin: true
 
@@ -12302,7 +12302,7 @@ snapshots:
 
   setprototypeof@1.2.0: {}
 
-  shadcn@4.13.0(babel-plugin-macros@3.1.0)(supports-color@7.2.0)(typescript@5.7.3):
+  shadcn@4.16.0(babel-plugin-macros@3.1.0)(supports-color@7.2.0)(typescript@5.7.3):
     dependencies:
       '@babel/core': 7.29.7(supports-color@7.2.0)
       '@babel/parser': 7.29.7
