@@ -49,7 +49,9 @@ function isMediaDocument(obj: Record<string, unknown>): boolean {
 }
 
 function isPageDocument(obj: Record<string, unknown>): boolean {
-  return typeof obj.slug === 'string' && 'layout' in obj
+  // Headers and Footers also have `slug` + `layout` — use `workflowState` as the
+  // page-only discriminator so their layout is never stripped.
+  return typeof obj.slug === 'string' && 'layout' in obj && 'workflowState' in obj
 }
 
 /**
