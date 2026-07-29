@@ -27,6 +27,8 @@ import { VideoEmbedBlockComponent } from './VideoEmbed/Component'
 import { MediaCarouselBlockComponent } from './MediaCarousel/Component'
 import { ProgramGridBlockComponent } from './ProgramGrid/Component'
 import { LogoStripBlockComponent } from './LogoStrip/Component'
+import { PageHeaderBlockComponent } from './PageHeader/Component'
+import { TimelineBlockComponent } from './Timeline/Component'
 import { BlockErrorBoundary } from './shared/BlockErrorBoundary'
 
 export type PageBlock = NonNullable<Page['layout']>[number]
@@ -98,6 +100,10 @@ function renderSingleBlock(block: PageBlock, index: number, depth = 0): React.Re
       return wrap(<ProgramGridBlockComponent {...block} />)
     case 'logoStrip':
       return wrap(<LogoStripBlockComponent {...block} />)
+    case 'pageHeader':
+      return wrap(<PageHeaderBlockComponent {...block} />)
+    case 'timeline':
+      return wrap(<TimelineBlockComponent {...block} />)
     case 'reusableSection': {
       const populated = block.section as PopulatedReusableSection | string | null | undefined
       if (!populated || typeof populated === 'string') return null

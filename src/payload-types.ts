@@ -211,6 +211,8 @@ export interface Page {
         | MediaCarouselBlock
         | ProgramGridBlock
         | LogoStripBlock
+        | PageHeaderBlock
+        | TimelineBlock
         | {
             /**
              * Select a reusable section to embed on this page.
@@ -1394,6 +1396,117 @@ export interface LogoStripBlock {
   blockType: 'logoStrip';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PageHeaderBlock".
+ */
+export interface PageHeaderBlock {
+  /**
+   * Navigation trail shown above the page title. Last item is treated as the current page (not a link).
+   */
+  breadcrumbs?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Small label above the page title.
+   */
+  eyebrow?: string | null;
+  title: string;
+  /**
+   * Supporting line below the title.
+   */
+  subtitle?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Used by the Banner and Split variants.
+   */
+  backgroundImage?: (string | null) | Media;
+  /**
+   * Displayed in the right panel for the Split variant (e.g. Duration: 4 Years).
+   */
+  keyFacts?:
+    | {
+        /**
+         * e.g. Duration, Intake, Mode, Eligibility
+         */
+        label: string;
+        /**
+         * e.g. 4 Years, 60 Seats, Full Time
+         */
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  variant: 'minimal' | 'banner' | 'split';
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  actionMode: 'link' | 'button';
+  contentAlignment: 'left' | 'center';
+  overlayStyle: 'light' | 'dark' | 'darker';
+  height: 'compact' | 'default' | 'immersive';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pageHeader';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TimelineBlock".
+ */
+export interface TimelineBlock {
+  /**
+   * Small label above the section title.
+   */
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  items?:
+    | {
+        /**
+         * e.g. March 2024, Week 1, Step 1, or left blank to auto-number.
+         */
+        date?: string | null;
+        /**
+         * Optional status indicator — useful for Horizontal Steps variant.
+         */
+        badge?: ('none' | 'done' | 'active' | 'upcoming') | null;
+        title: string;
+        description?: string | null;
+        /**
+         * Optional image shown in the media column (Alternating variant).
+         */
+        image?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  variant: 'horizontal' | 'vertical' | 'alternating';
+  contentAlignment: 'left' | 'center';
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'timeline';
+}
+/**
  * Shared block groups that sync across every page that references them. Edit once, update everywhere.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1432,6 +1545,8 @@ export interface ReusableSection {
         | MediaCarouselBlock
         | ProgramGridBlock
         | LogoStripBlock
+        | PageHeaderBlock
+        | TimelineBlock
       )[]
     | null;
   updatedAt: string;
@@ -2618,6 +2733,8 @@ export interface PagesSelect<T extends boolean = true> {
         mediaCarousel?: T | MediaCarouselBlockSelect<T>;
         programGrid?: T | ProgramGridBlockSelect<T>;
         logoStrip?: T | LogoStripBlockSelect<T>;
+        pageHeader?: T | PageHeaderBlockSelect<T>;
+        timeline?: T | TimelineBlockSelect<T>;
         reusableSection?:
           | T
           | {
@@ -3500,6 +3617,86 @@ export interface LogoStripBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PageHeaderBlock_select".
+ */
+export interface PageHeaderBlockSelect<T extends boolean = true> {
+  breadcrumbs?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        id?: T;
+      };
+  eyebrow?: T;
+  title?: T;
+  subtitle?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
+  backgroundImage?: T;
+  keyFacts?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  variant?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  actionMode?: T;
+  contentAlignment?: T;
+  overlayStyle?: T;
+  height?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TimelineBlock_select".
+ */
+export interface TimelineBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  items?:
+    | T
+    | {
+        date?: T;
+        badge?: T;
+        title?: T;
+        description?: T;
+        image?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  variant?: T;
+  contentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories_select".
  */
 export interface CategoriesSelect<T extends boolean = true> {
@@ -3705,6 +3902,8 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         mediaCarousel?: T | MediaCarouselBlockSelect<T>;
         programGrid?: T | ProgramGridBlockSelect<T>;
         logoStrip?: T | LogoStripBlockSelect<T>;
+        pageHeader?: T | PageHeaderBlockSelect<T>;
+        timeline?: T | TimelineBlockSelect<T>;
       };
   updatedAt?: T;
   createdAt?: T;

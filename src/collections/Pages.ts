@@ -26,6 +26,8 @@ import { VideoEmbedBlock } from '@/blocks/VideoEmbed/config'
 import { MediaCarouselBlock } from '@/blocks/MediaCarousel/config'
 import { ProgramGridBlock } from '@/blocks/ProgramGrid/config'
 import { LogoStripBlock } from '@/blocks/LogoStrip/config'
+import { PageHeaderBlock } from '@/blocks/PageHeader/config'
+import { TimelineBlock } from '@/blocks/Timeline/config'
 import type { Page } from '@/payload-types'
 import {
   allowPublicReadOrCapability,
@@ -246,6 +248,8 @@ export const Pages: CollectionConfig = {
                 MediaCarouselBlock,
                 ProgramGridBlock,
                 LogoStripBlock,
+                PageHeaderBlock,
+                TimelineBlock,
                 ReusableSectionBlock,
               ],
               required: false,
