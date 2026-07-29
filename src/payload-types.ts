@@ -698,6 +698,7 @@ export interface EventGalleryBlock {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  cardTextLayout: 'split' | 'center';
   contentAlignment: 'left' | 'center' | 'right';
   size: 'compact' | 'default' | 'comfortable';
   id?: string | null;
@@ -3675,6 +3676,7 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  cardTextLayout?: T;
   contentAlignment?: T;
   size?: T;
   id?: T;

@@ -1,5 +1,6 @@
 import type { Block, SelectField, TabsField } from 'payload'
 
+
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 
@@ -68,6 +69,17 @@ export const EventGalleryBlock: Block = {
           label: 'Layout & Theme',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
+            {
+              name: 'cardTextLayout',
+              label: 'Card Text Placement',
+              type: 'select',
+              defaultValue: 'center',
+              options: [
+                { label: 'Split — title left, count right', value: 'split' },
+                { label: 'Center — all text centered', value: 'center' },
+              ],
+              required: true,
+            } satisfies SelectField,
             {
               name: 'contentAlignment',
               label: 'Content Alignment',

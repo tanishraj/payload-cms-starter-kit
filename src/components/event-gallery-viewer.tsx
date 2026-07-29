@@ -83,16 +83,12 @@ export function EventGalleryViewer({
       hideAnimationDuration: 160,
       loop: hasMultipleImages,
       mainClass: 'event-gallery-lightbox',
-      paddingFn: (viewportSize) => {
-        const showSidePreviewLane = hasMultipleImages && viewportSize.x >= 1024
-
-        return {
-          bottom: hasMultipleImages ? (viewportSize.x < 640 ? 116 : 128) : 24,
-          left: showSidePreviewLane ? 132 : 16,
-          right: showSidePreviewLane ? 132 : 16,
-          top: 72,
-        }
-      },
+      paddingFn: (viewportSize) => ({
+        bottom: hasMultipleImages ? (viewportSize.x < 640 ? 112 : 124) : 24,
+        left: 16,
+        right: 16,
+        top: 68,
+      }),
       pswpModule: () => import('photoswipe'),
       returnFocus: true,
       showAnimationDuration: 180,

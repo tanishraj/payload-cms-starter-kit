@@ -11,12 +11,14 @@ import type { EventGalleryAlbum } from '@/lib/eventGalleryShared'
 import { cn } from '@/lib/utils'
 
 export type EventGalleryAlignment = 'center' | 'left' | 'right'
+export type EventGalleryCardTextLayout = 'center' | 'split'
 export type EventGallerySize = 'comfortable' | 'compact' | 'default'
 
 type EventGalleryProps = {
   albums: EventGalleryAlbum[]
   alignment?: EventGalleryAlignment
   appearance?: BlockAppearance | null
+  cardTextLayout?: EventGalleryCardTextLayout
   className?: string
   description?: string | null
   eyebrow?: string | null
@@ -40,6 +42,7 @@ export function EventGallery({
   albums,
   alignment = 'left',
   appearance,
+  cardTextLayout = 'center',
   className,
   description,
   eyebrow,
@@ -80,7 +83,7 @@ export function EventGallery({
         </div>
 
         <div className={gridMarginClasses[size]}>
-          <EventGalleryClient albums={albums} />
+          <EventGalleryClient albums={albums} cardTextLayout={cardTextLayout} />
         </div>
       </div>
     </section>

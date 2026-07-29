@@ -2,6 +2,7 @@ import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
 import {
   EventGallery,
   type EventGalleryAlignment,
+  type EventGalleryCardTextLayout,
   type EventGallerySize,
 } from '@/components/event-gallery'
 import type {
@@ -11,6 +12,7 @@ import type {
 
 export type EventGalleryBlockLike = {
   appearance?: BlockAppearance | null
+  cardTextLayout?: EventGalleryCardTextLayout | null
   contentAlignment?: EventGalleryAlignment | null
   description?: string | null
   displayOrder?: EventGalleryDisplayOrder | null
@@ -23,6 +25,7 @@ export type EventGalleryBlockLike = {
 export function EventGalleryBlockPresentation({
   albums,
   appearance,
+  cardTextLayout,
   contentAlignment = 'left',
   description,
   eyebrow,
@@ -40,6 +43,7 @@ export function EventGalleryBlockPresentation({
       albums={albums}
       alignment={contentAlignment ?? 'left'}
       appearance={appearance}
+      cardTextLayout={cardTextLayout ?? 'center'}
       description={description?.trim() || undefined}
       eyebrow={eyebrow?.trim() || undefined}
       size={size ?? 'default'}
