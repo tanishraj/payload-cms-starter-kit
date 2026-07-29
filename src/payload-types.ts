@@ -208,6 +208,7 @@ export interface Page {
         | Services21Block
         | RichTextBlock
         | VideoEmbedBlock
+        | MediaCarouselBlock
         | {
             /**
              * Select a reusable section to embed on this page.
@@ -1210,6 +1211,73 @@ export interface VideoEmbedBlock {
   blockType: 'videoEmbed';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaCarouselBlock".
+ */
+export interface MediaCarouselBlock {
+  /**
+   * Small label above the section title.
+   */
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  /**
+   * Each slide can display a video or image. Videos play on hover automatically.
+   */
+  items?:
+    | {
+        /**
+         * Upload a video (.mp4, .webm) or image. Type is detected from the file.
+         */
+        media: string | Media;
+        /**
+         * Optional icon overlaid on the media thumbnail.
+         */
+        icon?:
+          | (
+              | 'Star'
+              | 'Zap'
+              | 'Eye'
+              | 'Shield'
+              | 'Globe'
+              | 'Code2'
+              | 'Layers'
+              | 'Settings2'
+              | 'Users'
+              | 'BarChart2'
+              | 'Lock'
+              | 'Play'
+              | 'Rocket'
+              | 'Sparkles'
+              | 'Target'
+              | 'Award'
+              | 'Music'
+              | 'Mic'
+            )
+          | null;
+        title: string;
+        /**
+         * Short supporting text shown below the title.
+         */
+        summary?: string | null;
+        linkType?: ('none' | 'page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  contentAlignment: 'left' | 'center';
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaCarousel';
+}
+/**
  * Shared block groups that sync across every page that references them. Edit once, update everywhere.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1245,6 +1313,7 @@ export interface ReusableSection {
         | Services21Block
         | RichTextBlock
         | VideoEmbedBlock
+        | MediaCarouselBlock
       )[]
     | null;
   updatedAt: string;
@@ -2428,6 +2497,7 @@ export interface PagesSelect<T extends boolean = true> {
         services21?: T | Services21BlockSelect<T>;
         richText?: T | RichTextBlockSelect<T>;
         videoEmbed?: T | VideoEmbedBlockSelect<T>;
+        mediaCarousel?: T | MediaCarouselBlockSelect<T>;
         reusableSection?:
           | T
           | {
@@ -3210,6 +3280,38 @@ export interface VideoEmbedBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaCarouselBlock_select".
+ */
+export interface MediaCarouselBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  items?:
+    | T
+    | {
+        media?: T;
+        icon?: T;
+        title?: T;
+        summary?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories_select".
  */
 export interface CategoriesSelect<T extends boolean = true> {
@@ -3412,6 +3514,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         services21?: T | Services21BlockSelect<T>;
         richText?: T | RichTextBlockSelect<T>;
         videoEmbed?: T | VideoEmbedBlockSelect<T>;
+        mediaCarousel?: T | MediaCarouselBlockSelect<T>;
       };
   updatedAt?: T;
   createdAt?: T;

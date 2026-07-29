@@ -23,6 +23,7 @@ import { FeatureSpotlightBlock } from '@/blocks/FeatureSpotlight/config'
 import { ReusableSectionBlock } from '@/blocks/ReusableSection/config'
 import { RichTextBlock } from '@/blocks/RichTextBlock/config'
 import { VideoEmbedBlock } from '@/blocks/VideoEmbed/config'
+import { MediaCarouselBlock } from '@/blocks/MediaCarousel/config'
 import type { Page } from '@/payload-types'
 import {
   allowPublicReadOrCapability,
@@ -240,6 +241,7 @@ export const Pages: CollectionConfig = {
                 Services21Block,
                 RichTextBlock,
                 VideoEmbedBlock,
+                MediaCarouselBlock,
                 ReusableSectionBlock,
               ],
               required: false,

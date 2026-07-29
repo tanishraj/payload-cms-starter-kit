@@ -22,6 +22,7 @@ import { TeamShowcaseBlock } from '@/blocks/TeamShowcase/config'
 import { FeatureSpotlightBlock } from '@/blocks/FeatureSpotlight/config'
 import { RichTextBlock } from '@/blocks/RichTextBlock/config'
 import { VideoEmbedBlock } from '@/blocks/VideoEmbed/config'
+import { MediaCarouselBlock } from '@/blocks/MediaCarousel/config'
 import {
   allowPublicReadOrCapability,
   hideFromUsersWithoutCapability,
@@ -98,6 +99,7 @@ export const ReusableSections: CollectionConfig = {
         Services21Block,
         RichTextBlock,
         VideoEmbedBlock,
+        MediaCarouselBlock,
       ],
     },
   ],
