@@ -239,6 +239,9 @@ export const NewsEvents: CollectionConfig = {
         },
         {
           label: 'Event Details',
+          admin: {
+            condition: isEventEntry,
+          },
           fields: [
             {
               type: 'row',
