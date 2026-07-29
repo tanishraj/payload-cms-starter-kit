@@ -1,6 +1,10 @@
-import type { ArrayField, Block, RadioField, SelectField, TabsField } from 'payload'
+import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import {
+  createContentActionModeField,
+  createContentActionsField,
+} from '@/blocks/shared/contentActionsFields'
 
 const ICON_OPTIONS = [
   { label: 'Star', value: 'Star' },
@@ -22,19 +26,6 @@ const ICON_OPTIONS = [
   { label: 'Music', value: 'Music' },
   { label: 'Mic', value: 'Mic' },
 ]
-
-type ItemSiblingData = {
-  linkType?: 'none' | 'page' | 'custom' | null
-}
-
-const isPageLink = (_data: unknown, siblingData: ItemSiblingData) =>
-  siblingData?.linkType === 'page'
-
-const isCustomLink = (_data: unknown, siblingData: ItemSiblingData) =>
-  siblingData?.linkType === 'custom'
-
-const hasLink = (_data: unknown, siblingData: ItemSiblingData) =>
-  siblingData?.linkType !== 'none' && siblingData?.linkType != null
 
 const itemsField: ArrayField = {
   name: 'items',
@@ -78,44 +69,7 @@ const itemsField: ArrayField = {
         description: 'Short supporting text shown below the title.',
       },
     },
-    {
-      name: 'linkType',
-      label: 'Link',
-      type: 'radio',
-      defaultValue: 'none',
-      options: [
-        { label: 'None', value: 'none' },
-        { label: 'Page', value: 'page' },
-        { label: 'Custom URL', value: 'custom' },
-      ],
-      admin: {
-        layout: 'horizontal',
-      },
-    } satisfies RadioField,
-    {
-      name: 'page',
-      type: 'relationship',
-      relationTo: 'pages',
-      admin: {
-        condition: isPageLink,
-      },
-    },
-    {
-      name: 'url',
-      label: 'Custom URL',
-      type: 'text',
-      admin: {
-        condition: isCustomLink,
-      },
-    },
-    {
-      name: 'openInNewTab',
-      type: 'checkbox',
-      defaultValue: false,
-      admin: {
-        condition: hasLink,
-      },
-    },
+    createContentActionsField({ maxRows: 1, label: 'Action', name: 'actions' }),
   ],
 }
 
@@ -157,6 +111,33 @@ export const MediaCarouselBlock: Block = {
           label: 'Layout & Theme',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
+            createContentActionModeField(),
+            {
+              name: 'actionVariant',
+              label: 'Button Variant',
+              type: 'select',
+              defaultValue: 'default',
+              options: [
+                { label: 'Primary', value: 'default' },
+                { label: 'Secondary', value: 'secondary' },
+                { label: 'Outline', value: 'outline' },
+              ],
+              admin: {
+                condition: (_, siblingData) => siblingData?.actionMode === 'button',
+              },
+            } satisfies SelectField,
+            {
+              name: 'columns',
+              label: 'Columns',
+              type: 'select',
+              defaultValue: '3',
+              options: [
+                { label: '2 columns', value: '2' },
+                { label: '3 columns', value: '3' },
+                { label: '4 columns', value: '4' },
+              ],
+              required: true,
+            } satisfies SelectField,
             {
               name: 'contentAlignment',
               label: 'Header Alignment',

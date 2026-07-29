@@ -1337,10 +1337,17 @@ export interface MediaCarouselBlock {
          * Short supporting text shown below the title.
          */
         summary?: string | null;
-        linkType?: ('none' | 'page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
+        actions?:
+          | {
+              label: string;
+              linkType?: ('page' | 'custom') | null;
+              page?: (string | null) | Page;
+              url?: string | null;
+              openInNewTab?: boolean | null;
+              variant: 'default' | 'secondary' | 'outline';
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -1348,6 +1355,9 @@ export interface MediaCarouselBlock {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  actionMode: 'link' | 'button';
+  actionVariant?: ('default' | 'secondary' | 'outline') | null;
+  columns: '2' | '3' | '4';
   contentAlignment: 'left' | 'center';
   size: 'compact' | 'default' | 'comfortable';
   id?: string | null;
@@ -4105,10 +4115,17 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
         icon?: T;
         title?: T;
         summary?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
+        actions?:
+          | T
+          | {
+              label?: T;
+              linkType?: T;
+              page?: T;
+              url?: T;
+              openInNewTab?: T;
+              variant?: T;
+              id?: T;
+            };
         id?: T;
       };
   appearance?:
@@ -4117,6 +4134,9 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  actionMode?: T;
+  actionVariant?: T;
+  columns?: T;
   contentAlignment?: T;
   size?: T;
   id?: T;

@@ -1,28 +1,24 @@
 import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
 import type { RegularBlockSize } from '@/blocks/shared/blockSpacing'
 import { getMediaAbsoluteUrl, isMediaDoc } from '@/lib/media'
+import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@/lib/cmsLinks'
 import type { Media } from '@/payload-types'
 
 import { MediaCarouselClient, type MediaCarouselItem } from './MediaCarouselClient'
 
-type PageDoc = {
-  publicUrlPreview?: string | null
-  slug?: string | null
-}
-
 type MediaCarouselItemValue = {
+  actions?: CmsActionValue[] | null
   icon?: string | null
-  linkType?: 'none' | 'page' | 'custom' | null
   media?: unknown
-  openInNewTab?: boolean | null
-  page?: unknown
   summary?: string | null
   title?: string | null
-  url?: string | null
 }
 
 type MediaCarouselBlockLike = {
+  actionMode?: 'button' | 'link' | null
+  actionVariant?: CmsActionVariant | null
   appearance?: BlockAppearance | null
+  columns?: '2' | '3' | '4' | null
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
@@ -32,7 +28,10 @@ type MediaCarouselBlockLike = {
 }
 
 export function MediaCarouselBlockComponent({
+  actionMode,
+  actionVariant,
   appearance,
+  columns,
   contentAlignment = 'center',
   description,
   eyebrow,
@@ -59,13 +58,7 @@ export function MediaCarouselBlockComponent({
           ? 'video'
           : 'image'
 
-      let href: string | undefined
-      if (item.linkType === 'page') {
-        const pageDoc = item.page as PageDoc | null | undefined
-        href = pageDoc?.publicUrlPreview ?? undefined
-      } else if (item.linkType === 'custom') {
-        href = item.url?.trim() || undefined
-      }
+      const resolvedActions = resolveCmsActions(item.actions)
 
       return [
         {
@@ -78,8 +71,7 @@ export function MediaCarouselBlockComponent({
           icon: item.icon ?? undefined,
           title: itemTitle,
           summary: item.summary?.trim() || undefined,
-          href,
-          openInNewTab: item.openInNewTab ?? false,
+          action: resolvedActions[0],
         },
       ]
     },
@@ -89,9 +81,14 @@ export function MediaCarouselBlockComponent({
 
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
 
+  const resolvedColumns = (Number(columns ?? '3') as 2 | 3 | 4) || 3
+
   return (
     <MediaCarouselClient
+      actionMode={actionMode ?? 'link'}
+      actionVariant={actionVariant ?? 'default'}
       appearance={appearanceClassName}
+      columns={resolvedColumns}
       contentAlignment={contentAlignment ?? 'center'}
       description={description?.trim() || undefined}
       eyebrow={eyebrow?.trim() || undefined}

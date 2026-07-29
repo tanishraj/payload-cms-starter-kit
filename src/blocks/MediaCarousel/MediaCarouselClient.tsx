@@ -24,7 +24,6 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
-import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card'
 import {
   Carousel,
   CarouselContent,
@@ -32,6 +31,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
+import { Button } from '@/components/ui/button'
+import { ContentLink } from '@/components/ContentLink'
+import type { CmsActionVariant, ResolvedCmsAction } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 import {
   regularBlockMobilePaddingClasses,
@@ -69,12 +71,14 @@ export type MediaCarouselItem = {
   icon?: string
   title: string
   summary?: string
-  href?: string
-  openInNewTab?: boolean
+  action?: ResolvedCmsAction
 }
 
 type MediaCarouselClientProps = {
+  actionMode: 'button' | 'link'
+  actionVariant: CmsActionVariant
   appearance?: string
+  columns: 2 | 3 | 4
   contentAlignment: 'left' | 'center'
   description?: string
   eyebrow?: string
@@ -83,51 +87,76 @@ type MediaCarouselClientProps = {
   title: string
 }
 
-function MediaCard({ item }: { item: MediaCarouselItem }) {
+function MediaCard({
+  item,
+  actionMode,
+  actionVariant,
+}: {
+  item: MediaCarouselItem
+  actionMode: 'button' | 'link'
+  actionVariant: CmsActionVariant
+}) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const Icon = item.icon ? ICON_MAP[item.icon] : undefined
 
   const cardInner = (
-    <Card className="h-full min-h-[22rem] bg-muted p-6 shadow-none transition-all group-hover:shadow-md">
-      <CardContent className="p-0">
-        <div className="relative">
-          <div className="relative aspect-video overflow-hidden rounded-lg">
-            {item.mediaType === 'video' ? (
-              <video
-                ref={videoRef}
-                src={item.src}
-                className="block size-full object-cover object-center"
-                controls={false}
-                muted
-                playsInline
-                preload="none"
-              />
+    <div className="flex h-full flex-col overflow-hidden rounded-xl border border-border">
+      <div className="relative aspect-video w-full overflow-hidden">
+        {item.mediaType === 'video' ? (
+          <video
+            ref={videoRef}
+            src={item.src}
+            className="block size-full object-cover object-center"
+            controls={false}
+            muted
+            playsInline
+            preload="none"
+          />
+        ) : (
+          <Image
+            src={item.src}
+            alt={item.alt}
+            fill
+            className="object-cover object-center"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          />
+        )}
+        {Icon ? (
+          <div className="absolute left-3 top-3 flex size-8 items-center justify-center rounded-lg bg-primary">
+            <Icon className="size-4 text-primary-foreground" />
+          </div>
+        ) : null}
+      </div>
+      <div className="flex flex-col gap-2 p-5">
+        <p className="text-base font-semibold leading-snug tracking-tight text-foreground">
+          {item.title}
+        </p>
+        {item.summary ? (
+          <p className="text-sm leading-relaxed text-muted-foreground">{item.summary}</p>
+        ) : null}
+        {item.action ? (
+          <div className="mt-2">
+            {actionMode === 'button' ? (
+              <Button asChild size="sm" variant={actionVariant}>
+                <a
+                  href={item.action.href}
+                  rel={item.action.openInNewTab ? 'noreferrer' : undefined}
+                  target={item.action.openInNewTab ? '_blank' : undefined}
+                >
+                  {item.action.label}
+                </a>
+              </Button>
             ) : (
-              <Image
-                src={item.src}
-                alt={item.alt}
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              <ContentLink
+                href={item.action.href}
+                label={item.action.label}
+                openInNewTab={item.action.openInNewTab}
               />
             )}
           </div>
-          {Icon ? (
-            <div className="absolute -left-2 -top-3 flex size-9 items-center justify-center rounded-lg bg-primary">
-              <Icon className="size-4 text-primary-foreground" />
-            </div>
-          ) : null}
-        </div>
-        <div className="mt-6 flex flex-col gap-2">
-          <CardTitle className="text-lg font-medium leading-snug tracking-tight text-foreground">
-            {item.title}
-          </CardTitle>
-          {item.summary ? (
-            <CardDescription className="text-sm leading-relaxed">{item.summary}</CardDescription>
-          ) : null}
-        </div>
-      </CardContent>
-    </Card>
+        ) : null}
+      </div>
+    </div>
   )
 
   const videoHandlers =
@@ -143,20 +172,6 @@ function MediaCard({ item }: { item: MediaCarouselItem }) {
         }
       : {}
 
-  if (item.href) {
-    return (
-      <a
-        href={item.href}
-        target={item.openInNewTab ? '_blank' : undefined}
-        rel={item.openInNewTab ? 'noopener noreferrer' : undefined}
-        className="group block h-full"
-        {...videoHandlers}
-      >
-        {cardInner}
-      </a>
-    )
-  }
-
   return (
     <div className="group h-full" {...videoHandlers}>
       {cardInner}
@@ -165,7 +180,10 @@ function MediaCard({ item }: { item: MediaCarouselItem }) {
 }
 
 export function MediaCarouselClient({
+  actionMode = 'link',
+  actionVariant = 'default',
   appearance,
+  columns = 3,
   contentAlignment,
   description,
   eyebrow,
@@ -185,7 +203,7 @@ export function MediaCarouselClient({
           )}
         >
           {eyebrow ? (
-            <p className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
               {eyebrow}
             </p>
           ) : null}
@@ -198,12 +216,17 @@ export function MediaCarouselClient({
         </div>
         <Carousel opts={{ align: 'start' }} className="w-full">
           <CarouselContent className="py-4">
-            {items.map((item) => (
+            {items.map((item, index) => (
               <CarouselItem
-                key={String(item.id)}
-                className="basis-full md:basis-1/2 lg:basis-1/3"
+                key={`${String(item.id)}-${index}`}
+                className={cn(
+                  'basis-full sm:basis-1/2',
+                  columns === 2 && 'lg:basis-1/2',
+                  columns === 3 && 'lg:basis-1/3',
+                  columns === 4 && 'lg:basis-1/4',
+                )}
               >
-                <MediaCard item={item} />
+                <MediaCard item={item} actionMode={actionMode} actionVariant={actionVariant} />
               </CarouselItem>
             ))}
           </CarouselContent>
