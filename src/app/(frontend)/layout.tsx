@@ -24,6 +24,7 @@ import { getSiteURL } from '@/lib/siteUrl'
 import { defaultWebsiteTheme, isWebsiteTheme } from '@/lib/themes/websiteThemes'
 import type { Footer, Header, Page } from '@/payload-types'
 import { CMS_CACHE_TAGS } from '@/hooks/revalidateCmsContent'
+import { stripInternalMediaFields } from '@/lib/stripInternalMediaFields'
 
 export const dynamic = 'force-dynamic'
 
@@ -38,7 +39,7 @@ const _getFrontendGlobals = async () => {
     await Promise.all([
       payload.findGlobal({ slug: 'theme-settings', depth: 0 }),
       payload.findGlobal({ slug: 'seo-settings', depth: 1 }),
-      payload.findGlobal({ slug: 'site-settings', depth: 2 }),
+      payload.findGlobal({ slug: 'site-settings', depth: 1 }),
       payload.findGlobal({ slug: 'page-settings', depth: 0 }),
       payload.findGlobal({ slug: 'analytics-settings', depth: 0 }),
     ])
@@ -106,7 +107,7 @@ const _getFrontendGlobals = async () => {
 
   const activeFooter = (activeFooterResult?.docs[0] ?? null) as Footer | null
 
-  return {
+  return stripInternalMediaFields({
     activeFooter,
     activeHeader,
     analyticsSettings,
@@ -114,7 +115,7 @@ const _getFrontendGlobals = async () => {
     seoSettings,
     siteSettings,
     themeSettings,
-  }
+  })
 }
 
 const getFrontendGlobals = unstable_cache(_getFrontendGlobals, ['frontend-globals'], {

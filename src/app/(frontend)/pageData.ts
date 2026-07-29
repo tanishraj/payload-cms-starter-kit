@@ -11,6 +11,7 @@ import type { Media, Page, SeoSetting, SystemPage } from '@/payload-types'
 import { getPageHref, getPageSlugSegments } from '@/lib/pagePaths'
 import type { SystemPageType } from '@/lib/systemPageTypes'
 import { CMS_CACHE_TAGS } from '@/hooks/revalidateCmsContent'
+import { stripInternalMediaFields } from '@/lib/stripInternalMediaFields'
 
 const extractRelationshipID = (
   value: string | number | Page | SystemPage | null | undefined,
@@ -26,34 +27,6 @@ const extractRelationshipID = (
   return null
 }
 
-/**
- * Recursively strips the `sizes` field from every Media-like object in the
- * document tree before it enters unstable_cache.
- *
- * Payload populates `sizes` with pre-generated crop variants (thumbnail, card,
- * tablet, desktop …). Frontend components never read those variants — they
- * always go through getMediaAbsoluteUrl which only uses `media.url`. Stripping
- * `sizes` reduces cache payloads from ~16 MB to well under 2 MB on image-heavy
- * pages, staying within Next.js's 2 MB per-item cache limit.
- */
-function stripMediaSizes<T>(value: T): T {
-  if (!value || typeof value !== 'object') return value
-  if (Array.isArray(value)) return value.map(stripMediaSizes) as unknown as T
-
-  const obj = value as Record<string, unknown>
-
-  // Detect a populated Media document: has `url`, `filename`, and `sizes`.
-  if (typeof obj.url === 'string' && typeof obj.filename === 'string' && obj.sizes != null) {
-    const { sizes: _dropped, ...rest } = obj
-    return Object.fromEntries(
-      Object.entries(rest).map(([k, v]) => [k, stripMediaSizes(v)]),
-    ) as unknown as T
-  }
-
-  return Object.fromEntries(
-    Object.entries(obj).map(([k, v]) => [k, stripMediaSizes(v)]),
-  ) as unknown as T
-}
 
 const _getPageSettings = async () => {
   const payload = await getPayload({ config: configPromise })
@@ -113,7 +86,8 @@ const _getPublishedPageByID = async ({
     limit: 1,
   })
 
-  return stripMediaSizes(result.docs[0] ?? null)
+  const raw = result.docs[0] ?? null
+  return stripInternalMediaFields(raw, /* isRootDocument */ true)
 }
 
 const getPublishedPageByID = unstable_cache(
@@ -134,7 +108,7 @@ const _getPageBySlug = async (slug: string): Promise<Page | null> => {
     limit: 1,
   })
 
-  return stripMediaSizes(result.docs[0] ?? null)
+  return stripInternalMediaFields(result.docs[0] ?? null, true)
 }
 
 export const getPageBySlug = unstable_cache(_getPageBySlug, ['page-by-slug'], {
@@ -169,7 +143,7 @@ const _getPageByPathname = async (pathname: string): Promise<Page | null> => {
 
   const resolvedSegments = getPageSlugSegments(page)
 
-  return resolvedSegments.join('/') === pathname ? stripMediaSizes(page) : null
+  return resolvedSegments.join('/') === pathname ? stripInternalMediaFields(page, true) : null
 }
 
 const getPageByPathname = unstable_cache(_getPageByPathname, ['page-by-pathname'], {
@@ -345,7 +319,7 @@ const getPublishedSystemPageByID = async ({
     limit: 1,
   })
 
-  return stripMediaSizes(result.docs[0] ?? null)
+  return stripInternalMediaFields(result.docs[0] ?? null, true)
 }
 
 const getSystemBehaviorPages = async () => {
