@@ -5,7 +5,6 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
-import { validateHttpsUrl } from '@/lib/siteOfficesShared'
 import { revalidateGlobalsCacheForGlobal } from '@/hooks/revalidateCmsContent'
 
 const validateExternalSocialUrl = (value: unknown) => {
@@ -113,91 +112,6 @@ export const SiteSettings: GlobalConfig = {
               name: 'googleMapEmbedUrl',
               label: 'Google Map Embed URL',
               type: 'text',
-            },
-            {
-              name: 'officeLocations',
-              label: 'Office Locations',
-              type: 'array',
-              admin: {
-                description:
-                  'Shared office directory used by Regional Offices blocks. Drag rows to control display order.',
-                initCollapsed: true,
-              },
-              fields: [
-                {
-                  name: 'showAddressDetails',
-                  label: 'Show Address Details',
-                  type: 'checkbox',
-                  defaultValue: true,
-                  admin: {
-                    description: 'When unchecked, only the interactive map is shown — address, phone, and email are hidden.',
-                  },
-                },
-                {
-                  name: 'region',
-                  type: 'text',
-                  admin: {
-                    condition: (_, siblingData) => siblingData?.showAddressDetails !== false,
-                  },
-                },
-                {
-                  name: 'city',
-                  type: 'text',
-                  admin: {
-                    condition: (_, siblingData) => siblingData?.showAddressDetails !== false,
-                  },
-                },
-                {
-                  name: 'address',
-                  type: 'textarea',
-                  admin: {
-                    condition: (_, siblingData) => siblingData?.showAddressDetails !== false,
-                  },
-                },
-                {
-                  name: 'phone',
-                  type: 'text',
-                  admin: {
-                    condition: (_, siblingData) => siblingData?.showAddressDetails !== false,
-                  },
-                },
-                {
-                  name: 'email',
-                  type: 'email',
-                  admin: {
-                    condition: (_, siblingData) => siblingData?.showAddressDetails !== false,
-                  },
-                },
-                {
-                  name: 'mapEmbedUrl',
-                  label: 'Interactive Map Embed URL',
-                  type: 'text',
-                  required: true,
-                  validate: validateHttpsUrl,
-                  admin: {
-                    description: 'Paste the HTTPS URL from the map provider embed code.',
-                  },
-                },
-                {
-                  name: 'mapUrl',
-                  label: 'External Map URL',
-                  type: 'text',
-                  required: true,
-                  validate: validateHttpsUrl,
-                  admin: {
-                    description: 'Full HTTPS destination opened by View on Map.',
-                  },
-                },
-                {
-                  name: 'mapTitle',
-                  label: 'Accessible Map Title',
-                  type: 'text',
-                  admin: {
-                    description: 'For example: Interactive map for the Dubai office.',
-                    condition: (_, siblingData) => siblingData?.showAddressDetails !== false,
-                  },
-                },
-              ],
             },
           ],
         },

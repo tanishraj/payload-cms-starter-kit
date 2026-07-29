@@ -8,6 +8,7 @@ export type Contact24BlockLike = {
   description?: string | null
   detailsAlignment?: Contact24DetailsAlignment | null
   eyebrow?: string | null
+  offices?: (string | { id: string })[] | null
   showAddressDetails?: boolean | null
   size?: 'comfortable' | 'compact' | 'default' | null
   title?: string | null

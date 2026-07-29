@@ -19,6 +19,7 @@ import { Redirects } from './collections/Redirects'
 import { Reviews } from './collections/Reviews'
 import { Tags } from './collections/Tags'
 import { Headers } from './collections/Headers'
+import { OfficeLocations } from './collections/OfficeLocations'
 import { OperationalAuditEvents } from './collections/OperationalAuditEvents'
 import { WorkQueue } from './collections/WorkQueue'
 import { SystemPages } from './collections/SystemPages'
@@ -71,6 +72,7 @@ export default buildConfig({
     NavigationLinks,
     Headers,
     Footers,
+    OfficeLocations,
     Redirects,
     SystemPages,
     // Media

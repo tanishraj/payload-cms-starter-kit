@@ -77,6 +77,7 @@ export interface Config {
     'navigation-links': NavigationLink;
     headers: Header;
     footers: Footer;
+    'office-locations': OfficeLocation;
     redirects: Redirect;
     'system-pages': SystemPage;
     media: Media;
@@ -103,6 +104,7 @@ export interface Config {
     'navigation-links': NavigationLinksSelect<false> | NavigationLinksSelect<true>;
     headers: HeadersSelect<false> | HeadersSelect<true>;
     footers: FootersSelect<false> | FootersSelect<true>;
+    'office-locations': OfficeLocationsSelect<false> | OfficeLocationsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     'system-pages': SystemPagesSelect<false> | SystemPagesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -1070,6 +1072,10 @@ export interface Contact24Block {
   eyebrow?: string | null;
   title: string;
   description?: string | null;
+  /**
+   * Leave empty to show all published offices. Select specific offices to show only those, in the order chosen.
+   */
+  offices?: (string | OfficeLocation)[] | null;
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
@@ -1081,6 +1087,43 @@ export interface Contact24Block {
   id?: string | null;
   blockName?: string | null;
   blockType: 'contact24';
+}
+/**
+ * Office locations used by Regional Offices (Contact24) blocks. Each entry can be placed on any page independently.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "office-locations".
+ */
+export interface OfficeLocation {
+  id: string;
+  city: string;
+  /**
+   * e.g. "North America", "Middle East", "India"
+   */
+  region?: string | null;
+  /**
+   * When unchecked only the interactive map is shown — address, phone and email are hidden.
+   */
+  showAddressDetails?: boolean | null;
+  address?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  /**
+   * Paste the HTTPS embed URL from Google Maps / other map provider.
+   */
+  mapEmbedUrl: string;
+  /**
+   * Full HTTPS URL opened when the visitor clicks "View on Map".
+   */
+  mapUrl: string;
+  /**
+   * Screen-reader title for the map iframe, e.g. "Interactive map for the Dubai office".
+   */
+  mapTitle?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3099,6 +3142,10 @@ export interface PayloadLockedDocument {
         value: string | Footer;
       } | null)
     | ({
+        relationTo: 'office-locations';
+        value: string | OfficeLocation;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: string | Redirect;
       } | null)
@@ -3871,6 +3918,7 @@ export interface Contact24BlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
+  offices?: T;
   appearance?:
     | T
     | {
@@ -4876,6 +4924,25 @@ export interface Footer56BlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "office-locations_select".
+ */
+export interface OfficeLocationsSelect<T extends boolean = true> {
+  city?: T;
+  region?: T;
+  showAddressDetails?: T;
+  address?: T;
+  phone?: T;
+  email?: T;
+  mapEmbedUrl?: T;
+  mapUrl?: T;
+  mapTitle?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
@@ -5308,35 +5375,6 @@ export interface SiteSetting {
   contactPhone?: string | null;
   address?: string | null;
   googleMapEmbedUrl?: string | null;
-  /**
-   * Shared office directory used by Regional Offices blocks. Drag rows to control display order.
-   */
-  officeLocations?:
-    | {
-        /**
-         * When unchecked, only the interactive map is shown — address, phone, and email are hidden.
-         */
-        showAddressDetails?: boolean | null;
-        region?: string | null;
-        city?: string | null;
-        address?: string | null;
-        phone?: string | null;
-        email?: string | null;
-        /**
-         * Paste the HTTPS URL from the map provider embed code.
-         */
-        mapEmbedUrl: string;
-        /**
-         * Full HTTPS destination opened by View on Map.
-         */
-        mapUrl: string;
-        /**
-         * For example: Interactive map for the Dubai office.
-         */
-        mapTitle?: string | null;
-        id?: string | null;
-      }[]
-    | null;
   privacyPolicyPage?: (string | null) | Page;
   termsAndConditionsPage?: (string | null) | Page;
   socialLinks?: {
@@ -5585,20 +5623,6 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   contactPhone?: T;
   address?: T;
   googleMapEmbedUrl?: T;
-  officeLocations?:
-    | T
-    | {
-        showAddressDetails?: T;
-        region?: T;
-        city?: T;
-        address?: T;
-        phone?: T;
-        email?: T;
-        mapEmbedUrl?: T;
-        mapUrl?: T;
-        mapTitle?: T;
-        id?: T;
-      };
   privacyPolicyPage?: T;
   termsAndConditionsPage?: T;
   socialLinks?:

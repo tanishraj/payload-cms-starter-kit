@@ -77,6 +77,18 @@ export const Contact24Block: Block = {
               name: 'description',
               type: 'textarea',
             },
+            {
+              name: 'offices',
+              label: 'Offices to Show',
+              type: 'relationship',
+              relationTo: 'office-locations',
+              hasMany: true,
+              filterOptions: { _status: { equals: 'published' } },
+              admin: {
+                description: 'Leave empty to show all published offices. Select specific offices to show only those, in the order chosen.',
+                allowCreate: false,
+              },
+            },
           ],
         },
         {
