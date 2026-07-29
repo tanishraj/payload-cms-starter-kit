@@ -5374,7 +5374,6 @@ export interface SiteSetting {
   contactEmail?: string | null;
   contactPhone?: string | null;
   address?: string | null;
-  googleMapEmbedUrl?: string | null;
   privacyPolicyPage?: (string | null) | Page;
   termsAndConditionsPage?: (string | null) | Page;
   socialLinks?: {
@@ -5622,7 +5621,6 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   contactEmail?: T;
   contactPhone?: T;
   address?: T;
-  googleMapEmbedUrl?: T;
   privacyPolicyPage?: T;
   termsAndConditionsPage?: T;
   socialLinks?:

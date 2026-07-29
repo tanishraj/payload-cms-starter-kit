@@ -108,11 +108,6 @@ export const SiteSettings: GlobalConfig = {
               name: 'address',
               type: 'textarea',
             },
-            {
-              name: 'googleMapEmbedUrl',
-              label: 'Google Map Embed URL',
-              type: 'text',
-            },
           ],
         },
         {
