@@ -5192,34 +5192,36 @@ export interface AnalyticsSetting {
   createdAt?: string | null;
 }
 /**
+ * Set the active header, footer, and homepage, and configure the site-wide announcement bar.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "page-settings".
  */
 export interface PageSetting {
   id: string;
   /**
-   * Choose which published page should render at the root URL (/).
+   * The published page that renders at the root URL (/).
    */
   homepage?: (string | null) | Page;
   /**
-   * Default HTML/body appearance for all frontend pages.
+   * The header preset rendered on every page.
    */
+  activeHeader?: (string | null) | Header;
+  /**
+   * The footer preset rendered on every page.
+   */
+  activeFooter?: (string | null) | Footer;
   pageAppearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     textColor: 'auto' | 'default' | 'inverse';
   };
-  /**
-   * Choose which saved header preset should render site-wide.
-   */
-  activeHeader?: (string | null) | Header;
-  /**
-   * Choose which saved footer preset should render site-wide.
-   */
-  activeFooter?: (string | null) | Footer;
   announcementEnabled?: boolean | null;
+  /**
+   * Short prefix badge shown before the rotating items (e.g. "News").
+   */
   announcementLabel?: string | null;
   /**
-   * Displayed as a thin rotating site-wide banner above all frontend pages.
+   * Rotating messages shown in the announcement bar.
    */
   announcementItems?:
     | {
@@ -5233,23 +5235,23 @@ export interface PageSetting {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  /**
-   * Show a close button so visitors can hide the announcement for the rest of their browser session.
-   */
-  announcementDismissible?: boolean | null;
-  /**
-   * Allow the announcement bar to scroll out of view instead of remaining pinned above the header.
-   */
-  announcementHideOnScroll?: boolean | null;
   announcementDisplayMode?: ('vertical' | 'horizontal' | 'marquee') | null;
   /**
-   * Auto-advance interval for rotating announcement items. Minimum 2000ms.
+   * How long each item stays visible before rotating. Minimum 2000ms.
    */
   announcementIntervalMs?: number | null;
   /**
-   * Lower values scroll faster.
+   * Full scroll cycle duration. Lower values scroll faster.
    */
   announcementMarqueeDurationMs?: number | null;
+  /**
+   * Show a close button so visitors can hide the bar for their session.
+   */
+  announcementDismissible?: boolean | null;
+  /**
+   * Let the bar scroll out of view instead of staying pinned.
+   */
+  announcementHideOnScroll?: boolean | null;
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -5417,14 +5419,14 @@ export interface AnalyticsSettingsSelect<T extends boolean = true> {
  */
 export interface PageSettingsSelect<T extends boolean = true> {
   homepage?: T;
+  activeHeader?: T;
+  activeFooter?: T;
   pageAppearance?:
     | T
     | {
         background?: T;
         textColor?: T;
       };
-  activeHeader?: T;
-  activeFooter?: T;
   announcementEnabled?: T;
   announcementLabel?: T;
   announcementItems?:
@@ -5441,11 +5443,11 @@ export interface PageSettingsSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
-  announcementDismissible?: T;
-  announcementHideOnScroll?: T;
   announcementDisplayMode?: T;
   announcementIntervalMs?: T;
   announcementMarqueeDurationMs?: T;
+  announcementDismissible?: T;
+  announcementHideOnScroll?: T;
   _status?: T;
   updatedAt?: T;
   createdAt?: T;
