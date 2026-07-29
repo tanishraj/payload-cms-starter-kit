@@ -23,6 +23,8 @@ import { FeatureSpotlightBlock } from '@/blocks/FeatureSpotlight/config'
 import { RichTextBlock } from '@/blocks/RichTextBlock/config'
 import { VideoEmbedBlock } from '@/blocks/VideoEmbed/config'
 import { MediaCarouselBlock } from '@/blocks/MediaCarousel/config'
+import { ProgramGridBlock } from '@/blocks/ProgramGrid/config'
+import { LogoStripBlock } from '@/blocks/LogoStrip/config'
 import {
   allowPublicReadOrCapability,
   hideFromUsersWithoutCapability,
@@ -100,6 +102,8 @@ export const ReusableSections: CollectionConfig = {
         RichTextBlock,
         VideoEmbedBlock,
         MediaCarouselBlock,
+        ProgramGridBlock,
+        LogoStripBlock,
       ],
     },
   ],

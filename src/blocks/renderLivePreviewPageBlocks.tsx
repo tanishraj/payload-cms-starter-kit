@@ -29,6 +29,8 @@ import { Services21BlockComponent } from './Services21/Component'
 import { RichTextBlockComponent } from './RichTextBlock/Component'
 import { VideoEmbedBlockComponent } from './VideoEmbed/Component'
 import { MediaCarouselBlockComponent } from './MediaCarousel/Component'
+import { ProgramGridBlockComponent } from './ProgramGrid/Component'
+import { LogoStripBlockComponent } from './LogoStrip/Component'
 
 export type LivePreviewPageBlock = NonNullable<Page['layout']>[number]
 
@@ -113,6 +115,10 @@ function renderSingleLivePreviewBlock(
       return <VideoEmbedBlockComponent key={key} {...block} />
     case 'mediaCarousel':
       return <MediaCarouselBlockComponent key={key} {...block} />
+    case 'programGrid':
+      return <ProgramGridBlockComponent key={key} {...block} />
+    case 'logoStrip':
+      return <LogoStripBlockComponent key={key} {...block} />
     case 'reusableSection': {
       const populated = block.section as PopulatedReusableSection | string | null | undefined
       if (!populated || typeof populated === 'string') return null

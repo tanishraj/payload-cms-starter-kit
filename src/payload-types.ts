@@ -209,6 +209,8 @@ export interface Page {
         | RichTextBlock
         | VideoEmbedBlock
         | MediaCarouselBlock
+        | ProgramGridBlock
+        | LogoStripBlock
         | {
             /**
              * Select a reusable section to embed on this page.
@@ -1278,6 +1280,120 @@ export interface MediaCarouselBlock {
   blockType: 'mediaCarousel';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProgramGridBlock".
+ */
+export interface ProgramGridBlock {
+  /**
+   * Small label above the section title.
+   */
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  /**
+   * Each card represents one academic program or course.
+   */
+  programs?:
+    | {
+        image?: (string | null) | Media;
+        /**
+         * Used for the filter tabs (e.g. Engineering, Management, Sciences).
+         */
+        category?: string | null;
+        /**
+         * Short label on the card (e.g. AICTE Approved, New Batch 2025).
+         */
+        badge?: string | null;
+        title: string;
+        /**
+         * Short program overview, 1–2 sentences.
+         */
+        description?: string | null;
+        /**
+         * e.g. 4 Years
+         */
+        duration?: string | null;
+        /**
+         * e.g. 60 Seats
+         */
+        intake?: string | null;
+        linkType?: ('none' | 'page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  viewMode: 'grid' | 'list';
+  /**
+   * Displays tabs so visitors can filter programs by department/category.
+   */
+  showFilter?: boolean | null;
+  /**
+   * Label for the link button on each program card.
+   */
+  ctaLabel?: string | null;
+  contentAlignment: 'left' | 'center';
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'programGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LogoStripBlock".
+ */
+export interface LogoStripBlock {
+  /**
+   * Short label above the logos (e.g. Accredited By, Our Partners).
+   */
+  eyebrow?: string | null;
+  /**
+   * Optional section heading.
+   */
+  title?: string | null;
+  /**
+   * Upload each accreditation, partner, or employer logo.
+   */
+  logos?:
+    | {
+        image: string | Media;
+        /**
+         * Short label shown below the logo (e.g. NAAC A+, ISO 9001).
+         */
+        label?: string | null;
+        /**
+         * Optional — makes the logo a clickable link.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  displayMode: 'marquee' | 'grid';
+  /**
+   * Show the text label below each logo.
+   */
+  showLabels?: boolean | null;
+  /**
+   * Display logos in greyscale — they reveal colour on hover.
+   */
+  grayscale?: boolean | null;
+  logoHeight: 'sm' | 'md' | 'lg';
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'logoStrip';
+}
+/**
  * Shared block groups that sync across every page that references them. Edit once, update everywhere.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1314,6 +1430,8 @@ export interface ReusableSection {
         | RichTextBlock
         | VideoEmbedBlock
         | MediaCarouselBlock
+        | ProgramGridBlock
+        | LogoStripBlock
       )[]
     | null;
   updatedAt: string;
@@ -2498,6 +2616,8 @@ export interface PagesSelect<T extends boolean = true> {
         richText?: T | RichTextBlockSelect<T>;
         videoEmbed?: T | VideoEmbedBlockSelect<T>;
         mediaCarousel?: T | MediaCarouselBlockSelect<T>;
+        programGrid?: T | ProgramGridBlockSelect<T>;
+        logoStrip?: T | LogoStripBlockSelect<T>;
         reusableSection?:
           | T
           | {
@@ -3312,6 +3432,74 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProgramGridBlock_select".
+ */
+export interface ProgramGridBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  programs?:
+    | T
+    | {
+        image?: T;
+        category?: T;
+        badge?: T;
+        title?: T;
+        description?: T;
+        duration?: T;
+        intake?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  viewMode?: T;
+  showFilter?: T;
+  ctaLabel?: T;
+  contentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LogoStripBlock_select".
+ */
+export interface LogoStripBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  logos?:
+    | T
+    | {
+        image?: T;
+        label?: T;
+        url?: T;
+        openInNewTab?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  displayMode?: T;
+  showLabels?: T;
+  grayscale?: T;
+  logoHeight?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories_select".
  */
 export interface CategoriesSelect<T extends boolean = true> {
@@ -3515,6 +3703,8 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         richText?: T | RichTextBlockSelect<T>;
         videoEmbed?: T | VideoEmbedBlockSelect<T>;
         mediaCarousel?: T | MediaCarouselBlockSelect<T>;
+        programGrid?: T | ProgramGridBlockSelect<T>;
+        logoStrip?: T | LogoStripBlockSelect<T>;
       };
   updatedAt?: T;
   createdAt?: T;

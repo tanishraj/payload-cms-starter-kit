@@ -25,6 +25,8 @@ import { Services21BlockComponent } from './Services21/Component'
 import { RichTextBlockComponent } from './RichTextBlock/Component'
 import { VideoEmbedBlockComponent } from './VideoEmbed/Component'
 import { MediaCarouselBlockComponent } from './MediaCarousel/Component'
+import { ProgramGridBlockComponent } from './ProgramGrid/Component'
+import { LogoStripBlockComponent } from './LogoStrip/Component'
 import { BlockErrorBoundary } from './shared/BlockErrorBoundary'
 
 export type PageBlock = NonNullable<Page['layout']>[number]
@@ -92,6 +94,10 @@ function renderSingleBlock(block: PageBlock, index: number, depth = 0): React.Re
       return wrap(<VideoEmbedBlockComponent {...block} />)
     case 'mediaCarousel':
       return wrap(<MediaCarouselBlockComponent {...block} />)
+    case 'programGrid':
+      return wrap(<ProgramGridBlockComponent {...block} />)
+    case 'logoStrip':
+      return wrap(<LogoStripBlockComponent {...block} />)
     case 'reusableSection': {
       const populated = block.section as PopulatedReusableSection | string | null | undefined
       if (!populated || typeof populated === 'string') return null
