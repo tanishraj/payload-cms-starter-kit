@@ -16,7 +16,7 @@ export const Footers: CollectionConfig = {
     plural: 'Footers',
   },
   admin: {
-    group: 'Navigation',
+    group: 'Site Structure',
     hidden: hideFromUsersWithoutCapability('manage_footers'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'updatedAt'],
