@@ -1,4 +1,3 @@
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { slugField, type CollectionConfig } from 'payload'
 
 import {
@@ -15,6 +14,7 @@ import { syncPrimaryCategoryMembership } from '@/hooks/syncPrimaryCategoryMember
 import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 import { revalidateArticlesCache } from '@/hooks/revalidateCmsContent'
+import { bodyEditor } from '@/fields/bodyEditorConfig'
 
 const previewBreakpoints = [
   {
@@ -203,7 +203,7 @@ export const Articles: CollectionConfig = {
             {
               name: 'body',
               type: 'richText',
-              editor: lexicalEditor(),
+              editor: bodyEditor,
               required: true,
               admin: {
                 description: 'Primary long-form article body.',

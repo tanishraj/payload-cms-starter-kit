@@ -1,4 +1,3 @@
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import {
   slugField,
   type CollectionConfig,
@@ -13,6 +12,7 @@ import {
   requireCapability,
 } from '@/access/adminCapabilities'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { bodyEditor } from '@/fields/bodyEditorConfig'
 import { buildSEOFields } from '@/fields/buildSEOFields'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
@@ -188,7 +188,7 @@ export const NewsEvents: CollectionConfig = {
             {
               name: 'body',
               type: 'richText',
-              editor: lexicalEditor(),
+              editor: bodyEditor,
               required: true,
               admin: {
                 description: 'Complete story or event description.',
