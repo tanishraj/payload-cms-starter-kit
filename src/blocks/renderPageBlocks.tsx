@@ -35,6 +35,9 @@ import { TabsContentBlockComponent } from './TabsContent/Component'
 import { DownloadListBlockComponent } from './DownloadList/Component'
 import { NumberedStepsBlockComponent } from './NumberedSteps/Component'
 import { BentoGridBlockComponent } from './BentoGrid/Component'
+import { TestimonialGridBlockComponent } from './TestimonialGrid/Component'
+import { AwardsListBlockComponent } from './AwardsList/Component'
+import { AboutSectionBlockComponent } from './AboutSection/Component'
 import { BlockErrorBoundary } from './shared/BlockErrorBoundary'
 
 export type PageBlock = NonNullable<Page['layout']>[number]
@@ -122,6 +125,15 @@ function renderSingleBlock(block: PageBlock, index: number, depth = 0): React.Re
       return wrap(<NumberedStepsBlockComponent {...block} />)
     case 'bentoGrid':
       return wrap(<BentoGridBlockComponent {...block} />)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    case 'testimonialGrid':
+      return wrap(<TestimonialGridBlockComponent {...(block as any)} />)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    case 'awardsList':
+      return wrap(<AwardsListBlockComponent {...(block as any)} />)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    case 'aboutSection':
+      return wrap(<AboutSectionBlockComponent {...(block as any)} />)
     case 'reusableSection': {
       const populated = block.section as PopulatedReusableSection | string | null | undefined
       if (!populated || typeof populated === 'string') return null

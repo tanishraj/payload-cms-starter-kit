@@ -1,0 +1,110 @@
+import type { ArrayField, Block, SelectField, TabsField } from 'payload'
+
+import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+
+const testimonialsField = {
+  name: 'testimonials',
+  label: 'Testimonials',
+  type: 'array',
+  minRows: 1,
+  maxRows: 12,
+  admin: { initCollapsed: true },
+  fields: [
+    {
+      name: 'quote',
+      label: 'Quote',
+      type: 'textarea',
+      required: true,
+    },
+    {
+      name: 'name',
+      label: 'Name',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'role',
+      label: 'Role / Program',
+      type: 'text',
+      admin: { description: 'e.g. "B.Tech Computer Science, 2023" or "Alumni, MBA"' },
+    },
+    {
+      name: 'department',
+      label: 'Department / School',
+      type: 'text',
+    },
+    {
+      name: 'avatar',
+      label: 'Photo',
+      type: 'upload',
+      relationTo: 'media',
+    },
+  ],
+} satisfies ArrayField
+
+export const TestimonialGridBlock: Block = {
+  slug: 'testimonialGrid',
+  interfaceName: 'TestimonialGridBlock',
+  labels: {
+    singular: 'Testimonial Grid',
+    plural: 'Testimonial Grids',
+  },
+  fields: [
+    {
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [
+            { name: 'eyebrow', type: 'text', admin: { description: 'Small label above heading, e.g. "Student Stories"' } },
+            { name: 'heading', type: 'text' },
+            { name: 'description', type: 'textarea' },
+            testimonialsField,
+          ],
+        },
+        {
+          label: 'Layout & Theme',
+          fields: [
+            createBlockAppearanceFields({ includeTextOverride: false }),
+            {
+              name: 'variant',
+              label: 'Variant',
+              type: 'select',
+              defaultValue: 'grid',
+              options: [
+                { label: 'Grid (cards)', value: 'grid' },
+                { label: 'Featured (1 large + row)', value: 'featured' },
+                { label: 'Compact list', value: 'list' },
+              ],
+              required: true,
+            } satisfies SelectField,
+            {
+              name: 'columns',
+              label: 'Columns',
+              type: 'select',
+              defaultValue: '3',
+              options: [
+                { label: '2 Columns', value: '2' },
+                { label: '3 Columns', value: '3' },
+                { label: '4 Columns', value: '4' },
+              ],
+              required: true,
+            } satisfies SelectField,
+            {
+              name: 'size',
+              label: 'Vertical Padding',
+              type: 'select',
+              defaultValue: 'default',
+              options: [
+                { label: 'Compact', value: 'compact' },
+                { label: 'Default', value: 'default' },
+                { label: 'Comfortable', value: 'comfortable' },
+              ],
+              required: true,
+            } satisfies SelectField,
+          ],
+        },
+      ],
+    } satisfies TabsField,
+  ],
+}

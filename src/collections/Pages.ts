@@ -34,6 +34,9 @@ import { TabsContentBlock } from '@/blocks/TabsContent/config'
 import { DownloadListBlock } from '@/blocks/DownloadList/config'
 import { NumberedStepsBlock } from '@/blocks/NumberedSteps/config'
 import { BentoGridBlock } from '@/blocks/BentoGrid/config'
+import { TestimonialGridBlock } from '@/blocks/TestimonialGrid/config'
+import { AwardsListBlock } from '@/blocks/AwardsList/config'
+import { AboutSectionBlock } from '@/blocks/AboutSection/config'
 import type { Page } from '@/payload-types'
 import {
   allowPublicReadOrCapability,
@@ -262,6 +265,9 @@ export const Pages: CollectionConfig = {
                 DownloadListBlock,
                 NumberedStepsBlock,
                 BentoGridBlock,
+                TestimonialGridBlock,
+                AwardsListBlock,
+                AboutSectionBlock,
                 ReusableSectionBlock,
               ],
               required: false,

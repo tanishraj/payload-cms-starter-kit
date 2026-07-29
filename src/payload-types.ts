@@ -219,6 +219,9 @@ export interface Page {
         | DownloadListBlock
         | NumberedStepsBlock
         | BentoGridBlock
+        | TestimonialGridBlock
+        | AwardsListBlock
+        | AboutSectionBlock
         | {
             /**
              * Select a reusable section to embed on this page.
@@ -1840,6 +1843,143 @@ export interface BentoGridBlock {
   blockType: 'bentoGrid';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialGridBlock".
+ */
+export interface TestimonialGridBlock {
+  /**
+   * Small label above heading, e.g. "Student Stories"
+   */
+  eyebrow?: string | null;
+  heading?: string | null;
+  description?: string | null;
+  testimonials?:
+    | {
+        quote: string;
+        name: string;
+        /**
+         * e.g. "B.Tech Computer Science, 2023" or "Alumni, MBA"
+         */
+        role?: string | null;
+        department?: string | null;
+        avatar?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  variant: 'grid' | 'featured' | 'list';
+  columns: '2' | '3' | '4';
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonialGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AwardsListBlock".
+ */
+export interface AwardsListBlock {
+  /**
+   * Small label, e.g. "Our Achievements"
+   */
+  eyebrow?: string | null;
+  heading?: string | null;
+  description?: string | null;
+  awards?:
+    | {
+        /**
+         * e.g. "NAAC A+ Accreditation" or "QS World University Rankings #201"
+         */
+        title: string;
+        /**
+         * e.g. "NAAC", "QS", "NIRF", "NBA"
+         */
+        organization?: string | null;
+        category?: ('accreditation' | 'ranking' | 'award' | 'recognition' | 'milestone') | null;
+        /**
+         * e.g. "2024" or "2023–2024"
+         */
+        year?: string | null;
+        /**
+         * Optional detail about this award or ranking.
+         */
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  variant: 'cards' | 'table' | 'rows';
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'awardsList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutSectionBlock".
+ */
+export interface AboutSectionBlock {
+  /**
+   * e.g. "About Us" or "Our Story"
+   */
+  eyebrow?: string | null;
+  heading: string;
+  /**
+   * Main about text. Paragraphs separated by blank lines are rendered as separate paragraphs.
+   */
+  body: string;
+  /**
+   * Featured image — shown beside the text in split layouts.
+   */
+  image?: (string | null) | Media;
+  /**
+   * Optional inline stats shown alongside the about text.
+   */
+  stats?:
+    | {
+        /**
+         * e.g. "25,000+" or "A+"
+         */
+        value: string;
+        /**
+         * e.g. "Students Enrolled" or "NAAC Grade"
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional: list core values or pillars below the body text.
+   */
+  values?:
+    | {
+        /**
+         * Lucide icon name, e.g. "GraduationCap", "BookOpen", "Globe"
+         */
+        icon?: string | null;
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  variant: 'split' | 'centered' | 'text';
+  imagePosition?: ('left' | 'right') | null;
+  size: 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutSection';
+}
+/**
  * Shared block groups that sync across every page that references them. Edit once, update everywhere.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3080,6 +3220,9 @@ export interface PagesSelect<T extends boolean = true> {
         downloadList?: T | DownloadListBlockSelect<T>;
         numberedSteps?: T | NumberedStepsBlockSelect<T>;
         bentoGrid?: T | BentoGridBlockSelect<T>;
+        testimonialGrid?: T | TestimonialGridBlockSelect<T>;
+        awardsList?: T | AwardsListBlockSelect<T>;
+        aboutSection?: T | AboutSectionBlockSelect<T>;
         reusableSection?:
           | T
           | {
@@ -4247,6 +4390,101 @@ export interface BentoGridBlockSelect<T extends boolean = true> {
         border?: T;
       };
   contentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialGridBlock_select".
+ */
+export interface TestimonialGridBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  description?: T;
+  testimonials?:
+    | T
+    | {
+        quote?: T;
+        name?: T;
+        role?: T;
+        department?: T;
+        avatar?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  variant?: T;
+  columns?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AwardsListBlock_select".
+ */
+export interface AwardsListBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  description?: T;
+  awards?:
+    | T
+    | {
+        title?: T;
+        organization?: T;
+        category?: T;
+        year?: T;
+        description?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  variant?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutSectionBlock_select".
+ */
+export interface AboutSectionBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  body?: T;
+  image?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  values?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  variant?: T;
+  imagePosition?: T;
   size?: T;
   id?: T;
   blockName?: T;
