@@ -4,16 +4,25 @@ import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { ContentActions } from '@/components/ContentActions'
+import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 
 type AspectRatio = '16/9' | '4/3' | '1/1' | '9/16'
 type MaxWidth = 'full' | 'lg' | 'md'
+type ContentAlignment = 'center' | 'left' | 'right'
+type ActionMode = 'button' | 'link'
 
 type VideoEmbedBlockLike = {
+  actions?: CmsActionValue[] | null
+  actionMode?: ActionMode | null
   appearance?: BlockAppearance | null
   aspectRatio?: AspectRatio | null
   autoplay?: boolean | null
   caption?: string | null
+  contentAlignment?: ContentAlignment | null
+  description?: string | null
+  eyebrow?: string | null
   maxWidth?: MaxWidth | null
   size?: RegularBlockSize | null
   title?: string | null
@@ -57,11 +66,22 @@ function parseVideoUrl(url: string): { type: 'youtube' | 'vimeo' | 'direct'; emb
   return { type: 'direct', embedUrl: url }
 }
 
+const alignmentClasses: Record<ContentAlignment, string> = {
+  left: 'items-start text-left',
+  center: 'items-center text-center',
+  right: 'items-end text-right',
+}
+
 export function VideoEmbedBlockComponent({
+  actions,
+  actionMode = 'link',
   appearance,
   aspectRatio = '16/9',
   autoplay = false,
   caption,
+  contentAlignment = 'center',
+  description,
+  eyebrow,
   maxWidth = 'lg',
   size = 'default',
   title,
@@ -72,11 +92,14 @@ export function VideoEmbedBlockComponent({
   const resolvedSize: RegularBlockSize = size ?? 'default'
   const resolvedAspectRatio: AspectRatio = aspectRatio ?? '16/9'
   const resolvedMaxWidth: MaxWidth = maxWidth ?? 'lg'
+  const resolvedAlignment: ContentAlignment = contentAlignment ?? 'center'
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
   const { type, embedUrl } = parseVideoUrl(url.trim())
 
-  const iframeTitle = title?.trim() || (type === 'youtube' ? 'YouTube video' : type === 'vimeo' ? 'Vimeo video' : 'Video')
+  const resolvedTitle = title?.trim()
+  const iframeTitle = resolvedTitle || (type === 'youtube' ? 'YouTube video' : type === 'vimeo' ? 'Vimeo video' : 'Video')
   const autoplayParam = autoplay ? '&autoplay=1&mute=1' : ''
+  const resolvedActions = resolveCmsActions(actions)
 
   const embedSrc =
     type === 'youtube'
@@ -85,9 +108,36 @@ export function VideoEmbedBlockComponent({
         ? `${embedUrl}?dnt=1${autoplay ? '&autoplay=1&muted=1' : ''}`
         : embedUrl
 
+  const hasHeader = resolvedTitle || eyebrow?.trim() || description?.trim() || resolvedActions.length > 0
+
   return (
     <section className={cn(regularBlockMobilePaddingClasses[resolvedSize], appearanceClassName)}>
-      <div className={regularBlockContainerClasses}>
+      <div className={cn(regularBlockContainerClasses, 'flex flex-col gap-8')}>
+        {hasHeader ? (
+          <header className={cn('flex max-w-3xl flex-col gap-4', alignmentClasses[resolvedAlignment], resolvedAlignment === 'center' && 'mx-auto', resolvedAlignment === 'right' && 'ml-auto')}>
+            {eyebrow?.trim() ? (
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+                {eyebrow.trim()}
+              </p>
+            ) : null}
+            {resolvedTitle ? (
+              <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+                {resolvedTitle}
+              </h2>
+            ) : null}
+            {description?.trim() ? (
+              <p className="text-base leading-7 text-current/70">{description.trim()}</p>
+            ) : null}
+            {resolvedActions.length > 0 ? (
+              <ContentActions
+                actions={resolvedActions}
+                alignment={resolvedAlignment}
+                mode={actionMode ?? 'link'}
+              />
+            ) : null}
+          </header>
+        ) : null}
+
         <figure className={cn('mx-auto w-full', maxWidthClasses[resolvedMaxWidth])}>
           <div className={cn('w-full overflow-hidden rounded-xl', aspectRatioClasses[resolvedAspectRatio])}>
             {type === 'direct' ? (

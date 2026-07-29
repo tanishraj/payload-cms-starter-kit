@@ -1245,14 +1245,27 @@ export interface RichTextBlock {
  * via the `definition` "VideoEmbedBlock".
  */
 export interface VideoEmbedBlock {
+  eyebrow?: string | null;
+  /**
+   * Display heading shown above the video. Also used as the iframe accessibility title.
+   */
+  title?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Paste a YouTube, Vimeo, or direct .mp4/.webm URL. YouTube and Vimeo links are automatically embedded as iframes.
    */
   url: string;
-  /**
-   * Used as the iframe title for accessibility.
-   */
-  title?: string | null;
   /**
    * Optional caption displayed below the video.
    */
@@ -1265,6 +1278,8 @@ export interface VideoEmbedBlock {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  contentAlignment: 'left' | 'center' | 'right';
+  actionMode: 'link' | 'button';
   aspectRatio: '16/9' | '4/3' | '1/1' | '9/16';
   maxWidth: 'md' | 'lg' | 'full';
   size: 'compact' | 'default' | 'comfortable';
@@ -4044,8 +4059,21 @@ export interface RichTextBlockSelect<T extends boolean = true> {
  * via the `definition` "VideoEmbedBlock_select".
  */
 export interface VideoEmbedBlockSelect<T extends boolean = true> {
-  url?: T;
+  eyebrow?: T;
   title?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
+  url?: T;
   caption?: T;
   autoplay?: T;
   appearance?:
@@ -4054,6 +4082,8 @@ export interface VideoEmbedBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
+  actionMode?: T;
   aspectRatio?: T;
   maxWidth?: T;
   size?: T;

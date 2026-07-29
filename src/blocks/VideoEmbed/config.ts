@@ -1,6 +1,10 @@
 import type { Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import {
+  createContentActionModeField,
+  createContentActionsField,
+} from '@/blocks/shared/contentActionsFields'
 
 const aspectRatioField = {
   name: 'aspectRatio',
@@ -58,6 +62,25 @@ export const VideoEmbedBlock: Block = {
           label: 'Content',
           fields: [
             {
+              name: 'eyebrow',
+              label: 'Eyebrow',
+              type: 'text',
+            },
+            {
+              name: 'title',
+              label: 'Title',
+              type: 'text',
+              admin: {
+                description: 'Display heading shown above the video. Also used as the iframe accessibility title.',
+              },
+            },
+            {
+              name: 'description',
+              label: 'Description',
+              type: 'textarea',
+            },
+            createContentActionsField(),
+            {
               name: 'url',
               label: 'Video URL',
               type: 'text',
@@ -65,14 +88,6 @@ export const VideoEmbedBlock: Block = {
               admin: {
                 description:
                   'Paste a YouTube, Vimeo, or direct .mp4/.webm URL. YouTube and Vimeo links are automatically embedded as iframes.',
-              },
-            },
-            {
-              name: 'title',
-              label: 'Title',
-              type: 'text',
-              admin: {
-                description: 'Used as the iframe title for accessibility.',
               },
             },
             {
@@ -98,6 +113,19 @@ export const VideoEmbedBlock: Block = {
           label: 'Layout & Theme',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
+            {
+              name: 'contentAlignment',
+              label: 'Content Alignment',
+              type: 'select',
+              defaultValue: 'center',
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+                { label: 'Right', value: 'right' },
+              ],
+              required: true,
+            } satisfies SelectField,
+            createContentActionModeField(),
             aspectRatioField,
             maxWidthField,
             sizeField,
