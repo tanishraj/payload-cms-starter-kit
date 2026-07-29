@@ -8,7 +8,6 @@ import {
   HorizontalRuleFeature,
   IndentFeature,
   InlineCodeFeature,
-  InlineToolbarFeature,
   ItalicFeature,
   lexicalEditor,
   LinkFeature,
@@ -32,6 +31,12 @@ import {
  * experience clean and consistent with the site's typography system.
  */
 export const bodyEditor = lexicalEditor({
+  admin: {
+    hideGutter: true,
+    hideAddBlockButton: true,
+    hideDraggableBlockElement: true,
+    hideInsertParagraphAtEnd: true,
+  },
   features: [
     // Structure
     ParagraphFeature(),
@@ -59,8 +64,7 @@ export const bodyEditor = lexicalEditor({
     AlignFeature(),
     IndentFeature(),
 
-    // Toolbars — FixedToolbarFeature renders the persistent top bar
+    // FixedToolbarFeature renders the persistent top bar (always visible)
     FixedToolbarFeature(),
-    InlineToolbarFeature(),
   ],
 })
