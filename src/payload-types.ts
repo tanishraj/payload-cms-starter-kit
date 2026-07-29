@@ -213,6 +213,8 @@ export interface Page {
         | LogoStripBlock
         | PageHeaderBlock
         | TimelineBlock
+        | IconGridBlock
+        | QuoteBlockBlock
         | {
             /**
              * Select a reusable section to embed on this page.
@@ -1507,6 +1509,123 @@ export interface TimelineBlock {
   blockType: 'timeline';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IconGridBlock".
+ */
+export interface IconGridBlock {
+  /**
+   * Small label shown above the title.
+   */
+  eyebrow?: string | null;
+  title: string;
+  /**
+   * Optional supporting paragraph below the title.
+   */
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Each item shows an icon, title, and optional description.
+   */
+  items?:
+    | {
+        icon:
+          | 'Star'
+          | 'Zap'
+          | 'Eye'
+          | 'Shield'
+          | 'Globe'
+          | 'Code2'
+          | 'Layers'
+          | 'Settings2'
+          | 'Users'
+          | 'BarChart2'
+          | 'Lock'
+          | 'Play'
+          | 'Rocket'
+          | 'Sparkles'
+          | 'Target'
+          | 'Award'
+          | 'Lightbulb'
+          | 'CheckCircle2'
+          | 'Heart'
+          | 'BookOpen'
+          | 'GraduationCap'
+          | 'FlaskConical'
+          | 'Microscope'
+          | 'Building2';
+        title: string;
+        /**
+         * Short supporting text shown below the title.
+         */
+        description?: string | null;
+        linkType?: ('none' | 'page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  variant?: ('card' | 'minimal' | 'iconTop') | null;
+  columns?: ('2' | '3' | '4') | null;
+  iconStyle?: ('square' | 'circle' | 'outline' | 'plain') | null;
+  contentAlignment?: ('left' | 'center') | null;
+  size?: ('compact' | 'default' | 'comfortable') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'iconGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "QuoteBlockBlock".
+ */
+export interface QuoteBlockBlock {
+  /**
+   * The pull quote or testimonial text. The leading " " is added automatically.
+   */
+  quote: string;
+  /**
+   * Person or organization being quoted.
+   */
+  attributionName?: string | null;
+  attributionTitle?: string | null;
+  attributionCompany?: string | null;
+  /**
+   * Optional photo of the person being quoted.
+   */
+  avatar?: (string | null) | Media;
+  rating?: ('none' | '1' | '2' | '3' | '4' | '5') | null;
+  /**
+   * Optional small label above the quote (e.g. "Student Story").
+   */
+  eyebrow?: string | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    textColor: 'auto' | 'default' | 'inverse';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  variant?: ('centered' | 'side' | 'card' | 'highlight') | null;
+  size?: ('compact' | 'default' | 'comfortable') | null;
+  quoteSize?: ('sm' | 'lg' | 'xl' | '2xl') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'quoteBlock';
+}
+/**
  * Shared block groups that sync across every page that references them. Edit once, update everywhere.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1547,6 +1666,8 @@ export interface ReusableSection {
         | LogoStripBlock
         | PageHeaderBlock
         | TimelineBlock
+        | IconGridBlock
+        | QuoteBlockBlock
       )[]
     | null;
   updatedAt: string;
@@ -2735,6 +2856,8 @@ export interface PagesSelect<T extends boolean = true> {
         logoStrip?: T | LogoStripBlockSelect<T>;
         pageHeader?: T | PageHeaderBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;
+        iconGrid?: T | IconGridBlockSelect<T>;
+        quoteBlock?: T | QuoteBlockBlockSelect<T>;
         reusableSection?:
           | T
           | {
@@ -3697,6 +3820,77 @@ export interface TimelineBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IconGridBlock_select".
+ */
+export interface IconGridBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
+  items?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
+  variant?: T;
+  columns?: T;
+  iconStyle?: T;
+  contentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "QuoteBlockBlock_select".
+ */
+export interface QuoteBlockBlockSelect<T extends boolean = true> {
+  quote?: T;
+  attributionName?: T;
+  attributionTitle?: T;
+  attributionCompany?: T;
+  avatar?: T;
+  rating?: T;
+  eyebrow?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        textColor?: T;
+        border?: T;
+      };
+  variant?: T;
+  size?: T;
+  quoteSize?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories_select".
  */
 export interface CategoriesSelect<T extends boolean = true> {
@@ -3904,6 +4098,8 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         logoStrip?: T | LogoStripBlockSelect<T>;
         pageHeader?: T | PageHeaderBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;
+        iconGrid?: T | IconGridBlockSelect<T>;
+        quoteBlock?: T | QuoteBlockBlockSelect<T>;
       };
   updatedAt?: T;
   createdAt?: T;

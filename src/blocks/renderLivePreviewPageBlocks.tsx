@@ -33,6 +33,8 @@ import { ProgramGridBlockComponent } from './ProgramGrid/Component'
 import { LogoStripBlockComponent } from './LogoStrip/Component'
 import { PageHeaderBlockComponent } from './PageHeader/Component'
 import { TimelineBlockComponent } from './Timeline/Component'
+import { IconGridBlockComponent } from './IconGrid/Component'
+import { QuoteBlockBlockComponent } from './QuoteBlock/Component'
 
 export type LivePreviewPageBlock = NonNullable<Page['layout']>[number]
 
@@ -125,6 +127,10 @@ function renderSingleLivePreviewBlock(
       return <PageHeaderBlockComponent key={key} {...block} />
     case 'timeline':
       return <TimelineBlockComponent key={key} {...block} />
+    case 'iconGrid':
+      return <IconGridBlockComponent key={key} {...block} />
+    case 'quoteBlock':
+      return <QuoteBlockBlockComponent key={key} {...block} />
     case 'reusableSection': {
       const populated = block.section as PopulatedReusableSection | string | null | undefined
       if (!populated || typeof populated === 'string') return null

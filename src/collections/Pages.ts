@@ -28,6 +28,8 @@ import { ProgramGridBlock } from '@/blocks/ProgramGrid/config'
 import { LogoStripBlock } from '@/blocks/LogoStrip/config'
 import { PageHeaderBlock } from '@/blocks/PageHeader/config'
 import { TimelineBlock } from '@/blocks/Timeline/config'
+import { IconGridBlock } from '@/blocks/IconGrid/config'
+import { QuoteBlockBlock } from '@/blocks/QuoteBlock/config'
 import type { Page } from '@/payload-types'
 import {
   allowPublicReadOrCapability,
@@ -250,6 +252,8 @@ export const Pages: CollectionConfig = {
                 LogoStripBlock,
                 PageHeaderBlock,
                 TimelineBlock,
+                IconGridBlock,
+                QuoteBlockBlock,
                 ReusableSectionBlock,
               ],
               required: false,

@@ -27,6 +27,8 @@ import { ProgramGridBlock } from '@/blocks/ProgramGrid/config'
 import { LogoStripBlock } from '@/blocks/LogoStrip/config'
 import { PageHeaderBlock } from '@/blocks/PageHeader/config'
 import { TimelineBlock } from '@/blocks/Timeline/config'
+import { IconGridBlock } from '@/blocks/IconGrid/config'
+import { QuoteBlockBlock } from '@/blocks/QuoteBlock/config'
 import {
   allowPublicReadOrCapability,
   hideFromUsersWithoutCapability,
@@ -108,6 +110,8 @@ export const ReusableSections: CollectionConfig = {
         LogoStripBlock,
         PageHeaderBlock,
         TimelineBlock,
+        IconGridBlock,
+        QuoteBlockBlock,
       ],
     },
   ],
