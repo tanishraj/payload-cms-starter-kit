@@ -207,6 +207,7 @@ const contact24OfficeFixtures: SiteOfficeLocation[] = [
     mapEmbedUrl: officeMap,
     mapUrl: 'https://maps.google.com/?q=New+York',
     mapTitle: 'Interactive map for the New York office',
+    showAddressDetails: true,
   },
   {
     id: 'dubai',
@@ -219,6 +220,7 @@ const contact24OfficeFixtures: SiteOfficeLocation[] = [
     mapEmbedUrl: officeMap,
     mapUrl: 'https://maps.google.com/?q=Dubai',
     mapTitle: 'Interactive map for the Dubai office',
+    showAddressDetails: true,
   },
 ]
 

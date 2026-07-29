@@ -56,6 +56,7 @@ describe('live-preview page block renderer', () => {
         mapEmbedUrl: 'https://www.google.com/maps/embed?pb=draft',
         mapUrl: 'https://maps.google.com/?q=Dubai',
         mapTitle: 'Interactive map for the draft Dubai office',
+        showAddressDetails: true,
       },
     ]
     const layout = [

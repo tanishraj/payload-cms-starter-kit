@@ -162,11 +162,11 @@ export function Contact24({
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                     src={office.mapEmbedUrl}
-                    title={office.mapTitle}
+                    title={office.mapTitle ?? ''}
                   />
                 </div>
 
-                {showLocationDetails ? (
+                {showLocationDetails && office.showAddressDetails ? (
                   <div
                     className="relative flex flex-1 flex-col rounded-none border border-border p-6 sm:p-8"
                     data-contact24-details
@@ -174,19 +174,25 @@ export function Contact24({
                   >
                     <CornerBorderAccents />
 
-                    <div
-                      className={cn(
-                        'flex flex-col gap-2',
-                        detailsAlignmentClasses[detailsAlignment].content,
-                      )}
-                    >
-                      <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                        {office.region}
-                      </p>
-                      <h3 className="text-2xl font-semibold tracking-tight">
-                        {office.city}
-                      </h3>
-                    </div>
+                    {(office.region || office.city) && (
+                      <div
+                        className={cn(
+                          'flex flex-col gap-2',
+                          detailsAlignmentClasses[detailsAlignment].content,
+                        )}
+                      >
+                        {office.region && (
+                          <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                            {office.region}
+                          </p>
+                        )}
+                        {office.city && (
+                          <h3 className="text-2xl font-semibold tracking-tight">
+                            {office.city}
+                          </h3>
+                        )}
+                      </div>
+                    )}
 
                     <address
                       className={cn(
@@ -194,33 +200,39 @@ export function Contact24({
                         detailsAlignmentClasses[detailsAlignment].content,
                       )}
                     >
-                      <div className="flex max-w-full min-w-0 items-start gap-3">
-                        <MapPin
-                          aria-hidden="true"
-                          className="mt-0.5 size-4 shrink-0 text-muted-foreground"
-                        />
-                        <span>{office.address}</span>
-                      </div>
-                      <a
-                        className="flex max-w-full min-w-0 items-center gap-3 hover:underline"
-                        href={office.phoneHref}
-                      >
-                        <Phone
-                          aria-hidden="true"
-                          className="size-4 shrink-0 text-muted-foreground"
-                        />
-                        {office.phone}
-                      </a>
-                      <a
-                        className="flex max-w-full min-w-0 items-center gap-3 break-all hover:underline"
-                        href={`mailto:${office.email}`}
-                      >
-                        <Mail
-                          aria-hidden="true"
-                          className="size-4 shrink-0 text-muted-foreground"
-                        />
-                        {office.email}
-                      </a>
+                      {office.address && (
+                        <div className="flex max-w-full min-w-0 items-start gap-3">
+                          <MapPin
+                            aria-hidden="true"
+                            className="mt-0.5 size-4 shrink-0 text-muted-foreground"
+                          />
+                          <span>{office.address}</span>
+                        </div>
+                      )}
+                      {office.phone && office.phoneHref && (
+                        <a
+                          className="flex max-w-full min-w-0 items-center gap-3 hover:underline"
+                          href={office.phoneHref}
+                        >
+                          <Phone
+                            aria-hidden="true"
+                            className="size-4 shrink-0 text-muted-foreground"
+                          />
+                          {office.phone}
+                        </a>
+                      )}
+                      {office.email && (
+                        <a
+                          className="flex max-w-full min-w-0 items-center gap-3 break-all hover:underline"
+                          href={`mailto:${office.email}`}
+                        >
+                          <Mail
+                            aria-hidden="true"
+                            className="size-4 shrink-0 text-muted-foreground"
+                          />
+                          {office.email}
+                        </a>
+                      )}
                     </address>
 
                     <div

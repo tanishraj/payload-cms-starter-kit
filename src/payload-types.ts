@@ -5313,11 +5313,15 @@ export interface SiteSetting {
    */
   officeLocations?:
     | {
-        region: string;
-        city: string;
-        address: string;
-        phone: string;
-        email: string;
+        /**
+         * When unchecked, only the interactive map is shown — address, phone, and email are hidden.
+         */
+        showAddressDetails?: boolean | null;
+        region?: string | null;
+        city?: string | null;
+        address?: string | null;
+        phone?: string | null;
+        email?: string | null;
         /**
          * Paste the HTTPS URL from the map provider embed code.
          */
@@ -5329,7 +5333,7 @@ export interface SiteSetting {
         /**
          * For example: Interactive map for the Dubai office.
          */
-        mapTitle: string;
+        mapTitle?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -5584,6 +5588,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   officeLocations?:
     | T
     | {
+        showAddressDetails?: T;
         region?: T;
         city?: T;
         address?: T;

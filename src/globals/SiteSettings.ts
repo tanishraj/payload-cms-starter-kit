@@ -125,29 +125,48 @@ export const SiteSettings: GlobalConfig = {
               },
               fields: [
                 {
+                  name: 'showAddressDetails',
+                  label: 'Show Address Details',
+                  type: 'checkbox',
+                  defaultValue: true,
+                  admin: {
+                    description: 'When unchecked, only the interactive map is shown — address, phone, and email are hidden.',
+                  },
+                },
+                {
                   name: 'region',
                   type: 'text',
-                  required: true,
+                  admin: {
+                    condition: (_, siblingData) => siblingData?.showAddressDetails !== false,
+                  },
                 },
                 {
                   name: 'city',
                   type: 'text',
-                  required: true,
+                  admin: {
+                    condition: (_, siblingData) => siblingData?.showAddressDetails !== false,
+                  },
                 },
                 {
                   name: 'address',
                   type: 'textarea',
-                  required: true,
+                  admin: {
+                    condition: (_, siblingData) => siblingData?.showAddressDetails !== false,
+                  },
                 },
                 {
                   name: 'phone',
                   type: 'text',
-                  required: true,
+                  admin: {
+                    condition: (_, siblingData) => siblingData?.showAddressDetails !== false,
+                  },
                 },
                 {
                   name: 'email',
                   type: 'email',
-                  required: true,
+                  admin: {
+                    condition: (_, siblingData) => siblingData?.showAddressDetails !== false,
+                  },
                 },
                 {
                   name: 'mapEmbedUrl',
@@ -173,9 +192,9 @@ export const SiteSettings: GlobalConfig = {
                   name: 'mapTitle',
                   label: 'Accessible Map Title',
                   type: 'text',
-                  required: true,
                   admin: {
                     description: 'For example: Interactive map for the Dubai office.',
+                    condition: (_, siblingData) => siblingData?.showAddressDetails !== false,
                   },
                 },
               ],

@@ -8,19 +8,21 @@ export type SiteOfficeLocationSource = {
   mapUrl?: string | null
   phone?: string | null
   region?: string | null
+  showAddressDetails?: boolean | null
 }
 
 export type SiteOfficeLocation = {
-  address: string
-  city: string
-  email: string
+  address: string | null
+  city: string | null
+  email: string | null
   id: string
   mapEmbedUrl: string
-  mapTitle: string
+  mapTitle: string | null
   mapUrl: string
-  phone: string
-  phoneHref: string
-  region: string
+  phone: string | null
+  phoneHref: string | null
+  region: string | null
+  showAddressDetails: boolean
 }
 
 const httpsUrlError = 'Enter a complete HTTPS URL.'
@@ -47,42 +49,31 @@ export function normalizeSiteOfficeLocations(
   values: SiteOfficeLocationSource[] | null | undefined,
 ): SiteOfficeLocation[] {
   return (values ?? []).flatMap((office, index): SiteOfficeLocation[] => {
-    const address = trimValue(office.address)
-    const city = trimValue(office.city)
-    const email = trimValue(office.email)
     const mapEmbedUrl = trimValue(office.mapEmbedUrl)
-    const mapTitle = trimValue(office.mapTitle)
     const mapUrl = trimValue(office.mapUrl)
-    const phone = trimValue(office.phone)
-    const region = trimValue(office.region)
-    const phoneTarget = phone.replace(/[^\d+]/g, '')
 
-    if (
-      !address ||
-      !city ||
-      !email ||
-      !mapTitle ||
-      !phone ||
-      !phoneTarget ||
-      !region ||
-      !isHttpsUrl(mapEmbedUrl) ||
-      !isHttpsUrl(mapUrl)
-    ) {
+    // Only the two map URLs are mandatory — skip entries that lack them.
+    if (!isHttpsUrl(mapEmbedUrl) || !isHttpsUrl(mapUrl)) {
       return []
     }
 
+    const showAddressDetails = office.showAddressDetails !== false
+    const phone = trimValue(office.phone)
+    const phoneTarget = phone.replace(/[^\d+]/g, '')
+
     return [
       {
-        address,
-        city,
-        email,
+        address: trimValue(office.address) || null,
+        city: trimValue(office.city) || null,
+        email: trimValue(office.email) || null,
         id: trimValue(office.id) || `office-${index + 1}`,
         mapEmbedUrl,
-        mapTitle,
+        mapTitle: trimValue(office.mapTitle) || null,
         mapUrl,
-        phone,
-        phoneHref: `tel:${phoneTarget}`,
-        region,
+        phone: phone || null,
+        phoneHref: phoneTarget ? `tel:${phoneTarget}` : null,
+        region: trimValue(office.region) || null,
+        showAddressDetails,
       },
     ]
   })

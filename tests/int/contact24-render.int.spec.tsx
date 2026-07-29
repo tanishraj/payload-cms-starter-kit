@@ -20,6 +20,7 @@ const createOffice = (
   mapEmbedUrl: `https://www.google.com/maps/embed?pb=${id}`,
   mapUrl: `https://maps.google.com/?q=${city}`,
   mapTitle: `Interactive map for the ${city} office`,
+  showAddressDetails: true,
 })
 
 const offices = [
