@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils'
 import { LogoStripMarquee, type ResolvedLogo } from './LogoStripMarquee'
 
 type LogoItem = {
+  id?: string | null
   image?: unknown
   label?: string | null
   openInNewTab?: boolean | null
@@ -56,7 +57,7 @@ export function LogoStripBlockComponent({
 
     return [
       {
-        id: media.id ?? index,
+        id: item.id ?? index,
         src,
         alt: media.alt?.trim() || item.label?.trim() || 'Logo',
         label: item.label?.trim() || undefined,

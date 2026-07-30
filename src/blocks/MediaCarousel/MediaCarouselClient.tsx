@@ -207,11 +207,11 @@ export function MediaCarouselClient({
               {eyebrow}
             </p>
           ) : null}
-          <h2 className="text-4xl font-semibold leading-tight tracking-tight xl:text-5xl">
+          <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
             {title}
           </h2>
           {description ? (
-            <p className="text-lg text-muted-foreground">{description}</p>
+            <p className="text-base leading-7 text-current/70">{description}</p>
           ) : null}
         </div>
         <Carousel opts={{ align: 'start' }} className="w-full">

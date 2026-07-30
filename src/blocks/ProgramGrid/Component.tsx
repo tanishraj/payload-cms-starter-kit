@@ -8,6 +8,7 @@ import type { Media, Page } from '@/payload-types'
 import { ProgramGridClient, type ResolvedProgram } from './ProgramGridClient'
 
 type ProgramItem = {
+  id?: string | null
   badge?: string | null
   category?: string | null
   description?: string | null
@@ -72,7 +73,7 @@ export function ProgramGridBlockComponent({
 
       return [
         {
-          id: isMediaDoc(media) ? media.id : index,
+          id: item.id ?? index,
           badge: item.badge?.trim() || undefined,
           category: item.category?.trim() || undefined,
           description: item.description?.trim() || undefined,
