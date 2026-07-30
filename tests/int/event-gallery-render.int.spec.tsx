@@ -27,7 +27,6 @@ vi.mock('@/components/event-gallery-viewer', async (importOriginal) => {
 })
 
 import { EventGallery } from '@/components/event-gallery'
-import { createEventGalleryDataSource } from '@/components/event-gallery-viewer'
 import type { EventGalleryAlbum } from '@/lib/eventGalleryShared'
 
 const albums: EventGalleryAlbum[] = [
@@ -144,21 +143,7 @@ describe('event gallery presentation', () => {
     })
   })
 
-  it('returns no section without albums and creates PhotoSwipe image data', () => {
+  it('returns nothing when albums are empty', () => {
     expect(renderToStaticMarkup(<EventGallery albums={[]} title="Event gallery" />)).toBe('')
-    expect(createEventGalleryDataSource(albums[0]!.images)).toEqual([
-      {
-        alt: 'Yoga session',
-        height: 900,
-        src: '/media/yoga.jpg',
-        width: 1600,
-      },
-      {
-        alt: 'Group meditation',
-        height: 900,
-        src: '/media/meditation.jpg',
-        width: 1600,
-      },
-    ])
   })
 })

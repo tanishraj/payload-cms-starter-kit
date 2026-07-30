@@ -1,58 +1,110 @@
 'use client'
 
-import 'photoswipe/style.css'
-
-import type PhotoSwipe from 'photoswipe'
-import PhotoSwipeLightbox from 'photoswipe/lightbox'
-import { useEffect, useState } from 'react'
+import { AnimatePresence, motion, useAnimationControls } from 'framer-motion'
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  Pause,
+  Play,
+  RotateCcw,
+  XIcon,
+} from 'lucide-react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
-import { EventGalleryViewerOverlay } from '@/components/event-gallery-viewer-overlay'
-import type {
-  EventGalleryAlbum,
-  EventGalleryImage,
-} from '@/lib/eventGalleryShared'
+import type { EventGalleryAlbum, EventGalleryImage } from '@/lib/eventGalleryShared'
+import { cn } from '@/lib/utils'
 
-export const createEventGalleryDataSource = (images: EventGalleryImage[]) =>
-  images.map((image) => ({
-    alt: image.alt,
-    height: image.height,
-    src: image.src,
-    width: image.width,
-  }))
+const AUTOPLAY_DELAY_MS = 3500
 
-type EventGalleryViewerSnapshot = {
+type Direction = 1 | -1
+
+const slideVariants = {
+  enter: (dir: Direction) => ({
+    x: dir > 0 ? '55%' : '-55%',
+    opacity: 0,
+    scale: 0.94,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.45, ease: [0.32, 0.72, 0, 1] as [number, number, number, number] },
+  },
+  exit: (dir: Direction) => ({
+    x: dir > 0 ? '-55%' : '55%',
+    opacity: 0,
+    scale: 0.94,
+    transition: { duration: 0.35, ease: [0.32, 0.72, 0, 1] as [number, number, number, number] },
+  }),
+}
+
+function PaginationDot({
+  index,
+  currentIndex,
+  isPlaying,
+  onClick,
+}: {
+  index: number
   currentIndex: number
-  isZoomable: boolean
-  isZoomed: boolean
-}
+  isPlaying: boolean
+  onClick: () => void
+}) {
+  const controls = useAnimationControls()
+  const isActive = index === currentIndex
 
-type EventGalleryViewerPortal = EventGalleryViewerSnapshot & {
-  element: HTMLElement
-  pswp: PhotoSwipe
-}
-
-export const getEventGalleryViewerSnapshot = (
-  pswp: PhotoSwipe,
-): EventGalleryViewerSnapshot => {
-  const slide = pswp.currSlide
-
-  if (!slide) {
-    return {
-      currentIndex: pswp.currIndex,
-      isZoomable: false,
-      isZoomed: false,
+  useEffect(() => {
+    if (isPlaying && isActive) {
+      controls.set({ width: 0 })
+      controls.start({
+        width: '100%',
+        transition: { duration: AUTOPLAY_DELAY_MS / 1000, ease: 'linear' },
+      })
+    } else {
+      controls.stop()
     }
-  }
+  }, [isPlaying, isActive, controls, currentIndex])
 
-  const zoomDifference = Math.abs(
-    slide.zoomLevels.secondary - slide.zoomLevels.initial,
+  return (
+    <button
+      aria-label={`Go to image ${index + 1}`}
+      onClick={onClick}
+      className={cn(
+        'relative h-1.5 overflow-hidden rounded-full transition-all duration-300',
+        isActive ? 'w-8 bg-white/35' : 'w-1.5 bg-white/30 hover:bg-white/55',
+      )}
+    >
+      {isActive ? (
+        <motion.span
+          animate={controls}
+          className="absolute inset-y-0 left-0 rounded-full bg-white"
+          style={{ width: 0 }}
+        />
+      ) : null}
+    </button>
   )
+}
 
+export const getEventGalleryCaption = (
+  image: EventGalleryImage,
+  albumTitle: string,
+): string | undefined => {
+  const caption = image.caption?.trim()
+  if (caption) return caption
+  const alt = image.alt.trim()
+  return !alt || alt.toLocaleLowerCase() === albumTitle.trim().toLocaleLowerCase()
+    ? undefined
+    : alt
+}
+
+export const getAdjacentImageIndexes = (
+  length: number,
+  currentIndex: number,
+): { next: number; previous: number } | null => {
+  if (length <= 1) return null
   return {
-    currentIndex: pswp.currIndex,
-    isZoomable: slide.isZoomable() && zoomDifference >= 0.01,
-    isZoomed: slide.currZoomLevel > slide.zoomLevels.initial + 0.01,
+    next: (currentIndex + 1) % length,
+    previous: (currentIndex - 1 + length) % length,
   }
 }
 
@@ -67,99 +119,211 @@ export function EventGalleryViewer({
   initialIndex = 0,
   onClose,
 }: EventGalleryViewerProps) {
-  const [viewerPortal, setViewerPortal] =
-    useState<EventGalleryViewerPortal | null>(null)
+  const [currentIndex, setCurrentIndex] = useState(
+    Math.min(Math.max(initialIndex, 0), album.images.length - 1),
+  )
+  const [direction, setDirection] = useState<Direction>(1)
+  const [isPlaying, setIsPlaying] = useState(true)
+  const autoplayRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const isMultiple = album.images.length > 1
+  const isAtEnd = currentIndex === album.images.length - 1
 
+  const navigate = useCallback((nextIndex: number, dir: Direction) => {
+    setDirection(dir)
+    setCurrentIndex(nextIndex)
+  }, [])
+
+  const goNext = useCallback(() => {
+    if (!isMultiple) return
+    navigate((currentIndex + 1) % album.images.length, 1)
+  }, [currentIndex, album.images.length, isMultiple, navigate])
+
+  const goPrev = useCallback(() => {
+    if (!isMultiple) return
+    navigate((currentIndex - 1 + album.images.length) % album.images.length, -1)
+  }, [currentIndex, album.images.length, isMultiple, navigate])
+
+  const goTo = useCallback(
+    (index: number) => navigate(index, index >= currentIndex ? 1 : -1),
+    [currentIndex, navigate],
+  )
+
+  const restart = useCallback(() => {
+    setDirection(1)
+    setCurrentIndex(0)
+    setIsPlaying(true)
+  }, [])
+
+  // Autoplay
   useEffect(() => {
-    const hasMultipleImages = album.images.length > 1
-    const lightbox = new PhotoSwipeLightbox({
-      arrowNext: false,
-      arrowPrev: false,
-      bgOpacity: 1,
-      close: false,
-      closeOnVerticalDrag: true,
-      counter: false,
-      dataSource: createEventGalleryDataSource(album.images),
-      hideAnimationDuration: 160,
-      loop: hasMultipleImages,
-      mainClass: 'event-gallery-lightbox',
-      paddingFn: (viewportSize) => ({
-        bottom: hasMultipleImages ? (viewportSize.x < 640 ? 112 : 124) : 24,
-        left: 16,
-        right: 16,
-        top: 68,
-      }),
-      pswpModule: () => import('photoswipe'),
-      returnFocus: true,
-      showAnimationDuration: 180,
-      showHideAnimationType: 'fade',
-      wheelToZoom: true,
-      zoom: false,
-    })
-
-    lightbox.on('uiRegister', () => {
-      lightbox.pswp?.ui?.registerElement({
-        appendTo: 'root',
-        className: 'event-gallery-overlay',
-        name: 'event-gallery-overlay',
-        onInit: (element, pswp) => {
-          const syncViewerPortal = () => {
-            const snapshot = getEventGalleryViewerSnapshot(pswp)
-
-            setViewerPortal((currentPortal) => {
-              if (
-                currentPortal?.element === element &&
-                currentPortal.currentIndex === snapshot.currentIndex &&
-                currentPortal.isZoomable === snapshot.isZoomable &&
-                currentPortal.isZoomed === snapshot.isZoomed
-              ) {
-                return currentPortal
-              }
-
-              return {
-                element,
-                pswp,
-                ...snapshot,
-              }
-            })
-          }
-
-          pswp.on('change', syncViewerPortal)
-          pswp.on('zoomPanUpdate', syncViewerPortal)
-          syncViewerPortal()
-        },
-        order: 10,
-      })
-    })
-    lightbox.on('close', onClose)
-    lightbox.init()
-    lightbox.loadAndOpen(
-      Math.min(Math.max(initialIndex, 0), Math.max(album.images.length - 1, 0)),
-    )
-
-    return () => {
-      lightbox.destroy()
+    if (!isPlaying || !isMultiple) return
+    if (isAtEnd) {
+      setIsPlaying(false)
+      return
     }
-  }, [album, initialIndex, onClose])
+    autoplayRef.current = setTimeout(goNext, AUTOPLAY_DELAY_MS)
+    return () => {
+      if (autoplayRef.current) clearTimeout(autoplayRef.current)
+    }
+  }, [isPlaying, isMultiple, isAtEnd, currentIndex, goNext])
 
-  if (!viewerPortal) {
-    return null
-  }
+  // Keyboard navigation
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowRight') { setIsPlaying(false); goNext() }
+      if (e.key === 'ArrowLeft') { setIsPlaying(false); goPrev() }
+      if (e.key === ' ') { e.preventDefault(); setIsPlaying((p) => !p) }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [goNext, goPrev, onClose])
 
-  const { currentIndex, element, isZoomable, isZoomed, pswp } = viewerPortal
+  // Scroll lock
+  useEffect(() => {
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = prev }
+  }, [])
+
+  const image = album.images[currentIndex]
+  const caption = image ? getEventGalleryCaption(image, album.title) : undefined
 
   return createPortal(
-    <EventGalleryViewerOverlay
-      album={album}
-      currentIndex={currentIndex}
-      isZoomable={isZoomable}
-      isZoomed={isZoomed}
-      onClose={() => pswp.close()}
-      onNext={() => pswp.next()}
-      onPrevious={() => pswp.prev()}
-      onSelect={(index) => pswp.goTo(index)}
-      onToggleZoom={() => pswp.currSlide?.toggleZoom()}
-    />,
-    element,
+    <div
+      className="fixed inset-0 z-9999 flex flex-col"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${album.title} gallery`}
+    >
+      {/* Backdrop */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="absolute inset-0 bg-black"
+        onClick={onClose}
+      />
+
+      {/* Header */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center gap-3 bg-linear-to-b from-black/60 via-black/20 to-transparent px-4 pb-12 pt-4 sm:px-6">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-semibold leading-tight tracking-tight text-white">
+            {album.title}
+          </p>
+          <p className="mt-0.5 font-mono text-[11px] text-white/55">
+            {String(currentIndex + 1).padStart(2, '0')} /{' '}
+            {String(album.images.length).padStart(2, '0')}
+          </p>
+        </div>
+        <button
+          aria-label="Close gallery"
+          onClick={onClose}
+          className="pointer-events-auto flex size-9 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md ring-1 ring-inset ring-white/15 transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+        >
+          <XIcon className="size-4" />
+        </button>
+      </div>
+
+      {/* Slide area */}
+      <div className="relative z-10 flex flex-1 items-center justify-center overflow-hidden">
+        <AnimatePresence custom={direction} initial={false} mode="popLayout">
+          <motion.div
+            key={currentIndex}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            className="absolute inset-0 flex cursor-grab items-center justify-center active:cursor-grabbing"
+            drag={isMultiple ? 'x' : false}
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.12}
+            onDragEnd={(_, info) => {
+              if (Math.abs(info.offset.x) > 50) {
+                setIsPlaying(false)
+                info.offset.x < 0 ? goNext() : goPrev()
+              }
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt={image?.alt ?? ''}
+              src={image?.src ?? ''}
+              className="max-h-full max-w-full select-none object-contain"
+              draggable={false}
+              style={{ pointerEvents: 'none' }}
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Side arrows */}
+        {isMultiple ? (
+          <>
+            <button
+              aria-label="Previous image"
+              onClick={() => { setIsPlaying(false); goPrev() }}
+              className="absolute left-3 z-20 flex size-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md ring-1 ring-inset ring-white/15 transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:left-4 sm:size-11"
+            >
+              <ChevronLeftIcon className="size-5" />
+            </button>
+            <button
+              aria-label="Next image"
+              onClick={() => { setIsPlaying(false); goNext() }}
+              className="absolute right-3 z-20 flex size-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md ring-1 ring-inset ring-white/15 transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:right-4 sm:size-11"
+            >
+              <ChevronRightIcon className="size-5" />
+            </button>
+          </>
+        ) : null}
+      </div>
+
+      {/* Footer */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-4 bg-linear-to-t from-black/65 via-black/25 to-transparent px-4 pb-6 pt-16 sm:px-6">
+        {caption ? (
+          <p className="max-w-xl text-center text-xs leading-5 text-white/80 sm:text-sm">
+            {caption}
+          </p>
+        ) : null}
+
+        {isMultiple ? (
+          <div className="pointer-events-auto flex items-center gap-2">
+            {/* Pagination dots */}
+            <div className="flex h-10 items-center gap-2 rounded-full bg-black/40 px-5 backdrop-blur-xl ring-1 ring-inset ring-white/10">
+              {album.images.map((_, index) => (
+                <PaginationDot
+                  key={index}
+                  index={index}
+                  currentIndex={currentIndex}
+                  isPlaying={isPlaying}
+                  onClick={() => { setIsPlaying(false); goTo(index) }}
+                />
+              ))}
+            </div>
+
+            {/* Play / Pause / Restart */}
+            <button
+              aria-label={
+                isAtEnd && !isPlaying
+                  ? 'Restart slideshow'
+                  : isPlaying
+                    ? 'Pause slideshow'
+                    : 'Play slideshow'
+              }
+              onClick={isAtEnd && !isPlaying ? restart : () => setIsPlaying((p) => !p)}
+              className="flex size-10 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-xl ring-1 ring-inset ring-white/10 transition-colors hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+            >
+              {isAtEnd && !isPlaying ? (
+                <RotateCcw className="size-3.5" />
+              ) : isPlaying ? (
+                <Pause className="size-3.5 fill-white stroke-none" />
+              ) : (
+                <Play className="size-3.5 fill-white stroke-none" />
+              )}
+            </button>
+          </div>
+        ) : null}
+      </div>
+    </div>,
+    document.body,
   )
 }
