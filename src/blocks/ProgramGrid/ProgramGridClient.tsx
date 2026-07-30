@@ -5,7 +5,9 @@ import { useState } from 'react'
 import { ArrowRight, Clock, Users } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import type { CmsActionVariant } from '@/lib/cmsLinks'
 import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
@@ -28,7 +30,10 @@ export type ResolvedProgram = {
 }
 
 type ProgramGridClientProps = {
+  actionMode: 'button' | 'link'
+  actionVariant: CmsActionVariant
   appearance?: string
+  columns: 2 | 3 | 4
   contentAlignment: 'left' | 'center'
   ctaLabel: string
   description?: string
@@ -40,7 +45,33 @@ type ProgramGridClientProps = {
   viewMode: 'grid' | 'list'
 }
 
-function GridCard({ program, ctaLabel }: { program: ResolvedProgram; ctaLabel: string }) {
+const gridColsClasses: Record<2 | 3 | 4, string> = {
+  2: 'grid gap-5 sm:grid-cols-2',
+  3: 'grid gap-5 sm:grid-cols-2 lg:grid-cols-3',
+  4: 'grid gap-5 sm:grid-cols-2 lg:grid-cols-4',
+}
+
+type CardActionProps = { ctaHref: string; ctaLabel: string; actionMode: 'button' | 'link'; actionVariant: CmsActionVariant; openInNewTab?: boolean }
+
+function CardAction({ ctaHref, ctaLabel, actionMode, actionVariant, openInNewTab }: CardActionProps) {
+  if (actionMode === 'button') {
+    return (
+      <Button asChild size="sm" variant={actionVariant} className="mt-3 self-start">
+        <a href={ctaHref} target={openInNewTab ? '_blank' : undefined} rel={openInNewTab ? 'noopener noreferrer' : undefined}>
+          {ctaLabel}
+        </a>
+      </Button>
+    )
+  }
+  return (
+    <div className="mt-3 flex items-center gap-1 text-sm font-medium text-primary">
+      {ctaLabel}
+      <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+    </div>
+  )
+}
+
+function GridCard({ program, ctaLabel, actionMode, actionVariant }: { program: ResolvedProgram; ctaLabel: string; actionMode: 'button' | 'link'; actionVariant: CmsActionVariant }) {
   const inner = (
     <div
       className={cn(
@@ -104,16 +135,19 @@ function GridCard({ program, ctaLabel }: { program: ResolvedProgram; ctaLabel: s
         ) : null}
 
         {program.ctaHref ? (
-          <div className="mt-3 flex items-center gap-1 text-sm font-medium text-primary">
-            {ctaLabel}
-            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-          </div>
+          <CardAction
+            ctaHref={program.ctaHref}
+            ctaLabel={ctaLabel}
+            actionMode={actionMode}
+            actionVariant={actionVariant}
+            openInNewTab={program.ctaOpenInNewTab}
+          />
         ) : null}
       </div>
     </div>
   )
 
-  if (program.ctaHref) {
+  if (program.ctaHref && actionMode === 'link') {
     return (
       <a
         href={program.ctaHref}
@@ -129,7 +163,7 @@ function GridCard({ program, ctaLabel }: { program: ResolvedProgram; ctaLabel: s
   return <div className="h-full">{inner}</div>
 }
 
-function ListCard({ program, ctaLabel }: { program: ResolvedProgram; ctaLabel: string }) {
+function ListCard({ program, ctaLabel, actionMode, actionVariant }: { program: ResolvedProgram; ctaLabel: string; actionMode: 'button' | 'link'; actionVariant: CmsActionVariant }) {
   const inner = (
     <div
       className={cn(
@@ -181,18 +215,27 @@ function ListCard({ program, ctaLabel }: { program: ResolvedProgram; ctaLabel: s
               {program.intake}
             </span>
           ) : null}
-          {program.ctaHref ? (
+          {program.ctaHref && actionMode === 'link' ? (
             <span className="ml-auto flex items-center gap-1 font-medium text-primary">
               {ctaLabel}
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </span>
           ) : null}
         </div>
+        {program.ctaHref && actionMode === 'button' ? (
+          <CardAction
+            ctaHref={program.ctaHref}
+            ctaLabel={ctaLabel}
+            actionMode={actionMode}
+            actionVariant={actionVariant}
+            openInNewTab={program.ctaOpenInNewTab}
+          />
+        ) : null}
       </div>
     </div>
   )
 
-  if (program.ctaHref) {
+  if (program.ctaHref && actionMode === 'link') {
     return (
       <a
         href={program.ctaHref}
@@ -209,7 +252,10 @@ function ListCard({ program, ctaLabel }: { program: ResolvedProgram; ctaLabel: s
 }
 
 export function ProgramGridClient({
+  actionMode,
+  actionVariant,
   appearance,
+  columns,
   contentAlignment,
   ctaLabel,
   description,
@@ -275,15 +321,15 @@ export function ProgramGridClient({
         ) : null}
 
         {viewMode === 'grid' ? (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className={gridColsClasses[columns]}>
             {visible.map((program) => (
-              <GridCard key={String(program.id)} ctaLabel={ctaLabel} program={program} />
+              <GridCard key={String(program.id)} ctaLabel={ctaLabel} program={program} actionMode={actionMode} actionVariant={actionVariant} />
             ))}
           </div>
         ) : (
           <div className="flex flex-col gap-4">
             {visible.map((program) => (
-              <ListCard key={String(program.id)} ctaLabel={ctaLabel} program={program} />
+              <ListCard key={String(program.id)} ctaLabel={ctaLabel} program={program} actionMode={actionMode} actionVariant={actionVariant} />
             ))}
           </div>
         )}

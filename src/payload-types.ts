@@ -1414,6 +1414,9 @@ export interface ProgramGridBlock {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  actionMode: 'link' | 'button';
+  actionVariant?: ('default' | 'secondary' | 'outline') | null;
+  columns?: ('2' | '3' | '4') | null;
   viewMode: 'grid' | 'list';
   /**
    * Displays tabs so visitors can filter programs by department/category.
@@ -4174,6 +4177,9 @@ export interface ProgramGridBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  actionMode?: T;
+  actionVariant?: T;
+  columns?: T;
   viewMode?: T;
   showFilter?: T;
   ctaLabel?: T;

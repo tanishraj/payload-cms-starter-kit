@@ -1,6 +1,7 @@
 import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
 import type { RegularBlockSize } from '@/blocks/shared/blockSpacing'
 import { getMediaAbsoluteUrl, isMediaDoc } from '@/lib/media'
+import type { CmsActionVariant } from '@/lib/cmsLinks'
 import { getPageHref } from '@/lib/pagePaths'
 import type { Media, Page } from '@/payload-types'
 
@@ -21,7 +22,10 @@ type ProgramItem = {
 }
 
 type ProgramGridBlockLike = {
+  actionMode?: 'button' | 'link' | null
+  actionVariant?: CmsActionVariant | null
   appearance?: BlockAppearance | null
+  columns?: '2' | '3' | '4' | null
   contentAlignment?: 'left' | 'center' | null
   ctaLabel?: string | null
   description?: string | null
@@ -34,7 +38,10 @@ type ProgramGridBlockLike = {
 }
 
 export function ProgramGridBlockComponent({
+  actionMode,
+  actionVariant,
   appearance,
+  columns,
   contentAlignment = 'center',
   ctaLabel = 'Learn More',
   description,
@@ -87,10 +94,14 @@ export function ProgramGridBlockComponent({
   if (resolvedPrograms.length === 0) return null
 
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
+  const resolvedColumns = (Number(columns ?? '3') as 2 | 3 | 4) || 3
 
   return (
     <ProgramGridClient
+      actionMode={actionMode ?? 'link'}
+      actionVariant={actionVariant ?? 'default'}
       appearance={appearanceClassName}
+      columns={resolvedColumns}
       contentAlignment={contentAlignment ?? 'center'}
       ctaLabel={ctaLabel?.trim() || 'Learn More'}
       description={description?.trim() || undefined}

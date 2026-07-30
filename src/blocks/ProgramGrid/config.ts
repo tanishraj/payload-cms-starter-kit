@@ -1,6 +1,7 @@
 import type { ArrayField, Block, CheckboxField, RadioField, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createContentActionModeField } from '@/blocks/shared/contentActionsFields'
 
 type ProgramItemSiblingData = {
   linkType?: 'none' | 'page' | 'custom' | null
@@ -152,6 +153,36 @@ export const ProgramGridBlock: Block = {
           label: 'Layout & Theme',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
+            createContentActionModeField(),
+            {
+              name: 'actionVariant',
+              label: 'Button Variant',
+              type: 'select',
+              defaultValue: 'default',
+              options: [
+                { label: 'Primary', value: 'default' },
+                { label: 'Secondary', value: 'secondary' },
+                { label: 'Outline', value: 'outline' },
+              ],
+              admin: {
+                condition: (_, siblingData) => siblingData?.actionMode === 'button',
+              },
+            } satisfies SelectField,
+            {
+              name: 'columns',
+              label: 'Columns (Grid mode)',
+              type: 'select',
+              defaultValue: '3',
+              options: [
+                { label: '2 columns', value: '2' },
+                { label: '3 columns', value: '3' },
+                { label: '4 columns', value: '4' },
+              ],
+              required: true,
+              admin: {
+                condition: (_, siblingData) => siblingData?.viewMode === 'grid',
+              },
+            } satisfies SelectField,
             {
               name: 'viewMode',
               label: 'View Mode',
