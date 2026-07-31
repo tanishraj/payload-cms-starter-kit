@@ -84,66 +84,106 @@ function SectionHeader({
 // ── HORIZONTAL STEPS ─────────────────────────────────────────────────────────
 function HorizontalTimeline({ items, showConnectors }: { items: TimelineItem[]; showConnectors: boolean }) {
   return (
-    <div className="flex w-full pt-2">
-      {items.map((item, index) => {
-        const badge = item.badge ?? 'none'
-        const isFirst = index === 0
-        const isLast = index === items.length - 1
-
-        return (
-          <div key={index} className="flex flex-1 flex-col items-center gap-3">
-            {/* Circle row with connector lines drawn as absolute halves */}
-            <div className="relative flex w-full items-center justify-center">
-              {/* Left connector half */}
-              {showConnectors && !isFirst ? (
+    <div className="w-full pt-2">
+      {/* ── Mobile: vertical stacked list ── */}
+      <div className="flex flex-col md:hidden">
+        {items.map((item, index) => {
+          const badge = item.badge ?? 'none'
+          const isLast = index === items.length - 1
+          return (
+            <div key={index} className="flex gap-4">
+              {/* Left column: circle + connector, no gap so line touches both circles */}
+              <div className="flex flex-col items-center">
                 <div
                   className={cn(
-                    'absolute left-0 right-[calc(50%+20px)] top-1/2 h-0.5 -translate-y-1/2',
-                    stepConnectorClasses[badge],
+                    'flex size-10 shrink-0 items-center justify-center rounded-full',
+                    stepCircleClasses[badge],
+                    badge === 'active' && 'ring-4 ring-primary/20',
                   )}
-                />
-              ) : null}
-              {/* Circle */}
-              <div
-                className={cn(
-                  'relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full',
-                  stepCircleClasses[badge],
-                  badge === 'active' && 'ring-4 ring-primary/20',
-                )}
-              >
-                <StatusIcon badge={badge} index={index} />
+                >
+                  <StatusIcon badge={badge} index={index} />
+                </div>
+                {showConnectors && !isLast ? (
+                  <div className="w-px flex-1 bg-border" />
+                ) : null}
               </div>
-              {/* Right connector half */}
-              {showConnectors && !isLast ? (
+              {/* Right column: content, pb spaces out to next circle */}
+              <div className={cn('flex flex-col gap-1.5', !isLast && 'pb-8')}>
+                {item.date?.trim() ? (
+                  <span className="flex items-center gap-1 text-sm text-muted-foreground">
+                    <Clock className="size-3.5 shrink-0" />
+                    {item.date.trim()}
+                  </span>
+                ) : null}
+                <p className="text-base font-semibold leading-snug text-foreground">
+                  {item.title?.trim()}
+                </p>
+                {item.description?.trim() ? (
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {item.description.trim()}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* ── Desktop: horizontal row ── */}
+      <div className="hidden w-full md:flex">
+        {items.map((item, index) => {
+          const badge = item.badge ?? 'none'
+          const isFirst = index === 0
+          const isLast = index === items.length - 1
+          return (
+            <div key={index} className="flex flex-1 flex-col items-center gap-3">
+              <div className="relative flex w-full items-center justify-center">
+                {showConnectors && !isFirst ? (
+                  <div
+                    className={cn(
+                      'absolute left-0 right-[calc(50%+20px)] top-1/2 h-0.5 -translate-y-1/2',
+                      stepConnectorClasses[badge],
+                    )}
+                  />
+                ) : null}
                 <div
                   className={cn(
-                    'absolute left-[calc(50%+20px)] right-0 top-1/2 h-0.5 -translate-y-1/2',
-                    stepConnectorClasses[badge],
+                    'relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full',
+                    stepCircleClasses[badge],
+                    badge === 'active' && 'ring-4 ring-primary/20',
                   )}
-                />
-              ) : null}
-            </div>
-
-            {/* Label */}
-            <div className="flex flex-col items-center gap-1.5 px-2 text-center">
-              {item.date?.trim() ? (
-                <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                  <Clock className="size-3.5 shrink-0" />
-                  {item.date.trim()}
-                </span>
-              ) : null}
-              <p className="text-base font-semibold leading-snug text-foreground">
-                {item.title?.trim()}
-              </p>
-              {item.description?.trim() ? (
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {item.description.trim()}
+                >
+                  <StatusIcon badge={badge} index={index} />
+                </div>
+                {showConnectors && !isLast ? (
+                  <div
+                    className={cn(
+                      'absolute left-[calc(50%+20px)] right-0 top-1/2 h-0.5 -translate-y-1/2',
+                      stepConnectorClasses[badge],
+                    )}
+                  />
+                ) : null}
+              </div>
+              <div className="flex flex-col items-center gap-1.5 px-2 text-center">
+                {item.date?.trim() ? (
+                  <span className="flex items-center gap-1 text-sm text-muted-foreground">
+                    <Clock className="size-3.5 shrink-0" />
+                    {item.date.trim()}
+                  </span>
+                ) : null}
+                <p className="text-base font-semibold leading-snug text-foreground">
+                  {item.title?.trim()}
                 </p>
-              ) : null}
+                {item.description?.trim() ? (
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {item.description.trim()}
+                  </p>
+                ) : null}
+              </div>
             </div>
-          </div>
-        )
-      })}
+          )
+        })}
+      </div>
     </div>
   )
 }

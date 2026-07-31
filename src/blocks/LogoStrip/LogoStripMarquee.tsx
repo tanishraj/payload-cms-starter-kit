@@ -73,18 +73,30 @@ type LogoStripMarqueeProps = {
   showLabels: boolean
 }
 
+// Repeat logos until each track has at least MIN_PER_TRACK items, so the
+// track is always wider than the viewport and the loop has no visible gap.
+const MIN_PER_TRACK = 10
+const BASE_DURATION_S = 25
+
 export function LogoStripMarquee({ grayscale, logoHeightClass, logos, showLabels }: LogoStripMarqueeProps) {
   const [isPaused, setIsPaused] = useState(false)
+
+  const reps = Math.max(1, Math.ceil(MIN_PER_TRACK / logos.length))
+  const trackLogos = reps > 1
+    ? Array.from({ length: reps }, () => logos).flat()
+    : logos
+  // Scale duration so visual speed stays constant regardless of how many reps
+  const duration = `${BASE_DURATION_S * reps}s`
 
   const track = (duplicate: boolean) => (
     <div
       aria-hidden={duplicate || undefined}
       className="flex shrink-0 animate-marquee items-center gap-10 pr-10"
-      style={{ animationPlayState: isPaused ? 'paused' : 'running' }}
+      style={{ animationPlayState: isPaused ? 'paused' : 'running', animationDuration: duration }}
     >
-      {logos.map((logo) => (
+      {trackLogos.map((logo, i) => (
         <LogoItem
-          key={`${duplicate ? 'dup' : 'pri'}-${logo.id}`}
+          key={`${duplicate ? 'dup' : 'pri'}-${i}`}
           duplicate={duplicate}
           grayscale={grayscale}
           logo={logo}
