@@ -24,6 +24,7 @@ type TimelineBlockLike = {
   description?: string | null
   eyebrow?: string | null
   items?: TimelineItem[] | null
+  showConnectors?: boolean | null
   size?: RegularBlockSize | null
   title?: string | null
   variant?: 'horizontal' | 'vertical' | 'alternating' | null
@@ -38,10 +39,10 @@ const stepCircleClasses = {
 } as const
 
 const stepConnectorClasses = {
-  none: 'border-border',
-  upcoming: 'border-border',
-  active: 'border-primary',
-  done: 'border-green-500',
+  none: 'bg-border',
+  upcoming: 'bg-border',
+  active: 'bg-border',
+  done: 'bg-border',
 } as const
 
 function StatusIcon({ badge, index }: { badge: string; index: number }) {
@@ -65,71 +66,84 @@ function SectionHeader({
   return (
     <div
       className={cn(
-        'mb-12 flex flex-col gap-3',
+        'mb-12 flex flex-col gap-4',
         alignment === 'center' ? 'mx-auto max-w-3xl items-center text-center' : 'items-start',
       )}
     >
       {eyebrow ? (
-        <p className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+        <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="text-4xl font-semibold leading-tight tracking-tight xl:text-5xl">{title}</h2>
-      {description ? <p className="text-lg text-muted-foreground">{description}</p> : null}
+      <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">{title}</h2>
+      {description ? <p className="text-base leading-7 text-current/70">{description}</p> : null}
     </div>
   )
 }
 
 // ── HORIZONTAL STEPS ─────────────────────────────────────────────────────────
-function HorizontalTimeline({ items }: { items: TimelineItem[] }) {
+function HorizontalTimeline({ items, showConnectors }: { items: TimelineItem[]; showConnectors: boolean }) {
   return (
-    <div className="overflow-x-auto pb-4">
-      <div className="flex min-w-max items-start gap-0">
-        {items.map((item, index) => {
-          const badge = item.badge ?? 'none'
-          const isLast = index === items.length - 1
+    <div className="flex w-full pt-2">
+      {items.map((item, index) => {
+        const badge = item.badge ?? 'none'
+        const isFirst = index === 0
+        const isLast = index === items.length - 1
 
-          return (
-            <div key={index} className="flex items-start">
-              <div className="flex w-36 flex-col items-center gap-3 sm:w-44">
+        return (
+          <div key={index} className="flex flex-1 flex-col items-center gap-3">
+            {/* Circle row with connector lines drawn as absolute halves */}
+            <div className="relative flex w-full items-center justify-center">
+              {/* Left connector half */}
+              {showConnectors && !isFirst ? (
                 <div
                   className={cn(
-                    'flex size-10 shrink-0 items-center justify-center rounded-full',
-                    stepCircleClasses[badge],
-                    badge === 'active' && 'ring-4 ring-primary/20',
+                    'absolute left-0 right-[calc(50%+20px)] top-1/2 h-0.5 -translate-y-1/2',
+                    stepConnectorClasses[badge],
                   )}
-                >
-                  <StatusIcon badge={badge} index={index} />
-                </div>
-                <div className="flex flex-col items-center gap-1 px-2 text-center">
-                  {item.date?.trim() ? (
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <Clock className="size-3 shrink-0" />
-                      {item.date.trim()}
-                    </span>
-                  ) : null}
-                  <p className="text-sm font-semibold leading-snug text-foreground">
-                    {item.title?.trim()}
-                  </p>
-                  {item.description?.trim() ? (
-                    <p className="text-xs leading-relaxed text-muted-foreground">
-                      {item.description.trim()}
-                    </p>
-                  ) : null}
-                </div>
+                />
+              ) : null}
+              {/* Circle */}
+              <div
+                className={cn(
+                  'relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full',
+                  stepCircleClasses[badge],
+                  badge === 'active' && 'ring-4 ring-primary/20',
+                )}
+              >
+                <StatusIcon badge={badge} index={index} />
               </div>
-              {!isLast ? (
+              {/* Right connector half */}
+              {showConnectors && !isLast ? (
                 <div
                   className={cn(
-                    'mt-5 w-8 shrink-0 border-t-2 sm:w-12',
+                    'absolute left-[calc(50%+20px)] right-0 top-1/2 h-0.5 -translate-y-1/2',
                     stepConnectorClasses[badge],
                   )}
                 />
               ) : null}
             </div>
-          )
-        })}
-      </div>
+
+            {/* Label */}
+            <div className="flex flex-col items-center gap-1.5 px-2 text-center">
+              {item.date?.trim() ? (
+                <span className="flex items-center gap-1 text-sm text-muted-foreground">
+                  <Clock className="size-3.5 shrink-0" />
+                  {item.date.trim()}
+                </span>
+              ) : null}
+              <p className="text-base font-semibold leading-snug text-foreground">
+                {item.title?.trim()}
+              </p>
+              {item.description?.trim() ? (
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {item.description.trim()}
+                </p>
+              ) : null}
+            </div>
+          </div>
+        )
+      })}
     </div>
   )
 }
@@ -251,6 +265,7 @@ export function TimelineBlockComponent({
   description,
   eyebrow,
   items,
+  showConnectors = true,
   size = 'default',
   title,
   variant = 'vertical',
@@ -275,9 +290,7 @@ export function TimelineBlockComponent({
         />
 
         {variant === 'horizontal' ? (
-          <div className={cn(alignment === 'center' && 'flex justify-center')}>
-            <HorizontalTimeline items={validItems} />
-          </div>
+          <HorizontalTimeline items={validItems} showConnectors={showConnectors ?? true} />
         ) : variant === 'alternating' ? (
           <AlternatingTimeline items={validItems} />
         ) : (

@@ -1587,6 +1587,10 @@ export interface TimelineBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   variant: 'horizontal' | 'vertical' | 'alternating';
+  /**
+   * Show lines connecting steps. Applies to Horizontal Steps only.
+   */
+  showConnectors?: boolean | null;
   contentAlignment: 'left' | 'center';
   size: 'compact' | 'default' | 'comfortable';
   id?: string | null;
@@ -4293,6 +4297,7 @@ export interface TimelineBlockSelect<T extends boolean = true> {
         border?: T;
       };
   variant?: T;
+  showConnectors?: T;
   contentAlignment?: T;
   size?: T;
   id?: T;

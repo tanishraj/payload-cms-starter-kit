@@ -113,6 +113,16 @@ export const TimelineBlock: Block = {
               required: true,
             } satisfies SelectField,
             {
+              name: 'showConnectors',
+              label: 'Show Connector Lines',
+              type: 'checkbox',
+              defaultValue: true,
+              admin: {
+                description: 'Show lines connecting steps. Applies to Horizontal Steps only.',
+                condition: (_, siblingData) => siblingData?.variant === 'horizontal',
+              },
+            },
+            {
               name: 'contentAlignment',
               label: 'Header Alignment',
               type: 'select',
