@@ -27,6 +27,7 @@ type TabsContentBlockLike = {
   description?: string | null
   eyebrow?: string | null
   size?: RegularBlockSize | null
+  tabContentAlignment?: 'left' | 'center' | null
   tabStyle?: 'underline' | 'pills' | 'boxed' | null
   tabs?: TabItem[] | null
   title?: string | null
@@ -39,6 +40,7 @@ export function TabsContentBlockComponent({
   description,
   eyebrow,
   size = 'default',
+  tabContentAlignment = 'left',
   tabStyle = 'underline',
   tabs,
   title,
@@ -71,27 +73,32 @@ export function TabsContentBlockComponent({
         {(eyebrow?.trim() || title?.trim() || description?.trim()) ? (
           <div
             className={cn(
-              'mb-10 flex flex-col gap-3',
+              'mb-12 flex flex-col gap-4',
               isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start',
             )}
           >
             {eyebrow?.trim() ? (
-              <p className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                 {eyebrow.trim()}
               </p>
             ) : null}
             {title?.trim() ? (
-              <h2 className="text-4xl font-semibold leading-tight tracking-tight xl:text-5xl">
+              <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
                 {title.trim()}
               </h2>
             ) : null}
             {description?.trim() ? (
-              <p className="text-lg text-muted-foreground">{description.trim()}</p>
+              <p className="text-base leading-7 text-current/70">{description.trim()}</p>
             ) : null}
           </div>
         ) : null}
 
-        <TabsContentClient tabs={resolvedTabs} tabStyle={tabStyle} contentLayout={contentLayout} />
+        <TabsContentClient
+          tabs={resolvedTabs}
+          tabStyle={tabStyle}
+          contentLayout={contentLayout}
+          tabContentAlignment={tabContentAlignment ?? 'left'}
+        />
       </div>
     </section>
   )

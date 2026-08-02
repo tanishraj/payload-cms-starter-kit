@@ -49,7 +49,7 @@ const borderField = {
 } satisfies SelectField
 
 export const createBlockAppearanceFields = ({
-  includeTextOverride = true,
+  includeTextOverride = false,
   includeBackground = true,
   includeBorder = true,
 }: CreateBlockAppearanceFieldsOptions = {}): GroupField =>

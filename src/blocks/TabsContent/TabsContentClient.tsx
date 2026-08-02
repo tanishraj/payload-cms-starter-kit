@@ -24,9 +24,10 @@ type Props = {
   tabs: ResolvedTab[]
   tabStyle?: 'underline' | 'pills' | 'boxed' | null
   contentLayout?: 'imageRight' | 'imageLeft' | 'imageTop' | 'textOnly' | null
+  tabContentAlignment?: 'left' | 'center'
 }
 
-export function TabsContentClient({ tabs, tabStyle = 'underline', contentLayout = 'imageRight' }: Props) {
+export function TabsContentClient({ tabs, tabStyle = 'underline', contentLayout = 'imageRight', tabContentAlignment = 'left' }: Props) {
   const [activeIndex, setActiveIndex] = useState(0)
   const active = tabs[activeIndex]
 
@@ -119,20 +120,21 @@ export function TabsContentClient({ tabs, tabStyle = 'underline', contentLayout 
               resolvedLayout !== 'imageTop' && active.imageSrc && resolvedLayout !== 'textOnly'
                 ? 'md:flex-1'
                 : 'w-full',
+              tabContentAlignment === 'center' && 'items-center text-center',
             )}
           >
             {active.eyebrow ? (
-              <p className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                 {active.eyebrow}
               </p>
             ) : null}
             {active.title ? (
-              <h3 className="text-2xl font-semibold leading-snug tracking-tight text-foreground md:text-3xl">
+              <h3 className="font-sans text-xl font-semibold tracking-tight text-current sm:text-2xl">
                 {active.title}
               </h3>
             ) : null}
             {active.description ? (
-              <p className="text-base leading-relaxed text-muted-foreground">{active.description}</p>
+              <p className="text-base leading-7 text-current/70">{active.description}</p>
             ) : null}
             {active.actions.length > 0 ? (
               <div className="mt-2">

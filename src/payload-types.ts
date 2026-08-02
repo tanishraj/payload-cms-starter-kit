@@ -1232,7 +1232,6 @@ export interface RichTextBlock {
   };
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   size: 'compact' | 'default' | 'comfortable';
@@ -1666,7 +1665,6 @@ export interface IconGridBlock {
     | null;
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -1710,7 +1708,6 @@ export interface QuoteBlockBlock {
   eyebrow?: string | null;
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   variant?: ('centered' | 'side' | 'card' | 'highlight') | null;
@@ -1763,12 +1760,12 @@ export interface TabsContentBlock {
     | null;
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   tabStyle?: ('underline' | 'pills' | 'boxed') | null;
   contentLayout?: ('imageRight' | 'imageLeft' | 'imageTop' | 'textOnly') | null;
   contentAlignment?: ('left' | 'center') | null;
+  tabContentAlignment?: ('left' | 'center') | null;
   size?: ('compact' | 'default' | 'comfortable') | null;
   id?: string | null;
   blockName?: string | null;
@@ -1813,7 +1810,6 @@ export interface DownloadListBlock {
     | null;
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   displayMode?: ('list' | 'cards' | 'compact') | null;
@@ -1855,7 +1851,6 @@ export interface NumberedStepsBlock {
     | null;
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   variant?: ('vertical' | 'cards' | 'alternating') | null;
@@ -1921,7 +1916,6 @@ export interface BentoGridBlock {
     | null;
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -2739,7 +2733,6 @@ export interface HeaderNavbar12Block {
     | null;
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   sticky?: boolean | null;
@@ -4071,7 +4064,6 @@ export interface RichTextBlockSelect<T extends boolean = true> {
     | T
     | {
         background?: T;
-        textColor?: T;
         border?: T;
       };
   size?: T;
@@ -4344,7 +4336,6 @@ export interface IconGridBlockSelect<T extends boolean = true> {
     | T
     | {
         background?: T;
-        textColor?: T;
         border?: T;
       };
   actionMode?: T;
@@ -4374,7 +4365,6 @@ export interface QuoteBlockBlockSelect<T extends boolean = true> {
     | T
     | {
         background?: T;
-        textColor?: T;
         border?: T;
       };
   variant?: T;
@@ -4416,12 +4406,12 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
     | T
     | {
         background?: T;
-        textColor?: T;
         border?: T;
       };
   tabStyle?: T;
   contentLayout?: T;
   contentAlignment?: T;
+  tabContentAlignment?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -4449,7 +4439,6 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
     | T
     | {
         background?: T;
-        textColor?: T;
         border?: T;
       };
   displayMode?: T;
@@ -4480,7 +4469,6 @@ export interface NumberedStepsBlockSelect<T extends boolean = true> {
     | T
     | {
         background?: T;
-        textColor?: T;
         border?: T;
       };
   variant?: T;
@@ -4515,7 +4503,6 @@ export interface BentoGridBlockSelect<T extends boolean = true> {
     | T
     | {
         background?: T;
-        textColor?: T;
         border?: T;
       };
   contentAlignment?: T;
@@ -4919,7 +4906,6 @@ export interface HeaderNavbar12BlockSelect<T extends boolean = true> {
     | T
     | {
         background?: T;
-        textColor?: T;
         border?: T;
       };
   sticky?: T;
@@ -5573,7 +5559,6 @@ export interface PageSetting {
   activeFooter?: (string | null) | Footer;
   pageAppearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
-    textColor: 'auto' | 'default' | 'inverse';
   };
   announcementEnabled?: boolean | null;
   /**
@@ -5771,7 +5756,6 @@ export interface PageSettingsSelect<T extends boolean = true> {
     | T
     | {
         background?: T;
-        textColor?: T;
       };
   announcementEnabled?: T;
   announcementLabel?: T;

@@ -102,9 +102,19 @@ export const TabsContentBlock: Block = {
             } satisfies SelectField,
             {
               name: 'contentAlignment',
-              label: 'Header Alignment',
+              label: 'Section Header Alignment',
               type: 'select',
               defaultValue: 'center',
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+              ],
+            } satisfies SelectField,
+            {
+              name: 'tabContentAlignment',
+              label: 'Tab Content Alignment',
+              type: 'select',
+              defaultValue: 'left',
               options: [
                 { label: 'Left', value: 'left' },
                 { label: 'Center', value: 'center' },
