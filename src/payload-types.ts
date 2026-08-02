@@ -1669,6 +1669,12 @@ export interface IconGridBlock {
     textColor: 'auto' | 'default' | 'inverse';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  actionMode: 'link' | 'button';
+  actionVariant?: ('default' | 'secondary' | 'outline') | null;
+  /**
+   * Label shown on the button or link for each item.
+   */
+  itemActionLabel?: string | null;
   variant?: ('card' | 'minimal' | 'iconTop') | null;
   columns?: ('2' | '3' | '4') | null;
   iconStyle?: ('square' | 'circle' | 'outline' | 'plain') | null;
@@ -4341,6 +4347,9 @@ export interface IconGridBlockSelect<T extends boolean = true> {
         textColor?: T;
         border?: T;
       };
+  actionMode?: T;
+  actionVariant?: T;
+  itemActionLabel?: T;
   variant?: T;
   columns?: T;
   iconStyle?: T;

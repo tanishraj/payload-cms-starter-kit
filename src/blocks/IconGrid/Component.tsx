@@ -1,4 +1,5 @@
 import {
+  ArrowRight,
   Award,
   BarChart2,
   BookOpen,
@@ -32,8 +33,9 @@ import {
   regularBlockContainerClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { Button } from '@/components/ui/button'
 import { ContentActions } from '@/components/ContentActions'
-import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
+import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@/lib/cmsLinks'
 import { getPageHref } from '@/lib/pagePaths'
 import type { Page } from '@/payload-types'
 import { cn } from '@/lib/utils'
@@ -76,6 +78,8 @@ type IconGridItem = {
 }
 
 type IconGridBlockLike = {
+  actionMode?: 'button' | 'link' | null
+  actionVariant?: CmsActionVariant | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   columns?: '2' | '3' | '4' | null
@@ -83,6 +87,7 @@ type IconGridBlockLike = {
   description?: string | null
   eyebrow?: string | null
   iconStyle?: 'square' | 'circle' | 'outline' | 'plain' | null
+  itemActionLabel?: string | null
   items?: IconGridItem[] | null
   size?: RegularBlockSize | null
   title?: string | null
@@ -128,115 +133,180 @@ function IconContainer({
   )
 }
 
+type ActionProps = {
+  actionMode: 'button' | 'link'
+  actionVariant: CmsActionVariant
+  actionLabel: string
+  link: { href: string; openInNewTab: boolean }
+}
+
+function CardAction({ actionMode, actionVariant, actionLabel, link }: ActionProps) {
+  if (actionMode === 'button') {
+    return (
+      <Button asChild size="sm" variant={actionVariant} className="mt-auto self-start">
+        <a
+          href={link.href}
+          target={link.openInNewTab ? '_blank' : undefined}
+          rel={link.openInNewTab ? 'noopener noreferrer' : undefined}
+        >
+          {actionLabel}
+        </a>
+      </Button>
+    )
+  }
+  return (
+    <div className="mt-auto flex items-center gap-1 text-sm font-medium text-primary">
+      {actionLabel}
+      <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+    </div>
+  )
+}
+
 // ── Card variant ──────────────────────────────────────────────────────────────
 function CardItem({
   item,
   iconStyle,
+  actionMode,
+  actionVariant,
+  actionLabel,
 }: {
   item: IconGridItem
   iconStyle: keyof typeof iconContainerClasses
+  actionMode: 'button' | 'link'
+  actionVariant: CmsActionVariant
+  actionLabel: string
 }) {
   const link = resolveHref(item)
-  const Inner = (
-    <div className="flex flex-col gap-4 rounded-xl border border-border bg-card p-6 transition-shadow hover:shadow-md">
+  const inner = (
+    <div
+      className={cn(
+        'group flex h-full flex-col gap-4 rounded-xl border border-border bg-card p-6 transition-shadow',
+        link && 'hover:shadow-md hover:border-primary/30',
+      )}
+    >
       {item.icon ? <IconContainer icon={item.icon} iconStyle={iconStyle} /> : null}
-      <div className="flex flex-col gap-1">
-        <h3 className="text-base font-semibold leading-snug text-foreground">{item.title?.trim()}</h3>
+      <div className="flex flex-1 flex-col gap-1">
+        <h3 className="font-sans text-base font-semibold leading-snug text-foreground">{item.title?.trim()}</h3>
         {item.description?.trim() ? (
           <p className="text-sm leading-relaxed text-muted-foreground">{item.description.trim()}</p>
         ) : null}
       </div>
+      {link ? (
+        <CardAction actionMode={actionMode} actionVariant={actionVariant} actionLabel={actionLabel} link={link} />
+      ) : null}
     </div>
   )
 
-  if (link) {
+  if (link && actionMode === 'link') {
     return (
       <a
         href={link.href}
         target={link.openInNewTab ? '_blank' : undefined}
         rel={link.openInNewTab ? 'noopener noreferrer' : undefined}
-        className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-xl"
+        className="block h-full rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
-        {Inner}
+        {inner}
       </a>
     )
   }
-  return <div>{Inner}</div>
+  return <div className="h-full">{inner}</div>
 }
 
 // ── Minimal variant ───────────────────────────────────────────────────────────
 function MinimalItem({
   item,
   iconStyle,
+  actionMode,
+  actionVariant,
+  actionLabel,
 }: {
   item: IconGridItem
   iconStyle: keyof typeof iconContainerClasses
+  actionMode: 'button' | 'link'
+  actionVariant: CmsActionVariant
+  actionLabel: string
 }) {
   const link = resolveHref(item)
-  const Inner = (
-    <div className="flex gap-4">
-      {item.icon ? <IconContainer icon={item.icon} iconStyle={iconStyle} /> : null}
-      <div className="flex flex-col gap-1">
-        <h3 className="text-base font-semibold leading-snug text-foreground">{item.title?.trim()}</h3>
-        {item.description?.trim() ? (
-          <p className="text-sm leading-relaxed text-muted-foreground">{item.description.trim()}</p>
-        ) : null}
+  const inner = (
+    <div className="group flex flex-col gap-3">
+      <div className="flex gap-4">
+        {item.icon ? <IconContainer icon={item.icon} iconStyle={iconStyle} /> : null}
+        <div className="flex flex-col gap-1">
+          <h3 className="font-sans text-base font-semibold leading-snug text-foreground">{item.title?.trim()}</h3>
+          {item.description?.trim() ? (
+            <p className="text-sm leading-relaxed text-muted-foreground">{item.description.trim()}</p>
+          ) : null}
+        </div>
       </div>
+      {link ? (
+        <CardAction actionMode={actionMode} actionVariant={actionVariant} actionLabel={actionLabel} link={link} />
+      ) : null}
     </div>
   )
 
-  if (link) {
+  if (link && actionMode === 'link') {
     return (
       <a
         href={link.href}
         target={link.openInNewTab ? '_blank' : undefined}
         rel={link.openInNewTab ? 'noopener noreferrer' : undefined}
-        className="group block focus-visible:outline-none"
+        className="block focus-visible:outline-none"
       >
-        {Inner}
+        {inner}
       </a>
     )
   }
-  return <div>{Inner}</div>
+  return <div>{inner}</div>
 }
 
 // ── Icon Top variant ──────────────────────────────────────────────────────────
 function IconTopItem({
   item,
   iconStyle,
+  actionMode,
+  actionVariant,
+  actionLabel,
 }: {
   item: IconGridItem
   iconStyle: keyof typeof iconContainerClasses
+  actionMode: 'button' | 'link'
+  actionVariant: CmsActionVariant
+  actionLabel: string
 }) {
   const link = resolveHref(item)
-  const Inner = (
-    <div className="flex flex-col items-center gap-3 text-center">
+  const inner = (
+    <div className="group flex h-full flex-col items-center gap-3 text-center">
       {item.icon ? <IconContainer icon={item.icon} iconStyle={iconStyle} /> : null}
       <div className="flex flex-col gap-1">
-        <h3 className="text-base font-semibold leading-snug text-foreground">{item.title?.trim()}</h3>
+        <h3 className="font-sans text-base font-semibold leading-snug text-foreground">{item.title?.trim()}</h3>
         {item.description?.trim() ? (
           <p className="text-sm leading-relaxed text-muted-foreground">{item.description.trim()}</p>
         ) : null}
       </div>
+      {link ? (
+        <CardAction actionMode={actionMode} actionVariant={actionVariant} actionLabel={actionLabel} link={link} />
+      ) : null}
     </div>
   )
 
-  if (link) {
+  if (link && actionMode === 'link') {
     return (
       <a
         href={link.href}
         target={link.openInNewTab ? '_blank' : undefined}
         rel={link.openInNewTab ? 'noopener noreferrer' : undefined}
-        className="group block focus-visible:outline-none"
+        className="block h-full focus-visible:outline-none"
       >
-        {Inner}
+        {inner}
       </a>
     )
   }
-  return <div>{Inner}</div>
+  return <div className="h-full">{inner}</div>
 }
 
 export function IconGridBlockComponent({
+  actionMode,
+  actionVariant,
   actions,
   appearance,
   columns = '3',
@@ -244,6 +314,7 @@ export function IconGridBlockComponent({
   description,
   eyebrow,
   iconStyle = 'square',
+  itemActionLabel,
   items,
   size = 'default',
   title,
@@ -261,6 +332,16 @@ export function IconGridBlockComponent({
   const resolvedColumns = columns ?? '3'
   const resolvedIconStyle = (iconStyle ?? 'square') as keyof typeof iconContainerClasses
   const resolvedVariant = variant ?? 'card'
+  const resolvedActionMode = actionMode ?? 'link'
+  const resolvedActionVariant = actionVariant ?? 'default'
+  const resolvedActionLabel = itemActionLabel?.trim() || 'Learn More'
+
+  const itemProps = {
+    iconStyle: resolvedIconStyle,
+    actionMode: resolvedActionMode,
+    actionVariant: resolvedActionVariant,
+    actionLabel: resolvedActionLabel,
+  }
 
   return (
     <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
@@ -268,20 +349,20 @@ export function IconGridBlockComponent({
         {/* Header */}
         <div
           className={cn(
-            'mb-12 flex flex-col gap-3',
+            'mb-12 flex flex-col gap-4',
             isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start',
           )}
         >
           {eyebrow?.trim() ? (
-            <p className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
               {eyebrow.trim()}
             </p>
           ) : null}
-          <h2 className="text-4xl font-semibold leading-tight tracking-tight xl:text-5xl">
+          <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
             {resolvedTitle}
           </h2>
           {description?.trim() ? (
-            <p className="text-lg text-muted-foreground">{description.trim()}</p>
+            <p className="text-base leading-7 text-current/70">{description.trim()}</p>
           ) : null}
           {resolvedActions.length > 0 ? (
             <div className="mt-2">
@@ -294,12 +375,12 @@ export function IconGridBlockComponent({
         <div className={cn('grid grid-cols-1 gap-6', columnClasses[resolvedColumns])}>
           {validItems.map((item, index) => {
             if (resolvedVariant === 'minimal') {
-              return <MinimalItem key={index} item={item} iconStyle={resolvedIconStyle} />
+              return <MinimalItem key={index} item={item} {...itemProps} />
             }
             if (resolvedVariant === 'iconTop') {
-              return <IconTopItem key={index} item={item} iconStyle={resolvedIconStyle} />
+              return <IconTopItem key={index} item={item} {...itemProps} />
             }
-            return <CardItem key={index} item={item} iconStyle={resolvedIconStyle} />
+            return <CardItem key={index} item={item} {...itemProps} />
           })}
         </div>
       </div>

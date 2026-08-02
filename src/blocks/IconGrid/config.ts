@@ -1,7 +1,7 @@
 import type { ArrayField, Block, RadioField, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsField, createContentActionModeField } from '@/blocks/shared/contentActionsFields'
 
 const ICON_OPTIONS = [
   { label: 'Star', value: 'Star' },
@@ -141,6 +141,30 @@ export const IconGridBlock: Block = {
           label: 'Layout',
           fields: [
             createBlockAppearanceFields(),
+            createContentActionModeField(),
+            {
+              name: 'actionVariant',
+              label: 'Button Variant',
+              type: 'select',
+              defaultValue: 'default',
+              options: [
+                { label: 'Primary', value: 'default' },
+                { label: 'Secondary', value: 'secondary' },
+                { label: 'Outline', value: 'outline' },
+              ],
+              admin: {
+                condition: (_, siblingData) => siblingData?.actionMode === 'button',
+              },
+            } satisfies SelectField,
+            {
+              name: 'itemActionLabel',
+              label: 'Item Action Label',
+              type: 'text',
+              defaultValue: 'Learn More',
+              admin: {
+                description: 'Label shown on the button or link for each item.',
+              },
+            },
             {
               name: 'variant',
               label: 'Card Style',
