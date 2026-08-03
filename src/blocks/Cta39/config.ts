@@ -7,6 +7,20 @@ import {
   createContentActionsField,
 } from '@/blocks/shared/contentActionsFields'
 
+const borderStyleField = {
+  name: 'borderStyle',
+  label: 'Border Style',
+  type: 'select',
+  defaultValue: 'dashed',
+  options: [
+    { label: 'None', value: 'none' },
+    { label: 'Solid', value: 'solid' },
+    { label: 'Dashed', value: 'dashed' },
+    { label: 'Dotted', value: 'dotted' },
+  ],
+  required: true,
+} satisfies SelectField
+
 const ctaSizeField = {
   name: 'size',
   label: 'Section Padding',
@@ -67,6 +81,7 @@ export const Cta39Block: Block = {
             createBlockAppearanceFields({ includeTextOverride: false }),
             createContentActionModeField(),
             contentAlignmentField,
+            borderStyleField,
             ctaSizeField,
           ],
         },

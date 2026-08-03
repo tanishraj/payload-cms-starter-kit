@@ -325,6 +325,7 @@ export interface Cta39Block {
   };
   actionMode: 'link' | 'button';
   contentAlignment: 'left' | 'center' | 'right';
+  borderStyle: 'none' | 'solid' | 'dashed' | 'dotted';
   size: 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
@@ -3567,6 +3568,7 @@ export interface Cta39BlockSelect<T extends boolean = true> {
       };
   actionMode?: T;
   contentAlignment?: T;
+  borderStyle?: T;
   size?: T;
   id?: T;
   blockName?: T;

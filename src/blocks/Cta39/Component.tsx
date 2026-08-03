@@ -9,11 +9,13 @@ import { cn } from '@/lib/utils'
 
 type Cta39Size = 'comfortable' | 'compact' | 'default'
 type Cta39Alignment = 'center' | 'left' | 'right'
+type Cta39BorderStyle = 'dashed' | 'dotted' | 'none' | 'solid'
 
 type Cta39BlockLike = {
   actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
+  borderStyle?: Cta39BorderStyle | null
   contentAlignment?: Cta39Alignment | null
   description?: string | null
   size?: Cta39Size | null
@@ -26,10 +28,18 @@ const contentAlignmentClasses = {
   right: 'items-end text-right',
 } as const
 
+const borderStyleClasses: Record<Cta39BorderStyle, string> = {
+  dashed: 'border border-dashed border-border',
+  dotted: 'border border-dotted border-border',
+  solid: 'border border-solid border-border',
+  none: '',
+}
+
 export function Cta39BlockComponent({
   actionMode = 'link',
   actions,
   appearance,
+  borderStyle = 'dashed',
   contentAlignment = 'center',
   description,
   size = 'default',
@@ -41,6 +51,7 @@ export function Cta39BlockComponent({
   const resolvedActions = resolveCmsActions(actions)
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const resolvedContentAlignment = contentAlignment ?? 'center'
+  const resolvedBorderStyle: Cta39BorderStyle = borderStyle ?? 'dashed'
 
   if (!resolvedTitle) {
     return null
@@ -57,7 +68,8 @@ export function Cta39BlockComponent({
       <div className={regularBlockContainerClasses}>
         <div
           className={cn(
-            'flex w-full flex-col gap-4 rounded-xl border border-dashed border-border bg-background p-8 sm:gap-5 sm:p-12 md:p-16',
+            'flex w-full flex-col gap-4 rounded-xl bg-background p-8 sm:gap-5 sm:p-12 md:p-16',
+            borderStyleClasses[resolvedBorderStyle],
             contentAlignmentClasses[resolvedContentAlignment],
           )}
         >
