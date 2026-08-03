@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import type { Media } from '@/payload-types'
 
 export type LogoMediaLike =
@@ -52,18 +53,22 @@ export function SiteLogo({ customDark, customLight, fallbackText, height, mode, 
 
   return (
     <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         alt={lightImage.alt}
         className="block h-auto w-auto object-contain dark:hidden"
         src={lightImage.src}
+        width={0}
+        height={0}
+        sizes="100vw"
         style={{ height }}
       />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         alt={(darkImage ?? lightImage).alt}
         className="hidden h-auto w-auto object-contain dark:block"
         src={(darkImage ?? lightImage).src}
+        width={0}
+        height={0}
+        sizes="100vw"
         style={{ height }}
       />
     </>

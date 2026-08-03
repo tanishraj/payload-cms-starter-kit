@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 
 import { getMediaImageProps } from '@/lib/media'
@@ -46,13 +47,9 @@ export function ReviewPage({
           </p>
         </div>
         {featuredImage ? (
-          // CMS media URLs are runtime-managed and may be absolute, so keep a direct img element.
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            alt={featuredImage.alt}
-            className="w-full rounded-3xl border object-cover"
-            src={featuredImage.src}
-          />
+          <div className="relative aspect-video w-full overflow-hidden rounded-3xl border">
+            <Image fill alt={featuredImage.alt} className="object-cover" src={featuredImage.src} sizes="(max-width: 768px) 100vw, 80vw" />
+          </div>
         ) : null}
         {tags.length ? (
           <div className="flex flex-wrap gap-2">

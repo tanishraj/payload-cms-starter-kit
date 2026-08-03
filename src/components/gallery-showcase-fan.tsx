@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { motion, useReducedMotion } from 'framer-motion'
 import { useSyncExternalStore } from 'react'
 
@@ -129,8 +130,7 @@ export function GalleryShowcaseFan({ images, size = 'default' }: GalleryShowcase
                 shouldReduceMotion ? undefined : { rotate: 0, scale: 1.1, y: '-12%', zIndex: 20 }
               }
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 alt={image.alt}
                 className={cn(
                   'pointer-events-none block size-full object-cover select-none',

@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import React, { memo, useState, type ReactNode } from 'react'
 
@@ -40,11 +41,15 @@ const TeamShowcaseMemberCard = memo(
             !highlighted && 'border-b pb-4 md:border-b-2',
           )}
         >
-          <img
-            src={member.image}
-            alt={`${member.name} Profile Picture`}
-            className="size-full rounded border object-cover md:size-12"
-          />
+          <div className="relative size-full shrink-0 overflow-hidden rounded border md:size-12">
+            <Image
+              fill
+              src={member.image}
+              alt={`${member.name} Profile Picture`}
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 48px"
+            />
+          </div>
 
           <div className="flex flex-col gap-1 tracking-tight">
             <p className="line-clamp-1">{member.name}</p>
@@ -53,7 +58,7 @@ const TeamShowcaseMemberCard = memo(
         </div>
         {highlighted && (
           <>
-            <span className="h-0.5 w-full bg-gradient-to-r from-blue-500 via-green-500 to-yellow-500" />
+            <span className="h-0.5 w-full bg-linear-to-r from-blue-500 via-green-500 to-yellow-500" />
             <p className="line-clamp-2 text-xs">{member.description}</p>
           </>
         )}

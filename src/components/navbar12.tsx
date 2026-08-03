@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import type { LucideIcon } from "lucide-react";
 import {
   Archive,
@@ -278,7 +279,7 @@ const DesktopNavigationMenu = ({
           href={LOGO.url}
           className="flex max-h-8 items-center gap-2 text-lg font-semibold tracking-tighter"
         >
-          <img src={LOGO.src} alt={LOGO.alt} className="inline-block size-8" />
+          <Image src={LOGO.src} alt={LOGO.alt} width={32} height={32} className="inline-block size-8" />
           <span className="hidden md:inline-block">{LOGO.title}</span>
         </a>
         <NavigationMenu viewport={false} className="hidden lg:flex">

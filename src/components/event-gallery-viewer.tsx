@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { AnimatePresence, motion, useAnimationControls } from 'framer-motion'
 import {
   ChevronLeftIcon,
@@ -245,10 +246,11 @@ export function EventGalleryViewer({
               }
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               alt={image?.alt ?? ''}
               src={image?.src ?? ''}
+              width={image?.width ?? 1600}
+              height={image?.height ?? 900}
               className="max-h-full max-w-full select-none object-contain"
               draggable={false}
               style={{ pointerEvents: 'none' }}

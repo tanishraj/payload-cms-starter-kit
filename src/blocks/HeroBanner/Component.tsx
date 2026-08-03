@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
 import { Button } from '@/components/ui/button'
 import { resolveCmsLink } from '@/lib/cmsLinks'
@@ -195,8 +197,7 @@ export function HeroBannerBlockComponent({
       data-hero-banner-block="true"
     >
       <div className="absolute inset-0">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt={image.alt} className="size-full object-cover" src={image.src} />
+        <Image fill alt={image.alt} className="object-cover" src={image.src} sizes="100vw" />
       </div>
       <div
         className={cn('absolute inset-0', overlayClasses[resolvedThemeMode][resolvedOverlayStyle])}

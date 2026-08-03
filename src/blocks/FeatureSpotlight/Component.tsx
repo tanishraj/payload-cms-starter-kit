@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
@@ -180,19 +182,17 @@ export function FeatureSpotlightBlockComponent({
             <div
               className={cn(
                 order.media,
-                'relative aspect-[4/3] overflow-hidden md:min-h-full md:aspect-auto',
+                'relative aspect-4/3 overflow-hidden md:min-h-full md:aspect-auto',
                 edgeMediaMinHeightClasses[resolvedSize],
               )}
               data-feature-spotlight-media-frame="edgeToEdge"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                alt={media?.alt}
-                className={cn(
-                  'absolute inset-0 size-full object-cover',
-                  objectPositionClasses[resolvedImagePosition],
-                )}
-                src={media?.src}
+              <Image
+                fill
+                alt={media?.alt ?? ''}
+                className={cn('object-cover', objectPositionClasses[resolvedImagePosition])}
+                src={media?.src ?? ''}
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
           ) : null}
@@ -231,15 +231,13 @@ export function FeatureSpotlightBlockComponent({
             )}
           >
             <div className={cn(order.media)} data-feature-spotlight-media-frame="containedFill">
-              <div className="relative aspect-[4/3] overflow-hidden md:h-full md:aspect-auto">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={media?.alt}
-                  className={cn(
-                    'absolute inset-0 size-full object-cover',
-                    objectPositionClasses[resolvedImagePosition],
-                  )}
-                  src={media?.src}
+              <div className="relative aspect-4/3 overflow-hidden md:h-full md:aspect-auto">
+                <Image
+                  fill
+                  alt={media?.alt ?? ''}
+                  className={cn('object-cover', objectPositionClasses[resolvedImagePosition])}
+                  src={media?.src ?? ''}
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
             </div>
@@ -266,15 +264,13 @@ export function FeatureSpotlightBlockComponent({
           {renderAsSplit ? (
             <div className={cn('grid items-stretch gap-8 md:grid-cols-2 md:gap-12 lg:gap-16')}>
               <div className={cn(order.media)} data-feature-spotlight-media-frame="contained">
-                <div className="overflow-hidden rounded-xl border border-border bg-muted/20">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    alt={media?.alt}
-                    className={cn(
-                      'aspect-4/3 size-full object-cover',
-                      objectPositionClasses[resolvedImagePosition],
-                    )}
-                    src={media?.src}
+                <div className="relative aspect-4/3 overflow-hidden rounded-xl border border-border bg-muted/20">
+                  <Image
+                    fill
+                    alt={media?.alt ?? ''}
+                    className={cn('object-cover', objectPositionClasses[resolvedImagePosition])}
+                    src={media?.src ?? ''}
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
               </div>

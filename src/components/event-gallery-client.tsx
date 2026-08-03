@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { Images } from 'lucide-react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { useCallback, useRef, useState, useSyncExternalStore } from 'react'
@@ -82,15 +83,12 @@ export function EventGalleryClient({ albums, cardTextLayout = 'center' }: EventG
                 type="button"
               >
                 <div className="relative aspect-4/3 overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
+                    fill
                     alt={album.cover.alt}
-                    className="block size-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none [@media(hover:hover)]:group-hover:scale-[1.04]"
-                    decoding="async"
-                    height={album.cover.height}
-                    loading="lazy"
+                    className="object-cover transition-transform duration-700 ease-out motion-reduce:transition-none [@media(hover:hover)]:group-hover:scale-[1.04]"
                     src={album.cover.src}
-                    width={album.cover.width}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
 
                   {/* Overlay — flat for center, gradient for split */}

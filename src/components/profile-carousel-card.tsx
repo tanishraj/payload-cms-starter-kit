@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { cn } from '@/lib/utils'
 
 export type ProfileCarouselImagePosition = 'bottom' | 'center' | 'left' | 'right' | 'top'
@@ -56,18 +57,17 @@ export function ProfileCarouselCard({
       className={cn('relative w-full overflow-hidden rounded-md', imageHeightClasses[size])}
       data-profile-carousel-media-frame="true"
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
+        fill
         alt={profile.image.alt}
         className={cn(
-          'block h-full w-full object-cover select-none motion-safe:transition-transform motion-safe:duration-300 [@media(hover:hover)]:group-hover:scale-[1.02]',
+          'object-cover select-none motion-safe:transition-transform motion-safe:duration-300 [@media(hover:hover)]:group-hover:scale-[1.02]',
           objectPositionClasses[imagePosition],
         )}
         data-profile-carousel-image-position={imagePosition}
         draggable={false}
-        height={profile.image.height}
         src={profile.image.src}
-        width={profile.image.width}
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
       />
       {variant === 'overlay' ? (
         <div

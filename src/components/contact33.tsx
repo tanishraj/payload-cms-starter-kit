@@ -176,10 +176,7 @@ export function Contact33({
 }: Contact33Props) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const fieldDefinitions = useMemo(() => getContact33FieldDefinitions(form), [form])
-  const formSchema = useMemo(
-    () => createContactFormSchema(fieldDefinitions),
-    [fieldDefinitions],
-  )
+  const formSchema = useMemo(() => createContactFormSchema(fieldDefinitions), [fieldDefinitions])
   const formApi = useForm<ContactFormValues>({
     defaultValues: initialValues,
     mode: 'onSubmit',
@@ -234,8 +231,7 @@ export function Contact33({
           }
         })
         setMessage(
-          responsePayload.message ||
-            'Please correct the highlighted fields and try again.',
+          responsePayload.message || 'Please correct the highlighted fields and try again.',
         )
         setMessageTone('destructive')
         return
@@ -256,11 +252,7 @@ export function Contact33({
 
   return (
     <section
-      className={cn(
-        regularBlockMobilePaddingClasses[size],
-        appearanceClasses.className,
-        className,
-      )}
+      className={cn(regularBlockMobilePaddingClasses[size], appearanceClasses.className, className)}
       data-contact33-background={appearance?.background ?? 'none'}
       data-contact33-size={size}
     >
@@ -392,8 +384,7 @@ export function Contact33({
                           >
                             <SelectValue
                               placeholder={
-                                fieldDefinitions.subject.placeholder ||
-                                'What can we help with?'
+                                fieldDefinitions.subject.placeholder || 'What can we help with?'
                               }
                             />
                           </SelectTrigger>
@@ -498,7 +489,7 @@ export function Contact33({
 
           <div
             className={cn(
-              'relative min-h-72 overflow-hidden rounded-[calc(var(--radius)*2)] lg:min-h-[42rem]',
+              'relative min-h-72 overflow-hidden rounded-[calc(var(--radius)*2)] lg:min-h-168',
               imagePosition === 'left' && 'lg:order-first',
             )}
           >

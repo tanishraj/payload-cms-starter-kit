@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { Accordion as AccordionPrimitive } from 'radix-ui'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
@@ -279,14 +280,8 @@ export function QaAccordionBlockComponent({
         {hasProfile ? (
           <div className="mb-8 flex items-start gap-3 sm:gap-4 lg:mb-12">
             {profileImage ? (
-              <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg sm:h-16 sm:w-16">
-                {/* CMS media URLs are runtime-managed and may be absolute, so keep a direct img element. */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={profileImage.alt}
-                  className="h-full w-full object-cover"
-                  src={profileImage.src}
-                />
+              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg sm:h-16 sm:w-16">
+                <Image fill alt={profileImage.alt} className="object-cover" src={profileImage.src} sizes="64px" />
               </div>
             ) : null}
             <div className="min-w-0">

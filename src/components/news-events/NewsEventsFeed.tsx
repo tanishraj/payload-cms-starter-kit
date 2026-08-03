@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
@@ -85,19 +86,13 @@ function FeedRow({
       data-news-event-feed-row="true"
     >
       {item.image ? (
-        <div className="h-44 w-full self-start overflow-hidden rounded-md border border-border bg-muted md:h-48">
-          {/* CMS image URLs are runtime-managed and may be absolute. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+        <div className="relative h-44 w-full self-start overflow-hidden rounded-md border border-border bg-muted md:h-48">
+          <Image
+            fill
             alt={item.image.alt}
-            className={cn(
-              'size-full object-cover',
-              newsEventObjectPositionClasses[item.image.position],
-            )}
-            height={item.image.height}
-            loading="lazy"
+            className={cn('object-cover', newsEventObjectPositionClasses[item.image.position])}
             src={item.image.src}
-            width={item.image.width}
+            sizes="(max-width: 768px) 100vw, 40vw"
           />
         </div>
       ) : null}

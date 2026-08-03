@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { CalendarDays, MapPin } from 'lucide-react'
@@ -62,18 +63,13 @@ export function NewsEventStory({ entry }: { entry: PublicNewsEventDetail }) {
         </header>
 
         {entry.image ? (
-          <div className="aspect-[16/8] overflow-hidden rounded-md border border-border bg-muted">
-            {/* CMS image URLs are runtime-managed and may be absolute. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+          <div className="relative aspect-16/8 overflow-hidden rounded-md border border-border bg-muted">
+            <Image
+              fill
               alt={entry.image.alt}
-              className={cn(
-                'size-full object-cover',
-                newsEventObjectPositionClasses[entry.image.position],
-              )}
-              height={entry.image.height}
+              className={cn('object-cover', newsEventObjectPositionClasses[entry.image.position])}
               src={entry.image.src}
-              width={entry.image.width}
+              sizes="(max-width: 768px) 100vw, 80vw"
             />
           </div>
         ) : null}

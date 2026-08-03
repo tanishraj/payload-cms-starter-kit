@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import Image from 'next/image'
 
 import {
   resolveBlockAppearanceClasses,
@@ -204,17 +205,18 @@ export function FeatureMatrix({
                     <p className="text-sm leading-6 text-current/70">{feature.description}</p>
                   ) : null}
                 </div>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={feature.image.alt}
-                  className={cn(
-                    'mt-2 w-full rounded-md object-cover',
-                    imageHeightClasses[resolvedSize],
-                    objectPositionClasses[resolvedImagePosition],
-                  )}
+                <div
+                  className={cn('relative mt-2 w-full overflow-hidden rounded-md', imageHeightClasses[resolvedSize])}
                   data-feature-matrix-image-position={resolvedImagePosition}
-                  src={feature.image.src}
-                />
+                >
+                  <Image
+                    fill
+                    alt={feature.image.alt}
+                    className={cn('object-cover', objectPositionClasses[resolvedImagePosition])}
+                    src={feature.image.src}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
+                  />
+                </div>
               </article>
             )
           })}

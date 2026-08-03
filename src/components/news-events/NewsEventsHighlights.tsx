@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import Image from 'next/image'
 
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
 import { resolveBlockAppearanceClasses } from '@/blocks/shared/blockAppearance'
@@ -46,19 +47,16 @@ function NewsEventHighlightCard({ item }: { item: PublicNewsEventCard }) {
       data-news-event-highlight-card="true"
     >
       {item.image ? (
-        <div className="h-44 sm:h-48 relative overflow-hidden rounded-t-md bg-muted">
-          {/* CMS image URLs are runtime-managed and may be absolute. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+        <div className="relative h-44 sm:h-48 overflow-hidden rounded-t-md bg-muted">
+          <Image
+            fill
             alt={item.image.alt}
             className={cn(
-              'size-full object-cover transition-transform duration-300 ease-out group-hover/card:scale-[1.025]',
+              'object-cover transition-transform duration-300 ease-out group-hover/card:scale-[1.025]',
               newsEventObjectPositionClasses[item.image.position],
             )}
-            height={item.image.height}
-            loading="lazy"
             src={item.image.src}
-            width={item.image.width}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         </div>
       ) : null}

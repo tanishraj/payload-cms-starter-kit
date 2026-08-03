@@ -57,7 +57,7 @@ function ReviewFeedSummary({ summary }: { summary: PublishedReviewRatingDistribu
           {ratingValues.map((rating) => (
             <Progress
               aria-label={`${rating} star reviews`}
-              className="h-2 bg-current/15 [&_[data-slot=progress-indicator]]:bg-current"
+              className="h-2 bg-current/15 **:data-[slot=progress-indicator]:bg-current"
               key={rating}
               value={(summary.counts[rating - 1] / summary.count) * 100}
             />
@@ -93,7 +93,12 @@ export function ReviewFeed({
     >
       <div className={regularBlockContainerClasses}>
         <div className="flex w-full flex-col gap-6">
-          <header className={cn('flex flex-col gap-4', isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start')}>
+          <header
+            className={cn(
+              'flex flex-col gap-4',
+              isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start',
+            )}
+          >
             {eyebrow ? (
               <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                 {eyebrow}

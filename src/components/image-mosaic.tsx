@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import Image from 'next/image'
 
 import {
   resolveBlockAppearanceClasses,
@@ -170,8 +171,7 @@ export function ImageMosaic({
                 data-image-mosaic-item={index + 1}
                 key={itemKey}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   alt={item.image.alt}
                   className={cn(imageClassName, hasOverlay ? 'image-mosaic-image' : undefined)}
                   draggable={false}
