@@ -1891,6 +1891,17 @@ export interface BentoGridBlock {
   eyebrow?: string | null;
   title?: string | null;
   description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Each item is a bento cell. Size controls how much grid space it occupies.
    */
@@ -4530,6 +4541,17 @@ export interface BentoGridBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
   items?:
     | T
     | {

@@ -29,6 +29,8 @@ import {
   regularBlockContainerClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { ContentActions } from '@/components/ContentActions'
+import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import type { Media } from '@/payload-types'
 import { cn } from '@/lib/utils'
@@ -69,6 +71,7 @@ type BentoItem = {
 }
 
 type BentoGridBlockLike = {
+  actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
@@ -97,6 +100,13 @@ const accentMutedClasses = {
   primary: 'text-primary-foreground/80',
   secondary: 'text-secondary-foreground/80',
   accent: 'text-accent-foreground/80',
+} as const
+
+const accentIconClasses = {
+  none: 'bg-primary/10 text-primary',
+  primary: 'bg-white/20 text-primary-foreground',
+  secondary: 'bg-secondary-foreground/10 text-secondary-foreground',
+  accent: 'bg-accent-foreground/10 text-accent-foreground',
 } as const
 
 const cellColSpan = {
@@ -142,7 +152,7 @@ function BentoCell({ item }: { item: BentoItem }) {
         <div
           className={cn(
             'absolute top-5 left-5 flex size-10 items-center justify-center rounded-lg',
-            accent === 'none' ? 'bg-primary/10 text-primary' : 'bg-white/20 text-white',
+            accentIconClasses[accent],
           )}
         >
           <Icon className="size-5" />
@@ -164,7 +174,7 @@ function BentoCell({ item }: { item: BentoItem }) {
         {item.title?.trim() ? (
           <h3
             className={cn(
-              'font-semibold leading-snug',
+              'font-sans font-semibold leading-snug',
               isFull || isLarge ? 'text-xl md:text-2xl' : 'text-base',
               image ? 'text-white' : accentTextClasses[accent],
             )}
@@ -201,6 +211,7 @@ function BentoCell({ item }: { item: BentoItem }) {
 }
 
 export function BentoGridBlockComponent({
+  actions,
   appearance,
   contentAlignment = 'center',
   description,
@@ -214,29 +225,35 @@ export function BentoGridBlockComponent({
 
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
   const isCenter = (contentAlignment ?? 'center') === 'center'
+  const resolvedActions = resolveCmsActions(actions)
 
   return (
     <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
       <div className={regularBlockContainerClasses}>
-        {(eyebrow?.trim() || title?.trim() || description?.trim()) ? (
+        {(eyebrow?.trim() || title?.trim() || description?.trim() || resolvedActions.length > 0) ? (
           <div
             className={cn(
-              'mb-10 flex flex-col gap-3',
+              'mb-12 flex flex-col gap-4',
               isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start',
             )}
           >
             {eyebrow?.trim() ? (
-              <p className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                 {eyebrow.trim()}
               </p>
             ) : null}
             {title?.trim() ? (
-              <h2 className="text-4xl font-semibold leading-tight tracking-tight xl:text-5xl">
+              <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
                 {title.trim()}
               </h2>
             ) : null}
             {description?.trim() ? (
-              <p className="text-lg text-muted-foreground">{description.trim()}</p>
+              <p className="text-base leading-7 text-current/70">{description.trim()}</p>
+            ) : null}
+            {resolvedActions.length > 0 ? (
+              <div className="mt-2">
+                <ContentActions actions={resolvedActions} />
+              </div>
             ) : null}
           </div>
         ) : null}

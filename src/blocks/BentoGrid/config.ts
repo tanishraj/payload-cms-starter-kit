@@ -1,6 +1,7 @@
 import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 const ICON_OPTIONS = [
   { label: 'Star', value: 'Star' },
@@ -120,6 +121,7 @@ export const BentoGridBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             itemsField,
           ],
         },
@@ -129,7 +131,7 @@ export const BentoGridBlock: Block = {
             createBlockAppearanceFields(),
             {
               name: 'contentAlignment',
-              label: 'Header Alignment',
+              label: 'Section Content Alignment',
               type: 'select',
               defaultValue: 'center',
               options: [
