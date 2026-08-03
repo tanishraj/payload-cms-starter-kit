@@ -23,7 +23,7 @@ export type RatingSpotlightPresentationProps = {
   eyebrow?: string | null
   size?: RatingSpotlightSize
   summary?: PublishedReviewRatingSummary | null
-  title: string
+  title?: string | null
 }
 
 const alignmentClasses = {

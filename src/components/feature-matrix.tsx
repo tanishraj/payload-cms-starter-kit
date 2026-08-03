@@ -19,7 +19,7 @@ export type FeatureMatrixItem = {
     src: string
   }
   imagePosition?: FeatureMatrixImagePosition | null
-  title: string
+  title?: string | null
 }
 
 type FeatureMatrixProps = {
@@ -33,7 +33,7 @@ type FeatureMatrixProps = {
   features: FeatureMatrixItem[]
   showOuterBorder?: boolean
   size?: FeatureMatrixSize
-  title: string
+  title?: string | null
 }
 
 const panelPaddingClasses = {

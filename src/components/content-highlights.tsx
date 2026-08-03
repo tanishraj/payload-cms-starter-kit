@@ -20,7 +20,7 @@ export type ContentHighlightItem = {
   href?: string
   metadata?: string
   openInNewTab?: boolean
-  title: string
+  title?: string | null
 }
 
 export type ContentHighlightsProps = {
@@ -34,7 +34,7 @@ export type ContentHighlightsProps = {
   layout?: ContentHighlightsLayout
   size?: ContentHighlightsSize
   splitContentAlignment?: ContentHighlightsSplitAlignment
-  title: string
+  title?: string | null
 }
 
 const fullWidthItemGridClasses = {

@@ -306,7 +306,7 @@ export interface AnnouncementBlock {
  * via the `definition` "Cta39Block".
  */
 export interface Cta39Block {
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -338,7 +338,7 @@ export interface Cta39Block {
 export interface HeroBannerBlock {
   backgroundImage: string | Media;
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   buttons?:
     | {
@@ -457,7 +457,7 @@ export interface Media {
 export interface FeatureSpotlightBlock {
   image?: (string | null) | Media;
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -492,7 +492,7 @@ export interface FeatureSpotlightBlock {
  */
 export interface FeatureMatrixBlock {
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -507,7 +507,7 @@ export interface FeatureMatrixBlock {
     | null;
   features?:
     | {
-        title: string;
+        title?: string | null;
         description?: string | null;
         image: string | Media;
         imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
@@ -533,7 +533,7 @@ export interface FeatureMatrixBlock {
  */
 export interface ContentHighlightsBlock {
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -548,7 +548,7 @@ export interface ContentHighlightsBlock {
     | null;
   items: {
     metadata?: string | null;
-    title: string;
+    title?: string | null;
     description?: string | null;
     linkType: 'none' | 'page' | 'custom';
     page?: (string | null) | Page;
@@ -576,7 +576,7 @@ export interface ContentHighlightsBlock {
  */
 export interface NewsEventsHighlightsBlock {
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -611,7 +611,7 @@ export interface NewsEventsHighlightsBlock {
  */
 export interface ProfileCarouselBlock {
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -652,7 +652,7 @@ export interface ProfileCarouselBlock {
  */
 export interface GalleryShowcaseBlock {
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -689,7 +689,7 @@ export interface GalleryShowcaseBlock {
  */
 export interface EventGalleryBlock {
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -753,7 +753,7 @@ export interface GalleryAlbum {
  */
 export interface ImageMosaicBlock {
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -827,7 +827,7 @@ export interface StatsStripBlock {
  * via the `definition` "QaAccordionBlock".
  */
 export interface QaAccordionBlock {
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -904,7 +904,7 @@ export interface QaAccordionBlock {
  */
 export interface RatingSpotlightBlock {
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -939,7 +939,7 @@ export interface RatingSpotlightBlock {
  */
 export interface ReviewFeedBlock {
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -971,7 +971,7 @@ export interface ReviewFeedBlock {
  */
 export interface ReviewSubmissionBlock {
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -1072,7 +1072,7 @@ export interface Form {
  */
 export interface Contact33Block {
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -1108,7 +1108,7 @@ export interface Contact33Block {
  */
 export interface Contact24Block {
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -1241,7 +1241,7 @@ export interface Services21Block {
   services?:
     | {
         code?: string | null;
-        title: string;
+        title?: string | null;
         description: string;
         image: string | Media;
         id?: string | null;
@@ -1344,7 +1344,7 @@ export interface MediaCarouselBlock {
    * Small label above the section title.
    */
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   sectionActions?:
     | {
@@ -1391,7 +1391,7 @@ export interface MediaCarouselBlock {
               | 'Mic'
             )
           | null;
-        title: string;
+        title?: string | null;
         /**
          * Short supporting text shown below the title.
          */
@@ -1432,7 +1432,7 @@ export interface ProgramGridBlock {
    * Small label above the section title.
    */
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -1459,7 +1459,7 @@ export interface ProgramGridBlock {
          * Short label on the card (e.g. AICTE Approved, New Batch 2025).
          */
         badge?: string | null;
-        title: string;
+        title?: string | null;
         /**
          * Short program overview, 1–2 sentences.
          */
@@ -1588,7 +1588,7 @@ export interface PageHeaderBlock {
    * Small label above the page title.
    */
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   /**
    * Supporting line below the title.
    */
@@ -1646,7 +1646,7 @@ export interface TimelineBlock {
    * Small label above the section title.
    */
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -1669,7 +1669,7 @@ export interface TimelineBlock {
          * Optional status indicator — useful for Horizontal Steps variant.
          */
         badge?: ('none' | 'done' | 'active' | 'upcoming') | null;
-        title: string;
+        title?: string | null;
         description?: string | null;
         /**
          * Optional image shown in the media column (Alternating variant).
@@ -1702,7 +1702,7 @@ export interface IconGridBlock {
    * Small label shown above the title.
    */
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   /**
    * Optional supporting paragraph below the title.
    */
@@ -1748,7 +1748,7 @@ export interface IconGridBlock {
           | 'FlaskConical'
           | 'Microscope'
           | 'Building2';
-        title: string;
+        title?: string | null;
         /**
          * Short supporting text shown below the title.
          */
@@ -1903,7 +1903,7 @@ export interface DownloadListBlock {
    */
   downloads?:
     | {
-        title: string;
+        title?: string | null;
         /**
          * Brief note about the file (e.g. "Application form for 2025 intake").
          */
@@ -1948,7 +1948,7 @@ export interface DownloadListBlock {
  */
 export interface NumberedStepsBlock {
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -1966,7 +1966,7 @@ export interface NumberedStepsBlock {
    */
   steps?:
     | {
-        title: string;
+        title?: string | null;
         description?: string | null;
         /**
          * Optional image shown alongside this step.
@@ -2017,7 +2017,7 @@ export interface BentoGridBlock {
     | {
         size?: ('full' | 'large' | 'medium' | 'small') | null;
         eyebrow?: string | null;
-        title: string;
+        title?: string | null;
         description?: string | null;
         /**
          * Icon shown when no image is set.
@@ -2139,7 +2139,7 @@ export interface AwardsListBlock {
         /**
          * e.g. "NAAC A+ Accreditation" or "QS World University Rankings #201"
          */
-        title: string;
+        title?: string | null;
         /**
          * e.g. "NAAC", "QS", "NIRF", "NBA"
          */
@@ -2176,7 +2176,7 @@ export interface AboutSectionBlock {
    * e.g. "About Us" or "Our Story"
    */
   eyebrow?: string | null;
-  title: string;
+  title?: string | null;
   /**
    * Main about text. Paragraphs separated by blank lines are rendered as separate paragraphs.
    */
@@ -2210,7 +2210,7 @@ export interface AboutSectionBlock {
          * Lucide icon name, e.g. "GraduationCap", "BookOpen", "Globe"
          */
         icon?: string | null;
-        title: string;
+        title?: string | null;
         description?: string | null;
         id?: string | null;
       }[]
@@ -2954,7 +2954,7 @@ export interface Footer56Block {
   description?: string | null;
   linkGroups?:
     | {
-        title: string;
+        title?: string | null;
         links?:
           | {
               label: string;

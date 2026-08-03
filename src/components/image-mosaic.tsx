@@ -42,7 +42,7 @@ type ImageMosaicProps = {
   items: ImageMosaicItem[]
   showImageOverlays?: boolean
   size?: ImageMosaicSize
-  title: string
+  title?: string | null
 }
 
 const alignmentClasses = {
@@ -113,7 +113,7 @@ export function ImageMosaic({
 }: ImageMosaicProps) {
   const visibleItems = items.slice(0, 8)
 
-  if (!title.trim() || visibleItems.length === 0) {
+  if (!title?.trim() || visibleItems.length === 0) {
     return null
   }
 

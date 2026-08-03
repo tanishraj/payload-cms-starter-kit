@@ -27,7 +27,7 @@ type HeroBannerBlockLike = {
   horizontalAlignment?: 'center' | 'left' | 'right' | null
   overlayStyle?: 'brand' | 'dark' | 'darker' | 'ink' | 'light' | 'soft' | null
   themeMode?: 'auto' | 'dark' | 'light' | null
-  title: string
+  title?: string | null
   verticalAlignment?: 'bottom' | 'center' | 'top' | null
 }
 

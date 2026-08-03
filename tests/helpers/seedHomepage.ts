@@ -40,6 +40,7 @@ const homepagePageData = {
       contentAlignment: 'center' as const,
       description: 'Use this section as a quick call-to-action at the end of the page.',
       size: 'compact' as const,
+      borderStyle: 'dashed' as const,
       blockType: 'cta39' as const,
       title: 'Ready to explore more?',
     },

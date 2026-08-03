@@ -52,7 +52,6 @@ const programsField: ArrayField = {
     {
       name: 'title',
       type: 'text',
-      required: true,
     },
     {
       name: 'description',
@@ -140,7 +139,6 @@ export const ProgramGridBlock: Block = {
             {
               name: 'title',
               type: 'text',
-              required: true,
             },
             {
               name: 'description',

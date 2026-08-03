@@ -26,7 +26,7 @@ export type ResolvedProgram = {
   imageWidth?: number
   imageHeight?: number
   intake?: string
-  title: string
+  title?: string | null
 }
 
 type ProgramGridClientProps = {
@@ -42,7 +42,7 @@ type ProgramGridClientProps = {
   sectionActions?: React.ReactNode
   showFilter: boolean
   size: RegularBlockSize
-  title: string
+  title?: string | null
   viewMode: 'grid' | 'list'
 }
 
@@ -84,7 +84,7 @@ function GridCard({ program, ctaLabel, actionMode, actionVariant }: { program: R
         <div className="relative aspect-video w-full overflow-hidden">
           <Image
             src={program.imageSrc}
-            alt={program.imageAlt ?? program.title}
+            alt={program.imageAlt ?? program.title ?? ''}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -176,7 +176,7 @@ function ListCard({ program, ctaLabel, actionMode, actionVariant }: { program: R
         <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-lg sm:aspect-square sm:w-32">
           <Image
             src={program.imageSrc}
-            alt={program.imageAlt ?? program.title}
+            alt={program.imageAlt ?? program.title ?? ''}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, 128px"

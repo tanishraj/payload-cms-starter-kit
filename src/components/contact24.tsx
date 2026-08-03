@@ -34,7 +34,7 @@ export type Contact24Props = {
   offices: SiteOfficeLocation[]
   showLocationDetails?: boolean
   size?: Contact24Size
-  title: string
+  title?: string | null
 }
 
 const headerGapClasses = {
@@ -93,7 +93,7 @@ export function Contact24({
   size = 'default',
   title,
 }: Contact24Props) {
-  const resolvedTitle = title.trim()
+  const resolvedTitle = title?.trim()
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
 
   if (!resolvedTitle || offices.length === 0) {

@@ -66,7 +66,6 @@ export const Cta39Block: Block = {
               name: 'title',
               label: 'Title',
               type: 'text',
-              required: true,
             },
             {
               name: 'description',

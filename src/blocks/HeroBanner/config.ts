@@ -205,7 +205,6 @@ export const HeroBannerBlock: Block = {
             {
               name: 'title',
               type: 'text',
-              required: true,
             },
             {
               name: 'description',

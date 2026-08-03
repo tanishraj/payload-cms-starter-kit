@@ -51,7 +51,7 @@ export const ReviewFeedBlock: Block = {
           label: 'Content',
           fields: [
             { name: 'eyebrow', type: 'text' },
-            { name: 'title', type: 'text', required: true },
+            { name: 'title', type: 'text' },
             { name: 'description', type: 'textarea' },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             pageSizeField,

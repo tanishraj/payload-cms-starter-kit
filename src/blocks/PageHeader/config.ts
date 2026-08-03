@@ -105,7 +105,6 @@ export const PageHeaderBlock: Block = {
             {
               name: 'title',
               type: 'text',
-              required: true,
             },
             {
               name: 'subtitle',

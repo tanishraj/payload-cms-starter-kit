@@ -72,7 +72,6 @@ export const Contact24Block: Block = {
             {
               name: 'title',
               type: 'text',
-              required: true,
             },
             {
               name: 'description',

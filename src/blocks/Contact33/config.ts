@@ -89,7 +89,6 @@ export const Contact33Block: Block = {
             {
               name: 'title',
               type: 'text',
-              required: true,
             },
             {
               name: 'description',

@@ -26,7 +26,6 @@ export const EventGalleryBlock: Block = {
             {
               name: 'title',
               type: 'text',
-              required: true,
             },
             {
               name: 'description',

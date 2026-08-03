@@ -16,7 +16,6 @@ const downloadsField: ArrayField = {
     {
       name: 'title',
       type: 'text',
-      required: true,
     },
     {
       name: 'description',

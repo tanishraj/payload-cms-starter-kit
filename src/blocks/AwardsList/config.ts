@@ -15,7 +15,6 @@ const awardsField = {
       name: 'title',
       label: 'Title',
       type: 'text',
-      required: true,
       admin: { description: 'e.g. "NAAC A+ Accreditation" or "QS World University Rankings #201"' },
     },
     {

@@ -12,7 +12,7 @@ export type ResolvedDownload = {
   href: string
   id: string | number
   isExternal?: boolean
-  title: string
+  title?: string | null
 }
 
 type Props = {

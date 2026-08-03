@@ -19,7 +19,7 @@ interface FooterLink {
   href: string
 }
 interface FooterSection {
-  title: string
+  title?: string | null
   links: FooterLink[]
 }
 interface FooterSocialLink {
@@ -31,7 +31,7 @@ interface FooterLogo {
   url: string
   src: string
   alt: string
-  title: string
+  title?: string | null
   width?: number
   height?: number
 }

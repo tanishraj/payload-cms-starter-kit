@@ -28,7 +28,7 @@ type GalleryShowcaseProps = {
   eyebrow?: string | null
   images: GalleryShowcaseImage[]
   size?: GalleryShowcaseSize
-  title: string
+  title?: string | null
 }
 
 const alignmentClasses = {

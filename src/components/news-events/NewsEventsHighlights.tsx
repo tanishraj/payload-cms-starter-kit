@@ -25,7 +25,7 @@ type NewsEventsHighlightsProps = {
   eyebrow?: string
   items: PublicNewsEventCard[]
   size?: RegularBlockSize
-  title: string
+  title?: string | null
 }
 
 const sectionGapClasses = {

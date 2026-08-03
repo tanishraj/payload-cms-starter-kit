@@ -39,7 +39,7 @@ type ProfileCarouselProps = {
   overlayAlignment?: ProfileCarouselOverlayAlignment
   profiles: ProfileCarouselProfile[]
   size?: ProfileCarouselSize
-  title: string
+  title?: string | null
 }
 
 const alignmentClasses = {

@@ -62,7 +62,6 @@ const itemsField: ArrayField = {
     {
       name: 'title',
       type: 'text',
-      required: true,
     },
     {
       name: 'description',
@@ -126,7 +125,6 @@ export const IconGridBlock: Block = {
             {
               name: 'title',
               type: 'text',
-              required: true,
             },
             {
               name: 'description',

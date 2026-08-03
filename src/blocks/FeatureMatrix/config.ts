@@ -20,7 +20,6 @@ const featuresField = {
     {
       name: 'title',
       type: 'text',
-      required: true,
     },
     {
       name: 'description',
@@ -71,7 +70,6 @@ export const FeatureMatrixBlock: Block = {
             {
               name: 'title',
               type: 'text',
-              required: true,
             },
             {
               name: 'description',

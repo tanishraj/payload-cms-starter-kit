@@ -24,7 +24,7 @@ type EventGalleryProps = {
   description?: string | null
   eyebrow?: string | null
   size?: EventGallerySize
-  title: string
+  title?: string | null
 }
 
 const alignmentClasses = {

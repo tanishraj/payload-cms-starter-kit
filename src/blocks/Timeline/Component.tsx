@@ -64,7 +64,7 @@ function SectionHeader({
 }: {
   actions?: React.ReactNode
   eyebrow?: string
-  title: string
+  title?: string | null
   description?: string
   alignment: 'left' | 'center'
 }) {

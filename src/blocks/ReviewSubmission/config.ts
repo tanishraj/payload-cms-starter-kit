@@ -55,7 +55,6 @@ export const ReviewSubmissionBlock: Block = {
             {
               name: 'title',
               type: 'text',
-              required: true,
             },
             {
               name: 'description',

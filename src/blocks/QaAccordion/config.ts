@@ -104,7 +104,6 @@ export const QaAccordionBlock: Block = {
             {
               name: 'title',
               type: 'text',
-              required: true,
             },
             {
               name: 'description',

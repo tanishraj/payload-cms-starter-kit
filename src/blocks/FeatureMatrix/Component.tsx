@@ -28,7 +28,7 @@ type FeatureMatrixBlockLike = {
     | null
   showOuterBorder?: boolean | null
   size?: FeatureMatrixSize | null
-  title: string
+  title?: string | null
 }
 
 export function FeatureMatrixBlockComponent({

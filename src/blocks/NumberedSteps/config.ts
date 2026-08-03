@@ -17,7 +17,6 @@ const stepsField: ArrayField = {
     {
       name: 'title',
       type: 'text',
-      required: true,
     },
     {
       name: 'description',
@@ -62,7 +61,6 @@ export const NumberedStepsBlock: Block = {
             {
               name: 'title',
               type: 'text',
-              required: true,
             },
             {
               name: 'description',

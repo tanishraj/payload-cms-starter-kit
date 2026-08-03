@@ -23,7 +23,6 @@ const valuesField = {
       name: 'title',
       label: 'Title',
       type: 'text',
-      required: true,
     },
     {
       name: 'description',
@@ -74,7 +73,7 @@ export const AboutSectionBlock: Block = {
           label: 'Content',
           fields: [
             { name: 'eyebrow', type: 'text', admin: { description: 'e.g. "About Us" or "Our Story"' } },
-            { name: 'title', type: 'text', required: true },
+            { name: 'title', type: 'text' },
             {
               name: 'body',
               label: 'Body Text',

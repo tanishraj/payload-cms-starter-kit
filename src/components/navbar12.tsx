@@ -39,7 +39,7 @@ import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
 interface MenuItem {
-  title: string;
+  title?: string | null;
   url?: string;
   description?: string;
   icon?: LucideIcon;

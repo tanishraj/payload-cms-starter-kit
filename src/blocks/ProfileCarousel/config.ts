@@ -74,7 +74,6 @@ export const ProfileCarouselBlock: Block = {
             {
               name: 'title',
               type: 'text',
-              required: true,
             },
             {
               name: 'description',

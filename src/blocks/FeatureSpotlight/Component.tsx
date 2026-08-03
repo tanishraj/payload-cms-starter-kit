@@ -27,7 +27,7 @@ type FeatureSpotlightBlockLike = {
   mediaFillMode?: 'contained' | 'containedFill' | 'edgeToEdge' | null
   mediaPosition?: 'left' | 'right' | null
   size?: 'comfortable' | 'compact' | 'default' | null
-  title: string
+  title?: string | null
 }
 
 const orderClasses = {

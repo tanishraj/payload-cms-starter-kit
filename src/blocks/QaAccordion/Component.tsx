@@ -51,7 +51,7 @@ type QaAccordionBlockLike = {
   defaultOpenFirst?: boolean | null
   description?: string | null
   accordionPlacement?: 'left' | 'right' | null
-  title: string
+  title?: string | null
   items?: QaAccordionItemValue[] | null
   layoutMode?: 'fiftyFifty' | 'fullWidth' | 'oneThird' | null
   sideActionMode?: 'button' | 'link' | null

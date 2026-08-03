@@ -48,7 +48,6 @@ const itemsField = {
     {
       name: 'title',
       type: 'text',
-      required: true,
     },
     {
       name: 'description',
@@ -115,7 +114,6 @@ export const ContentHighlightsBlock: Block = {
             {
               name: 'title',
               type: 'text',
-              required: true,
             },
             {
               name: 'description',

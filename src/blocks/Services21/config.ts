@@ -24,7 +24,6 @@ const servicesField = {
     {
       name: 'title',
       type: 'text',
-      required: true,
     },
     {
       name: 'description',

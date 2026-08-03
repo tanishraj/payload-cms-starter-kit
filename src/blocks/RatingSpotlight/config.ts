@@ -118,7 +118,6 @@ export const RatingSpotlightBlock: Block = {
             {
               name: 'title',
               type: 'text',
-              required: true,
             },
             {
               name: 'description',

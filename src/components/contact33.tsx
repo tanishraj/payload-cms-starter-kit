@@ -64,7 +64,7 @@ export type Contact33Props = {
   image: Contact33Image
   imagePosition?: Contact33ImagePosition
   size?: Contact33Size
-  title: string
+  title?: string | null
 }
 
 const initialValues: ContactFormValues = {

@@ -44,7 +44,7 @@ export type LivePreviewPageBlock = NonNullable<Page['layout']>[number]
 
 type PopulatedReusableSection = {
   id: string | number
-  title: string
+  title?: string | null
   layout?: LivePreviewPageBlock[] | null
 }
 

@@ -60,7 +60,6 @@ const itemsField: ArrayField = {
     {
       name: 'title',
       type: 'text',
-      required: true,
     },
     {
       name: 'summary',
@@ -98,7 +97,6 @@ export const MediaCarouselBlock: Block = {
             {
               name: 'title',
               type: 'text',
-              required: true,
             },
             {
               name: 'description',

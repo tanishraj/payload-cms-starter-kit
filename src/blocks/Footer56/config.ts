@@ -133,7 +133,6 @@ export const Footer56Block: Block = {
                 {
                   name: 'title',
                   type: 'text',
-                  required: true,
                 },
                 {
                   name: 'links',

@@ -18,7 +18,7 @@ type Services21Alignment = 'left' | 'center' | 'right'
 
 type Services21Item = {
   id: string
-  title: string
+  title?: string | null
   description: string
   image: string
 }
@@ -102,7 +102,7 @@ export function Services21({
             <div className="relative h-[22.5rem] overflow-hidden">
               {previousService ? (
                 <div className="absolute inset-0">
-                  <Image fill alt={previousService.title} className="object-cover" src={previousService.image} sizes="(max-width: 1024px) 100vw, 20rem" />
+                  <Image fill alt={previousService.title ?? ''} className="object-cover" src={previousService.image} sizes="(max-width: 1024px) 100vw, 20rem" />
                 </div>
               ) : null}
               <motion.div
@@ -112,7 +112,7 @@ export function Services21({
                 transition={{ type: 'spring', stiffness: 150, damping: 20 }}
                 className="relative h-full w-full"
               >
-                <Image fill alt={activeService.title} className="object-cover" src={activeService.image} sizes="(max-width: 1024px) 100vw, 20rem" />
+                <Image fill alt={activeService.title ?? ''} className="object-cover" src={activeService.image} sizes="(max-width: 1024px) 100vw, 20rem" />
               </motion.div>
             </div>
             {activeService ? (

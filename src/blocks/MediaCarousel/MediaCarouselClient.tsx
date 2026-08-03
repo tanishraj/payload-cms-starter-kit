@@ -69,7 +69,7 @@ export type MediaCarouselItem = {
   width?: number
   height?: number
   icon?: string
-  title: string
+  title?: string | null
   summary?: string
   action?: ResolvedCmsAction
 }
@@ -85,7 +85,7 @@ type MediaCarouselClientProps = {
   items: MediaCarouselItem[]
   sectionActions?: React.ReactNode
   size: RegularBlockSize
-  title: string
+  title?: string | null
 }
 
 function MediaCard({

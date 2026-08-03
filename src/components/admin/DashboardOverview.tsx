@@ -123,7 +123,7 @@ function formatRelativeTime(iso: string): string {
 
 type RecentItem = {
   id: string
-  title: string
+  title?: string | null
   type: string
   collection: string
   updatedAt: string

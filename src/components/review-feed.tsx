@@ -26,7 +26,7 @@ export type ReviewFeedPresentationProps = {
   pageSize: number
   size?: ReviewFeedSize
   summary: PublishedReviewRatingDistribution | null
-  title: string
+  title?: string | null
 }
 
 const ratingValues = [5, 4, 3, 2, 1] as const
