@@ -2,6 +2,7 @@ import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 const ICON_OPTIONS = [
   { label: 'Star', value: 'Star' },
@@ -95,6 +96,7 @@ const itemsField: ArrayField = {
 }
 
 export const BentoGridBlock: Block = {
+  admin: getBlockThumbnailAdmin('bentoGrid'),
   slug: 'bentoGrid',
   interfaceName: 'BentoGridBlock',
   labels: {

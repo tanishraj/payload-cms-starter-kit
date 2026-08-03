@@ -2,6 +2,7 @@ import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 const tabItemsField: ArrayField = {
   name: 'tabs',
@@ -43,6 +44,7 @@ const tabItemsField: ArrayField = {
 }
 
 export const TabsContentBlock: Block = {
+  admin: getBlockThumbnailAdmin('tabsContent'),
   slug: 'tabsContent',
   interfaceName: 'TabsContentBlock',
   labels: {

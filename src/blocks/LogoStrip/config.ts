@@ -2,6 +2,7 @@ import type { ArrayField, Block, CheckboxField, SelectField, TabsField } from 'p
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 const logosField: ArrayField = {
   name: 'logos',
@@ -46,13 +47,13 @@ const logosField: ArrayField = {
 }
 
 export const LogoStripBlock: Block = {
+  admin: getBlockThumbnailAdmin('logoStrip'),
   slug: 'logoStrip',
   interfaceName: 'LogoStripBlock',
   labels: {
     singular: 'Logo Strip',
     plural: 'Logo Strips',
   },
-  admin: {},
   fields: [
     {
       type: 'tabs',

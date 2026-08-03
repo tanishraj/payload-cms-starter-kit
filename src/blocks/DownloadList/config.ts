@@ -2,6 +2,7 @@ import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 const downloadsField: ArrayField = {
   name: 'downloads',
@@ -54,6 +55,7 @@ const downloadsField: ArrayField = {
 }
 
 export const DownloadListBlock: Block = {
+  admin: getBlockThumbnailAdmin('downloadList'),
   slug: 'downloadList',
   interfaceName: 'DownloadListBlock',
   labels: {

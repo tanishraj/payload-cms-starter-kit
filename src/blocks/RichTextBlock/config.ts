@@ -2,6 +2,7 @@ import type { Block, SelectField, TabsField } from 'payload'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 const sizeField = {
   name: 'size',
@@ -31,13 +32,13 @@ const maxWidthField = {
 } satisfies SelectField
 
 export const RichTextBlock: Block = {
+  admin: getBlockThumbnailAdmin('richText'),
   slug: 'richText',
   interfaceName: 'RichTextBlock',
   labels: {
     singular: 'Rich Text',
     plural: 'Rich Text Blocks',
   },
-  admin: {},
   fields: [
     {
       type: 'tabs',

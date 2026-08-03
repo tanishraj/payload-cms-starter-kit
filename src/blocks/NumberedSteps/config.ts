@@ -2,6 +2,7 @@ import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 const stepsField: ArrayField = {
   name: 'steps',
@@ -41,6 +42,7 @@ const stepsField: ArrayField = {
 }
 
 export const NumberedStepsBlock: Block = {
+  admin: getBlockThumbnailAdmin('numberedSteps'),
   slug: 'numberedSteps',
   interfaceName: 'NumberedStepsBlock',
   labels: {

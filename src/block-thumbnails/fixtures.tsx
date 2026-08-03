@@ -26,7 +26,24 @@ import { SystemMaintenanceBlockComponent } from '@/blocks/SystemMaintenance/Comp
 import { Contact24 } from '@/components/contact24'
 import { EventGallery } from '@/components/event-gallery'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
-import type { Form } from '@/payload-types'
+import type { Form, Media } from '@/payload-types'
+
+import { AboutSectionBlockComponent } from '@/blocks/AboutSection/Component'
+import { AwardsListBlockComponent } from '@/blocks/AwardsList/Component'
+import { BentoGridBlockComponent } from '@/blocks/BentoGrid/Component'
+import { DownloadListBlockComponent } from '@/blocks/DownloadList/Component'
+import { IconGridBlockComponent } from '@/blocks/IconGrid/Component'
+import { LogoStripBlockComponent } from '@/blocks/LogoStrip/Component'
+import { MediaCarouselBlockComponent } from '@/blocks/MediaCarousel/Component'
+import { NumberedStepsBlockComponent } from '@/blocks/NumberedSteps/Component'
+import { PageHeaderBlockComponent } from '@/blocks/PageHeader/Component'
+import { ProgramGridBlockComponent } from '@/blocks/ProgramGrid/Component'
+import { QuoteBlockBlockComponent } from '@/blocks/QuoteBlock/Component'
+import { RichTextBlockComponent } from '@/blocks/RichTextBlock/Component'
+import { TabsContentBlockComponent } from '@/blocks/TabsContent/Component'
+import { TestimonialGridBlockComponent } from '@/blocks/TestimonialGrid/Component'
+import { TimelineBlockComponent } from '@/blocks/Timeline/Component'
+import { VideoEmbedBlockComponent } from '@/blocks/VideoEmbed/Component'
 
 import type { BlockThumbnailSlug } from './definitions'
 
@@ -72,6 +89,9 @@ const richTextParagraph = (text: string) => ({
     version: 1,
   },
 })
+
+const fakeMedia = (url: string, alt: string, width = 1200, height = 800): Media =>
+  ({ id: alt, url, alt, width, height, mimeType: 'image/svg+xml', updatedAt: '', createdAt: '' }) as unknown as Media
 
 const qaAccordionFixtureItems = [
   {
@@ -1001,6 +1021,305 @@ export const blockThumbnailFixtures = {
       blockType="systemMaintenance"
       description="Scheduled improvements are underway."
       heading="We'll be back shortly"
+    />
+  ),
+  aboutSection: (
+    <AboutSectionBlockComponent
+      actions={[{ label: 'Learn more', linkType: 'custom', url: '/about', variant: 'default' }]}
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      body="We started with the belief that thoughtful education changes outcomes. Over twelve years, that belief has shaped every program, space, and partnership we have built."
+      contentAlignment="left"
+      eyebrow="Our story"
+      image={fakeMedia(editorialLandscape, 'Our campus')}
+      imagePosition="right"
+      size="compact"
+      stats={[
+        { value: '12+', label: 'Years' },
+        { value: '5 000+', label: 'Graduates' },
+        { value: '40+', label: 'Programs' },
+      ]}
+      title="Built around the way people actually learn."
+      values={[
+        { icon: 'Lightbulb', title: 'Purpose', description: 'Every decision begins with outcomes.' },
+        { icon: 'Users', title: 'Community', description: 'Learning works better together.' },
+        { icon: 'Star', title: 'Excellence', description: 'High standards in everything we do.' },
+      ]}
+      variant="split"
+    />
+  ),
+  awardsList: (
+    <AwardsListBlockComponent
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      awards={[
+        { title: 'Centre of Excellence', organization: 'Education Standards Board', category: 'accreditation', year: '2025', description: 'Recognised for outstanding curriculum design and student outcomes.' },
+        { title: 'Top 10 Learning Environments', organization: 'National Education Review', category: 'ranking', year: '2025', description: 'Ranked among the best learning environments in the country.' },
+        { title: 'Community Impact Award', organization: 'Regional Foundation', category: 'award', year: '2024', description: 'Awarded for sustained engagement with local communities.' },
+        { title: 'Digital Innovation Recognition', organization: 'EdTech Alliance', category: 'recognition', year: '2024', description: 'Recognised for leading digital-first delivery models.' },
+      ]}
+      contentAlignment="center"
+      description="A record of independent recognition across curriculum quality, community impact, and innovation."
+      eyebrow="Recognition"
+      size="compact"
+      title="Awards & accreditations"
+      variant="cards"
+    />
+  ),
+  bentoGrid: (
+    <BentoGridBlockComponent
+      appearance={{ background: 'none', border: 'none' }}
+      contentAlignment="center"
+      description="Four dimensions that shape how we approach every program, partnership, and student experience."
+      eyebrow="What we stand for"
+      items={[
+        { title: 'Learning spaces', description: 'Flexible environments built for focus and collaboration.', image: fakeMedia(editorialLandscape, 'Learning space'), size: 'large' },
+        { title: 'Community', description: 'Programs that connect learning with real-world impact.', icon: 'Users', accentColor: 'primary', size: 'medium' },
+        { title: 'Support', description: 'Dedicated people at every stage of your journey.', icon: 'HeartHandshake', accentColor: 'secondary', size: 'small' },
+        { title: 'Research', description: 'Practical inquiry that informs teaching and shapes outcomes.', image: fakeMedia(collaboration, 'Research collaboration'), size: 'medium' },
+        { title: 'Innovation', description: 'Always finding smarter ways to deliver quality education.', icon: 'Lightbulb', accentColor: 'accent', size: 'small' },
+      ]}
+      size="compact"
+      title="Four pillars, one purpose."
+    />
+  ),
+  downloadList: (
+    <DownloadListBlockComponent
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      contentAlignment="left"
+      description="Key documents, guides, and forms available to download at any time."
+      displayMode="list"
+      downloads={[
+        { title: 'Academic Calendar 2025–26', category: 'Academic', fileType: 'PDF', externalUrl: '#', description: 'Term dates, exam periods, and key academic events.' },
+        { title: 'Student Handbook', category: 'Student Life', fileType: 'PDF', externalUrl: '#', description: 'Policies, support services, and campus resources.' },
+        { title: 'Program Guide', category: 'Programs', fileType: 'PDF', externalUrl: '#', description: 'Full overview of available programs and entry requirements.' },
+        { title: 'Financial Aid Overview', category: 'Finance', fileType: 'PDF', externalUrl: '#', description: 'Scholarships, bursaries, and payment options explained.' },
+      ]}
+      eyebrow="Resources"
+      showFilter
+      size="compact"
+      title="Download centre"
+    />
+  ),
+  iconGrid: (
+    <IconGridBlockComponent
+      actionMode="link"
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      columns="3"
+      contentAlignment="center"
+      description="Six capabilities that define how we approach every engagement — from first conversation to final delivery."
+      eyebrow="What we do"
+      iconStyle="square"
+      items={[
+        { title: 'Strategy', description: 'Clear thinking before any execution begins.', icon: 'Target' },
+        { title: 'Research', description: 'Evidence-based decisions rooted in real context.', icon: 'Search' },
+        { title: 'Design', description: 'Purposeful visuals and experiences for every audience.', icon: 'Palette' },
+        { title: 'Technology', description: 'Modern tools built for scale and reliability.', icon: 'Code2' },
+        { title: 'Community', description: 'Partnerships that extend reach and deepen impact.', icon: 'Users' },
+        { title: 'Delivery', description: 'Consistent execution with measurable outcomes.', icon: 'CheckCircle' },
+      ]}
+      size="compact"
+      title="A full-service approach to meaningful work."
+      variant="iconTop"
+    />
+  ),
+  logoStrip: (
+    <LogoStripBlockComponent
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      contentAlignment="center"
+      description="Trusted by leading organisations across education, research, and public service."
+      displayMode="grid"
+      eyebrow="Partners"
+      grayscale
+      logoHeight="md"
+      logos={[
+        { image: fakeMedia(brandMark, 'Northstar logo', 200, 80), label: 'Northstar' },
+        { image: fakeMedia(brandMark, 'Horizon logo', 200, 80), label: 'Horizon' },
+        { image: fakeMedia(brandMark, 'Meridian logo', 200, 80), label: 'Meridian' },
+        { image: fakeMedia(brandMark, 'Apex logo', 200, 80), label: 'Apex' },
+        { image: fakeMedia(brandMark, 'Veritas logo', 200, 80), label: 'Veritas' },
+        { image: fakeMedia(brandMark, 'Centurion logo', 200, 80), label: 'Centurion' },
+      ]}
+      showLabels
+      size="compact"
+      title="Our partners"
+    />
+  ),
+  mediaCarousel: (
+    <MediaCarouselBlockComponent
+      actionMode="link"
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      columns="3"
+      contentAlignment="center"
+      description="A closer look at the spaces, events, and everyday moments that define life here."
+      eyebrow="Gallery"
+      items={[
+        { title: 'Learning spaces', summary: 'Flexible rooms designed for focused and collaborative work.', media: fakeMedia(editorialLandscape, 'Learning space') },
+        { title: 'Community day', summary: 'Annual events that bring the whole campus together.', media: fakeMedia(collaboration, 'Community gathering') },
+        { title: 'Our people', summary: 'Students, staff, and partners working side by side.', media: fakeMedia(portrait, 'Community portrait', 800, 1000) },
+      ]}
+      size="compact"
+      title="Moments from campus"
+    />
+  ),
+  numberedSteps: (
+    <NumberedStepsBlockComponent
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      contentAlignment="center"
+      description="A clear, supported process that takes you from first interest to full enrolment."
+      eyebrow="How it works"
+      numberStyle="circle"
+      size="compact"
+      steps={[
+        { title: 'Explore your options', description: 'Browse programs, attend an info session, or speak with an advisor to find the right fit.' },
+        { title: 'Submit your application', description: 'Complete the online form, attach your documents, and submit before the deadline.' },
+        { title: 'Receive your offer', description: 'Our team reviews every application and sends a formal offer within five business days.' },
+        { title: 'Confirm your place', description: 'Accept your offer, complete enrolment, and get ready for your first day.' },
+      ]}
+      title="From interest to enrolment in four steps."
+      variant="cards"
+    />
+  ),
+  pageHeader: (
+    <PageHeaderBlockComponent
+      appearance={{ background: 'none', border: 'none' }}
+      backgroundImage={fakeMedia(editorialLandscape, 'Campus overview', 1600, 900)}
+      breadcrumbs={[
+        { label: 'Home', linkType: 'custom', url: '/' },
+        { label: 'Programs', linkType: 'custom', url: '/programs' },
+      ]}
+      contentAlignment="left"
+      eyebrow="Academic programs"
+      height="default"
+      overlayStyle="dark"
+      title="Find the program that fits your goals."
+      subtitle="Over forty specialisations across business, technology, health, and the arts."
+      variant="banner"
+    />
+  ),
+  programGrid: (
+    <ProgramGridBlockComponent
+      actionMode="link"
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      columns="3"
+      contentAlignment="center"
+      ctaLabel="View program"
+      description="Practical, career-focused programs designed around the skills employers need most."
+      eyebrow="Our programs"
+      programs={[
+        { title: 'Business & Management', category: 'Business', badge: 'Popular', duration: '2 years', intake: 'Feb, Jul', description: 'Leadership, strategy, and operational skills for every industry.', image: fakeMedia(editorialLandscape, 'Business program', 800, 500), linkType: 'custom', url: '/programs/business' },
+        { title: 'Technology & Innovation', category: 'Technology', badge: 'New', duration: '18 months', intake: 'Feb, Jul, Oct', description: 'Software development, data, and emerging technology skills.', image: fakeMedia(collaboration, 'Technology program', 800, 500), linkType: 'custom', url: '/programs/technology' },
+        { title: 'Health & Community Services', category: 'Health', duration: '2 years', intake: 'Feb, Jul', description: 'Practical training for health, social work, and community support roles.', image: fakeMedia(portrait, 'Health program', 800, 500), linkType: 'custom', url: '/programs/health' },
+      ]}
+      showFilter
+      size="compact"
+      title="Programs built for real outcomes."
+      viewMode="grid"
+    />
+  ),
+  quoteBlock: (
+    <QuoteBlockBlockComponent
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      attributionCompany="Program graduate, 2024"
+      attributionName="Jordan Lee"
+      attributionTitle="Business & Management"
+      avatar={fakeMedia(portrait, 'Jordan Lee', 400, 400)}
+      eyebrow="Student voice"
+      quote="The support I received here changed how I think about my work. Every challenge felt manageable because I was never navigating it alone."
+      quoteSize="lg"
+      rating="5"
+      size="compact"
+      variant="side"
+    />
+  ),
+  richText: (
+    <RichTextBlockComponent
+      appearance={{ background: 'none', border: 'none' }}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      content={richTextParagraph('Our approach to education is grounded in the belief that practical experience and critical thinking are inseparable. We design programs that challenge students to engage deeply with real-world problems, building skills that last well beyond graduation. Every course, every assessment, and every learning space reflects a commitment to outcomes that matter — to students, to employers, and to the communities they serve.') as any}
+      maxWidth="prose"
+      size="compact"
+    />
+  ),
+  tabsContent: (
+    <TabsContentBlockComponent
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      contentAlignment="center"
+      contentLayout="imageRight"
+      description="Each stage of student life is supported by dedicated resources, people, and programs."
+      eyebrow="Life here"
+      size="compact"
+      tabStyle="underline"
+      tabs={[
+        {
+          label: 'Learning',
+          title: 'Spaces built for how you work',
+          description: 'Flexible studios, collaborative labs, and quiet study rooms available across campus.',
+          image: fakeMedia(editorialLandscape, 'Learning space'),
+        },
+        {
+          label: 'Community',
+          title: 'Connect with people who share your goals',
+          description: 'Student clubs, mentorship programs, and campus events run year-round.',
+          image: fakeMedia(collaboration, 'Community gathering'),
+        },
+        {
+          label: 'Support',
+          title: 'Help available at every stage',
+          description: 'Academic advisors, career coaches, and wellbeing services are all on campus.',
+          image: fakeMedia(portrait, 'Support team', 800, 1000),
+        },
+      ]}
+      title="Everything you need, all in one place."
+    />
+  ),
+  testimonialGrid: (
+    <TestimonialGridBlockComponent
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      columns="3"
+      contentAlignment="center"
+      description="Honest reflections from students, alumni, and community partners."
+      eyebrow="Voices from our community"
+      size="compact"
+      testimonials={[
+        { quote: 'The instructors brought real-world experience to every session. I left each class with something immediately useful.', name: 'Alex Morgan', role: 'Graduate', department: 'Business & Management' },
+        { quote: 'The support network here is unlike anything I expected. Every question got a thoughtful, genuine answer.', name: 'Jordan Lee', role: 'Graduate', department: 'Technology & Innovation' },
+        { quote: 'I came in unsure of my direction. The program helped me find clarity and the confidence to act on it.', name: 'Sam Rivera', role: 'Graduate', department: 'Health & Community Services' },
+      ]}
+      title="What our community says."
+      variant="grid"
+    />
+  ),
+  timeline: (
+    <TimelineBlockComponent
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      contentAlignment="center"
+      description="Key milestones across twelve years of programs, partnerships, and community impact."
+      eyebrow="Our journey"
+      items={[
+        { title: 'Founded', date: '2013', badge: 'done', description: 'Launched with three programs and a founding cohort of eighty students.' },
+        { title: 'First graduates', date: '2015', badge: 'done', description: 'Two hundred graduates entered the workforce, with 94% employed within three months.' },
+        { title: 'Campus expansion', date: '2019', badge: 'done', description: 'Opened a second campus and expanded to twenty-two programs across four disciplines.' },
+        { title: 'Digital-first transition', date: '2022', badge: 'done', description: 'Launched a full hybrid delivery model, reaching students across five regions.' },
+        { title: 'Centre of Excellence', date: '2025', badge: 'active', description: 'Recognised by the Education Standards Board for curriculum quality and student outcomes.' },
+      ]}
+      showConnectors
+      size="compact"
+      title="A decade of progress."
+      variant="vertical"
+    />
+  ),
+  videoEmbed: (
+    <VideoEmbedBlockComponent
+      actionMode="link"
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      aspectRatio="16/9"
+      caption="A two-minute overview of life on campus."
+      contentAlignment="center"
+      description="See our learning spaces, meet some of our students, and get a feel for the experience we offer."
+      eyebrow="Campus life"
+      maxWidth="lg"
+      size="compact"
+      title="A closer look at Northstar."
+      url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     />
   ),
 } satisfies Record<BlockThumbnailSlug, ReactNode>

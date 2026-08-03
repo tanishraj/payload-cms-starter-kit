@@ -2,6 +2,7 @@ import type { ArrayField, Block, CheckboxField, RadioField, SelectField, TabsFie
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionModeField, createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 type ProgramItemSiblingData = {
   linkType?: 'none' | 'page' | 'custom' | null
@@ -117,13 +118,13 @@ const programsField: ArrayField = {
 }
 
 export const ProgramGridBlock: Block = {
+  admin: getBlockThumbnailAdmin('programGrid'),
   slug: 'programGrid',
   interfaceName: 'ProgramGridBlock',
   labels: {
     singular: 'Program Grid',
     plural: 'Program Grids',
   },
-  admin: {},
   fields: [
     {
       type: 'tabs',

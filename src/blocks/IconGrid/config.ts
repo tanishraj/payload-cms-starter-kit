@@ -2,6 +2,7 @@ import type { ArrayField, Block, RadioField, SelectField, TabsField } from 'payl
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField, createContentActionModeField } from '@/blocks/shared/contentActionsFields'
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 const ICON_OPTIONS = [
   { label: 'Star', value: 'Star' },
@@ -104,6 +105,7 @@ const itemsField: ArrayField = {
 }
 
 export const IconGridBlock: Block = {
+  admin: getBlockThumbnailAdmin('iconGrid'),
   slug: 'iconGrid',
   interfaceName: 'IconGridBlock',
   labels: {

@@ -1,8 +1,10 @@
 import type { Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 export const QuoteBlockBlock: Block = {
+  admin: getBlockThumbnailAdmin('quoteBlock'),
   slug: 'quoteBlock',
   interfaceName: 'QuoteBlockBlock',
   labels: {

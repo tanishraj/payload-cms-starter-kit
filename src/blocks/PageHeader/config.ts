@@ -1,6 +1,7 @@
 import type { ArrayField, Block, RadioField, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import {
   createContentActionModeField,
   createContentActionsField,
@@ -82,13 +83,13 @@ const keyFactsField: ArrayField = {
 }
 
 export const PageHeaderBlock: Block = {
+  admin: getBlockThumbnailAdmin('pageHeader'),
   slug: 'pageHeader',
   interfaceName: 'PageHeaderBlock',
   labels: {
     singular: 'Page Header',
     plural: 'Page Headers',
   },
-  admin: {},
   fields: [
     {
       type: 'tabs',

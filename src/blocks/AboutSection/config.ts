@@ -2,6 +2,7 @@ import type { ArrayField, Block, SelectField, TabsField, TextField } from 'paylo
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 const valuesField = {
   name: 'values',
@@ -59,6 +60,7 @@ const statsField = {
 } satisfies ArrayField
 
 export const AboutSectionBlock: Block = {
+  admin: getBlockThumbnailAdmin('aboutSection'),
   slug: 'aboutSection',
   interfaceName: 'AboutSectionBlock',
   labels: {

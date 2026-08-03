@@ -1,6 +1,7 @@
 import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import {
   createContentActionModeField,
   createContentActionsField,
@@ -73,13 +74,13 @@ const itemsField: ArrayField = {
 }
 
 export const MediaCarouselBlock: Block = {
+  admin: getBlockThumbnailAdmin('mediaCarousel'),
   slug: 'mediaCarousel',
   interfaceName: 'MediaCarouselBlock',
   labels: {
     singular: 'Media Carousel',
     plural: 'Media Carousels',
   },
-  admin: {},
   fields: [
     {
       type: 'tabs',

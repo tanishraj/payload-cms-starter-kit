@@ -2,6 +2,7 @@ import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 const timelineItemsField: ArrayField = {
   name: 'items',
@@ -56,13 +57,13 @@ const timelineItemsField: ArrayField = {
 }
 
 export const TimelineBlock: Block = {
+  admin: getBlockThumbnailAdmin('timeline'),
   slug: 'timeline',
   interfaceName: 'TimelineBlock',
   labels: {
     singular: 'Timeline',
     plural: 'Timelines',
   },
-  admin: {},
   fields: [
     {
       type: 'tabs',

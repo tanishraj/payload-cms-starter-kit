@@ -1,6 +1,7 @@
 import type { Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import {
   createContentActionModeField,
   createContentActionsField,
@@ -47,13 +48,13 @@ const maxWidthField = {
 } satisfies SelectField
 
 export const VideoEmbedBlock: Block = {
+  admin: getBlockThumbnailAdmin('videoEmbed'),
   slug: 'videoEmbed',
   interfaceName: 'VideoEmbedBlock',
   labels: {
     singular: 'Video / Embed',
     plural: 'Video / Embed Blocks',
   },
-  admin: {},
   fields: [
     {
       type: 'tabs',

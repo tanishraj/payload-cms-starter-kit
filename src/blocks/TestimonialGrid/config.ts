@@ -2,6 +2,7 @@ import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 const testimonialsField = {
   name: 'testimonials',
@@ -44,6 +45,7 @@ const testimonialsField = {
 } satisfies ArrayField
 
 export const TestimonialGridBlock: Block = {
+  admin: getBlockThumbnailAdmin('testimonialGrid'),
   slug: 'testimonialGrid',
   interfaceName: 'TestimonialGridBlock',
   labels: {
