@@ -68,11 +68,11 @@ function StatsRow({ stats }: { stats: StatItem[] }) {
   )
 }
 
-function ValuesGrid({ values }: { values: ValueItem[] }) {
+function ValuesGrid({ values, centered }: { values: ValueItem[]; centered?: boolean }) {
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
       {values.map((v, i) => (
-        <div key={i} className="flex flex-col gap-3">
+        <div key={i} className={cn('flex flex-col gap-3', centered && 'items-center text-center')}>
           {v.icon?.trim() ? (
             <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
               <DynamicIcon name={v.icon.trim()} className="size-5 text-primary" />
@@ -140,7 +140,7 @@ export function AboutSectionBlockComponent({
       {resolvedStats.length > 0 ? <StatsRow stats={resolvedStats} /> : null}
       {resolvedValues.length > 0 ? (
         <div className={cn(resolvedStats.length > 0 && 'mt-4 border-t border-border pt-8')}>
-          <ValuesGrid values={resolvedValues} />
+          <ValuesGrid values={resolvedValues} centered={isCenter && variant !== 'split'} />
         </div>
       ) : null}
     </div>
