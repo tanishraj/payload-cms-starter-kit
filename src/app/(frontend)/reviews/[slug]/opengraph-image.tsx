@@ -50,7 +50,6 @@ export default async function ReviewOgImage({ params }: Props) {
       {/* Top — logo + label */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         {logoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
           <img src={logoUrl} alt={siteName} style={{ height: 32, maxWidth: 160, objectFit: 'contain' }} />
         ) : (
           <span style={{ color: '#6b7280', fontSize: 16, letterSpacing: '0.05em' }}>{siteName}</span>

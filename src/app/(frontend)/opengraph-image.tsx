@@ -35,7 +35,6 @@ export default async function DefaultOgImage() {
       {/* Top — logo or site name */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
         {logoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
           <img src={logoUrl} alt={siteName} style={{ height: 36, maxWidth: 180, objectFit: 'contain' }} />
         ) : (
           <span style={{ color: '#888', fontSize: 18, letterSpacing: '0.05em' }}>{siteName}</span>
