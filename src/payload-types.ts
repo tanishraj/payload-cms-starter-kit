@@ -479,6 +479,7 @@ export interface FeatureSpotlightBlock {
   imagePosition?: ('center' | 'top' | 'bottom' | 'left' | 'right') | null;
   mediaFillMode?: ('contained' | 'containedFill' | 'edgeToEdge') | null;
   size: 'compact' | 'default' | 'comfortable';
+  contentAlignment?: ('left' | 'center') | null;
   contentVerticalAlignment?: ('top' | 'center' | 'bottom') | null;
   id?: string | null;
   blockName?: string | null;
@@ -689,6 +690,17 @@ export interface EventGalleryBlock {
   eyebrow?: string | null;
   title: string;
   description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Select the albums displayed by this block. Create an album here or reorder selected albums for Manual display order.
    */
@@ -801,6 +813,7 @@ export interface StatsStripBlock {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  size: 'compact' | 'default' | 'comfortable';
   animationEnabled?: boolean | null;
   animationDuration: number;
   triggerOnce?: boolean | null;
@@ -813,9 +826,9 @@ export interface StatsStripBlock {
  * via the `definition` "QaAccordionBlock".
  */
 export interface QaAccordionBlock {
-  heading: string;
+  title: string;
   description?: string | null;
-  headerActions?:
+  actions?:
     | {
         label: string;
         linkType?: ('page' | 'custom') | null;
@@ -876,7 +889,7 @@ export interface QaAccordionBlock {
   contentAlignment: 'left' | 'center' | 'right';
   layoutMode: 'fiftyFifty' | 'oneThird' | 'fullWidth';
   accordionPlacement?: ('left' | 'right') | null;
-  headerActionMode: 'link' | 'button';
+  actionMode: 'link' | 'button';
   sideActionMode?: ('link' | 'button') | null;
   size: 'compact' | 'default' | 'comfortable';
   defaultOpenFirst?: boolean | null;
@@ -927,6 +940,17 @@ export interface ReviewFeedBlock {
   eyebrow?: string | null;
   title: string;
   description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
   pageSize: number;
   loadMoreLabel?: string | null;
   emptyStateMessage?: string | null;
@@ -934,6 +958,7 @@ export interface ReviewFeedBlock {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  contentAlignment?: ('left' | 'center') | null;
   size: 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
@@ -1048,6 +1073,17 @@ export interface Contact33Block {
   eyebrow?: string | null;
   title: string;
   description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
   image: string | Media;
   imageAlt: string;
   /**
@@ -1073,6 +1109,17 @@ export interface Contact24Block {
   eyebrow?: string | null;
   title: string;
   description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Leave empty to show all published offices. Select specific offices to show only those, in the order chosen.
    */
@@ -1137,7 +1184,7 @@ export interface OfficeLocation {
  * via the `definition` "TeamShowcaseBlock".
  */
 export interface TeamShowcaseBlock {
-  heading?: string | null;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -1298,6 +1345,17 @@ export interface MediaCarouselBlock {
   eyebrow?: string | null;
   title: string;
   description?: string | null;
+  sectionActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Each slide can display a video or image. Videos play on hover automatically.
    */
@@ -1375,6 +1433,17 @@ export interface ProgramGridBlock {
   eyebrow?: string | null;
   title: string;
   description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Each card represents one academic program or course.
    */
@@ -1445,6 +1514,21 @@ export interface LogoStripBlock {
    */
   title?: string | null;
   /**
+   * Optional description below the heading.
+   */
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * Upload each accreditation, partner, or employer logo.
    */
   logos?:
@@ -1466,6 +1550,7 @@ export interface LogoStripBlock {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  contentAlignment?: ('left' | 'center') | null;
   displayMode: 'marquee' | 'grid';
   /**
    * Show the text label below each logo.
@@ -1562,6 +1647,17 @@ export interface TimelineBlock {
   eyebrow?: string | null;
   title: string;
   description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
   items?:
     | {
         /**
@@ -1731,6 +1827,17 @@ export interface TabsContentBlock {
    * Optional subtitle shown above the tab bar.
    */
   description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Each tab has a label and its own content.
    */
@@ -1966,7 +2073,7 @@ export interface TestimonialGridBlock {
    * Small label above heading, e.g. "Student Stories"
    */
   eyebrow?: string | null;
-  heading?: string | null;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -2013,7 +2120,7 @@ export interface AwardsListBlock {
    * Small label, e.g. "Our Achievements"
    */
   eyebrow?: string | null;
-  heading?: string | null;
+  title?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -2068,7 +2175,7 @@ export interface AboutSectionBlock {
    * e.g. "About Us" or "Our Story"
    */
   eyebrow?: string | null;
-  heading: string;
+  title: string;
   /**
    * Main about text. Paragraphs separated by blank lines are rendered as separate paragraphs.
    */
@@ -2107,10 +2214,22 @@ export interface AboutSectionBlock {
         id?: string | null;
       }[]
     | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  contentAlignment?: ('left' | 'center') | null;
   variant: 'split' | 'centered' | 'text';
   imagePosition?: ('left' | 'right') | null;
   size: 'compact' | 'default' | 'comfortable';
@@ -2874,6 +2993,7 @@ export interface Footer56Block {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  size: 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'footer56';
@@ -3518,6 +3638,7 @@ export interface FeatureSpotlightBlockSelect<T extends boolean = true> {
   imagePosition?: T;
   mediaFillMode?: T;
   size?: T;
+  contentAlignment?: T;
   contentVerticalAlignment?: T;
   id?: T;
   blockName?: T;
@@ -3731,6 +3852,17 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
   galleryAlbums?: T;
   displayOrder?: T;
   appearance?:
@@ -3817,6 +3949,7 @@ export interface StatsStripBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  size?: T;
   animationEnabled?: T;
   animationDuration?: T;
   triggerOnce?: T;
@@ -3828,9 +3961,9 @@ export interface StatsStripBlockSelect<T extends boolean = true> {
  * via the `definition` "QaAccordionBlock_select".
  */
 export interface QaAccordionBlockSelect<T extends boolean = true> {
-  heading?: T;
+  title?: T;
   description?: T;
-  headerActions?:
+  actions?:
     | T
     | {
         label?: T;
@@ -3885,7 +4018,7 @@ export interface QaAccordionBlockSelect<T extends boolean = true> {
   contentAlignment?: T;
   layoutMode?: T;
   accordionPlacement?: T;
-  headerActionMode?: T;
+  actionMode?: T;
   sideActionMode?: T;
   size?: T;
   defaultOpenFirst?: T;
@@ -3938,6 +4071,17 @@ export interface ReviewFeedBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
   pageSize?: T;
   loadMoreLabel?: T;
   emptyStateMessage?: T;
@@ -3947,6 +4091,7 @@ export interface ReviewFeedBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -3991,6 +4136,17 @@ export interface Contact33BlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
   image?: T;
   imageAlt?: T;
   form?: T;
@@ -4014,6 +4170,17 @@ export interface Contact24BlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
   offices?: T;
   appearance?:
     | T
@@ -4036,7 +4203,7 @@ export interface Contact24BlockSelect<T extends boolean = true> {
  * via the `definition` "TeamShowcaseBlock_select".
  */
 export interface TeamShowcaseBlockSelect<T extends boolean = true> {
-  heading?: T;
+  title?: T;
   description?: T;
   actions?:
     | T
@@ -4172,6 +4339,17 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
+  sectionActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
   items?:
     | T
     | {
@@ -4214,6 +4392,17 @@ export interface ProgramGridBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
   programs?:
     | T
     | {
@@ -4254,6 +4443,18 @@ export interface ProgramGridBlockSelect<T extends boolean = true> {
 export interface LogoStripBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
   logos?:
     | T
     | {
@@ -4269,6 +4470,7 @@ export interface LogoStripBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
   displayMode?: T;
   showLabels?: T;
   grayscale?: T;
@@ -4335,6 +4537,17 @@ export interface TimelineBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
   items?:
     | T
     | {
@@ -4438,6 +4651,17 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
   tabs?:
     | T
     | {
@@ -4606,7 +4830,7 @@ export interface BentoGridBlockSelect<T extends boolean = true> {
  */
 export interface TestimonialGridBlockSelect<T extends boolean = true> {
   eyebrow?: T;
-  heading?: T;
+  title?: T;
   description?: T;
   actions?:
     | T
@@ -4648,7 +4872,7 @@ export interface TestimonialGridBlockSelect<T extends boolean = true> {
  */
 export interface AwardsListBlockSelect<T extends boolean = true> {
   eyebrow?: T;
-  heading?: T;
+  title?: T;
   description?: T;
   actions?:
     | T
@@ -4689,7 +4913,7 @@ export interface AwardsListBlockSelect<T extends boolean = true> {
  */
 export interface AboutSectionBlockSelect<T extends boolean = true> {
   eyebrow?: T;
-  heading?: T;
+  title?: T;
   body?: T;
   image?: T;
   stats?:
@@ -4707,12 +4931,24 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
         description?: T;
         id?: T;
       };
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
   appearance?:
     | T
     | {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
   variant?: T;
   imagePosition?: T;
   size?: T;
@@ -5100,6 +5336,7 @@ export interface Footer56BlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  size?: T;
   id?: T;
   blockName?: T;
 }

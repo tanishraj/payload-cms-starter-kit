@@ -48,7 +48,7 @@ export function Services21BlockComponent({
   appearance,
   description,
   eyebrow,
-  contentAlignment = 'left',
+  contentAlignment = 'center',
   services,
   size = 'default',
   title,

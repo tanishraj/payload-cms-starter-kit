@@ -102,7 +102,7 @@ export const QaAccordionBlock: Block = {
           label: 'Content',
           fields: [
             {
-              name: 'heading',
+              name: 'title',
               type: 'text',
               required: true,
             },
@@ -111,22 +111,22 @@ export const QaAccordionBlock: Block = {
               type: 'textarea',
             },
             createContentActionsField({
-              name: 'headerActions',
-              label: 'Header Actions',
+              label: 'Section Actions',
+              maxRows: 2,
             }),
             qaAccordionItemsField,
             sideColumnField,
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             {
               name: 'contentAlignment',
-              label: 'Content Alignment',
+              label: 'Section Content Alignment',
               type: 'select',
-              defaultValue: 'left',
+              defaultValue: 'center',
               options: [
                 { label: 'Left', value: 'left' },
                 { label: 'Center', value: 'center' },
@@ -161,8 +161,8 @@ export const QaAccordionBlock: Block = {
               required: true,
             } satisfies SelectField,
             createContentActionModeField({
-              name: 'headerActionMode',
-              label: 'Header Action Mode',
+              name: 'actionMode',
+              label: 'Section Action Mode',
             }),
             createContentActionModeField({
               name: 'sideActionMode',
@@ -171,7 +171,7 @@ export const QaAccordionBlock: Block = {
             }),
             {
               name: 'size',
-              label: 'Size',
+              label: 'Section Padding',
               type: 'select',
               defaultValue: 'default',
               options: [

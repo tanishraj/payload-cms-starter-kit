@@ -201,7 +201,7 @@ export const IconGridBlock: Block = {
             } satisfies SelectField,
             {
               name: 'contentAlignment',
-              label: 'Header Alignment',
+              label: 'Section Content Alignment',
               type: 'select',
               defaultValue: 'center',
               options: [
@@ -211,7 +211,7 @@ export const IconGridBlock: Block = {
             } satisfies SelectField,
             {
               name: 'size',
-              label: 'Vertical Padding',
+              label: 'Section Padding',
               type: 'select',
               defaultValue: 'default',
               options: [

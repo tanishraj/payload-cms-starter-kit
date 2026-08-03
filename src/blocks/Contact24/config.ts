@@ -2,13 +2,13 @@ import type { Block, CheckboxField, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { createContentActionModeField } from '@/blocks/shared/contentActionsFields'
+import { createContentActionModeField, createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 const contentAlignmentField = {
   name: 'contentAlignment',
-  label: 'Content Alignment',
+  label: 'Section Content Alignment',
   type: 'select',
-  defaultValue: 'left',
+  defaultValue: 'center',
   options: [
     { label: 'Left', value: 'left' },
     { label: 'Center', value: 'center' },
@@ -39,7 +39,7 @@ const showAddressDetailsField = {
 
 const sizeField = {
   name: 'size',
-  label: 'Size',
+  label: 'Section Padding',
   type: 'select',
   defaultValue: 'default',
   options: [
@@ -78,6 +78,7 @@ export const Contact24Block: Block = {
               name: 'description',
               type: 'textarea',
             },
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             {
               name: 'offices',
               label: 'Offices to Show',
@@ -93,7 +94,7 @@ export const Contact24Block: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             contentAlignmentField,

@@ -54,6 +54,7 @@ export type Contact33Image = {
 }
 
 export type Contact33Props = {
+  actions?: React.ReactNode
   appearance?: BlockAppearance | null
   className?: string
   contentAlignment?: Contact33Alignment
@@ -161,6 +162,7 @@ function getSubmissionMetadata() {
 }
 
 export function Contact33({
+  actions,
   appearance,
   className,
   contentAlignment = 'left',
@@ -287,6 +289,7 @@ export function Contact33({
               {description ? (
                 <p className="max-w-2xl text-base leading-7 text-current/70">{description}</p>
               ) : null}
+              {actions ? <div className="mt-2">{actions}</div> : null}
             </div>
 
             {isFormAvailable ? (

@@ -4,6 +4,7 @@ import {
   regularBlockContainerClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { ContentActions } from '@/components/ContentActions'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps, isMediaDoc } from '@/lib/media'
 import type { Media } from '@/payload-types'
@@ -21,6 +22,7 @@ type TabItem = {
 }
 
 type TabsContentBlockLike = {
+  actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'left' | 'center' | null
   contentLayout?: 'imageRight' | 'imageLeft' | 'imageTop' | 'textOnly' | null
@@ -34,6 +36,7 @@ type TabsContentBlockLike = {
 }
 
 export function TabsContentBlockComponent({
+  actions,
   appearance,
   contentAlignment = 'center',
   contentLayout = 'imageRight',
@@ -50,6 +53,7 @@ export function TabsContentBlockComponent({
 
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
   const isCenter = (contentAlignment ?? 'center') === 'center'
+  const resolvedActions = resolveCmsActions(actions)
 
   const resolvedTabs: ResolvedTab[] = validTabs.map((tab, index) => {
     const imageProps = getMediaImageProps({ media: tab.image, preset: 'generic' })
@@ -70,7 +74,7 @@ export function TabsContentBlockComponent({
   return (
     <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
       <div className={regularBlockContainerClasses}>
-        {(eyebrow?.trim() || title?.trim() || description?.trim()) ? (
+        {(eyebrow?.trim() || title?.trim() || description?.trim() || resolvedActions.length > 0) ? (
           <div
             className={cn(
               'mb-12 flex flex-col gap-4',
@@ -89,6 +93,11 @@ export function TabsContentBlockComponent({
             ) : null}
             {description?.trim() ? (
               <p className="text-base leading-7 text-current/70">{description.trim()}</p>
+            ) : null}
+            {resolvedActions.length > 0 ? (
+              <div className="mt-2">
+                <ContentActions actions={resolvedActions} />
+              </div>
             ) : null}
           </div>
         ) : null}

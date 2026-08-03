@@ -1,7 +1,7 @@
 import type { ArrayField, Block, CheckboxField, RadioField, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { createContentActionModeField } from '@/blocks/shared/contentActionsFields'
+import { createContentActionModeField, createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 type ProgramItemSiblingData = {
   linkType?: 'none' | 'page' | 'custom' | null
@@ -146,11 +146,12 @@ export const ProgramGridBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             programsField,
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             createContentActionModeField(),
@@ -215,7 +216,7 @@ export const ProgramGridBlock: Block = {
             },
             {
               name: 'contentAlignment',
-              label: 'Header Alignment',
+              label: 'Section Content Alignment',
               type: 'select',
               defaultValue: 'center',
               options: [
@@ -226,7 +227,7 @@ export const ProgramGridBlock: Block = {
             } satisfies SelectField,
             {
               name: 'size',
-              label: 'Size',
+              label: 'Section Padding',
               type: 'select',
               defaultValue: 'default',
               options: [

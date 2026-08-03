@@ -58,14 +58,14 @@ export const TestimonialGridBlock: Block = {
           label: 'Content',
           fields: [
             { name: 'eyebrow', type: 'text', admin: { description: 'Small label above heading, e.g. "Student Stories"' } },
-            { name: 'heading', type: 'text' },
+            { name: 'title', type: 'text' },
             { name: 'description', type: 'textarea' },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             testimonialsField,
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             {
@@ -104,7 +104,7 @@ export const TestimonialGridBlock: Block = {
             } satisfies SelectField,
             {
               name: 'size',
-              label: 'Vertical Padding',
+              label: 'Section Padding',
               type: 'select',
               defaultValue: 'default',
               options: [

@@ -273,7 +273,7 @@ export const blockThumbnailFixtures = {
     <QaAccordionBlockComponent
       defaultOpenFirst
       description="Clear answers to common questions about programs, visits, and support."
-      heading="Frequently asked questions"
+      title="Frequently asked questions"
       items={qaAccordionFixtureItems}
       layoutMode="fiftyFifty"
       sideActionMode="link"
@@ -725,6 +725,7 @@ export const blockThumbnailFixtures = {
       siteLogo={{ alt: 'Northstar', url: brandMark }}
       siteName="Northstar"
       sitePhone="+1 555 0100"
+      size="default"
     />
   ),
   headerNavbar12: (

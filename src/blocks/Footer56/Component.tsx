@@ -141,6 +141,7 @@ export function Footer56BlockComponent({
   siteLogo,
   siteName,
   sitePhone,
+  size,
   termsAndConditionsPage,
   siteSocialLinks,
 }: Footer56BlockComponentProps) {
@@ -183,6 +184,7 @@ export function Footer56BlockComponent({
       appearance={appearance}
       phone={sitePhone ?? undefined}
       email={siteEmail ?? undefined}
+      size={size ?? 'default'}
       sections={resolveSections(linkGroups)}
       socialLinks={resolveSocialLinks(siteSocialLinks)}
       logo={

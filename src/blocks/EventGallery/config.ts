@@ -1,8 +1,8 @@
 import type { Block, SelectField, TabsField } from 'payload'
 
-
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 export const EventGalleryBlock: Block = {
   slug: 'eventGallery',
@@ -32,6 +32,7 @@ export const EventGalleryBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             {
               name: 'galleryAlbums',
               label: 'Gallery Albums',
@@ -66,7 +67,7 @@ export const EventGalleryBlock: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             {
@@ -82,9 +83,9 @@ export const EventGalleryBlock: Block = {
             } satisfies SelectField,
             {
               name: 'contentAlignment',
-              label: 'Content Alignment',
+              label: 'Section Content Alignment',
               type: 'select',
-              defaultValue: 'left',
+              defaultValue: 'center',
               options: [
                 { label: 'Left', value: 'left' },
                 { label: 'Center', value: 'center' },
@@ -94,7 +95,7 @@ export const EventGalleryBlock: Block = {
             } satisfies SelectField,
             {
               name: 'size',
-              label: 'Size',
+              label: 'Section Padding',
               type: 'select',
               defaultValue: 'default',
               options: [

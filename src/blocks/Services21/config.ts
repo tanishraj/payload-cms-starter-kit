@@ -42,7 +42,7 @@ const servicesField = {
 
 const serviceSizeField = {
   name: 'size',
-  label: 'Size',
+  label: 'Section Padding',
   type: 'select',
   defaultValue: 'default',
   options: [
@@ -55,9 +55,9 @@ const serviceSizeField = {
 
 const contentAlignmentField = {
   name: 'contentAlignment',
-  label: 'Content Alignment',
+  label: 'Section Content Alignment',
   type: 'select',
-  defaultValue: 'left',
+  defaultValue: 'center',
   options: [
     { label: 'Left', value: 'left' },
     { label: 'Center', value: 'center' },
@@ -99,7 +99,7 @@ export const Services21Block: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             createContentActionModeField(),

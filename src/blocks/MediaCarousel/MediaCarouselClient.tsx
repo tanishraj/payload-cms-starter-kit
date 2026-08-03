@@ -83,6 +83,7 @@ type MediaCarouselClientProps = {
   description?: string
   eyebrow?: string
   items: MediaCarouselItem[]
+  sectionActions?: React.ReactNode
   size: RegularBlockSize
   title: string
 }
@@ -188,6 +189,7 @@ export function MediaCarouselClient({
   description,
   eyebrow,
   items,
+  sectionActions,
   size,
   title,
 }: MediaCarouselClientProps) {
@@ -213,6 +215,7 @@ export function MediaCarouselClient({
           {description ? (
             <p className="text-base leading-7 text-current/70">{description}</p>
           ) : null}
+          {sectionActions ? <div className="mt-2">{sectionActions}</div> : null}
         </div>
         <Carousel opts={{ align: 'start' }} className="w-full">
           <CarouselContent className="py-4">

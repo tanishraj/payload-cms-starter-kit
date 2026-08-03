@@ -1,6 +1,7 @@
 import type { ArrayField, Block, SelectField, TabsField, TextField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 const valuesField = {
   name: 'values',
@@ -73,7 +74,7 @@ export const AboutSectionBlock: Block = {
           label: 'Content',
           fields: [
             { name: 'eyebrow', type: 'text', admin: { description: 'e.g. "About Us" or "Our Story"' } },
-            { name: 'heading', type: 'text', required: true },
+            { name: 'title', type: 'text', required: true },
             {
               name: 'body',
               label: 'Body Text',
@@ -90,12 +91,23 @@ export const AboutSectionBlock: Block = {
             },
             statsField,
             valuesField,
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
+            {
+              name: 'contentAlignment',
+              label: 'Section Content Alignment',
+              type: 'select',
+              defaultValue: 'center',
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+              ],
+            } satisfies SelectField,
             {
               name: 'variant',
               label: 'Variant',
@@ -121,7 +133,7 @@ export const AboutSectionBlock: Block = {
             } satisfies SelectField,
             {
               name: 'size',
-              label: 'Vertical Padding',
+              label: 'Section Padding',
               type: 'select',
               defaultValue: 'default',
               options: [

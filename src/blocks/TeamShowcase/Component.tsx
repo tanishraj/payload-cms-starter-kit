@@ -16,7 +16,7 @@ type TeamShowcaseBlockLike = {
   appearance?: BlockAppearance | null
   contentAlignment?: TeamShowcaseAlignment | null
   description?: string | null
-  heading?: string | null
+  title?: string | null
   members?: {
     image?: unknown
     name?: string | null
@@ -31,9 +31,9 @@ export function TeamShowcaseBlockComponent({
   actionMode = 'link',
   actions,
   appearance,
-  contentAlignment = 'left',
+  contentAlignment = 'center',
   description,
-  heading,
+  title,
   members,
   size = 'default',
 }: TeamShowcaseBlockLike) {
@@ -73,12 +73,12 @@ export function TeamShowcaseBlockComponent({
         />
       }
       appearance={appearance}
-      showHeaderDivider={showHeaderDivider}
-      contentAlignment={contentAlignment}
-      description={description?.trim()}
-      heading={heading}
+      showHeaderDivider={showHeaderDivider ?? undefined}
+      contentAlignment={contentAlignment ?? undefined}
+      description={description?.trim() || undefined}
+      heading={title ?? undefined}
       members={resolvedMembers}
-      size={size}
+      size={size ?? undefined}
     />
   )
 }

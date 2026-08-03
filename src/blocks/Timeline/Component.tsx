@@ -6,6 +6,8 @@ import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { ContentActions } from '@/components/ContentActions'
+import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import type { Media } from '@/payload-types'
 import { cn } from '@/lib/utils'
@@ -19,6 +21,7 @@ type TimelineItem = {
 }
 
 type TimelineBlockLike = {
+  actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
@@ -53,11 +56,13 @@ function StatusIcon({ badge, index }: { badge: string; index: number }) {
 
 // ── Section header shared across variants ────────────────────────────────────
 function SectionHeader({
+  actions,
   eyebrow,
   title,
   description,
   alignment,
 }: {
+  actions?: React.ReactNode
   eyebrow?: string
   title: string
   description?: string
@@ -77,6 +82,7 @@ function SectionHeader({
       ) : null}
       <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">{title}</h2>
       {description ? <p className="text-base leading-7 text-current/70">{description}</p> : null}
+      {actions ? <div className="mt-2">{actions}</div> : null}
     </div>
   )
 }
@@ -300,6 +306,7 @@ function AlternatingTimeline({ items }: { items: TimelineItem[] }) {
 
 // ── Main export ───────────────────────────────────────────────────────────────
 export function TimelineBlockComponent({
+  actions,
   appearance,
   contentAlignment = 'center',
   description,
@@ -318,11 +325,13 @@ export function TimelineBlockComponent({
 
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
   const alignment = contentAlignment ?? 'center'
+  const resolvedActions = resolveCmsActions(actions)
 
   return (
     <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
       <div className="mx-auto w-full max-w-screen-2xl px-4">
         <SectionHeader
+          actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
           alignment={alignment}
           description={description?.trim() || undefined}
           eyebrow={eyebrow?.trim() || undefined}

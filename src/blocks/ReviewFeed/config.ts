@@ -2,6 +2,7 @@ import type { Block, NumberField, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import { REVIEW_FEED_DEFAULT_PAGE_SIZE, REVIEW_FEED_MAX_PAGE_SIZE } from '@/lib/reviewFeedShared'
 
 const pageSizeField = {
@@ -23,7 +24,7 @@ const pageSizeField = {
 
 const sizeField = {
   name: 'size',
-  label: 'Size',
+  label: 'Section Padding',
   type: 'select',
   defaultValue: 'default',
   options: [
@@ -52,6 +53,7 @@ export const ReviewFeedBlock: Block = {
             { name: 'eyebrow', type: 'text' },
             { name: 'title', type: 'text', required: true },
             { name: 'description', type: 'textarea' },
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             pageSizeField,
             {
               name: 'loadMoreLabel',
@@ -68,8 +70,21 @@ export const ReviewFeedBlock: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
-          fields: [createBlockAppearanceFields({ includeTextOverride: false }), sizeField],
+          label: 'Layout',
+          fields: [
+            createBlockAppearanceFields({ includeTextOverride: false }),
+            {
+              name: 'contentAlignment',
+              label: 'Section Content Alignment',
+              type: 'select',
+              defaultValue: 'center',
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+              ],
+            } satisfies SelectField,
+            sizeField,
+          ],
         },
       ],
     } satisfies TabsField,

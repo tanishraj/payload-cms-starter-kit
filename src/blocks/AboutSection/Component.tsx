@@ -7,6 +7,8 @@ import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { ContentActions } from '@/components/ContentActions'
+import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
 import type { Media } from '@/payload-types'
@@ -23,10 +25,12 @@ type StatItem = {
 }
 
 type AboutSectionBlockLike = {
+  actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   body?: string | null
+  contentAlignment?: 'left' | 'center' | null
   eyebrow?: string | null
-  heading?: string | null
+  title?: string | null
   image?: string | number | Media | null
   imagePosition?: 'left' | 'right' | null
   size?: RegularBlockSize | null
@@ -91,10 +95,12 @@ function ValuesGrid({ values }: { values: ValueItem[] }) {
 }
 
 export function AboutSectionBlockComponent({
+  actions,
   appearance,
   body,
+  contentAlignment = 'center',
   eyebrow,
-  heading,
+  title,
   image,
   imagePosition = 'right',
   size = 'default',
@@ -103,27 +109,34 @@ export function AboutSectionBlockComponent({
   variant = 'split',
 }: AboutSectionBlockLike) {
   const resolvedBody = body?.trim()
-  const resolvedHeading = heading?.trim()
-  if (!resolvedHeading && !resolvedBody) return null
+  const resolvedTitle = title?.trim()
+  if (!resolvedTitle && !resolvedBody) return null
 
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
   const imageProps = getMediaImageProps({ media: image, preset: 'generic' })
   const resolvedStats = (stats ?? []).filter((s) => s.value?.trim() && s.label?.trim())
   const resolvedValues = (values ?? []).filter((v) => v.title?.trim())
+  const resolvedActions = resolveCmsActions(actions)
+  const isCenter = (contentAlignment ?? 'center') === 'center'
 
   const textContent = (
-    <div className="flex flex-col gap-5">
+    <div className={cn('flex flex-col gap-5', isCenter && variant !== 'split' && 'items-center text-center')}>
       {eyebrow?.trim() ? (
-        <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+        <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
           {eyebrow.trim()}
         </p>
       ) : null}
-      {resolvedHeading ? (
-        <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-          {resolvedHeading}
+      {resolvedTitle ? (
+        <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
+          {resolvedTitle}
         </h2>
       ) : null}
       {resolvedBody ? <BodyText text={resolvedBody} /> : null}
+      {resolvedActions.length > 0 ? (
+        <div className="mt-2">
+          <ContentActions actions={resolvedActions} />
+        </div>
+      ) : null}
       {resolvedStats.length > 0 ? <StatsRow stats={resolvedStats} /> : null}
       {resolvedValues.length > 0 ? (
         <div className={cn(resolvedStats.length > 0 && 'mt-4 border-t border-border pt-8')}>
@@ -134,7 +147,7 @@ export function AboutSectionBlockComponent({
   )
 
   const imageContent = imageProps ? (
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
+    <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl">
       <Image
         src={imageProps.src}
         alt={imageProps.alt}
@@ -161,16 +174,21 @@ export function AboutSectionBlockComponent({
           <div className="mx-auto max-w-3xl flex flex-col gap-8 items-center text-center">
             <div className="flex flex-col gap-5 items-center">
               {eyebrow?.trim() ? (
-                <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+                <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                   {eyebrow.trim()}
                 </p>
               ) : null}
-              {resolvedHeading ? (
-                <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-                  {resolvedHeading}
+              {resolvedTitle ? (
+                <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
+                  {resolvedTitle}
                 </h2>
               ) : null}
               {resolvedBody ? <BodyText text={resolvedBody} /> : null}
+              {resolvedActions.length > 0 ? (
+                <div className="mt-2">
+                  <ContentActions actions={resolvedActions} />
+                </div>
+              ) : null}
               {resolvedStats.length > 0 ? (
                 <div className="flex flex-wrap justify-center gap-8 pt-2">
                   {resolvedStats.map((s, i) => (

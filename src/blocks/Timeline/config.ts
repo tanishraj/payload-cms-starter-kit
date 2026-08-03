@@ -1,6 +1,7 @@
 import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 const timelineItemsField: ArrayField = {
   name: 'items',
@@ -84,11 +85,12 @@ export const TimelineBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             timelineItemsField,
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             {
@@ -124,7 +126,7 @@ export const TimelineBlock: Block = {
             },
             {
               name: 'contentAlignment',
-              label: 'Header Alignment',
+              label: 'Section Content Alignment',
               type: 'select',
               defaultValue: 'center',
               options: [
@@ -135,7 +137,7 @@ export const TimelineBlock: Block = {
             } satisfies SelectField,
             {
               name: 'size',
-              label: 'Size',
+              label: 'Section Padding',
               type: 'select',
               defaultValue: 'default',
               options: [

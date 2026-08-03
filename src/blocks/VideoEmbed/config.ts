@@ -110,12 +110,12 @@ export const VideoEmbedBlock: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             {
               name: 'contentAlignment',
-              label: 'Content Alignment',
+              label: 'Section Content Alignment',
               type: 'select',
               defaultValue: 'center',
               options: [

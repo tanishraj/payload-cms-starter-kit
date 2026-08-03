@@ -120,7 +120,7 @@ export const DownloadListBlock: Block = {
             } satisfies SelectField,
             {
               name: 'size',
-              label: 'Vertical Padding',
+              label: 'Section Padding',
               type: 'select',
               defaultValue: 'default',
               options: [

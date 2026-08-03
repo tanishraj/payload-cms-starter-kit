@@ -1,6 +1,7 @@
 import type { ArrayField, Block, CheckboxField, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 const logosField: ArrayField = {
   name: 'logos',
@@ -74,13 +75,25 @@ export const LogoStripBlock: Block = {
                 description: 'Optional section heading.',
               },
             },
+            { name: 'description', type: 'textarea', admin: { description: 'Optional description below the heading.' } },
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             logosField,
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
+            {
+              name: 'contentAlignment',
+              label: 'Section Content Alignment',
+              type: 'select',
+              defaultValue: 'center',
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+              ],
+            } satisfies SelectField,
             {
               name: 'displayMode',
               label: 'Display Mode',
@@ -124,7 +137,7 @@ export const LogoStripBlock: Block = {
             } satisfies SelectField,
             {
               name: 'size',
-              label: 'Size',
+              label: 'Section Padding',
               type: 'select',
               defaultValue: 'default',
               options: [

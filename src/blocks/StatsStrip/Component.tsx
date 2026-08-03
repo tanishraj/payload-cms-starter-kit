@@ -1,4 +1,5 @@
 import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { regularBlockMobilePaddingClasses, type RegularBlockSize } from '@/blocks/shared/blockSpacing'
 import { cn } from '@/lib/utils'
 
 import { AnimatedMetricValue } from './AnimatedMetricValue'
@@ -20,6 +21,7 @@ export type StatsStripBlockLike = {
   animationEnabled?: boolean | null
   appearance?: BlockAppearance | null
   items?: StatsStripItem[] | null
+  size?: RegularBlockSize | null
   triggerOnce?: boolean | null
 }
 
@@ -47,6 +49,7 @@ export function StatsStripBlockComponent({
   animationEnabled = true,
   appearance,
   items,
+  size = 'default',
   triggerOnce = true,
 }: StatsStripBlockLike) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
@@ -75,7 +78,7 @@ export function StatsStripBlockComponent({
 
   return (
     <section
-      className={appearanceClasses.className}
+      className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClasses.className)}
       data-stats-strip-background={appearance?.background ?? 'none'}
     >
       <div className="mx-auto flex max-w-screen-2xl flex-col px-4">

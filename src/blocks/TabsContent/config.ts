@@ -70,6 +70,7 @@ export const TabsContentBlock: Block = {
               type: 'textarea',
               admin: { description: 'Optional subtitle shown above the tab bar.' },
             },
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             tabItemsField,
           ],
         },
@@ -102,7 +103,7 @@ export const TabsContentBlock: Block = {
             } satisfies SelectField,
             {
               name: 'contentAlignment',
-              label: 'Section Header Alignment',
+              label: 'Section Content Alignment',
               type: 'select',
               defaultValue: 'center',
               options: [
@@ -122,7 +123,7 @@ export const TabsContentBlock: Block = {
             } satisfies SelectField,
             {
               name: 'size',
-              label: 'Vertical Padding',
+              label: 'Section Padding',
               type: 'select',
               defaultValue: 'default',
               options: [

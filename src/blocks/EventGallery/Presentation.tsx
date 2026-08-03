@@ -9,8 +9,11 @@ import type {
   EventGalleryAlbum,
   EventGalleryDisplayOrder,
 } from '@/lib/eventGalleryShared'
+import { ContentActions } from '@/components/ContentActions'
+import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 
 export type EventGalleryBlockLike = {
+  actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   cardTextLayout?: EventGalleryCardTextLayout | null
   contentAlignment?: EventGalleryAlignment | null
@@ -23,10 +26,11 @@ export type EventGalleryBlockLike = {
 }
 
 export function EventGalleryBlockPresentation({
+  actions,
   albums,
   appearance,
   cardTextLayout,
-  contentAlignment = 'left',
+  contentAlignment = 'center',
   description,
   eyebrow,
   size = 'default',
@@ -38,10 +42,13 @@ export function EventGalleryBlockPresentation({
     return null
   }
 
+  const resolvedActions = resolveCmsActions(actions)
+
   return (
     <EventGallery
+      actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
       albums={albums}
-      alignment={contentAlignment ?? 'left'}
+      alignment={contentAlignment ?? 'center'}
       appearance={appearance}
       cardTextLayout={cardTextLayout ?? 'center'}
       description={description?.trim() || undefined}

@@ -219,7 +219,7 @@ export function ReviewSubmissionBlockComponent({
   actionMode = 'link',
   actions,
   appearance,
-  contentAlignment = 'left',
+  contentAlignment = 'center',
   description,
   eyebrow,
   form,

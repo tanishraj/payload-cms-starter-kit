@@ -1,9 +1,11 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
 import { Contact24, type Contact24DetailsAlignment, type Contact24MapActionMode, type Contact24MapActionVariant } from '@/components/contact24'
-import type { CmsActionVariant } from '@/lib/cmsLinks'
+import { ContentActions } from '@/components/ContentActions'
+import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@/lib/cmsLinks'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
 
 export type Contact24BlockLike = {
+  actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'center' | 'left' | 'right' | null
   description?: string | null
@@ -19,8 +21,9 @@ export type Contact24BlockLike = {
 }
 
 export function Contact24BlockPresentation({
+  actions,
   appearance,
-  contentAlignment = 'left',
+  contentAlignment = 'center',
   description,
   detailsAlignment = 'left',
   eyebrow,
@@ -38,10 +41,13 @@ export function Contact24BlockPresentation({
     return null
   }
 
+  const resolvedActions = resolveCmsActions(actions)
+
   return (
     <Contact24
+      actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
       appearance={appearance}
-      contentAlignment={contentAlignment ?? 'left'}
+      contentAlignment={contentAlignment ?? 'center'}
       description={description?.trim()}
       detailsAlignment={detailsAlignment ?? 'left'}
       eyebrow={eyebrow?.trim()}

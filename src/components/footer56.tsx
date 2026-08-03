@@ -10,6 +10,7 @@ import {
 import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
+  type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { cn } from '@/lib/utils'
 
@@ -43,6 +44,7 @@ interface FooterBasicProps {
   legalLinks?: FooterLink[]
   appearance?: BlockAppearance | null
   className?: string
+  size?: RegularBlockSize | null
 }
 
 interface Footer56Props extends FooterBasicProps {
@@ -130,6 +132,7 @@ const Footer56 = (props: Props) => {
     phone,
     email,
     sections,
+    size,
     socialLinks,
     copyright,
     legalLinks,
@@ -142,7 +145,7 @@ const Footer56 = (props: Props) => {
   const visibleSections = (sections ?? []).slice(0, MAX_SECTIONS)
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const sectionClassName = cn(
-    regularBlockMobilePaddingClasses.default,
+    regularBlockMobilePaddingClasses[size ?? 'default'],
     appearanceClasses.className,
     className,
   )

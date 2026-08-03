@@ -72,9 +72,9 @@ const ratingDataField = {
 
 const contentAlignmentField = {
   name: 'contentAlignment',
-  label: 'Content Alignment',
+  label: 'Section Content Alignment',
   type: 'select',
-  defaultValue: 'left',
+  defaultValue: 'center',
   options: [
     { label: 'Left', value: 'left' },
     { label: 'Center', value: 'center' },
@@ -85,7 +85,7 @@ const contentAlignmentField = {
 
 const sizeField = {
   name: 'size',
-  label: 'Size',
+  label: 'Section Padding',
   type: 'select',
   defaultValue: 'default',
   options: [
@@ -129,7 +129,7 @@ export const RatingSpotlightBlock: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             createContentActionModeField(),

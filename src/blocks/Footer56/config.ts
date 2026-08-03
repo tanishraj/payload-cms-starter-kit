@@ -182,8 +182,22 @@ export const Footer56Block: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
-          fields: [createBlockAppearanceFields({ includeTextOverride: false })],
+          label: 'Layout',
+          fields: [
+            createBlockAppearanceFields({ includeTextOverride: false }),
+            {
+              name: 'size',
+              label: 'Section Padding',
+              type: 'select',
+              defaultValue: 'default',
+              options: [
+                { label: 'Compact', value: 'compact' },
+                { label: 'Default', value: 'default' },
+                { label: 'Comfortable', value: 'comfortable' },
+              ],
+              required: true,
+            } satisfies SelectField,
+          ],
         },
       ],
     } satisfies TabsField,

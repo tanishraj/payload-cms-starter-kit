@@ -49,7 +49,7 @@ describe('Q&A Accordion block', () => {
         defaultOpenFirst: true,
         description: 'Answers to the most common admissions questions.',
         accordionPlacement: 'right',
-        heading: 'Frequently asked questions',
+        title: 'Frequently asked questions',
         items: [
           {
             answer: createRichText('Applications open in August and close in January.'),
@@ -116,9 +116,9 @@ describe('Q&A Accordion block', () => {
         contentAlignment: 'center',
         defaultOpenFirst: false,
         description: 'Answers for prospective students.',
-        heading: 'Questions and answers',
-        headerActionMode: 'button',
-        headerActions: [
+        title: 'Questions and answers',
+        actionMode: 'button',
+        actions: [
           {
             label: 'Admissions guide',
             linkType: 'custom',
@@ -181,7 +181,7 @@ describe('Q&A Accordion block', () => {
         contentAlignment: 'right',
         description: 'Answers for current students.',
         accordionPlacement: 'left',
-        heading: 'Student questions',
+        title: 'Student questions',
         items: [
           {
             answer: createRichText('Visit the student services office.'),

@@ -1,5 +1,6 @@
 import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
 import type { RegularBlockSize } from '@/blocks/shared/blockSpacing'
+import { ContentActions } from '@/components/ContentActions'
 import { getMediaAbsoluteUrl, isMediaDoc } from '@/lib/media'
 import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@/lib/cmsLinks'
 import type { Media } from '@/payload-types'
@@ -23,6 +24,7 @@ type MediaCarouselBlockLike = {
   description?: string | null
   eyebrow?: string | null
   items?: MediaCarouselItemValue[] | null
+  sectionActions?: CmsActionValue[] | null
   size?: RegularBlockSize | null
   title?: string | null
 }
@@ -36,6 +38,7 @@ export function MediaCarouselBlockComponent({
   description,
   eyebrow,
   items,
+  sectionActions,
   size = 'default',
   title,
 }: MediaCarouselBlockLike) {
@@ -80,8 +83,8 @@ export function MediaCarouselBlockComponent({
   if (resolvedItems.length === 0) return null
 
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
-
   const resolvedColumns = (Number(columns ?? '3') as 2 | 3 | 4) || 3
+  const resolvedSectionActions = resolveCmsActions(sectionActions)
 
   return (
     <MediaCarouselClient
@@ -93,6 +96,7 @@ export function MediaCarouselBlockComponent({
       description={description?.trim() || undefined}
       eyebrow={eyebrow?.trim() || undefined}
       items={resolvedItems}
+      sectionActions={resolvedSectionActions.length > 0 ? <ContentActions actions={resolvedSectionActions} /> : undefined}
       size={size ?? 'default'}
       title={resolvedTitle}
     />

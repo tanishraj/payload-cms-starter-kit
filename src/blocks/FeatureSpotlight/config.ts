@@ -68,7 +68,7 @@ export const FeatureSpotlightBlock: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             createContentActionModeField(),
@@ -149,7 +149,7 @@ export const FeatureSpotlightBlock: Block = {
             } satisfies SelectField,
             {
               name: 'size',
-              label: 'Size',
+              label: 'Section Padding',
               type: 'select',
               defaultValue: 'default',
               options: [
@@ -158,6 +158,20 @@ export const FeatureSpotlightBlock: Block = {
                 { label: 'Comfortable', value: 'comfortable' },
               ],
               required: true,
+            } satisfies SelectField,
+            {
+              name: 'contentAlignment',
+              label: 'Section Content Alignment',
+              type: 'select',
+              defaultValue: 'center',
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+              ],
+              admin: {
+                condition: (_data: unknown, siblingData: FeatureSpotlightSiblingData) =>
+                  siblingData?.layoutMode !== 'split',
+              },
             } satisfies SelectField,
             {
               name: 'contentVerticalAlignment',

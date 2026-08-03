@@ -41,7 +41,7 @@ export function ContentHighlightsBlockComponent({
   actionMode = 'link',
   actions,
   appearance,
-  contentAlignment = 'left',
+  contentAlignment = 'center',
   description,
   enableSplitLayout = false,
   eyebrow,

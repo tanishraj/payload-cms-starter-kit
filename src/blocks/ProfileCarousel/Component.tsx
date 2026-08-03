@@ -38,7 +38,7 @@ export function ProfileCarouselBlockComponent({
   actions,
   appearance,
   cardVariant = 'stacked',
-  contentAlignment = 'left',
+  contentAlignment = 'center',
   description,
   eyebrow,
   overlayAlignment = 'left',

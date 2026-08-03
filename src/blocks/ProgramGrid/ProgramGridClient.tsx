@@ -39,6 +39,7 @@ type ProgramGridClientProps = {
   description?: string
   eyebrow?: string
   programs: ResolvedProgram[]
+  sectionActions?: React.ReactNode
   showFilter: boolean
   size: RegularBlockSize
   title: string
@@ -261,6 +262,7 @@ export function ProgramGridClient({
   description,
   eyebrow,
   programs,
+  sectionActions,
   showFilter,
   size,
   title,
@@ -299,6 +301,7 @@ export function ProgramGridClient({
           {description ? (
             <p className="text-base leading-7 text-current/70">{description}</p>
           ) : null}
+          {sectionActions ? <div className="mt-2">{sectionActions}</div> : null}
         </div>
 
         {showFilter && categories.length > 1 ? (

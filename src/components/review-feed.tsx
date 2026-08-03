@@ -15,7 +15,9 @@ import { cn } from '@/lib/utils'
 export type ReviewFeedSize = 'comfortable' | 'compact' | 'default'
 
 export type ReviewFeedPresentationProps = {
+  actions?: React.ReactNode
   appearance?: BlockAppearance | null
+  contentAlignment?: 'left' | 'center' | null
   description?: string | null
   emptyStateMessage: string
   eyebrow?: string | null
@@ -67,7 +69,9 @@ function ReviewFeedSummary({ summary }: { summary: PublishedReviewRatingDistribu
 }
 
 export function ReviewFeed({
+  actions,
   appearance,
+  contentAlignment = 'center',
   description,
   emptyStateMessage,
   eyebrow,
@@ -79,6 +83,7 @@ export function ReviewFeed({
   title,
 }: ReviewFeedPresentationProps) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
+  const isCenter = (contentAlignment ?? 'center') === 'center'
 
   return (
     <section
@@ -88,7 +93,7 @@ export function ReviewFeed({
     >
       <div className={regularBlockContainerClasses}>
         <div className="flex w-full flex-col gap-6">
-          <header className="flex flex-col gap-4">
+          <header className={cn('flex flex-col gap-4', isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start')}>
             {eyebrow ? (
               <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                 {eyebrow}
@@ -100,6 +105,7 @@ export function ReviewFeed({
             {description ? (
               <p className="text-base leading-7 text-balance text-current/70">{description}</p>
             ) : null}
+            {actions ? <div className="mt-2">{actions}</div> : null}
           </header>
           {summary ? <ReviewFeedSummary summary={summary} /> : null}
           <Separator className="bg-current/15" />

@@ -67,14 +67,14 @@ export const AwardsListBlock: Block = {
           label: 'Content',
           fields: [
             { name: 'eyebrow', type: 'text', admin: { description: 'Small label, e.g. "Our Achievements"' } },
-            { name: 'heading', type: 'text' },
+            { name: 'title', type: 'text' },
             { name: 'description', type: 'textarea' },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             awardsField,
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             {
@@ -101,7 +101,7 @@ export const AwardsListBlock: Block = {
             } satisfies SelectField,
             {
               name: 'size',
-              label: 'Vertical Padding',
+              label: 'Section Padding',
               type: 'select',
               defaultValue: 'default',
               options: [

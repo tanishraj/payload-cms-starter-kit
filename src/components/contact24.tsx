@@ -21,6 +21,7 @@ export type Contact24MapActionMode = 'button' | 'link'
 export type Contact24MapActionVariant = CmsActionVariant
 
 export type Contact24Props = {
+  actions?: React.ReactNode
   appearance?: BlockAppearance | null
   className?: string
   contentAlignment?: Contact24Alignment
@@ -77,6 +78,7 @@ const detailsAlignmentClasses = {
 
 
 export function Contact24({
+  actions,
   appearance,
   className,
   contentAlignment = 'left',
@@ -131,6 +133,7 @@ export function Contact24({
             {description ? (
               <p className="text-base leading-7 text-current/70">{description}</p>
             ) : null}
+            {actions ? <div className="mt-2">{actions}</div> : null}
           </header>
 
           <div

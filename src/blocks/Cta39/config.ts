@@ -9,7 +9,7 @@ import {
 
 const ctaSizeField = {
   name: 'size',
-  label: 'Size',
+  label: 'Section Padding',
   type: 'select',
   defaultValue: 'default',
   options: [
@@ -22,7 +22,7 @@ const ctaSizeField = {
 
 const contentAlignmentField = {
   name: 'contentAlignment',
-  label: 'Content Alignment',
+  label: 'Section Content Alignment',
   type: 'select',
   defaultValue: 'center',
   options: [
@@ -62,7 +62,7 @@ export const Cta39Block: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             createContentActionModeField(),

@@ -1,7 +1,8 @@
 import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
 import type { RegularBlockSize } from '@/blocks/shared/blockSpacing'
+import { ContentActions } from '@/components/ContentActions'
 import { getMediaAbsoluteUrl, isMediaDoc } from '@/lib/media'
-import type { CmsActionVariant } from '@/lib/cmsLinks'
+import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@/lib/cmsLinks'
 import { getPageHref } from '@/lib/pagePaths'
 import type { Media, Page } from '@/payload-types'
 
@@ -25,6 +26,7 @@ type ProgramItem = {
 type ProgramGridBlockLike = {
   actionMode?: 'button' | 'link' | null
   actionVariant?: CmsActionVariant | null
+  actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   columns?: '2' | '3' | '4' | null
   contentAlignment?: 'left' | 'center' | null
@@ -41,6 +43,7 @@ type ProgramGridBlockLike = {
 export function ProgramGridBlockComponent({
   actionMode,
   actionVariant,
+  actions,
   appearance,
   columns,
   contentAlignment = 'center',
@@ -96,6 +99,7 @@ export function ProgramGridBlockComponent({
 
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
   const resolvedColumns = (Number(columns ?? '3') as 2 | 3 | 4) || 3
+  const resolvedSectionActions = resolveCmsActions(actions)
 
   return (
     <ProgramGridClient
@@ -108,6 +112,7 @@ export function ProgramGridBlockComponent({
       description={description?.trim() || undefined}
       eyebrow={eyebrow?.trim() || undefined}
       programs={resolvedPrograms}
+      sectionActions={resolvedSectionActions.length > 0 ? <ContentActions actions={resolvedSectionActions} /> : undefined}
       showFilter={showFilter ?? false}
       size={size ?? 'default'}
       title={resolvedTitle}

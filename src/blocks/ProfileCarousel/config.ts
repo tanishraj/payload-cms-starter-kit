@@ -85,15 +85,15 @@ export const ProfileCarouselBlock: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             createContentActionModeField(),
             {
               name: 'contentAlignment',
-              label: 'Content Alignment',
+              label: 'Section Content Alignment',
               type: 'select',
-              defaultValue: 'left',
+              defaultValue: 'center',
               options: [
                 { label: 'Left', value: 'left' },
                 { label: 'Center', value: 'center' },
@@ -129,7 +129,7 @@ export const ProfileCarouselBlock: Block = {
             } satisfies SelectField,
             {
               name: 'size',
-              label: 'Size',
+              label: 'Section Padding',
               type: 'select',
               defaultValue: 'default',
               options: [

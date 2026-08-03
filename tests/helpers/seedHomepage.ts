@@ -37,6 +37,7 @@ const homepagePageData = {
         background: 'accent' as const,
         border: 'topAndBottom' as const,
       },
+      contentAlignment: 'center' as const,
       description: 'Use this section as a quick call-to-action at the end of the page.',
       size: 'compact' as const,
       blockType: 'cta39' as const,

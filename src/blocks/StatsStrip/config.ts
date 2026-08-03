@@ -1,4 +1,4 @@
-import type { ArrayField, Block, CheckboxField, NumberField, TabsField } from 'payload'
+import type { ArrayField, Block, CheckboxField, NumberField, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
@@ -49,9 +49,21 @@ export const StatsStripBlock: Block = {
           fields: [itemsField],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
+            {
+              name: 'size',
+              label: 'Section Padding',
+              type: 'select',
+              defaultValue: 'default',
+              options: [
+                { label: 'Compact', value: 'compact' },
+                { label: 'Default', value: 'default' },
+                { label: 'Comfortable', value: 'comfortable' },
+              ],
+              required: true,
+            } satisfies SelectField,
             {
               name: 'animationEnabled',
               type: 'checkbox',

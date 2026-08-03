@@ -43,14 +43,14 @@ type QaAccordionProfile = {
 }
 
 type QaAccordionBlockLike = {
+  actionMode?: 'button' | 'link' | null
+  actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'center' | 'left' | 'right' | null
   defaultOpenFirst?: boolean | null
   description?: string | null
   accordionPlacement?: 'left' | 'right' | null
-  heading: string
-  headerActionMode?: 'button' | 'link' | null
-  headerActions?: CmsActionValue[] | null
+  title: string
   items?: QaAccordionItemValue[] | null
   layoutMode?: 'fiftyFifty' | 'fullWidth' | 'oneThird' | null
   sideActionMode?: 'button' | 'link' | null
@@ -151,14 +151,14 @@ function QaAccordionContent({
 }
 
 export function QaAccordionBlockComponent({
+  actionMode = 'link',
+  actions,
   appearance,
-  contentAlignment = 'left',
+  contentAlignment = 'center',
   defaultOpenFirst = true,
   description,
   accordionPlacement = 'right',
-  heading,
-  headerActionMode = 'link',
-  headerActions,
+  title,
   items,
   layoutMode = 'fiftyFifty',
   sideActionMode = 'link',
@@ -194,9 +194,9 @@ export function QaAccordionBlockComponent({
   const profileImage = getMediaImageProps({
     media: profile?.image as never,
     preset: 'generic',
-    fallbackAlt: profile?.name?.trim() || heading,
+    fallbackAlt: profile?.name?.trim() || title,
   })
-  const resolvedHeaderActions = resolveCmsActions(headerActions)
+  const resolvedHeaderActions = resolveCmsActions(actions)
   const contactActions = resolveCmsActions(contact?.actions)
 
   const hasProfile = Boolean(profileImage || profile?.name?.trim() || profile?.title?.trim())
@@ -223,7 +223,7 @@ export function QaAccordionBlockComponent({
         )}
       >
         <h2 className="text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-4xl">
-          {heading}
+          {title}
         </h2>
         {description?.trim() ? (
           <p className="text-balance text-base leading-7 text-muted-foreground">
@@ -234,7 +234,7 @@ export function QaAccordionBlockComponent({
           actions={resolvedHeaderActions}
           alignment={resolvedContentAlignment}
           data-qa-accordion-header-actions="true"
-          mode={headerActionMode ?? 'link'}
+          mode={actionMode ?? 'link'}
         />
       </div>
 

@@ -104,11 +104,12 @@ export const MediaCarouselBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
+            createContentActionsField({ label: 'Section Actions', maxRows: 2, name: 'sectionActions' }),
             itemsField,
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             createContentActionModeField(),
@@ -140,7 +141,7 @@ export const MediaCarouselBlock: Block = {
             } satisfies SelectField,
             {
               name: 'contentAlignment',
-              label: 'Header Alignment',
+              label: 'Section Content Alignment',
               type: 'select',
               defaultValue: 'center',
               options: [
@@ -151,7 +152,7 @@ export const MediaCarouselBlock: Block = {
             } satisfies SelectField,
             {
               name: 'size',
-              label: 'Size',
+              label: 'Section Padding',
               type: 'select',
               defaultValue: 'default',
               options: [

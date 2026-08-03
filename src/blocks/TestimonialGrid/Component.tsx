@@ -28,7 +28,7 @@ type TestimonialGridBlockLike = {
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
-  heading?: string | null
+  title?: string | null
   size?: RegularBlockSize | null
   testimonials?: Testimonial[] | null
   variant?: 'grid' | 'featured' | 'list' | null
@@ -95,7 +95,7 @@ export function TestimonialGridBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
-  heading,
+  title,
   size = 'default',
   testimonials,
   variant = 'grid',
@@ -111,7 +111,7 @@ export function TestimonialGridBlockComponent({
     <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
       <div className={regularBlockContainerClasses}>
         {/* Header */}
-        {(eyebrow?.trim() || heading?.trim() || description?.trim() || resolvedActions.length > 0) ? (
+        {(eyebrow?.trim() || title?.trim() || description?.trim() || resolvedActions.length > 0) ? (
           <div
             className={cn(
               'mb-12 flex flex-col gap-4',
@@ -123,9 +123,9 @@ export function TestimonialGridBlockComponent({
                 {eyebrow.trim()}
               </p>
             ) : null}
-            {heading?.trim() ? (
+            {title?.trim() ? (
               <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-                {heading.trim()}
+                {title.trim()}
               </h2>
             ) : null}
             {description?.trim() ? (

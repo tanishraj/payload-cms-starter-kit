@@ -15,6 +15,7 @@ type FeatureSpotlightBlockLike = {
   actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
+  contentAlignment?: 'left' | 'center' | null
   contentVerticalAlignment?: 'bottom' | 'center' | 'top' | null
   description?: string | null
   eyebrow?: string | null
@@ -70,6 +71,7 @@ export function FeatureSpotlightBlockComponent({
   actionMode = 'link',
   actions,
   appearance,
+  contentAlignment = 'center',
   contentVerticalAlignment = 'center',
   description,
   eyebrow,
@@ -102,9 +104,12 @@ export function FeatureSpotlightBlockComponent({
   const renderAsSplit = resolvedLayoutMode === 'split' && hasMedia
   const renderAsEdgeToEdge = renderAsSplit && resolvedMediaFillMode === 'edgeToEdge'
   const renderAsContainedFill = renderAsSplit && resolvedMediaFillMode === 'containedFill'
+  const resolvedContentAlignment = contentAlignment ?? 'center'
   const contentContainerClasses = renderAsSplit
     ? 'max-w-xl text-left'
-    : 'mx-auto max-w-2xl items-center text-center'
+    : resolvedContentAlignment === 'left'
+      ? 'max-w-2xl items-start text-left'
+      : 'mx-auto max-w-2xl items-center text-center'
   const contentVerticalAlignmentClass =
     contentVerticalAlignmentClasses[resolvedContentVerticalAlignment]
   const filledSectionPaddingClasses =
@@ -143,7 +148,7 @@ export function FeatureSpotlightBlockComponent({
       ) : null}
       <ContentActions
         actions={resolvedActions}
-        alignment={renderAsSplit ? 'left' : 'center'}
+        alignment={renderAsSplit ? 'left' : resolvedContentAlignment}
         data-feature-spotlight-actions="true"
         mode={actionMode ?? 'link'}
       />

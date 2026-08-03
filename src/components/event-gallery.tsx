@@ -15,6 +15,7 @@ export type EventGalleryCardTextLayout = 'center' | 'split'
 export type EventGallerySize = 'comfortable' | 'compact' | 'default'
 
 type EventGalleryProps = {
+  actions?: React.ReactNode
   albums: EventGalleryAlbum[]
   alignment?: EventGalleryAlignment
   appearance?: BlockAppearance | null
@@ -39,6 +40,7 @@ const gridMarginClasses = {
 } as const
 
 export function EventGallery({
+  actions,
   albums,
   alignment = 'left',
   appearance,
@@ -80,6 +82,7 @@ export function EventGallery({
           {description ? (
             <p className="text-base leading-7 text-balance text-current/70">{description}</p>
           ) : null}
+          {actions ? <div className="mt-2">{actions}</div> : null}
         </div>
 
         <div className={gridMarginClasses[size]}>

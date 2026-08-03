@@ -2,12 +2,13 @@ import type { Block, RelationshipFieldSingleValidation, SelectField, TabsField }
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import { validateContact33FormDefinition } from '@/lib/contact33Form'
 import type { Form } from '@/payload-types'
 
 const sizeField = {
   name: 'size',
-  label: 'Size',
+  label: 'Section Padding',
   type: 'select',
   defaultValue: 'default',
   options: [
@@ -20,9 +21,9 @@ const sizeField = {
 
 const contentAlignmentField = {
   name: 'contentAlignment',
-  label: 'Content Alignment',
+  label: 'Section Content Alignment',
   type: 'select',
-  defaultValue: 'left',
+  defaultValue: 'center',
   options: [
     { label: 'Left', value: 'left' },
     { label: 'Center', value: 'center' },
@@ -94,6 +95,7 @@ export const Contact33Block: Block = {
               name: 'description',
               type: 'textarea',
             },
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             {
               name: 'image',
               type: 'upload',
@@ -127,7 +129,7 @@ export const Contact33Block: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             contentAlignmentField,

@@ -5,7 +5,7 @@ import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFiel
 
 const sizeField = {
   name: 'size',
-  label: 'Size',
+  label: 'Section Padding',
   type: 'select',
   defaultValue: 'default',
   options: [
@@ -55,7 +55,7 @@ export const RichTextBlock: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [createBlockAppearanceFields(), sizeField, maxWidthField],
         },
       ],

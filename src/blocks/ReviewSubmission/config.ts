@@ -9,7 +9,7 @@ import {
 
 const sizeField = {
   name: 'size',
-  label: 'Size',
+  label: 'Section Padding',
   type: 'select',
   defaultValue: 'default',
   options: [
@@ -22,9 +22,9 @@ const sizeField = {
 
 const contentAlignmentField = {
   name: 'contentAlignment',
-  label: 'Content Alignment',
+  label: 'Section Content Alignment',
   type: 'select',
-  defaultValue: 'left',
+  defaultValue: 'center',
   options: [
     { label: 'Left', value: 'left' },
     { label: 'Center', value: 'center' },
@@ -81,7 +81,7 @@ export const ReviewSubmissionBlock: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Layout',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
             createContentActionModeField(),
