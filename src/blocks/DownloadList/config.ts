@@ -1,6 +1,7 @@
 import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 const downloadsField: ArrayField = {
   name: 'downloads',
@@ -79,6 +80,7 @@ export const DownloadListBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             downloadsField,
           ],
         },
@@ -108,7 +110,7 @@ export const DownloadListBlock: Block = {
             },
             {
               name: 'contentAlignment',
-              label: 'Header Alignment',
+              label: 'Section Content Alignment',
               type: 'select',
               defaultValue: 'left',
               options: [

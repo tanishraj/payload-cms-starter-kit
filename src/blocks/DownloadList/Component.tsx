@@ -4,6 +4,8 @@ import {
   regularBlockContainerClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { ContentActions } from '@/components/ContentActions'
+import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaAbsoluteUrl, isMediaDoc } from '@/lib/media'
 import type { Media } from '@/payload-types'
 import { cn } from '@/lib/utils'
@@ -20,6 +22,7 @@ type DownloadItem = {
 }
 
 type DownloadListBlockLike = {
+  actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
@@ -45,6 +48,7 @@ function detectFileType(item: DownloadItem): string | undefined {
 }
 
 export function DownloadListBlockComponent({
+  actions,
   appearance,
   contentAlignment = 'left',
   description,
@@ -60,6 +64,7 @@ export function DownloadListBlockComponent({
 
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
   const isCenter = (contentAlignment ?? 'left') === 'center'
+  const resolvedActions = resolveCmsActions(actions)
 
   const resolvedDownloads: ResolvedDownload[] = validDownloads.flatMap((item, index) => {
     const fileUrl = isMediaDoc(item.file) ? getMediaAbsoluteUrl(item.file) : undefined
@@ -82,25 +87,30 @@ export function DownloadListBlockComponent({
   return (
     <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
       <div className={regularBlockContainerClasses}>
-        {(eyebrow?.trim() || title?.trim() || description?.trim()) ? (
+        {(eyebrow?.trim() || title?.trim() || description?.trim() || resolvedActions.length > 0) ? (
           <div
             className={cn(
-              'mb-10 flex flex-col gap-3',
+              'mb-12 flex flex-col gap-4',
               isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start',
             )}
           >
             {eyebrow?.trim() ? (
-              <p className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                 {eyebrow.trim()}
               </p>
             ) : null}
             {title?.trim() ? (
-              <h2 className="text-4xl font-semibold leading-tight tracking-tight xl:text-5xl">
+              <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
                 {title.trim()}
               </h2>
             ) : null}
             {description?.trim() ? (
-              <p className="text-lg text-muted-foreground">{description.trim()}</p>
+              <p className="text-base leading-7 text-current/70">{description.trim()}</p>
+            ) : null}
+            {resolvedActions.length > 0 ? (
+              <div className="mt-2">
+                <ContentActions actions={resolvedActions} />
+              </div>
             ) : null}
           </div>
         ) : null}
