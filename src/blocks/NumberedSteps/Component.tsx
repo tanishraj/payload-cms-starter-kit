@@ -6,6 +6,8 @@ import {
   regularBlockContainerClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { ContentActions } from '@/components/ContentActions'
+import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import type { Media } from '@/payload-types'
 import { cn } from '@/lib/utils'
@@ -18,6 +20,7 @@ type Step = {
 }
 
 type NumberedStepsBlockLike = {
+  actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
@@ -83,7 +86,7 @@ function VerticalSteps({
                   {step.badge.trim()}
                 </span>
               ) : null}
-              <h3 className="text-lg font-semibold leading-snug text-foreground">
+              <h3 className="font-sans text-lg font-semibold leading-snug text-foreground">
                 {step.title?.trim()}
               </h3>
               {step.description?.trim() ? (
@@ -121,7 +124,7 @@ function CardSteps({
                 {step.badge.trim()}
               </span>
             ) : null}
-            <h3 className="text-base font-semibold leading-snug text-foreground">
+            <h3 className="font-sans text-base font-semibold leading-snug text-foreground">
               {step.title?.trim()}
             </h3>
             {step.description?.trim() ? (
@@ -185,7 +188,7 @@ function AlternatingSteps({
                   {step.badge.trim()}
                 </span>
               ) : null}
-              <h3 className="text-2xl font-semibold leading-snug tracking-tight text-foreground md:text-3xl">
+              <h3 className="font-sans text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
                 {step.title?.trim()}
               </h3>
               {step.description?.trim() ? (
@@ -203,6 +206,7 @@ function AlternatingSteps({
 
 // ── Main export ───────────────────────────────────────────────────────────────
 export function NumberedStepsBlockComponent({
+  actions,
   appearance,
   contentAlignment = 'center',
   description,
@@ -223,26 +227,32 @@ export function NumberedStepsBlockComponent({
   const isCenter = (contentAlignment ?? 'center') === 'center'
   const resolvedNumberStyle = numberStyle ?? 'circle'
   const resolvedVariant = variant ?? 'vertical'
+  const resolvedActions = resolveCmsActions(actions)
 
   return (
     <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
       <div className={regularBlockContainerClasses}>
         <div
           className={cn(
-            'mb-12 flex flex-col gap-3',
+            'mb-12 flex flex-col gap-4',
             isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start',
           )}
         >
           {eyebrow?.trim() ? (
-            <p className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
               {eyebrow.trim()}
             </p>
           ) : null}
-          <h2 className="text-4xl font-semibold leading-tight tracking-tight xl:text-5xl">
+          <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
             {resolvedTitle}
           </h2>
           {description?.trim() ? (
-            <p className="text-lg text-muted-foreground">{description.trim()}</p>
+            <p className="text-base leading-7 text-current/70">{description.trim()}</p>
+          ) : null}
+          {resolvedActions.length > 0 ? (
+            <div className="mt-2">
+              <ContentActions actions={resolvedActions} />
+            </div>
           ) : null}
         </div>
 
