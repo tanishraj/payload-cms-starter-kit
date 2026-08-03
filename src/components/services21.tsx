@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 
@@ -101,11 +102,7 @@ export function Services21({
             <div className="relative h-[22.5rem] overflow-hidden">
               {previousService ? (
                 <div className="absolute inset-0">
-                  <img
-                    alt={previousService.title}
-                    className="h-full w-full object-cover"
-                    src={previousService.image}
-                  />
+                  <Image fill alt={previousService.title} className="object-cover" src={previousService.image} sizes="(max-width: 1024px) 100vw, 20rem" />
                 </div>
               ) : null}
               <motion.div
@@ -115,11 +112,7 @@ export function Services21({
                 transition={{ type: 'spring', stiffness: 150, damping: 20 }}
                 className="relative h-full w-full"
               >
-                <img
-                  alt={activeService.title}
-                  className="h-full w-full object-cover"
-                  src={activeService.image}
-                />
+                <Image fill alt={activeService.title} className="object-cover" src={activeService.image} sizes="(max-width: 1024px) 100vw, 20rem" />
               </motion.div>
             </div>
             {activeService ? (
