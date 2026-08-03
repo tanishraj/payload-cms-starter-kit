@@ -33,6 +33,7 @@ import { SystemModeSettings } from './globals/SystemModeSettings'
 import { ThemeSettings } from './globals/ThemeSettings'
 import { NewsEventsSettings } from './globals/NewsEventsSettings'
 import { AnalyticsSettings } from './globals/AnalyticsSettings'
+import { CookieConsentSettings } from './globals/CookieConsentSettings'
 import { ReusableSections } from './collections/ReusableSections'
 import { withTrash } from './plugins/withTrash'
 
@@ -92,6 +93,7 @@ export default buildConfig({
     ThemeSettings,
     SEOSettings,
     AnalyticsSettings,
+    CookieConsentSettings,
     // Configuration (set-and-forget)
     PageSettings,
     NewsEventsSettings,

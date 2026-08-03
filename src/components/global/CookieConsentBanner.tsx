@@ -1,83 +1,267 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState, useSyncExternalStore } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { ShieldCheck, X } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 const CONSENT_COOKIE = 'analytics_consent'
+
+export type CookieConsentVariant = 'bottom-bar' | 'floating-card' | 'modal' | 'corner-badge'
+export type CookieConsentPosition = 'bottom-left' | 'bottom-right'
+
+export type CookieConsentConfig = {
+  enabled?: boolean | null
+  variant?: CookieConsentVariant | null
+  position?: CookieConsentPosition | null
+  heading?: string | null
+  message?: string | null
+  acceptLabel?: string | null
+  rejectLabel?: string | null
+  learnMoreLabel?: string | null
+  privacyPolicyUrl?: string | null
+}
 
 function hasConsentDecision(): boolean {
   if (typeof document === 'undefined') return true
   return document.cookie.split(';').some((c) => c.trim().startsWith(`${CONSENT_COOKIE}=`))
 }
 
-export function CookieConsentBanner({
-  privacyPolicyUrl,
-}: {
-  privacyPolicyUrl?: string | null
-}) {
-  const [visible, setVisible] = useState(false)
+// no-op subscribe — cookies have no push notifications; we only need the
+// server/client snapshot split to avoid a hydration mismatch.
+function subscribe() {
+  return () => {}
+}
+
+function useConsent() {
+  const needsConsent = useSyncExternalStore(
+    subscribe,
+    () => !hasConsentDecision(), // client: check real cookie
+    () => false,                 // server: always hide during SSR
+  )
+  const [dismissed, setDismissed] = useState(false)
   const router = useRouter()
 
-  useEffect(() => {
-    if (!hasConsentDecision()) {
-      setVisible(true)
-    }
-  }, [])
+  const visible = needsConsent && !dismissed
 
   function setConsent(granted: boolean) {
     const value = granted ? 'granted' : 'denied'
     const secure = location.protocol === 'https:' ? '; Secure' : ''
     document.cookie = `${CONSENT_COOKIE}=${value}; Max-Age=31536000; Path=/; SameSite=Lax${secure}`
-    setVisible(false)
-    if (granted) {
-      // Re-run server components so the layout re-reads the consent cookie and injects analytics.
-      router.refresh()
-    }
+    setDismissed(true)
+    if (granted) router.refresh()
   }
 
-  if (!visible) return null
+  return { visible, setConsent }
+}
 
+// ── Bottom Bar ────────────────────────────────────────────────────────────────
+
+function BottomBar({ config, onAccept, onReject }: VariantProps) {
+  const { message, acceptLabel, rejectLabel, learnMoreLabel, privacyPolicyUrl } = config
   return (
     <div
       role="dialog"
       aria-modal="false"
       aria-label="Cookie consent"
-      aria-describedby="cookie-consent-description"
-      className="fixed inset-x-0 bottom-0 z-50 p-4 md:p-6"
+      aria-describedby="cc-description"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 shadow-lg backdrop-blur-sm"
     >
-      <div className="mx-auto max-w-4xl rounded-2xl border border-border/80 bg-background/95 px-5 py-4 shadow-xl backdrop-blur-sm md:flex md:items-center md:gap-8 md:px-7 md:py-5">
-        <p id="cookie-consent-description" className="flex-1 text-sm leading-6 text-muted-foreground">
-          We use cookies to analyse site performance and improve your experience. You can choose
-          which cookies to allow.{' '}
+      <div className="mx-auto flex max-w-screen-2xl flex-col gap-3 px-4 py-3 md:flex-row md:items-center md:gap-8 md:px-6 md:py-4">
+        <p id="cc-description" className="flex-1 text-sm leading-6 text-muted-foreground">
+          {message || 'We use cookies to analyse site performance and improve your experience.'}{' '}
           {privacyPolicyUrl ? (
             <Link
               href={privacyPolicyUrl}
               className="font-medium text-foreground underline underline-offset-2 hover:opacity-70"
             >
-              Privacy Policy
+              {learnMoreLabel || 'Privacy Policy'}
             </Link>
           ) : null}
         </p>
-        <div className="mt-4 flex shrink-0 flex-wrap gap-3 md:mt-0">
-          <button
-            type="button"
-            onClick={() => setConsent(false)}
-            aria-label="Reject non-essential cookies"
-            className="inline-flex items-center rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-          >
-            Reject non-essential
-          </button>
-          <button
-            type="button"
-            onClick={() => setConsent(true)}
-            aria-label="Accept all cookies"
-            className="inline-flex items-center rounded-lg bg-foreground px-4 py-2 text-sm font-medium text-background transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-          >
-            Accept all
-          </button>
+        <div className="flex shrink-0 flex-wrap gap-3">
+          <Button variant="outline" size="sm" onClick={onReject}>
+            {rejectLabel || 'Reject non-essential'}
+          </Button>
+          <Button size="sm" onClick={onAccept}>
+            {acceptLabel || 'Accept all'}
+          </Button>
         </div>
       </div>
     </div>
   )
+}
+
+// ── Floating Card ─────────────────────────────────────────────────────────────
+
+function FloatingCard({ config, onAccept, onReject }: VariantProps) {
+  const { heading, message, acceptLabel, rejectLabel, learnMoreLabel, privacyPolicyUrl, position } =
+    config
+  const isLeft = position === 'bottom-left'
+  return (
+    <div
+      role="dialog"
+      aria-modal="false"
+      aria-label="Cookie consent"
+      className={cn(
+        'fixed bottom-4 z-50 w-[calc(100vw-2rem)] max-w-sm',
+        isLeft ? 'left-4' : 'right-4',
+      )}
+    >
+      <div className="rounded-2xl border border-border/80 bg-background/95 p-5 shadow-xl backdrop-blur-sm">
+        {heading?.trim() ? (
+          <p className="mb-2 text-sm font-semibold text-foreground">{heading.trim()}</p>
+        ) : null}
+        <p id="cc-description" className="text-sm leading-6 text-muted-foreground">
+          {message || 'We use cookies to analyse site performance and improve your experience.'}{' '}
+          {privacyPolicyUrl ? (
+            <Link
+              href={privacyPolicyUrl}
+              className="font-medium text-foreground underline underline-offset-2 hover:opacity-70"
+            >
+              {learnMoreLabel || 'Privacy Policy'}
+            </Link>
+          ) : null}
+        </p>
+        <div className="mt-4 flex flex-col gap-2">
+          <Button className="w-full" onClick={onAccept}>
+            {acceptLabel || 'Accept all'}
+          </Button>
+          <Button variant="outline" className="w-full" onClick={onReject}>
+            {rejectLabel || 'Reject non-essential'}
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+
+function Modal({ config, onAccept, onReject }: VariantProps) {
+  const { heading, message, acceptLabel, rejectLabel, learnMoreLabel, privacyPolicyUrl } = config
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Cookie consent"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+    >
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" aria-hidden="true" />
+      <div className="relative w-full max-w-md rounded-2xl border border-border bg-background p-6 shadow-2xl">
+        <ShieldCheck className="mb-3 size-8 text-primary" aria-hidden="true" />
+        <h2 className="mb-2 text-base font-semibold text-foreground">
+          {heading?.trim() || 'We value your privacy'}
+        </h2>
+        <p id="cc-description" className="text-sm leading-6 text-muted-foreground">
+          {message || 'We use cookies to analyse site performance and improve your experience.'}{' '}
+          {privacyPolicyUrl ? (
+            <Link
+              href={privacyPolicyUrl}
+              className="font-medium text-foreground underline underline-offset-2 hover:opacity-70"
+            >
+              {learnMoreLabel || 'Privacy Policy'}
+            </Link>
+          ) : null}
+        </p>
+        <div className="mt-6 flex flex-col gap-2 sm:flex-row-reverse">
+          <Button className="flex-1" onClick={onAccept}>
+            {acceptLabel || 'Accept all'}
+          </Button>
+          <Button variant="outline" className="flex-1" onClick={onReject}>
+            {rejectLabel || 'Reject non-essential'}
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Corner Badge ──────────────────────────────────────────────────────────────
+
+function CornerBadge({ config, onAccept, onReject }: VariantProps) {
+  const [expanded, setExpanded] = useState(false)
+  const { message, acceptLabel, rejectLabel, learnMoreLabel, privacyPolicyUrl, position } = config
+  const isLeft = position === 'bottom-left'
+
+  return (
+    <div
+      className={cn('fixed bottom-4 z-50', isLeft ? 'left-4' : 'right-4')}
+      role="dialog"
+      aria-modal="false"
+      aria-label="Cookie consent"
+    >
+      {expanded ? (
+        <div className="relative w-72 rounded-2xl border border-border/80 bg-background/95 p-4 shadow-xl backdrop-blur-sm">
+          <Button
+            variant="ghost"
+            size="icon-xs"
+            onClick={() => setExpanded(false)}
+            aria-label="Collapse"
+            className="absolute right-3 top-3"
+          >
+            <X className="size-4" />
+          </Button>
+          <p className="pr-6 text-sm leading-6 text-muted-foreground">
+            {message || 'We use cookies to analyse site performance and improve your experience.'}{' '}
+            {privacyPolicyUrl ? (
+              <Link
+                href={privacyPolicyUrl}
+                className="font-medium text-foreground underline underline-offset-2 hover:opacity-70"
+              >
+                {learnMoreLabel || 'Privacy Policy'}
+              </Link>
+            ) : null}
+          </p>
+          <div className="mt-3 flex gap-2">
+            <Button size="xs" className="flex-1" onClick={onAccept}>
+              {acceptLabel || 'Accept all'}
+            </Button>
+            <Button variant="outline" size="xs" className="flex-1" onClick={onReject}>
+              {rejectLabel || 'Reject'}
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setExpanded(true)}
+          aria-label="Cookie preferences"
+          className="flex items-center gap-2 rounded-full border border-border/80 bg-background/95 px-3 py-2 text-xs font-medium text-muted-foreground shadow-lg backdrop-blur-sm transition hover:text-foreground"
+        >
+          <ShieldCheck className="size-4 text-primary" aria-hidden="true" />
+          Cookie preferences
+        </button>
+      )}
+    </div>
+  )
+}
+
+// ── Root export ───────────────────────────────────────────────────────────────
+
+type VariantProps = {
+  config: CookieConsentConfig
+  onAccept: () => void
+  onReject: () => void
+}
+
+export function CookieConsentBanner(config: CookieConsentConfig) {
+  const { visible, setConsent } = useConsent()
+
+  if (!config.enabled) return null
+  if (!visible) return null
+
+  const variant = config.variant ?? 'bottom-bar'
+  const props: VariantProps = {
+    config,
+    onAccept: () => setConsent(true),
+    onReject: () => setConsent(false),
+  }
+
+  if (variant === 'floating-card') return <FloatingCard {...props} />
+  if (variant === 'modal') return <Modal {...props} />
+  if (variant === 'corner-badge') return <CornerBadge {...props} />
+  return <BottomBar {...props} />
 }

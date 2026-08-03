@@ -35,13 +35,14 @@ const _getFrontendGlobals = async () => {
     config: configPromise,
   })
 
-  const [themeSettings, seoSettings, siteSettings, pageSettings, analyticsSettings] =
+  const [themeSettings, seoSettings, siteSettings, pageSettings, analyticsSettings, cookieConsentSettings] =
     await Promise.all([
       payload.findGlobal({ slug: 'theme-settings', depth: 0 }),
       payload.findGlobal({ slug: 'seo-settings', depth: 1 }),
       payload.findGlobal({ slug: 'site-settings', depth: 1 }),
       payload.findGlobal({ slug: 'page-settings', depth: 0 }),
       payload.findGlobal({ slug: 'analytics-settings', depth: 0 }),
+      payload.findGlobal({ slug: 'cookie-consent-settings', depth: 0 }),
     ])
 
   const activeHeaderID =
@@ -111,6 +112,7 @@ const _getFrontendGlobals = async () => {
     activeFooter,
     activeHeader,
     analyticsSettings,
+    cookieConsentSettings,
     pageSettings,
     seoSettings,
     siteSettings,
@@ -186,7 +188,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     getFrontendGlobals(),
     getCurrentCMSUser(),
   ])
-  const { activeFooter, activeHeader, analyticsSettings, pageSettings, siteSettings, themeSettings } =
+  const { activeFooter, activeHeader, analyticsSettings, cookieConsentSettings, pageSettings, siteSettings, themeSettings } =
     frontendGlobals
 
 
@@ -356,7 +358,17 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
             siteSocialLinks={siteSettings.socialLinks}
           />
         </div>
-        <CookieConsentBanner privacyPolicyUrl={privacyPolicyUrl} />
+        <CookieConsentBanner
+          enabled={cookieConsentSettings.enabled ?? true}
+          variant={cookieConsentSettings.variant as import('@/components/global/CookieConsentBanner').CookieConsentVariant | null | undefined}
+          position={cookieConsentSettings.position as import('@/components/global/CookieConsentBanner').CookieConsentPosition | null | undefined}
+          heading={cookieConsentSettings.heading}
+          message={cookieConsentSettings.message}
+          acceptLabel={cookieConsentSettings.acceptLabel}
+          rejectLabel={cookieConsentSettings.rejectLabel}
+          learnMoreLabel={cookieConsentSettings.learnMoreLabel}
+          privacyPolicyUrl={privacyPolicyUrl}
+        />
         <SearchDialog />
       </body>
     </html>

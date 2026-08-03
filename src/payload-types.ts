@@ -128,6 +128,7 @@ export interface Config {
     'theme-settings': ThemeSetting;
     'seo-settings': SeoSetting;
     'analytics-settings': AnalyticsSetting;
+    'cookie-consent-settings': CookieConsentSetting;
     'page-settings': PageSetting;
     'news-events-settings': NewsEventsSetting;
     'system-mode-settings': SystemModeSetting;
@@ -137,6 +138,7 @@ export interface Config {
     'theme-settings': ThemeSettingsSelect<false> | ThemeSettingsSelect<true>;
     'seo-settings': SeoSettingsSelect<false> | SeoSettingsSelect<true>;
     'analytics-settings': AnalyticsSettingsSelect<false> | AnalyticsSettingsSelect<true>;
+    'cookie-consent-settings': CookieConsentSettingsSelect<false> | CookieConsentSettingsSelect<true>;
     'page-settings': PageSettingsSelect<false> | PageSettingsSelect<true>;
     'news-events-settings': NewsEventsSettingsSelect<false> | NewsEventsSettingsSelect<true>;
     'system-mode-settings': SystemModeSettingsSelect<false> | SystemModeSettingsSelect<true>;
@@ -5826,6 +5828,41 @@ export interface AnalyticsSetting {
   createdAt?: string | null;
 }
 /**
+ * Configure the cookie consent banner shown to first-time visitors.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cookie-consent-settings".
+ */
+export interface CookieConsentSetting {
+  id: string;
+  /**
+   * Uncheck to hide the cookie consent banner site-wide.
+   */
+  enabled?: boolean | null;
+  variant: 'bottom-bar' | 'floating-card' | 'modal' | 'corner-badge';
+  /**
+   * Applies to Floating Card and Corner Badge variants only.
+   */
+  position?: ('bottom-left' | 'bottom-right') | null;
+  /**
+   * Optional heading shown above the message. Displayed in Modal and Floating Card variants.
+   */
+  heading?: string | null;
+  /**
+   * The consent description shown to visitors.
+   */
+  message?: string | null;
+  acceptLabel?: string | null;
+  rejectLabel?: string | null;
+  /**
+   * Label for the link to the Privacy Policy page.
+   */
+  learnMoreLabel?: string | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * Set the active header, footer, and homepage, and configure the site-wide announcement bar.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -6027,6 +6064,24 @@ export interface AnalyticsSettingsSelect<T extends boolean = true> {
   gtmContainerId?: T;
   ga4Enabled?: T;
   ga4MeasurementId?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cookie-consent-settings_select".
+ */
+export interface CookieConsentSettingsSelect<T extends boolean = true> {
+  enabled?: T;
+  variant?: T;
+  position?: T;
+  heading?: T;
+  message?: T;
+  acceptLabel?: T;
+  rejectLabel?: T;
+  learnMoreLabel?: T;
   _status?: T;
   updatedAt?: T;
   createdAt?: T;
