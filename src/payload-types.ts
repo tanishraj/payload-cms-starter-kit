@@ -1367,30 +1367,9 @@ export interface MediaCarouselBlock {
          */
         media: string | Media;
         /**
-         * Optional icon overlaid on the media thumbnail.
+         * Optional Lucide icon overlaid on the thumbnail — e.g. "Play", "Star". Browse all icons at lucide.dev/icons
          */
-        icon?:
-          | (
-              | 'Star'
-              | 'Zap'
-              | 'Eye'
-              | 'Shield'
-              | 'Globe'
-              | 'Code2'
-              | 'Layers'
-              | 'Settings2'
-              | 'Users'
-              | 'BarChart2'
-              | 'Lock'
-              | 'Play'
-              | 'Rocket'
-              | 'Sparkles'
-              | 'Target'
-              | 'Award'
-              | 'Music'
-              | 'Mic'
-            )
-          | null;
+        icon?: string | null;
         title?: string | null;
         /**
          * Short supporting text shown below the title.
@@ -1723,31 +1702,10 @@ export interface IconGridBlock {
    */
   items?:
     | {
-        icon:
-          | 'Star'
-          | 'Zap'
-          | 'Eye'
-          | 'Shield'
-          | 'Globe'
-          | 'Code2'
-          | 'Layers'
-          | 'Settings2'
-          | 'Users'
-          | 'BarChart2'
-          | 'Lock'
-          | 'Play'
-          | 'Rocket'
-          | 'Sparkles'
-          | 'Target'
-          | 'Award'
-          | 'Lightbulb'
-          | 'CheckCircle2'
-          | 'Heart'
-          | 'BookOpen'
-          | 'GraduationCap'
-          | 'FlaskConical'
-          | 'Microscope'
-          | 'Building2';
+        /**
+         * Lucide icon name — e.g. "Star", "Rocket", "GraduationCap". Browse all icons at lucide.dev/icons
+         */
+        icon: string;
         title?: string | null;
         /**
          * Short supporting text shown below the title.
@@ -2020,32 +1978,9 @@ export interface BentoGridBlock {
         title?: string | null;
         description?: string | null;
         /**
-         * Icon shown when no image is set.
+         * Lucide icon name — e.g. "Star", "Rocket". Shown when no image is set. Browse all icons at lucide.dev/icons
          */
-        icon?:
-          | (
-              | 'Star'
-              | 'Zap'
-              | 'Eye'
-              | 'Shield'
-              | 'Globe'
-              | 'Code2'
-              | 'Layers'
-              | 'Settings2'
-              | 'Users'
-              | 'BarChart2'
-              | 'Lock'
-              | 'Rocket'
-              | 'Sparkles'
-              | 'Target'
-              | 'Award'
-              | 'Lightbulb'
-              | 'GraduationCap'
-              | 'BookOpen'
-              | 'FlaskConical'
-              | 'Building2'
-            )
-          | null;
+        icon?: string | null;
         image?: (string | null) | Media;
         accentColor?: ('none' | 'primary' | 'secondary' | 'accent') | null;
         /**
@@ -2207,7 +2142,7 @@ export interface AboutSectionBlock {
   values?:
     | {
         /**
-         * Lucide icon name, e.g. "GraduationCap", "BookOpen", "Globe"
+         * Lucide icon name — e.g. "Star", "Rocket", "GraduationCap". Browse all icons at lucide.dev/icons
          */
         icon?: string | null;
         title?: string | null;

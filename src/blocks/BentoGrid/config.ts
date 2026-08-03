@@ -2,30 +2,8 @@ import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { createIconField } from '@/blocks/shared/iconField'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
-
-const ICON_OPTIONS = [
-  { label: 'Star', value: 'Star' },
-  { label: 'Zap', value: 'Zap' },
-  { label: 'Eye', value: 'Eye' },
-  { label: 'Shield', value: 'Shield' },
-  { label: 'Globe', value: 'Globe' },
-  { label: 'Code', value: 'Code2' },
-  { label: 'Layers', value: 'Layers' },
-  { label: 'Settings', value: 'Settings2' },
-  { label: 'Users', value: 'Users' },
-  { label: 'Chart', value: 'BarChart2' },
-  { label: 'Lock', value: 'Lock' },
-  { label: 'Rocket', value: 'Rocket' },
-  { label: 'Sparkles', value: 'Sparkles' },
-  { label: 'Target', value: 'Target' },
-  { label: 'Award', value: 'Award' },
-  { label: 'Lightbulb', value: 'Lightbulb' },
-  { label: 'GraduationCap', value: 'GraduationCap' },
-  { label: 'BookOpen', value: 'BookOpen' },
-  { label: 'FlaskConical', value: 'FlaskConical' },
-  { label: 'Building', value: 'Building2' },
-]
 
 const itemsField: ArrayField = {
   name: 'items',
@@ -62,12 +40,7 @@ const itemsField: ArrayField = {
       name: 'description',
       type: 'textarea',
     },
-    {
-      name: 'icon',
-      type: 'select',
-      options: ICON_OPTIONS,
-      admin: { description: 'Icon shown when no image is set.' },
-    } satisfies SelectField,
+    createIconField({ description: 'Lucide icon name — e.g. "Star", "Rocket". Shown when no image is set. Browse all icons at lucide.dev/icons' }),
     {
       name: 'image',
       label: 'Background / Feature Image',

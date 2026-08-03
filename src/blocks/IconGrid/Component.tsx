@@ -1,31 +1,5 @@
-import {
-  ArrowRight,
-  Award,
-  BarChart2,
-  BookOpen,
-  Building2,
-  CheckCircle2,
-  Code2,
-  Eye,
-  FlaskConical,
-  Globe,
-  GraduationCap,
-  Heart,
-  Layers,
-  Lightbulb,
-  Lock,
-  Microscope,
-  Play,
-  Rocket,
-  Settings2,
-  Shield,
-  Sparkles,
-  Star,
-  Target,
-  Users,
-  Zap,
-  type LucideIcon,
-} from 'lucide-react'
+import { ArrowRight, Star, type LucideIcon } from 'lucide-react'
+import * as LucideIcons from 'lucide-react'
 
 import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
 import {
@@ -40,32 +14,6 @@ import { getPageHref } from '@/lib/pagePaths'
 import type { Page } from '@/payload-types'
 import { cn } from '@/lib/utils'
 
-const ICON_MAP: Record<string, LucideIcon> = {
-  Star,
-  Zap,
-  Eye,
-  Shield,
-  Globe,
-  Code2,
-  Layers,
-  Settings2,
-  Users,
-  BarChart2,
-  Lock,
-  Play,
-  Rocket,
-  Sparkles,
-  Target,
-  Award,
-  Lightbulb,
-  CheckCircle2,
-  Heart,
-  BookOpen,
-  GraduationCap,
-  FlaskConical,
-  Microscope,
-  Building2,
-}
 
 type IconGridItem = {
   description?: string | null
@@ -125,7 +73,7 @@ function IconContainer({
   icon: string
   iconStyle: keyof typeof iconContainerClasses
 }) {
-  const Icon = ICON_MAP[icon] ?? Star
+  const Icon = ((LucideIcons as Record<string, unknown>)[icon] as LucideIcon | undefined) ?? Star
   return (
     <div className={iconContainerClasses[iconStyle]}>
       <Icon className="size-5" />

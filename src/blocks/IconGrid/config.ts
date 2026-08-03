@@ -2,34 +2,8 @@ import type { ArrayField, Block, RadioField, SelectField, TabsField } from 'payl
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField, createContentActionModeField } from '@/blocks/shared/contentActionsFields'
+import { createIconField } from '@/blocks/shared/iconField'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
-
-const ICON_OPTIONS = [
-  { label: 'Star', value: 'Star' },
-  { label: 'Zap', value: 'Zap' },
-  { label: 'Eye', value: 'Eye' },
-  { label: 'Shield', value: 'Shield' },
-  { label: 'Globe', value: 'Globe' },
-  { label: 'Code', value: 'Code2' },
-  { label: 'Layers', value: 'Layers' },
-  { label: 'Settings', value: 'Settings2' },
-  { label: 'Users', value: 'Users' },
-  { label: 'Chart', value: 'BarChart2' },
-  { label: 'Lock', value: 'Lock' },
-  { label: 'Play', value: 'Play' },
-  { label: 'Rocket', value: 'Rocket' },
-  { label: 'Sparkles', value: 'Sparkles' },
-  { label: 'Target', value: 'Target' },
-  { label: 'Award', value: 'Award' },
-  { label: 'Lightbulb', value: 'Lightbulb' },
-  { label: 'CheckCircle', value: 'CheckCircle2' },
-  { label: 'Heart', value: 'Heart' },
-  { label: 'BookOpen', value: 'BookOpen' },
-  { label: 'GraduationCap', value: 'GraduationCap' },
-  { label: 'FlaskConical', value: 'FlaskConical' },
-  { label: 'Microscope', value: 'Microscope' },
-  { label: 'Building', value: 'Building2' },
-]
 
 type ItemSiblingData = {
   linkType?: 'none' | 'page' | 'custom' | null
@@ -52,14 +26,7 @@ const itemsField: ArrayField = {
     description: 'Each item shows an icon, title, and optional description.',
   },
   fields: [
-    {
-      name: 'icon',
-      label: 'Icon',
-      type: 'select',
-      required: true,
-      defaultValue: 'Star',
-      options: ICON_OPTIONS,
-    } satisfies SelectField,
+    createIconField({ required: true }),
     {
       name: 'title',
       type: 'text',

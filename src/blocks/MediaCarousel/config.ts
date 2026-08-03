@@ -6,27 +6,7 @@ import {
   createContentActionModeField,
   createContentActionsField,
 } from '@/blocks/shared/contentActionsFields'
-
-const ICON_OPTIONS = [
-  { label: 'Star', value: 'Star' },
-  { label: 'Zap', value: 'Zap' },
-  { label: 'Eye', value: 'Eye' },
-  { label: 'Shield', value: 'Shield' },
-  { label: 'Globe', value: 'Globe' },
-  { label: 'Code', value: 'Code2' },
-  { label: 'Layers', value: 'Layers' },
-  { label: 'Settings', value: 'Settings2' },
-  { label: 'Users', value: 'Users' },
-  { label: 'Chart', value: 'BarChart2' },
-  { label: 'Lock', value: 'Lock' },
-  { label: 'Play', value: 'Play' },
-  { label: 'Rocket', value: 'Rocket' },
-  { label: 'Sparkles', value: 'Sparkles' },
-  { label: 'Target', value: 'Target' },
-  { label: 'Award', value: 'Award' },
-  { label: 'Music', value: 'Music' },
-  { label: 'Mic', value: 'Mic' },
-]
+import { createIconField } from '@/blocks/shared/iconField'
 
 const itemsField: ArrayField = {
   name: 'items',
@@ -49,15 +29,7 @@ const itemsField: ArrayField = {
         description: 'Upload a video (.mp4, .webm) or image. Type is detected from the file.',
       },
     },
-    {
-      name: 'icon',
-      label: 'Icon Badge',
-      type: 'select',
-      options: ICON_OPTIONS,
-      admin: {
-        description: 'Optional icon overlaid on the media thumbnail.',
-      },
-    },
+    createIconField({ label: 'Icon Badge', description: 'Optional Lucide icon overlaid on the thumbnail — e.g. "Play", "Star". Browse all icons at lucide.dev/icons' }),
     {
       name: 'title',
       type: 'text',

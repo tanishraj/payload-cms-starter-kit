@@ -18,7 +18,7 @@ const valuesField = {
       name: 'icon',
       label: 'Icon Name',
       type: 'text',
-      admin: { description: 'Lucide icon name, e.g. "GraduationCap", "BookOpen", "Globe"' },
+      admin: { description: 'Lucide icon name — e.g. "Star", "Rocket", "GraduationCap". Browse all icons at lucide.dev/icons' },
     },
     {
       name: 'title',

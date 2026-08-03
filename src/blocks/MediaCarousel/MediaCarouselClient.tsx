@@ -2,27 +2,8 @@
 
 import Image from 'next/image'
 import { useRef } from 'react'
-import {
-  Award,
-  BarChart2,
-  Code2,
-  Eye,
-  Globe,
-  Layers,
-  Lock,
-  Mic,
-  Music,
-  Play,
-  Rocket,
-  Settings2,
-  Shield,
-  Sparkles,
-  Star,
-  Target,
-  Users,
-  Zap,
-} from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
+import { Star, type LucideIcon } from 'lucide-react'
+import * as LucideIcons from 'lucide-react'
 
 import {
   Carousel,
@@ -40,26 +21,6 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 
-const ICON_MAP: Record<string, LucideIcon> = {
-  Award,
-  BarChart2,
-  Code2,
-  Eye,
-  Globe,
-  Layers,
-  Lock,
-  Mic,
-  Music,
-  Play,
-  Rocket,
-  Settings2,
-  Shield,
-  Sparkles,
-  Star,
-  Target,
-  Users,
-  Zap,
-}
 
 export type MediaCarouselItem = {
   id: string | number
@@ -98,7 +59,7 @@ function MediaCard({
   actionVariant: CmsActionVariant
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
-  const Icon = item.icon ? ICON_MAP[item.icon] : undefined
+  const Icon = item.icon ? (((LucideIcons as Record<string, unknown>)[item.icon] as LucideIcon | undefined) ?? Star) : undefined
 
   const cardInner = (
     <div className="flex h-full flex-col overflow-hidden rounded-xl border border-border">

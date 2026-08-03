@@ -1,27 +1,6 @@
 import Image from 'next/image'
-import {
-  Award,
-  BarChart2,
-  BookOpen,
-  Building2,
-  Code2,
-  Eye,
-  FlaskConical,
-  Globe,
-  GraduationCap,
-  Layers,
-  Lightbulb,
-  Lock,
-  Rocket,
-  Settings2,
-  Shield,
-  Sparkles,
-  Star,
-  Target,
-  Users,
-  Zap,
-  type LucideIcon,
-} from 'lucide-react'
+import { Star, type LucideIcon } from 'lucide-react'
+import * as LucideIcons from 'lucide-react'
 
 import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
 import {
@@ -35,28 +14,6 @@ import { getMediaImageProps } from '@/lib/media'
 import type { Media } from '@/payload-types'
 import { cn } from '@/lib/utils'
 
-const ICON_MAP: Record<string, LucideIcon> = {
-  Star,
-  Zap,
-  Eye,
-  Shield,
-  Globe,
-  Code2,
-  Layers,
-  Settings2,
-  Users,
-  BarChart2,
-  Lock,
-  Rocket,
-  Sparkles,
-  Target,
-  Award,
-  Lightbulb,
-  GraduationCap,
-  BookOpen,
-  FlaskConical,
-  Building2,
-}
 
 type BentoItem = {
   accentColor?: 'none' | 'primary' | 'secondary' | 'accent' | null
@@ -118,7 +75,7 @@ const cellColSpan = {
 
 function BentoCell({ item }: { item: BentoItem }) {
   const image = getMediaImageProps({ media: item.image, preset: 'generic' })
-  const Icon = item.icon ? (ICON_MAP[item.icon] ?? Star) : null
+  const Icon = item.icon ? (((LucideIcons as Record<string, unknown>)[item.icon] as LucideIcon | undefined) ?? Star) : null
   const accent = (item.accentColor ?? 'none') as keyof typeof accentBgClasses
   const isFull = item.size === 'full'
   const isLarge = item.size === 'large'
