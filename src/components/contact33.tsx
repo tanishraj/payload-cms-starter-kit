@@ -35,7 +35,7 @@ import {
 import { FORM_HONEYPOT_FIELD_NAME } from '@/lib/forms'
 import { cn } from '@/lib/utils'
 
-type Contact33Size = 'comfortable' | 'compact' | 'default'
+type Contact33Size = 'none' | 'comfortable' | 'compact' | 'default'
 type Contact33Alignment = 'center' | 'left' | 'right'
 type Contact33ImagePosition = 'left' | 'right'
 
@@ -75,24 +75,28 @@ const initialValues: ContactFormValues = {
 }
 
 const sectionGapClasses = {
+  none: 'gap-10 lg:gap-14',
   compact: 'gap-8 lg:gap-12',
   default: 'gap-10 lg:gap-14',
   comfortable: 'gap-12 lg:gap-16',
 } as const
 
 const contentGapClasses = {
+  none: 'gap-8',
   compact: 'gap-7',
   default: 'gap-8',
   comfortable: 'gap-10',
 } as const
 
 const headingGapClasses = {
+  none: 'gap-4',
   compact: 'gap-3',
   default: 'gap-4',
   comfortable: 'gap-5',
 } as const
 
 const formGapClasses = {
+  none: 'gap-6',
   compact: 'gap-5',
   default: 'gap-6',
   comfortable: 'gap-7',

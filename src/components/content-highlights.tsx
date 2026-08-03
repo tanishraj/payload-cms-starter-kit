@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils'
 export type ContentHighlightsAlignment = 'center' | 'left' | 'right'
 export type ContentHighlightsLayout =
   'editorialRow' | 'highlightsGrid' | 'numberedSteps' | 'simpleGrid'
-export type ContentHighlightsSize = 'comfortable' | 'compact' | 'default'
+export type ContentHighlightsSize = 'none' | 'comfortable' | 'compact' | 'default'
 export type ContentHighlightsSplitAlignment = 'bottom' | 'center' | 'top'
 
 export type ContentHighlightItem = {
@@ -75,6 +75,7 @@ function resolveContentHighlightsLayout(layout?: ContentHighlightsLayout | null)
 }
 
 const sectionGapClasses = {
+  none: 'gap-10',
   compact: 'gap-8',
   default: 'gap-10',
   comfortable: 'gap-12',

@@ -16,7 +16,7 @@ type Contact33BlockLike = {
   image?: unknown
   imageAlt?: string | null
   imagePosition?: 'left' | 'right' | null
-  size?: 'comfortable' | 'compact' | 'default' | null
+  size?: 'none' | 'comfortable' | 'compact' | 'default' | null
   title?: string | null
 }
 

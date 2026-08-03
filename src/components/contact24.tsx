@@ -14,7 +14,7 @@ import type { CmsActionVariant } from '@/lib/cmsLinks'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
 import { cn } from '@/lib/utils'
 
-export type Contact24Size = 'comfortable' | 'compact' | 'default'
+export type Contact24Size = 'none' | 'comfortable' | 'compact' | 'default'
 export type Contact24Alignment = 'center' | 'left' | 'right'
 export type Contact24DetailsAlignment = 'center' | 'left' | 'right'
 export type Contact24MapActionMode = 'button' | 'link'
@@ -38,18 +38,21 @@ export type Contact24Props = {
 }
 
 const headerGapClasses = {
+  none: 'gap-4',
   compact: 'gap-3',
   default: 'gap-4',
   comfortable: 'gap-5',
 } as const
 
 const sectionGapClasses = {
+  none: 'gap-10',
   compact: 'gap-8',
   default: 'gap-10',
   comfortable: 'gap-12',
 } as const
 
 const gridGapClasses = {
+  none: 'gap-6',
   compact: 'gap-4',
   default: 'gap-6',
   comfortable: 'gap-8',

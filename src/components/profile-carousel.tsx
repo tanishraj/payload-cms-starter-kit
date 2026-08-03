@@ -49,6 +49,7 @@ const alignmentClasses = {
 } as const
 
 const profileMarginClasses = {
+  none: 'mt-10',
   compact: 'mt-8',
   default: 'mt-10',
   comfortable: 'mt-12',

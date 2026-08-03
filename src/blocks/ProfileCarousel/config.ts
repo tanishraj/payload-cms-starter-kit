@@ -132,6 +132,7 @@ export const ProfileCarouselBlock: Block = {
               type: 'select',
               defaultValue: 'default',
               options: [
+                { label: 'None', value: 'none' },
                 { label: 'Compact', value: 'compact' },
                 { label: 'Default', value: 'default' },
                 { label: 'Comfortable', value: 'comfortable' },

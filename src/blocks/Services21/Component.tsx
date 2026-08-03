@@ -23,7 +23,7 @@ type Services21BlockLike = {
   description?: string | null
   eyebrow?: string | null
   services?: Services21BlockService[] | null
-  size?: 'comfortable' | 'compact' | 'default' | null
+  size?: 'none' | 'comfortable' | 'compact' | 'default' | null
   title?: string | null
 }
 

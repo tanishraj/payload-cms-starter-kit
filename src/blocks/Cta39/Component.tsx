@@ -7,7 +7,7 @@ import {
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 
-type Cta39Size = 'comfortable' | 'compact' | 'default'
+type Cta39Size = 'none' | 'comfortable' | 'compact' | 'default'
 type Cta39Alignment = 'center' | 'left' | 'right'
 type Cta39BorderStyle = 'dashed' | 'dotted' | 'none' | 'solid'
 

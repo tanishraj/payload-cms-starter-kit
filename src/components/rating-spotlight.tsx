@@ -13,7 +13,7 @@ import type { PublishedReviewRatingSummary } from '@/lib/reviewRatingSummary'
 import { cn } from '@/lib/utils'
 
 export type RatingSpotlightAlignment = 'center' | 'left' | 'right'
-export type RatingSpotlightSize = 'comfortable' | 'compact' | 'default'
+export type RatingSpotlightSize = 'none' | 'comfortable' | 'compact' | 'default'
 
 export type RatingSpotlightPresentationProps = {
   actions?: ReactNode

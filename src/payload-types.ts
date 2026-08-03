@@ -326,7 +326,7 @@ export interface Cta39Block {
   actionMode: 'link' | 'button';
   contentAlignment: 'left' | 'center' | 'right';
   borderStyle: 'none' | 'solid' | 'dashed' | 'dotted';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta39';
@@ -479,7 +479,7 @@ export interface FeatureSpotlightBlock {
   mediaPosition?: ('left' | 'right') | null;
   imagePosition?: ('center' | 'top' | 'bottom' | 'left' | 'right') | null;
   mediaFillMode?: ('contained' | 'containedFill' | 'edgeToEdge') | null;
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   contentAlignment?: ('left' | 'center') | null;
   contentVerticalAlignment?: ('top' | 'center' | 'bottom') | null;
   id?: string | null;
@@ -520,7 +520,7 @@ export interface FeatureMatrixBlock {
   };
   actionMode: 'link' | 'button';
   contentAlignment: 'left' | 'center' | 'right';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   showOuterBorder?: boolean | null;
   borderAnimationEnabled?: boolean | null;
   id?: string | null;
@@ -565,7 +565,7 @@ export interface ContentHighlightsBlock {
   enableSplitLayout?: boolean | null;
   contentAlignment?: ('left' | 'center' | 'right') | null;
   splitContentAlignment?: ('top' | 'center' | 'bottom') | null;
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'contentHighlights';
@@ -600,7 +600,7 @@ export interface NewsEventsHighlightsBlock {
   };
   actionMode: 'link' | 'button';
   contentAlignment: 'left' | 'center' | 'right';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'newsEventsHighlights';
@@ -641,7 +641,7 @@ export interface ProfileCarouselBlock {
   contentAlignment: 'left' | 'center' | 'right';
   cardVariant: 'stacked' | 'overlay';
   overlayAlignment?: ('left' | 'center' | 'right') | null;
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'profileCarousel';
@@ -678,7 +678,7 @@ export interface GalleryShowcaseBlock {
   };
   actionMode: 'link' | 'button';
   contentAlignment: 'left' | 'center' | 'right';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'galleryShowcase';
@@ -713,7 +713,7 @@ export interface EventGalleryBlock {
   };
   cardTextLayout: 'split' | 'center';
   contentAlignment: 'left' | 'center' | 'right';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'eventGallery';
@@ -790,7 +790,7 @@ export interface ImageMosaicBlock {
   };
   actionMode: 'link' | 'button';
   contentAlignment: 'left' | 'center' | 'right';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   showImageOverlays?: boolean | null;
   id?: string | null;
   blockName?: string | null;
@@ -814,7 +814,7 @@ export interface StatsStripBlock {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   animationEnabled?: boolean | null;
   animationDuration: number;
   triggerOnce?: boolean | null;
@@ -892,7 +892,7 @@ export interface QaAccordionBlock {
   accordionPlacement?: ('left' | 'right') | null;
   actionMode: 'link' | 'button';
   sideActionMode?: ('link' | 'button') | null;
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   defaultOpenFirst?: boolean | null;
   id?: string | null;
   blockName?: string | null;
@@ -928,7 +928,7 @@ export interface RatingSpotlightBlock {
   };
   actionMode: 'link' | 'button';
   contentAlignment: 'left' | 'center' | 'right';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'ratingSpotlight';
@@ -960,7 +960,7 @@ export interface ReviewFeedBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'reviewFeed';
@@ -994,7 +994,7 @@ export interface ReviewSubmissionBlock {
   };
   actionMode: 'link' | 'button';
   contentAlignment: 'left' | 'center' | 'right';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'reviewSubmission';
@@ -1096,7 +1096,7 @@ export interface Contact33Block {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   imagePosition: 'left' | 'right';
   id?: string | null;
   blockName?: string | null;
@@ -1132,7 +1132,7 @@ export interface Contact24Block {
   contentAlignment: 'left' | 'center' | 'right';
   detailsAlignment: 'left' | 'center' | 'right';
   showAddressDetails?: boolean | null;
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   /**
    * Label for the map link shown on each office card.
    */
@@ -1213,7 +1213,7 @@ export interface TeamShowcaseBlock {
   };
   actionMode: 'link' | 'button';
   contentAlignment: 'left' | 'center' | 'right';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   showHeaderDivider?: boolean | null;
   id?: string | null;
   blockName?: string | null;
@@ -1253,7 +1253,7 @@ export interface Services21Block {
   };
   actionMode: 'link' | 'button';
   contentAlignment: 'left' | 'center' | 'right';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'services21';
@@ -1282,7 +1282,7 @@ export interface RichTextBlock {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   maxWidth: 'prose' | 'md' | 'lg' | 'full';
   id?: string | null;
   blockName?: string | null;
@@ -1330,7 +1330,7 @@ export interface VideoEmbedBlock {
   actionMode: 'link' | 'button';
   aspectRatio: '16/9' | '4/3' | '1/1' | '9/16';
   maxWidth: 'md' | 'lg' | 'full';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'videoEmbed';
@@ -1397,7 +1397,7 @@ export interface MediaCarouselBlock {
   actionVariant?: ('default' | 'secondary' | 'outline') | null;
   columns: '2' | '3' | '4';
   contentAlignment: 'left' | 'center';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaCarousel';
@@ -1475,7 +1475,7 @@ export interface ProgramGridBlock {
    */
   ctaLabel?: string | null;
   contentAlignment: 'left' | 'center';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'programGrid';
@@ -1541,7 +1541,7 @@ export interface LogoStripBlock {
    */
   grayscale?: boolean | null;
   logoHeight: 'sm' | 'md' | 'lg';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'logoStrip';
@@ -1667,7 +1667,7 @@ export interface TimelineBlock {
    */
   showConnectors?: boolean | null;
   contentAlignment: 'left' | 'center';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'timeline';
@@ -1732,7 +1732,7 @@ export interface IconGridBlock {
   columns?: ('2' | '3' | '4') | null;
   iconStyle?: ('square' | 'circle' | 'outline' | 'plain') | null;
   contentAlignment?: ('left' | 'center') | null;
-  size?: ('compact' | 'default' | 'comfortable') | null;
+  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'iconGrid';
@@ -1766,7 +1766,7 @@ export interface QuoteBlockBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   variant?: ('centered' | 'side' | 'card' | 'highlight') | null;
-  size?: ('compact' | 'default' | 'comfortable') | null;
+  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
   quoteSize?: ('sm' | 'lg' | 'xl' | '2xl') | null;
   id?: string | null;
   blockName?: string | null;
@@ -1832,7 +1832,7 @@ export interface TabsContentBlock {
   contentLayout?: ('imageRight' | 'imageLeft' | 'imageTop' | 'textOnly') | null;
   contentAlignment?: ('left' | 'center') | null;
   tabContentAlignment?: ('left' | 'center') | null;
-  size?: ('compact' | 'default' | 'comfortable') | null;
+  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'tabsContent';
@@ -1895,7 +1895,7 @@ export interface DownloadListBlock {
    */
   showFilter?: boolean | null;
   contentAlignment?: ('left' | 'center') | null;
-  size?: ('compact' | 'default' | 'comfortable') | null;
+  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'downloadList';
@@ -1944,7 +1944,7 @@ export interface NumberedStepsBlock {
   variant?: ('vertical' | 'cards' | 'alternating') | null;
   numberStyle?: ('circle' | 'outlined' | 'serif') | null;
   contentAlignment?: ('left' | 'center') | null;
-  size?: ('compact' | 'default' | 'comfortable') | null;
+  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'numberedSteps';
@@ -1995,7 +1995,7 @@ export interface BentoGridBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
-  size?: ('compact' | 'default' | 'comfortable') | null;
+  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'bentoGrid';
@@ -2042,7 +2042,7 @@ export interface TestimonialGridBlock {
   contentAlignment?: ('left' | 'center') | null;
   variant: 'grid' | 'featured' | 'list';
   columns: '2' | '3' | '4';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'testimonialGrid';
@@ -2097,7 +2097,7 @@ export interface AwardsListBlock {
   };
   contentAlignment?: ('left' | 'center') | null;
   variant: 'cards' | 'table' | 'rows';
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'awardsList';
@@ -2168,7 +2168,7 @@ export interface AboutSectionBlock {
   contentAlignment?: ('left' | 'center') | null;
   variant: 'split' | 'centered' | 'text';
   imagePosition?: ('left' | 'right') | null;
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'aboutSection';
@@ -2929,7 +2929,7 @@ export interface Footer56Block {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  size: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
   blockType: 'footer56';

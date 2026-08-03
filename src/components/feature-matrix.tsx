@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils'
 
 export type FeatureMatrixAlignment = 'center' | 'left' | 'right'
 export type FeatureMatrixImagePosition = 'bottom' | 'center' | 'left' | 'right' | 'top'
-export type FeatureMatrixSize = 'comfortable' | 'compact' | 'default'
+export type FeatureMatrixSize = 'none' | 'comfortable' | 'compact' | 'default'
 
 export type FeatureMatrixItem = {
   description?: string | null
@@ -37,18 +37,21 @@ type FeatureMatrixProps = {
 }
 
 const panelPaddingClasses = {
+  none: 'p-6 md:p-8',
   compact: 'p-5 md:p-6',
   default: 'p-6 md:p-8',
   comfortable: 'p-8 md:p-10',
 } as const
 
 const introMarginClasses = {
+  none: 'mb-10',
   compact: 'mb-8',
   default: 'mb-10',
   comfortable: 'mb-12',
 } as const
 
 const imageHeightClasses = {
+  none: 'h-48 md:h-52 lg:h-56',
   compact: 'h-44 md:h-48 lg:h-52',
   default: 'h-48 md:h-52 lg:h-56',
   comfortable: 'h-52 md:h-64 lg:h-72',

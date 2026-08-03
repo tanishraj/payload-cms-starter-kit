@@ -16,7 +16,7 @@ export type Contact24BlockLike = {
   mapActionVariant?: CmsActionVariant | null
   offices?: (string | { id: string })[] | null
   showAddressDetails?: boolean | null
-  size?: 'comfortable' | 'compact' | 'default' | null
+  size?: 'none' | 'comfortable' | 'compact' | 'default' | null
   title?: string | null
 }
 

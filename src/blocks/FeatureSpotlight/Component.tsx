@@ -26,7 +26,7 @@ type FeatureSpotlightBlockLike = {
   layoutMode?: 'contentOnly' | 'split' | null
   mediaFillMode?: 'contained' | 'containedFill' | 'edgeToEdge' | null
   mediaPosition?: 'left' | 'right' | null
-  size?: 'comfortable' | 'compact' | 'default' | null
+  size?: 'none' | 'comfortable' | 'compact' | 'default' | null
   title?: string | null
 }
 
@@ -52,12 +52,14 @@ const objectPositionClasses = {
 const filledContentDesktopPaddingClass = 'md:py-16'
 
 const edgeLayoutMinHeightClasses = {
+  none: 'min-h-[24rem] md:min-h-[32rem]',
   compact: 'min-h-[18rem] md:min-h-[24rem]',
   default: 'min-h-[24rem] md:min-h-[32rem]',
   comfortable: 'min-h-[30rem] md:min-h-[40rem]',
 } as const
 
 const edgeMediaMinHeightClasses = {
+  none: 'min-h-72',
   compact: 'min-h-64',
   default: 'min-h-72',
   comfortable: 'min-h-80',

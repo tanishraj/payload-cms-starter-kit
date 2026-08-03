@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 export type ProfileCarouselImagePosition = 'bottom' | 'center' | 'left' | 'right' | 'top'
 export type ProfileCarouselCardVariant = 'overlay' | 'stacked'
 export type ProfileCarouselOverlayAlignment = 'center' | 'left' | 'right'
-export type ProfileCarouselSize = 'comfortable' | 'compact' | 'default'
+export type ProfileCarouselSize = 'none' | 'comfortable' | 'compact' | 'default'
 
 export type ProfileCarouselProfile = {
   image: {
@@ -26,6 +26,7 @@ type ProfileCarouselCardProps = {
 }
 
 const imageHeightClasses = {
+  none: 'h-72 sm:h-80 md:h-96',
   compact: 'h-64 sm:h-72 md:h-80',
   default: 'h-72 sm:h-80 md:h-96',
   comfortable: 'h-80 sm:h-96 md:h-[28rem]',

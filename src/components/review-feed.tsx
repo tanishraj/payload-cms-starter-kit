@@ -12,7 +12,7 @@ import type { PublicReviewFeedPage } from '@/lib/reviewFeedShared'
 import type { PublishedReviewRatingDistribution } from '@/lib/reviewRatingShared'
 import { cn } from '@/lib/utils'
 
-export type ReviewFeedSize = 'comfortable' | 'compact' | 'default'
+export type ReviewFeedSize = 'none' | 'comfortable' | 'compact' | 'default'
 
 export type ReviewFeedPresentationProps = {
   actions?: React.ReactNode

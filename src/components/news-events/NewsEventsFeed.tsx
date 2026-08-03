@@ -42,6 +42,7 @@ type NewsEventsFeedProps = {
 }
 
 const sectionGapClasses = {
+  none: 'gap-10',
   compact: 'gap-8',
   default: 'gap-10',
   comfortable: 'gap-12',

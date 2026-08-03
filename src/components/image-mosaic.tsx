@@ -15,7 +15,7 @@ import { cn } from '@/lib/utils'
 
 export type ImageMosaicAlignment = 'center' | 'left' | 'right'
 export type ImageMosaicImagePosition = 'bottom' | 'center' | 'left' | 'right' | 'top'
-export type ImageMosaicSize = 'comfortable' | 'compact' | 'default'
+export type ImageMosaicSize = 'none' | 'comfortable' | 'compact' | 'default'
 
 export type ImageMosaicItem = {
   action?: ResolvedCmsAction & {
@@ -52,6 +52,7 @@ const alignmentClasses = {
 } as const
 
 const sectionGapClasses = {
+  none: 'gap-10',
   compact: 'gap-8',
   default: 'gap-10',
   comfortable: 'gap-12',
@@ -69,12 +70,14 @@ const desktopGridClasses = {
 } as const
 
 const gridRowClasses = {
+  none: 'lg:auto-rows-[15rem]',
   compact: 'lg:auto-rows-[13rem]',
   default: 'lg:auto-rows-[15rem]',
   comfortable: 'lg:auto-rows-[17rem]',
 } as const
 
 const mobileTileHeightClasses = {
+  none: 'h-60 md:h-64 lg:h-full',
   compact: 'h-52 md:h-56 lg:h-full',
   default: 'h-60 md:h-64 lg:h-full',
   comfortable: 'h-68 md:h-72 lg:h-full',

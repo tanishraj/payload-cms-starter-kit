@@ -15,7 +15,7 @@ import {
 } from '@/blocks/shared/blockSpacing'
 
 type TeamShowcaseAlignment = 'left' | 'center' | 'right'
-type TeamShowcaseSize = 'compact' | 'default' | 'comfortable'
+type TeamShowcaseSize = 'none' | 'compact' | 'default' | 'comfortable'
 
 interface TeamShowcaseMember {
   image: string
@@ -87,12 +87,14 @@ const contentAlignmentClasses = {
 } as const
 
 const sectionGapClasses = {
+  none: 'gap-10',
   compact: 'gap-8',
   default: 'gap-10',
   comfortable: 'gap-12',
 } as const
 
 const sectionGapWithoutDividerClasses = {
+  none: 'gap-10',
   compact: 'gap-8',
   default: 'gap-10',
   comfortable: 'gap-12',

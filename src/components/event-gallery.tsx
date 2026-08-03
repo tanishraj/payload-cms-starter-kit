@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils'
 
 export type EventGalleryAlignment = 'center' | 'left' | 'right'
 export type EventGalleryCardTextLayout = 'center' | 'split'
-export type EventGallerySize = 'comfortable' | 'compact' | 'default'
+export type EventGallerySize = 'none' | 'comfortable' | 'compact' | 'default'
 
 type EventGalleryProps = {
   actions?: React.ReactNode
@@ -35,6 +35,7 @@ const alignmentClasses = {
 
 const gridMarginClasses = {
   comfortable: 'mt-12',
+  none: 'mt-10',
   compact: 'mt-8',
   default: 'mt-10',
 } as const

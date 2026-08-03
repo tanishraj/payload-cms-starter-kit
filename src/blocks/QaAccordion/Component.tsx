@@ -59,7 +59,7 @@ type QaAccordionBlockLike = {
     contact?: QaAccordionContact | null
     profile?: QaAccordionProfile | null
   } | null
-  size?: 'comfortable' | 'compact' | 'default' | null
+  size?: 'none' | 'comfortable' | 'compact' | 'default' | null
 }
 
 const contentAlignmentClasses = {

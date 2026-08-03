@@ -67,11 +67,12 @@ type ReviewSubmissionBlockLike = {
   formDescription?: string | null
   formEyebrow?: string | null
   formHeading?: string | null
-  size?: 'comfortable' | 'compact' | 'default' | null
+  size?: 'none' | 'comfortable' | 'compact' | 'default' | null
   title?: string | null
 }
 
 const formPanelPaddingClasses = {
+  none: 'p-5 sm:p-8',
   compact: 'p-4 sm:p-6',
   default: 'p-5 sm:p-8',
   comfortable: 'p-6 sm:p-10',

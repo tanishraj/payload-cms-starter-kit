@@ -7,7 +7,7 @@ import { useSyncExternalStore } from 'react'
 import { cn } from '@/lib/utils'
 
 export type GalleryShowcaseImagePosition = 'bottom' | 'center' | 'left' | 'right' | 'top'
-export type GalleryShowcaseSize = 'comfortable' | 'compact' | 'default'
+export type GalleryShowcaseSize = 'none' | 'comfortable' | 'compact' | 'default'
 
 export type GalleryShowcaseImage = {
   alt: string
@@ -35,12 +35,14 @@ export const galleryShowcaseMobileVisibilityClasses = [
 ] as const
 
 const fanHeightClasses = {
+  none: 'h-40 sm:h-52 lg:h-60',
   compact: 'h-36 sm:h-48 lg:h-52',
   default: 'h-40 sm:h-52 lg:h-60',
   comfortable: 'h-44 sm:h-60 lg:h-64',
 } as const
 
 const cardSizeClasses = {
+  none: 'size-20 sm:size-40 lg:size-44',
   compact: 'size-16 sm:size-36 lg:size-40',
   default: 'size-20 sm:size-40 lg:size-44',
   comfortable: 'size-24 sm:size-44 lg:size-48',

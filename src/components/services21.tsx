@@ -29,7 +29,7 @@ type Services21Props = {
   description?: string | null
   eyebrow?: string | null
   items: Services21Item[]
-  size?: 'compact' | 'default' | 'comfortable'
+  size?: 'none' | 'compact' | 'default' | 'comfortable'
   title?: string | null
   contentAlignment?: Services21Alignment
   className?: string
