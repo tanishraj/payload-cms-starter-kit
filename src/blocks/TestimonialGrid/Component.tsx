@@ -7,6 +7,8 @@ import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { ContentActions } from '@/components/ContentActions'
+import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
 import type { Media } from '@/payload-types'
@@ -20,8 +22,10 @@ type Testimonial = {
 }
 
 type TestimonialGridBlockLike = {
+  actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   columns?: '2' | '3' | '4' | null
+  contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
   heading?: string | null
@@ -85,8 +89,10 @@ const columnClasses = {
 } as const
 
 export function TestimonialGridBlockComponent({
+  actions,
   appearance,
   columns = '3',
+  contentAlignment = 'center',
   description,
   eyebrow,
   heading,
@@ -98,25 +104,37 @@ export function TestimonialGridBlockComponent({
   if (!items.length) return null
 
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
+  const isCenter = (contentAlignment ?? 'center') === 'center'
+  const resolvedActions = resolveCmsActions(actions)
 
   return (
     <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
       <div className={regularBlockContainerClasses}>
         {/* Header */}
-        {(eyebrow?.trim() || heading?.trim() || description?.trim()) ? (
-          <div className="mb-10 flex flex-col gap-3 text-center">
+        {(eyebrow?.trim() || heading?.trim() || description?.trim() || resolvedActions.length > 0) ? (
+          <div
+            className={cn(
+              'mb-12 flex flex-col gap-4',
+              isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start',
+            )}
+          >
             {eyebrow?.trim() ? (
-              <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                 {eyebrow.trim()}
               </p>
             ) : null}
             {heading?.trim() ? (
-              <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+              <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
                 {heading.trim()}
               </h2>
             ) : null}
             {description?.trim() ? (
-              <p className="mx-auto max-w-2xl text-muted-foreground">{description.trim()}</p>
+              <p className="text-base leading-7 text-current/70">{description.trim()}</p>
+            ) : null}
+            {resolvedActions.length > 0 ? (
+              <div className="mt-2">
+                <ContentActions actions={resolvedActions} />
+              </div>
             ) : null}
           </div>
         ) : null}

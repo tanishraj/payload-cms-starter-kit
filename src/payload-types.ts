@@ -1968,6 +1968,17 @@ export interface TestimonialGridBlock {
   eyebrow?: string | null;
   heading?: string | null;
   description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
   testimonials?:
     | {
         quote: string;
@@ -1985,6 +1996,7 @@ export interface TestimonialGridBlock {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  contentAlignment?: ('left' | 'center') | null;
   variant: 'grid' | 'featured' | 'list';
   columns: '2' | '3' | '4';
   size: 'compact' | 'default' | 'comfortable';
@@ -4584,6 +4596,17 @@ export interface TestimonialGridBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   heading?: T;
   description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
   testimonials?:
     | T
     | {
@@ -4600,6 +4623,7 @@ export interface TestimonialGridBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
   variant?: T;
   columns?: T;
   size?: T;

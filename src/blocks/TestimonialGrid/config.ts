@@ -1,6 +1,7 @@
 import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 const testimonialsField = {
   name: 'testimonials',
@@ -59,6 +60,7 @@ export const TestimonialGridBlock: Block = {
             { name: 'eyebrow', type: 'text', admin: { description: 'Small label above heading, e.g. "Student Stories"' } },
             { name: 'heading', type: 'text' },
             { name: 'description', type: 'textarea' },
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             testimonialsField,
           ],
         },
@@ -66,6 +68,16 @@ export const TestimonialGridBlock: Block = {
           label: 'Layout & Theme',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
+            {
+              name: 'contentAlignment',
+              label: 'Section Content Alignment',
+              type: 'select',
+              defaultValue: 'center',
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+              ],
+            } satisfies SelectField,
             {
               name: 'variant',
               label: 'Variant',
