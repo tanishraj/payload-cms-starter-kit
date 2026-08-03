@@ -2015,6 +2015,17 @@ export interface AwardsListBlock {
   eyebrow?: string | null;
   heading?: string | null;
   description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
   awards?:
     | {
         /**
@@ -2041,6 +2052,7 @@ export interface AwardsListBlock {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  contentAlignment?: ('left' | 'center') | null;
   variant: 'cards' | 'table' | 'rows';
   size: 'compact' | 'default' | 'comfortable';
   id?: string | null;
@@ -4638,6 +4650,17 @@ export interface AwardsListBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   heading?: T;
   description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
   awards?:
     | T
     | {
@@ -4654,6 +4677,7 @@ export interface AwardsListBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
   variant?: T;
   size?: T;
   id?: T;

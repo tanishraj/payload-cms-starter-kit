@@ -6,6 +6,8 @@ import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { ContentActions } from '@/components/ContentActions'
+import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 
 type AwardCategory = 'accreditation' | 'ranking' | 'award' | 'recognition' | 'milestone'
@@ -19,8 +21,10 @@ type AwardItem = {
 }
 
 type AwardsListBlockLike = {
+  actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   awards?: AwardItem[] | null
+  contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
   heading?: string | null
@@ -29,18 +33,18 @@ type AwardsListBlockLike = {
 }
 
 const categoryConfig: Record<AwardCategory, { label: string; icon: React.ComponentType<{ className?: string }>; color: string }> = {
-  accreditation: { label: 'Accreditation', icon: Medal, color: 'text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-950' },
-  ranking: { label: 'Ranking', icon: TrendingUp, color: 'text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-950' },
-  award: { label: 'Award', icon: Trophy, color: 'text-amber-600 bg-amber-50 dark:text-amber-400 dark:bg-amber-950' },
-  recognition: { label: 'Recognition', icon: Star, color: 'text-purple-600 bg-purple-50 dark:text-purple-400 dark:bg-purple-950' },
-  milestone: { label: 'Milestone', icon: Award, color: 'text-rose-600 bg-rose-50 dark:text-rose-400 dark:bg-rose-950' },
+  accreditation: { label: 'Accreditation', icon: Medal, color: 'bg-primary/10 text-primary' },
+  ranking:       { label: 'Ranking',        icon: TrendingUp, color: 'bg-secondary text-secondary-foreground' },
+  award:         { label: 'Award',          icon: Trophy, color: 'bg-accent text-accent-foreground' },
+  recognition:   { label: 'Recognition',   icon: Star, color: 'bg-muted text-muted-foreground' },
+  milestone:     { label: 'Milestone',     icon: Award, color: 'bg-destructive/10 text-destructive' },
 }
 
 function CategoryBadge({ category }: { category?: AwardCategory | null }) {
   const cat = category ?? 'recognition'
   const { label, icon: Icon, color } = categoryConfig[cat]
   return (
-    <span className={cn('inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium', color)}>
+    <span className={cn('inline-flex w-fit items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium', color)}>
       <Icon className="size-3" />
       {label}
     </span>
@@ -48,8 +52,10 @@ function CategoryBadge({ category }: { category?: AwardCategory | null }) {
 }
 
 export function AwardsListBlockComponent({
+  actions,
   appearance,
   awards,
+  contentAlignment = 'left',
   description,
   eyebrow,
   heading,
@@ -60,25 +66,37 @@ export function AwardsListBlockComponent({
   if (!items.length) return null
 
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
+  const isCenter = (contentAlignment ?? 'left') === 'center'
+  const resolvedActions = resolveCmsActions(actions)
 
   return (
     <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
       <div className={regularBlockContainerClasses}>
         {/* Header */}
-        {(eyebrow?.trim() || heading?.trim() || description?.trim()) ? (
-          <div className="mb-10 flex flex-col gap-3">
+        {(eyebrow?.trim() || heading?.trim() || description?.trim() || resolvedActions.length > 0) ? (
+          <div
+            className={cn(
+              'mb-12 flex flex-col gap-4',
+              isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start',
+            )}
+          >
             {eyebrow?.trim() ? (
-              <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                 {eyebrow.trim()}
               </p>
             ) : null}
             {heading?.trim() ? (
-              <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+              <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
                 {heading.trim()}
               </h2>
             ) : null}
             {description?.trim() ? (
-              <p className="max-w-2xl text-muted-foreground">{description.trim()}</p>
+              <p className="text-base leading-7 text-current/70">{description.trim()}</p>
+            ) : null}
+            {resolvedActions.length > 0 ? (
+              <div className="mt-2">
+                <ContentActions actions={resolvedActions} />
+              </div>
             ) : null}
           </div>
         ) : null}
@@ -100,7 +118,7 @@ export function AwardsListBlockComponent({
                     ) : null}
                   </div>
                   <div className="flex flex-col gap-1">
-                    <h3 className="font-semibold leading-tight text-foreground">{item.title?.trim()}</h3>
+                    <h3 className="font-sans font-semibold leading-tight text-foreground">{item.title?.trim()}</h3>
                     {item.organization?.trim() ? (
                       <p className="text-sm text-muted-foreground">{item.organization.trim()}</p>
                     ) : null}

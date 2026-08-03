@@ -66,19 +66,19 @@ function StatsRow({ stats }: { stats: StatItem[] }) {
 
 function ValuesGrid({ values }: { values: ValueItem[] }) {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
       {values.map((v, i) => (
-        <div key={i} className="flex gap-3">
+        <div key={i} className="flex flex-col gap-3">
           {v.icon?.trim() ? (
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
               <DynamicIcon name={v.icon.trim()} className="size-5 text-primary" />
             </div>
           ) : (
-            <div className="size-1.5 mt-2.5 shrink-0 rounded-full bg-primary" />
+            <div className="size-1.5 shrink-0 rounded-full bg-primary" />
           )}
           <div>
             {v.title?.trim() ? (
-              <h4 className="font-semibold text-foreground">{v.title.trim()}</h4>
+              <h4 className="font-sans font-semibold text-foreground">{v.title.trim()}</h4>
             ) : null}
             {v.description?.trim() ? (
               <p className="mt-0.5 text-sm text-muted-foreground">{v.description.trim()}</p>
@@ -125,7 +125,11 @@ export function AboutSectionBlockComponent({
       ) : null}
       {resolvedBody ? <BodyText text={resolvedBody} /> : null}
       {resolvedStats.length > 0 ? <StatsRow stats={resolvedStats} /> : null}
-      {resolvedValues.length > 0 ? <ValuesGrid values={resolvedValues} /> : null}
+      {resolvedValues.length > 0 ? (
+        <div className={cn(resolvedStats.length > 0 && 'mt-4 border-t border-border pt-8')}>
+          <ValuesGrid values={resolvedValues} />
+        </div>
+      ) : null}
     </div>
   )
 

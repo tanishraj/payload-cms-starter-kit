@@ -1,6 +1,7 @@
 import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 const awardsField = {
   name: 'awards',
@@ -68,6 +69,7 @@ export const AwardsListBlock: Block = {
             { name: 'eyebrow', type: 'text', admin: { description: 'Small label, e.g. "Our Achievements"' } },
             { name: 'heading', type: 'text' },
             { name: 'description', type: 'textarea' },
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             awardsField,
           ],
         },
@@ -75,6 +77,16 @@ export const AwardsListBlock: Block = {
           label: 'Layout & Theme',
           fields: [
             createBlockAppearanceFields({ includeTextOverride: false }),
+            {
+              name: 'contentAlignment',
+              label: 'Section Content Alignment',
+              type: 'select',
+              defaultValue: 'left',
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+              ],
+            } satisfies SelectField,
             {
               name: 'variant',
               label: 'Variant',
