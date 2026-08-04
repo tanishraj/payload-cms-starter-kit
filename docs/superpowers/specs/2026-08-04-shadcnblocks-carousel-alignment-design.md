@@ -81,12 +81,12 @@ Autoplay pauses through the carousel plugin's interaction behavior rather than a
 Follow Hero 210's composition:
 
 1. constrained heading content with a readable maximum width;
-2. a centered, horizontally clipped coverflow stage constrained to `max-w-4xl` on desktop;
+2. a centered, horizontally clipped coverflow stage constrained to `max-w-5xl` on desktop;
 3. portrait-oriented slides with large rounded corners and semantic shadow;
 4. left and right background fades that visually soften off-center slides;
 5. one optional pill action beneath the carousel.
 
-Content Alignment applies consistently to the heading stack and action. The carousel itself remains centered at every alignment. Its stage is fluid on smaller viewports and constrained to `max-w-4xl` on desktop. With the existing 300px automatic slide width, the desktop stage shows the centered active card and one adjacent card on each side; slides beyond that three-card group are clipped by the stage. Appearance is resolved by the shared block appearance utility, and the fade edges derive from the resolved section background so they remain visually coherent for `none`, `primary`, `secondary`, `muted`, and `accent` surfaces.
+Content Alignment applies consistently to the heading stack and action. The carousel itself remains centered at every alignment. Its stage is fluid on smaller viewports and constrained to `max-w-5xl` on desktop. With the existing 300px automatic slide width, the desktop composition emphasizes the centered active card and one adjacent card on each side while clipping distant slides at the stage boundary. Appearance is resolved by the shared block appearance utility. The fade edges derive from the resolved section background, use a narrower `md:w-40` overlay, and transition directly from the surface color to transparent without an extended `via-*` stop so the side images remain clearer.
 
 The Swiper behavior remains source-faithful: `EffectCoverflow`, centered slides, automatic slide width, looping, grab cursor, 1500 ms autoplay, and the source coverflow depth/rotation settings. The stage and slides scale down on narrow viewports without causing page-level horizontal overflow.
 
@@ -124,7 +124,7 @@ Focused tests should cover:
 - Hero Carousel shadcn composition, height and overlay states, alternating desktop alignment, optional controls, accessible navigation, and autoplay toggle;
 - Gallery Coverflow media normalization, minimum valid image behavior, content alignment, appearance and size state, action resolution, and scoped Swiper structure;
 - Gallery Coverflow presentation expansion, including ordered repetition below nine valid images and no expansion at nine or more;
-- the centered `max-w-4xl` Gallery Coverflow stage and its three-card desktop viewport;
+- the centered `max-w-5xl` Gallery Coverflow stage, narrowed edge fades, and absence of an extended `via-*` fade stop;
 - reduced-motion behavior for the gallery entrance;
 - absence of page-level horizontal overflow at mobile widths.
 
