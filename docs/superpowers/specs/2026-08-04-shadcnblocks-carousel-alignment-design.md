@@ -31,7 +31,7 @@ Preserve the existing slide fields:
 - optional eyebrow, title, and description;
 - up to two shared CMS-style links with a shadcn Button variant.
 
-Preserve block-level overlay, height, autoplay, arrow, and dot controls. The component deliberately omits Ecommerce Hero 7's product card, pricing, badges, rating, and shopping actions. The requested adaptation is the source block's full-bleed carousel and overlaid text treatment, not its ecommerce data model.
+Preserve block-level overlay, height, autoplay, arrow, and dot controls. Add one block-level `contentAlignment` control with `left`, `center`, and `right` options and a `left` default. The component deliberately omits Ecommerce Hero 7's product card, pricing, badges, rating, and shopping actions. The requested adaptation is the source block's full-bleed carousel and overlaid text treatment, not its ecommerce data model.
 
 At least one valid slide is required at render time. A slide is valid when it resolves either a background image or a non-empty video URL. Invalid slide rows are omitted. The block renders nothing if no valid slides remain.
 
@@ -55,7 +55,7 @@ Use the visual hierarchy of Ecommerce Hero 7:
 
 1. a full-bleed media layer;
 2. a readability overlay;
-3. content anchored toward the bottom of the viewport;
+3. content vertically centered within the configured hero height;
 4. a large display title, supporting copy, and pill-shaped actions;
 5. previous and next controls at the horizontal edges on larger screens;
 6. centered slide indicators near the bottom edge.
@@ -66,7 +66,7 @@ Each slide uses the configured height:
 - Default: `min-h-[70dvh]`;
 - Immersive: `min-h-dvh` with `min-h-[42.5rem]`, matching the source block's practical viewport floor.
 
-For multiple slides, alternate the desktop content placement by slide index, matching the source block's even/odd rhythm. Mobile remains a single readable column. Content stays within the project's `max-w-screen-2xl` container and standard horizontal padding.
+One block-level `contentAlignment` value controls every slide at all breakpoints. `left` places the content container, copy, and buttons at the start; `center` centers all three; and `right` places all three at the end. Do not alternate alignment by slide index. Missing values from documents created before this field existed fall back to `left`. Content stays within the project's `max-w-screen-2xl` container and standard horizontal padding.
 
 Overlay presets remain fixed and deterministic. Text on the media layer uses a consistent inverse treatment so contrast does not depend on the page theme. Buttons keep their authored shadcn variants; layout classes may control size and pill radius but must not replace variant colors.
 
@@ -98,7 +98,7 @@ Framer Motion only fades in the coverflow stage. Respect reduced-motion preferen
 
 ## Payload and Admin Alignment
 
-Retain the current field names and defaults so generated types and saved data remain compatible. Add the standard `getBlockThumbnailAdmin` metadata used by the rest of the page block catalog.
+Retain the current field names and defaults so generated types and saved data remain compatible. Add Hero Carousel's optional `contentAlignment` field with a `left` default; this additive field requires no migration because the Server Component applies the same fallback for older documents. Add the standard `getBlockThumbnailAdmin` metadata used by the rest of the page block catalog.
 
 Add canonical thumbnail definitions for `heroCarousel` and `galleryCoverflow`. Existing local thumbnail images may be reused initially because their visual subjects match these related variants; no network-hosted thumbnail dependency is introduced.
 
@@ -121,7 +121,7 @@ Focused tests should cover:
 - both canonical slugs, interfaces, labels, fields, defaults, and block registration;
 - thumbnail metadata for both blocks;
 - Hero Carousel media and link normalization, invalid-slide filtering, video precedence, and empty output;
-- Hero Carousel shadcn composition, height and overlay states, alternating desktop alignment, optional controls, accessible navigation, and autoplay toggle;
+- Hero Carousel shadcn composition, height and overlay states, block-level left/center/right alignment, fixed vertical centering, optional controls, accessible navigation, autoplay toggle, and absence of index-based alternation;
 - Gallery Coverflow media normalization, minimum valid image behavior, content alignment, appearance and size state, action resolution, and scoped Swiper structure;
 - Gallery Coverflow presentation expansion, including ordered repetition below nine valid images and no expansion at nine or more;
 - the centered `max-w-5xl` Gallery Coverflow stage, narrowed edge fades, and absence of an extended `via-*` fade stop;
@@ -135,5 +135,6 @@ Verification includes Payload type generation, TypeScript, focused tests, ESLint
 - Replacing or migrating the existing `Hero Banner` or `Gallery Showcase` blocks.
 - Adding Ecommerce Hero 7 product cards, catalog relationships, prices, ratings, badges, wishlists, carts, or quick-view behavior.
 - Adding per-slide product data or per-image gallery captions.
+- Adding per-slide Hero Carousel alignment or a configurable vertical-alignment field.
 - Adding arbitrary CSS, freeform colors, transition editors, or coverflow geometry controls to Payload.
 - Refactoring unrelated carousel blocks or shared page spacing.
