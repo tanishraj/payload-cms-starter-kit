@@ -13,10 +13,10 @@ The source blocks are visual and structural references. The final components mus
 
 These remain two new blocks. They do not replace or alias the existing `Hero Banner` and `Gallery Showcase` blocks.
 
-| Block | Payload slug | Interface | Registry reference |
-| --- | --- | --- | --- |
-| Hero Carousel | `heroCarousel` | `HeroCarouselBlock` | `@shadcnblocks/ecommerce-hero7` |
-| Gallery Coverflow | `galleryCoverflow` | `GalleryCoverflowBlock` | `@shadcnblocks/hero210` |
+| Block             | Payload slug       | Interface               | Registry reference              |
+| ----------------- | ------------------ | ----------------------- | ------------------------------- |
+| Hero Carousel     | `heroCarousel`     | `HeroCarouselBlock`     | `@shadcnblocks/ecommerce-hero7` |
+| Gallery Coverflow | `galleryCoverflow` | `GalleryCoverflowBlock` | `@shadcnblocks/hero210`         |
 
 Existing documents using either new slug must remain valid. No data migration or compatibility alias is required.
 
@@ -90,6 +90,8 @@ Content Alignment applies consistently to the heading stack and action. The caro
 
 The Swiper behavior remains source-faithful: `EffectCoverflow`, centered slides, automatic slide width, looping, grab cursor, 1500 ms autoplay, and the source coverflow depth/rotation settings. The stage and slides scale down on narrow viewports without causing page-level horizontal overflow.
 
+Automatic slide width can expose more cards than a small CMS gallery contains on wide viewports, leaving the coverflow empty on one side. Preserve the editor's original image array, but build a presentation-only sequence with at least nine entries by repeating images in source order. Galleries that already contain nine or more valid images remain unchanged. Repeated entries use unique render keys, and this display expansion never changes saved Payload data, image order, or alt text.
+
 Use Next.js `Image` in a relative slide wrapper with `fill` and responsive `sizes`. Avoid a plain `<img>` workaround and ensure the wrapper, rather than the image, owns dimensions and positioning.
 
 Framer Motion only fades in the coverflow stage. Respect reduced-motion preferences by rendering without the entrance transition when motion reduction is requested. Carousel interaction and all content remain available.
@@ -121,6 +123,7 @@ Focused tests should cover:
 - Hero Carousel media and link normalization, invalid-slide filtering, video precedence, and empty output;
 - Hero Carousel shadcn composition, height and overlay states, alternating desktop alignment, optional controls, accessible navigation, and autoplay toggle;
 - Gallery Coverflow media normalization, minimum valid image behavior, content alignment, appearance and size state, action resolution, and scoped Swiper structure;
+- Gallery Coverflow presentation expansion, including ordered repetition below nine valid images and no expansion at nine or more;
 - reduced-motion behavior for the gallery entrance;
 - absence of page-level horizontal overflow at mobile widths.
 
