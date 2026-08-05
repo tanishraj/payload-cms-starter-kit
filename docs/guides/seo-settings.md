@@ -1,14 +1,14 @@
-# SEO Settings Guide
+# SEO & Metadata Guide
 
 ## What This Section Is
 
-`SEO Settings` stores the default search and social metadata used when a page, article, review, or system page does not provide its own fully overridden SEO values.
+`SEO & Metadata` stores the default search and social metadata used when a route does not provide its own overrides.
 
 In North Valley Medical College, this is the global fallback SEO layer that helps keep metadata consistent across the website.
 
 ## When To Use It
 
-Use `SEO Settings` when you need to:
+Use `SEO & Metadata` when you need to:
 
 - define the default site title used by the website
 - set a title template such as `%s | North Valley Medical College`
@@ -35,7 +35,7 @@ When local content-level SEO stays on default or is left empty, these values fil
 
 Set global SEO defaults for North Valley Medical College:
 
-1. Open `SEO Settings`.
+1. Open `SEO & Metadata` in `Settings`.
 2. Enter a strong `Default Title`.
 3. Enter a `Title Template` such as `%s | North Valley Medical College`.
 4. Write a clear `Default Description` for the institution.

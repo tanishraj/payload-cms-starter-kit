@@ -2,7 +2,7 @@
 
 ## What This Section Is
 
-`Forms` is where you define reusable public forms that can be placed on website pages. A form controls what fields the visitor sees, what success message they get, who is notified internally, and how the submission should be operated after it is received.
+`Forms` defines public form schemas, success copy, notification recipients, intent, and optional submitter confirmation. Pages expose these through the dedicated `Contact Form` and `Review Submission` blocks; there is no generic form block.
 
 In North Valley Medical College, this is the section you would use for forms such as `Admission Enquiry`, `Request Prospectus`, or `Student Experience Review`.
 
@@ -11,7 +11,7 @@ In North Valley Medical College, this is the section you would use for forms suc
 Use `Forms` when you need to:
 
 - collect information from website visitors
-- place a reusable form block onto a page
+- configure a Form selected by Contact Form or Review Submission
 - decide whether submissions behave like general enquiries, leads, or review intake
 - notify internal staff when a valid submission arrives
 
@@ -19,7 +19,7 @@ Do not use `Forms` to manage the received entries themselves. That belongs in `F
 
 ## How It Connects To The Website
 
-Forms connect directly to the frontend. A published form definition can be inserted into a page layout, and the public website submits data through the live form endpoint for that form slug.
+Only published Forms are loaded by `POST /api/forms/[slug]/submit`. Contact Form accepts a general/lead Form with the expected `name` text, `email` email, `subject` select, and `message` textarea fields. Review Submission accepts review-intent Forms and review field names.
 
 This section also controls downstream operations:
 
@@ -45,7 +45,7 @@ Create an `Admission Enquiry` form for North Valley Medical College:
 9. Add fields such as `full_name`, `email`, `phone`, `program_interest`, and `message`.
 10. Mark the required fields clearly.
 11. Save the form and publish it.
-12. Open the page where this form should appear, add the form block, and select `Admission Enquiry`.
+12. Ensure the schema matches Contact Form, then add that block to a Page and select `Admission Enquiry`.
 
 Expected website result:
 
@@ -66,7 +66,15 @@ To configure it:
 5. Write a plain-text message body confirming receipt and next steps.
 6. Save and publish the form.
 
-The CMS identifies the submitter's email address from the first field named `email` in the form. If no email field is present, no confirmation is sent even when the feature is enabled.
+The CMS looks for a submitted email using the normalized keys `submitterEmail`, then `reviewerEmail`, then `email`. If none exists, no confirmation is sent even when enabled.
+
+## Spam Protection And Failure Handling
+
+- the hidden honeypot key is `website`; suspected bots receive a neutral success response
+- the built-in limiter allows five attempts per IP and form slug per ten minutes
+- the limiter is in-memory and per application process, not a durable distributed rate limiter
+- required, email, select-option, and checkbox-acceptance rules come from the Form schema
+- notification, confirmation, downstream-event, and review-promotion failures are logged without changing a successful visitor response after the submission is stored
 
 ## Best Practices
 
@@ -79,7 +87,7 @@ The CMS identifies the submitter's email address from the first field named `ema
 
 ## Common Mistakes And Recovery
 
-- building a form but forgetting to place it on a page
+- selecting a Form whose fields do not match Contact Form or Review Submission
 - using vague field names that make submission data hard to understand later
 - choosing `General` when the form should really be treated as a lead workflow
 - publishing a review-intent form without checking that the required review fields are included

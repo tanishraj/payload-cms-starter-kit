@@ -15,9 +15,9 @@ Do not use it for:
 
 ## How It Connects To The Website
 
-Pages define real frontend routes. A published page can become the homepage through `Website Defaults`, can appear in navigation through `Navigation Links`, and can rely on `Headers`, `Footers`, and `Media`.
+Pages define real frontend routes. A published Page can become the homepage through `Layout Defaults`. The CMS maintains its owned Navigation Link and creates 301 Redirects for the old path when a published slug/parent path changes, including affected descendants.
 
-This collection also supports parent-child hierarchy, public URL preview, reusable layout blocks, SEO fields, and editorial workflow states. If a page slug or hierarchy changes, related navigation and redirects may also need attention.
+The parent validator prevents self-parenting and circular hierarchies. Referenced Pages cannot be unpublished when doing so would invalidate configured relationships. Layout offers 39 blocks, SEO is publish-validated, and live preview provides desktop, tablet, and mobile frames.
 
 ## Step-By-Step Medical College Example
 
@@ -43,6 +43,7 @@ Expected website result:
 - confirm the public URL before publishing
 - use pages for stable evergreen sections of the site
 - use live preview before publishing major layout changes
+- use the [Page Blocks guide](./blocks.md) to choose data-backed rather than duplicated content
 - add a short change summary when the page update affects structure or messaging
 
 ## Common Mistakes And Recovery
@@ -59,4 +60,5 @@ If a URL changes unexpectedly, review `Redirects` and related `Navigation Links`
 - [Navigation Links](./links.md)
 - [Headers](./headers.md)
 - [Footers](./footers.md)
-- [Website Defaults](./site-defaults.md)
+- [Layout Defaults](./site-defaults.md)
+- [Page Blocks](./blocks.md)

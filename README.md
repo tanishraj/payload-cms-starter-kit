@@ -1,6 +1,6 @@
 # Payload CMS Marketing Starter
 
-This repository is an editorial-first marketing CMS starter built to be copied for one client website at a time. It already includes page routing, system pages, articles, reviews, forms, SEO defaults, editorial governance, and capability-based admin access.
+This repository is an editorial-first marketing CMS starter built to be copied for one client website at a time. It includes governed pages, articles, news and events, reviews, forms, media, navigation, system pages, SEO, analytics consent, operational queues, and capability-based admin access.
 
 ## Supported Starter Contract
 
@@ -29,26 +29,26 @@ The repo fails fast if you try to boot a Vercel production profile with the defa
 - articles with lexical rich text, taxonomies (categories + tags), SEO fields, and live preview
 - moderated reviews promoted from form submissions into public editorial content
 - news and events with type-specific layouts, gallery albums, and live preview
-- reusable content blocks: Rich Text, Video Embed, plus 20+ marketing blocks (hero, CTA, feature matrix, stats strip, testimonials, gallery, and more)
-- block error boundaries that prevent one broken block from crashing a whole page
+- 39 selectable Page blocks covering editorial, media, forms, reviews, galleries, offices, and reusable sections
+- production Page block error boundaries that prevent one broken layout block from crashing the remaining Page
 
 **SEO and discoverability**
 - sitemap with full pagination — no artificial 100-document cap, includes lastmod dates
 - dynamic `robots.txt` controlled by CMS global setting
-- per-collection Open Graph images generated server-side via `next/og` (site default, articles, news-events, CMS pages)
+- server-generated Open Graph images for the site default, articles, reviews, and news/events; generic CMS pages inherit configured metadata and default media
 - structured data: Organization, WebSite + SearchAction, Article, Event, BreadcrumbList, WebPage JSON-LD schemas
 - title templates, default Open Graph image, per-route robots override, and Google site verification
 
 **Analytics and privacy**
-- Analytics Settings global for Google Tag Manager and GA4 with format validation
-- cookie consent banner with GDPR/CCPA-compliant gating — no analytics load before visitor acceptance
+- Analytics & Tracking global for Google Tag Manager and GA4 with format validation
+- configurable cookie banner with consent-gated analytics — no analytics load before visitor acceptance; legal compliance still requires jurisdiction-specific review
 - analytics scripts injected server-side only after consent, re-applied instantly via router refresh
 
 **Search**
 - site-wide full-text search at `/search` (SSR) and a `Cmd+K` / `Ctrl+K` overlay dialog
 - debounced instant results, keyboard navigation, and accessible combobox ARIA pattern
 - rate-limited API endpoint (`/api/search`) — 20 requests per IP per 10 seconds
-- WebSite JSON-LD SearchAction registers the search endpoint with Google
+- WebSite JSON-LD describes the onsite search action (Google retired the Sitelinks Search Box visual result in 2024)
 
 **Redirects**
 - CMS-managed redirect collection with page relationship or custom URL destinations
@@ -56,11 +56,11 @@ The repo fails fast if you try to boot a Vercel production profile with the defa
 - in-process TTL cache on middleware; `unstable_cache` + tag invalidation on the API side
 
 **Feeds and syndication**
-- RSS 2.0 + Atom feeds at `/articles/feed.xml` and `/news-events/feed.xml`
+- RSS 2.0 feeds with Atom self-links at `/articles/feed.xml` and `/news-events/feed.xml`
 - `<link rel="alternate">` autodiscovery in layout `<head>`
 
 **Performance and caching**
-- ISR with `unstable_cache` and tag-based on-demand revalidation for pages, globals, articles, reviews, news-events, sitemap, and redirects
+- persistent tagged caching for layout globals, Pages, and redirects; request-level deduplication for article/review data; time-based revalidation for sitemap, robots, and feeds
 - full sitemap pagination via `fetchAllDocs()` helper — no silent content truncation
 
 **Forms and lead capture**
@@ -87,22 +87,29 @@ The repo fails fast if you try to boot a Vercel production profile with the defa
 
 ## Content Ownership
 
-The CMS already separates structural site content, editorial inventory, and site-wide defaults:
+The CMS separates content, taxonomy, structure, media, intake, administration, and site-wide defaults:
 
-- `pages`, `navigation-links`, `headers`, `footers`, and `system-pages` own the public site structure
-- `articles`, `reviews`, `categories`, and `tags` own editorial inventory
+- `pages`, `reusable-sections`, `articles`, `news-events`, and `reviews` own public content
+- `categories` (shown as Topics) and `tags` own taxonomy
+- `navigation-links`, `redirects`, `headers`, `footers`, `office-locations`, and `system-pages` own navigation and structure
+- `media` and `gallery-albums` own governed assets and albums
 - `forms` and `form-submissions` own intake and lead operations
-- `page-settings` (`Website Defaults`), `system-mode-settings` (`Website Modes`), `site-settings`, `theme-settings`, and `seo-settings` own site-wide defaults
+- `work-queue`, `operational-audit-events`, and `users` own administration
+- eight globals own identity, appearance, SEO, analytics, consent, layout defaults, news/archive settings, and maintenance modes
 
 ## Admin Information Architecture
 
-The operator-facing admin is organized into:
+The operator-facing admin is organized into nine groups:
 
-- `Website Content`
-- `Website Structure`
-- `Lead Capture`
-- `Site Settings`
-- `Operations`
+- `Content`
+- `Taxonomy`
+- `Navigation`
+- `Site Structure`
+- `Media`
+- `Forms`
+- `Settings`
+- `Configuration`
+- `Administration`
 
 See [docs/architecture/content-model-map.md](docs/architecture/content-model-map.md) for the full ownership map.
 
@@ -111,16 +118,22 @@ See [docs/architecture/content-model-map.md](docs/architecture/content-model-map
 - [CMS operator guide](docs/guides/README.md)
 - [Starter clone checklist](docs/operations/starter-clone-checklist.md)
 - [Content model map](docs/architecture/content-model-map.md)
+- [Complete feature inventory](docs/architecture/feature-inventory.md)
 - [Editorial governance](docs/operations/editorial-governance.md)
 - [MongoDB deployment](docs/operations/mongodb-deployment.md)
+- [Runtime and providers](docs/operations/runtime-and-providers.md)
+- [Developer workflows](docs/operations/developer-workflows.md)
 
 ### Feature guides
 
-- [Analytics Settings](docs/guides/analytics.md) — GTM, GA4, and cookie consent
+- [Analytics & Tracking](docs/guides/analytics.md) — GTM, GA4, and consent gating
 - [Site Search](docs/guides/search.md) — Cmd+K dialog and /search page
 - [Reusable Sections](docs/guides/reusable-sections.md) — shared block templates
 - [Redirects](docs/guides/redirects.md) — CMS-managed URL redirects
 - [Forms](docs/guides/forms.md) — form definitions and submitter confirmation email
+- [News & Events](docs/guides/news-events.md) — news/event authoring, archive, live preview, and feed
+- [Page Blocks](docs/guides/blocks.md) — all 39 Page layout choices and their data dependencies
+- [Cookie Consent Banner](docs/guides/cookie-consent.md) — consent variants, copy, and analytics behavior
 
 ## Environment
 
@@ -153,6 +166,11 @@ S3-compatible media storage for hosted uploads:
 - `S3_ACL=public-read | private`
 - `S3_FORCE_PATH_STYLE=true | false`
 - `S3_CLIENT_UPLOADS=true | false`
+- `MEDIA_RECONCILE_TOKEN` for the protected media health endpoint
+
+Optional tooling:
+
+- `SHADCNBLOCKS_API_KEY`
 
 ## Tooling
 
@@ -165,7 +183,7 @@ S3-compatible media storage for hosted uploads:
 - `pnpm test:e2e`
 - `pnpm test`
 
-Use the integration suite to verify starter behavior, homepage resolution, and runtime contract checks before handing the repo to a client team.
+Use an isolated MongoDB database for tests. E2E helpers seed and delete known test users and homepage content. See [Developer Workflows](docs/operations/developer-workflows.md) for browser installation, generation, backup, migration, and reconciliation commands.
 
 ## Starter Conventions
 

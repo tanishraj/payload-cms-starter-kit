@@ -18,13 +18,13 @@ Do not use reusable sections for one-off page content that is not shared anywher
 
 When a page layout includes a `Reusable Section` block, the frontend fetches the saved section by its reference and renders it exactly as if those blocks had been placed directly in the page. If the reusable section is updated and republished, the change appears on every page that references it.
 
-Reusable sections support the same blocks available on regular pages, including rich text, video embeds, hero banners, CTAs, statistics strips, and feature blocks.
+Reusable sections use a deliberately smaller catalog than regular Pages. They cannot contain another Reusable Section, Hero Carousel, Gallery Coverflow, Testimonial Grid, Awards List, or About Section.
 
 ## Step-By-Step Medical College Example
 
 North Valley Medical College adds an accreditation badge strip to every academic program page:
 
-1. Open `Reusable Sections` under `Website Content`.
+1. Open `Reusable Sections` under `Content`.
 2. Click `Create New`.
 3. Give it a clear title such as `Accreditation Badges Strip`.
 4. Add a `Stats Strip` block with accreditation body names and badge logos.
@@ -67,4 +67,4 @@ If the content change appears on pages it should not have, check which pages use
 ## Related Guides
 
 - [Pages](./pages.md)
-- [Site Settings](./site-settings.md)
+- [Page Blocks](./blocks.md)

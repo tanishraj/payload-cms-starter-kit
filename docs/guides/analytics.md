@@ -1,12 +1,12 @@
-# Analytics Settings Guide
+# Analytics & Tracking Guide
 
 ## What This Section Is
 
-`Analytics Settings` is where you connect the website to Google Tag Manager or Google Analytics 4 so visitor activity can be measured. All analytics are held back until a visitor explicitly accepts cookies, which keeps the website compliant with privacy regulations such as GDPR and CCPA.
+`Analytics & Tracking` is where you connect the website to Google Tag Manager or Google Analytics 4. Analytics are held back until a visitor explicitly accepts cookies. This provides consent gating but does not, by itself, guarantee compliance with any privacy law.
 
 ## When To Use It
 
-Use `Analytics Settings` when you need to:
+Use `Analytics & Tracking` when you need to:
 
 - start measuring page views, events, or conversions on the public website
 - connect a Google Tag Manager container that manages third-party scripts
@@ -19,7 +19,7 @@ Do not paste tracking scripts into page content or HTML embeds. All analytics be
 
 The website layout reads this global on every page load. If a visitor has accepted the cookie consent notice, the configured GTM container or GA4 script is injected into the page. If the visitor has not yet decided or has rejected cookies, no analytics scripts load at all.
 
-The cookie consent banner appears automatically on every visitor's first session. When they click **Accept all**, the page refreshes silently and analytics begin loading from that point forward. When they click **Reject non-essential**, the page does not refresh and no analytics scripts are ever injected.
+When `Cookie Consent Banner` is enabled, it appears if the visitor has no decision cookie. **Accept all** refreshes the route and allows analytics to load; **Reject non-essential** stores denial without loading analytics.
 
 Changing settings here takes effect on the next page load for visitors who have already consented.
 
@@ -27,7 +27,7 @@ Changing settings here takes effect on the next page load for visitors who have 
 
 Add Google Tag Manager to North Valley Medical College:
 
-1. Open `Analytics Settings` in the admin under `Site Settings`.
+1. Open `Analytics & Tracking` in the admin under `Settings`.
 2. On the **Google Tag Manager** tab, turn on `Enable Google Tag Manager`.
 3. Enter the GTM container ID in the format `GTM-XXXXXXX`.
 4. Save the global.
@@ -54,15 +54,15 @@ Do not enable both GTM and GA4 direct at the same time. If GTM is enabled, the G
 
 ## Cookie Consent And Privacy
 
-The consent banner is shown to every visitor on their first session. The banner:
+When enabled, the consent banner:
 
-- links to the Privacy Policy page configured in `Site Settings`
+- links to the Privacy Policy page configured in `Site Identity`
 - stores the visitor's choice in a browser cookie for one year
 - does not load any analytics until the visitor has accepted
 
 If a visitor later clears their cookies, the banner will show again on their next session.
 
-The Privacy Policy page link comes from `Site Settings → Privacy Policy Page`. If that field is empty, the banner still works but there is no privacy policy link shown.
+The Privacy Policy page link comes from `Site Identity → Legal`. If it is empty, the banner still works without the link. Configure the banner's style and copy separately in `Cookie Consent Banner`.
 
 ## Best Practices
 
@@ -76,11 +76,12 @@ The Privacy Policy page link comes from `Site Settings → Privacy Policy Page`.
 - entering the wrong ID format — GTM IDs start with `GTM-`, GA4 IDs start with `G-`
 - enabling GTM and GA4 direct at the same time — the GA4 direct script will not load when GTM is enabled
 - expecting analytics to fire before the visitor has accepted — this is correct behavior, not a bug
-- not having a Privacy Policy page set in Site Settings
+- not having a Privacy Policy Page selected in Site Identity
 
 If analytics data is not appearing after saving, check the consent banner in a private browsing window, verify the ID format, and confirm the global has been saved.
 
 ## Related Guides
 
-- [Site Settings](./site-settings.md)
-- [SEO Settings](./seo-settings.md)
+- [Site Identity](./site-settings.md)
+- [SEO & Metadata](./seo-settings.md)
+- [Cookie Consent Banner](./cookie-consent.md)

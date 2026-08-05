@@ -73,4 +73,4 @@ If a review submission did not flow correctly, inspect `promotionError`, open th
 - [Forms](./forms.md)
 - [Reviews](./reviews.md)
 - [Work Queue](./work-queue.md)
-- [Operational Audit Events](./operational-audit-events.md)
+- [Audit Log](./operational-audit-events.md)

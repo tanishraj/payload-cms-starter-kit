@@ -24,13 +24,15 @@ The queue does not appear on the public website, but it is tightly connected to 
 
 The current system automatically creates or updates queue items from conditions such as:
 
-- `Pages`, `Articles`, and `System Pages` entering `In Review` or `Scheduled`
+- `Pages`, `Articles`, `News & Events`, and `System Pages` entering `In Review` or `Scheduled`
 - `Reviews` needing moderation or scheduled publication oversight
 - `Form Submissions` that are `New` or `In Review`
 - `Headers`, `Footers`, `Navigation Links`, and `Redirects` having unpublished draft changes
-- `Media` items missing governance details or critical replacement guidance
+- `Media` items with missing storage objects, missing titles, or incomplete critical replacement guidance
 
 Each queue item stores the source collection, source record, current reason, and a direct admin path back to the underlying document. Operators are expected to resolve the real source condition, then let the queue sync automatically.
+
+Open or Blocked Approval and Publish Issue items prevent governed content from publishing. In Progress items do not block publication. Queue records are system-created and cannot be manually created or deleted.
 
 ## Step-By-Step Medical College Example
 
@@ -72,6 +74,6 @@ If a queue item seems wrong, inspect the `Source` tab first, open the related do
 ## Related Guides
 
 - [Form Submissions](./form-submissions.md)
-- [Activity Log](./operational-audit-events.md)
+- [Audit Log](./operational-audit-events.md)
 - [Pages](./pages.md)
 - [Users](./users.md)

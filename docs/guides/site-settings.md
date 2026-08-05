@@ -1,74 +1,38 @@
-# Site Settings Guide
+# Site Identity Guide
 
 ## What This Section Is
 
-`Site Settings` stores the global brand and contact details used across the website. This is where you keep the institution name, description, logo, favicon, contact details, address, map URL, and social links.
+`Site Identity` is the source of truth for global brand, contact, legal, and social data.
 
-In North Valley Medical College, this section is the source of truth for institution-wide identity details that should stay consistent across pages and shared frontend surfaces.
+## Fields And Consumers
 
-## When To Use It
+- `Brand`: site name, description, logo, and favicon feed metadata, the shared shell, and structured data.
+- `Contact`: email, phone, and postal address feed shared Header/Footer surfaces and Organization JSON-LD.
+- `Legal`: Privacy Policy Page and Terms and Conditions Page feed the Footer and cookie-consent link.
+- `Social Links`: validated Facebook, Instagram, LinkedIn, and YouTube destinations feed shell presets.
 
-Use `Site Settings` when you need to:
-
-- update the institution name or description
-- change the logo or favicon
-- update global contact details
-- update the address or map URL
-- update official social profile links
-
-Do not use this section for page-specific content. This is for shared site identity and contact information.
-
-## How It Connects To The Website
-
-This global feeds the frontend layout and shared UI elements. The website can use it for:
-
-- logo and favicon rendering
-- site identity shown in shared header or footer patterns
-- institution-wide contact information
-- social profile destinations
-
-Because these values are reused across the site, a mistake here can create inconsistent branding or outdated contact details everywhere at once.
+Maps are not stored here. Use `Office Locations` for reusable interactive map and regional contact records.
 
 ## Step-By-Step Medical College Example
 
-Update North Valley Medical College’s global contact details:
-
-1. Open `Site Settings`.
-2. In the `Brand` tab, confirm the `Site Name` and `Site Description`.
-3. Upload or select the approved logo and favicon from `Media`.
-4. Open the `Contact` tab.
-5. Update the central admissions email and phone number.
-6. Update the campus address.
-7. Add or update the Google Map embed URL if needed.
-8. Open the `Social Links` tab.
-9. Update the official Facebook, Instagram, LinkedIn, and YouTube URLs.
-10. Save the global.
-11. Verify the shared frontend areas where these values appear.
-
-Expected website result:
-
-- the website shows the updated institutional identity and contact information
-- shared surfaces stay consistent across the site
+1. Open `Site Identity` in `Settings`.
+2. Complete the Brand tab with approved name, description, logo, and favicon.
+3. Enter the central public email, phone, and address.
+4. Publish the Privacy Policy and Terms Pages, then select them under Legal.
+5. Add only verified full external social URLs.
+6. Save and verify metadata, Header, Footer, consent banner, and Organization structured data.
 
 ## Best Practices
 
-- treat this section as institutional source-of-truth data
-- use approved brand assets from `Media`
-- verify contact details carefully before saving
-- review shared header and footer behavior after major branding changes
-
-## Common Mistakes And Recovery
-
-- uploading an incorrect logo or favicon
-- updating one contact field but forgetting the rest of the shared contact set
-- using temporary campaign details in a global settings area
-- changing social links without verifying the destination accounts
-
-If branding or contact information looks wrong on the site, review this global first, then inspect the related header, footer, or template that renders the value.
+- treat this global as institution-wide source data
+- use governed Media assets and meaningful logo alt treatment
+- verify legal destinations before enabling analytics consent
+- use Office Locations for regional addresses and maps
 
 ## Related Guides
 
 - [Media](./media.md)
+- [Office Locations](./office-locations.md)
 - [Headers](./headers.md)
 - [Footers](./footers.md)
-- [Theme Settings](./theme-settings.md)
+- [Cookie Consent Banner](./cookie-consent.md)

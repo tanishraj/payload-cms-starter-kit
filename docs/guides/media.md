@@ -15,7 +15,9 @@ Do not use it for:
 
 ## How It Connects To The Website
 
-Media supports many parts of the frontend, including pages, articles, reviews, and SEO sharing. Assets can be labeled by type such as `Logo`, `Hero`, `SEO`, or `Document`, and the CMS tracks usage so high-impact files can be replaced more safely.
+Media supports Pages, Articles, News & Events, Reviews, galleries, shell presets, and SEO sharing. Assets can be labeled `Logo`, `Hero`, `SEO`, `Icon`, `Document`, or `General`, and the CMS tracks governed references before deletion.
+
+Images require alt text. Logo, Hero, and SEO classifications only accept image MIME types. A referenced asset cannot be deleted until every reported collection/global reference is removed.
 
 If a critical asset is replaced carelessly, the public website can show the wrong logo, weak hero imagery, broken brochures, or poor social previews.
 
@@ -55,9 +57,15 @@ Expected website result:
 
 If an asset change causes regressions, review the usage summary before replacing or deleting it again.
 
+## Storage Health
+
+Read-only status fields show `Unchecked`, `Healthy`, `Missing`, `Check Failed`, or `Local Only`, plus the last check and diagnostic detail. The protected reconciliation endpoint scans up to 1,000 records per call, marks local files `Local Only`, verifies S3 objects, creates media Action Queue conditions, and audits missing/restored transitions. See [Developer Workflows](../operations/developer-workflows.md) for the authenticated command.
+
 ## Related Guides
 
 - [Pages](./pages.md)
 - [Articles](./articles.md)
 - [Reviews](./reviews.md)
-- [SEO Settings](./seo-settings.md)
+- [Gallery Albums](./gallery-albums.md)
+- [SEO & Metadata](./seo-settings.md)
+- [Trash and Recovery](./trash-and-recovery.md)

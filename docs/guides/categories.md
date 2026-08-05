@@ -1,12 +1,12 @@
-# Categories Guide
+# Topics Guide
 
 ## What This Section Is
 
-`Categories` stores reusable hierarchical groups for editorial content. In North Valley Medical College, categories help organize articles and reviews into durable website topics such as `Admissions`, `Academics`, `Campus Life`, and `Research`.
+`Topics` stores reusable hierarchical groups in the `categories` collection. Topics organize Articles, Reviews, and News & Events into durable areas such as `Admissions`, `Academics`, `Campus Life`, and `Research`.
 
 ## When To Use It
 
-Use `Categories` when content should belong to a stable topic area that users may browse repeatedly over time.
+Use `Topics` when content should belong to a stable topic area that visitors may browse repeatedly over time.
 
 Do not use it for:
 
@@ -15,7 +15,7 @@ Do not use it for:
 
 ## How It Connects To The Website
 
-Categories affect how `Articles` and `Reviews` are grouped, filtered, and cross-linked. They also influence archive organization and related-content behavior because articles and reviews rely on a primary category plus optional supporting categories.
+Topics affect how `Articles`, `Reviews`, and `News & Events` are grouped, filtered, and cross-linked. Articles and News & Events support a primary Topic plus optional supporting Topics; Reviews use a primary Topic.
 
 If categories are named poorly or duplicated, the frontend content model becomes messy and related content becomes harder to trust.
 
@@ -23,7 +23,7 @@ If categories are named poorly or duplicated, the frontend content model becomes
 
 Create an `Admissions` category for North Valley Medical College:
 
-1. Open `Categories`.
+1. Open `Topics` in `Taxonomy`.
 2. Click `Create New`.
 3. Enter the title `Admissions`.
 4. Confirm the slug is `admissions`.
@@ -55,5 +55,6 @@ If editorial grouping becomes confusing, merge usage into the stronger category 
 ## Related Guides
 
 - [Articles](./articles.md)
+- [News & Events](./news-events.md)
 - [Reviews](./reviews.md)
 - [Tags](./tags.md)

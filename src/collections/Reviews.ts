@@ -48,7 +48,7 @@ export const Reviews: CollectionConfig = {
     hidden: hideFromUsersWithoutCapability('manage_reviews'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'primaryCategory', 'rating', '_status', 'workflowState', 'updatedAt'],
-    description: 'Moderated public reviews with structured fields and supplemental layout blocks.',
+    description: 'Moderated public reviews with structured rating, reviewer, taxonomy, SEO, and workflow fields.',
     listSearchableFields: ['title', 'reviewTitle', 'reviewerName', 'subjectLabel'],
     livePreview: {
       breakpoints: [...previewBreakpoints],

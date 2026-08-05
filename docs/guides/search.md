@@ -29,6 +29,8 @@ Search matches against:
 
 Search requires at least two characters before returning results.
 
+The dialog returns at most six matches per content type and is protected by an in-memory limit of 20 requests per IP per ten seconds. The full Page returns at most eight matches per content type, so `View all results` means the broader results surface rather than an unbounded export.
+
 ## How It Connects To The Website
 
 The search dialog is embedded in the site layout and is available on every page without any configuration. The search icon appears automatically in the site header next to the navigation.
@@ -37,9 +39,9 @@ Search results link directly to the relevant content page. Clicking a result fro
 
 Search is not indexed by Google because it is a dynamic query surface (`robots: noindex` is set on the `/search` page).
 
-## Google Sitelinks Search Box
+## Search Structured Data
 
-The website includes a `WebSite` structured data schema with a `SearchAction` that tells Google about the search endpoint. When Google indexes the website, it may display a search box directly in search results that sends queries to the website's `/search` page. This is a passive SEO benefit with no required CMS configuration.
+The website emits `WebSite` structured data with a `SearchAction` describing `/search`. Google retired the Sitelinks Search Box visual result in November 2024, so this markup must not be treated as a promise that Google will show a search box. See [Google Search Central's announcement](https://developers.google.com/search/blog/2024/10/sitelinks-search-box).
 
 ## Step-By-Step Medical College Example
 

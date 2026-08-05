@@ -15,7 +15,7 @@ Do not use it for:
 
 ## How It Connects To The Website
 
-Articles appear on article routes using their slug, and they depend on `Categories`, `Tags`, and often `Media`. Workflow state controls whether they are draft, in review, scheduled, or published. The primary category also influences archive placement and related-content priority.
+Articles render at `/articles/[slug]`, Topic archives at `/articles/category/[slug]`, Tag archives at `/articles/tag/[slug]`, and the newest 50 feed entries at `/articles/feed.xml`. There is no built-in `/articles` index; create a CMS Page at that path when the site needs one. Related content prioritizes the same primary Topic, then shared Tags, with at most three results.
 
 If taxonomy, excerpt, or featured image quality is weak, article listings and cross-linking will also weaken on the frontend.
 
@@ -49,6 +49,7 @@ Expected website result:
 - keep excerpts short and specific
 - use the rich text body for narrative content, not page-builder structure
 - review scheduled publication dates carefully if using the scheduled workflow state
+- remember that Scheduled records operator intent and queue work; it does not auto-publish on a timer
 
 ## Common Mistakes And Recovery
 
@@ -61,7 +62,7 @@ If the article is structurally wrong for its purpose, move the concept into `Pag
 
 ## Related Guides
 
-- [Categories](./categories.md)
+- [Topics](./categories.md)
 - [Tags](./tags.md)
 - [Media](./media.md)
 - [Reviews](./reviews.md)
