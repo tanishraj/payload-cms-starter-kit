@@ -31,6 +31,12 @@ export const blockThumbnailDefinitions = [
     slug: 'heroBanner',
   }),
   defineThumbnail({
+    alt: 'Hero Carousel block preview',
+    filename: 'hero-carousel.jpg',
+    label: 'Hero Carousel',
+    slug: 'heroCarousel',
+  }),
+  defineThumbnail({
     alt: 'Call to Action block preview',
     filename: 'cta-39.jpg',
     label: 'Call to Action',
@@ -76,6 +82,13 @@ export const blockThumbnailDefinitions = [
     filename: 'gallery-showcase.jpg',
     label: 'Gallery Showcase',
     slug: 'galleryShowcase',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
+    alt: 'Gallery Coverflow block preview',
+    filename: 'gallery-coverflow.jpg',
+    label: 'Gallery Coverflow',
+    slug: 'galleryCoverflow',
     stageAlignment: 'top',
   }),
   defineThumbnail({

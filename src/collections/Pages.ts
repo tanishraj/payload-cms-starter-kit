@@ -11,6 +11,8 @@ import { ImageMosaicBlock } from '@/blocks/ImageMosaic/config'
 import { NewsEventsHighlightsBlock } from '@/blocks/NewsEventsHighlights/config'
 import { ProfileCarouselBlock } from '@/blocks/ProfileCarousel/config'
 import { HeroBannerBlock } from '@/blocks/HeroBanner/config'
+import { HeroCarouselBlock } from '@/blocks/HeroCarousel/config'
+import { GalleryCoverflowBlock } from '@/blocks/GalleryCoverflow/config'
 import { RatingSpotlightBlock } from '@/blocks/RatingSpotlight/config'
 import { ReviewFeedBlock } from '@/blocks/ReviewFeed/config'
 import { ReviewSubmissionBlock } from '@/blocks/ReviewSubmission/config'
@@ -235,6 +237,8 @@ export const Pages: CollectionConfig = {
                 AnnouncementBlock,
                 Cta39Block,
                 HeroBannerBlock,
+                HeroCarouselBlock,
+                GalleryCoverflowBlock,
                 FeatureSpotlightBlock,
                 FeatureMatrixBlock,
                 ContentHighlightsBlock,
