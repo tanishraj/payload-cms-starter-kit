@@ -193,6 +193,8 @@ export interface Page {
         | AnnouncementBlock
         | Cta39Block
         | HeroBannerBlock
+        | HeroCarouselBlock
+        | GalleryCoverflowBlock
         | FeatureSpotlightBlock
         | FeatureMatrixBlock
         | ContentHighlightsBlock
@@ -451,6 +453,96 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroCarouselBlock".
+ */
+export interface HeroCarouselBlock {
+  /**
+   * Add one slide for a static hero, or multiple for a carousel.
+   */
+  slides?:
+    | {
+        /**
+         * Full-bleed background image for this slide.
+         */
+        backgroundImage?: (string | null) | Media;
+        /**
+         * Optional: direct video URL (.mp4). Overrides the image when set.
+         */
+        backgroundVideoUrl?: string | null;
+        /**
+         * Small label above the title.
+         */
+        eyebrow?: string | null;
+        title?: string | null;
+        description?: string | null;
+        buttons?:
+          | {
+              label: string;
+              linkType?: ('page' | 'custom') | null;
+              page?: (string | null) | Page;
+              url?: string | null;
+              openInNewTab?: boolean | null;
+              variant: 'default' | 'outline' | 'secondary' | 'link';
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  overlayStyle: 'light' | 'dark' | 'darker';
+  height: 'compact' | 'default' | 'immersive';
+  contentAlignment?: ('left' | 'center' | 'right') | null;
+  /**
+   * Automatically advance slides every 6 seconds.
+   */
+  autoplay?: boolean | null;
+  showArrows?: boolean | null;
+  showDots?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroCarousel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryCoverflowBlock".
+ */
+export interface GalleryCoverflowBlock {
+  eyebrow?: string | null;
+  title?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Add at least 3 images. More images create a richer coverflow carousel.
+   */
+  images?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  actionMode: 'link' | 'button';
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'galleryCoverflow';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3390,6 +3482,8 @@ export interface PagesSelect<T extends boolean = true> {
         announcement?: T | AnnouncementBlockSelect<T>;
         cta39?: T | Cta39BlockSelect<T>;
         heroBanner?: T | HeroBannerBlockSelect<T>;
+        heroCarousel?: T | HeroCarouselBlockSelect<T>;
+        galleryCoverflow?: T | GalleryCoverflowBlockSelect<T>;
         featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
         contentHighlights?: T | ContentHighlightsBlockSelect<T>;
@@ -3542,6 +3636,78 @@ export interface HeroBannerBlockSelect<T extends boolean = true> {
   themeMode?: T;
   contentWidth?: T;
   height?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroCarouselBlock_select".
+ */
+export interface HeroCarouselBlockSelect<T extends boolean = true> {
+  slides?:
+    | T
+    | {
+        backgroundImage?: T;
+        backgroundVideoUrl?: T;
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        buttons?:
+          | T
+          | {
+              label?: T;
+              linkType?: T;
+              page?: T;
+              url?: T;
+              openInNewTab?: T;
+              variant?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  overlayStyle?: T;
+  height?: T;
+  contentAlignment?: T;
+  autoplay?: T;
+  showArrows?: T;
+  showDots?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryCoverflowBlock_select".
+ */
+export interface GalleryCoverflowBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  actionMode?: T;
+  contentAlignment?: T;
+  size?: T;
   id?: T;
   blockName?: T;
 }

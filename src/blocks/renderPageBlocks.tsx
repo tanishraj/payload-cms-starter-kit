@@ -8,6 +8,8 @@ import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
 import { EventGalleryBlockComponent } from './EventGallery/Component'
 import { HeroBannerBlockComponent } from './HeroBanner/Component'
+import { HeroCarouselBlockComponent } from './HeroCarousel/Component'
+import { GalleryCoverflowBlockComponent } from './GalleryCoverflow/Component'
 import { ImageMosaicBlockComponent } from './ImageMosaic/Component'
 import { NewsEventsHighlightsBlockComponent } from './NewsEventsHighlights/Component'
 import { ProfileCarouselBlockComponent } from './ProfileCarousel/Component'
@@ -63,6 +65,10 @@ function renderSingleBlock(block: PageBlock, index: number, depth = 0): React.Re
       return wrap(<AnnouncementBlockComponent {...block} />)
     case 'heroBanner':
       return wrap(<HeroBannerBlockComponent {...block} />)
+    case 'heroCarousel':
+      return wrap(<HeroCarouselBlockComponent {...block} />)
+    case 'galleryCoverflow':
+      return wrap(<GalleryCoverflowBlockComponent {...block} />)
     case 'qaAccordion':
       return wrap(<QaAccordionBlockComponent {...block} />)
     case 'featureMatrix':

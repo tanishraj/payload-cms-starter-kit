@@ -5,9 +5,11 @@ import { ContentHighlightsBlockComponent } from '@/blocks/ContentHighlights/Comp
 import { FeatureMatrixBlockComponent } from '@/blocks/FeatureMatrix/Component'
 import { Footer56BlockComponent } from '@/blocks/Footer56/Component'
 import { GalleryShowcaseBlockComponent } from '@/blocks/GalleryShowcase/Component'
+import { GalleryCoverflowBlockComponent } from '@/blocks/GalleryCoverflow/Component'
 import { Cta39BlockComponent } from '@/blocks/Cta39/Component'
 import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
 import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
+import { HeroCarouselBlockComponent } from '@/blocks/HeroCarousel/Component'
 import { ImageMosaicBlockComponent } from '@/blocks/ImageMosaic/Component'
 import { NewsEventsHighlightsBlockPresentation } from '@/blocks/NewsEventsHighlights/Presentation'
 import { ProfileCarouselBlockComponent } from '@/blocks/ProfileCarousel/Component'
@@ -572,6 +574,31 @@ export const blockThumbnailFixtures = {
       title="A closer look at life here"
     />
   ),
+  galleryCoverflow: (
+    <GalleryCoverflowBlockComponent
+      actions={[
+        {
+          label: 'Explore the gallery',
+          linkType: 'custom',
+          url: '/gallery',
+          variant: 'default',
+        },
+      ]}
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      contentAlignment="center"
+      description="A collection of spaces, people, and moments from across the community."
+      eyebrow="Photo library"
+      images={[
+        { image: { alt: 'Editorial landscape one', id: 'coverflow-1', url: editorialLandscape } },
+        { image: { alt: 'Collaborative environment one', id: 'coverflow-2', url: collaboration } },
+        { image: { alt: 'Community portrait', id: 'coverflow-3', url: portrait } },
+        { image: { alt: 'Editorial landscape two', id: 'coverflow-4', url: editorialLandscape } },
+        { image: { alt: 'Collaborative environment two', id: 'coverflow-5', url: collaboration } },
+      ]}
+      size="compact"
+      title="Your photos, brought together."
+    />
+  ),
   eventGallery: (
     <EventGallery
       albums={[
@@ -791,6 +818,43 @@ export const blockThumbnailFixtures = {
       overlayStyle="light"
       themeMode="auto"
       title="A place to learn, connect, and grow."
+    />
+  ),
+  heroCarousel: (
+    <HeroCarouselBlockComponent
+      autoplay={false}
+      height="compact"
+      overlayStyle="dark"
+      showArrows
+      showDots
+      slides={[
+        {
+          backgroundImage: {
+            alt: 'Editorial landscape',
+            id: 'hero-1',
+            url: editorialLandscape,
+          },
+          buttons: [
+            {
+              label: 'Explore',
+              linkType: 'custom',
+              url: '/explore',
+              variant: 'secondary',
+            },
+          ],
+          description: 'Ideas, people, and places moving forward together.',
+          eyebrow: 'Discover more',
+          title: 'A wider view of what is possible.',
+        },
+        {
+          backgroundImage: {
+            alt: 'Collaborative environment',
+            id: 'hero-2',
+            url: collaboration,
+          },
+          title: 'Built around shared progress.',
+        },
+      ]}
     />
   ),
   reviewSubmission: (
