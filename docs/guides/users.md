@@ -75,7 +75,7 @@ If someone cannot access an expected area, confirm the role first, then review t
 
 ## Related Guides
 
-- [Operational Audit Events](./operational-audit-events.md)
+- [Audit Log](./operational-audit-events.md)
 - [Work Queue](./work-queue.md)
 - [Forms](./forms.md)
-- [Site Defaults](./site-defaults.md)
+- [Layout Defaults](./site-defaults.md)

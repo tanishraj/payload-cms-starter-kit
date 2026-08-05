@@ -20,55 +20,76 @@ That shared example shows how pages, content, structure, forms, settings, and op
 
 ## How The Admin Is Grouped
 
-### Website Content
+### Content
 
 - [Pages](./pages.md)
 - [Reusable Sections](./reusable-sections.md)
-- [Categories](./categories.md)
-- [Tags](./tags.md)
 - [Articles](./articles.md)
+- [News & Events](./news-events.md)
 - [Reviews](./reviews.md)
-- [Media](./media.md)
 
-### Website Structure
+### Taxonomy
+
+- [Topics](./categories.md)
+- [Tags](./tags.md)
+
+### Navigation
 
 - [Navigation Links](./links.md)
 - [Redirects](./redirects.md)
+
+### Site Structure
+
 - [Headers](./headers.md)
 - [Footers](./footers.md)
+- [Office Locations](./office-locations.md)
 - [System Pages](./system-pages.md)
 
-### Lead Capture
+### Media
+
+- [Media](./media.md)
+- [Gallery Albums](./gallery-albums.md)
+
+### Forms
 
 - [Forms](./forms.md)
 - [Form Submissions](./form-submissions.md)
 
-### Site Settings
+### Settings
 
-- [Website Defaults](./site-defaults.md)
-- [Site Settings](./site-settings.md)
-- [Theme Settings](./theme-settings.md)
-- [SEO Settings](./seo-settings.md)
-- [Analytics Settings](./analytics.md)
-- [Website Modes](./system-modes.md)
+- [Site Identity](./site-settings.md)
+- [Appearance](./theme-settings.md)
+- [SEO & Metadata](./seo-settings.md)
+- [Analytics & Tracking](./analytics.md)
+- [Cookie Consent Banner](./cookie-consent.md)
 
-### Operations
+### Configuration
 
-- [Activity Log](./operational-audit-events.md)
+- [Layout Defaults](./site-defaults.md)
+- [News & Events Settings](./news-events-settings.md)
+- [Maintenance & Modes](./system-modes.md)
+
+### Administration
+
+- [Admin Dashboard](./dashboard.md)
+- [Audit Log](./operational-audit-events.md)
 - [Action Queue](./work-queue.md)
 - [Users](./users.md)
+- [Trash and Recovery](./trash-and-recovery.md)
 
 ## Other Features
 
 - [Site Search](./search.md)
+- [Page Blocks](./blocks.md)
 
 ## Recommended Reading Order
 
-1. [Site Settings](./site-settings.md), [Theme Settings](./theme-settings.md), [SEO Settings](./seo-settings.md), [Analytics Settings](./analytics.md)
-2. [Website Defaults](./site-defaults.md), [Headers](./headers.md), [Footers](./footers.md), [Navigation Links](./links.md)
-3. [Pages](./pages.md), [Reusable Sections](./reusable-sections.md), [Media](./media.md), [Articles](./articles.md), [Categories](./categories.md), [Tags](./tags.md), [Reviews](./reviews.md)
-4. [Forms](./forms.md), [Form Submissions](./form-submissions.md)
-5. [Redirects](./redirects.md), [System Pages](./system-pages.md), [Website Modes](./system-modes.md), [Activity Log](./operational-audit-events.md), [Action Queue](./work-queue.md), [Users](./users.md)
+1. [Site Identity](./site-settings.md), [Appearance](./theme-settings.md), [SEO & Metadata](./seo-settings.md), [Analytics & Tracking](./analytics.md), [Cookie Consent Banner](./cookie-consent.md)
+2. [Layout Defaults](./site-defaults.md), [Headers](./headers.md), [Footers](./footers.md), [Navigation Links](./links.md), [Office Locations](./office-locations.md)
+3. [Pages](./pages.md), [Page Blocks](./blocks.md), [Reusable Sections](./reusable-sections.md), [Media](./media.md), [Gallery Albums](./gallery-albums.md)
+4. [Articles](./articles.md), [News & Events](./news-events.md), [Topics](./categories.md), [Tags](./tags.md), [Reviews](./reviews.md)
+5. [Forms](./forms.md), [Form Submissions](./form-submissions.md)
+6. [Redirects](./redirects.md), [System Pages](./system-pages.md), [Maintenance & Modes](./system-modes.md), [Audit Log](./operational-audit-events.md), [Action Queue](./work-queue.md), [Users](./users.md)
 
 ## How To Use These Guides
 

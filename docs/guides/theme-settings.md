@@ -1,14 +1,14 @@
-# Theme Settings Guide
+# Appearance Guide
 
 ## What This Section Is
 
-`Theme Settings` controls the global frontend theme preset and color-scheme behavior for the public website.
+`Appearance` controls the Default, Sunset, Blue, or Kodama theme preset and whether the public site follows the visitor's system preference or forces light or dark mode.
 
 In North Valley Medical College, this is the section you would use when switching the overall website visual theme or deciding whether the site should follow the visitor’s system preference or force a specific light or dark experience.
 
 ## When To Use It
 
-Use `Theme Settings` when you need to:
+Use `Appearance` when you need to:
 
 - switch the site to a different approved theme preset
 - choose whether the site follows system, light, or dark color mode
@@ -28,7 +28,7 @@ Because the setting affects the entire public site shell, a theme change can alt
 
 Switch North Valley Medical College to an approved visual preset:
 
-1. Open `Theme Settings`.
+1. Open `Appearance` in `Settings`.
 2. Review the available `Theme Color` presets.
 3. Select the approved preset for the institution.
 4. Choose the `Color Scheme` behavior that fits the site:
@@ -45,7 +45,7 @@ Expected website result:
 - treat global theme changes as a design release, not a casual toggle
 - check key pages after every theme change
 - confirm text contrast and image treatment still feel correct
-- align theme changes with the broader brand direction in `Site Settings`
+- align theme changes with the broader brand direction in `Site Identity`
 
 ## Common Mistakes And Recovery
 
@@ -53,11 +53,11 @@ Expected website result:
 - forcing a color scheme that hurts readability for the chosen design
 - using theme settings as a substitute for proper content or layout fixes
 
-If the site suddenly looks wrong everywhere, review `Theme Settings` first and confirm the chosen preset and color scheme match the expected design direction.
+If the site suddenly looks wrong everywhere, review `Appearance` first and confirm the chosen preset and color scheme match the expected design direction.
 
 ## Related Guides
 
-- [Site Settings](./site-settings.md)
+- [Site Identity](./site-settings.md)
 - [Pages](./pages.md)
 - [Headers](./headers.md)
 - [Footers](./footers.md)

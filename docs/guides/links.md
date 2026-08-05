@@ -2,11 +2,11 @@
 
 ## What This Section Is
 
-`Navigation Links` stores reusable destinations for menus, calls to action, utility links, and legal links. In North Valley Medical College, this is where you can manage destinations such as `Apply Now`, `Download Prospectus`, and `Book Campus Visit`.
+`Navigation Links` stores manual or Page-synchronized Page/custom destinations. System Page actions can reference these records. Current Header, Footer, and normal Page action fields use their own inline Page/custom links rather than this collection.
 
 ## When To Use It
 
-Use `Navigation Links` when the same destination may appear in multiple places across the website and should be managed centrally.
+Use `Navigation Links` when a feature explicitly offers a Navigation Link relationship or when inspecting the link record synchronized from a Page.
 
 Do not use it for:
 
@@ -15,7 +15,7 @@ Do not use it for:
 
 ## How It Connects To The Website
 
-Navigation links are used by structural elements such as headers, footers, and other navigation-driven areas. They can point to internal pages or custom URLs, and some links may be automatically synced from pages rather than manually managed.
+Publishing a Page creates or updates its owned synchronized link; deleting the Page removes that link. Manual records remain independent. Avoid editing ownership fields on synchronized records.
 
 If a reusable link points to the wrong page or URL, multiple parts of the frontend can break at once.
 
@@ -35,8 +35,8 @@ Create reusable links for North Valley Medical College:
 
 Expected website result:
 
-- the same key destinations can be reused safely across header, footer, and CTA areas
-- updating the link once updates all places that reference it
+- the destinations are available to features that explicitly reference Navigation Links
+- Page-owned records track the current Page destination automatically
 
 ## Best Practices
 
@@ -52,7 +52,7 @@ Expected website result:
 - using a custom URL where a page relationship would be safer
 - forgetting that a reusable link may affect multiple frontend locations
 
-If a destination changes, update the reusable link first and then spot-check the header, footer, and affected CTAs.
+If a Page destination changes, update the Page and allow synchronization to update its owned record. For an inline Header/Footer/Page action, edit that source preset or block directly.
 
 ## Related Guides
 

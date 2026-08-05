@@ -1,14 +1,14 @@
-# Activity Log Guide
+# Audit Log Guide
 
 ## What This Section Is
 
-`Activity Log` is the activity history for important CMS operations. It records who changed certain high-value records, what kind of action happened, and a short summary of the event in language operators can review later.
+`Audit Log` is a read-only history of selected governed CMS operations. It records the actor, action, entity, and a short operator-facing summary; it is not a complete database audit trail.
 
 In North Valley Medical College, this is the section to check when you need to understand who moved an article to review, who updated a homepage-related default, or who changed a work-queue item during an operational incident.
 
 ## When To Use It
 
-Use `Activity Log` when you need to:
+Use `Audit Log` when you need to:
 
 - understand who changed an important record
 - review workflow movement on pages, articles, reviews, or system pages
@@ -21,15 +21,19 @@ Do not use it as the main place to manage content. It is a trace and accountabil
 
 Audit events do not render directly on the public website, but they explain why website behavior changed. This collection receives events automatically from key CMS actions across content, site-wide settings, and work-queue operations.
 
-The current implementation captures audit events for:
+The current implementation captures selected events for:
 
 - `Pages`
 - `Articles`
+- `News & Events`
 - `Reviews`
 - `System Pages`
-- `Website Defaults`
-- `Website Modes`
+- `Reusable Sections`
+- `Layout Defaults`
+- `News & Events Settings`
+- `Maintenance & Modes`
 - `Action Queue` updates such as status, assignee, priority, due date, notes, and resolution changes
+- Media deletion and missing/restored storage transitions
 
 This section matters when a live site changed unexpectedly and the team needs a fast, operator-friendly explanation of what happened.
 
@@ -37,7 +41,7 @@ This section matters when a live site changed unexpectedly and the team needs a 
 
 Investigate why a homepage-related publishing decision changed at North Valley Medical College:
 
-1. Open `Activity Log`.
+1. Open `Audit Log` in `Administration`.
 2. Search by a useful summary keyword such as `homepage`, `article`, or `workflow`.
 3. Review the latest events at the top of the list.
 4. Check `entityType` to understand whether the event came from a page, article, review, system page, or work queue.

@@ -6,6 +6,7 @@ Use this checklist when copying the starter into a new client repository. The go
 
 - Update the project name and description in `package.json` if the clone will be published or handed off.
 - Replace brand, contact, address, social, and identity defaults in `site-settings`.
+- Select published privacy and terms Pages in `site-settings`.
 - Review logo, favicon, and default SEO imagery stored through the `media` collection.
 - Replace any example theme preset choice in `theme-settings` with the client-approved default.
 
@@ -17,13 +18,17 @@ Use this checklist when copying the starter into a new client repository. The go
 - Decide whether `RESEND_FROM_NAME` and `RESEND_OVERRIDE_TO_EMAIL` are needed for staging or QA.
 - Confirm `NEXT_PUBLIC_SERVER_URL` matches the public base URL used for previews and metadata.
 - Keep `MEDIA_PROVIDER=localDisk` for local work, or set `MEDIA_PROVIDER=s3` when the clone is being prepared for hosted editor uploads.
+- Configure `MEDIA_RECONCILE_TOKEN` if storage health will be checked remotely or by a scheduler.
 
 ## Review CMS Defaults
 
 - Choose the homepage in `page-settings`.
 - Choose the active header and footer presets in `page-settings`.
-- Confirm the published 404, maintenance, and coming-soon presets in `system-pages`.
+- Confirm the published 404, maintenance, and coming-soon presets in `system-pages`, then select them in `system-mode-settings`.
 - Review default SEO values in `seo-settings`.
+- Review `analytics-settings` and `cookie-consent-settings` with the client's privacy owner.
+- Review `news-events-settings` archive labels, page size, appearance, and SEO.
+- Create and publish Office Locations and Gallery Albums required by data-backed Page blocks.
 - Review admin users and editor capabilities before handing the project to a client team.
 
 ## Verify Content And Intake Workflows
@@ -45,7 +50,10 @@ Use this checklist when copying the starter into a new client repository. The go
 
 - Run `pnpm test:int`.
 - Run `pnpm test:e2e`.
+- Use an isolated MongoDB database for tests; E2E seeding mutates known users and homepage content.
 - Start the app with `pnpm dev` and confirm the public site, admin login, and preview routes load.
+- Run media reconciliation after an S3 migration or restore.
+- Regenerate Payload types and the Admin import map after schema or custom Admin changes.
 - Review [docs/architecture/content-model-map.md](../architecture/content-model-map.md) before adding client-specific content types.
 
 ## Safe Customization Boundaries

@@ -1,0 +1,33 @@
+# Cookie Consent Banner Guide
+
+## What This Section Is
+
+`Cookie Consent Banner` controls the first-visit analytics choice shown on the public site. Analytics scripts do not load until the visitor grants consent.
+
+## Configuration
+
+- enable or disable the banner globally
+- choose Bottom Bar, Floating Card, Modal, or Corner Badge
+- choose bottom-left or bottom-right for corner-based variants
+- customize the optional heading, message, accept label, reject label, and privacy-policy label
+
+The privacy-policy destination comes from `Site Identity > Legal`. If no Privacy Policy Page is selected, the banner omits that link.
+
+## Visitor Behavior
+
+The choice is stored in the `analytics_consent` cookie for one year with `SameSite=Lax` and `Secure` on HTTPS. Accepting stores `granted`; rejecting stores `denied`. A router refresh applies accepted GTM or GA4 configuration immediately. The Modal variant uses a dialog; all variants expose explicit accept and reject actions.
+
+## Step-By-Step Medical College Example
+
+1. Publish the privacy policy Page and select it under `Site Identity > Legal`.
+2. Open `Cookie Consent Banner` in `Settings`.
+3. Enable the banner, choose the approved style, and enter reviewed privacy copy.
+4. Configure either GTM or standalone GA4 in `Analytics & Tracking`.
+5. Test in a private browser window: no analytics before a choice, no analytics after rejection, and analytics after acceptance.
+6. Clear the `analytics_consent` cookie before repeating the test.
+
+## Related Guides
+
+- [Analytics & Tracking](./analytics.md)
+- [Site Identity](./site-settings.md)
+- [SEO & Metadata](./seo-settings.md)

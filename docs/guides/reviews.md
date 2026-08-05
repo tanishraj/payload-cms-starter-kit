@@ -15,7 +15,7 @@ Do not use it for:
 
 ## How It Connects To The Website
 
-Reviews publish to their own frontend routes and can also feed testimonial sections elsewhere on the site. They depend on `Categories`, `Tags`, and often `Media`. Their workflow and moderation notes matter because this content represents public trust signals.
+Reviews render at `/reviews/[slug]`; Topic archives render at `/reviews/category/[slug]`. There is no built-in `/reviews` index, so create a CMS Page there when needed. Rating Spotlight and Review Feed read published Reviews; Review Feed exposes averages, a five-to-one distribution, verified-experience badges, and paginated newest-first entries.
 
 If a review is published without proper moderation, the website can surface low-quality or unsafe testimonial content.
 
@@ -46,7 +46,7 @@ Expected website result:
 - treat reviews as moderated public statements
 - use internal moderation notes for context and decision history
 - prefer display names when privacy matters
-- keep supplemental layout blocks secondary to the structured review fields
+- preserve private reviewer email for moderation only and use the public display name intentionally
 
 ## Common Mistakes And Recovery
 
@@ -59,7 +59,9 @@ If a review should not be public, move it back out of the published state and re
 
 ## Related Guides
 
-- [Categories](./categories.md)
+- [Topics](./categories.md)
 - [Tags](./tags.md)
 - [Articles](./articles.md)
 - [Media](./media.md)
+- [Forms](./forms.md)
+- [Page Blocks](./blocks.md)

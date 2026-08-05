@@ -2,7 +2,7 @@
 
 ## What This Section Is
 
-`System Pages` is where you create branded fallback experiences for special website states such as `404`, `maintenance`, and `coming soon`. These are not normal content pages. They exist to protect the public experience when a route is missing or when the whole North Valley Medical College website is intentionally overridden by a system mode.
+`System Pages` creates branded 404, maintenance, and coming-soon presets. These are not normal content Pages and each record must contain exactly one system block matching its selected type.
 
 ## When To Use It
 
@@ -16,9 +16,9 @@ Do not use `System Pages` for normal marketing or editorial content. Use `Pages`
 
 ## How It Connects To The Website
 
-System pages have site-wide impact. A `404` page is shown when a visitor requests a route that does not exist. Maintenance and coming-soon pages are tied to `System Modes`, which can override the normal frontend for all public routes.
+The selected 404 handles missing frontend routes. Maintenance and coming-soon presets are activated through `Maintenance & Modes`; current overrides cover the homepage and catch-all CMS Page routes, not every dedicated route.
 
-This section depends on correct page type selection, matching system blocks, and the related selections in `Site Defaults` and `System Modes`. If a system page is misconfigured, visitors may see the wrong fallback, missing branding, or no clear path back to key areas such as Admissions or Contact.
+All three active preset relationships live in `Maintenance & Modes`. If a referenced preset is unpublished, deleted, or changed to the wrong type, validation prevents the invalid configuration.
 
 ## Step-By-Step Medical College Example
 
@@ -34,13 +34,13 @@ Create branded `404` and maintenance experiences for North Valley Medical Colleg
 8. Set the type to `maintenance`.
 9. Add the matching maintenance block and explain that the college website is temporarily unavailable during planned updates.
 10. Save and publish the maintenance page.
-11. Open `Site Defaults` and select the `404` page in the system-page defaults area.
-12. Open `System Modes` and choose the maintenance page so it is ready if the site needs to be placed into maintenance mode.
+11. Open `Maintenance & Modes` and select the published 404, maintenance, and coming-soon presets.
+12. Keep the mode Off until the temporary experience is required.
 
 Expected website result:
 
 - missing routes show the branded `404` experience
-- if maintenance mode is enabled later, the frontend switches to the maintenance experience site-wide
+- if maintenance mode is enabled later, CMS Page routes switch to the maintenance experience
 
 ## Best Practices
 
@@ -53,7 +53,7 @@ Expected website result:
 ## Common Mistakes And Recovery
 
 - using the wrong block for the selected page type
-- forgetting to connect the system page in `Site Defaults` or `System Modes`
+- forgetting to connect the system page in `Maintenance & Modes`
 - publishing weak fallback content with no route back to key sections
 - editing a referenced system page without checking how it behaves on the frontend
 
@@ -62,6 +62,6 @@ If a fallback experience looks wrong, verify the page type, confirm the selected
 ## Related Guides
 
 - [Pages](./pages.md)
-- [Site Defaults](./site-defaults.md)
-- [System Modes](./system-modes.md)
-- [SEO Settings](./seo-settings.md)
+- [Layout Defaults](./site-defaults.md)
+- [Maintenance & Modes](./system-modes.md)
+- [SEO & Metadata](./seo-settings.md)

@@ -1,72 +1,57 @@
-# Website Defaults Guide
+# Layout Defaults Guide
 
 ## What This Section Is
 
-`Website Defaults` is where you choose the global website defaults that control the real homepage, the active header, and the active footer.
+`Layout Defaults` controls the site's active homepage, Header, Footer, default Page appearance, and optional site-wide announcement bar.
 
-In North Valley Medical College, this is the section that decides:
+## Site Structure
 
-- which published page opens at `/`
-- which header appears across the site
-- which footer appears across the site
+- `Homepage` must reference a published Page and renders at `/`.
+- `Header` selects the Header preset rendered across the public layout.
+- `Footer` selects the Footer preset rendered across the public layout.
 
-## When To Use It
+Edit and publish the source Page/Header/Footer before selecting it here. These relationships select active records; they do not edit their content.
 
-Use `Website Defaults` when you need to:
+## Page Appearance
 
-- change the real homepage of the website
-- switch the live site to a different saved header preset
-- switch the live site to a different saved footer preset
+The Page Appearance tab sets the shared frontend Page background/surface behavior through the same appearance system used by project blocks. Treat it as a site-wide design change and verify representative routes in light and dark modes.
 
-Do not use this section to edit the page content itself. Edit the source page, header, or footer in its own section first, then select it here when it is ready to go live site-wide.
+## Announcement Bar
 
-## How It Connects To The Website
+The Announcement tab configures a bar above the global Header:
 
-This global is directly connected to the frontend layout and routing:
+- enablement, optional label, and one or more items with description and optional title/URL
+- Vertical Slider, Horizontal Slider, or Marquee animation
+- rotation interval of at least 2,000 ms for slider modes
+- marquee cycle of at least 8,000 ms
+- shared appearance settings
+- optional visitor dismissal for the browser session
+- optional hide-on-scroll behavior instead of a persistent bar
 
-- `Front Page` decides which published page renders at `/`
-- `Active Header` decides which header preset renders across the site
-- `Active Footer` decides which footer preset renders across the site
-
-This section has immediate site-wide importance. A wrong homepage selection changes the root route for the whole website. A wrong header or footer changes global navigation and trust content across nearly every page.
+This is separate from the in-page `Announcement` block.
 
 ## Step-By-Step Medical College Example
 
-Make `Admissions Overview` the homepage for North Valley Medical College:
-
-1. Confirm the `Admissions Overview` page is published in `Pages`.
-2. Open `Website Defaults`.
-3. Open the `Front Page` tab.
-4. Select `Admissions Overview` in the `Front Page` field.
-5. Open the `Header` tab and choose the intended live header preset.
-6. Open the `Footer` tab and choose the intended live footer preset.
-7. Save the global.
-8. Verify the public website homepage at `/`.
-
-Expected website result:
-
-- the root URL now renders the selected published page
-- the selected header and footer appear across the public site
-
-## Best Practices
-
-- only point the homepage to a page that is fully reviewed and already published
-- treat header and footer switches as site-wide releases
-- verify the homepage route after every homepage change
-- coordinate homepage changes with navigation, SEO, and campaign traffic
+1. Publish the intended Homepage, Header, and Footer presets.
+2. Open `Layout Defaults` in `Configuration`.
+3. Select those three records under `Site Structure`.
+4. Review the default Page appearance.
+5. If a campus notice is required, enable the announcement bar, add concise items, select an animation, and validate its timing.
+6. Save and verify `/`, a nested Page, mobile layout, dismissal, scrolling, and Header spacing.
 
 ## Common Mistakes And Recovery
 
-- selecting a draft page as the homepage candidate
-- changing the homepage without checking the live route afterward
-- switching header or footer presets before they were fully reviewed
-- assuming this section changes page content instead of just selecting the active preset
+- selecting a draft Homepage (validation rejects it)
+- assuming a draft Header/Footer will render publicly
+- confusing the site-wide announcement with an in-page Announcement block
+- using overly fast rotation or marquee timing
 
-If the homepage looks wrong, verify the selected page here first, then inspect the source page in `Pages`. If the site shell looks wrong, check the selected header and footer presets.
+If the root route or shell is wrong, restore the previous relationships here. If only one Page is wrong, edit that Page rather than changing a global default.
 
 ## Related Guides
 
 - [Pages](./pages.md)
 - [Headers](./headers.md)
 - [Footers](./footers.md)
-- [SEO Settings](./seo-settings.md)
+- [Page Blocks](./blocks.md)
+- [Appearance](./theme-settings.md)

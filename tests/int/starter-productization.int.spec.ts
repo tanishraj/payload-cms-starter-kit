@@ -40,7 +40,7 @@ describe('starter productization', () => {
     expect(envExample).toContain('DATABASE_URL=mongodb://127.0.0.1:27017/payload-cms-starter-kit')
     expect(envExample).not.toContain('DATABASE_PROVIDER=sqlite')
     expect(envExample).toContain('EMAIL_PROVIDER=none')
-    expect(envExample).toContain('MEDIA_PROVIDER=s3')
+    expect(envExample).toContain('MEDIA_PROVIDER=localDisk')
     expect(envExample).not.toContain('POSTGRES_URL=')
     expect(envExample).toContain('S3_ENDPOINT')
     expect(envExample).toContain('MEDIA_RECONCILE_TOKEN')

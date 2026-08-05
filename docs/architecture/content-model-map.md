@@ -1,78 +1,91 @@
 # Content Model Map
 
-This starter already has clear ownership boundaries for marketing-site content. Use this map before adding new collections or globals so client-specific changes land in the right place.
+Use this ownership map before adding schema so client-specific changes land in the correct collection, global, or runtime layer. The exhaustive technical map is [Feature Inventory](./feature-inventory.md).
 
-## Pages
+## Content
 
-`pages` is the main collection for marketing content. It owns hierarchical URLs, draft and publish state, live preview, redirects, page-level SEO fields, and block-based page layouts. Use it for normal public-facing pages such as home, about, services, and contact.
+`pages` owns hierarchical public CMS routes, block layouts, workflow, live preview, route SEO, synchronized Page links, and automatic redirects when a published path changes.
 
-## Navigation Links
+`reusable-sections` owns shared block groups referenced from Pages. It uses a restricted block set and cannot reference itself.
 
-`navigation-links` stores reusable destinations for menus, CTAs, utility links, and page-synced links. Use it when a destination needs to be shared across headers, footers, or page content without duplicating URL logic.
+`articles` owns authored long-form content, Topics and Tags, featured media, related-article behavior, SEO, and live preview. Article topic and tag archives are route-owned.
 
-## Headers And Footers
+`news-events` owns both news stories and dated events. Event entries add validated date, location, and registration data. The collection drives the dedicated archive, detail routes, Highlights block, feed, structured data, and live preview.
 
-`headers` and `footers` own reusable structural chrome for the public site. Use them for shared navigation, logos, social links, and repeated CTA surfaces instead of rebuilding those patterns inside page layouts.
+`reviews` owns moderated public ratings/testimonials and immutable linkage back to a promoted Form Submission. Review topic archives, feed blocks, rating summaries, SEO, and live preview read this collection.
 
-## System Pages
+## Taxonomy
 
-`system-pages` stores managed presets for 404, maintenance, and coming-soon experiences. These are not normal marketing pages. They are selected by type and then activated through Website Defaults and Website Modes when the frontend should override public routes.
+`categories`, labeled `Topics`, owns hierarchical reusable classifications. Articles, Reviews, and News & Events use primary Topics; Articles and News & Events also support additional Topics.
 
-## Editorial Inventory
+`tags` owns flat keywords used by Articles, Reviews, and News & Events. The built-in tag archive route exists for Articles; News & Events filters Tags through archive query parameters.
 
-`articles` owns long-form editorial content with lexical rich text, featured media, taxonomies, archive behavior, and SEO fields. Use it for authored posts, resources, and newsroom-style content.
+## Navigation And Site Structure
 
-`reviews` owns approved public testimonials promoted from form submissions. Use it for moderated review content that should be displayed on the public website after internal review.
+`navigation-links` owns reusable Page or custom destinations. Pages create and update their own synchronized records; manual records remain independently managed. Current Header/Footer presets use their own inline Page/custom link fields, while System Page actions can use Navigation Links.
 
-`categories` and `tags` provide reusable taxonomy for articles and reviews. Use them instead of ad hoc free-text labels when content needs filtering, archive pages, or shared SEO surfaces.
+`redirects` owns enabled normalized incoming paths, 301/302 status, and Page/custom destinations. Redirect middleware refreshes its in-process map every 60 seconds.
 
-## Intake And Lead Operations
+`headers` and `footers` own versioned shell presets. The current schema registers Header Navbar 12 and Footer 56 respectively. Site identity, contact, legal, and social defaults are injected from `site-settings` rather than duplicated in each preset.
 
-`forms` owns public submission schemas, field definitions, notification recipients, throttling behavior, and submission intent.
+`office-locations` owns reusable map/contact records consumed by the Regional Offices Page block. Both map URLs must be HTTPS.
 
-`form-submissions` owns stored submissions, assignment, follow-up state, and operational handling after a visitor submits a form.
+`system-pages` owns one matching 404, maintenance, or coming-soon block per preset, plus SEO and editorial workflow. `system-mode-settings` selects and activates these presets.
 
-Review intake starts in `forms` and `form-submissions`; public-facing reviews only belong in `reviews` after editorial approval.
+## Media
 
-## Website Defaults
+`media` owns uploads, internal classification, alt text, usage summaries, critical-asset notes, deletion protection, storage health, Action Queue integration, and selected Audit Log events.
 
-`page-settings` is the control surface for site-wide routing and structural defaults. It chooses the active homepage, header, and footer. Use it when a setting changes how the whole site resolves content.
+`gallery-albums` owns ordered image collections for Event Gallery. Its first image is the cover and the remaining row order controls the viewer.
 
-## Website Modes
+## Forms And Intake
 
-`system-mode-settings` is the control surface for site-wide fallback behavior. It chooses the active 404 page and maintenance or coming-soon override behavior when the public site should temporarily stop using the normal frontend content flow.
+`forms` owns general, lead, or review-intent schemas, validation fields, notification recipients, and optional submitter confirmation copy. Public spam controls and rate-limit constants live in application code, not editable Form fields.
 
-## Site Settings
+`form-submissions` owns stored visitor data, source/campaign metadata, assignment, follow-up state, activity, and optional promotion to a governed Review.
 
-`site-settings` owns client identity and operational contact data: site name, site description, logos, favicon, contact details, address, map embed URL, and social links. Replace these values early in each clone.
+## Administration
 
-## SEO Settings
+`work-queue`, labeled `Action Queue`, owns CMS-generated operational work. Hooks deduplicate, reopen, and auto-resolve approval, moderation, follow-up, publish, media, and system conditions.
 
-`seo-settings` owns the fallback SEO contract for the whole site. It defines default titles, title templates, descriptions, default Open Graph media, robots rules, and Google site verification when pages do not provide their own overrides.
+`operational-audit-events`, labeled `Audit Log`, owns immutable selected operational history. It is not a complete record of every database change.
 
-## Theme Settings
+`users` owns Payload authentication, Admin/Site Manager/Content Manager roles, capability presets, and per-user overrides.
 
-`theme-settings` owns presentation defaults that apply site-wide, including the chosen theme preset and color-scheme behavior. Treat it as the place for client-wide visual defaults, not page-specific design decisions.
+All collections receive Payload Trash through the project plugin, subject to their normal access rules.
 
-## Reusable Sections
+## Settings Globals
 
-`reusable-sections` stores named block collections that can be referenced from any page layout. A single edit to a reusable section propagates automatically to every page that references it. Use it for shared content that appears on multiple pages and must stay in sync: accreditation strips, seasonal CTAs, recurring disclaimers.
+`site-settings`, labeled `Site Identity`, owns site name/description, logo/favicon, contact/address, privacy and terms Page relationships, and social links.
 
-## Analytics Settings
+`theme-settings`, labeled `Appearance`, owns the site theme preset and system/light/dark mode.
 
-`analytics-settings` owns the GTM container ID and GA4 measurement ID for the public website. All analytics scripts are injected only after a visitor grants cookie consent. This global is the sole place for third-party analytics configuration — do not paste tracking scripts into page content or blocks.
+`seo-settings`, labeled `SEO & Metadata`, owns fallback title, title template, description, default social image, robots behavior, and Google verification.
 
-## Site Search
+`analytics-settings`, labeled `Analytics & Tracking`, owns GTM and standalone GA4 configuration.
 
-The website exposes a built-in search surface at `/search` and via a `Cmd+K` overlay. Search is always active and requires no CMS configuration. It queries pages, articles, and news-events in real time. A `WebSite` JSON-LD schema with `SearchAction` is emitted in the layout `<head>` to register the search endpoint with Google.
+`cookie-consent-settings`, labeled `Cookie Consent Banner`, owns consent UI enablement, four variants, position, and copy. Analytics still requires a granted consent cookie.
 
-## RSS Feeds
+## Configuration Globals
 
-The website automatically generates RSS 2.0 and Atom feeds at `/articles/feed.xml` and `/news-events/feed.xml`. These are linked via `<link rel="alternate">` autodiscovery tags in the layout `<head>` so feed readers detect them automatically. No CMS configuration is needed.
+`page-settings`, labeled `Layout Defaults`, chooses the homepage, active Header/Footer, default Page appearance, and site-wide announcement behavior.
+
+`news-events-settings` owns the `/news-events` archive copy, labels, item count, empty state, appearance, and SEO.
+
+`system-mode-settings`, labeled `Maintenance & Modes`, selects the published type-safe 404/maintenance/coming-soon presets and activates maintenance or coming-soon mode. Current mode overrides apply to the homepage and catch-all CMS Page routes, not every dedicated route.
+
+## Runtime-Owned Features
+
+- `/search` and the command-key dialog query Pages, Articles, and News & Events; they have no CMS global.
+- `/articles/feed.xml` and `/news-events/feed.xml` are RSS 2.0 feeds with Atom self-links.
+- `/robots.txt`, `/sitemap.xml`, dynamic social images, JSON-LD, and cache/revalidation behavior are application routes and helpers.
+- the Forms submission, review feed, search, redirects, and media reconciliation APIs are application-owned.
+- MongoDB, Resend, local/S3 media, and deployment constraints are environment-owned.
 
 ## Extension Rules
 
-- Add client-specific collections beside the core starter collections instead of overloading `pages`, `system-pages`, or `navigation-links`.
-- Prefer hooks and `src/lib` helpers for cross-cutting behavior such as notifications, automations, or publishing side effects.
-- Keep global ownership explicit so branding, routing defaults, fallback modes, SEO defaults, and theme defaults do not drift across multiple globals.
-- Keep intake flows in `forms` and `form-submissions`, and only promote curated public content into editorial collections when that distinction matters operationally.
+- add client-specific collections beside the core starter collections instead of overloading Pages or System Pages
+- prefer hooks and `src/lib` helpers for cross-cutting side effects
+- keep global ownership explicit so identity, layout, modes, SEO, analytics, and archive settings do not drift
+- keep visitor intake in Forms/Form Submissions and only promote curated public content to editorial collections
+- add a Page block only when its data does not deserve a governed reusable collection of its own

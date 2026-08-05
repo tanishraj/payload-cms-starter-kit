@@ -10,12 +10,12 @@ Use `Tags` when content needs lightweight topical labels that help users and edi
 
 Do not use it for:
 
-- the main content structure, which belongs in `Categories`
+- the main content structure, which belongs in `Topics`
 - page URLs or navigation items
 
 ## How It Connects To The Website
 
-Tags support related-content behavior, content discovery, and any future tag archives or filtered listings. They sit alongside `Articles` and `Reviews`, not above them.
+Tags support Articles, Reviews, and News & Events. Article tag archives are live at `/articles/tag/[slug]`; News & Events can filter Tags through archive query parameters. There is no Review tag archive.
 
 If tags are inconsistent or overly specific, the website becomes cluttered with weak labels that do not help real users.
 
@@ -33,7 +33,7 @@ Create an `MBBS` tag for North Valley Medical College:
 
 Expected website result:
 
-- editors can attach `MBBS` to articles and reviews across multiple categories
+- editors can attach `MBBS` to Articles, Reviews, and News & Events across multiple Topics
 - related article modules can surface MBBS-linked content more intelligently
 
 ## Best Practices
@@ -53,6 +53,7 @@ If the tag list becomes messy, standardize on one term and stop using the weaker
 
 ## Related Guides
 
-- [Categories](./categories.md)
+- [Topics](./categories.md)
 - [Articles](./articles.md)
+- [News & Events](./news-events.md)
 - [Reviews](./reviews.md)

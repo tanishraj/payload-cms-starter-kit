@@ -2725,7 +2725,7 @@ export interface NewsEvent {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Moderated public reviews with structured fields and supplemental layout blocks.
+ * Moderated public reviews with structured rating, reviewer, taxonomy, SEO, and workflow fields.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "reviews".
@@ -3303,7 +3303,7 @@ export interface WorkQueue {
   deletedAt?: string | null;
 }
 /**
- * Read-only record of every publish, delete, status change, and role update across the CMS.
+ * Read-only record of selected governed content, settings, queue, and media operations.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "operational-audit-events".
