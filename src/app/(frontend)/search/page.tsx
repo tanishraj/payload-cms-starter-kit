@@ -3,6 +3,8 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import Link from 'next/link'
 
+import { resolveSearchPageHrefs } from '@/lib/searchPagePaths'
+
 const MIN_QUERY_LENGTH = 2
 const PER_TYPE_LIMIT = 8
 
@@ -63,12 +65,17 @@ async function runSearch(query: string): Promise<SearchItem[]> {
   const items: SearchItem[] = []
 
   if (pagesResult.status === 'fulfilled') {
+    const pageHrefs = await resolveSearchPageHrefs(pagesResult.value.docs, payload)
+
     for (const page of pagesResult.value.docs) {
+      const href = pageHrefs.get(String(page.id))
+      if (!href) continue
+
       items.push({
         id: String(page.id),
         title: page.title,
         excerpt: page.metaDescription ?? '',
-        href: `/${page.slug}`,
+        href,
         label: 'Page',
         accent: 'bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300',
       })

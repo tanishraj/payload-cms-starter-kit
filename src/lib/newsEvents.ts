@@ -18,7 +18,7 @@ import {
   toPublicNewsEventDetail,
 } from '@/lib/newsEventsShared'
 import { getTaxonomyTerm, getTaxonomyTerms } from '@/lib/taxonomy'
-import type { NewsEvent, NewsEventsSetting } from '@/payload-types'
+import type { Category, NewsEvent, NewsEventsSetting, SeoSetting, Tag } from '@/payload-types'
 
 export type NewsEventsPayload = Pick<Payload, 'find' | 'findGlobal' | 'logger'>
 
@@ -317,6 +317,40 @@ export const getNewsEventsSettings = unstable_cache(
   ['news-events-settings'],
   { tags: [CMS_CACHE_TAGS.newsEvents], revalidate: false },
 )
+
+const _getNewsEventsInheritedRobots = async (): Promise<SeoSetting['robots']> => {
+  const payload = await loadPayload()
+  const settings = await payload.findGlobal({ slug: 'seo-settings', depth: 0 })
+  return settings.robots
+}
+
+export const getNewsEventsInheritedRobots = unstable_cache(
+  _getNewsEventsInheritedRobots,
+  ['news-events-inherited-robots'],
+  { tags: [CMS_CACHE_TAGS.globals], revalidate: false },
+)
+
+export const getNewsEventCategoryBySlug = cache(async (slug: string): Promise<Category | null> => {
+  const payload = await loadPayload()
+  const result = await payload.find({
+    collection: 'categories',
+    depth: 1,
+    limit: 1,
+    where: { slug: { equals: slug } },
+  })
+  return result.docs[0] ?? null
+})
+
+export const getNewsEventTagBySlug = cache(async (slug: string): Promise<Tag | null> => {
+  const payload = await loadPayload()
+  const result = await payload.find({
+    collection: 'tags',
+    depth: 1,
+    limit: 1,
+    where: { slug: { equals: slug } },
+  })
+  return result.docs[0] ?? null
+})
 
 const _getNewsEventCategories = async (): Promise<
   Array<{ id: number | string; slug: string; title: string }>

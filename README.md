@@ -20,6 +20,12 @@ The repo fails fast if you try to boot a Vercel production profile with the defa
 5. Run `pnpm dev`.
 6. Open `http://localhost:3000` and create the first admin user.
 
+## Production Docker Image
+
+The supplied `Dockerfile` builds the Next.js standalone production server. Build it with `docker build -t payload-cms-starter-kit .` and run it with the environment variables described below.
+
+Production containers require a durable external MongoDB database and `MEDIA_PROVIDER=s3` with a durable S3-compatible bucket. The image intentionally does not provide persistent local-disk uploads. `docker-compose.yml` remains the local-development workflow and is not a production stack.
+
 ## What This Starter Already Covers
 
 **Content and structure**

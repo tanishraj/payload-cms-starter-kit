@@ -28,6 +28,7 @@ Changes are versioned, written to the Audit Log, and revalidated for the fronten
 
 - keep filter labels short enough for mobile layouts
 - use the empty state to explain how visitors can recover from a narrow filter
+- leave Robots at `Default` to inherit the global SEO & Metadata crawler policy; explicit `Index` or `No index` values override it for the archive
 - review canonical and robots settings before intentionally excluding the archive
 - coordinate page-size changes with content-card density
 

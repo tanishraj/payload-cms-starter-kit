@@ -4,6 +4,8 @@
 
 The custom admin dashboard is the operational landing page after sign-in. It summarizes content totals, items needing attention, recent edits, and recent form submissions, and provides shortcuts to common create and management screens.
 
+The dashboard follows the signed-in user's capabilities. Counts, recent records, operational cards, and quick actions appear only for areas that user can manage. Administrators see the full dashboard; restricted users see a smaller workspace without placeholder cards for inaccessible areas.
+
 The public frontend also shows an authenticated CMS session bar with the current role, a link back to Admin, and logout.
 
 ## How To Use It

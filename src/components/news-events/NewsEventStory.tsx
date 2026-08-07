@@ -11,6 +11,7 @@ import {
   newsEventObjectPositionClasses,
   type PublicNewsEventDetail,
 } from '@/lib/newsEventsShared'
+import { getNewsEventsCategoryPath, getNewsEventsTagPath } from '@/lib/newsEventsPaths'
 import { cn } from '@/lib/utils'
 
 export function NewsEventStory({ entry }: { entry: PublicNewsEventDetail }) {
@@ -23,7 +24,7 @@ export function NewsEventStory({ entry }: { entry: PublicNewsEventDetail }) {
             {entry.category ? (
               <Link
                 className="transition-colors underline-offset-4 hover:text-current hover:underline"
-                href={`/news-events?category=${entry.category.slug}`}
+                href={getNewsEventsCategoryPath(entry.category.slug)}
               >
                 {entry.category.title}
               </Link>
@@ -83,7 +84,7 @@ export function NewsEventStory({ entry }: { entry: PublicNewsEventDetail }) {
             {entry.categories.map((term) => (
               <Link
                 className="rounded-md border border-border px-3 py-1 text-sm text-current/70 transition-colors hover:bg-muted hover:text-current"
-                href={`/news-events?category=${term.slug}`}
+                href={getNewsEventsCategoryPath(term.slug)}
                 key={`category-${term.id}`}
               >
                 {term.title}
@@ -92,7 +93,7 @@ export function NewsEventStory({ entry }: { entry: PublicNewsEventDetail }) {
             {entry.tags.map((tag) => (
               <Link
                 className="rounded-md border border-border px-3 py-1 text-sm text-current/70 transition-colors hover:bg-muted hover:text-current"
-                href={`/news-events?tag=${tag.slug}`}
+                href={getNewsEventsTagPath(tag.slug)}
                 key={`tag-${tag.id}`}
               >
                 {tag.title}

@@ -71,7 +71,7 @@ Normal Pages register 39 choices: Announcement, Call to Action, Hero Banner, Her
 
 Headers register only Header Navbar 12; Footers register only Footer 56; System Pages register one matching System 404, System Maintenance, or System Coming Soon block. The admin picker uses generated JPEG thumbnails. `/block-thumbnail-previews/[slug]` is development-only. See [Page Blocks](../guides/blocks.md) for the operator catalog.
 
-Production Page blocks are wrapped in a block-level error boundary. Reusable Section rendering has a maximum nesting depth of 10, while the schema prevents direct recursive selection.
+Production Page blocks are wrapped in a block-level error boundary. Live Page preview covers the same block types and production components, including blocks reached through Reusable Sections. Reusable Section rendering has a maximum nesting depth of 10, while the schema prevents direct recursive selection.
 
 ## Public Routes
 
@@ -85,6 +85,8 @@ Production Page blocks are wrapped in a block-level error boundary. Reusable Sec
 | `/reviews/[slug]` | Review detail, related reviews, metadata |
 | `/reviews/category/[slug]` | Topic-filtered review archive |
 | `/news-events` | Filtered and paginated all/news/event archive with separate upcoming/past event pages |
+| `/news-events/category/[slug]` | Canonical topic-filtered News & Events archive |
+| `/news-events/tag/[slug]` | Canonical tag-filtered News & Events archive |
 | `/news-events/[slug]` | NewsArticle or Event detail and structured data |
 | `/search` | SSR search, capped at eight results per content type |
 | `/preview/page/[id]` | Authenticated Page preview |
@@ -129,7 +131,7 @@ Redirect middleware excludes Next.js internals, APIs, Admin, and common static/m
 
 - SEO fields support route title/description/image, canonical, robots, and sitemap decisions with publish-time validation.
 - Layout emits Organization and WebSite/SearchAction structured data. SearchAction describes onsite search; Google retired its Sitelinks Search Box result in November 2024.
-- Sitemap fetches all result pages in batches of 500 and includes published Pages, Articles, Reviews, News & Events, the News & Events index, used article/review topic routes, and used article tag routes.
+- Sitemap fetches all result pages in batches of 500 and includes published Pages, Articles, Reviews, News & Events, the News & Events index, used article/review topic routes, used article tag routes, and eligible topic/tag routes used by indexable published News & Events entries. It does not generate filter-combination or pagination URLs.
 - `robots.txt` disallows Admin, API, and preview paths, or disallows the whole site when global robots is noindex.
 - Layout globals and Page data use persistent Next cache tags; article/review helper `cache()` calls mainly deduplicate within a render. Sitemap/robots/feeds also use explicit time revalidation.
 
@@ -156,16 +158,4 @@ Redirect middleware excludes Next.js internals, APIs, Admin, and common static/m
 - `pnpm export:db` uses `mongodump` to create a compressed archive under `backups/`.
 - `pnpm migrate:offices` migrates legacy office data.
 - Vitest covers schema, hooks, helpers, route behavior, rendering, providers, and documentation vocabulary; Playwright covers core Admin and frontend journeys.
-- There is no repository CI workflow. The supplied Dockerfile expects Next.js standalone output, but `next.config.ts` does not currently enable it; treat container-image deployment as unfinished until that mismatch is resolved.
-
-## Known Implementation Boundaries
-
-These are current source limitations, not promised features:
-
-- live Page preview omits Hero Carousel, Gallery Coverflow, Testimonial Grid, Awards List, and About Section even though production renders them
-- hierarchical Page results in search currently build links from the leaf slug rather than the complete parent path
-- News & Events metadata does not consistently inherit global robots defaults
-- sitemap taxonomy coverage is based on article/review use and does not model all News & Events taxonomy combinations
-- dashboard aggregate/recent-data queries are not capability-filtered at query time
-
-Address these in implementation work rather than describing them as supported behavior.
+- There is no repository CI workflow. The supplied Dockerfile builds a non-root Next.js standalone production image; production containers require durable MongoDB and S3-compatible media storage.

@@ -2,7 +2,7 @@ import configPromise from '@payload-config'
 import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 
-import { toAbsoluteSiteUrl } from '@/lib/siteUrl'
+import { resolveSearchPageHrefs } from '@/lib/searchPagePaths'
 
 // Simple in-memory rate limiter: max 20 requests per IP per 10 seconds
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
@@ -99,12 +99,17 @@ export async function GET(request: Request) {
   const results: SearchResultItem[] = []
 
   if (pagesResult.status === 'fulfilled') {
+    const pageHrefs = await resolveSearchPageHrefs(pagesResult.value.docs, payload)
+
     for (const page of pagesResult.value.docs) {
+      const href = pageHrefs.get(String(page.id))
+      if (!href) continue
+
       results.push({
         id: String(page.id),
         title: page.title,
         excerpt: page.metaDescription ?? '',
-        href: `/${page.slug}`,
+        href,
         type: 'page',
         label: 'Page',
       })

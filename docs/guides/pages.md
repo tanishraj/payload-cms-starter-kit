@@ -17,7 +17,7 @@ Do not use it for:
 
 Pages define real frontend routes. A published Page can become the homepage through `Layout Defaults`. The CMS maintains its owned Navigation Link and creates 301 Redirects for the old path when a published slug/parent path changes, including affected descendants.
 
-The parent validator prevents self-parenting and circular hierarchies. Referenced Pages cannot be unpublished when doing so would invalidate configured relationships. Layout offers 39 blocks, SEO is publish-validated, and live preview provides desktop, tablet, and mobile frames.
+The parent validator prevents self-parenting and circular hierarchies. Referenced Pages cannot be unpublished when doing so would invalidate configured relationships. Layout offers 39 blocks, SEO is publish-validated, and live preview renders every production Page block in desktop, tablet, and mobile frames.
 
 ## Step-By-Step Medical College Example
 

@@ -40,6 +40,16 @@ Boolean variables accept `true/false`, `1/0`, `yes/no`, or `on/off` case-insensi
 
 Use `MEDIA_PROVIDER=localDisk` and either `docker compose up -d mongo` or another reachable MongoDB. Do not leave the placeholder S3 credentials active in a copied `.env`.
 
+## Production Docker Image
+
+`next.config.ts` enables standalone output, and the supplied Dockerfile packages that traced server as a non-root production image. Build it with:
+
+```bash
+docker build -t payload-cms-starter-kit .
+```
+
+Run the image with a durable MongoDB connection and `MEDIA_PROVIDER=s3` plus the required S3-compatible provider variables. The image intentionally has no persistent local-media volume. `docker-compose.yml` remains a local-development workflow; it is not a production deployment stack.
+
 ## S3-Compatible Storage
 
 The Payload S3 plugin attaches only to `media`. Verify endpoint, credentials, bucket ACL, path style, and public/private delivery behavior with the actual provider. Enable client uploads only after adding PUT CORS for the site origin.
@@ -57,7 +67,6 @@ Run storage reconciliation after migrations, restores, or suspected bucket drift
 - set `NEXT_PUBLIC_SERVER_URL` to the externally reachable HTTPS origin
 - never expose reconciliation or provider secrets to client-side variables
 - the repository has no CI workflow
-- the Dockerfile currently expects `.next/standalone`, while `next.config.ts` does not enable standalone output; resolve this before treating the container image as deployable
 
 ## Verification
 

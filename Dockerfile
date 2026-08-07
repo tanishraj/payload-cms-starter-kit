@@ -1,5 +1,5 @@
-# To use this Dockerfile, you have to set `output: 'standalone'` in your next.config.mjs file.
-# From https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
+# Production image for the Next.js standalone output enabled in next.config.ts.
+# Based on https://github.com/vercel/next.js/tree/canary/examples/with-docker
 
 FROM node:22.17.0-alpine AS base
 
@@ -48,8 +48,8 @@ ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Remove this line if you do not have this folder
-COPY --from=builder /app/public ./public
+# Static public assets are immutable and owned by the runtime user.
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # Set the correct permission for prerender cache
 RUN mkdir .next

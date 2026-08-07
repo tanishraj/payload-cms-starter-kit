@@ -3,6 +3,7 @@ import type { MetadataRoute } from 'next'
 import { getPayload } from 'payload'
 
 import { getPageHrefFromSourceWithResolver, getPageID } from '@/lib/pagePaths'
+import { getNewsEventsCategoryPath, getNewsEventsTagPath } from '@/lib/newsEventsPaths'
 import { resolveRobotsMode, resolveSitemapInclusion, type RobotsFieldValue } from '@/lib/seo'
 import { getTaxonomyRelationshipIDs, getTaxonomyTerm } from '@/lib/taxonomy'
 import { toAbsoluteSiteUrl } from '@/lib/siteUrl'
@@ -177,9 +178,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   )
 
+  const newsEventCategoryIDs = new Set<number | string>()
+  const newsEventTagIDs = new Set<number | string>()
+
   for (const entry of newsEvents) {
     if (!entry.slug || !isRouteEligibleForSitemap({ entry, inheritedRobots })) continue
     addEntry({ entries, lastModified: entry.updatedAt, pathname: `/news-events/${entry.slug}` })
+
+    const primaryCategory = getTaxonomyTerm(entry.primaryCategory)
+    if (primaryCategory) newsEventCategoryIDs.add(primaryCategory.id)
+    for (const categoryID of getTaxonomyRelationshipIDs(entry.categories)) {
+      newsEventCategoryIDs.add(categoryID)
+    }
+    for (const tagID of getTaxonomyRelationshipIDs(entry.tags)) newsEventTagIDs.add(tagID)
   }
 
   // ─── Categories & Tags ─────────────────────────────────────────────────────
@@ -207,28 +218,48 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ])
 
   for (const category of allCategories) {
-    if (
-      !usedCategoryIDs.has(category.id) ||
-      !category.slug ||
-      !isRouteEligibleForSitemap({ entry: category, inheritedRobots })
-    ) {
+    if (!category.slug || !isRouteEligibleForSitemap({ entry: category, inheritedRobots })) {
       continue
     }
 
-    addEntry({ entries, lastModified: category.updatedAt, pathname: `/articles/category/${category.slug}` })
-    addEntry({ entries, lastModified: category.updatedAt, pathname: `/reviews/category/${category.slug}` })
+    if (usedCategoryIDs.has(category.id)) {
+      addEntry({
+        entries,
+        lastModified: category.updatedAt,
+        pathname: `/articles/category/${category.slug}`,
+      })
+      addEntry({
+        entries,
+        lastModified: category.updatedAt,
+        pathname: `/reviews/category/${category.slug}`,
+      })
+    }
+
+    if (newsEventCategoryIDs.has(category.id)) {
+      addEntry({
+        entries,
+        lastModified: category.updatedAt,
+        pathname: getNewsEventsCategoryPath(category.slug),
+      })
+    }
   }
 
   for (const tag of allTags) {
-    if (
-      !usedTagIDs.has(tag.id) ||
-      !tag.slug ||
-      !isRouteEligibleForSitemap({ entry: tag, inheritedRobots })
-    ) {
+    if (!tag.slug || !isRouteEligibleForSitemap({ entry: tag, inheritedRobots })) {
       continue
     }
 
-    addEntry({ entries, lastModified: tag.updatedAt, pathname: `/articles/tag/${tag.slug}` })
+    if (usedTagIDs.has(tag.id)) {
+      addEntry({ entries, lastModified: tag.updatedAt, pathname: `/articles/tag/${tag.slug}` })
+    }
+
+    if (newsEventTagIDs.has(tag.id)) {
+      addEntry({
+        entries,
+        lastModified: tag.updatedAt,
+        pathname: getNewsEventsTagPath(tag.slug),
+      })
+    }
   }
 
   return [...entries.values()]

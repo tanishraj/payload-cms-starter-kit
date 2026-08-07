@@ -37,6 +37,8 @@ The search dialog is embedded in the site layout and is available on every page 
 
 Search results link directly to the relevant content page. Clicking a result from the dialog or the search page takes the visitor straight to that article, news entry, or page.
 
+Page results use their complete parent path, so a child Page such as `Admissions / Requirements` links to `/admissions/requirements`. If a Page's parent chain cannot be resolved, search omits that Page instead of returning a broken leaf-slug link.
+
 Search is not indexed by Google because it is a dynamic query surface (`robots: noindex` is set on the `/search` page).
 
 ## Search Structured Data

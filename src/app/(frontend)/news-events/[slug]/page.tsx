@@ -6,7 +6,11 @@ import { getPayload } from 'payload'
 
 import { NewsEventLivePreview } from '@/components/live-preview/NewsEventLivePreview'
 import { NewsEventStory } from '@/components/news-events/NewsEventStory'
-import { getNewsEventBySlug, getNewsEventPreviewBySlug } from '@/lib/newsEvents'
+import {
+  getNewsEventBySlug,
+  getNewsEventPreviewBySlug,
+  getNewsEventsInheritedRobots,
+} from '@/lib/newsEvents'
 import { getNewsEventDetailMetadata, getNewsEventStructuredData } from '@/lib/newsEventsMetadata'
 
 export async function generateStaticParams() {
@@ -35,9 +39,12 @@ type PageProps = {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
-  const entry = await getNewsEventBySlug(slug, new Date().toISOString())
+  const [entry, inheritedRobots] = await Promise.all([
+    getNewsEventBySlug(slug, new Date().toISOString()),
+    getNewsEventsInheritedRobots(),
+  ])
 
-  return entry ? getNewsEventDetailMetadata(entry) : {}
+  return entry ? getNewsEventDetailMetadata(entry, inheritedRobots) : {}
 }
 
 export default async function NewsEventEntryPage({ params, searchParams }: PageProps) {

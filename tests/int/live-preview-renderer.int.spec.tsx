@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 
@@ -7,6 +8,113 @@ import { EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT } from '@/lib/newsEventsPreviewShare
 import type { Page } from '@/payload-types'
 
 describe('live-preview page block renderer', () => {
+  it('covers every production Page block type', () => {
+    const productionSource = readFileSync('src/blocks/renderPageBlocks.tsx', 'utf8')
+    const previewSource = readFileSync('src/blocks/renderLivePreviewPageBlocks.tsx', 'utf8')
+    const blockCases = (source: string) =>
+      [...source.matchAll(/case '([^']+)'/g)].map((match) => match[1]).sort()
+
+    expect(blockCases(previewSource)).toEqual(blockCases(productionSource))
+  })
+
+  it('renders every formerly missing block with production behavior', () => {
+    const media = (id: string) => ({
+      alt: `${id} alt`,
+      height: 900,
+      id,
+      url: `/${id}.jpg`,
+      width: 1600,
+    })
+    const layout = [
+      {
+        autoplay: false,
+        blockType: 'heroCarousel',
+        showArrows: false,
+        showDots: false,
+        slides: [
+          { backgroundImage: media('hero-one'), title: 'Preview hero one' },
+          { backgroundImage: media('hero-two'), title: 'Preview hero two' },
+        ],
+      },
+      {
+        blockType: 'galleryCoverflow',
+        images: ['one', 'two', 'three'].map((id) => ({ image: media(id) })),
+        title: 'Preview coverflow',
+      },
+      {
+        blockType: 'testimonialGrid',
+        testimonials: [{ name: 'Alex Morgan', quote: 'Preview testimonial quote' }],
+        title: 'Preview testimonials',
+      },
+      {
+        awards: [{ category: 'award', title: 'Preview excellence award', year: '2026' }],
+        blockType: 'awardsList',
+        title: 'Preview awards',
+      },
+      {
+        blockType: 'aboutSection',
+        body: 'Preview about body',
+        title: 'Preview about section',
+      },
+    ] as unknown as NonNullable<Page['layout']>
+    const html = renderToStaticMarkup(
+      renderLivePreviewPageBlocks(
+        layout,
+        {
+          feedPagesBySize: {},
+          ratingDistribution: { average: 0, count: 0, counts: [0, 0, 0, 0, 0] },
+        },
+        EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT,
+        [],
+        [],
+      ),
+    )
+
+    expect(html).toContain('data-hero-carousel="true"')
+    expect(html).toContain('Preview hero one')
+    expect(html).not.toContain('Previous slide')
+    expect(html).not.toContain('Go to slide')
+    expect(html).toContain('data-gallery-coverflow="true"')
+    expect(html).toContain('Preview coverflow')
+    expect(html).toContain('Preview testimonial quote')
+    expect(html).toContain('Preview excellence award')
+    expect(html).toContain('Preview about section')
+    expect(html).toContain('Preview about body')
+  })
+
+  it('renders formerly missing blocks through Reusable Sections', () => {
+    const layout = [
+      {
+        blockType: 'reusableSection',
+        section: {
+          id: 'shared-awards',
+          layout: [
+            {
+              awards: [{ title: 'Nested preview award' }],
+              blockType: 'awardsList',
+              title: 'Nested awards',
+            },
+          ],
+          title: 'Shared awards',
+        },
+      },
+    ] as unknown as NonNullable<Page['layout']>
+    const html = renderToStaticMarkup(
+      renderLivePreviewPageBlocks(
+        layout,
+        {
+          feedPagesBySize: {},
+          ratingDistribution: { average: 0, count: 0, counts: [0, 0, 0, 0, 0] },
+        },
+        EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT,
+        [],
+        [],
+      ),
+    )
+
+    expect(html).toContain('Nested preview award')
+  })
+
   it('renders review blocks from the server-provided snapshot', () => {
     const snapshot: ReviewPreviewSnapshot = {
       feedPagesBySize: {

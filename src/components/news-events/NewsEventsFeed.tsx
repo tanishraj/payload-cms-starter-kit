@@ -22,10 +22,13 @@ import {
 import {
   newsEventObjectPositionClasses,
   type NewsEventsArchiveQuery,
-  type NewsEventsArchiveType,
   type PublicNewsEventCard,
   type PublicNewsEventsPage,
 } from '@/lib/newsEventsShared'
+import {
+  buildNewsEventsArchiveHref,
+  type NewsEventsTaxonomyContext,
+} from '@/lib/newsEventsPaths'
 import { cn } from '@/lib/utils'
 import type { NewsEventsSetting } from '@/payload-types'
 
@@ -38,6 +41,7 @@ type NewsEventsFeedProps = {
   query: NewsEventsArchiveQuery
   settings: NewsEventsSetting
   tags: ArchiveTaxonomyTerm[]
+  taxonomyContext?: NewsEventsTaxonomyContext
   upcomingEvents?: PublicNewsEventsPage
 }
 
@@ -48,38 +52,16 @@ const sectionGapClasses = {
   comfortable: 'gap-12',
 } as const satisfies Record<RegularBlockSize, string>
 
-type ArchiveHrefUpdates = Partial<{
-  category: string | undefined
-  page: number
-  pastPage: number
-  tag: string | undefined
-  type: NewsEventsArchiveType
-  upcomingPage: number
-}>
-
-function buildArchiveHref(query: NewsEventsArchiveQuery, updates: ArchiveHrefUpdates) {
-  const params = new URLSearchParams()
-  const next = { ...query, ...updates }
-
-  if (next.type !== 'all') params.set('type', next.type)
-  if (next.category) params.set('category', next.category)
-  if (next.tag) params.set('tag', next.tag)
-  if (next.page > 1) params.set('page', String(next.page))
-  if (next.upcomingPage > 1) params.set('upcomingPage', String(next.upcomingPage))
-  if (next.pastPage > 1) params.set('pastPage', String(next.pastPage))
-
-  const search = params.toString()
-  return search ? `/news-events?${search}` : '/news-events'
-}
-
 function FeedRow({
   item,
   query,
   readMoreLabel,
+  taxonomyContext,
 }: {
   item: PublicNewsEventCard
   query: NewsEventsArchiveQuery
   readMoreLabel: string
+  taxonomyContext?: NewsEventsTaxonomyContext
 }) {
   return (
     <article
@@ -108,12 +90,16 @@ function FeedRow({
           {item.category ? (
             <Link
               className="underline-offset-4 hover:underline"
-              href={buildArchiveHref(query, {
-                category: item.category.slug,
-                page: 1,
-                pastPage: 1,
-                upcomingPage: 1,
-              })}
+              href={buildNewsEventsArchiveHref(
+                query,
+                {
+                  category: item.category.slug,
+                  page: 1,
+                  pastPage: 1,
+                  upcomingPage: 1,
+                },
+                taxonomyContext,
+              )}
             >
               {item.category.title}
             </Link>
@@ -139,11 +125,13 @@ function FeedPagination({
   pageKey,
   query,
   totalPages,
+  taxonomyContext,
 }: {
   page: number
   pageKey: 'page' | 'pastPage' | 'upcomingPage'
   query: NewsEventsArchiveQuery
   totalPages: number
+  taxonomyContext?: NewsEventsTaxonomyContext
 }) {
   if (totalPages <= 1) return null
 
@@ -155,13 +143,15 @@ function FeedPagination({
       <PaginationContent>
         {page > 1 ? (
           <PaginationItem>
-            <PaginationPrevious href={buildArchiveHref(query, { [pageKey]: page - 1 })} />
+            <PaginationPrevious
+              href={buildNewsEventsArchiveHref(query, { [pageKey]: page - 1 }, taxonomyContext)}
+            />
           </PaginationItem>
         ) : null}
         {pages.map((pageNumber) => (
           <PaginationItem key={pageNumber}>
             <PaginationLink
-              href={buildArchiveHref(query, { [pageKey]: pageNumber })}
+              href={buildNewsEventsArchiveHref(query, { [pageKey]: pageNumber }, taxonomyContext)}
               isActive={pageNumber === page}
             >
               {pageNumber}
@@ -170,7 +160,9 @@ function FeedPagination({
         ))}
         {page < totalPages ? (
           <PaginationItem>
-            <PaginationNext href={buildArchiveHref(query, { [pageKey]: page + 1 })} />
+            <PaginationNext
+              href={buildNewsEventsArchiveHref(query, { [pageKey]: page + 1 }, taxonomyContext)}
+            />
           </PaginationItem>
         ) : null}
       </PaginationContent>
@@ -184,12 +176,14 @@ function FeedSection({
   pageKey,
   query,
   readMoreLabel,
+  taxonomyContext,
 }: {
   label?: string
   page: PublicNewsEventsPage
   pageKey: 'page' | 'pastPage' | 'upcomingPage'
   query: NewsEventsArchiveQuery
   readMoreLabel: string
+  taxonomyContext?: NewsEventsTaxonomyContext
 }) {
   if (!page.docs.length) return null
 
@@ -200,13 +194,20 @@ function FeedSection({
       ) : null}
       <div className="grid gap-6">
         {page.docs.map((item) => (
-          <FeedRow item={item} key={item.id} query={query} readMoreLabel={readMoreLabel} />
+          <FeedRow
+            item={item}
+            key={item.id}
+            query={query}
+            readMoreLabel={readMoreLabel}
+            taxonomyContext={taxonomyContext}
+          />
         ))}
       </div>
       <FeedPagination
         page={page.page}
         pageKey={pageKey}
         query={query}
+        taxonomyContext={taxonomyContext}
         totalPages={page.totalPages}
       />
     </section>
@@ -220,6 +221,7 @@ export function NewsEventsFeed({
   query,
   settings,
   tags,
+  taxonomyContext,
   upcomingEvents,
 }: NewsEventsFeedProps) {
   const size = (settings.size ?? 'default') as RegularBlockSize
@@ -267,12 +269,16 @@ export function NewsEventsFeed({
                     ? 'border-primary bg-primary text-primary-foreground'
                     : 'border-border hover:bg-muted',
                 )}
-                href={buildArchiveHref(query, {
-                  page: 1,
-                  pastPage: 1,
-                  type: filter.value,
-                  upcomingPage: 1,
-                })}
+                href={buildNewsEventsArchiveHref(
+                  query,
+                  {
+                    page: 1,
+                    pastPage: 1,
+                    type: filter.value,
+                    upcomingPage: 1,
+                  },
+                  taxonomyContext,
+                )}
                 key={filter.value}
               >
                 {filter.label}
@@ -286,12 +292,16 @@ export function NewsEventsFeed({
                   'shrink-0 text-sm underline-offset-4 hover:underline',
                   !query.category && 'font-semibold',
                 )}
-                href={buildArchiveHref(query, {
-                  category: undefined,
-                  page: 1,
-                  pastPage: 1,
-                  upcomingPage: 1,
-                })}
+                href={buildNewsEventsArchiveHref(
+                  query,
+                  {
+                    category: undefined,
+                    page: 1,
+                    pastPage: 1,
+                    upcomingPage: 1,
+                  },
+                  taxonomyContext,
+                )}
               >
                 All categories
               </Link>
@@ -301,12 +311,16 @@ export function NewsEventsFeed({
                     'shrink-0 text-sm underline-offset-4 hover:underline',
                     query.category === category.slug && 'font-semibold',
                   )}
-                  href={buildArchiveHref(query, {
-                    category: category.slug,
-                    page: 1,
-                    pastPage: 1,
-                    upcomingPage: 1,
-                  })}
+                  href={buildNewsEventsArchiveHref(
+                    query,
+                    {
+                      category: category.slug,
+                      page: 1,
+                      pastPage: 1,
+                      upcomingPage: 1,
+                    },
+                    taxonomyContext,
+                  )}
                   key={category.id}
                 >
                   {category.title}
@@ -319,12 +333,16 @@ export function NewsEventsFeed({
               {query.tag ? (
                 <Link
                   className="shrink-0 rounded-full border border-border px-3 py-0.5 text-xs font-medium transition-colors hover:bg-muted"
-                  href={buildArchiveHref(query, {
-                    page: 1,
-                    pastPage: 1,
-                    tag: undefined,
-                    upcomingPage: 1,
-                  })}
+                  href={buildNewsEventsArchiveHref(
+                    query,
+                    {
+                      page: 1,
+                      pastPage: 1,
+                      tag: undefined,
+                      upcomingPage: 1,
+                    },
+                    taxonomyContext,
+                  )}
                 >
                   Clear tag
                 </Link>
@@ -337,12 +355,16 @@ export function NewsEventsFeed({
                       ? 'border-primary bg-primary text-primary-foreground hover:bg-primary/90'
                       : 'border-border',
                   )}
-                  href={buildArchiveHref(query, {
-                    page: 1,
-                    pastPage: 1,
-                    tag: tag.slug,
-                    upcomingPage: 1,
-                  })}
+                  href={buildNewsEventsArchiveHref(
+                    query,
+                    {
+                      page: 1,
+                      pastPage: 1,
+                      tag: tag.slug,
+                      upcomingPage: 1,
+                    },
+                    taxonomyContext,
+                  )}
                   key={tag.id}
                 >
                   {tag.title}
@@ -370,6 +392,7 @@ export function NewsEventsFeed({
                 pageKey="upcomingPage"
                 query={query}
                 readMoreLabel={settings.readMoreLabel}
+                taxonomyContext={taxonomyContext}
               />
             ) : null}
             {pastEvents ? (
@@ -379,6 +402,7 @@ export function NewsEventsFeed({
                 pageKey="pastPage"
                 query={query}
                 readMoreLabel={settings.readMoreLabel}
+                taxonomyContext={taxonomyContext}
               />
             ) : null}
           </div>
@@ -388,6 +412,7 @@ export function NewsEventsFeed({
             pageKey="page"
             query={query}
             readMoreLabel={settings.readMoreLabel}
+            taxonomyContext={taxonomyContext}
           />
         )}
       </div>

@@ -22,6 +22,7 @@ The primary topic is automatically included in additional topics. Tags are optio
 ## How It Connects To The Website
 
 - `/news-events` is the server-rendered archive.
+- `/news-events/category/[slug]` and `/news-events/tag/[slug]` are canonical taxonomy archives. Content type, pagination, and combined category/tag browsing remain query parameters on the active archive.
 - `/news-events/[slug]` renders a detail page and Event structured data when applicable.
 - `/news-events/feed.xml` publishes the feed.
 - `News & Events Highlights` can surface recent news and current/upcoming events on Pages.
@@ -29,6 +30,8 @@ The primary topic is automatically included in additional topics. Tags are optio
 - Live preview is available at desktop, tablet, and mobile breakpoints.
 
 Past events remain available in the archive and at their detail URL, but Highlights only selects current or upcoming events.
+
+The sitemap includes dedicated topic and tag archives only when an indexable published News & Events entry uses the term and the term's own SEO settings allow sitemap inclusion. It does not generate URLs for filter combinations or pagination.
 
 ## Step-By-Step Medical College Example
 
@@ -46,6 +49,7 @@ Past events remain available in the archive and at their detail URL, but Highlig
 - use the byline for a real public attribution, not internal notes
 - close event registration by editing its action instead of deleting the event history
 - set event times in the timezone expected by the deployment and verify the rendered result
+- leave Robots at `Default` to inherit the global SEO & Metadata crawler policy; choose `Index` or `No index` only for an intentional entry-level override
 - do not expect the `scheduled` workflow state to publish automatically; it records and queues the intended schedule for operator oversight
 
 ## Common Mistakes And Recovery

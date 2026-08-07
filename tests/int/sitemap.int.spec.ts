@@ -128,10 +128,30 @@ describe('sitemap route', () => {
         return {
           docs: [
             {
+              categories: [
+                { id: 103, slug: 'open-days', title: 'Open Days' },
+                { id: 105, slug: 'private-topic', title: 'Private Topic' },
+              ],
               id: 25,
               includeInSitemap: 'default',
+              primaryCategory: { id: 102, slug: 'community', title: 'Community' },
               robotsMode: 'index',
               slug: 'community-open-day',
+              tags: [
+                { id: 301, slug: 'featured-event', title: 'Featured Event' },
+                { id: 303, slug: 'hidden-event', title: 'Hidden Event' },
+              ],
+              updatedAt: '2026-07-09T00:00:00.000Z',
+              workflowState: 'published',
+            },
+            {
+              categories: [],
+              id: 26,
+              includeInSitemap: 'default',
+              primaryCategory: { id: 104, slug: 'staff-only', title: 'Staff Only' },
+              robotsMode: 'noindex',
+              slug: 'internal-event',
+              tags: [{ id: 302, slug: 'internal', title: 'Internal' }],
               updatedAt: '2026-07-09T00:00:00.000Z',
               workflowState: 'published',
             },
@@ -157,6 +177,41 @@ describe('sitemap route', () => {
               slug: 'archive-only',
               updatedAt: '2026-07-09T00:00:00.000Z',
             },
+            {
+              id: 102,
+              includeInSitemap: 'default',
+              robotsMode: 'index',
+              slug: 'community',
+              updatedAt: '2026-07-09T00:00:00.000Z',
+            },
+            {
+              id: 103,
+              includeInSitemap: 'default',
+              robotsMode: 'index',
+              slug: 'open-days',
+              updatedAt: '2026-07-09T00:00:00.000Z',
+            },
+            {
+              id: 104,
+              includeInSitemap: 'default',
+              robotsMode: 'index',
+              slug: 'staff-only',
+              updatedAt: '2026-07-09T00:00:00.000Z',
+            },
+            {
+              id: 105,
+              includeInSitemap: 'exclude',
+              robotsMode: 'index',
+              slug: 'private-topic',
+              updatedAt: '2026-07-09T00:00:00.000Z',
+            },
+            {
+              id: 106,
+              includeInSitemap: 'default',
+              robotsMode: 'index',
+              slug: 'unused-topic',
+              updatedAt: '2026-07-09T00:00:00.000Z',
+            },
           ],
           totalPages: 1,
         }
@@ -170,6 +225,34 @@ describe('sitemap route', () => {
               includeInSitemap: 'default',
               robotsMode: 'index',
               slug: 'featured',
+              updatedAt: '2026-07-09T00:00:00.000Z',
+            },
+            {
+              id: 301,
+              includeInSitemap: 'default',
+              robotsMode: 'index',
+              slug: 'featured-event',
+              updatedAt: '2026-07-09T00:00:00.000Z',
+            },
+            {
+              id: 302,
+              includeInSitemap: 'default',
+              robotsMode: 'index',
+              slug: 'internal',
+              updatedAt: '2026-07-09T00:00:00.000Z',
+            },
+            {
+              id: 303,
+              includeInSitemap: 'default',
+              robotsMode: 'noindex',
+              slug: 'hidden-event',
+              updatedAt: '2026-07-09T00:00:00.000Z',
+            },
+            {
+              id: 304,
+              includeInSitemap: 'default',
+              robotsMode: 'index',
+              slug: 'unused-event',
               updatedAt: '2026-07-09T00:00:00.000Z',
             },
           ],
@@ -200,5 +283,16 @@ describe('sitemap route', () => {
     expect(urls).toContain('http://localhost:3000/reviews/category/guides')
     expect(urls).toContain('http://localhost:3000/articles/tag/featured')
     expect(urls).not.toContain('http://localhost:3000/articles/category/archive-only')
+    expect(urls).toContain('http://localhost:3000/news-events/category/community')
+    expect(urls).toContain('http://localhost:3000/news-events/category/open-days')
+    expect(urls).toContain('http://localhost:3000/news-events/tag/featured-event')
+    expect(urls.some((url) => url.includes('news-events?category='))).toBe(false)
+    expect(urls.some((url) => url.includes('news-events?tag='))).toBe(false)
+    expect(urls).not.toContain('http://localhost:3000/news-events/category/staff-only')
+    expect(urls).not.toContain('http://localhost:3000/news-events/category/private-topic')
+    expect(urls).not.toContain('http://localhost:3000/news-events/category/unused-topic')
+    expect(urls).not.toContain('http://localhost:3000/news-events/tag/internal')
+    expect(urls).not.toContain('http://localhost:3000/news-events/tag/hidden-event')
+    expect(urls).not.toContain('http://localhost:3000/news-events/tag/unused-event')
   })
 })

@@ -1,5 +1,9 @@
 import configPromise from '@payload-config'
+import { headers as getHeaders } from 'next/headers'
 import { getPayload } from 'payload'
+
+import { hasAdminCapability } from '@/access/adminCapabilities'
+import type { User } from '@/payload-types'
 
 // ── Shared style helpers ───────────────────────────────────────────────────────
 
@@ -216,6 +220,32 @@ function RecentEditRow({ item }: { item: RecentItem }) {
 
 export async function DashboardOverview() {
   const payload = await getPayload({ config: configPromise })
+
+  let user: User | null = null
+  try {
+    const authResult = await payload.auth({
+      canSetHeaders: false,
+      headers: new Headers(await getHeaders()),
+    })
+    user = authResult.user as User | null
+  } catch {
+    return null
+  }
+
+  if (!user) return null
+
+  const visibility = {
+    articles: hasAdminCapability(user, 'manage_articles'),
+    formSubmissions: hasAdminCapability(user, 'manage_form_submissions'),
+    media: hasAdminCapability(user, 'manage_media'),
+    newsEvents: hasAdminCapability(user, 'manage_news_events'),
+    pages: hasAdminCapability(user, 'manage_pages'),
+    reviews: hasAdminCapability(user, 'manage_reviews'),
+    workQueue: hasAdminCapability(user, 'manage_work_queue'),
+  }
+  const secureQuery = { overrideAccess: false as const, user }
+  const zeroCount = () => Promise.resolve({ totalDocs: 0 })
+  const emptyDocs = () => Promise.resolve({ docs: [] })
   const now = new Date().toISOString()
 
   const [
@@ -238,28 +268,151 @@ export async function DashboardOverview() {
     recentSubmissionsResult,
   ] = await Promise.all([
     // Content totals
-    payload.count({ collection: 'pages', overrideAccess: true }).catch(() => ({ totalDocs: 0 })),
-    payload.count({ collection: 'articles', overrideAccess: true }).catch(() => ({ totalDocs: 0 })),
-    payload.count({ collection: 'news-events', overrideAccess: true }).catch(() => ({ totalDocs: 0 })),
-    payload.count({ collection: 'reviews', overrideAccess: true }).catch(() => ({ totalDocs: 0 })),
+    visibility.pages
+      ? payload.count({ collection: 'pages', ...secureQuery }).catch(zeroCount)
+      : zeroCount(),
+    visibility.articles
+      ? payload.count({ collection: 'articles', ...secureQuery }).catch(zeroCount)
+      : zeroCount(),
+    visibility.newsEvents
+      ? payload.count({ collection: 'news-events', ...secureQuery }).catch(zeroCount)
+      : zeroCount(),
+    visibility.reviews
+      ? payload.count({ collection: 'reviews', ...secureQuery }).catch(zeroCount)
+      : zeroCount(),
     // In review
-    payload.count({ collection: 'pages', overrideAccess: true, where: { workflowState: { equals: 'in_review' } } }).catch(() => ({ totalDocs: 0 })),
-    payload.count({ collection: 'articles', overrideAccess: true, where: { workflowState: { equals: 'in_review' } } }).catch(() => ({ totalDocs: 0 })),
-    payload.count({ collection: 'news-events', overrideAccess: true, where: { workflowState: { equals: 'in_review' } } }).catch(() => ({ totalDocs: 0 })),
-    payload.count({ collection: 'reviews', overrideAccess: true, where: { workflowState: { equals: 'in_review' } } }).catch(() => ({ totalDocs: 0 })),
+    visibility.pages
+      ? payload
+          .count({
+            collection: 'pages',
+            ...secureQuery,
+            where: { workflowState: { equals: 'in_review' } },
+          })
+          .catch(zeroCount)
+      : zeroCount(),
+    visibility.articles
+      ? payload
+          .count({
+            collection: 'articles',
+            ...secureQuery,
+            where: { workflowState: { equals: 'in_review' } },
+          })
+          .catch(zeroCount)
+      : zeroCount(),
+    visibility.newsEvents
+      ? payload
+          .count({
+            collection: 'news-events',
+            ...secureQuery,
+            where: { workflowState: { equals: 'in_review' } },
+          })
+          .catch(zeroCount)
+      : zeroCount(),
+    visibility.reviews
+      ? payload
+          .count({
+            collection: 'reviews',
+            ...secureQuery,
+            where: { workflowState: { equals: 'in_review' } },
+          })
+          .catch(zeroCount)
+      : zeroCount(),
     // Scheduled
-    payload.count({ collection: 'pages', overrideAccess: true, where: { and: [{ scheduledPublishAt: { exists: true } }, { scheduledPublishAt: { greater_than: now } }] } }).catch(() => ({ totalDocs: 0 })),
-    payload.count({ collection: 'articles', overrideAccess: true, where: { and: [{ scheduledPublishAt: { exists: true } }, { scheduledPublishAt: { greater_than: now } }] } }).catch(() => ({ totalDocs: 0 })),
-    payload.count({ collection: 'news-events', overrideAccess: true, where: { and: [{ scheduledPublishAt: { exists: true } }, { scheduledPublishAt: { greater_than: now } }] } }).catch(() => ({ totalDocs: 0 })),
+    visibility.pages
+      ? payload
+          .count({
+            collection: 'pages',
+            ...secureQuery,
+            where: {
+              and: [
+                { scheduledPublishAt: { exists: true } },
+                { scheduledPublishAt: { greater_than: now } },
+              ],
+            },
+          })
+          .catch(zeroCount)
+      : zeroCount(),
+    visibility.articles
+      ? payload
+          .count({
+            collection: 'articles',
+            ...secureQuery,
+            where: {
+              and: [
+                { scheduledPublishAt: { exists: true } },
+                { scheduledPublishAt: { greater_than: now } },
+              ],
+            },
+          })
+          .catch(zeroCount)
+      : zeroCount(),
+    visibility.newsEvents
+      ? payload
+          .count({
+            collection: 'news-events',
+            ...secureQuery,
+            where: {
+              and: [
+                { scheduledPublishAt: { exists: true } },
+                { scheduledPublishAt: { greater_than: now } },
+              ],
+            },
+          })
+          .catch(zeroCount)
+      : zeroCount(),
     // Lead / ops
-    payload.count({ collection: 'form-submissions', overrideAccess: true, where: { status: { in: ['new', 'in_review'] } } }).catch(() => ({ totalDocs: 0 })),
-    payload.count({ collection: 'work-queue', overrideAccess: true, where: { resolvedAt: { exists: false } } }).catch(() => ({ totalDocs: 0 })),
+    visibility.formSubmissions
+      ? payload
+          .count({
+            collection: 'form-submissions',
+            ...secureQuery,
+            where: { status: { in: ['new', 'in_review'] } },
+          })
+          .catch(zeroCount)
+      : zeroCount(),
+    visibility.workQueue
+      ? payload
+          .count({
+            collection: 'work-queue',
+            ...secureQuery,
+            where: { resolvedAt: { exists: false } },
+          })
+          .catch(zeroCount)
+      : zeroCount(),
     // Recently edited
-    payload.find({ collection: 'pages', overrideAccess: true, depth: 0, limit: 5, sort: '-updatedAt' }).catch(() => ({ docs: [] })),
-    payload.find({ collection: 'articles', overrideAccess: true, depth: 0, limit: 5, sort: '-updatedAt' }).catch(() => ({ docs: [] })),
-    payload.find({ collection: 'news-events', overrideAccess: true, depth: 0, limit: 5, sort: '-updatedAt' }).catch(() => ({ docs: [] })),
+    visibility.pages
+      ? payload
+          .find({ collection: 'pages', ...secureQuery, depth: 0, limit: 5, sort: '-updatedAt' })
+          .catch(emptyDocs)
+      : emptyDocs(),
+    visibility.articles
+      ? payload
+          .find({ collection: 'articles', ...secureQuery, depth: 0, limit: 5, sort: '-updatedAt' })
+          .catch(emptyDocs)
+      : emptyDocs(),
+    visibility.newsEvents
+      ? payload
+          .find({
+            collection: 'news-events',
+            ...secureQuery,
+            depth: 0,
+            limit: 5,
+            sort: '-updatedAt',
+          })
+          .catch(emptyDocs)
+      : emptyDocs(),
     // Recent submissions
-    payload.find({ collection: 'form-submissions', overrideAccess: true, depth: 0, limit: 5, sort: '-submittedAt' }).catch(() => ({ docs: [] })),
+    visibility.formSubmissions
+      ? payload
+          .find({
+            collection: 'form-submissions',
+            ...secureQuery,
+            depth: 0,
+            limit: 5,
+            sort: '-submittedAt',
+          })
+          .catch(emptyDocs)
+      : emptyDocs(),
   ])
 
   const totalInReview =
@@ -301,94 +454,170 @@ export async function DashboardOverview() {
     .slice(0, 6)
 
   const recentSubmissions = recentSubmissionsResult.docs
+  const hasWorkflowContent =
+    visibility.pages || visibility.articles || visibility.newsEvents || visibility.reviews
+  const hasScheduledContent = visibility.pages || visibility.articles || visibility.newsEvents
+  const hasAttention = hasWorkflowContent || visibility.formSubmissions || visibility.workQueue
+  const workflowCollection = visibility.pages
+    ? 'pages'
+    : visibility.articles
+      ? 'articles'
+      : visibility.newsEvents
+        ? 'news-events'
+        : 'reviews'
+  const scheduledCollection = visibility.pages
+    ? 'pages'
+    : visibility.articles
+      ? 'articles'
+      : 'news-events'
+  const quickActions = [
+    { enabled: visibility.pages, href: '/admin/collections/pages/create', label: '+ New Page' },
+    {
+      enabled: visibility.articles,
+      href: '/admin/collections/articles/create',
+      label: '+ New Article',
+    },
+    {
+      enabled: visibility.newsEvents,
+      href: '/admin/collections/news-events/create',
+      label: '+ New News / Event',
+    },
+    {
+      enabled: visibility.pages,
+      href: '/admin/collections/reusable-sections/create',
+      label: '+ New Reusable Section',
+    },
+    {
+      enabled: visibility.media,
+      href: '/admin/collections/media/create',
+      label: '+ Upload Media',
+    },
+  ].filter(({ enabled }) => enabled)
 
   return (
     <div style={{ padding: '0 0 48px' }}>
-
       {/* ── Needs Attention ───────────────────────────────────────────────── */}
-      <p style={sectionLabel}>Needs Attention</p>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
-          gap: '12px',
-          marginBottom: '32px',
-        }}
-      >
-        <AttentionCard
-          label="In Review"
-          value={totalInReview}
-          href="/admin/collections/pages?where[workflowState][equals]=in_review"
-          accent="#f59e0b"
-          alert
-        />
-        <AttentionCard
-          label="Scheduled"
-          value={totalScheduled}
-          href="/admin/collections/pages?where[scheduledPublishAt][exists]=true"
-          accent="#10b981"
-        />
-        <AttentionCard
-          label="Open Submissions"
-          value={openSubmissions.totalDocs}
-          href="/admin/collections/form-submissions"
-          accent="#f59e0b"
-          alert
-        />
-        <AttentionCard
-          label="Action Queue"
-          value={actionQueue.totalDocs}
-          href="/admin/collections/work-queue"
-          accent="#ef4444"
-          alert
-        />
-      </div>
-
-      {/* ── Content Overview ──────────────────────────────────────────────── */}
-      <p style={sectionLabel}>Content Overview</p>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
-          gap: '10px',
-          marginBottom: '32px',
-        }}
-      >
-        <MiniStat label="Pages" value={pagesTotal.totalDocs} href="/admin/collections/pages" />
-        <MiniStat label="Articles" value={articlesTotal.totalDocs} href="/admin/collections/articles" />
-        <MiniStat label="News & Events" value={newsTotal.totalDocs} href="/admin/collections/news-events" />
-        <MiniStat label="Reviews" value={reviewsTotal.totalDocs} href="/admin/collections/reviews" />
-      </div>
-
-      {/* ── Quick Actions ─────────────────────────────────────────────────── */}
-      <p style={{ ...sectionLabel, marginBottom: '10px' }}>Quick Actions</p>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '32px' }}>
-        {[
-          { label: '+ New Page', href: '/admin/collections/pages/create' },
-          { label: '+ New Article', href: '/admin/collections/articles/create' },
-          { label: '+ New News / Event', href: '/admin/collections/news-events/create' },
-          { label: '+ New Reusable Section', href: '/admin/collections/reusable-sections/create' },
-          { label: '+ Upload Media', href: '/admin/collections/media/create' },
-        ].map(({ label, href }) => (
-          <a
-            key={href}
-            href={href}
+      {hasAttention ? (
+        <>
+          <p style={sectionLabel}>Needs Attention</p>
+          <div
             style={{
-              display: 'inline-block',
-              padding: '7px 14px',
-              background: 'var(--theme-elevation-100)',
-              border: '1px solid var(--theme-elevation-200)',
-              borderRadius: '6px',
-              fontSize: '13px',
-              fontWeight: 500,
-              color: 'var(--theme-text)',
-              textDecoration: 'none',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+              gap: '12px',
+              marginBottom: '32px',
             }}
           >
-            {label}
-          </a>
-        ))}
-      </div>
+            {hasWorkflowContent ? (
+              <AttentionCard
+                label="In Review"
+                value={totalInReview}
+                href={`/admin/collections/${workflowCollection}?where[workflowState][equals]=in_review`}
+                accent="#f59e0b"
+                alert
+              />
+            ) : null}
+            {hasScheduledContent ? (
+              <AttentionCard
+                label="Scheduled"
+                value={totalScheduled}
+                href={`/admin/collections/${scheduledCollection}?where[scheduledPublishAt][exists]=true`}
+                accent="#10b981"
+              />
+            ) : null}
+            {visibility.formSubmissions ? (
+              <AttentionCard
+                label="Open Submissions"
+                value={openSubmissions.totalDocs}
+                href="/admin/collections/form-submissions"
+                accent="#f59e0b"
+                alert
+              />
+            ) : null}
+            {visibility.workQueue ? (
+              <AttentionCard
+                label="Action Queue"
+                value={actionQueue.totalDocs}
+                href="/admin/collections/work-queue"
+                accent="#ef4444"
+                alert
+              />
+            ) : null}
+          </div>
+        </>
+      ) : null}
+
+      {/* ── Content Overview ──────────────────────────────────────────────── */}
+      {hasWorkflowContent ? (
+        <>
+          <p style={sectionLabel}>Content Overview</p>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+              gap: '10px',
+              marginBottom: '32px',
+            }}
+          >
+            {visibility.pages ? (
+              <MiniStat
+                label="Pages"
+                value={pagesTotal.totalDocs}
+                href="/admin/collections/pages"
+              />
+            ) : null}
+            {visibility.articles ? (
+              <MiniStat
+                label="Articles"
+                value={articlesTotal.totalDocs}
+                href="/admin/collections/articles"
+              />
+            ) : null}
+            {visibility.newsEvents ? (
+              <MiniStat
+                label="News & Events"
+                value={newsTotal.totalDocs}
+                href="/admin/collections/news-events"
+              />
+            ) : null}
+            {visibility.reviews ? (
+              <MiniStat
+                label="Reviews"
+                value={reviewsTotal.totalDocs}
+                href="/admin/collections/reviews"
+              />
+            ) : null}
+          </div>
+        </>
+      ) : null}
+
+      {/* ── Quick Actions ─────────────────────────────────────────────────── */}
+      {quickActions.length > 0 ? (
+        <>
+          <p style={{ ...sectionLabel, marginBottom: '10px' }}>Quick Actions</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '32px' }}>
+            {quickActions.map(({ label, href }) => (
+              <a
+                key={href}
+                href={href}
+                style={{
+                  display: 'inline-block',
+                  padding: '7px 14px',
+                  background: 'var(--theme-elevation-100)',
+                  border: '1px solid var(--theme-elevation-200)',
+                  borderRadius: '6px',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  color: 'var(--theme-text)',
+                  textDecoration: 'none',
+                }}
+              >
+                {label}
+              </a>
+            ))}
+          </div>
+        </>
+      ) : null}
 
       {/* ── Recently Edited ───────────────────────────────────────────────── */}
       {recentEdits.length > 0 && (
@@ -408,7 +637,7 @@ export async function DashboardOverview() {
       )}
 
       {/* ── Recent Submissions ────────────────────────────────────────────── */}
-      {recentSubmissions.length > 0 && (
+      {visibility.formSubmissions && recentSubmissions.length > 0 && (
         <div>
           <p style={sectionLabel}>Recent Submissions</p>
           <div style={{ ...card, overflow: 'hidden' }}>

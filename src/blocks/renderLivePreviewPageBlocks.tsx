@@ -12,7 +12,9 @@ import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
 import { Cta39BlockComponent } from './Cta39/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
 import { EventGalleryPreviewBlockComponent } from './EventGallery/PreviewComponent'
+import { GalleryCoverflowBlockComponent } from './GalleryCoverflow/Component'
 import { HeroBannerBlockComponent } from './HeroBanner/Component'
+import { HeroCarouselBlockComponent } from './HeroCarousel/Component'
 import { ImageMosaicBlockComponent } from './ImageMosaic/Component'
 import { NewsEventsHighlightsPreviewBlockComponent } from './NewsEventsHighlights/PreviewComponent'
 import { PageBlockStack } from './PageBlockStack'
@@ -39,6 +41,9 @@ import { TabsContentBlockComponent } from './TabsContent/Component'
 import { DownloadListBlockComponent } from './DownloadList/Component'
 import { NumberedStepsBlockComponent } from './NumberedSteps/Component'
 import { BentoGridBlockComponent } from './BentoGrid/Component'
+import { TestimonialGridBlockComponent } from './TestimonialGrid/Component'
+import { AwardsListBlockComponent } from './AwardsList/Component'
+import { AboutSectionBlockComponent } from './AboutSection/Component'
 
 export type LivePreviewPageBlock = NonNullable<Page['layout']>[number]
 
@@ -71,6 +76,10 @@ function renderSingleLivePreviewBlock(
       return <AnnouncementBlockComponent key={key} {...block} />
     case 'heroBanner':
       return <HeroBannerBlockComponent key={key} {...block} />
+    case 'heroCarousel':
+      return <HeroCarouselBlockComponent key={key} {...block} />
+    case 'galleryCoverflow':
+      return <GalleryCoverflowBlockComponent key={key} {...block} />
     case 'qaAccordion':
       return <QaAccordionBlockComponent key={key} {...block} />
     case 'featureMatrix':
@@ -143,6 +152,15 @@ function renderSingleLivePreviewBlock(
       return <NumberedStepsBlockComponent key={key} {...block} />
     case 'bentoGrid':
       return <BentoGridBlockComponent key={key} {...block} />
+    case 'testimonialGrid':
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return <TestimonialGridBlockComponent key={key} {...(block as any)} />
+    case 'awardsList':
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return <AwardsListBlockComponent key={key} {...(block as any)} />
+    case 'aboutSection':
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return <AboutSectionBlockComponent key={key} {...(block as any)} />
     case 'reusableSection': {
       const populated = block.section as PopulatedReusableSection | string | null | undefined
       if (!populated || typeof populated === 'string') return null
