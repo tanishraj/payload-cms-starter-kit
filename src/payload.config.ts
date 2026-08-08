@@ -34,6 +34,7 @@ import { ThemeSettings } from './globals/ThemeSettings'
 import { NewsEventsSettings } from './globals/NewsEventsSettings'
 import { AnalyticsSettings } from './globals/AnalyticsSettings'
 import { CookieConsentSettings } from './globals/CookieConsentSettings'
+import { SearchSettings } from './globals/SearchSettings'
 import { ReusableSections } from './collections/ReusableSections'
 import { withTrash } from './plugins/withTrash'
 
@@ -97,6 +98,7 @@ export default buildConfig({
     // Configuration (set-and-forget)
     PageSettings,
     NewsEventsSettings,
+    SearchSettings,
     SystemModeSettings,
   ],
   editor: lexicalEditor(),

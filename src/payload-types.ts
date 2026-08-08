@@ -131,6 +131,7 @@ export interface Config {
     'cookie-consent-settings': CookieConsentSetting;
     'page-settings': PageSetting;
     'news-events-settings': NewsEventsSetting;
+    'search-settings': SearchSetting;
     'system-mode-settings': SystemModeSetting;
   };
   globalsSelect: {
@@ -141,6 +142,7 @@ export interface Config {
     'cookie-consent-settings': CookieConsentSettingsSelect<false> | CookieConsentSettingsSelect<true>;
     'page-settings': PageSettingsSelect<false> | PageSettingsSelect<true>;
     'news-events-settings': NewsEventsSettingsSelect<false> | NewsEventsSettingsSelect<true>;
+    'search-settings': SearchSettingsSelect<false> | SearchSettingsSelect<true>;
     'system-mode-settings': SystemModeSettingsSelect<false> | SystemModeSettingsSelect<true>;
   };
   locale: null;
@@ -6137,6 +6139,26 @@ export interface NewsEventsSetting {
   createdAt?: string | null;
 }
 /**
+ * Suggested search terms displayed on the search page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "search-settings".
+ */
+export interface SearchSetting {
+  id: string;
+  /**
+   * Up to 12 terms shown as clickable chips on the search page. Operators can update these without touching code.
+   */
+  suggestedSearches?:
+    | {
+        term: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "system-mode-settings".
  */
@@ -6325,6 +6347,21 @@ export interface NewsEventsSettingsSelect<T extends boolean = true> {
   ogImage?: T;
   ogDescription?: T;
   _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "search-settings_select".
+ */
+export interface SearchSettingsSelect<T extends boolean = true> {
+  suggestedSearches?:
+    | T
+    | {
+        term?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

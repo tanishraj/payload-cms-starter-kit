@@ -4,21 +4,28 @@ import { getPayload } from 'payload'
 
 import { resolveSearchPageHrefs } from '@/lib/searchPagePaths'
 
-// Simple in-memory rate limiter: max 20 requests per IP per 10 seconds
+// In-memory rate limiter: 20 requests / IP / 10 s.
+// Expired entries are evicted on each request to prevent unbounded growth
+// in long-lived Node.js processes (e.g. self-hosted next start).
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
 const RATE_LIMIT = 20
 const RATE_WINDOW_MS = 10_000
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now()
+
+  // Evict expired entries so the map does not grow unboundedly
+  for (const [key, entry] of rateLimitMap) {
+    if (now >= entry.resetAt) rateLimitMap.delete(key)
+  }
+
   const entry = rateLimitMap.get(ip)
   if (!entry || now >= entry.resetAt) {
     rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS })
     return false
   }
   entry.count++
-  if (entry.count > RATE_LIMIT) return true
-  return false
+  return entry.count > RATE_LIMIT
 }
 
 export type SearchResultItem = {
@@ -26,7 +33,7 @@ export type SearchResultItem = {
   title: string
   excerpt: string
   href: string
-  type: 'page' | 'article' | 'news-event'
+  type: 'article' | 'news-event' | 'page' | 'review'
   label: string
 }
 
@@ -37,6 +44,8 @@ export type SearchResponse = {
 }
 
 const MIN_QUERY_LENGTH = 2
+// Dialog shows 6 per type — enough for a compact list without overwhelming the UI.
+// The SSR /search page uses 8 per type for the expanded view.
 const PER_TYPE_LIMIT = 6
 
 export async function GET(request: Request) {
@@ -58,16 +67,21 @@ export async function GET(request: Request) {
 
   const payload = await getPayload({ config: configPromise })
   const textLike = { like: query }
+  const publishedFilter = [
+    { _status: { equals: 'published' } },
+    { workflowState: { equals: 'published' } },
+  ]
 
-  const [pagesResult, articlesResult, newsEventsResult] = await Promise.allSettled([
+  const [pagesResult, articlesResult, newsEventsResult, reviewsResult] = await Promise.allSettled([
     payload.find({
       collection: 'pages',
       depth: 0,
       limit: PER_TYPE_LIMIT,
+      select: { id: true, title: true, slug: true, parent: true, metaDescription: true },
       where: {
         and: [
-          { _status: { equals: 'published' } },
-          { title: textLike },
+          ...publishedFilter,
+          { or: [{ title: textLike }, { metaDescription: textLike }] },
         ],
       },
     }),
@@ -75,9 +89,10 @@ export async function GET(request: Request) {
       collection: 'articles',
       depth: 0,
       limit: PER_TYPE_LIMIT,
+      select: { id: true, title: true, slug: true, excerpt: true, authorName: true },
       where: {
         and: [
-          { _status: { equals: 'published' } },
+          ...publishedFilter,
           { or: [{ title: textLike }, { excerpt: textLike }, { authorName: textLike }] },
         ],
       },
@@ -86,11 +101,23 @@ export async function GET(request: Request) {
       collection: 'news-events',
       depth: 0,
       limit: PER_TYPE_LIMIT,
+      select: { id: true, title: true, slug: true, excerpt: true, contentType: true, authorName: true },
       where: {
         and: [
-          { _status: { equals: 'published' } },
-          { workflowState: { equals: 'published' } },
-          { or: [{ title: textLike }, { excerpt: textLike }] },
+          ...publishedFilter,
+          { or: [{ title: textLike }, { excerpt: textLike }, { authorName: textLike }] },
+        ],
+      },
+    }),
+    payload.find({
+      collection: 'reviews',
+      depth: 0,
+      limit: PER_TYPE_LIMIT,
+      select: { id: true, title: true, slug: true, reviewTitle: true, reviewerName: true },
+      where: {
+        and: [
+          ...publishedFilter,
+          { or: [{ title: textLike }, { reviewTitle: textLike }, { reviewerName: textLike }] },
         ],
       },
     }),
@@ -100,11 +127,9 @@ export async function GET(request: Request) {
 
   if (pagesResult.status === 'fulfilled') {
     const pageHrefs = await resolveSearchPageHrefs(pagesResult.value.docs, payload)
-
     for (const page of pagesResult.value.docs) {
       const href = pageHrefs.get(String(page.id))
       if (!href) continue
-
       results.push({
         id: String(page.id),
         title: page.title,
@@ -121,7 +146,7 @@ export async function GET(request: Request) {
       results.push({
         id: String(article.id),
         title: article.title,
-        excerpt: article.excerpt,
+        excerpt: article.excerpt ?? '',
         href: `/articles/${article.slug}`,
         type: 'article',
         label: 'Article',
@@ -134,7 +159,7 @@ export async function GET(request: Request) {
       results.push({
         id: String(entry.id),
         title: entry.title,
-        excerpt: entry.excerpt,
+        excerpt: entry.excerpt ?? '',
         href: `/news-events/${entry.slug}`,
         type: 'news-event',
         label: entry.contentType === 'event' ? 'Event' : 'News',
@@ -142,9 +167,18 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.json<SearchResponse>({
-    results,
-    query,
-    total: results.length,
-  })
+  if (reviewsResult.status === 'fulfilled') {
+    for (const review of reviewsResult.value.docs) {
+      results.push({
+        id: String(review.id),
+        title: review.title,
+        excerpt: review.reviewTitle ?? '',
+        href: `/reviews/${review.slug}`,
+        type: 'review',
+        label: 'Review',
+      })
+    }
+  }
+
+  return NextResponse.json<SearchResponse>({ results, query, total: results.length })
 }

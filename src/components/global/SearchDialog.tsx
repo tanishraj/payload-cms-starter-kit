@@ -1,7 +1,9 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { motion } from 'framer-motion'
 import type { SearchResponse, SearchResultItem } from '@/app/api/search/route'
 
 const DEBOUNCE_MS = 220
@@ -18,20 +20,42 @@ function useDebounce<T>(value: T, delay: number): T {
 
 type Status = 'idle' | 'loading' | 'done' | 'error'
 
-const typeAccent: Record<string, string> = {
-  page: 'bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300',
-  article: 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
-  'news-event': 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
+type ResultGroup = {
+  type: string
+  label: string
+  items: SearchResultItem[]
+}
+
+const TYPE_ORDER = ['page', 'article', 'news-event', 'review'] as const
+const TYPE_LABELS: Record<string, string> = {
+  page: 'Pages',
+  article: 'Articles',
+  'news-event': 'News & Events',
+  review: 'Reviews',
+}
+
+function groupResults(results: SearchResultItem[]): ResultGroup[] {
+  const map = new Map<string, SearchResultItem[]>()
+  for (const item of results) {
+    const list = map.get(item.type) ?? []
+    list.push(item)
+    map.set(item.type, list)
+  }
+  return TYPE_ORDER.filter((t) => map.has(t)).map((t) => ({
+    type: t,
+    label: TYPE_LABELS[t] ?? t,
+    items: map.get(t)!,
+  }))
 }
 
 export function SearchDialog() {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<SearchResultItem[]>([])
   const [status, setStatus] = useState<Status>('idle')
   const [activeIndex, setActiveIndex] = useState(-1)
   const inputRef = useRef<HTMLInputElement>(null)
-  const listRef = useRef<HTMLUListElement>(null)
   const debouncedQuery = useDebounce(query, DEBOUNCE_MS)
 
   const openDialog = useCallback(() => {
@@ -42,11 +66,9 @@ export function SearchDialog() {
     setActiveIndex(-1)
   }, [])
 
-  const closeDialog = useCallback(() => {
-    setOpen(false)
-  }, [])
+  const closeDialog = useCallback(() => setOpen(false), [])
 
-  // Global Cmd+K / Ctrl+K keyboard shortcut
+  // Cmd+K / Ctrl+K toggle and Escape close
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -60,21 +82,19 @@ export function SearchDialog() {
     return () => window.removeEventListener('keydown', handler)
   }, [open, openDialog, closeDialog])
 
-  // Custom event so the header button can trigger the dialog
+  // Header button trigger
   useEffect(() => {
     const handler = () => openDialog()
     window.addEventListener('open-search-dialog', handler)
     return () => window.removeEventListener('open-search-dialog', handler)
   }, [openDialog])
 
-  // Focus input when dialog opens
+  // Auto-focus input on open
   useEffect(() => {
-    if (open) {
-      requestAnimationFrame(() => inputRef.current?.focus())
-    }
+    if (open) requestAnimationFrame(() => inputRef.current?.focus())
   }, [open])
 
-  // Fetch results when debounced query changes
+  // Fetch results on debounced query change
   useEffect(() => {
     if (debouncedQuery.length < MIN_QUERY) {
       setResults([])
@@ -101,7 +121,7 @@ export function SearchDialog() {
     }
   }, [debouncedQuery])
 
-  // Keyboard navigation within results
+  // Arrow-key / Enter keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!results.length) return
     if (e.key === 'ArrowDown') {
@@ -115,162 +135,208 @@ export function SearchDialog() {
       const item = results[activeIndex]
       if (item) {
         closeDialog()
-        window.location.href = item.href
+        router.push(item.href)
       }
     }
   }
 
   // Scroll active item into view
   useEffect(() => {
-    if (activeIndex < 0 || !listRef.current) return
-    const el = listRef.current.children[activeIndex] as HTMLElement | undefined
-    el?.scrollIntoView({ block: 'nearest' })
+    if (activeIndex < 0) return
+    document.getElementById(`search-result-${activeIndex}`)?.scrollIntoView({ block: 'nearest' })
   }, [activeIndex])
+
+  const groups = useMemo(() => groupResults(results), [results])
 
   if (!open) return null
 
   return (
-    /* backdrop */
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Site search"
-      className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-[12vh]"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) closeDialog()
-      }}
-    >
-      {/* scrim */}
-      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" aria-hidden="true" />
+    <>
+      {/* Backdrop — separate element so onClick reliably fires when clicking outside the panel */}
+      <div
+        className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm"
+        aria-hidden="true"
+        onClick={closeDialog}
+      />
 
-      {/* panel */}
-      <div className="relative z-10 w-full max-w-xl overflow-hidden rounded-2xl border border-border bg-background shadow-2xl">
-        {/* Search input row */}
-        <div className="flex items-center gap-3 border-b border-border px-4 py-3">
-          <svg
-            aria-hidden="true"
-            className="size-4 shrink-0 text-muted-foreground"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.35-4.35" />
-          </svg>
-          <input
-            ref={inputRef}
-            type="search"
-            role="combobox"
-            aria-expanded={results.length > 0}
-            aria-autocomplete="list"
-            aria-controls="search-dialog-results"
-            aria-activedescendant={activeIndex >= 0 ? `search-result-${activeIndex}` : undefined}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Search pages, articles, news…"
-            autoComplete="off"
-            className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
-          />
-          {/* Esc hint */}
-          <kbd className="hidden rounded border border-border px-1.5 py-0.5 text-xs text-muted-foreground sm:block">
-            Esc
-          </kbd>
-          <button
-            type="button"
-            onClick={closeDialog}
-            aria-label="Close search"
-            className="shrink-0 rounded p-0.5 text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-          >
-            <svg aria-hidden="true" className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path d="M18 6 6 18M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Results */}
-        <div
-          aria-live="polite"
-          aria-atomic="false"
-          className="max-h-[60vh] overflow-y-auto"
+      {/* Positioning shell — pointer-events-none so clicks outside the panel fall through to the backdrop */}
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site search"
+        className="pointer-events-none fixed inset-0 z-50 flex items-start justify-center px-4 pt-[12vh]"
+      >
+        {/* Panel */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97, y: -6 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.15, ease: 'easeOut' }}
+          className="pointer-events-auto w-full max-w-xl overflow-hidden rounded-2xl border border-border bg-background shadow-2xl"
         >
-          {query.length >= MIN_QUERY && status === 'loading' ? (
-            <p className="px-4 py-6 text-center text-sm text-muted-foreground">Searching…</p>
-          ) : status === 'error' ? (
-            <p className="px-4 py-6 text-center text-sm text-muted-foreground">
-              Search unavailable. Please try again.
-            </p>
-          ) : status === 'done' && results.length === 0 ? (
-            <p className="px-4 py-6 text-center text-sm text-muted-foreground">
-              No results for <strong>&ldquo;{query}&rdquo;</strong>
-            </p>
-          ) : results.length > 0 ? (
-            <ul
-              ref={listRef}
-              id="search-dialog-results"
-              role="listbox"
-              aria-label="Search results"
-              className="py-2"
+          {/* Search input row */}
+          <div className="flex items-center gap-3 border-b border-border px-4 py-3">
+            <svg
+              aria-hidden="true"
+              className="size-4 shrink-0 text-muted-foreground"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
             >
-              {results.map((item, i) => (
-                <li
-                  key={item.id}
-                  id={`search-result-${i}`}
-                  role="option"
-                  aria-selected={i === activeIndex}
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input
+              ref={inputRef}
+              type="search"
+              role="combobox"
+              aria-expanded={query.length >= MIN_QUERY}
+              aria-autocomplete="list"
+              aria-controls="search-dialog-listbox"
+              aria-activedescendant={activeIndex >= 0 ? `search-result-${activeIndex}` : undefined}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Search pages, articles, news, reviews…"
+              autoComplete="off"
+              className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+            />
+            <kbd className="hidden rounded border border-border px-1.5 py-0.5 text-xs text-muted-foreground sm:block">
+              Esc
+            </kbd>
+            <button
+              type="button"
+              onClick={closeDialog}
+              aria-label="Close search"
+              className="shrink-0 rounded p-0.5 text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            >
+              <svg
+                aria-hidden="true"
+                className="size-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path d="M18 6 6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Results body */}
+          <div
+            aria-live="polite"
+            aria-atomic="false"
+            className="max-h-[min(60vh,420px)] overflow-y-auto"
+          >
+            {query.length >= MIN_QUERY && status === 'loading' ? (
+              <div className="flex items-center gap-2.5 px-4 py-6 text-sm text-muted-foreground">
+                <svg
+                  aria-hidden="true"
+                  className="size-4 animate-spin"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
                 >
-                  <Link
-                    href={item.href}
-                    onClick={closeDialog}
-                    className={`flex items-start gap-3 px-4 py-2.5 transition ${
-                      i === activeIndex ? 'bg-muted' : 'hover:bg-muted'
-                    }`}
-                  >
-                    <span
-                      className={`mt-0.5 shrink-0 rounded px-1.5 py-0.5 text-xs font-semibold ${
-                        typeAccent[item.type] ?? 'bg-muted text-muted-foreground'
-                      }`}
-                    >
-                      {item.label}
-                    </span>
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-foreground">{item.title}</p>
-                      {item.excerpt ? (
-                        <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
-                          {item.excerpt}
-                        </p>
-                      ) : null}
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            /* idle: show keyboard hint */
-            <div className="flex items-center justify-between px-4 py-4 text-xs text-muted-foreground">
-              <span>Type to search the site</span>
-              <span className="hidden sm:block">
-                <kbd className="rounded border border-border px-1.5 py-0.5">↑↓</kbd> navigate&nbsp;&nbsp;
-                <kbd className="rounded border border-border px-1.5 py-0.5">↵</kbd> open
-              </span>
+                  <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                </svg>
+                Searching…
+              </div>
+            ) : status === 'error' ? (
+              <p className="px-4 py-6 text-center text-sm text-muted-foreground">
+                Search unavailable. Please try again.
+              </p>
+            ) : status === 'done' && results.length === 0 ? (
+              <p className="px-4 py-6 text-center text-sm text-muted-foreground">
+                No results for <strong>&ldquo;{query}&rdquo;</strong>
+              </p>
+            ) : results.length > 0 ? (
+              <ul
+                id="search-dialog-listbox"
+                role="listbox"
+                aria-label="Search results"
+                className="pb-1 pt-1"
+              >
+                {groups.map(({ type, label, items }) => (
+                  <li key={type} role="presentation">
+                    {/* Section header */}
+                    <p className="px-4 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/70">
+                      {label}
+                    </p>
+                    <ul role="group" aria-label={label}>
+                      {items.map((item) => {
+                        const idx = results.indexOf(item)
+                        return (
+                          <li
+                            key={item.id}
+                            id={`search-result-${idx}`}
+                            role="option"
+                            aria-selected={idx === activeIndex}
+                          >
+                            <Link
+                              href={item.href}
+                              onClick={closeDialog}
+                              className={`mx-2 flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${
+                                idx === activeIndex ? 'bg-accent' : 'hover:bg-accent'
+                              }`}
+                            >
+                              <div className="min-w-0 flex-1">
+                                <p className="truncate text-sm font-medium text-foreground">
+                                  {item.title}
+                                </p>
+                                {item.excerpt && item.excerpt !== item.title ? (
+                                  <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
+                                    {item.excerpt}
+                                  </p>
+                                ) : null}
+                              </div>
+                              <svg
+                                aria-hidden="true"
+                                className="size-3.5 shrink-0 text-muted-foreground/40"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                              >
+                                <path d="m9 18 6-6-6-6" />
+                              </svg>
+                            </Link>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              /* Idle: keyboard hint */
+              <div className="flex items-center justify-between px-4 py-4 text-xs text-muted-foreground">
+                <span>Type to search the site</span>
+                <span className="hidden items-center gap-1 sm:flex">
+                  <kbd className="rounded border border-border px-1.5 py-0.5">↑↓</kbd>
+                  <span>navigate</span>
+                  <kbd className="ml-1 rounded border border-border px-1.5 py-0.5">↵</kbd>
+                  <span>open</span>
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Footer: always visible once query is long enough */}
+          {query.length >= MIN_QUERY && (
+            <div className="border-t border-border px-4 py-2.5">
+              <Link
+                href={`/search?q=${encodeURIComponent(query)}`}
+                onClick={closeDialog}
+                className="text-xs text-muted-foreground hover:text-foreground hover:underline"
+              >
+                View all results for &ldquo;{query}&rdquo; →
+              </Link>
             </div>
           )}
-        </div>
-
-        {/* Footer: link to full search page */}
-        {results.length > 0 && (
-          <div className="border-t border-border px-4 py-2.5">
-            <Link
-              href={`/search?q=${encodeURIComponent(query)}`}
-              onClick={closeDialog}
-              className="text-xs text-muted-foreground hover:text-foreground hover:underline"
-            >
-              View all results for &ldquo;{query}&rdquo; →
-            </Link>
-          </div>
-        )}
+        </motion.div>
       </div>
-    </div>
+    </>
   )
 }
