@@ -45,7 +45,7 @@ describe('Hero Banner block', () => {
     )
     expect(html).toContain('border-y border-border')
     expect(html).toContain('from-background/90')
-    expect(html).toContain('flex flex-col gap-8 lg:flex-1')
+    expect(html).toContain('flex w-full flex-col gap-8 max-w-5xl')
     expect(html).toContain('flex flex-col gap-6')
     expect(html).toContain('text-balance')
     expect(html).toContain('text-foreground/84')
@@ -86,16 +86,20 @@ describe('Hero Banner block', () => {
     expect(darkHtml).toContain('from-black/68')
     expect(darkHtml).toContain('text-white')
     expect(darkHtml).toContain('text-white/84')
-    expect(darkHtml).toContain('bg-primary text-primary-foreground hover:bg-primary/80')
+    expect(darkHtml).toContain(
+      'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklch,var(--primary),var(--foreground)_8%)]',
+    )
     expect(darkHtml).toContain(
       'border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground',
     )
 
     expect(lightHtml).toContain('data-hero-banner-theme="light"')
     expect(lightHtml).toContain('from-background/72')
-    expect(lightHtml).toContain('text-slate-950')
-    expect(lightHtml).toContain('text-slate-950/84')
-    expect(lightHtml).toContain('bg-primary text-primary-foreground hover:bg-primary/80')
+    expect(lightHtml).toContain('text-foreground')
+    expect(lightHtml).toContain('text-foreground/84')
+    expect(lightHtml).toContain(
+      'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklch,var(--primary),var(--foreground)_8%)]',
+    )
     expect(lightHtml).toContain(
       'border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground',
     )
@@ -133,4 +137,40 @@ describe('Hero Banner block', () => {
     expect(html).not.toContain('data-hero-banner-description')
     expect(html).not.toContain('data-hero-banner-actions')
   })
+
+  it.each([
+    ['left', 'justify-start', 'mr-auto'],
+    ['center', 'justify-center', 'mx-auto'],
+    ['right', 'justify-end', 'ml-auto'],
+  ] as const)(
+    'aligns the complete Hero Banner content axis to %s',
+    (horizontalAlignment, shellClass, constrainedItemClass) => {
+      const html = renderToStaticMarkup(
+        createElement(HeroBannerBlockComponent, {
+          backgroundImage: { alt: 'Campus', url: '/media/campus.jpg' } as never,
+          buttons: [
+            { label: 'Apply now', linkType: 'custom', url: '/apply', variant: 'default' },
+          ] as never,
+          contentWidth: 'wide',
+          description: 'A deliberately constrained description.',
+          eyebrow: 'Admissions',
+          horizontalAlignment,
+          title: 'A deliberately constrained title.',
+        }),
+      )
+
+      expect(html).toContain(`data-hero-banner-horizontal="${horizontalAlignment}"`)
+      expect(html).toContain(shellClass)
+      expect(html).toContain('flex w-full flex-col gap-8 max-w-5xl')
+      expect(html).toMatch(new RegExp(`<h1 class="[^"]*${constrainedItemClass}`))
+      expect(html).toMatch(
+        new RegExp(
+          `<p class="[^"]*${constrainedItemClass}[^"]*" data-hero-banner-description="true"`,
+        ),
+      )
+      expect(html).toMatch(
+        new RegExp(`<div class="[^"]*${shellClass}[^"]*" data-hero-banner-actions="true"`),
+      )
+    },
+  )
 })

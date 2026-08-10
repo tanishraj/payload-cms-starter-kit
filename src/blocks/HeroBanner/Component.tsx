@@ -79,6 +79,12 @@ const textAlignmentClasses = {
   right: 'text-right',
 } as const
 
+const constrainedItemAlignmentClasses = {
+  left: 'mr-auto',
+  center: 'mx-auto',
+  right: 'ml-auto',
+} as const
+
 const verticalShellClasses = {
   top: 'items-start py-16 md:py-20',
   center: 'items-center py-16 md:py-20',
@@ -219,8 +225,8 @@ export function HeroBannerBlockComponent({
         >
           <div
             className={cn(
-              'flex flex-col gap-8 lg:flex-1',
-              resolvedHorizontalAlignment !== 'center' ? 'lg:max-w-xl' : contentWidthClasses[resolvedContentWidth],
+              'flex w-full flex-col gap-8',
+              contentWidthClasses[resolvedContentWidth],
               textAlignmentClasses[resolvedHorizontalAlignment],
             )}
             data-hero-banner-content-width={resolvedContentWidth}
@@ -243,6 +249,7 @@ export function HeroBannerBlockComponent({
                   titleSizeClasses[resolvedHeight],
                   textToneClasses[resolvedThemeMode].title,
                   titleWidthClasses[resolvedContentWidth],
+                  constrainedItemAlignmentClasses[resolvedHorizontalAlignment],
                 )}
               >
                 {title}
@@ -254,7 +261,7 @@ export function HeroBannerBlockComponent({
                     descriptionSizeClasses[resolvedHeight],
                     descriptionWidthClasses[resolvedContentWidth],
                     textToneClasses[resolvedThemeMode].description,
-                    resolvedHorizontalAlignment !== 'center' ? 'max-w-2xl' : undefined,
+                    constrainedItemAlignmentClasses[resolvedHorizontalAlignment],
                   )}
                   data-hero-banner-description="true"
                 >
