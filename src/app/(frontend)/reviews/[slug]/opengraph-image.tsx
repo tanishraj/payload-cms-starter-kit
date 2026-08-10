@@ -2,7 +2,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { ImageResponse } from 'next/og'
 
-import { getMediaAbsoluteUrl } from '@/lib/media'
+import { getOpenGraphMediaUrl } from '@/lib/media'
 
 export const alt = 'Review preview'
 export const contentType = 'image/png'
@@ -30,7 +30,7 @@ export default async function ReviewOgImage({ params }: Props) {
   const reviewer = review?.displayName?.trim() || review?.reviewerName?.trim() || ''
   const subjectLabel = review?.subjectLabel?.trim() ?? ''
   const siteName = siteSettings.siteName
-  const logoUrl = getMediaAbsoluteUrl(siteSettings.logo)
+  const logoUrl = getOpenGraphMediaUrl(siteSettings.logo)
 
   const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : ''
 

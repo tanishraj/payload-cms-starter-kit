@@ -2,7 +2,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { ImageResponse } from 'next/og'
 
-import { getMediaAbsoluteUrl } from '@/lib/media'
+import { getOpenGraphMediaUrl } from '@/lib/media'
 
 export const alt = 'News & Events preview'
 export const contentType = 'image/png'
@@ -35,7 +35,7 @@ export default async function NewsEventOgImage({ params }: Props) {
   const excerpt = entry?.excerpt ?? ''
   const contentType_ = entry?.contentType === 'event' ? 'Event' : 'News'
   const siteName = siteSettings.siteName
-  const logoUrl = getMediaAbsoluteUrl(siteSettings.logo)
+  const logoUrl = getOpenGraphMediaUrl(siteSettings.logo)
 
   const accentColor = entry?.contentType === 'event' ? '#7c3aed' : '#2563eb'
 

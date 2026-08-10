@@ -2,7 +2,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { ImageResponse } from 'next/og'
 
-import { getMediaAbsoluteUrl } from '@/lib/media'
+import { getOpenGraphMediaUrl } from '@/lib/media'
 
 export const alt = 'Article preview'
 export const contentType = 'image/png'
@@ -29,7 +29,7 @@ export default async function ArticleOgImage({ params }: Props) {
   const excerpt = article?.excerpt ?? ''
   const author = article?.authorName ?? ''
   const siteName = siteSettings.siteName
-  const logoUrl = getMediaAbsoluteUrl(siteSettings.logo)
+  const logoUrl = getOpenGraphMediaUrl(siteSettings.logo)
 
   return new ImageResponse(
     <div

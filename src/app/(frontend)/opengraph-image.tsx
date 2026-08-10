@@ -2,7 +2,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { ImageResponse } from 'next/og'
 
-import { getMediaAbsoluteUrl } from '@/lib/media'
+import { getOpenGraphMediaUrl } from '@/lib/media'
 
 export const alt = 'Site preview'
 export const contentType = 'image/png'
@@ -17,7 +17,7 @@ export default async function DefaultOgImage() {
 
   const siteName = siteSettings.siteName
   const description = seoSettings.defaultDescription ?? siteSettings.siteDescription ?? ''
-  const logoUrl = getMediaAbsoluteUrl(siteSettings.logo)
+  const logoUrl = getOpenGraphMediaUrl(siteSettings.logo)
 
   return new ImageResponse(
     <div

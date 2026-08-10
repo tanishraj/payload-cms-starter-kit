@@ -32,6 +32,18 @@ export const getMediaAbsoluteUrl = (
   return new URL(url, defaultSiteURL).toString()
 }
 
+export const getOpenGraphMediaUrl = (
+  media: string | number | Media | null | undefined,
+): string | undefined => {
+  if (!isMediaDoc(media) || !media.url) {
+    return undefined
+  }
+
+  const url = media.url.trim()
+
+  return /^https?:\/\//i.test(url) ? url : undefined
+}
+
 const getMediaAltFallback = (preset: MediaPreset): string => {
   switch (preset) {
     case 'favicon':
