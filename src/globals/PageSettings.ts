@@ -10,6 +10,21 @@ import { createGlobalAuditHook } from '@/hooks/logOperationalAuditEvent'
 import { describeAuditValue } from '@/lib/operationalAudit'
 import { revalidateGlobalsCacheForGlobal } from '@/hooks/revalidateCmsContent'
 
+type AnnouncementAdminData = {
+  announcementDisplayMode?: 'horizontal' | 'marquee' | 'vertical' | null
+  announcementEnabled?: boolean | null
+}
+
+const isAnnouncementEnabled = (
+  data?: AnnouncementAdminData,
+  siblingData?: AnnouncementAdminData,
+): boolean => Boolean(siblingData?.announcementEnabled ?? data?.announcementEnabled)
+
+const getAnnouncementDisplayMode = (
+  data?: AnnouncementAdminData,
+  siblingData?: AnnouncementAdminData,
+) => siblingData?.announcementDisplayMode ?? data?.announcementDisplayMode
+
 const extractPageID = (
   value: number | { id: number | string } | null | undefined,
 ): number | string | null => {
@@ -218,7 +233,7 @@ export const PageSettings: GlobalConfig = {
               label: 'Label',
               type: 'text',
               admin: {
-                condition: (data) => Boolean(data?.announcementEnabled),
+                condition: isAnnouncementEnabled,
                 description: 'Short prefix badge shown before the rotating items (e.g. "News").',
               },
             },
@@ -228,7 +243,7 @@ export const PageSettings: GlobalConfig = {
               type: 'array',
               minRows: 1,
               admin: {
-                condition: (data) => Boolean(data?.announcementEnabled),
+                condition: isAnnouncementEnabled,
                 description: 'Rotating messages shown in the announcement bar.',
               },
               fields: [
@@ -276,7 +291,7 @@ export const PageSettings: GlobalConfig = {
               name: 'announcementAppearance',
               label: 'Appearance',
               admin: {
-                condition: (data) => Boolean(data?.announcementEnabled),
+                condition: isAnnouncementEnabled,
               },
             },
             {
@@ -291,7 +306,7 @@ export const PageSettings: GlobalConfig = {
               ],
               required: true,
               admin: {
-                condition: (data) => Boolean(data?.announcementEnabled),
+                condition: isAnnouncementEnabled,
               },
             },
             {
@@ -300,9 +315,9 @@ export const PageSettings: GlobalConfig = {
               type: 'number',
               defaultValue: 4000,
               admin: {
-                condition: (data) =>
-                  Boolean(data?.announcementEnabled) &&
-                  data?.announcementDisplayMode !== 'marquee',
+                condition: (data, siblingData) =>
+                  isAnnouncementEnabled(data, siblingData) &&
+                  getAnnouncementDisplayMode(data, siblingData) !== 'marquee',
                 description: 'How long each item stays visible before rotating. Minimum 2000ms.',
               },
               validate: validateAnnouncementInterval,
@@ -313,9 +328,9 @@ export const PageSettings: GlobalConfig = {
               type: 'number',
               defaultValue: 18000,
               admin: {
-                condition: (data) =>
-                  Boolean(data?.announcementEnabled) &&
-                  data?.announcementDisplayMode === 'marquee',
+                condition: (data, siblingData) =>
+                  isAnnouncementEnabled(data, siblingData) &&
+                  getAnnouncementDisplayMode(data, siblingData) === 'marquee',
                 description: 'Full scroll cycle duration. Lower values scroll faster.',
               },
               validate: validateAnnouncementMarqueeDuration,
@@ -326,7 +341,7 @@ export const PageSettings: GlobalConfig = {
               type: 'checkbox',
               defaultValue: false,
               admin: {
-                condition: (data) => Boolean(data?.announcementEnabled),
+                condition: isAnnouncementEnabled,
                 description: 'Show a close button so visitors can hide the bar for their session.',
               },
             },
@@ -336,7 +351,7 @@ export const PageSettings: GlobalConfig = {
               type: 'checkbox',
               defaultValue: false,
               admin: {
-                condition: (data) => Boolean(data?.announcementEnabled),
+                condition: isAnnouncementEnabled,
                 description: 'Let the bar scroll out of view instead of staying pinned.',
               },
             },
