@@ -1,12 +1,14 @@
 import type { Block } from 'payload'
 
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
+
 export const ReusableSectionBlock: Block = {
   slug: 'reusableSection',
   labels: {
     singular: 'Reusable Section',
     plural: 'Reusable Sections',
   },
-  admin: {},
+  admin: getBlockThumbnailAdmin('reusableSection'),
   fields: [
     {
       name: 'section',

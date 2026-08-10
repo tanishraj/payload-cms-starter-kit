@@ -122,7 +122,6 @@ describe('header navbar rendering', () => {
         appearance: {
           background: 'secondary',
           border: 'bottom',
-          textColor: 'auto',
         },
         ctas: [{ href: '/contact', label: 'Contact', newTab: false, variant: 'outline' }],
         logo: createElement('span', null, 'Acme'),
@@ -163,7 +162,6 @@ describe('header navbar rendering', () => {
         appearance: {
           background: 'accent',
           border: 'bottom',
-          textColor: 'auto',
         },
         blockType: 'headerNavbar12',
         ctaButtons: [
@@ -207,7 +205,7 @@ describe('header navbar rendering', () => {
   it('uses size-based logo height defaults when no logo override is set', () => {
     const compactHtml = renderToStaticMarkup(
       createElement(HeaderNavbar12BlockComponent, {
-        appearance: { background: 'none', border: 'none', textColor: 'auto' },
+        appearance: { background: 'none', border: 'none' },
         blockType: 'headerNavbar12',
         logoMode: 'siteDefault',
         menuItems: [
@@ -225,7 +223,7 @@ describe('header navbar rendering', () => {
 
     const largeHtml = renderToStaticMarkup(
       createElement(HeaderNavbar12BlockComponent, {
-        appearance: { background: 'none', border: 'none', textColor: 'auto' },
+        appearance: { background: 'none', border: 'none' },
         blockType: 'headerNavbar12',
         logoMode: 'siteDefault',
         menuItems: [
@@ -256,7 +254,6 @@ describe('header navbar rendering', () => {
               appearance: {
                 background: 'primary',
                 border: 'bottom',
-                textColor: 'auto',
               },
               blockType: 'headerNavbar12',
               ctaButtons: [

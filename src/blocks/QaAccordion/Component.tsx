@@ -124,11 +124,11 @@ function QaAccordionTrigger({
       >
         {children}
         <ChevronDownIcon
-          className="ml-auto h-5 w-5 shrink-0 text-muted-foreground group-data-[state=open]/accordion-trigger:hidden"
+          className="ml-auto h-5 w-5 shrink-0 text-current/70 group-data-[state=open]/accordion-trigger:hidden"
           aria-hidden="true"
         />
         <ChevronUpIcon
-          className="ml-auto hidden h-5 w-5 shrink-0 text-muted-foreground group-data-[state=open]/accordion-trigger:inline"
+          className="ml-auto hidden h-5 w-5 shrink-0 text-current/70 group-data-[state=open]/accordion-trigger:inline"
           aria-hidden="true"
         />
       </AccordionPrimitive.Trigger>
@@ -223,11 +223,11 @@ export function QaAccordionBlockComponent({
           contentAlignmentClasses[resolvedContentAlignment],
         )}
       >
-        <h2 className="text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-4xl">
+        <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
           {title}
         </h2>
         {description?.trim() ? (
-          <p className="text-balance text-base leading-7 text-muted-foreground">
+          <p className="text-balance text-base leading-7 text-current/70">
             {description.trim()}
           </p>
         ) : null}
@@ -247,17 +247,17 @@ export function QaAccordionBlockComponent({
       >
         {validItems.map((item, index) => (
           <QaAccordionItem
-            className={cn('border-0', index !== validItems.length - 1 && 'border-b border-border')}
+            className={cn('border-0', index !== validItems.length - 1 && 'border-b border-current/15')}
             key={`${item.question}-${index}`}
             value={`item-${index}`}
           >
             <QaAccordionTrigger className="justify-between py-6 text-left text-base font-semibold hover:no-underline sm:text-lg lg:py-8 lg:text-xl">
               <span className="pr-4">{item.question}</span>
             </QaAccordionTrigger>
-            <QaAccordionContent className="pb-6 pr-8 text-left text-sm leading-relaxed text-muted-foreground sm:text-base">
-              <div className="prose max-w-none text-left text-sm leading-relaxed [--tw-prose-body:var(--muted-foreground)] [--tw-prose-bold:var(--foreground)] [--tw-prose-bullets:var(--border)] [--tw-prose-counters:var(--muted-foreground)] [--tw-prose-headings:var(--foreground)] [--tw-prose-links:var(--foreground)] sm:text-base">
+            <QaAccordionContent className="pb-6 pr-8 text-left text-sm leading-relaxed text-current/70 sm:text-base">
+              <div className="prose max-w-none text-left text-sm leading-relaxed [--tw-prose-body:currentColor] [--tw-prose-bold:currentColor] [--tw-prose-bullets:var(--border)] [--tw-prose-counters:currentColor] [--tw-prose-headings:currentColor] [--tw-prose-links:var(--primary)] sm:text-base">
                 <RichText
-                  className="[&>p]:m-0 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground"
+                  className="[&>p]:m-0 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:opacity-80"
                   data={item.answer as RichTextData}
                 />
               </div>
@@ -286,12 +286,12 @@ export function QaAccordionBlockComponent({
             ) : null}
             <div className="min-w-0">
               {profile?.name?.trim() ? (
-                <p className="mb-1 text-sm font-semibold text-foreground sm:text-base">
+                <p className="mb-1 text-sm font-semibold text-current sm:text-base">
                   {profile.name.trim()}
                 </p>
               ) : null}
               {profile?.title?.trim() ? (
-                <p className="text-sm text-muted-foreground sm:text-base">{profile.title.trim()}</p>
+                <p className="text-sm text-current/70 sm:text-base">{profile.title.trim()}</p>
               ) : null}
             </div>
           </div>
@@ -300,12 +300,12 @@ export function QaAccordionBlockComponent({
         {hasContact ? (
           <div className="space-y-4 lg:space-y-6">
             {contact?.title?.trim() ? (
-              <p className="text-lg leading-tight font-semibold text-foreground sm:text-xl">
+              <p className="text-lg leading-tight font-semibold text-current sm:text-xl">
                 {contact.title.trim()}
               </p>
             ) : null}
             {contact?.description?.trim() ? (
-              <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+              <p className="text-sm leading-relaxed text-current/70 sm:text-base">
                 {contact.description.trim()}
               </p>
             ) : null}

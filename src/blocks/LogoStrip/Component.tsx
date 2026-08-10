@@ -127,7 +127,7 @@ export function LogoStripBlockComponent({
                   width={120}
                   height={64}
                   className={cn(
-                    'w-auto object-contain transition-all duration-300',
+                    'w-auto object-contain transition-all duration-300 dark:brightness-0 dark:invert',
                     heightClass,
                     grayscale && 'grayscale hover:grayscale-0',
                   )}
@@ -151,7 +151,7 @@ export function LogoStripBlockComponent({
                 <div key={String(logo.id)} className="flex flex-col items-center gap-1.5">
                   {wrapper}
                   {showLabels && logo.label ? (
-                    <span className="text-xs font-medium text-muted-foreground">{logo.label}</span>
+                    <span className="text-xs font-medium text-current/70">{logo.label}</span>
                   ) : null}
                 </div>
               )

@@ -14,6 +14,7 @@ import {
 import { Footers } from '@/collections/Footers'
 import { Headers } from '@/collections/Headers'
 import { Pages } from '@/collections/Pages'
+import { ReusableSections } from '@/collections/ReusableSections'
 import { SystemPages } from '@/collections/SystemPages'
 
 const collectRegisteredBlocks = (fields: Field[]): Block[] =>
@@ -42,35 +43,21 @@ describe('block thumbnail metadata', () => {
     const registeredSlugs = registeredBlocks.map(({ slug }) => slug)
     const definitionSlugs = blockThumbnailDefinitions.map(({ slug }) => slug)
 
-    expect(registeredSlugs.slice().sort()).toEqual([
-      'announcement',
-      'contact24',
-      'contact33',
-      'contentHighlights',
-      'cta39',
-      'eventGallery',
-      'featureMatrix',
-      'featureSpotlight',
-      'footer56',
-      'galleryShowcase',
-      'headerNavbar12',
-      'heroBanner',
-      'imageMosaic',
-      'newsEventsHighlights',
-      'profileCarousel',
-      'qaAccordion',
-      'ratingSpotlight',
-      'reviewFeed',
-      'reviewSubmission',
-      'services21',
-      'statsStrip',
-      'system404',
-      'systemComingSoon',
-      'systemMaintenance',
-      'teamShowcase',
-    ])
     expect(definitionSlugs.slice().sort()).toEqual(registeredSlugs.slice().sort())
+    expect(new Set(registeredSlugs).size).toBe(registeredSlugs.length)
     expect(new Set(definitionSlugs).size).toBe(definitionSlugs.length)
+  })
+
+  it('offers every non-recursive page block in Reusable Sections', () => {
+    const pageSlugs = collectRegisteredBlocks(Pages.fields).map(({ slug }) => slug)
+    const reusableSectionSlugs = collectRegisteredBlocks(ReusableSections.fields).map(
+      ({ slug }) => slug,
+    )
+
+    expect(reusableSectionSlugs.slice().sort()).toEqual(
+      pageSlugs.filter((slug) => slug !== 'reusableSection').sort(),
+    )
+    expect(reusableSectionSlugs).not.toContain('reusableSection')
   })
 
   it('uses manifest metadata in every Payload block config', () => {
@@ -184,6 +171,12 @@ describe('block thumbnail metadata', () => {
       filename: 'services-21.jpg',
       label: 'Services',
       slug: 'services21',
+      stageAlignment: 'top',
+    })
+    expect(getBlockThumbnailDefinition('reusableSection')).toMatchObject({
+      filename: 'reusable-section.jpg',
+      label: 'Reusable Section',
+      slug: 'reusableSection',
       stageAlignment: 'top',
     })
     expect(definitionSlugs).not.toContain('feature166')

@@ -84,7 +84,7 @@ export const LogoStripBlock: Block = {
         {
           label: 'Layout',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             {
               name: 'contentAlignment',
               label: 'Section Content Alignment',

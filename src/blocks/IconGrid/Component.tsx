@@ -128,15 +128,15 @@ function CardItem({
   const inner = (
     <div
       className={cn(
-        'group flex h-full flex-col gap-4 rounded-xl border border-border bg-card p-6 transition-shadow',
+        'group flex h-full flex-col gap-4 rounded-xl border border-border bg-card p-6 text-card-foreground transition-shadow',
         link && 'hover:shadow-md hover:border-primary/30',
       )}
     >
       {item.icon ? <IconContainer icon={item.icon} iconStyle={iconStyle} /> : null}
       <div className="flex flex-1 flex-col gap-1">
-        <h3 className="font-sans text-base font-semibold leading-snug text-foreground">{item.title?.trim()}</h3>
+        <h3 className="font-sans text-base font-semibold leading-snug text-current">{item.title?.trim()}</h3>
         {item.description?.trim() ? (
-          <p className="text-sm leading-relaxed text-muted-foreground">{item.description.trim()}</p>
+          <p className="text-sm leading-relaxed text-current/70">{item.description.trim()}</p>
         ) : null}
       </div>
       {link ? (
@@ -180,9 +180,9 @@ function MinimalItem({
       <div className="flex gap-4">
         {item.icon ? <IconContainer icon={item.icon} iconStyle={iconStyle} /> : null}
         <div className="flex flex-col gap-1">
-          <h3 className="font-sans text-base font-semibold leading-snug text-foreground">{item.title?.trim()}</h3>
+          <h3 className="font-sans text-base font-semibold leading-snug text-current">{item.title?.trim()}</h3>
           {item.description?.trim() ? (
-            <p className="text-sm leading-relaxed text-muted-foreground">{item.description.trim()}</p>
+            <p className="text-sm leading-relaxed text-current/70">{item.description.trim()}</p>
           ) : null}
         </div>
       </div>
@@ -226,9 +226,9 @@ function IconTopItem({
     <div className="group flex h-full flex-col items-center gap-3 text-center">
       {item.icon ? <IconContainer icon={item.icon} iconStyle={iconStyle} /> : null}
       <div className="flex flex-col gap-1">
-        <h3 className="font-sans text-base font-semibold leading-snug text-foreground">{item.title?.trim()}</h3>
+        <h3 className="font-sans text-base font-semibold leading-snug text-current">{item.title?.trim()}</h3>
         {item.description?.trim() ? (
-          <p className="text-sm leading-relaxed text-muted-foreground">{item.description.trim()}</p>
+          <p className="text-sm leading-relaxed text-current/70">{item.description.trim()}</p>
         ) : null}
       </div>
       {link ? (

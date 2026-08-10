@@ -126,7 +126,7 @@ export const ContentHighlightsBlock: Block = {
         {
           label: 'Layout',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             createContentActionModeField(),
             {
               name: 'layout',

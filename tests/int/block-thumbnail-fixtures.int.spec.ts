@@ -15,7 +15,15 @@ describe('block thumbnail fixtures', () => {
     )
 
     for (const definition of blockThumbnailDefinitions) {
-      const html = renderToStaticMarkup(getBlockThumbnailFixture(definition.slug))
+      let html = ''
+
+      try {
+        html = renderToStaticMarkup(getBlockThumbnailFixture(definition.slug))
+      } catch (error) {
+        throw new Error(`Failed to render ${definition.slug} thumbnail fixture.`, {
+          cause: error,
+        })
+      }
 
       expect(html.length).toBeGreaterThan(100)
       expect(html).not.toContain('Replace this file')

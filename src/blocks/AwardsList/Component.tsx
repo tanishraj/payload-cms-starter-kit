@@ -36,7 +36,7 @@ const categoryConfig: Record<AwardCategory, { label: string; icon: React.Compone
   accreditation: { label: 'Accreditation', icon: Medal, color: 'bg-primary/10 text-primary' },
   ranking:       { label: 'Ranking',        icon: TrendingUp, color: 'bg-secondary text-secondary-foreground' },
   award:         { label: 'Award',          icon: Trophy, color: 'bg-accent text-accent-foreground' },
-  recognition:   { label: 'Recognition',   icon: Star, color: 'bg-muted text-muted-foreground' },
+  recognition:   { label: 'Recognition',   icon: Star, color: 'bg-muted text-foreground' },
   milestone:     { label: 'Milestone',     icon: Award, color: 'bg-destructive/10 text-destructive' },
 }
 
@@ -108,22 +108,22 @@ export function AwardsListBlockComponent({
               const cat = (item.category ?? 'recognition') as AwardCategory
               const { icon: Icon, color } = categoryConfig[cat]
               return (
-                <div key={i} className="flex flex-col gap-3 rounded-xl border border-border bg-card p-5">
+                <div key={i} className="flex flex-col gap-3 rounded-xl border border-border bg-card p-5 text-card-foreground">
                   <div className="flex items-start justify-between gap-3">
                     <div className={cn('flex size-10 shrink-0 items-center justify-center rounded-lg', color)}>
                       <Icon className="size-5" />
                     </div>
                     {item.year?.trim() ? (
-                      <span className="text-xs font-medium text-muted-foreground">{item.year.trim()}</span>
+                      <span className="text-xs font-medium text-current/70">{item.year.trim()}</span>
                     ) : null}
                   </div>
                   <div className="flex flex-col gap-1">
-                    <h3 className="font-sans font-semibold leading-tight text-foreground">{item.title?.trim()}</h3>
+                    <h3 className="font-sans font-semibold leading-tight text-current">{item.title?.trim()}</h3>
                     {item.organization?.trim() ? (
-                      <p className="text-sm text-muted-foreground">{item.organization.trim()}</p>
+                      <p className="text-sm text-current/70">{item.organization.trim()}</p>
                     ) : null}
                     {item.description?.trim() ? (
-                      <p className="mt-1 text-sm text-muted-foreground/80">{item.description.trim()}</p>
+                      <p className="mt-1 text-sm text-current/70">{item.description.trim()}</p>
                     ) : null}
                   </div>
                   <CategoryBadge category={item.category} />
@@ -138,29 +138,29 @@ export function AwardsListBlockComponent({
           <div className="overflow-x-auto rounded-xl border border-border">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border bg-muted/50">
-                  <th className="px-4 py-3 text-left font-semibold text-foreground">Award / Accreditation</th>
-                  <th className="hidden px-4 py-3 text-left font-semibold text-foreground sm:table-cell">Organization</th>
-                  <th className="px-4 py-3 text-left font-semibold text-foreground">Category</th>
-                  <th className="hidden px-4 py-3 text-right font-semibold text-foreground md:table-cell">Year</th>
+                <tr className="border-b border-border bg-muted/50 text-foreground">
+                  <th className="px-4 py-3 text-left font-semibold text-current">Award / Accreditation</th>
+                  <th className="hidden px-4 py-3 text-left font-semibold text-current sm:table-cell">Organization</th>
+                  <th className="px-4 py-3 text-left font-semibold text-current">Category</th>
+                  <th className="hidden px-4 py-3 text-right font-semibold text-current md:table-cell">Year</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
                 {items.map((item, i) => (
                   <tr key={i} className="hover:bg-muted/30 transition-colors">
                     <td className="px-4 py-3">
-                      <p className="font-medium text-foreground">{item.title?.trim()}</p>
+                      <p className="font-medium text-current">{item.title?.trim()}</p>
                       {item.description?.trim() ? (
-                        <p className="mt-0.5 text-xs text-muted-foreground">{item.description.trim()}</p>
+                        <p className="mt-0.5 text-xs text-current/70">{item.description.trim()}</p>
                       ) : null}
                     </td>
-                    <td className="hidden px-4 py-3 text-muted-foreground sm:table-cell">
+                    <td className="hidden px-4 py-3 text-current/70 sm:table-cell">
                       {item.organization?.trim() ?? '—'}
                     </td>
                     <td className="px-4 py-3">
                       <CategoryBadge category={item.category} />
                     </td>
-                    <td className="hidden px-4 py-3 text-right text-muted-foreground md:table-cell">
+                    <td className="hidden px-4 py-3 text-right text-current/70 md:table-cell">
                       {item.year?.trim() ?? '—'}
                     </td>
                   </tr>
@@ -176,15 +176,15 @@ export function AwardsListBlockComponent({
             {items.map((item, i) => (
               <div key={i} className="flex items-center gap-4 py-4">
                 <div className="flex min-w-0 flex-1 flex-col gap-0.5 sm:flex-row sm:items-center sm:gap-4">
-                  <p className="font-semibold text-foreground sm:flex-1">{item.title?.trim()}</p>
+                  <p className="font-semibold text-current sm:flex-1">{item.title?.trim()}</p>
                   {item.organization?.trim() ? (
-                    <p className="text-sm text-muted-foreground sm:w-40 sm:shrink-0">{item.organization.trim()}</p>
+                    <p className="text-sm text-current/70 sm:w-40 sm:shrink-0">{item.organization.trim()}</p>
                   ) : null}
                 </div>
                 <div className="flex shrink-0 flex-col items-end gap-1 sm:flex-row sm:items-center sm:gap-4">
                   <CategoryBadge category={item.category} />
                   {item.year?.trim() ? (
-                    <span className="text-xs text-muted-foreground">{item.year.trim()}</span>
+                    <span className="text-xs text-current/70">{item.year.trim()}</span>
                   ) : null}
                 </div>
               </div>

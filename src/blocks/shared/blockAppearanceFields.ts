@@ -1,7 +1,6 @@
 import type { Field, GroupField, SelectField } from 'payload'
 
 type CreateBlockAppearanceFieldsOptions = {
-  includeTextOverride?: boolean
   includeBackground?: boolean
   includeBorder?: boolean
 }
@@ -21,19 +20,6 @@ const backgroundField = {
   required: true,
 } satisfies SelectField
 
-const textColorField = {
-  name: 'textColor',
-  label: 'Text Color',
-  type: 'select',
-  defaultValue: 'auto',
-  options: [
-    { label: 'Auto', value: 'auto' },
-    { label: 'Default', value: 'default' },
-    { label: 'Inverse', value: 'inverse' },
-  ],
-  required: true,
-} satisfies SelectField
-
 const borderField = {
   name: 'border',
   label: 'Border',
@@ -49,7 +35,6 @@ const borderField = {
 } satisfies SelectField
 
 export const createBlockAppearanceFields = ({
-  includeTextOverride = false,
   includeBackground = true,
   includeBorder = true,
 }: CreateBlockAppearanceFieldsOptions = {}): GroupField =>
@@ -59,7 +44,6 @@ export const createBlockAppearanceFields = ({
     type: 'group',
     fields: [
       ...(includeBackground ? [backgroundField] : []),
-      ...(includeTextOverride ? [textColorField] : []),
       ...(includeBorder ? [borderField] : []),
     ],
   }) satisfies GroupField

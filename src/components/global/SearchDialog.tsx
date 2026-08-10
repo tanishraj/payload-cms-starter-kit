@@ -56,6 +56,7 @@ export function SearchDialog() {
   const [status, setStatus] = useState<Status>('idle')
   const [activeIndex, setActiveIndex] = useState(-1)
   const inputRef = useRef<HTMLInputElement>(null)
+  const latestQueryRef = useRef('')
   const debouncedQuery = useDebounce(query, DEBOUNCE_MS)
 
   const openDialog = useCallback(() => {
@@ -64,6 +65,7 @@ export function SearchDialog() {
     setResults([])
     setStatus('idle')
     setActiveIndex(-1)
+    latestQueryRef.current = ''
   }, [])
 
   const closeDialog = useCallback(() => setOpen(false), [])
@@ -97,29 +99,40 @@ export function SearchDialog() {
   // Fetch results on debounced query change
   useEffect(() => {
     if (debouncedQuery.length < MIN_QUERY) {
-      setResults([])
-      setStatus('idle')
-      setActiveIndex(-1)
       return
     }
     let cancelled = false
-    setStatus('loading')
     fetch(`/api/search?q=${encodeURIComponent(debouncedQuery)}`)
       .then((r) => r.json() as Promise<SearchResponse>)
       .then((data) => {
-        if (!cancelled) {
+        if (!cancelled && latestQueryRef.current === debouncedQuery) {
           setResults(data.results)
           setStatus('done')
           setActiveIndex(-1)
         }
       })
       .catch(() => {
-        if (!cancelled) setStatus('error')
+        if (!cancelled && latestQueryRef.current === debouncedQuery) {
+          setStatus('error')
+        }
       })
     return () => {
       cancelled = true
     }
   }, [debouncedQuery])
+
+  const handleQueryChange = (nextQuery: string) => {
+    latestQueryRef.current = nextQuery
+    setQuery(nextQuery)
+    setActiveIndex(-1)
+
+    if (nextQuery.length < MIN_QUERY) {
+      setResults([])
+      setStatus('idle')
+    } else {
+      setStatus('loading')
+    }
+  }
 
   // Arrow-key / Enter keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -171,13 +184,13 @@ export function SearchDialog() {
           initial={{ opacity: 0, scale: 0.97, y: -6 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.15, ease: 'easeOut' }}
-          className="pointer-events-auto w-full max-w-xl overflow-hidden rounded-2xl border border-border bg-background shadow-2xl"
+          className="pointer-events-auto w-full max-w-2xl overflow-hidden rounded-2xl border border-border bg-background shadow-2xl"
         >
           {/* Search input row */}
-          <div className="flex items-center gap-3 border-b border-border px-4 py-3">
+          <div className="flex items-center gap-4 border-b border-border px-5 py-4 sm:px-6">
             <svg
               aria-hidden="true"
-              className="size-4 shrink-0 text-muted-foreground"
+              className="size-5 shrink-0 text-muted-foreground"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -195,24 +208,24 @@ export function SearchDialog() {
               aria-controls="search-dialog-listbox"
               aria-activedescendant={activeIndex >= 0 ? `search-result-${activeIndex}` : undefined}
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(event) => handleQueryChange(event.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Search pages, articles, news, reviews…"
               autoComplete="off"
-              className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+              className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground sm:text-lg"
             />
-            <kbd className="hidden rounded border border-border px-1.5 py-0.5 text-xs text-muted-foreground sm:block">
+            <kbd className="hidden rounded-md border border-border px-2 py-1 text-sm text-muted-foreground sm:block">
               Esc
             </kbd>
             <button
               type="button"
               onClick={closeDialog}
               aria-label="Close search"
-              className="shrink-0 rounded p-0.5 text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="flex size-9 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <svg
                 aria-hidden="true"
-                className="size-4"
+                className="size-5"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -230,7 +243,7 @@ export function SearchDialog() {
             className="max-h-[min(60vh,420px)] overflow-y-auto"
           >
             {query.length >= MIN_QUERY && status === 'loading' ? (
-              <div className="flex items-center gap-2.5 px-4 py-6 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2.5 px-5 py-6 text-sm text-muted-foreground sm:px-6">
                 <svg
                   aria-hidden="true"
                   className="size-4 animate-spin"
@@ -244,11 +257,11 @@ export function SearchDialog() {
                 Searching…
               </div>
             ) : status === 'error' ? (
-              <p className="px-4 py-6 text-center text-sm text-muted-foreground">
+              <p className="px-5 py-6 text-center text-sm text-muted-foreground sm:px-6">
                 Search unavailable. Please try again.
               </p>
             ) : status === 'done' && results.length === 0 ? (
-              <p className="px-4 py-6 text-center text-sm text-muted-foreground">
+              <p className="px-5 py-6 text-center text-sm text-muted-foreground sm:px-6">
                 No results for <strong>&ldquo;{query}&rdquo;</strong>
               </p>
             ) : results.length > 0 ? (
@@ -261,7 +274,7 @@ export function SearchDialog() {
                 {groups.map(({ type, label, items }) => (
                   <li key={type} role="presentation">
                     {/* Section header */}
-                    <p className="px-4 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/70">
+                    <p className="px-5 pb-1 pt-4 font-mono text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground/70 sm:px-6">
                       {label}
                     </p>
                     <ul role="group" aria-label={label}>
@@ -277,23 +290,23 @@ export function SearchDialog() {
                             <Link
                               href={item.href}
                               onClick={closeDialog}
-                              className={`mx-2 flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${
+                              className={`mx-2 flex items-center gap-3 rounded-lg px-4 py-3 transition-colors ${
                                 idx === activeIndex ? 'bg-accent' : 'hover:bg-accent'
                               }`}
                             >
                               <div className="min-w-0 flex-1">
-                                <p className="truncate text-sm font-medium text-foreground">
+                                <p className="truncate text-base font-medium text-foreground">
                                   {item.title}
                                 </p>
                                 {item.excerpt && item.excerpt !== item.title ? (
-                                  <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
+                                  <p className="mt-0.5 line-clamp-1 text-sm text-muted-foreground">
                                     {item.excerpt}
                                   </p>
                                 ) : null}
                               </div>
                               <svg
                                 aria-hidden="true"
-                                className="size-3.5 shrink-0 text-muted-foreground/40"
+                                className="size-4 shrink-0 text-muted-foreground/40"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
@@ -311,13 +324,17 @@ export function SearchDialog() {
               </ul>
             ) : (
               /* Idle: keyboard hint */
-              <div className="flex items-center justify-between px-4 py-4 text-xs text-muted-foreground">
+              <div className="flex items-center justify-between px-5 py-4 text-sm text-muted-foreground sm:px-6">
                 <span>Type to search the site</span>
-                <span className="hidden items-center gap-1 sm:flex">
-                  <kbd className="rounded border border-border px-1.5 py-0.5">↑↓</kbd>
-                  <span>navigate</span>
-                  <kbd className="ml-1 rounded border border-border px-1.5 py-0.5">↵</kbd>
-                  <span>open</span>
+                <span className="hidden items-center gap-4 sm:flex">
+                  <span className="inline-flex items-center gap-2">
+                    <kbd className="rounded-md border border-border px-2 py-1">↑↓</kbd>
+                    <span>navigate</span>
+                  </span>
+                  <span className="inline-flex items-center gap-2">
+                    <kbd className="rounded-md border border-border px-2 py-1">↵</kbd>
+                    <span>open</span>
+                  </span>
                 </span>
               </div>
             )}
@@ -325,11 +342,11 @@ export function SearchDialog() {
 
           {/* Footer: always visible once query is long enough */}
           {query.length >= MIN_QUERY && (
-            <div className="border-t border-border px-4 py-2.5">
+            <div className="border-t border-border px-5 py-3 sm:px-6">
               <Link
                 href={`/search?q=${encodeURIComponent(query)}`}
                 onClick={closeDialog}
-                className="text-xs text-muted-foreground hover:text-foreground hover:underline"
+                className="text-sm text-muted-foreground hover:text-foreground hover:underline"
               >
                 View all results for &ldquo;{query}&rdquo; →
               </Link>

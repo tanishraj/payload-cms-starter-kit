@@ -32,7 +32,6 @@ describe('global footer wiring', () => {
               appearance: {
                 background: 'accent',
                 border: 'top',
-                textColor: 'auto',
               },
               blockType: 'footer56',
               bottomLinks: [{ label: 'Terms and Conditions', linkType: 'custom', url: '/terms' }],
@@ -114,7 +113,6 @@ describe('global footer wiring', () => {
               appearance: {
                 background: 'muted',
                 border: 'top',
-                textColor: 'auto',
               },
               blockType: 'footer56',
               ctaButtons: [{ label: 'Contact', linkType: 'custom', url: '/contact', variant: 'outline' }],

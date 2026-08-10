@@ -2286,6 +2286,8 @@ export interface ReusableSection {
         | AnnouncementBlock
         | Cta39Block
         | HeroBannerBlock
+        | HeroCarouselBlock
+        | GalleryCoverflowBlock
         | FeatureSpotlightBlock
         | FeatureMatrixBlock
         | ContentHighlightsBlock
@@ -2316,6 +2318,9 @@ export interface ReusableSection {
         | DownloadListBlock
         | NumberedStepsBlock
         | BentoGridBlock
+        | TestimonialGridBlock
+        | AwardsListBlock
+        | AboutSectionBlock
       )[]
     | null;
   updatedAt: string;
@@ -5204,6 +5209,8 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         announcement?: T | AnnouncementBlockSelect<T>;
         cta39?: T | Cta39BlockSelect<T>;
         heroBanner?: T | HeroBannerBlockSelect<T>;
+        heroCarousel?: T | HeroCarouselBlockSelect<T>;
+        galleryCoverflow?: T | GalleryCoverflowBlockSelect<T>;
         featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
         contentHighlights?: T | ContentHighlightsBlockSelect<T>;
@@ -5234,6 +5241,9 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         downloadList?: T | DownloadListBlockSelect<T>;
         numberedSteps?: T | NumberedStepsBlockSelect<T>;
         bentoGrid?: T | BentoGridBlockSelect<T>;
+        testimonialGrid?: T | TestimonialGridBlockSelect<T>;
+        awardsList?: T | AwardsListBlockSelect<T>;
+        aboutSection?: T | AboutSectionBlockSelect<T>;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -5934,7 +5944,7 @@ export interface ThemeSetting {
   /**
    * Select which frontend theme preset is loaded for the site.
    */
-  themeColor: 'default' | 'sunset' | 'blue' | 'kodama';
+  themeColor: 'default' | 'sunset' | 'blue' | 'kodama' | 'snmih';
   /**
    * Choose whether the site follows the system preference or forces light/dark mode.
    */

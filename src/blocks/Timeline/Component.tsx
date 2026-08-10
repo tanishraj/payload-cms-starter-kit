@@ -35,17 +35,17 @@ type TimelineBlockLike = {
 
 // ── Status styles for Horizontal Steps ──────────────────────────────────────
 const stepCircleClasses = {
-  none: 'border-2 border-border bg-background text-muted-foreground',
-  upcoming: 'border-2 border-border bg-background text-muted-foreground',
+  none: 'border-2 border-border bg-background text-foreground/70',
+  upcoming: 'border-2 border-border bg-background text-foreground/70',
   active: 'border-2 border-primary bg-primary text-primary-foreground',
-  done: 'border-2 border-green-500 bg-green-500 text-white',
+  done: 'border-2 border-success bg-success text-white',
 } as const
 
 const stepConnectorClasses = {
-  none: 'bg-border',
-  upcoming: 'bg-border',
-  active: 'bg-border',
-  done: 'bg-border',
+  none: 'bg-current/15',
+  upcoming: 'bg-current/15',
+  active: 'bg-current/15',
+  done: 'bg-current/15',
 } as const
 
 function StatusIcon({ badge, index }: { badge: string; index: number }) {
@@ -53,6 +53,9 @@ function StatusIcon({ badge, index }: { badge: string; index: number }) {
   if (badge === 'active') return <span className="text-sm font-bold">{index + 1}</span>
   return <span className="text-sm font-semibold">{index + 1}</span>
 }
+
+export const formatStepLabel = (index: number) =>
+  `Step ${String(index + 1).padStart(2, '0')}`
 
 // ── Section header shared across variants ────────────────────────────────────
 function SectionHeader({
@@ -110,22 +113,20 @@ function HorizontalTimeline({ items, showConnectors }: { items: TimelineItem[]; 
                   <StatusIcon badge={badge} index={index} />
                 </div>
                 {showConnectors && !isLast ? (
-                  <div className="w-px flex-1 bg-border" />
+                  <div className="w-px flex-1 bg-current/15" />
                 ) : null}
               </div>
               {/* Right column: content, pb spaces out to next circle */}
               <div className={cn('flex flex-col gap-1.5', !isLast && 'pb-8')}>
-                {item.date?.trim() ? (
-                  <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                    <Clock className="size-3.5 shrink-0" />
-                    {item.date.trim()}
-                  </span>
-                ) : null}
-                <p className="text-base font-semibold leading-snug text-foreground">
+                <span className="flex items-center gap-1 text-sm text-current/70">
+                  <Clock className="size-3.5 shrink-0" />
+                  {formatStepLabel(index)}
+                </span>
+                <p className="text-base font-semibold leading-snug text-current">
                   {item.title?.trim()}
                 </p>
                 {item.description?.trim() ? (
-                  <p className="text-sm leading-relaxed text-muted-foreground">
+                  <p className="text-sm leading-relaxed text-current/70">
                     {item.description.trim()}
                   </p>
                 ) : null}
@@ -171,17 +172,15 @@ function HorizontalTimeline({ items, showConnectors }: { items: TimelineItem[]; 
                 ) : null}
               </div>
               <div className="flex flex-col items-center gap-1.5 px-2 text-center">
-                {item.date?.trim() ? (
-                  <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                    <Clock className="size-3.5 shrink-0" />
-                    {item.date.trim()}
-                  </span>
-                ) : null}
-                <p className="text-base font-semibold leading-snug text-foreground">
+                <span className="flex items-center gap-1 text-sm text-current/70">
+                  <Clock className="size-3.5 shrink-0" />
+                  {formatStepLabel(index)}
+                </span>
+                <p className="text-base font-semibold leading-snug text-current">
                   {item.title?.trim()}
                 </p>
                 {item.description?.trim() ? (
-                  <p className="text-sm leading-relaxed text-muted-foreground">
+                  <p className="text-sm leading-relaxed text-current/70">
                     {item.description.trim()}
                   </p>
                 ) : null}
@@ -218,19 +217,19 @@ function VerticalTimeline({ items }: { items: TimelineItem[] }) {
                   <Circle className="size-3 fill-current" />
                 )}
               </div>
-              {!isLast ? <div className="w-0.5 flex-1 bg-border" /> : null}
+              {!isLast ? <div className="w-0.5 flex-1 bg-current/15" /> : null}
             </div>
             <div className={cn('flex flex-col gap-1 pb-10', isLast && 'pb-0')}>
               {item.date?.trim() ? (
-                <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                <span className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                   {item.date.trim()}
                 </span>
               ) : null}
-              <h3 className="text-lg font-semibold leading-snug text-foreground">
+              <h3 className="text-lg font-semibold leading-snug text-current">
                 {item.title?.trim()}
               </h3>
               {item.description?.trim() ? (
-                <p className="text-base leading-relaxed text-muted-foreground">
+                <p className="text-base leading-relaxed text-current/70">
                   {item.description.trim()}
                 </p>
               ) : null}
@@ -269,7 +268,7 @@ function AlternatingTimeline({ items }: { items: TimelineItem[] }) {
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               ) : (
-                <div className="flex h-full items-center justify-center bg-muted">
+                <div className="flex h-full items-center justify-center bg-muted text-foreground">
                   <span className="font-serif text-8xl font-bold text-border">
                     {String(index + 1).padStart(2, '0')}
                   </span>
@@ -280,7 +279,7 @@ function AlternatingTimeline({ items }: { items: TimelineItem[] }) {
             {/* Content */}
             <div className="flex flex-col gap-3 md:flex-1">
               {item.date?.trim() ? (
-                <span className="text-sm font-semibold uppercase tracking-widest text-primary">
+                <span className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-primary">
                   {item.date.trim()}
                 </span>
               ) : (
@@ -288,11 +287,11 @@ function AlternatingTimeline({ items }: { items: TimelineItem[] }) {
                   {String(index + 1).padStart(2, '0')}
                 </span>
               )}
-              <h3 className="text-2xl font-semibold leading-snug tracking-tight text-foreground md:text-3xl">
+              <h3 className="text-2xl font-semibold leading-snug tracking-tight text-current md:text-3xl">
                 {item.title?.trim()}
               </h3>
               {item.description?.trim() ? (
-                <p className="text-base leading-relaxed text-muted-foreground">
+                <p className="text-base leading-relaxed text-current/70">
                   {item.description.trim()}
                 </p>
               ) : null}

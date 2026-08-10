@@ -82,7 +82,7 @@ export const MediaCarouselBlock: Block = {
         {
           label: 'Layout',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             createContentActionModeField(),
             {
               name: 'actionVariant',

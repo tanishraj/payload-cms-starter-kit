@@ -551,22 +551,22 @@ export const blockThumbnailFixtures = {
       eyebrow="Inside our community"
       images={[
         {
-          image: { alt: 'Editorial landscape', id: 1, url: editorialLandscape },
+          image: { alt: 'Editorial landscape', height: 900, id: 1, url: editorialLandscape, width: 1600 },
         },
         {
-          image: { alt: 'Collaborative environment', id: 2, url: collaboration },
+          image: { alt: 'Collaborative environment', height: 900, id: 2, url: collaboration, width: 1600 },
           imagePosition: 'top',
         },
         {
-          image: { alt: 'Community portrait', id: 3, url: portrait },
+          image: { alt: 'Community portrait', height: 1200, id: 3, url: portrait, width: 900 },
           imagePosition: 'center',
         },
         {
-          image: { alt: 'Learning environment', id: 4, url: editorialLandscape },
+          image: { alt: 'Learning environment', height: 900, id: 4, url: editorialLandscape, width: 1600 },
           imagePosition: 'right',
         },
         {
-          image: { alt: 'Shared campus moment', id: 5, url: collaboration },
+          image: { alt: 'Shared campus moment', height: 900, id: 5, url: collaboration, width: 1600 },
           imagePosition: 'bottom',
         },
       ]}
@@ -589,11 +589,11 @@ export const blockThumbnailFixtures = {
       description="A collection of spaces, people, and moments from across the community."
       eyebrow="Photo library"
       images={[
-        { image: { alt: 'Editorial landscape one', id: 'coverflow-1', url: editorialLandscape } },
-        { image: { alt: 'Collaborative environment one', id: 'coverflow-2', url: collaboration } },
-        { image: { alt: 'Community portrait', id: 'coverflow-3', url: portrait } },
-        { image: { alt: 'Editorial landscape two', id: 'coverflow-4', url: editorialLandscape } },
-        { image: { alt: 'Collaborative environment two', id: 'coverflow-5', url: collaboration } },
+        { image: { alt: 'Editorial landscape one', height: 900, id: 'coverflow-1', url: editorialLandscape, width: 1600 } },
+        { image: { alt: 'Collaborative environment one', height: 900, id: 'coverflow-2', url: collaboration, width: 1600 } },
+        { image: { alt: 'Community portrait', height: 1200, id: 'coverflow-3', url: portrait, width: 900 } },
+        { image: { alt: 'Editorial landscape two', height: 900, id: 'coverflow-4', url: editorialLandscape, width: 1600 } },
+        { image: { alt: 'Collaborative environment two', height: 900, id: 'coverflow-5', url: collaboration, width: 1600 } },
       ]}
       size="compact"
       title="Your photos, brought together."
@@ -704,7 +704,7 @@ export const blockThumbnailFixtures = {
               variant: 'default',
             },
           ],
-          image: { alt: 'Learning environment', id: 1, url: editorialLandscape },
+          image: { alt: 'Learning environment', height: 900, id: 1, url: editorialLandscape, width: 1600 },
           title: 'Learning spaces',
         },
         {
@@ -717,12 +717,12 @@ export const blockThumbnailFixtures = {
               variant: 'outline',
             },
           ],
-          image: { alt: 'Collaborative environment', id: 2, url: collaboration },
+          image: { alt: 'Collaborative environment', height: 900, id: 2, url: collaboration, width: 1600 },
           imagePosition: 'top',
           title: 'Collaboration',
         },
         {
-          image: { alt: 'Community portrait', id: 3, url: portrait },
+          image: { alt: 'Community portrait', height: 1200, id: 3, url: portrait, width: 900 },
           imagePosition: 'center',
           title: 'Our community',
         },
@@ -736,7 +736,7 @@ export const blockThumbnailFixtures = {
               variant: 'default',
             },
           ],
-          image: { alt: 'Campus landscape', id: 4, url: editorialLandscape },
+          image: { alt: 'Campus landscape', height: 900, id: 4, url: editorialLandscape, width: 1600 },
           imagePosition: 'right',
           title: 'Campus life',
         },
@@ -750,7 +750,7 @@ export const blockThumbnailFixtures = {
               variant: 'default',
             },
           ],
-          image: { alt: 'Shared learning moment', id: 5, url: collaboration },
+          image: { alt: 'Shared learning moment', height: 900, id: 5, url: collaboration, width: 1600 },
           imagePosition: 'bottom',
           title: 'Shared experiences',
         },
@@ -777,7 +777,7 @@ export const blockThumbnailFixtures = {
   ),
   headerNavbar12: (
     <HeaderNavbar12BlockComponent
-      appearance={{ background: 'none', border: 'bottom', textColor: 'auto' }}
+      appearance={{ background: 'none', border: 'bottom' }}
       blockType="headerNavbar12"
       ctaButtons={[
         {
@@ -1301,6 +1301,17 @@ export const blockThumbnailFixtures = {
       content={richTextParagraph('Our approach to education is grounded in the belief that practical experience and critical thinking are inseparable. We design programs that challenge students to engage deeply with real-world problems, building skills that last well beyond graduation. Every course, every assessment, and every learning space reflects a commitment to outcomes that matter — to students, to employers, and to the communities they serve.') as any}
       maxWidth="prose"
       size="compact"
+    />
+  ),
+  reusableSection: (
+    <PageHeaderBlockComponent
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      contentAlignment="left"
+      eyebrow="Reusable content"
+      height="compact"
+      subtitle="Manage this shared section once and keep every referenced page in sync."
+      title="A shared section for consistent pages."
+      variant="minimal"
     />
   ),
   tabsContent: (

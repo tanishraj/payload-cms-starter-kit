@@ -96,7 +96,7 @@ export const Contact24Block: Block = {
         {
           label: 'Layout',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             contentAlignmentField,
             detailsAlignmentField,
             showAddressDetailsField,

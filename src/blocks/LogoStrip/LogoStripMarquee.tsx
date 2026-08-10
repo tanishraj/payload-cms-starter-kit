@@ -30,7 +30,7 @@ function LogoItem({ duplicate = false, grayscale, logo, logoHeightClass, showLab
       width={120}
       height={64}
       className={cn(
-        'w-auto object-contain transition-all duration-300',
+        'w-auto object-contain transition-all duration-300 dark:brightness-0 dark:invert',
         logoHeightClass,
         grayscale && 'grayscale hover:grayscale-0',
       )}

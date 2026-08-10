@@ -69,7 +69,7 @@ export const FeatureSpotlightBlock: Block = {
         {
           label: 'Layout',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             createContentActionModeField(),
             {
               name: 'layoutMode',

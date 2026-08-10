@@ -62,7 +62,7 @@ function MediaCard({
   const Icon = item.icon ? (((LucideIcons as Record<string, unknown>)[item.icon] as LucideIcon | undefined) ?? Star) : undefined
 
   const cardInner = (
-    <div className="flex h-full flex-col overflow-hidden rounded-xl border border-border">
+    <div className="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card text-card-foreground">
       <div className="relative aspect-video w-full overflow-hidden">
         {item.mediaType === 'video' ? (
           <video
@@ -90,11 +90,11 @@ function MediaCard({
         ) : null}
       </div>
       <div className="flex flex-col gap-2 p-5">
-        <p className="text-base font-semibold leading-snug tracking-tight text-foreground">
+        <p className="text-base font-semibold leading-snug tracking-tight text-current">
           {item.title}
         </p>
         {item.summary ? (
-          <p className="text-sm leading-relaxed text-muted-foreground">{item.summary}</p>
+          <p className="text-sm leading-relaxed text-current/70">{item.summary}</p>
         ) : null}
         {item.action ? (
           <div className="mt-2">

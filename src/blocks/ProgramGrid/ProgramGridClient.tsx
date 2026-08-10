@@ -76,7 +76,7 @@ function GridCard({ program, ctaLabel, actionMode, actionVariant }: { program: R
   const inner = (
     <div
       className={cn(
-        'group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card transition-all duration-200',
+        'group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card text-card-foreground transition-all duration-200',
         program.ctaHref && 'hover:shadow-md hover:border-primary/30',
       )}
     >
@@ -107,19 +107,19 @@ function GridCard({ program, ctaLabel, actionMode, actionVariant }: { program: R
 
       <div className="flex flex-1 flex-col gap-3 p-5">
         {program.category ? (
-          <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-primary">
             {program.category}
           </p>
         ) : null}
-        <h3 className="text-lg font-semibold leading-snug text-foreground">{program.title}</h3>
+        <h3 className="text-lg font-semibold leading-snug text-current">{program.title}</h3>
         {program.description ? (
-          <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+          <p className="line-clamp-2 text-sm leading-relaxed text-current/70">
             {program.description}
           </p>
         ) : null}
 
         {program.duration || program.intake ? (
-          <div className="mt-auto flex flex-wrap gap-x-4 gap-y-1 pt-2 text-xs text-muted-foreground">
+          <div className="mt-auto flex flex-wrap gap-x-4 gap-y-1 pt-2 text-xs text-current/70">
             {program.duration ? (
               <span className="flex items-center gap-1">
                 <Clock className="size-3.5 shrink-0" />
@@ -168,7 +168,7 @@ function ListCard({ program, ctaLabel, actionMode, actionVariant }: { program: R
   const inner = (
     <div
       className={cn(
-        'group flex flex-col gap-4 overflow-hidden rounded-xl border border-border bg-card p-5 transition-all duration-200 sm:flex-row',
+        'group flex flex-col gap-4 overflow-hidden rounded-xl border border-border bg-card p-5 text-card-foreground transition-all duration-200 sm:flex-row',
         program.ctaHref && 'hover:shadow-md hover:border-primary/30',
       )}
     >
@@ -187,7 +187,7 @@ function ListCard({ program, ctaLabel, actionMode, actionVariant }: { program: R
       <div className="flex flex-1 flex-col gap-2">
         <div className="flex flex-wrap items-center gap-2">
           {program.category ? (
-            <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-primary">
               {program.category}
             </p>
           ) : null}
@@ -197,13 +197,13 @@ function ListCard({ program, ctaLabel, actionMode, actionVariant }: { program: R
             </Badge>
           ) : null}
         </div>
-        <h3 className="text-base font-semibold leading-snug text-foreground">{program.title}</h3>
+        <h3 className="text-base font-semibold leading-snug text-current">{program.title}</h3>
         {program.description ? (
-          <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+          <p className="line-clamp-2 text-sm leading-relaxed text-current/70">
             {program.description}
           </p>
         ) : null}
-        <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-xs text-muted-foreground">
+        <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-xs text-current/70">
           {program.duration ? (
             <span className="flex items-center gap-1">
               <Clock className="size-3.5 shrink-0" />

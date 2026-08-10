@@ -289,7 +289,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
                 <section key={group.type} aria-label={group.label}>
                   {/* Section header */}
                   <div className="mb-3 flex items-center gap-3">
-                    <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                    <h2 className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
                       {group.label}
                     </h2>
                     <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">

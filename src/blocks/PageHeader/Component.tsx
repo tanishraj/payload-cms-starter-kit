@@ -145,7 +145,7 @@ export function PageHeaderBlockComponent({
         <div className="relative mx-auto w-full max-w-screen-2xl px-4 py-10 md:py-14">
           <Breadcrumbs items={resolvedBreadcrumbs} />
           {eyebrow?.trim() ? (
-            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-white/70">
+            <p className="mb-2 font-mono text-xs font-semibold uppercase tracking-[0.24em] text-white/70">
               {eyebrow.trim()}
             </p>
           ) : null}
@@ -192,7 +192,7 @@ export function PageHeaderBlockComponent({
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
             <div className="flex flex-1 flex-col gap-4">
               {eyebrow?.trim() ? (
-                <p className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                   {eyebrow.trim()}
                 </p>
               ) : null}
@@ -200,7 +200,7 @@ export function PageHeaderBlockComponent({
                 {resolvedTitle}
               </h1>
               {subtitle?.trim() ? (
-                <p className="text-lg text-muted-foreground">{subtitle.trim()}</p>
+                <p className="text-lg text-current/70">{subtitle.trim()}</p>
               ) : null}
               {resolvedActions.length > 0 ? (
                 <div className="mt-2">
@@ -214,14 +214,14 @@ export function PageHeaderBlockComponent({
             </div>
 
             {resolvedKeyFacts.length > 0 ? (
-              <div className="shrink-0 rounded-xl border border-border bg-muted/50 p-6 lg:w-72">
+              <div className="shrink-0 rounded-xl border border-border bg-muted/50 p-6 text-foreground lg:w-72">
                 <dl className="grid grid-cols-2 gap-x-6 gap-y-4 lg:grid-cols-1">
                   {resolvedKeyFacts.map((fact, index) => (
                     <div key={index} className="flex flex-col gap-0.5">
-                      <dt className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                      <dt className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                         {fact.label!.trim()}
                       </dt>
-                      <dd className="text-base font-semibold text-foreground">
+                      <dd className="text-base font-semibold text-current">
                         {fact.value!.trim()}
                       </dd>
                     </div>
@@ -245,7 +245,7 @@ export function PageHeaderBlockComponent({
         {eyebrow?.trim() ? (
           <p
             className={cn(
-              'mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground',
+              'mb-2 font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70',
               isCenter && 'text-center',
             )}
           >
@@ -263,7 +263,7 @@ export function PageHeaderBlockComponent({
         {subtitle?.trim() ? (
           <p
             className={cn(
-              'mt-3 max-w-2xl text-lg text-muted-foreground',
+              'mt-3 max-w-2xl text-lg text-current/70',
               isCenter && 'mx-auto text-center',
             )}
           >

@@ -307,6 +307,13 @@ export const blockThumbnailDefinitions = [
     slug: 'videoEmbed',
     stageAlignment: 'top',
   }),
+  defineThumbnail({
+    alt: 'Reusable Section block preview',
+    filename: 'reusable-section.jpg',
+    label: 'Reusable Section',
+    slug: 'reusableSection',
+    stageAlignment: 'top',
+  }),
 ] as const
 
 export type BlockThumbnailSlug = (typeof blockThumbnailDefinitions)[number]['slug']

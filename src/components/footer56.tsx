@@ -173,9 +173,9 @@ const Footer56 = (props: Props) => {
                   />
                 </a>
               </div>
-              <div className="mt-6 space-y-3 text-sm text-muted-foreground">
+              <div className="mt-6 space-y-3 text-sm text-current/70">
                 <div className="flex gap-2">
-                  <MapPin className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden />
+                  <MapPin className="mt-0.5 size-4 shrink-0 text-current/70" aria-hidden />
                   <div className="space-y-0.5">
                     {(addressLines ?? []).map((line, i) => (
                       <p key={i}>{line}</p>
@@ -202,7 +202,7 @@ const Footer56 = (props: Props) => {
                   </div>
                 ) : null}
               </div>
-              <ul className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+              <ul className="mt-6 flex flex-wrap items-center gap-4 text-sm text-current/70">
                 {socialLinks?.map((social, idx) => (
                   <li key={idx} className="font-medium hover:text-primary">
                     <a href={social.href} aria-label={social.label}>
@@ -217,7 +217,7 @@ const Footer56 = (props: Props) => {
                 <h3 className="mb-4 text-sm font-semibold uppercase font-mono tracking-widest">
                   {section.title}
                 </h3>
-                <ul className="space-y-4 text-sm text-muted-foreground">
+                <ul className="space-y-4 text-sm text-current/70">
                   {section.links.map((link, linkIdx) => (
                     <li key={linkIdx} className="font-medium hover:text-primary">
                       <a href={link.href}>{link.name}</a>
@@ -227,7 +227,7 @@ const Footer56 = (props: Props) => {
               </div>
             ))}
           </div>
-          <div className="mt-8 flex flex-col justify-between gap-4 border-t border-border pt-8 text-xs font-medium text-muted-foreground md:flex-row md:items-center">
+          <div className="mt-8 flex flex-col justify-between gap-4 border-t border-current/15 pt-8 text-xs font-medium text-current/70 md:flex-row md:items-center">
             <p>{copyright}</p>
             <ul className="flex flex-wrap gap-4">
               {legalLinks?.map((link, linkIdx) => (

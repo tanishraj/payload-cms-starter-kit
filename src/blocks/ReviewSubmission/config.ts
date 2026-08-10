@@ -83,7 +83,7 @@ export const ReviewSubmissionBlock: Block = {
         {
           label: 'Layout',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             createContentActionModeField(),
             contentAlignmentField,
             sizeField,

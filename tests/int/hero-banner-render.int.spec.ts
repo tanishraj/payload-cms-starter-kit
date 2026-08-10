@@ -11,7 +11,6 @@ describe('Hero Banner block', () => {
         appearance: {
           background: 'primary',
           border: 'topAndBottom',
-          textColor: 'auto',
         },
         backgroundImage: { alt: 'Campus facade', url: '/media/campus.jpg' } as never,
         buttons: [

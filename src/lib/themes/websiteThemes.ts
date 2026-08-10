@@ -20,13 +20,16 @@ export const websiteThemes = [
   { label: 'Sunset', value: 'sunset' },
   { label: 'Blue', value: 'blue' },
   { label: 'Kodama', value: 'kodama' },
+  { label: 'SNMIH', value: 'snmih' },
 ] as const
 
 export type WebsiteThemeValue = (typeof websiteThemes)[number]['value']
 
 export const defaultWebsiteTheme: WebsiteThemeValue = 'default'
 
-export const websiteThemeValues = websiteThemes.map(({ value }) => value) as readonly WebsiteThemeValue[]
+export const websiteThemeValues = websiteThemes.map(
+  ({ value }) => value,
+) as readonly WebsiteThemeValue[]
 
 export const websiteThemeOptions = websiteThemes.map(({ label, value }) => ({
   label,

@@ -183,7 +183,7 @@ export function Contact24({
                         )}
                       >
                         {office.region && (
-                          <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                          <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-current/70">
                             {office.region}
                           </p>
                         )}
@@ -205,7 +205,7 @@ export function Contact24({
                         <div className="flex max-w-full min-w-0 items-start gap-3">
                           <MapPin
                             aria-hidden="true"
-                            className="mt-0.5 size-4 shrink-0 text-muted-foreground"
+                            className="mt-0.5 size-4 shrink-0 text-current/70"
                           />
                           <span>{office.address}</span>
                         </div>
@@ -217,7 +217,7 @@ export function Contact24({
                         >
                           <Phone
                             aria-hidden="true"
-                            className="size-4 shrink-0 text-muted-foreground"
+                            className="size-4 shrink-0 text-current/70"
                           />
                           {office.phone}
                         </a>
@@ -229,7 +229,7 @@ export function Contact24({
                         >
                           <Mail
                             aria-hidden="true"
-                            className="size-4 shrink-0 text-muted-foreground"
+                            className="size-4 shrink-0 text-current/70"
                           />
                           {office.email}
                         </a>

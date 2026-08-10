@@ -49,7 +49,7 @@ function DynamicIcon({ name, className }: { name?: string | null; className?: st
 function BodyText({ text }: { text: string }) {
   const paragraphs = text.split(/\n\n+/).map((p) => p.trim()).filter(Boolean)
   return (
-    <div className="flex flex-col gap-4 text-muted-foreground leading-relaxed">
+    <div className="flex flex-col gap-4 text-current/70 leading-relaxed">
       {paragraphs.map((p, i) => <p key={i}>{p}</p>)}
     </div>
   )
@@ -60,8 +60,8 @@ function StatsRow({ stats }: { stats: StatItem[] }) {
     <div className="flex flex-wrap gap-6 pt-2">
       {stats.map((s, i) => (
         <div key={i} className="flex flex-col">
-          <span className="text-3xl font-bold text-foreground">{s.value?.trim()}</span>
-          <span className="text-sm text-muted-foreground">{s.label?.trim()}</span>
+          <span className="text-3xl font-bold text-current">{s.value?.trim()}</span>
+          <span className="text-sm text-current/70">{s.label?.trim()}</span>
         </div>
       ))}
     </div>
@@ -82,10 +82,10 @@ function ValuesGrid({ values, centered }: { values: ValueItem[]; centered?: bool
           )}
           <div>
             {v.title?.trim() ? (
-              <h4 className="font-sans font-semibold text-foreground">{v.title.trim()}</h4>
+              <h4 className="font-sans font-semibold text-current">{v.title.trim()}</h4>
             ) : null}
             {v.description?.trim() ? (
-              <p className="mt-0.5 text-sm text-muted-foreground">{v.description.trim()}</p>
+              <p className="mt-0.5 text-sm text-current/70">{v.description.trim()}</p>
             ) : null}
           </div>
         </div>
@@ -139,7 +139,7 @@ export function AboutSectionBlockComponent({
       ) : null}
       {resolvedStats.length > 0 ? <StatsRow stats={resolvedStats} /> : null}
       {resolvedValues.length > 0 ? (
-        <div className={cn(resolvedStats.length > 0 && 'mt-4 border-t border-border pt-8')}>
+        <div className={cn(resolvedStats.length > 0 && 'mt-4 border-t border-current/15 pt-8')}>
           <ValuesGrid values={resolvedValues} centered={isCenter && variant !== 'split'} />
         </div>
       ) : null}
@@ -193,8 +193,8 @@ export function AboutSectionBlockComponent({
                 <div className="flex flex-wrap justify-center gap-8 pt-2">
                   {resolvedStats.map((s, i) => (
                     <div key={i} className="flex flex-col items-center">
-                      <span className="text-3xl font-bold text-foreground">{s.value?.trim()}</span>
-                      <span className="text-sm text-muted-foreground">{s.label?.trim()}</span>
+                      <span className="text-3xl font-bold text-current">{s.value?.trim()}</span>
+                      <span className="text-sm text-current/70">{s.label?.trim()}</span>
                     </div>
                   ))}
                 </div>

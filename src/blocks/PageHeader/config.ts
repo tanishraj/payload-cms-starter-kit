@@ -149,7 +149,7 @@ export const PageHeaderBlock: Block = {
               ],
               required: true,
             } satisfies SelectField,
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             createContentActionModeField(),
             {
               name: 'contentAlignment',

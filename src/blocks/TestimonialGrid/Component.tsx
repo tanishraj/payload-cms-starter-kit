@@ -59,22 +59,22 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   const avatarProps = getMediaImageProps({ media: testimonial.avatar, preset: 'generic' })
 
   return (
-    <div className="flex h-full flex-col gap-4 rounded-xl border border-border bg-card p-6 shadow-sm">
+    <div className="flex h-full flex-col gap-4 rounded-xl border border-border bg-card p-6 text-card-foreground shadow-sm">
       <Quote className="size-7 shrink-0 text-primary/25" aria-hidden="true" />
-      <blockquote className="grow text-sm leading-relaxed text-foreground/80">
+      <blockquote className="grow text-sm leading-relaxed text-current/80">
         &ldquo;{testimonial.quote?.trim()}&rdquo;
       </blockquote>
       <div className="flex items-center gap-3 border-t border-border pt-4">
         <Avatar avatar={avatarProps ?? undefined} name={testimonial.name} />
         <div className="min-w-0 flex-1">
           {testimonial.name?.trim() ? (
-            <p className="truncate text-sm font-semibold text-foreground">{testimonial.name.trim()}</p>
+            <p className="truncate text-sm font-semibold text-current">{testimonial.name.trim()}</p>
           ) : null}
           {testimonial.role?.trim() ? (
-            <p className="truncate text-xs text-muted-foreground">{testimonial.role.trim()}</p>
+            <p className="truncate text-xs text-current/70">{testimonial.role.trim()}</p>
           ) : null}
           {testimonial.department?.trim() ? (
-            <p className="truncate text-xs text-muted-foreground/70">{testimonial.department.trim()}</p>
+            <p className="truncate text-xs text-current/60">{testimonial.department.trim()}</p>
           ) : null}
         </div>
       </div>
@@ -152,9 +152,9 @@ export function TestimonialGridBlockComponent({
         {variant === 'featured' ? (
           <div className="flex flex-col gap-6">
             {items[0] ? (
-              <div className="rounded-xl border border-border bg-card p-8 shadow-sm md:p-12">
+              <div className="rounded-xl border border-border bg-card p-8 text-card-foreground shadow-sm md:p-12">
                 <Quote className="mb-4 size-9 text-primary/25" aria-hidden="true" />
-                <blockquote className="mb-6 text-xl font-medium leading-relaxed text-foreground md:text-2xl">
+                <blockquote className="mb-6 text-xl font-medium leading-relaxed text-current md:text-2xl">
                   &ldquo;{items[0].quote?.trim()}&rdquo;
                 </blockquote>
                 <div className="flex items-center gap-4 border-t border-border pt-6">
@@ -163,9 +163,9 @@ export function TestimonialGridBlockComponent({
                     name={items[0].name}
                   />
                   <div>
-                    <p className="font-semibold text-foreground">{items[0].name?.trim()}</p>
+                    <p className="font-semibold text-current">{items[0].name?.trim()}</p>
                     {items[0].role?.trim() ? (
-                      <p className="text-sm text-muted-foreground">{items[0].role.trim()}</p>
+                      <p className="text-sm text-current/70">{items[0].role.trim()}</p>
                     ) : null}
                   </div>
                 </div>
@@ -190,12 +190,12 @@ export function TestimonialGridBlockComponent({
                 <div key={i} className="flex gap-5 py-6">
                   <Avatar avatar={avatarProps ?? undefined} name={t.name} />
                   <div className="flex flex-col gap-1">
-                    <blockquote className="text-sm leading-relaxed text-foreground/80">
+                    <blockquote className="text-sm leading-relaxed text-current/80">
                       &ldquo;{t.quote?.trim()}&rdquo;
                     </blockquote>
-                    <p className="mt-2 text-sm font-semibold text-foreground">{t.name?.trim()}</p>
+                    <p className="mt-2 text-sm font-semibold text-current">{t.name?.trim()}</p>
                     {t.role?.trim() ? (
-                      <p className="text-xs text-muted-foreground">{t.role.trim()}</p>
+                      <p className="text-xs text-current/70">{t.role.trim()}</p>
                     ) : null}
                   </div>
                 </div>

@@ -78,7 +78,7 @@ export const Cta39Block: Block = {
         {
           label: 'Layout',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             createContentActionModeField(),
             contentAlignmentField,
             borderStyleField,

@@ -68,7 +68,7 @@ export const EventGalleryBlock: Block = {
         {
           label: 'Layout',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             {
               name: 'cardTextLayout',
               label: 'Card Text Placement',

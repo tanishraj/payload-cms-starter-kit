@@ -163,7 +163,7 @@ export function VideoEmbedBlockComponent({
             )}
           </div>
           {caption?.trim() ? (
-            <figcaption className="mt-3 text-center text-sm text-muted-foreground">
+            <figcaption className="mt-3 text-center text-sm text-current/70">
               {caption.trim()}
             </figcaption>
           ) : null}

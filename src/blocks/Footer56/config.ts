@@ -183,7 +183,7 @@ export const Footer56Block: Block = {
         {
           label: 'Layout',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             {
               name: 'size',
               label: 'Section Padding',

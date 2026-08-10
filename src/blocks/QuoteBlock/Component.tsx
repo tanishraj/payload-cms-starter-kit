@@ -40,7 +40,7 @@ function StarRating({ rating }: { rating: number }) {
           key={i}
           className={cn(
             'size-4',
-            i < rating ? 'fill-amber-400 text-amber-400' : 'fill-muted text-muted-foreground',
+            i < rating ? 'fill-amber-400 text-amber-400 dark:fill-amber-300 dark:text-amber-300' : 'fill-muted text-muted-foreground',
           )}
         />
       ))}
@@ -79,10 +79,10 @@ function Attribution({
       {hasAttribution ? (
         <div className="flex flex-col">
           {name?.trim() ? (
-            <span className="text-sm font-semibold text-foreground">{name.trim()}</span>
+            <span className="text-sm font-semibold text-current">{name.trim()}</span>
           ) : null}
           {(title?.trim() || company?.trim()) ? (
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-current/70">
               {[title?.trim(), company?.trim()].filter(Boolean).join(', ')}
             </span>
           ) : null}
@@ -120,7 +120,7 @@ export function QuoteBlockBlockComponent({
         {resolvedVariant === 'centered' && (
           <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
             {eyebrow?.trim() ? (
-              <p className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                 {eyebrow.trim()}
               </p>
             ) : null}
@@ -128,7 +128,7 @@ export function QuoteBlockBlockComponent({
             {ratingNum > 0 ? <StarRating rating={ratingNum} /> : null}
             <blockquote
               className={cn(
-                'font-medium leading-relaxed text-foreground',
+                'font-medium leading-relaxed text-current',
                 quoteSizeClasses[resolvedQuoteSize],
               )}
             >
@@ -164,12 +164,12 @@ export function QuoteBlockBlockComponent({
               )}
               <div className="flex flex-col items-center text-center">
                 {attributionName?.trim() ? (
-                  <span className="text-sm font-semibold text-foreground">
+                  <span className="text-sm font-semibold text-current">
                     {attributionName.trim()}
                   </span>
                 ) : null}
                 {(attributionTitle?.trim() || attributionCompany?.trim()) ? (
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-current/70">
                     {[attributionTitle?.trim(), attributionCompany?.trim()]
                       .filter(Boolean)
                       .join(', ')}
@@ -181,14 +181,14 @@ export function QuoteBlockBlockComponent({
             {/* Quote side */}
             <div className="flex flex-col gap-4">
               {eyebrow?.trim() ? (
-                <p className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                   {eyebrow.trim()}
                 </p>
               ) : null}
               {ratingNum > 0 ? <StarRating rating={ratingNum} /> : null}
               <blockquote
                 className={cn(
-                  'font-medium leading-relaxed text-foreground',
+                  'font-medium leading-relaxed text-current',
                   quoteSizeClasses[resolvedQuoteSize],
                 )}
               >
@@ -199,11 +199,11 @@ export function QuoteBlockBlockComponent({
         )}
 
         {resolvedVariant === 'card' && (
-          <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-card p-8 shadow-sm md:p-12">
+          <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-card p-8 text-card-foreground shadow-sm md:p-12">
             <div className="flex flex-col gap-6">
               <div className="flex items-start justify-between gap-4">
                 {eyebrow?.trim() ? (
-                  <p className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                  <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                     {eyebrow.trim()}
                   </p>
                 ) : <span />}
@@ -212,7 +212,7 @@ export function QuoteBlockBlockComponent({
               {ratingNum > 0 ? <StarRating rating={ratingNum} /> : null}
               <blockquote
                 className={cn(
-                  'font-medium leading-relaxed text-foreground',
+                  'font-medium leading-relaxed text-current',
                   quoteSizeClasses[resolvedQuoteSize],
                 )}
               >
@@ -234,14 +234,14 @@ export function QuoteBlockBlockComponent({
           <div className="mx-auto max-w-3xl border-l-4 border-primary pl-6 md:pl-8">
             <div className="flex flex-col gap-4">
               {eyebrow?.trim() ? (
-                <p className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
                   {eyebrow.trim()}
                 </p>
               ) : null}
               {ratingNum > 0 ? <StarRating rating={ratingNum} /> : null}
               <blockquote
                 className={cn(
-                  'font-medium italic leading-relaxed text-foreground',
+                  'font-medium italic leading-relaxed text-current',
                   quoteSizeClasses[resolvedQuoteSize],
                 )}
               >

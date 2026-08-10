@@ -41,7 +41,7 @@ const TeamShowcaseMemberCard = memo(
             !highlighted && 'border-b pb-4 md:border-b-2',
           )}
         >
-          <div className="relative size-full shrink-0 overflow-hidden rounded border md:size-12">
+          <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded border md:size-12 md:aspect-auto">
             <Image
               fill
               src={member.image}
@@ -53,12 +53,12 @@ const TeamShowcaseMemberCard = memo(
 
           <div className="flex flex-col gap-1 tracking-tight">
             <p className="line-clamp-1">{member.name}</p>
-            <p className="line-clamp-1 text-sm text-muted-foreground">{member.role}</p>
+            <p className="line-clamp-1 text-sm text-current/70">{member.role}</p>
           </div>
         </div>
         {highlighted && (
           <>
-            <span className="h-0.5 w-full bg-linear-to-r from-blue-500 via-green-500 to-yellow-500" />
+            <span className="h-0.5 w-full bg-linear-to-r from-primary/30 via-primary to-primary/30" />
             <p className="line-clamp-2 text-xs">{member.description}</p>
           </>
         )}
@@ -99,6 +99,13 @@ const sectionGapWithoutDividerClasses = {
   default: 'gap-10',
   comfortable: 'gap-12',
 } as const
+
+export const getTeamGridClasses = (memberCount: number) => {
+  if (memberCount === 2) return 'grid grid-cols-2 md:grid-cols-2'
+  if (memberCount === 3) return 'grid grid-cols-2 md:grid-cols-3'
+
+  return 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+}
 
 const TeamShowcase = ({
   appearance,
@@ -155,7 +162,7 @@ const TeamShowcase = ({
           </div>
           <ul
             onMouseLeave={() => setHoveredMember(null)}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+            className={getTeamGridClasses(members.length)}
           >
             {members.map((member, index) => {
               return (
@@ -176,7 +183,7 @@ const TeamShowcase = ({
                           bounce: 0.1,
                         },
                       }}
-                      className="pointer-events-none absolute inset-0 z-10 hidden h-max rounded-2xl bg-background shadow-lg md:block dark:border"
+                      className="pointer-events-none absolute inset-0 z-10 hidden h-max rounded-2xl bg-background text-foreground shadow-lg md:block dark:border"
                     >
                       <TeamShowcaseMemberCard member={member} highlighted />
                     </motion.div>

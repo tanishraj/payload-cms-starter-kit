@@ -101,7 +101,7 @@ export const Services21Block: Block = {
         {
           label: 'Layout',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             createContentActionModeField(),
             contentAlignmentField,
             serviceSizeField,

@@ -13,7 +13,6 @@ describe('system page rendering', () => {
       createElement(System404BlockComponent, {
         appearance: {
           background: 'muted',
-          textColor: 'auto',
           border: 'topAndBottom',
         },
         badge: '404',

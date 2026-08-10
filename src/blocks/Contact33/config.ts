@@ -131,7 +131,7 @@ export const Contact33Block: Block = {
         {
           label: 'Layout',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             contentAlignmentField,
             sizeField,
             imagePositionField,

@@ -140,15 +140,15 @@ export function FeatureSpotlightBlockComponent({
       )}
     >
       {eyebrow ? (
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+        <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-4xl">
+      <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
         {title}
       </h2>
       {description ? (
-        <p className="text-balance text-base leading-7 text-muted-foreground">{description}</p>
+        <p className="text-balance text-base leading-7 text-current/70">{description}</p>
       ) : null}
       <ContentActions
         actions={resolvedActions}

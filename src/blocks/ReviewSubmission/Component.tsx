@@ -343,7 +343,7 @@ export function ReviewSubmissionBlockComponent({
   const activeRating = hoveredRating ?? values.rating
   const activeRatingTone = ratingToneByValue[activeRating]
   const activeRatingLabel = activeRatingTone?.label ?? ''
-  const activeRatingToneClass = activeRatingTone?.className ?? 'text-muted-foreground'
+  const activeRatingToneClass = activeRatingTone?.className ?? 'text-current/70'
   const bodyCharacterCount = values.reviewBody.length
 
   return (
@@ -361,15 +361,15 @@ export function ReviewSubmissionBlockComponent({
           data-review-submission-content-alignment={resolvedContentAlignment}
         >
           {resolvedEyebrow ? (
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
               {resolvedEyebrow}
             </p>
           ) : null}
-          <h2 className="text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-4xl">
+          <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
             {resolvedTitle}
           </h2>
           {resolvedDescription ? (
-            <p className="max-w-2xl text-balance text-base leading-7 text-muted-foreground">
+            <p className="max-w-2xl text-balance text-base leading-7 text-current/70">
               {resolvedDescription}
             </p>
           ) : null}
@@ -396,7 +396,7 @@ export function ReviewSubmissionBlockComponent({
               <FieldGroup className="gap-6">
                 <FieldGroup className="gap-6 @lg/form-panel:grid @lg/form-panel:grid-cols-2 @lg/form-panel:items-start">
                   <FieldSet className="gap-3">
-                    <FieldLegend className="mb-2 text-left text-sm font-medium text-foreground">
+                    <FieldLegend className="mb-2 text-left text-sm font-medium text-current">
                       {ratingField.label}
                       {activeRatingLabel ? (
                         <span className={cn('font-normal', activeRatingToneClass)}>
@@ -424,7 +424,7 @@ export function ReviewSubmissionBlockComponent({
                             <RadioGroupItem
                               aria-label={`${option.label} star${option.label === '1' ? '' : 's'} - ${ratingLabel}`}
                               className={cn(
-                                'size-auto rounded-none border-0 bg-transparent px-1.5 py-1 text-muted-foreground shadow-none after:hidden focus-visible:border-0 focus-visible:ring-0 data-checked:bg-transparent [&_svg]:size-8 sm:[&_svg]:size-9',
+                                'size-auto rounded-none border-0 bg-transparent px-1.5 py-1 text-current/70 shadow-none after:hidden focus-visible:border-0 focus-visible:ring-0 data-checked:bg-transparent [&_svg]:size-8 sm:[&_svg]:size-9',
                                 '**:data-[slot=radio-group-indicator]:hidden',
                               )}
                               key={option.value}
@@ -439,7 +439,7 @@ export function ReviewSubmissionBlockComponent({
                                   'transition-colors',
                                   isFilled
                                     ? cn('fill-current', activeRatingToneClass)
-                                    : 'fill-transparent text-muted-foreground group-hover/radio-group-item:text-foreground/70',
+                                    : 'fill-transparent text-current/60 group-hover/radio-group-item:text-current/80',
                                 )}
                               />
                             </RadioGroupItem>
@@ -452,7 +452,7 @@ export function ReviewSubmissionBlockComponent({
 
                   {subjectField.options?.length ? (
                     <FieldSet className="gap-3">
-                      <FieldLegend className="mb-2 text-left text-sm font-medium text-foreground">
+                      <FieldLegend className="mb-2 text-left text-sm font-medium text-current">
                         {subjectField.label}
                       </FieldLegend>
                       <Field data-invalid={Boolean(errors.subjectLabel) || undefined}>
@@ -514,7 +514,7 @@ export function ReviewSubmissionBlockComponent({
                     <FieldLabel className="text-sm font-medium" htmlFor="reviewer-email">
                       {emailField.label}
                       {!emailField.required ? (
-                        <span className="font-normal text-muted-foreground">(optional)</span>
+                        <span className="font-normal text-current/70">(optional)</span>
                       ) : null}
                     </FieldLabel>
                     <Input
@@ -554,7 +554,7 @@ export function ReviewSubmissionBlockComponent({
                     ) : (
                       <span aria-hidden="true" />
                     )}
-                    <p className="shrink-0 text-sm text-muted-foreground">
+                    <p className="shrink-0 text-sm text-current/70">
                       {bodyCharacterCount}/1000
                     </p>
                   </div>
@@ -578,7 +578,7 @@ export function ReviewSubmissionBlockComponent({
                 <p
                   className={cn(
                     'text-sm leading-6',
-                    messageTone === 'destructive' ? 'text-destructive' : 'text-muted-foreground',
+                    messageTone === 'destructive' ? 'text-destructive' : 'text-current/70',
                   )}
                 >
                   {message}
@@ -590,7 +590,7 @@ export function ReviewSubmissionBlockComponent({
               </Button>
             </form>
           ) : (
-            <p className="text-sm leading-6 text-muted-foreground">
+            <p className="text-sm leading-6 text-current/70">
               This review form is currently unavailable.
             </p>
           )}

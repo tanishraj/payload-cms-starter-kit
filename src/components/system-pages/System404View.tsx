@@ -21,7 +21,7 @@ export function System404View(props: SystemPageViewProps) {
       <div className="relative mx-auto flex w-full max-w-3xl flex-col items-center gap-5">
         <div className="flex flex-col items-center gap-5">
           {showEyebrow ? (
-            <p className="animate-[fade-in_.7s_ease-out_both] text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
+            <p className="animate-[fade-in_.7s_ease-out_both] font-mono text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
               {props.badge}
             </p>
           ) : null}

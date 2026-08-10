@@ -51,7 +51,7 @@ export const StatsStripBlock: Block = {
         {
           label: 'Layout',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             {
               name: 'size',
               label: 'Section Padding',

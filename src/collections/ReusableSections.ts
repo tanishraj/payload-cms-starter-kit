@@ -11,6 +11,8 @@ import { ImageMosaicBlock } from '@/blocks/ImageMosaic/config'
 import { NewsEventsHighlightsBlock } from '@/blocks/NewsEventsHighlights/config'
 import { ProfileCarouselBlock } from '@/blocks/ProfileCarousel/config'
 import { HeroBannerBlock } from '@/blocks/HeroBanner/config'
+import { HeroCarouselBlock } from '@/blocks/HeroCarousel/config'
+import { GalleryCoverflowBlock } from '@/blocks/GalleryCoverflow/config'
 import { RatingSpotlightBlock } from '@/blocks/RatingSpotlight/config'
 import { ReviewFeedBlock } from '@/blocks/ReviewFeed/config'
 import { ReviewSubmissionBlock } from '@/blocks/ReviewSubmission/config'
@@ -33,6 +35,9 @@ import { TabsContentBlock } from '@/blocks/TabsContent/config'
 import { DownloadListBlock } from '@/blocks/DownloadList/config'
 import { NumberedStepsBlock } from '@/blocks/NumberedSteps/config'
 import { BentoGridBlock } from '@/blocks/BentoGrid/config'
+import { TestimonialGridBlock } from '@/blocks/TestimonialGrid/config'
+import { AwardsListBlock } from '@/blocks/AwardsList/config'
+import { AboutSectionBlock } from '@/blocks/AboutSection/config'
 import {
   allowPublicReadOrCapability,
   hideFromUsersWithoutCapability,
@@ -90,6 +95,8 @@ export const ReusableSections: CollectionConfig = {
         AnnouncementBlock,
         Cta39Block,
         HeroBannerBlock,
+        HeroCarouselBlock,
+        GalleryCoverflowBlock,
         FeatureSpotlightBlock,
         FeatureMatrixBlock,
         ContentHighlightsBlock,
@@ -120,6 +127,9 @@ export const ReusableSections: CollectionConfig = {
         DownloadListBlock,
         NumberedStepsBlock,
         BentoGridBlock,
+        TestimonialGridBlock,
+        AwardsListBlock,
+        AboutSectionBlock,
       ],
     },
   ],

@@ -216,7 +216,7 @@ export const HeroBannerBlock: Block = {
         {
           label: 'Layout & Theme',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             horizontalAlignmentField,
             verticalAlignmentField,
             overlayStyleField,

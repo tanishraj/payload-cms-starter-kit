@@ -27,7 +27,6 @@ describe('feature spotlight block', () => {
         appearance: {
           background: 'muted',
           border: 'bottom',
-          textColor: 'auto',
         },
         contentVerticalAlignment: 'top',
         description: 'Choose from MD, MD-PhD, and specialized tracks.',
@@ -80,7 +79,6 @@ describe('feature spotlight block', () => {
         appearance: {
           background: 'accent',
           border: 'top',
-          textColor: 'auto',
         },
         description: 'Applications for the Class of 2030 open August 1.',
         image: { alt: 'Clinical team', url: '/media/apply.jpg' } as never,

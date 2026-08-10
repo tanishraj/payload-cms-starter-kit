@@ -25,7 +25,6 @@ describe('stats strip block', () => {
         appearance: {
           background: 'accent',
           border: 'bottom',
-          textColor: 'auto',
         },
         items: [
           { label: 'Years of training physicians', value: 112 },

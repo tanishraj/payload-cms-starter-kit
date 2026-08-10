@@ -9,6 +9,7 @@ import { createBaseSystemPageFields } from '@/blocks/systemPageFields'
 import { Footers } from '@/collections/Footers'
 import { Headers } from '@/collections/Headers'
 import { Pages } from '@/collections/Pages'
+import { ReusableSections } from '@/collections/ReusableSections'
 import { Reviews } from '@/collections/Reviews'
 import { SystemPages } from '@/collections/SystemPages'
 
@@ -100,12 +101,10 @@ describe('system page block schemas', () => {
     }>
 
     const appearanceBackgroundField = appearanceFields.find((field) => field.name === 'background')
-    const appearanceTextColorField = appearanceFields.find((field) => field.name === 'textColor')
     const appearanceBorderField = appearanceFields.find((field) => field.name === 'border')
 
     expect(appearanceField?.type).toBe('group')
     expect(appearanceBackgroundField?.defaultValue).toBe('none')
-    expect(appearanceTextColorField?.defaultValue).toBe('auto')
     expect(appearanceBorderField?.defaultValue).toBe('none')
     expect(appearanceBackgroundField?.options?.map((option) => option.value)).toEqual([
       'none',
@@ -114,11 +113,7 @@ describe('system page block schemas', () => {
       'muted',
       'accent',
     ])
-    expect(appearanceTextColorField?.options?.map((option) => option.value)).toEqual([
-      'auto',
-      'default',
-      'inverse',
-    ])
+    expect(appearanceFields.map((field) => field.name)).not.toContain('textColor')
     expect(appearanceBorderField?.options?.map((option) => option.value)).toEqual([
       'none',
       'top',
@@ -141,29 +136,15 @@ describe('system page block schemas', () => {
   })
 
   it('registers page, header, footer, and system blocks only on their intended collections', () => {
-    expect(collectBlockSlugs(Pages.fields)).toEqual([
-      'announcement',
-      'cta39',
-      'heroBanner',
-      'featureSpotlight',
-      'featureMatrix',
-      'contentHighlights',
-      'newsEventsHighlights',
-      'profileCarousel',
-      'galleryShowcase',
-      'eventGallery',
-      'imageMosaic',
-      'statsStrip',
-      'qaAccordion',
-      'ratingSpotlight',
-      'reviewFeed',
-      'reviewSubmission',
-      'contact33',
-      'contact24',
-      'teamShowcase',
-      'services21',
-    ])
-    expect(collectBlockSlugs(Pages.fields)).not.toContain('feature166')
+    const pageSlugs = collectBlockSlugs(Pages.fields)
+    const reusableSectionSlugs = collectBlockSlugs(ReusableSections.fields)
+
+    expect(pageSlugs).toHaveLength(39)
+    expect(new Set(pageSlugs).size).toBe(pageSlugs.length)
+    expect(pageSlugs).not.toContain('feature166')
+    expect(reusableSectionSlugs.slice().sort()).toEqual(
+      pageSlugs.filter((slug) => slug !== 'reusableSection').sort(),
+    )
     expect(collectBlockSlugs(Reviews.fields)).toEqual([])
     expect(collectBlockSlugs(Headers.fields)).toEqual(['headerNavbar12'])
     expect(collectBlockSlugs(Footers.fields)).toEqual(['footer56'])

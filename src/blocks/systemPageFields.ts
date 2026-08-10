@@ -69,7 +69,7 @@ export const createBaseSystemPageFields = (defaults: SystemPageDefaults): Field[
       },
       {
         label: 'Layout & Theme',
-        fields: [createBlockAppearanceFields({ includeTextOverride: false })],
+        fields: [createBlockAppearanceFields()],
       },
     ],
   } satisfies TabsField,

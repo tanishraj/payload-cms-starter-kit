@@ -52,7 +52,7 @@ export const AnnouncementBlock: Block = {
         {
           label: 'Layout & Theme',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             {
               name: 'displayMode',
               label: 'Animation Mode',

@@ -13,7 +13,7 @@ export function ReviewArchivePage({
   return (
     <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12">
       <header className="space-y-3">
-        <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
+        <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
           Review category
         </p>
         <h1 className="text-4xl font-semibold tracking-tight text-foreground md:text-5xl">

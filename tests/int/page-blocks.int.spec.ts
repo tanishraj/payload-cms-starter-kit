@@ -107,12 +107,10 @@ describe('page block pipeline', () => {
     }>
 
     const appearanceBackgroundField = appearanceFields.find((field) => field.name === 'background')
-    const appearanceTextColorField = appearanceFields.find((field) => field.name === 'textColor')
     const appearanceBorderField = appearanceFields.find((field) => field.name === 'border')
 
     expect(appearanceField?.type).toBe('group')
     expect(appearanceBackgroundField?.defaultValue).toBe('none')
-    expect(appearanceTextColorField?.defaultValue).toBe('auto')
     expect(appearanceBorderField?.defaultValue).toBe('none')
     expect(appearanceBackgroundField?.options?.map((option) => option.value)).toEqual([
       'none',
@@ -121,11 +119,7 @@ describe('page block pipeline', () => {
       'muted',
       'accent',
     ])
-    expect(appearanceTextColorField?.options?.map((option) => option.value)).toEqual([
-      'auto',
-      'default',
-      'inverse',
-    ])
+    expect(appearanceFields.map((field) => field.name)).not.toContain('textColor')
     expect(appearanceBorderField?.options?.map((option) => option.value)).toEqual([
       'none',
       'top',
@@ -145,7 +139,6 @@ describe('page block pipeline', () => {
     expect(
       resolveBlockAppearanceClasses({
         background: 'primary',
-        textColor: 'auto',
         border: 'topAndBottom',
       }),
     ).toEqual({
@@ -158,31 +151,22 @@ describe('page block pipeline', () => {
 
   it('registers a general layout blocks field on Pages', () => {
     const layoutField = getLayoutField()
+    const registeredSlugs = layoutField?.blocks?.map((block) => block.slug) ?? []
+    const publicRenderer = readFileSync('src/blocks/renderPageBlocks.tsx', 'utf8')
+    const livePreviewRenderer = readFileSync(
+      'src/blocks/renderLivePreviewPageBlocks.tsx',
+      'utf8',
+    )
 
     expect(layoutField?.type).toBe('blocks')
-    expect(layoutField?.blocks?.map((block) => block.slug)).toEqual([
-      'announcement',
-      'cta39',
-      'heroBanner',
-      'featureSpotlight',
-      'featureMatrix',
-      'contentHighlights',
-      'newsEventsHighlights',
-      'profileCarousel',
-      'galleryShowcase',
-      'eventGallery',
-      'imageMosaic',
-      'statsStrip',
-      'qaAccordion',
-      'ratingSpotlight',
-      'reviewFeed',
-      'reviewSubmission',
-      'contact33',
-      'contact24',
-      'teamShowcase',
-      'services21',
-    ])
-    expect(layoutField?.blocks?.map((block) => block.slug)).not.toContain('feature166')
+    expect(registeredSlugs).toHaveLength(39)
+    expect(new Set(registeredSlugs).size).toBe(registeredSlugs.length)
+    expect(registeredSlugs).not.toContain('feature166')
+
+    for (const slug of registeredSlugs) {
+      expect(publicRenderer).toContain(`case '${slug}'`)
+      expect(livePreviewRenderer).toContain(`case '${slug}'`)
+    }
   })
 
   it('defines the eventGallery album selection and ordering fields', async () => {
@@ -668,7 +652,6 @@ describe('page block pipeline', () => {
             appearance: {
               background: 'secondary',
               border: 'topAndBottom',
-              textColor: 'auto',
             },
             blockType: 'announcement',
             intervalMs: 4000,
@@ -761,7 +744,6 @@ describe('page block pipeline', () => {
             appearance: {
               background: 'accent',
               border: 'topAndBottom',
-              textColor: 'auto',
             },
             actions: [{ label: 'Get started', linkType: 'custom', url: '/start', variant: 'default' }],
             blockType: 'cta39',
@@ -793,7 +775,6 @@ describe('page block pipeline', () => {
             appearance: {
               background: 'primary',
               border: 'top',
-              textColor: 'auto',
             },
             backgroundImage: {
               alt: 'Main hall',
@@ -1099,7 +1080,6 @@ describe('page block pipeline', () => {
             appearance: {
               background: 'muted',
               border: 'bottom',
-              textColor: 'auto',
             },
             actionMode: 'link',
             actions: [{ label: 'See all programs', linkType: 'custom', url: '/programs' }],
@@ -1145,7 +1125,6 @@ describe('page block pipeline', () => {
             appearance: {
               background: 'accent',
               border: 'top',
-              textColor: 'auto',
             },
             blockType: 'statsStrip',
             id: 'stats-block-1',
@@ -1189,7 +1168,6 @@ describe('page block pipeline', () => {
             appearance: {
               background: 'muted',
               border: 'topAndBottom',
-              textColor: 'auto',
             },
             blockType: 'contact33',
             contentAlignment: 'left',

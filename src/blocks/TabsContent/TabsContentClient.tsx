@@ -27,7 +27,12 @@ type Props = {
   tabContentAlignment?: 'left' | 'center'
 }
 
-export function TabsContentClient({ tabs, tabStyle = 'underline', contentLayout = 'imageRight', tabContentAlignment = 'left' }: Props) {
+export function TabsContentClient({
+  tabs,
+  tabStyle = 'underline',
+  contentLayout = 'imageRight',
+  tabContentAlignment = 'left',
+}: Props) {
   const [activeIndex, setActiveIndex] = useState(0)
   const active = tabs[activeIndex]
 
@@ -59,7 +64,7 @@ export function TabsContentClient({ tabs, tabStyle = 'underline', contentLayout 
                 resolvedTabStyle === 'underline' && [
                   'px-4 py-3 border-b-2 -mb-px',
                   isActive
-                    ? 'border-primary text-foreground'
+                    ? 'border-primary text-primary'
                     : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border',
                 ],
                 resolvedTabStyle === 'pills' && [
@@ -100,7 +105,9 @@ export function TabsContentClient({ tabs, tabStyle = 'underline', contentLayout 
             <div
               className={cn(
                 'relative overflow-hidden rounded-xl',
-                resolvedLayout === 'imageTop' ? 'aspect-video w-full' : 'aspect-video w-full md:flex-1',
+                resolvedLayout === 'imageTop'
+                  ? 'aspect-video w-full'
+                  : 'aspect-video w-full md:flex-1',
               )}
             >
               <Image

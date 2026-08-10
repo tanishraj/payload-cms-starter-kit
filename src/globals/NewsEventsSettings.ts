@@ -113,7 +113,7 @@ export const NewsEventsSettings: GlobalConfig = {
         },
         {
           label: 'Layout & Theme',
-          fields: [createBlockAppearanceFields({ includeTextOverride: false }), sizeField],
+          fields: [createBlockAppearanceFields(), sizeField],
         },
         {
           label: 'SEO',

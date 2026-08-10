@@ -287,7 +287,7 @@ export const PageSettings: GlobalConfig = {
               },
             },
             {
-              ...createBlockAppearanceFields({ includeTextOverride: false }),
+              ...createBlockAppearanceFields(),
               name: 'announcementAppearance',
               label: 'Appearance',
               admin: {

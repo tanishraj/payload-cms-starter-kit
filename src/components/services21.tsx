@@ -117,10 +117,10 @@ export function Services21({
             </div>
             {activeService ? (
               <>
-                <p className="font-semibold tracking-tight text-foreground/20 uppercase">
+                <p className="font-semibold tracking-tight text-current/20 uppercase">
                   {activeService.title}
                 </p>
-                <p className="text-base text-foreground/50">{activeService.description}</p>
+                <p className="text-base text-current/50">{activeService.description}</p>
               </>
             ) : null}
           </div>
@@ -136,7 +136,7 @@ export function Services21({
                   )}
                 >
                   <span>{service.title}</span>
-                  <sup className="align-super text-sm text-red-500 lg:text-3xl">{service.id}</sup>
+                  <sup className="align-super text-sm text-primary lg:text-3xl">{service.id}</sup>
                 </li>
               ))}
             </ul>

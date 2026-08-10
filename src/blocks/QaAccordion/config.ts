@@ -120,7 +120,7 @@ export const QaAccordionBlock: Block = {
         {
           label: 'Layout',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             {
               name: 'contentAlignment',
               label: 'Section Content Alignment',

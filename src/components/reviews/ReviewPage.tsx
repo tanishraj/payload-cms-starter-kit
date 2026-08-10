@@ -28,13 +28,13 @@ export function ReviewPage({
           {primaryCategory ? (
             <Link
               href={`/reviews/category/${primaryCategory.slug}`}
-              className="font-medium uppercase tracking-[0.2em]"
+              className="font-mono text-xs font-semibold uppercase tracking-[0.24em]"
             >
               {primaryCategory.title}
             </Link>
           ) : null}
           {review.subjectLabel ? (
-            <span className="font-medium uppercase tracking-[0.2em]">{review.subjectLabel}</span>
+            <span className="font-mono text-xs font-semibold uppercase tracking-[0.24em]">{review.subjectLabel}</span>
           ) : null}
           <span className="font-medium text-foreground">{review.rating}/5</span>
         </div>

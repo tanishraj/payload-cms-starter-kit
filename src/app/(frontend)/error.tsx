@@ -8,7 +8,7 @@ export default function Error({
 }) {
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center gap-6 px-6 py-20 text-center">
-      <p className="text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">500</p>
+      <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">500</p>
       <div className="flex flex-col items-center gap-3">
         <h1 className="text-[clamp(1.8rem,7vw,3.25rem)] font-semibold leading-[0.95]">
           Something went wrong

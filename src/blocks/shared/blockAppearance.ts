@@ -2,7 +2,6 @@ import { cn } from '@/lib/utils'
 
 export type BlockAppearance = {
   background?: 'none' | 'primary' | 'secondary' | 'muted' | 'accent' | null
-  textColor?: 'auto' | 'default' | 'inverse' | null
   border?: 'none' | 'top' | 'bottom' | 'topAndBottom' | null
 }
 
@@ -31,12 +30,10 @@ const borderClasses = {
 
 export function resolveBlockAppearanceClasses(appearance?: BlockAppearance | null) {
   const background = appearance?.background ?? 'none'
-  const textColor = appearance?.textColor ?? 'auto'
   const border = appearance?.border ?? 'none'
 
   const backgroundClassName = backgroundClasses[background]
-  const textClassName =
-    textColor === 'default' ? 'text-foreground' : surfaceForegroundClasses[background]
+  const textClassName = surfaceForegroundClasses[background]
   const borderClassName = borderClasses[border]
 
   return {

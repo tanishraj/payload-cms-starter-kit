@@ -82,7 +82,7 @@ export const FeatureMatrixBlock: Block = {
         {
           label: 'Layout',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             createContentActionModeField(),
             {
               name: 'contentAlignment',

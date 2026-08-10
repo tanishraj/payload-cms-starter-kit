@@ -62,7 +62,7 @@ function NewsEventHighlightCard({ item }: { item: PublicNewsEventCard }) {
         </div>
       ) : null}
       <CardHeader className="gap-3 rounded-none px-5 pt-5 sm:px-6 sm:pt-6">
-        <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-card-foreground/70">
           <Badge variant="secondary">{item.contentType === 'event' ? 'Event' : 'News'}</Badge>
           {item.category ? <span>{item.category.title}</span> : null}
           <span aria-hidden="true">·</span>
@@ -78,7 +78,7 @@ function NewsEventHighlightCard({ item }: { item: PublicNewsEventCard }) {
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1 px-5 pt-3 sm:px-6">
-        <p className="line-clamp-4 text-sm leading-6 text-muted-foreground">{item.excerpt}</p>
+        <p className="line-clamp-4 text-sm leading-6 text-card-foreground/70">{item.excerpt}</p>
       </CardContent>
       <CardFooter className="px-5 pt-5 pb-5 sm:px-6 sm:pb-6">
         <ContentLink href={item.href} label="Read more" />

@@ -35,10 +35,10 @@ export const galleryShowcaseMobileVisibilityClasses = [
 ] as const
 
 const fanHeightClasses = {
-  none: 'h-40 sm:h-52 lg:h-60',
-  compact: 'h-36 sm:h-48 lg:h-52',
-  default: 'h-40 sm:h-52 lg:h-60',
-  comfortable: 'h-44 sm:h-60 lg:h-64',
+  none: 'h-48 sm:h-60 lg:h-68',
+  compact: 'h-44 sm:h-56 lg:h-60',
+  default: 'h-48 sm:h-60 lg:h-68',
+  comfortable: 'h-52 sm:h-68 lg:h-72',
 } as const
 
 const cardSizeClasses = {

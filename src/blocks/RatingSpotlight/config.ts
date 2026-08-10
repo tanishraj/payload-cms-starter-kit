@@ -131,7 +131,7 @@ export const RatingSpotlightBlock: Block = {
         {
           label: 'Layout',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             createContentActionModeField(),
             contentAlignmentField,
             sizeField,

@@ -78,7 +78,7 @@ function VerticalSteps({
           <div key={index} className="flex gap-5">
             <div className="flex flex-col items-center">
               <StepNumber num={index + 1} numberStyle={numberStyle} />
-              {!isLast ? <div className="w-0.5 flex-1 bg-border my-1" /> : null}
+              {!isLast ? <div className="w-0.5 flex-1 bg-current/15 my-1" /> : null}
             </div>
             <div className={cn('flex flex-col gap-1 pb-10', isLast && 'pb-0')}>
               {step.badge?.trim() ? (
@@ -86,11 +86,11 @@ function VerticalSteps({
                   {step.badge.trim()}
                 </span>
               ) : null}
-              <h3 className="font-sans text-lg font-semibold leading-snug text-foreground">
+              <h3 className="font-sans text-lg font-semibold leading-snug text-current">
                 {step.title?.trim()}
               </h3>
               {step.description?.trim() ? (
-                <p className="text-base leading-relaxed text-muted-foreground">
+                <p className="text-base leading-relaxed text-current/70">
                   {step.description.trim()}
                 </p>
               ) : null}
@@ -111,11 +111,11 @@ function CardSteps({
   numberStyle: 'circle' | 'outlined' | 'serif'
 }) {
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div className={cn('grid grid-cols-1 gap-6', getNumberedStepsGridClasses(steps.length))}>
       {steps.map((step, index) => (
         <div
           key={index}
-          className="relative flex flex-col gap-4 rounded-xl border border-border bg-card p-6"
+          className="relative flex flex-col gap-4 rounded-xl border border-border bg-card p-6 text-card-foreground"
         >
           <StepNumber num={index + 1} numberStyle={numberStyle} />
           <div className="flex flex-col gap-1">
@@ -124,11 +124,11 @@ function CardSteps({
                 {step.badge.trim()}
               </span>
             ) : null}
-            <h3 className="font-sans text-base font-semibold leading-snug text-foreground">
+            <h3 className="font-sans text-base font-semibold leading-snug text-current">
               {step.title?.trim()}
             </h3>
             {step.description?.trim() ? (
-              <p className="text-sm leading-relaxed text-muted-foreground">
+              <p className="text-sm leading-relaxed text-current/70">
                 {step.description.trim()}
               </p>
             ) : null}
@@ -137,6 +137,13 @@ function CardSteps({
       ))}
     </div>
   )
+}
+
+export const getNumberedStepsGridClasses = (stepCount: number) => {
+  if (stepCount === 2) return 'sm:grid-cols-2 lg:grid-cols-2'
+  if (stepCount === 4) return 'sm:grid-cols-2 lg:grid-cols-4'
+
+  return 'sm:grid-cols-2 lg:grid-cols-3'
 }
 
 // ── ALTERNATING ───────────────────────────────────────────────────────────────
@@ -172,7 +179,7 @@ function AlternatingSteps({
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               ) : (
-                <div className="flex h-full items-center justify-center bg-muted">
+                <div className="flex h-full items-center justify-center bg-muted text-foreground">
                   <span className="font-serif text-8xl font-bold text-border select-none">
                     {String(index + 1).padStart(2, '0')}
                   </span>
@@ -188,11 +195,11 @@ function AlternatingSteps({
                   {step.badge.trim()}
                 </span>
               ) : null}
-              <h3 className="font-sans text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
+              <h3 className="font-sans text-xl font-semibold tracking-tight text-current sm:text-2xl">
                 {step.title?.trim()}
               </h3>
               {step.description?.trim() ? (
-                <p className="text-base leading-relaxed text-muted-foreground">
+                <p className="text-base leading-relaxed text-current/70">
                   {step.description.trim()}
                 </p>
               ) : null}

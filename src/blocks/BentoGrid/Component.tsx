@@ -61,7 +61,7 @@ const accentMutedClasses = {
 
 const accentIconClasses = {
   none: 'bg-primary/10 text-primary',
-  primary: 'bg-white/20 text-primary-foreground',
+  primary: 'bg-primary-foreground/20 text-primary-foreground',
   secondary: 'bg-secondary-foreground/10 text-secondary-foreground',
   accent: 'bg-accent-foreground/10 text-accent-foreground',
 } as const
@@ -121,7 +121,7 @@ function BentoCell({ item }: { item: BentoItem }) {
         {item.eyebrow?.trim() ? (
           <p
             className={cn(
-              'text-xs font-semibold uppercase tracking-widest',
+              'font-mono text-xs font-semibold uppercase tracking-[0.24em]',
               image ? 'text-white/70' : accentMutedClasses[accent],
             )}
           >

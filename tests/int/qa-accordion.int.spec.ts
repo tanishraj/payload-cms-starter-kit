@@ -44,7 +44,6 @@ describe('Q&A Accordion block', () => {
         appearance: {
           background: 'muted',
           border: 'top',
-          textColor: 'auto',
         },
         defaultOpenFirst: true,
         description: 'Answers to the most common admissions questions.',

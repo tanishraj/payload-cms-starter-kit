@@ -35,19 +35,41 @@ const getThemeField = () => {
 describe('website theme registry', () => {
   it('exports the supported website themes and helpers', () => {
     expect(defaultWebsiteTheme).toBe('default')
-    expect(websiteThemeValues).toEqual(['default', 'sunset', 'blue', 'kodama'])
+    expect(websiteThemeValues).toEqual(['default', 'sunset', 'blue', 'kodama', 'snmih'])
     expect(websiteThemeOptions).toEqual([
       { label: 'Default', value: 'default' },
       { label: 'Sunset', value: 'sunset' },
       { label: 'Blue', value: 'blue' },
       { label: 'Kodama', value: 'kodama' },
+      { label: 'SNMIH', value: 'snmih' },
     ])
     expect(isWebsiteTheme('default')).toBe(true)
     expect(isWebsiteTheme('sunset')).toBe(true)
     expect(isWebsiteTheme('blue')).toBe(true)
     expect(isWebsiteTheme('kodama')).toBe(true)
+    expect(isWebsiteTheme('snmih')).toBe(true)
     expect(isWebsiteTheme('sera')).toBe(false)
     expect(isWebsiteTheme('amber')).toBe(false)
+  })
+
+  it('loads the isolated SNMIH token preset', () => {
+    const globalsSource = fs.readFileSync(
+      path.resolve(process.cwd(), 'src/styles/globals.css'),
+      'utf8',
+    )
+    const themeSource = fs.readFileSync(
+      path.resolve(process.cwd(), 'src/styles/themes/theme-snmih.css'),
+      'utf8',
+    )
+
+    expect(globalsSource).toContain("@import './themes/theme-snmih.css';")
+    expect(themeSource).toContain(":root[data-theme-color='snmih'] {")
+    expect(themeSource).toContain(":root[data-theme-color='snmih'].dark {")
+    expect(themeSource).not.toMatch(/^:root\s*\{/m)
+    expect(themeSource).not.toMatch(/^\.dark\s*\{/m)
+    expect(themeSource).toContain('--primary: oklch(0.488 0.243 264.376);')
+    expect(themeSource).toContain('--primary: oklch(0.72 0.16 264);')
+    expect(themeSource).toContain('--radius: 0;')
   })
 
   it('drives the Theme Settings select field from the shared registry', () => {

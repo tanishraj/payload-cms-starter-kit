@@ -91,7 +91,7 @@ export const TimelineBlock: Block = {
         {
           label: 'Layout',
           fields: [
-            createBlockAppearanceFields({ includeTextOverride: false }),
+            createBlockAppearanceFields(),
             {
               name: 'variant',
               label: 'Variant',

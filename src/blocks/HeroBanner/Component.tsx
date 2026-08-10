@@ -56,9 +56,9 @@ const textToneClasses = {
     description: 'text-foreground/84',
   },
   light: {
-    eyebrow: 'text-slate-950/78',
-    title: 'text-slate-950',
-    description: 'text-slate-950/84',
+    eyebrow: 'text-foreground/78',
+    title: 'text-foreground',
+    description: 'text-foreground/84',
   },
   dark: {
     eyebrow: 'text-white/78',

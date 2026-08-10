@@ -29,7 +29,7 @@ export function ArticlePage({
           {primaryCategory ? (
             <Link
               href={`/articles/category/${primaryCategory.slug}`}
-              className="font-medium uppercase tracking-[0.2em]"
+              className="font-mono text-xs font-semibold uppercase tracking-[0.24em]"
             >
               {primaryCategory.title}
             </Link>
