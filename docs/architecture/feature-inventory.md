@@ -146,7 +146,8 @@ Redirect middleware excludes Next.js internals, APIs, Admin, and common static/m
 ## Analytics And Consent
 
 - GTM takes precedence over standalone GA4 when both are enabled.
-- Neither script is server-injected until `analytics_consent=granted`.
+- GTM, standalone GA4, and Vercel Speed Insights are not loaded until `analytics_consent=granted`.
+- Vercel Speed Insights collects public-route Web Vitals only after analytics consent. Payload Admin is excluded.
 - The configurable banner writes `granted` or `denied` for one year using `SameSite=Lax` and `Secure` on HTTPS.
 - This implements analytics consent gating, not a complete legal-compliance or consent-management platform. Obtain jurisdiction-specific legal review.
 

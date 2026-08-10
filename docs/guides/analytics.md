@@ -2,7 +2,7 @@
 
 ## What This Section Is
 
-`Analytics & Tracking` is where you connect the website to Google Tag Manager or Google Analytics 4. Analytics are held back until a visitor explicitly accepts cookies. This provides consent gating but does not, by itself, guarantee compliance with any privacy law.
+`Analytics & Tracking` is where you connect the website to Google Tag Manager or Google Analytics 4. The starter also integrates Vercel Speed Insights for real-user performance metrics. All three integrations are held back until a visitor explicitly accepts analytics cookies. This provides consent gating but does not, by itself, guarantee compliance with any privacy law.
 
 ## When To Use It
 
@@ -22,6 +22,21 @@ The website layout reads this global on every page load. If a visitor has accept
 When `Cookie Consent Banner` is enabled, it appears if the visitor has no decision cookie. **Accept all** refreshes the route and allows analytics to load; **Reject non-essential** stores denial without loading analytics.
 
 Changing settings here takes effect on the next page load for visitors who have already consented.
+
+## Vercel Speed Insights
+
+Vercel Speed Insights reports anonymous Core Web Vitals for public frontend routes. It is configured in code rather than through the Payload `Analytics & Tracking` global and does not measure Payload Admin routes.
+
+To activate it for a deployment:
+
+1. Open the project in the Vercel dashboard.
+2. Open **Speed Insights** and select **Enable Speed Insights**.
+3. Deploy the repository with the `@vercel/speed-insights` integration.
+4. Visit the deployed website, accept analytics cookies, navigate between pages, and then leave or blur the page so pending metrics can be sent.
+
+The component is rendered only when `analytics_consent=granted`. Visitors who reject analytics or have not made a choice do not load the Speed Insights script. The integration uses Vercel's default sampling and endpoint configuration.
+
+If metrics do not appear, confirm the Vercel project feature is enabled, test after granting consent, navigate between public routes, and check whether a content blocker prevented the Speed Insights script or request. A blocked or unavailable metrics endpoint does not affect website rendering.
 
 ## Step-By-Step Medical College Example
 
@@ -69,6 +84,7 @@ The Privacy Policy page link comes from `Site Identity → Legal`. If it is empt
 - always use a GTM container rather than GA4 direct on sites that may need additional third-party tools later
 - confirm that the GTM container ID is correct before saving — an incorrect ID will silently produce no data
 - verify consent behavior by visiting the site in a private browser window and checking that no analytics requests are made until you click **Accept all**
+- keep Speed Insights consent-gated unless a deployment-specific privacy review explicitly approves another policy
 - keep the Privacy Policy page up to date with an accurate description of cookie usage
 
 ## Common Mistakes And Recovery
