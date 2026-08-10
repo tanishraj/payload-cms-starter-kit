@@ -26,14 +26,12 @@
 ### Task 1: Establish the canonical test contract
 
 **Files:**
-
 - Move: `tests/int/faq-render.int.spec.ts` → `tests/int/qa-accordion.int.spec.ts`
 - Modify: `tests/int/page-blocks.int.spec.ts`
 - Modify: `tests/int/system-page-blocks.int.spec.ts`
 - Modify: `tests/int/block-thumbnails.int.spec.ts`
 
 **Interfaces:**
-
 - Produces: failing expectations for `qaAccordion`, `QaAccordionBlock`, `QaAccordionBlockComponent`, `accordionPlacement`, `data-qa-accordion-*`, and `qa-accordion.jpg`.
 
 - [ ] **Step 1: Rename the focused render test and its identifiers**
@@ -91,14 +89,12 @@ Expected: fail because the Q&A Accordion source identity is not implemented yet.
 ### Task 2: Rename the Payload block and renderer
 
 **Files:**
-
 - Move: `src/blocks/Faq/config.ts` → `src/blocks/QaAccordion/config.ts`
 - Move: `src/blocks/Faq/Component.tsx` → `src/blocks/QaAccordion/Component.tsx`
 - Modify: `src/collections/Pages.ts`
 - Modify: `src/blocks/renderPageBlocks.tsx`
 
 **Interfaces:**
-
 - Produces: `QaAccordionBlock`, `QaAccordionBlockComponent`, and the only renderer case `qaAccordion`.
 - Consumes: existing fields and render behavior without visual changes.
 
@@ -163,14 +159,12 @@ Expected: block schema and render tests pass; thumbnail tests remain pending.
 ### Task 3: Rename the thumbnail identity and asset
 
 **Files:**
-
 - Modify: `src/block-thumbnails/definitions.ts`
 - Modify: `src/block-thumbnails/fixtures.tsx`
 - Move: `public/block-thumbnails/faq.jpg` → `public/block-thumbnails/qa-accordion.jpg`
 - Test: `tests/int/block-thumbnails.int.spec.ts`
 
 **Interfaces:**
-
 - Produces: preview slug `qaAccordion`, fixture key `qaAccordion`, and exact asset `qa-accordion.jpg`.
 
 - [ ] **Step 1: Replace the thumbnail definition**
@@ -188,13 +182,15 @@ defineThumbnail({
 - [ ] **Step 2: Rename the fixture key and component**
 
 ```tsx
-qaAccordion: <QaAccordionBlockComponent
-  heading="Questions and answers"
-  items={qaAccordionFixtureItems}
-  layoutMode="fiftyFifty"
-  sideActionMode="link"
-  size="compact"
-/>
+qaAccordion: (
+  <QaAccordionBlockComponent
+    heading="Questions and answers"
+    items={qaAccordionFixtureItems}
+    layoutMode="fiftyFifty"
+    sideActionMode="link"
+    size="compact"
+  />
+)
 ```
 
 Rename `faqFixtureItems` to `qaAccordionFixtureItems`; preserve the existing descriptions, actions, profile, and item values.
@@ -212,11 +208,9 @@ Expected: the manifest, fixture, preview identity, and exact thumbnail file cont
 ### Task 4: Regenerate Payload types
 
 **Files:**
-
 - Modify: `src/payload-types.ts`
 
 **Interfaces:**
-
 - Consumes: `QaAccordionBlock` schema.
 - Produces: `QaAccordionBlock`, `QaAccordionBlockSelect`, and `blockType: 'qaAccordion'` generated types.
 
@@ -240,18 +234,16 @@ Expected: the first search finds generated declarations; the second returns no m
 ### Task 5: Rewrite local page documents and versions
 
 **Files:**
-
 - Modify external local state: MongoDB database `payload-cms-starter-kit`
 - No migration file is created.
 
 **Interfaces:**
-
 - Consumes: `pages.layout` and `_pages_versions.version.layout` blocks with `blockType: 'faq'`.
 - Produces: equivalent blocks with `blockType: 'qaAccordion'` and `accordionPlacement`.
 
 - [ ] **Step 1: Capture and rewrite the matching layouts with rollback protection**
 
-Run this logic through `pnpm exec tsx -e` with the local `MONGODB_URI` and a development `PAYLOAD_SECRET`:
+Run this logic through `pnpm exec tsx -e` with the local `DATABASE_URL` and a development `PAYLOAD_SECRET`:
 
 ```ts
 import { getPayload } from 'payload'
@@ -312,12 +304,10 @@ try {
   }
 } catch (error) {
   for (const backup of backups) {
-    await database
-      .collection(backup.collection)
-      .updateOne(
-        { _id: backup.id },
-        { $set: { [backup.versioned ? 'version.layout' : 'layout']: backup.layout } },
-      )
+    await database.collection(backup.collection).updateOne(
+      { _id: backup.id },
+      { $set: { [backup.versioned ? 'version.layout' : 'layout']: backup.layout } },
+    )
   }
   throw error
 }
@@ -341,11 +331,9 @@ Expected: every old query returns zero. Confirm the current Home page has three 
 ### Task 6: Final runtime and repository verification
 
 **Files:**
-
 - Verify all files modified in Tasks 1–5.
 
 **Interfaces:**
-
 - Produces: evidence that Q&A Accordion is the sole runtime identity and content still renders.
 
 - [ ] **Step 1: Run focused integration tests**

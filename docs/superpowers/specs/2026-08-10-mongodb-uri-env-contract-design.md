@@ -2,11 +2,11 @@
 
 ## Goal
 
-Replace the starter's active `MONGODB_URI` environment contract with a strict `MONGODB_URI` contract so local development, production deployments, database exports, tests, and operator documentation use the same MongoDB-specific variable name.
+Replace the starter's active `DATABASE_URL` environment contract with a strict `MONGODB_URI` contract so local development, production deployments, database exports, tests, and operator documentation use the same MongoDB-specific variable name.
 
 ## Decision
 
-The cutover is strict. Runtime code and operational scripts will read only `MONGODB_URI`. `MONGODB_URI` will not be accepted as a fallback and will not produce a deprecation warning.
+The cutover is strict. Runtime code and operational scripts will read only `MONGODB_URI`. `DATABASE_URL` will not be accepted as a fallback and will not produce a deprecation warning.
 
 This matches the existing production environment and prevents an obsolete variable from silently masking configuration drift.
 
@@ -40,7 +40,7 @@ The invalid-variable error will be:
 Invalid MongoDB MONGODB_URI. Use a connection string starting with "mongodb://" or "mongodb+srv://".
 ```
 
-Supplying only `MONGODB_URI` must fail as a missing `MONGODB_URI` configuration.
+Supplying only `DATABASE_URL` must fail as a missing `MONGODB_URI` configuration.
 
 ## Local And Deployment Configuration
 
@@ -58,10 +58,10 @@ Archive naming and export behavior remain unchanged.
 
 - Update runtime tests to cover valid local and SRV values through `MONGODB_URI`.
 - Verify missing and invalid `MONGODB_URI` values produce the new exact errors.
-- Add a strict-cutover assertion that a valid legacy `MONGODB_URI` without `MONGODB_URI` is rejected.
+- Add a strict-cutover assertion that a valid legacy `DATABASE_URL` without `MONGODB_URI` is rejected.
 - Update Mongo-backed integration setup to assign temporary database URIs through `process.env.MONGODB_URI`.
-- Assert `.env.example` contains `MONGODB_URI` and no longer contains `MONGODB_URI`.
-- Verify active code, scripts, Docker configuration, README, integration setup, and operations documentation contain no `MONGODB_URI` references. The strict-rejection test is the only intentional legacy reference.
+- Assert `.env.example` contains `MONGODB_URI` and no longer contains `DATABASE_URL`.
+- Verify active code, scripts, Docker configuration, README, integration setup, and operations documentation contain no `DATABASE_URL` references. The strict-rejection test is the only intentional legacy reference.
 - Run focused runtime/provider tests, TypeScript, lint, and the production build.
 
 ## Security And Failure Handling
@@ -72,7 +72,7 @@ Missing or invalid configuration fails at startup before Payload connects. Datab
 
 ## Non-Goals
 
-- Supporting `MONGODB_URI` as a legacy alias.
+- Supporting `DATABASE_URL` as a legacy alias.
 - Renaming the internal `database.url` runtime property.
 - Changing the MongoDB adapter, database provider, database name, credentials, or connection options.
 - Rewriting historical documents under `docs/superpowers`.

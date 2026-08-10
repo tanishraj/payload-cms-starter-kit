@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Replace the starter's active `MONGODB_URI` environment contract with strict `MONGODB_URI` configuration everywhere it is consumed or documented.
+**Goal:** Replace the starter's active `DATABASE_URL` environment contract with strict `MONGODB_URI` configuration everywhere it is consumed or documented.
 
 **Architecture:** `getRuntimeConfig()` remains the single runtime validation boundary and continues to expose `database.url` to the MongoDB adapter. Environment-facing code, local/Docker configuration, database export tooling, integration setup, and active documentation move to `MONGODB_URI` with no legacy fallback.
 
@@ -11,7 +11,7 @@
 ## Global Constraints
 
 - Runtime code and operational scripts must read only `MONGODB_URI`.
-- `MONGODB_URI` must not be accepted as a fallback or produce a deprecation warning.
+- `DATABASE_URL` must not be accepted as a fallback or produce a deprecation warning.
 - Accepted values must start with `mongodb://` or `mongodb+srv://`.
 - Keep the internal `RuntimeConfig.database.url` interface unchanged.
 - Preserve the existing local MongoDB URI, database name, credentials, and backup behavior.
@@ -49,7 +49,7 @@
 Apply the mechanical rename only within `tests/int/runtime-config.int.spec.ts`:
 
 ```bash
-perl -pi -e 's/MONGODB_URI/MONGODB_URI/g' tests/int/runtime-config.int.spec.ts
+perl -pi -e 's/DATABASE_URL/MONGODB_URI/g' tests/int/runtime-config.int.spec.ts
 ```
 
 The existing cases must then use entries such as:
@@ -70,11 +70,11 @@ and expect these exact messages:
 Add this test immediately after the missing-connection-string case:
 
 ```ts
-it('does not accept MONGODB_URI as a legacy fallback', () => {
+it('does not accept DATABASE_URL as a legacy fallback', () => {
   process.env = {
     ...ORIGINAL_ENV,
     MONGODB_URI: '',
-    MONGODB_URI: 'mongodb://127.0.0.1:27017/legacy-database',
+    DATABASE_URL: 'mongodb://127.0.0.1:27017/legacy-database',
     EMAIL_PROVIDER: 'none',
     MEDIA_PROVIDER: 'localDisk',
   }
@@ -93,7 +93,7 @@ Run:
 pnpm exec vitest run tests/int/runtime-config.int.spec.ts --config ./vitest.config.mts
 ```
 
-Expected: the renamed cases fail because production code still reads `MONGODB_URI`, and the legacy-fallback test fails because the old variable is still accepted.
+Expected: the renamed cases fail because production code still reads `DATABASE_URL`, and the legacy-fallback test fails because the old variable is still accepted.
 
 - [ ] **Step 4: Change the runtime validation boundary**
 
@@ -183,7 +183,7 @@ describe('MongoDB environment contract', () => {
       const source = readFileSync(filePath, 'utf8')
 
       expect(source, filePath).toContain('MONGODB_URI')
-      expect(source, filePath).not.toContain('MONGODB_URI')
+      expect(source, filePath).not.toContain('DATABASE_URL')
     }
   })
 
@@ -203,14 +203,14 @@ Run:
 pnpm exec vitest run tests/int/mongodb-uri-contract.int.spec.ts --config ./vitest.config.mts
 ```
 
-Expected: FAIL because the environment example, export script, Docker configuration, README, and operations guides still contain `MONGODB_URI`.
+Expected: FAIL because the environment example, export script, Docker configuration, README, and operations guides still contain `DATABASE_URL`.
 
 - [ ] **Step 3: Rename the tracked active contract surfaces**
 
 Run this exact mechanical replacement:
 
 ```bash
-perl -pi -e 's/MONGODB_URI/MONGODB_URI/g' .env.example README.md docker-compose.yml scripts/export-db.mjs docs/operations/runtime-and-providers.md docs/operations/developer-workflows.md docs/operations/mongodb-deployment.md docs/operations/starter-clone-checklist.md tests/int/api.int.spec.ts tests/int/starter-productization.int.spec.ts tests/int/media-storage.int.spec.ts
+perl -pi -e 's/DATABASE_URL/MONGODB_URI/g' .env.example README.md docker-compose.yml scripts/export-db.mjs docs/operations/runtime-and-providers.md docs/operations/developer-workflows.md docs/operations/mongodb-deployment.md docs/operations/starter-clone-checklist.md tests/int/api.int.spec.ts tests/int/starter-productization.int.spec.ts tests/int/media-storage.int.spec.ts
 ```
 
 This preserves every URI value and changes only the environment key text. In `scripts/export-db.mjs`, the resulting contract must be:
@@ -238,13 +238,13 @@ environment:
 Run:
 
 ```bash
-perl -pi -e 's/^MONGODB_URI=/MONGODB_URI=/' .env
+perl -pi -e 's/^DATABASE_URL=/MONGODB_URI=/' .env
 ```
 
 Do not print `.env`. Confirm only its matching key name with:
 
 ```bash
-awk -F= '/^(MONGODB_URI|MONGODB_URI)=/{print $1}' .env
+awk -F= '/^(DATABASE_URL|MONGODB_URI)=/{print $1}' .env
 ```
 
 Expected output:
@@ -281,7 +281,7 @@ Expected: all tests pass.
 Run:
 
 ```bash
-rg -n 'MONGODB_URI' README.md docker-compose.yml scripts src/config tests/int docs/operations .env.example --hidden -g '!runtime-config.int.spec.ts' -g '!mongodb-uri-contract.int.spec.ts'
+rg -n 'DATABASE_URL' README.md docker-compose.yml scripts src/config tests/int docs/operations .env.example --hidden -g '!runtime-config.int.spec.ts' -g '!mongodb-uri-contract.int.spec.ts'
 ```
 
 Expected: no output and exit code 1 because no active legacy references remain outside the explicit rejection contract.
@@ -289,10 +289,10 @@ Expected: no output and exit code 1 because no active legacy references remain o
 Run:
 
 ```bash
-rg -n 'MONGODB_URI' tests/int/runtime-config.int.spec.ts
+rg -n 'DATABASE_URL' tests/int/runtime-config.int.spec.ts
 ```
 
-Expected: only the strict legacy-rejection test name and its `MONGODB_URI` input are reported.
+Expected: only the strict legacy-rejection test name and its `DATABASE_URL` input are reported.
 
 - [ ] **Step 2: Verify integration environment setup**
 

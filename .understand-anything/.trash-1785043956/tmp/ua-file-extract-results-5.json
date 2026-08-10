@@ -45,19 +45,25 @@
           "name": "createDatabaseAdapter",
           "startLine": 8,
           "endLine": 12,
-          "params": ["config"]
+          "params": [
+            "config"
+          ]
         },
         {
           "name": "createEmailAdapter",
           "startLine": 14,
           "endLine": 25,
-          "params": ["config"]
+          "params": [
+            "config"
+          ]
         },
         {
           "name": "createStoragePlugins",
           "startLine": 27,
           "endLine": 51,
-          "params": ["config"]
+          "params": [
+            "config"
+          ]
         }
       ],
       "exports": [
@@ -112,25 +118,34 @@
           "name": "isMongoConnectionString",
           "startLine": 32,
           "endLine": 33,
-          "params": ["value"]
+          "params": [
+            "value"
+          ]
         },
         {
           "name": "parseBooleanEnv",
           "startLine": 35,
           "endLine": 51,
-          "params": ["value", "defaultValue"]
+          "params": [
+            "value",
+            "defaultValue"
+          ]
         },
         {
           "name": "getMediaProvider",
           "startLine": 53,
           "endLine": 63,
-          "params": ["env"]
+          "params": [
+            "env"
+          ]
         },
         {
           "name": "getRuntimeConfig",
           "startLine": 65,
           "endLine": 146,
-          "params": ["env"]
+          "params": [
+            "env"
+          ]
         }
       ],
       "exports": [
@@ -188,7 +203,7 @@
         },
         {
           "caller": "getRuntimeConfig",
-          "callee": "env.MONGODB_URI?.trim",
+          "callee": "env.DATABASE_URL?.trim",
           "lineNumber": 69
         },
         {
@@ -260,13 +275,17 @@
           "name": "getStarterContract",
           "startLine": 14,
           "endLine": 34,
-          "params": ["config"]
+          "params": [
+            "config"
+          ]
         },
         {
           "name": "assertSupportedStarterContract",
           "startLine": 36,
           "endLine": 40,
-          "params": ["contract"]
+          "params": [
+            "contract"
+          ]
         }
       ],
       "exports": [
@@ -299,7 +318,9 @@
           "name": "buildSEOFields",
           "startLine": 10,
           "endLine": 98,
-          "params": ["{\n  allowOpenGraph = true,\n  allowSitemap = true,\n}"]
+          "params": [
+            "{\n  allowOpenGraph = true,\n  allowSitemap = true,\n}"
+          ]
         }
       ],
       "exports": [
@@ -364,31 +385,45 @@
           "name": "extractPageID",
           "startLine": 12,
           "endLine": 24,
-          "params": ["value"]
+          "params": [
+            "value"
+          ]
         },
         {
           "name": "validatePublishedFrontPage",
           "startLine": 26,
           "endLine": 59,
-          "params": ["value", "{ req }"]
+          "params": [
+            "value",
+            "{ req }"
+          ]
         },
         {
           "name": "validateAnnouncementInterval",
           "startLine": 61,
           "endLine": 79,
-          "params": ["value", "{\n    siblingData,\n  }"]
+          "params": [
+            "value",
+            "{\n    siblingData,\n  }"
+          ]
         },
         {
           "name": "validateAnnouncementMarqueeDuration",
           "startLine": 81,
           "endLine": 99,
-          "params": ["value", "{\n    siblingData,\n  }"]
+          "params": [
+            "value",
+            "{\n    siblingData,\n  }"
+          ]
         },
         {
           "name": "validateAnnouncementItems",
           "startLine": 101,
           "endLine": 124,
-          "params": ["value", "{ siblingData }"]
+          "params": [
+            "value",
+            "{ siblingData }"
+          ]
         }
       ],
       "exports": [
@@ -473,7 +508,9 @@
           "name": "validateExternalSocialUrl",
           "startLine": 9,
           "endLine": 25,
-          "params": ["value"]
+          "params": [
+            "value"
+          ]
         }
       ],
       "exports": [
@@ -513,19 +550,26 @@
           "name": "extractPageID",
           "startLine": 11,
           "endLine": 23,
-          "params": ["value"]
+          "params": [
+            "value"
+          ]
         },
         {
           "name": "validatePublishedSystemPageType",
           "startLine": 25,
           "endLine": 65,
-          "params": ["expectedType", "fieldLabel"]
+          "params": [
+            "expectedType",
+            "fieldLabel"
+          ]
         },
         {
           "name": "pageOfTypeFilter",
           "startLine": 67,
           "endLine": 71,
-          "params": ["type"]
+          "params": [
+            "type"
+          ]
         }
       ],
       "exports": [
@@ -585,31 +629,45 @@
           "name": "canPublish",
           "startLine": 36,
           "endLine": 50,
-          "params": ["capability", "user"]
+          "params": [
+            "capability",
+            "user"
+          ]
         },
         {
           "name": "normalizeUserID",
           "startLine": 52,
           "endLine": 66,
-          "params": ["value"]
+          "params": [
+            "value"
+          ]
         },
         {
           "name": "resolveWorkflowState",
           "startLine": 68,
           "endLine": 89,
-          "params": ["data", "originalDoc"]
+          "params": [
+            "data",
+            "originalDoc"
+          ]
         },
         {
           "name": "resolveBypassedWorkflowState",
           "startLine": 91,
           "endLine": 108,
-          "params": ["data", "originalDoc"]
+          "params": [
+            "data",
+            "originalDoc"
+          ]
         },
         {
           "name": "enforceEditorialWorkflow",
           "startLine": 110,
           "endLine": 196,
-          "params": ["publishCapability", "sourceCollection"]
+          "params": [
+            "publishCapability",
+            "sourceCollection"
+          ]
         }
       ],
       "exports": [
@@ -724,13 +782,17 @@
           "name": "createCollectionAuditHook",
           "startLine": 22,
           "endLine": 42,
-          "params": ["config"]
+          "params": [
+            "config"
+          ]
         },
         {
           "name": "createGlobalAuditHook",
           "startLine": 44,
           "endLine": 65,
-          "params": ["config"]
+          "params": [
+            "config"
+          ]
         }
       ],
       "exports": [
@@ -795,7 +857,9 @@
           "name": "normalizeNewsEventFields",
           "startLine": 3,
           "endLine": 14,
-          "params": ["{ data }"]
+          "params": [
+            "{ data }"
+          ]
         }
       ],
       "exports": [
@@ -823,13 +887,17 @@
           "name": "formatUsageList",
           "startLine": 5,
           "endLine": 5,
-          "params": ["locations"]
+          "params": [
+            "locations"
+          ]
         },
         {
           "name": "preventMediaDeletionWhileInUse",
           "startLine": 7,
           "endLine": 28,
-          "params": ["{ id, req }"]
+          "params": [
+            "{ id, req }"
+          ]
         }
       ],
       "exports": [
@@ -879,19 +947,26 @@
           "name": "getSystemPageID",
           "startLine": 7,
           "endLine": 17,
-          "params": ["value"]
+          "params": [
+            "value"
+          ]
         },
         {
           "name": "getSystemBehaviorUsage",
           "startLine": 19,
           "endLine": 51,
-          "params": ["pageSettings", "pageID"]
+          "params": [
+            "pageSettings",
+            "pageID"
+          ]
         },
         {
           "name": "preventReferencedSystemPageInvalidation",
           "startLine": 53,
           "endLine": 100,
-          "params": ["{\n  data,\n  operation,\n  originalDoc,\n  req,\n}"]
+          "params": [
+            "{\n  data,\n  operation,\n  originalDoc,\n  req,\n}"
+          ]
         }
       ],
       "exports": [
@@ -986,7 +1061,9 @@
           "name": "syncFormSubmissionToWorkQueue",
           "startLine": 15,
           "endLine": 78,
-          "params": ["{ doc, req }"]
+          "params": [
+            "{ doc, req }"
+          ]
         }
       ],
       "exports": [
@@ -1031,7 +1108,9 @@
           "name": "syncMediaToWorkQueue",
           "startLine": 14,
           "endLine": 101,
-          "params": ["{ doc, req }"]
+          "params": [
+            "{ doc, req }"
+          ]
         }
       ],
       "exports": [
@@ -1091,13 +1170,17 @@
           "name": "toRelationshipID",
           "startLine": 3,
           "endLine": 15,
-          "params": ["value"]
+          "params": [
+            "value"
+          ]
         },
         {
           "name": "syncPrimaryCategoryMembership",
           "startLine": 17,
           "endLine": 50,
-          "params": ["{ data, originalDoc }"]
+          "params": [
+            "{ data, originalDoc }"
+          ]
         }
       ],
       "exports": [
@@ -1172,7 +1255,9 @@
           "name": "syncReviewToWorkQueue",
           "startLine": 15,
           "endLine": 80,
-          "params": ["{ doc, req }"]
+          "params": [
+            "{ doc, req }"
+          ]
         }
       ],
       "exports": [
@@ -1217,13 +1302,17 @@
           "name": "isWorkQueueSyncContext",
           "startLine": 3,
           "endLine": 5,
-          "params": ["context"]
+          "params": [
+            "context"
+          ]
         },
         {
           "name": "withWorkQueueSyncContext",
           "startLine": 7,
           "endLine": 14,
-          "params": ["context"]
+          "params": [
+            "context"
+          ]
         }
       ],
       "exports": [
@@ -1261,7 +1350,11 @@
           "name": "toSourceTitle",
           "startLine": 18,
           "endLine": 21,
-          "params": ["doc", "titleField", "fallback"]
+          "params": [
+            "doc",
+            "titleField",
+            "fallback"
+          ]
         },
         {
           "name": "createWorkflowQueueHook",
@@ -1382,19 +1475,25 @@
           "name": "normalizeOwnerID",
           "startLine": 11,
           "endLine": 21,
-          "params": ["value"]
+          "params": [
+            "value"
+          ]
         },
         {
           "name": "normalizeNotes",
           "startLine": 23,
           "endLine": 25,
-          "params": ["value"]
+          "params": [
+            "value"
+          ]
         },
         {
           "name": "updateFormSubmissionActivity",
           "startLine": 27,
           "endLine": 55,
-          "params": ["{\n  data,\n  operation,\n  originalDoc,\n}"]
+          "params": [
+            "{\n  data,\n  operation,\n  originalDoc,\n}"
+          ]
         }
       ],
       "exports": [
@@ -1474,7 +1573,9 @@
           "name": "validateSEOContract",
           "startLine": 23,
           "endLine": 68,
-          "params": ["{ getIsPublicRoute }"]
+          "params": [
+            "{ getIsPublicRoute }"
+          ]
         }
       ],
       "exports": [
@@ -1524,7 +1625,9 @@
           "name": "formatCMSRoleLabel",
           "startLine": 28,
           "endLine": 39,
-          "params": ["role"]
+          "params": [
+            "role"
+          ]
         }
       ],
       "exports": [

@@ -66,13 +66,13 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
   const mediaProvider = getMediaProvider(env)
   const isProduction = env.NODE_ENV === 'production'
   const isVercel = Boolean(env.VERCEL)
-  const databaseURL = env.MONGODB_URI?.trim() || ''
+  const mongodbURI = env.MONGODB_URI?.trim() || ''
 
-  if (!databaseURL) {
+  if (!mongodbURI) {
     throw new Error('Missing MongoDB MONGODB_URI. Set MONGODB_URI to a MongoDB connection string.')
   }
 
-  if (!isMongoConnectionString(databaseURL)) {
+  if (!isMongoConnectionString(mongodbURI)) {
     throw new Error(
       'Invalid MongoDB MONGODB_URI. Use a connection string starting with "mongodb://" or "mongodb+srv://".',
     )
@@ -129,7 +129,7 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
 
   return {
     database: {
-      url: databaseURL,
+      url: mongodbURI,
     },
     deployment: {
       isProduction,

@@ -92,6 +92,20 @@ describe('runtime config', () => {
     )
   })
 
+  it('does not accept DATABASE_URL as a legacy fallback', () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      MONGODB_URI: '',
+      DATABASE_URL: 'mongodb://127.0.0.1:27017/legacy-database',
+      EMAIL_PROVIDER: 'none',
+      MEDIA_PROVIDER: 'localDisk',
+    }
+
+    expect(() => getRuntimeConfig(process.env)).toThrow(
+      'Missing MongoDB MONGODB_URI. Set MONGODB_URI to a MongoDB connection string.',
+    )
+  })
+
   it('rejects a non-mongodb connection string', () => {
     process.env = {
       ...ORIGINAL_ENV,

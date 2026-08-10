@@ -1,6 +1,6 @@
 import configPromise from '@payload-config'
 import { NextResponse } from 'next/server'
-import { getPayload } from 'payload'
+import { getPayload, type Where } from 'payload'
 
 import { resolveSearchPageHrefs } from '@/lib/searchPagePaths'
 
@@ -67,7 +67,7 @@ export async function GET(request: Request) {
 
   const payload = await getPayload({ config: configPromise })
   const textLike = { like: query }
-  const publishedFilter = [
+  const publishedFilter: Where[] = [
     { _status: { equals: 'published' } },
     { workflowState: { equals: 'published' } },
   ]

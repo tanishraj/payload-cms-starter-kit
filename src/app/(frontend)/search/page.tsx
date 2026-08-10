@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import configPromise from '@payload-config'
-import { getPayload } from 'payload'
+import { getPayload, type Where } from 'payload'
 import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
@@ -43,7 +43,7 @@ async function getSearchSettings(): Promise<SearchSetting> {
 async function runSearch(query: string): Promise<SearchGroup[]> {
   const payload = await getPayload({ config: configPromise })
   const textLike = { like: query }
-  const publishedFilter = [
+  const publishedFilter: Where[] = [
     { _status: { equals: 'published' } },
     { workflowState: { equals: 'published' } },
   ]
