@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { useEffect, useMemo, useState } from 'react'
 
 const DEFAULT_INTERVAL_MS = 4000
 const MIN_INTERVAL_MS = 2000
-const TRANSITION_MS = 320
+const TRANSITION_DURATION_SECONDS = 0.16
 
 type RotatingAnnouncementItem = {
   description: string
@@ -29,13 +30,7 @@ export function RotatingAnnouncementContent({
   )
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
-  const [previousIndex, setPreviousIndex] = useState<number | null>(null)
-  const currentIndexRef = useRef(0)
-  const timeoutRef = useRef<number | null>(null)
-
-  useEffect(() => {
-    currentIndexRef.current = currentIndex
-  }, [currentIndex])
+  const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
     if (isPaused || items.length <= 1) {
@@ -43,57 +38,17 @@ export function RotatingAnnouncementContent({
     }
 
     const intervalId = window.setInterval(() => {
-      const nextIndex = (currentIndexRef.current + 1) % items.length
-
-      setPreviousIndex(currentIndexRef.current)
-      setCurrentIndex(nextIndex)
-      currentIndexRef.current = nextIndex
-
-      if (timeoutRef.current != null) {
-        window.clearTimeout(timeoutRef.current)
-      }
-
-      timeoutRef.current = window.setTimeout(() => {
-        setPreviousIndex(null)
-        timeoutRef.current = null
-      }, TRANSITION_MS)
+      setCurrentIndex((index) => (index + 1) % items.length)
     }, sanitizedInterval)
 
-    return () => {
-      window.clearInterval(intervalId)
-
-      if (timeoutRef.current != null) {
-        window.clearTimeout(timeoutRef.current)
-        timeoutRef.current = null
-      }
-    }
+    return () => window.clearInterval(intervalId)
   }, [isPaused, items.length, sanitizedInterval])
 
   const safeCurrentIndex = currentIndex % items.length
-  const safePreviousIndex = previousIndex != null ? previousIndex % items.length : null
   const currentItem = items[safeCurrentIndex]
-  const previousItem = safePreviousIndex != null ? items[safePreviousIndex] : null
-  const exitAnimationClass =
-    mode === 'horizontal'
-      ? 'animate-out fade-out slide-out-to-left-2'
-      : 'animate-out fade-out slide-out-to-top-2'
-  const enterAnimationClass =
-    mode === 'horizontal'
-      ? 'animate-in fade-in slide-in-from-right-2'
-      : 'animate-in fade-in slide-in-from-bottom-2'
-
-  if (!previousItem) {
-    return (
-      <div
-        className="min-w-0 flex-1 py-0.5"
-        data-testid="announcement-rotator"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-      >
-        <AnnouncementItem item={currentItem} />
-      </div>
-    )
-  }
+  const initialOffset = mode === 'horizontal' ? { x: 8, y: 0 } : { x: 0, y: 8 }
+  const exitOffset = mode === 'horizontal' ? { x: -8, y: 0 } : { x: 0, y: -8 }
+  const motionDisabled = prefersReducedMotion === true
 
   return (
     <div
@@ -102,23 +57,21 @@ export function RotatingAnnouncementContent({
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div aria-hidden="true" className="invisible">
-        <AnnouncementItem item={currentItem} />
-      </div>
-      {previousItem ? (
-        <div
-          className={`${exitAnimationClass} absolute inset-0`}
-          style={{ animationDuration: `${TRANSITION_MS}ms` }}
+      <AnimatePresence initial={false} mode="wait">
+        <motion.div
+          key={safeCurrentIndex}
+          animate={{ opacity: 1, x: 0, y: 0 }}
+          data-testid="announcement-item"
+          exit={motionDisabled ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, ...exitOffset }}
+          initial={motionDisabled ? false : { opacity: 0, ...initialOffset }}
+          transition={{
+            duration: motionDisabled ? 0 : TRANSITION_DURATION_SECONDS,
+            ease: 'easeOut',
+          }}
         >
-          <AnnouncementItem item={previousItem} />
-        </div>
-      ) : null}
-      <div
-        className={`${enterAnimationClass} absolute inset-0`}
-        style={previousItem ? { animationDuration: `${TRANSITION_MS}ms` } : undefined}
-      >
-        <AnnouncementItem item={currentItem} />
-      </div>
+          <AnnouncementItem item={currentItem} />
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }
