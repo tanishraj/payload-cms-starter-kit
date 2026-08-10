@@ -25,6 +25,10 @@ export const getMediaAbsoluteUrl = (
 
   const url = media.url.trim()
 
+  if (url.startsWith('/')) {
+    return url
+  }
+
   if (/^https?:\/\//i.test(url)) {
     return url
   }

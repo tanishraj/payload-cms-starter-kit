@@ -6,9 +6,9 @@ import type { Media } from '@/payload-types'
 const mediaWithURL = (url: string): Media => ({ url }) as Media
 
 describe('media URL resolution', () => {
-  it('converts Payload root-relative media paths to absolute URLs', () => {
+  it('preserves Payload root-relative media paths for same-origin Next images', () => {
     expect(getMediaAbsoluteUrl(mediaWithURL('/api/media/file/social-image.png'))).toBe(
-      'http://localhost:3000/api/media/file/social-image.png',
+      '/api/media/file/social-image.png',
     )
   })
 
