@@ -15,9 +15,9 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE_URL: mongodb://mongo:27017/payload-cms-starter-kit
+      MONGODB_URI: mongodb://mongo:27017/payload-cms-starter-kit
 
-  # Use DATABASE_URL=mongodb://mongo:27017/payload-cms-starter-kit when the app runs in Docker.
+  # Use MONGODB_URI=mongodb://mongo:27017/payload-cms-starter-kit when the app runs in Docker.
   mongo:
     image: mongo:latest
     ports:

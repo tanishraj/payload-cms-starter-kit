@@ -13,7 +13,7 @@ describe('starter productization', () => {
   beforeAll(async () => {
     const mongoServer = await createTestMongoServer()
 
-    process.env.DATABASE_URL = mongoServer.uri
+    process.env.MONGODB_URI = mongoServer.uri
     process.env.EMAIL_PROVIDER = 'none'
     process.env.MEDIA_PROVIDER = 'localDisk'
     process.env.PAYLOAD_SECRET = 'test-secret'
@@ -37,7 +37,7 @@ describe('starter productization', () => {
   it('keeps the documented local defaults in .env.example', () => {
     const envExample = readFileSync('.env.example', 'utf8')
 
-    expect(envExample).toContain('DATABASE_URL=mongodb://127.0.0.1:27017/payload-cms-starter-kit')
+    expect(envExample).toContain('MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit')
     expect(envExample).not.toContain('DATABASE_PROVIDER=sqlite')
     expect(envExample).toContain('EMAIL_PROVIDER=none')
     expect(envExample).toContain('MEDIA_PROVIDER=localDisk')

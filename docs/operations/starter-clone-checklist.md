@@ -12,7 +12,7 @@ Use this checklist when copying the starter into a new client repository. The go
 
 ## Confirm Runtime And Provider Choices
 
-- Confirm `DATABASE_URL` points at the correct MongoDB instance for the environment.
+- Confirm `MONGODB_URI` points at the correct MongoDB instance for the environment.
 - Set `PAYLOAD_SECRET` for every environment.
 - Configure `RESEND_API_KEY` and `RESEND_FROM_EMAIL` if the site should send notifications.
 - Decide whether `RESEND_FROM_NAME` and `RESEND_OVERRIDE_TO_EMAIL` are needed for staging or QA.
@@ -41,7 +41,7 @@ Use this checklist when copying the starter into a new client repository. The go
 
 ## Verify Deployment Assumptions
 
-- Confirm `DATABASE_URL` points to the hosted MongoDB cluster before any shared deployment work.
+- Confirm `MONGODB_URI` points to the hosted MongoDB cluster before any shared deployment work.
 - Confirm `MEDIA_PROVIDER=s3` and the S3-compatible bucket credentials before any Vercel deployment work.
 - Do not treat the default `media` upload behavior as durable on Vercel.
 - Verify the configured homepage, 404 page, maintenance page, and coming-soon page all resolve correctly.

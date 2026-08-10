@@ -42,10 +42,12 @@
 ### Task 1: Harden Runtime Contract Parsing
 
 **Files:**
+
 - Modify: `src/config/runtime.ts`
 - Modify: `tests/int/runtime-config.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: raw environment variables from `process.env`
 - Produces:
   - `type RuntimeConfig`
@@ -72,7 +74,7 @@ describe('runtime config', () => {
     process.env = {
       ...ORIGINAL_ENV,
       DATABASE_PROVIDER: 'sqlite',
-      DATABASE_URL: 'file:./payload.db',
+      MONGODB_URI: 'file:./payload.db',
       EMAIL_PROVIDER: 'none',
       VERCEL: '',
     }
@@ -115,7 +117,7 @@ describe('runtime config', () => {
     process.env = {
       ...ORIGINAL_ENV,
       DATABASE_PROVIDER: 'sqlite',
-      DATABASE_URL: 'file:./payload.db',
+      MONGODB_URI: 'file:./payload.db',
       NODE_ENV: 'production',
       VERCEL: '1',
     }
@@ -133,7 +135,7 @@ describe('runtime config', () => {
     }
 
     expect(() => getRuntimeConfig(process.env)).toThrow(
-      'Missing Postgres connection string. Set POSTGRES_URL or DATABASE_URL.',
+      'Missing Postgres connection string. Set POSTGRES_URL or MONGODB_URI.',
     )
   })
 })
@@ -148,6 +150,7 @@ Run:
 ```
 
 Expected:
+
 - FAIL because `RuntimeConfig` does not yet expose `deployment`
 - FAIL because `getRuntimeConfig` does not yet support `postgres` or startup validation
 
@@ -194,13 +197,13 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
   const databaseProvider = getDatabaseProvider(env)
   const isProduction = env.NODE_ENV === 'production'
   const isVercel = Boolean(env.VERCEL)
-  const postgresUrl = env.POSTGRES_URL || env.DATABASE_URL || ''
+  const postgresUrl = env.POSTGRES_URL || env.MONGODB_URI || ''
 
   const database =
     databaseProvider === 'postgres'
       ? (() => {
           if (!postgresUrl) {
-            throw new Error('Missing Postgres connection string. Set POSTGRES_URL or DATABASE_URL.')
+            throw new Error('Missing Postgres connection string. Set POSTGRES_URL or MONGODB_URI.')
           }
 
           return {
@@ -209,8 +212,8 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
           }
         })()
       : (() => {
-          if (!env.DATABASE_URL) {
-            throw new Error('Missing SQLite DATABASE_URL. Set DATABASE_URL to a local file path.')
+          if (!env.MONGODB_URI) {
+            throw new Error('Missing SQLite MONGODB_URI. Set MONGODB_URI to a local file path.')
           }
 
           if (isVercel && isProduction) {
@@ -221,7 +224,7 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
 
           return {
             provider: 'sqlite' as const,
-            url: env.DATABASE_URL,
+            url: env.MONGODB_URI,
           }
         })()
 
@@ -261,6 +264,7 @@ Run:
 ```
 
 Expected:
+
 - PASS with 4 tests passing
 
 - [ ] **Step 5: Commit**
@@ -273,6 +277,7 @@ git commit -m "feat: harden runtime config contract"
 ### Task 2: Add SQLite/Postgres Provider Branching
 
 **Files:**
+
 - Modify: `src/config/providers.ts`
 - Modify: `src/payload.config.ts`
 - Create: `tests/int/provider-selection.int.spec.ts`
@@ -281,6 +286,7 @@ git commit -m "feat: harden runtime config contract"
 - Create: `pnpm-lock.yaml`
 
 **Interfaces:**
+
 - Consumes:
   - `getRuntimeConfig(env?: NodeJS.ProcessEnv): RuntimeConfig`
   - `RuntimeConfig['database']` with `provider: 'sqlite' | 'postgres'`
@@ -381,6 +387,7 @@ Run:
 ```
 
 Expected:
+
 - FAIL because `@payloadcms/db-vercel-postgres` is not installed
 - or FAIL because `createDatabaseAdapter` never selects a Postgres branch
 
@@ -468,6 +475,7 @@ pnpm test:int -- --run tests/int/runtime-config.int.spec.ts tests/int/provider-s
 ```
 
 Expected:
+
 - `pnpm install` has already succeeded with `pnpm 11.x`
 - PASS with all runtime/provider tests passing
 
@@ -482,11 +490,13 @@ git commit -m "feat: add vercel postgres database adapter"
 ### Task 3: Publish The Supported Vercel Deployment Contract
 
 **Files:**
+
 - Modify: `.env.example`
 - Modify: `README.md`
 - Create: `docs/operations/vercel-postgres-deployment.md`
 
 **Interfaces:**
+
 - Consumes:
   - runtime contract from `src/config/runtime.ts`
   - supported adapter selection from `src/config/providers.ts`
@@ -517,6 +527,7 @@ test -f docs/operations/vercel-postgres-deployment.md || echo "missing deploymen
 ```
 
 Expected:
+
 - `.env.example` still starts with a MongoDB URL
 - no dedicated Vercel Postgres deployment runbook exists
 
@@ -527,7 +538,7 @@ Replace `.env.example` with:
 ```dotenv
 # Local development defaults
 DATABASE_PROVIDER=sqlite
-DATABASE_URL=file:./payload-cms-next-tailwind-shadcn-starter-kit.db
+MONGODB_URI=file:./payload-cms-next-tailwind-shadcn-starter-kit.db
 PAYLOAD_SECRET=YOUR_SECRET_HERE
 EMAIL_PROVIDER=none
 
@@ -553,7 +564,7 @@ Update the environment/tooling sections in `README.md` to include:
 Local development defaults:
 
 - `DATABASE_PROVIDER=sqlite`
-- `DATABASE_URL=file:./payload-cms-next-tailwind-shadcn-starter-kit.db`
+- `MONGODB_URI=file:./payload-cms-next-tailwind-shadcn-starter-kit.db`
 - `PAYLOAD_SECRET`
 
 Vercel deployments:
@@ -632,6 +643,7 @@ pnpm test:int -- --run tests/int/runtime-config.int.spec.ts tests/int/provider-s
 ```
 
 Expected:
+
 - the grep output shows the local/dev and Vercel production profile in all three files
 - tests still pass after the doc updates
 

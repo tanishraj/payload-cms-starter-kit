@@ -12,7 +12,7 @@ describe('runtime config', () => {
   it('reads the mongodb database url for local runtime', () => {
     process.env = {
       ...ORIGINAL_ENV,
-      DATABASE_URL: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
       EMAIL_PROVIDER: 'none',
       MEDIA_PROVIDER: 'localDisk',
       VERCEL: '',
@@ -36,7 +36,7 @@ describe('runtime config', () => {
   it('accepts mongodb srv urls for hosted deployments', () => {
     process.env = {
       ...ORIGINAL_ENV,
-      DATABASE_URL: 'mongodb+srv://starter:secret@cluster.example.com/payload',
+      MONGODB_URI: 'mongodb+srv://starter:secret@cluster.example.com/payload',
       NODE_ENV: 'production',
       VERCEL: '1',
     }
@@ -55,7 +55,7 @@ describe('runtime config', () => {
   it('reads s3-compatible media configuration for hosted uploads', () => {
     process.env = {
       ...ORIGINAL_ENV,
-      DATABASE_URL: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
       MEDIA_PROVIDER: 's3',
       S3_BUCKET: 'payload-media',
       S3_ENDPOINT: 'https://s3.ap-southeast-1.idrivee2.com',
@@ -84,29 +84,29 @@ describe('runtime config', () => {
   it('rejects a missing mongodb connection string', () => {
     process.env = {
       ...ORIGINAL_ENV,
-      DATABASE_URL: '',
+      MONGODB_URI: '',
     }
 
     expect(() => getRuntimeConfig(process.env)).toThrow(
-      'Missing MongoDB DATABASE_URL. Set DATABASE_URL to a MongoDB connection string.',
+      'Missing MongoDB MONGODB_URI. Set MONGODB_URI to a MongoDB connection string.',
     )
   })
 
   it('rejects a non-mongodb connection string', () => {
     process.env = {
       ...ORIGINAL_ENV,
-      DATABASE_URL: 'postgres://starter:secret@db.example.com:5432/payload',
+      MONGODB_URI: 'postgres://starter:secret@db.example.com:5432/payload',
     }
 
     expect(() => getRuntimeConfig(process.env)).toThrow(
-      'Invalid MongoDB DATABASE_URL. Use a connection string starting with "mongodb://" or "mongodb+srv://".',
+      'Invalid MongoDB MONGODB_URI. Use a connection string starting with "mongodb://" or "mongodb+srv://".',
     )
   })
 
   it('rejects s3 mode without the required bucket configuration', () => {
     process.env = {
       ...ORIGINAL_ENV,
-      DATABASE_URL: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
       MEDIA_PROVIDER: 's3',
       S3_BUCKET: '',
       S3_ENDPOINT: '',

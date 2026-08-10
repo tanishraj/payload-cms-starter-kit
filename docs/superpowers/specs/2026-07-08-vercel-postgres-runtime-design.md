@@ -132,7 +132,7 @@ Startup validation should be strict and explicit.
 
 ### Database Rules
 
-- when `DATABASE_PROVIDER=sqlite`, `DATABASE_URL` must exist and point to a SQLite database path
+- when `DATABASE_PROVIDER=sqlite`, `MONGODB_URI` must exist and point to a SQLite database path
 - when `DATABASE_PROVIDER=postgres`, a Postgres connection string must exist
 - when the app is running in a Vercel deployment context, `sqlite` must not be treated as a supported production database mode
 - invalid provider values must fail immediately with clear startup errors

@@ -49,12 +49,14 @@
 ### Task 1: Codify The Starter Runtime And Storage Contract
 
 **Files:**
+
 - Create: `src/config/starterContract.ts`
 - Modify: `src/payload.config.ts`
 - Modify: `.env.example`
 - Create: `tests/int/starter-contract.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `getRuntimeConfig(env?: NodeJS.ProcessEnv): RuntimeConfig` from `src/config/runtime.ts`
 - Produces: `type StarterContract`, `getStarterContract(config: RuntimeConfig): StarterContract`, `assertSupportedStarterContract(contract: StarterContract): void`
 
@@ -182,7 +184,7 @@ const email = createEmailAdapter(runtimeConfig)
 # .env.example
 # Local development defaults
 DATABASE_PROVIDER=sqlite
-DATABASE_URL=file:./payload-cms-next-tailwind-shadcn-starter-kit.db
+MONGODB_URI=file:./payload-cms-next-tailwind-shadcn-starter-kit.db
 PAYLOAD_SECRET=YOUR_SECRET_HERE
 EMAIL_PROVIDER=none
 
@@ -206,12 +208,14 @@ git commit -m "feat(cms): codify starter contract"
 ### Task 2: Rewrite The Starter Handoff Docs Around The Actual CMS Product
 
 **Files:**
+
 - Modify: `README.md`
 - Modify: `docs/operations/starter-clone-checklist.md`
 - Modify: `docs/architecture/content-model-map.md`
 - Modify: `docs/operations/vercel-postgres-deployment.md`
 
 **Interfaces:**
+
 - Consumes: `getStarterContract(...)` and current collection/global ownership in `src/payload.config.ts`
 - Produces: developer-facing startup contract, operator-facing clone checklist, expanded content ownership map, explicit deployed media caveat
 
@@ -294,11 +298,13 @@ git commit -m "docs(cms): productize starter handoff docs"
 ### Task 3: Add Executable Clone-Safety Checks For The Documented Starter Profile
 
 **Files:**
+
 - Create: `tests/int/starter-productization.int.spec.ts`
 - Modify: `tests/int/api.int.spec.ts`
 - Test: `tests/int/page-routing.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `getStarterContract(...)`, `getPayload({ config })`, documented local `.env.example` defaults, `getHomepagePath(): Promise<string | null>`, `getHomepageMetadata(): Promise<Metadata>`
 - Produces: clone-safety regression coverage for local boot, homepage/public-route contract, core collection/global availability, and doc-aligned starter assumptions
 
@@ -319,7 +325,7 @@ describe('starter productization', () => {
   beforeAll(async () => {
     testDirectory = mkdtempSync(join(tmpdir(), 'payload-starter-productization-'))
     process.env.DATABASE_PROVIDER = 'sqlite'
-    process.env.DATABASE_URL = `file:${join(testDirectory, 'payload-test.db')}`
+    process.env.MONGODB_URI = `file:${join(testDirectory, 'payload-test.db')}`
     process.env.EMAIL_PROVIDER = 'none'
     process.env.PAYLOAD_SECRET = 'test-secret'
 
@@ -342,15 +348,16 @@ describe('starter productization', () => {
   })
 
   it('boots the starter and exposes the documented core collections and globals', async () => {
-    const [pages, articles, reviews, forms, pageSettings, siteSettings, seoSettings] = await Promise.all([
-      payload.find({ collection: 'pages', limit: 1 }),
-      payload.find({ collection: 'articles', limit: 1 }),
-      payload.find({ collection: 'reviews', limit: 1 }),
-      payload.find({ collection: 'forms', limit: 1 }),
-      payload.findGlobal({ slug: 'page-settings' }),
-      payload.findGlobal({ slug: 'site-settings' }),
-      payload.findGlobal({ slug: 'seo-settings' }),
-    ])
+    const [pages, articles, reviews, forms, pageSettings, siteSettings, seoSettings] =
+      await Promise.all([
+        payload.find({ collection: 'pages', limit: 1 }),
+        payload.find({ collection: 'articles', limit: 1 }),
+        payload.find({ collection: 'reviews', limit: 1 }),
+        payload.find({ collection: 'forms', limit: 1 }),
+        payload.findGlobal({ slug: 'page-settings' }),
+        payload.findGlobal({ slug: 'site-settings' }),
+        payload.findGlobal({ slug: 'seo-settings' }),
+      ])
 
     expect(Array.isArray(pages.docs)).toBe(true)
     expect(Array.isArray(articles.docs)).toBe(true)
@@ -376,7 +383,7 @@ Expected: FAIL because the test file does not exist yet
 beforeAll(async () => {
   testDirectory = mkdtempSync(join(tmpdir(), 'payload-api-int-'))
   process.env.DATABASE_PROVIDER = 'sqlite'
-  process.env.DATABASE_URL = `file:${join(testDirectory, 'payload-test.db')}`
+  process.env.MONGODB_URI = `file:${join(testDirectory, 'payload-test.db')}`
   process.env.EMAIL_PROVIDER = 'none'
   process.env.PAYLOAD_SECRET = 'test-secret'
 
@@ -402,7 +409,7 @@ describe('starter productization', () => {
   beforeAll(async () => {
     testDirectory = mkdtempSync(join(tmpdir(), 'payload-starter-productization-'))
     process.env.DATABASE_PROVIDER = 'sqlite'
-    process.env.DATABASE_URL = `file:${join(testDirectory, 'payload-test.db')}`
+    process.env.MONGODB_URI = `file:${join(testDirectory, 'payload-test.db')}`
     process.env.EMAIL_PROVIDER = 'none'
     process.env.PAYLOAD_SECRET = 'test-secret'
 
@@ -425,15 +432,16 @@ describe('starter productization', () => {
   })
 
   it('boots the starter and exposes the documented core collections and globals', async () => {
-    const [pages, articles, reviews, forms, pageSettings, siteSettings, seoSettings] = await Promise.all([
-      payload.find({ collection: 'pages', limit: 1 }),
-      payload.find({ collection: 'articles', limit: 1 }),
-      payload.find({ collection: 'reviews', limit: 1 }),
-      payload.find({ collection: 'forms', limit: 1 }),
-      payload.findGlobal({ slug: 'page-settings' }),
-      payload.findGlobal({ slug: 'site-settings' }),
-      payload.findGlobal({ slug: 'seo-settings' }),
-    ])
+    const [pages, articles, reviews, forms, pageSettings, siteSettings, seoSettings] =
+      await Promise.all([
+        payload.find({ collection: 'pages', limit: 1 }),
+        payload.find({ collection: 'articles', limit: 1 }),
+        payload.find({ collection: 'reviews', limit: 1 }),
+        payload.find({ collection: 'forms', limit: 1 }),
+        payload.findGlobal({ slug: 'page-settings' }),
+        payload.findGlobal({ slug: 'site-settings' }),
+        payload.findGlobal({ slug: 'seo-settings' }),
+      ])
 
     expect(Array.isArray(pages.docs)).toBe(true)
     expect(Array.isArray(articles.docs)).toBe(true)

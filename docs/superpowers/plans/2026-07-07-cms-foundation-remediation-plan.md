@@ -46,11 +46,13 @@
 ### Task 1: Productize Starter Documentation
 
 **Files:**
+
 - Modify: `README.md`
 - Create: `docs/operations/starter-clone-checklist.md`
 - Create: `docs/architecture/content-model-map.md`
 
 **Interfaces:**
+
 - Consumes: `docs/superpowers/reviews/2026-07-07-cms-foundation-audit.md`
 - Produces:
   - `README.md` with `Features`, `Clone For A New Client`, `Environment`, and `Testing` sections
@@ -80,6 +82,7 @@ test -f docs/architecture/content-model-map.md || echo "missing content model ma
 ```
 
 Expected:
+
 - `README.md` still reads like a generic Payload template
 - both new docs are missing
 
@@ -104,7 +107,7 @@ Add content shaped like this:
 
 ## Environment
 
-- `DATABASE_URL`
+- `MONGODB_URI`
 - `PAYLOAD_SECRET`
 - `RESEND_API_KEY`
 - `RESEND_FROM_EMAIL`
@@ -163,6 +166,7 @@ rg -n '^# Starter Clone Checklist|^# Content Model Map' docs/operations/starter-
 ```
 
 Expected:
+
 - the new README sections exist
 - both new docs exist with top-level headings
 
@@ -176,12 +180,14 @@ git commit -m "docs: productize starter guidance"
 ### Task 2: Extract Runtime Provider Boundaries
 
 **Files:**
+
 - Create: `src/config/runtime.ts`
 - Create: `src/config/providers.ts`
 - Modify: `src/payload.config.ts`
 - Test: `tests/int/runtime-config.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: environment variables from `.env`
 - Produces:
   - `getRuntimeConfig(): RuntimeConfig`
@@ -199,7 +205,7 @@ import { getRuntimeConfig } from '@/config/runtime'
 describe('runtime config', () => {
   it('reads provider and email settings from env', () => {
     process.env.DATABASE_PROVIDER = 'sqlite'
-    process.env.DATABASE_URL = 'file:./test.db'
+    process.env.MONGODB_URI = 'file:./test.db'
     process.env.EMAIL_PROVIDER = 'resend'
     process.env.RESEND_FROM_EMAIL = 'hello@example.com'
 
@@ -239,7 +245,7 @@ export type RuntimeConfig = {
 export const getRuntimeConfig = (): RuntimeConfig => ({
   database: {
     provider: 'sqlite',
-    url: process.env.DATABASE_URL || '',
+    url: process.env.MONGODB_URI || '',
   },
   email: {
     provider: process.env.RESEND_API_KEY && process.env.RESEND_FROM_EMAIL ? 'resend' : 'none',
@@ -310,6 +316,7 @@ pnpm test:int -- --run tests/int/api.int.spec.ts
 ```
 
 Expected:
+
 - runtime config test passes
 - existing integration smoke test still passes
 
@@ -323,11 +330,13 @@ git commit -m "refactor: extract runtime provider config"
 ### Task 3: Raise The Starter Test Baseline
 
 **Files:**
+
 - Create: `tests/int/page-routing.int.spec.ts`
 - Create: `tests/int/page-settings-system-mode.int.spec.ts`
 - Modify: `tests/int/api.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `src/app/(frontend)/pageData.ts`, `src/globals/PageSettings.ts`
 - Produces:
   - coverage for homepage resolution
@@ -374,6 +383,7 @@ pnpm test:int -- --run tests/int/page-settings-system-mode.int.spec.ts
 ```
 
 Expected:
+
 - at least one test fails or is too weak to be meaningful without the next implementation changes
 
 - [ ] **Step 3: Strengthen the tests around real starter contracts**
@@ -417,11 +427,13 @@ git commit -m "test: add cms starter integration coverage"
 ### Task 4: Fix System-Mode Bypass Safety
 
 **Files:**
+
 - Modify: `src/app/(frontend)/pageData.ts`
 - Modify: `src/globals/PageSettings.ts`
 - Test: `tests/int/page-settings-system-mode.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `payload.auth()` result
 - Produces:
   - admin-only bypass behavior
@@ -491,12 +503,14 @@ git commit -m "fix: restrict site mode bypass to admins"
 ### Task 5: Add A Starter-Level Lead Handling Seam
 
 **Files:**
+
 - Create: `src/lib/formSubmissionEvents.ts`
 - Modify: `src/collections/FormSubmissions.ts`
 - Modify: `src/app/api/forms/[slug]/submit/route.ts`
 - Create: `tests/int/forms-submission.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: normalized form submission data
 - Produces:
   - `emitFormSubmissionEvent(input: FormSubmissionEventInput): Promise<void>`
@@ -608,11 +622,13 @@ git commit -m "feat: add starter lead handling seam"
 ### Task 6: Formalize Starter Extension Conventions
 
 **Files:**
+
 - Modify: `README.md`
 - Modify: `docs/architecture/content-model-map.md`
 - Modify: `docs/operations/starter-clone-checklist.md`
 
 **Interfaces:**
+
 - Consumes: completed code seams from Tasks 2-5
 - Produces:
   - explicit extension rules for collections, globals, providers, and forms

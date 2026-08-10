@@ -11,7 +11,7 @@ describe('API', () => {
   beforeAll(async () => {
     const mongoServer = await createTestMongoServer()
 
-    process.env.DATABASE_URL = mongoServer.uri
+    process.env.MONGODB_URI = mongoServer.uri
     process.env.EMAIL_PROVIDER = 'none'
     process.env.MEDIA_PROVIDER = 'localDisk'
     process.env.PAYLOAD_SECRET = 'test-secret'

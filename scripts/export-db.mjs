@@ -5,10 +5,10 @@ import { config } from 'dotenv'
 
 config()
 
-const databaseUrl = process.env.DATABASE_URL
+const databaseUrl = process.env.MONGODB_URI
 
 if (!databaseUrl) {
-  console.error('DATABASE_URL is required in .env')
+  console.error('MONGODB_URI is required in .env')
   process.exit(1)
 }
 
@@ -29,7 +29,7 @@ try {
   const output =
     maybeError && maybeError.stderr != null
       ? `${maybeError.message}\n${stderr.toString()}`
-      : maybeError?.message ?? ''
+      : (maybeError?.message ?? '')
 
   const missingCommandHint =
     output.includes('not found') ||

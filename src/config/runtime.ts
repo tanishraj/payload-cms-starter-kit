@@ -66,15 +66,15 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
   const mediaProvider = getMediaProvider(env)
   const isProduction = env.NODE_ENV === 'production'
   const isVercel = Boolean(env.VERCEL)
-  const databaseURL = env.DATABASE_URL?.trim() || ''
+  const databaseURL = env.MONGODB_URI?.trim() || ''
 
   if (!databaseURL) {
-    throw new Error('Missing MongoDB DATABASE_URL. Set DATABASE_URL to a MongoDB connection string.')
+    throw new Error('Missing MongoDB MONGODB_URI. Set MONGODB_URI to a MongoDB connection string.')
   }
 
   if (!isMongoConnectionString(databaseURL)) {
     throw new Error(
-      'Invalid MongoDB DATABASE_URL. Use a connection string starting with "mongodb://" or "mongodb+srv://".',
+      'Invalid MongoDB MONGODB_URI. Use a connection string starting with "mongodb://" or "mongodb+srv://".',
     )
   }
 
@@ -82,8 +82,8 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
     env.EMAIL_PROVIDER === 'none'
       ? 'none'
       : env.EMAIL_PROVIDER === 'resend' || (env.RESEND_API_KEY && env.RESEND_FROM_EMAIL)
-      ? 'resend'
-      : 'none'
+        ? 'resend'
+        : 'none'
 
   if (emailProvider === 'resend' && (!env.RESEND_API_KEY || !env.RESEND_FROM_EMAIL)) {
     throw new Error(

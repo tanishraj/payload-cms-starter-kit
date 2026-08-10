@@ -2,19 +2,19 @@
 
 ## Application Commands
 
-| Command | Purpose |
-| --- | --- |
-| `pnpm dev` | Start Next.js development mode |
-| `pnpm devsafe` | Remove `.next` and start development; use for stale build output |
-| `pnpm build` | Create the production Next.js build |
-| `pnpm start` | Serve an existing production build |
-| `pnpm lint` | Run ESLint across the repository |
-| `pnpm payload` | Run the Payload CLI |
-| `pnpm generate:types` | Regenerate `src/payload-types.ts` after schema changes |
-| `pnpm generate:importmap` | Regenerate the Payload admin import map |
-| `pnpm test:int` | Run Vitest integration/component tests |
-| `pnpm test:e2e` | Run Playwright Admin/frontend journeys |
-| `pnpm test` | Run integration tests, then E2E tests |
+| Command                   | Purpose                                                          |
+| ------------------------- | ---------------------------------------------------------------- |
+| `pnpm dev`                | Start Next.js development mode                                   |
+| `pnpm devsafe`            | Remove `.next` and start development; use for stale build output |
+| `pnpm build`              | Create the production Next.js build                              |
+| `pnpm start`              | Serve an existing production build                               |
+| `pnpm lint`               | Run ESLint across the repository                                 |
+| `pnpm payload`            | Run the Payload CLI                                              |
+| `pnpm generate:types`     | Regenerate `src/payload-types.ts` after schema changes           |
+| `pnpm generate:importmap` | Regenerate the Payload admin import map                          |
+| `pnpm test:int`           | Run Vitest integration/component tests                           |
+| `pnpm test:e2e`           | Run Playwright Admin/frontend journeys                           |
+| `pnpm test`               | Run integration tests, then E2E tests                            |
 
 Run type and import-map generation after changing collections, globals, fields, blocks, or custom Admin components.
 
@@ -30,7 +30,7 @@ pnpm exec playwright install chromium
 
 ## Database Export
 
-`pnpm export:db` loads `.env`, requires `DATABASE_URL`, and invokes the external `mongodump` executable. It writes a gzip archive named `backups/payload-db-<timestamp>.archive`.
+`pnpm export:db` loads `.env`, requires `MONGODB_URI`, and invokes the external `mongodump` executable. It writes a gzip archive named `backups/payload-db-<timestamp>.archive`.
 
 ```bash
 pnpm export:db
@@ -43,7 +43,7 @@ Install MongoDB Database Tools first. Treat archives as sensitive production dat
 `pnpm migrate:offices` moves legacy site-office data into the `office-locations` collection. Before running it:
 
 1. export the database
-2. confirm `DATABASE_URL` targets the intended environment
+2. confirm `MONGODB_URI` targets the intended environment
 3. run the migration once
 4. inspect and publish migrated Office Locations
 5. verify every Regional Offices block
@@ -54,11 +54,11 @@ Install MongoDB Database Tools first. Treat archives as sensitive production dat
 
 Optional variables:
 
-| Variable | Purpose |
-| --- | --- |
-| `BLOCK_THUMBNAIL_SLUG` | Generate one known block slug instead of all previews |
+| Variable                   | Purpose                                                                          |
+| -------------------------- | -------------------------------------------------------------------------------- |
+| `BLOCK_THUMBNAIL_SLUG`     | Generate one known block slug instead of all previews                            |
 | `BLOCK_THUMBNAIL_BASE_URL` | Reuse an already running development server; defaults to `http://localhost:3000` |
-| `BLOCK_THUMBNAIL_PORT` | Port for the script-managed server; defaults to `3199` |
+| `BLOCK_THUMBNAIL_PORT`     | Port for the script-managed server; defaults to `3199`                           |
 
 Examples:
 

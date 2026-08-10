@@ -31,7 +31,7 @@ The starter becomes MongoDB-only.
 
 The active database contract is reduced to a single variable:
 
-- `DATABASE_URL`
+- `MONGODB_URI`
 
 That value must be a MongoDB connection string.
 
@@ -50,8 +50,8 @@ Examples:
 `src/config/runtime.ts` should:
 
 - remove SQLite and Postgres branching
-- validate only `DATABASE_URL`
-- fail fast when `DATABASE_URL` is missing
+- validate only `MONGODB_URI`
+- fail fast when `MONGODB_URI` is missing
 - fail fast when the value is not a MongoDB-style connection string
 
 Accepted URL prefixes should be:
@@ -66,7 +66,7 @@ Accepted URL prefixes should be:
 - remove `sqliteAdapter`
 - remove `vercelPostgresAdapter`
 - use `mongooseAdapter` from `@payloadcms/db-mongodb`
-- pass `DATABASE_URL` into the Mongo adapter
+- pass `MONGODB_URI` into the Mongo adapter
 
 No database branching should remain in the active provider layer.
 
@@ -77,14 +77,14 @@ Local development should be centered on Docker MongoDB.
 ### Primary Local Flow
 
 1. Start MongoDB with Docker.
-2. Keep `DATABASE_URL` pointed at the local Mongo container.
+2. Keep `MONGODB_URI` pointed at the local Mongo container.
 3. Run `pnpm dev`.
 4. Use Payload normally.
 
 Recommended local default:
 
 ```env
-DATABASE_URL=mongodb://127.0.0.1:27017/payload-cms-starter-kit
+MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit
 ```
 
 ### Docker Scope
@@ -106,7 +106,7 @@ Integration suites that boot real Payload should use `mongodb-memory-server`.
 That means:
 
 - each real-boot test suite creates an isolated temporary Mongo URI
-- tests assign that URI to `process.env.DATABASE_URL`
+- tests assign that URI to `process.env.MONGODB_URI`
 - tests import the Payload config only after environment setup
 - the ephemeral database is disposed after the suite finishes
 

@@ -20,7 +20,7 @@ vi.mock('@aws-sdk/client-s3', () => ({
 describe('media storage helpers', () => {
   beforeEach(() => {
     sendMock.mockReset()
-    process.env.DATABASE_URL = 'mongodb://127.0.0.1:27017/payload-cms-starter-kit'
+    process.env.MONGODB_URI = 'mongodb://127.0.0.1:27017/payload-cms-starter-kit'
     process.env.EMAIL_PROVIDER = 'none'
     process.env.MEDIA_PROVIDER = 's3'
     process.env.S3_BUCKET = 'snmih'
@@ -57,7 +57,7 @@ describe('media storage helpers', () => {
 describe('reconcileMediaStorage', () => {
   beforeEach(() => {
     sendMock.mockReset()
-    process.env.DATABASE_URL = 'mongodb://127.0.0.1:27017/payload-cms-starter-kit'
+    process.env.MONGODB_URI = 'mongodb://127.0.0.1:27017/payload-cms-starter-kit'
     process.env.EMAIL_PROVIDER = 'none'
     process.env.MEDIA_PROVIDER = 's3'
     process.env.S3_BUCKET = 'snmih'

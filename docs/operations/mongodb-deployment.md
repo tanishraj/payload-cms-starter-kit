@@ -10,7 +10,7 @@ For the complete environment matrix, email/media providers, and deployment bound
 
 ## Required Environment Variables
 
-- `DATABASE_URL`
+- `MONGODB_URI`
 - `PAYLOAD_SECRET`
 - `MEDIA_PROVIDER=s3`
 - `S3_BUCKET`
@@ -31,7 +31,7 @@ For the complete environment matrix, email/media providers, and deployment bound
 
 1. Copy `.env.example` to `.env`.
 2. Start MongoDB with `docker compose up -d mongo`.
-3. Keep `DATABASE_URL=mongodb://127.0.0.1:27017/payload-cms-starter-kit` when running the app from your host machine.
+3. Keep `MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit` when running the app from your host machine.
 4. If you run the app inside Docker, switch the hostname to `mongo` so the container can resolve it.
 
 ## Hosted Deployment Notes
@@ -45,7 +45,7 @@ For the complete environment matrix, email/media providers, and deployment bound
 ## Verification
 
 1. Confirm the hosted MongoDB cluster is reachable from the deployment environment.
-2. Set `DATABASE_URL`.
+2. Set `MONGODB_URI`.
 3. Set `PAYLOAD_SECRET`.
 4. Set `MEDIA_PROVIDER=s3`.
 5. Set the S3-compatible storage variables for your bucket.

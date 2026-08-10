@@ -4,7 +4,7 @@
 
 **Goal:** Replace the starter's split SQLite and Postgres runtime with a MongoDB-only database contract, while preserving the working S3-compatible media integration.
 
-**Architecture:** Collapse the runtime to a single `DATABASE_URL`-driven MongoDB path, back Payload with `mongooseAdapter`, and move real integration suites to isolated in-memory MongoDB instances. Keep the local developer story centered on Docker MongoDB and rewrite the active docs to describe only the new contract.
+**Architecture:** Collapse the runtime to a single `MONGODB_URI`-driven MongoDB path, back Payload with `mongooseAdapter`, and move real integration suites to isolated in-memory MongoDB instances. Keep the local developer story centered on Docker MongoDB and rewrite the active docs to describe only the new contract.
 
 **Tech Stack:** Payload 3.85.2, Next.js 16, `@payloadcms/db-mongodb`, `mongodb-memory-server`, Docker Compose, Vitest, Playwright
 
@@ -18,7 +18,7 @@
 - Make `no change to the current S3-compatible media strategy`.
 - `DATABASE_PROVIDER` is removed from the runtime contract.
 - `POSTGRES_URL` is removed from the active runtime contract.
-- Accepted `DATABASE_URL` prefixes are `mongodb://` and `mongodb+srv://`.
+- Accepted `MONGODB_URI` prefixes are `mongodb://` and `mongodb+srv://`.
 - The project should not require the entire app to run inside Docker to develop locally.
 - This reset does not include changing the editorial workflow model, content collections or roles, the work queue or audit model, the current S3 media integration design, or adding multi-database compatibility back into the starter.
 
@@ -72,6 +72,7 @@
 ### Task 1: Reset Runtime And Provider Contract To MongoDB
 
 **Files:**
+
 - Modify: `package.json`
 - Modify: `src/config/runtime.ts`
 - Modify: `src/config/providers.ts`
@@ -82,6 +83,7 @@
 - Test: `tests/int/starter-contract.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: existing `RuntimeConfig`, `createDatabaseAdapter`, `createStoragePlugins`, `getStarterContract`
 - Produces:
   - `RuntimeConfig['database'] = { url: string }`
@@ -102,11 +104,11 @@ expect(config.database).toEqual({
 })
 
 expect(() => getRuntimeConfig(process.env)).toThrow(
-  'Missing MongoDB DATABASE_URL. Set DATABASE_URL to a MongoDB connection string.',
+  'Missing MongoDB MONGODB_URI. Set MONGODB_URI to a MongoDB connection string.',
 )
 
 expect(() => getRuntimeConfig(process.env)).toThrow(
-  'Invalid MongoDB DATABASE_URL. Use a connection string starting with "mongodb://" or "mongodb+srv://".',
+  'Invalid MongoDB MONGODB_URI. Use a connection string starting with "mongodb://" or "mongodb+srv://".',
 )
 ```
 
@@ -202,15 +204,15 @@ const isMongoConnectionString = (value: string): boolean =>
   value.startsWith('mongodb://') || value.startsWith('mongodb+srv://')
 
 export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeConfig => {
-  const databaseURL = env.DATABASE_URL?.trim() || ''
+  const databaseURL = env.MONGODB_URI?.trim() || ''
 
   if (!databaseURL) {
-    throw new Error('Missing MongoDB DATABASE_URL. Set DATABASE_URL to a MongoDB connection string.')
+    throw new Error('Missing MongoDB MONGODB_URI. Set MONGODB_URI to a MongoDB connection string.')
   }
 
   if (!isMongoConnectionString(databaseURL)) {
     throw new Error(
-      'Invalid MongoDB DATABASE_URL. Use a connection string starting with "mongodb://" or "mongodb+srv://".',
+      'Invalid MongoDB MONGODB_URI. Use a connection string starting with "mongodb://" or "mongodb+srv://".',
     )
   }
 
@@ -277,6 +279,7 @@ git commit -m "feat(db): switch runtime to mongodb"
 ### Task 2: Replace SQLite Test Harness With In-Memory MongoDB
 
 **Files:**
+
 - Create: `tests/helpers/mongoMemoryServer.ts`
 - Modify: `tests/int/api.int.spec.ts`
 - Modify: `tests/int/starter-productization.int.spec.ts`
@@ -287,6 +290,7 @@ git commit -m "feat(db): switch runtime to mongodb"
 - Test: `tests/int/starter-productization.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: MongoDB-only `getRuntimeConfig`, `@payloadcms/db-mongodb`, `mongodb-memory-server`, existing `getPayload`
 - Produces:
   - `createTestMongoServer(): Promise<{ stop(): Promise<void>; uri: string }>`
@@ -303,7 +307,7 @@ let mongo: { stop: () => Promise<void>; uri: string }
 
 beforeAll(async () => {
   mongo = await createTestMongoServer()
-  process.env.DATABASE_URL = mongo.uri
+  process.env.MONGODB_URI = mongo.uri
   process.env.EMAIL_PROVIDER = 'none'
   process.env.MEDIA_PROVIDER = 'localDisk'
   process.env.PAYLOAD_SECRET = 'test-secret'
@@ -413,15 +417,17 @@ git commit -m "test(db): move integration suites to in-memory mongo"
 ### Task 3: Clean Local Runtime Workflow And Remove SQLite Artifacts
 
 **Files:**
+
 - Modify: `.env.example`
 - Modify: `docker-compose.yml`
 - Delete: `src/payload-generated-schema.ts`
 - Test: `tests/int/starter-productization.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: MongoDB-only runtime contract from Task 1
 - Produces:
-  - local env example centered on `DATABASE_URL=mongodb://127.0.0.1:27017/payload-cms-starter-kit`
+  - local env example centered on `MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit`
   - Docker compose instructions centered on MongoDB
   - no active SQLite-generated schema artifact in repo
 
@@ -434,7 +440,7 @@ Use these checks:
 ```ts
 const envExample = readFileSync('.env.example', 'utf8')
 
-expect(envExample).toContain('DATABASE_URL=mongodb://127.0.0.1:27017/payload-cms-starter-kit')
+expect(envExample).toContain('MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit')
 expect(envExample).not.toContain('DATABASE_PROVIDER=sqlite')
 expect(envExample).not.toContain('POSTGRES_URL=')
 ```
@@ -454,7 +460,7 @@ Expected: FAIL because `.env.example` and related assumptions still describe SQL
 Update `.env.example` to this contract shape:
 
 ```env
-DATABASE_URL=mongodb://127.0.0.1:27017/payload-cms-starter-kit
+MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit
 PAYLOAD_SECRET=YOUR_SECRET_HERE
 EMAIL_PROVIDER=none
 MEDIA_PROVIDER=localDisk
@@ -502,6 +508,7 @@ git commit -m "chore(db): remove sqlite runtime artifacts"
 ### Task 4: Rewrite Active Docs For The MongoDB-Only Contract And Re-verify The Starter
 
 **Files:**
+
 - Modify: `README.md`
 - Modify: `docs/operations/starter-clone-checklist.md`
 - Create: `docs/operations/mongodb-deployment.md`
@@ -510,6 +517,7 @@ git commit -m "chore(db): remove sqlite runtime artifacts"
 - Test: `tests/int/starter-productization.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: MongoDB-only runtime contract, Docker local flow, existing media contract
 - Produces:
   - active handoff docs that describe MongoDB only
@@ -523,7 +531,7 @@ Use this assertion pattern where appropriate:
 
 ```ts
 expect(readme).toContain('Docker MongoDB')
-expect(readme).toContain('DATABASE_URL=mongodb://127.0.0.1:27017/payload-cms-starter-kit')
+expect(readme).toContain('MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit')
 expect(readme).not.toContain('Vercel Postgres deployment')
 ```
 
@@ -562,7 +570,7 @@ Update the docs with these content shifts:
 
 Create `docs/operations/mongodb-deployment.md` with:
 
-- required env: `DATABASE_URL`, `PAYLOAD_SECRET`, media envs as needed
+- required env: `MONGODB_URI`, `PAYLOAD_SECRET`, media envs as needed
 - local Docker example and hosted MongoDB example
 - hosted verification flow
 - reminder that local disk media is not durable in hosted environments
