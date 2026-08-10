@@ -27,7 +27,7 @@ export async function GET() {
 
   const feedUrl = toAbsoluteSiteUrl('/news-events/feed.xml')
   const archiveUrl = toAbsoluteSiteUrl('/news-events')
-  const siteName = siteSettings.siteName
+  const siteName = siteSettings.siteName?.trim() || 'Website'
 
   const items = entries
     .map((entry) => {

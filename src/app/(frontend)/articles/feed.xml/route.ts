@@ -32,7 +32,7 @@ export async function GET() {
   const siteUrl = toAbsoluteSiteUrl('/')
   const feedUrl = toAbsoluteSiteUrl('/articles/feed.xml')
   const articlesUrl = toAbsoluteSiteUrl('/articles')
-  const siteName = escapeXml(siteSettings.siteName)
+  const siteName = escapeXml(siteSettings.siteName?.trim() || 'Website')
 
   const items = articles
     .map((article) => {
