@@ -609,7 +609,7 @@ export interface FeatureMatrixBlock {
         image: string | Media;
         imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
         /**
-         * Uses the active website theme and automatically adjusts card contrast.
+         * Default Card inherits the section background. Other choices use the active theme and automatically adjust card contrast.
          */
         cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
         id?: string | null;
@@ -736,7 +736,7 @@ export interface ProfileCarouselBlock {
         role?: string | null;
         imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
         /**
-         * Uses the active website theme and automatically adjusts card contrast.
+         * Default Card inherits the section background. Other choices use the active theme and automatically adjust card contrast.
          */
         cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
         id?: string | null;
@@ -1314,7 +1314,7 @@ export interface TeamShowcaseBlock {
         role?: string | null;
         description?: string | null;
         /**
-         * Uses the active website theme and automatically adjusts card contrast.
+         * Default Card inherits the section background. Other choices use the active theme and automatically adjust card contrast.
          */
         cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
         id?: string | null;
@@ -1500,7 +1500,7 @@ export interface MediaCarouselBlock {
             }[]
           | null;
         /**
-         * Uses the active website theme and automatically adjusts card contrast.
+         * Default Card inherits the section background. Other choices use the active theme and automatically adjust card contrast.
          */
         cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
         id?: string | null;
@@ -1573,7 +1573,7 @@ export interface ProgramGridBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
-         * Uses the active website theme and automatically adjusts card contrast.
+         * Default Card inherits the section background. Other choices use the active theme and automatically adjust card contrast.
          */
         cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
         id?: string | null;
@@ -1642,7 +1642,7 @@ export interface ProgramMatrixBlock {
     url?: string | null;
     openInNewTab?: boolean | null;
     /**
-     * Uses the active website theme and automatically adjusts card contrast.
+     * Default Card inherits the section background. Other choices use the active theme and automatically adjust card contrast.
      */
     cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
     id?: string | null;
