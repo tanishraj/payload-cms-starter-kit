@@ -19,6 +19,35 @@ describe('stats strip block', () => {
     cleanup()
   })
 
+  it.each([
+    ['none', 'border-foreground/15'],
+    ['primary', 'border-primary-foreground/15'],
+    ['secondary', 'border-secondary-foreground/15'],
+    ['muted', 'border-foreground/15'],
+    ['accent', 'border-accent-foreground/15'],
+  ] as const)('adapts internal dividers to the %s background', (background, dividerClass) => {
+    const { container } = render(
+      createElement(StatsStripBlockComponent, {
+        appearance: { background, border: 'top' },
+        items: [
+          { label: 'Students', value: 750 },
+          { label: 'Seats', value: 150 },
+          { label: 'Faculty', value: 300 },
+          { label: 'Clinical sites', value: 14 },
+          { label: 'Programs', value: 8 },
+        ],
+      }),
+    )
+
+    const firstArticle = container.querySelector('article')
+    const rowDivider = container.querySelector('[data-stats-strip-row-divider="true"]')
+
+    expect(firstArticle?.className).toContain(dividerClass)
+    expect(rowDivider?.className).toContain(dividerClass)
+    expect(firstArticle?.className).not.toContain('border-r border-border')
+    expect(rowDivider?.className).not.toContain('border-t border-border')
+  })
+
   it('renders items sequentially across rows and adds a divider before later rows', () => {
     const html = renderToStaticMarkup(
       createElement(StatsStripBlockComponent, {
@@ -64,12 +93,14 @@ describe('stats strip block', () => {
     )
 
     const articles = Array.from(container.querySelectorAll('article'))
+    const hasMobileDivider = (article: Element | undefined) =>
+      article?.className.split(/\s+/).includes('border-r') ?? false
 
     expect(articles).toHaveLength(4)
-    expect(articles[0]?.className).toContain('border-r border-border')
-    expect(articles[1]?.className).not.toContain('border-r border-border')
-    expect(articles[2]?.className).toContain('border-r border-border')
-    expect(articles[3]?.className).not.toContain('border-r border-border')
+    expect(hasMobileDivider(articles[0])).toBe(true)
+    expect(hasMobileDivider(articles[1])).toBe(false)
+    expect(hasMobileDivider(articles[2])).toBe(true)
+    expect(hasMobileDivider(articles[3])).toBe(false)
   })
 
   it('animates only the numeric value and preserves prefix and suffix', () => {

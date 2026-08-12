@@ -1,4 +1,8 @@
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+  type BlockBackground,
+} from '@/blocks/shared/blockAppearance'
 import { regularBlockMobilePaddingClasses, type RegularBlockSize } from '@/blocks/shared/blockSpacing'
 import { cn } from '@/lib/utils'
 
@@ -44,6 +48,14 @@ const rowGridClasses = {
   4: 'md:grid-cols-4',
 } satisfies Record<RowSize, string>
 
+const dividerColorClasses = {
+  none: 'border-foreground/15',
+  primary: 'border-primary-foreground/15',
+  secondary: 'border-secondary-foreground/15',
+  muted: 'border-foreground/15',
+  accent: 'border-accent-foreground/15',
+} satisfies Record<BlockBackground, string>
+
 export function StatsStripBlockComponent({
   animationDuration = 1200,
   animationEnabled = true,
@@ -75,6 +87,7 @@ export function StatsStripBlockComponent({
 
   const rows = chunkItems(validItems)
   const hasMultipleRows = rows.length > 1
+  const dividerColorClass = dividerColorClasses[appearance?.background ?? 'none']
 
   return (
     <section
@@ -86,7 +99,7 @@ export function StatsStripBlockComponent({
           <div key={`stats-strip-row-group-${rowIndex}`}>
             {rowIndex > 0 ? (
               <div
-                className="w-full border-t border-border"
+                className={cn('w-full border-t', dividerColorClass)}
                 data-stats-strip-row-divider="true"
               />
             ) : null}
@@ -106,8 +119,8 @@ export function StatsStripBlockComponent({
                   <article
                     className={cn(
                       'flex min-h-32 flex-col justify-center gap-3 px-5 py-7 text-left md:min-h-40 md:px-8 md:py-9',
-                      hasMobileRightDivider && 'border-r border-border',
-                      hasDesktopRightDivider && 'md:border-r md:border-border',
+                      hasMobileRightDivider && cn('border-r', dividerColorClass),
+                      hasDesktopRightDivider && cn('md:border-r', dividerColorClass),
                       hasMultipleRows && rowIndex < rows.length - 1 && 'md:border-b-0',
                       isOddLastMobileItem && 'col-span-2 md:col-span-1',
                     )}
