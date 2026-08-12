@@ -250,11 +250,11 @@ export function EditorialReasonsBlockComponent({
             ) : null}
 
             <h2 className={contentSectionHeadingClasses}>
-              <span className="block font-[family-name:inherit]">{resolvedTitle}</span>
+              <span className="block font-[inherit]">{resolvedTitle}</span>
               {resolvedAccentTitle ? (
-                <span className="block font-[family-name:inherit] italic">
+                <em className="block font-[inherit]">
                   {resolvedAccentTitle}
-                </span>
+                </em>
               ) : null}
             </h2>
 

@@ -15,6 +15,7 @@ type Services21BlockService = {
 }
 
 type Services21BlockLike = {
+  accentTitle?: string | null
   actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
@@ -42,6 +43,7 @@ const buttonClassNameByVariant: Record<ActionButtonMode, string> = {
 }
 
 export function Services21BlockComponent({
+  accentTitle,
   actionMode = 'link',
   actions,
   appearance,
@@ -114,6 +116,7 @@ export function Services21BlockComponent({
 
   return (
     <Services21
+      accentTitle={accentTitle}
       appearance={appearance}
       actions={actionNode}
       contentAlignment={resolvedContentAlignment}

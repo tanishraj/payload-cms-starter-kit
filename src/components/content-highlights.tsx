@@ -36,6 +36,7 @@ export type ContentHighlightItem = {
 }
 
 export type ContentHighlightsProps = {
+  accentTitle?: string | null
   actions?: ReactNode
   appearance?: BlockAppearance | null
   contentAlignment?: ContentHighlightsAlignment
@@ -94,20 +95,31 @@ const sectionGapClasses = {
 } as const satisfies Record<ContentHighlightsSize, string>
 
 function ContentHighlightsIntro({
+  accentTitle,
   actions,
   className,
   description,
   eyebrow,
   surface,
   title,
-}: Pick<ContentHighlightsProps, 'actions' | 'description' | 'eyebrow' | 'title'> & {
+}: Pick<ContentHighlightsProps, 'accentTitle' | 'actions' | 'description' | 'eyebrow' | 'title'> & {
   className?: string
   surface: BlockBackground
 }) {
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
   return (
     <div className={cn(contentIntroClasses, className)}>
       {eyebrow ? <SectionEyebrow surface={surface}>{eyebrow}</SectionEyebrow> : null}
-      <h2 className={contentSectionHeadingClasses}>{title}</h2>
+      <h2 className={contentSectionHeadingClasses}>
+        {resolvedAccentTitle ? (
+          <>
+            <span className="block font-[inherit]">{title}</span>
+            <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+          </>
+        ) : (
+          title
+        )}
+      </h2>
       {description ? <p className={contentSectionDescriptionClasses}>{description}</p> : null}
       {actions}
     </div>
@@ -227,6 +239,7 @@ function ContentHighlightsItems({
 }
 
 export function ContentHighlights({
+  accentTitle,
   actions,
   appearance,
   contentAlignment = 'left',
@@ -262,6 +275,7 @@ export function ContentHighlights({
         {isSplit ? (
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16">
             <ContentHighlightsIntro
+              accentTitle={accentTitle}
               actions={actions}
               className={splitAlignmentClasses[resolvedSplitAlignment]}
               description={description}
@@ -281,6 +295,7 @@ export function ContentHighlights({
             {resolvedLayout === 'editorialRow' ? (
               <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                 <ContentHighlightsIntro
+                  accentTitle={accentTitle}
                   className={horizontalAlignmentClasses[resolvedAlignment]}
                   description={description}
                   eyebrow={eyebrow}
@@ -295,6 +310,7 @@ export function ContentHighlights({
               </div>
             ) : (
               <ContentHighlightsIntro
+                accentTitle={accentTitle}
                 actions={actions}
                 className={horizontalAlignmentClasses[resolvedAlignment]}
                 description={description}

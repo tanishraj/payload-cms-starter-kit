@@ -11,6 +11,7 @@ import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 
 type FeatureMatrixBlockLike = {
+  accentTitle?: string | null
   actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
@@ -33,6 +34,7 @@ type FeatureMatrixBlockLike = {
 }
 
 export function FeatureMatrixBlockComponent({
+  accentTitle,
   actionMode = 'link',
   actions,
   appearance,
@@ -70,6 +72,7 @@ export function FeatureMatrixBlockComponent({
 
   return (
     <FeatureMatrix
+      accentTitle={accentTitle}
       actions={
         <ContentActions
           actions={resolvedActions}

@@ -12,6 +12,7 @@ import { getMediaImageProps, isMediaDoc } from '@/lib/media'
 import type { Media } from '@/payload-types'
 
 type GalleryShowcaseBlockLike = {
+  accentTitle?: string | null
   actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
@@ -29,6 +30,7 @@ type GalleryShowcaseBlockLike = {
 }
 
 export function GalleryShowcaseBlockComponent({
+  accentTitle,
   actionMode = 'link',
   actions,
   appearance,
@@ -65,6 +67,7 @@ export function GalleryShowcaseBlockComponent({
 
   return (
     <GalleryShowcase
+      accentTitle={accentTitle}
       actions={
         <ContentActions
           actions={resolveCmsActions(actions).slice(0, 1)}

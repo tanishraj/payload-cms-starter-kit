@@ -23,6 +23,7 @@ type TabItem = {
 }
 
 type TabsContentBlockLike = {
+  accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'left' | 'center' | null
@@ -37,6 +38,7 @@ type TabsContentBlockLike = {
 }
 
 export function TabsContentBlockComponent({
+  accentTitle,
   actions,
   appearance,
   contentAlignment = 'center',
@@ -49,6 +51,7 @@ export function TabsContentBlockComponent({
   tabs,
   title,
 }: TabsContentBlockLike) {
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
   const validTabs = (tabs ?? []).filter((t) => t.label?.trim())
   if (validTabs.length < 2) return null
 
@@ -89,7 +92,14 @@ export function TabsContentBlockComponent({
             ) : null}
             {title?.trim() ? (
               <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-                {title.trim()}
+                {resolvedAccentTitle ? (
+                  <>
+                    <span className="block font-[inherit]">{title.trim()}</span>
+                    <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+                  </>
+                ) : (
+                  title.trim()
+                )}
               </h2>
             ) : null}
             {description?.trim() ? (

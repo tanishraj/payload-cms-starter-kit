@@ -16,6 +16,7 @@ import { cn } from '@/lib/utils'
 export type ReviewFeedSize = 'none' | 'comfortable' | 'compact' | 'default'
 
 export type ReviewFeedPresentationProps = {
+  accentTitle?: string | null
   actions?: React.ReactNode
   appearance?: BlockAppearance | null
   contentAlignment?: 'left' | 'center' | null
@@ -70,6 +71,7 @@ function ReviewFeedSummary({ summary }: { summary: PublishedReviewRatingDistribu
 }
 
 export function ReviewFeed({
+  accentTitle,
   actions,
   appearance,
   contentAlignment = 'center',
@@ -85,6 +87,7 @@ export function ReviewFeed({
 }: ReviewFeedPresentationProps) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const isCenter = (contentAlignment ?? 'center') === 'center'
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
 
   return (
     <section
@@ -106,7 +109,14 @@ export function ReviewFeed({
               </SectionEyebrow>
             ) : null}
             <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-              {title}
+              {resolvedAccentTitle ? (
+                <>
+                  <span className="block font-[inherit]">{title}</span>
+                  <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+                </>
+              ) : (
+                title
+              )}
             </h2>
             {description ? (
               <p className="text-base leading-7 text-balance text-current/70">{description}</p>

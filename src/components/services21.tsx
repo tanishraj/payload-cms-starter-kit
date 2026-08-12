@@ -25,15 +25,16 @@ type Services21Item = {
 }
 
 type Services21Props = {
+  accentTitle?: string | null
   appearance?: BlockAppearance | null
   actions?: ReactNode
+  contentAlignment?: Services21Alignment
+  className?: string
   description?: string | null
   eyebrow?: string | null
   items: Services21Item[]
   size?: 'none' | 'compact' | 'default' | 'comfortable'
   title?: string | null
-  contentAlignment?: Services21Alignment
-  className?: string
 }
 
 const usePrevious = <T,>(value: T): T | undefined => {
@@ -49,6 +50,7 @@ const usePrevious = <T,>(value: T): T | undefined => {
 }
 
 export function Services21({
+  accentTitle,
   appearance,
   className,
   actions,
@@ -59,6 +61,7 @@ export function Services21({
   size = 'default',
   title,
 }: Services21Props) {
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
   const [activeServiceIndex, setActiveServiceIndex] = useState<number>(0)
   const previousServiceIndex = usePrevious(activeServiceIndex)
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
@@ -89,7 +92,16 @@ export function Services21({
             <SectionEyebrow surface={appearance?.background ?? 'none'}>{eyebrow}</SectionEyebrow>
           ) : null}
           {title ? (
-            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h2>
+            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+              {resolvedAccentTitle ? (
+                <>
+                  <span className="block font-[inherit]">{title}</span>
+                  <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+                </>
+              ) : (
+                title
+              )}
+            </h2>
           ) : null}
           {description ? (
             <p className="text-base leading-7 text-current/70">{description}</p>

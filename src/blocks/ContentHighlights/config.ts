@@ -124,6 +124,11 @@ export const ContentHighlightsBlock: Block = {
               type: 'text',
             },
             {
+              name: 'accentTitle',
+              label: 'Accent Title (Italic)',
+              type: 'text',
+            },
+            {
               name: 'description',
               type: 'textarea',
             },

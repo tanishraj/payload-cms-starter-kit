@@ -27,6 +27,7 @@ export type FeatureMatrixItem = {
 }
 
 type FeatureMatrixProps = {
+  accentTitle?: string | null
   actions?: ReactNode
   alignment?: FeatureMatrixAlignment
   appearance?: BlockAppearance | null
@@ -119,6 +120,7 @@ function FeatureMatrixDividerBeam({
 }
 
 export function FeatureMatrix({
+  accentTitle,
   actions,
   alignment = 'center',
   appearance,
@@ -136,6 +138,7 @@ export function FeatureMatrix({
   const resolvedBorderAnimationEnabled = borderAnimationEnabled ?? true
   const resolvedSize = size ?? 'default'
   const resolvedShowOuterBorder = showOuterBorder ?? true
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
   const visibleFeatures = features.slice(0, 4)
   const sectionBackground: BlockBackground = appearance?.background ?? 'none'
   const sectionSurface = resolveCardSurface('default', sectionBackground)
@@ -166,7 +169,14 @@ export function FeatureMatrix({
             <SectionEyebrow surface={sectionBackground}>{eyebrow}</SectionEyebrow>
           ) : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-            {title}
+            {resolvedAccentTitle ? (
+              <>
+                <span className="block font-[inherit]">{title}</span>
+                <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+              </>
+            ) : (
+              title
+            )}
           </h2>
           {description ? (
             <p className="text-base leading-7 text-balance text-current/70">{description}</p>

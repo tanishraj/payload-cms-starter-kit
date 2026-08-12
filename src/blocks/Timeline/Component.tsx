@@ -26,6 +26,7 @@ type TimelineItem = {
 }
 
 type TimelineBlockLike = {
+  accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'left' | 'center' | null
@@ -64,6 +65,7 @@ export const formatStepLabel = (index: number) =>
 
 // ── Section header shared across variants ────────────────────────────────────
 function SectionHeader({
+  accentTitle,
   actions,
   eyebrow,
   title,
@@ -71,6 +73,7 @@ function SectionHeader({
   alignment,
   surface,
 }: {
+  accentTitle?: string
   actions?: React.ReactNode
   eyebrow?: string
   title?: string | null
@@ -88,7 +91,16 @@ function SectionHeader({
       {eyebrow ? (
         <SectionEyebrow surface={surface}>{eyebrow}</SectionEyebrow>
       ) : null}
-      <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">{title}</h2>
+      <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
+        {accentTitle ? (
+          <>
+            <span className="block font-[inherit]">{title}</span>
+            <em className="block font-[inherit]">{accentTitle}</em>
+          </>
+        ) : (
+          title
+        )}
+      </h2>
       {description ? <p className="text-base leading-7 text-current/70">{description}</p> : null}
       {actions ? <div className="mt-2">{actions}</div> : null}
     </div>
@@ -306,6 +318,7 @@ function AlternatingTimeline({ items, sectionBackground }: { items: TimelineItem
 
 // ── Main export ───────────────────────────────────────────────────────────────
 export function TimelineBlockComponent({
+  accentTitle,
   actions,
   appearance,
   contentAlignment = 'center',
@@ -319,6 +332,7 @@ export function TimelineBlockComponent({
 }: TimelineBlockLike) {
   const resolvedTitle = title?.trim()
   if (!resolvedTitle) return null
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
 
   const validItems = (items ?? []).filter((item) => item.title?.trim())
   if (validItems.length === 0) return null
@@ -331,6 +345,7 @@ export function TimelineBlockComponent({
     <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
       <div className="mx-auto w-full max-w-screen-2xl px-4">
         <SectionHeader
+          accentTitle={resolvedAccentTitle}
           actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
           alignment={alignment}
           description={description?.trim() || undefined}

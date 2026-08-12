@@ -315,6 +315,7 @@ export interface AnnouncementBlock {
  */
 export interface Cta39Block {
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -351,6 +352,7 @@ export interface HeroBannerBlock {
   backgroundImage: string | Media;
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   buttons?:
     | {
@@ -533,6 +535,7 @@ export interface HeroCarouselBlock {
 export interface GalleryCoverflowBlock {
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -577,6 +580,7 @@ export interface FeatureSpotlightBlock {
   image?: (string | null) | Media;
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -616,6 +620,7 @@ export interface FeatureSpotlightBlock {
 export interface FeatureMatrixBlock {
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -665,6 +670,7 @@ export interface FeatureMatrixBlock {
 export interface ContentHighlightsBlock {
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -829,6 +835,7 @@ export interface NewsEventsHighlightsBlock {
 export interface ProfileCarouselBlock {
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -878,6 +885,7 @@ export interface ProfileCarouselBlock {
 export interface GalleryShowcaseBlock {
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -987,6 +995,7 @@ export interface GalleryAlbum {
 export interface ImageMosaicBlock {
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -1069,6 +1078,7 @@ export interface StatsStripBlock {
  */
 export interface QaAccordionBlock {
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -1193,6 +1203,7 @@ export interface RatingSpotlightBlock {
 export interface ReviewFeedBlock {
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -1455,6 +1466,7 @@ export interface OfficeLocation {
  */
 export interface TeamShowcaseBlock {
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -1503,6 +1515,7 @@ export interface TeamShowcaseBlock {
 export interface Services21Block {
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -1709,6 +1722,7 @@ export interface ProgramGridBlock {
    */
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -1795,6 +1809,7 @@ export interface ProgramMatrixBlock {
    */
   eyebrow?: string | null;
   title: string;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -1940,6 +1955,7 @@ export interface PageHeaderBlock {
    */
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   /**
    * Supporting line below the title.
    */
@@ -2002,6 +2018,7 @@ export interface TimelineBlock {
    */
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -2062,6 +2079,7 @@ export interface IconGridBlock {
    */
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   /**
    * Optional supporting paragraph below the title.
    */
@@ -2200,6 +2218,7 @@ export interface TabsContentBlock {
         label: string;
         eyebrow?: string | null;
         title?: string | null;
+        accentTitle?: string | null;
         description?: string | null;
         image?: (string | null) | Media;
         actions?:
@@ -2240,6 +2259,7 @@ export interface TabsContentBlock {
 export interface DownloadListBlock {
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -2333,6 +2353,7 @@ export interface NumberedStepsBlock {
   steps?:
     | {
         title?: string | null;
+        accentTitle?: string | null;
         description?: string | null;
         /**
          * Optional image shown alongside this step.
@@ -2368,6 +2389,7 @@ export interface NumberedStepsBlock {
 export interface BentoGridBlock {
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -2426,6 +2448,7 @@ export interface TestimonialGridBlock {
    */
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -2481,6 +2504,7 @@ export interface AwardsListBlock {
    */
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   description?: string | null;
   actions?:
     | {
@@ -2544,6 +2568,7 @@ export interface AboutSectionBlock {
    */
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   /**
    * Main about text. Paragraphs separated by blank lines are rendered as separate paragraphs.
    */
@@ -3942,6 +3967,7 @@ export interface AnnouncementBlockSelect<T extends boolean = true> {
  */
 export interface Cta39BlockSelect<T extends boolean = true> {
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -3976,6 +4002,7 @@ export interface HeroBannerBlockSelect<T extends boolean = true> {
   backgroundImage?: T;
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   buttons?:
     | T
@@ -4049,6 +4076,7 @@ export interface HeroCarouselBlockSelect<T extends boolean = true> {
 export interface GalleryCoverflowBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -4088,6 +4116,7 @@ export interface FeatureSpotlightBlockSelect<T extends boolean = true> {
   image?: T;
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -4125,6 +4154,7 @@ export interface FeatureSpotlightBlockSelect<T extends boolean = true> {
 export interface FeatureMatrixBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -4169,6 +4199,7 @@ export interface FeatureMatrixBlockSelect<T extends boolean = true> {
 export interface ContentHighlightsBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -4301,6 +4332,7 @@ export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
 export interface ProfileCarouselBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -4345,6 +4377,7 @@ export interface ProfileCarouselBlockSelect<T extends boolean = true> {
 export interface GalleryShowcaseBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -4418,6 +4451,7 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
 export interface ImageMosaicBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -4498,6 +4532,7 @@ export interface StatsStripBlockSelect<T extends boolean = true> {
  */
 export interface QaAccordionBlockSelect<T extends boolean = true> {
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -4609,6 +4644,7 @@ export interface RatingSpotlightBlockSelect<T extends boolean = true> {
 export interface ReviewFeedBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -4747,6 +4783,7 @@ export interface Contact24BlockSelect<T extends boolean = true> {
  */
 export interface TeamShowcaseBlockSelect<T extends boolean = true> {
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -4790,6 +4827,7 @@ export interface TeamShowcaseBlockSelect<T extends boolean = true> {
 export interface Services21BlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -4941,6 +4979,7 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
 export interface ProgramGridBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -4995,6 +5034,7 @@ export interface ProgramGridBlockSelect<T extends boolean = true> {
 export interface ProgramMatrixBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -5096,6 +5136,7 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
       };
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   subtitle?: T;
   actions?:
     | T
@@ -5138,6 +5179,7 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
 export interface TimelineBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -5181,6 +5223,7 @@ export interface TimelineBlockSelect<T extends boolean = true> {
 export interface IconGridBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -5274,6 +5317,7 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
         label?: T;
         eyebrow?: T;
         title?: T;
+        accentTitle?: T;
         description?: T;
         image?: T;
         actions?:
@@ -5311,6 +5355,7 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
 export interface DownloadListBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -5373,6 +5418,7 @@ export interface NumberedStepsBlockSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
+        accentTitle?: T;
         description?: T;
         image?: T;
         badge?: T;
@@ -5399,6 +5445,7 @@ export interface NumberedStepsBlockSelect<T extends boolean = true> {
 export interface BentoGridBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -5443,6 +5490,7 @@ export interface BentoGridBlockSelect<T extends boolean = true> {
 export interface TestimonialGridBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -5487,6 +5535,7 @@ export interface TestimonialGridBlockSelect<T extends boolean = true> {
 export interface AwardsListBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -5530,6 +5579,7 @@ export interface AwardsListBlockSelect<T extends boolean = true> {
 export interface AboutSectionBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   body?: T;
   image?: T;
   stats?:

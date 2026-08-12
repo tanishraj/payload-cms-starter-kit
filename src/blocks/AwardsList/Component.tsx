@@ -28,6 +28,7 @@ type AwardItem = {
 }
 
 type AwardsListBlockLike = {
+  accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   awards?: AwardItem[] | null
@@ -73,6 +74,7 @@ function CategoryBadge({
 }
 
 export function AwardsListBlockComponent({
+  accentTitle,
   actions,
   appearance,
   awards,
@@ -90,6 +92,7 @@ export function AwardsListBlockComponent({
   const isCenter = (contentAlignment ?? 'left') === 'center'
   const resolvedActions = resolveCmsActions(actions)
   const sectionBackground: BlockBackground = appearance?.background ?? 'none'
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
 
   return (
     <section
@@ -111,7 +114,14 @@ export function AwardsListBlockComponent({
             ) : null}
             {title?.trim() ? (
               <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-                {title.trim()}
+                {resolvedAccentTitle ? (
+                  <>
+                    <span className="block font-[inherit]">{title.trim()}</span>
+                    <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+                  </>
+                ) : (
+                  title.trim()
+                )}
               </h2>
             ) : null}
             {description?.trim() ? (

@@ -24,6 +24,7 @@ type KeyFact = {
 }
 
 type PageHeaderBlockLike = {
+  accentTitle?: string | null
   actions?: CmsActionValue[] | null
   actionMode?: 'button' | 'link' | null
   appearance?: BlockAppearance | null
@@ -93,6 +94,7 @@ function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
 }
 
 export function PageHeaderBlockComponent({
+  accentTitle,
   actions,
   actionMode = 'link',
   appearance,
@@ -109,6 +111,7 @@ export function PageHeaderBlockComponent({
 }: PageHeaderBlockLike) {
   const resolvedTitle = title?.trim()
   if (!resolvedTitle) return null
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
 
   const resolvedBreadcrumbs = (breadcrumbs ?? []).filter((b) => b.label?.trim())
   const resolvedActions = resolveCmsActions(actions)
@@ -156,7 +159,14 @@ export function PageHeaderBlockComponent({
               isCenter && 'text-center',
             )}
           >
-            {resolvedTitle}
+            {resolvedAccentTitle ? (
+              <>
+                <span className="block">{resolvedTitle}</span>
+                <em className="block">{resolvedAccentTitle}</em>
+              </>
+            ) : (
+              resolvedTitle
+            )}
           </h1>
           {subtitle?.trim() ? (
             <p
@@ -198,7 +208,14 @@ export function PageHeaderBlockComponent({
                 </SectionEyebrow>
               ) : null}
               <h1 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
-                {resolvedTitle}
+                {resolvedAccentTitle ? (
+                  <>
+                    <span className="block">{resolvedTitle}</span>
+                    <em className="block">{resolvedAccentTitle}</em>
+                  </>
+                ) : (
+                  resolvedTitle
+                )}
               </h1>
               {subtitle?.trim() ? (
                 <p className="text-lg text-current/70">{subtitle.trim()}</p>
@@ -257,7 +274,14 @@ export function PageHeaderBlockComponent({
             isCenter && 'text-center',
           )}
         >
-          {resolvedTitle}
+          {resolvedAccentTitle ? (
+            <>
+              <span className="block">{resolvedTitle}</span>
+              <em className="block">{resolvedAccentTitle}</em>
+            </>
+          ) : (
+            resolvedTitle
+          )}
         </h1>
         {subtitle?.trim() ? (
           <p

@@ -35,6 +35,7 @@ type ProgramMatrixItem = {
 }
 
 type ProgramMatrixBlockLike = {
+  accentTitle?: string | null
   actionMode?: 'button' | 'link' | null
   actionVariant?: CmsActionVariant | null
   actions?: CmsActionValue[] | null
@@ -103,6 +104,7 @@ function ProgrammeAction({
 }
 
 export function ProgramMatrixBlockComponent({
+  accentTitle,
   actionMode = 'link',
   actionVariant = 'default',
   actions,
@@ -117,6 +119,7 @@ export function ProgramMatrixBlockComponent({
 }: ProgramMatrixBlockLike) {
   const resolvedTitle = title?.trim()
   if (!resolvedTitle) return null
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
 
   const resolvedItems = (items ?? []).flatMap((item, index): ResolvedProgramMatrixItem[] => {
     const itemTitle = item.title?.trim()
@@ -183,7 +186,14 @@ export function ProgramMatrixBlockComponent({
             </SectionEyebrow>
           ) : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-            {resolvedTitle}
+            {resolvedAccentTitle ? (
+              <>
+                <span className="block font-[inherit]">{resolvedTitle}</span>
+                <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+              </>
+            ) : (
+              resolvedTitle
+            )}
           </h2>
           {resolvedDescription ? (
             <p className="max-w-[70ch] text-base leading-7 text-current/70">

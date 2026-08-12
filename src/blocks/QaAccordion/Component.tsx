@@ -44,6 +44,7 @@ type QaAccordionProfile = {
 }
 
 type QaAccordionBlockLike = {
+  accentTitle?: string | null
   actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
@@ -152,6 +153,7 @@ function QaAccordionContent({
 }
 
 export function QaAccordionBlockComponent({
+  accentTitle,
   actionMode = 'link',
   actions,
   appearance,
@@ -190,6 +192,7 @@ export function QaAccordionBlockComponent({
     return null
   }
 
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
   const profile = sideColumn?.profile
   const contact = sideColumn?.contact
   const profileImage = getMediaImageProps({
@@ -224,7 +227,14 @@ export function QaAccordionBlockComponent({
         )}
       >
         <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-          {title}
+          {resolvedAccentTitle ? (
+            <>
+              <span className="block font-[inherit]">{title}</span>
+              <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+            </>
+          ) : (
+            title
+          )}
         </h2>
         {description?.trim() ? (
           <p className="text-balance text-base leading-7 text-current/70">

@@ -27,6 +27,7 @@ type Step = {
 }
 
 type NumberedStepsBlockLike = {
+  accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'left' | 'center' | null
@@ -249,6 +250,7 @@ function AlternatingSteps({
 
 // ── Main export ───────────────────────────────────────────────────────────────
 export function NumberedStepsBlockComponent({
+  accentTitle,
   actions,
   appearance,
   contentAlignment = 'center',
@@ -262,6 +264,7 @@ export function NumberedStepsBlockComponent({
 }: NumberedStepsBlockLike) {
   const resolvedTitle = title?.trim()
   if (!resolvedTitle) return null
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
 
   const validSteps = (steps ?? []).filter((s) => s.title?.trim())
   if (validSteps.length < 2) return null
@@ -290,7 +293,14 @@ export function NumberedStepsBlockComponent({
             </SectionEyebrow>
           ) : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-            {resolvedTitle}
+            {resolvedAccentTitle ? (
+              <>
+                <span className="block font-[inherit]">{resolvedTitle}</span>
+                <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+              </>
+            ) : (
+              resolvedTitle
+            )}
           </h2>
           {description?.trim() ? (
             <p className="text-base leading-7 text-current/70">{description.trim()}</p>

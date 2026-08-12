@@ -107,6 +107,7 @@ export const PageHeaderBlock: Block = {
               name: 'title',
               type: 'text',
             },
+            { name: 'accentTitle', label: 'Accent Title (Italic)', type: 'text' },
             {
               name: 'subtitle',
               type: 'textarea',

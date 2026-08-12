@@ -32,6 +32,7 @@ type IconGridItem = {
 }
 
 type IconGridBlockLike = {
+  accentTitle?: string | null
   actionMode?: 'button' | 'link' | null
   actionVariant?: CmsActionVariant | null
   actions?: CmsActionValue[] | null
@@ -323,6 +324,7 @@ export function IconGridBlockComponent({
 }: IconGridBlockLike) {
   const resolvedTitle = title?.trim()
   if (!resolvedTitle) return null
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
 
   const validItems = (items ?? []).filter((item) => item.title?.trim())
   if (validItems.length === 0) return null
@@ -364,7 +366,14 @@ export function IconGridBlockComponent({
             </SectionEyebrow>
           ) : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-            {resolvedTitle}
+            {resolvedAccentTitle ? (
+              <>
+                <span className="block font-[inherit]">{resolvedTitle}</span>
+                <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+              </>
+            ) : (
+              resolvedTitle
+            )}
           </h2>
           {description?.trim() ? (
             <p className="text-base leading-7 text-current/70">{description.trim()}</p>

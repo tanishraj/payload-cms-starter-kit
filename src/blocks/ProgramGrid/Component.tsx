@@ -28,6 +28,7 @@ type ProgramItem = {
 }
 
 type ProgramGridBlockLike = {
+  accentTitle?: string | null
   actionMode?: 'button' | 'link' | null
   actionVariant?: CmsActionVariant | null
   actions?: CmsActionValue[] | null
@@ -45,6 +46,7 @@ type ProgramGridBlockLike = {
 }
 
 export function ProgramGridBlockComponent({
+  accentTitle,
   actionMode,
   actionVariant,
   actions,
@@ -109,6 +111,7 @@ export function ProgramGridBlockComponent({
 
   return (
     <ProgramGridClient
+      accentTitle={accentTitle}
       actionMode={actionMode ?? 'link'}
       actionVariant={actionVariant ?? 'default'}
       appearance={appearanceClassName}

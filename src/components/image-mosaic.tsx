@@ -34,6 +34,7 @@ export type ImageMosaicItem = {
 }
 
 type ImageMosaicProps = {
+  accentTitle?: string | null
   actions?: ReactNode
   alignment?: ImageMosaicAlignment
   appearance?: BlockAppearance | null
@@ -104,6 +105,7 @@ const mosaicSpanClasses = [
 ] as const
 
 export function ImageMosaic({
+  accentTitle,
   actions,
   alignment = 'center',
   appearance,
@@ -122,6 +124,7 @@ export function ImageMosaic({
   }
 
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
   const count = visibleItems.length as keyof typeof desktopGridClasses
 
   return (
@@ -139,7 +142,14 @@ export function ImageMosaic({
             <SectionEyebrow surface={appearance?.background ?? 'none'}>{eyebrow}</SectionEyebrow>
           ) : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-            {title}
+            {resolvedAccentTitle ? (
+              <>
+                <span className="block font-[inherit]">{title}</span>
+                <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+              </>
+            ) : (
+              title
+            )}
           </h2>
           {description ? (
             <p className="text-base leading-7 text-balance text-current/70">{description}</p>

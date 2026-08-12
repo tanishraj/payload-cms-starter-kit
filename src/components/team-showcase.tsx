@@ -80,6 +80,7 @@ const TeamShowcaseMemberCard = memo(
 TeamShowcaseMemberCard.displayName = 'TeamShowcaseMemberCard'
 
 interface TeamShowcaseProps {
+  accentHeading?: string
   appearance?: BlockAppearance | null
   className?: string
   contentAlignment?: TeamShowcaseAlignment
@@ -119,6 +120,7 @@ export const getTeamGridClasses = (memberCount: number) => {
 }
 
 const TeamShowcase = ({
+  accentHeading,
   appearance,
   className,
   actions,
@@ -129,6 +131,7 @@ const TeamShowcase = ({
   members = [],
   size = 'default',
 }: TeamShowcaseProps) => {
+  const resolvedAccentHeading = accentHeading?.trim() || undefined
   const [hoveredMember, setHoveredMember] = useState<number | null>(null)
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const resolvedAlignment = contentAlignment ?? 'left'
@@ -162,7 +165,14 @@ const TeamShowcase = ({
           >
             {heading?.trim() ? (
               <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-                {heading.trim()}
+                {resolvedAccentHeading ? (
+                  <>
+                    <span className="block font-[inherit]">{heading.trim()}</span>
+                    <em className="block font-[inherit]">{resolvedAccentHeading}</em>
+                  </>
+                ) : (
+                  heading.trim()
+                )}
               </h2>
             ) : null}
             {resolvedDescription ? (

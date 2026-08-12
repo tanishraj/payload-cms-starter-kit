@@ -123,6 +123,7 @@ export const ProgramMatrixBlock: Block = {
               type: 'text',
               required: true,
             },
+            { name: 'accentTitle', label: 'Accent Title (Italic)', type: 'text' },
             {
               name: 'description',
               type: 'textarea',

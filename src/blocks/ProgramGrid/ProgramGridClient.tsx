@@ -35,6 +35,7 @@ export type ResolvedProgram = {
 
 type ProgramGridClientProps = {
   actionMode: 'button' | 'link'
+  accentTitle?: string | null
   actionVariant: CmsActionVariant
   appearance?: string
   columns: 2 | 3 | 4
@@ -332,6 +333,7 @@ function ListCard({
 }
 
 export function ProgramGridClient({
+  accentTitle,
   actionMode,
   actionVariant,
   appearance,
@@ -348,6 +350,7 @@ export function ProgramGridClient({
   title,
   viewMode,
 }: ProgramGridClientProps) {
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
   const categories = showFilter
     ? ['All', ...Array.from(new Set(programs.map((p) => p.category).filter(Boolean) as string[]))]
     : []
@@ -374,7 +377,14 @@ export function ProgramGridClient({
             <SectionEyebrow surface={sectionBackground}>{eyebrow}</SectionEyebrow>
           ) : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-            {title}
+            {resolvedAccentTitle ? (
+              <>
+                <span className="block font-[inherit]">{title}</span>
+                <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+              </>
+            ) : (
+              title
+            )}
           </h2>
           {description ? (
             <p className="text-base leading-7 text-current/70">{description}</p>

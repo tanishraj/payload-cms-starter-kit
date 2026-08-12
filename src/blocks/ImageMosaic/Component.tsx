@@ -23,6 +23,7 @@ type ImageMosaicItemValue = {
 }
 
 type ImageMosaicBlockLike = {
+  accentTitle?: string | null
   actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
@@ -36,6 +37,7 @@ type ImageMosaicBlockLike = {
 }
 
 export function ImageMosaicBlockComponent({
+  accentTitle,
   actionMode = 'link',
   actions,
   appearance,
@@ -95,6 +97,7 @@ export function ImageMosaicBlockComponent({
 
   return (
     <ImageMosaic
+      accentTitle={accentTitle}
       actions={
         <ContentActions
           actions={resolveCmsActions(actions).slice(0, 2)}

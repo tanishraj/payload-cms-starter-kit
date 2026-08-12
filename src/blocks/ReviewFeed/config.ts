@@ -53,6 +53,7 @@ export const ReviewFeedBlock: Block = {
           fields: [
             { name: 'eyebrow', type: 'text' },
             { name: 'title', type: 'text' },
+            { name: 'accentTitle', label: 'Accent Title (Italic)', type: 'text' },
             { name: 'description', type: 'textarea' },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             pageSizeField,

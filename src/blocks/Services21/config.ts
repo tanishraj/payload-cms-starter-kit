@@ -90,6 +90,7 @@ export const Services21Block: Block = {
               type: 'text',
               required: false,
             },
+            { name: 'accentTitle', label: 'Accent Title (Italic)', type: 'text' },
             {
               name: 'description',
               type: 'textarea',

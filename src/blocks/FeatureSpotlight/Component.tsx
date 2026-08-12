@@ -15,6 +15,7 @@ import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
 
 type FeatureSpotlightBlockLike = {
+  accentTitle?: string | null
   actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
@@ -73,6 +74,7 @@ const contentVerticalAlignmentClasses = {
 } as const
 
 export function FeatureSpotlightBlockComponent({
+  accentTitle,
   actionMode = 'link',
   actions,
   appearance,
@@ -88,6 +90,7 @@ export function FeatureSpotlightBlockComponent({
   size = 'default',
   title,
 }: FeatureSpotlightBlockLike) {
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const media = getMediaImageProps({
     media: image as never,
@@ -146,7 +149,14 @@ export function FeatureSpotlightBlockComponent({
         </SectionEyebrow>
       ) : null}
       <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-        {title}
+        {resolvedAccentTitle ? (
+          <>
+            <span className="block font-[inherit]">{title}</span>
+            <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+          </>
+        ) : (
+          title
+        )}
       </h2>
       {description ? (
         <p className="text-balance text-base leading-7 text-current/70">{description}</p>

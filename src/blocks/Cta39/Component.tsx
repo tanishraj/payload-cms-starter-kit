@@ -12,6 +12,7 @@ type Cta39Alignment = 'center' | 'left' | 'right'
 type Cta39BorderStyle = 'dashed' | 'dotted' | 'none' | 'solid'
 
 type Cta39BlockLike = {
+  accentTitle?: string | null
   actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
@@ -36,6 +37,7 @@ const borderStyleClasses: Record<Cta39BorderStyle, string> = {
 }
 
 export function Cta39BlockComponent({
+  accentTitle,
   actionMode = 'link',
   actions,
   appearance,
@@ -46,6 +48,7 @@ export function Cta39BlockComponent({
   title,
 }: Cta39BlockLike) {
   const resolvedTitle = title?.trim()
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
   const resolvedDescription = description?.trim()
   const resolvedSize: Cta39Size = size ?? 'default'
   const resolvedActions = resolveCmsActions(actions)
@@ -74,7 +77,14 @@ export function Cta39BlockComponent({
           )}
         >
           <h2 className="text-3xl font-semibold leading-tight tracking-tight md:text-4xl">
-            {resolvedTitle}
+            {resolvedAccentTitle ? (
+              <>
+                <span className="block">{resolvedTitle}</span>
+                <em className="block">{resolvedAccentTitle}</em>
+              </>
+            ) : (
+              resolvedTitle
+            )}
           </h2>
           {resolvedDescription ? (
             <p className="text-base leading-7 text-muted-foreground">{resolvedDescription}</p>

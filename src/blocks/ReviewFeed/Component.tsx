@@ -9,6 +9,7 @@ import { getPublishedReviewRatingDistribution } from '@/lib/reviewRatingSummary'
 export type { ReviewFeedBlockLike } from '@/blocks/ReviewFeed/Presentation'
 
 export async function ReviewFeedBlockComponent({
+  accentTitle,
   appearance,
   description,
   emptyStateMessage,
@@ -33,6 +34,7 @@ export async function ReviewFeedBlockComponent({
 
   return (
     <ReviewFeedBlockPresentation
+      accentTitle={accentTitle}
       appearance={appearance}
       description={description}
       emptyStateMessage={emptyStateMessage}

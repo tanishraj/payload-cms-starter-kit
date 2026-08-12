@@ -6,6 +6,7 @@ import { normalizeReviewFeedPageSize, type PublicReviewFeedPage } from '@/lib/re
 import type { PublishedReviewRatingDistribution } from '@/lib/reviewRatingShared'
 
 export type ReviewFeedBlockLike = {
+  accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'left' | 'center' | null
@@ -24,6 +25,7 @@ export type ReviewFeedBlockPresentationProps = ReviewFeedBlockLike & {
 }
 
 export function ReviewFeedBlockPresentation({
+  accentTitle,
   actions,
   appearance,
   contentAlignment = 'center',
@@ -47,6 +49,7 @@ export function ReviewFeedBlockPresentation({
 
   return (
     <ReviewFeed
+      accentTitle={accentTitle}
       actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
       appearance={appearance}
       contentAlignment={contentAlignment}

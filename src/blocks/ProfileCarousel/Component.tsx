@@ -13,6 +13,7 @@ import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 
 type ProfileCarouselBlockLike = {
+  accentTitle?: string | null
   actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
@@ -35,6 +36,7 @@ type ProfileCarouselBlockLike = {
 }
 
 export function ProfileCarouselBlockComponent({
+  accentTitle,
   actionMode = 'link',
   actions,
   appearance,
@@ -78,6 +80,7 @@ export function ProfileCarouselBlockComponent({
 
   return (
     <ProfileCarousel
+      accentTitle={accentTitle}
       actions={
         <ContentActions
           actions={resolvedActions}

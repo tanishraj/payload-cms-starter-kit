@@ -69,6 +69,12 @@
   --sidebar-ring: oklch(0.769267 0.085353 254.774);
 }
 
+/* Heading italic accent — soft green, decorative on all backgrounds. */
+:root[data-theme-color='snmih'] :is(h1, h2, h3) em {
+  color: #9dd4a6;
+  font-style: italic;
+}
+
 /* Section eyebrows use direct brand accents without expanding the theme token API. */
 :root[data-theme-color='snmih']:not(.dark)
   :is(

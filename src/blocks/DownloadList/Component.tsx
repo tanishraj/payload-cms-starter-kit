@@ -27,6 +27,7 @@ type DownloadItem = {
 }
 
 type DownloadListBlockLike = {
+  accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'left' | 'center' | null
@@ -53,6 +54,7 @@ function detectFileType(item: DownloadItem): string | undefined {
 }
 
 export function DownloadListBlockComponent({
+  accentTitle,
   actions,
   appearance,
   contentAlignment = 'left',
@@ -70,6 +72,7 @@ export function DownloadListBlockComponent({
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
   const isCenter = (contentAlignment ?? 'left') === 'center'
   const resolvedActions = resolveCmsActions(actions)
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
 
   const resolvedDownloads: ResolvedDownload[] = validDownloads.flatMap((item, index) => {
     const fileUrl = isMediaDoc(item.file) ? getMediaAbsoluteUrl(item.file) : undefined
@@ -111,7 +114,14 @@ export function DownloadListBlockComponent({
             ) : null}
             {title?.trim() ? (
               <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-                {title.trim()}
+                {resolvedAccentTitle ? (
+                  <>
+                    <span className="block font-[inherit]">{title.trim()}</span>
+                    <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+                  </>
+                ) : (
+                  title.trim()
+                )}
               </h2>
             ) : null}
             {description?.trim() ? (

@@ -74,6 +74,7 @@ export const TestimonialGridBlock: Block = {
               admin: { description: 'Small label above heading, e.g. "Student Stories"' },
             },
             { name: 'title', type: 'text' },
+            { name: 'accentTitle', label: 'Accent Title (Italic)', type: 'text' },
             { name: 'description', type: 'textarea' },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             testimonialsField,

@@ -31,6 +31,7 @@ export type {
 }
 
 type ProfileCarouselProps = {
+  accentTitle?: string | null
   actions?: ReactNode
   alignment?: ProfileCarouselAlignment
   appearance?: BlockAppearance | null
@@ -58,6 +59,7 @@ const profileMarginClasses = {
 } as const
 
 export function ProfileCarousel({
+  accentTitle,
   actions,
   alignment = 'left',
   appearance,
@@ -70,6 +72,7 @@ export function ProfileCarousel({
   size = 'default',
   title,
 }: ProfileCarouselProps) {
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const resolvedAlignment = alignment ?? 'left'
   const resolvedSize = size ?? 'default'
@@ -101,7 +104,14 @@ export function ProfileCarousel({
             <SectionEyebrow surface={sectionBackground}>{eyebrow}</SectionEyebrow>
           ) : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-            {title}
+            {resolvedAccentTitle ? (
+              <>
+                <span className="block font-[inherit]">{title}</span>
+                <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+              </>
+            ) : (
+              title
+            )}
           </h2>
           {description ? (
             <p className="text-base leading-7 text-balance text-current/70">{description}</p>

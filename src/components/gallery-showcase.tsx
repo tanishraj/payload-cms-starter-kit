@@ -21,6 +21,7 @@ export type GalleryShowcaseAlignment = 'center' | 'left' | 'right'
 export type { GalleryShowcaseImage, GalleryShowcaseImagePosition, GalleryShowcaseSize }
 
 type GalleryShowcaseProps = {
+  accentTitle?: string | null
   actions?: ReactNode
   alignment?: GalleryShowcaseAlignment
   appearance?: BlockAppearance | null
@@ -39,6 +40,7 @@ const alignmentClasses = {
 } as const
 
 export function GalleryShowcase({
+  accentTitle,
   actions,
   alignment = 'center',
   appearance,
@@ -49,6 +51,7 @@ export function GalleryShowcase({
   size = 'default',
   title,
 }: GalleryShowcaseProps) {
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
   if (images.length !== 5) {
     return null
   }
@@ -71,7 +74,14 @@ export function GalleryShowcase({
             <SectionEyebrow surface={appearance?.background ?? 'none'}>{eyebrow}</SectionEyebrow>
           ) : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-            {title}
+            {resolvedAccentTitle ? (
+              <>
+                <span className="block font-[inherit]">{title}</span>
+                <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+              </>
+            ) : (
+              title
+            )}
           </h2>
           {description ? (
             <p className="text-base leading-7 text-balance text-current/70">{description}</p>

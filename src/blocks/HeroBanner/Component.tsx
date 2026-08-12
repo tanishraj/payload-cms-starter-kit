@@ -24,6 +24,7 @@ type HeroButton = {
 }
 
 type HeroBannerBlockLike = {
+  accentTitle?: string | null
   appearance?: BlockAppearance | null
   backgroundImage?: unknown
   buttons?: HeroButton[] | null
@@ -187,6 +188,7 @@ const heroLinkArrowShadowStyle = {
 } as const
 
 export function HeroBannerBlockComponent({
+  accentTitle,
   appearance,
   backgroundImage,
   buttons,
@@ -227,6 +229,8 @@ export function HeroBannerBlockComponent({
         : height === '60' || height === 'balanced'
           ? 'default'
           : (height ?? 'default')
+
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
 
   const image = getMediaImageProps({
     media: backgroundImage as never,
@@ -316,7 +320,14 @@ export function HeroBannerBlockComponent({
                 )}
                 style={usesTextShadow ? heroTextShadowStyle : undefined}
               >
-                {title}
+                {resolvedAccentTitle ? (
+                  <>
+                    <span className="block">{title}</span>
+                    <em className="block">{resolvedAccentTitle}</em>
+                  </>
+                ) : (
+                  title
+                )}
               </h1>
               {description ? (
                 <p

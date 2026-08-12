@@ -23,6 +23,7 @@ import {
 type GalleryCoverflowAlignment = 'center' | 'left' | 'right'
 
 type GalleryCoverflowBlockLike = {
+  accentTitle?: string | null
   actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
@@ -67,6 +68,7 @@ const actionAlignmentClasses = {
 } as const
 
 export function GalleryCoverflowBlockComponent({
+  accentTitle,
   actionMode = 'link',
   actions,
   appearance,
@@ -85,6 +87,7 @@ export function GalleryCoverflowBlockComponent({
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const resolvedActions = resolveCmsActions(actions).slice(0, 1)
   const surface = (appearance?.background ?? 'none') as CoverflowSurface
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
 
   return (
     <section
@@ -105,7 +108,14 @@ export function GalleryCoverflowBlockComponent({
           ) : null}
           {title?.trim() ? (
             <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-              {title.trim()}
+              {resolvedAccentTitle ? (
+                <>
+                  <span className="block font-[inherit]">{title.trim()}</span>
+                  <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+                </>
+              ) : (
+                title.trim()
+              )}
             </h2>
           ) : null}
           {description?.trim() ? (

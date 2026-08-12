@@ -84,6 +84,7 @@ export const AwardsListBlock: Block = {
               admin: { description: 'Small label, e.g. "Our Achievements"' },
             },
             { name: 'title', type: 'text' },
+            { name: 'accentTitle', label: 'Accent Title (Italic)', type: 'text' },
             { name: 'description', type: 'textarea' },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             awardsField,

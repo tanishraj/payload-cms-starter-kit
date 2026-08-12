@@ -10,6 +10,7 @@ import { getMediaImageProps } from '@/lib/media'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 
 type TeamShowcaseBlockLike = {
+  accentTitle?: string | null
   showHeaderDivider?: boolean | null
   actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
@@ -30,6 +31,7 @@ type TeamShowcaseBlockLike = {
 }
 
 export function TeamShowcaseBlockComponent({
+  accentTitle,
   showHeaderDivider = true,
   actionMode = 'link',
   actions,
@@ -80,6 +82,7 @@ export function TeamShowcaseBlockComponent({
       showHeaderDivider={showHeaderDivider ?? undefined}
       contentAlignment={contentAlignment ?? undefined}
       description={description?.trim() || undefined}
+      accentHeading={accentTitle?.trim() || undefined}
       heading={title ?? undefined}
       members={resolvedMembers}
       size={size ?? undefined}

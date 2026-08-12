@@ -33,6 +33,7 @@ type BentoItem = {
 }
 
 type BentoGridBlockLike = {
+  accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'left' | 'center' | null
@@ -154,6 +155,7 @@ function BentoCell({
 }
 
 export function BentoGridBlockComponent({
+  accentTitle,
   actions,
   appearance,
   contentAlignment = 'center',
@@ -170,6 +172,7 @@ export function BentoGridBlockComponent({
   const isCenter = (contentAlignment ?? 'center') === 'center'
   const resolvedActions = resolveCmsActions(actions)
   const sectionBackground: BlockBackground = appearance?.background ?? 'none'
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
 
   return (
     <section
@@ -188,7 +191,14 @@ export function BentoGridBlockComponent({
             ) : null}
             {title?.trim() ? (
               <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-                {title.trim()}
+                {resolvedAccentTitle ? (
+                  <>
+                    <span className="block font-[inherit]">{title.trim()}</span>
+                    <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+                  </>
+                ) : (
+                  title.trim()
+                )}
               </h2>
             ) : null}
             {description?.trim() ? (

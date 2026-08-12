@@ -26,6 +26,7 @@ type StatItem = {
 }
 
 type AboutSectionBlockLike = {
+  accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   body?: string | null
@@ -96,6 +97,7 @@ function ValuesGrid({ values, centered }: { values: ValueItem[]; centered?: bool
 }
 
 export function AboutSectionBlockComponent({
+  accentTitle,
   actions,
   appearance,
   body,
@@ -111,6 +113,7 @@ export function AboutSectionBlockComponent({
 }: AboutSectionBlockLike) {
   const resolvedBody = body?.trim()
   const resolvedTitle = title?.trim()
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
   if (!resolvedTitle && !resolvedBody) return null
 
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
@@ -129,7 +132,14 @@ export function AboutSectionBlockComponent({
       ) : null}
       {resolvedTitle ? (
         <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-          {resolvedTitle}
+          {resolvedAccentTitle ? (
+            <>
+              <span className="block font-[inherit]">{resolvedTitle}</span>
+              <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+            </>
+          ) : (
+            resolvedTitle
+          )}
         </h2>
       ) : null}
       {resolvedBody ? <BodyText text={resolvedBody} /> : null}

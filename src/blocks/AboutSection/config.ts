@@ -76,6 +76,7 @@ export const AboutSectionBlock: Block = {
           fields: [
             { name: 'eyebrow', type: 'text', admin: { description: 'e.g. "About Us" or "Our Story"' } },
             { name: 'title', type: 'text' },
+            { name: 'accentTitle', label: 'Accent Title (Italic)', type: 'text' },
             {
               name: 'body',
               label: 'Body Text',
