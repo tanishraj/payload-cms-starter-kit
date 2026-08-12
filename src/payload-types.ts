@@ -296,7 +296,15 @@ export interface AnnouncementBlock {
     id?: string | null;
   }[];
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   displayMode: 'vertical' | 'horizontal' | 'marquee';
@@ -333,7 +341,15 @@ export interface Cta39Block {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -377,7 +393,15 @@ export interface HeroBannerBlock {
    */
   enableTextShadow?: boolean | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   horizontalAlignment: 'left' | 'center' | 'right';
@@ -562,7 +586,15 @@ export interface GalleryCoverflowBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -598,7 +630,15 @@ export interface FeatureSpotlightBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -651,7 +691,15 @@ export interface FeatureMatrixBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -702,7 +750,15 @@ export interface ContentHighlightsBlock {
     id?: string | null;
   }[];
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -758,7 +814,15 @@ export interface EditorialReasonsBlock {
     id?: string | null;
   }[];
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -818,7 +882,15 @@ export interface NewsEventsHighlightsBlock {
    */
   emptyStateMessage?: string | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -866,7 +938,15 @@ export interface ProfileCarouselBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -910,7 +990,15 @@ export interface GalleryShowcaseBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -949,7 +1037,15 @@ export interface EventGalleryBlock {
   galleryAlbums: (string | GalleryAlbum)[];
   displayOrder: 'latestEventDate' | 'manual';
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   cardTextLayout: 'split' | 'center';
@@ -1035,7 +1131,15 @@ export interface ImageMosaicBlock {
     id?: string | null;
   }[];
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -1061,7 +1165,15 @@ export interface StatsStripBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   size: 'none' | 'compact' | 'default' | 'comfortable';
@@ -1143,7 +1255,15 @@ export interface QaAccordionBlock {
     };
   };
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1186,7 +1306,15 @@ export interface RatingSpotlightBlock {
     manualReviewCount?: number | null;
   };
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -1224,7 +1352,15 @@ export interface ReviewFeedBlock {
   loadMoreLabel?: string | null;
   emptyStateMessage?: string | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -1261,7 +1397,15 @@ export interface ReviewSubmissionBlock {
    */
   form: string | Form;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -1368,7 +1512,15 @@ export interface Contact33Block {
    */
   form: string | Form;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1406,7 +1558,15 @@ export interface Contact24Block {
    */
   offices?: (string | OfficeLocation)[] | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1497,7 +1657,15 @@ export interface TeamShowcaseBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -1542,7 +1710,15 @@ export interface Services21Block {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -1573,7 +1749,15 @@ export interface RichTextBlock {
     [k: string]: unknown;
   };
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   size: 'none' | 'compact' | 'default' | 'comfortable';
@@ -1621,7 +1805,15 @@ export interface VideoEmbedBlock {
    */
   autoplay?: boolean | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1700,7 +1892,15 @@ export interface MediaCarouselBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -1778,7 +1978,15 @@ export interface ProgramGridBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -1851,7 +2059,15 @@ export interface ProgramMatrixBlock {
     id?: string | null;
   }[];
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -1914,7 +2130,15 @@ export interface LogoStripBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -1997,7 +2221,15 @@ export interface PageHeaderBlock {
     | null;
   variant: 'minimal' | 'banner' | 'split';
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -2055,7 +2287,15 @@ export interface TimelineBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   variant: 'horizontal' | 'vertical' | 'alternating';
@@ -2125,7 +2365,15 @@ export interface IconGridBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -2168,7 +2416,15 @@ export interface QuoteBlockBlock {
    */
   eyebrow?: string | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   variant?: ('centered' | 'side' | 'card' | 'highlight') | null;
@@ -2240,7 +2496,15 @@ export interface TabsContentBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   tabStyle?: ('underline' | 'pills' | 'boxed') | null;
@@ -2310,7 +2574,15 @@ export interface DownloadListBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   displayMode?: ('list' | 'cards' | 'compact') | null;
@@ -2371,7 +2643,15 @@ export interface NumberedStepsBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   variant?: ('vertical' | 'cards' | 'alternating') | null;
@@ -2429,7 +2709,15 @@ export interface BentoGridBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -2483,7 +2771,15 @@ export interface TestimonialGridBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -2548,7 +2844,15 @@ export interface AwardsListBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -2623,7 +2927,15 @@ export interface AboutSectionBlock {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -3320,7 +3632,15 @@ export interface HeaderNavbar12Block {
       }[]
     | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   sticky?: boolean | null;
@@ -3406,7 +3726,15 @@ export interface Footer56Block {
     | null;
   copyrightText?: string | null;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   size: 'none' | 'compact' | 'default' | 'comfortable';
@@ -3522,7 +3850,15 @@ export interface System404Block {
     openInNewTab?: boolean | null;
   };
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   id?: string | null;
@@ -3555,7 +3891,15 @@ export interface SystemMaintenanceBlock {
     openInNewTab?: boolean | null;
   };
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   id?: string | null;
@@ -3588,7 +3932,15 @@ export interface SystemComingSoonBlock {
     openInNewTab?: boolean | null;
   };
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   id?: string | null;
@@ -6621,7 +6973,15 @@ export interface PageSetting {
    */
   activeFooter?: (string | null) | Footer;
   pageAppearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
   };
   announcementEnabled?: boolean | null;
   /**
@@ -6640,7 +7000,15 @@ export interface PageSetting {
       }[]
     | null;
   announcementAppearance?: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   announcementDisplayMode?: ('vertical' | 'horizontal' | 'marquee') | null;
@@ -6683,7 +7051,15 @@ export interface NewsEventsSetting {
   emptyStateDescription?: string | null;
   entriesPerPage: number;
   appearance: {
-    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    background:
+      | 'none'
+      | 'primary'
+      | 'secondary'
+      | 'muted'
+      | 'accent'
+      | 'gradient-secondary'
+      | 'gradient-muted'
+      | 'gradient-accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   size: 'compact' | 'default' | 'comfortable';
