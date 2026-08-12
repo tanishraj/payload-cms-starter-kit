@@ -9,6 +9,7 @@ import {
 } from '@/blocks/shared/blockAppearance'
 import { regularBlockMobilePaddingClasses } from '@/blocks/shared/blockSpacing'
 import { ContentActions } from '@/components/ContentActions'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { Button } from '@/components/ui/button'
 import {
   Field,
@@ -361,9 +362,9 @@ export function ReviewSubmissionBlockComponent({
           data-review-submission-content-alignment={resolvedContentAlignment}
         >
           {resolvedEyebrow ? (
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+            <SectionEyebrow surface={appearance?.background ?? 'none'}>
               {resolvedEyebrow}
-            </p>
+            </SectionEyebrow>
           ) : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
             {resolvedTitle}

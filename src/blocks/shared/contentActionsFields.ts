@@ -114,6 +114,16 @@ const createActionLayoutFields = (includeDisplayMode: boolean): Field[] => [
         }
       : {}),
   } satisfies SelectField,
+  {
+    name: 'showArrow',
+    label: 'Show arrow',
+    type: 'checkbox',
+    defaultValue: false,
+    admin: {
+      description: 'Adds a trailing arrow when this action is displayed as a button.',
+      ...(includeDisplayMode ? { condition: isButtonMode } : {}),
+    },
+  } satisfies CheckboxField,
 ]
 
 export const createContentActionModeField = ({

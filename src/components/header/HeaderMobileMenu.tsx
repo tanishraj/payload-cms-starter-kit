@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { MenuIcon, X } from 'lucide-react'
 
+import { ActionButtonContent } from '@/components/ActionButtonContent'
+import { ContentLink } from '@/components/ContentLink'
 import {
   Accordion,
   AccordionContent,
@@ -14,7 +16,12 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/s
 import type { ResolvedHeaderLink, ResolvedHeaderMenuItem } from '@/lib/headerNavigation'
 
 type HeaderMobileMenuProps = {
-  ctas: Array<ResolvedHeaderLink & { variant?: 'default' | 'link' | 'outline' | null }>
+  ctas: Array<
+    ResolvedHeaderLink & {
+      showArrow?: boolean
+      variant?: 'default' | 'link' | 'outline' | null
+    }
+  >
   menuItems: ResolvedHeaderMenuItem[]
 }
 
@@ -168,22 +175,32 @@ export function HeaderMobileMenu({ ctas, menuItems }: HeaderMobileMenuProps) {
             <div className="sticky bottom-0">
               <div className="mx-auto w-full max-w-screen-2xl px-4">
                 <div className="flex flex-col gap-4 border-t py-4">
-                  {ctas.map((item) => (
-                    <Button
-                      asChild
-                      className="text-base leading-relaxed"
-                      key={`${item.label}-${item.href}`}
-                      variant={item.variant ?? 'default'}
-                    >
-                      <a
+                  {ctas.map((item) =>
+                    item.variant === 'link' ? (
+                      <ContentLink
+                        className="text-base leading-relaxed"
                         href={item.href}
-                        rel={item.newTab ? 'noreferrer' : undefined}
-                        target={item.newTab ? '_blank' : undefined}
+                        key={`${item.label}-${item.href}`}
+                        label={item.label}
+                        openInNewTab={item.newTab}
+                      />
+                    ) : (
+                      <Button
+                        asChild
+                        className="text-base leading-relaxed"
+                        key={`${item.label}-${item.href}`}
+                        variant={item.variant ?? 'default'}
                       >
-                        {item.label}
-                      </a>
-                    </Button>
-                  ))}
+                        <a
+                          href={item.href}
+                          rel={item.newTab ? 'noreferrer' : undefined}
+                          target={item.newTab ? '_blank' : undefined}
+                        >
+                          <ActionButtonContent label={item.label} showArrow={item.showArrow} />
+                        </a>
+                      </Button>
+                    ),
+                  )}
                 </div>
               </div>
             </div>

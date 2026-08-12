@@ -13,6 +13,7 @@ type HeroButton = {
   linkType?: 'page' | 'custom' | null
   openInNewTab?: boolean | null
   page?: Page | number | string | null
+  showArrow?: boolean | null
   url?: string | null
   variant?: 'default' | 'link' | 'outline' | 'secondary' | null
 }
@@ -50,6 +51,7 @@ export function resolveHeroCarouselSlides(slides?: SlideData[] | null): Carousel
               href: link.href,
               label,
               openInNewTab: link.openInNewTab,
+              showArrow: Boolean(button.showArrow),
               variant: button.variant ?? 'secondary',
             },
           ]

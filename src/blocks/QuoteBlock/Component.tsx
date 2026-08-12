@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { Quote, Star } from 'lucide-react'
 
 import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import {
   regularBlockMobilePaddingClasses,
   regularBlockContainerClasses,
@@ -120,9 +121,9 @@ export function QuoteBlockBlockComponent({
         {resolvedVariant === 'centered' && (
           <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
             {eyebrow?.trim() ? (
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+              <SectionEyebrow surface={appearance?.background ?? 'none'}>
                 {eyebrow.trim()}
-              </p>
+              </SectionEyebrow>
             ) : null}
             <Quote className="size-10 text-primary/30" aria-hidden="true" />
             {ratingNum > 0 ? <StarRating rating={ratingNum} /> : null}
@@ -181,9 +182,9 @@ export function QuoteBlockBlockComponent({
             {/* Quote side */}
             <div className="flex flex-col gap-4">
               {eyebrow?.trim() ? (
-                <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+                <SectionEyebrow surface={appearance?.background ?? 'none'}>
                   {eyebrow.trim()}
-                </p>
+                </SectionEyebrow>
               ) : null}
               {ratingNum > 0 ? <StarRating rating={ratingNum} /> : null}
               <blockquote
@@ -203,9 +204,9 @@ export function QuoteBlockBlockComponent({
             <div className="flex flex-col gap-6">
               <div className="flex items-start justify-between gap-4">
                 {eyebrow?.trim() ? (
-                  <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+                  <SectionEyebrow surface={appearance?.background ?? 'none'}>
                     {eyebrow.trim()}
-                  </p>
+                  </SectionEyebrow>
                 ) : <span />}
                 <Quote className="size-8 shrink-0 text-primary/20" aria-hidden="true" />
               </div>
@@ -234,9 +235,9 @@ export function QuoteBlockBlockComponent({
           <div className="mx-auto max-w-3xl border-l-4 border-primary pl-6 md:pl-8">
             <div className="flex flex-col gap-4">
               {eyebrow?.trim() ? (
-                <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+                <SectionEyebrow surface={appearance?.background ?? 'none'}>
                   {eyebrow.trim()}
-                </p>
+                </SectionEyebrow>
               ) : null}
               {ratingNum > 0 ? <StarRating rating={ratingNum} /> : null}
               <blockquote

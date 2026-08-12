@@ -9,6 +9,7 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { ContentLink } from '@/components/ContentLink'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { Badge } from '@/components/ui/badge'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import {
@@ -242,9 +243,9 @@ export function NewsEventsFeed({
       <div className={cn(regularBlockContainerClasses, 'flex flex-col', sectionGapClasses[size])}>
         <header className="flex max-w-3xl flex-col gap-4">
           {settings.eyebrow ? (
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+            <SectionEyebrow surface={appearance?.background ?? 'none'}>
               {settings.eyebrow}
-            </p>
+            </SectionEyebrow>
           ) : null}
           <h1 className="text-4xl font-semibold tracking-tight text-balance text-current sm:text-5xl">
             {settings.title}

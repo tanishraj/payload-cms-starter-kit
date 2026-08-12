@@ -11,10 +11,11 @@ export type CmsLinkValue = {
   url?: string | null
 }
 
-export type CmsActionVariant = 'default' | 'outline' | 'secondary'
+export type CmsActionVariant = 'default' | 'link' | 'outline' | 'secondary'
 
 export type CmsActionValue = CmsLinkValue & {
   label?: string | null
+  showArrow?: boolean | null
   variant?: CmsActionVariant | null
 }
 
@@ -22,6 +23,7 @@ export type ResolvedCmsAction = {
   href: string
   label: string
   openInNewTab?: boolean
+  showArrow: boolean
   variant: CmsActionVariant
 }
 
@@ -51,6 +53,7 @@ export const resolveCmsActions = (actions?: CmsActionValue[] | null): ResolvedCm
             href: destination.href,
             label,
             openInNewTab: destination.openInNewTab,
+            showArrow: Boolean(action.showArrow),
             variant: action.variant ?? 'default',
           },
         ]

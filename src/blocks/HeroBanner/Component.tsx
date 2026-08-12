@@ -1,7 +1,13 @@
 import Image from 'next/image'
 
 import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { ActionButtonContent } from '@/components/ActionButtonContent'
+import { ContentLink } from '@/components/ContentLink'
 import { Button } from '@/components/ui/button'
+import {
+  SectionEyebrow,
+  type SectionEyebrowSurface,
+} from '@/components/SectionEyebrow'
 import { resolveCmsLink } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
@@ -12,6 +18,7 @@ type HeroButton = {
   linkType?: 'page' | 'custom' | null
   openInNewTab?: boolean | null
   page?: Page | number | string | null
+  showArrow?: boolean | null
   url?: string | null
   variant?: 'default' | 'link' | 'outline' | 'secondary' | null
 }
@@ -51,17 +58,14 @@ const overlayClasses = {
 
 const textToneClasses = {
   auto: {
-    eyebrow: 'text-foreground/78',
     title: 'text-foreground',
     description: 'text-foreground/84',
   },
   light: {
-    eyebrow: 'text-foreground/78',
     title: 'text-foreground',
     description: 'text-foreground/84',
   },
   dark: {
-    eyebrow: 'text-white/78',
     title: 'text-white',
     description: 'text-white/84',
   },
@@ -159,6 +163,8 @@ export function HeroBannerBlockComponent({
           ? 'light'
           : (overlayStyle ?? 'dark')
   const resolvedThemeMode = themeMode ?? 'auto'
+  const eyebrowSurface: SectionEyebrowSurface =
+    resolvedThemeMode === 'dark' ? 'darkOverlay' : 'none'
   const resolvedVerticalAlignment = verticalAlignment ?? 'center'
   const resolvedHeight =
     height === '40'
@@ -190,6 +196,7 @@ export function HeroBannerBlockComponent({
             href: link.href,
             label,
             openInNewTab: link.openInNewTab,
+            showArrow: Boolean(button.showArrow),
             variant: resolvedVariant,
           },
         ]
@@ -233,15 +240,16 @@ export function HeroBannerBlockComponent({
           >
             <div className="flex flex-col gap-6">
               {eyebrow ? (
-                <p
+                <SectionEyebrow
                   className={cn(
-                    'font-mono text-xs font-semibold uppercase tracking-[0.28em]',
-                    textToneClasses[resolvedThemeMode].eyebrow,
+                    'tracking-[0.28em]',
+                    resolvedThemeMode === 'dark' ? 'text-white/78' : 'text-foreground/78',
                   )}
                   data-hero-banner-eyebrow="true"
+                  surface={eyebrowSurface}
                 >
                   {eyebrow}
-                </p>
+                </SectionEyebrow>
               ) : null}
               <h1
                 className={cn(
@@ -277,23 +285,39 @@ export function HeroBannerBlockComponent({
                 )}
                 data-hero-banner-actions="true"
               >
-                {actions.map((action) => (
-                  <Button
-                    asChild
-                    key={`${action.label}-${action.href}`}
-                    size="lg"
-                    variant={action.variant}
-                    className="h-12 w-full sm:w-auto"
-                  >
-                    <a
+                {actions.map((action) =>
+                  action.variant === 'link' ? (
+                    <ContentLink
+                      className={cn(
+                        'w-full sm:w-auto',
+                        resolvedThemeMode === 'dark' ? 'text-white' : 'text-foreground',
+                      )}
                       href={action.href}
-                      rel={action.openInNewTab ? 'noreferrer' : undefined}
-                      target={action.openInNewTab ? '_blank' : undefined}
+                      key={`${action.label}-${action.href}`}
+                      label={action.label}
+                      openInNewTab={action.openInNewTab}
+                    />
+                  ) : (
+                    <Button
+                      asChild
+                      className="h-12 w-full sm:w-auto"
+                      key={`${action.label}-${action.href}`}
+                      size="lg"
+                      variant={action.variant}
                     >
-                      {action.label}
-                    </a>
-                  </Button>
-                ))}
+                      <a
+                        href={action.href}
+                        rel={action.openInNewTab ? 'noreferrer' : undefined}
+                        target={action.openInNewTab ? '_blank' : undefined}
+                      >
+                        <ActionButtonContent
+                          label={action.label}
+                          showArrow={action.showArrow}
+                        />
+                      </a>
+                    </Button>
+                  ),
+                )}
               </div>
             ) : null}
           </div>

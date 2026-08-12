@@ -36,7 +36,7 @@ describe('global footer wiring', () => {
               blockType: 'footer56',
               bottomLinks: [{ label: 'Terms and Conditions', linkType: 'custom', url: '/terms' }],
               copyrightText: '© 2026 Acme Institute. All rights reserved.',
-              ctaButtons: [{ label: 'Apply now', linkType: 'custom', url: '/apply', variant: 'outline' }],
+              ctaButtons: [{ label: 'Apply now', linkType: 'custom', showArrow: true, url: '/apply', variant: 'outline' }],
               description: 'Preparing students for decisive practice and public service.',
               linkGroups: [
                 {
@@ -78,6 +78,7 @@ describe('global footer wiring', () => {
     expect(html).toContain('Privacy Policy')
     expect(html).toContain('Terms and Conditions')
     expect(html).toContain('Apply now')
+    expect(html).toContain('data-action-arrow="true"')
     expect(html).toContain('© 2026 Acme Institute. All rights reserved.')
     expect(html).toContain('123 Market Street, Suite 400')
     expect(html).toContain('+1 (555) 000-0000')

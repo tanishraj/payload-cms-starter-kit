@@ -5,6 +5,7 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { ContentActions } from '@/components/ContentActions'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 
@@ -116,9 +117,9 @@ export function VideoEmbedBlockComponent({
         {hasHeader ? (
           <header className={cn('flex max-w-3xl flex-col gap-4', alignmentClasses[resolvedAlignment], resolvedAlignment === 'center' && 'mx-auto', resolvedAlignment === 'right' && 'ml-auto')}>
             {eyebrow?.trim() ? (
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+              <SectionEyebrow surface={appearance?.background ?? 'none'}>
                 {eyebrow.trim()}
-              </p>
+              </SectionEyebrow>
             ) : null}
             {resolvedTitle ? (
               <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">

@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { ContentLink } from '@/components/ContentLink'
 import { Button } from '@/components/ui/button'
 import type { ResolvedCmsAction } from '@/lib/cmsLinks'
@@ -49,8 +50,10 @@ export function ContentActions({
       )}
       data-action-mode={mode}
     >
-      {actions.map((action, index) =>
-        mode === 'button' ? (
+      {actions.map((action, index) => {
+        const rendersAsButton = mode === 'button' && action.variant !== 'link'
+
+        return rendersAsButton ? (
           <Button
             asChild
             data-action-variant={action.variant}
@@ -63,7 +66,7 @@ export function ContentActions({
               rel={action.openInNewTab ? 'noreferrer' : undefined}
               target={action.openInNewTab ? '_blank' : undefined}
             >
-              {action.label}
+              <ActionButtonContent label={action.label} showArrow={action.showArrow} />
             </a>
           </Button>
         ) : (
@@ -73,8 +76,8 @@ export function ContentActions({
             label={action.label}
             openInNewTab={action.openInNewTab}
           />
-        ),
-      )}
+        )
+      })}
     </div>
   )
 }

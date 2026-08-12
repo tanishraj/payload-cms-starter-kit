@@ -7,6 +7,7 @@ import {
   type BlockBackground,
 } from '@/blocks/shared/blockAppearance'
 import { regularBlockMobilePaddingClasses } from '@/blocks/shared/blockSpacing'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { cn } from '@/lib/utils'
 import { resolveCardSurface } from '@/blocks/shared/cardSurface'
 
@@ -162,9 +163,7 @@ export function FeatureMatrix({
           )}
         >
           {eyebrow ? (
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
-              {eyebrow}
-            </p>
+            <SectionEyebrow surface={sectionBackground}>{eyebrow}</SectionEyebrow>
           ) : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
             {title}

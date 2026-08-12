@@ -10,6 +10,7 @@ import {
   regularBlockMobilePaddingClasses,
 } from '@/blocks/shared/blockSpacing'
 import type { PublishedReviewRatingSummary } from '@/lib/reviewRatingSummary'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { cn } from '@/lib/utils'
 
 export type RatingSpotlightAlignment = 'center' | 'left' | 'right'
@@ -99,9 +100,9 @@ export function RatingSpotlight({
         <div className={cn('flex max-w-3xl flex-col gap-6', alignmentClasses[alignment])}>
           <div className="flex flex-col gap-4">
             {eyebrow ? (
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+              <SectionEyebrow surface={appearance?.background ?? 'none'}>
                 {eyebrow}
-              </p>
+              </SectionEyebrow>
             ) : null}
             <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
               {title}

@@ -38,6 +38,7 @@ describe('Hero Banner block', () => {
     expect(html).toContain('data-hero-banner-height="immersive"')
     expect(html).toContain('data-hero-banner-background="primary"')
     expect(html).toContain('data-hero-banner-theme="auto"')
+    expect(html).toContain('data-section-eyebrow-surface="none"')
     expect(html).toContain('bg-primary')
     expect(html).toContain('text-primary-foreground')
     expect(html).toContain(
@@ -62,6 +63,7 @@ describe('Hero Banner block', () => {
           { label: 'Compare programs', linkType: 'custom', url: '/programs', variant: 'outline' },
         ] as never,
         description: 'Deliberate contrast regardless of site theme.',
+        eyebrow: 'Admissions',
         overlayStyle: 'dark',
         themeMode: 'dark',
         title: 'Dark hero tone.',
@@ -76,6 +78,7 @@ describe('Hero Banner block', () => {
           { label: 'Learn more', linkType: 'custom', url: '/learn', variant: 'outline' },
         ] as never,
         description: 'Readable content on a lighter surface treatment.',
+        eyebrow: 'Admissions',
         overlayStyle: 'light',
         themeMode: 'light',
         title: 'Light hero tone.',
@@ -83,6 +86,7 @@ describe('Hero Banner block', () => {
     )
 
     expect(darkHtml).toContain('data-hero-banner-theme="dark"')
+    expect(darkHtml).toContain('data-section-eyebrow-surface="darkOverlay"')
     expect(darkHtml).toContain('from-black/68')
     expect(darkHtml).toContain('text-white')
     expect(darkHtml).toContain('text-white/84')
@@ -94,6 +98,7 @@ describe('Hero Banner block', () => {
     )
 
     expect(lightHtml).toContain('data-hero-banner-theme="light"')
+    expect(lightHtml).toContain('data-section-eyebrow-surface="none"')
     expect(lightHtml).toContain('from-background/72')
     expect(lightHtml).toContain('text-foreground')
     expect(lightHtml).toContain('text-foreground/84')
@@ -136,6 +141,34 @@ describe('Hero Banner block', () => {
     expect(html).not.toContain('data-hero-banner-eyebrow')
     expect(html).not.toContain('data-hero-banner-description')
     expect(html).not.toContain('data-hero-banner-actions')
+  })
+
+  it('renders arrows only for opted-in button CTAs and keeps link CTAs editorial', () => {
+    const html = renderToStaticMarkup(
+      createElement(HeroBannerBlockComponent, {
+        backgroundImage: { alt: 'Campus', url: '/media/campus.jpg' } as never,
+        buttons: [
+          {
+            label: 'Apply now',
+            linkType: 'custom',
+            showArrow: true,
+            url: '/apply',
+            variant: 'default',
+          },
+          {
+            label: 'Read more',
+            linkType: 'custom',
+            showArrow: true,
+            url: '/read',
+            variant: 'link',
+          },
+        ] as never,
+        title: 'Study medicine.',
+      }),
+    )
+
+    expect((html.match(/data-action-arrow="true"/g) ?? [])).toHaveLength(1)
+    expect(html).toContain('data-content-link="true"')
   })
 
   it.each([

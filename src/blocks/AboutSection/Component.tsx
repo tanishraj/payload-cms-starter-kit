@@ -8,6 +8,7 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { ContentActions } from '@/components/ContentActions'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
@@ -122,9 +123,9 @@ export function AboutSectionBlockComponent({
   const textContent = (
     <div className={cn('flex flex-col gap-5', isCenter && variant !== 'split' && 'items-center text-center')}>
       {eyebrow?.trim() ? (
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+        <SectionEyebrow surface={appearance?.background ?? 'none'}>
           {eyebrow.trim()}
-        </p>
+        </SectionEyebrow>
       ) : null}
       {resolvedTitle ? (
         <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
@@ -174,9 +175,9 @@ export function AboutSectionBlockComponent({
           <div className="mx-auto max-w-3xl flex flex-col gap-8 items-center text-center">
             <div className="flex flex-col gap-5 items-center">
               {eyebrow?.trim() ? (
-                <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+                <SectionEyebrow surface={appearance?.background ?? 'none'}>
                   {eyebrow.trim()}
-                </p>
+                </SectionEyebrow>
               ) : null}
               {resolvedTitle ? (
                 <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">

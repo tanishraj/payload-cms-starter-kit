@@ -128,6 +128,7 @@ describe('carousel block schemas', () => {
             {
               label: ' Visit ',
               linkType: 'custom',
+              showArrow: true,
               url: '/visit',
               variant: 'secondary',
             },
@@ -140,7 +141,7 @@ describe('carousel block schemas', () => {
     ).toEqual([
       expect.objectContaining({
         backgroundImageSrc: '/campus.jpg',
-        buttons: [expect.objectContaining({ href: '/visit', label: 'Visit' })],
+        buttons: [expect.objectContaining({ href: '/visit', label: 'Visit', showArrow: true })],
         title: 'First slide',
       }),
       expect.objectContaining({
@@ -249,6 +250,38 @@ describe('carousel block schemas', () => {
     )
 
     expect(html).toContain('data-hero-carousel-alignment="left"')
+  })
+
+  it('renders arrows only for opted-in Hero Carousel buttons', () => {
+    const html = renderToStaticMarkup(
+      <HeroCarouselBlockComponent
+        slides={[
+          {
+            backgroundImage: { alt: 'Campus', id: 'campus', url: '/campus.jpg' },
+            buttons: [
+              {
+                label: 'Visit',
+                linkType: 'custom',
+                showArrow: true,
+                url: '/visit',
+                variant: 'secondary',
+              },
+              {
+                label: 'Read',
+                linkType: 'custom',
+                showArrow: true,
+                url: '/read',
+                variant: 'link',
+              },
+            ],
+            title: 'Campus life',
+          },
+        ]}
+      />,
+    )
+
+    expect((html.match(/data-action-arrow="true"/g) ?? [])).toHaveLength(1)
+    expect(html).toContain('data-content-link="true"')
   })
 
   it('renders Gallery Coverflow state and action through the server adapter', () => {

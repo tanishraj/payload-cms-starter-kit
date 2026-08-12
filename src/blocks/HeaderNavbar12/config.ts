@@ -21,6 +21,9 @@ const linkTypeCondition = (_data: unknown, siblingData: { linkType?: LinkType | 
 const customUrlCondition = (_data: unknown, siblingData: { linkType?: LinkType | null }) =>
   siblingData?.linkType === 'custom'
 
+const buttonArrowCondition = (_data: unknown, siblingData: { variant?: string | null }) =>
+  siblingData?.variant !== 'link'
+
 const customLogoCondition = (_data: unknown, siblingData: { logoMode?: LogoMode | null }) =>
   siblingData?.logoMode === 'customLogo'
 
@@ -145,6 +148,16 @@ const ctaButtonsField = {
         { label: 'Default', value: 'default' },
       ],
     } satisfies SelectField,
+    {
+      name: 'showArrow',
+      label: 'Show arrow',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        condition: buttonArrowCondition,
+        description: 'Adds a trailing arrow to this button.',
+      },
+    } satisfies CheckboxField,
   ],
 } satisfies ArrayField
 

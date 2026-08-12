@@ -10,6 +10,7 @@ import {
 } from '@/blocks/shared/blockSpacing'
 import { Button } from '@/components/ui/button'
 import { ContentLink } from '@/components/ContentLink'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import type { CmsActionVariant } from '@/lib/cmsLinks'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
 import { cn } from '@/lib/utils'
@@ -126,9 +127,9 @@ export function Contact24({
             data-contact24-content-alignment={contentAlignment}
           >
             {eyebrow ? (
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+              <SectionEyebrow surface={appearance?.background ?? 'none'}>
                 {eyebrow}
-              </p>
+              </SectionEyebrow>
             ) : null}
             <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
               {resolvedTitle}

@@ -31,6 +31,7 @@ describe('dark-mode media treatments', () => {
     const html = renderToStaticMarkup(
       <PageHeaderBlockComponent
         backgroundImage={media}
+        eyebrow="Admissions"
         overlayStyle="light"
         title="Admissions"
         variant="banner"
@@ -38,6 +39,7 @@ describe('dark-mode media treatments', () => {
     )
 
     expect(html).toContain('bg-black/20')
+    expect(html).toContain('data-section-eyebrow-surface="darkOverlay"')
     expect(html).not.toContain('bg-foreground/20')
   })
 })

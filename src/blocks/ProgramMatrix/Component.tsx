@@ -13,6 +13,7 @@ import { resolveCardSurface } from '@/blocks/shared/cardSurface'
 import type { CardSurfaceValue } from '@/blocks/shared/cardThemeFields'
 import { resolveLucideIcon } from '@/blocks/shared/resolveLucideIcon'
 import { ContentActions } from '@/components/ContentActions'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { ContentLink } from '@/components/ContentLink'
 import { Button } from '@/components/ui/button'
 import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@/lib/cmsLinks'
@@ -177,9 +178,9 @@ export function ProgramMatrixBlockComponent({
           data-content-alignment={resolvedAlignment}
         >
           {resolvedEyebrow ? (
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+            <SectionEyebrow surface={resolvedSectionBackground}>
               {resolvedEyebrow}
-            </p>
+            </SectionEyebrow>
           ) : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
             {resolvedTitle}

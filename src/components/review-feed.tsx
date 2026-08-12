@@ -8,6 +8,7 @@ import { Rating } from '@/components/shadcnblocks/rating'
 import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
 import { ReviewFeedList } from '@/components/review-feed-list'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import type { PublicReviewFeedPage } from '@/lib/reviewFeedShared'
 import type { PublishedReviewRatingDistribution } from '@/lib/reviewRatingShared'
 import { cn } from '@/lib/utils'
@@ -100,9 +101,9 @@ export function ReviewFeed({
             )}
           >
             {eyebrow ? (
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+              <SectionEyebrow surface={appearance?.background ?? 'none'}>
                 {eyebrow}
-              </p>
+              </SectionEyebrow>
             ) : null}
             <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
               {title}

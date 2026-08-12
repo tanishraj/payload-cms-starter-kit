@@ -42,6 +42,7 @@ export function HeaderNavbar12BlockComponent({
 
       return {
         ...link,
+        showArrow: Boolean(item.showArrow),
         variant: item.variant ?? 'default',
       }
     })

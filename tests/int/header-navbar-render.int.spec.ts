@@ -168,6 +168,7 @@ describe('header navbar rendering', () => {
           {
             label: 'Contact',
             linkType: 'custom',
+            showArrow: true,
             url: '/contact',
             variant: 'outline',
           },
@@ -200,6 +201,8 @@ describe('header navbar rendering', () => {
     expect(html).toContain('data-slot="navigation-menu-trigger"')
     expect(html).toContain('lucide-chevron-down')
     expect(html).toContain('/contact')
+    expect(html).toContain('data-action-arrow="true"')
+    expect(html).not.toContain('data-content-link="true"')
   })
 
   it('uses size-based logo height defaults when no logo override is set', () => {

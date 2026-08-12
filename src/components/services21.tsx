@@ -12,6 +12,7 @@ import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
 } from '@/blocks/shared/blockSpacing'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { cn } from '@/lib/utils'
 
 type Services21Alignment = 'left' | 'center' | 'right'
@@ -85,9 +86,7 @@ export function Services21({
       <div className={regularBlockContainerClasses}>
         <div className="mb-10 flex w-full flex-col gap-4" data-services21-intro="true">
           {eyebrow ? (
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
-              {eyebrow}
-            </p>
+            <SectionEyebrow surface={appearance?.background ?? 'none'}>{eyebrow}</SectionEyebrow>
           ) : null}
           {title ? (
             <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h2>

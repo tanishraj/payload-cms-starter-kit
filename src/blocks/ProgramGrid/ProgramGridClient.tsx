@@ -6,6 +6,7 @@ import { ArrowRight, Clock, Users } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { cn } from '@/lib/utils'
 import type { CmsActionVariant } from '@/lib/cmsLinks'
 import {
@@ -370,9 +371,7 @@ export function ProgramGridClient({
           )}
         >
           {eyebrow ? (
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
-              {eyebrow}
-            </p>
+            <SectionEyebrow surface={sectionBackground}>{eyebrow}</SectionEyebrow>
           ) : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
             {title}

@@ -323,6 +323,10 @@ export interface Cta39Block {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -355,6 +359,10 @@ export interface HeroBannerBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'outline' | 'secondary' | 'link';
+        /**
+         * Adds a trailing arrow to this button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -489,6 +497,10 @@ export interface HeroCarouselBlock {
               url?: string | null;
               openInNewTab?: boolean | null;
               variant: 'default' | 'outline' | 'secondary' | 'link';
+              /**
+               * Adds a trailing arrow to this button.
+               */
+              showArrow?: boolean | null;
               id?: string | null;
             }[]
           | null;
@@ -524,6 +536,10 @@ export interface GalleryCoverflowBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -564,6 +580,10 @@ export interface FeatureSpotlightBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -599,6 +619,10 @@ export interface FeatureMatrixBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -644,6 +668,10 @@ export interface ContentHighlightsBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -691,6 +719,10 @@ export interface NewsEventsHighlightsBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -726,6 +758,10 @@ export interface ProfileCarouselBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -771,6 +807,10 @@ export interface GalleryShowcaseBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -808,6 +848,10 @@ export interface EventGalleryBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -872,6 +916,10 @@ export interface ImageMosaicBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -888,6 +936,10 @@ export interface ImageMosaicBlock {
           openInNewTab?: boolean | null;
           mode: 'link' | 'button';
           variant?: ('default' | 'secondary' | 'outline') | null;
+          /**
+           * Adds a trailing arrow when this action is displayed as a button.
+           */
+          showArrow?: boolean | null;
           id?: string | null;
         }[]
       | null;
@@ -946,6 +998,10 @@ export interface QaAccordionBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -987,6 +1043,10 @@ export interface QaAccordionBlock {
             url?: string | null;
             openInNewTab?: boolean | null;
             variant: 'default' | 'secondary' | 'outline';
+            /**
+             * Adds a trailing arrow when this action is displayed as a button.
+             */
+            showArrow?: boolean | null;
             id?: string | null;
           }[]
         | null;
@@ -1023,6 +1083,10 @@ export interface RatingSpotlightBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1058,6 +1122,10 @@ export interface ReviewFeedBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1090,6 +1158,10 @@ export interface ReviewSubmissionBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1191,6 +1263,10 @@ export interface Contact33Block {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1227,6 +1303,10 @@ export interface Contact24Block {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1304,6 +1384,10 @@ export interface TeamShowcaseBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1348,6 +1432,10 @@ export interface Services21Block {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1420,6 +1508,10 @@ export interface VideoEmbedBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1467,6 +1559,10 @@ export interface MediaCarouselBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1496,6 +1592,10 @@ export interface MediaCarouselBlock {
               url?: string | null;
               openInNewTab?: boolean | null;
               variant: 'default' | 'secondary' | 'outline';
+              /**
+               * Adds a trailing arrow when this action is displayed as a button.
+               */
+              showArrow?: boolean | null;
               id?: string | null;
             }[]
           | null;
@@ -1538,6 +1638,10 @@ export interface ProgramGridBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1620,6 +1724,10 @@ export interface ProgramMatrixBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1685,6 +1793,10 @@ export interface LogoStripBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1760,6 +1872,10 @@ export interface PageHeaderBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1815,6 +1931,10 @@ export interface TimelineBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1874,6 +1994,10 @@ export interface IconGridBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1978,6 +2102,10 @@ export interface TabsContentBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -2002,6 +2130,10 @@ export interface TabsContentBlock {
               url?: string | null;
               openInNewTab?: boolean | null;
               variant: 'default' | 'secondary' | 'outline';
+              /**
+               * Adds a trailing arrow when this action is displayed as a button.
+               */
+              showArrow?: boolean | null;
               id?: string | null;
             }[]
           | null;
@@ -2037,6 +2169,10 @@ export interface DownloadListBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -2104,6 +2240,10 @@ export interface NumberedStepsBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -2157,6 +2297,10 @@ export interface BentoGridBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -2211,6 +2355,10 @@ export interface TestimonialGridBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -2262,6 +2410,10 @@ export interface AwardsListBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -2358,6 +2510,10 @@ export interface AboutSectionBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -2799,6 +2955,10 @@ export interface NewsEvent {
         openInNewTab?: boolean | null;
         mode: 'link' | 'button';
         variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -3046,6 +3206,10 @@ export interface HeaderNavbar12Block {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant?: ('link' | 'outline' | 'default') | null;
+        /**
+         * Adds a trailing arrow to this button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -3117,6 +3281,10 @@ export interface Footer56Block {
         url?: string | null;
         openInNewTab?: boolean | null;
         variant?: ('link' | 'outline' | 'default') | null;
+        /**
+         * Adds a trailing arrow to this button.
+         */
+        showArrow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -3702,6 +3870,7 @@ export interface Cta39BlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   appearance?:
@@ -3735,6 +3904,7 @@ export interface HeroBannerBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   appearance?:
@@ -3774,6 +3944,7 @@ export interface HeroCarouselBlockSelect<T extends boolean = true> {
               url?: T;
               openInNewTab?: T;
               variant?: T;
+              showArrow?: T;
               id?: T;
             };
         id?: T;
@@ -3804,6 +3975,7 @@ export interface GalleryCoverflowBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   images?:
@@ -3842,6 +4014,7 @@ export interface FeatureSpotlightBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   appearance?:
@@ -3878,6 +4051,7 @@ export interface FeatureMatrixBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   features?:
@@ -3921,6 +4095,7 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   items?:
@@ -3968,6 +4143,7 @@ export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   itemCount?: T;
@@ -4001,6 +4177,7 @@ export interface ProfileCarouselBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   profiles?:
@@ -4044,6 +4221,7 @@ export interface GalleryShowcaseBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   images?:
@@ -4082,6 +4260,7 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   galleryAlbums?: T;
@@ -4115,6 +4294,7 @@ export interface ImageMosaicBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   items?:
@@ -4133,6 +4313,7 @@ export interface ImageMosaicBlockSelect<T extends boolean = true> {
               openInNewTab?: T;
               mode?: T;
               variant?: T;
+              showArrow?: T;
               id?: T;
             };
         id?: T;
@@ -4193,6 +4374,7 @@ export interface QaAccordionBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   items?:
@@ -4226,6 +4408,7 @@ export interface QaAccordionBlockSelect<T extends boolean = true> {
                     url?: T;
                     openInNewTab?: T;
                     variant?: T;
+                    showArrow?: T;
                     id?: T;
                   };
             };
@@ -4263,6 +4446,7 @@ export interface RatingSpotlightBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   ratingData?:
@@ -4301,6 +4485,7 @@ export interface ReviewFeedBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   pageSize?: T;
@@ -4334,6 +4519,7 @@ export interface ReviewSubmissionBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   form?: T;
@@ -4366,6 +4552,7 @@ export interface Contact33BlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   image?: T;
@@ -4400,6 +4587,7 @@ export interface Contact24BlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   offices?: T;
@@ -4435,6 +4623,7 @@ export interface TeamShowcaseBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   members?:
@@ -4477,6 +4666,7 @@ export interface Services21BlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   services?:
@@ -4534,6 +4724,7 @@ export interface VideoEmbedBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   url?: T;
@@ -4570,6 +4761,7 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   items?:
@@ -4588,6 +4780,7 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
               url?: T;
               openInNewTab?: T;
               variant?: T;
+              showArrow?: T;
               id?: T;
             };
         cardBackground?: T;
@@ -4624,6 +4817,7 @@ export interface ProgramGridBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   programs?:
@@ -4677,6 +4871,7 @@ export interface ProgramMatrixBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   items?:
@@ -4724,6 +4919,7 @@ export interface LogoStripBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   logos?:
@@ -4776,6 +4972,7 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   backgroundImage?: T;
@@ -4817,6 +5014,7 @@ export interface TimelineBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   items?:
@@ -4859,6 +5057,7 @@ export interface IconGridBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   items?:
@@ -4932,6 +5131,7 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   tabs?:
@@ -4951,6 +5151,7 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
               url?: T;
               openInNewTab?: T;
               variant?: T;
+              showArrow?: T;
               id?: T;
             };
         id?: T;
@@ -4986,6 +5187,7 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   downloads?:
@@ -5030,6 +5232,7 @@ export interface NumberedStepsBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   steps?:
@@ -5072,6 +5275,7 @@ export interface BentoGridBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   items?:
@@ -5115,6 +5319,7 @@ export interface TestimonialGridBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   testimonials?:
@@ -5158,6 +5363,7 @@ export interface AwardsListBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   awards?:
@@ -5216,6 +5422,7 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   appearance?:
@@ -5295,6 +5502,7 @@ export interface NewsEventsSelect<T extends boolean = true> {
         openInNewTab?: T;
         mode?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   featuredImage?: T;
@@ -5532,6 +5740,7 @@ export interface HeaderNavbar12BlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   appearance?:
@@ -5599,6 +5808,7 @@ export interface Footer56BlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         variant?: T;
+        showArrow?: T;
         id?: T;
       };
   bottomLinks?:

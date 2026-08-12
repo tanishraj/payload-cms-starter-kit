@@ -66,3 +66,26 @@
   --sidebar-border: oklch(0.351576 0.044540 255.167);
   --sidebar-ring: oklch(0.769267 0.085353 254.774);
 }
+
+/* Section eyebrows use direct brand accents without expanding the theme token API. */
+:root[data-theme-color='snmih']:not(.dark)
+  :is(
+    [data-section-eyebrow-surface='none'],
+    [data-section-eyebrow-surface='secondary'],
+    [data-section-eyebrow-surface='muted'],
+    [data-section-eyebrow-surface='accent']
+  ) {
+  color: #2b833f;
+}
+
+:root[data-theme-color='snmih']:not(.dark) [data-section-eyebrow-surface='primary'],
+:root[data-theme-color='snmih'].dark
+  :is(
+    [data-section-eyebrow-surface='none'],
+    [data-section-eyebrow-surface='secondary'],
+    [data-section-eyebrow-surface='muted'],
+    [data-section-eyebrow-surface='accent']
+  ),
+:root[data-theme-color='snmih'] [data-section-eyebrow-surface='darkOverlay'] {
+  color: #9dd4a6;
+}

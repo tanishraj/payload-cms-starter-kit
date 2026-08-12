@@ -3,7 +3,9 @@
 import { useState } from 'react'
 import Image from 'next/image'
 
+import type { BlockBackground } from '@/blocks/shared/blockAppearance'
 import { ContentActions } from '@/components/ContentActions'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { type ResolvedCmsAction } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 
@@ -21,6 +23,7 @@ export type ResolvedTab = {
 }
 
 type Props = {
+  sectionBackground: BlockBackground
   tabs: ResolvedTab[]
   tabStyle?: 'underline' | 'pills' | 'boxed' | null
   contentLayout?: 'imageRight' | 'imageLeft' | 'imageTop' | 'textOnly' | null
@@ -28,6 +31,7 @@ type Props = {
 }
 
 export function TabsContentClient({
+  sectionBackground,
   tabs,
   tabStyle = 'underline',
   contentLayout = 'imageRight',
@@ -131,9 +135,7 @@ export function TabsContentClient({
             )}
           >
             {active.eyebrow ? (
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
-                {active.eyebrow}
-              </p>
+              <SectionEyebrow surface={sectionBackground}>{active.eyebrow}</SectionEyebrow>
             ) : null}
             {active.title ? (
               <h3 className="font-sans text-xl font-semibold tracking-tight text-current sm:text-2xl">

@@ -18,6 +18,7 @@ import {
   type ProfileCarouselSize,
 } from '@/components/profile-carousel-card'
 import { ProfileCarouselClient } from '@/components/profile-carousel-client'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { cn } from '@/lib/utils'
 
 export type ProfileCarouselAlignment = 'center' | 'left' | 'right'
@@ -97,9 +98,7 @@ export function ProfileCarousel({
       <div className={regularBlockContainerClasses}>
         <div className={cn('flex max-w-3xl flex-col gap-4', alignmentClasses[resolvedAlignment])}>
           {eyebrow ? (
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
-              {eyebrow}
-            </p>
+            <SectionEyebrow surface={sectionBackground}>{eyebrow}</SectionEyebrow>
           ) : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
             {title}

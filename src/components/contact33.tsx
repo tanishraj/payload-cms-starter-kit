@@ -16,6 +16,7 @@ import {
   regularBlockMobilePaddingClasses,
 } from '@/blocks/shared/blockSpacing'
 import { Button } from '@/components/ui/button'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import {
@@ -275,9 +276,9 @@ export function Contact33({
               data-contact33-content-alignment={contentAlignment}
             >
               {eyebrow ? (
-                <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+                <SectionEyebrow surface={appearance?.background ?? 'none'}>
                   {eyebrow}
-                </p>
+                </SectionEyebrow>
               ) : null}
               <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
                 {title}

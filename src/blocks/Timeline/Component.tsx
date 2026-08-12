@@ -1,12 +1,17 @@
 import Image from 'next/image'
 import { CheckCircle2, Circle, Clock } from 'lucide-react'
 
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+  type BlockBackground,
+} from '@/blocks/shared/blockAppearance'
 import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { ContentActions } from '@/components/ContentActions'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import type { Media } from '@/payload-types'
@@ -64,12 +69,14 @@ function SectionHeader({
   title,
   description,
   alignment,
+  surface,
 }: {
   actions?: React.ReactNode
   eyebrow?: string
   title?: string | null
   description?: string
   alignment: 'left' | 'center'
+  surface: BlockBackground
 }) {
   return (
     <div
@@ -79,9 +86,7 @@ function SectionHeader({
       )}
     >
       {eyebrow ? (
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
-          {eyebrow}
-        </p>
+        <SectionEyebrow surface={surface}>{eyebrow}</SectionEyebrow>
       ) : null}
       <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">{title}</h2>
       {description ? <p className="text-base leading-7 text-current/70">{description}</p> : null}
@@ -334,6 +339,7 @@ export function TimelineBlockComponent({
           alignment={alignment}
           description={description?.trim() || undefined}
           eyebrow={eyebrow?.trim() || undefined}
+          surface={appearance?.background ?? 'none'}
           title={resolvedTitle}
         />
 

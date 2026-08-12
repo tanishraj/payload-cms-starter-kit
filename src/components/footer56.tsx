@@ -12,6 +12,8 @@ import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { ContentActions } from '@/components/ContentActions'
+import type { ResolvedCmsAction } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 
 interface FooterLink {
@@ -37,10 +39,12 @@ interface FooterLogo {
 }
 
 interface FooterBasicProps {
+  actions?: ResolvedCmsAction[]
   logo?: FooterLogo
   sections?: FooterSection[]
   socialLinks?: FooterSocialLink[]
   copyright?: string
+  description?: string
   legalLinks?: FooterLink[]
   appearance?: BlockAppearance | null
   className?: string
@@ -126,6 +130,7 @@ const MAX_SECTIONS = 4
 
 const Footer56 = (props: Props) => {
   const {
+    actions,
     appearance,
     logo,
     addressLines,
@@ -135,6 +140,7 @@ const Footer56 = (props: Props) => {
     size,
     socialLinks,
     copyright,
+    description,
     legalLinks,
     className,
   } = {
@@ -151,7 +157,10 @@ const Footer56 = (props: Props) => {
   )
 
   return (
-    <section className={sectionClassName}>
+    <section
+      className={sectionClassName}
+      data-footer56-background={appearance?.background ?? 'none'}
+    >
       <div className={cn(regularBlockContainerClasses, 'flex')}>
         <footer className="w-full">
           <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
@@ -173,6 +182,12 @@ const Footer56 = (props: Props) => {
                   />
                 </a>
               </div>
+              {description ? (
+                <p className="mt-6 max-w-sm text-sm leading-6 text-current/70">{description}</p>
+              ) : null}
+              {actions?.length ? (
+                <ContentActions actions={actions} className="mt-6" mode="button" />
+              ) : null}
               <div className="mt-6 space-y-3 text-sm text-current/70">
                 <div className="flex gap-2">
                   <MapPin className="mt-0.5 size-4 shrink-0 text-current/70" aria-hidden />

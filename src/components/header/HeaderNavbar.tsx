@@ -4,6 +4,8 @@ import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
+import { ActionButtonContent } from '@/components/ActionButtonContent'
+import { ContentLink } from '@/components/ContentLink'
 import { HeaderMobileMenu } from '@/components/header/HeaderMobileMenu'
 import { HeaderNavMenu } from '@/components/header/HeaderNavMenu'
 import { SearchTriggerButton } from '@/components/header/SearchTriggerButton'
@@ -13,7 +15,12 @@ import { cn } from '@/lib/utils'
 
 type HeaderNavbarProps = {
   appearance?: BlockAppearance | null
-  ctas: Array<ResolvedHeaderLink & { variant?: 'default' | 'link' | 'outline' | null }>
+  ctas: Array<
+    ResolvedHeaderLink & {
+      showArrow?: boolean
+      variant?: 'default' | 'link' | 'outline' | null
+    }
+  >
   logo: ReactNode
   menuItems: ResolvedHeaderMenuItem[]
   navAlignment: 'left' | 'center' | 'right'
@@ -75,22 +82,31 @@ export function HeaderNavbar({
 
         <div className="ml-auto hidden items-center gap-2.5 lg:flex">
           <SearchTriggerButton size={size} />
-          {ctas.map((item) => (
-            <Button
-              asChild
-              key={`${item.label}-${item.href}`}
-              size={ctaButtonSizes[size]}
-              variant={item.variant ?? 'default'}
-            >
-              <a
+          {ctas.map((item) =>
+            item.variant === 'link' ? (
+              <ContentLink
                 href={item.href}
-                rel={item.newTab ? 'noreferrer' : undefined}
-                target={item.newTab ? '_blank' : undefined}
+                key={`${item.label}-${item.href}`}
+                label={item.label}
+                openInNewTab={item.newTab}
+              />
+            ) : (
+              <Button
+                asChild
+                key={`${item.label}-${item.href}`}
+                size={ctaButtonSizes[size]}
+                variant={item.variant ?? 'default'}
               >
-                {item.label}
-              </a>
-            </Button>
-          ))}
+                <a
+                  href={item.href}
+                  rel={item.newTab ? 'noreferrer' : undefined}
+                  target={item.newTab ? '_blank' : undefined}
+                >
+                  <ActionButtonContent label={item.label} showArrow={item.showArrow} />
+                </a>
+              </Button>
+            ),
+          )}
         </div>
 
         <div className="ml-auto flex items-center gap-1 lg:hidden">

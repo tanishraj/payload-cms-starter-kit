@@ -9,6 +9,7 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { ContentLink } from '@/components/ContentLink'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { newsEventObjectPositionClasses, type PublicNewsEventCard } from '@/lib/newsEventsShared'
@@ -116,9 +117,9 @@ export function NewsEventsHighlights({
               className={cn('flex max-w-3xl flex-col gap-4', alignmentClasses[resolvedAlignment])}
             >
               {eyebrow ? (
-                <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+                <SectionEyebrow surface={appearance?.background ?? 'none'}>
                   {eyebrow}
-                </p>
+                </SectionEyebrow>
               ) : null}
               <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
                 {title}

@@ -1,5 +1,4 @@
-import { ArrowUpRight } from 'lucide-react'
-
+import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { BorderButton } from '@/components/shadcnblocks/border-button'
 import { Services21, type Services21Item, type Services21Alignment } from '@/components/services21'
 import { ContentLink } from '@/components/ContentLink'
@@ -81,7 +80,8 @@ export function Services21BlockComponent({
   const resolvedEyebrow = eyebrow?.trim()
   const resolvedContentAlignment = contentAlignment ?? 'left'
   const action = resolvedActions[0]
-  const actionVariant: ActionButtonMode = action?.variant ?? 'default'
+  const actionVariant: ActionButtonMode =
+    action?.variant === 'link' ? 'default' : (action?.variant ?? 'default')
   const hasServices = resolvedServices.length > 0
   const actionNode = action ? (
     actionMode === 'button' ? (
@@ -95,8 +95,7 @@ export function Services21BlockComponent({
           rel={action.openInNewTab ? 'noreferrer' : undefined}
           target={action.openInNewTab ? '_blank' : undefined}
         >
-          {action.label}
-          <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:rotate-45" />
+          <ActionButtonContent label={action.label} showArrow={action.showArrow} />
         </a>
       </BorderButton>
     ) : (

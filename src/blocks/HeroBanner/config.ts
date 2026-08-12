@@ -19,6 +19,9 @@ const pageCondition = (_data: unknown, siblingData: { linkType?: LinkType | null
 const customUrlCondition = (_data: unknown, siblingData: { linkType?: LinkType | null }) =>
   siblingData?.linkType === 'custom'
 
+const buttonArrowCondition = (_data: unknown, siblingData: { variant?: string | null }) =>
+  siblingData?.variant !== 'link'
+
 const createLinkFields = (): Field[] => [
   {
     name: 'label',
@@ -169,6 +172,16 @@ const buttonsField = {
               ],
               required: true,
             } satisfies SelectField,
+            {
+              name: 'showArrow',
+              label: 'Show arrow',
+              type: 'checkbox',
+              defaultValue: false,
+              admin: {
+                condition: buttonArrowCondition,
+                description: 'Adds a trailing arrow to this button.',
+              },
+            } satisfies CheckboxField,
           ],
         },
       ],

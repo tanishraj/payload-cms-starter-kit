@@ -126,6 +126,7 @@ describe('Rating Spotlight', () => {
           href: '/reviews/new',
           label: 'Leave a review',
           openInNewTab: false,
+          showArrow: false,
           variant: 'default',
         },
       ],

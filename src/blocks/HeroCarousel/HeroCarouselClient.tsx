@@ -5,7 +5,10 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
 
+import { ActionButtonContent } from '@/components/ActionButtonContent'
+import { ContentLink } from '@/components/ContentLink'
 import { Button } from '@/components/ui/button'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { cn } from '@/lib/utils'
 
@@ -17,6 +20,7 @@ export type CarouselSlide = {
     href: string
     label: string
     openInNewTab?: boolean
+    showArrow: boolean
     variant?: 'default' | 'link' | 'outline' | 'secondary'
   }>
   description?: string | null
@@ -161,9 +165,12 @@ export function HeroCarouselClient({
                     )}
                   >
                     {slide.eyebrow ? (
-                      <p className="font-mono text-xs font-semibold uppercase tracking-[0.28em] text-white/75">
+                      <SectionEyebrow
+                        className="tracking-[0.28em] text-white/75"
+                        surface="darkOverlay"
+                      >
                         {slide.eyebrow}
-                      </p>
+                      </SectionEyebrow>
                     ) : null}
                     {slide.title ? (
                       <Heading className="font-serif font-semibold text-5xl leading-none tracking-tight text-balance md:text-6xl lg:text-7xl">
@@ -182,22 +189,35 @@ export function HeroCarouselClient({
                           contentAlignmentClasses[contentAlignment].actions,
                         )}
                       >
-                        {slide.buttons.map((button) => (
-                          <Button
-                            asChild
-                            key={`${button.label}-${button.href}`}
-                            size="lg"
-                            variant={button.variant ?? 'secondary'}
-                          >
-                            <a
+                        {slide.buttons.map((button) =>
+                          button.variant === 'link' ? (
+                            <ContentLink
+                              className="text-white"
                               href={button.href}
-                              rel={button.openInNewTab ? 'noreferrer' : undefined}
-                              target={button.openInNewTab ? '_blank' : undefined}
+                              key={`${button.label}-${button.href}`}
+                              label={button.label}
+                              openInNewTab={button.openInNewTab}
+                            />
+                          ) : (
+                            <Button
+                              asChild
+                              key={`${button.label}-${button.href}`}
+                              size="lg"
+                              variant={button.variant ?? 'secondary'}
                             >
-                              {button.label}
-                            </a>
-                          </Button>
-                        ))}
+                              <a
+                                href={button.href}
+                                rel={button.openInNewTab ? 'noreferrer' : undefined}
+                                target={button.openInNewTab ? '_blank' : undefined}
+                              >
+                                <ActionButtonContent
+                                  label={button.label}
+                                  showArrow={button.showArrow}
+                                />
+                              </a>
+                            </Button>
+                          ),
+                        )}
                       </div>
                     ) : null}
                   </div>

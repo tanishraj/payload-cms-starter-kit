@@ -4,6 +4,7 @@ import { ChevronRight } from 'lucide-react'
 import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
 import { regularBlockMobilePaddingClasses } from '@/blocks/shared/blockSpacing'
 import { ContentActions } from '@/components/ContentActions'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { getMediaImageProps } from '@/lib/media'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getPageHref } from '@/lib/pagePaths'
@@ -145,9 +146,9 @@ export function PageHeaderBlockComponent({
         <div className="relative mx-auto w-full max-w-screen-2xl px-4 py-10 md:py-14">
           <Breadcrumbs items={resolvedBreadcrumbs} />
           {eyebrow?.trim() ? (
-            <p className="mb-2 font-mono text-xs font-semibold uppercase tracking-[0.24em] text-white/70">
+            <SectionEyebrow className="mb-2 text-white/70" surface="darkOverlay">
               {eyebrow.trim()}
-            </p>
+            </SectionEyebrow>
           ) : null}
           <h1
             className={cn(
@@ -192,9 +193,9 @@ export function PageHeaderBlockComponent({
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
             <div className="flex flex-1 flex-col gap-4">
               {eyebrow?.trim() ? (
-                <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+                <SectionEyebrow surface={appearance?.background ?? 'none'}>
                   {eyebrow.trim()}
-                </p>
+                </SectionEyebrow>
               ) : null}
               <h1 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
                 {resolvedTitle}
@@ -243,14 +244,12 @@ export function PageHeaderBlockComponent({
       <div className="mx-auto w-full max-w-screen-2xl px-4">
         <Breadcrumbs items={resolvedBreadcrumbs} />
         {eyebrow?.trim() ? (
-          <p
-            className={cn(
-              'mb-2 font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70',
-              isCenter && 'text-center',
-            )}
+          <SectionEyebrow
+            className={cn('mb-2', isCenter && 'text-center')}
+            surface={appearance?.background ?? 'none'}
           >
             {eyebrow.trim()}
-          </p>
+          </SectionEyebrow>
         ) : null}
         <h1
           className={cn(

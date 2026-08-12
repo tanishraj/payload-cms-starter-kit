@@ -11,6 +11,7 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { ContentActions } from '@/components/ContentActions'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 import { resolveCardSurface, type CardSurfaceClasses } from '@/blocks/shared/cardSurface'
@@ -104,9 +105,9 @@ export function AwardsListBlockComponent({
             )}
           >
             {eyebrow?.trim() ? (
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+              <SectionEyebrow surface={sectionBackground}>
                 {eyebrow.trim()}
-              </p>
+              </SectionEyebrow>
             ) : null}
             {title?.trim() ? (
               <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">

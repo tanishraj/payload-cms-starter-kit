@@ -7,6 +7,7 @@ import {
   regularBlockMobilePaddingClasses,
 } from '@/blocks/shared/blockSpacing'
 import { Separator } from '@/components/ui/separator'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCardSurface } from '@/blocks/shared/cardSurface'
 import { cn } from '@/lib/utils'
 
@@ -88,16 +89,16 @@ function ContentHighlightsIntro({
   className,
   description,
   eyebrow,
+  surface,
   title,
 }: Pick<ContentHighlightsProps, 'actions' | 'description' | 'eyebrow' | 'title'> & {
   className?: string
+  surface: BlockBackground
 }) {
   return (
     <div className={cn('flex max-w-3xl flex-col gap-4', className)}>
       {eyebrow ? (
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
-          {eyebrow}
-        </p>
+        <SectionEyebrow surface={surface}>{eyebrow}</SectionEyebrow>
       ) : null}
       <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
         {title}
@@ -267,6 +268,7 @@ export function ContentHighlights({
               className={splitAlignmentClasses[resolvedSplitAlignment]}
               description={description}
               eyebrow={eyebrow}
+              surface={sectionBackground}
               title={title}
             />
             <ContentHighlightsItems
@@ -284,6 +286,7 @@ export function ContentHighlights({
                   className={horizontalAlignmentClasses[resolvedAlignment]}
                   description={description}
                   eyebrow={eyebrow}
+                  surface={sectionBackground}
                   title={title}
                 />
                 {actions ? (
@@ -298,6 +301,7 @@ export function ContentHighlights({
                 className={horizontalAlignmentClasses[resolvedAlignment]}
                 description={description}
                 eyebrow={eyebrow}
+                surface={sectionBackground}
                 title={title}
               />
             )}

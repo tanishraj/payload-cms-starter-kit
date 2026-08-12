@@ -1,6 +1,7 @@
 import type { Footer56Block as Footer56BlockType, Page } from '@/payload-types'
 
 import { getMediaImageProps } from '@/lib/media'
+import { resolveCmsActions } from '@/lib/cmsLinks'
 import { getPageHref } from '@/lib/pagePaths'
 import { resolveHeaderLink } from '@/lib/headerNavigation'
 import { Footer56 } from '@/components/footer56'
@@ -129,8 +130,10 @@ const resolveLegalLinks = (
 export function Footer56BlockComponent({
   bottomLinks,
   copyrightText,
+  ctaButtons,
   customLogoDark,
   customLogoLight,
+  description,
   linkGroups,
   appearance,
   logoHeight,
@@ -174,8 +177,10 @@ export function Footer56BlockComponent({
 
   return (
     <Footer56
+      actions={resolveCmsActions(ctaButtons)}
       addressLines={siteAddress?.split('\n').map((line) => line.trim()).filter(Boolean)}
       copyright={copyrightText ?? undefined}
+      description={description ?? undefined}
       legalLinks={resolveLegalLinks(
         bottomLinks,
         privacyPolicyPage,

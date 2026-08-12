@@ -13,7 +13,9 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 import { Button } from '@/components/ui/button'
+import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { ContentLink } from '@/components/ContentLink'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import type { CmsActionVariant, ResolvedCmsAction } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 import {
@@ -125,7 +127,10 @@ function MediaCard({
                   rel={item.action.openInNewTab ? 'noreferrer' : undefined}
                   target={item.action.openInNewTab ? '_blank' : undefined}
                 >
-                  {item.action.label}
+                  <ActionButtonContent
+                    label={item.action.label}
+                    showArrow={item.action.showArrow}
+                  />
                 </a>
               </Button>
             ) : (
@@ -188,9 +193,7 @@ export function MediaCarouselClient({
           )}
         >
           {eyebrow ? (
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
-              {eyebrow}
-            </p>
+            <SectionEyebrow surface={sectionBackground}>{eyebrow}</SectionEyebrow>
           ) : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
             {title}

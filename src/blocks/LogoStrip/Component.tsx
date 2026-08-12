@@ -6,6 +6,7 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { ContentActions } from '@/components/ContentActions'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaAbsoluteUrl, isMediaDoc } from '@/lib/media'
 import type { Media } from '@/payload-types'
@@ -90,9 +91,9 @@ export function LogoStripBlockComponent({
         {hasHeader ? (
           <div className={cn('mb-10 flex flex-col gap-4', isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start')}>
             {eyebrow?.trim() ? (
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
+              <SectionEyebrow surface={appearance?.background ?? 'none'}>
                 {eyebrow.trim()}
-              </p>
+              </SectionEyebrow>
             ) : null}
             {title?.trim() ? (
               <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
