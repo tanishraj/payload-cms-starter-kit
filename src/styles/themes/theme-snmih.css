@@ -1,4 +1,6 @@
 :root[data-theme-color='snmih'] {
+  --snmih-accent: #9dd4a6;
+  --snmih-accent-emphasis: #2b833f;
   --background: oklch(1 0 0);
   --success: oklch(0.55 0.14 150);
   --foreground: oklch(0.209255 0.032306 262.410);
@@ -71,19 +73,22 @@
 
 /* Heading italic accent — soft green, decorative on all backgrounds. */
 :root[data-theme-color='snmih'] :is(h1, h2, h3) em {
-  color: #9dd4a6;
+  color: var(--snmih-accent);
   font-style: italic;
 }
 
-/* Section eyebrows use direct brand accents without expanding the theme token API. */
+/* Section eyebrows: emphasis green on light surfaces, accent green on dark/primary. */
 :root[data-theme-color='snmih']:not(.dark)
   :is(
     [data-section-eyebrow-surface='none'],
     [data-section-eyebrow-surface='secondary'],
     [data-section-eyebrow-surface='muted'],
-    [data-section-eyebrow-surface='accent']
+    [data-section-eyebrow-surface='accent'],
+    [data-section-eyebrow-surface='gradient-secondary'],
+    [data-section-eyebrow-surface='gradient-muted'],
+    [data-section-eyebrow-surface='gradient-accent']
   ) {
-  color: #2b833f;
+  color: var(--snmih-accent-emphasis);
 }
 
 :root[data-theme-color='snmih']:not(.dark) [data-section-eyebrow-surface='primary'],
@@ -92,8 +97,11 @@
     [data-section-eyebrow-surface='none'],
     [data-section-eyebrow-surface='secondary'],
     [data-section-eyebrow-surface='muted'],
-    [data-section-eyebrow-surface='accent']
+    [data-section-eyebrow-surface='accent'],
+    [data-section-eyebrow-surface='gradient-secondary'],
+    [data-section-eyebrow-surface='gradient-muted'],
+    [data-section-eyebrow-surface='gradient-accent']
   ),
 :root[data-theme-color='snmih'] [data-section-eyebrow-surface='darkOverlay'] {
-  color: #9dd4a6;
+  color: var(--snmih-accent);
 }

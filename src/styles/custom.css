@@ -1,3 +1,16 @@
+/* Section gradient backgrounds — fade from surface color to page background */
+.bg-gradient-secondary {
+  background: linear-gradient(180deg, var(--secondary) 0%, var(--background) 100%);
+}
+
+.bg-gradient-muted {
+  background: linear-gradient(180deg, var(--muted) 0%, var(--background) 100%);
+}
+
+.bg-gradient-accent {
+  background: linear-gradient(180deg, var(--accent) 0%, var(--background) 100%);
+}
+
 /* Feature Matrix internal-divider motion */
 .feature-matrix-divider-beam {
   position: absolute;

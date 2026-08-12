@@ -16,6 +16,9 @@ const backgroundField = {
     { label: 'Secondary', value: 'secondary' },
     { label: 'Muted', value: 'muted' },
     { label: 'Accent', value: 'accent' },
+    { label: 'Gradient: Secondary', value: 'gradient-secondary' },
+    { label: 'Gradient: Muted', value: 'gradient-muted' },
+    { label: 'Gradient: Accent', value: 'gradient-accent' },
   ],
   required: true,
 } satisfies SelectField

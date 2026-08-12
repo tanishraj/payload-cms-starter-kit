@@ -307,6 +307,7 @@ function IconTopItem({
 }
 
 export function IconGridBlockComponent({
+  accentTitle,
   actionMode,
   actionVariant,
   actions,

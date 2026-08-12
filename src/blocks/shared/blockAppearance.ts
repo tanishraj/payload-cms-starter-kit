@@ -1,6 +1,14 @@
 import { cn } from '@/lib/utils'
 
-export type BlockBackground = 'none' | 'primary' | 'secondary' | 'muted' | 'accent'
+export type BlockBackground =
+  | 'none'
+  | 'primary'
+  | 'secondary'
+  | 'muted'
+  | 'accent'
+  | 'gradient-secondary'
+  | 'gradient-muted'
+  | 'gradient-accent'
 
 export type BlockAppearance = {
   background?: BlockBackground | null
@@ -13,6 +21,9 @@ const backgroundClasses = {
   secondary: 'bg-secondary',
   muted: 'bg-muted',
   accent: 'bg-accent',
+  'gradient-secondary': 'bg-gradient-secondary',
+  'gradient-muted': 'bg-gradient-muted',
+  'gradient-accent': 'bg-gradient-accent',
 } as const
 
 const surfaceForegroundClasses = {
@@ -21,6 +32,9 @@ const surfaceForegroundClasses = {
   secondary: 'text-secondary-foreground',
   muted: 'text-foreground',
   accent: 'text-accent-foreground',
+  'gradient-secondary': 'text-secondary-foreground',
+  'gradient-muted': 'text-foreground',
+  'gradient-accent': 'text-accent-foreground',
 } as const
 
 const borderClasses = {
