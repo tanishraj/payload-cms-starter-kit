@@ -2,7 +2,10 @@ import Image from 'next/image'
 import { Star, type LucideIcon } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
 import {
   regularBlockMobilePaddingClasses,
   regularBlockContainerClasses,
@@ -13,10 +16,10 @@ import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import type { Media } from '@/payload-types'
 import { cn } from '@/lib/utils'
-
+import { resolveCardSurface } from '@/blocks/shared/cardSurface'
 
 type BentoItem = {
-  accentColor?: 'none' | 'primary' | 'secondary' | 'accent' | null
+  accentColor?: 'none' | 'default' | 'primary' | 'secondary' | 'muted' | 'accent' | null
   description?: string | null
   eyebrow?: string | null
   icon?: string | null
@@ -38,34 +41,6 @@ type BentoGridBlockLike = {
   title?: string | null
 }
 
-const accentBgClasses = {
-  none: 'bg-card',
-  primary: 'bg-primary',
-  secondary: 'bg-secondary',
-  accent: 'bg-accent',
-} as const
-
-const accentTextClasses = {
-  none: 'text-foreground',
-  primary: 'text-primary-foreground',
-  secondary: 'text-secondary-foreground',
-  accent: 'text-accent-foreground',
-} as const
-
-const accentMutedClasses = {
-  none: 'text-muted-foreground',
-  primary: 'text-primary-foreground/80',
-  secondary: 'text-secondary-foreground/80',
-  accent: 'text-accent-foreground/80',
-} as const
-
-const accentIconClasses = {
-  none: 'bg-primary/10 text-primary',
-  primary: 'bg-primary-foreground/20 text-primary-foreground',
-  secondary: 'bg-secondary-foreground/10 text-secondary-foreground',
-  accent: 'bg-accent-foreground/10 text-accent-foreground',
-} as const
-
 const cellColSpan = {
   full: 'col-span-1 md:col-span-3',
   large: 'col-span-1 md:col-span-2',
@@ -75,16 +50,20 @@ const cellColSpan = {
 
 function BentoCell({ item }: { item: BentoItem }) {
   const image = getMediaImageProps({ media: item.image, preset: 'generic' })
-  const Icon = item.icon ? (((LucideIcons as Record<string, unknown>)[item.icon] as LucideIcon | undefined) ?? Star) : null
-  const accent = (item.accentColor ?? 'none') as keyof typeof accentBgClasses
+  const Icon = item.icon
+    ? (((LucideIcons as Record<string, unknown>)[item.icon] as LucideIcon | undefined) ?? Star)
+    : null
+  const surface = resolveCardSurface(item.accentColor === 'none' ? 'default' : item.accentColor)
   const isFull = item.size === 'full'
   const isLarge = item.size === 'large'
 
   const Inner = (
     <div
+      data-card-background={surface.value}
       className={cn(
-        'group relative flex h-full min-h-45 flex-col justify-end overflow-hidden rounded-2xl border border-border p-6 transition-all',
-        accentBgClasses[accent],
+        'group relative flex h-full min-h-45 flex-col justify-end overflow-hidden rounded-2xl border p-6 transition-all',
+        surface.className,
+        surface.divider,
         image ? 'min-h-60' : '',
         isLarge ? 'min-h-70' : '',
         item.linkUrl && 'cursor-pointer hover:shadow-lg hover:scale-[1.01]',
@@ -109,7 +88,8 @@ function BentoCell({ item }: { item: BentoItem }) {
         <div
           className={cn(
             'absolute top-5 left-5 flex size-10 items-center justify-center rounded-lg',
-            accentIconClasses[accent],
+            surface.value === 'primary' ? 'bg-primary-foreground/15' : 'bg-primary/10',
+            surface.icon,
           )}
         >
           <Icon className="size-5" />
@@ -122,7 +102,7 @@ function BentoCell({ item }: { item: BentoItem }) {
           <p
             className={cn(
               'font-mono text-xs font-semibold uppercase tracking-[0.24em]',
-              image ? 'text-white/70' : accentMutedClasses[accent],
+              image ? 'text-white/70' : surface.secondary,
             )}
           >
             {item.eyebrow.trim()}
@@ -133,19 +113,14 @@ function BentoCell({ item }: { item: BentoItem }) {
             className={cn(
               'font-sans font-semibold leading-snug',
               isFull || isLarge ? 'text-xl md:text-2xl' : 'text-base',
-              image ? 'text-white' : accentTextClasses[accent],
+              image ? 'text-white' : 'text-current',
             )}
           >
             {item.title.trim()}
           </h3>
         ) : null}
         {item.description?.trim() ? (
-          <p
-            className={cn(
-              'text-sm leading-relaxed',
-              image ? 'text-white/80' : accentMutedClasses[accent],
-            )}
-          >
+          <p className={cn('text-sm leading-relaxed', image ? 'text-white/80' : surface.secondary)}>
             {item.description.trim()}
           </p>
         ) : null}
@@ -185,9 +160,11 @@ export function BentoGridBlockComponent({
   const resolvedActions = resolveCmsActions(actions)
 
   return (
-    <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
+    <section
+      className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}
+    >
       <div className={regularBlockContainerClasses}>
-        {(eyebrow?.trim() || title?.trim() || description?.trim() || resolvedActions.length > 0) ? (
+        {eyebrow?.trim() || title?.trim() || description?.trim() || resolvedActions.length > 0 ? (
           <div
             className={cn(
               'mb-12 flex flex-col gap-4',

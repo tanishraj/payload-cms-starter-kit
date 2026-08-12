@@ -1,9 +1,13 @@
 import type { ArrayField, Block, CheckboxField, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
-import { createContentActionModeField, createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import {
+  createContentActionModeField,
+  createContentActionsField,
+} from '@/blocks/shared/contentActionsFields'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 
 const teamShowcaseMembersField = {
   name: 'members',
@@ -15,26 +19,30 @@ const teamShowcaseMembersField = {
     initCollapsed: true,
   },
   fields: [
-    {
-      name: 'image',
-      type: 'upload',
-      relationTo: 'media',
-      required: true,
-    },
-    {
-      name: 'name',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'role',
-      label: 'Role / Designation',
-      type: 'text',
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-    },
+    createCardTabs({
+      contentFields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+        },
+        {
+          name: 'name',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'role',
+          label: 'Role / Designation',
+          type: 'text',
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+        },
+      ],
+    }),
   ],
 } satisfies ArrayField
 
@@ -66,7 +74,7 @@ export const TeamShowcaseBlock: Block = {
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             createContentActionModeField(),

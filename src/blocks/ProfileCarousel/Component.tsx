@@ -22,6 +22,7 @@ type ProfileCarouselBlockLike = {
   eyebrow?: string | null
   profiles?:
     | {
+        cardBackground?: string | null
         image?: unknown
         imagePosition?: ProfileCarouselImagePosition | null
         name?: string | null
@@ -58,6 +59,7 @@ export function ProfileCarouselBlockComponent({
     return name && image
       ? [
           {
+            cardBackground: profile.cardBackground,
             image,
             imagePosition: profile.imagePosition,
             name,

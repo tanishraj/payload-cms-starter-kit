@@ -71,7 +71,7 @@ export const ReviewFeedBlock: Block = {
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             {

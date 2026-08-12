@@ -1,7 +1,11 @@
 import type { ArrayField, Block, RadioField, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { createContentActionsField, createContentActionModeField } from '@/blocks/shared/contentActionsFields'
+import { createCardTabs } from '@/blocks/shared/cardThemeFields'
+import {
+  createContentActionsField,
+  createContentActionModeField,
+} from '@/blocks/shared/contentActionsFields'
 import { createIconField } from '@/blocks/shared/iconField'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
@@ -26,48 +30,56 @@ const itemsField: ArrayField = {
     description: 'Each item shows an icon, title, and optional description.',
   },
   fields: [
-    createIconField({ required: true }),
-    {
-      name: 'title',
-      type: 'text',
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-      admin: {
-        description: 'Short supporting text shown below the title.',
+    createCardTabs({
+      backgroundFieldOptions: {
+        adminDescription:
+          'Applied to the Card presentation. Minimal and Icon Top remain intentionally unboxed.',
       },
-    },
-    {
-      name: 'linkType',
-      label: 'Link',
-      type: 'radio',
-      defaultValue: 'none',
-      options: [
-        { label: 'None', value: 'none' },
-        { label: 'Page', value: 'page' },
-        { label: 'Custom URL', value: 'custom' },
+      contentFields: [
+        createIconField({ required: true }),
+        {
+          name: 'title',
+          type: 'text',
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          admin: {
+            description: 'Short supporting text shown below the title.',
+          },
+        },
+        {
+          name: 'linkType',
+          label: 'Link',
+          type: 'radio',
+          defaultValue: 'none',
+          options: [
+            { label: 'None', value: 'none' },
+            { label: 'Page', value: 'page' },
+            { label: 'Custom URL', value: 'custom' },
+          ],
+          admin: { layout: 'horizontal' },
+        } satisfies RadioField,
+        {
+          name: 'page',
+          type: 'relationship',
+          relationTo: 'pages',
+          admin: { condition: isPageLink },
+        },
+        {
+          name: 'url',
+          label: 'Custom URL',
+          type: 'text',
+          admin: { condition: isCustomLink },
+        },
+        {
+          name: 'openInNewTab',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: { condition: hasLink },
+        },
       ],
-      admin: { layout: 'horizontal' },
-    } satisfies RadioField,
-    {
-      name: 'page',
-      type: 'relationship',
-      relationTo: 'pages',
-      admin: { condition: isPageLink },
-    },
-    {
-      name: 'url',
-      label: 'Custom URL',
-      type: 'text',
-      admin: { condition: isCustomLink },
-    },
-    {
-      name: 'openInNewTab',
-      type: 'checkbox',
-      defaultValue: false,
-      admin: { condition: hasLink },
-    },
+    }),
   ],
 }
 
@@ -105,7 +117,7 @@ export const IconGridBlock: Block = {
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             createContentActionModeField(),

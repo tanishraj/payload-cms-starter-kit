@@ -126,7 +126,7 @@ export const PageHeaderBlock: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Theme Settings',
           fields: [
             {
               name: 'variant',

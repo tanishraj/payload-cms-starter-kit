@@ -71,7 +71,7 @@ describe('Image Mosaic', () => {
 
       return (
         tabsField.tabs
-          .find(({ label }) => label === 'Layout & Theme')
+          .find(({ label }) => label === 'Theme Settings')
           ?.fields.flatMap((item) => ('name' in item ? [item.name] : [])) ?? []
       )
     }
@@ -86,7 +86,7 @@ describe('Image Mosaic', () => {
     }
 
     const layoutFields =
-      tabsField.tabs.find(({ label }) => label === 'Layout & Theme')?.fields ?? []
+      tabsField.tabs.find(({ label }) => label === 'Theme Settings')?.fields ?? []
     const modeField = layoutFields.find((field) => 'name' in field && field.name === 'mode')
     const variantField = layoutFields.find((field) => 'name' in field && field.name === 'variant')
 
@@ -117,11 +117,11 @@ describe('Image Mosaic', () => {
       type: string
     }
     const contentTab = tabsField.tabs.find(({ label }) => label === 'Content')
-    const layoutTab = tabsField.tabs.find(({ label }) => label === 'Layout & Theme')
+    const layoutTab = tabsField.tabs.find(({ label }) => label === 'Theme Settings')
     const itemsField = getField(contentTab?.fields ?? [], 'items')
 
     expect(tabsField.type).toBe('tabs')
-    expect(tabsField.tabs.map(({ label }) => label)).toEqual(['Content', 'Layout & Theme'])
+    expect(tabsField.tabs.map(({ label }) => label)).toEqual(['Content', 'Theme Settings'])
     expect(getField(contentTab?.fields ?? [], 'title')).toMatchObject({
       required: true,
       type: 'text',

@@ -39,7 +39,7 @@ describe('News & Events editorial model', () => {
     ])
     expect(getTabs(NewsEventsSettings.fields).map(({ label }) => label)).toEqual([
       'Content',
-      'Layout & Theme',
+      'Theme Settings',
       'SEO',
     ])
   })

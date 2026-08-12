@@ -8,6 +8,7 @@ import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
+import { resolveCardSurface } from '@/blocks/shared/cardSurface'
 import { cn } from '@/lib/utils'
 import {
   regularBlockContainerClasses,
@@ -18,6 +19,7 @@ type TeamShowcaseAlignment = 'left' | 'center' | 'right'
 type TeamShowcaseSize = 'none' | 'compact' | 'default' | 'comfortable'
 
 interface TeamShowcaseMember {
+  cardBackground?: string | null
   image: string
   name: string
   role: string
@@ -31,14 +33,21 @@ interface TeamShowcaseMemberCardProps {
 
 const TeamShowcaseMemberCard = memo(
   ({ member, highlighted = false }: TeamShowcaseMemberCardProps) => {
+    const surface = resolveCardSurface(member.cardBackground)
     return (
       <div
-        className={cn('flex flex-col gap-4 px-2 md:px-5 md:pt-8', highlighted && 'md:py-0 md:pb-4')}
+        className={cn(
+          'flex h-full flex-col gap-4 px-2 md:px-5 md:pt-8',
+          surface.className,
+          highlighted && 'md:py-0 md:pb-4',
+        )}
+        data-card-background={surface.value}
       >
         <div
           className={cn(
             'flex flex-col gap-2 pt-4 md:flex-row md:items-center',
             !highlighted && 'border-b pb-4 md:border-b-2',
+            surface.divider,
           )}
         >
           <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded border md:size-12 md:aspect-auto">
@@ -53,12 +62,12 @@ const TeamShowcaseMemberCard = memo(
 
           <div className="flex flex-col gap-1 tracking-tight">
             <p className="line-clamp-1">{member.name}</p>
-            <p className="line-clamp-1 text-sm text-current/70">{member.role}</p>
+            <p className={cn('line-clamp-1 text-sm', surface.secondary)}>{member.role}</p>
           </div>
         </div>
         {highlighted && (
           <>
-            <span className="h-0.5 w-full bg-linear-to-r from-primary/30 via-primary to-primary/30" />
+            <span className={cn('h-0.5 w-full bg-current opacity-30', surface.icon)} />
             <p className="line-clamp-2 text-xs">{member.description}</p>
           </>
         )}
@@ -183,7 +192,7 @@ const TeamShowcase = ({
                           bounce: 0.1,
                         },
                       }}
-                      className="pointer-events-none absolute inset-0 z-10 hidden h-max rounded-2xl bg-background text-foreground shadow-lg md:block dark:border"
+                      className="pointer-events-none absolute inset-0 z-10 hidden h-max overflow-hidden rounded-2xl shadow-lg md:block"
                     >
                       <TeamShowcaseMemberCard member={member} highlighted />
                     </motion.div>

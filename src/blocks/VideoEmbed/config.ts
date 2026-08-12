@@ -112,7 +112,7 @@ export const VideoEmbedBlock: Block = {
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             {

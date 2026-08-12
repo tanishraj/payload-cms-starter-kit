@@ -50,7 +50,7 @@ export const AnnouncementBlock: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             {

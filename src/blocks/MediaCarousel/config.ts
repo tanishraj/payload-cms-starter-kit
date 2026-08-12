@@ -1,6 +1,7 @@
 import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import {
   createContentActionModeField,
@@ -19,29 +20,37 @@ const itemsField: ArrayField = {
     description: 'Each slide can display a video or image. Videos play on hover automatically.',
   },
   fields: [
-    {
-      name: 'media',
-      label: 'Media',
-      type: 'upload',
-      relationTo: 'media',
-      required: true,
-      admin: {
-        description: 'Upload a video (.mp4, .webm) or image. Type is detected from the file.',
-      },
-    },
-    createIconField({ label: 'Icon Badge', description: 'Optional Lucide icon overlaid on the thumbnail — e.g. "Play", "Star". Browse all icons at lucide.dev/icons' }),
-    {
-      name: 'title',
-      type: 'text',
-    },
-    {
-      name: 'summary',
-      type: 'textarea',
-      admin: {
-        description: 'Short supporting text shown below the title.',
-      },
-    },
-    createContentActionsField({ maxRows: 1, label: 'Action', name: 'actions' }),
+    createCardTabs({
+      contentFields: [
+        {
+          name: 'media',
+          label: 'Media',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+          admin: {
+            description: 'Upload a video (.mp4, .webm) or image. Type is detected from the file.',
+          },
+        },
+        createIconField({
+          label: 'Icon Badge',
+          description:
+            'Optional Lucide icon overlaid on the thumbnail — e.g. "Play", "Star". Browse all icons at lucide.dev/icons',
+        }),
+        {
+          name: 'title',
+          type: 'text',
+        },
+        {
+          name: 'summary',
+          type: 'textarea',
+          admin: {
+            description: 'Short supporting text shown below the title.',
+          },
+        },
+        createContentActionsField({ maxRows: 1, label: 'Action', name: 'actions' }),
+      ],
+    }),
   ],
 }
 
@@ -75,12 +84,16 @@ export const MediaCarouselBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            createContentActionsField({ label: 'Section Actions', maxRows: 2, name: 'sectionActions' }),
+            createContentActionsField({
+              label: 'Section Actions',
+              maxRows: 2,
+              name: 'sectionActions',
+            }),
             itemsField,
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             createContentActionModeField(),

@@ -118,7 +118,7 @@ export const QaAccordionBlock: Block = {
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             {

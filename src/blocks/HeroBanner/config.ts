@@ -155,7 +155,7 @@ const buttonsField = {
           fields: createLinkFields(),
         },
         {
-          label: 'Layout & Theme',
+          label: 'Theme Settings',
           fields: [
             {
               name: 'variant',
@@ -214,7 +214,7 @@ export const HeroBannerBlock: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             horizontalAlignmentField,

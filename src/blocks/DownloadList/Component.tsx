@@ -1,4 +1,7 @@
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
 import {
   regularBlockMobilePaddingClasses,
   regularBlockContainerClasses,
@@ -12,6 +15,7 @@ import { cn } from '@/lib/utils'
 import { DownloadListClient, type ResolvedDownload } from './DownloadListClient'
 
 type DownloadItem = {
+  cardBackground?: string | null
   category?: string | null
   description?: string | null
   externalUrl?: string | null
@@ -71,23 +75,28 @@ export function DownloadListBlockComponent({
     const href = fileUrl ?? item.externalUrl?.trim()
     if (!href) return []
 
-    return [{
-      id: item.id ?? index,
-      title: item.title!.trim(),
-      description: item.description?.trim() || undefined,
-      category: item.category?.trim() || undefined,
-      href,
-      isExternal: !fileUrl,
-      fileType: detectFileType(item),
-    }]
+    return [
+      {
+        id: item.id ?? index,
+        title: item.title!.trim(),
+        description: item.description?.trim() || undefined,
+        category: item.category?.trim() || undefined,
+        cardBackground: item.cardBackground ?? undefined,
+        href,
+        isExternal: !fileUrl,
+        fileType: detectFileType(item),
+      },
+    ]
   })
 
   if (resolvedDownloads.length === 0) return null
 
   return (
-    <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
+    <section
+      className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}
+    >
       <div className={regularBlockContainerClasses}>
-        {(eyebrow?.trim() || title?.trim() || description?.trim() || resolvedActions.length > 0) ? (
+        {eyebrow?.trim() || title?.trim() || description?.trim() || resolvedActions.length > 0 ? (
           <div
             className={cn(
               'mb-12 flex flex-col gap-4',

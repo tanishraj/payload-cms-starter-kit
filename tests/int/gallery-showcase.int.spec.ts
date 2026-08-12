@@ -66,7 +66,7 @@ describe('Gallery Showcase', () => {
       type: string
     }
     const contentTab = tabsField.tabs.find(({ label }) => label === 'Content')
-    const layoutTab = tabsField.tabs.find(({ label }) => label === 'Layout & Theme')
+    const layoutTab = tabsField.tabs.find(({ label }) => label === 'Theme Settings')
     const imagesField = getField(contentTab?.fields ?? [], 'images')
     const imageField = getField(imagesField?.fields ?? [], 'image')
     const imagePositionField = getField(imagesField?.fields ?? [], 'imagePosition')
@@ -74,7 +74,7 @@ describe('Gallery Showcase', () => {
     const sizeField = getField(layoutTab?.fields ?? [], 'size')
 
     expect(tabsField.type).toBe('tabs')
-    expect(tabsField.tabs.map(({ label }) => label)).toEqual(['Content', 'Layout & Theme'])
+    expect(tabsField.tabs.map(({ label }) => label)).toEqual(['Content', 'Theme Settings'])
     expect(getField(contentTab?.fields ?? [], 'eyebrow')?.type).toBe('text')
     expect(getField(contentTab?.fields ?? [], 'title')).toMatchObject({
       required: true,

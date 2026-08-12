@@ -1,6 +1,7 @@
 import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
@@ -14,43 +15,56 @@ const downloadsField: ArrayField = {
     description: 'Files or links available for download.',
   },
   fields: [
-    {
-      name: 'title',
-      type: 'text',
-    },
-    {
-      name: 'description',
-      type: 'text',
-      admin: { description: 'Brief note about the file (e.g. "Application form for 2025 intake").' },
-    },
-    {
-      name: 'category',
-      type: 'text',
-      admin: { description: 'Optional group label (e.g. "Prospectus", "Forms", "Reports").' },
-    },
-    {
-      name: 'file',
-      label: 'File Upload',
-      type: 'upload',
-      relationTo: 'media',
-      admin: { description: 'Upload a file to Payload media. Takes priority over external URL.' },
-    },
-    {
-      name: 'externalUrl',
-      label: 'External URL',
-      type: 'text',
-      admin: {
-        description: 'Used when file is hosted externally. Ignored if a file is uploaded above.',
+    createCardTabs({
+      backgroundFieldOptions: {
+        adminDescription:
+          'Applied only to the Cards display mode. List and Compact modes remain unchanged.',
       },
-    },
-    {
-      name: 'fileType',
-      label: 'File Type Label',
-      type: 'text',
-      admin: {
-        description: 'Override auto-detected type (e.g. "PDF", "XLSX"). Shown as a badge.',
-      },
-    },
+      contentFields: [
+        {
+          name: 'title',
+          type: 'text',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          admin: {
+            description: 'Brief note about the file (e.g. "Application form for 2025 intake").',
+          },
+        },
+        {
+          name: 'category',
+          type: 'text',
+          admin: { description: 'Optional group label (e.g. "Prospectus", "Forms", "Reports").' },
+        },
+        {
+          name: 'file',
+          label: 'File Upload',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            description: 'Upload a file to Payload media. Takes priority over external URL.',
+          },
+        },
+        {
+          name: 'externalUrl',
+          label: 'External URL',
+          type: 'text',
+          admin: {
+            description:
+              'Used when file is hosted externally. Ignored if a file is uploaded above.',
+          },
+        },
+        {
+          name: 'fileType',
+          label: 'File Type Label',
+          type: 'text',
+          admin: {
+            description: 'Override auto-detected type (e.g. "PDF", "XLSX"). Shown as a badge.',
+          },
+        },
+      ],
+    }),
   ],
 }
 
@@ -86,7 +100,7 @@ export const DownloadListBlock: Block = {
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             {

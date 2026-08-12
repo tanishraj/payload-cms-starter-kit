@@ -16,6 +16,7 @@ import {
 } from '@/lib/cmsLinks'
 
 type ContentHighlightItemValue = Omit<CmsLinkValue, 'linkType'> & {
+  cardBackground?: string | null
   description?: string | null
   linkType?: 'custom' | 'none' | 'page' | null
   metadata?: string | null
@@ -68,6 +69,7 @@ export function ContentHighlightsBlockComponent({
 
     return [
       {
+        cardBackground: item.cardBackground,
         description: item.description?.trim() || undefined,
         href: destination.href,
         metadata: item.metadata?.trim() || undefined,

@@ -111,7 +111,7 @@ describe('contact33 form contract', () => {
         }
       | undefined
     const content = tabs?.tabs?.find((tab) => tab.label === 'Content')
-    const layout = tabs?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const layout = tabs?.tabs?.find((tab) => tab.label === 'Theme Settings')
     const byName = <T>(fields: unknown[], name: string) =>
       fields.find(
         (field) =>
@@ -128,7 +128,7 @@ describe('contact33 form contract', () => {
       singular: 'Contact Form',
     })
     expect(tabs?.type).toBe('tabs')
-    expect(tabs?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(tabs?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(
       content?.fields.map((field) =>
         typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,

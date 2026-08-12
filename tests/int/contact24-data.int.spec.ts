@@ -76,7 +76,7 @@ describe('contact24 data path', () => {
       type?: string
     }
     const content = tabs.tabs?.find((tab) => tab.label === 'Content')
-    const layout = tabs.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const layout = tabs.tabs?.find((tab) => tab.label === 'Theme Settings')
     const byName = (fields: Array<Record<string, unknown>>, name: string) =>
       fields.find((field) => field.name === name)
 

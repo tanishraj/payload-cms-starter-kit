@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { resolveCardSurface } from '@/blocks/shared/cardSurface'
 import { cn } from '@/lib/utils'
 
 export type ProfileCarouselImagePosition = 'bottom' | 'center' | 'left' | 'right' | 'top'
@@ -7,6 +8,7 @@ export type ProfileCarouselOverlayAlignment = 'center' | 'left' | 'right'
 export type ProfileCarouselSize = 'none' | 'comfortable' | 'compact' | 'default'
 
 export type ProfileCarouselProfile = {
+  cardBackground?: string | null
   image: {
     alt: string
     height?: number
@@ -53,6 +55,7 @@ export function ProfileCarouselCard({
   variant,
 }: ProfileCarouselCardProps) {
   const imagePosition = profile.imagePosition ?? 'center'
+  const surface = resolveCardSurface(profile.cardBackground)
   const mediaFrame = (
     <div
       className={cn('relative w-full overflow-hidden rounded-md', imageHeightClasses[size])}
@@ -73,13 +76,14 @@ export function ProfileCarouselCard({
       {variant === 'overlay' ? (
         <div
           className={cn(
-            'absolute inset-x-0 bottom-0 flex flex-col gap-0.5 bg-linear-to-t from-background/95 via-background/70 to-transparent p-5 pt-16 text-foreground',
+            'absolute inset-x-0 bottom-0 flex flex-col gap-0.5 bg-linear-to-t p-5 pt-16',
+            surface.overlay,
             overlayAlignmentClasses[overlayAlignment],
           )}
         >
           <p className="text-base leading-tight font-semibold">{profile.name}</p>
           {profile.role ? (
-            <p className="text-sm leading-6 text-foreground/70">{profile.role}</p>
+            <p className={cn('text-sm leading-6', surface.secondary)}>{profile.role}</p>
           ) : null}
         </div>
       ) : null}
@@ -89,7 +93,8 @@ export function ProfileCarouselCard({
   if (variant === 'overlay') {
     return (
       <article
-        className="group min-w-0"
+        className={cn('group min-w-0 overflow-hidden rounded-md', surface.className)}
+        data-card-background={surface.value}
         data-profile-carousel-card-variant="overlay"
         data-profile-carousel-overlay-alignment={overlayAlignment}
       >
@@ -100,13 +105,19 @@ export function ProfileCarouselCard({
 
   return (
     <article
-      className="group flex min-w-0 flex-col gap-3"
+      className={cn(
+        'group flex min-w-0 flex-col gap-3 overflow-hidden rounded-md',
+        surface.className,
+      )}
+      data-card-background={surface.value}
       data-profile-carousel-card-variant="stacked"
     >
       {mediaFrame}
       <div className="flex flex-col gap-0.5">
         <p className="text-base leading-tight font-semibold text-current">{profile.name}</p>
-        {profile.role ? <p className="text-sm leading-6 text-current/70">{profile.role}</p> : null}
+        {profile.role ? (
+          <p className={cn('text-sm leading-6', surface.secondary)}>{profile.role}</p>
+        ) : null}
       </div>
     </article>
   )

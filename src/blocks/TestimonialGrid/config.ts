@@ -1,6 +1,7 @@
 import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
@@ -12,35 +13,43 @@ const testimonialsField = {
   maxRows: 12,
   admin: { initCollapsed: true },
   fields: [
-    {
-      name: 'quote',
-      label: 'Quote',
-      type: 'textarea',
-      required: true,
-    },
-    {
-      name: 'name',
-      label: 'Name',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'role',
-      label: 'Role / Program',
-      type: 'text',
-      admin: { description: 'e.g. "B.Tech Computer Science, 2023" or "Alumni, MBA"' },
-    },
-    {
-      name: 'department',
-      label: 'Department / School',
-      type: 'text',
-    },
-    {
-      name: 'avatar',
-      label: 'Photo',
-      type: 'upload',
-      relationTo: 'media',
-    },
+    createCardTabs({
+      backgroundFieldOptions: {
+        adminDescription:
+          'Applied to Grid and Featured presentations. Compact List remains intentionally unboxed.',
+      },
+      contentFields: [
+        {
+          name: 'quote',
+          label: 'Quote',
+          type: 'textarea',
+          required: true,
+        },
+        {
+          name: 'name',
+          label: 'Name',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'role',
+          label: 'Role / Program',
+          type: 'text',
+          admin: { description: 'e.g. "B.Tech Computer Science, 2023" or "Alumni, MBA"' },
+        },
+        {
+          name: 'department',
+          label: 'Department / School',
+          type: 'text',
+        },
+        {
+          name: 'avatar',
+          label: 'Photo',
+          type: 'upload',
+          relationTo: 'media',
+        },
+      ],
+    }),
   ],
 } satisfies ArrayField
 
@@ -59,7 +68,11 @@ export const TestimonialGridBlock: Block = {
         {
           label: 'Content',
           fields: [
-            { name: 'eyebrow', type: 'text', admin: { description: 'Small label above heading, e.g. "Student Stories"' } },
+            {
+              name: 'eyebrow',
+              type: 'text',
+              admin: { description: 'Small label above heading, e.g. "Student Stories"' },
+            },
             { name: 'title', type: 'text' },
             { name: 'description', type: 'textarea' },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
@@ -67,7 +80,7 @@ export const TestimonialGridBlock: Block = {
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             {

@@ -58,7 +58,7 @@ export const GalleryCoverflowBlock: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             createContentActionModeField(),

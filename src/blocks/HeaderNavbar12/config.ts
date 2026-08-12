@@ -197,7 +197,7 @@ export const HeaderNavbar12Block: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields({}),
             {

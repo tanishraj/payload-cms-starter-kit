@@ -94,7 +94,7 @@ export const Contact24Block: Block = {
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             contentAlignmentField,

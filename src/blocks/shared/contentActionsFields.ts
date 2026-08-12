@@ -161,7 +161,7 @@ export const createContentActionsField = ({
           fields: actionContentFields,
         },
         {
-          label: 'Layout & Theme',
+          label: 'Theme Settings',
           fields: createActionLayoutFields(includeDisplayMode),
         },
       ],

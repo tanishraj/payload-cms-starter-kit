@@ -68,7 +68,7 @@ export const createBaseSystemPageFields = (defaults: SystemPageDefaults): Field[
         ],
       },
       {
-        label: 'Layout & Theme',
+          label: 'Theme Settings',
         fields: [createBlockAppearanceFields()],
       },
     ],

@@ -40,6 +40,7 @@ import { MediaCarouselBlockComponent } from '@/blocks/MediaCarousel/Component'
 import { NumberedStepsBlockComponent } from '@/blocks/NumberedSteps/Component'
 import { PageHeaderBlockComponent } from '@/blocks/PageHeader/Component'
 import { ProgramGridBlockComponent } from '@/blocks/ProgramGrid/Component'
+import { ProgramMatrixBlockComponent } from '@/blocks/ProgramMatrix/Component'
 import { QuoteBlockBlockComponent } from '@/blocks/QuoteBlock/Component'
 import { RichTextBlockComponent } from '@/blocks/RichTextBlock/Component'
 import { TabsContentBlockComponent } from '@/blocks/TabsContent/Component'
@@ -57,8 +58,7 @@ export const blockThumbnailAssetPaths = [
   '/block-thumbnail-assets/office-map.svg',
 ] as const
 
-const [editorialLandscape, collaboration, portrait, brandMark, officeMap] =
-  blockThumbnailAssetPaths
+const [editorialLandscape, collaboration, portrait, brandMark, officeMap] = blockThumbnailAssetPaths
 
 const richTextParagraph = (text: string) => ({
   root: {
@@ -93,7 +93,16 @@ const richTextParagraph = (text: string) => ({
 })
 
 const fakeMedia = (url: string, alt: string, width = 1200, height = 800): Media =>
-  ({ id: alt, url, alt, width, height, mimeType: 'image/svg+xml', updatedAt: '', createdAt: '' }) as unknown as Media
+  ({
+    id: alt,
+    url,
+    alt,
+    width,
+    height,
+    mimeType: 'image/svg+xml',
+    updatedAt: '',
+    createdAt: '',
+  }) as unknown as Media
 
 const qaAccordionFixtureItems = [
   {
@@ -336,11 +345,13 @@ export const blockThumbnailFixtures = {
       eyebrow="Facilities"
       features={[
         {
+          cardBackground: 'muted',
           description: 'Flexible spaces for independent and collaborative learning.',
           image: { alt: 'Modern learning environment', url: editorialLandscape },
           title: 'Learning spaces',
         },
         {
+          cardBackground: 'primary',
           description: 'Hands-on settings designed for practical exploration.',
           image: { alt: 'Collaborative practical environment', url: collaboration },
           title: 'Practical labs',
@@ -409,7 +420,7 @@ export const blockThumbnailFixtures = {
       layout="highlightsGrid"
       size="compact"
       title="What students say matters"
-      />
+    />
   ),
   cta39: (
     <Cta39BlockComponent
@@ -509,11 +520,13 @@ export const blockThumbnailFixtures = {
           role: 'Program Director',
         },
         {
+          cardBackground: 'muted',
           image: { alt: 'Student experience lead', url: collaboration },
           name: 'Jordan Lee',
           role: 'Student Experience Lead',
         },
         {
+          cardBackground: 'primary',
           image: { alt: 'Faculty advisor', url: editorialLandscape },
           name: 'Sam Rivera',
           role: 'Faculty Advisor',
@@ -551,10 +564,22 @@ export const blockThumbnailFixtures = {
       eyebrow="Inside our community"
       images={[
         {
-          image: { alt: 'Editorial landscape', height: 900, id: 1, url: editorialLandscape, width: 1600 },
+          image: {
+            alt: 'Editorial landscape',
+            height: 900,
+            id: 1,
+            url: editorialLandscape,
+            width: 1600,
+          },
         },
         {
-          image: { alt: 'Collaborative environment', height: 900, id: 2, url: collaboration, width: 1600 },
+          image: {
+            alt: 'Collaborative environment',
+            height: 900,
+            id: 2,
+            url: collaboration,
+            width: 1600,
+          },
           imagePosition: 'top',
         },
         {
@@ -562,11 +587,23 @@ export const blockThumbnailFixtures = {
           imagePosition: 'center',
         },
         {
-          image: { alt: 'Learning environment', height: 900, id: 4, url: editorialLandscape, width: 1600 },
+          image: {
+            alt: 'Learning environment',
+            height: 900,
+            id: 4,
+            url: editorialLandscape,
+            width: 1600,
+          },
           imagePosition: 'right',
         },
         {
-          image: { alt: 'Shared campus moment', height: 900, id: 5, url: collaboration, width: 1600 },
+          image: {
+            alt: 'Shared campus moment',
+            height: 900,
+            id: 5,
+            url: collaboration,
+            width: 1600,
+          },
           imagePosition: 'bottom',
         },
       ]}
@@ -589,11 +626,51 @@ export const blockThumbnailFixtures = {
       description="A collection of spaces, people, and moments from across the community."
       eyebrow="Photo library"
       images={[
-        { image: { alt: 'Editorial landscape one', height: 900, id: 'coverflow-1', url: editorialLandscape, width: 1600 } },
-        { image: { alt: 'Collaborative environment one', height: 900, id: 'coverflow-2', url: collaboration, width: 1600 } },
-        { image: { alt: 'Community portrait', height: 1200, id: 'coverflow-3', url: portrait, width: 900 } },
-        { image: { alt: 'Editorial landscape two', height: 900, id: 'coverflow-4', url: editorialLandscape, width: 1600 } },
-        { image: { alt: 'Collaborative environment two', height: 900, id: 'coverflow-5', url: collaboration, width: 1600 } },
+        {
+          image: {
+            alt: 'Editorial landscape one',
+            height: 900,
+            id: 'coverflow-1',
+            url: editorialLandscape,
+            width: 1600,
+          },
+        },
+        {
+          image: {
+            alt: 'Collaborative environment one',
+            height: 900,
+            id: 'coverflow-2',
+            url: collaboration,
+            width: 1600,
+          },
+        },
+        {
+          image: {
+            alt: 'Community portrait',
+            height: 1200,
+            id: 'coverflow-3',
+            url: portrait,
+            width: 900,
+          },
+        },
+        {
+          image: {
+            alt: 'Editorial landscape two',
+            height: 900,
+            id: 'coverflow-4',
+            url: editorialLandscape,
+            width: 1600,
+          },
+        },
+        {
+          image: {
+            alt: 'Collaborative environment two',
+            height: 900,
+            id: 'coverflow-5',
+            url: collaboration,
+            width: 1600,
+          },
+        },
       ]}
       size="compact"
       title="Your photos, brought together."
@@ -704,7 +781,13 @@ export const blockThumbnailFixtures = {
               variant: 'default',
             },
           ],
-          image: { alt: 'Learning environment', height: 900, id: 1, url: editorialLandscape, width: 1600 },
+          image: {
+            alt: 'Learning environment',
+            height: 900,
+            id: 1,
+            url: editorialLandscape,
+            width: 1600,
+          },
           title: 'Learning spaces',
         },
         {
@@ -717,7 +800,13 @@ export const blockThumbnailFixtures = {
               variant: 'outline',
             },
           ],
-          image: { alt: 'Collaborative environment', height: 900, id: 2, url: collaboration, width: 1600 },
+          image: {
+            alt: 'Collaborative environment',
+            height: 900,
+            id: 2,
+            url: collaboration,
+            width: 1600,
+          },
           imagePosition: 'top',
           title: 'Collaboration',
         },
@@ -736,7 +825,13 @@ export const blockThumbnailFixtures = {
               variant: 'default',
             },
           ],
-          image: { alt: 'Campus landscape', height: 900, id: 4, url: editorialLandscape, width: 1600 },
+          image: {
+            alt: 'Campus landscape',
+            height: 900,
+            id: 4,
+            url: editorialLandscape,
+            width: 1600,
+          },
           imagePosition: 'right',
           title: 'Campus life',
         },
@@ -750,7 +845,13 @@ export const blockThumbnailFixtures = {
               variant: 'default',
             },
           ],
-          image: { alt: 'Shared learning moment', height: 900, id: 5, url: collaboration, width: 1600 },
+          image: {
+            alt: 'Shared learning moment',
+            height: 900,
+            id: 5,
+            url: collaboration,
+            width: 1600,
+          },
           imagePosition: 'bottom',
           title: 'Shared experiences',
         },
@@ -934,7 +1035,7 @@ export const blockThumbnailFixtures = {
       size="compact"
       summary={{ average: 4.7, count: 124, counts: [2, 3, 8, 19, 92] }}
       title="What our community is saying"
-      />
+    />
   ),
   services21: (
     <Services21BlockComponent
@@ -963,7 +1064,8 @@ export const blockThumbnailFixtures = {
           title: 'Discovery',
         },
         {
-          description: 'Refine goals, priorities, and architecture before any implementation begins.',
+          description:
+            'Refine goals, priorities, and architecture before any implementation begins.',
           image: { alt: 'Roadmap planning', url: collaboration, width: 1200, height: 800 },
           code: '{02}',
           title: 'Strategy',
@@ -1005,15 +1107,15 @@ export const blockThumbnailFixtures = {
       heading="Meet the team"
       members={[
         {
-          description:
-            'Leads program design, curriculum planning, and student-facing support.',
+          cardBackground: 'muted',
+          description: 'Leads program design, curriculum planning, and student-facing support.',
           image: editorialLandscape,
           name: 'Jordan Lee',
           role: 'Academic Director',
         },
         {
-          description:
-            'Builds partnerships, coordinates initiatives, and keeps teams aligned.',
+          cardBackground: 'primary',
+          description: 'Builds partnerships, coordinates initiatives, and keeps teams aligned.',
           image: collaboration,
           name: 'Sam Rivera',
           role: 'Community Lead',
@@ -1104,7 +1206,11 @@ export const blockThumbnailFixtures = {
       ]}
       title="Built around the way people actually learn."
       values={[
-        { icon: 'Lightbulb', title: 'Purpose', description: 'Every decision begins with outcomes.' },
+        {
+          icon: 'Lightbulb',
+          title: 'Purpose',
+          description: 'Every decision begins with outcomes.',
+        },
         { icon: 'Users', title: 'Community', description: 'Learning works better together.' },
         { icon: 'Star', title: 'Excellence', description: 'High standards in everything we do.' },
       ]}
@@ -1115,10 +1221,36 @@ export const blockThumbnailFixtures = {
     <AwardsListBlockComponent
       appearance={{ background: 'muted', border: 'topAndBottom' }}
       awards={[
-        { title: 'Centre of Excellence', organization: 'Education Standards Board', category: 'accreditation', year: '2025', description: 'Recognised for outstanding curriculum design and student outcomes.' },
-        { title: 'Top 10 Learning Environments', organization: 'National Education Review', category: 'ranking', year: '2025', description: 'Ranked among the best learning environments in the country.' },
-        { title: 'Community Impact Award', organization: 'Regional Foundation', category: 'award', year: '2024', description: 'Awarded for sustained engagement with local communities.' },
-        { title: 'Digital Innovation Recognition', organization: 'EdTech Alliance', category: 'recognition', year: '2024', description: 'Recognised for leading digital-first delivery models.' },
+        {
+          cardBackground: 'muted',
+          title: 'Centre of Excellence',
+          organization: 'Education Standards Board',
+          category: 'accreditation',
+          year: '2025',
+          description: 'Recognised for outstanding curriculum design and student outcomes.',
+        },
+        {
+          cardBackground: 'primary',
+          title: 'Top 10 Learning Environments',
+          organization: 'National Education Review',
+          category: 'ranking',
+          year: '2025',
+          description: 'Ranked among the best learning environments in the country.',
+        },
+        {
+          title: 'Community Impact Award',
+          organization: 'Regional Foundation',
+          category: 'award',
+          year: '2024',
+          description: 'Awarded for sustained engagement with local communities.',
+        },
+        {
+          title: 'Digital Innovation Recognition',
+          organization: 'EdTech Alliance',
+          category: 'recognition',
+          year: '2024',
+          description: 'Recognised for leading digital-first delivery models.',
+        },
       ]}
       contentAlignment="center"
       description="A record of independent recognition across curriculum quality, community impact, and innovation."
@@ -1135,11 +1267,46 @@ export const blockThumbnailFixtures = {
       description="Four dimensions that shape how we approach every program, partnership, and student experience."
       eyebrow="What we stand for"
       items={[
-        { title: 'Learning spaces', description: 'Flexible environments built for focus and collaboration.', image: fakeMedia(editorialLandscape, 'Learning space'), size: 'large' },
-        { title: 'Community', description: 'Programs that connect learning with real-world impact.', icon: 'Users', accentColor: 'primary', size: 'medium' },
-        { title: 'Support', description: 'Dedicated people at every stage of your journey.', icon: 'HeartHandshake', accentColor: 'secondary', size: 'small' },
-        { title: 'Research', description: 'Practical inquiry that informs teaching and shapes outcomes.', image: fakeMedia(collaboration, 'Research collaboration'), size: 'medium' },
-        { title: 'Innovation', description: 'Always finding smarter ways to deliver quality education.', icon: 'Lightbulb', accentColor: 'accent', size: 'small' },
+        {
+          title: 'Learning spaces',
+          description: 'Flexible environments built for focus and collaboration.',
+          image: fakeMedia(editorialLandscape, 'Learning space'),
+          size: 'large',
+        },
+        {
+          title: 'Community',
+          description: 'Programs that connect learning with real-world impact.',
+          icon: 'Users',
+          accentColor: 'primary',
+          size: 'medium',
+        },
+        {
+          title: 'Support',
+          description: 'Dedicated people at every stage of your journey.',
+          icon: 'HeartHandshake',
+          accentColor: 'secondary',
+          size: 'small',
+        },
+        {
+          title: 'Research culture',
+          description: 'Evidence-led practice in every programme.',
+          icon: 'Microscope',
+          accentColor: 'muted',
+          size: 'small',
+        },
+        {
+          title: 'Research',
+          description: 'Practical inquiry that informs teaching and shapes outcomes.',
+          image: fakeMedia(collaboration, 'Research collaboration'),
+          size: 'medium',
+        },
+        {
+          title: 'Innovation',
+          description: 'Always finding smarter ways to deliver quality education.',
+          icon: 'Lightbulb',
+          accentColor: 'accent',
+          size: 'small',
+        },
       ]}
       size="compact"
       title="Four pillars, one purpose."
@@ -1152,10 +1319,34 @@ export const blockThumbnailFixtures = {
       description="Key documents, guides, and forms available to download at any time."
       displayMode="list"
       downloads={[
-        { title: 'Academic Calendar 2025–26', category: 'Academic', fileType: 'PDF', externalUrl: '#', description: 'Term dates, exam periods, and key academic events.' },
-        { title: 'Student Handbook', category: 'Student Life', fileType: 'PDF', externalUrl: '#', description: 'Policies, support services, and campus resources.' },
-        { title: 'Program Guide', category: 'Programs', fileType: 'PDF', externalUrl: '#', description: 'Full overview of available programs and entry requirements.' },
-        { title: 'Financial Aid Overview', category: 'Finance', fileType: 'PDF', externalUrl: '#', description: 'Scholarships, bursaries, and payment options explained.' },
+        {
+          title: 'Academic Calendar 2025–26',
+          category: 'Academic',
+          fileType: 'PDF',
+          externalUrl: '#',
+          description: 'Term dates, exam periods, and key academic events.',
+        },
+        {
+          title: 'Student Handbook',
+          category: 'Student Life',
+          fileType: 'PDF',
+          externalUrl: '#',
+          description: 'Policies, support services, and campus resources.',
+        },
+        {
+          title: 'Program Guide',
+          category: 'Programs',
+          fileType: 'PDF',
+          externalUrl: '#',
+          description: 'Full overview of available programs and entry requirements.',
+        },
+        {
+          title: 'Financial Aid Overview',
+          category: 'Finance',
+          fileType: 'PDF',
+          externalUrl: '#',
+          description: 'Scholarships, bursaries, and payment options explained.',
+        },
       ]}
       eyebrow="Resources"
       showFilter
@@ -1173,12 +1364,36 @@ export const blockThumbnailFixtures = {
       eyebrow="What we do"
       iconStyle="square"
       items={[
-        { title: 'Strategy', description: 'Clear thinking before any execution begins.', icon: 'Target' },
-        { title: 'Research', description: 'Evidence-based decisions rooted in real context.', icon: 'Search' },
-        { title: 'Design', description: 'Purposeful visuals and experiences for every audience.', icon: 'Palette' },
-        { title: 'Technology', description: 'Modern tools built for scale and reliability.', icon: 'Code2' },
-        { title: 'Community', description: 'Partnerships that extend reach and deepen impact.', icon: 'Users' },
-        { title: 'Delivery', description: 'Consistent execution with measurable outcomes.', icon: 'CheckCircle' },
+        {
+          title: 'Strategy',
+          description: 'Clear thinking before any execution begins.',
+          icon: 'Target',
+        },
+        {
+          title: 'Research',
+          description: 'Evidence-based decisions rooted in real context.',
+          icon: 'Search',
+        },
+        {
+          title: 'Design',
+          description: 'Purposeful visuals and experiences for every audience.',
+          icon: 'Palette',
+        },
+        {
+          title: 'Technology',
+          description: 'Modern tools built for scale and reliability.',
+          icon: 'Code2',
+        },
+        {
+          title: 'Community',
+          description: 'Partnerships that extend reach and deepen impact.',
+          icon: 'Users',
+        },
+        {
+          title: 'Delivery',
+          description: 'Consistent execution with measurable outcomes.',
+          icon: 'CheckCircle',
+        },
       ]}
       size="compact"
       title="A full-service approach to meaningful work."
@@ -1216,9 +1431,23 @@ export const blockThumbnailFixtures = {
       description="A closer look at the spaces, events, and everyday moments that define life here."
       eyebrow="Gallery"
       items={[
-        { title: 'Learning spaces', summary: 'Flexible rooms designed for focused and collaborative work.', media: fakeMedia(editorialLandscape, 'Learning space') },
-        { title: 'Community day', summary: 'Annual events that bring the whole campus together.', media: fakeMedia(collaboration, 'Community gathering') },
-        { title: 'Our people', summary: 'Students, staff, and partners working side by side.', media: fakeMedia(portrait, 'Community portrait', 800, 1000) },
+        {
+          cardBackground: 'muted',
+          title: 'Learning spaces',
+          summary: 'Flexible rooms designed for focused and collaborative work.',
+          media: fakeMedia(editorialLandscape, 'Learning space'),
+        },
+        {
+          cardBackground: 'primary',
+          title: 'Community day',
+          summary: 'Annual events that bring the whole campus together.',
+          media: fakeMedia(collaboration, 'Community gathering'),
+        },
+        {
+          title: 'Our people',
+          summary: 'Students, staff, and partners working side by side.',
+          media: fakeMedia(portrait, 'Community portrait', 800, 1000),
+        },
       ]}
       size="compact"
       title="Moments from campus"
@@ -1233,10 +1462,27 @@ export const blockThumbnailFixtures = {
       numberStyle="circle"
       size="compact"
       steps={[
-        { title: 'Explore your options', description: 'Browse programs, attend an info session, or speak with an advisor to find the right fit.' },
-        { title: 'Submit your application', description: 'Complete the online form, attach your documents, and submit before the deadline.' },
-        { title: 'Receive your offer', description: 'Our team reviews every application and sends a formal offer within five business days.' },
-        { title: 'Confirm your place', description: 'Accept your offer, complete enrolment, and get ready for your first day.' },
+        {
+          cardBackground: 'muted',
+          title: 'Explore your options',
+          description:
+            'Browse programs, attend an info session, or speak with an advisor to find the right fit.',
+        },
+        {
+          cardBackground: 'primary',
+          title: 'Submit your application',
+          description:
+            'Complete the online form, attach your documents, and submit before the deadline.',
+        },
+        {
+          title: 'Receive your offer',
+          description:
+            'Our team reviews every application and sends a formal offer within five business days.',
+        },
+        {
+          title: 'Confirm your place',
+          description: 'Accept your offer, complete enrolment, and get ready for your first day.',
+        },
       ]}
       title="From interest to enrolment in four steps."
       variant="cards"
@@ -1269,14 +1515,85 @@ export const blockThumbnailFixtures = {
       description="Practical, career-focused programs designed around the skills employers need most."
       eyebrow="Our programs"
       programs={[
-        { title: 'Business & Management', category: 'Business', badge: 'Popular', duration: '2 years', intake: 'Feb, Jul', description: 'Leadership, strategy, and operational skills for every industry.', image: fakeMedia(editorialLandscape, 'Business program', 800, 500), linkType: 'custom', url: '/programs/business' },
-        { title: 'Technology & Innovation', category: 'Technology', badge: 'New', duration: '18 months', intake: 'Feb, Jul, Oct', description: 'Software development, data, and emerging technology skills.', image: fakeMedia(collaboration, 'Technology program', 800, 500), linkType: 'custom', url: '/programs/technology' },
-        { title: 'Health & Community Services', category: 'Health', duration: '2 years', intake: 'Feb, Jul', description: 'Practical training for health, social work, and community support roles.', image: fakeMedia(portrait, 'Health program', 800, 500), linkType: 'custom', url: '/programs/health' },
+        {
+          cardBackground: 'muted',
+          title: 'Business & Management',
+          category: 'Business',
+          badge: 'Popular',
+          duration: '2 years',
+          intake: 'Feb, Jul',
+          description: 'Leadership, strategy, and operational skills for every industry.',
+          image: fakeMedia(editorialLandscape, 'Business program', 800, 500),
+          linkType: 'custom',
+          url: '/programs/business',
+        },
+        {
+          cardBackground: 'primary',
+          title: 'Technology & Innovation',
+          category: 'Technology',
+          badge: 'New',
+          duration: '18 months',
+          intake: 'Feb, Jul, Oct',
+          description: 'Software development, data, and emerging technology skills.',
+          image: fakeMedia(collaboration, 'Technology program', 800, 500),
+          linkType: 'custom',
+          url: '/programs/technology',
+        },
+        {
+          title: 'Health & Community Services',
+          category: 'Health',
+          duration: '2 years',
+          intake: 'Feb, Jul',
+          description: 'Practical training for health, social work, and community support roles.',
+          image: fakeMedia(portrait, 'Health program', 800, 500),
+          linkType: 'custom',
+          url: '/programs/health',
+        },
       ]}
       showFilter
       size="compact"
       title="Programs built for real outcomes."
       viewMode="grid"
+    />
+  ),
+  programMatrix: (
+    <ProgramMatrixBlockComponent
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      contentAlignment="left"
+      description="Four routes into clinical practice, each with a defined intake, published curriculum, and supervised hospital rotations."
+      eyebrow="Academics"
+      items={[
+        {
+          cardBackground: 'default',
+          icon: 'stethoscope',
+          title: 'MBBS',
+          metadata: '4.5 Years + 1 Year Internship',
+          description: '150 seats approved by the National Medical Commission.',
+        },
+        {
+          cardBackground: 'muted',
+          icon: 'graduation-cap',
+          title: 'Postgraduate MD / MS',
+          metadata: '3 Years',
+          description: 'Residencies across medicine, surgery, paediatrics, and radiology.',
+        },
+        {
+          cardBackground: 'default',
+          icon: 'heart-pulse',
+          title: 'GNM & B.Sc Nursing',
+          metadata: '3–4 Years',
+          description: 'Recognised nursing programmes with supervised hospital rotations.',
+        },
+        {
+          cardBackground: 'primary',
+          icon: 'microscope',
+          title: 'Allied Health Sciences',
+          metadata: '2–3 Years',
+          description: 'Diploma and degree tracks in clinical support disciplines.',
+        },
+      ]}
+      size="compact"
+      title="Programmes offered"
     />
   ),
   quoteBlock: (
@@ -1298,7 +1615,11 @@ export const blockThumbnailFixtures = {
     <RichTextBlockComponent
       appearance={{ background: 'none', border: 'none' }}
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      content={richTextParagraph('Our approach to education is grounded in the belief that practical experience and critical thinking are inseparable. We design programs that challenge students to engage deeply with real-world problems, building skills that last well beyond graduation. Every course, every assessment, and every learning space reflects a commitment to outcomes that matter — to students, to employers, and to the communities they serve.') as any}
+      content={
+        richTextParagraph(
+          'Our approach to education is grounded in the belief that practical experience and critical thinking are inseparable. We design programs that challenge students to engage deeply with real-world problems, building skills that last well beyond graduation. Every course, every assessment, and every learning space reflects a commitment to outcomes that matter — to students, to employers, and to the communities they serve.',
+        ) as any
+      }
       maxWidth="prose"
       size="compact"
     />
@@ -1327,7 +1648,8 @@ export const blockThumbnailFixtures = {
         {
           label: 'Learning',
           title: 'Spaces built for how you work',
-          description: 'Flexible studios, collaborative labs, and quiet study rooms available across campus.',
+          description:
+            'Flexible studios, collaborative labs, and quiet study rooms available across campus.',
           image: fakeMedia(editorialLandscape, 'Learning space'),
         },
         {
@@ -1339,7 +1661,8 @@ export const blockThumbnailFixtures = {
         {
           label: 'Support',
           title: 'Help available at every stage',
-          description: 'Academic advisors, career coaches, and wellbeing services are all on campus.',
+          description:
+            'Academic advisors, career coaches, and wellbeing services are all on campus.',
           image: fakeMedia(portrait, 'Support team', 800, 1000),
         },
       ]}
@@ -1355,9 +1678,29 @@ export const blockThumbnailFixtures = {
       eyebrow="Voices from our community"
       size="compact"
       testimonials={[
-        { quote: 'The instructors brought real-world experience to every session. I left each class with something immediately useful.', name: 'Alex Morgan', role: 'Graduate', department: 'Business & Management' },
-        { quote: 'The support network here is unlike anything I expected. Every question got a thoughtful, genuine answer.', name: 'Jordan Lee', role: 'Graduate', department: 'Technology & Innovation' },
-        { quote: 'I came in unsure of my direction. The program helped me find clarity and the confidence to act on it.', name: 'Sam Rivera', role: 'Graduate', department: 'Health & Community Services' },
+        {
+          cardBackground: 'muted',
+          quote:
+            'The instructors brought real-world experience to every session. I left each class with something immediately useful.',
+          name: 'Alex Morgan',
+          role: 'Graduate',
+          department: 'Business & Management',
+        },
+        {
+          cardBackground: 'primary',
+          quote:
+            'The support network here is unlike anything I expected. Every question got a thoughtful, genuine answer.',
+          name: 'Jordan Lee',
+          role: 'Graduate',
+          department: 'Technology & Innovation',
+        },
+        {
+          quote:
+            'I came in unsure of my direction. The program helped me find clarity and the confidence to act on it.',
+          name: 'Sam Rivera',
+          role: 'Graduate',
+          department: 'Health & Community Services',
+        },
       ]}
       title="What our community says."
       variant="grid"
@@ -1370,11 +1713,40 @@ export const blockThumbnailFixtures = {
       description="Key milestones across twelve years of programs, partnerships, and community impact."
       eyebrow="Our journey"
       items={[
-        { title: 'Founded', date: '2013', badge: 'done', description: 'Launched with three programs and a founding cohort of eighty students.' },
-        { title: 'First graduates', date: '2015', badge: 'done', description: 'Two hundred graduates entered the workforce, with 94% employed within three months.' },
-        { title: 'Campus expansion', date: '2019', badge: 'done', description: 'Opened a second campus and expanded to twenty-two programs across four disciplines.' },
-        { title: 'Digital-first transition', date: '2022', badge: 'done', description: 'Launched a full hybrid delivery model, reaching students across five regions.' },
-        { title: 'Centre of Excellence', date: '2025', badge: 'active', description: 'Recognised by the Education Standards Board for curriculum quality and student outcomes.' },
+        {
+          title: 'Founded',
+          date: '2013',
+          badge: 'done',
+          description: 'Launched with three programs and a founding cohort of eighty students.',
+        },
+        {
+          title: 'First graduates',
+          date: '2015',
+          badge: 'done',
+          description:
+            'Two hundred graduates entered the workforce, with 94% employed within three months.',
+        },
+        {
+          title: 'Campus expansion',
+          date: '2019',
+          badge: 'done',
+          description:
+            'Opened a second campus and expanded to twenty-two programs across four disciplines.',
+        },
+        {
+          title: 'Digital-first transition',
+          date: '2022',
+          badge: 'done',
+          description:
+            'Launched a full hybrid delivery model, reaching students across five regions.',
+        },
+        {
+          title: 'Centre of Excellence',
+          date: '2025',
+          badge: 'active',
+          description:
+            'Recognised by the Education Standards Board for curriculum quality and student outcomes.',
+        },
       ]}
       showConnectors
       size="compact"

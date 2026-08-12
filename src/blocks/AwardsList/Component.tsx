@@ -1,6 +1,9 @@
 import { Award, Medal, Star, TrendingUp, Trophy } from 'lucide-react'
 
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
 import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
@@ -9,10 +12,12 @@ import {
 import { ContentActions } from '@/components/ContentActions'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
+import { resolveCardSurface, type CardSurfaceClasses } from '@/blocks/shared/cardSurface'
 
 type AwardCategory = 'accreditation' | 'ranking' | 'award' | 'recognition' | 'milestone'
 
 type AwardItem = {
+  cardBackground?: string | null
   title?: string | null
   organization?: string | null
   category?: AwardCategory | null
@@ -32,19 +37,33 @@ type AwardsListBlockLike = {
   variant?: 'cards' | 'table' | 'rows' | null
 }
 
-const categoryConfig: Record<AwardCategory, { label: string; icon: React.ComponentType<{ className?: string }>; color: string }> = {
+const categoryConfig: Record<
+  AwardCategory,
+  { label: string; icon: React.ComponentType<{ className?: string }>; color: string }
+> = {
   accreditation: { label: 'Accreditation', icon: Medal, color: 'bg-primary/10 text-primary' },
-  ranking:       { label: 'Ranking',        icon: TrendingUp, color: 'bg-secondary text-secondary-foreground' },
-  award:         { label: 'Award',          icon: Trophy, color: 'bg-accent text-accent-foreground' },
-  recognition:   { label: 'Recognition',   icon: Star, color: 'bg-muted text-foreground' },
-  milestone:     { label: 'Milestone',     icon: Award, color: 'bg-destructive/10 text-destructive' },
+  ranking: { label: 'Ranking', icon: TrendingUp, color: 'bg-secondary text-secondary-foreground' },
+  award: { label: 'Award', icon: Trophy, color: 'bg-accent text-accent-foreground' },
+  recognition: { label: 'Recognition', icon: Star, color: 'bg-muted text-foreground' },
+  milestone: { label: 'Milestone', icon: Award, color: 'bg-destructive/10 text-destructive' },
 }
 
-function CategoryBadge({ category }: { category?: AwardCategory | null }) {
+function CategoryBadge({
+  category,
+  surface,
+}: {
+  category?: AwardCategory | null
+  surface?: CardSurfaceClasses
+}) {
   const cat = category ?? 'recognition'
   const { label, icon: Icon, color } = categoryConfig[cat]
   return (
-    <span className={cn('inline-flex w-fit items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium', color)}>
+    <span
+      className={cn(
+        'inline-flex w-fit items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium',
+        surface?.value === 'primary' ? 'bg-primary-foreground/15 text-primary-foreground' : color,
+      )}
+    >
       <Icon className="size-3" />
       {label}
     </span>
@@ -70,10 +89,12 @@ export function AwardsListBlockComponent({
   const resolvedActions = resolveCmsActions(actions)
 
   return (
-    <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
+    <section
+      className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}
+    >
       <div className={regularBlockContainerClasses}>
         {/* Header */}
-        {(eyebrow?.trim() || title?.trim() || description?.trim() || resolvedActions.length > 0) ? (
+        {eyebrow?.trim() || title?.trim() || description?.trim() || resolvedActions.length > 0 ? (
           <div
             className={cn(
               'mb-12 flex flex-col gap-4',
@@ -102,31 +123,53 @@ export function AwardsListBlockComponent({
         ) : null}
 
         {/* Cards variant */}
-        {(variant === 'cards' || !variant) ? (
+        {variant === 'cards' || !variant ? (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((item, i) => {
               const cat = (item.category ?? 'recognition') as AwardCategory
               const { icon: Icon, color } = categoryConfig[cat]
+              const surface = resolveCardSurface(item.cardBackground)
               return (
-                <div key={i} className="flex flex-col gap-3 rounded-xl border border-border bg-card p-5 text-card-foreground">
+                <div
+                  key={i}
+                  className={cn(
+                    'flex flex-col gap-3 rounded-xl border p-5',
+                    surface.className,
+                    surface.divider,
+                  )}
+                  data-card-background={surface.value}
+                >
                   <div className="flex items-start justify-between gap-3">
-                    <div className={cn('flex size-10 shrink-0 items-center justify-center rounded-lg', color)}>
+                    <div
+                      className={cn(
+                        'flex size-10 shrink-0 items-center justify-center rounded-lg',
+                        surface.value === 'primary'
+                          ? 'bg-primary-foreground/15 text-primary-foreground'
+                          : color,
+                      )}
+                    >
                       <Icon className="size-5" />
                     </div>
                     {item.year?.trim() ? (
-                      <span className="text-xs font-medium text-current/70">{item.year.trim()}</span>
+                      <span className={cn('text-xs font-medium', surface.secondary)}>
+                        {item.year.trim()}
+                      </span>
                     ) : null}
                   </div>
                   <div className="flex flex-col gap-1">
-                    <h3 className="font-sans font-semibold leading-tight text-current">{item.title?.trim()}</h3>
+                    <h3 className="font-sans font-semibold leading-tight text-current">
+                      {item.title?.trim()}
+                    </h3>
                     {item.organization?.trim() ? (
-                      <p className="text-sm text-current/70">{item.organization.trim()}</p>
+                      <p className={cn('text-sm', surface.secondary)}>{item.organization.trim()}</p>
                     ) : null}
                     {item.description?.trim() ? (
-                      <p className="mt-1 text-sm text-current/70">{item.description.trim()}</p>
+                      <p className={cn('mt-1 text-sm', surface.secondary)}>
+                        {item.description.trim()}
+                      </p>
                     ) : null}
                   </div>
-                  <CategoryBadge category={item.category} />
+                  <CategoryBadge category={item.category} surface={surface} />
                 </div>
               )
             })}
@@ -139,10 +182,16 @@ export function AwardsListBlockComponent({
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border bg-muted/50 text-foreground">
-                  <th className="px-4 py-3 text-left font-semibold text-current">Award / Accreditation</th>
-                  <th className="hidden px-4 py-3 text-left font-semibold text-current sm:table-cell">Organization</th>
+                  <th className="px-4 py-3 text-left font-semibold text-current">
+                    Award / Accreditation
+                  </th>
+                  <th className="hidden px-4 py-3 text-left font-semibold text-current sm:table-cell">
+                    Organization
+                  </th>
                   <th className="px-4 py-3 text-left font-semibold text-current">Category</th>
-                  <th className="hidden px-4 py-3 text-right font-semibold text-current md:table-cell">Year</th>
+                  <th className="hidden px-4 py-3 text-right font-semibold text-current md:table-cell">
+                    Year
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -178,7 +227,9 @@ export function AwardsListBlockComponent({
                 <div className="flex min-w-0 flex-1 flex-col gap-0.5 sm:flex-row sm:items-center sm:gap-4">
                   <p className="font-semibold text-current sm:flex-1">{item.title?.trim()}</p>
                   {item.organization?.trim() ? (
-                    <p className="text-sm text-current/70 sm:w-40 sm:shrink-0">{item.organization.trim()}</p>
+                    <p className="text-sm text-current/70 sm:w-40 sm:shrink-0">
+                      {item.organization.trim()}
+                    </p>
                   ) : null}
                 </div>
                 <div className="flex shrink-0 flex-col items-end gap-1 sm:flex-row sm:items-center sm:gap-4">

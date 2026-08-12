@@ -139,8 +139,9 @@ describe('system page block schemas', () => {
     const pageSlugs = collectBlockSlugs(Pages.fields)
     const reusableSectionSlugs = collectBlockSlugs(ReusableSections.fields)
 
-    expect(pageSlugs).toHaveLength(39)
+    expect(pageSlugs).toHaveLength(40)
     expect(new Set(pageSlugs).size).toBe(pageSlugs.length)
+    expect(pageSlugs).toContain('programMatrix')
     expect(pageSlugs).not.toContain('feature166')
     expect(reusableSectionSlugs.slice().sort()).toEqual(
       pageSlugs.filter((slug) => slug !== 'reusableSection').sort(),
@@ -166,7 +167,7 @@ describe('system page block schemas', () => {
         { tabs?: Array<{ label: string }>; type?: string } | undefined
 
       expect(tabsField?.type).toBe('tabs')
-      expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+      expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
       expect(fieldNames).toEqual(
         expect.arrayContaining([
           'appearance',
@@ -187,7 +188,7 @@ describe('system page block schemas', () => {
     for (const block of [System404Block, SystemMaintenanceBlock, SystemComingSoonBlock]) {
       const tabsField = block.fields[0] as
         { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string } | undefined
-      const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+      const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
       const appearanceField = layoutTab?.fields.find(
         (field) =>
           typeof field === 'object' &&

@@ -21,6 +21,7 @@ type FeatureMatrixBlockLike = {
   features?:
     | {
         description?: string | null
+        cardBackground?: string | null
         image?: unknown
         imagePosition?: FeatureMatrixImagePosition | null
         title?: string | null
@@ -56,6 +57,7 @@ export function FeatureMatrixBlockComponent({
       ? [
           {
             description: feature.description,
+            cardBackground: feature.cardBackground,
             image,
             imagePosition: feature.imagePosition,
             title: featureTitle,

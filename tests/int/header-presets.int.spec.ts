@@ -21,7 +21,7 @@ describe('header presets', () => {
       | { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string }
       | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
-    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
     const stickyField = layoutTab?.fields.find(
       (field) => typeof field === 'object' && field !== null && 'name' in field && field.name === 'sticky',
     ) as { defaultValue?: boolean; type?: string } | undefined
@@ -36,7 +36,7 @@ describe('header presets', () => {
     ) as { maxRows?: number; type?: string } | undefined
 
     expect(tabsField?.type).toBe('tabs')
-    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(stickyField?.type).toBe('checkbox')
     expect(stickyField?.defaultValue).toBe(true)
     expect(sizeField?.type).toBe('select')

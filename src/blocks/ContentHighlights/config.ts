@@ -2,6 +2,7 @@ import type { ArrayField, Block, CheckboxField, SelectField, TabsField } from 'p
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import {
   createContentActionModeField,
   createContentActionsField,
@@ -41,54 +42,61 @@ const itemsField = {
     initCollapsed: true,
   },
   fields: [
-    {
-      name: 'metadata',
-      type: 'text',
-    },
-    {
-      name: 'title',
-      type: 'text',
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-    },
-    {
-      name: 'linkType',
-      label: 'Item Link',
-      type: 'select',
-      defaultValue: 'none',
-      options: [
-        { label: 'No Link', value: 'none' },
-        { label: 'Page', value: 'page' },
-        { label: 'Custom URL', value: 'custom' },
+    createCardTabs({
+      backgroundFieldOptions: {
+        adminDescription: 'Applied only when the block uses the Numbered Steps presentation.',
+      },
+      contentFields: [
+        {
+          name: 'metadata',
+          type: 'text',
+        },
+        {
+          name: 'title',
+          type: 'text',
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+        },
+        {
+          name: 'linkType',
+          label: 'Item Link',
+          type: 'select',
+          defaultValue: 'none',
+          options: [
+            { label: 'No Link', value: 'none' },
+            { label: 'Page', value: 'page' },
+            { label: 'Custom URL', value: 'custom' },
+          ],
+          required: true,
+        } satisfies SelectField,
+        {
+          name: 'page',
+          type: 'relationship',
+          relationTo: 'pages',
+          admin: {
+            condition: isPageLink,
+          },
+        },
+        {
+          name: 'url',
+          label: 'Custom URL',
+          type: 'text',
+          admin: {
+            condition: isCustomLink,
+          },
+        },
+        {
+          name: 'openInNewTab',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: {
+            condition: hasItemLink,
+          },
+        } satisfies CheckboxField,
       ],
-      required: true,
-    } satisfies SelectField,
-    {
-      name: 'page',
-      type: 'relationship',
-      relationTo: 'pages',
-      admin: {
-        condition: isPageLink,
-      },
-    },
-    {
-      name: 'url',
-      label: 'Custom URL',
-      type: 'text',
-      admin: {
-        condition: isCustomLink,
-      },
-    },
-    {
-      name: 'openInNewTab',
-      type: 'checkbox',
-      defaultValue: false,
-      admin: {
-        condition: hasItemLink,
-      },
-    } satisfies CheckboxField,
+    }),
   ],
 } satisfies ArrayField
 
@@ -124,7 +132,7 @@ export const ContentHighlightsBlock: Block = {
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             createContentActionModeField(),

@@ -66,7 +66,7 @@ const expectContentActionsFieldSet = (
       }
     | undefined
   const actionContentTab = actionTabsField?.tabs?.find((tab) => tab.label === 'Content')
-  const actionLayoutTab = actionTabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+  const actionLayoutTab = actionTabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
   const variantField = getNamedField<{
     defaultValue?: string
     name?: string
@@ -82,7 +82,7 @@ const expectContentActionsFieldSet = (
   expect(actionsField?.type).toBe('array')
   expect(actionsField?.maxRows).toBe(2)
   expect(actionTabsField?.type).toBe('tabs')
-  expect(actionTabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+  expect(actionTabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
   expect(
     actionContentTab?.fields.map((field) =>
       typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,
@@ -159,8 +159,9 @@ describe('page block pipeline', () => {
     )
 
     expect(layoutField?.type).toBe('blocks')
-    expect(registeredSlugs).toHaveLength(39)
+    expect(registeredSlugs).toHaveLength(40)
     expect(new Set(registeredSlugs).size).toBe(registeredSlugs.length)
+    expect(registeredSlugs).toContain('programMatrix')
     expect(registeredSlugs).not.toContain('feature166')
 
     for (const slug of registeredSlugs) {
@@ -178,7 +179,7 @@ describe('page block pipeline', () => {
         }
       | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
-    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
     const galleryAlbums = getNamedField<{
       admin?: {
         allowCreate?: boolean
@@ -207,7 +208,7 @@ describe('page block pipeline', () => {
     }>(layoutTab?.fields ?? [], 'size')
 
     expect(tabsField?.type).toBe('tabs')
-    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(
       contentTab?.fields.map((field) =>
         typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,
@@ -257,7 +258,7 @@ describe('page block pipeline', () => {
     const tabsField = StatsStripBlock.fields[0] as
       { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string } | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
-    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
 
     const itemsField = getNamedField<{
       fields?: Array<{ name?: string; type?: string }>
@@ -285,7 +286,7 @@ describe('page block pipeline', () => {
     )
 
     expect(tabsField?.type).toBe('tabs')
-    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(itemsField?.type).toBe('array')
     expect(itemsField?.minRows).toBe(1)
     expect(itemsField?.fields?.map((field) => field.name).filter((name) => name !== 'id')).toEqual([
@@ -313,7 +314,7 @@ describe('page block pipeline', () => {
         }
       | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
-    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
 
     const appearanceField = getNamedField<{ type?: string }>(layoutTab?.fields ?? [], 'appearance')
     const backgroundImageField = getNamedField<{
@@ -361,7 +362,7 @@ describe('page block pipeline', () => {
         }
       | undefined
     const buttonContentTab = buttonTabsField?.tabs?.find((tab) => tab.label === 'Content')
-    const buttonLayoutTab = buttonTabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const buttonLayoutTab = buttonTabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
     const buttonLabelField = getNamedField<{ required?: boolean; type?: string }>(
       buttonContentTab?.fields ?? [],
       'label',
@@ -373,7 +374,7 @@ describe('page block pipeline', () => {
     }>(buttonLayoutTab?.fields ?? [], 'variant')
 
     expect(tabsField?.type).toBe('tabs')
-    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(appearanceField?.type).toBe('group')
     expect(backgroundImageField?.type).toBe('upload')
     expect(backgroundImageField?.relationTo).toBe('media')
@@ -433,7 +434,7 @@ describe('page block pipeline', () => {
     expect(buttonsField?.type).toBe('array')
     expect(buttonsField?.maxRows).toBe(2)
     expect(buttonTabsField?.type).toBe('tabs')
-    expect(buttonTabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(buttonTabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(buttonLabelField?.type).toBe('text')
     expect(buttonLabelField?.required).toBe(true)
     expect(buttonVariantField?.defaultValue).toBe('default')
@@ -450,7 +451,7 @@ describe('page block pipeline', () => {
     const tabsField = Footer56Block.fields[0] as
       { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string } | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
-    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
 
     const logoModeField = getNamedField<{
       defaultValue?: string
@@ -487,7 +488,7 @@ describe('page block pipeline', () => {
     )
 
     expect(tabsField?.type).toBe('tabs')
-    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(logoModeField?.type).toBe('select')
     expect(logoModeField?.defaultValue).toBe('siteDefault')
     expect(logoModeField?.options?.map((option) => option.value)).toEqual([
@@ -597,7 +598,7 @@ describe('page block pipeline', () => {
     const tabsField = AnnouncementBlock.fields[0] as
       { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string } | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
-    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
     const appearanceField = getNamedField<{ type?: string }>(layoutTab?.fields ?? [], 'appearance')
     const displayModeField = getNamedField<{
       defaultValue?: string
@@ -623,7 +624,7 @@ describe('page block pipeline', () => {
     )
 
     expect(tabsField?.type).toBe('tabs')
-    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(appearanceField?.type).toBe('group')
     expect(displayModeField?.type).toBe('select')
     expect(displayModeField?.label).toBe('Animation Mode')
@@ -695,7 +696,7 @@ describe('page block pipeline', () => {
         }
       | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
-    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
     const titleField = getNamedField<{ required?: boolean; type?: string }>(
       contentTab?.fields ?? [],
       'title',
@@ -713,7 +714,7 @@ describe('page block pipeline', () => {
     }>(layoutTab?.fields ?? [], 'contentAlignment')
 
     expect(tabsField?.type).toBe('tabs')
-    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(titleField?.type).toBe('text')
     expect(titleField?.required).toBe(true)
     expect(descriptionField?.type).toBe('textarea')
@@ -814,7 +815,7 @@ describe('page block pipeline', () => {
     const tabsField = FeatureSpotlightBlock.fields[0] as
       { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string } | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
-    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
 
     const appearanceField = getNamedField<{ type?: string }>(layoutTab?.fields ?? [], 'appearance')
     const imageField = getNamedField<{ relationTo?: string; required?: boolean; type?: string }>(
@@ -864,7 +865,7 @@ describe('page block pipeline', () => {
     ) as { type?: string } | undefined
 
     expect(tabsField?.type).toBe('tabs')
-    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(appearanceField?.type).toBe('group')
     expect(imageField?.type).toBe('upload')
     expect(imageField?.relationTo).toBe('media')
@@ -922,7 +923,7 @@ describe('page block pipeline', () => {
     const tabsField = QaAccordionBlock.fields[0] as
       { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string } | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
-    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
 
     const headingField = getNamedField<{ required?: boolean; type?: string }>(
       contentTab?.fields ?? [],
@@ -979,7 +980,7 @@ describe('page block pipeline', () => {
     }>(layoutTab?.fields ?? [], 'sideActionMode')
 
     expect(tabsField?.type).toBe('tabs')
-    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(
       contentTab?.fields.map((field) =>
         typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,
@@ -1053,7 +1054,7 @@ describe('page block pipeline', () => {
         }
       | undefined
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
-    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Layout & Theme')
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
     const contentAlignmentField = getNamedField<{
       defaultValue?: string
       options?: Array<{ value: string }>

@@ -17,12 +17,15 @@ type TeamShowcaseBlockLike = {
   contentAlignment?: TeamShowcaseAlignment | null
   description?: string | null
   title?: string | null
-  members?: {
-    image?: unknown
-    name?: string | null
-    role?: string | null
-    description?: string | null
-  }[] | null
+  members?:
+    | {
+        cardBackground?: string | null
+        image?: unknown
+        name?: string | null
+        role?: string | null
+        description?: string | null
+      }[]
+    | null
   size?: TeamShowcaseSize | null
 }
 
@@ -49,6 +52,7 @@ export function TeamShowcaseBlockComponent({
     return name && imageProps
       ? [
           {
+            cardBackground: member.cardBackground,
             image: imageProps.src,
             name,
             role: member.role?.trim() ?? '',

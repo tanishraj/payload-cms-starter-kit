@@ -1,4 +1,7 @@
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
 import type { RegularBlockSize } from '@/blocks/shared/blockSpacing'
 import { ContentActions } from '@/components/ContentActions'
 import { getMediaAbsoluteUrl, isMediaDoc } from '@/lib/media'
@@ -9,6 +12,7 @@ import { MediaCarouselClient, type MediaCarouselItem } from './MediaCarouselClie
 
 type MediaCarouselItemValue = {
   actions?: CmsActionValue[] | null
+  cardBackground?: string | null
   icon?: string | null
   media?: unknown
   summary?: string | null
@@ -45,40 +49,37 @@ export function MediaCarouselBlockComponent({
   const resolvedTitle = title?.trim()
   if (!resolvedTitle) return null
 
-  const resolvedItems: MediaCarouselItem[] = (items ?? []).flatMap(
-    (item): MediaCarouselItem[] => {
-      const itemTitle = item.title?.trim()
-      if (!itemTitle) return []
+  const resolvedItems: MediaCarouselItem[] = (items ?? []).flatMap((item): MediaCarouselItem[] => {
+    const itemTitle = item.title?.trim()
+    if (!itemTitle) return []
 
-      const media = item.media as Media | null | undefined
-      if (!isMediaDoc(media)) return []
+    const media = item.media as Media | null | undefined
+    if (!isMediaDoc(media)) return []
 
-      const src = getMediaAbsoluteUrl(media)
-      if (!src) return []
+    const src = getMediaAbsoluteUrl(media)
+    if (!src) return []
 
-      const mediaType =
-        typeof media.mimeType === 'string' && media.mimeType.startsWith('video/')
-          ? 'video'
-          : 'image'
+    const mediaType =
+      typeof media.mimeType === 'string' && media.mimeType.startsWith('video/') ? 'video' : 'image'
 
-      const resolvedActions = resolveCmsActions(item.actions)
+    const resolvedActions = resolveCmsActions(item.actions)
 
-      return [
-        {
-          id: media.id,
-          mediaType,
-          src,
-          alt: media.alt?.trim() || itemTitle,
-          width: typeof media.width === 'number' ? media.width : undefined,
-          height: typeof media.height === 'number' ? media.height : undefined,
-          icon: item.icon ?? undefined,
-          title: itemTitle,
-          summary: item.summary?.trim() || undefined,
-          action: resolvedActions[0],
-        },
-      ]
-    },
-  )
+    return [
+      {
+        id: media.id,
+        mediaType,
+        src,
+        alt: media.alt?.trim() || itemTitle,
+        width: typeof media.width === 'number' ? media.width : undefined,
+        height: typeof media.height === 'number' ? media.height : undefined,
+        icon: item.icon ?? undefined,
+        title: itemTitle,
+        summary: item.summary?.trim() || undefined,
+        action: resolvedActions[0],
+        cardBackground: item.cardBackground ?? undefined,
+      },
+    ]
+  })
 
   if (resolvedItems.length === 0) return null
 
@@ -96,7 +97,11 @@ export function MediaCarouselBlockComponent({
       description={description?.trim() || undefined}
       eyebrow={eyebrow?.trim() || undefined}
       items={resolvedItems}
-      sectionActions={resolvedSectionActions.length > 0 ? <ContentActions actions={resolvedSectionActions} /> : undefined}
+      sectionActions={
+        resolvedSectionActions.length > 0 ? (
+          <ContentActions actions={resolvedSectionActions} />
+        ) : undefined
+      }
       size={size ?? 'default'}
       title={resolvedTitle}
     />

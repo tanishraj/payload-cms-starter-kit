@@ -83,7 +83,7 @@ describe('carousel block schemas', () => {
 
     const [contentTab, layoutTab] = getTabs(GalleryCoverflowBlock)
 
-    expect(layoutTab.label).toBe('Layout & Theme')
+    expect(layoutTab.label).toBe('Theme Settings')
     expect(getField(contentTab.fields, 'images')).toMatchObject({
       minRows: 3,
       maxRows: 20,

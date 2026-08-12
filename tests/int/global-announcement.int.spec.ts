@@ -36,7 +36,7 @@ describe('global announcement settings', () => {
       (field) => typeof field === 'object' && field !== null && 'tabs' in field,
     ) as { tabs: Array<{ label: string; fields: unknown[] }>; type?: string } | undefined
     const contentTab = announcementTabsField?.tabs.find((tab) => tab.label === 'Content')
-    const layoutTab = announcementTabsField?.tabs.find((tab) => tab.label === 'Layout & Theme')
+    const layoutTab = announcementTabsField?.tabs.find((tab) => tab.label === 'Theme Settings')
     const enabledField = contentTab?.fields.find(
       (field) =>
         typeof field === 'object' &&
@@ -81,7 +81,7 @@ describe('global announcement settings', () => {
     ) as { minRows?: number; type?: string } | undefined
 
     expect(announcementTabsField?.type).toBe('tabs')
-    expect(announcementTabsField?.tabs.map((tab) => tab.label)).toEqual(['Content', 'Layout & Theme'])
+    expect(announcementTabsField?.tabs.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(enabledField?.type).toBe('checkbox')
     expect(enabledField?.defaultValue).toBe(false)
     expect(labelField?.type).toBe('text')

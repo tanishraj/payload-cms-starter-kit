@@ -93,7 +93,7 @@ describe('Review Feed', () => {
 
     const tabsField = ReviewFeedBlock.fields[0] as unknown as { tabs: TestTab[]; type: string }
     const content = tabsField.tabs.find(({ label }) => label === 'Content')
-    const layout = tabsField.tabs.find(({ label }) => label === 'Layout & Theme')
+    const layout = tabsField.tabs.find(({ label }) => label === 'Theme Settings')
     const pageSize = getField(content?.fields ?? [], 'pageSize')
 
     expect(tabsField.type).toBe('tabs')

@@ -267,6 +267,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Program Matrix block preview',
+    filename: 'program-matrix.jpg',
+    label: 'Program Matrix',
+    slug: 'programMatrix',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Quote Block preview',
     filename: 'quote-block.jpg',
     label: 'Quote Block',

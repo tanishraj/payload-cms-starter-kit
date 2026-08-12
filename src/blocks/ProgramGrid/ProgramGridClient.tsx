@@ -12,10 +12,12 @@ import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { resolveCardSurface, type CardSurfaceClasses } from '@/blocks/shared/cardSurface'
 
 export type ResolvedProgram = {
   id: string | number
   badge?: string
+  cardBackground?: string
   category?: string
   ctaHref?: string
   ctaOpenInNewTab?: boolean
@@ -52,31 +54,68 @@ const gridColsClasses: Record<2 | 3 | 4, string> = {
   4: 'grid gap-5 sm:grid-cols-2 lg:grid-cols-4',
 }
 
-type CardActionProps = { ctaHref: string; ctaLabel: string; actionMode: 'button' | 'link'; actionVariant: CmsActionVariant; openInNewTab?: boolean }
+type CardActionProps = {
+  ctaHref: string
+  ctaLabel: string
+  actionMode: 'button' | 'link'
+  actionVariant: CmsActionVariant
+  openInNewTab?: boolean
+  surface: CardSurfaceClasses
+}
 
-function CardAction({ ctaHref, ctaLabel, actionMode, actionVariant, openInNewTab }: CardActionProps) {
+function CardAction({
+  ctaHref,
+  ctaLabel,
+  actionMode,
+  actionVariant,
+  openInNewTab,
+  surface,
+}: CardActionProps) {
   if (actionMode === 'button') {
     return (
-      <Button asChild size="sm" variant={actionVariant} className="mt-3 self-start">
-        <a href={ctaHref} target={openInNewTab ? '_blank' : undefined} rel={openInNewTab ? 'noopener noreferrer' : undefined}>
+      <Button
+        asChild
+        size="sm"
+        variant={actionVariant}
+        className={cn('mt-3 self-start', surface.button[actionVariant])}
+      >
+        <a
+          href={ctaHref}
+          target={openInNewTab ? '_blank' : undefined}
+          rel={openInNewTab ? 'noopener noreferrer' : undefined}
+        >
           {ctaLabel}
         </a>
       </Button>
     )
   }
   return (
-    <div className="mt-3 flex items-center gap-1 text-sm font-medium text-primary">
+    <div className={cn('mt-3 flex items-center gap-1 text-sm font-medium', surface.link)}>
       {ctaLabel}
       <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
     </div>
   )
 }
 
-function GridCard({ program, ctaLabel, actionMode, actionVariant }: { program: ResolvedProgram; ctaLabel: string; actionMode: 'button' | 'link'; actionVariant: CmsActionVariant }) {
+function GridCard({
+  program,
+  ctaLabel,
+  actionMode,
+  actionVariant,
+}: {
+  program: ResolvedProgram
+  ctaLabel: string
+  actionMode: 'button' | 'link'
+  actionVariant: CmsActionVariant
+}) {
+  const surface = resolveCardSurface(program.cardBackground)
   const inner = (
     <div
+      data-card-background={surface.value}
       className={cn(
-        'group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card text-card-foreground transition-all duration-200',
+        'group flex h-full flex-col overflow-hidden rounded-xl border transition-all duration-200',
+        surface.className,
+        surface.divider,
         program.ctaHref && 'hover:shadow-md hover:border-primary/30',
       )}
     >
@@ -107,19 +146,26 @@ function GridCard({ program, ctaLabel, actionMode, actionVariant }: { program: R
 
       <div className="flex flex-1 flex-col gap-3 p-5">
         {program.category ? (
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-primary">
+          <p
+            className={cn(
+              'font-mono text-xs font-semibold uppercase tracking-[0.24em]',
+              surface.icon,
+            )}
+          >
             {program.category}
           </p>
         ) : null}
         <h3 className="text-lg font-semibold leading-snug text-current">{program.title}</h3>
         {program.description ? (
-          <p className="line-clamp-2 text-sm leading-relaxed text-current/70">
+          <p className={cn('line-clamp-2 text-sm leading-relaxed', surface.secondary)}>
             {program.description}
           </p>
         ) : null}
 
         {program.duration || program.intake ? (
-          <div className="mt-auto flex flex-wrap gap-x-4 gap-y-1 pt-2 text-xs text-current/70">
+          <div
+            className={cn('mt-auto flex flex-wrap gap-x-4 gap-y-1 pt-2 text-xs', surface.secondary)}
+          >
             {program.duration ? (
               <span className="flex items-center gap-1">
                 <Clock className="size-3.5 shrink-0" />
@@ -142,6 +188,7 @@ function GridCard({ program, ctaLabel, actionMode, actionVariant }: { program: R
             actionMode={actionMode}
             actionVariant={actionVariant}
             openInNewTab={program.ctaOpenInNewTab}
+            surface={surface}
           />
         ) : null}
       </div>
@@ -164,11 +211,25 @@ function GridCard({ program, ctaLabel, actionMode, actionVariant }: { program: R
   return <div className="h-full">{inner}</div>
 }
 
-function ListCard({ program, ctaLabel, actionMode, actionVariant }: { program: ResolvedProgram; ctaLabel: string; actionMode: 'button' | 'link'; actionVariant: CmsActionVariant }) {
+function ListCard({
+  program,
+  ctaLabel,
+  actionMode,
+  actionVariant,
+}: {
+  program: ResolvedProgram
+  ctaLabel: string
+  actionMode: 'button' | 'link'
+  actionVariant: CmsActionVariant
+}) {
+  const surface = resolveCardSurface(program.cardBackground)
   const inner = (
     <div
+      data-card-background={surface.value}
       className={cn(
-        'group flex flex-col gap-4 overflow-hidden rounded-xl border border-border bg-card p-5 text-card-foreground transition-all duration-200 sm:flex-row',
+        'group flex flex-col gap-4 overflow-hidden rounded-xl border p-5 transition-all duration-200 sm:flex-row',
+        surface.className,
+        surface.divider,
         program.ctaHref && 'hover:shadow-md hover:border-primary/30',
       )}
     >
@@ -187,7 +248,12 @@ function ListCard({ program, ctaLabel, actionMode, actionVariant }: { program: R
       <div className="flex flex-1 flex-col gap-2">
         <div className="flex flex-wrap items-center gap-2">
           {program.category ? (
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-primary">
+            <p
+              className={cn(
+                'font-mono text-xs font-semibold uppercase tracking-[0.24em]',
+                surface.icon,
+              )}
+            >
               {program.category}
             </p>
           ) : null}
@@ -199,11 +265,16 @@ function ListCard({ program, ctaLabel, actionMode, actionVariant }: { program: R
         </div>
         <h3 className="text-base font-semibold leading-snug text-current">{program.title}</h3>
         {program.description ? (
-          <p className="line-clamp-2 text-sm leading-relaxed text-current/70">
+          <p className={cn('line-clamp-2 text-sm leading-relaxed', surface.secondary)}>
             {program.description}
           </p>
         ) : null}
-        <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-xs text-current/70">
+        <div
+          className={cn(
+            'mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-xs',
+            surface.secondary,
+          )}
+        >
           {program.duration ? (
             <span className="flex items-center gap-1">
               <Clock className="size-3.5 shrink-0" />
@@ -217,7 +288,7 @@ function ListCard({ program, ctaLabel, actionMode, actionVariant }: { program: R
             </span>
           ) : null}
           {program.ctaHref && actionMode === 'link' ? (
-            <span className="ml-auto flex items-center gap-1 font-medium text-primary">
+            <span className={cn('ml-auto flex items-center gap-1 font-medium', surface.link)}>
               {ctaLabel}
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </span>
@@ -230,6 +301,7 @@ function ListCard({ program, ctaLabel, actionMode, actionVariant }: { program: R
             actionMode={actionMode}
             actionVariant={actionVariant}
             openInNewTab={program.ctaOpenInNewTab}
+            surface={surface}
           />
         ) : null}
       </div>
@@ -326,13 +398,25 @@ export function ProgramGridClient({
         {viewMode === 'grid' ? (
           <div className={gridColsClasses[columns]}>
             {visible.map((program) => (
-              <GridCard key={String(program.id)} ctaLabel={ctaLabel} program={program} actionMode={actionMode} actionVariant={actionVariant} />
+              <GridCard
+                key={String(program.id)}
+                ctaLabel={ctaLabel}
+                program={program}
+                actionMode={actionMode}
+                actionVariant={actionVariant}
+              />
             ))}
           </div>
         ) : (
           <div className="flex flex-col gap-4">
             {visible.map((program) => (
-              <ListCard key={String(program.id)} ctaLabel={ctaLabel} program={program} actionMode={actionMode} actionVariant={actionVariant} />
+              <ListCard
+                key={String(program.id)}
+                ctaLabel={ctaLabel}
+                program={program}
+                actionMode={actionMode}
+                actionVariant={actionVariant}
+              />
             ))}
           </div>
         )}

@@ -2,6 +2,7 @@ import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import {
   createContentActionModeField,
   createContentActionsField,
@@ -25,30 +26,36 @@ const profilesField = {
     initCollapsed: true,
   },
   fields: [
-    {
-      name: 'image',
-      type: 'upload',
-      relationTo: 'media',
-      required: true,
-    },
-    {
-      name: 'name',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'role',
-      label: 'Role / Designation',
-      type: 'text',
-    },
-    {
-      name: 'imagePosition',
-      label: 'Background Position',
-      type: 'select',
-      defaultValue: 'center',
-      options: imagePositionOptions,
-      required: true,
-    } satisfies SelectField,
+    createCardTabs({
+      contentFields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+        },
+        {
+          name: 'name',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'role',
+          label: 'Role / Designation',
+          type: 'text',
+        },
+      ],
+      themeFields: [
+        {
+          name: 'imagePosition',
+          label: 'Background Position',
+          type: 'select',
+          defaultValue: 'center',
+          options: imagePositionOptions,
+          required: true,
+        } satisfies SelectField,
+      ],
+    }),
   ],
 } satisfies ArrayField
 
@@ -84,7 +91,7 @@ export const ProfileCarouselBlock: Block = {
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             createContentActionModeField(),

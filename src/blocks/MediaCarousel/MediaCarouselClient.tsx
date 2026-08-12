@@ -20,9 +20,10 @@ import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
-
+import { resolveCardSurface } from '@/blocks/shared/cardSurface'
 
 export type MediaCarouselItem = {
+  cardBackground?: string
   id: string | number
   mediaType: 'video' | 'image'
   src: string
@@ -59,10 +60,20 @@ function MediaCard({
   actionVariant: CmsActionVariant
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
-  const Icon = item.icon ? (((LucideIcons as Record<string, unknown>)[item.icon] as LucideIcon | undefined) ?? Star) : undefined
+  const surface = resolveCardSurface(item.cardBackground)
+  const Icon = item.icon
+    ? (((LucideIcons as Record<string, unknown>)[item.icon] as LucideIcon | undefined) ?? Star)
+    : undefined
 
   const cardInner = (
-    <div className="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card text-card-foreground">
+    <div
+      className={cn(
+        'flex h-full flex-col overflow-hidden rounded-xl border',
+        surface.className,
+        surface.divider,
+      )}
+      data-card-background={surface.value}
+    >
       <div className="relative aspect-video w-full overflow-hidden">
         {item.mediaType === 'video' ? (
           <video
@@ -94,12 +105,17 @@ function MediaCard({
           {item.title}
         </p>
         {item.summary ? (
-          <p className="text-sm leading-relaxed text-current/70">{item.summary}</p>
+          <p className={cn('text-sm leading-relaxed', surface.secondary)}>{item.summary}</p>
         ) : null}
         {item.action ? (
           <div className="mt-2">
             {actionMode === 'button' ? (
-              <Button asChild size="sm" variant={actionVariant}>
+              <Button
+                asChild
+                size="sm"
+                variant={actionVariant}
+                className={surface.button[actionVariant]}
+              >
                 <a
                   href={item.action.href}
                   rel={item.action.openInNewTab ? 'noreferrer' : undefined}
@@ -110,6 +126,7 @@ function MediaCard({
               </Button>
             ) : (
               <ContentLink
+                className={surface.link}
                 href={item.action.href}
                 label={item.action.label}
                 openInNewTab={item.action.openInNewTab}

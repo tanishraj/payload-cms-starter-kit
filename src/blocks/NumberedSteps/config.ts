@@ -1,6 +1,7 @@
 import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
@@ -15,29 +16,37 @@ const stepsField: ArrayField = {
     description: 'Each step has a number (auto-assigned), title, and optional description.',
   },
   fields: [
-    {
-      name: 'title',
-      type: 'text',
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-    },
-    {
-      name: 'image',
-      label: 'Image',
-      type: 'upload',
-      relationTo: 'media',
-      admin: { description: 'Optional image shown alongside this step.' },
-    },
-    {
-      name: 'badge',
-      label: 'Badge Text',
-      type: 'text',
-      admin: {
-        description: 'Optional small label (e.g. "Required", "Optional", "New").',
+    createCardTabs({
+      backgroundFieldOptions: {
+        adminDescription:
+          'Applied only to the Cards presentation. Vertical and Alternating layouts remain unchanged.',
       },
-    },
+      contentFields: [
+        {
+          name: 'title',
+          type: 'text',
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+        },
+        {
+          name: 'image',
+          label: 'Image',
+          type: 'upload',
+          relationTo: 'media',
+          admin: { description: 'Optional image shown alongside this step.' },
+        },
+        {
+          name: 'badge',
+          label: 'Badge Text',
+          type: 'text',
+          admin: {
+            description: 'Optional small label (e.g. "Required", "Optional", "New").',
+          },
+        },
+      ],
+    }),
   ],
 }
 
@@ -73,7 +82,7 @@ export const NumberedStepsBlock: Block = {
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             {

@@ -2,6 +2,7 @@ import type { ArrayField, Block, CheckboxField, SelectField, TabsField } from 'p
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import {
   createContentActionModeField,
   createContentActionsField,
@@ -17,34 +18,40 @@ const featuresField = {
     initCollapsed: true,
   },
   fields: [
-    {
-      name: 'title',
-      type: 'text',
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-    },
-    {
-      name: 'image',
-      type: 'upload',
-      relationTo: 'media',
-      required: true,
-    },
-    {
-      name: 'imagePosition',
-      label: 'Background Position',
-      type: 'select',
-      defaultValue: 'center',
-      options: [
-        { label: 'Center', value: 'center' },
-        { label: 'Top', value: 'top' },
-        { label: 'Bottom', value: 'bottom' },
-        { label: 'Left', value: 'left' },
-        { label: 'Right', value: 'right' },
+    createCardTabs({
+      contentFields: [
+        {
+          name: 'title',
+          type: 'text',
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+        },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+        },
       ],
-      required: true,
-    } satisfies SelectField,
+      themeFields: [
+        {
+          name: 'imagePosition',
+          label: 'Background Position',
+          type: 'select',
+          defaultValue: 'center',
+          options: [
+            { label: 'Center', value: 'center' },
+            { label: 'Top', value: 'top' },
+            { label: 'Bottom', value: 'bottom' },
+            { label: 'Left', value: 'left' },
+            { label: 'Right', value: 'right' },
+          ],
+          required: true,
+        } satisfies SelectField,
+      ],
+    }),
   ],
 } satisfies ArrayField
 
@@ -80,7 +87,7 @@ export const FeatureMatrixBlock: Block = {
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             createContentActionModeField(),

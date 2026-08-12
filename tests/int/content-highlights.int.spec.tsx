@@ -36,7 +36,7 @@ describe('Content Highlights', () => {
       type: string
     }
     const content = tabs.tabs.find(({ label }) => label === 'Content')
-    const layout = tabs.tabs.find(({ label }) => label === 'Layout & Theme')
+    const layout = tabs.tabs.find(({ label }) => label === 'Theme Settings')
     const items = getField(content?.fields ?? [], 'items')
 
     expect(tabs.type).toBe('tabs')

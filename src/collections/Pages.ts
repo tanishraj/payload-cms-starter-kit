@@ -27,6 +27,7 @@ import { RichTextBlock } from '@/blocks/RichTextBlock/config'
 import { VideoEmbedBlock } from '@/blocks/VideoEmbed/config'
 import { MediaCarouselBlock } from '@/blocks/MediaCarousel/config'
 import { ProgramGridBlock } from '@/blocks/ProgramGrid/config'
+import { ProgramMatrixBlock } from '@/blocks/ProgramMatrix/config'
 import { LogoStripBlock } from '@/blocks/LogoStrip/config'
 import { PageHeaderBlock } from '@/blocks/PageHeader/config'
 import { TimelineBlock } from '@/blocks/Timeline/config'
@@ -260,6 +261,7 @@ export const Pages: CollectionConfig = {
                 VideoEmbedBlock,
                 MediaCarouselBlock,
                 ProgramGridBlock,
+                ProgramMatrixBlock,
                 LogoStripBlock,
                 PageHeaderBlock,
                 TimelineBlock,

@@ -22,7 +22,8 @@ This is an additive schema change and requires no content migration.
 
 ## CMS Schema
 
-The block uses the standard **Content** and **Layout & Theme** tabs.
+The block uses the standard **Content** and **Layout** tabs, matching Program Grid, Icon Grid,
+Bento Grid, and the majority of content blocks.
 
 ### Content
 
@@ -39,6 +40,7 @@ Section fields:
 - `title`: required text
 - `metadata`: optional short text such as “4.5 Years + 1 Year Internship”
 - `description`: optional textarea
+- `cardBackground`: Default Card, Primary, Secondary, Muted, or Accent; defaults to Default Card
 - `linkType`: None, Page, or Custom URL
 - `page`: conditionally shown Page relationship
 - `url`: conditionally shown custom URL
@@ -47,7 +49,7 @@ Section fields:
 Rows without a non-empty title are omitted defensively at render time. A valid title is sufficient
 to render a row; icon, metadata, description, and action are optional.
 
-### Layout & Theme
+### Layout
 
 - Shared block appearance controls
 - `actionMode`: Button or Link Text, using the shared action-mode field and applying to section
@@ -60,12 +62,21 @@ to render a row; icon, metadata, description, and action are optional.
 
 Programme cell copy remains left-aligned for scanability regardless of section alignment.
 
+Card backgrounds are configured independently inside each programme row because they describe an
+individual cell rather than the whole matrix. Free-form color values are not accepted. The five
+semantic choices keep authoring predictable and allow every installed theme and dark mode to own
+the final palette.
+
 ## Action Behavior
 
 Each programme row owns only its destination. Presentation is configured once at block level:
 
-- **Button** renders the shared Button component with the selected variant.
-- **Link Text** renders a text link with an Arrow Right icon and semantic primary color.
+- **Button** renders the shared Button component with the selected variant. When a button variant
+  matches its card surface (Primary on Primary or Secondary on Secondary), it receives the
+  semantic inverse treatment needed to remain distinguishable.
+- **Link Text** renders a text link with an Arrow Right icon. Its color follows the card surface:
+  semantic primary on Default, Muted, and Accent cards, and the appropriate surface foreground on
+  Primary and Secondary cards.
 - Rows with Link set to None render no item action.
 - Section actions remain independent of item actions.
 - Page and custom links use the existing CMS link resolution rules.
@@ -101,10 +112,16 @@ The section uses the standard regular block container and selected block spacing
 
 The introduction is a restrained editorial stack:
 
-- optional mono uppercase eyebrow in semantic primary
-- serif section title using the existing block heading scale
-- readable supporting description in semantic muted foreground
+- optional mono uppercase eyebrow using the shared `text-xs`, semibold,
+  `tracking-[0.24em]` treatment
+- section title inheriting the active theme's `--font-display`, using the shared
+  `text-3xl sm:text-4xl`, semibold block-heading scale
+- readable `text-base leading-7` supporting description in semantic secondary foreground
 - optional section actions below the description
+
+The introduction uses the same `gap-4` internal rhythm as Program Grid, Icon Grid, Bento Grid, and
+Feature Matrix. The matrix begins after `gap-10 md:gap-12`, preserving clear section hierarchy
+without introducing a one-off spacing scale.
 
 The programme matrix uses:
 
@@ -115,19 +132,39 @@ The programme matrix uses:
 - two equal columns from the tablet breakpoint upward
 - semantic internal dividers without doubled borders
 - equal-height cells within each desktop row
-- generous but responsive cell padding
-- optional primary-colored Lucide icon
-- serif programme title
-- mono uppercase metadata
-- readable supporting description
+- shared `p-6 md:p-8` responsive cell padding
+- optional `size-5` Lucide icon whose color adapts to the selected card surface
+- explicit theme-aware `font-sans`, `text-lg`, semibold programme title
+- mono uppercase `text-xs`, semibold metadata using `tracking-[0.24em]`
+- readable `text-sm leading-6` supporting description
 - action anchored after the content without forcing empty space when absent
+
+The icon-to-title and title-group spacing use the existing spacing scale rather than bespoke
+values. The matrix layout—not oversized or alternate typography—remains the block's distinctive
+visual signature.
+
+Each programme cell independently resolves one of five semantic surfaces:
+
+- **Default Card:** `card` and `card-foreground`
+- **Primary:** `primary` and `primary-foreground`
+- **Secondary:** `secondary` and `secondary-foreground`
+- **Muted:** `muted` and `foreground`
+- **Accent:** `accent` and `accent-foreground`
+
+The surface resolver also supplies appropriate secondary-copy, icon, divider, Link Text, and
+matching-button contrast classes. Section actions receive the same automatic contrast treatment
+when the block-level appearance uses a matching colored surface. Internal dividers use
+low-emphasis current-color treatment so a line remains visible without introducing a hard-coded
+color when adjacent cells use different surfaces. The outer clipping frame continues to use the
+shared theme radius and border token, so background variation does not turn the matrix into
+detached cards.
 
 The matrix supports any valid item count. Odd final items preserve the outer frame and correct
 divider treatment without spanning two columns.
 
-All colors use `background`, `card`, `foreground`, `muted-foreground`, `primary`,
-`primary-foreground`, and `border` tokens. No raw light/dark colors or manual dark-mode
-exceptions are added.
+All colors use `background`, `card`, `foreground`, `muted`, `accent`, `secondary`, their semantic
+foreground counterparts, `primary`, `primary-foreground`, and `border` tokens. No raw light/dark
+colors, free-form CMS colors, or manual dark-mode exceptions are added.
 
 ## Responsive Behavior
 
@@ -193,6 +230,9 @@ Integration coverage verifies:
 - internal divider behavior for even and odd item counts
 - Button, Link Text, no-link, internal-link, and external-link behavior
 - semantic appearance, radius, spacing, typography, and color classes
+- parity with shared section-heading, card-title, label, icon, description, and padding conventions
+- every per-card semantic background and its automatic foreground, icon, divider, link, and button
+  contrast treatment
 - generated Payload type presence
 
 Run focused tests, targeted ESLint, TypeScript checking, type generation, and the production build

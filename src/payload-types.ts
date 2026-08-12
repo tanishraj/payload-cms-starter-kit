@@ -218,6 +218,7 @@ export interface Page {
         | VideoEmbedBlock
         | MediaCarouselBlock
         | ProgramGridBlock
+        | ProgramMatrixBlock
         | LogoStripBlock
         | PageHeaderBlock
         | TimelineBlock
@@ -607,6 +608,10 @@ export interface FeatureMatrixBlock {
         description?: string | null;
         image: string | Media;
         imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+        /**
+         * Uses the active website theme and automatically adjusts card contrast.
+         */
+        cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
         id?: string | null;
       }[]
     | null;
@@ -650,6 +655,10 @@ export interface ContentHighlightsBlock {
     page?: (string | null) | Page;
     url?: string | null;
     openInNewTab?: boolean | null;
+    /**
+     * Applied only when the block uses the Numbered Steps presentation.
+     */
+    cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
     id?: string | null;
   }[];
   appearance: {
@@ -726,6 +735,10 @@ export interface ProfileCarouselBlock {
         name: string;
         role?: string | null;
         imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+        /**
+         * Uses the active website theme and automatically adjusts card contrast.
+         */
+        cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
         id?: string | null;
       }[]
     | null;
@@ -1300,6 +1313,10 @@ export interface TeamShowcaseBlock {
         name: string;
         role?: string | null;
         description?: string | null;
+        /**
+         * Uses the active website theme and automatically adjusts card contrast.
+         */
+        cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
         id?: string | null;
       }[]
     | null;
@@ -1482,6 +1499,10 @@ export interface MediaCarouselBlock {
               id?: string | null;
             }[]
           | null;
+        /**
+         * Uses the active website theme and automatically adjusts card contrast.
+         */
+        cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
         id?: string | null;
       }[]
     | null;
@@ -1551,6 +1572,10 @@ export interface ProgramGridBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Uses the active website theme and automatically adjusts card contrast.
+         */
+        cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
         id?: string | null;
       }[]
     | null;
@@ -1575,6 +1600,65 @@ export interface ProgramGridBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'programGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProgramMatrixBlock".
+ */
+export interface ProgramMatrixBlock {
+  /**
+   * Small label above the section title.
+   */
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Each row represents one academic programme or structured offering.
+   */
+  items: {
+    /**
+     * Lucide icon name, such as Hospital, hospital, GraduationCap, or graduation-cap.
+     */
+    icon?: string | null;
+    title: string;
+    /**
+     * Short detail such as 4.5 Years + 1 Year Internship.
+     */
+    metadata?: string | null;
+    description?: string | null;
+    linkType?: ('none' | 'page' | 'custom') | null;
+    page?: (string | null) | Page;
+    url?: string | null;
+    openInNewTab?: boolean | null;
+    /**
+     * Uses the active website theme and automatically adjusts card contrast.
+     */
+    cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
+    id?: string | null;
+  }[];
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  actionMode: 'link' | 'button';
+  actionVariant?: ('default' | 'secondary' | 'outline') | null;
+  itemActionLabel?: string | null;
+  contentAlignment: 'left' | 'center';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'programMatrix';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1811,6 +1895,10 @@ export interface IconGridBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Applied to the Card presentation. Minimal and Icon Top remain intentionally unboxed.
+         */
+        cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
         id?: string | null;
       }[]
     | null;
@@ -1978,6 +2066,10 @@ export interface DownloadListBlock {
          * Override auto-detected type (e.g. "PDF", "XLSX"). Shown as a badge.
          */
         fileType?: string | null;
+        /**
+         * Applied only to the Cards display mode. List and Compact modes remain unchanged.
+         */
+        cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
         id?: string | null;
       }[]
     | null;
@@ -2030,6 +2122,10 @@ export interface NumberedStepsBlock {
          * Optional small label (e.g. "Required", "Optional", "New").
          */
         badge?: string | null;
+        /**
+         * Applied only to the Cards presentation. Vertical and Alternating layouts remain unchanged.
+         */
+        cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
         id?: string | null;
       }[]
     | null;
@@ -2069,7 +2165,6 @@ export interface BentoGridBlock {
    */
   items?:
     | {
-        size?: ('full' | 'large' | 'medium' | 'small') | null;
         eyebrow?: string | null;
         title?: string | null;
         description?: string | null;
@@ -2078,11 +2173,12 @@ export interface BentoGridBlock {
          */
         icon?: string | null;
         image?: (string | null) | Media;
-        accentColor?: ('none' | 'primary' | 'secondary' | 'accent') | null;
         /**
          * Optional — makes the entire cell a clickable link.
          */
         linkUrl?: string | null;
+        size?: ('full' | 'large' | 'medium' | 'small') | null;
+        accentColor: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
         id?: string | null;
       }[]
     | null;
@@ -2128,6 +2224,10 @@ export interface TestimonialGridBlock {
         role?: string | null;
         department?: string | null;
         avatar?: (string | null) | Media;
+        /**
+         * Applied to Grid and Featured presentations. Compact List remains intentionally unboxed.
+         */
+        cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
         id?: string | null;
       }[]
     | null;
@@ -2184,6 +2284,10 @@ export interface AwardsListBlock {
          * Optional detail about this award or ranking.
          */
         description?: string | null;
+        /**
+         * Applied only to the Cards Grid presentation. Table and Compact Rows remain unchanged.
+         */
+        cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
         id?: string | null;
       }[]
     | null;
@@ -2309,6 +2413,7 @@ export interface ReusableSection {
         | VideoEmbedBlock
         | MediaCarouselBlock
         | ProgramGridBlock
+        | ProgramMatrixBlock
         | LogoStripBlock
         | PageHeaderBlock
         | TimelineBlock
@@ -3512,6 +3617,7 @@ export interface PagesSelect<T extends boolean = true> {
         videoEmbed?: T | VideoEmbedBlockSelect<T>;
         mediaCarousel?: T | MediaCarouselBlockSelect<T>;
         programGrid?: T | ProgramGridBlockSelect<T>;
+        programMatrix?: T | ProgramMatrixBlockSelect<T>;
         logoStrip?: T | LogoStripBlockSelect<T>;
         pageHeader?: T | PageHeaderBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;
@@ -3781,6 +3887,7 @@ export interface FeatureMatrixBlockSelect<T extends boolean = true> {
         description?: T;
         image?: T;
         imagePosition?: T;
+        cardBackground?: T;
         id?: T;
       };
   appearance?:
@@ -3826,6 +3933,7 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        cardBackground?: T;
         id?: T;
       };
   appearance?:
@@ -3902,6 +4010,7 @@ export interface ProfileCarouselBlockSelect<T extends boolean = true> {
         name?: T;
         role?: T;
         imagePosition?: T;
+        cardBackground?: T;
         id?: T;
       };
   appearance?:
@@ -4335,6 +4444,7 @@ export interface TeamShowcaseBlockSelect<T extends boolean = true> {
         name?: T;
         role?: T;
         description?: T;
+        cardBackground?: T;
         id?: T;
       };
   appearance?:
@@ -4480,6 +4590,7 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
               variant?: T;
               id?: T;
             };
+        cardBackground?: T;
         id?: T;
       };
   appearance?:
@@ -4529,6 +4640,7 @@ export interface ProgramGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        cardBackground?: T;
         id?: T;
       };
   appearance?:
@@ -4543,6 +4655,53 @@ export interface ProgramGridBlockSelect<T extends boolean = true> {
   viewMode?: T;
   showFilter?: T;
   ctaLabel?: T;
+  contentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProgramMatrixBlock_select".
+ */
+export interface ProgramMatrixBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        id?: T;
+      };
+  items?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        metadata?: T;
+        description?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        cardBackground?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  actionMode?: T;
+  actionVariant?: T;
+  itemActionLabel?: T;
   contentAlignment?: T;
   size?: T;
   id?: T;
@@ -4712,6 +4871,7 @@ export interface IconGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        cardBackground?: T;
         id?: T;
       };
   appearance?:
@@ -4837,6 +4997,7 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
         file?: T;
         externalUrl?: T;
         fileType?: T;
+        cardBackground?: T;
         id?: T;
       };
   appearance?:
@@ -4878,6 +5039,7 @@ export interface NumberedStepsBlockSelect<T extends boolean = true> {
         description?: T;
         image?: T;
         badge?: T;
+        cardBackground?: T;
         id?: T;
       };
   appearance?:
@@ -4915,14 +5077,14 @@ export interface BentoGridBlockSelect<T extends boolean = true> {
   items?:
     | T
     | {
-        size?: T;
         eyebrow?: T;
         title?: T;
         description?: T;
         icon?: T;
         image?: T;
-        accentColor?: T;
         linkUrl?: T;
+        size?: T;
+        accentColor?: T;
         id?: T;
       };
   appearance?:
@@ -4963,6 +5125,7 @@ export interface TestimonialGridBlockSelect<T extends boolean = true> {
         role?: T;
         department?: T;
         avatar?: T;
+        cardBackground?: T;
         id?: T;
       };
   appearance?:
@@ -5005,6 +5168,7 @@ export interface AwardsListBlockSelect<T extends boolean = true> {
         category?: T;
         year?: T;
         description?: T;
+        cardBackground?: T;
         id?: T;
       };
   appearance?:
@@ -5232,6 +5396,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         videoEmbed?: T | VideoEmbedBlockSelect<T>;
         mediaCarousel?: T | MediaCarouselBlockSelect<T>;
         programGrid?: T | ProgramGridBlockSelect<T>;
+        programMatrix?: T | ProgramMatrixBlockSelect<T>;
         logoStrip?: T | LogoStripBlockSelect<T>;
         pageHeader?: T | PageHeaderBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;

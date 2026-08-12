@@ -1,6 +1,7 @@
 import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
@@ -12,43 +13,53 @@ const awardsField = {
   maxRows: 30,
   admin: { initCollapsed: true },
   fields: [
-    {
-      name: 'title',
-      label: 'Title',
-      type: 'text',
-      admin: { description: 'e.g. "NAAC A+ Accreditation" or "QS World University Rankings #201"' },
-    },
-    {
-      name: 'organization',
-      label: 'Issuing Organization',
-      type: 'text',
-      admin: { description: 'e.g. "NAAC", "QS", "NIRF", "NBA"' },
-    },
-    {
-      name: 'category',
-      label: 'Category',
-      type: 'select',
-      defaultValue: 'accreditation',
-      options: [
-        { label: 'Accreditation', value: 'accreditation' },
-        { label: 'Ranking', value: 'ranking' },
-        { label: 'Award', value: 'award' },
-        { label: 'Recognition', value: 'recognition' },
-        { label: 'Milestone', value: 'milestone' },
+    createCardTabs({
+      backgroundFieldOptions: {
+        adminDescription:
+          'Applied only to the Cards Grid presentation. Table and Compact Rows remain unchanged.',
+      },
+      contentFields: [
+        {
+          name: 'title',
+          label: 'Title',
+          type: 'text',
+          admin: {
+            description: 'e.g. "NAAC A+ Accreditation" or "QS World University Rankings #201"',
+          },
+        },
+        {
+          name: 'organization',
+          label: 'Issuing Organization',
+          type: 'text',
+          admin: { description: 'e.g. "NAAC", "QS", "NIRF", "NBA"' },
+        },
+        {
+          name: 'category',
+          label: 'Category',
+          type: 'select',
+          defaultValue: 'accreditation',
+          options: [
+            { label: 'Accreditation', value: 'accreditation' },
+            { label: 'Ranking', value: 'ranking' },
+            { label: 'Award', value: 'award' },
+            { label: 'Recognition', value: 'recognition' },
+            { label: 'Milestone', value: 'milestone' },
+          ],
+        } satisfies SelectField,
+        {
+          name: 'year',
+          label: 'Year',
+          type: 'text',
+          admin: { description: 'e.g. "2024" or "2023–2024"' },
+        },
+        {
+          name: 'description',
+          label: 'Description',
+          type: 'textarea',
+          admin: { description: 'Optional detail about this award or ranking.' },
+        },
       ],
-    } satisfies SelectField,
-    {
-      name: 'year',
-      label: 'Year',
-      type: 'text',
-      admin: { description: 'e.g. "2024" or "2023–2024"' },
-    },
-    {
-      name: 'description',
-      label: 'Description',
-      type: 'textarea',
-      admin: { description: 'Optional detail about this award or ranking.' },
-    },
+    }),
   ],
 } satisfies ArrayField
 
@@ -67,7 +78,11 @@ export const AwardsListBlock: Block = {
         {
           label: 'Content',
           fields: [
-            { name: 'eyebrow', type: 'text', admin: { description: 'Small label, e.g. "Our Achievements"' } },
+            {
+              name: 'eyebrow',
+              type: 'text',
+              admin: { description: 'Small label, e.g. "Our Achievements"' },
+            },
             { name: 'title', type: 'text' },
             { name: 'description', type: 'textarea' },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
@@ -75,7 +90,7 @@ export const AwardsListBlock: Block = {
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             {

@@ -28,6 +28,7 @@ import { RichTextBlockComponent } from './RichTextBlock/Component'
 import { VideoEmbedBlockComponent } from './VideoEmbed/Component'
 import { MediaCarouselBlockComponent } from './MediaCarousel/Component'
 import { ProgramGridBlockComponent } from './ProgramGrid/Component'
+import { ProgramMatrixBlockComponent } from './ProgramMatrix/Component'
 import { LogoStripBlockComponent } from './LogoStrip/Component'
 import { PageHeaderBlockComponent } from './PageHeader/Component'
 import { TimelineBlockComponent } from './Timeline/Component'
@@ -113,6 +114,8 @@ function renderSingleBlock(block: PageBlock, index: number, depth = 0): React.Re
       return wrap(<MediaCarouselBlockComponent {...block} />)
     case 'programGrid':
       return wrap(<ProgramGridBlockComponent {...block} />)
+    case 'programMatrix':
+      return wrap(<ProgramMatrixBlockComponent {...block} />)
     case 'logoStrip':
       return wrap(<LogoStripBlockComponent {...block} />)
     case 'pageHeader':

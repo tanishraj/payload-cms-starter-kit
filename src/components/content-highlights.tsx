@@ -7,6 +7,7 @@ import {
   regularBlockMobilePaddingClasses,
 } from '@/blocks/shared/blockSpacing'
 import { Separator } from '@/components/ui/separator'
+import { resolveCardSurface } from '@/blocks/shared/cardSurface'
 import { cn } from '@/lib/utils'
 
 export type ContentHighlightsAlignment = 'center' | 'left' | 'right'
@@ -16,6 +17,7 @@ export type ContentHighlightsSize = 'none' | 'comfortable' | 'compact' | 'defaul
 export type ContentHighlightsSplitAlignment = 'bottom' | 'center' | 'top'
 
 export type ContentHighlightItem = {
+  cardBackground?: string | null
   description?: string
   href?: string
   metadata?: string
@@ -120,6 +122,7 @@ function ContentHighlightItemComponent({
   const isNumbered = layout === 'numberedSteps'
   const isSimple = layout === 'simpleGrid'
   const step = String(index + 1).padStart(2, '0')
+  const surface = resolveCardSurface(item.cardBackground)
   const titleClassName =
     'rounded-sm text-md leading-tight font-semibold text-current underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current sm:text-lg'
 
@@ -153,12 +156,17 @@ function ContentHighlightItemComponent({
   if (isNumbered) {
     return (
       <article
-        className="flex min-w-0 flex-col gap-4 rounded-md border border-current/20 p-6"
+        className={cn(
+          'flex min-w-0 flex-col gap-4 rounded-md border p-6',
+          surface.className,
+          surface.divider,
+        )}
+        data-card-background={surface.value}
         data-content-highlight-item="true"
         data-content-highlight-presentation="numbered"
       >
         <p
-          className="text-2xl leading-none font-semibold text-primary"
+          className={cn('text-2xl leading-none font-semibold', surface.icon)}
           data-content-highlight-step={step}
         >
           {step}

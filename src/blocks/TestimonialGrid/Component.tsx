@@ -1,7 +1,10 @@
 import Image from 'next/image'
 import { Quote } from 'lucide-react'
 
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
 import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
@@ -12,8 +15,10 @@ import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
 import type { Media } from '@/payload-types'
+import { resolveCardSurface, type CardSurfaceClasses } from '@/blocks/shared/cardSurface'
 
 type Testimonial = {
+  cardBackground?: string | null
   quote?: string | null
   name?: string | null
   role?: string | null
@@ -34,7 +39,15 @@ type TestimonialGridBlockLike = {
   variant?: 'grid' | 'featured' | 'list' | null
 }
 
-function Avatar({ avatar, name }: { avatar?: ReturnType<typeof getMediaImageProps>; name?: string | null }) {
+function Avatar({
+  avatar,
+  name,
+  surface,
+}: {
+  avatar?: ReturnType<typeof getMediaImageProps>
+  name?: string | null
+  surface?: CardSurfaceClasses
+}) {
   if (avatar) {
     return (
       <div className="relative size-12 shrink-0 overflow-hidden rounded-full">
@@ -49,7 +62,12 @@ function Avatar({ avatar, name }: { avatar?: ReturnType<typeof getMediaImageProp
     .join('')
     .toUpperCase()
   return (
-    <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+    <div
+      className={cn(
+        'flex size-12 shrink-0 items-center justify-center rounded-full bg-current/10 text-sm font-semibold',
+        surface?.icon ?? 'text-primary',
+      )}
+    >
       {initials ?? '?'}
     </div>
   )
@@ -57,24 +75,63 @@ function Avatar({ avatar, name }: { avatar?: ReturnType<typeof getMediaImageProp
 
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   const avatarProps = getMediaImageProps({ media: testimonial.avatar, preset: 'generic' })
+  const surface = resolveCardSurface(testimonial.cardBackground)
 
   return (
-    <div className="flex h-full flex-col gap-4 rounded-xl border border-border bg-card p-6 text-card-foreground shadow-sm">
-      <Quote className="size-7 shrink-0 text-primary/25" aria-hidden="true" />
-      <blockquote className="grow text-sm leading-relaxed text-current/80">
+    <div
+      className={cn(
+        'flex h-full flex-col gap-4 rounded-xl border p-6 shadow-sm',
+        surface.className,
+        surface.divider,
+      )}
+      data-card-background={surface.value}
+    >
+      <Quote className={cn('size-7 shrink-0 opacity-30', surface.icon)} aria-hidden="true" />
+      <blockquote className={cn('grow text-sm leading-relaxed', surface.secondary)}>
         &ldquo;{testimonial.quote?.trim()}&rdquo;
       </blockquote>
-      <div className="flex items-center gap-3 border-t border-border pt-4">
-        <Avatar avatar={avatarProps ?? undefined} name={testimonial.name} />
+      <div className={cn('flex items-center gap-3 border-t pt-4', surface.divider)}>
+        <Avatar avatar={avatarProps ?? undefined} name={testimonial.name} surface={surface} />
         <div className="min-w-0 flex-1">
           {testimonial.name?.trim() ? (
             <p className="truncate text-sm font-semibold text-current">{testimonial.name.trim()}</p>
           ) : null}
           {testimonial.role?.trim() ? (
-            <p className="truncate text-xs text-current/70">{testimonial.role.trim()}</p>
+            <p className={cn('truncate text-xs', surface.secondary)}>{testimonial.role.trim()}</p>
           ) : null}
           {testimonial.department?.trim() ? (
-            <p className="truncate text-xs text-current/60">{testimonial.department.trim()}</p>
+            <p className={cn('truncate text-xs opacity-80', surface.secondary)}>
+              {testimonial.department.trim()}
+            </p>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function FeaturedTestimonial({ testimonial }: { testimonial: Testimonial }) {
+  const surface = resolveCardSurface(testimonial.cardBackground)
+
+  return (
+    <div
+      className={cn('rounded-xl border p-8 shadow-sm md:p-12', surface.className, surface.divider)}
+      data-card-background={surface.value}
+    >
+      <Quote className={cn('mb-4 size-9 opacity-30', surface.icon)} aria-hidden="true" />
+      <blockquote className="mb-6 text-xl font-medium leading-relaxed text-current md:text-2xl">
+        &ldquo;{testimonial.quote?.trim()}&rdquo;
+      </blockquote>
+      <div className={cn('flex items-center gap-4 border-t pt-6', surface.divider)}>
+        <Avatar
+          avatar={getMediaImageProps({ media: testimonial.avatar, preset: 'generic' }) ?? undefined}
+          name={testimonial.name}
+          surface={surface}
+        />
+        <div>
+          <p className="font-semibold text-current">{testimonial.name?.trim()}</p>
+          {testimonial.role?.trim() ? (
+            <p className={cn('text-sm', surface.secondary)}>{testimonial.role.trim()}</p>
           ) : null}
         </div>
       </div>
@@ -108,10 +165,12 @@ export function TestimonialGridBlockComponent({
   const resolvedActions = resolveCmsActions(actions)
 
   return (
-    <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
+    <section
+      className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}
+    >
       <div className={regularBlockContainerClasses}>
         {/* Header */}
-        {(eyebrow?.trim() || title?.trim() || description?.trim() || resolvedActions.length > 0) ? (
+        {eyebrow?.trim() || title?.trim() || description?.trim() || resolvedActions.length > 0 ? (
           <div
             className={cn(
               'mb-12 flex flex-col gap-4',
@@ -151,26 +210,7 @@ export function TestimonialGridBlockComponent({
         {/* Featured variant: first card large, rest in a row below */}
         {variant === 'featured' ? (
           <div className="flex flex-col gap-6">
-            {items[0] ? (
-              <div className="rounded-xl border border-border bg-card p-8 text-card-foreground shadow-sm md:p-12">
-                <Quote className="mb-4 size-9 text-primary/25" aria-hidden="true" />
-                <blockquote className="mb-6 text-xl font-medium leading-relaxed text-current md:text-2xl">
-                  &ldquo;{items[0].quote?.trim()}&rdquo;
-                </blockquote>
-                <div className="flex items-center gap-4 border-t border-border pt-6">
-                  <Avatar
-                    avatar={getMediaImageProps({ media: items[0].avatar, preset: 'generic' }) ?? undefined}
-                    name={items[0].name}
-                  />
-                  <div>
-                    <p className="font-semibold text-current">{items[0].name?.trim()}</p>
-                    {items[0].role?.trim() ? (
-                      <p className="text-sm text-current/70">{items[0].role.trim()}</p>
-                    ) : null}
-                  </div>
-                </div>
-              </div>
-            ) : null}
+            {items[0] ? <FeaturedTestimonial testimonial={items[0]} /> : null}
             {items.length > 1 ? (
               <div className={cn('grid gap-6', columnClasses[columns ?? '3'])}>
                 {items.slice(1).map((t, i) => (

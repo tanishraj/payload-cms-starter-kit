@@ -114,9 +114,7 @@ describe('Feature Matrix presentation', () => {
     ['default', 'h-44 md:h-52 lg:h-60'],
     ['comfortable', 'h-52 md:h-64 lg:h-72'],
   ] as const)('applies equal responsive image heights in %s mode', (size, classes) => {
-    const html = renderToStaticMarkup(
-      FeatureMatrix({ features, size, title: 'What we provide' }),
-    )
+    const html = renderToStaticMarkup(FeatureMatrix({ features, size, title: 'What we provide' }))
 
     expect(html.match(new RegExp(classes, 'g'))).toHaveLength(4)
   })
@@ -124,7 +122,7 @@ describe('Feature Matrix presentation', () => {
   it('defines exactly four features and shared content/layout controls', () => {
     const tabsField = FeatureMatrixBlock.fields[0] as unknown as { tabs: TestTab[]; type: string }
     const contentTab = tabsField.tabs.find(({ label }) => label === 'Content')
-    const layoutTab = tabsField.tabs.find(({ label }) => label === 'Layout & Theme')
+    const layoutTab = tabsField.tabs.find(({ label }) => label === 'Theme Settings')
 
     expect(tabsField.type).toBe('tabs')
     expect(contentTab).toBeDefined()

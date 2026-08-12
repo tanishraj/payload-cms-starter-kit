@@ -1,6 +1,9 @@
 import Image from 'next/image'
 
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
 import {
   regularBlockMobilePaddingClasses,
   regularBlockContainerClasses,
@@ -11,9 +14,11 @@ import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import type { Media } from '@/payload-types'
 import { cn } from '@/lib/utils'
+import { resolveCardSurface, type CardSurfaceClasses } from '@/blocks/shared/cardSurface'
 
 type Step = {
   badge?: string | null
+  cardBackground?: string | null
   description?: string | null
   image?: string | number | Media | null
   title?: string | null
@@ -35,15 +40,22 @@ type NumberedStepsBlockLike = {
 function StepNumber({
   num,
   numberStyle,
+  surface,
 }: {
   num: number
   numberStyle: 'circle' | 'outlined' | 'serif'
+  surface?: CardSurfaceClasses
 }) {
   const label = String(num).padStart(2, '0')
 
   if (numberStyle === 'serif') {
     return (
-      <span className="shrink-0 font-serif text-7xl font-bold leading-none text-primary/20 select-none">
+      <span
+        className={cn(
+          'shrink-0 font-serif text-7xl font-bold leading-none opacity-20 select-none',
+          surface?.icon ?? 'text-primary',
+        )}
+      >
         {label}
       </span>
     )
@@ -55,6 +67,12 @@ function StepNumber({
         'flex size-12 shrink-0 items-center justify-center rounded-full text-base font-bold',
         numberStyle === 'circle' && 'bg-primary text-primary-foreground',
         numberStyle === 'outlined' && 'border-2 border-primary text-primary',
+        surface?.value === 'primary' &&
+          numberStyle === 'circle' &&
+          'bg-primary-foreground text-primary',
+        surface?.value === 'primary' &&
+          numberStyle === 'outlined' &&
+          'border-primary-foreground text-primary-foreground',
       )}
     >
       {num}
@@ -112,29 +130,43 @@ function CardSteps({
 }) {
   return (
     <div className={cn('grid grid-cols-1 gap-6', getNumberedStepsGridClasses(steps.length))}>
-      {steps.map((step, index) => (
-        <div
-          key={index}
-          className="relative flex flex-col gap-4 rounded-xl border border-border bg-card p-6 text-card-foreground"
-        >
-          <StepNumber num={index + 1} numberStyle={numberStyle} />
-          <div className="flex flex-col gap-1">
-            {step.badge?.trim() ? (
-              <span className="w-fit rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
-                {step.badge.trim()}
-              </span>
-            ) : null}
-            <h3 className="font-sans text-base font-semibold leading-snug text-current">
-              {step.title?.trim()}
-            </h3>
-            {step.description?.trim() ? (
-              <p className="text-sm leading-relaxed text-current/70">
-                {step.description.trim()}
-              </p>
-            ) : null}
+      {steps.map((step, index) => {
+        const surface = resolveCardSurface(step.cardBackground)
+
+        return (
+          <div
+            key={index}
+            className={cn(
+              'relative flex flex-col gap-4 rounded-xl border p-6',
+              surface.className,
+              surface.divider,
+            )}
+            data-card-background={surface.value}
+          >
+            <StepNumber num={index + 1} numberStyle={numberStyle} surface={surface} />
+            <div className="flex flex-col gap-1">
+              {step.badge?.trim() ? (
+                <span
+                  className={cn(
+                    'w-fit rounded-full bg-current/10 px-2.5 py-0.5 text-xs font-semibold',
+                    surface.icon,
+                  )}
+                >
+                  {step.badge.trim()}
+                </span>
+              ) : null}
+              <h3 className="font-sans text-base font-semibold leading-snug text-current">
+                {step.title?.trim()}
+              </h3>
+              {step.description?.trim() ? (
+                <p className={cn('text-sm leading-relaxed', surface.secondary)}>
+                  {step.description.trim()}
+                </p>
+              ) : null}
+            </div>
           </div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }
@@ -237,7 +269,9 @@ export function NumberedStepsBlockComponent({
   const resolvedActions = resolveCmsActions(actions)
 
   return (
-    <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
+    <section
+      className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}
+    >
       <div className={regularBlockContainerClasses}>
         <div
           className={cn(

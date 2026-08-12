@@ -4,8 +4,10 @@ import { useState } from 'react'
 import { Download, FileText, FileSpreadsheet, FileImage, File, ExternalLink } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
+import { resolveCardSurface, type CardSurfaceClasses } from '@/blocks/shared/cardSurface'
 
 export type ResolvedDownload = {
+  cardBackground?: string
   category?: string
   description?: string
   fileType?: string
@@ -38,10 +40,17 @@ function FileTypeIcon({ type }: { type?: string }) {
   return <Icon className="size-4 shrink-0" />
 }
 
-function FileTypeBadge({ type }: { type?: string }) {
+function FileTypeBadge({ type, surface }: { type?: string; surface?: CardSurfaceClasses }) {
   if (!type) return null
   return (
-    <span className="rounded bg-muted px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+    <span
+      className={cn(
+        'rounded px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide',
+        surface?.value === 'primary'
+          ? 'bg-primary-foreground/15 text-primary-foreground'
+          : 'bg-muted text-muted-foreground',
+      )}
+    >
       {type}
     </span>
   )
@@ -80,35 +89,44 @@ function ListRow({ dl }: { dl: ResolvedDownload }) {
 }
 
 function CardItem({ dl }: { dl: ResolvedDownload }) {
+  const surface = resolveCardSurface(dl.cardBackground)
   return (
     <a
       href={dl.href}
       download={!dl.isExternal}
       target={dl.isExternal ? '_blank' : undefined}
       rel={dl.isExternal ? 'noopener noreferrer' : undefined}
-      className="group flex flex-col gap-3 rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/40 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className={cn(
+        'group flex flex-col gap-3 rounded-xl border p-5 transition-all hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        surface.className,
+        surface.divider,
+      )}
+      data-card-background={surface.value}
     >
       <div className="flex items-start justify-between gap-3">
-        <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+        <div
+          className={cn(
+            'flex size-10 items-center justify-center rounded-lg bg-current/10',
+            surface.icon,
+          )}
+        >
           <FileTypeIcon type={dl.fileType} />
         </div>
         {dl.isExternal ? (
-          <ExternalLink className="size-4 text-muted-foreground" />
+          <ExternalLink className={cn('size-4', surface.secondary)} />
         ) : (
-          <Download className="size-4 text-muted-foreground group-hover:text-primary" />
+          <Download className={cn('size-4', surface.secondary)} />
         )}
       </div>
       <div className="flex flex-col gap-1">
-        <span className="text-sm font-semibold text-foreground group-hover:text-primary leading-snug">
-          {dl.title}
-        </span>
+        <span className={cn('text-sm font-semibold leading-snug', surface.link)}>{dl.title}</span>
         {dl.description ? (
-          <span className="text-xs leading-relaxed text-muted-foreground">{dl.description}</span>
+          <span className={cn('text-xs leading-relaxed', surface.secondary)}>{dl.description}</span>
         ) : null}
       </div>
       {dl.fileType ? (
         <div>
-          <FileTypeBadge type={dl.fileType} />
+          <FileTypeBadge type={dl.fileType} surface={surface} />
         </div>
       ) : null}
     </a>
@@ -141,13 +159,17 @@ function CompactRow({ dl }: { dl: ResolvedDownload }) {
 }
 
 export function DownloadListClient({ downloads, displayMode = 'list', showFilter = false }: Props) {
-  const categories = ['All', ...Array.from(new Set(downloads.map((d) => d.category).filter(Boolean) as string[]))]
+  const categories = [
+    'All',
+    ...Array.from(new Set(downloads.map((d) => d.category).filter(Boolean) as string[])),
+  ]
   const hasCategories = categories.length > 1
   const [activeCategory, setActiveCategory] = useState('All')
 
-  const filtered = hasCategories && activeCategory !== 'All'
-    ? downloads.filter((d) => d.category === activeCategory)
-    : downloads
+  const filtered =
+    hasCategories && activeCategory !== 'All'
+      ? downloads.filter((d) => d.category === activeCategory)
+      : downloads
 
   return (
     <div className="flex flex-col gap-6">

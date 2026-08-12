@@ -1,7 +1,11 @@
 import type { ArrayField, Block, CheckboxField, RadioField, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { createContentActionModeField, createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { createCardTabs } from '@/blocks/shared/cardThemeFields'
+import {
+  createContentActionModeField,
+  createContentActionsField,
+} from '@/blocks/shared/contentActionsFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 type ProgramItemSiblingData = {
@@ -28,92 +32,96 @@ const programsField: ArrayField = {
     description: 'Each card represents one academic program or course.',
   },
   fields: [
-    {
-      name: 'image',
-      label: 'Cover Image',
-      type: 'upload',
-      relationTo: 'media',
-    },
-    {
-      name: 'category',
-      label: 'Department / Category',
-      type: 'text',
-      admin: {
-        description: 'Used for the filter tabs (e.g. Engineering, Management, Sciences).',
-      },
-    },
-    {
-      name: 'badge',
-      label: 'Badge',
-      type: 'text',
-      admin: {
-        description: 'Short label on the card (e.g. AICTE Approved, New Batch 2025).',
-      },
-    },
-    {
-      name: 'title',
-      type: 'text',
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-      admin: {
-        description: 'Short program overview, 1–2 sentences.',
-      },
-    },
-    {
-      type: 'row',
-      fields: [
+    createCardTabs({
+      contentFields: [
         {
-          name: 'duration',
-          label: 'Duration',
+          name: 'image',
+          label: 'Cover Image',
+          type: 'upload',
+          relationTo: 'media',
+        },
+        {
+          name: 'category',
+          label: 'Department / Category',
           type: 'text',
           admin: {
-            description: 'e.g. 4 Years',
-            width: '50%',
+            description: 'Used for the filter tabs (e.g. Engineering, Management, Sciences).',
           },
         },
         {
-          name: 'intake',
-          label: 'Intake',
+          name: 'badge',
+          label: 'Badge',
           type: 'text',
           admin: {
-            description: 'e.g. 60 Seats',
-            width: '50%',
+            description: 'Short label on the card (e.g. AICTE Approved, New Batch 2025).',
           },
         },
+        {
+          name: 'title',
+          type: 'text',
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          admin: {
+            description: 'Short program overview, 1–2 sentences.',
+          },
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'duration',
+              label: 'Duration',
+              type: 'text',
+              admin: {
+                description: 'e.g. 4 Years',
+                width: '50%',
+              },
+            },
+            {
+              name: 'intake',
+              label: 'Intake',
+              type: 'text',
+              admin: {
+                description: 'e.g. 60 Seats',
+                width: '50%',
+              },
+            },
+          ],
+        },
+        {
+          name: 'linkType',
+          label: 'Link',
+          type: 'radio',
+          defaultValue: 'none',
+          options: [
+            { label: 'None', value: 'none' },
+            { label: 'Page', value: 'page' },
+            { label: 'Custom URL', value: 'custom' },
+          ],
+          admin: { layout: 'horizontal' },
+        } satisfies RadioField,
+        {
+          name: 'page',
+          type: 'relationship',
+          relationTo: 'pages',
+          admin: { condition: isPageLink },
+        },
+        {
+          name: 'url',
+          label: 'Custom URL',
+          type: 'text',
+          admin: { condition: isCustomLink },
+        },
+        {
+          name: 'openInNewTab',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: { condition: hasLink },
+        } satisfies CheckboxField,
       ],
-    },
-    {
-      name: 'linkType',
-      label: 'Link',
-      type: 'radio',
-      defaultValue: 'none',
-      options: [
-        { label: 'None', value: 'none' },
-        { label: 'Page', value: 'page' },
-        { label: 'Custom URL', value: 'custom' },
-      ],
-      admin: { layout: 'horizontal' },
-    } satisfies RadioField,
-    {
-      name: 'page',
-      type: 'relationship',
-      relationTo: 'pages',
-      admin: { condition: isPageLink },
-    },
-    {
-      name: 'url',
-      label: 'Custom URL',
-      type: 'text',
-      admin: { condition: isCustomLink },
-    },
-    {
-      name: 'openInNewTab',
-      type: 'checkbox',
-      defaultValue: false,
-      admin: { condition: hasLink },
-    } satisfies CheckboxField,
+    }),
   ],
 }
 
@@ -150,7 +158,7 @@ export const ProgramGridBlock: Block = {
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             createContentActionModeField(),

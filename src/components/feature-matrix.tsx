@@ -7,12 +7,14 @@ import {
 } from '@/blocks/shared/blockAppearance'
 import { regularBlockMobilePaddingClasses } from '@/blocks/shared/blockSpacing'
 import { cn } from '@/lib/utils'
+import { resolveCardSurface } from '@/blocks/shared/cardSurface'
 
 export type FeatureMatrixAlignment = 'center' | 'left' | 'right'
 export type FeatureMatrixImagePosition = 'bottom' | 'center' | 'left' | 'right' | 'top'
 export type FeatureMatrixSize = 'none' | 'comfortable' | 'compact' | 'default'
 
 export type FeatureMatrixItem = {
+  cardBackground?: string | null
   description?: string | null
   image: {
     alt: string
@@ -180,15 +182,18 @@ export function FeatureMatrix({
           {visibleFeatures.map((feature, index) => {
             const isWidePanel = index === 0 || index === 3
             const resolvedImagePosition = feature.imagePosition ?? 'center'
+            const surface = resolveCardSurface(feature.cardBackground)
 
             return (
               <article
                 className={cn(
                   'relative flex flex-col gap-3',
+                  surface.className,
                   panelPaddingClasses[resolvedSize],
-                  panelDividerClasses[index],
+                  panelDividerClasses[index].replaceAll('border-border', surface.divider),
                   isWidePanel ? 'lg:col-span-3' : 'lg:col-span-2',
                 )}
+                data-card-background={surface.value}
                 data-feature-matrix-panel={index + 1}
                 key={`${feature.title}-${index}`}
               >
@@ -205,11 +210,16 @@ export function FeatureMatrix({
                     {feature.title}
                   </p>
                   {feature.description ? (
-                    <p className="text-sm leading-6 text-current/70">{feature.description}</p>
+                    <p className={cn('text-sm leading-6', surface.secondary)}>
+                      {feature.description}
+                    </p>
                   ) : null}
                 </div>
                 <div
-                  className={cn('relative mt-2 w-full overflow-hidden rounded-md', imageHeightClasses[resolvedSize])}
+                  className={cn(
+                    'relative mt-2 w-full overflow-hidden rounded-md',
+                    imageHeightClasses[resolvedSize],
+                  )}
                   data-feature-matrix-image-position={resolvedImagePosition}
                 >
                   <Image

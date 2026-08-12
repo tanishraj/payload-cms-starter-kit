@@ -57,7 +57,7 @@ export const RichTextBlock: Block = {
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [createBlockAppearanceFields(), sizeField, maxWidthField],
         },
       ],

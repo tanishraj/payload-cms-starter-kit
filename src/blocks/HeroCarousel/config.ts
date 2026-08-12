@@ -134,7 +134,7 @@ export const HeroCarouselBlock: Block = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Slides',
+          label: 'Content',
           fields: [
             {
               name: 'slides',
@@ -151,7 +151,7 @@ export const HeroCarouselBlock: Block = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Theme Settings',
           fields: [
             {
               name: 'overlayStyle',

@@ -129,7 +129,7 @@ export const Contact33Block: Block = {
           ],
         },
         {
-          label: 'Layout',
+          label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
             contentAlignmentField,

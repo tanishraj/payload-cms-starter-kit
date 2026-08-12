@@ -1,7 +1,10 @@
 import { ArrowRight, Star, type LucideIcon } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
 import {
   regularBlockMobilePaddingClasses,
   regularBlockContainerClasses,
@@ -13,9 +16,10 @@ import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@
 import { getPageHref } from '@/lib/pagePaths'
 import type { Page } from '@/payload-types'
 import { cn } from '@/lib/utils'
-
+import { resolveCardSurface, type CardSurfaceClasses } from '@/blocks/shared/cardSurface'
 
 type IconGridItem = {
+  cardBackground?: string | null
   description?: string | null
   icon?: string | null
   linkType?: 'none' | 'page' | 'custom' | null
@@ -50,8 +54,10 @@ const columnClasses = {
 
 const iconContainerClasses = {
   square: 'flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary',
-  circle: 'flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary',
-  outline: 'flex size-11 shrink-0 items-center justify-center rounded-lg border border-border text-primary',
+  circle:
+    'flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary',
+  outline:
+    'flex size-11 shrink-0 items-center justify-center rounded-lg border border-border text-primary',
   plain: 'flex size-11 shrink-0 items-center justify-center text-primary',
 } as const
 
@@ -69,13 +75,15 @@ function resolveHref(item: IconGridItem): { href: string; openInNewTab: boolean 
 function IconContainer({
   icon,
   iconStyle,
+  surface,
 }: {
   icon: string
   iconStyle: keyof typeof iconContainerClasses
+  surface?: CardSurfaceClasses
 }) {
   const Icon = ((LucideIcons as Record<string, unknown>)[icon] as LucideIcon | undefined) ?? Star
   return (
-    <div className={iconContainerClasses[iconStyle]}>
+    <div className={cn(iconContainerClasses[iconStyle], surface?.icon)}>
       <Icon className="size-5" />
     </div>
   )
@@ -86,12 +94,18 @@ type ActionProps = {
   actionVariant: CmsActionVariant
   actionLabel: string
   link: { href: string; openInNewTab: boolean }
+  surface?: CardSurfaceClasses
 }
 
-function CardAction({ actionMode, actionVariant, actionLabel, link }: ActionProps) {
+function CardAction({ actionMode, actionVariant, actionLabel, link, surface }: ActionProps) {
   if (actionMode === 'button') {
     return (
-      <Button asChild size="sm" variant={actionVariant} className="mt-auto self-start">
+      <Button
+        asChild
+        size="sm"
+        variant={actionVariant}
+        className={cn('mt-auto self-start', surface?.button[actionVariant])}
+      >
         <a
           href={link.href}
           target={link.openInNewTab ? '_blank' : undefined}
@@ -103,7 +117,12 @@ function CardAction({ actionMode, actionVariant, actionLabel, link }: ActionProp
     )
   }
   return (
-    <div className="mt-auto flex items-center gap-1 text-sm font-medium text-primary">
+    <div
+      className={cn(
+        'mt-auto flex items-center gap-1 text-sm font-medium',
+        surface?.link ?? 'text-primary',
+      )}
+    >
       {actionLabel}
       <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
     </div>
@@ -125,22 +144,38 @@ function CardItem({
   actionLabel: string
 }) {
   const link = resolveHref(item)
+  const surface = resolveCardSurface(item.cardBackground)
   const inner = (
     <div
+      data-card-background={surface.value}
       className={cn(
-        'group flex h-full flex-col gap-4 rounded-xl border border-border bg-card p-6 text-card-foreground transition-shadow',
+        'group flex h-full flex-col gap-4 rounded-xl border p-6 transition-shadow',
+        surface.className,
+        surface.divider,
         link && 'hover:shadow-md hover:border-primary/30',
       )}
     >
-      {item.icon ? <IconContainer icon={item.icon} iconStyle={iconStyle} /> : null}
+      {item.icon ? (
+        <IconContainer icon={item.icon} iconStyle={iconStyle} surface={surface} />
+      ) : null}
       <div className="flex flex-1 flex-col gap-1">
-        <h3 className="font-sans text-base font-semibold leading-snug text-current">{item.title?.trim()}</h3>
+        <h3 className="font-sans text-base font-semibold leading-snug text-current">
+          {item.title?.trim()}
+        </h3>
         {item.description?.trim() ? (
-          <p className="text-sm leading-relaxed text-current/70">{item.description.trim()}</p>
+          <p className={cn('text-sm leading-relaxed', surface.secondary)}>
+            {item.description.trim()}
+          </p>
         ) : null}
       </div>
       {link ? (
-        <CardAction actionMode={actionMode} actionVariant={actionVariant} actionLabel={actionLabel} link={link} />
+        <CardAction
+          actionMode={actionMode}
+          actionVariant={actionVariant}
+          actionLabel={actionLabel}
+          link={link}
+          surface={surface}
+        />
       ) : null}
     </div>
   )
@@ -180,14 +215,21 @@ function MinimalItem({
       <div className="flex gap-4">
         {item.icon ? <IconContainer icon={item.icon} iconStyle={iconStyle} /> : null}
         <div className="flex flex-col gap-1">
-          <h3 className="font-sans text-base font-semibold leading-snug text-current">{item.title?.trim()}</h3>
+          <h3 className="font-sans text-base font-semibold leading-snug text-current">
+            {item.title?.trim()}
+          </h3>
           {item.description?.trim() ? (
             <p className="text-sm leading-relaxed text-current/70">{item.description.trim()}</p>
           ) : null}
         </div>
       </div>
       {link ? (
-        <CardAction actionMode={actionMode} actionVariant={actionVariant} actionLabel={actionLabel} link={link} />
+        <CardAction
+          actionMode={actionMode}
+          actionVariant={actionVariant}
+          actionLabel={actionLabel}
+          link={link}
+        />
       ) : null}
     </div>
   )
@@ -226,13 +268,20 @@ function IconTopItem({
     <div className="group flex h-full flex-col items-center gap-3 text-center">
       {item.icon ? <IconContainer icon={item.icon} iconStyle={iconStyle} /> : null}
       <div className="flex flex-col gap-1">
-        <h3 className="font-sans text-base font-semibold leading-snug text-current">{item.title?.trim()}</h3>
+        <h3 className="font-sans text-base font-semibold leading-snug text-current">
+          {item.title?.trim()}
+        </h3>
         {item.description?.trim() ? (
           <p className="text-sm leading-relaxed text-current/70">{item.description.trim()}</p>
         ) : null}
       </div>
       {link ? (
-        <CardAction actionMode={actionMode} actionVariant={actionVariant} actionLabel={actionLabel} link={link} />
+        <CardAction
+          actionMode={actionMode}
+          actionVariant={actionVariant}
+          actionLabel={actionLabel}
+          link={link}
+        />
       ) : null}
     </div>
   )
@@ -292,7 +341,9 @@ export function IconGridBlockComponent({
   }
 
   return (
-    <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
+    <section
+      className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}
+    >
       <div className={regularBlockContainerClasses}>
         {/* Header */}
         <div

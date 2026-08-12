@@ -29,7 +29,7 @@ describe('News & Events Highlights block', () => {
   it('uses the approved canonical identity and two-tab configuration', () => {
     expect(NewsEventsHighlightsBlock.slug).toBe('newsEventsHighlights')
     expect(NewsEventsHighlightsBlock.interfaceName).toBe('NewsEventsHighlightsBlock')
-    expect(JSON.stringify(NewsEventsHighlightsBlock.fields)).toContain('Layout & Theme')
+    expect(JSON.stringify(NewsEventsHighlightsBlock.fields)).toContain('Theme Settings')
     expect(JSON.stringify(NewsEventsHighlightsBlock.fields)).toContain('itemCount')
 
     const contentAlignment = findNamedField(NewsEventsHighlightsBlock.fields, 'contentAlignment')

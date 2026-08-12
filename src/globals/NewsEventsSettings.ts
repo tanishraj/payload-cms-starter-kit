@@ -112,7 +112,7 @@ export const NewsEventsSettings: GlobalConfig = {
           ],
         },
         {
-          label: 'Layout & Theme',
+          label: 'Theme Settings',
           fields: [createBlockAppearanceFields(), sizeField],
         },
         {

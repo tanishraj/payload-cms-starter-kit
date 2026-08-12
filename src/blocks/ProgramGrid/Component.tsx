@@ -1,4 +1,7 @@
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
 import type { RegularBlockSize } from '@/blocks/shared/blockSpacing'
 import { ContentActions } from '@/components/ContentActions'
 import { getMediaAbsoluteUrl, isMediaDoc } from '@/lib/media'
@@ -12,6 +15,7 @@ type ProgramItem = {
   id?: string | null
   badge?: string | null
   category?: string | null
+  cardBackground?: string | null
   description?: string | null
   duration?: string | null
   image?: unknown
@@ -78,12 +82,14 @@ export function ProgramGridBlockComponent({
         {
           id: item.id ?? index,
           badge: item.badge?.trim() || undefined,
+          cardBackground: item.cardBackground ?? undefined,
           category: item.category?.trim() || undefined,
           description: item.description?.trim() || undefined,
           duration: item.duration?.trim() || undefined,
           imageSrc,
-          imageAlt: isMediaDoc(media) ? (media.alt?.trim() || itemTitle) : itemTitle,
-          imageWidth: isMediaDoc(media) && typeof media.width === 'number' ? media.width : undefined,
+          imageAlt: isMediaDoc(media) ? media.alt?.trim() || itemTitle : itemTitle,
+          imageWidth:
+            isMediaDoc(media) && typeof media.width === 'number' ? media.width : undefined,
           imageHeight:
             isMediaDoc(media) && typeof media.height === 'number' ? media.height : undefined,
           intake: item.intake?.trim() || undefined,
@@ -112,7 +118,11 @@ export function ProgramGridBlockComponent({
       description={description?.trim() || undefined}
       eyebrow={eyebrow?.trim() || undefined}
       programs={resolvedPrograms}
-      sectionActions={resolvedSectionActions.length > 0 ? <ContentActions actions={resolvedSectionActions} /> : undefined}
+      sectionActions={
+        resolvedSectionActions.length > 0 ? (
+          <ContentActions actions={resolvedSectionActions} />
+        ) : undefined
+      }
       showFilter={showFilter ?? false}
       size={size ?? 'default'}
       title={resolvedTitle}

@@ -66,7 +66,7 @@ describe('Rating Spotlight', () => {
       type: string
     }
     const contentTab = tabsField.tabs.find(({ label }) => label === 'Content')
-    const layoutTab = tabsField.tabs.find(({ label }) => label === 'Layout & Theme')
+    const layoutTab = tabsField.tabs.find(({ label }) => label === 'Theme Settings')
     const actionsField = getField(contentTab?.fields ?? [], 'actions')
     const ratingDataField = getField(contentTab?.fields ?? [], 'ratingData')
     const dataModeField = getField(ratingDataField?.fields ?? [], 'dataMode')
@@ -77,7 +77,7 @@ describe('Rating Spotlight', () => {
     const sizeField = getField(layoutTab?.fields ?? [], 'size')
 
     expect(tabsField.type).toBe('tabs')
-    expect(tabsField.tabs.map(({ label }) => label)).toEqual(['Content', 'Layout & Theme'])
+    expect(tabsField.tabs.map(({ label }) => label)).toEqual(['Content', 'Theme Settings'])
     expect(getField(contentTab?.fields ?? [], 'eyebrow')?.type).toBe('text')
     expect(getField(contentTab?.fields ?? [], 'title')).toMatchObject({
       required: true,
