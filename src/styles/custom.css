@@ -1,3 +1,38 @@
+/* SNMIH heading italic accent */
+:root[data-theme-color='snmih'] :is(h1, h2, h3) em {
+  color: var(--ring);
+  font-style: italic;
+}
+
+/* SNMIH section eyebrows: success on light surfaces, ring on dark/primary */
+:root[data-theme-color='snmih']:not(.dark)
+  :is(
+    [data-section-eyebrow-surface='none'],
+    [data-section-eyebrow-surface='secondary'],
+    [data-section-eyebrow-surface='muted'],
+    [data-section-eyebrow-surface='accent'],
+    [data-section-eyebrow-surface='gradient-secondary'],
+    [data-section-eyebrow-surface='gradient-muted'],
+    [data-section-eyebrow-surface='gradient-accent']
+  ) {
+  color: var(--success);
+}
+
+:root[data-theme-color='snmih']:not(.dark) [data-section-eyebrow-surface='primary'],
+:root[data-theme-color='snmih'].dark
+  :is(
+    [data-section-eyebrow-surface='none'],
+    [data-section-eyebrow-surface='secondary'],
+    [data-section-eyebrow-surface='muted'],
+    [data-section-eyebrow-surface='accent'],
+    [data-section-eyebrow-surface='gradient-secondary'],
+    [data-section-eyebrow-surface='gradient-muted'],
+    [data-section-eyebrow-surface='gradient-accent']
+  ),
+:root[data-theme-color='snmih'] [data-section-eyebrow-surface='darkOverlay'] {
+  color: var(--ring);
+}
+
 /* Section gradient backgrounds — fade from surface color to page background */
 .bg-gradient-secondary {
   background: linear-gradient(180deg, var(--secondary) 0%, var(--background) 100%);

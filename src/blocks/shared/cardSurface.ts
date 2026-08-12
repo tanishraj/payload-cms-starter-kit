@@ -72,12 +72,18 @@ const defaultDividerClasses: Record<BlockBackground, string> = {
   secondary: 'border-current/10',
   muted: 'border-current/10',
   accent: 'border-current/10',
+  'gradient-secondary': 'border-current/10',
+  'gradient-muted': 'border-current/10',
+  'gradient-accent': 'border-current/10',
 }
 
 const resolveDefaultCardSurface = (
   sectionBackground: BlockBackground = 'none',
 ): CardSurfaceClasses => {
-  const usesPrimaryAccent = sectionBackground === 'none' || sectionBackground === 'muted'
+  const usesPrimaryAccent =
+    sectionBackground === 'none' ||
+    sectionBackground === 'muted' ||
+    sectionBackground === 'gradient-muted'
 
   return {
     value: 'default',
@@ -95,7 +101,7 @@ const resolveDefaultCardSurface = (
             default:
               'bg-primary-foreground text-primary hover:bg-primary-foreground/90 focus-visible:border-primary-foreground focus-visible:ring-primary-foreground/30',
           }
-        : sectionBackground === 'secondary'
+        : sectionBackground === 'secondary' || sectionBackground === 'gradient-secondary'
           ? {
               secondary:
                 'bg-secondary-foreground text-secondary hover:bg-secondary-foreground/90 focus-visible:border-secondary-foreground focus-visible:ring-secondary-foreground/30',

@@ -1,8 +1,6 @@
 :root[data-theme-color='snmih'] {
-  --snmih-accent: #9dd4a6;
-  --snmih-accent-emphasis: #2b833f;
   --background: oklch(1 0 0);
-  --success: oklch(0.55 0.14 150);
+  --success: oklch(0.484 0.127 145);
   --foreground: oklch(0.209255 0.032306 262.410);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.209255 0.032306 262.410);
@@ -19,7 +17,7 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.898202 0.015641 257.200);
   --input: oklch(0.898202 0.015641 257.200);
-  --ring: oklch(0.529970 0.089429 256.778);
+  --ring: oklch(0.800 0.082 150);
   --chart-1: oklch(0.238550 0.080565 258.205);
   --chart-2: oklch(0.529970 0.089429 256.778);
   --chart-3: oklch(0.769267 0.085353 254.774);
@@ -33,7 +31,7 @@
   --sidebar-accent: oklch(0.947186 0.013730 258.345);
   --sidebar-accent-foreground: oklch(0.244862 0.038771 264.354);
   --sidebar-border: oklch(0.898202 0.015641 257.200);
-  --sidebar-ring: oklch(0.529970 0.089429 256.778);
+  --sidebar-ring: oklch(0.800 0.082 150);
 }
 
 :root[data-theme-color='snmih'].dark {
@@ -55,7 +53,7 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(0.351576 0.044540 255.167);
   --input: oklch(0.351576 0.044540 255.167);
-  --ring: oklch(0.769267 0.085353 254.774);
+  --ring: oklch(0.800 0.082 150);
   --chart-1: oklch(0.769267 0.085353 254.774);
   --chart-2: oklch(0.529970 0.089429 256.778);
   --chart-3: oklch(0.925732 0.024723 251.905);
@@ -68,40 +66,5 @@
   --sidebar-accent: oklch(0.325710 0.063155 255.477);
   --sidebar-accent-foreground: oklch(0.974538 0.007928 253.852);
   --sidebar-border: oklch(0.351576 0.044540 255.167);
-  --sidebar-ring: oklch(0.769267 0.085353 254.774);
-}
-
-/* Heading italic accent — soft green, decorative on all backgrounds. */
-:root[data-theme-color='snmih'] :is(h1, h2, h3) em {
-  color: var(--snmih-accent);
-  font-style: italic;
-}
-
-/* Section eyebrows: emphasis green on light surfaces, accent green on dark/primary. */
-:root[data-theme-color='snmih']:not(.dark)
-  :is(
-    [data-section-eyebrow-surface='none'],
-    [data-section-eyebrow-surface='secondary'],
-    [data-section-eyebrow-surface='muted'],
-    [data-section-eyebrow-surface='accent'],
-    [data-section-eyebrow-surface='gradient-secondary'],
-    [data-section-eyebrow-surface='gradient-muted'],
-    [data-section-eyebrow-surface='gradient-accent']
-  ) {
-  color: var(--snmih-accent-emphasis);
-}
-
-:root[data-theme-color='snmih']:not(.dark) [data-section-eyebrow-surface='primary'],
-:root[data-theme-color='snmih'].dark
-  :is(
-    [data-section-eyebrow-surface='none'],
-    [data-section-eyebrow-surface='secondary'],
-    [data-section-eyebrow-surface='muted'],
-    [data-section-eyebrow-surface='accent'],
-    [data-section-eyebrow-surface='gradient-secondary'],
-    [data-section-eyebrow-surface='gradient-muted'],
-    [data-section-eyebrow-surface='gradient-accent']
-  ),
-:root[data-theme-color='snmih'] [data-section-eyebrow-surface='darkOverlay'] {
-  color: var(--snmih-accent);
+  --sidebar-ring: oklch(0.800 0.082 150);
 }

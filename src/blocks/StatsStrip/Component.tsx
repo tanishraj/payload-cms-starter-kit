@@ -54,6 +54,9 @@ const dividerColorClasses = {
   secondary: 'border-secondary-foreground/15',
   muted: 'border-foreground/15',
   accent: 'border-accent-foreground/15',
+  'gradient-secondary': 'border-secondary-foreground/15',
+  'gradient-muted': 'border-foreground/15',
+  'gradient-accent': 'border-accent-foreground/15',
 } satisfies Record<BlockBackground, string>
 
 export function StatsStripBlockComponent({
