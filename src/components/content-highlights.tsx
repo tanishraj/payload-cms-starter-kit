@@ -6,6 +6,15 @@ import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
 } from '@/blocks/shared/blockSpacing'
+import {
+  contentIntroClasses,
+  contentItemDescriptionClasses,
+  contentItemLinkClasses,
+  contentItemMetadataClasses,
+  contentItemTitleClasses,
+  contentSectionDescriptionClasses,
+  contentSectionHeadingClasses,
+} from '@/blocks/shared/contentStyles'
 import { Separator } from '@/components/ui/separator'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCardSurface } from '@/blocks/shared/cardSurface'
@@ -96,16 +105,10 @@ function ContentHighlightsIntro({
   surface: BlockBackground
 }) {
   return (
-    <div className={cn('flex max-w-3xl flex-col gap-4', className)}>
-      {eyebrow ? (
-        <SectionEyebrow surface={surface}>{eyebrow}</SectionEyebrow>
-      ) : null}
-      <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-        {title}
-      </h2>
-      {description ? (
-        <p className="text-base leading-7 text-balance text-current/70">{description}</p>
-      ) : null}
+    <div className={cn(contentIntroClasses, className)}>
+      {eyebrow ? <SectionEyebrow surface={surface}>{eyebrow}</SectionEyebrow> : null}
+      <h2 className={contentSectionHeadingClasses}>{title}</h2>
+      {description ? <p className={contentSectionDescriptionClasses}>{description}</p> : null}
       {actions}
     </div>
   )
@@ -126,12 +129,9 @@ function ContentHighlightItemComponent({
   const isSimple = layout === 'simpleGrid'
   const step = String(index + 1).padStart(2, '0')
   const surface = resolveCardSurface(item.cardBackground, sectionBackground)
-  const titleClassName =
-    'rounded-sm text-md leading-tight font-semibold text-current underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current sm:text-lg'
-
   const title = item.href ? (
     <a
-      className={cn(titleClassName, 'transition-opacity hover:opacity-70 hover:underline')}
+      className={cn(contentItemTitleClasses, contentItemLinkClasses)}
       href={item.href}
       rel={item.openInNewTab ? 'noreferrer' : undefined}
       target={item.openInNewTab ? '_blank' : undefined}
@@ -139,19 +139,17 @@ function ContentHighlightItemComponent({
       {item.title}
     </a>
   ) : (
-    <p className={titleClassName}>{item.title}</p>
+    <p className={contentItemTitleClasses}>{item.title}</p>
   )
 
   const content = (
     <div className="flex flex-col gap-2">
       {item.metadata ? (
-        <p className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-current/65">
-          {item.metadata}
-        </p>
+        <p className={cn(contentItemMetadataClasses, 'uppercase')}>{item.metadata}</p>
       ) : null}
       {title}
       {item.description ? (
-        <p className="text-sm leading-6 text-current/70">{item.description}</p>
+        <p className={contentItemDescriptionClasses}>{item.description}</p>
       ) : null}
     </div>
   )

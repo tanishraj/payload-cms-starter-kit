@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 
 import { AnnouncementBlockComponent } from '@/blocks/Announcement/Component'
 import { ContentHighlightsBlockComponent } from '@/blocks/ContentHighlights/Component'
+import { EditorialReasonsBlockComponent } from '@/blocks/EditorialReasons/Component'
 import { FeatureMatrixBlockComponent } from '@/blocks/FeatureMatrix/Component'
 import { Footer56BlockComponent } from '@/blocks/Footer56/Component'
 import { GalleryShowcaseBlockComponent } from '@/blocks/GalleryShowcase/Component'
@@ -420,6 +421,34 @@ export const blockThumbnailFixtures = {
       layout="highlightsGrid"
       size="compact"
       title="What students say matters"
+    />
+  ),
+  editorialReasons: (
+    <EditorialReasonsBlockComponent
+      accentTitle="Driven by purpose."
+      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      description="A learning environment shaped around academic development, clinical experience, and service."
+      eyebrow="Why choose us"
+      reasons={[
+        {
+          description: 'Learning connected directly with real-world patient care.',
+          title: 'Clinical exposure',
+        },
+        {
+          description: 'Guidance from experienced educators and practicing clinicians.',
+          title: 'Experienced faculty',
+        },
+        {
+          description: 'Contemporary spaces designed for practical education.',
+          title: 'Modern infrastructure',
+        },
+        {
+          description: 'Education connected to meaningful service in the wider community.',
+          title: 'Community impact',
+        },
+      ]}
+      size="compact"
+      title="Built for learning."
     />
   ),
   cta39: (

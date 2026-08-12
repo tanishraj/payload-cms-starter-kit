@@ -67,7 +67,7 @@ Globals with versions retain history. Relevant changes invalidate cached fronten
 
 ## Page And Shell Block Systems
 
-Normal Pages register 40 choices: Announcement, Call to Action, Hero Banner, Hero Carousel, Gallery Coverflow, Feature Spotlight, Feature Matrix, Content Highlights, News & Events Highlights, Profile Carousel, Gallery Showcase, Event Gallery, Image Mosaic, Stats Strip, Q&A Accordion, Rating Spotlight, Review Feed, Review Submission, Contact Form, Regional Offices, Team Showcase, Services, Rich Text, Video Embed, Media Carousel, Program Grid, Program Matrix, Logo Strip, Page Header, Timeline, Icon Grid, Quote Block, Tabs Content, Download List, Numbered Steps, Bento Grid, Testimonial Grid, Awards List, About Section, and Reusable Section.
+Normal Pages register 41 choices: Announcement, Call to Action, Hero Banner, Hero Carousel, Gallery Coverflow, Feature Spotlight, Feature Matrix, Content Highlights, Editorial Reasons, News & Events Highlights, Profile Carousel, Gallery Showcase, Event Gallery, Image Mosaic, Stats Strip, Q&A Accordion, Rating Spotlight, Review Feed, Review Submission, Contact Form, Regional Offices, Team Showcase, Services, Rich Text, Video Embed, Media Carousel, Program Grid, Program Matrix, Logo Strip, Page Header, Timeline, Icon Grid, Quote Block, Tabs Content, Download List, Numbered Steps, Bento Grid, Testimonial Grid, Awards List, About Section, and Reusable Section.
 
 Headers register only Header Navbar 12; Footers register only Footer 56; System Pages register one matching System 404, System Maintenance, or System Coming Soon block. The admin picker uses generated JPEG thumbnails. `/block-thumbnail-previews/[slug]` is development-only. See [Page Blocks](../guides/blocks.md) for the operator catalog.
 

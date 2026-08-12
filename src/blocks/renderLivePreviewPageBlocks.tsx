@@ -7,6 +7,7 @@ import type { EventGalleryAlbum } from '@/lib/eventGalleryShared'
 
 import { AnnouncementBlockComponent } from './Announcement/Component'
 import { ContentHighlightsBlockComponent } from './ContentHighlights/Component'
+import { EditorialReasonsBlockComponent } from './EditorialReasons/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
 import { Cta39BlockComponent } from './Cta39/Component'
@@ -87,6 +88,8 @@ function renderSingleLivePreviewBlock(
       return <FeatureMatrixBlockComponent key={key} {...block} />
     case 'contentHighlights':
       return <ContentHighlightsBlockComponent key={key} {...block} />
+    case 'editorialReasons':
+      return <EditorialReasonsBlockComponent key={key} {...block} />
     case 'newsEventsHighlights':
       return (
         <NewsEventsHighlightsPreviewBlockComponent

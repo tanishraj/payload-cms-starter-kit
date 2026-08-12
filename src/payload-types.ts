@@ -200,6 +200,7 @@ export interface Page {
         | FeatureSpotlightBlock
         | FeatureMatrixBlock
         | ContentHighlightsBlock
+        | EditorialReasonsBlock
         | NewsEventsHighlightsBlock
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
@@ -707,6 +708,63 @@ export interface ContentHighlightsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'contentHighlights';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EditorialReasonsBlock".
+ */
+export interface EditorialReasonsBlock {
+  /**
+   * Small label above the section title.
+   */
+  eyebrow?: string | null;
+  title: string;
+  /**
+   * Optional emphasized second line of the heading.
+   */
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Rows are numbered automatically in their displayed order.
+   */
+  reasons: {
+    title: string;
+    description?: string | null;
+    linkType?: ('none' | 'page' | 'custom') | null;
+    page?: (string | null) | Page;
+    url?: string | null;
+    openInNewTab?: boolean | null;
+    id?: string | null;
+  }[];
+  appearance: {
+    background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  actionMode: 'link' | 'button';
+  introVerticalAlignment: 'top' | 'center' | 'bottom';
+  /**
+   * Keeps the introduction visible beside longer lists on large screens.
+   */
+  stickyIntro?: boolean | null;
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'editorialReasons';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2556,6 +2614,7 @@ export interface ReusableSection {
         | FeatureSpotlightBlock
         | FeatureMatrixBlock
         | ContentHighlightsBlock
+        | EditorialReasonsBlock
         | NewsEventsHighlightsBlock
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
@@ -3772,6 +3831,7 @@ export interface PagesSelect<T extends boolean = true> {
         featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
         contentHighlights?: T | ContentHighlightsBlockSelect<T>;
+        editorialReasons?: T | EditorialReasonsBlockSelect<T>;
         newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
@@ -4129,6 +4189,51 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
   enableSplitLayout?: T;
   contentAlignment?: T;
   splitContentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EditorialReasonsBlock_select".
+ */
+export interface EditorialReasonsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  reasons?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  actionMode?: T;
+  introVerticalAlignment?: T;
+  stickyIntro?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -5593,6 +5698,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
         contentHighlights?: T | ContentHighlightsBlockSelect<T>;
+        editorialReasons?: T | EditorialReasonsBlockSelect<T>;
         newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;

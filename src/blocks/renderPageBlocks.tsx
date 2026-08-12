@@ -3,6 +3,7 @@ import type { Page } from '@/payload-types'
 
 import { AnnouncementBlockComponent } from './Announcement/Component'
 import { ContentHighlightsBlockComponent } from './ContentHighlights/Component'
+import { EditorialReasonsBlockComponent } from './EditorialReasons/Component'
 import { QaAccordionBlockComponent } from './QaAccordion/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
@@ -76,6 +77,8 @@ function renderSingleBlock(block: PageBlock, index: number, depth = 0): React.Re
       return wrap(<FeatureMatrixBlockComponent {...block} />)
     case 'contentHighlights':
       return wrap(<ContentHighlightsBlockComponent {...block} />)
+    case 'editorialReasons':
+      return wrap(<EditorialReasonsBlockComponent {...block} />)
     case 'newsEventsHighlights':
       return wrap(<NewsEventsHighlightsBlockComponent {...block} />)
     case 'profileCarousel':

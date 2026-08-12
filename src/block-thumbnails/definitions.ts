@@ -64,6 +64,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Editorial Reasons block preview',
+    filename: 'editorial-reasons.jpg',
+    label: 'Editorial Reasons',
+    slug: 'editorialReasons',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'News & Events Highlights block preview',
     filename: 'news-events-highlights.jpg',
     label: 'News & Events Highlights',

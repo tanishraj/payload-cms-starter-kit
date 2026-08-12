@@ -156,7 +156,7 @@ describe('page block pipeline', () => {
     const livePreviewRenderer = readFileSync('src/blocks/renderLivePreviewPageBlocks.tsx', 'utf8')
 
     expect(layoutField?.type).toBe('blocks')
-    expect(registeredSlugs).toHaveLength(40)
+    expect(registeredSlugs).toHaveLength(41)
     expect(new Set(registeredSlugs).size).toBe(registeredSlugs.length)
     expect(registeredSlugs).toContain('programMatrix')
     expect(registeredSlugs).not.toContain('feature166')
