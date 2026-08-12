@@ -67,6 +67,11 @@ function BentoCell({
   )
   const isFull = item.size === 'full'
   const isLarge = item.size === 'large'
+  const eyebrowSurface = image
+    ? 'darkOverlay'
+    : surface.value === 'default'
+      ? sectionBackground
+      : surface.value
 
   const Inner = (
     <div
@@ -110,14 +115,9 @@ function BentoCell({
       {/* Content */}
       <div className={cn('relative flex flex-col gap-1.5', !image && Icon ? 'mt-14' : '')}>
         {item.eyebrow?.trim() ? (
-          <p
-            className={cn(
-              'font-mono text-xs font-semibold uppercase tracking-[0.24em]',
-              image ? 'text-white/70' : surface.secondary,
-            )}
-          >
+          <SectionEyebrow className={image ? 'text-white/70' : undefined} surface={eyebrowSurface}>
             {item.eyebrow.trim()}
-          </p>
+          </SectionEyebrow>
         ) : null}
         {item.title?.trim() ? (
           <h3
@@ -184,9 +184,7 @@ export function BentoGridBlockComponent({
             )}
           >
             {eyebrow?.trim() ? (
-              <SectionEyebrow surface={sectionBackground}>
-                {eyebrow.trim()}
-              </SectionEyebrow>
+              <SectionEyebrow surface={sectionBackground}>{eyebrow.trim()}</SectionEyebrow>
             ) : null}
             {title?.trim() ? (
               <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
