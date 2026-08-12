@@ -199,7 +199,7 @@ function HorizontalTimeline({ items, showConnectors }: { items: TimelineItem[]; 
 }
 
 // ── VERTICAL ──────────────────────────────────────────────────────────────────
-function VerticalTimeline({ items }: { items: TimelineItem[] }) {
+function VerticalTimeline({ items, sectionBackground }: { items: TimelineItem[]; sectionBackground: BlockBackground }) {
   return (
     <div className="relative flex flex-col gap-0">
       {items.map((item, index) => {
@@ -226,9 +226,7 @@ function VerticalTimeline({ items }: { items: TimelineItem[] }) {
             </div>
             <div className={cn('flex flex-col gap-1 pb-10', isLast && 'pb-0')}>
               {item.date?.trim() ? (
-                <span className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
-                  {item.date.trim()}
-                </span>
+                <SectionEyebrow surface={sectionBackground}>{item.date.trim()}</SectionEyebrow>
               ) : null}
               <h3 className="text-lg font-semibold leading-snug text-current">
                 {item.title?.trim()}
@@ -247,7 +245,7 @@ function VerticalTimeline({ items }: { items: TimelineItem[] }) {
 }
 
 // ── ALTERNATING ───────────────────────────────────────────────────────────────
-function AlternatingTimeline({ items }: { items: TimelineItem[] }) {
+function AlternatingTimeline({ items, sectionBackground }: { items: TimelineItem[]; sectionBackground: BlockBackground }) {
   return (
     <div className="flex flex-col gap-16">
       {items.map((item, index) => {
@@ -284,9 +282,7 @@ function AlternatingTimeline({ items }: { items: TimelineItem[] }) {
             {/* Content */}
             <div className="flex flex-col gap-3 md:flex-1">
               {item.date?.trim() ? (
-                <span className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-primary">
-                  {item.date.trim()}
-                </span>
+                <SectionEyebrow surface={sectionBackground}>{item.date.trim()}</SectionEyebrow>
               ) : (
                 <span className="font-serif text-5xl font-bold leading-none text-border/60">
                   {String(index + 1).padStart(2, '0')}
@@ -346,10 +342,10 @@ export function TimelineBlockComponent({
         {variant === 'horizontal' ? (
           <HorizontalTimeline items={validItems} showConnectors={showConnectors ?? true} />
         ) : variant === 'alternating' ? (
-          <AlternatingTimeline items={validItems} />
+          <AlternatingTimeline items={validItems} sectionBackground={appearance?.background ?? 'none'} />
         ) : (
           <div className="mx-auto max-w-2xl">
-            <VerticalTimeline items={validItems} />
+            <VerticalTimeline items={validItems} sectionBackground={appearance?.background ?? 'none'} />
           </div>
         )}
       </div>

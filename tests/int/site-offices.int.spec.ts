@@ -25,19 +25,8 @@ describe('site office directory', () => {
       type?: string
     }>(contact?.fields ?? [], 'officeLocations')
 
-    expect(offices?.type).toBe('array')
-    expect(offices?.admin?.initCollapsed).toBe(true)
-    expect(offices?.fields?.map((field) => field.name)).toEqual([
-      'region',
-      'city',
-      'address',
-      'phone',
-      'email',
-      'mapEmbedUrl',
-      'mapUrl',
-      'mapTitle',
-    ])
-    expect(offices?.fields?.every((field) => field.required)).toBe(true)
+    // officeLocations has been removed from the SiteSettings Contact tab
+    expect(offices).toBeUndefined()
   })
 
   it.each([
@@ -87,6 +76,20 @@ describe('site office directory', () => {
         mapEmbedUrl: 'https://www.google.com/maps/embed?pb=dubai',
         mapUrl: 'https://maps.google.com/?q=Dubai',
         mapTitle: 'Interactive map for the Dubai office',
+        showAddressDetails: true,
+      },
+      {
+        id: 'invalid',
+        region: 'Europe',
+        city: 'London',
+        address: null,
+        phone: '+44 20 7555 0123',
+        phoneHref: 'tel:+442075550123',
+        email: 'london@example.com',
+        mapEmbedUrl: 'https://www.google.com/maps/embed?pb=london',
+        mapUrl: 'https://maps.google.com/?q=London',
+        mapTitle: 'Interactive map for the London office',
+        showAddressDetails: true,
       },
     ])
   })

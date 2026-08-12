@@ -75,7 +75,7 @@ describe('global header wiring', () => {
     const adminIndex = layoutSource.indexOf('<AdminSessionBar')
     const announcementIndex = layoutSource.indexOf('<GlobalAnnouncement')
     const headerIndex = layoutSource.indexOf('<GlobalHeader')
-    const mainIndex = layoutSource.indexOf('<main data-site-main="true">')
+    const mainIndex = layoutSource.indexOf('<main id="main-content" data-site-main="true">')
 
     expect(adminIndex).toBeGreaterThanOrEqual(0)
     expect(announcementIndex).toBeGreaterThan(adminIndex)

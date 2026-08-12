@@ -30,14 +30,21 @@ describe('block surface semantics', () => {
   })
 
   it.each([
-    'src/blocks/TestimonialGrid/Component.tsx',
-    'src/blocks/ProgramGrid/ProgramGridClient.tsx',
-    'src/blocks/MediaCarousel/MediaCarouselClient.tsx',
     'src/components/news-events/NewsEventsHighlights.tsx',
   ])('%s pairs card backgrounds with card foregrounds', (file) => {
     const source = read(file)
 
     expect(source).toMatch(/bg-card[^"']*text-card-foreground|text-card-foreground[^"']*bg-card/)
+  })
+
+  it.each([
+    'src/blocks/TestimonialGrid/Component.tsx',
+    'src/blocks/ProgramGrid/ProgramGridClient.tsx',
+    'src/blocks/MediaCarousel/MediaCarouselClient.tsx',
+  ])('%s uses resolveCardSurface for adaptive card theming', (file) => {
+    const source = read(file)
+    expect(source).toContain("from '@/blocks/shared/cardSurface'")
+    expect(source).toContain('resolveCardSurface')
   })
 
   it('uses semantic brand colors instead of raw palette utilities', () => {
@@ -55,8 +62,6 @@ describe('block surface semantics', () => {
       /(?:text|bg|border|from|via|to)-(?:red|blue|green|yellow|purple|pink|indigo|orange|lime|emerald|cyan|sky|violet|fuchsia|rose|teal)-\d+/,
     )
     expect(read('src/components/services21.tsx')).toContain('text-primary')
-    expect(read('src/components/team-showcase.tsx')).toContain(
-      'from-primary/30 via-primary to-primary/30',
-    )
+    expect(read('src/components/team-showcase.tsx')).toContain('resolveCardSurface')
   })
 })

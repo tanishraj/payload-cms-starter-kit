@@ -24,6 +24,10 @@ vi.mock('next/headers', () => ({
   headers: vi.fn(async () => ({})),
 }))
 
+vi.mock('next/cache', () => ({
+  unstable_cache: vi.fn((fn: (...args: unknown[]) => unknown) => fn),
+}))
+
 const loadPageData = async () => {
   vi.resetModules()
   return import('@/app/(frontend)/pageData')

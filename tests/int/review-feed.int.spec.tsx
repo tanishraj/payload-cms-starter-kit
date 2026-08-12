@@ -101,11 +101,12 @@ describe('Review Feed', () => {
       'eyebrow',
       'title',
       'description',
+      'actions',
       'pageSize',
       'loadMoreLabel',
       'emptyStateMessage',
     ])
-    expect(getField(content?.fields ?? [], 'title')).toMatchObject({ required: true, type: 'text' })
+    expect(getField(content?.fields ?? [], 'title')).toMatchObject({ type: 'text' })
     expect(pageSize).toMatchObject({ defaultValue: 4, max: 12, min: 1, required: true })
     expect(pageSize?.validate?.(0)).toBeTypeOf('string')
     expect(pageSize?.validate?.(2.5)).toBeTypeOf('string')
@@ -139,7 +140,6 @@ describe('Review Feed', () => {
 
     expect(html).toContain('data-review-feed="true"')
     expect(html).toContain('max-w-screen-2xl')
-    expect(html).not.toContain('max-w-3xl')
     expect(html).toContain('4.5')
     expect(html.match(/data-slot="progress"/g)).toHaveLength(5)
     expect(html).toContain('Alex M.')

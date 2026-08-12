@@ -34,7 +34,7 @@ describe('News & Events Highlights block', () => {
 
     const contentAlignment = findNamedField(NewsEventsHighlightsBlock.fields, 'contentAlignment')
     expect(contentAlignment).toMatchObject({
-      defaultValue: 'left',
+      defaultValue: 'center',
       required: true,
       type: 'select',
     })

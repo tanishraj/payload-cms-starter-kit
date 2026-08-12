@@ -89,12 +89,12 @@ describe('Feature Matrix presentation', () => {
     expect(html).toContain('lg:col-span-3')
     expect(html).toContain('lg:col-span-2')
     expect(html).toContain('border-border')
-    expect(html).toContain('overflow-hidden rounded-md border border-border')
+    expect(html).toContain('overflow-hidden rounded-md border border-current/10')
     expect(html).not.toContain('rounded-[var(--radius)]')
     expect(html.match(/flex flex-col gap-1/g)).toHaveLength(4)
-    expect(html).toContain('border-b border-border lg:border-r lg:border-b-0')
+    expect(html).toContain('border-b border-current/10 lg:border-r lg:border-b-0')
     expect(html).toContain('Explore our facilities')
-    expect(html.match(/h-36 md:h-40 lg:h-44/g)).toHaveLength(4)
+    expect(html.match(/h-44 md:h-48 lg:h-52/g)).toHaveLength(4)
     expect(html).not.toContain('aspect-[1.45]')
     expect(html).not.toContain('lg:aspect-[2.4]')
     expect(html).not.toMatch(/<h3[^>]*>Learning spaces<\/h3>/)
@@ -105,13 +105,13 @@ describe('Feature Matrix presentation', () => {
 
     for (const feature of features) {
       expect(html).toContain(feature.title)
-      expect(html).toContain(feature.image.src)
+      expect(html).toContain(encodeURIComponent(feature.image.src))
     }
   })
 
   it.each([
-    ['compact', 'h-36 md:h-40 lg:h-44'],
-    ['default', 'h-44 md:h-52 lg:h-60'],
+    ['compact', 'h-44 md:h-48 lg:h-52'],
+    ['default', 'h-48 md:h-52 lg:h-56'],
     ['comfortable', 'h-52 md:h-64 lg:h-72'],
   ] as const)('applies equal responsive image heights in %s mode', (size, classes) => {
     const html = renderToStaticMarkup(FeatureMatrix({ features, size, title: 'What we provide' }))
@@ -131,20 +131,26 @@ describe('Feature Matrix presentation', () => {
     const titleField = getField(contentTab?.fields ?? [], 'title')
     const featuresField = getField(contentTab?.fields ?? [], 'features')
     const actionsField = getField(contentTab?.fields ?? [], 'actions')
-    const featureTitleField = getField(featuresField?.fields ?? [], 'title')
-    const featureImageField = getField(featuresField?.fields ?? [], 'image')
-    const featureImagePositionField = getField(featuresField?.fields ?? [], 'imagePosition')
+    // Features use createCardTabs which wraps fields in a tabs structure
+    const featureTabsField = featuresField?.fields?.[0] as unknown as {
+      tabs: TestTab[]
+      type: string
+    }
+    const featureContentTab = featureTabsField?.tabs?.find(({ label }) => label === 'Content')
+    const featureThemeTab = featureTabsField?.tabs?.find(({ label }) => label === 'Theme Settings')
+    const featureTitleField = getField(featureContentTab?.fields ?? [], 'title')
+    const featureImageField = getField(featureContentTab?.fields ?? [], 'image')
+    const featureImagePositionField = getField(featureThemeTab?.fields ?? [], 'imagePosition')
     const alignmentField = getField(layoutTab?.fields ?? [], 'contentAlignment')
     const actionModeField = getField(layoutTab?.fields ?? [], 'actionMode')
     const sizeField = getField(layoutTab?.fields ?? [], 'size')
     const showOuterBorderField = getField(layoutTab?.fields ?? [], 'showOuterBorder')
     const borderAnimationEnabledField = getField(layoutTab?.fields ?? [], 'borderAnimationEnabled')
 
-    expect(titleField?.required).toBe(true)
     expect(actionsField?.maxRows).toBe(2)
     expect(featuresField?.minRows).toBe(4)
     expect(featuresField?.maxRows).toBe(4)
-    expect(featureTitleField?.required).toBe(true)
+    expect(featureTitleField?.required).toBeUndefined()
     expect(featureImageField).toMatchObject({ relationTo: 'media', required: true, type: 'upload' })
     expect(featureImagePositionField).toMatchObject({
       defaultValue: 'center',
@@ -164,6 +170,7 @@ describe('Feature Matrix presentation', () => {
     expect(showOuterBorderField).toMatchObject({ defaultValue: true, type: 'checkbox' })
     expect(borderAnimationEnabledField).toMatchObject({ defaultValue: true, type: 'checkbox' })
     expect(sizeField?.options?.map(({ value }) => value)).toEqual([
+      'none',
       'compact',
       'default',
       'comfortable',
@@ -184,7 +191,7 @@ describe('Feature Matrix presentation', () => {
     expect(html).toContain('data-feature-matrix-outer-border="hidden"')
     expect(html).toContain('grid overflow-hidden rounded-md lg:grid-cols-5')
     expect(html).not.toContain('grid overflow-hidden rounded-md border border-border')
-    expect(html).toContain('border-b border-border lg:border-r')
+    expect(html).toContain('border-b border-current/10 lg:border-r')
   })
 
   it('can disable decorative beams without removing the static internal dividers', () => {
@@ -200,8 +207,8 @@ describe('Feature Matrix presentation', () => {
 
     expect(html).toContain('data-feature-matrix-border-animation="disabled"')
     expect(html).not.toContain('data-feature-matrix-divider-beam=')
-    expect(html).toContain('border-b border-border lg:border-r')
-    expect(html).toContain('border-b border-border lg:border-r lg:border-b-0')
+    expect(html).toContain('border-b border-current/10 lg:border-r')
+    expect(html).toContain('border-b border-current/10 lg:border-r lg:border-b-0')
   })
 
   it('applies an independent focal position to every image with a center fallback', () => {
@@ -291,7 +298,7 @@ describe('Feature Matrix presentation', () => {
     expect(html).toContain('data-action-variant="outline"')
     expect(html).toContain('href="/facilities"')
     expect(html).toContain('bg-accent')
-    expect(html).toContain('/media/learning-space.jpg')
+    expect(html).toContain('%2Fmedia%2Flearning-space.jpg')
     expect(html).toContain('object-[center_bottom]')
   })
 

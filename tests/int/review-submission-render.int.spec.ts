@@ -62,9 +62,9 @@ describe('review submission block', () => {
   })
 
   it.each([
-    ['compact', 'py-12 md:py-16'],
+    ['compact', 'py-8 md:py-10'],
     ['default', 'py-12 md:py-16'],
-    ['comfortable', 'py-12 md:py-16'],
+    ['comfortable', 'py-20 md:py-28'],
   ] as const)('uses the shared responsive spacing for %s size', (size, classes) => {
     const html = renderToStaticMarkup(
       createElement(ReviewSubmissionBlockComponent, {
@@ -110,7 +110,7 @@ describe('review submission block', () => {
 
     expect(centerHtml).toContain('data-review-submission-content-alignment="center"')
     expect(centerHtml).toContain('self-center items-center text-center')
-    expect(centerHtml).toContain('text-base leading-7 text-muted-foreground')
+    expect(centerHtml).toContain('text-base leading-7 text-current/70')
     expect(centerHtml).toContain('data-review-submission-actions="true"')
     expect(centerHtml).toContain('data-action-mode="link"')
     expect(centerHtml).toContain('justify-center')

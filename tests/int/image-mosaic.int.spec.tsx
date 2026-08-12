@@ -77,8 +77,8 @@ describe('Image Mosaic', () => {
       )
     }
 
-    expect(getLayoutNames(defaultField)).toEqual(['variant'])
-    expect(getLayoutNames(imageActionField)).toEqual(['mode', 'variant'])
+    expect(getLayoutNames(defaultField)).toEqual(['variant', 'showArrow'])
+    expect(getLayoutNames(imageActionField)).toEqual(['mode', 'variant', 'showArrow'])
 
     const tabsField = imageActionField.fields[0]
 
@@ -124,7 +124,6 @@ describe('Image Mosaic', () => {
     expect(tabsField.type).toBe('tabs')
     expect(tabsField.tabs.map(({ label }) => label)).toEqual(['Content', 'Theme Settings'])
     expect(getField(contentTab?.fields ?? [], 'title')).toMatchObject({
-      required: true,
       type: 'text',
     })
     expect(getField(contentTab?.fields ?? [], 'actions')?.maxRows).toBe(2)
@@ -198,7 +197,7 @@ describe('Image Mosaic', () => {
     expect(html).toContain('data-image-mosaic-size="compact"')
     expect(html).toContain('bg-muted')
     expect(html).toContain('border-y border-border')
-    expect(html).toContain('py-12 md:py-16')
+    expect(html).toContain('py-8 md:py-10')
     expect(html).toContain('mx-auto w-full max-w-screen-2xl px-4')
     expect(html).toContain(
       'text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl',
@@ -340,16 +339,20 @@ describe('Image Mosaic', () => {
             ],
             image: {
               alt: 'Community',
+              height: 900,
               id: 11,
               url: '/media/community.jpg',
+              width: 1200,
             },
             title: 'Community',
           },
           {
             image: {
               alt: 'No action',
+              height: 900,
               id: 12,
               url: '/media/no-action.jpg',
+              width: 1200,
             },
             title: 'No action',
           },
@@ -379,8 +382,10 @@ describe('Image Mosaic', () => {
           {
             image: {
               alt: 'Valid',
+              height: 900,
               id: 1,
               url: '/media/valid.jpg',
+              width: 1200,
             },
             title: 'Valid',
           },
@@ -416,8 +421,10 @@ describe('Image Mosaic', () => {
             {
               image: {
                 alt: 'Pipeline image',
+                height: 900,
                 id: 1,
                 url: '/pipeline.jpg',
+                width: 1200,
               },
             },
           ],

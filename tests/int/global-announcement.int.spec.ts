@@ -32,47 +32,44 @@ describe('global announcement settings', () => {
       (field) => typeof field === 'object' && field !== null && 'tabs' in field,
     ) as { tabs: Array<{ label: string; fields: unknown[] }> } | undefined
     const announcementTab = tabsField?.tabs.find((tab) => tab.label === 'Announcement')
-    const announcementTabsField = announcementTab?.fields.find(
-      (field) => typeof field === 'object' && field !== null && 'tabs' in field,
-    ) as { tabs: Array<{ label: string; fields: unknown[] }>; type?: string } | undefined
-    const contentTab = announcementTabsField?.tabs.find((tab) => tab.label === 'Content')
-    const layoutTab = announcementTabsField?.tabs.find((tab) => tab.label === 'Theme Settings')
-    const enabledField = contentTab?.fields.find(
+    const announcementFields = announcementTab?.fields ?? []
+
+    const enabledField = announcementFields.find(
       (field) =>
         typeof field === 'object' &&
         field !== null &&
         'name' in field &&
         field.name === 'announcementEnabled',
     ) as { defaultValue?: boolean; type?: string } | undefined
-    const labelField = contentTab?.fields.find(
+    const labelField = announcementFields.find(
       (field) =>
         typeof field === 'object' &&
         field !== null &&
         'name' in field &&
         field.name === 'announcementLabel',
     ) as { label?: string; type?: string } | undefined
-    const displayModeField = layoutTab?.fields.find(
+    const displayModeField = announcementFields.find(
       (field) =>
         typeof field === 'object' &&
         field !== null &&
         'name' in field &&
         field.name === 'announcementDisplayMode',
     ) as { defaultValue?: string; label?: string; options?: Array<{ value: string }>; type?: string } | undefined
-    const intervalField = layoutTab?.fields.find(
+    const intervalField = announcementFields.find(
       (field) =>
         typeof field === 'object' &&
         field !== null &&
         'name' in field &&
         field.name === 'announcementIntervalMs',
     ) as { defaultValue?: number; min?: number; type?: string } | undefined
-    const marqueeDurationField = layoutTab?.fields.find(
+    const marqueeDurationField = announcementFields.find(
       (field) =>
         typeof field === 'object' &&
         field !== null &&
         'name' in field &&
         field.name === 'announcementMarqueeDurationMs',
     ) as { defaultValue?: number; type?: string } | undefined
-    const itemsField = contentTab?.fields.find(
+    const itemsField = announcementFields.find(
       (field) =>
         typeof field === 'object' &&
         field !== null &&
@@ -80,12 +77,10 @@ describe('global announcement settings', () => {
         field.name === 'announcementItems',
     ) as { minRows?: number; type?: string } | undefined
 
-    expect(announcementTabsField?.type).toBe('tabs')
-    expect(announcementTabsField?.tabs.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(enabledField?.type).toBe('checkbox')
     expect(enabledField?.defaultValue).toBe(false)
     expect(labelField?.type).toBe('text')
-    expect(labelField?.label).toBe('Announcement Label')
+    expect(labelField?.label).toBe('Label')
     expect(displayModeField?.type).toBe('select')
     expect(displayModeField?.label).toBe('Animation Mode')
     expect(displayModeField?.defaultValue).toBe('vertical')

@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
+import { regularBlockMobilePaddingClasses } from '@/blocks/shared/blockSpacing'
 import { Contact33BlockComponent } from '@/blocks/Contact33/Component'
 
 const contactForm = {
@@ -72,7 +73,7 @@ describe('contact33 block', () => {
       )
 
       expect(html).toContain(`data-contact33-size="${size}"`)
-      expect(html).toContain('py-12 md:py-16')
+      expect(html).toContain(regularBlockMobilePaddingClasses[size])
       expect(html).toContain('mx-auto w-full max-w-screen-2xl px-4')
     },
   )
@@ -134,7 +135,7 @@ describe('contact33 block', () => {
     expect(right).toContain('data-contact33-image-position="right"')
     expect(right).not.toContain('lg:order-first')
     expect(left).toContain('min-h-72')
-    expect(left).toContain('lg:min-h-[42rem]')
+    expect(left).toContain('lg:min-h-168')
   })
 
   it('renders an unavailable message for an unpopulated form relationship', () => {

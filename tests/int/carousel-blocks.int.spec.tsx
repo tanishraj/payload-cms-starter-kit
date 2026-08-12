@@ -317,7 +317,7 @@ describe('carousel block schemas', () => {
     expect(html).toContain('data-gallery-coverflow-alignment="right"')
     expect(html).toContain('data-gallery-coverflow-size="compact"')
     expect(html).toContain('data-gallery-coverflow-stage="true"')
-    expect(html).toContain('max-w-5xl')
+    expect(html).toContain('max-w-4xl')
     expect(html).toContain('md:w-40')
     expect(html).not.toContain('sm:via-muted')
     expect(html).toContain('bg-muted')

@@ -27,6 +27,10 @@ vi.mock('next/headers', () => ({
   headers: vi.fn(async () => ({})),
 }))
 
+vi.mock('next/cache', () => ({
+  unstable_cache: vi.fn((fn: (...args: unknown[]) => unknown) => fn),
+}))
+
 type NamedField = {
   admin?: {
     description?: string
@@ -70,10 +74,8 @@ describe('system mode settings', () => {
     const typedTabsField = tabsField as { tabs: Array<{ label: string }> } | undefined
 
     expect(typedTabsField?.tabs.map((tab) => tab.label)).toEqual([
-      'Default Home',
+      'Site Structure',
       'Page Appearance',
-      'Header',
-      'Footer',
       'Announcement',
     ])
   })

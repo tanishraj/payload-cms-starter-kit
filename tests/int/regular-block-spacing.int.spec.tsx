@@ -15,9 +15,10 @@ const regularBlockSources = [
 describe('regular block responsive spacing', () => {
   it('uses one responsive outer-padding contract for every size', () => {
     expect(regularBlockMobilePaddingClasses).toEqual({
-      compact: 'py-12 md:py-16',
+      none: '',
+      compact: 'py-8 md:py-10',
       default: 'py-12 md:py-16',
-      comfortable: 'py-12 md:py-16',
+      comfortable: 'py-20 md:py-28',
     })
   })
 

@@ -433,11 +433,11 @@ describe('user normalization hook', () => {
 
     const serialized = JSON.stringify(capabilityField.fields)
 
-    expect(serialized).toContain('"label":"Website Content"')
-    expect(serialized).toContain('"label":"Website Structure"')
-    expect(serialized).toContain('"label":"Lead Capture"')
-    expect(serialized).toContain('"label":"Site Settings"')
-    expect(serialized).toContain('"label":"Operations"')
+    expect(serialized).toContain('"label":"Content"')
+    expect(serialized).toContain('"label":"Site Structure"')
+    expect(serialized).toContain('"label":"Lead Management"')
+    expect(serialized).toContain('"label":"Configuration"')
+    expect(serialized).toContain('"label":"Administration"')
     expect(serialized).toContain('"label":"Publishing"')
   })
 
@@ -449,11 +449,11 @@ describe('user normalization hook', () => {
           value: 'manage_navigation',
         }),
         expect.objectContaining({
-          label: 'Website Defaults',
+          label: 'Routing Defaults',
           value: 'manage_page_settings',
         }),
         expect.objectContaining({
-          label: 'Website Modes',
+          label: 'Site Modes',
           value: 'manage_system_modes',
         }),
         expect.objectContaining({
@@ -461,7 +461,7 @@ describe('user normalization hook', () => {
           value: 'manage_work_queue',
         }),
         expect.objectContaining({
-          label: 'Activity Log',
+          label: 'Audit Log',
           value: 'view_operational_audit',
         }),
         expect.objectContaining({

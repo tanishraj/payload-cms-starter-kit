@@ -25,7 +25,7 @@ describe('gallery albums collection', () => {
         'drafts' in GalleryAlbums.versions,
     ).toBe(true)
     expect(GalleryAlbums.admin).toMatchObject({
-      group: 'Website Content',
+      group: 'Media',
       useAsTitle: 'title',
     })
     expect(images).toMatchObject({ minRows: 1, required: true, type: 'array' })

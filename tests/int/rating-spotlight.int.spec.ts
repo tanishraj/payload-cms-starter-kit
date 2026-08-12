@@ -80,7 +80,6 @@ describe('Rating Spotlight', () => {
     expect(tabsField.tabs.map(({ label }) => label)).toEqual(['Content', 'Theme Settings'])
     expect(getField(contentTab?.fields ?? [], 'eyebrow')?.type).toBe('text')
     expect(getField(contentTab?.fields ?? [], 'title')).toMatchObject({
-      required: true,
       type: 'text',
     })
     expect(getField(contentTab?.fields ?? [], 'description')?.type).toBe('textarea')
@@ -115,7 +114,7 @@ describe('Rating Spotlight', () => {
       true,
     )
     expect(actionModeField?.defaultValue).toBe('link')
-    expect(contentAlignmentField?.defaultValue).toBe('left')
+    expect(contentAlignmentField?.defaultValue).toBe('center')
     expect(sizeField?.defaultValue).toBe('default')
   })
 

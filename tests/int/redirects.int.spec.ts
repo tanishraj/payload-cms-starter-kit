@@ -138,7 +138,7 @@ describe('redirect cleanup', () => {
           destinationType: 'page',
           enabled: true,
           fromPath: '/home',
-          page: 10,
+          page: '10',
         }),
       }),
     )

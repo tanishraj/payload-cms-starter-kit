@@ -133,7 +133,7 @@ describe('contact33 form contract', () => {
       content?.fields.map((field) =>
         typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,
       ),
-    ).toEqual(['eyebrow', 'title', 'description', 'image', 'imageAlt', 'form'])
+    ).toEqual(['eyebrow', 'title', 'description', 'actions', 'image', 'imageAlt', 'form'])
     expect(form?.required).toBe(true)
     expect(form?.filterOptions).toEqual({
       and: [
@@ -148,7 +148,7 @@ describe('contact33 form contract', () => {
         'contentAlignment',
       ),
     ).toMatchObject({
-      defaultValue: 'left',
+      defaultValue: 'center',
       type: 'select',
     })
     expect(

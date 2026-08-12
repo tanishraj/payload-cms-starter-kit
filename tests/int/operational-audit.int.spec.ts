@@ -8,9 +8,9 @@ import {
 } from '@/hooks/logOperationalAuditEvent'
 
 describe('operational audit collection', () => {
-  it('is read-only for operators and grouped under Operations', () => {
+  it('is read-only for operators and grouped under Administration', () => {
     expect(OperationalAuditEvents.slug).toBe('operational-audit-events')
-    expect(OperationalAuditEvents.admin?.group).toBe('Operations')
+    expect(OperationalAuditEvents.admin?.group).toBe('Administration')
     expect(OperationalAuditEvents.access?.create?.({} as never)).toBe(false)
     expect(OperationalAuditEvents.access?.update?.({} as never)).toBe(false)
   })

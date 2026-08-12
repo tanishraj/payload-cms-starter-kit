@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 const mocks = vi.hoisted(() => ({
   find: vi.fn(),
   findByID: vi.fn(),
+  findGlobal: vi.fn(),
   getPayload: vi.fn(),
 }))
 
@@ -19,9 +20,11 @@ import { GET } from '@/app/api/search/route'
 describe('hierarchical Page search URLs', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mocks.findGlobal.mockResolvedValue({ id: 'search-settings', suggestedSearches: [] })
     mocks.getPayload.mockResolvedValue({
       find: mocks.find,
       findByID: mocks.findByID,
+      findGlobal: mocks.findGlobal,
     })
     mocks.find.mockImplementation(async ({ collection }) => {
       if (collection === 'pages') {

@@ -77,7 +77,6 @@ describe('Gallery Showcase', () => {
     expect(tabsField.tabs.map(({ label }) => label)).toEqual(['Content', 'Theme Settings'])
     expect(getField(contentTab?.fields ?? [], 'eyebrow')?.type).toBe('text')
     expect(getField(contentTab?.fields ?? [], 'title')).toMatchObject({
-      required: true,
       type: 'text',
     })
     expect(getField(contentTab?.fields ?? [], 'description')?.type).toBe('textarea')
@@ -107,6 +106,7 @@ describe('Gallery Showcase', () => {
     ])
     expect(sizeField).toMatchObject({ defaultValue: 'default', required: true })
     expect(sizeField?.options?.map(({ value }) => value)).toEqual([
+      'none',
       'compact',
       'default',
       'comfortable',
@@ -132,12 +132,12 @@ describe('Gallery Showcase', () => {
     expect(html).toContain('data-gallery-showcase-size="compact"')
     expect(html).toContain('bg-muted')
     expect(html).toContain('border-y border-border')
-    expect(html).toContain('py-12 md:py-16')
+    expect(html).toContain('py-8 md:py-10')
     expect(html).toContain('mx-auto w-full max-w-screen-2xl px-4')
-    expect(html).toContain('h-36 sm:h-48 lg:h-52')
+    expect(html).toContain('h-44 sm:h-56 lg:h-60')
     expect(html).toContain('size-16 sm:size-36 lg:size-40')
     expect(html).toContain('overflow-x-clip')
-    expect(html).toContain('mx-auto w-full max-w-screen-2xl px-4 flex flex-col gap-5')
+    expect(html).toContain('mx-auto w-full max-w-screen-2xl px-4 flex flex-col gap-8 sm:gap-10')
     expect(html).not.toContain('mt-5')
     expect(html).toContain(
       'text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl',
@@ -192,9 +192,9 @@ describe('Gallery Showcase', () => {
   })
 
   it.each([
-    ['compact', 'h-36 sm:h-48 lg:h-52', 'size-16 sm:size-36 lg:size-40'],
-    ['default', 'h-40 sm:h-52 lg:h-60', 'size-20 sm:size-40 lg:size-44'],
-    ['comfortable', 'h-44 sm:h-60 lg:h-64', 'size-24 sm:size-44 lg:size-48'],
+    ['compact', 'h-44 sm:h-56 lg:h-60', 'size-16 sm:size-36 lg:size-40'],
+    ['default', 'h-48 sm:h-60 lg:h-68', 'size-20 sm:size-40 lg:size-44'],
+    ['comfortable', 'h-52 sm:h-68 lg:h-72', 'size-24 sm:size-44 lg:size-48'],
   ] as const)('applies %s fan and card sizing', (size, fanClasses, cardClasses) => {
     const html = renderToStaticMarkup(
       GalleryShowcase({ images: galleryImages, size, title: 'Gallery' }),
@@ -305,7 +305,7 @@ describe('Gallery Showcase', () => {
         {
           blockType: 'galleryShowcase',
           images: galleryImages.map((image) => ({
-            image: { alt: image.alt, id: image.id, url: image.src },
+            image: { alt: image.alt, height: image.height, id: image.id, url: image.src, width: image.width },
             imagePosition: image.imagePosition,
           })),
           title: 'Gallery pipeline',

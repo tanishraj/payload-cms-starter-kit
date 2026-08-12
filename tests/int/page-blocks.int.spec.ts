@@ -210,7 +210,7 @@ describe('page block pipeline', () => {
       contentTab?.fields.map((field) =>
         typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,
       ),
-    ).toEqual(['eyebrow', 'title', 'description', 'galleryAlbums', 'displayOrder'])
+    ).toEqual(['eyebrow', 'title', 'description', 'actions', 'galleryAlbums', 'displayOrder'])
     expect(galleryAlbums).toMatchObject({
       admin: {
         allowCreate: true,
@@ -231,7 +231,7 @@ describe('page block pipeline', () => {
       'manual',
     ])
     expect(contentAlignment).toMatchObject({
-      defaultValue: 'left',
+      defaultValue: 'center',
       type: 'select',
     })
     expect(contentAlignment?.options?.map((option) => option.value)).toEqual([
@@ -244,6 +244,7 @@ describe('page block pipeline', () => {
       type: 'select',
     })
     expect(size?.options?.map((option) => option.value)).toEqual([
+      'none',
       'compact',
       'default',
       'comfortable',
@@ -377,7 +378,7 @@ describe('page block pipeline', () => {
     expect(backgroundImageField?.relationTo).toBe('media')
     expect(backgroundImageField?.required).toBe(true)
     expect(titleField?.type).toBe('text')
-    expect(titleField?.required).toBe(true)
+    expect(titleField?.required).not.toBe(true)
     expect(overlayStyleField?.type).toBe('select')
     expect(overlayStyleField?.defaultValue).toBe('dark')
     expect(overlayStyleField?.options?.map((option) => option.value)).toEqual([
@@ -788,12 +789,13 @@ describe('page block pipeline', () => {
     expect(tabsField?.type).toBe('tabs')
     expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(titleField?.type).toBe('text')
-    expect(titleField?.required).toBe(true)
+    expect(titleField?.required).not.toBe(true)
     expect(descriptionField?.type).toBe('textarea')
     expectContentActionsFieldSet(contentTab?.fields ?? [], layoutTab?.fields ?? [])
     expect(sizeField?.type).toBe('select')
     expect(sizeField?.defaultValue).toBe('default')
     expect(sizeField?.options?.map((option) => option.value)).toEqual([
+      'none',
       'compact',
       'default',
       'comfortable',
@@ -945,7 +947,7 @@ describe('page block pipeline', () => {
     expect(imageField?.relationTo).toBe('media')
     expect(imageField?.required).not.toBe(true)
     expect(titleField?.type).toBe('text')
-    expect(titleField?.required).toBe(true)
+    expect(titleField?.required).not.toBe(true)
     expect(layoutModeField?.type).toBe('select')
     expect(layoutModeField?.defaultValue).toBe('split')
     expect(layoutModeField?.options?.map((option) => option.value)).toEqual([
@@ -981,6 +983,7 @@ describe('page block pipeline', () => {
     expect(sizeField?.type).toBe('select')
     expect(sizeField?.defaultValue).toBe('default')
     expect(sizeField?.options?.map((option) => option.value)).toEqual([
+      'none',
       'compact',
       'default',
       'comfortable',
@@ -999,9 +1002,9 @@ describe('page block pipeline', () => {
     const contentTab = tabsField?.tabs?.find((tab) => tab.label === 'Content')
     const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
 
-    const headingField = getNamedField<{ required?: boolean; type?: string }>(
+    const titleField = getNamedField<{ required?: boolean; type?: string }>(
       contentTab?.fields ?? [],
-      'heading',
+      'title',
     )
     const itemsField = getNamedField<{
       fields?: Array<{ name?: string; type?: string }>
@@ -1059,9 +1062,9 @@ describe('page block pipeline', () => {
       contentTab?.fields.map((field) =>
         typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,
       ),
-    ).toEqual(['heading', 'description', 'headerActions', 'items', 'sideColumn'])
-    expect(headingField?.type).toBe('text')
-    expect(headingField?.required).toBe(true)
+    ).toEqual(['title', 'description', 'actions', 'items', 'sideColumn'])
+    expect(titleField?.type).toBe('text')
+    expect(titleField?.required).not.toBe(true)
     expect(itemsField?.type).toBe('array')
     expect(itemsField?.minRows).toBe(1)
     expect(itemsField?.fields?.map((field) => field.name).filter((name) => name !== 'id')).toEqual([
@@ -1076,16 +1079,13 @@ describe('page block pipeline', () => {
     expect(sideColumnField?.admin?.condition).toBeTypeOf('function')
     expect(sideColumnField?.fields?.map((field) => field.name)).toEqual(['profile', 'contact'])
     expect(getNamedField(contactField?.fields ?? [], 'links')).toBeUndefined()
-    expectContentActionsFieldSet(contentTab?.fields ?? [], layoutTab?.fields ?? [], {
-      actionsName: 'headerActions',
-      modeName: 'headerActionMode',
-    })
+    expectContentActionsFieldSet(contentTab?.fields ?? [], layoutTab?.fields ?? [])
     expectContentActionsFieldSet(contactField?.fields ?? [], layoutTab?.fields ?? [], {
       modeName: 'sideActionMode',
     })
     expect(appearanceField?.type).toBe('group')
     expect(contentAlignmentField?.type).toBe('select')
-    expect(contentAlignmentField?.defaultValue).toBe('left')
+    expect(contentAlignmentField?.defaultValue).toBe('center')
     expect(contentAlignmentField?.options?.map((option) => option.value)).toEqual([
       'left',
       'center',
@@ -1110,6 +1110,7 @@ describe('page block pipeline', () => {
     expect(sizeField?.type).toBe('select')
     expect(sizeField?.defaultValue).toBe('default')
     expect(sizeField?.options?.map((option) => option.value)).toEqual([
+      'none',
       'compact',
       'default',
       'comfortable',
@@ -1136,7 +1137,7 @@ describe('page block pipeline', () => {
     }>(layoutTab?.fields ?? [], 'contentAlignment')
 
     expect(contentAlignmentField?.type).toBe('select')
-    expect(contentAlignmentField?.defaultValue).toBe('left')
+    expect(contentAlignmentField?.defaultValue).toBe('center')
     expect(contentAlignmentField?.options?.map((option) => option.value)).toEqual([
       'left',
       'center',
@@ -1179,7 +1180,7 @@ describe('page block pipeline', () => {
     const html = renderToStaticMarkup(result)
 
     expect(html).toContain('data-page-block-stack="true"')
-    expect(html).toContain('flex flex-col gap-4 md:gap-0')
+    expect(html).toContain('flex flex-col')
     expect(html).toContain('data-feature-spotlight-position="right"')
     expect(html).toContain('data-feature-spotlight-image-position="right"')
     expect(html).toContain('data-feature-spotlight-layout="split"')

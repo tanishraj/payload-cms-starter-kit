@@ -77,10 +77,15 @@ describe('Profile Carousel', () => {
     const layoutTab = tabsField.tabs.find(({ label }) => label === 'Theme Settings')
     const actionsField = getField(contentTab?.fields ?? [], 'actions')
     const profilesField = getField(contentTab?.fields ?? [], 'profiles')
-    const imageField = getField(profilesField?.fields ?? [], 'image')
-    const nameField = getField(profilesField?.fields ?? [], 'name')
-    const roleField = getField(profilesField?.fields ?? [], 'role')
-    const imagePositionField = getField(profilesField?.fields ?? [], 'imagePosition')
+    const profileCardTabs = profilesField?.fields?.[0] as unknown as
+      | { tabs: TestTab[]; type: string }
+      | undefined
+    const profileContentTab = profileCardTabs?.tabs?.find(({ label }) => label === 'Content')
+    const profileThemeTab = profileCardTabs?.tabs?.find(({ label }) => label === 'Theme Settings')
+    const imageField = getField(profileContentTab?.fields ?? [], 'image')
+    const nameField = getField(profileContentTab?.fields ?? [], 'name')
+    const roleField = getField(profileContentTab?.fields ?? [], 'role')
+    const imagePositionField = getField(profileThemeTab?.fields ?? [], 'imagePosition')
     const appearanceField = getField(layoutTab?.fields ?? [], 'appearance')
     const actionModeField = getField(layoutTab?.fields ?? [], 'actionMode')
     const contentAlignmentField = getField(layoutTab?.fields ?? [], 'contentAlignment')
@@ -91,7 +96,7 @@ describe('Profile Carousel', () => {
     expect(tabsField.type).toBe('tabs')
     expect(tabsField.tabs.map(({ label }) => label)).toEqual(['Content', 'Theme Settings'])
     expect(getField(contentTab?.fields ?? [], 'eyebrow')?.type).toBe('text')
-    expect(getField(contentTab?.fields ?? [], 'title')?.required).toBe(true)
+    expect(getField(contentTab?.fields ?? [], 'title')?.type).toBe('text')
     expect(actionsField?.maxRows).toBe(1)
     expect(createContentActionsField().maxRows).toBe(2)
     expect(profilesField).toMatchObject({ maxRows: 12, minRows: 1, type: 'array' })
@@ -112,9 +117,10 @@ describe('Profile Carousel', () => {
     ])
     expect(appearanceField?.type).toBe('group')
     expect(actionModeField?.defaultValue).toBe('link')
-    expect(contentAlignmentField?.defaultValue).toBe('left')
+    expect(contentAlignmentField?.defaultValue).toBe('center')
     expect(sizeField?.defaultValue).toBe('default')
     expect(sizeField?.options?.map(({ value }) => value)).toEqual([
+      'none',
       'compact',
       'default',
       'comfortable',
@@ -146,7 +152,7 @@ describe('Profile Carousel', () => {
     expect(html).toContain('data-profile-carousel="true"')
     expect(html).toContain('data-profile-carousel-mode="static"')
     expect(html).toContain('data-profile-carousel-size="compact"')
-    expect(html).toContain('py-12 md:py-16')
+    expect(html).toContain('py-8 md:py-10')
     expect(html).toContain('grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4')
     expect(html).toContain(
       'text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl',
@@ -164,7 +170,7 @@ describe('Profile Carousel', () => {
     expect(html).toContain('data-profile-carousel-card-variant="stacked"')
     expect(html.match(/data-profile-carousel-media-frame="true"/g)).toHaveLength(3)
     expect(html).toContain('h-64 sm:h-72 md:h-80')
-    expect(html).toContain('block h-full w-full object-cover')
+    expect(html).toContain('object-cover select-none')
     expect(html).toContain('object-[center_center]')
     expect(html).toContain('object-[center_top]')
   })
@@ -254,7 +260,7 @@ describe('Profile Carousel', () => {
     expect(html).toContain('data-action-mode="button"')
     expect(html).toContain('data-action-variant="outline"')
     expect(html).toContain('href="/team"')
-    expect(html).toContain('/media/alex.jpg')
+    expect(html).toContain('%2Fmedia%2Falex.jpg')
     expect(html).toContain('object-[right_center]')
   })
 

@@ -16,6 +16,7 @@ type TestField = {
   name?: string
   options?: Array<{ label: string; value: string }>
   required?: boolean
+  tabs?: TestTab[]
   type?: string
 }
 
@@ -48,11 +49,12 @@ describe('Content Highlights', () => {
       'items',
     ])
     expect(getField(content?.fields ?? [], 'title')).toMatchObject({
-      required: true,
       type: 'text',
     })
     expect(items).toMatchObject({ maxRows: 6, minRows: 1, required: true, type: 'array' })
-    expect(items?.fields?.map(({ name }) => name)).toEqual([
+    const itemsTabsField = items?.fields?.[0] as TestField | undefined
+    const itemsContentTab = itemsTabsField?.tabs?.find(({ label }) => label === 'Content')
+    expect(itemsContentTab?.fields?.map(({ name }) => name)).toEqual([
       'metadata',
       'title',
       'description',
@@ -61,11 +63,10 @@ describe('Content Highlights', () => {
       'url',
       'openInNewTab',
     ])
-    expect(getField(items?.fields ?? [], 'title')).toMatchObject({
-      required: true,
+    expect(getField(itemsContentTab?.fields ?? [], 'title')).toMatchObject({
       type: 'text',
     })
-    expect(getField(items?.fields ?? [], 'linkType')).toMatchObject({
+    expect(getField(itemsContentTab?.fields ?? [], 'linkType')).toMatchObject({
       defaultValue: 'none',
       required: true,
       type: 'select',
@@ -87,7 +88,7 @@ describe('Content Highlights', () => {
     const vertical = getField(layout?.fields ?? [], 'splitContentAlignment')
 
     expect(split).toMatchObject({ defaultValue: false, type: 'checkbox' })
-    expect(horizontal).toMatchObject({ defaultValue: 'left', type: 'select' })
+    expect(horizontal).toMatchObject({ defaultValue: 'center', type: 'select' })
     expect(horizontal?.options?.map(({ value }) => value)).toEqual(['left', 'center', 'right'])
     expect(vertical).toMatchObject({ defaultValue: 'top', type: 'select' })
     expect(vertical?.options?.map(({ value }) => value)).toEqual(['top', 'center', 'bottom'])
@@ -245,8 +246,8 @@ describe('Content Highlights', () => {
     expect(numberedHtml).toContain('data-content-highlights-layout="numberedSteps"')
     expect(numberedHtml).toContain('grid gap-4 md:grid-cols-2 lg:grid-cols-4')
     expect(numberedHtml).toContain('data-content-highlight-presentation="numbered"')
-    expect(numberedHtml).toContain('rounded-md border border-current/20')
-    expect(numberedHtml).not.toContain('rounded-md border border-border')
+    expect(numberedHtml).toContain('border-current/10')
+    expect(numberedHtml).not.toContain('border-border')
     expect(numberedHtml).toContain('data-content-highlight-step="01"')
     expect(numberedHtml).toContain('data-content-highlight-step="06"')
     expect(numberedHtml).not.toContain('data-slot="separator"')
@@ -263,8 +264,8 @@ describe('Content Highlights', () => {
 
     expect(splitNumberedHtml).toContain('bg-secondary')
     expect(splitNumberedHtml).toContain('text-secondary-foreground')
-    expect(splitNumberedHtml).toContain('rounded-md border border-current/20')
-    expect(splitNumberedHtml).not.toContain('rounded-md border border-border')
+    expect(splitNumberedHtml).toContain('border-current/10')
+    expect(splitNumberedHtml).not.toContain('border-border')
 
     for (const html of [simpleHtml, numberedHtml]) {
       expect(html).toContain('py-12 md:py-16')

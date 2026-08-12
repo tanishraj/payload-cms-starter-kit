@@ -53,9 +53,9 @@ const createReq = ({
 }
 
 describe('work queue collection', () => {
-  it('registers under Operations with system-managed create and delete', () => {
+  it('registers under Administration with system-managed create and delete', () => {
     expect(WorkQueue.slug).toBe('work-queue')
-    expect(WorkQueue.admin?.group).toBe('Operations')
+    expect(WorkQueue.admin?.group).toBe('Administration')
     expect(WorkQueue.access?.create?.({ req: {} } as never)).toBe(false)
     expect(WorkQueue.access?.delete?.({ req: {} } as never)).toBe(false)
   })

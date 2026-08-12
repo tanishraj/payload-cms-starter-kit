@@ -469,7 +469,7 @@ describe('Program Matrix catalogs', () => {
   })
 
   it('is recorded in architecture and operator documentation', () => {
-    expect(featureInventorySource).toContain('Normal Pages register 40 choices')
+    expect(featureInventorySource).toContain('Normal Pages register 41 choices')
     expect(featureInventorySource).toContain('Program Matrix')
     expect(blocksGuideSource).toMatch(/\| Program Matrix\s+\|/)
     expect(blocksGuideSource).toContain('independent semantic card backgrounds')

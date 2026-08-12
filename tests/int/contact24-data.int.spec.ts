@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mocks = vi.hoisted(() => ({
-  findGlobal: vi.fn(),
+  find: vi.fn(),
   getPayload: vi.fn(),
 }))
 
@@ -29,10 +29,10 @@ const office = {
 }
 
 beforeEach(() => {
-  mocks.findGlobal.mockReset()
+  mocks.find.mockReset()
   mocks.getPayload.mockReset()
-  mocks.getPayload.mockResolvedValue({ findGlobal: mocks.findGlobal })
-  mocks.findGlobal.mockResolvedValue({ officeLocations: [office] })
+  mocks.getPayload.mockResolvedValue({ find: mocks.find })
+  mocks.find.mockResolvedValue({ docs: [office] })
 })
 
 describe('contact24 data path', () => {
@@ -44,16 +44,14 @@ describe('contact24 data path', () => {
       { city: 'Dubai', phoneHref: 'tel:+97145550123' },
     ])
 
-    expect(mocks.findGlobal).toHaveBeenCalledWith({
-      depth: 0,
+    expect(mocks.find).toHaveBeenCalledWith(expect.objectContaining({
+      collection: 'office-locations',
       draft: false,
-      slug: 'site-settings',
-    })
-    expect(mocks.findGlobal).toHaveBeenCalledWith({
-      depth: 0,
+    }))
+    expect(mocks.find).toHaveBeenCalledWith(expect.objectContaining({
+      collection: 'office-locations',
       draft: true,
-      slug: 'site-settings',
-    })
+    }))
   })
 
   it('joins published Site Settings data with public block presentation', async () => {
@@ -89,11 +87,12 @@ describe('contact24 data path', () => {
       'eyebrow',
       'title',
       'description',
+      'actions',
+      'offices',
     ])
-    expect(byName(content?.fields ?? [], 'title')?.required).toBe(true)
     expect(byName(layout?.fields ?? [], 'appearance')?.type).toBe('group')
     expect(byName(layout?.fields ?? [], 'contentAlignment')).toMatchObject({
-      defaultValue: 'left',
+      defaultValue: 'center',
       type: 'select',
     })
     expect(byName(layout?.fields ?? [], 'detailsAlignment')).toMatchObject({

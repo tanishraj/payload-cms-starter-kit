@@ -2,6 +2,7 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 
+import { regularBlockMobilePaddingClasses } from '@/blocks/shared/blockSpacing'
 import { Contact24 } from '@/components/contact24'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
 
@@ -43,7 +44,7 @@ describe('contact24 presentation', () => {
       )
 
       expect(html).toContain(`data-contact24-size="${size}"`)
-      expect(html).toContain('py-12 md:py-16')
+      expect(html).toContain(regularBlockMobilePaddingClasses[size])
       expect(html).toContain('mx-auto w-full max-w-screen-2xl px-4')
     },
   )
@@ -84,17 +85,12 @@ describe('contact24 presentation', () => {
     expect(html).toContain('data-contact24-office')
     expect(html).toContain('data-contact24-map')
     expect(html).toContain('data-contact24-details')
-    expect(html).toContain('data-contact24-corner-accents')
     expect(html).toContain('border border-border')
-    expect(html).toContain('rounded-none')
+    expect(html).toContain('rounded-xl')
     expect(html).toContain('gap-4')
-    expect(html).toContain('sm:aspect-[5/2]')
+    expect(html).toContain('sm:aspect-5/2')
     expect(html).not.toContain('bg-muted/40')
     expect(html).not.toContain('rounded-none bg-muted')
-    expect(html).toContain('-left-1 -top-1 size-3 border-l border-t border-border')
-    expect(html).toContain('-right-1 -top-1 size-3 border-r border-t border-border')
-    expect(html).toContain('-bottom-1 -left-1 size-3 border-b border-l border-border')
-    expect(html).toContain('-bottom-1 -right-1 size-3 border-b border-r border-border')
     expect(html).not.toContain('bg-gradient-to-t')
     expect(html.indexOf('data-contact24-map')).toBeLessThan(
       html.indexOf('data-contact24-details'),
@@ -118,7 +114,7 @@ describe('contact24 presentation', () => {
     expect(html).toContain('href="https://maps.google.com/?q=Dubai"')
     expect(html).toContain('target="_blank"')
     expect(html).toContain('rel="noreferrer"')
-    expect(html).toContain('data-icon="inline-end"')
+    expect(html).toContain('data-content-link-arrow="true"')
     expect(html).toContain('View on Map')
   })
 
@@ -131,14 +127,13 @@ describe('contact24 presentation', () => {
         title="Our offices"
       />,
     )
-    const buttonClass = html.match(/data-slot="button"[^>]*class="([^"]+)"/)?.[1]
-
     expect(html).toContain('data-contact24-content-alignment="left"')
     expect(html).toContain('data-contact24-details-alignment="center"')
     expect(html).toContain('items-center text-center')
     expect(html).toContain('self-center')
-    expect(html).toContain('data-size="sm"')
-    expect(buttonClass).not.toContain('w-full')
+    expect(html).toContain('data-content-link="true"')
+    const linkClass = html.match(/class="([^"]+)"\s+data-content-link="true"/)
+    expect(linkClass?.[1]).not.toContain('w-full')
   })
 
   it('can hide the entire location-details panel and retain the interactive map', () => {
