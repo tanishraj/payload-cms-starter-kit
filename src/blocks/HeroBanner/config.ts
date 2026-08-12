@@ -102,6 +102,29 @@ const overlayStyleField = {
   required: true,
 } satisfies SelectField
 
+const overlayDirectionField = {
+  name: 'overlayDirection',
+  label: 'Overlay Direction',
+  type: 'select',
+  defaultValue: 'vertical',
+  options: [
+    { label: 'Even / Vertical', value: 'vertical' },
+    { label: 'Left to Right', value: 'leftToRight' },
+    { label: 'Right to Left', value: 'rightToLeft' },
+  ],
+  required: true,
+} satisfies SelectField
+
+const enableTextShadowField = {
+  name: 'enableTextShadow',
+  label: 'Enable Text Shadow',
+  type: 'checkbox',
+  defaultValue: false,
+  admin: {
+    description: 'Adds a restrained shadow to text and editorial links over dark image overlays.',
+  },
+} satisfies CheckboxField
+
 const themeModeField = {
   name: 'themeMode',
   label: 'Theme Mode',
@@ -229,11 +252,13 @@ export const HeroBannerBlock: Block = {
         {
           label: 'Theme Settings',
           fields: [
+            themeModeField,
+            overlayStyleField,
+            overlayDirectionField,
+            enableTextShadowField,
             createBlockAppearanceFields(),
             horizontalAlignmentField,
             verticalAlignmentField,
-            overlayStyleField,
-            themeModeField,
             contentWidthField,
             heightField,
           ],

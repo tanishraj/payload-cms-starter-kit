@@ -366,14 +366,19 @@ export interface HeroBannerBlock {
         id?: string | null;
       }[]
     | null;
+  themeMode: 'auto' | 'light' | 'dark';
+  overlayStyle: 'light' | 'dark' | 'darker';
+  overlayDirection: 'vertical' | 'leftToRight' | 'rightToLeft';
+  /**
+   * Adds a restrained shadow to text and editorial links over dark image overlays.
+   */
+  enableTextShadow?: boolean | null;
   appearance: {
     background: 'none' | 'primary' | 'secondary' | 'muted' | 'accent';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   horizontalAlignment: 'left' | 'center' | 'right';
   verticalAlignment: 'top' | 'center' | 'bottom';
-  overlayStyle: 'light' | 'dark' | 'darker';
-  themeMode: 'auto' | 'light' | 'dark';
   contentWidth: 'narrow' | 'default' | 'wide';
   height: 'compact' | 'default' | 'immersive';
   id?: string | null;
@@ -3907,6 +3912,10 @@ export interface HeroBannerBlockSelect<T extends boolean = true> {
         showArrow?: T;
         id?: T;
       };
+  themeMode?: T;
+  overlayStyle?: T;
+  overlayDirection?: T;
+  enableTextShadow?: T;
   appearance?:
     | T
     | {
@@ -3915,8 +3924,6 @@ export interface HeroBannerBlockSelect<T extends boolean = true> {
       };
   horizontalAlignment?: T;
   verticalAlignment?: T;
-  overlayStyle?: T;
-  themeMode?: T;
   contentWidth?: T;
   height?: T;
   id?: T;

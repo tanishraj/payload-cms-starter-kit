@@ -1,16 +1,18 @@
 import { ArrowRight } from 'lucide-react'
-import type { ComponentProps } from 'react'
+import type { ComponentProps, CSSProperties } from 'react'
 
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
 type ContentLinkProps = Omit<ComponentProps<'a'>, 'children' | 'href' | 'rel' | 'target'> & {
+  arrowStyle?: CSSProperties
   href: string
   label: string
   openInNewTab?: boolean
 }
 
 export function ContentLink({
+  arrowStyle,
   className,
   href,
   label,
@@ -40,6 +42,7 @@ export function ContentLink({
         aria-hidden="true"
         className="relative inline-flex size-4 shrink-0 overflow-hidden"
         data-content-link-arrow="true"
+        style={arrowStyle}
       >
         <ArrowRight
           className="absolute left-0 top-0 size-4 rotate-[-35deg] transition-all duration-200 ease-out group-hover/button:translate-x-1 group-hover/button:opacity-0 group-hover/button:rotate-0"

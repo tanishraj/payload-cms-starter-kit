@@ -54,7 +54,7 @@ describe('Hero Banner block', () => {
     expect(html).toContain('h-12 w-full sm:w-auto')
   })
 
-  it('supports explicit light and dark hero theme overrides', () => {
+  it('preserves the develop branch light and dark overlay colors', () => {
     const darkHtml = renderToStaticMarkup(
       createElement(HeroBannerBlockComponent, {
         backgroundImage: { alt: 'Lecture hall', url: '/media/lecture.jpg' } as never,
@@ -77,7 +77,7 @@ describe('Hero Banner block', () => {
           { label: 'Apply now', linkType: 'custom', url: '/apply', variant: 'default' },
           { label: 'Learn more', linkType: 'custom', url: '/learn', variant: 'outline' },
         ] as never,
-        description: 'Readable content on a lighter surface treatment.',
+        description: 'Theme mode remains explicit while the overlay stays navy.',
         eyebrow: 'Admissions',
         overlayStyle: 'light',
         themeMode: 'light',
@@ -98,6 +98,7 @@ describe('Hero Banner block', () => {
     )
 
     expect(lightHtml).toContain('data-hero-banner-theme="light"')
+    expect(lightHtml).toContain('data-hero-banner-overlay="light"')
     expect(lightHtml).toContain('data-section-eyebrow-surface="none"')
     expect(lightHtml).toContain('from-background/72')
     expect(lightHtml).toContain('text-foreground')
@@ -109,6 +110,46 @@ describe('Hero Banner block', () => {
       'border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground',
     )
   })
+
+  it('maps legacy darkest overlay content to the develop branch darker style', () => {
+    const html = renderToStaticMarkup(
+      createElement(HeroBannerBlockComponent, {
+        backgroundImage: { alt: 'Campus', url: '/media/campus.jpg' } as never,
+        overlayDirection: 'leftToRight',
+        overlayStyle: 'darkest',
+        title: 'A focused learning environment.',
+      }),
+    )
+
+    expect(html).toContain('data-hero-banner-overlay="darker"')
+    expect(html).toContain('bg-linear-to-r')
+    expect(html).toContain('from-background/90')
+    expect(html).toContain('via-background/80')
+    expect(html).toContain('to-background/92')
+  })
+
+  it.each([
+    ['vertical', 'bg-linear-to-b'],
+    ['leftToRight', 'bg-linear-to-r'],
+    ['rightToLeft', 'bg-linear-to-l'],
+  ] as const)(
+    'renders the %s navy overlay direction',
+    (overlayDirection, gradient) => {
+      const html = renderToStaticMarkup(
+        createElement(HeroBannerBlockComponent, {
+          backgroundImage: { alt: 'Campus', url: '/media/campus.jpg' } as never,
+          overlayDirection,
+          overlayStyle: 'dark',
+          title: 'A clear path into medicine.',
+        }),
+      )
+
+      expect(html).toContain(`data-hero-banner-overlay-direction="${overlayDirection}"`)
+      expect(html).toContain(gradient)
+      expect(html).toContain('from-background/82')
+      expect(html).toContain('text-foreground')
+    },
+  )
 
   it('maps overlay and alignment presets into deterministic class hooks', () => {
     const html = renderToStaticMarkup(
@@ -167,8 +208,37 @@ describe('Hero Banner block', () => {
       }),
     )
 
-    expect((html.match(/data-action-arrow="true"/g) ?? [])).toHaveLength(1)
+    expect(html.match(/data-action-arrow="true"/g) ?? []).toHaveLength(1)
     expect(html).toContain('data-content-link="true"')
+  })
+
+  it('applies the optional text shadow to dark-overlay copy and editorial links only', () => {
+    const shadowedHtml = renderToStaticMarkup(
+      createElement(HeroBannerBlockComponent, {
+        backgroundImage: { alt: 'Campus', url: '/media/campus.jpg' } as never,
+        buttons: [
+          { label: 'Apply now', linkType: 'custom', url: '/apply', variant: 'default' },
+          { label: 'Read more', linkType: 'custom', url: '/read', variant: 'link' },
+        ] as never,
+        description: 'Clinical learning grounded in service.',
+        enableTextShadow: true,
+        eyebrow: 'Admissions',
+        overlayStyle: 'dark',
+        title: 'Study medicine with purpose.',
+      }),
+    )
+    const unshadowedHtml = renderToStaticMarkup(
+      createElement(HeroBannerBlockComponent, {
+        backgroundImage: { alt: 'Campus', url: '/media/campus.jpg' } as never,
+        overlayStyle: 'dark',
+        title: 'Study medicine with purpose.',
+      }),
+    )
+
+    expect((shadowedHtml.match(/text-shadow:0 2px 12px rgb\(0 0 0 \/ 55%\)/g) ?? []).length).toBe(4)
+    expect(shadowedHtml).toContain('filter:drop-shadow(0 2px 6px rgb(0 0 0 / 55%))')
+    expect(shadowedHtml).not.toMatch(/<a[^>]*href="\/apply"[^>]*text-shadow/)
+    expect(unshadowedHtml).not.toContain('text-shadow:')
   })
 
   it.each([

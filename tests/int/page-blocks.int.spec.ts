@@ -153,10 +153,7 @@ describe('page block pipeline', () => {
     const layoutField = getLayoutField()
     const registeredSlugs = layoutField?.blocks?.map((block) => block.slug) ?? []
     const publicRenderer = readFileSync('src/blocks/renderPageBlocks.tsx', 'utf8')
-    const livePreviewRenderer = readFileSync(
-      'src/blocks/renderLivePreviewPageBlocks.tsx',
-      'utf8',
-    )
+    const livePreviewRenderer = readFileSync('src/blocks/renderLivePreviewPageBlocks.tsx', 'utf8')
 
     expect(layoutField?.type).toBe('blocks')
     expect(registeredSlugs).toHaveLength(40)
@@ -446,6 +443,78 @@ describe('page block pipeline', () => {
     ])
   })
 
+  it('defines the heroBanner overlay direction presets', async () => {
+    const { HeroBannerBlock } = await import('@/blocks/HeroBanner/config')
+    const tabsField = HeroBannerBlock.fields[0] as
+      | {
+          tabs?: Array<{ fields: unknown[]; label: string }>
+          type?: string
+        }
+      | undefined
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
+    const overlayDirectionField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      required?: boolean
+      type?: string
+    }>(layoutTab?.fields ?? [], 'overlayDirection')
+
+    expect(overlayDirectionField?.type).toBe('select')
+    expect(overlayDirectionField?.required).toBe(true)
+    expect(overlayDirectionField?.defaultValue).toBe('vertical')
+    expect(overlayDirectionField?.options?.map((option) => option.value)).toEqual([
+      'vertical',
+      'leftToRight',
+      'rightToLeft',
+    ])
+  })
+
+  it('defines the optional heroBanner text-shadow control', async () => {
+    const { HeroBannerBlock } = await import('@/blocks/HeroBanner/config')
+    const tabsField = HeroBannerBlock.fields[0] as
+      | {
+          tabs?: Array<{ fields: unknown[]; label: string }>
+          type?: string
+        }
+      | undefined
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
+    const enableTextShadowField = getNamedField<{
+      defaultValue?: boolean
+      type?: string
+    }>(layoutTab?.fields ?? [], 'enableTextShadow')
+
+    expect(enableTextShadowField?.type).toBe('checkbox')
+    expect(enableTextShadowField?.defaultValue).toBe(false)
+  })
+
+  it('orders heroBanner theme and overlay controls consistently', async () => {
+    const { HeroBannerBlock } = await import('@/blocks/HeroBanner/config')
+    const tabsField = HeroBannerBlock.fields[0] as
+      | {
+          tabs?: Array<{ fields: Array<{ name?: string; type?: string }>; label: string }>
+          type?: string
+        }
+      | undefined
+    const layoutTab = tabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
+    const namedFields = (layoutTab?.fields ?? [])
+      .map((field) => field.name)
+      .filter((name): name is string => Boolean(name))
+
+    expect(namedFields.slice(0, 4)).toEqual([
+      'themeMode',
+      'overlayStyle',
+      'overlayDirection',
+      'enableTextShadow',
+    ])
+    expect(namedFields.indexOf('themeMode')).toBeLessThan(namedFields.indexOf('overlayStyle'))
+    expect(namedFields.indexOf('overlayStyle')).toBeLessThan(
+      namedFields.indexOf('overlayDirection'),
+    )
+    expect(namedFields.indexOf('overlayDirection')).toBeLessThan(
+      namedFields.indexOf('enableTextShadow'),
+    )
+  })
+
   it('defines the footer56 schema with branding, link groups, utilities, and shared appearance', async () => {
     const { Footer56Block } = await import('@/blocks/Footer56/config')
     const tabsField = Footer56Block.fields[0] as
@@ -701,7 +770,10 @@ describe('page block pipeline', () => {
       contentTab?.fields ?? [],
       'title',
     )
-    const descriptionField = getNamedField<{ type?: string }>(contentTab?.fields ?? [], 'description')
+    const descriptionField = getNamedField<{ type?: string }>(
+      contentTab?.fields ?? [],
+      'description',
+    )
     const sizeField = getNamedField<{
       defaultValue?: string
       options?: Array<{ value: string }>
@@ -746,7 +818,9 @@ describe('page block pipeline', () => {
               background: 'accent',
               border: 'topAndBottom',
             },
-            actions: [{ label: 'Get started', linkType: 'custom', url: '/start', variant: 'default' }],
+            actions: [
+              { label: 'Get started', linkType: 'custom', url: '/start', variant: 'default' },
+            ],
             blockType: 'cta39',
             description: 'Everything you need to launch your next website block.',
             size: 'compact',
@@ -1233,14 +1307,9 @@ describe('page block pipeline', () => {
   })
 
   it('registers contact33 in live preview rendering', () => {
-    const source = readFileSync(
-      'src/blocks/renderLivePreviewPageBlocks.tsx',
-      'utf8',
-    )
+    const source = readFileSync('src/blocks/renderLivePreviewPageBlocks.tsx', 'utf8')
 
-    expect(source).toContain(
-      "import { Contact33BlockComponent } from './Contact33/Component'",
-    )
+    expect(source).toContain("import { Contact33BlockComponent } from './Contact33/Component'")
     expect(source).toContain("case 'contact33':")
     expect(source).toContain(
       "import { Contact24PreviewBlockComponent } from './Contact24/PreviewComponent'",
@@ -1251,9 +1320,7 @@ describe('page block pipeline', () => {
   it('registers contact24 in public page rendering', () => {
     const source = readFileSync('src/blocks/renderPageBlocks.tsx', 'utf8')
 
-    expect(source).toContain(
-      "import { Contact24BlockComponent } from './Contact24/Component'",
-    )
+    expect(source).toContain("import { Contact24BlockComponent } from './Contact24/Component'")
     expect(source).toContain("case 'contact24':")
   })
 })

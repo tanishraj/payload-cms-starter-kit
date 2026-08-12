@@ -1,13 +1,13 @@
 import Image from 'next/image'
 
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
 import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { ContentLink } from '@/components/ContentLink'
 import { Button } from '@/components/ui/button'
-import {
-  SectionEyebrow,
-  type SectionEyebrowSurface,
-} from '@/components/SectionEyebrow'
+import { SectionEyebrow, type SectionEyebrowSurface } from '@/components/SectionEyebrow'
 import { resolveCmsLink } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
@@ -29,10 +29,12 @@ type HeroBannerBlockLike = {
   buttons?: HeroButton[] | null
   contentWidth?: 'default' | 'narrow' | 'wide' | null
   description?: string | null
+  enableTextShadow?: boolean | null
   eyebrow?: string | null
   height?: '40' | '60' | '80' | 'balanced' | 'compact' | 'default' | 'immersive' | null
   horizontalAlignment?: 'center' | 'left' | 'right' | null
-  overlayStyle?: 'brand' | 'dark' | 'darker' | 'ink' | 'light' | 'soft' | null
+  overlayDirection?: 'leftToRight' | 'rightToLeft' | 'vertical' | null
+  overlayStyle?: 'brand' | 'dark' | 'darker' | 'darkest' | 'ink' | 'light' | 'soft' | null
   themeMode?: 'auto' | 'dark' | 'light' | null
   title?: string | null
   verticalAlignment?: 'bottom' | 'center' | 'top' | null
@@ -40,19 +42,55 @@ type HeroBannerBlockLike = {
 
 const overlayClasses = {
   auto: {
-    light: 'bg-linear-to-b from-background/72 via-background/56 to-background/78',
-    dark: 'bg-linear-to-b from-background/82 via-background/68 to-background/86',
-    darker: 'bg-linear-to-b from-background/90 via-background/80 to-background/92',
+    light: {
+      vertical: 'bg-linear-to-b from-background/72 via-background/56 to-background/78',
+      leftToRight: 'bg-linear-to-r from-background/72 via-background/56 to-background/78',
+      rightToLeft: 'bg-linear-to-l from-background/72 via-background/56 to-background/78',
+    },
+    dark: {
+      vertical: 'bg-linear-to-b from-background/82 via-background/68 to-background/86',
+      leftToRight: 'bg-linear-to-r from-background/82 via-background/68 to-background/86',
+      rightToLeft: 'bg-linear-to-l from-background/82 via-background/68 to-background/86',
+    },
+    darker: {
+      vertical: 'bg-linear-to-b from-background/90 via-background/80 to-background/92',
+      leftToRight: 'bg-linear-to-r from-background/90 via-background/80 to-background/92',
+      rightToLeft: 'bg-linear-to-l from-background/90 via-background/80 to-background/92',
+    },
   },
   light: {
-    light: 'bg-linear-to-b from-background/72 via-background/56 to-background/78',
-    dark: 'bg-linear-to-b from-background/82 via-background/68 to-background/86',
-    darker: 'bg-linear-to-b from-background/90 via-background/80 to-background/92',
+    light: {
+      vertical: 'bg-linear-to-b from-background/72 via-background/56 to-background/78',
+      leftToRight: 'bg-linear-to-r from-background/72 via-background/56 to-background/78',
+      rightToLeft: 'bg-linear-to-l from-background/72 via-background/56 to-background/78',
+    },
+    dark: {
+      vertical: 'bg-linear-to-b from-background/82 via-background/68 to-background/86',
+      leftToRight: 'bg-linear-to-r from-background/82 via-background/68 to-background/86',
+      rightToLeft: 'bg-linear-to-l from-background/82 via-background/68 to-background/86',
+    },
+    darker: {
+      vertical: 'bg-linear-to-b from-background/90 via-background/80 to-background/92',
+      leftToRight: 'bg-linear-to-r from-background/90 via-background/80 to-background/92',
+      rightToLeft: 'bg-linear-to-l from-background/90 via-background/80 to-background/92',
+    },
   },
   dark: {
-    light: 'bg-linear-to-b from-black/56 via-black/42 to-black/62',
-    dark: 'bg-linear-to-b from-black/68 via-black/54 to-black/74',
-    darker: 'bg-linear-to-b from-black/80 via-black/68 to-black/84',
+    light: {
+      vertical: 'bg-linear-to-b from-black/56 via-black/42 to-black/62',
+      leftToRight: 'bg-linear-to-r from-black/56 via-black/42 to-black/62',
+      rightToLeft: 'bg-linear-to-l from-black/56 via-black/42 to-black/62',
+    },
+    dark: {
+      vertical: 'bg-linear-to-b from-black/68 via-black/54 to-black/74',
+      leftToRight: 'bg-linear-to-r from-black/68 via-black/54 to-black/74',
+      rightToLeft: 'bg-linear-to-l from-black/68 via-black/54 to-black/74',
+    },
+    darker: {
+      vertical: 'bg-linear-to-b from-black/80 via-black/68 to-black/84',
+      leftToRight: 'bg-linear-to-r from-black/80 via-black/68 to-black/84',
+      rightToLeft: 'bg-linear-to-l from-black/80 via-black/68 to-black/84',
+    },
   },
 } as const
 
@@ -60,14 +98,20 @@ const textToneClasses = {
   auto: {
     title: 'text-foreground',
     description: 'text-foreground/84',
+    eyebrow: 'text-foreground/78',
+    link: 'text-foreground',
   },
   light: {
     title: 'text-foreground',
     description: 'text-foreground/84',
+    eyebrow: 'text-foreground/78',
+    link: 'text-foreground',
   },
   dark: {
     title: 'text-white',
     description: 'text-white/84',
+    eyebrow: 'text-white/78',
+    link: 'text-white',
   },
 } as const
 
@@ -137,15 +181,22 @@ const actionAlignmentClasses = {
   right: 'justify-end',
 } as const
 
+const heroTextShadowStyle = { textShadow: '0 2px 12px rgb(0 0 0 / 55%)' } as const
+const heroLinkArrowShadowStyle = {
+  filter: 'drop-shadow(0 2px 6px rgb(0 0 0 / 55%))',
+} as const
+
 export function HeroBannerBlockComponent({
   appearance,
   backgroundImage,
   buttons,
   contentWidth = 'default',
   description,
+  enableTextShadow = false,
   eyebrow,
   height = 'default',
   horizontalAlignment = 'left',
+  overlayDirection = 'vertical',
   overlayStyle = 'dark',
   themeMode = 'auto',
   title,
@@ -155,14 +206,16 @@ export function HeroBannerBlockComponent({
   const resolvedContentWidth = contentWidth ?? 'default'
   const resolvedHorizontalAlignment = horizontalAlignment ?? 'left'
   const resolvedOverlayStyle =
-    overlayStyle === 'ink'
-      ? 'darker'
-      : overlayStyle === 'brand'
-        ? 'dark'
-        : overlayStyle === 'soft'
-          ? 'light'
-          : (overlayStyle ?? 'dark')
+    overlayStyle === 'light' || overlayStyle === 'darker'
+      ? overlayStyle
+      : overlayStyle === 'soft'
+        ? 'light'
+        : overlayStyle === 'ink' || overlayStyle === 'darkest'
+        ? 'darker'
+        : 'dark'
+  const resolvedOverlayDirection = overlayDirection ?? 'vertical'
   const resolvedThemeMode = themeMode ?? 'auto'
+  const usesTextShadow = Boolean(enableTextShadow)
   const eyebrowSurface: SectionEyebrowSurface =
     resolvedThemeMode === 'dark' ? 'darkOverlay' : 'none'
   const resolvedVerticalAlignment = verticalAlignment ?? 'center'
@@ -213,8 +266,12 @@ export function HeroBannerBlockComponent({
         <Image fill alt={image.alt} className="object-cover" src={image.src} sizes="100vw" />
       </div>
       <div
-        className={cn('absolute inset-0', overlayClasses[resolvedThemeMode][resolvedOverlayStyle])}
+        className={cn(
+          'absolute inset-0',
+          overlayClasses[resolvedThemeMode][resolvedOverlayStyle][resolvedOverlayDirection],
+        )}
         data-hero-banner-overlay={resolvedOverlayStyle}
+        data-hero-banner-overlay-direction={resolvedOverlayDirection}
         data-hero-banner-theme={resolvedThemeMode}
       />
       <div
@@ -241,12 +298,10 @@ export function HeroBannerBlockComponent({
             <div className="flex flex-col gap-6">
               {eyebrow ? (
                 <SectionEyebrow
-                  className={cn(
-                    'tracking-[0.28em]',
-                    resolvedThemeMode === 'dark' ? 'text-white/78' : 'text-foreground/78',
-                  )}
+                  className={cn('tracking-[0.28em]', textToneClasses[resolvedThemeMode].eyebrow)}
                   data-hero-banner-eyebrow="true"
                   surface={eyebrowSurface}
+                  style={usesTextShadow ? heroTextShadowStyle : undefined}
                 >
                   {eyebrow}
                 </SectionEyebrow>
@@ -259,6 +314,7 @@ export function HeroBannerBlockComponent({
                   titleWidthClasses[resolvedContentWidth],
                   constrainedItemAlignmentClasses[resolvedHorizontalAlignment],
                 )}
+                style={usesTextShadow ? heroTextShadowStyle : undefined}
               >
                 {title}
               </h1>
@@ -272,6 +328,7 @@ export function HeroBannerBlockComponent({
                     constrainedItemAlignmentClasses[resolvedHorizontalAlignment],
                   )}
                   data-hero-banner-description="true"
+                  style={usesTextShadow ? heroTextShadowStyle : undefined}
                 >
                   {description}
                 </p>
@@ -288,14 +345,16 @@ export function HeroBannerBlockComponent({
                 {actions.map((action) =>
                   action.variant === 'link' ? (
                     <ContentLink
+                      arrowStyle={usesTextShadow ? heroLinkArrowShadowStyle : undefined}
                       className={cn(
                         'w-full sm:w-auto',
-                        resolvedThemeMode === 'dark' ? 'text-white' : 'text-foreground',
+                        textToneClasses[resolvedThemeMode].link,
                       )}
                       href={action.href}
                       key={`${action.label}-${action.href}`}
                       label={action.label}
                       openInNewTab={action.openInNewTab}
+                      style={usesTextShadow ? heroTextShadowStyle : undefined}
                     />
                   ) : (
                     <Button
@@ -310,10 +369,7 @@ export function HeroBannerBlockComponent({
                         rel={action.openInNewTab ? 'noreferrer' : undefined}
                         target={action.openInNewTab ? '_blank' : undefined}
                       >
-                        <ActionButtonContent
-                          label={action.label}
-                          showArrow={action.showArrow}
-                        />
+                        <ActionButtonContent label={action.label} showArrow={action.showArrow} />
                       </a>
                     </Button>
                   ),
