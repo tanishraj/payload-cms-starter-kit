@@ -13,6 +13,7 @@ const regularSectionEyebrowFiles = [
   'src/blocks/AwardsList/Component.tsx',
   'src/blocks/BentoGrid/Component.tsx',
   'src/blocks/DownloadList/Component.tsx',
+  'src/blocks/EditorialReasons/Component.tsx',
   'src/blocks/FeatureSpotlight/Component.tsx',
   'src/blocks/GalleryCoverflow/Component.tsx',
   'src/blocks/IconGrid/Component.tsx',

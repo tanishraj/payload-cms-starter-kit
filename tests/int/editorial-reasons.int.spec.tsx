@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 
-import type { ArrayField, Field } from 'payload'
+import type { ArrayField, CheckboxField, Field, SelectField } from 'payload'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 
@@ -95,6 +95,25 @@ describe('EditorialReasonsBlock schema', () => {
 
   it('defines reason links and approved theme controls', () => {
     const reasons = findNamedField(EditorialReasonsBlock.fields, 'reasons') as ArrayField
+    const layoutProportion = findNamedField(
+      EditorialReasonsBlock.fields,
+      'layoutProportion',
+    ) as SelectField
+    const listPosition = findNamedField(EditorialReasonsBlock.fields, 'listPosition') as SelectField
+    const contentAlignment = findNamedField(
+      EditorialReasonsBlock.fields,
+      'contentAlignment',
+    ) as SelectField
+    const listColumns = findNamedField(EditorialReasonsBlock.fields, 'listColumns') as SelectField
+    const listBorderStyle = findNamedField(
+      EditorialReasonsBlock.fields,
+      'listBorderStyle',
+    ) as SelectField
+    const introVerticalAlignment = findNamedField(
+      EditorialReasonsBlock.fields,
+      'introVerticalAlignment',
+    ) as SelectField
+    const stickyIntro = findNamedField(EditorialReasonsBlock.fields, 'stickyIntro') as CheckboxField
 
     expect(findNamedField(reasons.fields, 'linkType')).toMatchObject({
       type: 'radio',
@@ -115,12 +134,63 @@ describe('EditorialReasonsBlock schema', () => {
       defaultValue: 'link',
       required: true,
     })
-    expect(findNamedField(EditorialReasonsBlock.fields, 'introVerticalAlignment')).toMatchObject({
+    expect(layoutProportion).toMatchObject({
+      type: 'select',
+      defaultValue: 'listFocus',
+      required: true,
+      options: [
+        { label: 'List Focus (40 / 60)', value: 'listFocus' },
+        { label: 'Balanced (50 / 50)', value: 'balanced' },
+        { label: 'Introduction Focus (60 / 40)', value: 'introFocus' },
+        { label: 'Full Width', value: 'fullWidth' },
+      ],
+    })
+    expect(listPosition).toMatchObject({
+      type: 'select',
+      defaultValue: 'right',
+      required: true,
+      options: [
+        { label: 'Right', value: 'right' },
+        { label: 'Left', value: 'left' },
+      ],
+    })
+    expect(contentAlignment).toMatchObject({
+      type: 'select',
+      defaultValue: 'left',
+      required: true,
+      options: [
+        { label: 'Left', value: 'left' },
+        { label: 'Center', value: 'center' },
+        { label: 'Right', value: 'right' },
+      ],
+    })
+    expect(listColumns).toMatchObject({
+      type: 'select',
+      defaultValue: '2',
+      required: true,
+      options: [
+        { label: '1 Column', value: '1' },
+        { label: '2 Columns', value: '2' },
+        { label: '3 Columns', value: '3' },
+        { label: '4 Columns', value: '4' },
+      ],
+    })
+    expect(listBorderStyle).toMatchObject({
+      type: 'select',
+      defaultValue: 'ruled',
+      required: true,
+      options: [
+        { label: 'Open', value: 'open' },
+        { label: 'Ruled', value: 'ruled' },
+        { label: 'Framed', value: 'framed' },
+      ],
+    })
+    expect(introVerticalAlignment).toMatchObject({
       type: 'select',
       defaultValue: 'top',
       required: true,
     })
-    expect(findNamedField(EditorialReasonsBlock.fields, 'stickyIntro')).toMatchObject({
+    expect(stickyIntro).toMatchObject({
       type: 'checkbox',
       defaultValue: true,
     })
@@ -129,6 +199,15 @@ describe('EditorialReasonsBlock schema', () => {
       defaultValue: 'default',
       required: true,
     })
+
+    for (const field of [listPosition, introVerticalAlignment, stickyIntro]) {
+      expect(field.admin?.condition?.({}, { layoutProportion: 'listFocus' }, {} as never)).toBe(
+        true,
+      )
+      expect(field.admin?.condition?.({}, { layoutProportion: 'fullWidth' }, {} as never)).toBe(
+        false,
+      )
+    }
   })
 })
 
@@ -145,12 +224,15 @@ describe('EditorialReasonsBlockComponent', () => {
     )
 
     expect(html).toContain('data-editorial-reasons="true"')
-    expect(html).toContain('lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]')
+    expect(html).toContain('lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]')
+    expect(html).toContain('data-editorial-reasons-layout="listFocus"')
+    expect(html).toContain('data-editorial-reasons-list-position="right"')
     expect(html).toContain('grid gap-10')
     expect(html).toContain('lg:gap-16')
     expect(html).toContain('data-editorial-reasons-intro="true"')
     expect(html).toContain('data-editorial-reasons-list="true"')
-    expect(html).toContain('border-t border-border')
+    expect(html).toContain('border-y border-current/15')
+    expect(html).toContain('data-editorial-reasons-border-style="ruled"')
     expect(html.match(/data-editorial-reason="true"/g)).toHaveLength(4)
     expect(html.match(/aria-hidden="true"/g)).toHaveLength(4)
     expect(html).toContain('>01<')
@@ -163,10 +245,120 @@ describe('EditorialReasonsBlockComponent', () => {
     expect(html).toContain('font-[family-name:var(--font-display)]')
     expect(html.match(/font-\[family-name:inherit\]/g)).toHaveLength(2)
     expect(html).toContain('italic')
-    expect(html).toContain('grid-cols-[2rem_minmax(0,1fr)]')
-    expect(html).toContain('sm:grid-cols-[3rem_minmax(0,1fr)]')
+    expect(html).toContain('data-editorial-reasons-grid="true"')
+    expect(html).toContain('grid-cols-1 md:grid-cols-2')
+    expect(html).toContain('data-editorial-reasons-columns="2"')
+    expect(html).not.toContain('grid-cols-[2rem_minmax(0,1fr)]')
     expect(html).toContain('font-sans text-md leading-tight font-semibold text-current')
     expect(html).toContain('text-sm leading-6 text-current/70')
+  })
+
+  it.each([
+    ['listFocus', 'lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]'],
+    ['balanced', 'lg:grid-cols-2'],
+    ['introFocus', 'lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]'],
+  ] as const)('maps the %s split proportion', (layoutProportion, expectedClass) => {
+    const html = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        layoutProportion={layoutProportion}
+        reasons={baseReasons}
+        title="Why choose us"
+      />,
+    )
+
+    expect(html).toContain(expectedClass)
+    expect(html).toContain(`data-editorial-reasons-layout="${layoutProportion}"`)
+  })
+
+  it('places the list on either side while preserving introduction-first DOM order', () => {
+    const right = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        listPosition="right"
+        reasons={baseReasons}
+        title="Why choose us"
+      />,
+    )
+    const left = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        listPosition="left"
+        reasons={baseReasons}
+        title="Why choose us"
+      />,
+    )
+
+    expect(right).toContain('data-editorial-reasons-list-position="right"')
+    expect(right).toContain('lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]')
+    expect(right).toContain('lg:order-1')
+    expect(right).toContain('lg:order-2')
+    expect(left).toContain('data-editorial-reasons-list-position="left"')
+    expect(left).toContain('lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]')
+    expect(left).toContain('lg:order-2')
+    expect(left).toContain('lg:order-1')
+    expect(left.indexOf('data-editorial-reasons-intro="true"')).toBeLessThan(
+      left.indexOf('data-editorial-reasons-list="true"'),
+    )
+  })
+
+  it('preserves the configured intro/list proportions when the list moves left', () => {
+    const introFocus = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        layoutProportion="introFocus"
+        listPosition="left"
+        reasons={baseReasons}
+        title="Why choose us"
+      />,
+    )
+    const balanced = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        layoutProportion="balanced"
+        listPosition="left"
+        reasons={baseReasons}
+        title="Why choose us"
+      />,
+    )
+
+    expect(introFocus).toContain('lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]')
+    expect(balanced).toContain('lg:grid-cols-2')
+  })
+
+  it('uses a container-wide list below the introduction in Full Width', () => {
+    const html = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        introVerticalAlignment="bottom"
+        layoutProportion="fullWidth"
+        listPosition="left"
+        reasons={baseReasons}
+        stickyIntro
+        title="Why choose us"
+      />,
+    )
+
+    expect(html).toContain('data-editorial-reasons-layout="fullWidth"')
+    expect(html).toContain('data-editorial-reasons-list-position="below"')
+    expect(html).toContain('grid-cols-1 md:grid-cols-2')
+    expect(html).toContain('data-editorial-reasons-columns="2"')
+    expect(html).not.toContain('lg:order-')
+    expect(html).not.toContain('lg:self-end')
+    expect(html).not.toContain('lg:sticky')
+  })
+
+  it('uses safe defaults for stale layout values', () => {
+    const html = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        layoutProportion={'legacy' as never}
+        contentAlignment={'justify' as never}
+        listColumns={'6' as never}
+        listPosition={'below' as never}
+        reasons={baseReasons}
+        title="Why choose us"
+      />,
+    )
+
+    expect(html).toContain('data-editorial-reasons-layout="listFocus"')
+    expect(html).toContain('data-editorial-reasons-list-position="right"')
+    expect(html).toContain('data-editorial-reasons-content-alignment="left"')
+    expect(html).toContain('data-editorial-reasons-columns="2"')
+    expect(html).not.toContain('legacy')
   })
 
   it.each([
@@ -184,6 +376,27 @@ describe('EditorialReasonsBlockComponent', () => {
 
     expect(html).toContain(expectedClass)
     expect(html).toContain(`data-editorial-reasons-intro-alignment="${introVerticalAlignment}"`)
+  })
+
+  it.each([
+    ['left', 'items-start text-left'],
+    ['center', 'mx-auto items-center text-center'],
+    ['right', 'ml-auto items-end text-right'],
+  ] as const)('aligns all section content to the %s', (contentAlignment, expectedClass) => {
+    const html = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        actions={[{ label: 'Explore admissions', linkType: 'custom', url: '/admissions' }]}
+        contentAlignment={contentAlignment}
+        description="A complete medical learning environment."
+        eyebrow="Why us"
+        reasons={baseReasons}
+        title="Why choose us"
+      />,
+    )
+
+    expect(html).toContain(expectedClass)
+    expect(html).toContain(`data-editorial-reasons-content-alignment="${contentAlignment}"`)
+    expect(html).toContain(`data-content-alignment="${contentAlignment}"`)
   })
 
   it('enables stickiness only from the large breakpoint', () => {
@@ -230,6 +443,134 @@ describe('EditorialReasonsBlockComponent', () => {
     expect(html).toContain('rel="noreferrer"')
     expect(html).toContain('transition-opacity hover:opacity-70 hover:underline')
     expect(html).not.toContain('>03<')
+  })
+
+  it.each([
+    ['1', 'grid-cols-1'],
+    ['2', 'grid-cols-1 md:grid-cols-2 md:[&amp;&gt;*:nth-child(2n)]:border-l'],
+    [
+      '3',
+      'grid-cols-1 md:grid-cols-2 md:[&amp;&gt;*:nth-child(2n)]:border-l xl:grid-cols-3 xl:[&amp;&gt;*:nth-child(3n+1)]:border-l-0 xl:[&amp;&gt;*:nth-child(3n+2)]:border-l xl:[&amp;&gt;*:nth-child(3n)]:border-l',
+    ],
+    [
+      '4',
+      'grid-cols-1 md:grid-cols-2 md:[&amp;&gt;*:nth-child(2n)]:border-l xl:grid-cols-4 xl:[&amp;&gt;*:nth-child(4n+3)]:border-l',
+    ],
+  ] as const)('supports %s responsive list columns', (listColumns, expectedClass) => {
+    const html = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        listColumns={listColumns}
+        reasons={baseReasons}
+        title="Why choose us"
+      />,
+    )
+
+    expect(html).toContain(`data-editorial-reasons-columns="${listColumns}"`)
+    expect(html).toContain(expectedClass)
+  })
+
+  it('uses a number rail in one column and number-above cells in multi-column layouts', () => {
+    const oneColumn = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        listColumns="1"
+        reasons={baseReasons}
+        title="Why choose us"
+      />,
+    )
+    const twoColumns = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        listColumns="2"
+        reasons={baseReasons}
+        title="Why choose us"
+      />,
+    )
+
+    expect(oneColumn).toContain('grid-cols-[3.5rem_minmax(0,1fr)]')
+    expect(oneColumn).toContain('sm:grid-cols-[4.5rem_minmax(0,1fr)]')
+    expect(oneColumn).toContain('pt-1 tabular-nums')
+    expect(twoColumns).toContain('flex flex-col')
+    expect(twoColumns).toContain('mb-6 tabular-nums')
+    expect(twoColumns).not.toContain('grid-cols-[3.5rem_minmax(0,1fr)]')
+  })
+
+  it.each([
+    ['open', 'overflow-hidden', 'data-editorial-reasons-border-style="open"'],
+    [
+      'ruled',
+      'overflow-hidden border-y border-current/15',
+      'data-editorial-reasons-border-style="ruled"',
+    ],
+    [
+      'framed',
+      'overflow-hidden rounded-[var(--radius)] border border-current/15',
+      'data-editorial-reasons-border-style="framed"',
+    ],
+  ] as const)('maps the %s list border style', (listBorderStyle, expectedClass, dataHook) => {
+    const html = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        listBorderStyle={listBorderStyle}
+        reasons={baseReasons}
+        title="Why choose us"
+      />,
+    )
+
+    expect(html).toContain(expectedClass)
+    expect(html).toContain(dataHook)
+    expect(html).toContain('-mb-px')
+    if (listBorderStyle === 'framed') {
+      expect(html).not.toContain('-mx-6 -mb-px grid')
+      const articleClasses = Array.from(html.matchAll(/<article class="([^"]+)"/g), (match) =>
+        match[1].split(' '),
+      )
+      expect(articleClasses.every((classes) => !classes.includes('border-l'))).toBe(true)
+    }
+  })
+
+  it('uses Ruled as the safe fallback for stale border values', () => {
+    const html = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        listBorderStyle={'legacy' as never}
+        reasons={baseReasons}
+        title="Why choose us"
+      />,
+    )
+
+    expect(html).toContain('data-editorial-reasons-border-style="ruled"')
+    expect(html).toContain('overflow-hidden border-y border-current/15')
+    expect(html).not.toContain('legacy')
+  })
+
+  it('uses responsive columns, surface-aware numbers, and generalized dividers', () => {
+    const split = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        appearance={{ background: 'primary' }}
+        reasons={baseReasons}
+        title="Why choose us"
+      />,
+    )
+    const fullWidth = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        layoutProportion="fullWidth"
+        listColumns="4"
+        reasons={baseReasons.slice(0, 3)}
+        title="Why choose us"
+      />,
+    )
+    expect(split).toContain('grid-cols-1 md:grid-cols-2')
+    expect(split).toContain('data-editorial-reasons-columns="2"')
+    expect(split.match(/data-section-eyebrow-surface="primary"/g)).toHaveLength(4)
+    expect(split.match(/aria-hidden="true"/g)).toHaveLength(4)
+    expect(split).toContain('text-current/65')
+    expect(split).toContain('flex flex-col')
+    expect(split).toContain('border-b border-current/15')
+    expect(split).toContain('md:[&amp;&gt;*:nth-child(2n)]:border-l')
+    expect(split).not.toContain('shadow-[-1px_0_0_var(--border)]')
+
+    expect(fullWidth).toContain('grid-cols-1 md:grid-cols-2')
+    expect(fullWidth).toContain('xl:grid-cols-4')
+    expect(fullWidth).toContain('data-editorial-reasons-columns="4"')
+    expect(fullWidth).toContain('border-b border-current/15')
+    expect(fullWidth).toContain('xl:[&amp;&gt;*:nth-child(4n+3)]:border-l')
   })
 
   it('uses semantic appearance, spacing, and shared actions', () => {
@@ -308,7 +649,16 @@ describe('Editorial Reasons catalogs', () => {
   it('is represented in generated Payload types', () => {
     expect(payloadTypesSource).toContain('export interface EditorialReasonsBlock')
     expect(payloadTypesSource).toContain("blockType: 'editorialReasons'")
-    expect(payloadTypesSource).toContain("introVerticalAlignment: 'top' | 'center' | 'bottom'")
+    expect(payloadTypesSource).toContain(
+      "layoutProportion: 'listFocus' | 'balanced' | 'introFocus' | 'fullWidth'",
+    )
+    expect(payloadTypesSource).toContain("listPosition?: ('right' | 'left') | null")
+    expect(payloadTypesSource).toContain("contentAlignment: 'left' | 'center' | 'right'")
+    expect(payloadTypesSource).toContain("listColumns: '1' | '2' | '3' | '4'")
+    expect(payloadTypesSource).toContain("listBorderStyle: 'open' | 'ruled' | 'framed'")
+    expect(payloadTypesSource).toContain(
+      "introVerticalAlignment?: ('top' | 'center' | 'bottom') | null",
+    )
   })
 
   it('has thumbnail definition and fixture coverage', () => {
@@ -325,6 +675,7 @@ describe('Editorial Reasons documentation', () => {
     expect(featureInventorySource).toContain('Editorial Reasons')
     expect(blocksGuideSource).toMatch(/\| Editorial Reasons\s+\|/)
     expect(blocksGuideSource).toContain('sticky introduction')
-    expect(blocksGuideSource).toContain('automatically numbered ruled list')
+    expect(blocksGuideSource).toContain('responsive one-to-four-column numbered grid')
+    expect(blocksGuideSource).toContain('Full Width')
   })
 })

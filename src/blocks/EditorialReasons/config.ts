@@ -11,6 +11,13 @@ type ReasonSiblingData = {
   linkType?: 'custom' | 'none' | 'page' | null
 }
 
+type EditorialReasonsLayoutSiblingData = {
+  layoutProportion?: 'balanced' | 'fullWidth' | 'introFocus' | 'listFocus' | null
+}
+
+const isSplitLayout = (_data: unknown, siblingData: EditorialReasonsLayoutSiblingData) =>
+  siblingData?.layoutProportion !== 'fullWidth'
+
 const isPageLink = (_data: unknown, siblingData: ReasonSiblingData) =>
   siblingData?.linkType === 'page'
 
@@ -131,6 +138,86 @@ export const EditorialReasonsBlock: Block = {
             createBlockAppearanceFields(),
             createContentActionModeField(),
             {
+              name: 'contentAlignment',
+              label: 'Section Content Alignment',
+              type: 'select',
+              defaultValue: 'left',
+              required: true,
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+                { label: 'Right', value: 'right' },
+              ],
+              admin: {
+                description:
+                  'Aligns the section eyebrow, heading, description, and actions together.',
+              },
+            } satisfies SelectField,
+            {
+              name: 'layoutProportion',
+              label: 'Layout Proportion',
+              type: 'select',
+              defaultValue: 'listFocus',
+              required: true,
+              options: [
+                { label: 'List Focus (40 / 60)', value: 'listFocus' },
+                { label: 'Balanced (50 / 50)', value: 'balanced' },
+                { label: 'Introduction Focus (60 / 40)', value: 'introFocus' },
+                { label: 'Full Width', value: 'fullWidth' },
+              ],
+              admin: {
+                description:
+                  'Controls the introduction and numbered-list proportions on large screens.',
+              },
+            } satisfies SelectField,
+            {
+              name: 'listColumns',
+              label: 'List Columns',
+              type: 'select',
+              defaultValue: '2',
+              required: true,
+              options: [
+                { label: '1 Column', value: '1' },
+                { label: '2 Columns', value: '2' },
+                { label: '3 Columns', value: '3' },
+                { label: '4 Columns', value: '4' },
+              ],
+              admin: {
+                description:
+                  'Sets the desktop list layout. Two to four columns collapse responsively on smaller screens.',
+              },
+            } satisfies SelectField,
+            {
+              name: 'listBorderStyle',
+              label: 'List Border Style',
+              type: 'select',
+              defaultValue: 'ruled',
+              required: true,
+              options: [
+                { label: 'Open', value: 'open' },
+                { label: 'Ruled', value: 'ruled' },
+                { label: 'Framed', value: 'framed' },
+              ],
+              admin: {
+                description:
+                  'Open removes the outer top and bottom rules. Ruled keeps them. Framed wraps the list on all sides.',
+              },
+            } satisfies SelectField,
+            {
+              name: 'listPosition',
+              label: 'List Position',
+              type: 'select',
+              defaultValue: 'right',
+              required: true,
+              options: [
+                { label: 'Right', value: 'right' },
+                { label: 'Left', value: 'left' },
+              ],
+              admin: {
+                condition: isSplitLayout,
+              },
+            } satisfies SelectField,
+            {
               name: 'introVerticalAlignment',
               label: 'Introduction Vertical Alignment',
               type: 'select',
@@ -141,6 +228,9 @@ export const EditorialReasonsBlock: Block = {
                 { label: 'Center', value: 'center' },
                 { label: 'Bottom', value: 'bottom' },
               ],
+              admin: {
+                condition: isSplitLayout,
+              },
             } satisfies SelectField,
             {
               name: 'stickyIntro',
@@ -148,6 +238,7 @@ export const EditorialReasonsBlock: Block = {
               type: 'checkbox',
               defaultValue: true,
               admin: {
+                condition: isSplitLayout,
                 description: 'Keeps the introduction visible beside longer lists on large screens.',
               },
             } satisfies CheckboxField,

@@ -1,787 +1,476 @@
-# Editorial Reasons Block Implementation Plan
+# Editorial Reasons Layout Controls Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add a reusable, theme-aware Editorial Reasons block with a sticky editorial introduction and a responsive ruled list of automatically numbered reasons.
+**Goal:** Extend the existing Editorial Reasons block with three split proportions, a full-width layout, standard section content alignment, left/right list placement, a responsive one-to-four-column reasons grid, and surface-aware green number accents.
 
-**Architecture:** Keep Editorial Reasons independent from Content Highlights. A Payload config owns authoring and validation, a React server component normalizes links and renders the asymmetric layout, and the existing Page, Reusable Section, renderer, thumbnail, and documentation catalogs expose it everywhere normal Page blocks are available.
+**Architecture:** Keep the feature inside the existing `EditorialReasons` Payload config and server component. Payload owns the editor choices and hides split-only controls in Full Width mode; the renderer validates old or missing values, maps them to static Tailwind class contracts, preserves introduction-first DOM order, and reuses the existing `data-section-eyebrow-surface` theme hook for number color. No new theme token, client component, migration, or dependency is required.
 
 **Tech Stack:** Payload CMS 3, Next.js 16, React 19 server components, TypeScript, Tailwind CSS 4, Vitest, and the existing Playwright thumbnail generator.
 
 ## Global Constraints
 
-- Use label **Editorial Reasons**, slug `editorialReasons`, and interface `EditorialReasonsBlock`.
-- Keep the block independent from Content Highlights and preserve every existing block.
-- Use standard `Content` and `Theme Settings` tabs.
-- Permit one to eight reasons and generate `01`, `02`, and so on from array order.
-- Use semantic appearance, eyebrow, action, spacing, foreground, and divider systems only.
-- Keep the introduction left-aligned; support Top, Center, and Bottom desktop alignment.
-- Default sticky behavior on at large breakpoints and disable stickiness in the stacked mobile layout.
-- Link only reason titles, with visible focus and safe external-link attributes.
-- Add no reason cards, icons, badges, per-item backgrounds, client state, or animation.
-- Register Pages, Reusable Sections, production rendering, live preview, thumbnails, types, and docs.
-- Keep all plan and implementation files unstaged and uncommitted until explicitly requested.
+- Preserve all current Editorial Reasons content, typography, appearance, spacing, action, link, sticky, and registration behavior unless this plan explicitly changes it.
+- Add `layoutProportion` values `listFocus`, `balanced`, `introFocus`, and `fullWidth`; default to `listFocus`.
+- Label the four choices **List Focus (40 / 60)**, **Balanced (50 / 50)**, **Introduction Focus (60 / 40)**, and **Full Width**.
+- Add `listPosition` values `right` and `left`; default to `right` and expose it only for split layouts.
+- Hide `introVerticalAlignment` and `stickyIntro` in the admin when `layoutProportion` is `fullWidth`.
+- Full Width always renders the introduction above a container-wide reasons grid and ignores list position, vertical alignment, and sticky values, including stale stored values.
+- Split layouts stack introduction-first below `lg`.
+- `listColumns` selects an explicit desktop count from one through four; multi-column layouts stack
+  responsively on smaller screens.
+- `listBorderStyle` selects Open, Ruled, or Framed; default to Ruled and validate stale values back
+  to that default.
+- Section Content Alignment applies to eyebrow, heading, description, and actions together.
+- Put generated numbers beside content in One Column and above content in multi-column layouts;
+  preserve `aria-hidden="true"`.
+- Reuse `data-section-eyebrow-surface` and existing SNMIH theme selectors for number accents; add no token and no hard-coded component color.
+- Other themes retain `text-current/65` as the number fallback.
+- Keep all files unstaged and uncommitted until the user explicitly requests otherwise.
 
 ## File Map
 
-- Create `src/blocks/EditorialReasons/config.ts` for the Payload schema.
-- Create `src/blocks/EditorialReasons/Component.tsx` for normalization and rendering.
-- Create `tests/int/editorial-reasons.int.spec.tsx` for focused coverage.
-- Modify Page/Reusable Section collections and both page renderers.
-- Modify thumbnail definitions/fixtures and generate `public/block-thumbnails/editorial-reasons.jpg`.
-- Regenerate `src/payload-types.ts`.
-- Modify `tests/int/page-blocks.int.spec.ts` for the new block count.
-- Modify `docs/guides/blocks.md` and `docs/architecture/feature-inventory.md`.
+- Modify `src/blocks/EditorialReasons/config.ts` for section content alignment, one-to-four list
+  columns, four layout choices, list placement, and conditional controls.
+- Modify `src/blocks/EditorialReasons/Component.tsx` for validated layout mappings, visual ordering,
+  aligned introduction content, responsive one-to-four-column list rules, and number surface hooks.
+- Modify `tests/int/editorial-reasons.int.spec.tsx` for schema and renderer regression coverage.
+- Regenerate `src/payload-types.ts` after the schema changes.
+- Modify `src/block-thumbnails/fixtures.tsx` only if an explicit non-default fixture value improves catalog coverage.
+- Regenerate `public/block-thumbnails/editorial-reasons.jpg` to show the approved default two-column composition.
+- Modify `docs/guides/blocks.md` to document the new controls.
+- Keep `docs/superpowers/specs/2026-08-12-editorial-reasons-block-design.md` synchronized with the approved behavior.
 
 ---
 
-### Task 1: Define the Payload schema
+### Task 1: Add the Payload layout controls
 
 **Files:**
 
-- Create: `src/blocks/EditorialReasons/config.ts`
-- Create: `tests/int/editorial-reasons.int.spec.tsx`
+- Modify: `src/blocks/EditorialReasons/config.ts`
+- Test: `tests/int/editorial-reasons.int.spec.tsx`
 
 **Interfaces:**
 
-- Consumes: Payload field types and existing block field factories.
-- Produces: `EditorialReasonsBlock: Block`.
+- Consumes: Payload `SelectField` and sibling-data `admin.condition` behavior.
+- Produces: `layoutProportion` and `listPosition` fields plus split-only visibility conditions.
 
-- [ ] **Step 1: Write the failing schema test**
+- [ ] **Step 1: Write failing schema assertions**
 
-Create `tests/int/editorial-reasons.int.spec.tsx` with a recursive `findNamedField(fields, name)` helper matching `tests/int/program-matrix.int.spec.tsx`, then assert:
+Extend the existing theme-control test with exact field contracts:
 
-```tsx
-describe('EditorialReasonsBlock schema', () => {
-  it('defines its identity, content, and row limits', () => {
-    expect(EditorialReasonsBlock).toMatchObject({
-      slug: 'editorialReasons',
-      interfaceName: 'EditorialReasonsBlock',
-      labels: { singular: 'Editorial Reasons', plural: 'Editorial Reasons' },
-    })
-    expect(EditorialReasonsBlock.admin?.images?.thumbnail).toEqual({
-      alt: 'Editorial Reasons block preview',
-      url: '/block-thumbnails/editorial-reasons.jpg',
-    })
-    const tabs = EditorialReasonsBlock.fields.find((field) => field.type === 'tabs')
-    expect(tabs && tabs.type === 'tabs' ? tabs.tabs.map((tab) => tab.label) : []).toEqual([
-      'Content',
-      'Theme Settings',
-    ])
-    expect(findNamedField(EditorialReasonsBlock.fields, 'title')).toMatchObject({
-      type: 'text',
-      required: true,
-    })
-    expect(findNamedField(EditorialReasonsBlock.fields, 'accentTitle')).toMatchObject({
-      type: 'text',
-    })
-    expect(findNamedField(EditorialReasonsBlock.fields, 'actions')).toMatchObject({
-      type: 'array',
-      maxRows: 2,
-    })
-    expect(findNamedField(EditorialReasonsBlock.fields, 'reasons')).toMatchObject({
-      type: 'array',
-      required: true,
-      minRows: 1,
-      maxRows: 8,
-    })
-  })
+```ts
+expect(findNamedField(EditorialReasonsBlock.fields, 'layoutProportion')).toMatchObject({
+  type: 'select',
+  defaultValue: 'listFocus',
+  required: true,
+  options: [
+    { label: 'List Focus (40 / 60)', value: 'listFocus' },
+    { label: 'Balanced (50 / 50)', value: 'balanced' },
+    { label: 'Introduction Focus (60 / 40)', value: 'introFocus' },
+    { label: 'Full Width', value: 'fullWidth' },
+  ],
+})
 
-  it('defines reason links and approved theme controls', () => {
-    const reasons = findNamedField(EditorialReasonsBlock.fields, 'reasons') as ArrayField
-    expect(findNamedField(reasons.fields, 'linkType')).toMatchObject({
-      type: 'radio',
-      defaultValue: 'none',
-      options: [
-        { label: 'None', value: 'none' },
-        { label: 'Page', value: 'page' },
-        { label: 'Custom URL', value: 'custom' },
-      ],
-    })
-    expect(findNamedField(reasons.fields, 'page')).toMatchObject({
-      type: 'relationship',
-      relationTo: 'pages',
-    })
-    expect(findNamedField(EditorialReasonsBlock.fields, 'appearance')).toBeDefined()
-    expect(findNamedField(EditorialReasonsBlock.fields, 'actionMode')).toMatchObject({
-      type: 'select',
-      defaultValue: 'link',
-      required: true,
-    })
-    expect(findNamedField(EditorialReasonsBlock.fields, 'introVerticalAlignment')).toMatchObject({
-      type: 'select',
-      defaultValue: 'top',
-      required: true,
-    })
-    expect(findNamedField(EditorialReasonsBlock.fields, 'stickyIntro')).toMatchObject({
-      type: 'checkbox',
-      defaultValue: true,
-    })
-    expect(findNamedField(EditorialReasonsBlock.fields, 'size')).toMatchObject({
-      type: 'select',
-      defaultValue: 'default',
-      required: true,
-    })
-  })
+expect(findNamedField(EditorialReasonsBlock.fields, 'listPosition')).toMatchObject({
+  type: 'select',
+  defaultValue: 'right',
+  required: true,
+  options: [
+    { label: 'Right', value: 'right' },
+    { label: 'Left', value: 'left' },
+  ],
 })
 ```
 
-- [ ] **Step 2: Verify the test fails because the block is missing**
+Read the three fields as `SelectField` / `CheckboxField`, call their `admin.condition` callbacks with
+`{ layoutProportion: 'listFocus' }` and `{ layoutProportion: 'fullWidth' }`, and assert that
+`listPosition`, `introVerticalAlignment`, and `stickyIntro` are visible only for the split value.
 
-Run `pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx`.
+- [ ] **Step 2: Run the focused schema test and verify failure**
 
-Expected: FAIL resolving `@/blocks/EditorialReasons/config` and `Component`.
+Run:
 
-- [ ] **Step 3: Implement the schema**
+```bash
+pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx -t 'approved theme controls'
+```
 
-Create `src/blocks/EditorialReasons/config.ts` with:
+Expected: FAIL because `layoutProportion` and `listPosition` do not exist and the existing controls
+do not have split-layout conditions.
+
+- [ ] **Step 3: Implement the schema controls**
+
+Add these types and condition near the current sibling-data helpers:
 
 ```ts
-import type { ArrayField, Block, CheckboxField, RadioField, SelectField, TabsField } from 'payload'
+type EditorialReasonsLayoutSiblingData = {
+  layoutProportion?: 'balanced' | 'fullWidth' | 'introFocus' | 'listFocus' | null
+}
 
-import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
-import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import {
-  createContentActionModeField,
-  createContentActionsField,
-} from '@/blocks/shared/contentActionsFields'
+const isSplitLayout = (_data: unknown, siblingData: EditorialReasonsLayoutSiblingData) =>
+  siblingData?.layoutProportion !== 'fullWidth'
+```
 
-type ReasonSiblingData = { linkType?: 'custom' | 'none' | 'page' | null }
-const isPageLink = (_data: unknown, row: ReasonSiblingData) => row?.linkType === 'page'
-const isCustomLink = (_data: unknown, row: ReasonSiblingData) => row?.linkType === 'custom'
-const hasLink = (_data: unknown, row: ReasonSiblingData) =>
-  row?.linkType === 'page' || row?.linkType === 'custom'
+Insert these fields immediately after the shared action-mode field:
 
-const reasonsField: ArrayField = {
-  name: 'reasons',
-  label: 'Reasons',
-  type: 'array',
+```ts
+{
+  name: 'layoutProportion',
+  label: 'Layout Proportion',
+  type: 'select',
+  defaultValue: 'listFocus',
   required: true,
-  minRows: 1,
-  maxRows: 8,
+  options: [
+    { label: 'List Focus (40 / 60)', value: 'listFocus' },
+    { label: 'Balanced (50 / 50)', value: 'balanced' },
+    { label: 'Introduction Focus (60 / 40)', value: 'introFocus' },
+    { label: 'Full Width', value: 'fullWidth' },
+  ],
   admin: {
-    initCollapsed: true,
-    description: 'Rows are numbered automatically from their current order.',
+    description: 'Controls the introduction and numbered-list proportions on large screens.',
   },
-  fields: [
-    { name: 'title', type: 'text', required: true },
-    { name: 'description', type: 'textarea' },
-    {
-      name: 'linkType',
-      label: 'Link',
-      type: 'radio',
-      defaultValue: 'none',
-      options: [
-        { label: 'None', value: 'none' },
-        { label: 'Page', value: 'page' },
-        { label: 'Custom URL', value: 'custom' },
-      ],
-      admin: { layout: 'horizontal' },
-    } satisfies RadioField,
-    {
-      name: 'page',
-      type: 'relationship',
-      relationTo: 'pages',
-      admin: { condition: isPageLink },
-    },
-    {
-      name: 'url',
-      label: 'Custom URL',
-      type: 'text',
-      admin: { condition: isCustomLink },
-    },
-    {
-      name: 'openInNewTab',
-      type: 'checkbox',
-      defaultValue: false,
-      admin: { condition: hasLink },
-    } satisfies CheckboxField,
+} satisfies SelectField,
+{
+  name: 'listPosition',
+  label: 'List Position',
+  type: 'select',
+  defaultValue: 'right',
+  required: true,
+  options: [
+    { label: 'Right', value: 'right' },
+    { label: 'Left', value: 'left' },
   ],
-}
-
-export const EditorialReasonsBlock: Block = {
-  admin: getBlockThumbnailAdmin('editorialReasons'),
-  slug: 'editorialReasons',
-  interfaceName: 'EditorialReasonsBlock',
-  labels: { singular: 'Editorial Reasons', plural: 'Editorial Reasons' },
-  fields: [
-    {
-      type: 'tabs',
-      tabs: [
-        {
-          label: 'Content',
-          fields: [
-            { name: 'eyebrow', type: 'text' },
-            { name: 'title', type: 'text', required: true },
-            {
-              name: 'accentTitle',
-              label: 'Emphasized Title Line',
-              type: 'text',
-              admin: { description: 'Optional second line with restrained display emphasis.' },
-            },
-            { name: 'description', type: 'textarea' },
-            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
-            reasonsField,
-          ],
-        },
-        {
-          label: 'Theme Settings',
-          fields: [
-            createBlockAppearanceFields(),
-            createContentActionModeField(),
-            {
-              name: 'introVerticalAlignment',
-              label: 'Introduction Vertical Alignment',
-              type: 'select',
-              defaultValue: 'top',
-              required: true,
-              options: [
-                { label: 'Top', value: 'top' },
-                { label: 'Center', value: 'center' },
-                { label: 'Bottom', value: 'bottom' },
-              ],
-            } satisfies SelectField,
-            {
-              name: 'stickyIntro',
-              label: 'Keep Introduction Visible While Scrolling',
-              type: 'checkbox',
-              defaultValue: true,
-              admin: { description: 'Applies only to the large-screen two-column layout.' },
-            } satisfies CheckboxField,
-            {
-              name: 'size',
-              label: 'Section Padding',
-              type: 'select',
-              defaultValue: 'default',
-              required: true,
-              options: [
-                { label: 'None', value: 'none' },
-                { label: 'Compact', value: 'compact' },
-                { label: 'Default', value: 'default' },
-                { label: 'Comfortable', value: 'comfortable' },
-              ],
-            } satisfies SelectField,
-          ],
-        },
-      ],
-    } satisfies TabsField,
-  ],
-}
+  admin: { condition: isSplitLayout },
+} satisfies SelectField,
 ```
 
-- [ ] **Step 4: Add a temporary component export and pass schema tests**
+Add `condition: isSplitLayout` to the existing `admin` objects for `introVerticalAlignment` and
+`stickyIntro`. Keep their current descriptions and defaults.
 
-Create `src/blocks/EditorialReasons/Component.tsx`:
+- [ ] **Step 4: Run the schema tests**
 
-```tsx
-export function EditorialReasonsBlockComponent() {
-  return null
-}
+Run:
+
+```bash
+pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx -t 'schema'
 ```
 
-Run `pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx -t 'schema'`.
-
-Expected: both schema tests PASS.
+Expected: both Editorial Reasons schema tests PASS.
 
 ---
 
-### Task 2: Build the theme-aware server renderer
+### Task 2: Render all four layouts and both list positions
 
 **Files:**
 
 - Modify: `src/blocks/EditorialReasons/Component.tsx`
-- Modify: `tests/int/editorial-reasons.int.spec.tsx`
+- Test: `tests/int/editorial-reasons.int.spec.tsx`
 
 **Interfaces:**
 
-- Consumes: block appearance/spacing, shared actions, shared eyebrow, and CMS link resolution.
-- Produces: `EditorialReasonsBlockComponent` with stable data hooks.
+- Consumes: `layoutProportion`, `listPosition`, current introduction alignment, and current sticky flag.
+- Produces: safe layout defaults, static outer-grid classes, visual list ordering, and stable data hooks.
 
-- [ ] **Step 1: Add failing renderer coverage**
+- [ ] **Step 1: Add failing layout-mapping tests**
 
-Add `baseReasons` containing the four approved prototype reasons, then assert:
+Add a table-driven test with these exact mappings:
 
-```tsx
-describe('EditorialReasonsBlockComponent', () => {
-  it('renders the responsive asymmetric layout and ruled numbered list', () => {
-    const html = renderToStaticMarkup(
-      <EditorialReasonsBlockComponent
-        accentTitle="Driven by purpose."
-        description="A learning environment shaped around development and service."
-        eyebrow="Why SNMIH"
-        reasons={baseReasons}
-        title="Built for learning."
-      />,
-    )
-    expect(html).toContain('data-editorial-reasons="true"')
-    expect(html).toContain('lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]')
-    expect(html).toContain('data-editorial-reasons-intro="true"')
-    expect(html).toContain('data-editorial-reasons-list="true"')
-    expect(html).toContain('border-t border-current/15')
-    expect(html.match(/data-editorial-reason="true"/g)).toHaveLength(4)
-    expect(html).toContain('>01<')
-    expect(html).toContain('>04<')
-    expect(html).toContain('font-[family-name:var(--font-display)] italic')
-  })
+```ts
+it.each([
+  ['listFocus', 'lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]'],
+  ['balanced', 'lg:grid-cols-2'],
+  ['introFocus', 'lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]'],
+] as const)('maps the %s split proportion', (layoutProportion, expectedClass) => {
+  const html = renderToStaticMarkup(
+    <EditorialReasonsBlockComponent
+      layoutProportion={layoutProportion}
+      reasons={baseReasons}
+      title="Why choose us"
+    />,
+  )
 
-  it.each([
-    ['top', 'lg:self-start'],
-    ['center', 'lg:self-center'],
-    ['bottom', 'lg:self-end'],
-  ] as const)('maps %s intro alignment', (introVerticalAlignment, expectedClass) => {
-    const html = renderToStaticMarkup(
-      <EditorialReasonsBlockComponent
-        introVerticalAlignment={introVerticalAlignment}
-        reasons={baseReasons}
-        title="Why choose us"
-      />,
-    )
-    expect(html).toContain(expectedClass)
-    expect(html).toContain(`data-editorial-reasons-intro-alignment="${introVerticalAlignment}"`)
-  })
-
-  it('enables stickiness only from the large breakpoint', () => {
-    const sticky = renderToStaticMarkup(
-      <EditorialReasonsBlockComponent reasons={baseReasons} stickyIntro title="Why choose us" />,
-    )
-    const staticMarkup = renderToStaticMarkup(
-      <EditorialReasonsBlockComponent
-        reasons={baseReasons}
-        stickyIntro={false}
-        title="Why choose us"
-      />,
-    )
-    expect(sticky).toContain('lg:sticky lg:top-28')
-    expect(sticky).toContain('data-editorial-reasons-sticky="true"')
-    expect(staticMarkup).not.toContain('lg:sticky')
-  })
-
-  it('filters invalid rows and resolves custom and hierarchical Page links', () => {
-    const parent = { id: 'academics', slug: 'academics' } as unknown as Page
-    const page = { id: 'why-us', parent, slug: 'why-us' } as unknown as Page
-    const html = renderToStaticMarkup(
-      <EditorialReasonsBlockComponent
-        reasons={[
-          { linkType: 'page', page, title: 'Clinical Exposure' },
-          {
-            linkType: 'custom',
-            openInNewTab: true,
-            title: 'Experienced Faculty',
-            url: 'https://example.com/faculty',
-          },
-          { title: '   ' },
-        ]}
-        title="Why choose us"
-      />,
-    )
-    expect(html.match(/data-editorial-reason="true"/g)).toHaveLength(2)
-    expect(html).toContain('href="/academics/why-us"')
-    expect(html).toContain('href="https://example.com/faculty"')
-    expect(html).toContain('target="_blank"')
-    expect(html).toContain('rel="noreferrer"')
-  })
-
-  it('uses semantic appearance, spacing, and shared actions', () => {
-    const html = renderToStaticMarkup(
-      <EditorialReasonsBlockComponent
-        actionMode="button"
-        actions={[
-          {
-            label: 'Explore admissions',
-            linkType: 'custom',
-            showArrow: true,
-            url: '/admissions',
-            variant: 'default',
-          },
-        ]}
-        appearance={{ background: 'primary', border: 'topAndBottom' }}
-        eyebrow="Why us"
-        reasons={baseReasons}
-        size="comfortable"
-        title="Built for learning"
-      />,
-    )
-    expect(html).toContain('bg-primary text-primary-foreground border-y border-border')
-    expect(html).toContain('py-20 md:py-28')
-    expect(html).toContain('data-section-eyebrow-surface="primary"')
-    expect(html).toContain('data-action-mode="button"')
-    expect(html).toContain('data-action-arrow="true"')
-  })
-
-  it('returns no markup without a title or usable reason', () => {
-    expect(renderToStaticMarkup(<EditorialReasonsBlockComponent reasons={baseReasons} />)).toBe('')
-    expect(
-      renderToStaticMarkup(
-        <EditorialReasonsBlockComponent reasons={[{ title: '   ' }]} title="Why choose us" />,
-      ),
-    ).toBe('')
-  })
+  expect(html).toContain(expectedClass)
+  expect(html).toContain(`data-editorial-reasons-layout="${layoutProportion}"`)
 })
 ```
 
-- [ ] **Step 2: Verify renderer tests fail against the stub**
+Add a list-position test asserting that `right` gives the intro `lg:order-1` and list `lg:order-2`,
+while `left` gives the intro `lg:order-2` and list `lg:order-1`. Assert
+`data-editorial-reasons-list-position` exposes the resolved value.
 
-Run `pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx -t 'Component'`.
-
-Expected: FAIL because the component emits no markup.
-
-- [ ] **Step 3: Implement renderer normalization and structure**
-
-Replace the stub with a server component that:
-
-```tsx
-type EditorialReasonValue = CmsLinkValue & {
-  description?: string | null
-  id?: string | null
-  linkType?: 'custom' | 'none' | 'page' | null
-  title?: string | null
-}
-
-const introAlignmentClasses = {
-  bottom: 'lg:self-end',
-  center: 'lg:self-center',
-  top: 'lg:self-start',
-} as const
-```
-
-Normalize each non-empty title with `resolveCmsLink()`, using `null` when `linkType` is `none`.
-Return `null` without a trimmed section title or normalized reasons. Resolve appearance with
-`resolveBlockAppearanceClasses()`, actions with `resolveCmsActions()`, and surface with
-`appearance?.background ?? 'none'`.
-
-Render the exact outer contract:
-
-```tsx
-<section
-  className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClasses.className)}
-  data-editorial-reasons="true"
->
-  <div
-    className={cn(
-      regularBlockContainerClasses,
-      'grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16',
-    )}
-  >
-    <div className={introAlignmentClasses[resolvedAlignment]}>
-      <div
-        className={cn(
-          'flex max-w-3xl flex-col items-start gap-4',
-          stickyIntro && 'lg:sticky lg:top-28',
-        )}
-        data-editorial-reasons-intro="true"
-        data-editorial-reasons-intro-alignment={resolvedAlignment}
-        data-editorial-reasons-sticky={String(stickyIntro ?? true)}
-      >
-        <SectionEyebrow surface={sectionBackground}>{resolvedEyebrow}</SectionEyebrow>
-        <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-          <span className="block">{resolvedTitle}</span>
-          {resolvedAccentTitle ? <span className="block italic">{resolvedAccentTitle}</span> : null}
-        </h2>
-        {resolvedDescription ? (
-          <p className="text-base leading-7 text-balance text-current/70">{resolvedDescription}</p>
-        ) : null}
-        {resolvedActions.length ? (
-          <ContentActions
-            actions={resolvedActions}
-            data-editorial-reasons-actions="true"
-            mode={resolvedActionMode}
-          />
-        ) : null}
-      </div>
-    </div>
-    <div className="border-t border-border" data-editorial-reasons-list="true">
-      {resolvedReasons.map((reason, index) => (
-        <article
-          className="grid grid-cols-[2rem_minmax(0,1fr)] gap-4 border-b border-border py-7 sm:grid-cols-[3rem_minmax(0,1fr)] sm:gap-5 sm:py-8"
-          data-editorial-reason="true"
-          key={reason.id}
-        >
-          <span
-            aria-hidden="true"
-            className="pt-1 font-mono text-xs font-medium tabular-nums tracking-[0.14em] text-current/65"
-          >
-            {String(index + 1).padStart(2, '0')}
-          </span>
-          <div className="min-w-0">{/* linked or plain h3, then optional description */}</div>
-        </article>
-      ))}
-    </div>
-  </div>
-</section>
-```
-
-For a linked title, use an `<a>` with `hover:underline`, `focus-visible:underline`, a visible outline,
-`target="_blank"` and `rel="noreferrer"` only when configured. Otherwise use an `h3`. Both use
-`font-sans text-md leading-tight font-semibold text-current sm:text-lg`, matching Content
-Highlights. Description uses `mt-2 text-sm leading-6 text-current/70`.
-
-- [ ] **Step 4: Run all focused schema and renderer tests**
-
-Run `pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx`.
-
-Expected: all current tests PASS.
-
----
-
-### Task 3: Register Pages and both renderers
-
-**Files:**
-
-- Modify: `src/collections/Pages.ts`
-- Modify: `src/collections/ReusableSections.ts`
-- Modify: `src/blocks/renderPageBlocks.tsx`
-- Modify: `src/blocks/renderLivePreviewPageBlocks.tsx`
-- Modify: `tests/int/editorial-reasons.int.spec.tsx`
-- Modify: `tests/int/page-blocks.int.spec.ts`
-
-**Interfaces:**
-
-- Consumes: Task 1 schema and Task 2 renderer.
-- Produces: authoring and render parity.
-
-- [ ] **Step 1: Add failing registration assertions**
-
-Read the four source files in the focused test and assert they contain `EditorialReasonsBlock`,
-`EditorialReasonsBlockComponent`, and `case 'editorialReasons':`. Change the Page block expectation
-in `tests/int/page-blocks.int.spec.ts` from 40 to 41 and assert the slug is present.
-
-- [ ] **Step 2: Verify registration tests fail**
-
-Run:
-
-```bash
-pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx -t 'registration'
-pnpm exec vitest run tests/int/page-blocks.int.spec.ts -t 'registers a general layout blocks field on Pages'
-```
-
-Expected: FAIL because the new block is absent and the catalog count remains 40.
-
-- [ ] **Step 3: Register schema and rendering**
-
-Import `EditorialReasonsBlock` in both collections and place it immediately after
-`ContentHighlightsBlock` in both arrays. Import `EditorialReasonsBlockComponent` in both renderers.
-Add these adjacent cases:
-
-```tsx
-case 'editorialReasons':
-  return wrap(<EditorialReasonsBlockComponent {...block} />)
-```
-
-```tsx
-case 'editorialReasons':
-  return <EditorialReasonsBlockComponent key={key} {...block} />
-```
-
-- [ ] **Step 4: Run registration and Reusable Section parity tests**
-
-Run:
-
-```bash
-pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx -t 'registration'
-pnpm exec vitest run tests/int/page-blocks.int.spec.ts -t 'registers a general layout blocks field on Pages'
-pnpm exec vitest run tests/int/block-thumbnails.int.spec.ts -t 'offers every non-recursive page block in Reusable Sections'
-```
-
-Expected: registration tests PASS; thumbnail metadata parity may remain red until Task 4.
-
----
-
-### Task 4: Add generated types and thumbnail catalogs
-
-**Files:**
-
-- Modify: `src/block-thumbnails/definitions.ts`
-- Modify: `src/block-thumbnails/fixtures.tsx`
-- Create: `public/block-thumbnails/editorial-reasons.jpg`
-- Generate: `src/payload-types.ts`
-- Modify: `tests/int/editorial-reasons.int.spec.tsx`
-
-**Interfaces:**
-
-- Consumes: registered block and renderer.
-- Produces: picker preview and generated type support.
-
-- [ ] **Step 1: Add failing type/thumbnail assertions**
-
-Assert generated types contain `export interface EditorialReasonsBlock`,
-`blockType: 'editorialReasons'`, and the alignment union. Assert definitions contain
-`editorial-reasons.jpg`/`editorialReasons` and fixtures contain `editorialReasons:` plus the component.
-
-- [ ] **Step 2: Verify catalog tests fail**
-
-Run `pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx -t 'catalogs'`.
-
-Expected: FAIL until types and thumbnail files are updated.
-
-- [ ] **Step 3: Add thumbnail definition and fixture**
-
-Add after Content Highlights:
+Add a Full Width test that passes stale conflicting values (`listPosition="left"`,
+`introVerticalAlignment="bottom"`, `stickyIntro`) and asserts:
 
 ```ts
-defineThumbnail({
-  alt: 'Editorial Reasons block preview',
-  filename: 'editorial-reasons.jpg',
-  label: 'Editorial Reasons',
-  slug: 'editorialReasons',
-  stageAlignment: 'top',
-}),
+expect(html).toContain('data-editorial-reasons-layout="fullWidth"')
+expect(html).toContain('data-editorial-reasons-list-position="below"')
+expect(html).not.toContain('lg:grid-cols-2')
+expect(html).not.toContain('lg:order-')
+expect(html).not.toContain('lg:self-end')
+expect(html).not.toContain('lg:sticky')
 ```
 
-Import the component in fixtures and add:
+Add a safe-default test by passing invalid values through a cast and assert resolution to
+`listFocus` and `right` rather than emitting an unknown class.
+
+- [ ] **Step 2: Run the layout tests and verify failure**
+
+Run:
+
+```bash
+pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx -t 'layout|position|Full Width|safe defaults'
+```
+
+Expected: FAIL because the component still has one fixed `1fr / 2fr` outer grid.
+
+- [ ] **Step 3: Add validated renderer types and class maps**
+
+Add these component types and maps:
+
+```ts
+type EditorialReasonsLayoutProportion = 'balanced' | 'fullWidth' | 'introFocus' | 'listFocus'
+type EditorialReasonsListPosition = 'left' | 'right'
+
+const layoutProportionClasses = {
+  listFocus: 'lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]',
+  balanced: 'lg:grid-cols-2',
+  introFocus: 'lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]',
+} as const
+
+const leftListLayoutProportionClasses = {
+  listFocus: 'lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]',
+  balanced: 'lg:grid-cols-2',
+  introFocus: 'lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]',
+} as const
+
+const layoutProportions = new Set<EditorialReasonsLayoutProportion>([
+  'listFocus',
+  'balanced',
+  'introFocus',
+  'fullWidth',
+])
+
+const listPositions = new Set<EditorialReasonsListPosition>(['right', 'left'])
+```
+
+Extend `EditorialReasonsBlockLike` with nullable `layoutProportion` and `listPosition`. Resolve each
+against the sets, defaulting to `listFocus` and `right`. Derive `isFullWidth` once.
+
+- [ ] **Step 4: Apply layout, order, and split-only behavior**
+
+Keep introduction first in the DOM. On the outer container:
 
 ```tsx
-editorialReasons: (
-  <EditorialReasonsBlockComponent
-    accentTitle="Driven by purpose."
-    appearance={{ background: 'muted', border: 'topAndBottom' }}
-    description="A learning environment shaped around academic development, practical experience, and service."
-    eyebrow="Why choose us"
-    reasons={[
-      { title: 'Practical exposure', description: 'Learning connected with real-world practice.' },
-      { title: 'Experienced faculty', description: 'Guidance from educators and practitioners.' },
-      { title: 'Purpose-built infrastructure', description: 'Modern spaces for focused learning.' },
-      { title: 'Community impact', description: 'Education that strengthens its community.' },
-    ]}
-    size="compact"
-    title="Built for learning."
-  />
-),
+className={cn(
+  regularBlockContainerClasses,
+  'grid gap-10 lg:gap-16',
+  !isFullWidth &&
+    (resolvedListPosition === 'left'
+      ? leftListLayoutProportionClasses[resolvedLayoutProportion]
+      : layoutProportionClasses[resolvedLayoutProportion]),
+)}
+data-editorial-reasons-layout={resolvedLayoutProportion}
 ```
 
-- [ ] **Step 4: Generate types and the dedicated thumbnail**
+Apply `lg:order-1` / `lg:order-2` only for split layouts. The Full Width list position data value is
+`below`; split layouts expose `left` or `right`. Apply `introAlignmentClasses` and
+`lg:sticky lg:top-28` only when `!isFullWidth`.
+
+- [ ] **Step 5: Run layout, alignment, and sticky tests**
 
 Run:
 
 ```bash
-pnpm run generate:types
-BLOCK_THUMBNAIL_SLUG=editorialReasons pnpm run generate:block-thumbnails
+pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx -t 'layout|position|alignment|sticky|Full Width|safe defaults'
 ```
 
-Expected: generated type interfaces and `public/block-thumbnails/editorial-reasons.jpg`. If browser
-launch is sandbox-blocked, rerun the same thumbnail command with browser permission; do not create a
-manual substitute.
+Expected: all selected tests PASS, including the pre-existing alignment and sticky cases.
 
-- [ ] **Step 5: Run all thumbnail and type catalog tests**
+---
+
+### Task 3: Build the responsive ruled reasons grid and surface-aware numbers
+
+**Files:**
+
+- Modify: `src/blocks/EditorialReasons/Component.tsx`
+- Test: `tests/int/editorial-reasons.int.spec.tsx`
+- Verify: `src/styles/themes/theme-snmih.css`
+
+**Interfaces:**
+
+- Consumes: resolved section background and existing SNMIH eyebrow surface selectors.
+- Produces: a one-column number-rail composition, responsive two-to-four-column grids, clean
+  semantic dividers, three outer-border treatments, and inherited green accent behavior.
+
+- [ ] **Step 1: Replace obsolete list assertions with failing grid assertions**
+
+For the default split layout, assert:
+
+```ts
+expect(html).toContain('data-editorial-reasons-grid="true"')
+expect(html).toContain('grid-cols-1 md:grid-cols-2')
+expect(html).toContain('data-editorial-reasons-columns="2"')
+expect(html.match(/data-section-eyebrow-surface="none"/g)).toHaveLength(5)
+expect(html.match(/aria-hidden="true"/g)).toHaveLength(4)
+expect(html).toContain('flex flex-col')
+expect(html).not.toContain('grid-cols-[2rem_minmax(0,1fr)]')
+```
+
+Render each configured `listColumns` value and assert one uses `grid-cols-1`, two adds
+`md:grid-cols-2`, three adds `xl:grid-cols-3`, and four adds `xl:grid-cols-4`. Assert the data hook
+exposes the validated count. Verify One Column uses a number rail while multi-column layouts place
+numbers above their content.
+
+Render `appearance={{ background: 'primary' }}` and assert every number carries
+`data-section-eyebrow-surface="primary"` while preserving the fallback
+`text-current/65` metadata class.
+
+- [ ] **Step 2: Run the grid tests and verify failure**
 
 Run:
 
 ```bash
-pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx -t 'catalogs'
-pnpm exec vitest run tests/int/block-thumbnails.int.spec.ts
-pnpm exec vitest run tests/int/block-thumbnail-fixtures.int.spec.ts
+pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx -t 'responsive|grid|surface-aware|odd'
 ```
 
-Expected: all PASS.
+Expected: FAIL until all explicit column mappings and the single-column composition are present.
 
----
+- [ ] **Step 3: Implement the breakpoint-aware grid**
 
-### Task 5: Update documentation catalogs
+Set the list grid to the validated static column class mapping:
 
-**Files:**
-
-- Modify: `docs/guides/blocks.md`
-- Modify: `docs/architecture/feature-inventory.md`
-- Modify: `tests/int/editorial-reasons.int.spec.tsx`
-
-**Interfaces:**
-
-- Consumes: complete registered block.
-- Produces: accurate operator and architecture documentation.
-
-- [ ] **Step 1: Add failing documentation assertions**
-
-Assert feature inventory says `Normal Pages register 41 choices`, both docs mention Editorial
-Reasons, and the guide includes `sticky introduction` and `automatically numbered ruled list`.
-
-- [ ] **Step 2: Verify documentation test fails**
-
-Run `pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx -t 'documentation'`.
-
-Expected: FAIL while docs still report 40 choices.
-
-- [ ] **Step 3: Update both catalogs**
-
-Insert this row after Content Highlights:
-
-```md
-| Editorial Reasons | Reasons, principles, or differentiators | Asymmetric split with optional sticky introduction and an automatically numbered ruled list |
+```tsx
+className={cn(
+  '-mx-6 grid',
+  listColumnClasses[resolvedListColumns],
+)}
+data-editorial-reasons-columns={resolvedListColumns}
 ```
 
-Change the feature inventory count to 41 and insert Editorial Reasons after Content Highlights in
-the exhaustive normal Page list. Do not add it to Reusable Section exclusions.
+Map static Tailwind classes for one through four columns. Use clipped one-pixel shadows for internal
+vertical rules so every active column count has correct dividers without brittle `nth-child`
+selectors. The One Column article uses a number rail; multi-column articles remain vertical:
 
-- [ ] **Step 4: Run documentation test**
+```tsx
+className={cn(
+  'min-w-0 border-b border-border px-6 py-7 shadow-[-1px_0_0_var(--border)] sm:py-8',
+  resolvedListColumns === '1'
+    ? 'grid grid-cols-[3.5rem_minmax(0,1fr)] items-start gap-5'
+    : 'flex flex-col',
+)}
+```
 
-Run `pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx -t 'documentation'`.
+Render the number before the content wrapper using `contentItemMetadataClasses`, `tabular-nums`, and
+`data-section-eyebrow-surface={resolvedSectionBackground}`. Use top alignment in One Column and
+`mb-6` in multi-column layouts. Keep the existing title/link/description markup and accessibility
+attributes unchanged.
 
-Expected: PASS.
+- [ ] **Step 4: Run the full component test suite**
 
----
-
-### Task 6: Verify and visually inspect
-
-**Files:**
-
-- Verify every file in the File Map.
-- Do not stage or commit.
-
-**Interfaces:**
-
-- Consumes: complete implementation.
-- Produces: build-ready unstaged changes.
-
-- [ ] **Step 1: Format only touched files**
-
-Run Prettier with `--write` over the two new block files, two collection files, two renderer files,
-two thumbnail catalog files, two test files, two documentation catalogs, the spec, and this plan.
-
-Expected: no unrelated file changes.
-
-- [ ] **Step 2: Run focused tests**
+Run:
 
 ```bash
 pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx
-pnpm exec vitest run tests/int/page-blocks.int.spec.ts -t 'registers a general layout blocks field on Pages'
-pnpm exec vitest run tests/int/block-thumbnails.int.spec.ts
-pnpm exec vitest run tests/int/block-thumbnail-fixtures.int.spec.ts
+pnpm exec vitest run tests/int/section-eyebrow.int.spec.tsx
+pnpm exec vitest run tests/int/content-style-parity.int.spec.ts
 ```
 
-Expected: all PASS.
+Expected: all tests PASS. `theme-snmih.css` remains unchanged because its existing selectors match
+the number surface attributes.
 
-- [ ] **Step 3: Run type, lint, and diff verification**
+---
+
+### Task 4: Regenerate types, documentation, thumbnail, and verify
+
+**Files:**
+
+- Regenerate: `src/payload-types.ts`
+- Modify: `docs/guides/blocks.md`
+- Regenerate: `public/block-thumbnails/editorial-reasons.jpg`
+- Verify: all files in the File Map
+
+**Interfaces:**
+
+- Consumes: completed schema and renderer.
+- Produces: synchronized generated types, operator documentation, and a visually accurate admin thumbnail.
+
+- [ ] **Step 1: Update the block guide**
+
+Change the Editorial Reasons row to:
+
+```md
+| Editorial Reasons | Institutional strengths | Four proportion presets, aligned section content, left/right placement, optional sticky introduction, and a responsive one-to-four-column numbered grid |
+```
+
+Add a short note below the catalog explaining that Full Width places the introduction above the
+list and that the other proportions apply on large screens before stacking on smaller viewports.
+
+- [ ] **Step 2: Regenerate Payload types**
+
+Run:
 
 ```bash
 pnpm run generate:types
+```
+
+Expected: `EditorialReasonsBlock` contains required `layoutProportion` and `listPosition` unions with
+the four and two approved values. No unrelated schema type disappears.
+
+- [ ] **Step 3: Format and run focused checks**
+
+Run:
+
+```bash
+pnpm exec prettier --write src/blocks/EditorialReasons/config.ts src/blocks/EditorialReasons/Component.tsx tests/int/editorial-reasons.int.spec.tsx src/payload-types.ts docs/guides/blocks.md docs/superpowers/specs/2026-08-12-editorial-reasons-block-design.md docs/superpowers/plans/2026-08-12-editorial-reasons-block.md
+pnpm exec vitest run tests/int/editorial-reasons.int.spec.tsx tests/int/section-eyebrow.int.spec.tsx tests/int/content-style-parity.int.spec.ts tests/int/page-blocks.int.spec.ts tests/int/block-thumbnails.int.spec.ts tests/int/block-thumbnail-fixtures.int.spec.ts
 pnpm exec tsc --noEmit
-pnpm exec eslint src/blocks/EditorialReasons/config.ts src/blocks/EditorialReasons/Component.tsx tests/int/editorial-reasons.int.spec.tsx tests/int/page-blocks.int.spec.ts
+pnpm exec eslint src/blocks/EditorialReasons/config.ts src/blocks/EditorialReasons/Component.tsx tests/int/editorial-reasons.int.spec.tsx
 git diff --check
 ```
 
-Expected: all commands exit successfully.
+Expected: all commands PASS.
 
-- [ ] **Step 4: Inspect desktop/mobile and light/dark in one bounded pass**
+- [ ] **Step 4: Regenerate and inspect the thumbnail**
 
-Open `/block-thumbnail-previews/editorialReasons` at 1440 × 1000 and 390 × 844. Verify asymmetric
-desktop columns, safe sticky behavior, stacked mobile layout, aligned two-digit numbers, subtle
-rules, no overflow, semantic light/dark contrast, and visible link/action focus. Fix all material
-defects in one batch and confirm once at the same sizes.
+Run:
 
-- [ ] **Step 5: Run Impeccable detection once**
+```bash
+BLOCK_THUMBNAIL_SLUG=editorialReasons pnpm run generate:block-thumbnails
+```
+
+Expected: `public/block-thumbnails/editorial-reasons.jpg` shows the display-font introduction beside
+the default clean two-column reasons grid. If browser launch is sandbox-blocked, rerun with browser permission;
+do not create a manual substitute.
+
+- [ ] **Step 5: Perform one bounded visual inspection**
+
+Inspect List Focus Right, Balanced Left, Introduction Focus Right, and Full Width at desktop width;
+inspect one split layout and Full Width at mobile width. Include light and SNMIH primary/dark
+surfaces in the same pass. Verify wrapping, visual order, responsive stacking, all four column
+settings, the one-column number rail, divider continuity, green number contrast, sticky behavior,
+and keyboard focus. Fix all material
+defects in one batch and confirm once.
+
+- [ ] **Step 6: Run the typography/design detector once**
+
+Run:
 
 ```bash
 node .agents/skills/impeccable/scripts/detect.mjs --json src/blocks/EditorialReasons/Component.tsx src/blocks/EditorialReasons/config.ts
 ```
 
-Expected: no unresolved mechanical findings. Fix findings in one batch and rerun only affected
-tests/type/lint checks; do not run the detector twice.
+Expected: no unresolved findings. If a finding requires a code change, rerun only the affected tests,
+TypeScript, ESLint, and `git diff --check`.
 
-- [ ] **Step 6: Confirm everything remains unstaged**
+- [ ] **Step 7: Confirm the working tree remains unstaged**
+
+Run:
 
 ```bash
+git diff --cached --name-only
 git status --short
 git diff --stat
-git diff --check
 ```
 
-Expected: the spec, plan, implementation, registration, generated type, test, thumbnail, and docs
-are working-tree changes only. Nothing is staged and no commit exists.
+Expected: the cached-name command prints nothing. All Editorial Reasons work remains visible only as
+unstaged or untracked working-tree changes. Do not commit.

@@ -756,7 +756,24 @@ export interface EditorialReasonsBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
-  introVerticalAlignment: 'top' | 'center' | 'bottom';
+  /**
+   * Aligns the section eyebrow, heading, description, and actions together.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  /**
+   * Controls the introduction and numbered-list proportions on large screens.
+   */
+  layoutProportion: 'listFocus' | 'balanced' | 'introFocus' | 'fullWidth';
+  /**
+   * Sets the desktop list layout. Two to four columns collapse responsively on smaller screens.
+   */
+  listColumns: '1' | '2' | '3' | '4';
+  /**
+   * Open removes the outer top and bottom rules. Ruled keeps them. Framed wraps the list on all sides.
+   */
+  listBorderStyle: 'open' | 'ruled' | 'framed';
+  listPosition?: ('right' | 'left') | null;
+  introVerticalAlignment?: ('top' | 'center' | 'bottom') | null;
   /**
    * Keeps the introduction visible beside longer lists on large screens.
    */
@@ -4232,6 +4249,11 @@ export interface EditorialReasonsBlockSelect<T extends boolean = true> {
         border?: T;
       };
   actionMode?: T;
+  contentAlignment?: T;
+  layoutProportion?: T;
+  listColumns?: T;
+  listBorderStyle?: T;
+  listPosition?: T;
   introVerticalAlignment?: T;
   stickyIntro?: T;
   size?: T;

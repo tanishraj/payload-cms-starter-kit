@@ -429,6 +429,8 @@ export const blockThumbnailFixtures = {
       appearance={{ background: 'muted', border: 'topAndBottom' }}
       description="A learning environment shaped around academic development, clinical experience, and service."
       eyebrow="Why choose us"
+      listBorderStyle="framed"
+      listColumns="1"
       reasons={[
         {
           description: 'Learning connected directly with real-world patient care.',
