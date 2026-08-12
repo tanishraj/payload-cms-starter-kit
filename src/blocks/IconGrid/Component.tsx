@@ -4,6 +4,7 @@ import * as LucideIcons from 'lucide-react'
 import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
+  type BlockBackground,
 } from '@/blocks/shared/blockAppearance'
 import {
   regularBlockMobilePaddingClasses,
@@ -136,15 +137,17 @@ function CardItem({
   actionMode,
   actionVariant,
   actionLabel,
+  sectionBackground,
 }: {
   item: IconGridItem
   iconStyle: keyof typeof iconContainerClasses
   actionMode: 'button' | 'link'
   actionVariant: CmsActionVariant
   actionLabel: string
+  sectionBackground: BlockBackground
 }) {
   const link = resolveHref(item)
-  const surface = resolveCardSurface(item.cardBackground)
+  const surface = resolveCardSurface(item.cardBackground, sectionBackground)
   const inner = (
     <div
       data-card-background={surface.value}
@@ -332,12 +335,14 @@ export function IconGridBlockComponent({
   const resolvedActionMode = actionMode ?? 'link'
   const resolvedActionVariant = actionVariant ?? 'default'
   const resolvedActionLabel = itemActionLabel?.trim() || 'Learn More'
+  const sectionBackground: BlockBackground = appearance?.background ?? 'none'
 
   const itemProps = {
     iconStyle: resolvedIconStyle,
     actionMode: resolvedActionMode,
     actionVariant: resolvedActionVariant,
     actionLabel: resolvedActionLabel,
+    sectionBackground,
   }
 
   return (

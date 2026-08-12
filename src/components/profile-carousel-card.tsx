@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { resolveCardSurface } from '@/blocks/shared/cardSurface'
+import type { BlockBackground } from '@/blocks/shared/blockAppearance'
 import { cn } from '@/lib/utils'
 
 export type ProfileCarouselImagePosition = 'bottom' | 'center' | 'left' | 'right' | 'top'
@@ -23,6 +24,7 @@ export type ProfileCarouselProfile = {
 type ProfileCarouselCardProps = {
   overlayAlignment: ProfileCarouselOverlayAlignment
   profile: ProfileCarouselProfile
+  sectionBackground: BlockBackground
   size: ProfileCarouselSize
   variant: ProfileCarouselCardVariant
 }
@@ -51,11 +53,12 @@ const overlayAlignmentClasses = {
 export function ProfileCarouselCard({
   overlayAlignment,
   profile,
+  sectionBackground,
   size,
   variant,
 }: ProfileCarouselCardProps) {
   const imagePosition = profile.imagePosition ?? 'center'
-  const surface = resolveCardSurface(profile.cardBackground)
+  const surface = resolveCardSurface(profile.cardBackground, sectionBackground)
   const mediaFrame = (
     <div
       className={cn('relative w-full overflow-hidden rounded-md', imageHeightClasses[size])}

@@ -102,6 +102,7 @@ export function MediaCarouselBlockComponent({
           <ContentActions actions={resolvedSectionActions} />
         ) : undefined
       }
+      sectionBackground={appearance?.background ?? 'none'}
       size={size ?? 'default'}
       title={resolvedTitle}
     />

@@ -11,6 +11,7 @@ import { MediaCarouselBlockComponent } from '@/blocks/MediaCarousel/Component'
 import { NumberedStepsBlockComponent } from '@/blocks/NumberedSteps/Component'
 import { ProfileCarouselBlockComponent } from '@/blocks/ProfileCarousel/Component'
 import { ProgramGridBlockComponent } from '@/blocks/ProgramGrid/Component'
+import { ProgramMatrixBlockComponent } from '@/blocks/ProgramMatrix/Component'
 import { TeamShowcaseBlockComponent } from '@/blocks/TeamShowcase/Component'
 import { TestimonialGridBlockComponent } from '@/blocks/TestimonialGrid/Component'
 
@@ -23,6 +24,12 @@ const media = {
 const expectPrimarySurface = (html: string) => {
   expect(html).toContain('data-card-background="primary"')
   expect(html).toContain('bg-primary text-primary-foreground')
+}
+
+const expectInheritedDefaultSurface = (html: string) => {
+  expect(html).toContain('data-card-background="default"')
+  expect(html).toContain('bg-transparent text-current')
+  expect(html).not.toContain('bg-card text-card-foreground')
 }
 
 describe('semantic card surface rendering', () => {
@@ -185,5 +192,86 @@ describe('semantic card surface rendering', () => {
     expectPrimarySurface(cardSteps)
     expect(downloadList).not.toContain('data-card-background')
     expect(verticalSteps).not.toContain('data-card-background')
+  })
+
+  it('inherits a primary section in server-rendered default cards', () => {
+    const markups = [
+      renderToStaticMarkup(
+        <IconGridBlockComponent
+          appearance={{ background: 'primary' }}
+          items={[{ icon: 'Hospital', title: 'Hospital training' }]}
+          title="Why choose us"
+          variant="card"
+        />,
+      ),
+      renderToStaticMarkup(
+        <FeatureMatrixBlockComponent
+          appearance={{ background: 'primary' }}
+          features={[{ image: media, title: 'Hospital training' }]}
+          title="Features"
+        />,
+      ),
+      renderToStaticMarkup(
+        <ProgramMatrixBlockComponent
+          appearance={{ background: 'primary' }}
+          items={[{ title: 'MBBS' }]}
+          title="Programmes"
+        />,
+      ),
+      renderToStaticMarkup(
+        <TestimonialGridBlockComponent
+          appearance={{ background: 'primary' }}
+          testimonials={[{ name: 'Student', quote: 'Excellent' }]}
+          variant="grid"
+        />,
+      ),
+    ]
+
+    for (const html of markups) {
+      expectInheritedDefaultSurface(html)
+      expect(html).toContain('border-current/15')
+    }
+  })
+
+  it('inherits a primary section across client-rendered default cards', () => {
+    const borderedMarkups = [
+      renderToStaticMarkup(
+        <DownloadListBlockComponent
+          appearance={{ background: 'primary' }}
+          displayMode="cards"
+          downloads={[{ externalUrl: 'https://example.com/form.pdf', title: 'Application Form' }]}
+        />,
+      ),
+      renderToStaticMarkup(
+        <MediaCarouselBlockComponent
+          appearance={{ background: 'primary' }}
+          items={[{ media, title: 'Campus life' }]}
+          title="Gallery"
+        />,
+      ),
+      renderToStaticMarkup(
+        <ProgramGridBlockComponent
+          appearance={{ background: 'primary' }}
+          programs={[{ title: 'MBBS' }]}
+          title="Programmes"
+        />,
+      ),
+    ]
+
+    for (const html of borderedMarkups) {
+      expectInheritedDefaultSurface(html)
+      expect(html).toContain('border-current/15')
+    }
+
+    const borderlessProfile = renderToStaticMarkup(
+      <ProfileCarouselBlockComponent
+        appearance={{ background: 'primary' }}
+        profiles={[{ image: media, name: 'Dr Example' }]}
+        title="Faculty"
+      />,
+    )
+
+    expectInheritedDefaultSurface(borderlessProfile)
+    expect(borderlessProfile).not.toContain('border-current/15')
   })
 })

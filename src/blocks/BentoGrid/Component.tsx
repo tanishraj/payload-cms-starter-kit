@@ -5,6 +5,7 @@ import * as LucideIcons from 'lucide-react'
 import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
+  type BlockBackground,
 } from '@/blocks/shared/blockAppearance'
 import {
   regularBlockMobilePaddingClasses,
@@ -48,12 +49,21 @@ const cellColSpan = {
   small: 'col-span-1',
 } as const
 
-function BentoCell({ item }: { item: BentoItem }) {
+function BentoCell({
+  item,
+  sectionBackground,
+}: {
+  item: BentoItem
+  sectionBackground: BlockBackground
+}) {
   const image = getMediaImageProps({ media: item.image, preset: 'generic' })
   const Icon = item.icon
     ? (((LucideIcons as Record<string, unknown>)[item.icon] as LucideIcon | undefined) ?? Star)
     : null
-  const surface = resolveCardSurface(item.accentColor === 'none' ? 'default' : item.accentColor)
+  const surface = resolveCardSurface(
+    item.accentColor === 'none' ? 'default' : item.accentColor,
+    sectionBackground,
+  )
   const isFull = item.size === 'full'
   const isLarge = item.size === 'large'
 
@@ -158,6 +168,7 @@ export function BentoGridBlockComponent({
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
   const isCenter = (contentAlignment ?? 'center') === 'center'
   const resolvedActions = resolveCmsActions(actions)
+  const sectionBackground: BlockBackground = appearance?.background ?? 'none'
 
   return (
     <section
@@ -195,7 +206,7 @@ export function BentoGridBlockComponent({
         <div className="grid auto-rows-fr grid-cols-1 gap-4 md:grid-cols-3">
           {validItems.map((item, index) => (
             <div key={item.id ?? index} className={cellColSpan[item.size ?? 'medium']}>
-              <BentoCell item={item} />
+              <BentoCell item={item} sectionBackground={sectionBackground} />
             </div>
           ))}
         </div>

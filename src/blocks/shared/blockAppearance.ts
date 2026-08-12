@@ -1,7 +1,9 @@
 import { cn } from '@/lib/utils'
 
+export type BlockBackground = 'none' | 'primary' | 'secondary' | 'muted' | 'accent'
+
 export type BlockAppearance = {
-  background?: 'none' | 'primary' | 'secondary' | 'muted' | 'accent' | null
+  background?: BlockBackground | null
   border?: 'none' | 'top' | 'bottom' | 'topAndBottom' | null
 }
 

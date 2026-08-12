@@ -1,6 +1,9 @@
 import type { LucideIcon } from 'lucide-react'
 
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
 import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
@@ -114,32 +117,30 @@ export function ProgramMatrixBlockComponent({
   const resolvedTitle = title?.trim()
   if (!resolvedTitle) return null
 
-  const resolvedItems = (items ?? []).flatMap(
-    (item, index): ResolvedProgramMatrixItem[] => {
-      const itemTitle = item.title?.trim()
-      if (!itemTitle) return []
+  const resolvedItems = (items ?? []).flatMap((item, index): ResolvedProgramMatrixItem[] => {
+    const itemTitle = item.title?.trim()
+    if (!itemTitle) return []
 
-      let href: string | undefined
-      if (item.linkType === 'page') {
-        href = getPageHref(item.page)
-      } else if (item.linkType === 'custom') {
-        href = item.url?.trim() || undefined
-      }
+    let href: string | undefined
+    if (item.linkType === 'page') {
+      href = getPageHref(item.page)
+    } else if (item.linkType === 'custom') {
+      href = item.url?.trim() || undefined
+    }
 
-      return [
-        {
-          cardBackground: resolveCardSurface(item.cardBackground).value,
-          description: item.description?.trim() || undefined,
-          href,
-          Icon: resolveLucideIcon(item.icon),
-          id: item.id ?? index,
-          metadata: item.metadata?.trim() || undefined,
-          openInNewTab: item.openInNewTab ?? false,
-          title: itemTitle,
-        },
-      ]
-    },
-  )
+    return [
+      {
+        cardBackground: resolveCardSurface(item.cardBackground).value,
+        description: item.description?.trim() || undefined,
+        href,
+        Icon: resolveLucideIcon(item.icon),
+        id: item.id ?? index,
+        metadata: item.metadata?.trim() || undefined,
+        openInNewTab: item.openInNewTab ?? false,
+        title: itemTitle,
+      },
+    ]
+  })
 
   if (resolvedItems.length === 0) return null
 
@@ -162,10 +163,7 @@ export function ProgramMatrixBlockComponent({
 
   return (
     <section
-      className={cn(
-        regularBlockMobilePaddingClasses[size ?? 'default'],
-        appearanceClassName,
-      )}
+      className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}
       data-program-matrix-section="true"
     >
       <div className={cn(regularBlockContainerClasses, 'flex flex-col gap-10 md:gap-12')}>
@@ -195,9 +193,7 @@ export function ProgramMatrixBlockComponent({
             actions={resolvedSectionActions}
             alignment={resolvedAlignment}
             className={cn(
-              resolvedActionMode === 'link' &&
-                usesSurfaceForeground &&
-                '[&_a]:text-current',
+              resolvedActionMode === 'link' && usesSurfaceForeground && '[&_a]:text-current',
               resolvedActionMode === 'button' &&
                 isPrimarySurface &&
                 '[&_[data-action-variant=default]]:bg-primary-foreground [&_[data-action-variant=default]]:text-primary [&_[data-action-variant=default]]:hover:bg-primary-foreground/90',
@@ -212,16 +208,18 @@ export function ProgramMatrixBlockComponent({
         </div>
 
         <div
-          className="grid overflow-hidden rounded-[var(--radius)] border border-border bg-card text-card-foreground md:grid-cols-2"
+          className={cn(
+            'grid overflow-hidden rounded-[var(--radius)] border bg-transparent text-current md:grid-cols-2',
+            isPrimarySurface ? 'border-current/15' : 'border-current/10',
+          )}
           data-program-matrix="true"
         >
           {resolvedItems.map((item, index) => {
             const Icon = item.Icon
-            const surface = resolveCardSurface(item.cardBackground)
+            const surface = resolveCardSurface(item.cardBackground, resolvedSectionBackground)
             const isLastItem = index === resolvedItems.length - 1
             const isLeftColumn = index % 2 === 0
-            const lastDesktopRowStart =
-              resolvedItems.length - (resolvedItems.length % 2 || 2)
+            const lastDesktopRowStart = resolvedItems.length - (resolvedItems.length % 2 || 2)
             const isLastDesktopRow = index >= lastDesktopRowStart
             const buttonClassName = surface.button[resolvedActionVariant]
 
@@ -263,12 +261,7 @@ export function ProgramMatrixBlockComponent({
                   </p>
                 ) : null}
                 {item.description ? (
-                  <p
-                    className={cn(
-                      'mt-4 max-w-[65ch] text-sm leading-6',
-                      surface.secondary,
-                    )}
-                  >
+                  <p className={cn('mt-4 max-w-[65ch] text-sm leading-6', surface.secondary)}>
                     {item.description}
                   </p>
                 ) : null}

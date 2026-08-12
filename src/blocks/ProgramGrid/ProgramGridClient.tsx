@@ -13,6 +13,7 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { resolveCardSurface, type CardSurfaceClasses } from '@/blocks/shared/cardSurface'
+import type { BlockBackground } from '@/blocks/shared/blockAppearance'
 
 export type ResolvedProgram = {
   id: string | number
@@ -42,6 +43,7 @@ type ProgramGridClientProps = {
   eyebrow?: string
   programs: ResolvedProgram[]
   sectionActions?: React.ReactNode
+  sectionBackground: BlockBackground
   showFilter: boolean
   size: RegularBlockSize
   title?: string | null
@@ -102,13 +104,15 @@ function GridCard({
   ctaLabel,
   actionMode,
   actionVariant,
+  sectionBackground,
 }: {
   program: ResolvedProgram
   ctaLabel: string
   actionMode: 'button' | 'link'
   actionVariant: CmsActionVariant
+  sectionBackground: BlockBackground
 }) {
-  const surface = resolveCardSurface(program.cardBackground)
+  const surface = resolveCardSurface(program.cardBackground, sectionBackground)
   const inner = (
     <div
       data-card-background={surface.value}
@@ -216,13 +220,15 @@ function ListCard({
   ctaLabel,
   actionMode,
   actionVariant,
+  sectionBackground,
 }: {
   program: ResolvedProgram
   ctaLabel: string
   actionMode: 'button' | 'link'
   actionVariant: CmsActionVariant
+  sectionBackground: BlockBackground
 }) {
-  const surface = resolveCardSurface(program.cardBackground)
+  const surface = resolveCardSurface(program.cardBackground, sectionBackground)
   const inner = (
     <div
       data-card-background={surface.value}
@@ -335,6 +341,7 @@ export function ProgramGridClient({
   eyebrow,
   programs,
   sectionActions,
+  sectionBackground,
   showFilter,
   size,
   title,
@@ -404,6 +411,7 @@ export function ProgramGridClient({
                 program={program}
                 actionMode={actionMode}
                 actionVariant={actionVariant}
+                sectionBackground={sectionBackground}
               />
             ))}
           </div>
@@ -416,6 +424,7 @@ export function ProgramGridClient({
                 program={program}
                 actionMode={actionMode}
                 actionVariant={actionVariant}
+                sectionBackground={sectionBackground}
               />
             ))}
           </div>

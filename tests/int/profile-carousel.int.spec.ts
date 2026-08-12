@@ -199,7 +199,7 @@ describe('Profile Carousel', () => {
     expect(html.match(/<article[^>]*data-profile-carousel-card-variant="overlay"/g)).toHaveLength(4)
     expect(html.match(/data-profile-carousel-overlay-alignment="center"/g)).toHaveLength(4)
     expect(
-      html.match(/bg-linear-to-t from-background\/95 via-background\/70 to-transparent/g),
+      html.match(/bg-linear-to-t[^\"]*from-black\/80 via-black\/50 to-transparent text-white/g),
     ).toHaveLength(4)
     expect(html.match(/items-center text-center/g)).toHaveLength(4)
     expect(html.match(/h-80 sm:h-96 md:h-\[28rem\]/g)).toHaveLength(4)

@@ -14,11 +14,13 @@ import {
   type ProfileCarouselProfile,
   type ProfileCarouselSize,
 } from '@/components/profile-carousel-card'
+import type { BlockBackground } from '@/blocks/shared/blockAppearance'
 
 type ProfileCarouselClientProps = {
   cardVariant: ProfileCarouselCardVariant
   overlayAlignment: ProfileCarouselOverlayAlignment
   profiles: ProfileCarouselProfile[]
+  sectionBackground: BlockBackground
   size: ProfileCarouselSize
 }
 
@@ -26,6 +28,7 @@ export function ProfileCarouselClient({
   cardVariant,
   overlayAlignment,
   profiles,
+  sectionBackground,
   size,
 }: ProfileCarouselClientProps) {
   return (
@@ -52,6 +55,7 @@ export function ProfileCarouselClient({
             <ProfileCarouselCard
               overlayAlignment={overlayAlignment}
               profile={profile}
+              sectionBackground={sectionBackground}
               size={size}
               variant={cardVariant}
             />

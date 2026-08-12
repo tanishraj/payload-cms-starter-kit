@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
+  type BlockBackground,
 } from '@/blocks/shared/blockAppearance'
 import {
   regularBlockContainerClasses,
@@ -73,6 +74,7 @@ export function ProfileCarousel({
   const resolvedSize = size ?? 'default'
   const visibleProfiles = profiles.slice(0, 12)
   const usesCarousel = visibleProfiles.length > 4
+  const sectionBackground: BlockBackground = appearance?.background ?? 'none'
 
   if (!visibleProfiles.length) {
     return null
@@ -114,6 +116,7 @@ export function ProfileCarousel({
               cardVariant={cardVariant}
               overlayAlignment={overlayAlignment}
               profiles={visibleProfiles}
+              sectionBackground={sectionBackground}
               size={resolvedSize}
             />
           ) : (
@@ -123,6 +126,7 @@ export function ProfileCarousel({
                   key={`${profile.name}-${index}`}
                   overlayAlignment={overlayAlignment}
                   profile={profile}
+                  sectionBackground={sectionBackground}
                   size={resolvedSize}
                   variant={cardVariant}
                 />

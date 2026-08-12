@@ -3,6 +3,7 @@ import Image from 'next/image'
 import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
+  type BlockBackground,
 } from '@/blocks/shared/blockAppearance'
 import {
   regularBlockMobilePaddingClasses,
@@ -124,14 +125,16 @@ function VerticalSteps({
 function CardSteps({
   steps,
   numberStyle,
+  sectionBackground,
 }: {
   steps: Step[]
   numberStyle: 'circle' | 'outlined' | 'serif'
+  sectionBackground: BlockBackground
 }) {
   return (
     <div className={cn('grid grid-cols-1 gap-6', getNumberedStepsGridClasses(steps.length))}>
       {steps.map((step, index) => {
-        const surface = resolveCardSurface(step.cardBackground)
+        const surface = resolveCardSurface(step.cardBackground, sectionBackground)
 
         return (
           <div
@@ -267,6 +270,7 @@ export function NumberedStepsBlockComponent({
   const resolvedNumberStyle = numberStyle ?? 'circle'
   const resolvedVariant = variant ?? 'vertical'
   const resolvedActions = resolveCmsActions(actions)
+  const sectionBackground: BlockBackground = appearance?.background ?? 'none'
 
   return (
     <section
@@ -298,7 +302,11 @@ export function NumberedStepsBlockComponent({
         </div>
 
         {resolvedVariant === 'cards' ? (
-          <CardSteps steps={validSteps} numberStyle={resolvedNumberStyle} />
+          <CardSteps
+            steps={validSteps}
+            numberStyle={resolvedNumberStyle}
+            sectionBackground={sectionBackground}
+          />
         ) : resolvedVariant === 'alternating' ? (
           <AlternatingSteps steps={validSteps} numberStyle={resolvedNumberStyle} />
         ) : (

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
+import type { BlockAppearance, BlockBackground } from '@/blocks/shared/blockAppearance'
 import { resolveBlockAppearanceClasses } from '@/blocks/shared/blockAppearance'
 import {
   regularBlockContainerClasses,
@@ -114,15 +114,17 @@ function ContentHighlightItemComponent({
   index,
   item,
   layout,
+  sectionBackground,
 }: {
   index: number
   item: ContentHighlightItem
   layout: ContentHighlightsLayout
+  sectionBackground: BlockBackground
 }) {
   const isNumbered = layout === 'numberedSteps'
   const isSimple = layout === 'simpleGrid'
   const step = String(index + 1).padStart(2, '0')
-  const surface = resolveCardSurface(item.cardBackground)
+  const surface = resolveCardSurface(item.cardBackground, sectionBackground)
   const titleClassName =
     'rounded-sm text-md leading-tight font-semibold text-current underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current sm:text-lg'
 
@@ -199,10 +201,12 @@ function ContentHighlightItemComponent({
 function ContentHighlightsItems({
   items,
   layout,
+  sectionBackground,
   split,
 }: {
   items: ContentHighlightItem[]
   layout: ContentHighlightsLayout
+  sectionBackground: BlockBackground
   split: boolean
 }) {
   return (
@@ -216,6 +220,7 @@ function ContentHighlightsItems({
           item={item}
           key={`${item.title}-${index}`}
           layout={layout}
+          sectionBackground={sectionBackground}
         />
       ))}
     </div>
@@ -241,6 +246,7 @@ export function ContentHighlights({
   const resolvedSize = size ?? 'default'
   const resolvedSplitAlignment = splitContentAlignment ?? 'top'
   const isSplit = enableSplitLayout === true
+  const sectionBackground: BlockBackground = appearance?.background ?? 'none'
 
   return (
     <section
@@ -263,7 +269,12 @@ export function ContentHighlights({
               eyebrow={eyebrow}
               title={title}
             />
-            <ContentHighlightsItems items={items} layout={resolvedLayout} split />
+            <ContentHighlightsItems
+              items={items}
+              layout={resolvedLayout}
+              sectionBackground={sectionBackground}
+              split
+            />
           </div>
         ) : (
           <div className={cn('flex flex-col', sectionGapClasses[resolvedSize])}>
@@ -290,7 +301,12 @@ export function ContentHighlights({
                 title={title}
               />
             )}
-            <ContentHighlightsItems items={items} layout={resolvedLayout} split={false} />
+            <ContentHighlightsItems
+              items={items}
+              layout={resolvedLayout}
+              sectionBackground={sectionBackground}
+              split={false}
+            />
           </div>
         )}
       </div>

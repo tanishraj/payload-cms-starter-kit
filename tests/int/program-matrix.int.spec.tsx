@@ -189,7 +189,7 @@ describe('ProgramMatrixBlockComponent', () => {
     )
     expect(html).not.toContain('font-serif')
     expect(html).toContain('max-w-[70ch] text-base leading-7 text-current/70')
-    expect(html).toContain('p-6 text-left md:p-8 bg-card text-card-foreground border-border')
+    expect(html).toContain('p-6 text-left md:p-8 bg-transparent text-current border-current/10')
     expect(html).toContain('mb-4 size-5 shrink-0')
     expect(html).toContain('font-sans text-lg font-semibold leading-snug text-current')
     expect(html).toContain('mt-2 font-mono text-xs font-semibold uppercase tracking-[0.24em]')
@@ -230,7 +230,7 @@ describe('ProgramMatrixBlockComponent', () => {
     expect(html).toContain('data-card-background="secondary"')
     expect(html).toContain('data-card-background="muted"')
     expect(html).toContain('data-card-background="accent"')
-    expect(html).toContain('bg-card text-card-foreground')
+    expect(html).toContain('bg-transparent text-current')
     expect(html).toContain('bg-primary text-primary-foreground')
     expect(html).toContain('bg-secondary text-secondary-foreground')
     expect(html).toContain('bg-muted text-foreground')
@@ -249,7 +249,7 @@ describe('ProgramMatrixBlockComponent', () => {
     )
 
     expect(html).toContain('data-card-background="default"')
-    expect(html).toContain('bg-card text-card-foreground')
+    expect(html).toContain('bg-transparent text-current')
   })
 
   it('keeps surface links and matching button variants readable', () => {

@@ -5,6 +5,7 @@ import { Download, FileText, FileSpreadsheet, FileImage, File, ExternalLink } fr
 
 import { cn } from '@/lib/utils'
 import { resolveCardSurface, type CardSurfaceClasses } from '@/blocks/shared/cardSurface'
+import type { BlockBackground } from '@/blocks/shared/blockAppearance'
 
 export type ResolvedDownload = {
   cardBackground?: string
@@ -20,6 +21,7 @@ export type ResolvedDownload = {
 type Props = {
   downloads: ResolvedDownload[]
   displayMode?: 'list' | 'cards' | 'compact' | null
+  sectionBackground: BlockBackground
   showFilter?: boolean | null
 }
 
@@ -88,8 +90,14 @@ function ListRow({ dl }: { dl: ResolvedDownload }) {
   )
 }
 
-function CardItem({ dl }: { dl: ResolvedDownload }) {
-  const surface = resolveCardSurface(dl.cardBackground)
+function CardItem({
+  dl,
+  sectionBackground,
+}: {
+  dl: ResolvedDownload
+  sectionBackground: BlockBackground
+}) {
+  const surface = resolveCardSurface(dl.cardBackground, sectionBackground)
   return (
     <a
       href={dl.href}
@@ -158,7 +166,12 @@ function CompactRow({ dl }: { dl: ResolvedDownload }) {
   )
 }
 
-export function DownloadListClient({ downloads, displayMode = 'list', showFilter = false }: Props) {
+export function DownloadListClient({
+  downloads,
+  displayMode = 'list',
+  sectionBackground,
+  showFilter = false,
+}: Props) {
   const categories = [
     'All',
     ...Array.from(new Set(downloads.map((d) => d.category).filter(Boolean) as string[])),
@@ -195,7 +208,7 @@ export function DownloadListClient({ downloads, displayMode = 'list', showFilter
       {displayMode === 'cards' ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((dl) => (
-            <CardItem key={dl.id} dl={dl} />
+            <CardItem key={dl.id} dl={dl} sectionBackground={sectionBackground} />
           ))}
         </div>
       ) : displayMode === 'compact' ? (

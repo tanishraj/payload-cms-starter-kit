@@ -18,7 +18,7 @@ type CreateCardTabsOptions = {
 }
 
 export const createCardBackgroundField = ({
-  adminDescription = 'Uses the active website theme and automatically adjusts card contrast.',
+  adminDescription = 'Default Card inherits the section background. Other choices use the active theme and automatically adjust card contrast.',
   label = 'Background',
   name = 'cardBackground',
 }: CreateCardBackgroundFieldOptions = {}): SelectField => ({

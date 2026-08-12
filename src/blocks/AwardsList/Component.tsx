@@ -3,6 +3,7 @@ import { Award, Medal, Star, TrendingUp, Trophy } from 'lucide-react'
 import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
+  type BlockBackground,
 } from '@/blocks/shared/blockAppearance'
 import {
   regularBlockContainerClasses,
@@ -87,6 +88,7 @@ export function AwardsListBlockComponent({
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
   const isCenter = (contentAlignment ?? 'left') === 'center'
   const resolvedActions = resolveCmsActions(actions)
+  const sectionBackground: BlockBackground = appearance?.background ?? 'none'
 
   return (
     <section
@@ -128,7 +130,7 @@ export function AwardsListBlockComponent({
             {items.map((item, i) => {
               const cat = (item.category ?? 'recognition') as AwardCategory
               const { icon: Icon, color } = categoryConfig[cat]
-              const surface = resolveCardSurface(item.cardBackground)
+              const surface = resolveCardSurface(item.cardBackground, sectionBackground)
               return (
                 <div
                   key={i}

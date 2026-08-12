@@ -7,6 +7,7 @@ import React, { memo, useState, type ReactNode } from 'react'
 import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
+  type BlockBackground,
 } from '@/blocks/shared/blockAppearance'
 import { resolveCardSurface } from '@/blocks/shared/cardSurface'
 import { cn } from '@/lib/utils'
@@ -29,11 +30,12 @@ interface TeamShowcaseMember {
 interface TeamShowcaseMemberCardProps {
   member: TeamShowcaseMember
   highlighted?: boolean
+  sectionBackground: BlockBackground
 }
 
 const TeamShowcaseMemberCard = memo(
-  ({ member, highlighted = false }: TeamShowcaseMemberCardProps) => {
-    const surface = resolveCardSurface(member.cardBackground)
+  ({ member, highlighted = false, sectionBackground }: TeamShowcaseMemberCardProps) => {
+    const surface = resolveCardSurface(member.cardBackground, sectionBackground)
     return (
       <div
         className={cn(
@@ -132,6 +134,7 @@ const TeamShowcase = ({
   const resolvedAlignment = contentAlignment ?? 'left'
   const resolvedSize = size ?? 'default'
   const resolvedDescription = description?.trim()
+  const sectionBackground: BlockBackground = appearance?.background ?? 'none'
 
   if (!members.length) {
     return null
@@ -180,7 +183,7 @@ const TeamShowcase = ({
                   onMouseEnter={() => setHoveredMember(index)}
                   className="relative"
                 >
-                  <TeamShowcaseMemberCard member={member} />
+                  <TeamShowcaseMemberCard member={member} sectionBackground={sectionBackground} />
 
                   {hoveredMember === index && (
                     <motion.div
@@ -194,7 +197,11 @@ const TeamShowcase = ({
                       }}
                       className="pointer-events-none absolute inset-0 z-10 hidden h-max overflow-hidden rounded-2xl shadow-lg md:block"
                     >
-                      <TeamShowcaseMemberCard member={member} highlighted />
+                      <TeamShowcaseMemberCard
+                        member={member}
+                        highlighted
+                        sectionBackground={sectionBackground}
+                      />
                     </motion.div>
                   )}
                 </li>

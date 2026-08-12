@@ -4,6 +4,7 @@ import { Quote } from 'lucide-react'
 import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
+  type BlockBackground,
 } from '@/blocks/shared/blockAppearance'
 import {
   regularBlockContainerClasses,
@@ -73,9 +74,15 @@ function Avatar({
   )
 }
 
-function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+function TestimonialCard({
+  testimonial,
+  sectionBackground,
+}: {
+  testimonial: Testimonial
+  sectionBackground: BlockBackground
+}) {
   const avatarProps = getMediaImageProps({ media: testimonial.avatar, preset: 'generic' })
-  const surface = resolveCardSurface(testimonial.cardBackground)
+  const surface = resolveCardSurface(testimonial.cardBackground, sectionBackground)
 
   return (
     <div
@@ -110,8 +117,14 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   )
 }
 
-function FeaturedTestimonial({ testimonial }: { testimonial: Testimonial }) {
-  const surface = resolveCardSurface(testimonial.cardBackground)
+function FeaturedTestimonial({
+  testimonial,
+  sectionBackground,
+}: {
+  testimonial: Testimonial
+  sectionBackground: BlockBackground
+}) {
+  const surface = resolveCardSurface(testimonial.cardBackground, sectionBackground)
 
   return (
     <div
@@ -163,6 +176,7 @@ export function TestimonialGridBlockComponent({
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
   const isCenter = (contentAlignment ?? 'center') === 'center'
   const resolvedActions = resolveCmsActions(actions)
+  const sectionBackground: BlockBackground = appearance?.background ?? 'none'
 
   return (
     <section
@@ -202,7 +216,7 @@ export function TestimonialGridBlockComponent({
         {variant === 'grid' || !variant ? (
           <div className={cn('grid gap-6', columnClasses[columns ?? '3'])}>
             {items.map((t, i) => (
-              <TestimonialCard key={i} testimonial={t} />
+              <TestimonialCard key={i} testimonial={t} sectionBackground={sectionBackground} />
             ))}
           </div>
         ) : null}
@@ -210,11 +224,13 @@ export function TestimonialGridBlockComponent({
         {/* Featured variant: first card large, rest in a row below */}
         {variant === 'featured' ? (
           <div className="flex flex-col gap-6">
-            {items[0] ? <FeaturedTestimonial testimonial={items[0]} /> : null}
+            {items[0] ? (
+              <FeaturedTestimonial testimonial={items[0]} sectionBackground={sectionBackground} />
+            ) : null}
             {items.length > 1 ? (
               <div className={cn('grid gap-6', columnClasses[columns ?? '3'])}>
                 {items.slice(1).map((t, i) => (
-                  <TestimonialCard key={i} testimonial={t} />
+                  <TestimonialCard key={i} testimonial={t} sectionBackground={sectionBackground} />
                 ))}
               </div>
             ) : null}

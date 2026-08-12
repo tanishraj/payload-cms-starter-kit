@@ -127,6 +127,7 @@ export function DownloadListBlockComponent({
         <DownloadListClient
           downloads={resolvedDownloads}
           displayMode={displayMode}
+          sectionBackground={appearance?.background ?? 'none'}
           showFilter={showFilter}
         />
       </div>

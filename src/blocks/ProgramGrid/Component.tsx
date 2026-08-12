@@ -123,6 +123,7 @@ export function ProgramGridBlockComponent({
           <ContentActions actions={resolvedSectionActions} />
         ) : undefined
       }
+      sectionBackground={appearance?.background ?? 'none'}
       showFilter={showFilter ?? false}
       size={size ?? 'default'}
       title={resolvedTitle}

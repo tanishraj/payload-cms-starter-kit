@@ -4,6 +4,7 @@ import Image from 'next/image'
 import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
+  type BlockBackground,
 } from '@/blocks/shared/blockAppearance'
 import { regularBlockMobilePaddingClasses } from '@/blocks/shared/blockSpacing'
 import { cn } from '@/lib/utils'
@@ -135,6 +136,8 @@ export function FeatureMatrix({
   const resolvedSize = size ?? 'default'
   const resolvedShowOuterBorder = showOuterBorder ?? true
   const visibleFeatures = features.slice(0, 4)
+  const sectionBackground: BlockBackground = appearance?.background ?? 'none'
+  const sectionSurface = resolveCardSurface('default', sectionBackground)
 
   return (
     <section
@@ -175,14 +178,14 @@ export function FeatureMatrix({
         <div
           className={cn(
             'grid overflow-hidden rounded-md',
-            resolvedShowOuterBorder ? 'border border-border' : '',
+            resolvedShowOuterBorder ? cn('border', sectionSurface.divider) : '',
             'lg:grid-cols-5',
           )}
         >
           {visibleFeatures.map((feature, index) => {
             const isWidePanel = index === 0 || index === 3
             const resolvedImagePosition = feature.imagePosition ?? 'center'
-            const surface = resolveCardSurface(feature.cardBackground)
+            const surface = resolveCardSurface(feature.cardBackground, sectionBackground)
 
             return (
               <article

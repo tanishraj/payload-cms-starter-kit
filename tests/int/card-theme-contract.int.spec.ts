@@ -57,7 +57,6 @@ describe('card theme contract', () => {
   })
 
   it.each([
-    ['default', 'bg-card text-card-foreground', 'text-muted-foreground'],
     ['primary', 'bg-primary text-primary-foreground', 'text-primary-foreground/75'],
     ['secondary', 'bg-secondary text-secondary-foreground', 'text-secondary-foreground/70'],
     ['muted', 'bg-muted text-foreground', 'text-muted-foreground'],
@@ -66,9 +65,44 @@ describe('card theme contract', () => {
     expect(resolveCardSurface(value)).toMatchObject({ className, secondary })
   })
 
+  it.each([
+    ['none', 'border-current/10'],
+    ['primary', 'border-current/15'],
+    ['secondary', 'border-current/10'],
+    ['muted', 'border-current/10'],
+    ['accent', 'border-current/10'],
+  ] as const)('inherits the %s section for a default card', (background, divider) => {
+    expect(resolveCardSurface('default', background)).toMatchObject({
+      className: 'bg-transparent text-current',
+      divider,
+      secondary: 'text-current/70',
+      value: 'default',
+    })
+  })
+
+  it('keeps explicit card surfaces independent from the section', () => {
+    expect(resolveCardSurface('primary', 'accent')).toMatchObject({
+      className: 'bg-primary text-primary-foreground',
+      divider: 'border-primary-foreground/15',
+      value: 'primary',
+    })
+  })
+
+  it('uses a readable media overlay for a default card', () => {
+    expect(resolveCardSurface('default', 'primary').overlay).toBe(
+      'from-black/80 via-black/50 to-transparent text-white',
+    )
+  })
+
   it('falls back safely and inverses matching filled buttons', () => {
     expect(resolveCardSurface('unknown').value).toBe('default')
     expect(resolveCardSurface(null).value).toBe('default')
+    expect(resolveCardSurface('default', 'primary').button.default).toContain(
+      'bg-primary-foreground',
+    )
+    expect(resolveCardSurface('default', 'secondary').button.secondary).toContain(
+      'bg-secondary-foreground',
+    )
     expect(resolveCardSurface('primary').button.default).toContain('bg-primary-foreground')
     expect(resolveCardSurface('secondary').button.secondary).toContain('bg-secondary-foreground')
   })

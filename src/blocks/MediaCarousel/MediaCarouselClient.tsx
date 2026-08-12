@@ -21,6 +21,7 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { resolveCardSurface } from '@/blocks/shared/cardSurface'
+import type { BlockBackground } from '@/blocks/shared/blockAppearance'
 
 export type MediaCarouselItem = {
   cardBackground?: string
@@ -46,6 +47,7 @@ type MediaCarouselClientProps = {
   eyebrow?: string
   items: MediaCarouselItem[]
   sectionActions?: React.ReactNode
+  sectionBackground: BlockBackground
   size: RegularBlockSize
   title?: string | null
 }
@@ -54,13 +56,15 @@ function MediaCard({
   item,
   actionMode,
   actionVariant,
+  sectionBackground,
 }: {
   item: MediaCarouselItem
   actionMode: 'button' | 'link'
   actionVariant: CmsActionVariant
+  sectionBackground: BlockBackground
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
-  const surface = resolveCardSurface(item.cardBackground)
+  const surface = resolveCardSurface(item.cardBackground, sectionBackground)
   const Icon = item.icon
     ? (((LucideIcons as Record<string, unknown>)[item.icon] as LucideIcon | undefined) ?? Star)
     : undefined
@@ -168,6 +172,7 @@ export function MediaCarouselClient({
   eyebrow,
   items,
   sectionActions,
+  sectionBackground,
   size,
   title,
 }: MediaCarouselClientProps) {
@@ -207,7 +212,12 @@ export function MediaCarouselClient({
                   columns === 4 && 'lg:basis-1/4',
                 )}
               >
-                <MediaCard item={item} actionMode={actionMode} actionVariant={actionVariant} />
+                <MediaCard
+                  item={item}
+                  actionMode={actionMode}
+                  actionVariant={actionVariant}
+                  sectionBackground={sectionBackground}
+                />
               </CarouselItem>
             ))}
           </CarouselContent>
