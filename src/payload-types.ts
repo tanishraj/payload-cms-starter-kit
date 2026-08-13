@@ -304,7 +304,11 @@ export interface AnnouncementBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   displayMode: 'vertical' | 'horizontal' | 'marquee';
@@ -349,7 +353,11 @@ export interface Cta39Block {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -401,7 +409,11 @@ export interface HeroBannerBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   horizontalAlignment: 'left' | 'center' | 'right';
@@ -594,7 +606,11 @@ export interface GalleryCoverflowBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -638,7 +654,11 @@ export interface FeatureSpotlightBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -699,7 +719,11 @@ export interface FeatureMatrixBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -758,7 +782,11 @@ export interface ContentHighlightsBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -822,7 +850,11 @@ export interface EditorialReasonsBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -890,7 +922,11 @@ export interface NewsEventsHighlightsBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -946,7 +982,11 @@ export interface ProfileCarouselBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -998,7 +1038,11 @@ export interface GalleryShowcaseBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -1045,7 +1089,11 @@ export interface EventGalleryBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   cardTextLayout: 'split' | 'center';
@@ -1139,7 +1187,11 @@ export interface ImageMosaicBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -1173,7 +1225,11 @@ export interface StatsStripBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   size: 'none' | 'compact' | 'default' | 'comfortable';
@@ -1263,7 +1319,11 @@ export interface QaAccordionBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1314,7 +1374,11 @@ export interface RatingSpotlightBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -1360,7 +1424,11 @@ export interface ReviewFeedBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -1405,7 +1473,11 @@ export interface ReviewSubmissionBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -1520,7 +1592,11 @@ export interface Contact33Block {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1566,7 +1642,11 @@ export interface Contact24Block {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1665,7 +1745,11 @@ export interface TeamShowcaseBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -1718,7 +1802,11 @@ export interface Services21Block {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -1757,7 +1845,11 @@ export interface RichTextBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   size: 'none' | 'compact' | 'default' | 'comfortable';
@@ -1813,7 +1905,11 @@ export interface VideoEmbedBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1900,7 +1996,11 @@ export interface MediaCarouselBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -1986,7 +2086,11 @@ export interface ProgramGridBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -2067,7 +2171,11 @@ export interface ProgramMatrixBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -2138,7 +2246,11 @@ export interface LogoStripBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -2229,7 +2341,11 @@ export interface PageHeaderBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -2295,7 +2411,11 @@ export interface TimelineBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   variant: 'horizontal' | 'vertical' | 'alternating';
@@ -2373,7 +2493,11 @@ export interface IconGridBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
@@ -2424,7 +2548,11 @@ export interface QuoteBlockBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   variant?: ('centered' | 'side' | 'card' | 'highlight') | null;
@@ -2504,7 +2632,11 @@ export interface TabsContentBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   tabStyle?: ('underline' | 'pills' | 'boxed') | null;
@@ -2582,7 +2714,11 @@ export interface DownloadListBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   displayMode?: ('list' | 'cards' | 'compact') | null;
@@ -2651,7 +2787,11 @@ export interface NumberedStepsBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   variant?: ('vertical' | 'cards' | 'alternating') | null;
@@ -2717,7 +2857,11 @@ export interface BentoGridBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -2779,7 +2923,11 @@ export interface TestimonialGridBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -2852,7 +3000,11 @@ export interface AwardsListBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -2935,7 +3087,11 @@ export interface AboutSectionBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -3640,7 +3796,11 @@ export interface HeaderNavbar12Block {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   sticky?: boolean | null;
@@ -3734,7 +3894,11 @@ export interface Footer56Block {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   size: 'none' | 'compact' | 'default' | 'comfortable';
@@ -3858,7 +4022,11 @@ export interface System404Block {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   id?: string | null;
@@ -3899,7 +4067,11 @@ export interface SystemMaintenanceBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   id?: string | null;
@@ -3940,7 +4112,11 @@ export interface SystemComingSoonBlock {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   id?: string | null;
@@ -6981,7 +7157,11 @@ export interface PageSetting {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
   };
   announcementEnabled?: boolean | null;
   /**
@@ -7008,7 +7188,11 @@ export interface PageSetting {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   announcementDisplayMode?: ('vertical' | 'horizontal' | 'marquee') | null;
@@ -7059,7 +7243,11 @@ export interface NewsEventsSetting {
       | 'accent'
       | 'gradient-secondary'
       | 'gradient-muted'
-      | 'gradient-accent';
+      | 'gradient-accent'
+      | 'gradient-success'
+      | 'gradient-error'
+      | 'gradient-info'
+      | 'gradient-warning';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   size: 'compact' | 'default' | 'comfortable';
