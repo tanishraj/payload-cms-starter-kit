@@ -33,13 +33,32 @@
   color: var(--ring);
 }
 
-/* Section gradient backgrounds — fade from surface color to page background */
+/* Section gradient backgrounds — secondary tint at top, specific color tint at bottom */
 .bg-gradient-secondary {
-  background: linear-gradient(180deg, var(--secondary) 0%, var(--background) 100%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--secondary) 50%, var(--background)) 0%,
+    var(--background) 100%
+  );
 }
 
-/* SNMIH brand gradient: light blue-tint → light green-tint (matches prototype #f4f8fc → #eef7f0) */
-:root[data-theme-color='snmih'] .bg-gradient-secondary {
+.bg-gradient-muted {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--secondary) 50%, var(--background)) 0%,
+    color-mix(in oklch, var(--muted) 50%, var(--background)) 100%
+  );
+}
+
+.bg-gradient-accent {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--secondary) 50%, var(--background)) 0%,
+    color-mix(in oklch, var(--accent) 50%, var(--background)) 100%
+  );
+}
+
+.bg-gradient-success {
   background: linear-gradient(
     180deg,
     color-mix(in oklch, var(--secondary) 50%, var(--background)) 0%,
@@ -47,28 +66,68 @@
   );
 }
 
-.bg-gradient-muted {
-  background: linear-gradient(180deg, var(--muted) 0%, var(--background) 100%);
-}
-
-.bg-gradient-accent {
-  background: linear-gradient(180deg, var(--accent) 0%, var(--background) 100%);
-}
-
-.bg-gradient-success {
-  background: linear-gradient(180deg, color-mix(in oklch, var(--success) 10%, var(--background)) 0%, var(--background) 100%);
-}
-
 .bg-gradient-error {
-  background: linear-gradient(180deg, color-mix(in oklch, var(--error) 8%, var(--background)) 0%, var(--background) 100%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--secondary) 50%, var(--background)) 0%,
+    color-mix(in oklch, var(--error) 8%, var(--background)) 100%
+  );
 }
 
 .bg-gradient-info {
-  background: linear-gradient(180deg, color-mix(in oklch, var(--info) 8%, var(--background)) 0%, var(--background) 100%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--secondary) 50%, var(--background)) 0%,
+    color-mix(in oklch, var(--info) 8%, var(--background)) 100%
+  );
 }
 
 .bg-gradient-warning {
-  background: linear-gradient(180deg, color-mix(in oklch, var(--warning) 10%, var(--background)) 0%, var(--background) 100%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--secondary) 50%, var(--background)) 0%,
+    color-mix(in oklch, var(--warning) 10%, var(--background)) 100%
+  );
+}
+
+/* SNMIH brand gradient overrides — must come after base classes.
+   --muted ≈ #f4f8fc (blue-gray, maps to "secondary" in brand language) */
+:root[data-theme-color='snmih'] .bg-gradient-secondary,
+:root[data-theme-color='snmih'] .bg-gradient-muted,
+:root[data-theme-color='snmih'] .bg-gradient-accent {
+  background: linear-gradient(180deg, var(--muted) 0%, var(--background) 100%);
+}
+
+:root[data-theme-color='snmih'] .bg-gradient-success {
+  background: linear-gradient(
+    180deg,
+    var(--muted) 0%,
+    color-mix(in oklch, var(--success) 15%, var(--background)) 100%
+  );
+}
+
+:root[data-theme-color='snmih'] .bg-gradient-error {
+  background: linear-gradient(
+    180deg,
+    var(--muted) 0%,
+    color-mix(in oklch, var(--error) 8%, var(--background)) 100%
+  );
+}
+
+:root[data-theme-color='snmih'] .bg-gradient-info {
+  background: linear-gradient(
+    180deg,
+    var(--muted) 0%,
+    color-mix(in oklch, var(--info) 8%, var(--background)) 100%
+  );
+}
+
+:root[data-theme-color='snmih'] .bg-gradient-warning {
+  background: linear-gradient(
+    180deg,
+    var(--muted) 0%,
+    color-mix(in oklch, var(--warning) 10%, var(--background)) 100%
+  );
 }
 
 /* Feature Matrix internal-divider motion */
