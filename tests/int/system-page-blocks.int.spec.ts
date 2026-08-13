@@ -108,10 +108,10 @@ describe('system page block schemas', () => {
     expect(appearanceBorderField?.defaultValue).toBe('none')
     expect(appearanceBackgroundField?.options?.map((option) => option.value)).toEqual([
       'none',
-      'primary',
-      'secondary',
-      'muted',
-      'accent',
+      'subtle',
+      'brand',
+      'gradient-subtle',
+      'gradient-brand',
     ])
     expect(appearanceFields.map((field) => field.name)).not.toContain('textColor')
     expect(appearanceBorderField?.options?.map((option) => option.value)).toEqual([

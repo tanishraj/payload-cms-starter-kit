@@ -1,53 +1,66 @@
 import { cn } from '@/lib/utils'
 
-export type BlockBackground =
-  | 'none'
-  | 'primary'
-  | 'secondary'
-  | 'muted'
-  | 'accent'
-  | 'gradient-secondary'
-  | 'gradient-muted'
-  | 'gradient-accent'
-  | 'gradient-success'
-  | 'gradient-error'
-  | 'gradient-info'
-  | 'gradient-warning'
+/**
+ * Section background surfaces.
+ *
+ * Deliberately minimal: every section is either the page background, a light
+ * tint, or the brand (navy) surface — each with an optional gradient variant.
+ * `subtle` and `gradient-subtle` are light in light mode and dark-tinted in dark
+ * mode; `brand` and `gradient-brand` follow --primary, which inverts in dark mode.
+ */
+export type BlockBackground = 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand'
+
+/** Whether a surface reads as light (foreground text) or brand (primary-foreground text). */
+export type BlockSurface = 'brand' | 'light'
 
 export type BlockAppearance = {
   background?: BlockBackground | null
   border?: 'none' | 'top' | 'bottom' | 'topAndBottom' | null
 }
 
+/**
+ * Backgrounds retired in the palette collapse. Stored content still holds these
+ * values, so they are folded into the nearest surviving surface at render time
+ * rather than requiring a data migration.
+ */
+const legacyBackgrounds: Record<string, BlockBackground> = {
+  primary: 'brand',
+  secondary: 'subtle',
+  muted: 'subtle',
+  accent: 'subtle',
+  'gradient-secondary': 'gradient-subtle',
+  'gradient-muted': 'gradient-subtle',
+  'gradient-accent': 'gradient-subtle',
+  'gradient-success': 'gradient-subtle',
+  'gradient-error': 'gradient-subtle',
+  'gradient-info': 'gradient-subtle',
+  'gradient-warning': 'gradient-subtle',
+  'gradient-primary': 'gradient-brand',
+}
+
 const backgroundClasses = {
   none: '',
-  primary: 'bg-primary',
-  secondary: 'bg-secondary',
-  muted: 'bg-muted',
-  accent: 'bg-accent',
-  'gradient-secondary': 'bg-gradient-secondary',
-  'gradient-muted': 'bg-gradient-muted',
-  'gradient-accent': 'bg-gradient-accent',
-  'gradient-success': 'bg-gradient-success',
-  'gradient-error': 'bg-gradient-error',
-  'gradient-info': 'bg-gradient-info',
-  'gradient-warning': 'bg-gradient-warning',
-} as const
+  subtle: 'bg-subtle',
+  brand: 'bg-brand',
+  'gradient-subtle': 'bg-gradient-subtle',
+  'gradient-brand': 'bg-gradient-brand',
+} as const satisfies Record<BlockBackground, string>
 
 const surfaceForegroundClasses = {
   none: '',
-  primary: 'text-primary-foreground',
-  secondary: 'text-secondary-foreground',
-  muted: 'text-foreground',
-  accent: 'text-accent-foreground',
-  'gradient-secondary': 'text-secondary-foreground',
-  'gradient-muted': 'text-foreground',
-  'gradient-accent': 'text-accent-foreground',
-  'gradient-success': 'text-foreground',
-  'gradient-error': 'text-foreground',
-  'gradient-info': 'text-foreground',
-  'gradient-warning': 'text-foreground',
-} as const
+  subtle: 'text-foreground',
+  brand: 'text-primary-foreground',
+  'gradient-subtle': 'text-foreground',
+  'gradient-brand': 'text-primary-foreground',
+} as const satisfies Record<BlockBackground, string>
+
+const backgroundSurfaces = {
+  none: 'light',
+  subtle: 'light',
+  brand: 'brand',
+  'gradient-subtle': 'light',
+  'gradient-brand': 'brand',
+} as const satisfies Record<BlockBackground, BlockSurface>
 
 const borderClasses = {
   none: '',
@@ -56,8 +69,20 @@ const borderClasses = {
   topAndBottom: 'border-y border-border',
 } as const
 
+/** Maps any stored background value — current or retired — onto a supported surface. */
+export function normalizeBlockBackground(value?: string | null): BlockBackground {
+  if (!value) return 'none'
+  if (value in backgroundClasses) return value as BlockBackground
+  return legacyBackgrounds[value] ?? 'none'
+}
+
+/** Whether a section reads as a light surface or the brand surface. */
+export function resolveBlockSurface(value?: string | null): BlockSurface {
+  return backgroundSurfaces[normalizeBlockBackground(value)]
+}
+
 export function resolveBlockAppearanceClasses(appearance?: BlockAppearance | null) {
-  const background = appearance?.background ?? 'none'
+  const background = normalizeBlockBackground(appearance?.background)
   const border = appearance?.border ?? 'none'
 
   const backgroundClassName = backgroundClasses[background]
@@ -65,9 +90,11 @@ export function resolveBlockAppearanceClasses(appearance?: BlockAppearance | nul
   const borderClassName = borderClasses[border]
 
   return {
+    background,
     backgroundClassName,
-    textClassName,
     borderClassName,
     className: cn(backgroundClassName, textClassName, borderClassName),
+    surface: backgroundSurfaces[background],
+    textClassName,
   }
 }

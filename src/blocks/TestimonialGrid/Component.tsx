@@ -37,7 +37,6 @@ type TestimonialGridBlockLike = {
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   title?: string | null
   size?: RegularBlockSize | null
@@ -171,7 +170,6 @@ export function TestimonialGridBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   title,
   size = 'default',
@@ -275,7 +273,7 @@ export function TestimonialGridBlockComponent({
             })}
           </div>
         ) : null}
-        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+        <BlockFooterActions actions={footerActions} />
       </div>
     </section>
   )

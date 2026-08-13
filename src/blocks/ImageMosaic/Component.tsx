@@ -25,13 +25,11 @@ type ImageMosaicItemValue = {
 
 type ImageMosaicBlockLike = {
   accentTitle?: string | null
-  actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: ImageMosaicAlignment | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   items?: ImageMosaicItemValue[] | null
   showImageOverlays?: boolean | null
@@ -41,13 +39,11 @@ type ImageMosaicBlockLike = {
 
 export function ImageMosaicBlockComponent({
   accentTitle,
-  actionMode = 'link',
   actions,
   appearance,
   contentAlignment = 'center',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   items,
   showImageOverlays = true,
@@ -109,7 +105,6 @@ export function ImageMosaicBlockComponent({
             actions={resolveCmsActions(actions).slice(0, 2)}
             alignment={alignment}
             data-image-mosaic-actions="true"
-            mode={actionMode ?? 'link'}
           />
         }
         alignment={alignment}
@@ -121,7 +116,7 @@ export function ImageMosaicBlockComponent({
         size={size ?? 'default'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
     </>
   )
 }

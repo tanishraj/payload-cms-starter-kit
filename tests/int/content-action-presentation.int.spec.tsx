@@ -110,10 +110,9 @@ describe('content action presentation', () => {
     const html = renderToStaticMarkup(
       createElement(ContentActions, {
         actions: [
-          { href: '/plain', label: 'Plain', showArrow: false, variant: 'default' },
-          { href: '/arrow', label: 'Arrow', showArrow: true, variant: 'outline' },
+          { href: '/plain', label: 'Plain', mode: 'button', showArrow: false, variant: 'default' },
+          { href: '/arrow', label: 'Arrow', mode: 'button', showArrow: true, variant: 'outline' },
         ],
-        mode: 'button',
       }),
     )
 
@@ -124,13 +123,31 @@ describe('content action presentation', () => {
   it('keeps link-style CTAs editorial and ignores their button arrow', () => {
     const html = renderToStaticMarkup(
       createElement(ContentActions, {
-        actions: [{ href: '/read', label: 'Read more', showArrow: true, variant: 'link' }],
-        mode: 'button',
+        actions: [
+          { href: '/read', label: 'Read more', mode: 'button', showArrow: true, variant: 'link' },
+        ],
       }),
     )
 
     expect(html).toContain('data-content-link="true"')
     expect(html).not.toContain('data-action-arrow="true"')
+  })
+
+  it('renders a mixed row as a button next to a link, reporting button mode on the container', () => {
+    const html = renderToStaticMarkup(
+      createElement(ContentActions, {
+        actions: [
+          { href: '/apply', label: 'Apply now', mode: 'button', showArrow: false, variant: 'default' },
+          { href: '/learn-more', label: 'Learn more', mode: 'link', showArrow: false, variant: 'default' },
+        ],
+      }),
+    )
+
+    expect(html).toContain('data-action-mode="button"')
+    expect(html).toContain('data-slot="button"')
+    expect(html).toContain('href="/apply"')
+    expect(html).toContain('data-content-link="true"')
+    expect(html).toContain('href="/learn-more"')
   })
 
   it.each([

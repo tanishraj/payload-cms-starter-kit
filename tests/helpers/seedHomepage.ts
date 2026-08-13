@@ -34,7 +34,7 @@ const homepagePageData = {
         },
       ],
       appearance: {
-        background: 'accent' as const,
+        background: 'subtle' as const,
         border: 'topAndBottom' as const,
       },
       contentAlignment: 'center' as const,

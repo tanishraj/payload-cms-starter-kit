@@ -1,168 +1,165 @@
-/* SNMIH heading italic accent */
+/* ==========================================================================
+   Section surfaces
+
+   Five surfaces total. `subtle` follows --muted and `brand` follows --primary,
+   so both invert automatically in dark mode without extra rules.
+   These classes are applied only to block section roots (see blockAppearance.ts),
+   which keeps the button rules below from leaking into cards.
+   ========================================================================== */
+
+.bg-subtle {
+  background-color: var(--muted);
+}
+
+.bg-brand {
+  background-color: var(--primary);
+}
+
+/* Light tint fading into the page background. */
+.bg-gradient-subtle {
+  background: linear-gradient(180deg, var(--muted) 0%, var(--background) 100%);
+}
+
+/* Brand surface with a deeper top-left corner. */
+.bg-gradient-brand {
+  background: linear-gradient(
+    145deg,
+    color-mix(in oklch, var(--primary) 80%, black) 0%,
+    var(--primary) 100%
+  );
+}
+
+/* SNMIH fades the subtle gradient into mint instead of the page background. */
+:root[data-theme-color='snmih'] .bg-gradient-subtle {
+  background: linear-gradient(
+    180deg,
+    var(--muted) 0%,
+    color-mix(in oklch, var(--success) 10%, var(--background)) 100%
+  );
+}
+
+/* ==========================================================================
+   Buttons and links on section surfaces
+
+   Two families only:
+     light surfaces  -> filled = --primary,            outline = --primary border
+     brand surfaces  -> filled = --primary-foreground, outline = translucent border
+
+   Scoped to `section` (every block renders one) so the outline fix reaches
+   `none` sections too, which carry no background class.
+   ========================================================================== */
+
+/* Light surfaces need no rules: the base `outline` variant is already transparent
+   with a --primary border, and every other variant is token-driven.
+
+   Brand surfaces invert everything against --primary. */
+.bg-brand [data-slot='button'][data-variant='default'],
+.bg-gradient-brand [data-slot='button'][data-variant='default'],
+[data-block-surface='brand'] [data-slot='button'][data-variant='default'] {
+  background-color: var(--primary-foreground);
+  color: var(--primary);
+}
+
+.bg-brand [data-slot='button'][data-variant='default']:hover,
+.bg-gradient-brand [data-slot='button'][data-variant='default']:hover,
+[data-block-surface='brand'] [data-slot='button'][data-variant='default']:hover {
+  background-color: color-mix(in oklch, var(--primary-foreground) 90%, var(--primary));
+}
+
+.bg-brand [data-slot='button'][data-variant='outline'],
+.bg-gradient-brand [data-slot='button'][data-variant='outline'],
+[data-block-surface='brand'] [data-slot='button'][data-variant='outline'] {
+  background-color: transparent;
+  border-color: color-mix(in oklch, var(--primary-foreground) 60%, transparent);
+  color: var(--primary-foreground);
+}
+
+.bg-brand [data-slot='button'][data-variant='outline']:hover,
+.bg-gradient-brand [data-slot='button'][data-variant='outline']:hover,
+[data-block-surface='brand'] [data-slot='button'][data-variant='outline']:hover {
+  background-color: color-mix(in oklch, var(--primary-foreground) 12%, transparent);
+  border-color: var(--primary-foreground);
+  color: var(--primary-foreground);
+}
+
+.bg-brand [data-slot='button'][data-variant='secondary'],
+.bg-gradient-brand [data-slot='button'][data-variant='secondary'],
+[data-block-surface='brand'] [data-slot='button'][data-variant='secondary'] {
+  background-color: color-mix(in oklch, var(--primary-foreground) 14%, transparent);
+  color: var(--primary-foreground);
+}
+
+.bg-brand [data-slot='button'][data-variant='secondary']:hover,
+.bg-gradient-brand [data-slot='button'][data-variant='secondary']:hover,
+[data-block-surface='brand'] [data-slot='button'][data-variant='secondary']:hover {
+  background-color: color-mix(in oklch, var(--primary-foreground) 22%, transparent);
+}
+
+.bg-brand [data-slot='button'][data-variant='ghost'],
+.bg-gradient-brand [data-slot='button'][data-variant='ghost'],
+[data-block-surface='brand'] [data-slot='button'][data-variant='ghost'] {
+  color: var(--primary-foreground);
+}
+
+.bg-brand [data-slot='button'][data-variant='ghost']:hover,
+.bg-gradient-brand [data-slot='button'][data-variant='ghost']:hover,
+[data-block-surface='brand'] [data-slot='button'][data-variant='ghost']:hover {
+  background-color: color-mix(in oklch, var(--primary-foreground) 12%, transparent);
+  color: var(--primary-foreground);
+}
+
+/* Text links: --primary is invisible against the brand surface. */
+.bg-brand [data-content-link='true'],
+.bg-gradient-brand [data-content-link='true'],
+[data-block-surface='brand'] [data-content-link='true'] {
+  color: var(--primary-foreground);
+}
+
+/* ==========================================================================
+   SNMIH brand accents
+   ========================================================================== */
+
+/* Italic heading fragments pick up the soft green. */
 :root[data-theme-color='snmih'] :is(h1, h2, h3) em {
   color: var(--ring);
   font-style: italic;
 }
 
-/* SNMIH section eyebrows: success on light surfaces, ring on dark/primary */
+/* Eyebrows track how dark the surface actually renders, which flips between
+   modes: --primary is navy in light mode but inverts to a light tint in dark
+   mode, so a brand section is dark in one and light in the other.
+   The three rules match disjoint sets, so none needs to outrank another.
+   Retired surface names are matched too, since stored content may still emit
+   them. */
+
+/* Deep green — light-mode surfaces that sit on the page background. */
 :root[data-theme-color='snmih']:not(.dark)
-  :is(
-    [data-section-eyebrow-surface='none'],
-    [data-section-eyebrow-surface='secondary'],
-    [data-section-eyebrow-surface='muted'],
-    [data-section-eyebrow-surface='accent'],
-    [data-section-eyebrow-surface='gradient-secondary'],
-    [data-section-eyebrow-surface='gradient-muted'],
-    [data-section-eyebrow-surface='gradient-accent']
+  [data-section-eyebrow-surface]:not([data-section-eyebrow-surface='brand']):not(
+    [data-section-eyebrow-surface='gradient-brand']
+  ):not([data-section-eyebrow-surface='primary']):not(
+    [data-section-eyebrow-surface='darkOverlay']
   ) {
   color: var(--success);
 }
 
+/* Soft green — genuinely dark surfaces: the navy brand surface in light mode,
+   the page background in dark mode, and image overlays in either mode. */
+:root[data-theme-color='snmih']:not(.dark) [data-section-eyebrow-surface='brand'],
+:root[data-theme-color='snmih']:not(.dark) [data-section-eyebrow-surface='gradient-brand'],
 :root[data-theme-color='snmih']:not(.dark) [data-section-eyebrow-surface='primary'],
+:root[data-theme-color='snmih'] [data-section-eyebrow-surface='darkOverlay'],
 :root[data-theme-color='snmih'].dark
-  :is(
-    [data-section-eyebrow-surface='none'],
-    [data-section-eyebrow-surface='secondary'],
-    [data-section-eyebrow-surface='muted'],
-    [data-section-eyebrow-surface='accent'],
-    [data-section-eyebrow-surface='gradient-secondary'],
-    [data-section-eyebrow-surface='gradient-muted'],
-    [data-section-eyebrow-surface='gradient-accent']
-  ),
-:root[data-theme-color='snmih'] [data-section-eyebrow-surface='darkOverlay'] {
+  [data-section-eyebrow-surface]:not([data-section-eyebrow-surface='brand']):not(
+    [data-section-eyebrow-surface='gradient-brand']
+  ):not([data-section-eyebrow-surface='primary']) {
   color: var(--ring);
 }
 
-/* Section gradient backgrounds — secondary tint at top, specific color tint at bottom */
-.bg-gradient-secondary {
-  background: linear-gradient(
-    180deg,
-    color-mix(in oklch, var(--secondary) 50%, var(--background)) 0%,
-    var(--background) 100%
-  );
-}
-
-.bg-gradient-muted {
-  background: linear-gradient(
-    180deg,
-    color-mix(in oklch, var(--secondary) 50%, var(--background)) 0%,
-    color-mix(in oklch, var(--muted) 50%, var(--background)) 100%
-  );
-}
-
-.bg-gradient-accent {
-  background: linear-gradient(
-    180deg,
-    color-mix(in oklch, var(--secondary) 50%, var(--background)) 0%,
-    color-mix(in oklch, var(--accent) 50%, var(--background)) 100%
-  );
-}
-
-.bg-gradient-success {
-  background: linear-gradient(
-    180deg,
-    color-mix(in oklch, var(--secondary) 50%, var(--background)) 0%,
-    color-mix(in oklch, var(--success) 10%, var(--background)) 100%
-  );
-}
-
-.bg-gradient-error {
-  background: linear-gradient(
-    180deg,
-    color-mix(in oklch, var(--secondary) 50%, var(--background)) 0%,
-    color-mix(in oklch, var(--error) 8%, var(--background)) 100%
-  );
-}
-
-.bg-gradient-info {
-  background: linear-gradient(
-    180deg,
-    color-mix(in oklch, var(--secondary) 50%, var(--background)) 0%,
-    color-mix(in oklch, var(--info) 8%, var(--background)) 100%
-  );
-}
-
-.bg-gradient-warning {
-  background: linear-gradient(
-    180deg,
-    color-mix(in oklch, var(--secondary) 50%, var(--background)) 0%,
-    color-mix(in oklch, var(--warning) 10%, var(--background)) 100%
-  );
-}
-
-/* SNMIH brand gradient overrides — must come after base classes.
-   --muted ≈ #f4f8fc (blue-gray, maps to "secondary" in brand language) */
-:root[data-theme-color='snmih'] .bg-gradient-secondary,
-:root[data-theme-color='snmih'] .bg-gradient-muted,
-:root[data-theme-color='snmih'] .bg-gradient-accent {
-  background: linear-gradient(180deg, var(--muted) 0%, var(--background) 100%);
-}
-
-:root[data-theme-color='snmih'] .bg-gradient-success {
-  background: linear-gradient(
-    180deg,
-    var(--muted) 0%,
-    color-mix(in oklch, var(--success) 15%, var(--background)) 100%
-  );
-}
-
-:root[data-theme-color='snmih'] .bg-gradient-error {
-  background: linear-gradient(
-    180deg,
-    var(--muted) 0%,
-    color-mix(in oklch, var(--error) 8%, var(--background)) 100%
-  );
-}
-
-:root[data-theme-color='snmih'] .bg-gradient-info {
-  background: linear-gradient(
-    180deg,
-    var(--muted) 0%,
-    color-mix(in oklch, var(--info) 8%, var(--background)) 100%
-  );
-}
-
-:root[data-theme-color='snmih'] .bg-gradient-warning {
-  background: linear-gradient(
-    180deg,
-    var(--muted) 0%,
-    color-mix(in oklch, var(--warning) 10%, var(--background)) 100%
-  );
-}
-
-/* Button and link surface overrides — primary section background.
-   Without these, default/outline buttons are invisible (same color as section)
-   and ContentLink is invisible (text-primary === section color). */
-.bg-primary [data-slot='button'][data-variant='default'] {
-  background-color: var(--primary-foreground);
-  color: var(--primary);
-}
-.bg-primary [data-slot='button'][data-variant='default']:hover {
-  background-color: color-mix(in oklch, var(--primary-foreground) 90%, var(--primary));
-}
-.bg-primary [data-slot='button'][data-variant='outline'] {
-  background-color: transparent;
-  border-color: color-mix(in oklch, var(--primary-foreground) 35%, transparent);
-  color: var(--primary-foreground);
-}
-.bg-primary [data-slot='button'][data-variant='outline']:hover {
-  background-color: color-mix(in oklch, var(--primary-foreground) 10%, transparent);
-}
-.bg-primary [data-slot='button'][data-variant='secondary'] {
-  background-color: color-mix(in oklch, var(--primary-foreground) 12%, transparent);
-  color: var(--primary-foreground);
-}
-.bg-primary [data-slot='button'][data-variant='secondary']:hover {
-  background-color: color-mix(in oklch, var(--primary-foreground) 20%, transparent);
-}
-.bg-primary [data-slot='button'][data-variant='ghost'] {
-  color: var(--primary-foreground);
-}
-.bg-primary [data-slot='button'][data-variant='ghost']:hover {
-  background-color: color-mix(in oklch, var(--primary-foreground) 10%, transparent);
-  color: var(--primary-foreground);
-}
-.bg-primary [data-content-link='true'] {
+/* In dark mode the brand surface inverts to a light tint, where both greens
+   are too pale to read. Fall back to the surface's own foreground. */
+:root[data-theme-color='snmih'].dark [data-section-eyebrow-surface='brand'],
+:root[data-theme-color='snmih'].dark [data-section-eyebrow-surface='gradient-brand'],
+:root[data-theme-color='snmih'].dark [data-section-eyebrow-surface='primary'] {
   color: var(--primary-foreground);
 }
 

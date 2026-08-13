@@ -3,9 +3,7 @@ import type { ArrayField, Block, CheckboxField, SelectField, TabsField } from 'p
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
-import {
-  createContentActionsWithModeFields,
-} from '@/blocks/shared/contentActionsFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 type ItemLinkSiblingData = {
   linkType?: 'custom' | 'none' | 'page' | null
@@ -131,8 +129,8 @@ export const ContentHighlightsBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            ...createContentActionsWithModeFields(),
-            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField(),
+            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             itemsField,
           ],
         },

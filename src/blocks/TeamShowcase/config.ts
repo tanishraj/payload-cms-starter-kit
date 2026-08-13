@@ -1,7 +1,7 @@
 import type { ArrayField, Block, CheckboxField, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
-import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
@@ -67,8 +67,8 @@ export const TeamShowcaseBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            ...createContentActionsWithModeFields(),
-            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField(),
+            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             teamShowcaseMembersField,
           ],
         },

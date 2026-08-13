@@ -33,7 +33,6 @@ type TimelineBlockLike = {
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   items?: TimelineItem[] | null
   showConnectors?: boolean | null
@@ -327,7 +326,6 @@ export function TimelineBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   items,
   showConnectors = true,
@@ -368,7 +366,7 @@ export function TimelineBlockComponent({
             <VerticalTimeline items={validItems} sectionBackground={appearance?.background ?? 'none'} />
           </div>
         )}
-        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+        <BlockFooterActions actions={footerActions} />
       </div>
     </section>
   )

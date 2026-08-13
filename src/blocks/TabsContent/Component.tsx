@@ -31,7 +31,6 @@ type TabsContentBlockLike = {
   contentLayout?: 'imageRight' | 'imageLeft' | 'imageTop' | 'textOnly' | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   size?: RegularBlockSize | null
   tabContentAlignment?: 'left' | 'center' | null
@@ -48,7 +47,6 @@ export function TabsContentBlockComponent({
   contentLayout = 'imageRight',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   size = 'default',
   tabContentAlignment = 'left',
@@ -125,7 +123,7 @@ export function TabsContentBlockComponent({
           contentLayout={contentLayout}
           tabContentAlignment={tabContentAlignment ?? 'left'}
         />
-        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+        <BlockFooterActions actions={footerActions} />
       </div>
     </section>
   )

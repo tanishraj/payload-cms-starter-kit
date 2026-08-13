@@ -59,13 +59,11 @@ type ReviewSubmissionValues = {
 type FormLike = Pick<Form, 'fields' | 'slug' | 'submitButtonLabel' | 'successMessage' | 'title'>
 
 type ReviewSubmissionBlockLike = {
-  actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'center' | 'left' | 'right' | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   form?: FormLike | number | string | null
   formDescription?: string | null
@@ -221,13 +219,11 @@ function getSubmissionMetadata() {
 }
 
 export function ReviewSubmissionBlockComponent({
-  actionMode = 'link',
   actions,
   appearance,
   contentAlignment = 'center',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   form,
   formDescription,
@@ -383,7 +379,6 @@ export function ReviewSubmissionBlockComponent({
             actions={resolvedActions}
             alignment={resolvedContentAlignment}
             data-review-submission-actions="true"
-            mode={actionMode ?? 'link'}
           />
         </div>
 
@@ -601,7 +596,7 @@ export function ReviewSubmissionBlockComponent({
             </p>
           )}
         </div>
-        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+        <BlockFooterActions actions={footerActions} />
       </div>
     </section>
   )

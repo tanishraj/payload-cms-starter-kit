@@ -42,7 +42,7 @@ describe('Q&A Accordion block', () => {
     const html = renderToStaticMarkup(
       createElement(QaAccordionBlockComponent, {
         appearance: {
-          background: 'muted',
+          background: 'subtle',
           border: 'top',
         },
         defaultOpenFirst: true,
@@ -75,12 +75,11 @@ describe('Q&A Accordion block', () => {
             title: 'Admissions Counselor',
           },
         },
-        sideActionMode: 'link',
         size: 'comfortable',
       }),
     )
 
-    expect(html).toContain('data-qa-accordion-background="muted"')
+    expect(html).toContain('data-qa-accordion-background="subtle"')
     expect(html).toContain('data-qa-accordion-has-side-column="true"')
     expect(html).toContain('data-qa-accordion-side-column="true"')
     expect(html).toContain('data-qa-accordion-layout="oneThird"')
@@ -88,7 +87,7 @@ describe('Q&A Accordion block', () => {
     expect(html).toContain('data-qa-accordion-size="comfortable"')
     expect(html).toContain('py-20 md:py-28')
     expect(html).toContain(regularBlockContainerClasses)
-    expect(html).toContain('bg-muted')
+    expect(html).toContain('bg-subtle')
     expect(html).toContain('border-t border-border')
     expect(html).toContain('Frequently asked questions')
     expect(html).toContain('Still have questions?')
@@ -116,17 +115,18 @@ describe('Q&A Accordion block', () => {
         defaultOpenFirst: false,
         description: 'Answers for prospective students.',
         title: 'Questions and answers',
-        actionMode: 'button',
         actions: [
           {
             label: 'Admissions guide',
             linkType: 'custom',
+            mode: 'button',
             url: '/guide',
             variant: 'default',
           },
           {
             label: 'Contact us',
             linkType: 'custom',
+            mode: 'button',
             url: '/contact',
             variant: 'outline',
           },

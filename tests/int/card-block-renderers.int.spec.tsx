@@ -198,7 +198,7 @@ describe('semantic card surface rendering', () => {
     const markups = [
       renderToStaticMarkup(
         <IconGridBlockComponent
-          appearance={{ background: 'primary' }}
+          appearance={{ background: 'brand' }}
           items={[{ icon: 'Hospital', title: 'Hospital training' }]}
           title="Why choose us"
           variant="card"
@@ -206,21 +206,21 @@ describe('semantic card surface rendering', () => {
       ),
       renderToStaticMarkup(
         <FeatureMatrixBlockComponent
-          appearance={{ background: 'primary' }}
+          appearance={{ background: 'brand' }}
           features={[{ image: media, title: 'Hospital training' }]}
           title="Features"
         />,
       ),
       renderToStaticMarkup(
         <ProgramMatrixBlockComponent
-          appearance={{ background: 'primary' }}
+          appearance={{ background: 'brand' }}
           items={[{ title: 'MBBS' }]}
           title="Programmes"
         />,
       ),
       renderToStaticMarkup(
         <TestimonialGridBlockComponent
-          appearance={{ background: 'primary' }}
+          appearance={{ background: 'brand' }}
           testimonials={[{ name: 'Student', quote: 'Excellent' }]}
           variant="grid"
         />,
@@ -237,21 +237,21 @@ describe('semantic card surface rendering', () => {
     const borderedMarkups = [
       renderToStaticMarkup(
         <DownloadListBlockComponent
-          appearance={{ background: 'primary' }}
+          appearance={{ background: 'brand' }}
           displayMode="cards"
           downloads={[{ externalUrl: 'https://example.com/form.pdf', title: 'Application Form' }]}
         />,
       ),
       renderToStaticMarkup(
         <MediaCarouselBlockComponent
-          appearance={{ background: 'primary' }}
+          appearance={{ background: 'brand' }}
           items={[{ media, title: 'Campus life' }]}
           title="Gallery"
         />,
       ),
       renderToStaticMarkup(
         <ProgramGridBlockComponent
-          appearance={{ background: 'primary' }}
+          appearance={{ background: 'brand' }}
           programs={[{ title: 'MBBS' }]}
           title="Programmes"
         />,
@@ -265,7 +265,7 @@ describe('semantic card surface rendering', () => {
 
     const borderlessProfile = renderToStaticMarkup(
       <ProfileCarouselBlockComponent
-        appearance={{ background: 'primary' }}
+        appearance={{ background: 'brand' }}
         profiles={[{ image: media, name: 'Dr Example' }]}
         title="Faculty"
       />,

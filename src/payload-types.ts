@@ -296,19 +296,7 @@ export interface AnnouncementBlock {
     id?: string | null;
   }[];
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   displayMode: 'vertical' | 'horizontal' | 'marquee';
@@ -329,7 +317,6 @@ export interface Cta39Block {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -337,7 +324,8 @@ export interface Cta39Block {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -345,7 +333,6 @@ export interface Cta39Block {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -353,7 +340,8 @@ export interface Cta39Block {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -362,19 +350,7 @@ export interface Cta39Block {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -417,19 +393,7 @@ export interface HeroBannerBlock {
    */
   enableTextShadow?: boolean | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   horizontalAlignment: 'left' | 'center' | 'right';
@@ -589,7 +553,6 @@ export interface GalleryCoverflowBlock {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -597,7 +560,8 @@ export interface GalleryCoverflowBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -605,7 +569,6 @@ export interface GalleryCoverflowBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -613,7 +576,8 @@ export interface GalleryCoverflowBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -631,19 +595,7 @@ export interface GalleryCoverflowBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -662,7 +614,6 @@ export interface FeatureSpotlightBlock {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -670,7 +621,8 @@ export interface FeatureSpotlightBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -678,7 +630,6 @@ export interface FeatureSpotlightBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -686,7 +637,8 @@ export interface FeatureSpotlightBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -695,19 +647,7 @@ export interface FeatureSpotlightBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   layoutMode: 'split' | 'contentOnly';
@@ -730,7 +670,6 @@ export interface FeatureMatrixBlock {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -738,7 +677,8 @@ export interface FeatureMatrixBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -746,7 +686,6 @@ export interface FeatureMatrixBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -754,7 +693,8 @@ export interface FeatureMatrixBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -776,19 +716,7 @@ export interface FeatureMatrixBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -808,7 +736,6 @@ export interface ContentHighlightsBlock {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -816,7 +743,8 @@ export interface ContentHighlightsBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -824,7 +752,6 @@ export interface ContentHighlightsBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -832,7 +759,8 @@ export interface ContentHighlightsBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -855,19 +783,7 @@ export interface ContentHighlightsBlock {
     id?: string | null;
   }[];
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   layout: 'editorialRow' | 'highlightsGrid' | 'simpleGrid' | 'numberedSteps';
@@ -894,7 +810,6 @@ export interface EditorialReasonsBlock {
    */
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -902,7 +817,8 @@ export interface EditorialReasonsBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -922,7 +838,6 @@ export interface EditorialReasonsBlock {
     openInNewTab?: boolean | null;
     id?: string | null;
   }[];
-  listActionMode?: ('link' | 'button') | null;
   listActions?:
     | {
         label: string;
@@ -930,7 +845,8 @@ export interface EditorialReasonsBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -939,19 +855,7 @@ export interface EditorialReasonsBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   /**
@@ -990,7 +894,6 @@ export interface NewsEventsHighlightsBlock {
   eyebrow?: string | null;
   title?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -998,7 +901,8 @@ export interface NewsEventsHighlightsBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1006,7 +910,6 @@ export interface NewsEventsHighlightsBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -1014,7 +917,8 @@ export interface NewsEventsHighlightsBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1028,19 +932,7 @@ export interface NewsEventsHighlightsBlock {
    */
   emptyStateMessage?: string | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1058,7 +950,6 @@ export interface ProfileCarouselBlock {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -1066,7 +957,8 @@ export interface ProfileCarouselBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1074,7 +966,6 @@ export interface ProfileCarouselBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -1082,7 +973,8 @@ export interface ProfileCarouselBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1104,19 +996,7 @@ export interface ProfileCarouselBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1136,7 +1016,6 @@ export interface GalleryShowcaseBlock {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -1144,7 +1023,8 @@ export interface GalleryShowcaseBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1152,7 +1032,6 @@ export interface GalleryShowcaseBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -1160,7 +1039,8 @@ export interface GalleryShowcaseBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1176,19 +1056,7 @@ export interface GalleryShowcaseBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1205,7 +1073,6 @@ export interface EventGalleryBlock {
   eyebrow?: string | null;
   title?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -1213,7 +1080,8 @@ export interface EventGalleryBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1226,7 +1094,6 @@ export interface EventGalleryBlock {
    */
   galleryAlbums: (string | GalleryAlbum)[];
   displayOrder: 'latestEventDate' | 'manual';
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -1234,7 +1101,8 @@ export interface EventGalleryBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1243,19 +1111,7 @@ export interface EventGalleryBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   cardTextLayout: 'split' | 'center';
@@ -1303,7 +1159,6 @@ export interface ImageMosaicBlock {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -1311,7 +1166,8 @@ export interface ImageMosaicBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1319,7 +1175,6 @@ export interface ImageMosaicBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -1327,7 +1182,8 @@ export interface ImageMosaicBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1346,7 +1202,7 @@ export interface ImageMosaicBlock {
           page?: (string | null) | Page;
           url?: string | null;
           openInNewTab?: boolean | null;
-          mode: 'link' | 'button';
+          mode?: ('link' | 'button') | null;
           variant?: ('default' | 'secondary' | 'outline') | null;
           /**
            * Adds a trailing arrow when this action is displayed as a button.
@@ -1358,19 +1214,7 @@ export interface ImageMosaicBlock {
     id?: string | null;
   }[];
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1395,19 +1239,7 @@ export interface StatsStripBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   size: 'none' | 'compact' | 'default' | 'comfortable';
@@ -1426,7 +1258,6 @@ export interface QaAccordionBlock {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -1434,7 +1265,8 @@ export interface QaAccordionBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1442,7 +1274,6 @@ export interface QaAccordionBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -1450,7 +1281,8 @@ export interface QaAccordionBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1495,7 +1327,8 @@ export interface QaAccordionBlock {
             page?: (string | null) | Page;
             url?: string | null;
             openInNewTab?: boolean | null;
-            variant: 'default' | 'secondary' | 'outline';
+            mode?: ('link' | 'button') | null;
+            variant?: ('default' | 'secondary' | 'outline') | null;
             /**
              * Adds a trailing arrow when this action is displayed as a button.
              */
@@ -1506,19 +1339,7 @@ export interface QaAccordionBlock {
     };
   };
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1538,7 +1359,6 @@ export interface RatingSpotlightBlock {
   eyebrow?: string | null;
   title?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -1546,7 +1366,8 @@ export interface RatingSpotlightBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1554,7 +1375,6 @@ export interface RatingSpotlightBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -1562,7 +1382,8 @@ export interface RatingSpotlightBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1576,19 +1397,7 @@ export interface RatingSpotlightBlock {
     manualReviewCount?: number | null;
   };
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1606,7 +1415,6 @@ export interface ReviewFeedBlock {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -1614,7 +1422,8 @@ export interface ReviewFeedBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1625,7 +1434,6 @@ export interface ReviewFeedBlock {
   pageSize: number;
   loadMoreLabel?: string | null;
   emptyStateMessage?: string | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -1633,7 +1441,8 @@ export interface ReviewFeedBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1642,19 +1451,7 @@ export interface ReviewFeedBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -1671,7 +1468,6 @@ export interface ReviewSubmissionBlock {
   eyebrow?: string | null;
   title?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -1679,7 +1475,8 @@ export interface ReviewSubmissionBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1687,7 +1484,6 @@ export interface ReviewSubmissionBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -1695,7 +1491,8 @@ export interface ReviewSubmissionBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1708,19 +1505,7 @@ export interface ReviewSubmissionBlock {
    */
   form: string | Form;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1804,7 +1589,6 @@ export interface Contact33Block {
   eyebrow?: string | null;
   title?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -1812,7 +1596,8 @@ export interface Contact33Block {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1820,7 +1605,6 @@ export interface Contact33Block {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -1828,7 +1612,8 @@ export interface Contact33Block {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1843,19 +1628,7 @@ export interface Contact33Block {
    */
   form: string | Form;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1873,7 +1646,6 @@ export interface Contact24Block {
   eyebrow?: string | null;
   title?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -1881,7 +1653,8 @@ export interface Contact24Block {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1889,7 +1662,6 @@ export interface Contact24Block {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -1897,7 +1669,8 @@ export interface Contact24Block {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1910,19 +1683,7 @@ export interface Contact24Block {
    */
   offices?: (string | OfficeLocation)[] | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -1933,7 +1694,7 @@ export interface Contact24Block {
    * Label for the map link shown on each office card.
    */
   mapActionLabel?: string | null;
-  mapActionMode: 'link' | 'button';
+  mapActionMode?: ('link' | 'button') | null;
   mapActionVariant?: ('default' | 'secondary' | 'outline') | null;
   id?: string | null;
   blockName?: string | null;
@@ -1984,7 +1745,6 @@ export interface TeamShowcaseBlock {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -1992,7 +1752,8 @@ export interface TeamShowcaseBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2000,7 +1761,6 @@ export interface TeamShowcaseBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -2008,7 +1768,8 @@ export interface TeamShowcaseBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2030,19 +1791,7 @@ export interface TeamShowcaseBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -2061,7 +1810,6 @@ export interface Services21Block {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -2069,7 +1817,8 @@ export interface Services21Block {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2077,7 +1826,6 @@ export interface Services21Block {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -2085,7 +1833,8 @@ export interface Services21Block {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2103,19 +1852,7 @@ export interface Services21Block {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -2145,19 +1882,7 @@ export interface RichTextBlock {
     [k: string]: unknown;
   };
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   size: 'none' | 'compact' | 'default' | 'comfortable';
@@ -2177,7 +1902,6 @@ export interface VideoEmbedBlock {
    */
   title?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -2185,7 +1909,8 @@ export interface VideoEmbedBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2193,7 +1918,6 @@ export interface VideoEmbedBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -2201,7 +1925,8 @@ export interface VideoEmbedBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2222,19 +1947,7 @@ export interface VideoEmbedBlock {
    */
   autoplay?: boolean | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
@@ -2256,7 +1969,6 @@ export interface MediaCarouselBlock {
   eyebrow?: string | null;
   title?: string | null;
   description?: string | null;
-  sectionActionMode?: ('link' | 'button') | null;
   sectionActions?:
     | {
         label: string;
@@ -2264,7 +1976,8 @@ export interface MediaCarouselBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2272,7 +1985,6 @@ export interface MediaCarouselBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -2280,7 +1992,8 @@ export interface MediaCarouselBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2313,7 +2026,8 @@ export interface MediaCarouselBlock {
               page?: (string | null) | Page;
               url?: string | null;
               openInNewTab?: boolean | null;
-              variant: 'default' | 'secondary' | 'outline';
+              mode?: ('link' | 'button') | null;
+              variant?: ('default' | 'secondary' | 'outline') | null;
               /**
                * Adds a trailing arrow when this action is displayed as a button.
                */
@@ -2329,22 +2043,9 @@ export interface MediaCarouselBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  actionVariant?: ('default' | 'secondary' | 'outline') | null;
   columns: '2' | '3' | '4';
   contentAlignment: 'left' | 'center';
   size: 'none' | 'compact' | 'default' | 'comfortable';
@@ -2364,7 +2065,6 @@ export interface ProgramGridBlock {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -2372,7 +2072,8 @@ export interface ProgramGridBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2380,7 +2081,6 @@ export interface ProgramGridBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -2388,7 +2088,8 @@ export interface ProgramGridBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2435,21 +2136,10 @@ export interface ProgramGridBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  actionMode?: ('link' | 'button') | null;
   actionVariant?: ('default' | 'secondary' | 'outline') | null;
   columns?: ('2' | '3' | '4') | null;
   viewMode: 'grid' | 'list';
@@ -2479,7 +2169,6 @@ export interface ProgramMatrixBlock {
   title: string;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -2487,7 +2176,8 @@ export interface ProgramMatrixBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2495,7 +2185,6 @@ export interface ProgramMatrixBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -2503,7 +2192,8 @@ export interface ProgramMatrixBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2536,21 +2226,10 @@ export interface ProgramMatrixBlock {
     id?: string | null;
   }[];
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  actionMode?: ('link' | 'button') | null;
   actionVariant?: ('default' | 'secondary' | 'outline') | null;
   itemActionLabel?: string | null;
   contentAlignment: 'left' | 'center';
@@ -2583,7 +2262,8 @@ export interface LogoStripBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2610,19 +2290,7 @@ export interface LogoStripBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -2668,7 +2336,6 @@ export interface PageHeaderBlock {
    * Supporting line below the title.
    */
   subtitle?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -2676,7 +2343,8 @@ export interface PageHeaderBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2684,7 +2352,6 @@ export interface PageHeaderBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -2692,7 +2359,8 @@ export interface PageHeaderBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2722,19 +2390,7 @@ export interface PageHeaderBlock {
     | null;
   variant: 'minimal' | 'banner' | 'split';
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center';
@@ -2756,7 +2412,6 @@ export interface TimelineBlock {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -2764,7 +2419,8 @@ export interface TimelineBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2791,7 +2447,6 @@ export interface TimelineBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -2799,7 +2454,8 @@ export interface TimelineBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2808,19 +2464,7 @@ export interface TimelineBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   variant: 'horizontal' | 'vertical' | 'alternating';
@@ -2849,7 +2493,6 @@ export interface IconGridBlock {
    * Optional supporting paragraph below the title.
    */
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -2857,7 +2500,8 @@ export interface IconGridBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2865,7 +2509,6 @@ export interface IconGridBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -2873,7 +2516,8 @@ export interface IconGridBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2907,21 +2551,10 @@ export interface IconGridBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  actionMode?: ('link' | 'button') | null;
   actionVariant?: ('default' | 'secondary' | 'outline') | null;
   /**
    * Label shown on the button or link for each item.
@@ -2961,19 +2594,7 @@ export interface QuoteBlockBlock {
    */
   eyebrow?: string | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   variant?: ('centered' | 'side' | 'card' | 'highlight') | null;
@@ -2997,7 +2618,6 @@ export interface TabsContentBlock {
    * Optional subtitle shown above the tab bar.
    */
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -3005,7 +2625,8 @@ export interface TabsContentBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3034,7 +2655,8 @@ export interface TabsContentBlock {
               page?: (string | null) | Page;
               url?: string | null;
               openInNewTab?: boolean | null;
-              variant: 'default' | 'secondary' | 'outline';
+              mode?: ('link' | 'button') | null;
+              variant?: ('default' | 'secondary' | 'outline') | null;
               /**
                * Adds a trailing arrow when this action is displayed as a button.
                */
@@ -3045,7 +2667,6 @@ export interface TabsContentBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -3053,7 +2674,8 @@ export interface TabsContentBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3062,19 +2684,7 @@ export interface TabsContentBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   tabStyle?: ('underline' | 'pills' | 'boxed') | null;
@@ -3095,7 +2705,6 @@ export interface DownloadListBlock {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -3103,7 +2712,8 @@ export interface DownloadListBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3144,7 +2754,6 @@ export interface DownloadListBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -3152,7 +2761,8 @@ export interface DownloadListBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3161,19 +2771,7 @@ export interface DownloadListBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   displayMode?: ('list' | 'cards' | 'compact') | null;
@@ -3195,7 +2793,6 @@ export interface NumberedStepsBlock {
   eyebrow?: string | null;
   title?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -3203,7 +2800,8 @@ export interface NumberedStepsBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3211,7 +2809,6 @@ export interface NumberedStepsBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -3219,7 +2816,8 @@ export interface NumberedStepsBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3251,19 +2849,7 @@ export interface NumberedStepsBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   variant?: ('vertical' | 'cards' | 'alternating') | null;
@@ -3283,7 +2869,6 @@ export interface BentoGridBlock {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -3291,7 +2876,8 @@ export interface BentoGridBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3299,7 +2885,6 @@ export interface BentoGridBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -3307,7 +2892,8 @@ export interface BentoGridBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3338,19 +2924,7 @@ export interface BentoGridBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -3371,7 +2945,6 @@ export interface TestimonialGridBlock {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -3379,7 +2952,8 @@ export interface TestimonialGridBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3404,7 +2978,6 @@ export interface TestimonialGridBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -3412,7 +2985,8 @@ export interface TestimonialGridBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3421,19 +2995,7 @@ export interface TestimonialGridBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -3456,7 +3018,6 @@ export interface AwardsListBlock {
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -3464,7 +3025,8 @@ export interface AwardsListBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3472,7 +3034,6 @@ export interface AwardsListBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -3480,7 +3041,8 @@ export interface AwardsListBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3515,19 +3077,7 @@ export interface AwardsListBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -3586,7 +3136,6 @@ export interface AboutSectionBlock {
         id?: string | null;
       }[]
     | null;
-  actionMode?: ('link' | 'button') | null;
   actions?:
     | {
         label: string;
@@ -3594,7 +3143,8 @@ export interface AboutSectionBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3602,7 +3152,6 @@ export interface AboutSectionBlock {
         id?: string | null;
       }[]
     | null;
-  footerActionMode?: ('link' | 'button') | null;
   footerActions?:
     | {
         label: string;
@@ -3610,7 +3159,8 @@ export interface AboutSectionBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'secondary' | 'outline';
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3619,19 +3169,7 @@ export interface AboutSectionBlock {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment?: ('left' | 'center') | null;
@@ -4067,7 +3605,7 @@ export interface NewsEvent {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        mode: 'link' | 'button';
+        mode?: ('link' | 'button') | null;
         variant?: ('default' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
@@ -4328,19 +3866,7 @@ export interface HeaderNavbar12Block {
       }[]
     | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   sticky?: boolean | null;
@@ -4426,19 +3952,7 @@ export interface Footer56Block {
     | null;
   copyrightText?: string | null;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   size: 'none' | 'compact' | 'default' | 'comfortable';
@@ -4554,19 +4068,7 @@ export interface System404Block {
     openInNewTab?: boolean | null;
   };
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   id?: string | null;
@@ -4599,19 +4101,7 @@ export interface SystemMaintenanceBlock {
     openInNewTab?: boolean | null;
   };
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   id?: string | null;
@@ -4644,19 +4134,7 @@ export interface SystemComingSoonBlock {
     openInNewTab?: boolean | null;
   };
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   id?: string | null;
@@ -5037,7 +4515,6 @@ export interface Cta39BlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -5046,11 +4523,11 @@ export interface Cta39BlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -5059,6 +4536,7 @@ export interface Cta39BlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5159,7 +4637,6 @@ export interface GalleryCoverflowBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -5168,11 +4645,11 @@ export interface GalleryCoverflowBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -5181,6 +4658,7 @@ export interface GalleryCoverflowBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5212,7 +4690,6 @@ export interface FeatureSpotlightBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -5221,11 +4698,11 @@ export interface FeatureSpotlightBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -5234,6 +4711,7 @@ export interface FeatureSpotlightBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5263,7 +4741,6 @@ export interface FeatureMatrixBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -5272,11 +4749,11 @@ export interface FeatureMatrixBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -5285,6 +4762,7 @@ export interface FeatureMatrixBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5321,7 +4799,6 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -5330,11 +4807,11 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -5343,6 +4820,7 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5383,7 +4861,6 @@ export interface EditorialReasonsBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -5392,6 +4869,7 @@ export interface EditorialReasonsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5407,7 +4885,6 @@ export interface EditorialReasonsBlockSelect<T extends boolean = true> {
         openInNewTab?: T;
         id?: T;
       };
-  listActionMode?: T;
   listActions?:
     | T
     | {
@@ -5416,6 +4893,7 @@ export interface EditorialReasonsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5446,7 +4924,6 @@ export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -5455,11 +4932,11 @@ export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -5468,6 +4945,7 @@ export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5494,7 +4972,6 @@ export interface ProfileCarouselBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -5503,11 +4980,11 @@ export interface ProfileCarouselBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -5516,6 +4993,7 @@ export interface ProfileCarouselBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5552,7 +5030,6 @@ export interface GalleryShowcaseBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -5561,11 +5038,11 @@ export interface GalleryShowcaseBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -5574,6 +5051,7 @@ export interface GalleryShowcaseBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5604,7 +5082,6 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -5613,13 +5090,13 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
   galleryAlbums?: T;
   displayOrder?: T;
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -5628,6 +5105,7 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5653,7 +5131,6 @@ export interface ImageMosaicBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -5662,11 +5139,11 @@ export interface ImageMosaicBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -5675,6 +5152,7 @@ export interface ImageMosaicBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5747,7 +5225,6 @@ export interface QaAccordionBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -5756,11 +5233,11 @@ export interface QaAccordionBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -5769,6 +5246,7 @@ export interface QaAccordionBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5803,6 +5281,7 @@ export interface QaAccordionBlockSelect<T extends boolean = true> {
                     page?: T;
                     url?: T;
                     openInNewTab?: T;
+                    mode?: T;
                     variant?: T;
                     showArrow?: T;
                     id?: T;
@@ -5831,7 +5310,6 @@ export interface RatingSpotlightBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -5840,11 +5318,11 @@ export interface RatingSpotlightBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -5853,6 +5331,7 @@ export interface RatingSpotlightBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5884,7 +5363,6 @@ export interface ReviewFeedBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -5893,6 +5371,7 @@ export interface ReviewFeedBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5900,7 +5379,6 @@ export interface ReviewFeedBlockSelect<T extends boolean = true> {
   pageSize?: T;
   loadMoreLabel?: T;
   emptyStateMessage?: T;
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -5909,6 +5387,7 @@ export interface ReviewFeedBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5932,7 +5411,6 @@ export interface ReviewSubmissionBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -5941,11 +5419,11 @@ export interface ReviewSubmissionBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -5954,6 +5432,7 @@ export interface ReviewSubmissionBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -5978,7 +5457,6 @@ export interface Contact33BlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -5987,11 +5465,11 @@ export interface Contact33BlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -6000,6 +5478,7 @@ export interface Contact33BlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6027,7 +5506,6 @@ export interface Contact24BlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -6036,11 +5514,11 @@ export interface Contact24BlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -6049,6 +5527,7 @@ export interface Contact24BlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6078,7 +5557,6 @@ export interface TeamShowcaseBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -6087,11 +5565,11 @@ export interface TeamShowcaseBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -6100,6 +5578,7 @@ export interface TeamShowcaseBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6135,7 +5614,6 @@ export interface Services21BlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -6144,11 +5622,11 @@ export interface Services21BlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -6157,6 +5635,7 @@ export interface Services21BlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6206,7 +5685,6 @@ export interface VideoEmbedBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -6215,11 +5693,11 @@ export interface VideoEmbedBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -6228,6 +5706,7 @@ export interface VideoEmbedBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6256,7 +5735,6 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
-  sectionActionMode?: T;
   sectionActions?:
     | T
     | {
@@ -6265,11 +5743,11 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -6278,6 +5756,7 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6297,6 +5776,7 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
               page?: T;
               url?: T;
               openInNewTab?: T;
+              mode?: T;
               variant?: T;
               showArrow?: T;
               id?: T;
@@ -6310,7 +5790,6 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
-  actionVariant?: T;
   columns?: T;
   contentAlignment?: T;
   size?: T;
@@ -6326,7 +5805,6 @@ export interface ProgramGridBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -6335,11 +5813,11 @@ export interface ProgramGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -6348,6 +5826,7 @@ export interface ProgramGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6375,6 +5854,7 @@ export interface ProgramGridBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  actionMode?: T;
   actionVariant?: T;
   columns?: T;
   viewMode?: T;
@@ -6394,7 +5874,6 @@ export interface ProgramMatrixBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -6403,11 +5882,11 @@ export interface ProgramMatrixBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -6416,6 +5895,7 @@ export interface ProgramMatrixBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6440,6 +5920,7 @@ export interface ProgramMatrixBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  actionMode?: T;
   actionVariant?: T;
   itemActionLabel?: T;
   contentAlignment?: T;
@@ -6463,6 +5944,7 @@ export interface LogoStripBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6509,7 +5991,6 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   subtitle?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -6518,11 +5999,11 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -6531,6 +6012,7 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6565,7 +6047,6 @@ export interface TimelineBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -6574,6 +6055,7 @@ export interface TimelineBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6588,7 +6070,6 @@ export interface TimelineBlockSelect<T extends boolean = true> {
         image?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -6597,6 +6078,7 @@ export interface TimelineBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6623,7 +6105,6 @@ export interface IconGridBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -6632,11 +6113,11 @@ export interface IconGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -6645,6 +6126,7 @@ export interface IconGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6668,6 +6150,7 @@ export interface IconGridBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  actionMode?: T;
   actionVariant?: T;
   itemActionLabel?: T;
   variant?: T;
@@ -6710,7 +6193,6 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -6719,6 +6201,7 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6740,13 +6223,13 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
               page?: T;
               url?: T;
               openInNewTab?: T;
+              mode?: T;
               variant?: T;
               showArrow?: T;
               id?: T;
             };
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -6755,6 +6238,7 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6782,7 +6266,6 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -6791,6 +6274,7 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6807,7 +6291,6 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
         cardBackground?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -6816,6 +6299,7 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6841,7 +6325,6 @@ export interface NumberedStepsBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -6850,11 +6333,11 @@ export interface NumberedStepsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -6863,6 +6346,7 @@ export interface NumberedStepsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6900,7 +6384,6 @@ export interface BentoGridBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -6909,11 +6392,11 @@ export interface BentoGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -6922,6 +6405,7 @@ export interface BentoGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6959,7 +6443,6 @@ export interface TestimonialGridBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -6968,6 +6451,7 @@ export interface TestimonialGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -6983,7 +6467,6 @@ export interface TestimonialGridBlockSelect<T extends boolean = true> {
         cardBackground?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -6992,6 +6475,7 @@ export interface TestimonialGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -7018,7 +6502,6 @@ export interface AwardsListBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   description?: T;
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -7027,11 +6510,11 @@ export interface AwardsListBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -7040,6 +6523,7 @@ export interface AwardsListBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -7092,7 +6576,6 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
         description?: T;
         id?: T;
       };
-  actionMode?: T;
   actions?:
     | T
     | {
@@ -7101,11 +6584,11 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
       };
-  footerActionMode?: T;
   footerActions?:
     | T
     | {
@@ -7114,6 +6597,7 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
         id?: T;
@@ -8130,19 +7614,7 @@ export interface PageSetting {
    */
   activeFooter?: (string | null) | Footer;
   pageAppearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
   };
   announcementEnabled?: boolean | null;
   /**
@@ -8161,19 +7633,7 @@ export interface PageSetting {
       }[]
     | null;
   announcementAppearance?: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   announcementDisplayMode?: ('vertical' | 'horizontal' | 'marquee') | null;
@@ -8216,19 +7676,7 @@ export interface NewsEventsSetting {
   emptyStateDescription?: string | null;
   entriesPerPage: number;
   appearance: {
-    background:
-      | 'none'
-      | 'primary'
-      | 'secondary'
-      | 'muted'
-      | 'accent'
-      | 'gradient-secondary'
-      | 'gradient-muted'
-      | 'gradient-accent'
-      | 'gradient-success'
-      | 'gradient-error'
-      | 'gradient-info'
-      | 'gradient-warning';
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   size: 'compact' | 'default' | 'comfortable';

@@ -46,19 +46,16 @@ type QaAccordionProfile = {
 
 type QaAccordionBlockLike = {
   accentTitle?: string | null
-  actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'center' | 'left' | 'right' | null
   defaultOpenFirst?: boolean | null
   description?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   accordionPlacement?: 'left' | 'right' | null
   title?: string | null
   items?: QaAccordionItemValue[] | null
   layoutMode?: 'fiftyFifty' | 'fullWidth' | 'oneThird' | null
-  sideActionMode?: 'button' | 'link' | null
   sideColumn?: {
     contact?: QaAccordionContact | null
     profile?: QaAccordionProfile | null
@@ -157,19 +154,16 @@ function QaAccordionContent({
 
 export function QaAccordionBlockComponent({
   accentTitle,
-  actionMode = 'link',
   actions,
   appearance,
   contentAlignment = 'center',
   defaultOpenFirst = true,
   description,
-  footerActionMode = 'link',
   footerActions,
   accordionPlacement = 'right',
   title,
   items,
   layoutMode = 'fiftyFifty',
-  sideActionMode = 'link',
   sideColumn,
   size = 'default',
 }: QaAccordionBlockLike) {
@@ -250,7 +244,6 @@ export function QaAccordionBlockComponent({
           actions={resolvedHeaderActions}
           alignment={resolvedContentAlignment}
           data-qa-accordion-header-actions="true"
-          mode={actionMode ?? 'link'}
         />
       </div>
 
@@ -333,7 +326,6 @@ export function QaAccordionBlockComponent({
         alignment="left"
         className="py-4"
         data-qa-accordion-contact-actions="true"
-        mode={sideActionMode ?? 'link'}
       />
     </aside>
   ) : null
@@ -361,7 +353,7 @@ export function QaAccordionBlockComponent({
           {accordionContent}
           {sideContent}
         </div>
-        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+        <BlockFooterActions actions={footerActions} />
       </div>
     </section>
   )

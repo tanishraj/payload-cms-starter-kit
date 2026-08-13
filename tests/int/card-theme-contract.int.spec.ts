@@ -67,10 +67,10 @@ describe('card theme contract', () => {
 
   it.each([
     ['none', 'border-current/10'],
-    ['primary', 'border-current/15'],
-    ['secondary', 'border-current/10'],
-    ['muted', 'border-current/10'],
-    ['accent', 'border-current/10'],
+    ['subtle', 'border-current/10'],
+    ['brand', 'border-current/15'],
+    ['gradient-subtle', 'border-current/10'],
+    ['gradient-brand', 'border-current/15'],
   ] as const)('inherits the %s section for a default card', (background, divider) => {
     expect(resolveCardSurface('default', background)).toMatchObject({
       className: 'bg-transparent text-current',
@@ -81,7 +81,7 @@ describe('card theme contract', () => {
   })
 
   it('keeps explicit card surfaces independent from the section', () => {
-    expect(resolveCardSurface('primary', 'accent')).toMatchObject({
+    expect(resolveCardSurface('primary', 'subtle')).toMatchObject({
       className: 'bg-primary text-primary-foreground',
       divider: 'border-primary-foreground/15',
       value: 'primary',
@@ -89,7 +89,7 @@ describe('card theme contract', () => {
   })
 
   it('uses a readable media overlay for a default card', () => {
-    expect(resolveCardSurface('default', 'primary').overlay).toBe(
+    expect(resolveCardSurface('default', 'brand').overlay).toBe(
       'from-black/80 via-black/50 to-transparent text-white',
     )
   })
@@ -97,12 +97,14 @@ describe('card theme contract', () => {
   it('falls back safely and inverses matching filled buttons', () => {
     expect(resolveCardSurface('unknown').value).toBe('default')
     expect(resolveCardSurface(null).value).toBe('default')
-    expect(resolveCardSurface('default', 'primary').button.default).toContain(
+    // The brand surface is not "light", so the default card inverts its
+    // filled button to the surface foreground.
+    expect(resolveCardSurface('default', 'brand').button.default).toContain(
       'bg-primary-foreground',
     )
-    expect(resolveCardSurface('default', 'secondary').button.secondary).toContain(
-      'bg-secondary-foreground',
-    )
+    // The subtle surface is "light", so the default card keeps no button
+    // override at all (it inherits the theme's default button styling).
+    expect(resolveCardSurface('default', 'subtle').button).toEqual({})
     expect(resolveCardSurface('primary').button.default).toContain('bg-primary-foreground')
     expect(resolveCardSurface('secondary').button.secondary).toContain('bg-secondary-foreground')
   })

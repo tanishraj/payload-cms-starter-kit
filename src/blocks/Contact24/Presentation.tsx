@@ -12,7 +12,6 @@ export type Contact24BlockLike = {
   description?: string | null
   detailsAlignment?: Contact24DetailsAlignment | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   mapActionLabel?: string | null
   mapActionMode?: 'button' | 'link' | null
@@ -30,7 +29,6 @@ export function Contact24BlockPresentation({
   description,
   detailsAlignment = 'left',
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   mapActionLabel,
   mapActionMode,
@@ -65,7 +63,7 @@ export function Contact24BlockPresentation({
         size={size ?? 'default'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
     </>
   )
 }

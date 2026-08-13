@@ -88,6 +88,7 @@ describe('contact24 data path', () => {
       'title',
       'description',
       'actions',
+      'footerActions',
       'offices',
     ])
     expect(byName(layout?.fields ?? [], 'appearance')?.type).toBe('group')

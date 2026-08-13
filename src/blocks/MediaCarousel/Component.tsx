@@ -6,7 +6,7 @@ import type { RegularBlockSize } from '@/blocks/shared/blockSpacing'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import { getMediaAbsoluteUrl, isMediaDoc } from '@/lib/media'
-import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@/lib/cmsLinks'
+import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import type { Media } from '@/payload-types'
 
 import { MediaCarouselClient, type MediaCarouselItem } from './MediaCarouselClient'
@@ -21,14 +21,11 @@ type MediaCarouselItemValue = {
 }
 
 type MediaCarouselBlockLike = {
-  actionMode?: 'button' | 'link' | null
-  actionVariant?: CmsActionVariant | null
   appearance?: BlockAppearance | null
   columns?: '2' | '3' | '4' | null
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   items?: MediaCarouselItemValue[] | null
   sectionActions?: CmsActionValue[] | null
@@ -37,14 +34,11 @@ type MediaCarouselBlockLike = {
 }
 
 export function MediaCarouselBlockComponent({
-  actionMode,
-  actionVariant,
   appearance,
   columns,
   contentAlignment = 'center',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   items,
   sectionActions,
@@ -95,8 +89,6 @@ export function MediaCarouselBlockComponent({
   return (
     <>
       <MediaCarouselClient
-        actionMode={actionMode ?? 'link'}
-        actionVariant={actionVariant ?? 'default'}
         appearance={appearanceClassName}
         columns={resolvedColumns}
         contentAlignment={contentAlignment ?? 'center'}
@@ -112,7 +104,7 @@ export function MediaCarouselBlockComponent({
         size={size ?? 'default'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
     </>
   )
 }

@@ -43,16 +43,8 @@ const expectContentActionsFieldSet = (
     options?: Array<{ value: string }>
     type?: string
   }>(contentFields, 'actionPresentation')
-  const actionModeInContent = getNamedField<{ name?: string; type?: string }>(
-    contentFields,
-    modeName,
-  )
-  const actionModeField = getNamedField<{
-    defaultValue?: string
-    name?: string
-    options?: Array<{ value: string }>
-    type?: string
-  }>(layoutFields, modeName)
+  const actionModeInContent = getNamedField<{ name?: string }>(contentFields, modeName)
+  const actionModeInLayout = getNamedField<{ name?: string }>(layoutFields, modeName)
   const actionsField = getNamedField<{
     fields?: unknown[]
     maxRows?: number
@@ -67,7 +59,16 @@ const expectContentActionsFieldSet = (
     | undefined
   const actionContentTab = actionTabsField?.tabs?.find((tab) => tab.label === 'Content')
   const actionLayoutTab = actionTabsField?.tabs?.find((tab) => tab.label === 'Theme Settings')
+  const rowModeField = getNamedField<{
+    admin?: { condition?: unknown }
+    defaultValue?: string
+    name?: string
+    options?: Array<{ value: string }>
+    required?: boolean
+    type?: string
+  }>(actionLayoutTab?.fields ?? [], 'mode')
   const variantField = getNamedField<{
+    admin?: { condition?: unknown }
     defaultValue?: string
     name?: string
     options?: Array<{ value: string }>
@@ -75,10 +76,16 @@ const expectContentActionsFieldSet = (
   }>(actionLayoutTab?.fields ?? [], 'variant')
 
   expect(actionPresentationField).toBeUndefined()
+  // Display mode is per action: it lives in each action row's own Theme Settings
+  // tab, so no block-level mode field survives in either tab.
   expect(actionModeInContent).toBeUndefined()
-  expect(actionModeField?.type).toBe('select')
-  expect(actionModeField?.defaultValue).toBe('link')
-  expect(actionModeField?.options?.map((option) => option.value)).toEqual(['link', 'button'])
+  expect(actionModeInLayout).toBeUndefined()
+  expect(rowModeField?.type).toBe('select')
+  expect(rowModeField?.defaultValue).toBe('link')
+  expect(rowModeField?.required).toBe(false)
+  expect(rowModeField?.options?.map((option) => option.value)).toEqual(['link', 'button'])
+  // Variant only means anything once that row renders as a button.
+  expect(variantField?.admin?.condition).toBeTypeOf('function')
   expect(actionsField?.type).toBe('array')
   expect(actionsField?.maxRows).toBe(2)
   expect(actionTabsField?.type).toBe('tabs')
@@ -114,10 +121,10 @@ describe('page block pipeline', () => {
     expect(appearanceBorderField?.defaultValue).toBe('none')
     expect(appearanceBackgroundField?.options?.map((option) => option.value)).toEqual([
       'none',
-      'primary',
-      'secondary',
-      'muted',
-      'accent',
+      'subtle',
+      'brand',
+      'gradient-subtle',
+      'gradient-brand',
     ])
     expect(appearanceFields.map((field) => field.name)).not.toContain('textColor')
     expect(appearanceBorderField?.options?.map((option) => option.value)).toEqual([
@@ -130,22 +137,26 @@ describe('page block pipeline', () => {
 
   it('resolves shared block appearance classes from semantic appearance values', () => {
     expect(resolveBlockAppearanceClasses()).toEqual({
+      background: 'none',
       backgroundClassName: '',
       textClassName: '',
       borderClassName: '',
       className: '',
+      surface: 'light',
     })
 
     expect(
       resolveBlockAppearanceClasses({
-        background: 'primary',
+        background: 'brand',
         border: 'topAndBottom',
       }),
     ).toEqual({
-      backgroundClassName: 'bg-primary',
+      background: 'brand',
+      backgroundClassName: 'bg-brand',
       textClassName: 'text-primary-foreground',
       borderClassName: 'border-y border-border',
-      className: 'bg-primary text-primary-foreground border-y border-border',
+      className: 'bg-brand text-primary-foreground border-y border-border',
+      surface: 'brand',
     })
   })
 
@@ -210,7 +221,15 @@ describe('page block pipeline', () => {
       contentTab?.fields.map((field) =>
         typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,
       ),
-    ).toEqual(['eyebrow', 'title', 'description', 'actions', 'galleryAlbums', 'displayOrder'])
+    ).toEqual([
+      'eyebrow',
+      'title',
+      'description',
+      'actions',
+      'galleryAlbums',
+      'displayOrder',
+      'footerActions',
+    ])
     expect(galleryAlbums).toMatchObject({
       admin: {
         allowCreate: true,
@@ -721,7 +740,7 @@ describe('page block pipeline', () => {
         layout: [
           {
             appearance: {
-              background: 'secondary',
+              background: 'subtle',
               border: 'topAndBottom',
             },
             blockType: 'announcement',
@@ -751,9 +770,9 @@ describe('page block pipeline', () => {
     expect(html).toContain('Urgent Notice')
     expect(html).toContain('Scheduled tonight at 10:00 PM.')
     expect(html).toContain('href="/maintenance"')
-    expect(html).toContain('data-announcement-background="secondary"')
-    expect(html).toContain('bg-secondary')
-    expect(html).toContain('text-secondary-foreground')
+    expect(html).toContain('data-announcement-background="subtle"')
+    expect(html).toContain('bg-subtle')
+    expect(html).toContain('text-foreground')
     expect(html).toContain('border-y border-border')
   })
 
@@ -850,7 +869,7 @@ describe('page block pipeline', () => {
         layout: [
           {
             appearance: {
-              background: 'primary',
+              background: 'brand',
               border: 'top',
             },
             backgroundImage: {
@@ -880,8 +899,8 @@ describe('page block pipeline', () => {
     expect(html).toContain('Practice begins before the clinic.')
     expect(html).toContain('Admissions')
     expect(html).toContain('href="/apply"')
-    expect(html).toContain('data-hero-banner-background="primary"')
-    expect(html).toContain('bg-primary')
+    expect(html).toContain('data-hero-banner-background="brand"')
+    expect(html).toContain('bg-brand')
     expect(html).toContain('text-primary-foreground')
     expect(html).toContain('border-t border-border')
   })
@@ -1050,11 +1069,25 @@ describe('page block pipeline', () => {
       options?: Array<{ value: string }>
       type?: string
     }>(layoutTab?.fields ?? [], 'accordionPlacement')
-    const sideActionModeField = getNamedField<{
-      admin?: { condition?: unknown }
-      defaultValue?: string
+    const contactActionsField = getNamedField<{
+      fields?: unknown[]
+      maxRows?: number
       type?: string
-    }>(layoutTab?.fields ?? [], 'sideActionMode')
+    }>(contactField?.fields ?? [], 'actions')
+    const contactActionTabsField = contactActionsField?.fields?.[0] as
+      | { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string }
+      | undefined
+    const contactActionContentTab = contactActionTabsField?.tabs?.find(
+      (tab) => tab.label === 'Content',
+    )
+    const contactActionLayoutTab = contactActionTabsField?.tabs?.find(
+      (tab) => tab.label === 'Theme Settings',
+    )
+    const contactVariantField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(contactActionLayoutTab?.fields ?? [], 'variant')
 
     expect(tabsField?.type).toBe('tabs')
     expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
@@ -1062,7 +1095,15 @@ describe('page block pipeline', () => {
       contentTab?.fields.map((field) =>
         typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,
       ),
-    ).toEqual(['title', 'description', 'actions', 'items', 'sideColumn'])
+    ).toEqual([
+      'title',
+      'accentTitle',
+      'description',
+      'actions',
+      'footerActions',
+      'items',
+      'sideColumn',
+    ])
     expect(titleField?.type).toBe('text')
     expect(titleField?.required).not.toBe(true)
     expect(itemsField?.type).toBe('array')
@@ -1080,9 +1121,38 @@ describe('page block pipeline', () => {
     expect(sideColumnField?.fields?.map((field) => field.name)).toEqual(['profile', 'contact'])
     expect(getNamedField(contactField?.fields ?? [], 'links')).toBeUndefined()
     expectContentActionsFieldSet(contentTab?.fields ?? [], layoutTab?.fields ?? [])
-    expectContentActionsFieldSet(contactField?.fields ?? [], layoutTab?.fields ?? [], {
-      modeName: 'sideActionMode',
-    })
+    // The side column's contact actions carry their own per-row display mode, so
+    // the block-level `sideActionMode` that used to govern them is gone entirely.
+    const contactRowModeField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      required?: boolean
+    }>(contactActionLayoutTab?.fields ?? [], 'mode')
+
+    expect(contactRowModeField?.defaultValue).toBe('link')
+    expect(contactRowModeField?.required).toBe(false)
+    expect(contactRowModeField?.options?.map((option) => option.value)).toEqual(['link', 'button'])
+    expect(getNamedField(contentTab?.fields ?? [], 'sideActionMode')).toBeUndefined()
+    expect(getNamedField(layoutTab?.fields ?? [], 'sideActionMode')).toBeUndefined()
+    expect(getNamedField(contactField?.fields ?? [], 'sideActionMode')).toBeUndefined()
+    expect(contactActionsField?.type).toBe('array')
+    expect(contactActionsField?.maxRows).toBe(2)
+    expect(contactActionTabsField?.type).toBe('tabs')
+    expect(contactActionTabsField?.tabs?.map((tab) => tab.label)).toEqual([
+      'Content',
+      'Theme Settings',
+    ])
+    expect(
+      contactActionContentTab?.fields.map((field) =>
+        typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,
+      ),
+    ).toEqual(['label', 'linkType', 'page', 'url', 'openInNewTab'])
+    expect(contactVariantField?.defaultValue).toBe('default')
+    expect(contactVariantField?.options?.map((option) => option.value)).toEqual([
+      'default',
+      'secondary',
+      'outline',
+    ])
     expect(appearanceField?.type).toBe('group')
     expect(contentAlignmentField?.type).toBe('select')
     expect(contentAlignmentField?.defaultValue).toBe('center')
@@ -1105,8 +1175,6 @@ describe('page block pipeline', () => {
       'right',
     ])
     expect(accordionPlacementField?.admin?.condition).toBeTypeOf('function')
-    expect(sideActionModeField?.defaultValue).toBe('link')
-    expect(sideActionModeField?.admin?.condition).toBeTypeOf('function')
     expect(sizeField?.type).toBe('select')
     expect(sizeField?.defaultValue).toBe('default')
     expect(sizeField?.options?.map((option) => option.value)).toEqual([
@@ -1199,7 +1267,7 @@ describe('page block pipeline', () => {
             animationDuration: 1200,
             animationEnabled: true,
             appearance: {
-              background: 'accent',
+              background: 'subtle',
               border: 'top',
             },
             blockType: 'statsStrip',
@@ -1221,9 +1289,9 @@ describe('page block pipeline', () => {
 
     const html = renderToStaticMarkup(result)
 
-    expect(html).toContain('data-stats-strip-background="accent"')
-    expect(html).toContain('bg-accent')
-    expect(html).toContain('text-accent-foreground')
+    expect(html).toContain('data-stats-strip-background="subtle"')
+    expect(html).toContain('bg-subtle')
+    expect(html).toContain('text-foreground')
     expect(html).toContain('border-t border-border')
     expect(html).toContain('data-stats-strip-row="0"')
     expect(html).toContain('data-stats-strip-row="1"')

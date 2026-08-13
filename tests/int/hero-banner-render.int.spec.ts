@@ -9,7 +9,7 @@ describe('Hero Banner block', () => {
     const html = renderToStaticMarkup(
       createElement(HeroBannerBlockComponent, {
         appearance: {
-          background: 'primary',
+          background: 'brand',
           border: 'topAndBottom',
         },
         backgroundImage: { alt: 'Campus facade', url: '/media/campus.jpg' } as never,
@@ -36,10 +36,10 @@ describe('Hero Banner block', () => {
     expect(html).toContain('href="/programs"')
     expect(html).toContain('data-hero-banner-content-width="wide"')
     expect(html).toContain('data-hero-banner-height="immersive"')
-    expect(html).toContain('data-hero-banner-background="primary"')
+    expect(html).toContain('data-hero-banner-background="brand"')
     expect(html).toContain('data-hero-banner-theme="auto"')
     expect(html).toContain('data-section-eyebrow-surface="none"')
-    expect(html).toContain('bg-primary')
+    expect(html).toContain('bg-brand')
     expect(html).toContain('text-primary-foreground')
     expect(html).toContain(
       'bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)]',
@@ -94,7 +94,7 @@ describe('Hero Banner block', () => {
       'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklch,var(--primary),var(--foreground)_8%)]',
     )
     expect(darkHtml).toContain(
-      'border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground',
+      'border-primary/70 bg-transparent text-primary hover:border-primary',
     )
 
     expect(lightHtml).toContain('data-hero-banner-theme="light"')
@@ -107,7 +107,7 @@ describe('Hero Banner block', () => {
       'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklch,var(--primary),var(--foreground)_8%)]',
     )
     expect(lightHtml).toContain(
-      'border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground',
+      'border-primary/70 bg-transparent text-primary hover:border-primary',
     )
   })
 

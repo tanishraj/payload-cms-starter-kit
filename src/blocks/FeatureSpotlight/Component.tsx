@@ -17,14 +17,12 @@ import { cn } from '@/lib/utils'
 
 type FeatureSpotlightBlockLike = {
   accentTitle?: string | null
-  actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'left' | 'center' | null
   contentVerticalAlignment?: 'bottom' | 'center' | 'top' | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   image?: unknown
   imagePosition?: 'bottom' | 'center' | 'left' | 'right' | 'top' | null
@@ -78,14 +76,12 @@ const contentVerticalAlignmentClasses = {
 
 export function FeatureSpotlightBlockComponent({
   accentTitle,
-  actionMode = 'link',
   actions,
   appearance,
   contentAlignment = 'center',
   contentVerticalAlignment = 'center',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   image,
   imagePosition = 'center',
@@ -170,7 +166,6 @@ export function FeatureSpotlightBlockComponent({
         actions={resolvedActions}
         alignment={renderAsSplit ? 'left' : resolvedContentAlignment}
         data-feature-spotlight-actions="true"
-        mode={actionMode ?? 'link'}
       />
     </div>
   )
@@ -178,7 +173,6 @@ export function FeatureSpotlightBlockComponent({
   return (
     <section
       className={cn(filledSectionPaddingClasses, appearanceClasses.className)}
-      data-feature-spotlight-action-mode={actionMode ?? 'link'}
       data-feature-spotlight-background={appearance?.background ?? 'none'}
       data-feature-spotlight-layout={renderAsSplit ? 'split' : 'contentOnly'}
       data-feature-spotlight-media-fill={renderAsSplit ? resolvedMediaFillMode : 'contentOnly'}
@@ -241,7 +235,7 @@ export function FeatureSpotlightBlockComponent({
             )}
           </div>
         </div>
-        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+        <BlockFooterActions actions={footerActions} />
         </>
       ) : renderAsContainedFill ? (
         <div className={regularBlockContainerClasses}>
@@ -274,7 +268,7 @@ export function FeatureSpotlightBlockComponent({
               </div>
             </div>
           </div>
-          <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+          <BlockFooterActions actions={footerActions} />
         </div>
       ) : (
         <div
@@ -309,7 +303,7 @@ export function FeatureSpotlightBlockComponent({
           ) : (
             <div className="block">{content}</div>
           )}
-          <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+          <BlockFooterActions actions={footerActions} />
         </div>
       )}
     </section>

@@ -37,6 +37,7 @@ type TestField = {
   name?: string
   options?: Array<{ value: string }>
   required?: boolean
+  tabs?: TestTab[]
   type?: string
   validate?: (value: unknown, context: { siblingData?: unknown }) => true | string
 }
@@ -72,7 +73,9 @@ describe('Rating Spotlight', () => {
     const dataModeField = getField(ratingDataField?.fields ?? [], 'dataMode')
     const manualRatingField = getField(ratingDataField?.fields ?? [], 'manualRating')
     const manualReviewCountField = getField(ratingDataField?.fields ?? [], 'manualReviewCount')
-    const actionModeField = getField(layoutTab?.fields ?? [], 'actionMode')
+    const actionsTabsField = actionsField?.fields?.[0]?.tabs ?? []
+    const actionThemeSettingsTab = actionsTabsField.find((tab) => tab.label === 'Theme Settings')
+    const actionModeField = getField(actionThemeSettingsTab?.fields ?? [], 'mode')
     const contentAlignmentField = getField(layoutTab?.fields ?? [], 'contentAlignment')
     const sizeField = getField(layoutTab?.fields ?? [], 'size')
 
@@ -124,19 +127,19 @@ describe('Rating Spotlight', () => {
         {
           href: '/reviews/new',
           label: 'Leave a review',
+          mode: 'button',
           openInNewTab: false,
           showArrow: false,
           variant: 'default',
         },
       ],
       alignment: 'center',
-      mode: 'button',
     })
     const html = renderToStaticMarkup(
       RatingSpotlight({
         actions,
         alignment: 'center',
-        appearance: { background: 'muted', border: 'topAndBottom' },
+        appearance: { background: 'subtle', border: 'topAndBottom' },
         description: 'Your feedback helps us improve.',
         eyebrow: 'Feedback',
         size: 'compact',
@@ -151,7 +154,7 @@ describe('Rating Spotlight', () => {
     expect(html).toContain('1,240 reviews')
     expect(html).toContain('aria-label="4.8 out of 5 from 1,240 reviews"')
     expect(html.match(/data-rating-star=/g)).toHaveLength(5)
-    expect(html).toContain('bg-muted')
+    expect(html).toContain('bg-subtle')
     expect(html).toContain('border-y border-border')
     expect(html).toContain(
       'text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl',
@@ -176,11 +179,11 @@ describe('Rating Spotlight', () => {
   it('uses complete manual data without calling the live resolver', () => {
     const html = renderToStaticMarkup(
       RatingSpotlightBlockComponent({
-        actionMode: 'button',
         actions: [
           {
             label: 'Leave a review',
             linkType: 'custom',
+            mode: 'button',
             url: '/reviews/new',
             variant: 'default',
           },

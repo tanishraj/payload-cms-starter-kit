@@ -1,7 +1,7 @@
 import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 const timelineItemsField: ArrayField = {
@@ -85,9 +85,9 @@ export const TimelineBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            ...createContentActionsWithModeFields({ label: 'Section Actions', maxRows: 2 }),
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             timelineItemsField,
-            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
           ],
         },
         {

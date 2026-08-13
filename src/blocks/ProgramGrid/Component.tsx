@@ -30,7 +30,6 @@ type ProgramItem = {
 
 type ProgramGridBlockLike = {
   accentTitle?: string | null
-  actionMode?: 'button' | 'link' | null
   actionVariant?: CmsActionVariant | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
@@ -39,7 +38,6 @@ type ProgramGridBlockLike = {
   ctaLabel?: string | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   programs?: ProgramItem[] | null
   showFilter?: boolean | null
@@ -50,7 +48,6 @@ type ProgramGridBlockLike = {
 
 export function ProgramGridBlockComponent({
   accentTitle,
-  actionMode,
   actionVariant,
   actions,
   appearance,
@@ -59,7 +56,6 @@ export function ProgramGridBlockComponent({
   ctaLabel = 'Learn More',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   programs,
   showFilter = false,
@@ -118,7 +114,7 @@ export function ProgramGridBlockComponent({
     <>
       <ProgramGridClient
         accentTitle={accentTitle}
-        actionMode={actionMode ?? 'link'}
+        actionMode="link"
         actionVariant={actionVariant ?? 'default'}
         appearance={appearanceClassName}
         columns={resolvedColumns}
@@ -138,7 +134,7 @@ export function ProgramGridBlockComponent({
         title={resolvedTitle}
         viewMode={viewMode ?? 'grid'}
       />
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
     </>
   )
 }

@@ -13,14 +13,12 @@ import { getMediaImageProps } from '@/lib/media'
 
 type FeatureMatrixBlockLike = {
   accentTitle?: string | null
-  actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   borderAnimationEnabled?: boolean | null
   contentAlignment?: FeatureMatrixAlignment | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   features?:
     | {
@@ -38,14 +36,12 @@ type FeatureMatrixBlockLike = {
 
 export function FeatureMatrixBlockComponent({
   accentTitle,
-  actionMode = 'link',
   actions,
   appearance,
   borderAnimationEnabled = true,
   contentAlignment = 'center',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   features,
   showOuterBorder = true,
@@ -84,7 +80,6 @@ export function FeatureMatrixBlockComponent({
             actions={resolvedActions}
             alignment={resolvedAlignment}
             data-feature-matrix-actions="true"
-            mode={actionMode ?? 'link'}
           />
         }
         alignment={resolvedAlignment}
@@ -97,7 +92,7 @@ export function FeatureMatrixBlockComponent({
         size={size ?? 'default'}
         title={title}
       />
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
     </>
   )
 }

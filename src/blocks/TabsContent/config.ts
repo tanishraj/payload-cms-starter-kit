@@ -1,7 +1,7 @@
 import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { createContentActionsField, createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 const tabItemsField: ArrayField = {
@@ -77,9 +77,9 @@ export const TabsContentBlock: Block = {
               type: 'textarea',
               admin: { description: 'Optional subtitle shown above the tab bar.' },
             },
-            ...createContentActionsWithModeFields({ label: 'Section Actions', maxRows: 2 }),
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             tabItemsField,
-            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
           ],
         },
         {

@@ -101,26 +101,26 @@ describe('website theme contracts', () => {
 
     expect(light).toMatchObject({
       background: 'oklch(1 0 0)',
-      foreground: 'oklch(0.209255 0.032306 262.410)',
-      primary: 'oklch(0.238550 0.080565 258.205)',
+      foreground: 'oklch(0.2322 0.0575 258.39)',
+      primary: 'oklch(0.2901 0.1025 259.53)',
       'primary-foreground': 'oklch(0.984152 0.003413 247.858)',
       secondary: 'oklch(0.947186 0.013730 258.345)',
-      muted: 'oklch(0.972008 0.006231 255.475)',
+      muted: 'oklch(0.9735 0.0076 241.66)',
       accent: 'oklch(0.925732 0.024723 251.905)',
-      border: 'oklch(0.898202 0.015641 257.200)',
-      ring: 'oklch(0.529970 0.089429 256.778)',
+      border: 'oklch(0.9242 0.0139 247.98)',
+      ring: 'oklch(0.8018 0.1024 148.89)',
     })
     expect(dark).toMatchObject({
       background: 'oklch(0.176997 0.032292 258.683)',
       foreground: 'oklch(0.974538 0.007928 253.852)',
       card: 'oklch(0.216127 0.040176 256.770)',
       primary: 'oklch(0.769267 0.085353 254.774)',
-      'primary-foreground': 'oklch(0.238550 0.080565 258.205)',
+      'primary-foreground': 'oklch(0.2901 0.1025 259.53)',
       secondary: 'oklch(0.274249 0.048665 256.289)',
       muted: 'oklch(0.251364 0.046287 259.131)',
       accent: 'oklch(0.325710 0.063155 255.477)',
       border: 'oklch(0.351576 0.044540 255.167)',
-      ring: 'oklch(0.769267 0.085353 254.774)',
+      ring: 'oklch(0.8018 0.1024 148.89)',
     })
   })
 

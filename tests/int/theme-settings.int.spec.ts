@@ -67,7 +67,7 @@ describe('website theme registry', () => {
     expect(themeSource).toContain(":root[data-theme-color='snmih'].dark {")
     expect(themeSource).not.toMatch(/^:root\s*\{/m)
     expect(themeSource).not.toMatch(/^\.dark\s*\{/m)
-    expect(themeSource).toContain('--primary: oklch(0.238550 0.080565 258.205);')
+    expect(themeSource).toContain('--primary: oklch(0.2901 0.1025 259.53);')
     expect(themeSource).toContain('--primary: oklch(0.769267 0.085353 254.774);')
     expect(themeSource).toContain('--radius: 0;')
   })

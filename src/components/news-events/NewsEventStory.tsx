@@ -56,7 +56,6 @@ export function NewsEventStory({ entry }: { entry: PublicNewsEventDetail }) {
                 <ContentActions
                   actions={[entry.eventRegistrationAction]}
                   className="sm:ml-auto sm:w-auto"
-                  mode={entry.eventRegistrationMode ?? 'link'}
                 />
               ) : null}
             </div>

@@ -14,7 +14,7 @@ import {
 } from '@/blocks/shared/blockSpacing'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
-import { SectionEyebrow } from '@/components/SectionEyebrow'
+import { SectionEyebrow, type SectionEyebrowSurface } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import type { Media } from '@/payload-types'
@@ -40,7 +40,6 @@ type BentoGridBlockLike = {
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   items?: BentoItem[] | null
   size?: RegularBlockSize | null
@@ -71,11 +70,15 @@ function BentoCell({
   )
   const isFull = item.size === 'full'
   const isLarge = item.size === 'large'
-  const eyebrowSurface = image
+  // An explicit card background overrides the section's: 'primary' cards read as
+  // the brand surface, every other card tint reads as a light one.
+  const eyebrowSurface: SectionEyebrowSurface = image
     ? 'darkOverlay'
     : surface.value === 'default'
       ? sectionBackground
-      : surface.value
+      : surface.value === 'primary'
+        ? 'brand'
+        : 'subtle'
 
   const Inner = (
     <div
@@ -164,7 +167,6 @@ export function BentoGridBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   items,
   size = 'default',
@@ -173,10 +175,11 @@ export function BentoGridBlockComponent({
   const validItems = (items ?? []).filter((item) => item.title?.trim())
   if (validItems.length === 0) return null
 
-  const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
+  const appearanceClasses = resolveBlockAppearanceClasses(appearance)
+  const { className: appearanceClassName } = appearanceClasses
   const isCenter = (contentAlignment ?? 'center') === 'center'
   const resolvedActions = resolveCmsActions(actions)
-  const sectionBackground: BlockBackground = appearance?.background ?? 'none'
+  const sectionBackground: BlockBackground = appearanceClasses.background
   const resolvedAccentTitle = accentTitle?.trim() || undefined
 
   return (
@@ -224,7 +227,7 @@ export function BentoGridBlockComponent({
             </div>
           ))}
         </div>
-        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+        <BlockFooterActions actions={footerActions} />
       </div>
     </section>
   )

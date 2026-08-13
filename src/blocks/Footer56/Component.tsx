@@ -177,7 +177,9 @@ export function Footer56BlockComponent({
 
   return (
     <Footer56
-      actions={resolveCmsActions(ctaButtons)}
+      // `ctaButtons` is a bespoke link array with no per-row display mode, and
+      // these are buttons by definition, so force the mode here.
+      actions={resolveCmsActions(ctaButtons, 'button')}
       addressLines={siteAddress?.split('\n').map((line) => line.trim()).filter(Boolean)}
       copyright={copyrightText ?? undefined}
       description={description ?? undefined}

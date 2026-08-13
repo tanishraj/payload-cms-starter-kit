@@ -11,14 +11,12 @@ import { resolveCmsActions } from '@/lib/cmsLinks'
 import type { PublicNewsEventCard } from '@/lib/newsEventsShared'
 
 export type NewsEventsHighlightsBlockLike = {
-  actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: NewsEventsHighlightsAlignment | null
   description?: string | null
   emptyStateMessage?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   itemCount?: number | null
   size?: RegularBlockSize | null
@@ -30,14 +28,12 @@ type NewsEventsHighlightsBlockPresentationProps = NewsEventsHighlightsBlockLike 
 }
 
 export function NewsEventsHighlightsBlockPresentation({
-  actionMode = 'link',
   actions,
   appearance,
   contentAlignment = 'left',
   description,
   emptyStateMessage,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   items,
   size = 'default',
@@ -57,12 +53,7 @@ export function NewsEventsHighlightsBlockPresentation({
       <NewsEventsHighlights
         actions={
           resolvedActions.length ? (
-            <ContentActions
-              actions={resolvedActions}
-              alignment="right"
-              className="lg:w-auto"
-              mode={actionMode ?? 'link'}
-            />
+            <ContentActions actions={resolvedActions} alignment="right" className="lg:w-auto" />
           ) : null
         }
         alignment={resolvedAlignment}
@@ -74,7 +65,7 @@ export function NewsEventsHighlightsBlockPresentation({
         size={size ?? 'default'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
     </>
   )
 }

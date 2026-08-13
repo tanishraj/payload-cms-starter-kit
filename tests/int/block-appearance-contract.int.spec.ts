@@ -8,10 +8,10 @@ import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFiel
 describe('block appearance contract', () => {
   it.each([
     ['none', '', ''],
-    ['primary', 'bg-primary', 'text-primary-foreground'],
-    ['secondary', 'bg-secondary', 'text-secondary-foreground'],
-    ['muted', 'bg-muted', 'text-foreground'],
-    ['accent', 'bg-accent', 'text-accent-foreground'],
+    ['subtle', 'bg-subtle', 'text-foreground'],
+    ['brand', 'bg-brand', 'text-primary-foreground'],
+    ['gradient-subtle', 'bg-gradient-subtle', 'text-foreground'],
+    ['gradient-brand', 'bg-gradient-brand', 'text-primary-foreground'],
   ] as const)('pairs the %s surface with its semantic foreground', (background, surface, text) => {
     expect(resolveBlockAppearanceClasses({ background })).toMatchObject({
       backgroundClassName: surface,

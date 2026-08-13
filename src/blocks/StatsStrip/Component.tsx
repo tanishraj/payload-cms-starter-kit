@@ -50,17 +50,10 @@ const rowGridClasses = {
 
 const dividerColorClasses = {
   none: 'border-foreground/15',
-  primary: 'border-primary-foreground/15',
-  secondary: 'border-secondary-foreground/15',
-  muted: 'border-foreground/15',
-  accent: 'border-accent-foreground/15',
-  'gradient-secondary': 'border-secondary-foreground/15',
-  'gradient-muted': 'border-foreground/15',
-  'gradient-accent': 'border-accent-foreground/15',
-  'gradient-success': 'border-foreground/15',
-  'gradient-error': 'border-foreground/15',
-  'gradient-info': 'border-foreground/15',
-  'gradient-warning': 'border-foreground/15',
+  subtle: 'border-foreground/15',
+  brand: 'border-primary-foreground/15',
+  'gradient-subtle': 'border-foreground/15',
+  'gradient-brand': 'border-primary-foreground/15',
 } satisfies Record<BlockBackground, string>
 
 export function StatsStripBlockComponent({
@@ -94,12 +87,13 @@ export function StatsStripBlockComponent({
 
   const rows = chunkItems(validItems)
   const hasMultipleRows = rows.length > 1
-  const dividerColorClass = dividerColorClasses[appearance?.background ?? 'none']
+  const resolvedBackground = appearanceClasses.background
+  const dividerColorClass = dividerColorClasses[resolvedBackground]
 
   return (
     <section
       className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClasses.className)}
-      data-stats-strip-background={appearance?.background ?? 'none'}
+      data-stats-strip-background={resolvedBackground}
     >
       <div className="mx-auto flex max-w-screen-2xl flex-col px-4">
         {rows.map((row, rowIndex) => (

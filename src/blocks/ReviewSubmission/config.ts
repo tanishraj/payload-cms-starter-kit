@@ -2,7 +2,7 @@ import type { Block, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 const sizeField = {
   name: 'size',
@@ -58,8 +58,8 @@ export const ReviewSubmissionBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            ...createContentActionsWithModeFields(),
-            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField(),
+            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             {
               name: 'form',
               label: 'Review Form',

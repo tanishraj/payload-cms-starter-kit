@@ -263,7 +263,10 @@ export function HeroBannerBlockComponent({
   return (
     <section
       className={cn('relative isolate overflow-hidden', appearanceClasses.className)}
-      data-hero-banner-background={appearance?.background ?? 'none'}
+      // Over a dark overlay the section carries no background class, so buttons
+      // need the brand-surface treatment declared explicitly.
+      data-block-surface={eyebrowSurface === 'darkOverlay' ? 'brand' : undefined}
+      data-hero-banner-background={appearanceClasses.background}
       data-hero-banner-block="true"
     >
       <div className="absolute inset-0">

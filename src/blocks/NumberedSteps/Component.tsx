@@ -34,7 +34,6 @@ type NumberedStepsBlockLike = {
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   numberStyle?: 'circle' | 'outlined' | 'serif' | null
   size?: RegularBlockSize | null
@@ -259,7 +258,6 @@ export function NumberedStepsBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   numberStyle = 'circle',
   size = 'default',
@@ -328,7 +326,7 @@ export function NumberedStepsBlockComponent({
         ) : (
           <VerticalSteps steps={validSteps} numberStyle={resolvedNumberStyle} />
         )}
-        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+        <BlockFooterActions actions={footerActions} />
       </div>
     </section>
   )

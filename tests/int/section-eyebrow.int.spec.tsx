@@ -47,10 +47,10 @@ const regularSectionEyebrowFiles = [
 describe('SNMIH section eyebrows', () => {
   it.each([
     'none',
-    'primary',
-    'secondary',
-    'muted',
-    'accent',
+    'subtle',
+    'brand',
+    'gradient-subtle',
+    'gradient-brand',
     'darkOverlay',
   ] as const)('renders the %s surface contract with the inherited fallback', (surface) => {
     const html = renderToStaticMarkup(
@@ -67,25 +67,64 @@ describe('SNMIH section eyebrows', () => {
     expect(html).toContain('>Academics</p>')
   })
 
-  it('scopes direct eyebrow colors to SNMIH without defining another token', () => {
-    const css = read('src/styles/themes/theme-snmih.css')
+  it('scopes direct eyebrow colors to SNMIH and reuses existing tokens instead of defining a new one', () => {
+    const css = read('src/styles/custom.css')
 
-    expect(css).toContain("[data-theme-color='snmih']")
-    expect(css).toContain("[data-section-eyebrow-surface='none']")
-    expect(css).toContain("[data-section-eyebrow-surface='primary']")
-    expect(css).toContain("[data-section-eyebrow-surface='darkOverlay']")
-    expect(css).toContain('color: #2b833f;')
-    expect(css).toContain('color: #9dd4a6;')
+    expect(css).toContain(
+      [
+        ":root[data-theme-color='snmih']:not(.dark)",
+        "  [data-section-eyebrow-surface]:not([data-section-eyebrow-surface='brand']):not(",
+        "    [data-section-eyebrow-surface='gradient-brand']",
+        "  ):not([data-section-eyebrow-surface='primary']):not(",
+        "    [data-section-eyebrow-surface='darkOverlay']",
+        '  ) {',
+        '  color: var(--success);',
+        '}',
+      ].join('\n'),
+    )
     expect(css).not.toMatch(/--(?:section-)?eyebrow/)
     expect(css).not.toMatch(/--section-accent/)
   })
 
-  it('keeps the SNMIH dark-mode primary surface on inherited foreground', () => {
-    const css = read('src/styles/themes/theme-snmih.css')
-    const darkPrimaryRule =
-      /:root\[data-theme-color='snmih'\]\.dark[^{}]*\[data-section-eyebrow-surface='primary'\][^{]*\{[^}]*color:/
+  it('gives genuinely dark surfaces the ring token, flipping which surfaces qualify per mode', () => {
+    const css = read('src/styles/custom.css')
+    const ringRule = css.slice(
+      css.indexOf(":root[data-theme-color='snmih']:not(.dark) [data-section-eyebrow-surface='brand']"),
+    )
+    const ringBlock = ringRule.slice(0, ringRule.indexOf('}') + 1)
 
-    expect(css).not.toMatch(darkPrimaryRule)
+    expect(ringBlock).toContain('color: var(--ring);')
+    // Dark in light mode: the navy brand surface.
+    expect(ringBlock).toContain(
+      ":root[data-theme-color='snmih']:not(.dark) [data-section-eyebrow-surface='brand']",
+    )
+    expect(ringBlock).toContain(
+      ":root[data-theme-color='snmih']:not(.dark) [data-section-eyebrow-surface='gradient-brand']",
+    )
+    // Dark in either mode: image overlays.
+    expect(ringBlock).toContain(
+      ":root[data-theme-color='snmih'] [data-section-eyebrow-surface='darkOverlay']",
+    )
+    // Dark in dark mode: the page background, but NOT the brand surface, which
+    // inverts to a light tint there.
+    expect(ringBlock).toContain(":root[data-theme-color='snmih'].dark")
+    expect(ringBlock).toContain(":not([data-section-eyebrow-surface='brand'])")
+  })
+
+  it('falls back to the surface foreground where the brand surface inverts to a light tint', () => {
+    const css = read('src/styles/custom.css')
+
+    // --primary inverts to a light tint in dark mode, so both greens are too
+    // pale to read against it. Neither may be used there.
+    expect(css).toContain(
+      [
+        ":root[data-theme-color='snmih'].dark [data-section-eyebrow-surface='brand'],",
+        ":root[data-theme-color='snmih'].dark [data-section-eyebrow-surface='gradient-brand'],",
+        ":root[data-theme-color='snmih'].dark [data-section-eyebrow-surface='primary'] {",
+        '  color: var(--primary-foreground);',
+        '}',
+      ].join('\n'),
+    )
   })
 
   it.each(regularSectionEyebrowFiles)('%s consumes the shared section eyebrow', (file) => {
@@ -103,7 +142,7 @@ describe('SNMIH section eyebrows', () => {
   it('passes a regular section background to the eyebrow', () => {
     const html = renderToStaticMarkup(
       <ProgramMatrixBlockComponent
-        appearance={{ background: 'primary' }}
+        appearance={{ background: 'brand' }}
         eyebrow="Academics"
         items={[{ title: 'MBBS' }]}
         title="Programmes offered"
@@ -111,7 +150,7 @@ describe('SNMIH section eyebrows', () => {
     )
 
     expect(html).toContain('data-section-eyebrow="true"')
-    expect(html).toContain('data-section-eyebrow-surface="primary"')
+    expect(html).toContain('data-section-eyebrow-surface="brand"')
   })
 
   it('marks Hero Carousel eyebrows as dark-overlay content', () => {

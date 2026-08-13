@@ -2,7 +2,7 @@ import type { Block, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 type LayoutMode = 'split' | 'contentOnly'
 type MediaFillMode = 'contained' | 'containedFill' | 'edgeToEdge'
@@ -65,8 +65,8 @@ export const FeatureSpotlightBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            ...createContentActionsWithModeFields(),
-            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField(),
+            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
           ],
         },
         {

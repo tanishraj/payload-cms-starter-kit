@@ -89,8 +89,18 @@ describe('carousel block schemas', () => {
       maxRows: 20,
       type: 'array',
     })
-    expect(getField(contentTab.fields, 'actions')?.maxRows).toBe(1)
-    expect(getField(layoutTab.fields, 'actionMode')?.defaultValue).toBe('link')
+    const actionsField = getField(contentTab.fields, 'actions')
+    expect(actionsField?.maxRows).toBe(1)
+    const actionsTabsField = actionsField?.fields?.[0] as unknown as
+      | { tabs: TestTab[]; type: string }
+      | undefined
+    const actionsThemeTab = actionsTabsField?.tabs?.find(({ label }) => label === 'Theme Settings')
+    expect(getField(actionsThemeTab?.fields ?? [], 'mode')).toMatchObject({
+      defaultValue: 'link',
+      label: 'Display As',
+      required: false,
+      type: 'select',
+    })
     expect(getField(layoutTab.fields, 'contentAlignment')?.defaultValue).toBe('center')
     expect(getField(layoutTab.fields, 'size')?.defaultValue).toBe('default')
   })
@@ -300,12 +310,12 @@ describe('carousel block schemas', () => {
           {
             label: 'Explore',
             linkType: 'custom',
+            mode: 'button',
             url: '/gallery',
             variant: 'default',
           },
         ]}
-        actionMode="button"
-        appearance={{ background: 'muted', border: 'top' }}
+        appearance={{ background: 'subtle', border: 'top' }}
         contentAlignment="right"
         images={images}
         size="compact"
@@ -320,7 +330,7 @@ describe('carousel block schemas', () => {
     expect(html).toContain('max-w-4xl')
     expect(html).toContain('md:w-40')
     expect(html).not.toContain('sm:via-muted')
-    expect(html).toContain('bg-muted')
+    expect(html).toContain('bg-subtle')
     expect(html).toContain('href="/gallery"')
     expect(html).toContain('[&amp;_[data-slot=button]]:rounded-full')
   })

@@ -3,7 +3,7 @@ import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
-import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 const imagePositionOptions = [
   { label: 'Center', value: 'center' },
@@ -84,8 +84,8 @@ export const ProfileCarouselBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            ...createContentActionsWithModeFields({ label: 'Action', maxRows: 1 }),
-            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({ label: 'Action', maxRows: 1 }),
+            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             profilesField,
           ],
         },

@@ -13,7 +13,6 @@ type Contact33BlockLike = {
   contentAlignment?: 'center' | 'left' | 'right' | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   form?: Contact33FormLike | number | string | null
   image?: unknown
@@ -29,7 +28,6 @@ export function Contact33BlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   form,
   image,
@@ -68,7 +66,7 @@ export function Contact33BlockComponent({
         size={size ?? 'default'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
     </>
   )
 }

@@ -13,8 +13,11 @@ export type CmsLinkValue = {
 
 export type CmsActionVariant = 'default' | 'link' | 'outline' | 'secondary'
 
+export type CmsActionMode = 'button' | 'link'
+
 export type CmsActionValue = CmsLinkValue & {
   label?: string | null
+  mode?: CmsActionMode | null
   showArrow?: boolean | null
   variant?: CmsActionVariant | null
 }
@@ -22,6 +25,7 @@ export type CmsActionValue = CmsLinkValue & {
 export type ResolvedCmsAction = {
   href: string
   label: string
+  mode: CmsActionMode
   openInNewTab?: boolean
   showArrow: boolean
   variant: CmsActionVariant
@@ -42,7 +46,11 @@ export const resolveCmsLink = (value: CmsLinkValue): { href?: string; openInNewT
   }
 }
 
-export const resolveCmsActions = (actions?: CmsActionValue[] | null): ResolvedCmsAction[] =>
+export const resolveCmsActions = (
+  actions?: CmsActionValue[] | null,
+  // Applied to rows saved before display mode moved onto the action itself.
+  fallbackMode: CmsActionMode = 'link',
+): ResolvedCmsAction[] =>
   (actions ?? []).flatMap((action) => {
     const label = action.label?.trim()
     const destination = resolveCmsLink(action)
@@ -52,6 +60,7 @@ export const resolveCmsActions = (actions?: CmsActionValue[] | null): ResolvedCm
           {
             href: destination.href,
             label,
+            mode: action.mode ?? fallbackMode,
             openInNewTab: destination.openInNewTab,
             showArrow: Boolean(action.showArrow),
             variant: action.variant ?? 'default',

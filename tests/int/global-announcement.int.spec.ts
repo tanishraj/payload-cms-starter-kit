@@ -113,7 +113,7 @@ describe('global announcement settings', () => {
     const html = renderToStaticMarkup(
       createElement(GlobalAnnouncement, {
         appearance: {
-          background: 'accent',
+          background: 'subtle',
           border: 'topAndBottom',
         },
         displayMode: 'horizontal',
@@ -127,8 +127,8 @@ describe('global announcement settings', () => {
     expect(html).toContain('Important')
     expect(html).toContain('Maintenance')
     expect(html).toContain('Scheduled tonight at 10:00 PM.')
-    expect(html).toContain('bg-accent')
-    expect(html).toContain('text-accent-foreground')
+    expect(html).toContain('bg-subtle')
+    expect(html).toContain('text-foreground')
     expect(html).toContain('border-border')
   })
 

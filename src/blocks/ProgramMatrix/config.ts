@@ -3,7 +3,10 @@ import type { ArrayField, Block, CheckboxField, RadioField, SelectField, TabsFie
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
-import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
+import {
+  createContentActionModeField,
+  createContentActionsField,
+} from '@/blocks/shared/contentActionsFields'
 import { createIconField } from '@/blocks/shared/iconField'
 
 type ProgrammeItemSiblingData = {
@@ -128,8 +131,8 @@ export const ProgramMatrixBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            ...createContentActionsWithModeFields({ label: 'Section Actions', maxRows: 2 }),
-            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
+            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             itemsField,
           ],
         },
@@ -137,6 +140,10 @@ export const ProgramMatrixBlock: Block = {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
+            // Drives the per-programme card CTAs (not the section actions array,
+            // whose display mode now lives on each action row). `actionVariant`
+            // below is conditioned on this field.
+            createContentActionModeField({ label: 'Programme Action Style', name: 'actionMode' }),
             {
               name: 'actionVariant',
               label: 'Programme Button Variant',

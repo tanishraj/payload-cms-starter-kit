@@ -1,4 +1,6 @@
-import type { Field, GroupField, SelectField } from 'payload'
+import type { GroupField, SelectField } from 'payload'
+
+import { normalizeBlockBackground } from './blockAppearance'
 
 type CreateBlockAppearanceFieldsOptions = {
   includeBackground?: boolean
@@ -11,20 +13,20 @@ const backgroundField = {
   type: 'select',
   defaultValue: 'none',
   options: [
-    { label: 'None', value: 'none' },
-    { label: 'Primary', value: 'primary' },
-    { label: 'Secondary', value: 'secondary' },
-    { label: 'Muted', value: 'muted' },
-    { label: 'Accent', value: 'accent' },
-    { label: 'Gradient: Secondary', value: 'gradient-secondary' },
-    { label: 'Gradient: Muted', value: 'gradient-muted' },
-    { label: 'Gradient: Accent', value: 'gradient-accent' },
-    { label: 'Gradient: Success', value: 'gradient-success' },
-    { label: 'Gradient: Error', value: 'gradient-error' },
-    { label: 'Gradient: Info', value: 'gradient-info' },
-    { label: 'Gradient: Warning', value: 'gradient-warning' },
+    { label: 'None (page background)', value: 'none' },
+    { label: 'Subtle', value: 'subtle' },
+    { label: 'Brand', value: 'brand' },
+    { label: 'Gradient: Subtle', value: 'gradient-subtle' },
+    { label: 'Gradient: Brand', value: 'gradient-brand' },
   ],
   required: true,
+  hooks: {
+    // Content saved before the palette collapsed still holds retired values such
+    // as 'muted' or 'gradient-accent'. Without this the admin select would render
+    // blank for those blocks; folding them to the nearest surviving surface on
+    // read keeps existing pages editable and migrates them on the next save.
+    afterRead: [({ value }) => normalizeBlockBackground(value as string | null | undefined)],
+  },
 } satisfies SelectField
 
 const borderField = {

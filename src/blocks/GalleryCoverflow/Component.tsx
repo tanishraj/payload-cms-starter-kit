@@ -25,13 +25,11 @@ type GalleryCoverflowAlignment = 'center' | 'left' | 'right'
 
 type GalleryCoverflowBlockLike = {
   accentTitle?: string | null
-  actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: GalleryCoverflowAlignment | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   images?: { image?: unknown }[] | null
   size?: RegularBlockSize | null
@@ -72,13 +70,11 @@ const actionAlignmentClasses = {
 
 export function GalleryCoverflowBlockComponent({
   accentTitle,
-  actionMode = 'link',
   actions,
   appearance,
   contentAlignment = 'center',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   images,
   size = 'default',
@@ -143,11 +139,10 @@ export function GalleryCoverflowBlockComponent({
             actions={resolvedActions}
             alignment={alignment}
             className="[&_[data-slot=button]]:rounded-full"
-            mode={actionMode ?? 'link'}
           />
         </div>
       ) : null}
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
     </section>
   )
 }

@@ -14,13 +14,11 @@ import type { Media } from '@/payload-types'
 
 type GalleryShowcaseBlockLike = {
   accentTitle?: string | null
-  actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: GalleryShowcaseAlignment | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   images?:
     | {
@@ -34,13 +32,11 @@ type GalleryShowcaseBlockLike = {
 
 export function GalleryShowcaseBlockComponent({
   accentTitle,
-  actionMode = 'link',
   actions,
   appearance,
   contentAlignment = 'center',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   images,
   size = 'default',
@@ -79,7 +75,6 @@ export function GalleryShowcaseBlockComponent({
             actions={resolveCmsActions(actions).slice(0, 1)}
             alignment={alignment}
             data-gallery-showcase-actions="true"
-            mode={actionMode ?? 'link'}
           />
         }
         alignment={alignment}
@@ -90,7 +85,7 @@ export function GalleryShowcaseBlockComponent({
         size={size ?? 'default'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
     </>
   )
 }

@@ -34,6 +34,7 @@ type IconGridItem = {
 
 type IconGridBlockLike = {
   accentTitle?: string | null
+  // Presentation of the per-item card CTAs; the section actions carry their own.
   actionMode?: 'button' | 'link' | null
   actionVariant?: CmsActionVariant | null
   actions?: CmsActionValue[] | null
@@ -42,7 +43,6 @@ type IconGridBlockLike = {
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   iconStyle?: 'square' | 'circle' | 'outline' | 'plain' | null
   itemActionLabel?: string | null
@@ -319,7 +319,6 @@ export function IconGridBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   iconStyle = 'square',
   itemActionLabel,
@@ -403,7 +402,7 @@ export function IconGridBlockComponent({
             return <CardItem key={index} item={item} {...itemProps} />
           })}
         </div>
-        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+        <BlockFooterActions actions={footerActions} />
       </div>
     </section>
   )

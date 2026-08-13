@@ -19,13 +19,12 @@ describe('feature spotlight block', () => {
   it('renders image-right layout with a text link CTA', () => {
     const html = renderToStaticMarkup(
       createElement(FeatureSpotlightBlockComponent, {
-        actionMode: 'link',
         actions: [
           { label: 'See all programs', linkType: 'custom', url: '/programs' },
           { label: 'Compare pathways', linkType: 'custom', url: '/pathways' },
         ],
         appearance: {
-          background: 'muted',
+          background: 'subtle',
           border: 'bottom',
         },
         contentVerticalAlignment: 'top',
@@ -44,16 +43,15 @@ describe('feature spotlight block', () => {
     expect(html).toContain('data-feature-spotlight-image-position="right"')
     expect(html).toContain('data-feature-spotlight-layout="split"')
     expect(html).toContain('data-feature-spotlight-media-fill="contained"')
-    expect(html).toContain('data-feature-spotlight-action-mode="link"')
     expect(html).toContain('data-action-mode="link"')
-    expect(html).toContain('data-feature-spotlight-background="muted"')
+    expect(html).toContain('data-feature-spotlight-background="subtle"')
     expect(html).toContain('data-feature-spotlight-actions="true"')
     expect(html).toContain('href="/programs"')
     expect(html).toContain('href="/pathways"')
     expect(html).toContain('See all programs')
     expect(html).toContain('Compare pathways')
     expect(html).toContain('lucide-arrow-right')
-    expect(html).toContain('bg-muted')
+    expect(html).toContain('bg-subtle')
     expect(html).toContain('border-b border-border')
     expect(html).toContain('text-foreground')
     expect(html).toContain('text-3xl font-semibold tracking-tight')
@@ -66,18 +64,24 @@ describe('feature spotlight block', () => {
   it('renders muted background and two CTA buttons', () => {
     const html = renderToStaticMarkup(
       createElement(FeatureSpotlightBlockComponent, {
-        actionMode: 'button',
         actions: [
           {
             label: 'Start your application',
             linkType: 'custom',
+            mode: 'button',
             url: '/apply',
             variant: 'default',
           },
-          { label: 'Schedule a visit', linkType: 'custom', url: '/visit', variant: 'secondary' },
+          {
+            label: 'Schedule a visit',
+            linkType: 'custom',
+            mode: 'button',
+            url: '/visit',
+            variant: 'secondary',
+          },
         ],
         appearance: {
-          background: 'accent',
+          background: 'subtle',
           border: 'top',
         },
         description: 'Applications for the Class of 2030 open August 1.',
@@ -89,15 +93,14 @@ describe('feature spotlight block', () => {
       }),
     )
 
-    expect(html).toContain('data-feature-spotlight-background="accent"')
-    expect(html).toContain('data-feature-spotlight-action-mode="button"')
+    expect(html).toContain('data-feature-spotlight-background="subtle"')
     expect(html).toContain('data-action-mode="button"')
     expect(html).toContain('data-action-variant="default"')
     expect(html).toContain('data-action-variant="secondary"')
     expect(html).toContain('href="/apply"')
     expect(html).toContain('href="/visit"')
-    expect(html).toContain('bg-accent')
-    expect(html).toContain('text-accent-foreground')
+    expect(html).toContain('bg-subtle')
+    expect(html).toContain('text-foreground')
     expect(html).toContain('border-t border-border')
     expect(html).toContain('border border-border')
     expect(html).toContain('object-[center_top]')
@@ -106,7 +109,6 @@ describe('feature spotlight block', () => {
   it('renders centered content-only layout without an image', () => {
     const html = renderToStaticMarkup(
       createElement(FeatureSpotlightBlockComponent, {
-        actionMode: 'link',
         actions: [{ label: 'Start your application', linkType: 'custom', url: '/apply' }],
         description: 'Applications for the Class of 2030 open August 1.',
         layoutMode: 'contentOnly',
@@ -126,7 +128,6 @@ describe('feature spotlight block', () => {
   it('supports edge-to-edge media fill while keeping content contained', () => {
     const html = renderToStaticMarkup(
       createElement(FeatureSpotlightBlockComponent, {
-        actionMode: 'link',
         actions: [{ label: 'Explore facilities', linkType: 'custom', url: '/facilities' }],
         contentVerticalAlignment: 'bottom',
         description: 'Train with faculty mentors across clinics, labs, and simulation spaces.',
@@ -185,7 +186,6 @@ describe('feature spotlight block', () => {
   it('supports contained-fill media while keeping the layout inside the normal container', () => {
     const html = renderToStaticMarkup(
       createElement(FeatureSpotlightBlockComponent, {
-        actionMode: 'link',
         actions: [{ label: 'Explore facilities', linkType: 'custom', url: '/facilities' }],
         contentVerticalAlignment: 'top',
         description: 'Train with faculty mentors across clinics, labs, and simulation spaces.',

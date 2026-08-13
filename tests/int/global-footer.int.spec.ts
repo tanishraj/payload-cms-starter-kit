@@ -69,9 +69,13 @@ describe('global footer wiring', () => {
       ),
     )
 
+    // 'accent' is a legacy background value retired in the palette collapse; it
+    // normalizes to 'subtle' for rendered classes, but the raw stored value is
+    // still surfaced verbatim on the data attribute (Footer56 reads
+    // appearance.background directly, not through resolveBlockAppearanceClasses).
     expect(html).toContain('data-footer56-background="accent"')
-    expect(html).toContain('bg-accent')
-    expect(html).toContain('text-accent-foreground')
+    expect(html).toContain('bg-subtle')
+    expect(html).toContain('text-foreground')
     expect(html).toContain('border-t')
     expect(html).toContain('Acme Institute')
     expect(html).toContain('Programs')
@@ -112,7 +116,7 @@ describe('global footer wiring', () => {
           layout: [
             {
               appearance: {
-                background: 'muted',
+                background: 'brand',
                 border: 'top',
               },
               blockType: 'footer56',
@@ -137,9 +141,13 @@ describe('global footer wiring', () => {
       }),
     )
 
+    // Uses the 'brand' surface (rather than another value that also folds to
+    // 'subtle') so this test proves a genuinely different rendered surface
+    // than the legacy 'accent' background exercised above.
     expect(html).toContain('data-global-footer="true"')
-    expect(html).toContain('data-footer56-background="muted"')
-    expect(html).toContain('bg-muted')
+    expect(html).toContain('data-footer56-background="brand"')
+    expect(html).toContain('bg-brand')
+    expect(html).toContain('text-primary-foreground')
     expect(html).toContain('Acme Institute')
     expect(html).toContain('123 Market Street, Suite 400')
     expect(html).toContain('hello@acme.edu')

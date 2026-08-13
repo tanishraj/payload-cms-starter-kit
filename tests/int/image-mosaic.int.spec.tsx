@@ -54,10 +54,15 @@ const mosaicItems: ImageMosaicItem[] = Array.from({ length: 8 }, (_, index) => (
 }))
 
 describe('Image Mosaic', () => {
-  it('adds per-action display mode only when explicitly requested', () => {
+  it('includes the per-action display mode field by default, with an opt-out', () => {
     const defaultField = createContentActionsField()
     const imageActionField = createContentActionsField({
-      includeDisplayMode: true,
+      label: 'Action',
+      maxRows: 1,
+      name: 'action',
+    })
+    const noModeField = createContentActionsField({
+      includeDisplayMode: false,
       label: 'Action',
       maxRows: 1,
       name: 'action',
@@ -77,8 +82,9 @@ describe('Image Mosaic', () => {
       )
     }
 
-    expect(getLayoutNames(defaultField)).toEqual(['variant', 'showArrow'])
+    expect(getLayoutNames(defaultField)).toEqual(['mode', 'variant', 'showArrow'])
     expect(getLayoutNames(imageActionField)).toEqual(['mode', 'variant', 'showArrow'])
+    expect(getLayoutNames(noModeField)).toEqual(['variant', 'showArrow'])
 
     const tabsField = imageActionField.fields[0]
 
@@ -94,7 +100,8 @@ describe('Image Mosaic', () => {
     expect(imageActionField).toMatchObject({ maxRows: 1, name: 'action', type: 'array' })
     expect(modeField).toMatchObject({
       defaultValue: 'link',
-      required: true,
+      label: 'Display As',
+      required: false,
       type: 'select',
     })
     expect(variantField).toMatchObject({
@@ -157,7 +164,18 @@ describe('Image Mosaic', () => {
     expect(getField(itemsField?.fields ?? [], 'linkType')).toBeUndefined()
     expect(getField(itemsField?.fields ?? [], 'linkLabel')).toBeUndefined()
     expect(getField(layoutTab?.fields ?? [], 'appearance')?.type).toBe('group')
-    expect(getField(layoutTab?.fields ?? [], 'actionMode')?.defaultValue).toBe('link')
+    const actionsField = getField(contentTab?.fields ?? [], 'actions')
+    const actionsTabsField = actionsField?.fields?.[0]
+    const actionsThemeTab =
+      actionsTabsField?.type === 'tabs'
+        ? actionsTabsField.tabs?.find(({ label }) => label === 'Theme Settings')
+        : undefined
+    expect(getField(actionsThemeTab?.fields ?? [], 'mode')).toMatchObject({
+      defaultValue: 'link',
+      label: 'Display As',
+      required: false,
+      type: 'select',
+    })
     expect(getField(layoutTab?.fields ?? [], 'contentAlignment')?.defaultValue).toBe('center')
     expect(getField(layoutTab?.fields ?? [], 'size')?.defaultValue).toBe('default')
     expect(getField(layoutTab?.fields ?? [], 'showImageOverlays')).toMatchObject({
@@ -184,7 +202,7 @@ describe('Image Mosaic', () => {
       <ImageMosaic
         actions="Explore the collection"
         alignment="right"
-        appearance={{ background: 'muted', border: 'topAndBottom' }}
+        appearance={{ background: 'subtle', border: 'topAndBottom' }}
         description="A closer look at the people and places in our community."
         eyebrow="Gallery"
         items={mosaicItems.slice(0, 5)}
@@ -195,7 +213,7 @@ describe('Image Mosaic', () => {
 
     expect(html).toContain('data-image-mosaic-alignment="right"')
     expect(html).toContain('data-image-mosaic-size="compact"')
-    expect(html).toContain('bg-muted')
+    expect(html).toContain('bg-subtle')
     expect(html).toContain('border-y border-border')
     expect(html).toContain('py-8 md:py-10')
     expect(html).toContain('mx-auto w-full max-w-screen-2xl px-4')
@@ -297,16 +315,16 @@ describe('Image Mosaic', () => {
   it('resolves Payload media, item actions, section actions, and image positions', () => {
     const html = renderToStaticMarkup(
       <ImageMosaicBlockComponent
-        actionMode="button"
         actions={[
           {
             label: 'View all',
             linkType: 'custom',
+            mode: 'button',
             url: '/gallery',
             variant: 'outline',
           },
         ]}
-        appearance={{ background: 'accent', border: 'top' }}
+        appearance={{ background: 'subtle', border: 'top' }}
         contentAlignment="left"
         items={[
           {

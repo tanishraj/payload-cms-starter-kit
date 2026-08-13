@@ -2,7 +2,7 @@ import type { Block, RelationshipFieldSingleValidation, SelectField, TabsField }
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import { validateContact33FormDefinition } from '@/lib/contact33Form'
 import type { Form } from '@/payload-types'
 
@@ -95,8 +95,8 @@ export const Contact33Block: Block = {
               name: 'description',
               type: 'textarea',
             },
-            ...createContentActionsWithModeFields({ label: 'Section Actions', maxRows: 2 }),
-            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
+            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             {
               name: 'image',
               type: 'upload',

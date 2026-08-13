@@ -44,8 +44,10 @@ describe('Content Highlights', () => {
     expect(content?.fields.map(({ name }) => name)).toEqual([
       'eyebrow',
       'title',
+      'accentTitle',
       'description',
       'actions',
+      'footerActions',
       'items',
     ])
     expect(getField(content?.fields ?? [], 'title')).toMatchObject({
@@ -72,7 +74,20 @@ describe('Content Highlights', () => {
       type: 'select',
     })
     expect(getField(layout?.fields ?? [], 'appearance')?.type).toBe('group')
-    expect(getField(layout?.fields ?? [], 'actionMode')?.defaultValue).toBe('link')
+    const actionsField = getField(content?.fields ?? [], 'actions')
+    const actionsTabsField = actionsField?.fields?.[0] as TestField | undefined
+    const actionsThemeTab = actionsTabsField?.tabs?.find(({ label }) => label === 'Theme Settings')
+    expect(actionsThemeTab?.fields?.map(({ name }) => name)).toEqual([
+      'mode',
+      'variant',
+      'showArrow',
+    ])
+    expect(getField(actionsThemeTab?.fields ?? [], 'mode')).toMatchObject({
+      defaultValue: 'link',
+      label: 'Display As',
+      required: false,
+      type: 'select',
+    })
     expect(getField(layout?.fields ?? [], 'layout')).toMatchObject({
       defaultValue: 'highlightsGrid',
       required: true,
@@ -104,7 +119,7 @@ describe('Content Highlights', () => {
       renderToStaticMarkup(
         <ContentHighlights
           actions={<span>All stories</span>}
-          appearance={{ background: 'muted', border: 'topAndBottom' }}
+          appearance={{ background: 'subtle', border: 'topAndBottom' }}
           description="A concise introduction to the highlighted content."
           eyebrow="Latest"
           enableSplitLayout={enableSplitLayout}
@@ -145,7 +160,7 @@ describe('Content Highlights', () => {
     for (const html of [editorialHtml, gridHtml, splitHtml]) {
       expect(html).toContain('max-w-screen-2xl')
       expect(html).toContain('px-4')
-      expect(html).toContain('bg-muted')
+      expect(html).toContain('bg-subtle')
       expect(html).toContain('border-y border-border')
       expect(html).toContain('data-slot="separator"')
     }
@@ -254,7 +269,7 @@ describe('Content Highlights', () => {
 
     const splitNumberedHtml = renderToStaticMarkup(
       <ContentHighlights
-        appearance={{ background: 'secondary' }}
+        appearance={{ background: 'subtle' }}
         enableSplitLayout
         items={items}
         layout="numberedSteps"
@@ -262,8 +277,8 @@ describe('Content Highlights', () => {
       />,
     )
 
-    expect(splitNumberedHtml).toContain('bg-secondary')
-    expect(splitNumberedHtml).toContain('text-secondary-foreground')
+    expect(splitNumberedHtml).toContain('bg-subtle')
+    expect(splitNumberedHtml).toContain('text-foreground')
     expect(splitNumberedHtml).toContain('border-current/10')
     expect(splitNumberedHtml).not.toContain('border-border')
 
@@ -276,11 +291,11 @@ describe('Content Highlights', () => {
   it('resolves shared actions and optional item destinations defensively', () => {
     const html = renderToStaticMarkup(
       <ContentHighlightsBlockComponent
-        actionMode="button"
         actions={[
           {
             label: 'Explore all',
             linkType: 'custom',
+            mode: 'button',
             url: '/explore',
             variant: 'outline',
           },
@@ -325,11 +340,11 @@ describe('Content Highlights', () => {
     (layout) => {
       const html = renderToStaticMarkup(
         <ContentHighlightsBlockComponent
-          actionMode="button"
           actions={[
             {
               label: 'Explore all',
               linkType: 'custom',
+              mode: 'button',
               url: '/explore',
               variant: 'outline',
             },

@@ -13,11 +13,9 @@ import { cn } from '@/lib/utils'
 type AspectRatio = '16/9' | '4/3' | '1/1' | '9/16'
 type MaxWidth = 'full' | 'lg' | 'md'
 type ContentAlignment = 'center' | 'left' | 'right'
-type ActionMode = 'button' | 'link'
 
 type VideoEmbedBlockLike = {
   actions?: CmsActionValue[] | null
-  actionMode?: ActionMode | null
   appearance?: BlockAppearance | null
   aspectRatio?: AspectRatio | null
   autoplay?: boolean | null
@@ -25,7 +23,6 @@ type VideoEmbedBlockLike = {
   contentAlignment?: ContentAlignment | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   maxWidth?: MaxWidth | null
   size?: RegularBlockSize | null
@@ -78,7 +75,6 @@ const alignmentClasses: Record<ContentAlignment, string> = {
 
 export function VideoEmbedBlockComponent({
   actions,
-  actionMode = 'link',
   appearance,
   aspectRatio = '16/9',
   autoplay = false,
@@ -86,7 +82,6 @@ export function VideoEmbedBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   maxWidth = 'lg',
   size = 'default',
@@ -135,11 +130,7 @@ export function VideoEmbedBlockComponent({
               <p className="text-base leading-7 text-current/70">{description.trim()}</p>
             ) : null}
             {resolvedActions.length > 0 ? (
-              <ContentActions
-                actions={resolvedActions}
-                alignment={resolvedAlignment}
-                mode={actionMode ?? 'link'}
-              />
+              <ContentActions actions={resolvedActions} alignment={resolvedAlignment} />
             ) : null}
           </header>
         ) : null}
@@ -174,7 +165,7 @@ export function VideoEmbedBlockComponent({
             </figcaption>
           ) : null}
         </figure>
-        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+        <BlockFooterActions actions={footerActions} />
       </div>
     </section>
   )

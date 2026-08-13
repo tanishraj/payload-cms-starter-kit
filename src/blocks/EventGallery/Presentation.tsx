@@ -21,7 +21,6 @@ export type EventGalleryBlockLike = {
   description?: string | null
   displayOrder?: EventGalleryDisplayOrder | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   galleryAlbums?: unknown
   size?: EventGallerySize | null
@@ -36,7 +35,6 @@ export function EventGalleryBlockPresentation({
   contentAlignment = 'center',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   size = 'default',
   title,
@@ -62,7 +60,7 @@ export function EventGalleryBlockPresentation({
         size={size ?? 'default'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
     </>
   )
 }

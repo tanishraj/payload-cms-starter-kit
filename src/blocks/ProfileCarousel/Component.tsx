@@ -15,14 +15,12 @@ import { getMediaImageProps } from '@/lib/media'
 
 type ProfileCarouselBlockLike = {
   accentTitle?: string | null
-  actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   cardVariant?: ProfileCarouselCardVariant | null
   contentAlignment?: ProfileCarouselAlignment | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   profiles?:
     | {
@@ -40,14 +38,12 @@ type ProfileCarouselBlockLike = {
 
 export function ProfileCarouselBlockComponent({
   accentTitle,
-  actionMode = 'link',
   actions,
   appearance,
   cardVariant = 'stacked',
   contentAlignment = 'center',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   overlayAlignment = 'left',
   profiles,
@@ -92,7 +88,6 @@ export function ProfileCarouselBlockComponent({
             actions={resolvedActions}
             alignment={resolvedAlignment}
             data-profile-carousel-actions="true"
-            mode={actionMode ?? 'link'}
           />
         }
         alignment={resolvedAlignment}
@@ -105,7 +100,7 @@ export function ProfileCarouselBlockComponent({
         size={size ?? 'default'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
     </>
   )
 }

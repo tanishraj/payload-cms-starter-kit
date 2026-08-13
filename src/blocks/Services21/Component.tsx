@@ -17,13 +17,11 @@ type Services21BlockService = {
 
 type Services21BlockLike = {
   accentTitle?: string | null
-  actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: Services21Alignment | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   services?: Services21BlockService[] | null
   size?: 'none' | 'comfortable' | 'compact' | 'default' | null
@@ -47,12 +45,10 @@ const buttonClassNameByVariant: Record<ActionButtonMode, string> = {
 
 export function Services21BlockComponent({
   accentTitle,
-  actionMode = 'link',
   actions,
   appearance,
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   contentAlignment = 'center',
   services,
@@ -91,7 +87,7 @@ export function Services21BlockComponent({
     action?.variant === 'link' ? 'default' : (action?.variant ?? 'default')
   const hasServices = resolvedServices.length > 0
   const actionNode = action ? (
-    actionMode === 'button' ? (
+    action.mode === 'button' ? (
       <BorderButton
         asChild
         className={`group mt-10 ${buttonClassNameByVariant[actionVariant]}`}
@@ -132,7 +128,7 @@ export function Services21BlockComponent({
         size={size ?? 'default'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
     </>
   )
 }

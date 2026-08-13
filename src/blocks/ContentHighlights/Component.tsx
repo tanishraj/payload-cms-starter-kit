@@ -25,14 +25,12 @@ type ContentHighlightItemValue = Omit<CmsLinkValue, 'linkType'> & {
 }
 
 type ContentHighlightsBlockLike = {
-  actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: ContentHighlightsAlignment | null
   description?: string | null
   enableSplitLayout?: boolean | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   items?: ContentHighlightItemValue[] | null
   layout?: ContentHighlightsLayout | null
@@ -42,14 +40,12 @@ type ContentHighlightsBlockLike = {
 }
 
 export function ContentHighlightsBlockComponent({
-  actionMode = 'link',
   actions,
   appearance,
   contentAlignment = 'center',
   description,
   enableSplitLayout = false,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   items,
   layout = 'highlightsGrid',
@@ -102,7 +98,6 @@ export function ContentHighlightsBlockComponent({
           : undefined
       }
       data-content-highlights-actions="true"
-      mode={actionMode ?? 'link'}
     />
   ) : null
 
@@ -121,7 +116,7 @@ export function ContentHighlightsBlockComponent({
         splitContentAlignment={splitContentAlignment ?? 'top'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
     </>
   )
 }

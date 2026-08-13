@@ -115,7 +115,7 @@ describe('ProgramMatrixBlock schema', () => {
     expect(findNamedField(ProgramMatrixBlock.fields, 'actionMode')).toMatchObject({
       type: 'select',
       defaultValue: 'link',
-      required: true,
+      required: false,
     })
     expect(findNamedField(ProgramMatrixBlock.fields, 'actionVariant')).toMatchObject({
       type: 'select',
@@ -199,7 +199,7 @@ describe('ProgramMatrixBlockComponent', () => {
   it('uses the shared eyebrow color treatment on colored section surfaces', () => {
     const html = renderToStaticMarkup(
       <ProgramMatrixBlockComponent
-        appearance={{ background: 'primary' }}
+        appearance={{ background: 'brand' }}
         eyebrow="Academics"
         items={baseItems}
         title="Programmes"
@@ -252,10 +252,11 @@ describe('ProgramMatrixBlockComponent', () => {
     expect(html).toContain('bg-transparent text-current')
   })
 
-  it('keeps surface links and matching button variants readable', () => {
-    const linkHtml = renderToStaticMarkup(
+  it('keeps item surface links readable across card backgrounds', () => {
+    // Per-item CTAs always render as ContentLink now (see Component.tsx),
+    // so this only exercises the link-color treatment per card surface.
+    const primaryHtml = renderToStaticMarkup(
       <ProgramMatrixBlockComponent
-        actionMode="link"
         items={[
           {
             cardBackground: 'primary',
@@ -267,25 +268,8 @@ describe('ProgramMatrixBlockComponent', () => {
         title="Programmes"
       />,
     )
-    const buttonHtml = renderToStaticMarkup(
+    const secondaryHtml = renderToStaticMarkup(
       <ProgramMatrixBlockComponent
-        actionMode="button"
-        actionVariant="default"
-        items={[
-          {
-            cardBackground: 'primary',
-            linkType: 'custom',
-            title: 'MBBS',
-            url: '/mbbs',
-          },
-        ]}
-        title="Programmes"
-      />,
-    )
-    const secondaryButtonHtml = renderToStaticMarkup(
-      <ProgramMatrixBlockComponent
-        actionMode="button"
-        actionVariant="secondary"
         items={[
           {
             cardBackground: 'secondary',
@@ -298,40 +282,50 @@ describe('ProgramMatrixBlockComponent', () => {
       />,
     )
 
-    expect(linkHtml).toContain('text-primary-foreground')
-    expect(buttonHtml).toContain('bg-primary-foreground text-primary')
-    expect(secondaryButtonHtml).toContain('bg-secondary-foreground text-secondary')
+    expect(primaryHtml).toContain('text-primary-foreground')
+    expect(secondaryHtml).toContain('text-secondary-foreground')
   })
 
   it('adapts section actions when the block uses a matching colored surface', () => {
     const linkHtml = renderToStaticMarkup(
       <ProgramMatrixBlockComponent
         actions={[{ label: 'Explore', linkType: 'custom', url: '/programmes' }]}
-        appearance={{ background: 'primary' }}
+        appearance={{ background: 'brand' }}
         items={baseItems}
         title="Programmes"
       />,
     )
     const buttonHtml = renderToStaticMarkup(
       <ProgramMatrixBlockComponent
-        actionMode="button"
         actions={[
           {
             label: 'Explore',
             linkType: 'custom',
+            mode: 'button',
             url: '/programmes',
             variant: 'default',
           },
         ]}
-        appearance={{ background: 'primary' }}
+        appearance={{ background: 'brand' }}
         items={baseItems}
         title="Programmes"
       />,
     )
 
+    // Brand-surface contrast for BOTH buttons and links now comes from custom.css
+    // (`.bg-brand [data-slot='button']...` and `.bg-brand [data-content-link='true']`),
+    // so the component emits no per-variant Tailwind classes of its own — it only
+    // marks the surface and lets each action declare its own display mode.
     expect(linkHtml).toContain('data-surface-contrast="true"')
     expect(buttonHtml).toContain('data-surface-contrast="true"')
-    expect(buttonHtml).toContain('bg-primary-foreground')
+    expect(linkHtml).toContain('data-action-mode="link"')
+    expect(linkHtml).toContain('data-content-link="true"')
+    expect(buttonHtml).toContain('data-action-mode="button"')
+    expect(buttonHtml).toContain('data-slot="button"')
+    expect(buttonHtml).toContain('data-variant="default"')
+    // No hand-rolled contrast classes survive in either mode.
+    expect(linkHtml).not.toContain(':text-current')
+    expect(buttonHtml).not.toContain('bg-primary-foreground')
   })
 
   it('omits invalid rows and invalid icons without a fallback', () => {
@@ -350,19 +344,16 @@ describe('ProgramMatrixBlockComponent', () => {
     expect(html).not.toContain('data-program-icon="true"')
   })
 
-  it('renders explicit link and button actions without wrapping the cell', () => {
+  it('renders explicit link actions without wrapping the cell', () => {
     const linkHtml = renderToStaticMarkup(
       <ProgramMatrixBlockComponent
-        actionMode="link"
         itemActionLabel="View Programme"
         items={[{ linkType: 'custom', title: 'MBBS', url: '/mbbs' }]}
         title="Programmes"
       />,
     )
-    const buttonHtml = renderToStaticMarkup(
+    const newTabHtml = renderToStaticMarkup(
       <ProgramMatrixBlockComponent
-        actionMode="button"
-        actionVariant="outline"
         itemActionLabel="Apply"
         items={[
           {
@@ -379,10 +370,9 @@ describe('ProgramMatrixBlockComponent', () => {
     expect(linkHtml).toContain('View Programme')
     expect(linkHtml).toContain('href="/mbbs"')
     expect(linkHtml).not.toContain('<a href="/mbbs"><article')
-    expect(buttonHtml).toContain('Apply')
-    expect(buttonHtml).toContain('data-variant="outline"')
-    expect(buttonHtml).toContain('target="_blank"')
-    expect(buttonHtml).toContain('rel="noopener noreferrer"')
+    expect(newTabHtml).toContain('Apply')
+    expect(newTabHtml).toContain('target="_blank"')
+    expect(newTabHtml).toContain('rel="noreferrer"')
   })
 
   it('resolves hierarchical page links and omits actions without a destination', () => {
@@ -413,14 +403,14 @@ describe('ProgramMatrixBlockComponent', () => {
     expect(html.match(/data-last-desktop-row="true"/g)).toHaveLength(1)
   })
 
-  it('passes alignment and mode to section actions', () => {
+  it('passes alignment to section actions and derives mode from action rows', () => {
     const html = renderToStaticMarkup(
       <ProgramMatrixBlockComponent
-        actionMode="button"
         actions={[
           {
             label: 'Explore programmes',
             linkType: 'custom',
+            mode: 'button',
             url: '/programmes',
           },
         ]}

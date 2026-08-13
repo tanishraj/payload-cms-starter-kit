@@ -2,7 +2,7 @@ import type { Block, NumberField, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 export const NewsEventsHighlightsBlock: Block = {
   slug: 'newsEventsHighlights',
@@ -22,8 +22,8 @@ export const NewsEventsHighlightsBlock: Block = {
             { name: 'eyebrow', type: 'text' },
             { name: 'title', type: 'text' },
             { name: 'description', type: 'textarea' },
-            ...createContentActionsWithModeFields({ maxRows: 1 }),
-            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({ maxRows: 1 }),
+            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             {
               name: 'itemCount',
               label: 'Number of Items',

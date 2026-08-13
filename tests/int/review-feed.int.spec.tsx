@@ -100,11 +100,13 @@ describe('Review Feed', () => {
     expect(content?.fields.map(({ name }) => name)).toEqual([
       'eyebrow',
       'title',
+      'accentTitle',
       'description',
       'actions',
       'pageSize',
       'loadMoreLabel',
       'emptyStateMessage',
+      'footerActions',
     ])
     expect(getField(content?.fields ?? [], 'title')).toMatchObject({ type: 'text' })
     expect(pageSize).toMatchObject({ defaultValue: 4, max: 12, min: 1, required: true })
@@ -125,7 +127,7 @@ describe('Review Feed', () => {
   it('renders the upstream summary and public review cards without the removed row', () => {
     const html = renderToStaticMarkup(
       createElement(ReviewFeed, {
-        appearance: { background: 'muted', border: 'topAndBottom' },
+        appearance: { background: 'subtle', border: 'topAndBottom' },
         description: 'Read what our community has shared.',
         emptyStateMessage: 'No published reviews yet.',
         eyebrow: 'Community voices',
@@ -148,7 +150,7 @@ describe('Review Feed', () => {
     expect(html).toContain('Jul 18, 2026')
     expect(html).toContain('Outstanding support')
     expect(html).toContain('A thoughtful and supportive experience.')
-    expect(html).toContain('bg-muted')
+    expect(html).toContain('bg-subtle')
     expect(html).toContain('border-y border-border')
     expect(html).not.toContain('Sort:')
     expect(html).not.toContain('Most Helpful')

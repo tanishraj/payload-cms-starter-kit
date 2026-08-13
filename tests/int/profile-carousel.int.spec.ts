@@ -87,7 +87,11 @@ describe('Profile Carousel', () => {
     const roleField = getField(profileContentTab?.fields ?? [], 'role')
     const imagePositionField = getField(profileThemeTab?.fields ?? [], 'imagePosition')
     const appearanceField = getField(layoutTab?.fields ?? [], 'appearance')
-    const actionModeField = getField(layoutTab?.fields ?? [], 'actionMode')
+    const actionsTabsField = actionsField?.fields?.[0] as unknown as
+      | { tabs: TestTab[]; type: string }
+      | undefined
+    const actionsThemeTab = actionsTabsField?.tabs?.find(({ label }) => label === 'Theme Settings')
+    const actionModeField = getField(actionsThemeTab?.fields ?? [], 'mode')
     const contentAlignmentField = getField(layoutTab?.fields ?? [], 'contentAlignment')
     const sizeField = getField(layoutTab?.fields ?? [], 'size')
     const cardVariantField = getField(layoutTab?.fields ?? [], 'cardVariant')
@@ -116,7 +120,12 @@ describe('Profile Carousel', () => {
       'right',
     ])
     expect(appearanceField?.type).toBe('group')
-    expect(actionModeField?.defaultValue).toBe('link')
+    expect(actionModeField).toMatchObject({
+      defaultValue: 'link',
+      label: 'Display As',
+      required: false,
+      type: 'select',
+    })
     expect(contentAlignmentField?.defaultValue).toBe('center')
     expect(sizeField?.defaultValue).toBe('default')
     expect(sizeField?.options?.map(({ value }) => value)).toEqual([
@@ -140,7 +149,7 @@ describe('Profile Carousel', () => {
       ProfileCarousel({
         actions: 'Meet our team',
         alignment: 'left',
-        appearance: { background: 'muted', border: 'topAndBottom' },
+        appearance: { background: 'subtle', border: 'topAndBottom' },
         description: 'The people supporting every part of the experience.',
         eyebrow: 'Our people',
         profiles: profiles.slice(0, 3),
@@ -226,16 +235,16 @@ describe('Profile Carousel', () => {
   it('resolves Payload media, alignment, appearance, and the one shared action', () => {
     const html = renderToStaticMarkup(
       ProfileCarouselBlockComponent({
-        actionMode: 'button',
         actions: [
           {
             label: 'Meet everyone',
             linkType: 'custom',
+            mode: 'button',
             url: '/team',
             variant: 'outline',
           },
         ],
-        appearance: { background: 'accent', border: 'top' },
+        appearance: { background: 'subtle', border: 'top' },
         cardVariant: 'overlay',
         contentAlignment: 'right',
         description: 'A multidisciplinary group working together.',
@@ -256,7 +265,7 @@ describe('Profile Carousel', () => {
     expect(html).toContain('data-profile-carousel-card-variant="overlay"')
     expect(html).toContain('data-profile-carousel-overlay-alignment="right"')
     expect(html).toContain('Leadership')
-    expect(html).toContain('bg-accent')
+    expect(html).toContain('bg-subtle')
     expect(html).toContain('data-action-mode="button"')
     expect(html).toContain('data-action-variant="outline"')
     expect(html).toContain('href="/team"')

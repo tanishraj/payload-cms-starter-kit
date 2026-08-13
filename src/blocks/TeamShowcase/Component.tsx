@@ -13,10 +13,8 @@ import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 type TeamShowcaseBlockLike = {
   accentTitle?: string | null
   showHeaderDivider?: boolean | null
-  actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   contentAlignment?: TeamShowcaseAlignment | null
   description?: string | null
@@ -36,10 +34,8 @@ type TeamShowcaseBlockLike = {
 export function TeamShowcaseBlockComponent({
   accentTitle,
   showHeaderDivider = true,
-  actionMode = 'link',
   actions,
   appearance,
-  footerActionMode = 'link',
   footerActions,
   contentAlignment = 'center',
   description,
@@ -81,7 +77,6 @@ export function TeamShowcaseBlockComponent({
             actions={resolveCmsActions(actions)}
             alignment={contentAlignment ?? 'left'}
             data-team-showcase-actions="true"
-            mode={actionMode ?? 'link'}
           />
         }
         appearance={appearance}
@@ -93,7 +88,7 @@ export function TeamShowcaseBlockComponent({
         members={resolvedMembers}
         size={size ?? undefined}
       />
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
     </>
   )
 }

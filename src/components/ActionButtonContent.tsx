@@ -1,4 +1,4 @@
-import { ArrowRight } from 'lucide-react'
+import { ActionArrow } from '@/components/ActionArrow'
 
 type ActionButtonContentProps = {
   label: string
@@ -9,15 +9,7 @@ export function ActionButtonContent({ label, showArrow = false }: ActionButtonCo
   return (
     <>
       <span>{label}</span>
-      {showArrow ? (
-        <ArrowRight
-          aria-hidden="true"
-          className="transition-transform duration-200 ease-out motion-reduce:transition-none group-hover/button:translate-x-0.5 group-focus-visible/button:translate-x-0.5"
-          data-action-arrow="true"
-          data-icon="inline-end"
-          strokeWidth={2.5}
-        />
-      ) : null}
+      {showArrow ? <ActionArrow data-action-arrow="true" data-icon="inline-end" /> : null}
     </>
   )
 }

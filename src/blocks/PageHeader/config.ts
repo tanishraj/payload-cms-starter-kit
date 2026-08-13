@@ -2,7 +2,7 @@ import type { ArrayField, Block, RadioField, SelectField, TabsField } from 'payl
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
-import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 type BreadcrumbSiblingData = {
   linkType?: 'page' | 'custom' | null
@@ -110,8 +110,8 @@ export const PageHeaderBlock: Block = {
               type: 'textarea',
               admin: { description: 'Supporting line below the title.' },
             },
-            ...createContentActionsWithModeFields({ label: 'Actions', maxRows: 2 }),
-            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({ label: 'Actions', maxRows: 2 }),
+            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             {
               name: 'backgroundImage',
               label: 'Background Image',

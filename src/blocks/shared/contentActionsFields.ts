@@ -19,10 +19,6 @@ type CreateContentActionsFieldOptions = {
   name?: string
 }
 
-type CreateContentActionsWithModeFieldsOptions = CreateContentActionsFieldOptions & {
-  modeLabel?: string
-}
-
 type ActionLayoutSiblingData = {
   mode?: 'button' | 'link' | null
 }
@@ -95,7 +91,7 @@ const createActionLayoutFields = (includeDisplayMode: boolean): Field[] => [
             { label: 'Link', value: 'link' },
             { label: 'Button', value: 'button' },
           ],
-          required: true,
+          required: false,
         } satisfies SelectField,
       ]
     : []),
@@ -143,7 +139,9 @@ export const createContentActionModeField = ({
     { label: 'Link', value: 'link' },
     { label: 'Button', value: 'button' },
   ],
-  required: true,
+  // Optional: the default already covers unset values, and marking it required
+  // would make the generated type demand it on every seeded block.
+  required: false,
   ...(condition
     ? {
         admin: {
@@ -153,26 +151,10 @@ export const createContentActionModeField = ({
     : {}),
 })
 
-// Returns [modeSelectField, actionsArrayField] so both can be spread together in the
-// Content tab, keeping "how" next to "what" without splitting across tabs.
-export const createContentActionsWithModeFields = ({
-  includeDisplayMode = false,
-  label = 'Actions',
-  maxRows = 2,
-  modeLabel,
-  name = 'actions',
-}: CreateContentActionsWithModeFieldsOptions = {}): Field[] => {
-  // actions → actionMode, footerActions → footerActionMode
-  const modeName = name.replace(/s$/, 'Mode')
-  const resolvedModeLabel = modeLabel ?? label.replace(/s$/, '') + ' Mode'
-  return [
-    { ...createContentActionModeField({ label: resolvedModeLabel, name: modeName }), required: false },
-    createContentActionsField({ includeDisplayMode, label, maxRows, name }),
-  ]
-}
-
 export const createContentActionsField = ({
-  includeDisplayMode = false,
+  // Display mode lives on each action, inside its own Theme Settings tab, so a
+  // row can be a button while its neighbour stays a link.
+  includeDisplayMode = true,
   label = 'Actions',
   maxRows = 2,
   name = 'actions',

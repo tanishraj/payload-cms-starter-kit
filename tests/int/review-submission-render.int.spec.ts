@@ -80,7 +80,6 @@ describe('review submission block', () => {
   it('aligns only the content header while preserving shared description typography', () => {
     const centerHtml = renderToStaticMarkup(
       createElement(ReviewSubmissionBlockComponent, {
-        actionMode: 'link',
         actions: [
           {
             label: 'Read review policy',
@@ -126,17 +125,18 @@ describe('review submission block', () => {
   it('renders shared actions as theme-aware buttons', () => {
     const html = renderToStaticMarkup(
       createElement(ReviewSubmissionBlockComponent, {
-        actionMode: 'button',
         actions: [
           {
             label: 'Review guidelines',
             linkType: 'custom',
+            mode: 'button',
             url: '/guidelines',
             variant: 'default',
           },
           {
             label: 'Contact support',
             linkType: 'custom',
+            mode: 'button',
             url: '/support',
             variant: 'outline',
           },

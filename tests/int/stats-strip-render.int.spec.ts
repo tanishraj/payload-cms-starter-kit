@@ -21,10 +21,10 @@ describe('stats strip block', () => {
 
   it.each([
     ['none', 'border-foreground/15'],
-    ['primary', 'border-primary-foreground/15'],
-    ['secondary', 'border-secondary-foreground/15'],
-    ['muted', 'border-foreground/15'],
-    ['accent', 'border-accent-foreground/15'],
+    ['subtle', 'border-foreground/15'],
+    ['brand', 'border-primary-foreground/15'],
+    ['gradient-subtle', 'border-foreground/15'],
+    ['gradient-brand', 'border-primary-foreground/15'],
   ] as const)('adapts internal dividers to the %s background', (background, dividerClass) => {
     const { container } = render(
       createElement(StatsStripBlockComponent, {
@@ -52,7 +52,7 @@ describe('stats strip block', () => {
     const html = renderToStaticMarkup(
       createElement(StatsStripBlockComponent, {
         appearance: {
-          background: 'accent',
+          background: 'subtle',
           border: 'bottom',
         },
         items: [
@@ -66,9 +66,9 @@ describe('stats strip block', () => {
       }),
     )
 
-    expect(html).toContain('data-stats-strip-background="accent"')
-    expect(html).toContain('bg-accent')
-    expect(html).toContain('text-accent-foreground')
+    expect(html).toContain('data-stats-strip-background="subtle"')
+    expect(html).toContain('bg-subtle')
+    expect(html).toContain('text-foreground')
     expect(html).toContain('border-b border-border')
     expect(html).toContain('data-stats-strip-row="0"')
     expect(html).toContain('data-stats-strip-row="1"')

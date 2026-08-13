@@ -12,7 +12,7 @@ describe('system page rendering', () => {
     const html = renderToStaticMarkup(
       createElement(System404BlockComponent, {
         appearance: {
-          background: 'muted',
+          background: 'subtle',
           border: 'topAndBottom',
         },
         badge: '404',
@@ -29,7 +29,7 @@ describe('system page rendering', () => {
     expect(html).toContain('data-system-page-variant="notFound"')
     expect(html).toContain('min-h-dvh')
     expect(html).toContain('justify-center')
-    expect(html).toContain('bg-muted')
+    expect(html).toContain('bg-subtle')
     expect(html).toContain('text-foreground')
     expect(html).toContain('border-y border-border')
     expect(html).toContain('text-center')

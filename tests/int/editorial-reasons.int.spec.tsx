@@ -105,6 +105,7 @@ describe('EditorialReasonsBlock schema', () => {
       'contentAlignment',
     ) as SelectField
     const listColumns = findNamedField(EditorialReasonsBlock.fields, 'listColumns') as SelectField
+    const numberLayout = findNamedField(EditorialReasonsBlock.fields, 'numberLayout') as SelectField
     const listBorderStyle = findNamedField(
       EditorialReasonsBlock.fields,
       'listBorderStyle',
@@ -129,11 +130,6 @@ describe('EditorialReasonsBlock schema', () => {
       relationTo: 'pages',
     })
     expect(findNamedField(EditorialReasonsBlock.fields, 'appearance')).toBeDefined()
-    expect(findNamedField(EditorialReasonsBlock.fields, 'actionMode')).toMatchObject({
-      type: 'select',
-      defaultValue: 'link',
-      required: true,
-    })
     expect(layoutProportion).toMatchObject({
       type: 'select',
       defaultValue: 'listFocus',
@@ -173,6 +169,14 @@ describe('EditorialReasonsBlock schema', () => {
         { label: '2 Columns', value: '2' },
         { label: '3 Columns', value: '3' },
         { label: '4 Columns', value: '4' },
+      ],
+    })
+    expect(numberLayout).toMatchObject({
+      type: 'select',
+      defaultValue: 'stacked',
+      options: [
+        { label: 'Stacked (number above title)', value: 'stacked' },
+        { label: 'Inline (number beside title)', value: 'inline' },
       ],
     })
     expect(listBorderStyle).toMatchObject({
@@ -243,8 +247,8 @@ describe('EditorialReasonsBlockComponent', () => {
       'font-[family-name:var(--font-display)] text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl',
     )
     expect(html).toContain('font-[family-name:var(--font-display)]')
-    expect(html.match(/font-\[family-name:inherit\]/g)).toHaveLength(2)
-    expect(html).toContain('italic')
+    expect(html.match(/font-\[inherit\]/g)).toHaveLength(2)
+    expect(html).toContain('<em class="block font-[inherit]">Driven by purpose.</em>')
     expect(html).toContain('data-editorial-reasons-grid="true"')
     expect(html).toContain('grid-cols-1 md:grid-cols-2')
     expect(html).toContain('data-editorial-reasons-columns="2"')
@@ -469,28 +473,45 @@ describe('EditorialReasonsBlockComponent', () => {
     expect(html).toContain(expectedClass)
   })
 
-  it('uses a number rail in one column and number-above cells in multi-column layouts', () => {
-    const oneColumn = renderToStaticMarkup(
+  it('uses a number rail for inline and number-above cells for stacked, independent of column count', () => {
+    const inlineOneColumn = renderToStaticMarkup(
       <EditorialReasonsBlockComponent
         listColumns="1"
+        numberLayout="inline"
         reasons={baseReasons}
         title="Why choose us"
       />,
     )
-    const twoColumns = renderToStaticMarkup(
+    const stackedOneColumn = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        listColumns="1"
+        numberLayout="stacked"
+        reasons={baseReasons}
+        title="Why choose us"
+      />,
+    )
+    const inlineTwoColumns = renderToStaticMarkup(
       <EditorialReasonsBlockComponent
         listColumns="2"
+        numberLayout="inline"
         reasons={baseReasons}
         title="Why choose us"
       />,
     )
 
-    expect(oneColumn).toContain('grid-cols-[3.5rem_minmax(0,1fr)]')
-    expect(oneColumn).toContain('sm:grid-cols-[4.5rem_minmax(0,1fr)]')
-    expect(oneColumn).toContain('pt-1 tabular-nums')
-    expect(twoColumns).toContain('flex flex-col')
-    expect(twoColumns).toContain('mb-6 tabular-nums')
-    expect(twoColumns).not.toContain('grid-cols-[3.5rem_minmax(0,1fr)]')
+    expect(inlineOneColumn).toContain('grid-cols-[3.5rem_minmax(0,1fr)]')
+    expect(inlineOneColumn).toContain('sm:grid-cols-[4.5rem_minmax(0,1fr)]')
+    expect(inlineOneColumn).toContain('pt-1 tabular-nums')
+    expect(inlineOneColumn).toContain('data-editorial-reason-number-layout="inline"')
+
+    expect(stackedOneColumn).toContain('flex flex-col')
+    expect(stackedOneColumn).toContain('mb-6 tabular-nums')
+    expect(stackedOneColumn).not.toContain('grid-cols-[3.5rem_minmax(0,1fr)]')
+    expect(stackedOneColumn).toContain('data-editorial-reason-number-layout="stacked"')
+
+    // Proves numberLayout is independent of column count: inline still applies at 2 columns.
+    expect(inlineTwoColumns).toContain('grid-cols-[3.5rem_minmax(0,1fr)]')
+    expect(inlineTwoColumns).toContain('data-editorial-reason-number-layout="inline"')
   })
 
   it.each([
@@ -543,7 +564,7 @@ describe('EditorialReasonsBlockComponent', () => {
   it('uses responsive columns, surface-aware numbers, and generalized dividers', () => {
     const split = renderToStaticMarkup(
       <EditorialReasonsBlockComponent
-        appearance={{ background: 'primary' }}
+        appearance={{ background: 'brand' }}
         reasons={baseReasons}
         title="Why choose us"
       />,
@@ -558,7 +579,7 @@ describe('EditorialReasonsBlockComponent', () => {
     )
     expect(split).toContain('grid-cols-1 md:grid-cols-2')
     expect(split).toContain('data-editorial-reasons-columns="2"')
-    expect(split.match(/data-section-eyebrow-surface="primary"/g)).toHaveLength(4)
+    expect(split.match(/data-section-eyebrow-surface="brand"/g)).toHaveLength(4)
     expect(split.match(/aria-hidden="true"/g)).toHaveLength(4)
     expect(split).toContain('text-current/65')
     expect(split).toContain('flex flex-col')
@@ -576,17 +597,17 @@ describe('EditorialReasonsBlockComponent', () => {
   it('uses semantic appearance, spacing, and shared actions', () => {
     const html = renderToStaticMarkup(
       <EditorialReasonsBlockComponent
-        actionMode="button"
         actions={[
           {
             label: 'Explore admissions',
             linkType: 'custom',
+            mode: 'button',
             showArrow: true,
             url: '/admissions',
             variant: 'default',
           },
         ]}
-        appearance={{ background: 'primary', border: 'topAndBottom' }}
+        appearance={{ background: 'brand', border: 'topAndBottom' }}
         eyebrow="Why us"
         reasons={baseReasons}
         size="comfortable"
@@ -594,9 +615,9 @@ describe('EditorialReasonsBlockComponent', () => {
       />,
     )
 
-    expect(html).toContain('bg-primary text-primary-foreground border-y border-border')
+    expect(html).toContain('bg-brand text-primary-foreground border-y border-border')
     expect(html).toContain('py-20 md:py-28')
-    expect(html).toContain('data-section-eyebrow-surface="primary"')
+    expect(html).toContain('data-section-eyebrow-surface="brand"')
     expect(html).toContain('data-editorial-reasons-actions="true"')
     expect(html).toContain('data-action-mode="button"')
     expect(html).toContain('data-action-arrow="true"')
@@ -607,7 +628,6 @@ describe('EditorialReasonsBlockComponent', () => {
   it('uses the same semantic link color and treatment as Content Highlights', () => {
     const html = renderToStaticMarkup(
       <EditorialReasonsBlockComponent
-        actionMode="link"
         actions={[
           {
             label: 'Explore admissions',
@@ -623,7 +643,7 @@ describe('EditorialReasonsBlockComponent', () => {
     expect(html).toContain('data-content-link="true"')
     expect(html).toContain('text-primary')
     expect(html).toContain('text-sm font-semibold')
-    expect(html).toContain('underline decoration-current/55')
+    expect(html).toContain('underline decoration-current decoration-2')
   })
 
   it('returns no markup without a title or usable reason', () => {

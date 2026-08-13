@@ -72,6 +72,12 @@ describe('Gallery Showcase', () => {
     const imagePositionField = getField(imagesField?.fields ?? [], 'imagePosition')
     const contentAlignmentField = getField(layoutTab?.fields ?? [], 'contentAlignment')
     const sizeField = getField(layoutTab?.fields ?? [], 'size')
+    const actionsField = getField(contentTab?.fields ?? [], 'actions')
+    const actionsTabsField = actionsField?.fields?.[0] as unknown as
+      | { tabs: TestTab[]; type: string }
+      | undefined
+    const actionsThemeTab = actionsTabsField?.tabs?.find(({ label }) => label === 'Theme Settings')
+    const actionModeField = getField(actionsThemeTab?.fields ?? [], 'mode')
 
     expect(tabsField.type).toBe('tabs')
     expect(tabsField.tabs.map(({ label }) => label)).toEqual(['Content', 'Theme Settings'])
@@ -97,7 +103,12 @@ describe('Gallery Showcase', () => {
       'right',
     ])
     expect(getField(layoutTab?.fields ?? [], 'appearance')?.type).toBe('group')
-    expect(getField(layoutTab?.fields ?? [], 'actionMode')?.defaultValue).toBe('link')
+    expect(actionModeField).toMatchObject({
+      defaultValue: 'link',
+      label: 'Display As',
+      required: false,
+      type: 'select',
+    })
     expect(contentAlignmentField).toMatchObject({ defaultValue: 'center', required: true })
     expect(contentAlignmentField?.options?.map(({ value }) => value)).toEqual([
       'left',
@@ -118,7 +129,7 @@ describe('Gallery Showcase', () => {
       GalleryShowcase({
         actions: 'Explore the gallery',
         alignment: 'right',
-        appearance: { background: 'muted', border: 'topAndBottom' },
+        appearance: { background: 'subtle', border: 'topAndBottom' },
         description: 'Five perspectives from across the community.',
         eyebrow: 'Gallery',
         images: galleryImages,
@@ -130,7 +141,7 @@ describe('Gallery Showcase', () => {
     expect(html).toContain('data-gallery-showcase="true"')
     expect(html).toContain('data-gallery-showcase-alignment="right"')
     expect(html).toContain('data-gallery-showcase-size="compact"')
-    expect(html).toContain('bg-muted')
+    expect(html).toContain('bg-subtle')
     expect(html).toContain('border-y border-border')
     expect(html).toContain('py-8 md:py-10')
     expect(html).toContain('mx-auto w-full max-w-screen-2xl px-4')
@@ -222,16 +233,16 @@ describe('Gallery Showcase', () => {
   it('resolves exactly five Payload media rows and one shared action', () => {
     const html = renderToStaticMarkup(
       GalleryShowcaseBlockComponent({
-        actionMode: 'button',
         actions: [
           {
             label: 'View gallery',
             linkType: 'custom',
+            mode: 'button',
             url: '/gallery',
             variant: 'outline',
           },
         ],
-        appearance: { background: 'accent', border: 'top' },
+        appearance: { background: 'subtle', border: 'top' },
         contentAlignment: 'left',
         description: 'A closer look at our spaces.',
         eyebrow: 'Inside the campus',

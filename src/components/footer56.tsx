@@ -186,7 +186,7 @@ const Footer56 = (props: Props) => {
                 <p className="mt-6 max-w-sm text-sm leading-6 text-current/70">{description}</p>
               ) : null}
               {actions?.length ? (
-                <ContentActions actions={actions} className="mt-6" mode="button" />
+                <ContentActions actions={actions} className="mt-6" />
               ) : null}
               <div className="mt-6 space-y-3 text-sm text-current/70">
                 <div className="flex gap-2">

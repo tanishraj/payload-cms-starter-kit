@@ -11,13 +11,11 @@ import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import type { PublishedReviewRatingSummary } from '@/lib/reviewRatingShared'
 
 export type RatingSpotlightBlockLike = {
-  actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: RatingSpotlightAlignment | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   ratingData?: {
     dataMode?: 'live' | 'manual' | null
@@ -54,13 +52,11 @@ const resolveManualSummary = (
 }
 
 export function RatingSpotlightBlockPresentation({
-  actionMode = 'link',
   actions,
   appearance,
   contentAlignment = 'left',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   liveSummary,
   ratingData,
@@ -82,7 +78,6 @@ export function RatingSpotlightBlockPresentation({
         actions={resolvedActions}
         alignment={resolvedAlignment}
         className="lg:w-auto lg:justify-end"
-        mode={actionMode ?? 'link'}
       />
     ) : undefined,
     alignment: resolvedAlignment,
@@ -97,7 +92,7 @@ export function RatingSpotlightBlockPresentation({
   return (
     <>
       <RatingSpotlight {...presentationProps} />
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
     </>
   )
 }

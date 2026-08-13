@@ -14,7 +14,6 @@ export type ReviewFeedBlockLike = {
   description?: string | null
   emptyStateMessage?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   loadMoreLabel?: string | null
   pageSize?: number | null
@@ -35,7 +34,6 @@ export function ReviewFeedBlockPresentation({
   description,
   emptyStateMessage,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   initialPage,
   loadMoreLabel,
@@ -69,7 +67,7 @@ export function ReviewFeedBlockPresentation({
         summary={summary}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
     </>
   )
 }

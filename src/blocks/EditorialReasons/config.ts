@@ -2,7 +2,7 @@ import type { ArrayField, Block, CheckboxField, RadioField, SelectField, TabsFie
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 type ReasonSiblingData = {
   linkType?: 'custom' | 'none' | 'page' | null
@@ -125,9 +125,9 @@ export const EditorialReasonsBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            ...createContentActionsWithModeFields({ label: 'Section Actions', maxRows: 2 }),
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             reasonsField,
-            ...createContentActionsWithModeFields({ name: 'listActions', label: 'List Footer Actions', maxRows: 2 }),
+            createContentActionsField({ name: 'listActions', label: 'List Footer Actions', maxRows: 2 }),
           ],
         },
         {

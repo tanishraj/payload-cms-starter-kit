@@ -1,6 +1,6 @@
-import { ArrowRight } from 'lucide-react'
 import type { ComponentProps, CSSProperties } from 'react'
 
+import { ActionArrow } from '@/components/ActionArrow'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -32,27 +32,14 @@ export function ContentLink({
       rel={openInNewTab ? 'noreferrer' : undefined}
       target={openInNewTab ? '_blank' : undefined}
     >
+      {/* Underline stays a constant weight; only the arrow reacts to hover. */}
       <span
-        className="underline decoration-current/55 decoration-1 underline-offset-4 transition-[text-decoration-color,text-decoration-thickness] group-hover/button:decoration-current group-hover/button:decoration-2 group-focus-visible/button:decoration-current group-focus-visible/button:decoration-2"
+        className="underline decoration-current decoration-2 underline-offset-4"
         data-content-link-label="true"
       >
         {label}
       </span>
-      <span
-        aria-hidden="true"
-        className="relative inline-flex size-4 shrink-0 overflow-hidden"
-        data-content-link-arrow="true"
-        style={arrowStyle}
-      >
-        <ArrowRight
-          className="absolute left-0 top-0 size-4 rotate-[-35deg] transition-all duration-200 ease-out group-hover/button:translate-x-1 group-hover/button:opacity-0 group-hover/button:rotate-0"
-          strokeWidth={2.5}
-        />
-        <ArrowRight
-          className="absolute left-0 top-0 size-4 translate-x-[-70%] opacity-0 transition-all duration-200 ease-out group-hover/button:translate-x-0 group-hover/button:opacity-100"
-          strokeWidth={2.5}
-        />
-      </span>
+      <ActionArrow data-content-link-arrow="true" style={arrowStyle} />
     </a>
   )
 }

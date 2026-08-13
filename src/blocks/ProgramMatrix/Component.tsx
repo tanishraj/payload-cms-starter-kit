@@ -37,14 +37,12 @@ type ProgramMatrixItem = {
 
 type ProgramMatrixBlockLike = {
   accentTitle?: string | null
-  actionMode?: 'button' | 'link' | null
   actionVariant?: CmsActionVariant | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   itemActionLabel?: string | null
   items?: ProgramMatrixItem[] | null
@@ -108,14 +106,12 @@ function ProgrammeAction({
 
 export function ProgramMatrixBlockComponent({
   accentTitle,
-  actionMode = 'link',
   actionVariant = 'default',
   actions,
   appearance,
   contentAlignment = 'left',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   itemActionLabel = 'Learn More',
   items,
@@ -153,22 +149,17 @@ export function ProgramMatrixBlockComponent({
 
   if (resolvedItems.length === 0) return null
 
-  const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
-  const resolvedActionMode = actionMode ?? 'link'
+  const appearanceClasses = resolveBlockAppearanceClasses(appearance)
+  const { className: appearanceClassName } = appearanceClasses
   const resolvedActionVariant = actionVariant ?? 'default'
   const resolvedAlignment = contentAlignment ?? 'left'
   const resolvedItemActionLabel = itemActionLabel?.trim() || 'Learn More'
   const resolvedSectionActions = resolveCmsActions(actions)
   const resolvedEyebrow = eyebrow?.trim()
   const resolvedDescription = description?.trim()
-  const resolvedSectionBackground = appearance?.background ?? 'none'
-  const isPrimarySurface = resolvedSectionBackground === 'primary'
-  const isSecondarySurface = resolvedSectionBackground === 'secondary'
-  const usesSurfaceForeground =
-    isPrimarySurface || isSecondarySurface || resolvedSectionBackground === 'accent'
-  const sectionActionsUseSurfaceContrast =
-    (resolvedActionMode === 'link' && usesSurfaceForeground) ||
-    (resolvedActionMode === 'button' && (isPrimarySurface || isSecondarySurface))
+  const resolvedSectionBackground = appearanceClasses.background
+  const isBrandSurface = appearanceClasses.surface === 'brand'
+  const sectionActionsUseSurfaceContrast = isBrandSurface
 
   return (
     <section
@@ -208,25 +199,17 @@ export function ProgramMatrixBlockComponent({
           <ContentActions
             actions={resolvedSectionActions}
             alignment={resolvedAlignment}
-            className={cn(
-              resolvedActionMode === 'link' && usesSurfaceForeground && '[&_a]:text-current',
-              resolvedActionMode === 'button' &&
-                isPrimarySurface &&
-                '[&_[data-action-variant=default]]:bg-primary-foreground [&_[data-action-variant=default]]:text-primary [&_[data-action-variant=default]]:hover:bg-primary-foreground/90',
-              resolvedActionMode === 'button' &&
-                isSecondarySurface &&
-                '[&_[data-action-variant=secondary]]:bg-secondary-foreground [&_[data-action-variant=secondary]]:text-secondary [&_[data-action-variant=secondary]]:hover:bg-secondary-foreground/90',
-            )}
+            /* Button and link contrast on the brand surface is handled globally
+               in custom.css, so no per-variant overrides are needed here. */
             data-program-matrix-actions="true"
             data-surface-contrast={sectionActionsUseSurfaceContrast ? 'true' : undefined}
-            mode={resolvedActionMode}
           />
         </div>
 
         <div
           className={cn(
             'grid overflow-hidden rounded-[var(--radius)] border bg-transparent text-current md:grid-cols-2',
-            isPrimarySurface ? 'border-current/15' : 'border-current/10',
+            isBrandSurface ? 'border-current/15' : 'border-current/10',
           )}
           data-program-matrix="true"
         >
@@ -285,7 +268,7 @@ export function ProgramMatrixBlockComponent({
                   <div className="mt-auto pt-6">
                     <ProgrammeAction
                       actionLabel={resolvedItemActionLabel}
-                      actionMode={resolvedActionMode}
+                      actionMode="link"
                       actionVariant={resolvedActionVariant}
                       buttonClassName={buttonClassName}
                       href={item.href}
@@ -298,7 +281,7 @@ export function ProgramMatrixBlockComponent({
             )
           })}
         </div>
-        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+        <BlockFooterActions actions={footerActions} />
       </div>
     </section>
   )

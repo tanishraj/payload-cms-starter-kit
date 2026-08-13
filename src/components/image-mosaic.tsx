@@ -207,7 +207,6 @@ export function ImageMosaic({
                           actions={[item.action]}
                           alignment="left"
                           data-image-mosaic-item-action="true"
-                          mode={item.action.mode}
                         />
                       ) : null}
                     </div>

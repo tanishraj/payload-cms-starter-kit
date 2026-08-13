@@ -3,10 +3,7 @@ import type { ArrayField, Block, CheckboxField, GroupField, SelectField, TabsFie
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import {
-  createContentActionsField,
-  createContentActionsWithModeFields,
-} from '@/blocks/shared/contentActionsFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 type QaAccordionBlockSiblingData = {
   layoutMode?: 'fiftyFifty' | 'fullWidth' | 'oneThird' | null
 }
@@ -110,8 +107,8 @@ export const QaAccordionBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            ...createContentActionsWithModeFields({ label: 'Section Actions', maxRows: 2 }),
-            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
+            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             qaAccordionItemsField,
             sideColumnField,
           ],

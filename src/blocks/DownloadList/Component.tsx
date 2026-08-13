@@ -36,7 +36,6 @@ type DownloadListBlockLike = {
   displayMode?: 'list' | 'cards' | 'compact' | null
   downloads?: DownloadItem[] | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   showFilter?: boolean | null
   size?: RegularBlockSize | null
@@ -65,7 +64,6 @@ export function DownloadListBlockComponent({
   displayMode = 'list',
   downloads,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   showFilter = false,
   size = 'default',
@@ -146,7 +144,7 @@ export function DownloadListBlockComponent({
           sectionBackground={appearance?.background ?? 'none'}
           showFilter={showFilter}
         />
-        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+        <BlockFooterActions actions={footerActions} />
       </div>
     </section>
   )

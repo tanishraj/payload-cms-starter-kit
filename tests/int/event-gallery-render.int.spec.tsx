@@ -109,7 +109,7 @@ describe('event gallery presentation', () => {
       <EventGallery
         albums={albums}
         alignment="center"
-        appearance={{ background: 'muted', border: 'topAndBottom' }}
+        appearance={{ background: 'subtle', border: 'topAndBottom' }}
         description="Recent events"
         eyebrow="Moments"
         size="compact"
@@ -120,7 +120,7 @@ describe('event gallery presentation', () => {
     expect(html).toContain('data-event-gallery="true"')
     expect(html).toContain('data-event-gallery-alignment="center"')
     expect(html).toContain('data-event-gallery-size="compact"')
-    expect(html).toContain('bg-muted')
+    expect(html).toContain('bg-subtle')
     expect(html.indexOf('Yoga Day')).toBeLessThan(html.indexOf('New Batch Day'))
     expect(html).toContain('Open Yoga Day gallery with 2 images')
   })

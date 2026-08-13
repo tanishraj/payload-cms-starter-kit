@@ -290,7 +290,7 @@ const footerGroupsFixture = [
 export const blockThumbnailFixtures = {
   announcement: (
     <AnnouncementBlockComponent
-      appearance={{ background: 'accent', border: 'bottom' }}
+      appearance={{ background: 'subtle', border: 'bottom' }}
       displayMode="vertical"
       items={[
         {
@@ -308,7 +308,6 @@ export const blockThumbnailFixtures = {
       title="Frequently asked questions"
       items={qaAccordionFixtureItems}
       layoutMode="fiftyFifty"
-      sideActionMode="link"
       sideColumn={{
         contact: {
           actions: [
@@ -332,7 +331,6 @@ export const blockThumbnailFixtures = {
   ),
   featureMatrix: (
     <FeatureMatrixBlockComponent
-      actionMode="link"
       actions={[
         {
           label: 'Explore our facilities',
@@ -340,7 +338,7 @@ export const blockThumbnailFixtures = {
           url: '/facilities',
         },
       ]}
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       contentAlignment="center"
       description="Four connected environments support focused study, practical work, collaboration, and community."
       eyebrow="Facilities"
@@ -374,7 +372,6 @@ export const blockThumbnailFixtures = {
   ),
   contentHighlights: (
     <ContentHighlightsBlockComponent
-      actionMode="link"
       actions={[
         {
           label: 'Explore student life',
@@ -382,7 +379,7 @@ export const blockThumbnailFixtures = {
           url: '/student-life',
         },
       ]}
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       description="Resources, communities, and opportunities designed to support every part of the student experience."
       eyebrow="Life here"
       items={[
@@ -426,7 +423,7 @@ export const blockThumbnailFixtures = {
   editorialReasons: (
     <EditorialReasonsBlockComponent
       accentTitle="Driven by purpose."
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       description="A learning environment shaped around academic development, clinical experience, and service."
       eyebrow="Why choose us"
       reasons={[
@@ -453,15 +450,16 @@ export const blockThumbnailFixtures = {
   ),
   cta39: (
     <Cta39BlockComponent
-      actionMode="button"
       actions={[
         {
+          mode: 'button',
           label: 'Get started',
           linkType: 'custom',
           url: '/get-started',
           variant: 'default',
         },
         {
+          mode: 'button',
           label: 'Talk to our team',
           linkType: 'custom',
           url: '/contact',
@@ -476,9 +474,8 @@ export const blockThumbnailFixtures = {
   ),
   newsEventsHighlights: (
     <NewsEventsHighlightsBlockPresentation
-      actionMode="link"
       actions={[{ label: 'View all stories', linkType: 'custom', url: '/news-events' }]}
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       description="Discover the latest stories, milestones, and opportunities from across our community."
       eyebrow="Latest"
       items={[
@@ -528,7 +525,6 @@ export const blockThumbnailFixtures = {
   ),
   profileCarousel: (
     <ProfileCarouselBlockComponent
-      actionMode="link"
       actions={[
         {
           label: 'Meet the full team',
@@ -536,7 +532,7 @@ export const blockThumbnailFixtures = {
           url: '/team',
         },
       ]}
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       cardVariant="overlay"
       contentAlignment="left"
       description="A multidisciplinary team brings practical experience, thoughtful guidance, and shared purpose to every program."
@@ -579,7 +575,6 @@ export const blockThumbnailFixtures = {
   ),
   galleryShowcase: (
     <GalleryShowcaseBlockComponent
-      actionMode="link"
       actions={[
         {
           label: 'Explore the gallery',
@@ -587,7 +582,7 @@ export const blockThumbnailFixtures = {
           url: '/gallery',
         },
       ]}
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       contentAlignment="center"
       description="Five perspectives capture the spaces, people, and shared moments that shape the experience."
       eyebrow="Inside our community"
@@ -650,7 +645,7 @@ export const blockThumbnailFixtures = {
           variant: 'default',
         },
       ]}
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       contentAlignment="center"
       description="A collection of spaces, people, and moments from across the community."
       eyebrow="Photo library"
@@ -778,7 +773,7 @@ export const blockThumbnailFixtures = {
         },
       ]}
       alignment="left"
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       description="Browse recent celebrations, programs, and community events."
       eyebrow="Moments"
       size="compact"
@@ -787,7 +782,6 @@ export const blockThumbnailFixtures = {
   ),
   imageMosaic: (
     <ImageMosaicBlockComponent
-      actionMode="link"
       actions={[
         {
           label: 'Explore all spaces',
@@ -795,7 +789,7 @@ export const blockThumbnailFixtures = {
           url: '/spaces',
         },
       ]}
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       contentAlignment="center"
       description="Explore the spaces, people, and moments that shape our community."
       eyebrow="Inside our community"
@@ -891,7 +885,7 @@ export const blockThumbnailFixtures = {
   ),
   footer56: (
     <Footer56BlockComponent
-      appearance={{ background: 'muted', border: 'top' }}
+      appearance={{ background: 'subtle', border: 'top' }}
       blockType="footer56"
       copyrightText="© 2026 Northstar"
       description="Thoughtful programs, practical resources, and a community built around progress."
@@ -998,7 +992,7 @@ export const blockThumbnailFixtures = {
   ),
   contact33: (
     <Contact33BlockComponent
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       description="Tell us what you need and our team will help you find the right next step."
       eyebrow="Contact"
       form={contactFormFixture}
@@ -1011,7 +1005,7 @@ export const blockThumbnailFixtures = {
   ),
   contact24: (
     <Contact24
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       description="Regional teams provide local support wherever your work takes you."
       eyebrow="Global presence"
       offices={contact24OfficeFixtures}
@@ -1021,7 +1015,7 @@ export const blockThumbnailFixtures = {
   ),
   reviewFeed: (
     <ReviewFeed
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       description="Published experiences shared by students, families, alumni, and visitors."
       emptyStateMessage="No published reviews yet."
       eyebrow="Community voices"
@@ -1077,7 +1071,7 @@ export const blockThumbnailFixtures = {
           variant: 'default',
         },
       ]}
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       description="Service-first design support for products, teams, and platforms from discovery to launch."
       eyebrow="Capabilities"
       services={[
@@ -1111,16 +1105,16 @@ export const blockThumbnailFixtures = {
   ),
   ratingSpotlight: (
     <RatingSpotlightBlockComponent
-      actionMode="button"
       actions={[
         {
+          mode: 'button',
           label: 'Leave a review',
           linkType: 'custom',
           url: '/reviews/new',
           variant: 'default',
         },
       ]}
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       description="Students, alumni, parents, and campus visitors — your rating and review help us keep sharpening what works."
       eyebrow="Feedback"
       ratingData={{ dataMode: 'manual', manualRating: 4.8, manualReviewCount: 1240 }}
@@ -1130,7 +1124,7 @@ export const blockThumbnailFixtures = {
   ),
   teamShowcase: (
     <TeamShowcase
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       contentAlignment="left"
       description="Our team combines practical experience, community focus, and active mentorship."
       heading="Meet the team"
@@ -1161,7 +1155,6 @@ export const blockThumbnailFixtures = {
   ),
   featureSpotlight: (
     <FeatureSpotlightBlockComponent
-      actionMode="link"
       actions={[
         {
           label: 'Explore the experience',
@@ -1182,7 +1175,7 @@ export const blockThumbnailFixtures = {
   statsStrip: (
     <StatsStripBlockComponent
       animationEnabled={false}
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       items={[
         { label: 'Programs', suffix: '+', value: 48 },
         { label: 'Positive outcomes', suffix: '%', value: 92 },
@@ -1193,7 +1186,7 @@ export const blockThumbnailFixtures = {
   ),
   system404: (
     <System404BlockComponent
-      appearance={{ background: 'muted', border: 'none' }}
+      appearance={{ background: 'subtle', border: 'none' }}
       badge="404"
       blockType="system404"
       description="The page may have moved or the address may be incorrect."
@@ -1202,7 +1195,7 @@ export const blockThumbnailFixtures = {
   ),
   systemComingSoon: (
     <SystemComingSoonBlockComponent
-      appearance={{ background: 'accent', border: 'none' }}
+      appearance={{ background: 'subtle', border: 'none' }}
       badge="Coming soon"
       blockType="systemComingSoon"
       description="We are preparing a new experience."
@@ -1211,7 +1204,7 @@ export const blockThumbnailFixtures = {
   ),
   systemMaintenance: (
     <SystemMaintenanceBlockComponent
-      appearance={{ background: 'secondary', border: 'none' }}
+      appearance={{ background: 'subtle', border: 'none' }}
       badge="Maintenance"
       blockType="systemMaintenance"
       description="Scheduled improvements are underway."
@@ -1221,7 +1214,7 @@ export const blockThumbnailFixtures = {
   aboutSection: (
     <AboutSectionBlockComponent
       actions={[{ label: 'Learn more', linkType: 'custom', url: '/about', variant: 'default' }]}
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       body="We started with the belief that thoughtful education changes outcomes. Over twelve years, that belief has shaped every program, space, and partnership we have built."
       contentAlignment="left"
       eyebrow="Our story"
@@ -1248,7 +1241,7 @@ export const blockThumbnailFixtures = {
   ),
   awardsList: (
     <AwardsListBlockComponent
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       awards={[
         {
           cardBackground: 'muted',
@@ -1343,7 +1336,7 @@ export const blockThumbnailFixtures = {
   ),
   downloadList: (
     <DownloadListBlockComponent
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       contentAlignment="left"
       description="Key documents, guides, and forms available to download at any time."
       displayMode="list"
@@ -1385,8 +1378,7 @@ export const blockThumbnailFixtures = {
   ),
   iconGrid: (
     <IconGridBlockComponent
-      actionMode="link"
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       columns="3"
       contentAlignment="center"
       description="Six capabilities that define how we approach every engagement — from first conversation to final delivery."
@@ -1431,7 +1423,7 @@ export const blockThumbnailFixtures = {
   ),
   logoStrip: (
     <LogoStripBlockComponent
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       contentAlignment="center"
       description="Trusted by leading organisations across education, research, and public service."
       displayMode="grid"
@@ -1453,8 +1445,7 @@ export const blockThumbnailFixtures = {
   ),
   mediaCarousel: (
     <MediaCarouselBlockComponent
-      actionMode="link"
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       columns="3"
       contentAlignment="center"
       description="A closer look at the spaces, events, and everyday moments that define life here."
@@ -1484,7 +1475,7 @@ export const blockThumbnailFixtures = {
   ),
   numberedSteps: (
     <NumberedStepsBlockComponent
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       contentAlignment="center"
       description="A clear, supported process that takes you from first interest to full enrolment."
       eyebrow="How it works"
@@ -1536,8 +1527,7 @@ export const blockThumbnailFixtures = {
   ),
   programGrid: (
     <ProgramGridBlockComponent
-      actionMode="link"
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       columns="3"
       contentAlignment="center"
       ctaLabel="View program"
@@ -1587,7 +1577,7 @@ export const blockThumbnailFixtures = {
   ),
   programMatrix: (
     <ProgramMatrixBlockComponent
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       contentAlignment="left"
       description="Four routes into clinical practice, each with a defined intake, published curriculum, and supervised hospital rotations."
       eyebrow="Academics"
@@ -1627,7 +1617,7 @@ export const blockThumbnailFixtures = {
   ),
   quoteBlock: (
     <QuoteBlockBlockComponent
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       attributionCompany="Program graduate, 2024"
       attributionName="Jordan Lee"
       attributionTitle="Business & Management"
@@ -1655,7 +1645,7 @@ export const blockThumbnailFixtures = {
   ),
   reusableSection: (
     <PageHeaderBlockComponent
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       contentAlignment="left"
       eyebrow="Reusable content"
       height="compact"
@@ -1666,7 +1656,7 @@ export const blockThumbnailFixtures = {
   ),
   tabsContent: (
     <TabsContentBlockComponent
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       contentAlignment="center"
       contentLayout="imageRight"
       description="Each stage of student life is supported by dedicated resources, people, and programs."
@@ -1700,7 +1690,7 @@ export const blockThumbnailFixtures = {
   ),
   testimonialGrid: (
     <TestimonialGridBlockComponent
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       columns="3"
       contentAlignment="center"
       description="Honest reflections from students, alumni, and community partners."
@@ -1737,7 +1727,7 @@ export const blockThumbnailFixtures = {
   ),
   timeline: (
     <TimelineBlockComponent
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       contentAlignment="center"
       description="Key milestones across twelve years of programs, partnerships, and community impact."
       eyebrow="Our journey"
@@ -1785,8 +1775,7 @@ export const blockThumbnailFixtures = {
   ),
   videoEmbed: (
     <VideoEmbedBlockComponent
-      actionMode="link"
-      appearance={{ background: 'muted', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       aspectRatio="16/9"
       caption="A two-minute overview of life on campus."
       contentAlignment="center"

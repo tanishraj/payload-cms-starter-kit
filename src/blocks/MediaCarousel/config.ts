@@ -3,10 +3,7 @@ import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
-import {
-  createContentActionsField,
-  createContentActionsWithModeFields,
-} from '@/blocks/shared/contentActionsFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import { createIconField } from '@/blocks/shared/iconField'
 
 const itemsField: ArrayField = {
@@ -84,12 +81,12 @@ export const MediaCarouselBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            ...createContentActionsWithModeFields({
+            createContentActionsField({
               label: 'Section Actions',
               maxRows: 2,
               name: 'sectionActions',
             }),
-            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             itemsField,
           ],
         },
@@ -97,20 +94,6 @@ export const MediaCarouselBlock: Block = {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
-            {
-              name: 'actionVariant',
-              label: 'Button Variant',
-              type: 'select',
-              defaultValue: 'default',
-              options: [
-                { label: 'Primary', value: 'default' },
-                { label: 'Secondary', value: 'secondary' },
-                { label: 'Outline', value: 'outline' },
-              ],
-              admin: {
-                condition: (_, siblingData) => siblingData?.actionMode === 'button',
-              },
-            } satisfies SelectField,
             {
               name: 'columns',
               label: 'Columns',

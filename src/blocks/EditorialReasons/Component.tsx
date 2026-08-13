@@ -48,17 +48,14 @@ type EditorialReasonsNumberLayout = 'inline' | 'stacked'
 
 type EditorialReasonsBlockLike = {
   accentTitle?: string | null
-  actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: EditorialReasonsContentAlignment | null
   description?: string | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   introVerticalAlignment?: 'bottom' | 'center' | 'top' | null
   layoutProportion?: EditorialReasonsLayoutProportion | null
-  listActionMode?: 'button' | 'link' | null
   listActions?: CmsActionValue[] | null
   listBorderStyle?: EditorialReasonsListBorderStyle | null
   listColumns?: EditorialReasonsListColumns | null
@@ -164,17 +161,14 @@ const resolveNumberLayout = (
 
 export function EditorialReasonsBlockComponent({
   accentTitle,
-  actionMode = 'link',
   actions,
   appearance,
   contentAlignment = 'left',
   description,
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   introVerticalAlignment = 'top',
   layoutProportion = 'listFocus',
-  listActionMode = 'link',
   listActions,
   listBorderStyle = 'ruled',
   listColumns = '2',
@@ -214,7 +208,6 @@ export function EditorialReasonsBlockComponent({
 
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
   const resolvedAccentTitle = accentTitle?.trim()
-  const resolvedActionMode = actionMode ?? 'link'
   const resolvedActions = resolveCmsActions(actions)
   const resolvedDescription = description?.trim()
   const resolvedEyebrow = eyebrow?.trim()
@@ -224,7 +217,6 @@ export function EditorialReasonsBlockComponent({
   const resolvedListColumns = resolveListColumns(listColumns)
   const resolvedListPosition = resolveListPosition(listPosition)
   const resolvedListActions = resolveCmsActions(listActions)
-  const resolvedListActionMode = listActionMode ?? 'link'
   const resolvedNumberLayout = resolveNumberLayout(numberLayout)
   const isFullWidth = resolvedLayoutProportion === 'fullWidth'
   const resolvedIntroAlignment = isFullWidth ? 'top' : (introVerticalAlignment ?? 'top')
@@ -291,7 +283,6 @@ export function EditorialReasonsBlockComponent({
               actions={resolvedActions}
               alignment={resolvedContentAlignment}
               data-editorial-reasons-actions="true"
-              mode={resolvedActionMode}
             />
           </div>
         </div>
@@ -374,12 +365,11 @@ export function EditorialReasonsBlockComponent({
               alignment={resolvedContentAlignment}
               className="mt-8"
               data-editorial-reasons-list-actions="true"
-              mode={resolvedListActionMode}
             />
           ) : null}
         </div>
       </div>
-      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+      <BlockFooterActions actions={footerActions} />
       </div>
     </section>
   )

@@ -127,6 +127,7 @@ export function HeroCarouselClient({
                   'group relative flex items-center overflow-hidden px-4 py-24 md:px-12 lg:px-40',
                   heightClasses[height],
                 )}
+                data-block-surface="brand"
                 data-hero-carousel-slide={index}
               >
                 <div className="absolute inset-0">

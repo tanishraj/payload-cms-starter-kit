@@ -7,12 +7,10 @@ import type { ResolvedCmsAction } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 
 type ContentActionAlignment = 'center' | 'left' | 'right'
-type ContentActionMode = 'button' | 'link'
 
 type ContentActionsProps = Omit<ComponentProps<'div'>, 'children'> & {
   actions: ResolvedCmsAction[]
   alignment?: ContentActionAlignment
-  mode?: ContentActionMode
 }
 
 const linkAlignmentClasses = {
@@ -27,16 +25,22 @@ const buttonAlignmentClasses = {
   right: 'items-end sm:justify-end',
 } as const
 
+const rendersAsButton = (action: ResolvedCmsAction) =>
+  action.mode === 'button' && action.variant !== 'link'
+
 export function ContentActions({
   actions,
   alignment = 'left',
   className,
-  mode = 'link',
   ...divProps
 }: ContentActionsProps) {
   if (!actions.length) {
     return null
   }
+
+  // Display mode is per action, but the row itself can only be laid out one way.
+  // A single button needs the roomier button spacing, so it wins the mix.
+  const mode = actions.some(rendersAsButton) ? 'button' : 'link'
 
   return (
     <div
@@ -51,9 +55,7 @@ export function ContentActions({
       data-action-mode={mode}
     >
       {actions.map((action, index) => {
-        const rendersAsButton = mode === 'button' && action.variant !== 'link'
-
-        return rendersAsButton ? (
+        return rendersAsButton(action) ? (
           <Button
             asChild
             data-action-variant={action.variant}

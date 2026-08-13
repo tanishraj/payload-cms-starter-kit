@@ -2,7 +2,7 @@ import type { Block, GroupField, NumberField, SelectField, TabsField } from 'pay
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 type RatingDataSiblingData = {
   dataMode?: 'live' | 'manual' | null
@@ -121,8 +121,8 @@ export const RatingSpotlightBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            ...createContentActionsWithModeFields({ label: 'Action', maxRows: 1 }),
-            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({ label: 'Action', maxRows: 1 }),
+            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             ratingDataField,
           ],
         },

@@ -27,13 +27,11 @@ type KeyFact = {
 type PageHeaderBlockLike = {
   accentTitle?: string | null
   actions?: CmsActionValue[] | null
-  actionMode?: 'button' | 'link' | null
   appearance?: BlockAppearance | null
   backgroundImage?: string | number | Media | null
   breadcrumbs?: BreadcrumbItem[] | null
   contentAlignment?: 'left' | 'center' | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   height?: 'compact' | 'default' | 'immersive' | null
   keyFacts?: KeyFact[] | null
@@ -99,13 +97,11 @@ function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
 export function PageHeaderBlockComponent({
   accentTitle,
   actions,
-  actionMode = 'link',
   appearance,
   backgroundImage,
   breadcrumbs,
   contentAlignment = 'left',
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   height = 'default',
   keyFacts,
@@ -132,6 +128,7 @@ export function PageHeaderBlockComponent({
           'relative flex flex-col justify-end overflow-hidden text-white',
           bannerHeightClasses[height ?? 'default'],
         )}
+        data-block-surface="brand"
       >
         {bgImage ? (
           <Image
@@ -185,14 +182,10 @@ export function PageHeaderBlockComponent({
           ) : null}
           {resolvedActions.length > 0 ? (
             <div className={cn('mt-6', isCenter && 'flex justify-center')}>
-              <ContentActions
-                actions={resolvedActions}
-                alignment={isCenter ? 'center' : 'left'}
-                mode={actionMode ?? 'link'}
-              />
+              <ContentActions actions={resolvedActions} alignment={isCenter ? 'center' : 'left'} />
             </div>
           ) : null}
-          <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+          <BlockFooterActions actions={footerActions} />
         </div>
       </section>
     )
@@ -228,11 +221,7 @@ export function PageHeaderBlockComponent({
               ) : null}
               {resolvedActions.length > 0 ? (
                 <div className="mt-2">
-                  <ContentActions
-                    actions={resolvedActions}
-                    alignment="left"
-                    mode={actionMode ?? 'link'}
-                  />
+                  <ContentActions actions={resolvedActions} alignment="left" />
                 </div>
               ) : null}
             </div>
@@ -254,7 +243,7 @@ export function PageHeaderBlockComponent({
               </div>
             ) : null}
           </div>
-          <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+          <BlockFooterActions actions={footerActions} />
         </div>
       </section>
     )
@@ -302,14 +291,10 @@ export function PageHeaderBlockComponent({
         ) : null}
         {resolvedActions.length > 0 ? (
           <div className={cn('mt-5', isCenter && 'flex justify-center')}>
-            <ContentActions
-              actions={resolvedActions}
-              alignment={isCenter ? 'center' : 'left'}
-              mode={actionMode ?? 'link'}
-            />
+            <ContentActions actions={resolvedActions} alignment={isCenter ? 'center' : 'left'} />
           </div>
         ) : null}
-        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+        <BlockFooterActions actions={footerActions} />
       </div>
     </section>
   )

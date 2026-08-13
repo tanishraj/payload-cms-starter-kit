@@ -120,7 +120,7 @@ describe('header navbar rendering', () => {
     const html = renderToStaticMarkup(
       createElement(HeaderNavbar, {
         appearance: {
-          background: 'secondary',
+          background: 'subtle',
           border: 'bottom',
         },
         ctas: [{ href: '/contact', label: 'Contact', newTab: false, variant: 'outline' }],
@@ -145,9 +145,9 @@ describe('header navbar rendering', () => {
 
     expect(html).toContain('data-header-navbar="true"')
     expect(html).toContain('data-header-navbar-style="navbar12"')
-    expect(html).toContain('data-header-navbar-background="secondary"')
-    expect(html).toContain('bg-secondary')
-    expect(html).toContain('text-secondary-foreground')
+    expect(html).toContain('data-header-navbar-background="subtle"')
+    expect(html).toContain('bg-subtle')
+    expect(html).toContain('text-foreground')
     expect(html).toContain('border-b')
     expect(html).toContain('Acme')
     expect(html).toContain('Services')
@@ -160,7 +160,7 @@ describe('header navbar rendering', () => {
     const html = renderToStaticMarkup(
       createElement(HeaderNavbar12BlockComponent, {
         appearance: {
-          background: 'accent',
+          background: 'subtle',
           border: 'bottom',
         },
         blockType: 'headerNavbar12',
@@ -197,7 +197,7 @@ describe('header navbar rendering', () => {
     )
 
     expect(html).toContain('Acme Studio')
-    expect(html).toContain('data-header-navbar-background="accent"')
+    expect(html).toContain('data-header-navbar-background="subtle"')
     expect(html).toContain('data-slot="navigation-menu-trigger"')
     expect(html).toContain('lucide-chevron-down')
     expect(html).toContain('/contact')

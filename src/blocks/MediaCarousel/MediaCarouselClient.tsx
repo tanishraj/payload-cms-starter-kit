@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button'
 import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { ContentLink } from '@/components/ContentLink'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
-import type { CmsActionVariant, ResolvedCmsAction } from '@/lib/cmsLinks'
+import type { ResolvedCmsAction } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 import {
   regularBlockMobilePaddingClasses,
@@ -40,8 +40,6 @@ export type MediaCarouselItem = {
 }
 
 type MediaCarouselClientProps = {
-  actionMode: 'button' | 'link'
-  actionVariant: CmsActionVariant
   appearance?: string
   columns: 2 | 3 | 4
   contentAlignment: 'left' | 'center'
@@ -56,13 +54,9 @@ type MediaCarouselClientProps = {
 
 function MediaCard({
   item,
-  actionMode,
-  actionVariant,
   sectionBackground,
 }: {
   item: MediaCarouselItem
-  actionMode: 'button' | 'link'
-  actionVariant: CmsActionVariant
   sectionBackground: BlockBackground
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
@@ -115,12 +109,12 @@ function MediaCard({
         ) : null}
         {item.action ? (
           <div className="mt-2">
-            {actionMode === 'button' ? (
+            {item.action.mode === 'button' ? (
               <Button
                 asChild
                 size="sm"
-                variant={actionVariant}
-                className={surface.button[actionVariant]}
+                variant={item.action.variant}
+                className={surface.button[item.action.variant]}
               >
                 <a
                   href={item.action.href}
@@ -168,8 +162,6 @@ function MediaCard({
 }
 
 export function MediaCarouselClient({
-  actionMode = 'link',
-  actionVariant = 'default',
   appearance,
   columns = 3,
   contentAlignment,
@@ -215,12 +207,7 @@ export function MediaCarouselClient({
                   columns === 4 && 'lg:basis-1/4',
                 )}
               >
-                <MediaCard
-                  item={item}
-                  actionMode={actionMode}
-                  actionVariant={actionVariant}
-                  sectionBackground={sectionBackground}
-                />
+                <MediaCard item={item} sectionBackground={sectionBackground} />
               </CarouselItem>
             ))}
           </CarouselContent>

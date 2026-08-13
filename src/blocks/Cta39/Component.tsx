@@ -14,13 +14,11 @@ type Cta39BorderStyle = 'dashed' | 'dotted' | 'none' | 'solid'
 
 type Cta39BlockLike = {
   accentTitle?: string | null
-  actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   borderStyle?: Cta39BorderStyle | null
   contentAlignment?: Cta39Alignment | null
   description?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   size?: Cta39Size | null
   title?: string | null
@@ -41,13 +39,11 @@ const borderStyleClasses: Record<Cta39BorderStyle, string> = {
 
 export function Cta39BlockComponent({
   accentTitle,
-  actionMode = 'link',
   actions,
   appearance,
   borderStyle = 'dashed',
   contentAlignment = 'center',
   description,
-  footerActionMode = 'link',
   footerActions,
   size = 'default',
   title,
@@ -99,10 +95,9 @@ export function Cta39BlockComponent({
             alignment={resolvedContentAlignment}
             className={resolvedContentAlignment === 'center' ? 'justify-center' : undefined}
             data-cta39-actions="true"
-            mode={actionMode ?? 'link'}
           />
         </div>
-        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+        <BlockFooterActions actions={footerActions} />
       </div>
     </section>
   )

@@ -68,7 +68,7 @@ describe('Feature Matrix presentation', () => {
       FeatureMatrix({
         actions: 'Explore our facilities',
         alignment: 'center',
-        appearance: { background: 'muted', border: 'topAndBottom' },
+        appearance: { background: 'subtle', border: 'topAndBottom' },
         description: 'Four practical ways the learning environment supports every student.',
         eyebrow: 'Facilities',
         features,
@@ -142,7 +142,11 @@ describe('Feature Matrix presentation', () => {
     const featureImageField = getField(featureContentTab?.fields ?? [], 'image')
     const featureImagePositionField = getField(featureThemeTab?.fields ?? [], 'imagePosition')
     const alignmentField = getField(layoutTab?.fields ?? [], 'contentAlignment')
-    const actionModeField = getField(layoutTab?.fields ?? [], 'actionMode')
+    const actionsTabsField = actionsField?.fields?.[0] as unknown as
+      | { tabs: TestTab[]; type: string }
+      | undefined
+    const actionsThemeTab = actionsTabsField?.tabs?.find(({ label }) => label === 'Theme Settings')
+    const actionModeField = getField(actionsThemeTab?.fields ?? [], 'mode')
     const sizeField = getField(layoutTab?.fields ?? [], 'size')
     const showOuterBorderField = getField(layoutTab?.fields ?? [], 'showOuterBorder')
     const borderAnimationEnabledField = getField(layoutTab?.fields ?? [], 'borderAnimationEnabled')
@@ -165,7 +169,12 @@ describe('Feature Matrix presentation', () => {
       'right',
     ])
     expect(alignmentField?.defaultValue).toBe('center')
-    expect(actionModeField?.defaultValue).toBe('link')
+    expect(actionModeField).toMatchObject({
+      defaultValue: 'link',
+      label: 'Display As',
+      required: false,
+      type: 'select',
+    })
     expect(sizeField?.defaultValue).toBe('default')
     expect(showOuterBorderField).toMatchObject({ defaultValue: true, type: 'checkbox' })
     expect(borderAnimationEnabledField).toMatchObject({ defaultValue: true, type: 'checkbox' })
@@ -263,16 +272,16 @@ describe('Feature Matrix presentation', () => {
   it('resolves Payload media and shared button actions through the block wrapper', () => {
     const html = renderToStaticMarkup(
       FeatureMatrixBlockComponent({
-        actionMode: 'button',
         actions: [
           {
             label: 'Explore facilities',
             linkType: 'custom',
+            mode: 'button',
             url: '/facilities',
             variant: 'outline',
           },
         ],
-        appearance: { background: 'accent', border: 'top' },
+        appearance: { background: 'subtle', border: 'top' },
         borderAnimationEnabled: false,
         contentAlignment: 'left',
         description: 'Spaces and services designed for practical learning.',
@@ -297,7 +306,7 @@ describe('Feature Matrix presentation', () => {
     expect(html).toContain('data-action-mode="button"')
     expect(html).toContain('data-action-variant="outline"')
     expect(html).toContain('href="/facilities"')
-    expect(html).toContain('bg-accent')
+    expect(html).toContain('bg-subtle')
     expect(html).toContain('%2Fmedia%2Flearning-space.jpg')
     expect(html).toContain('object-[center_bottom]')
   })

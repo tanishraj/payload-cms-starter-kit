@@ -3,7 +3,8 @@ import type { ArrayField, Block, CheckboxField, RadioField, SelectField, TabsFie
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import {
-  createContentActionsWithModeFields,
+  createContentActionModeField,
+  createContentActionsField,
 } from '@/blocks/shared/contentActionsFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
@@ -153,8 +154,8 @@ export const ProgramGridBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            ...createContentActionsWithModeFields({ label: 'Section Actions', maxRows: 2 }),
-            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
+            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             programsField,
           ],
         },
@@ -162,6 +163,10 @@ export const ProgramGridBlock: Block = {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
+            // Drives the per-program card CTAs (not the section actions array, whose
+            // display mode now lives on each action row). `actionVariant` below
+            // is conditioned on this field.
+            createContentActionModeField({ label: 'Item Action Style', name: 'actionMode' }),
             {
               name: 'actionVariant',
               label: 'Button Variant',

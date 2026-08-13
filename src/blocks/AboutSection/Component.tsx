@@ -33,7 +33,6 @@ type AboutSectionBlockLike = {
   body?: string | null
   contentAlignment?: 'left' | 'center' | null
   eyebrow?: string | null
-  footerActionMode?: 'button' | 'link' | null
   footerActions?: CmsActionValue[] | null
   title?: string | null
   image?: string | number | Media | null
@@ -106,7 +105,6 @@ export function AboutSectionBlockComponent({
   body,
   contentAlignment = 'center',
   eyebrow,
-  footerActionMode = 'link',
   footerActions,
   title,
   image,
@@ -229,7 +227,7 @@ export function AboutSectionBlockComponent({
         {variant === 'text' ? (
           <div className="mx-auto max-w-3xl">{textContent}</div>
         ) : null}
-        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+        <BlockFooterActions actions={footerActions} />
       </div>
     </section>
   )

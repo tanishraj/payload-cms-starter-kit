@@ -1,6 +1,10 @@
 import type { CmsActionVariant } from '@/lib/cmsLinks'
 
-import type { BlockBackground } from './blockAppearance'
+import {
+  normalizeBlockBackground,
+  resolveBlockSurface,
+  type BlockBackground,
+} from './blockAppearance'
 import { cardSurfaceValues, type CardSurfaceValue } from './cardThemeFields'
 
 export type CardSurfaceClasses = {
@@ -68,26 +72,19 @@ const explicitCardSurfaceClasses: Record<
 
 const defaultDividerClasses: Record<BlockBackground, string> = {
   none: 'border-current/10',
-  primary: 'border-current/15',
-  secondary: 'border-current/10',
-  muted: 'border-current/10',
-  accent: 'border-current/10',
-  'gradient-secondary': 'border-current/10',
-  'gradient-muted': 'border-current/10',
-  'gradient-accent': 'border-current/10',
-  'gradient-success': 'border-current/10',
-  'gradient-error': 'border-current/10',
-  'gradient-info': 'border-current/10',
-  'gradient-warning': 'border-current/10',
+  subtle: 'border-current/10',
+  brand: 'border-current/15',
+  'gradient-subtle': 'border-current/10',
+  'gradient-brand': 'border-current/15',
 }
 
 const resolveDefaultCardSurface = (
-  sectionBackground: BlockBackground = 'none',
+  rawSectionBackground: BlockBackground | string = 'none',
 ): CardSurfaceClasses => {
-  const usesPrimaryAccent =
-    sectionBackground === 'none' ||
-    sectionBackground === 'muted' ||
-    sectionBackground === 'gradient-muted'
+  const sectionBackground = normalizeBlockBackground(rawSectionBackground)
+  // Light surfaces can carry primary-colored icons and links; brand surfaces
+  // must inherit the surface foreground instead.
+  const usesPrimaryAccent = resolveBlockSurface(sectionBackground) === 'light'
 
   return {
     value: 'default',
@@ -99,24 +96,20 @@ const resolveDefaultCardSurface = (
       ? 'text-primary hover:text-primary/80'
       : 'text-current hover:text-current/80',
     overlay: 'from-black/80 via-black/50 to-transparent text-white',
-    button:
-      sectionBackground === 'primary'
-        ? {
-            default:
-              'bg-primary-foreground text-primary hover:bg-primary-foreground/90 focus-visible:border-primary-foreground focus-visible:ring-primary-foreground/30',
-          }
-        : sectionBackground === 'secondary' || sectionBackground === 'gradient-secondary'
-          ? {
-              secondary:
-                'bg-secondary-foreground text-secondary hover:bg-secondary-foreground/90 focus-visible:border-secondary-foreground focus-visible:ring-secondary-foreground/30',
-            }
-          : {},
+    // On the brand surface a filled primary button would vanish into the
+    // background, so invert it to the surface foreground.
+    button: usesPrimaryAccent
+      ? {}
+      : {
+          default:
+            'bg-primary-foreground text-primary hover:bg-primary-foreground/90 focus-visible:border-primary-foreground focus-visible:ring-primary-foreground/30',
+        },
   }
 }
 
 export const resolveCardSurface = (
   value?: string | null,
-  sectionBackground: BlockBackground = 'none',
+  sectionBackground: BlockBackground | string = 'none',
 ): CardSurfaceClasses => {
   const resolvedValue = cardSurfaceValues.includes(value as CardSurfaceValue)
     ? (value as CardSurfaceValue)
