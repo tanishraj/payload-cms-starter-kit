@@ -4044,8 +4044,15 @@ export interface Footer56Block {
  * via the `definition` "FooterMinimalBlock".
  */
 export interface FooterMinimalBlock {
-  logoMode?: ('siteDefault' | 'customLogo' | 'nameOnly') | null;
+  /**
+   * Pair No logo with the site name switch off to drop the brand mark entirely.
+   */
+  logoMode?: ('siteDefault' | 'customLogo' | 'none') | null;
   customLogo?: (string | null) | Media;
+  /**
+   * Optional heading above the logo, styled like the link column headings.
+   */
+  brandTitle?: string | null;
   showSiteName?: boolean | null;
   /**
    * Optional copy under the logo. Leave empty to fall back to the address from Site Settings.
@@ -4100,6 +4107,9 @@ export interface FooterMinimalBlock {
    */
   showSocialLinks?: boolean | null;
   socialIconStyle?: ('tile' | 'plain') | null;
+  /**
+   * The bottom bar places the icons after the divider, on one line with the copyright and legal links.
+   */
   socialPlacement?: ('brand' | 'bottomBar') | null;
   logoHeight?: number | null;
   size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
@@ -7221,6 +7231,7 @@ export interface Footer56BlockSelect<T extends boolean = true> {
 export interface FooterMinimalBlockSelect<T extends boolean = true> {
   logoMode?: T;
   customLogo?: T;
+  brandTitle?: T;
   showSiteName?: T;
   description?: T;
   linkGroups?:

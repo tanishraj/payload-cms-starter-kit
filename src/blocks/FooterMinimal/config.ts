@@ -128,8 +128,12 @@ export const FooterMinimalBlock: Block = {
               options: [
                 { label: 'Site default', value: 'siteDefault' },
                 { label: 'Custom logo', value: 'customLogo' },
-                { label: 'Site name only', value: 'nameOnly' },
+                { label: 'No logo', value: 'none' },
               ],
+              admin: {
+                description:
+                  'Pair No logo with the site name switch off to drop the brand mark entirely.',
+              },
             } satisfies SelectField,
             {
               name: 'customLogo',
@@ -138,6 +142,15 @@ export const FooterMinimalBlock: Block = {
               relationTo: 'media',
               admin: {
                 condition: (_data, siblingData) => siblingData?.logoMode === 'customLogo',
+              },
+            },
+            {
+              name: 'brandTitle',
+              label: 'Brand Column Title',
+              type: 'text',
+              admin: {
+                description:
+                  'Optional heading above the logo, styled like the link column headings.',
               },
             },
             {
@@ -201,10 +214,12 @@ export const FooterMinimalBlock: Block = {
               defaultValue: 'brand',
               options: [
                 { label: 'Under the logo', value: 'brand' },
-                { label: 'In the bottom bar', value: 'bottomBar' },
+                { label: 'In the bottom bar, beside the legal links', value: 'bottomBar' },
               ],
               admin: {
                 condition: (_data, siblingData) => siblingData?.showSocialLinks !== false,
+                description:
+                  'The bottom bar places the icons after the divider, on one line with the copyright and legal links.',
               },
             } satisfies SelectField,
             {

@@ -11,10 +11,7 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { resolveSiteSocialLinks, type SiteSocialLinks } from '@/blocks/shared/siteSocialLinks'
-import {
-  sectionEyebrowClasses,
-  type SectionEyebrowSurface,
-} from '@/components/SectionEyebrow'
+import { sectionEyebrowClasses, type SectionEyebrowSurface } from '@/components/SectionEyebrow'
 import { type LogoMediaLike } from '@/components/site/SiteLogo'
 import { resolveHeaderLink } from '@/lib/headerNavigation'
 import { getMediaImageProps } from '@/lib/media'
@@ -39,12 +36,13 @@ type FooterMinimalLinkGroup = {
 type FooterMinimalBlockLike = {
   appearance?: BlockAppearance | null
   bottomLinks?: FooterMinimalLink[] | null
+  brandTitle?: string | null
   copyrightText?: string | null
   customLogo?: unknown
   description?: string | null
   linkGroups?: FooterMinimalLinkGroup[] | null
   logoHeight?: number | null
-  logoMode?: 'customLogo' | 'nameOnly' | 'siteDefault' | null
+  logoMode?: 'customLogo' | 'nameOnly' | 'none' | 'siteDefault' | null
   privacyPolicyPage?: Page | null
   showSiteName?: boolean | null
   showSocialLinks?: boolean | null
@@ -88,6 +86,10 @@ const toContactHref = (href: string) => {
   return href
 }
 
+// Every footer column is a flex stack on this gap, so a heading sits the same
+// distance above its content as the content's own rows sit apart.
+const columnStackClasses = 'flex flex-col gap-4'
+
 const resolveLinks = (links?: FooterMinimalLink[] | null) =>
   (links ?? []).flatMap((link) => {
     const resolved = resolveHeaderLink(link as never)
@@ -98,6 +100,7 @@ const resolveLinks = (links?: FooterMinimalLink[] | null) =>
 export function FooterMinimalBlockComponent({
   appearance,
   bottomLinks,
+  brandTitle,
   copyrightText,
   customLogo,
   description,
@@ -121,17 +124,19 @@ export function FooterMinimalBlockComponent({
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   // Column headings borrow the eyebrow accent, which is picked per surface.
   const eyebrowSurface: SectionEyebrowSurface = appearanceClasses.background
+  const resolvedBrandTitle = brandTitle?.trim()
+  const showsSiteName = showSiteName !== false && Boolean(siteName?.trim())
   const resolvedSiteName = siteName?.trim()
   const resolvedLogoHeight = typeof logoHeight === 'number' ? logoHeight : 44
 
-  const logo =
-    logoMode === 'nameOnly'
-      ? undefined
-      : getMediaImageProps({
-          media: (logoMode === 'customLogo' ? customLogo : siteLogo) as never,
-          preset: 'logo',
-          fallbackAlt: resolvedSiteName ?? 'Logo',
-        })
+  const hidesLogo = logoMode === 'none' || logoMode === 'nameOnly'
+  const logo = hidesLogo
+    ? undefined
+    : getMediaImageProps({
+        media: (logoMode === 'customLogo' ? customLogo : siteLogo) as never,
+        preset: 'logo',
+        fallbackAlt: resolvedSiteName ?? 'Logo',
+      })
 
   // Falls back to the Site Settings address so the column is never left empty.
   const bodyLines = (description?.trim() || siteAddress?.trim() || '')
@@ -215,6 +220,32 @@ export function FooterMinimalBlockComponent({
       </ul>
     ) : null
 
+  const bottomBarSlots = [
+    socialPlacement === 'bottomBar' && socialList ? { key: 'social', node: socialList } : null,
+    resolvedCopyright
+      ? { key: 'copyright', node: <p className="text-current/60">{resolvedCopyright}</p> }
+      : null,
+    legalLinks.length > 0
+      ? {
+          key: 'legal',
+          node: (
+            <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+              {legalLinks.map((link) => (
+                <li key={`${link.href}-${link.label}`}>
+                  <a
+                    className="text-current/60 transition-colors hover:text-current"
+                    href={link.href}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ),
+        }
+      : null,
+  ].flatMap((slot) => (slot ? [slot] : []))
+
   return (
     <footer
       className={cn(
@@ -226,24 +257,38 @@ export function FooterMinimalBlockComponent({
     >
       <div className={regularBlockContainerClasses}>
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))] lg:gap-12">
-          <div className="flex flex-col gap-6" data-footer-minimal-brand="true">
-            <Link className="inline-flex items-center gap-4" href="/">
-              {logo ? (
-                <Image
-                  alt={logo.alt}
-                  className="h-auto w-auto"
-                  height={resolvedLogoHeight}
-                  src={logo.src}
-                  style={{ height: resolvedLogoHeight, objectFit: 'contain', width: 'auto' }}
-                  width={logo.width ?? 160}
-                />
-              ) : null}
-              {showSiteName !== false && resolvedSiteName ? (
-                <span className="max-w-[18ch] text-sm font-semibold uppercase leading-snug tracking-wide text-current">
-                  {resolvedSiteName}
-                </span>
-              ) : null}
-            </Link>
+          <div className={columnStackClasses} data-footer-minimal-brand="true">
+            {resolvedBrandTitle ? (
+              <h2
+                className={sectionEyebrowClasses}
+                data-footer-minimal-brand-title="true"
+                data-section-eyebrow-surface={eyebrowSurface}
+              >
+                {resolvedBrandTitle}
+              </h2>
+            ) : null}
+
+            {/* With no logo and no site name the link would have no accessible
+                name, so drop it rather than render an empty target. */}
+            {logo || showsSiteName ? (
+              <Link className="inline-flex items-center gap-4" href="/">
+                {logo ? (
+                  <Image
+                    alt={logo.alt}
+                    className="h-auto w-auto"
+                    height={resolvedLogoHeight}
+                    src={logo.src}
+                    style={{ height: resolvedLogoHeight, objectFit: 'contain', width: 'auto' }}
+                    width={logo.width ?? 160}
+                  />
+                ) : null}
+                {showsSiteName ? (
+                  <span className="max-w-[18ch] text-sm font-semibold uppercase leading-snug tracking-wide text-current">
+                    {resolvedSiteName}
+                  </span>
+                ) : null}
+              </Link>
+            ) : null}
 
             {bodyLines.length > 0 ? (
               <div className="flex flex-col gap-1 text-sm leading-6 text-current/70">
@@ -257,14 +302,11 @@ export function FooterMinimalBlockComponent({
           </div>
 
           {groups.map((group) => (
-            <div key={group.title} data-footer-minimal-group="true">
-              <h2
-                className={sectionEyebrowClasses}
-                data-section-eyebrow-surface={eyebrowSurface}
-              >
+            <div className={columnStackClasses} key={group.title} data-footer-minimal-group="true">
+              <h2 className={sectionEyebrowClasses} data-section-eyebrow-surface={eyebrowSurface}>
                 {group.title}
               </h2>
-              <ul className="mt-5 flex flex-col gap-3 text-sm">
+              <ul className="flex flex-col gap-3 text-sm">
                 {group.links.map((link) => (
                   <li key={`${group.title}-${link.href}-${link.label}`}>
                     <a
@@ -282,30 +324,33 @@ export function FooterMinimalBlockComponent({
           ))}
         </div>
 
-        {resolvedCopyright || legalLinks.length > 0 || socialPlacement === 'bottomBar' ? (
+        {bottomBarSlots.length > 0 ? (
           <div
-            className="mt-12 flex flex-col gap-4 border-t border-current/15 pt-6 text-xs md:flex-row md:items-center md:justify-between"
+            className={cn(
+              'mt-8 flex flex-col items-center gap-4 border-t border-current/15 pt-6 text-xs',
+              // Three slots need real thirds for the middle one to sit centred;
+              // justify-between only centres it when both sides happen to match.
+              bottomBarSlots.length === 3 && 'md:grid md:grid-cols-3 md:items-center',
+              bottomBarSlots.length === 2 && 'md:flex-row md:items-center md:justify-between',
+              bottomBarSlots.length === 1 && 'md:flex-row md:justify-center',
+            )}
             data-footer-minimal-bottom-bar="true"
+            data-footer-minimal-bottom-slots={bottomBarSlots.length}
           >
-            {resolvedCopyright ? <p className="text-current/60">{resolvedCopyright}</p> : <span />}
-
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-              {socialPlacement === 'bottomBar' ? socialList : null}
-              {legalLinks.length > 0 ? (
-                <ul className="flex flex-wrap gap-x-6 gap-y-2">
-                  {legalLinks.map((link) => (
-                    <li key={`${link.href}-${link.label}`}>
-                      <a
-                        className="text-current/60 transition-colors hover:text-current"
-                        href={link.href}
-                      >
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-            </div>
+            {bottomBarSlots.map((slot, index) => (
+              <div
+                className={cn(
+                  'flex items-center',
+                  bottomBarSlots.length === 3 &&
+                    ['md:justify-self-start', 'md:justify-self-center', 'md:justify-self-end'][
+                      index
+                    ],
+                )}
+                key={slot.key}
+              >
+                {slot.node}
+              </div>
+            ))}
           </div>
         ) : null}
       </div>

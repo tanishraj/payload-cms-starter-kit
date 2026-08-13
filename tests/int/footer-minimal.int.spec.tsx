@@ -237,4 +237,128 @@ describe('FooterMinimal', () => {
     // The serif display face the base layer applies to headings is overridden.
     expect(html).not.toMatch(/<h2 class="text-sm font-semibold text-current"/)
   })
+
+  it('makes the logo optional and titles the brand column like a link column', () => {
+    const withTitle = renderToStaticMarkup(
+      <FooterMinimalBlockComponent
+        appearance={{ background: 'brand', border: 'none' }}
+        brandTitle="Shree Narayan"
+        logoMode="none"
+        siteLogo={{ alt: 'Logo', url: '/logo.svg' } as never}
+        siteName="SNMIH"
+      />,
+    )
+
+    // No logo rendered, but the name still anchors the home link.
+    expect(withTitle).not.toContain('/logo.svg')
+    expect(withTitle).toContain('data-footer-minimal-brand-title="true"')
+    // Same treatment as the link column headings.
+    expect(withTitle).toContain('font-mono')
+    expect(withTitle).toContain('data-section-eyebrow-surface="brand"')
+    expect(withTitle).toContain('href="/"')
+  })
+
+  it('drops the home link when it would have no logo and no name to announce', () => {
+    const html = renderToStaticMarkup(
+      <FooterMinimalBlockComponent
+        brandTitle="Shree Narayan"
+        logoMode="none"
+        showSiteName={false}
+        siteName="SNMIH"
+      />,
+    )
+
+    // An empty <a> would be focusable with no accessible name.
+    expect(html).not.toContain('href="/"')
+    expect(html).toContain('Shree Narayan')
+  })
+
+  it('keeps rendering content saved under the previous nameOnly logo mode', () => {
+    const html = renderToStaticMarkup(
+      <FooterMinimalBlockComponent
+        logoMode="nameOnly"
+        siteLogo={{ alt: 'Logo', url: '/logo.svg' } as never}
+        siteName="SNMIH"
+      />,
+    )
+
+    expect(html).not.toContain('/logo.svg')
+    expect(html).toContain('SNMIH')
+  })
+
+  it('arranges the bottom bar by how many of the three slots are present', () => {
+    const social = { facebook: 'https://facebook.com/x' }
+    const terms = { id: 1, slug: 'terms', title: 'Terms' } as never
+
+    const three = renderToStaticMarkup(
+      <FooterMinimalBlockComponent
+        copyrightText="© 2026 SNMIH"
+        siteName="SNMIH"
+        siteSocialLinks={social}
+        socialPlacement="bottomBar"
+        termsAndConditionsPage={terms}
+      />,
+    )
+    const two = renderToStaticMarkup(
+      <FooterMinimalBlockComponent
+        copyrightText="© 2026 SNMIH"
+        siteName="SNMIH"
+        termsAndConditionsPage={terms}
+      />,
+    )
+    const one = renderToStaticMarkup(
+      <FooterMinimalBlockComponent copyrightText="© 2026 SNMIH" siteName="SNMIH" />,
+    )
+
+    // Three: real thirds, so the middle slot is genuinely centred.
+    expect(three).toContain('data-footer-minimal-bottom-slots="3"')
+    expect(three).toContain('md:grid-cols-3')
+    expect(three).toContain('md:justify-self-start')
+    expect(three).toContain('md:justify-self-center')
+    expect(three).toContain('md:justify-self-end')
+    // Order is social, copyright, legal.
+    const socialAt = three.indexOf('data-footer-minimal-social')
+    const copyAt = three.indexOf('© 2026 SNMIH')
+    const legalAt = three.indexOf('Terms &amp; Conditions')
+    expect(socialAt).toBeLessThan(copyAt)
+    expect(copyAt).toBeLessThan(legalAt)
+
+    // Two: split to the edges.
+    expect(two).toContain('data-footer-minimal-bottom-slots="2"')
+    expect(two).toContain('md:justify-between')
+    expect(two).not.toContain('md:grid-cols-3')
+
+    // One: centred.
+    expect(one).toContain('data-footer-minimal-bottom-slots="1"')
+    expect(one).toContain('md:justify-center')
+    expect(one).not.toContain('md:justify-between')
+  })
+
+  it('spaces every column on one shared gap, heading included', () => {
+    const html = renderToStaticMarkup(
+      <FooterMinimalBlockComponent
+        brandTitle="Shree Narayan"
+        linkGroups={[
+          { links: [{ label: 'About', linkType: 'custom', url: '/about' }], title: 'Explore' },
+        ]}
+        siteAddress="Mahavir Nagar"
+        siteName="SNMIH"
+      />,
+    )
+
+    // Brand column and link column share the same stack.
+    expect(html.match(/flex flex-col gap-6/g)?.length).toBe(2)
+    // Spacing comes from the gap, so no margin is needed under a heading.
+    expect(html).not.toContain('mt-5')
+  })
+
+  it('needs no conditional spacing when a column has no heading', () => {
+    const html = renderToStaticMarkup(
+      <FooterMinimalBlockComponent siteAddress="Mahavir Nagar" siteName="SNMIH" />,
+    )
+
+    // A gap only applies between siblings, so an absent heading leaves no trace.
+    expect(html).toContain('flex flex-col gap-6')
+    expect(html).not.toContain('mt-5')
+  })
 })
