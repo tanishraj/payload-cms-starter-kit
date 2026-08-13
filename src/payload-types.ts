@@ -4034,6 +4034,14 @@ export interface Footer56Block {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Icons come from Site Settings › Social Links.
+   */
+  socialIconStyle?: ('plain' | 'tile') | null;
+  /**
+   * The bottom bar places the icons after the divider, on one line with the copyright and legal links.
+   */
+  socialPlacement?: ('brand' | 'bottomBar') | null;
   size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
@@ -7220,6 +7228,8 @@ export interface Footer56BlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  socialIconStyle?: T;
+  socialPlacement?: T;
   size?: T;
   id?: T;
   blockName?: T;

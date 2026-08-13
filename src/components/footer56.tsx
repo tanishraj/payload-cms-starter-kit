@@ -1,6 +1,7 @@
 import Image from 'next/image'
 
-import { FaFacebook, FaGithub, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa'
+import type { IconType } from 'react-icons'
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaXTwitter, FaYoutube } from 'react-icons/fa6'
 import { Mail, MapPin, Phone } from 'lucide-react'
 
 import {
@@ -13,6 +14,7 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { ContentActions } from '@/components/ContentActions'
+import { sectionEyebrowClasses, type SectionEyebrowSurface } from '@/components/SectionEyebrow'
 import type { ResolvedCmsAction } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 
@@ -25,9 +27,10 @@ interface FooterSection {
   links: FooterLink[]
 }
 interface FooterSocialLink {
-  icon: React.ReactNode
+  Icon: IconType
   href: string
   label: string
+  platform?: string
 }
 interface FooterLogo {
   url: string
@@ -55,6 +58,8 @@ interface Footer56Props extends FooterBasicProps {
   addressLines?: string[]
   phone?: string
   email?: string
+  socialIconStyle?: 'plain' | 'tile'
+  socialPlacement?: 'bottomBar' | 'brand'
 }
 type Props = Partial<Footer56Props>
 
@@ -106,19 +111,15 @@ const defaultProps: Footer56Props = {
     },
   ],
   socialLinks: [
-    {
-      icon: <FaInstagram className="size-5" />,
-      href: '#',
-      label: 'Instagram',
-    },
-    { icon: <FaFacebook className="size-5" />, href: '#', label: 'Facebook' },
-    { icon: <FaTwitter className="size-5" />, href: '#', label: 'Twitter' },
-    { icon: <FaLinkedin className="size-5" />, href: '#', label: 'LinkedIn' },
-    { icon: <FaGithub className="size-5" />, href: '#', label: 'GitHub' },
+    { Icon: FaFacebookF, href: '#', label: 'Facebook' },
+    { Icon: FaInstagram, href: '#', label: 'Instagram' },
+    { Icon: FaXTwitter, href: '#', label: 'X' },
+    { Icon: FaYoutube, href: '#', label: 'YouTube' },
+    { Icon: FaLinkedinIn, href: '#', label: 'LinkedIn' },
   ],
   copyright: '© 2024 Shadcnblocks.com. All rights reserved.',
   legalLinks: [
-    { name: 'Terms and Conditions', href: '#' },
+    { name: 'Terms & Conditions', href: '#' },
     { name: 'Privacy Policy', href: '#' },
   ],
   addressLines: ['123 Market Street, Suite 400', 'San Francisco, CA 94103'],
@@ -138,7 +139,9 @@ const Footer56 = (props: Props) => {
     email,
     sections,
     size,
+    socialIconStyle,
     socialLinks,
+    socialPlacement,
     copyright,
     description,
     legalLinks,
@@ -150,6 +153,57 @@ const Footer56 = (props: Props) => {
 
   const visibleSections = (sections ?? []).slice(0, MAX_SECTIONS)
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
+  const eyebrowSurface: SectionEyebrowSurface = appearanceClasses.background
+  const footerLinkClasses = 'text-current/70 transition-colors hover:text-current'
+
+  // Tiles tint from currentColor so they stay legible on a light surface and on
+  // the navy brand surface alike, without branching on which one is in use.
+  const socialList = socialLinks?.length ? (
+    <ul className="flex flex-wrap items-center gap-3" data-footer56-social="true">
+      {socialLinks.map(({ Icon, href, label, platform }, idx) => (
+        <li key={platform ?? `${label}-${idx}`}>
+          <a
+            aria-label={label}
+            className={cn(
+              'inline-flex items-center justify-center transition-colors',
+              socialIconStyle === 'tile'
+                ? 'size-10 rounded-[var(--radius)] bg-current/10 text-current hover:bg-current/20'
+                : footerLinkClasses,
+            )}
+            data-footer56-social-link={platform ?? label}
+            href={href}
+            rel="noreferrer"
+            target="_blank"
+          >
+            <Icon className="size-4" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  ) : null
+
+  // Fixed order — social, copyright, legal — so two slots fall to the correct
+  // sides and a lone slot centres, with no per-combination special casing.
+  const bottomBarSlots = [
+    socialPlacement === 'bottomBar' && socialList ? { key: 'social', node: socialList } : null,
+    copyright ? { key: 'copyright', node: <p className="text-current/70">{copyright}</p> } : null,
+    legalLinks?.length
+      ? {
+          key: 'legal',
+          node: (
+            <ul className="flex flex-wrap justify-center gap-4">
+              {legalLinks.map((link, linkIdx) => (
+                <li key={linkIdx}>
+                  <a className={cn('underline', footerLinkClasses)} href={link.href}>
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ),
+        }
+      : null,
+  ].flatMap((slot) => (slot ? [slot] : []))
   const sectionClassName = cn(
     regularBlockMobilePaddingClasses[size ?? 'default'],
     appearanceClasses.className,
@@ -185,9 +239,7 @@ const Footer56 = (props: Props) => {
               {description ? (
                 <p className="mt-6 max-w-sm text-sm leading-6 text-current/70">{description}</p>
               ) : null}
-              {actions?.length ? (
-                <ContentActions actions={actions} className="mt-6" />
-              ) : null}
+              {actions?.length ? <ContentActions actions={actions} className="mt-6" /> : null}
               <div className="mt-6 space-y-3 text-sm text-current/70">
                 <div className="flex gap-2">
                   <MapPin className="mt-0.5 size-4 shrink-0 text-current/70" aria-hidden />
@@ -202,7 +254,7 @@ const Footer56 = (props: Props) => {
                     <Phone className="size-4 shrink-0" aria-hidden />
                     <a
                       href={`tel:${phone.replace(/[^\d+]/g, '')}`}
-                      className="font-medium hover:text-primary"
+                      className={cn('font-medium', footerLinkClasses)}
                     >
                       {phone}
                     </a>
@@ -211,47 +263,60 @@ const Footer56 = (props: Props) => {
                 {email ? (
                   <div className="flex items-center gap-2">
                     <Mail className="size-4 shrink-0" aria-hidden />
-                    <a href={`mailto:${email}`} className="font-medium hover:text-primary">
+                    <a href={`mailto:${email}`} className={cn('font-medium', footerLinkClasses)}>
                       {email}
                     </a>
                   </div>
                 ) : null}
               </div>
-              <ul className="mt-6 flex flex-wrap items-center gap-4 text-sm text-current/70">
-                {socialLinks?.map((social, idx) => (
-                  <li key={idx} className="font-medium hover:text-primary">
-                    <a href={social.href} aria-label={social.label}>
-                      {social.icon}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              {socialPlacement !== 'bottomBar' ? <div className="mt-6">{socialList}</div> : null}
             </div>
             {visibleSections.map((section, sectionIdx) => (
               <div key={sectionIdx}>
-                <h3 className="mb-4 text-sm font-semibold uppercase font-mono tracking-widest">
+                <h3 className={sectionEyebrowClasses} data-section-eyebrow-surface={eyebrowSurface}>
                   {section.title}
                 </h3>
-                <ul className="space-y-4 text-sm text-current/70">
+                <ul className="mt-4 space-y-4 text-sm">
                   {section.links.map((link, linkIdx) => (
-                    <li key={linkIdx} className="font-medium hover:text-primary">
-                      <a href={link.href}>{link.name}</a>
+                    <li key={linkIdx}>
+                      <a className={cn('font-medium', footerLinkClasses)} href={link.href}>
+                        {link.name}
+                      </a>
                     </li>
                   ))}
                 </ul>
               </div>
             ))}
           </div>
-          <div className="mt-8 flex flex-col justify-between gap-4 border-t border-current/15 pt-8 text-xs font-medium text-current/70 md:flex-row md:items-center">
-            <p>{copyright}</p>
-            <ul className="flex flex-wrap gap-4">
-              {legalLinks?.map((link, linkIdx) => (
-                <li key={linkIdx} className="underline hover:text-primary">
-                  <a href={link.href}>{link.name}</a>
-                </li>
+          {bottomBarSlots.length > 0 ? (
+            <div
+              className={cn(
+                'mt-8 flex flex-col items-center gap-4 border-t border-current/15 pt-8 text-xs font-medium',
+                // Real thirds, so the middle slot is centred whatever the
+                // outer two weigh; justify-between would only approximate it.
+                bottomBarSlots.length === 3 && 'md:grid md:grid-cols-3 md:items-center',
+                bottomBarSlots.length === 2 && 'md:flex-row md:items-center md:justify-between',
+                bottomBarSlots.length === 1 && 'md:flex-row md:justify-center',
+              )}
+              data-footer56-bottom-bar="true"
+              data-footer56-bottom-slots={bottomBarSlots.length}
+            >
+              {bottomBarSlots.map((slot, index) => (
+                <div
+                  className={cn(
+                    'flex items-center',
+                    bottomBarSlots.length === 3 &&
+                      ['md:justify-self-start', 'md:justify-self-center', 'md:justify-self-end'][
+                        index
+                      ],
+                  )}
+                  key={slot.key}
+                >
+                  {slot.node}
+                </div>
               ))}
-            </ul>
-          </div>
+            </div>
+          ) : null}
         </footer>
       </div>
     </section>

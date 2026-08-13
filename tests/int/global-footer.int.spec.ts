@@ -98,7 +98,9 @@ describe('global footer wiring', () => {
     const emailIndex = html.indexOf('hello@acme.edu')
     const linkedInIndex = html.indexOf('linkedin')
     const customBottomLinkIndex = html.indexOf('Terms and Conditions', html.indexOf('href="/terms"'))
-    const legalTermsIndex = html.lastIndexOf('Terms and Conditions')
+    // The appended legal link is labelled from Site Settings, so it reads
+    // "Terms & Conditions" and is distinct from the editor's own bottom link.
+    const legalTermsIndex = html.indexOf('Terms &amp; Conditions')
     const privacyIndex = html.indexOf('Privacy Policy')
 
     expect(addressIndex).toBeGreaterThan(descriptionIndex)

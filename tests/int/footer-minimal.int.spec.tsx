@@ -346,9 +346,15 @@ describe('FooterMinimal', () => {
       />,
     )
 
-    // Brand column and link column share the same stack.
-    expect(html.match(/flex flex-col gap-6/g)?.length).toBe(2)
-    // Spacing comes from the gap, so no margin is needed under a heading.
+    const brandClass = html.match(/class="([^"]*)" data-footer-minimal-brand/)?.[1]
+    const groupClass = html.match(/class="([^"]*)" data-footer-minimal-group/)?.[1]
+
+    // Assert the columns agree, not what the gap happens to be, so tuning the
+    // spacing does not require touching this test.
+    expect(brandClass).toBeDefined()
+    expect(brandClass).toBe(groupClass)
+    expect(brandClass).toMatch(/flex flex-col gap-\d/)
+    // Spacing comes from the gap, so no margin sits under a heading.
     expect(html).not.toContain('mt-5')
   })
 
@@ -358,7 +364,7 @@ describe('FooterMinimal', () => {
     )
 
     // A gap only applies between siblings, so an absent heading leaves no trace.
-    expect(html).toContain('flex flex-col gap-6')
+    expect(html).toMatch(/flex flex-col gap-\d/)
     expect(html).not.toContain('mt-5')
   })
 })

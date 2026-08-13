@@ -19,12 +19,6 @@ type FooterSection = {
   }[]
 }
 
-type FooterSocialLink = {
-  icon: React.ReactElement
-  href: string
-  label: string
-}
-
 type Footer56BlockComponentProps = Footer56BlockType & {
   siteAddress?: string | null
   siteEmail?: string | null
@@ -34,6 +28,8 @@ type Footer56BlockComponentProps = Footer56BlockType & {
   privacyPolicyPage?: Page | null
   termsAndConditionsPage?: Page | null
   siteSocialLinks?: SiteSocialLinks
+  socialIconStyle?: 'plain' | 'tile' | null
+  socialPlacement?: 'bottomBar' | 'brand' | null
 }
 
 const resolveSections = (
@@ -58,13 +54,6 @@ const resolveSections = (
     .filter((group): group is FooterSection => group !== null)
 }
 
-const resolveSocialLinks = (siteSocialLinks?: SiteSocialLinks): FooterSocialLink[] =>
-  resolveSiteSocialLinks(siteSocialLinks).map(({ Icon, href, label }) => ({
-    href,
-    icon: <Icon className="size-5" />,
-    label,
-  }))
-
 const resolveLegalLinks = (
   bottomLinks?: Footer56BlockType['bottomLinks'],
   privacyPolicyPage?: Page | null,
@@ -75,14 +64,26 @@ const resolveLegalLinks = (
     .filter((link): link is NonNullable<ReturnType<typeof resolveHeaderLink>> => Boolean(link))
     .map((link) => ({ name: link.label, href: link.href }))
 
-  const privacyHref = getPageHref(privacyPolicyPage)
-  const termsHref = getPageHref(termsAndConditionsPage)
+  const linkedHrefs = new Set(resolvedBottomLinks.map((link) => link.href))
 
-  return [
-    ...resolvedBottomLinks,
-    ...(termsHref ? [{ href: termsHref, name: 'Terms and Conditions' }] : []),
-    ...(privacyHref ? [{ href: privacyHref, name: 'Privacy Policy' }] : []),
-  ]
+  const legalPageLinks = (
+    [
+      [termsAndConditionsPage, 'Terms & Conditions'],
+      [privacyPolicyPage, 'Privacy Policy'],
+    ] as const
+  ).flatMap(([page, name]) => {
+    const href = getPageHref(page)
+
+    if (!href || linkedHrefs.has(href)) {
+      return []
+    }
+
+    linkedHrefs.add(href)
+
+    return [{ href, name }]
+  })
+
+  return [...resolvedBottomLinks, ...legalPageLinks]
 }
 
 export function Footer56BlockComponent({
@@ -105,6 +106,8 @@ export function Footer56BlockComponent({
   size,
   termsAndConditionsPage,
   siteSocialLinks,
+  socialIconStyle,
+  socialPlacement,
 }: Footer56BlockComponentProps) {
   const resolvedSiteName = siteName?.trim() || 'Shadcnblocks.com'
   const fallbackLogoHref = logoMode === 'customLogo' ? '/' : '/'
@@ -151,7 +154,9 @@ export function Footer56BlockComponent({
       email={siteEmail ?? undefined}
       size={size ?? 'default'}
       sections={resolveSections(linkGroups)}
-      socialLinks={resolveSocialLinks(siteSocialLinks)}
+      socialIconStyle={socialIconStyle ?? 'plain'}
+      socialLinks={resolveSiteSocialLinks(siteSocialLinks)}
+      socialPlacement={socialPlacement ?? 'brand'}
       logo={
         resolvedLogo ?? {
           alt: resolvedSiteName,

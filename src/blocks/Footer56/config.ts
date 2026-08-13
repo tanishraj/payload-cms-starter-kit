@@ -198,6 +198,33 @@ export const Footer56Block: Block = {
           fields: [
             createBlockAppearanceFields(),
             {
+              name: 'socialIconStyle',
+              label: 'Social Icon Style',
+              type: 'select',
+              defaultValue: 'plain',
+              options: [
+                { label: 'Plain glyph', value: 'plain' },
+                { label: 'Filled tile', value: 'tile' },
+              ],
+              admin: {
+                description: 'Icons come from Site Settings \u203a Social Links.',
+              },
+            } satisfies SelectField,
+            {
+              name: 'socialPlacement',
+              label: 'Social Icon Placement',
+              type: 'select',
+              defaultValue: 'brand',
+              options: [
+                { label: 'Under the logo', value: 'brand' },
+                { label: 'In the bottom bar, beside the legal links', value: 'bottomBar' },
+              ],
+              admin: {
+                description:
+                  'The bottom bar places the icons after the divider, on one line with the copyright and legal links.',
+              },
+            } satisfies SelectField,
+            {
               name: 'size',
               label: 'Section Padding',
               type: 'select',
