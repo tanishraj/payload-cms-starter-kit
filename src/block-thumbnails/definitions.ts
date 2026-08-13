@@ -37,6 +37,12 @@ export const blockThumbnailDefinitions = [
     slug: 'heroCarousel',
   }),
   defineThumbnail({
+    alt: 'Banner CTA block preview',
+    filename: 'banner-cta.jpg',
+    label: 'Banner CTA',
+    slug: 'bannerCta',
+  }),
+  defineThumbnail({
     alt: 'Call to Action block preview',
     filename: 'cta-39.jpg',
     label: 'Call to Action',

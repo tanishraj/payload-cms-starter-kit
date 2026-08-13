@@ -193,6 +193,7 @@ export interface Page {
   layout?:
     | (
         | AnnouncementBlock
+        | BannerCtaBlock
         | Cta39Block
         | HeroBannerBlock
         | HeroCarouselBlock
@@ -311,6 +312,164 @@ export interface AnnouncementBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerCtaBlock".
+ */
+export interface BannerCtaBlock {
+  /**
+   * Sits behind the overlay. Without one the block falls back to the Appearance background.
+   */
+  backgroundImage?: (string | null) | Media;
+  /**
+   * Small label above the heading.
+   */
+  eyebrow?: string | null;
+  title: string;
+  /**
+   * Optional emphasized second line of the heading.
+   */
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * The side column stacks back under the copy on small screens.
+   */
+  actionPlacement?: ('side' | 'below') | null;
+  contentAlignment?: ('left' | 'center' | 'right') | null;
+  contentWidth?: ('narrow' | 'default' | 'wide') | null;
+  /**
+   * Auto tints with the theme primary and follows it into dark mode. Light uses a pale scrim under dark copy. Dark keeps white copy over the image regardless of the site theme.
+   */
+  themeMode?: ('auto' | 'light' | 'dark') | null;
+  overlayStyle?: ('light' | 'dark' | 'darker') | null;
+  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft') | null;
+  height?: ('compact' | 'default' | 'immersive') | null;
+  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bannerCta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: string;
+  /**
+   * Read-only storage health set by the media reconciliation process.
+   */
+  storageStatus?: ('unchecked' | 'healthy' | 'missing' | 'check_failed' | 'local_only') | null;
+  /**
+   * Most recent storage verification time.
+   */
+  storageCheckedAt?: string | null;
+  /**
+   * When this asset was first detected missing from object storage.
+   */
+  storageMissingSince?: string | null;
+  /**
+   * Read-only diagnostic detail from the last storage verification.
+   */
+  storageIssue?: string | null;
+  /**
+   * Internal asset name used in the admin panel.
+   */
+  title?: string | null;
+  /**
+   * Use Logo, Hero, and SEO for image assets only. Logo: prefer transparent background and clean padding. Hero: prefer wide, high-resolution imagery for desktop layouts. SEO: prefer Open Graph-friendly images around 1200x630.
+   */
+  assetType?: ('general' | 'logo' | 'hero' | 'seo' | 'icon' | 'document') | null;
+  /**
+   * Required for image assets. Describe the image for accessibility and SEO. Documents can leave this blank.
+   */
+  alt?: string | null;
+  /**
+   * Optional labels to make assets easier to find later.
+   */
+  tags?:
+    | {
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional internal notes about where or how this asset should be used, plus any preferred sizing or placement guidance for editors.
+   */
+  notes?: string | null;
+  /**
+   * Mark logos, default SEO images, or other high-sensitivity assets that should be changed with extra care.
+   */
+  isCriticalAsset?: boolean | null;
+  /**
+   * Optional internal guidance for replacement, retirement, or migration of this asset.
+   */
+  replacementNotes?: string | null;
+  /**
+   * Read-only usage overview derived from supported media relationship fields.
+   */
+  usageSummary?: string | null;
+  /**
+   * Read-only structured list of supported collection and global usage locations.
+   */
+  usageDetails?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "Cta39Block".
  */
 export interface Cta39Block {
@@ -403,91 +562,6 @@ export interface HeroBannerBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'heroBanner';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: string;
-  /**
-   * Read-only storage health set by the media reconciliation process.
-   */
-  storageStatus?: ('unchecked' | 'healthy' | 'missing' | 'check_failed' | 'local_only') | null;
-  /**
-   * Most recent storage verification time.
-   */
-  storageCheckedAt?: string | null;
-  /**
-   * When this asset was first detected missing from object storage.
-   */
-  storageMissingSince?: string | null;
-  /**
-   * Read-only diagnostic detail from the last storage verification.
-   */
-  storageIssue?: string | null;
-  /**
-   * Internal asset name used in the admin panel.
-   */
-  title?: string | null;
-  /**
-   * Use Logo, Hero, and SEO for image assets only. Logo: prefer transparent background and clean padding. Hero: prefer wide, high-resolution imagery for desktop layouts. SEO: prefer Open Graph-friendly images around 1200x630.
-   */
-  assetType?: ('general' | 'logo' | 'hero' | 'seo' | 'icon' | 'document') | null;
-  /**
-   * Required for image assets. Describe the image for accessibility and SEO. Documents can leave this blank.
-   */
-  alt?: string | null;
-  /**
-   * Optional labels to make assets easier to find later.
-   */
-  tags?:
-    | {
-        value: string;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Optional internal notes about where or how this asset should be used, plus any preferred sizing or placement guidance for editors.
-   */
-  notes?: string | null;
-  /**
-   * Mark logos, default SEO images, or other high-sensitivity assets that should be changed with extra care.
-   */
-  isCriticalAsset?: boolean | null;
-  /**
-   * Optional internal guidance for replacement, retirement, or migration of this asset.
-   */
-  replacementNotes?: string | null;
-  /**
-   * Read-only usage overview derived from supported media relationship fields.
-   */
-  usageSummary?: string | null;
-  /**
-   * Read-only structured list of supported collection and global usage locations.
-   */
-  usageDetails?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3195,6 +3269,7 @@ export interface ReusableSection {
   layout?:
     | (
         | AnnouncementBlock
+        | BannerCtaBlock
         | Cta39Block
         | HeroBannerBlock
         | HeroCarouselBlock
@@ -4412,6 +4487,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         announcement?: T | AnnouncementBlockSelect<T>;
+        bannerCta?: T | BannerCtaBlockSelect<T>;
         cta39?: T | Cta39BlockSelect<T>;
         heroBanner?: T | HeroBannerBlockSelect<T>;
         heroCarousel?: T | HeroCarouselBlockSelect<T>;
@@ -4504,6 +4580,59 @@ export interface AnnouncementBlockSelect<T extends boolean = true> {
   displayMode?: T;
   intervalMs?: T;
   marqueeDurationMs?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerCtaBlock_select".
+ */
+export interface BannerCtaBlockSelect<T extends boolean = true> {
+  backgroundImage?: T;
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  actionPlacement?: T;
+  contentAlignment?: T;
+  contentWidth?: T;
+  themeMode?: T;
+  overlayStyle?: T;
+  overlayDirection?: T;
+  height?: T;
+  size?: T;
   id?: T;
   blockName?: T;
 }
@@ -6756,6 +6885,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
     | T
     | {
         announcement?: T | AnnouncementBlockSelect<T>;
+        bannerCta?: T | BannerCtaBlockSelect<T>;
         cta39?: T | Cta39BlockSelect<T>;
         heroBanner?: T | HeroBannerBlockSelect<T>;
         heroCarousel?: T | HeroCarouselBlockSelect<T>;

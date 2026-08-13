@@ -10,6 +10,7 @@ import { ContentHighlightsBlockComponent } from './ContentHighlights/Component'
 import { EditorialReasonsBlockComponent } from './EditorialReasons/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
+import { BannerCtaBlockComponent } from './BannerCta/Component'
 import { Cta39BlockComponent } from './Cta39/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
 import { EventGalleryPreviewBlockComponent } from './EventGallery/PreviewComponent'
@@ -128,6 +129,8 @@ function renderSingleLivePreviewBlock(
       return <TeamShowcaseBlockComponent key={key} {...block} />
     case 'services21':
       return <Services21BlockComponent key={key} {...block} />
+    case 'bannerCta':
+      return <BannerCtaBlockComponent key={key} {...block} />
     case 'cta39':
       return <Cta39BlockComponent key={key} {...block} />
     case 'richText':

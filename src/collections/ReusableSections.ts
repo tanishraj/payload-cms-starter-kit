@@ -5,6 +5,7 @@ import { ContentHighlightsBlock } from '@/blocks/ContentHighlights/config'
 import { EditorialReasonsBlock } from '@/blocks/EditorialReasons/config'
 import { QaAccordionBlock } from '@/blocks/QaAccordion/config'
 import { FeatureMatrixBlock } from '@/blocks/FeatureMatrix/config'
+import { BannerCtaBlock } from '@/blocks/BannerCta/config'
 import { Cta39Block } from '@/blocks/Cta39/config'
 import { GalleryShowcaseBlock } from '@/blocks/GalleryShowcase/config'
 import { EventGalleryBlock } from '@/blocks/EventGallery/config'
@@ -95,6 +96,7 @@ export const ReusableSections: CollectionConfig = {
       // ReusableSectionBlock is intentionally excluded here to prevent circular nesting.
       blocks: [
         AnnouncementBlock,
+        BannerCtaBlock,
         Cta39Block,
         HeroBannerBlock,
         HeroCarouselBlock,

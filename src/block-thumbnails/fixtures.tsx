@@ -7,6 +7,7 @@ import { FeatureMatrixBlockComponent } from '@/blocks/FeatureMatrix/Component'
 import { Footer56BlockComponent } from '@/blocks/Footer56/Component'
 import { GalleryShowcaseBlockComponent } from '@/blocks/GalleryShowcase/Component'
 import { GalleryCoverflowBlockComponent } from '@/blocks/GalleryCoverflow/Component'
+import { BannerCtaBlockComponent } from '@/blocks/BannerCta/Component'
 import { Cta39BlockComponent } from '@/blocks/Cta39/Component'
 import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
 import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
@@ -288,6 +289,33 @@ const footerGroupsFixture = [
 ]
 
 export const blockThumbnailFixtures = {
+  bannerCta: (
+    <BannerCtaBlockComponent
+      accentTitle="starts here."
+      actions={[
+        {
+          label: 'Explore admissions',
+          linkType: 'custom',
+          mode: 'button',
+          url: '/admissions',
+          variant: 'default',
+        },
+        {
+          label: 'Download brochure',
+          linkType: 'custom',
+          mode: 'button',
+          showArrow: true,
+          url: '/brochure',
+          variant: 'outline',
+        },
+      ]}
+      backgroundImage={{ alt: 'Abstract architectural landscape', url: editorialLandscape }}
+      description="Discover an academic environment built around knowledge, clinical experience and compassionate care."
+      eyebrow="Admissions"
+      height="compact"
+      title="Your journey in medicine"
+    />
+  ),
   announcement: (
     <AnnouncementBlockComponent
       appearance={{ background: 'subtle', border: 'bottom' }}
