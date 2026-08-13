@@ -130,6 +130,7 @@ export const EditorialReasonsBlock: Block = {
             },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             reasonsField,
+            createContentActionsField({ name: 'listActions', label: 'List Footer Actions', maxRows: 2 }),
           ],
         },
         {
@@ -137,6 +138,7 @@ export const EditorialReasonsBlock: Block = {
           fields: [
             createBlockAppearanceFields(),
             createContentActionModeField(),
+            createContentActionModeField({ name: 'listActionMode', label: 'List Footer Action Mode' }),
             {
               name: 'contentAlignment',
               label: 'Section Content Alignment',
@@ -186,6 +188,17 @@ export const EditorialReasonsBlock: Block = {
                 description:
                   'Sets the desktop list layout. Two to four columns collapse responsively on smaller screens.',
               },
+            } satisfies SelectField,
+            {
+              name: 'numberLayout',
+              label: 'Number Layout',
+              type: 'select',
+              defaultValue: 'stacked',
+              required: true,
+              options: [
+                { label: 'Stacked (number above title)', value: 'stacked' },
+                { label: 'Inline (number beside title)', value: 'inline' },
+              ],
             } satisfies SelectField,
             {
               name: 'listBorderStyle',

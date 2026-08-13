@@ -43,6 +43,8 @@ type EditorialReasonsListColumns = '1' | '2' | '3' | '4'
 
 type EditorialReasonsListBorderStyle = 'framed' | 'open' | 'ruled'
 
+type EditorialReasonsNumberLayout = 'inline' | 'stacked'
+
 type EditorialReasonsBlockLike = {
   accentTitle?: string | null
   actionMode?: 'button' | 'link' | null
@@ -53,9 +55,12 @@ type EditorialReasonsBlockLike = {
   eyebrow?: string | null
   introVerticalAlignment?: 'bottom' | 'center' | 'top' | null
   layoutProportion?: EditorialReasonsLayoutProportion | null
+  listActionMode?: 'button' | 'link' | null
+  listActions?: CmsActionValue[] | null
   listBorderStyle?: EditorialReasonsListBorderStyle | null
   listColumns?: EditorialReasonsListColumns | null
   listPosition?: EditorialReasonsListPosition | null
+  numberLayout?: EditorialReasonsNumberLayout | null
   reasons?: EditorialReasonValue[] | null
   size?: RegularBlockSize | null
   stickyIntro?: boolean | null
@@ -122,6 +127,8 @@ const listColumnValues = new Set<EditorialReasonsListColumns>(['1', '2', '3', '4
 
 const listBorderStyles = new Set<EditorialReasonsListBorderStyle>(['open', 'ruled', 'framed'])
 
+const numberLayoutValues = new Set<EditorialReasonsNumberLayout>(['inline', 'stacked'])
+
 const resolveLayoutProportion = (
   value: EditorialReasonsLayoutProportion | null | undefined,
 ): EditorialReasonsLayoutProportion =>
@@ -147,6 +154,11 @@ const resolveListBorderStyle = (
 ): EditorialReasonsListBorderStyle =>
   listBorderStyles.has(value as EditorialReasonsListBorderStyle) ? value! : 'ruled'
 
+const resolveNumberLayout = (
+  value: EditorialReasonsNumberLayout | null | undefined,
+): EditorialReasonsNumberLayout =>
+  numberLayoutValues.has(value as EditorialReasonsNumberLayout) ? value! : 'stacked'
+
 export function EditorialReasonsBlockComponent({
   accentTitle,
   actionMode = 'link',
@@ -157,9 +169,12 @@ export function EditorialReasonsBlockComponent({
   eyebrow,
   introVerticalAlignment = 'top',
   layoutProportion = 'listFocus',
+  listActionMode = 'link',
+  listActions,
   listBorderStyle = 'ruled',
   listColumns = '2',
   listPosition = 'right',
+  numberLayout = 'stacked',
   reasons,
   size = 'default',
   stickyIntro = true,
@@ -203,6 +218,9 @@ export function EditorialReasonsBlockComponent({
   const resolvedListBorderStyle = resolveListBorderStyle(listBorderStyle)
   const resolvedListColumns = resolveListColumns(listColumns)
   const resolvedListPosition = resolveListPosition(listPosition)
+  const resolvedListActions = resolveCmsActions(listActions)
+  const resolvedListActionMode = listActionMode ?? 'link'
+  const resolvedNumberLayout = resolveNumberLayout(numberLayout)
   const isFullWidth = resolvedLayoutProportion === 'fullWidth'
   const resolvedIntroAlignment = isFullWidth ? 'top' : (introVerticalAlignment ?? 'top')
   const resolvedSectionBackground = appearance?.background ?? 'none'
@@ -273,70 +291,85 @@ export function EditorialReasonsBlockComponent({
 
         <div
           className={cn(
-            listBorderStyleClasses[resolvedListBorderStyle],
+            'min-w-0',
             !isFullWidth && (resolvedListPosition === 'right' ? 'lg:order-2' : 'lg:order-1'),
           )}
-          data-editorial-reasons-border-style={resolvedListBorderStyle}
-          data-editorial-reasons-columns={resolvedListColumns}
-          data-editorial-reasons-list="true"
         >
           <div
-            className={cn(
-              '-mb-px grid',
-              resolvedListBorderStyle !== 'framed' && '-mx-6',
-              listColumnClasses[resolvedListColumns],
-            )}
-            data-editorial-reasons-grid="true"
+            className={cn(listBorderStyleClasses[resolvedListBorderStyle])}
+            data-editorial-reasons-border-style={resolvedListBorderStyle}
+            data-editorial-reasons-columns={resolvedListColumns}
+            data-editorial-reasons-list="true"
           >
-            {resolvedReasons.map((reason, index) => {
-              return (
-                <article
-                  className={cn(
-                    'min-w-0 border-b border-current/15 px-6 py-7 sm:py-8',
-                    resolvedListColumns === '1'
-                      ? 'grid grid-cols-[3.5rem_minmax(0,1fr)] items-start gap-5 sm:grid-cols-[4.5rem_minmax(0,1fr)] sm:gap-6'
-                      : 'flex flex-col',
-                  )}
-                  data-editorial-reason="true"
-                  key={reason.id}
-                >
-                  <span
-                    aria-hidden="true"
+            <div
+              className={cn(
+                '-mb-px grid',
+                resolvedListBorderStyle !== 'framed' && '-mx-6',
+                listColumnClasses[resolvedListColumns],
+              )}
+              data-editorial-reasons-grid="true"
+            >
+              {resolvedReasons.map((reason, index) => {
+                return (
+                  <article
                     className={cn(
-                      contentItemMetadataClasses,
-                      resolvedListColumns === '1' ? 'pt-1 tabular-nums' : 'mb-6 tabular-nums',
+                      'min-w-0 border-b border-current/15 px-6 py-7 sm:py-8',
+                      resolvedNumberLayout === 'inline'
+                        ? 'grid grid-cols-[3.5rem_minmax(0,1fr)] items-start gap-5 sm:grid-cols-[4.5rem_minmax(0,1fr)] sm:gap-6'
+                        : 'flex flex-col',
                     )}
-                    data-section-eyebrow-surface={resolvedSectionBackground}
+                    data-editorial-reason="true"
+                    data-editorial-reason-number-layout={resolvedNumberLayout}
+                    key={reason.id}
                   >
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        contentItemMetadataClasses,
+                        resolvedNumberLayout === 'inline' ? 'pt-1 tabular-nums' : 'mb-6 tabular-nums',
+                      )}
+                      data-section-eyebrow-surface={resolvedSectionBackground}
+                    >
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
 
-                  <div className="min-w-0">
-                    {reason.href ? (
-                      <h3>
-                        <a
-                          className={cn(contentItemTitleClasses, contentItemLinkClasses)}
-                          href={reason.href}
-                          rel={reason.openInNewTab ? 'noreferrer' : undefined}
-                          target={reason.openInNewTab ? '_blank' : undefined}
-                        >
-                          {reason.title}
-                        </a>
-                      </h3>
-                    ) : (
-                      <h3 className={contentItemTitleClasses}>{reason.title}</h3>
-                    )}
+                    <div className="min-w-0">
+                      {reason.href ? (
+                        <h3>
+                          <a
+                            className={cn(contentItemTitleClasses, contentItemLinkClasses)}
+                            href={reason.href}
+                            rel={reason.openInNewTab ? 'noreferrer' : undefined}
+                            target={reason.openInNewTab ? '_blank' : undefined}
+                          >
+                            {reason.title}
+                          </a>
+                        </h3>
+                      ) : (
+                        <h3 className={contentItemTitleClasses}>{reason.title}</h3>
+                      )}
 
-                    {reason.description ? (
-                      <p className={cn(contentItemDescriptionClasses, 'mt-2')}>
-                        {reason.description}
-                      </p>
-                    ) : null}
-                  </div>
-                </article>
-              )
-            })}
+                      {reason.description ? (
+                        <p className={cn(contentItemDescriptionClasses, 'mt-2')}>
+                          {reason.description}
+                        </p>
+                      ) : null}
+                    </div>
+                  </article>
+                )
+              })}
+            </div>
           </div>
+
+          {resolvedListActions.length > 0 ? (
+            <ContentActions
+              actions={resolvedListActions}
+              alignment={resolvedContentAlignment}
+              className="mt-8"
+              data-editorial-reasons-list-actions="true"
+              mode={resolvedListActionMode}
+            />
+          ) : null}
         </div>
       </div>
     </section>

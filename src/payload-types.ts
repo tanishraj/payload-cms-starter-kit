@@ -841,6 +841,21 @@ export interface EditorialReasonsBlock {
     openInNewTab?: boolean | null;
     id?: string | null;
   }[];
+  listActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        variant: 'default' | 'secondary' | 'outline';
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background:
       | 'none'
@@ -858,6 +873,7 @@ export interface EditorialReasonsBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode: 'link' | 'button';
+  listActionMode: 'link' | 'button';
   /**
    * Aligns the section eyebrow, heading, description, and actions together.
    */
@@ -870,6 +886,7 @@ export interface EditorialReasonsBlock {
    * Sets the desktop list layout. Two to four columns collapse responsively on smaller screens.
    */
   listColumns: '1' | '2' | '3' | '4';
+  numberLayout: 'stacked' | 'inline';
   /**
    * Open removes the outer top and bottom rules. Ruled keeps them. Framed wraps the list on all sides.
    */
@@ -4801,6 +4818,18 @@ export interface EditorialReasonsBlockSelect<T extends boolean = true> {
         openInNewTab?: T;
         id?: T;
       };
+  listActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
   appearance?:
     | T
     | {
@@ -4808,9 +4837,11 @@ export interface EditorialReasonsBlockSelect<T extends boolean = true> {
         border?: T;
       };
   actionMode?: T;
+  listActionMode?: T;
   contentAlignment?: T;
   layoutProportion?: T;
   listColumns?: T;
+  numberLayout?: T;
   listBorderStyle?: T;
   listPosition?: T;
   introVerticalAlignment?: T;
