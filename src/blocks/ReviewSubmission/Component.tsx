@@ -8,6 +8,7 @@ import {
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
 import { regularBlockMobilePaddingClasses } from '@/blocks/shared/blockSpacing'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { Button } from '@/components/ui/button'
@@ -64,6 +65,8 @@ type ReviewSubmissionBlockLike = {
   contentAlignment?: 'center' | 'left' | 'right' | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   form?: FormLike | number | string | null
   formDescription?: string | null
   formEyebrow?: string | null
@@ -224,6 +227,8 @@ export function ReviewSubmissionBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   form,
   formDescription,
   formEyebrow,
@@ -596,6 +601,7 @@ export function ReviewSubmissionBlockComponent({
             </p>
           )}
         </div>
+        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
       </div>
     </section>
   )

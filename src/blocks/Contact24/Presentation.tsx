@@ -1,4 +1,5 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { Contact24, type Contact24DetailsAlignment, type Contact24MapActionMode, type Contact24MapActionVariant } from '@/components/contact24'
 import { ContentActions } from '@/components/ContentActions'
 import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@/lib/cmsLinks'
@@ -11,6 +12,8 @@ export type Contact24BlockLike = {
   description?: string | null
   detailsAlignment?: Contact24DetailsAlignment | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   mapActionLabel?: string | null
   mapActionMode?: 'button' | 'link' | null
   mapActionVariant?: CmsActionVariant | null
@@ -27,6 +30,8 @@ export function Contact24BlockPresentation({
   description,
   detailsAlignment = 'left',
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   mapActionLabel,
   mapActionMode,
   mapActionVariant,
@@ -44,20 +49,23 @@ export function Contact24BlockPresentation({
   const resolvedActions = resolveCmsActions(actions)
 
   return (
-    <Contact24
-      actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
-      appearance={appearance}
-      contentAlignment={contentAlignment ?? 'center'}
-      description={description?.trim()}
-      detailsAlignment={detailsAlignment ?? 'left'}
-      eyebrow={eyebrow?.trim()}
-      mapActionLabel={mapActionLabel?.trim() || 'View on Map'}
-      mapActionMode={(mapActionMode as Contact24MapActionMode) ?? 'link'}
-      mapActionVariant={(mapActionVariant as Contact24MapActionVariant) ?? 'outline'}
-      offices={offices}
-      showLocationDetails={showAddressDetails ?? true}
-      size={size ?? 'default'}
-      title={resolvedTitle}
-    />
+    <>
+      <Contact24
+        actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
+        appearance={appearance}
+        contentAlignment={contentAlignment ?? 'center'}
+        description={description?.trim()}
+        detailsAlignment={detailsAlignment ?? 'left'}
+        eyebrow={eyebrow?.trim()}
+        mapActionLabel={mapActionLabel?.trim() || 'View on Map'}
+        mapActionMode={(mapActionMode as Contact24MapActionMode) ?? 'link'}
+        mapActionVariant={(mapActionVariant as Contact24MapActionVariant) ?? 'outline'}
+        offices={offices}
+        showLocationDetails={showAddressDetails ?? true}
+        size={size ?? 'default'}
+        title={resolvedTitle}
+      />
+      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+    </>
   )
 }

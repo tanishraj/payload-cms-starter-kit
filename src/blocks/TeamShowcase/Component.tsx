@@ -1,4 +1,5 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import {
   TeamShowcase,
@@ -15,6 +16,8 @@ type TeamShowcaseBlockLike = {
   actionMode?: 'button' | 'link' | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   contentAlignment?: TeamShowcaseAlignment | null
   description?: string | null
   title?: string | null
@@ -36,6 +39,8 @@ export function TeamShowcaseBlockComponent({
   actionMode = 'link',
   actions,
   appearance,
+  footerActionMode = 'link',
+  footerActions,
   contentAlignment = 'center',
   description,
   title,
@@ -69,23 +74,26 @@ export function TeamShowcaseBlockComponent({
   }
 
   return (
-    <TeamShowcase
-      actions={
-        <ContentActions
-          actions={resolveCmsActions(actions)}
-          alignment={contentAlignment ?? 'left'}
-          data-team-showcase-actions="true"
-          mode={actionMode ?? 'link'}
-        />
-      }
-      appearance={appearance}
-      showHeaderDivider={showHeaderDivider ?? undefined}
-      contentAlignment={contentAlignment ?? undefined}
-      description={description?.trim() || undefined}
-      accentHeading={accentTitle?.trim() || undefined}
-      heading={title ?? undefined}
-      members={resolvedMembers}
-      size={size ?? undefined}
-    />
+    <>
+      <TeamShowcase
+        actions={
+          <ContentActions
+            actions={resolveCmsActions(actions)}
+            alignment={contentAlignment ?? 'left'}
+            data-team-showcase-actions="true"
+            mode={actionMode ?? 'link'}
+          />
+        }
+        appearance={appearance}
+        showHeaderDivider={showHeaderDivider ?? undefined}
+        contentAlignment={contentAlignment ?? undefined}
+        description={description?.trim() || undefined}
+        accentHeading={accentTitle?.trim() || undefined}
+        heading={title ?? undefined}
+        members={resolvedMembers}
+        size={size ?? undefined}
+      />
+      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+    </>
   )
 }

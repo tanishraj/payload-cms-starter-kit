@@ -16,6 +16,7 @@ import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import type { Media } from '@/payload-types'
 import { cn } from '@/lib/utils'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { resolveCardSurface, type CardSurfaceClasses } from '@/blocks/shared/cardSurface'
 
 type Step = {
@@ -33,6 +34,8 @@ type NumberedStepsBlockLike = {
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   numberStyle?: 'circle' | 'outlined' | 'serif' | null
   size?: RegularBlockSize | null
   steps?: Step[] | null
@@ -256,6 +259,8 @@ export function NumberedStepsBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   numberStyle = 'circle',
   size = 'default',
   steps,
@@ -323,6 +328,7 @@ export function NumberedStepsBlockComponent({
         ) : (
           <VerticalSteps steps={validSteps} numberStyle={resolvedNumberStyle} />
         )}
+        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
       </div>
     </section>
   )

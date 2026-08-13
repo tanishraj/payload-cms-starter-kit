@@ -13,6 +13,7 @@ import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
 } from '@/blocks/shared/blockSpacing'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
@@ -51,6 +52,8 @@ type QaAccordionBlockLike = {
   contentAlignment?: 'center' | 'left' | 'right' | null
   defaultOpenFirst?: boolean | null
   description?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   accordionPlacement?: 'left' | 'right' | null
   title?: string | null
   items?: QaAccordionItemValue[] | null
@@ -160,6 +163,8 @@ export function QaAccordionBlockComponent({
   contentAlignment = 'center',
   defaultOpenFirst = true,
   description,
+  footerActionMode = 'link',
+  footerActions,
   accordionPlacement = 'right',
   title,
   items,
@@ -356,6 +361,7 @@ export function QaAccordionBlockComponent({
           {accordionContent}
           {sideContent}
         </div>
+        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
       </div>
     </section>
   )

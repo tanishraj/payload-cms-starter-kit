@@ -1,4 +1,5 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import {
   ImageMosaic,
@@ -30,6 +31,8 @@ type ImageMosaicBlockLike = {
   contentAlignment?: ImageMosaicAlignment | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   items?: ImageMosaicItemValue[] | null
   showImageOverlays?: boolean | null
   size?: ImageMosaicSize | null
@@ -44,6 +47,8 @@ export function ImageMosaicBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   items,
   showImageOverlays = true,
   size = 'default',
@@ -96,24 +101,27 @@ export function ImageMosaicBlockComponent({
   const alignment = contentAlignment ?? 'center'
 
   return (
-    <ImageMosaic
-      accentTitle={accentTitle}
-      actions={
-        <ContentActions
-          actions={resolveCmsActions(actions).slice(0, 2)}
-          alignment={alignment}
-          data-image-mosaic-actions="true"
-          mode={actionMode ?? 'link'}
-        />
-      }
-      alignment={alignment}
-      appearance={appearance}
-      description={description?.trim() || undefined}
-      eyebrow={eyebrow?.trim() || undefined}
-      items={resolvedItems}
-      showImageOverlays={showImageOverlays ?? true}
-      size={size ?? 'default'}
-      title={resolvedTitle}
-    />
+    <>
+      <ImageMosaic
+        accentTitle={accentTitle}
+        actions={
+          <ContentActions
+            actions={resolveCmsActions(actions).slice(0, 2)}
+            alignment={alignment}
+            data-image-mosaic-actions="true"
+            mode={actionMode ?? 'link'}
+          />
+        }
+        alignment={alignment}
+        appearance={appearance}
+        description={description?.trim() || undefined}
+        eyebrow={eyebrow?.trim() || undefined}
+        items={resolvedItems}
+        showImageOverlays={showImageOverlays ?? true}
+        size={size ?? 'default'}
+        title={resolvedTitle}
+      />
+      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+    </>
   )
 }

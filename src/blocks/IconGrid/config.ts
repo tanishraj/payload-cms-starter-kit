@@ -2,10 +2,7 @@ import type { ArrayField, Block, RadioField, SelectField, TabsField } from 'payl
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
-import {
-  createContentActionsField,
-  createContentActionModeField,
-} from '@/blocks/shared/contentActionsFields'
+import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
 import { createIconField } from '@/blocks/shared/iconField'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
@@ -117,7 +114,8 @@ export const IconGridBlock: Block = {
               type: 'textarea',
               admin: { description: 'Optional supporting paragraph below the title.' },
             },
-            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
+            ...createContentActionsWithModeFields({ label: 'Section Actions', maxRows: 2 }),
+            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             itemsField,
           ],
         },
@@ -125,7 +123,6 @@ export const IconGridBlock: Block = {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
-            createContentActionModeField(),
             {
               name: 'actionVariant',
               label: 'Button Variant',

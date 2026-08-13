@@ -2,7 +2,7 @@ import type { Block, NumberField, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
 import { REVIEW_FEED_DEFAULT_PAGE_SIZE, REVIEW_FEED_MAX_PAGE_SIZE } from '@/lib/reviewFeedShared'
 
 const pageSizeField = {
@@ -55,7 +55,7 @@ export const ReviewFeedBlock: Block = {
             { name: 'title', type: 'text' },
             { name: 'accentTitle', label: 'Accent Title (Italic)', type: 'text' },
             { name: 'description', type: 'textarea' },
-            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
+            ...createContentActionsWithModeFields({ label: 'Section Actions', maxRows: 2 }),
             pageSizeField,
             {
               name: 'loadMoreLabel',
@@ -69,6 +69,7 @@ export const ReviewFeedBlock: Block = {
               type: 'text',
               defaultValue: 'No published reviews yet.',
             },
+            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
           ],
         },
         {

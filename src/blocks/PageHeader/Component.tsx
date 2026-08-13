@@ -3,6 +3,7 @@ import { ChevronRight } from 'lucide-react'
 
 import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
 import { regularBlockMobilePaddingClasses } from '@/blocks/shared/blockSpacing'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { getMediaImageProps } from '@/lib/media'
@@ -32,6 +33,8 @@ type PageHeaderBlockLike = {
   breadcrumbs?: BreadcrumbItem[] | null
   contentAlignment?: 'left' | 'center' | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   height?: 'compact' | 'default' | 'immersive' | null
   keyFacts?: KeyFact[] | null
   overlayStyle?: 'light' | 'dark' | 'darker' | null
@@ -102,6 +105,8 @@ export function PageHeaderBlockComponent({
   breadcrumbs,
   contentAlignment = 'left',
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   height = 'default',
   keyFacts,
   overlayStyle = 'dark',
@@ -187,6 +192,7 @@ export function PageHeaderBlockComponent({
               />
             </div>
           ) : null}
+          <BlockFooterActions actions={footerActions} mode={footerActionMode} />
         </div>
       </section>
     )
@@ -248,6 +254,7 @@ export function PageHeaderBlockComponent({
               </div>
             ) : null}
           </div>
+          <BlockFooterActions actions={footerActions} mode={footerActionMode} />
         </div>
       </section>
     )
@@ -302,6 +309,7 @@ export function PageHeaderBlockComponent({
             />
           </div>
         ) : null}
+        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
       </div>
     </section>
   )

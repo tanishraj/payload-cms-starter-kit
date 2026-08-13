@@ -4,8 +4,7 @@ import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import {
-  createContentActionModeField,
-  createContentActionsField,
+  createContentActionsWithModeFields,
 } from '@/blocks/shared/contentActionsFields'
 
 type ItemLinkSiblingData = {
@@ -132,7 +131,8 @@ export const ContentHighlightsBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            createContentActionsField(),
+            ...createContentActionsWithModeFields(),
+            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             itemsField,
           ],
         },
@@ -140,7 +140,6 @@ export const ContentHighlightsBlock: Block = {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
-            createContentActionModeField(),
             {
               name: 'layout',
               label: 'Layout',

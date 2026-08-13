@@ -12,6 +12,7 @@ import {
   regularBlockContainerClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
@@ -39,6 +40,8 @@ type BentoGridBlockLike = {
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   items?: BentoItem[] | null
   size?: RegularBlockSize | null
   title?: string | null
@@ -161,6 +164,8 @@ export function BentoGridBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   items,
   size = 'default',
   title,
@@ -219,6 +224,7 @@ export function BentoGridBlockComponent({
             </div>
           ))}
         </div>
+        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
       </div>
     </section>
   )

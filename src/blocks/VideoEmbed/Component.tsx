@@ -1,4 +1,5 @@
 import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
@@ -24,6 +25,8 @@ type VideoEmbedBlockLike = {
   contentAlignment?: ContentAlignment | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   maxWidth?: MaxWidth | null
   size?: RegularBlockSize | null
   title?: string | null
@@ -83,6 +86,8 @@ export function VideoEmbedBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   maxWidth = 'lg',
   size = 'default',
   title,
@@ -169,6 +174,7 @@ export function VideoEmbedBlockComponent({
             </figcaption>
           ) : null}
         </figure>
+        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
       </div>
     </section>
   )

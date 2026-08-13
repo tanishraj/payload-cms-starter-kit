@@ -1,4 +1,5 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import {
   FeatureMatrix,
@@ -19,6 +20,8 @@ type FeatureMatrixBlockLike = {
   contentAlignment?: FeatureMatrixAlignment | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   features?:
     | {
         description?: string | null
@@ -42,6 +45,8 @@ export function FeatureMatrixBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   features,
   showOuterBorder = true,
   size = 'default',
@@ -71,25 +76,28 @@ export function FeatureMatrixBlockComponent({
   const resolvedAlignment = contentAlignment ?? 'center'
 
   return (
-    <FeatureMatrix
-      accentTitle={accentTitle}
-      actions={
-        <ContentActions
-          actions={resolvedActions}
-          alignment={resolvedAlignment}
-          data-feature-matrix-actions="true"
-          mode={actionMode ?? 'link'}
-        />
-      }
-      alignment={resolvedAlignment}
-      appearance={appearance}
-      borderAnimationEnabled={borderAnimationEnabled ?? true}
-      description={description}
-      eyebrow={eyebrow}
-      features={resolvedFeatures}
-      showOuterBorder={showOuterBorder ?? true}
-      size={size ?? 'default'}
-      title={title}
-    />
+    <>
+      <FeatureMatrix
+        accentTitle={accentTitle}
+        actions={
+          <ContentActions
+            actions={resolvedActions}
+            alignment={resolvedAlignment}
+            data-feature-matrix-actions="true"
+            mode={actionMode ?? 'link'}
+          />
+        }
+        alignment={resolvedAlignment}
+        appearance={appearance}
+        borderAnimationEnabled={borderAnimationEnabled ?? true}
+        description={description}
+        eyebrow={eyebrow}
+        features={resolvedFeatures}
+        showOuterBorder={showOuterBorder ?? true}
+        size={size ?? 'default'}
+        title={title}
+      />
+      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+    </>
   )
 }

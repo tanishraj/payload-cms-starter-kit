@@ -4,8 +4,8 @@ import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFiel
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import {
-  createContentActionModeField,
   createContentActionsField,
+  createContentActionsWithModeFields,
 } from '@/blocks/shared/contentActionsFields'
 import { createIconField } from '@/blocks/shared/iconField'
 
@@ -84,11 +84,12 @@ export const MediaCarouselBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            createContentActionsField({
+            ...createContentActionsWithModeFields({
               label: 'Section Actions',
               maxRows: 2,
               name: 'sectionActions',
             }),
+            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             itemsField,
           ],
         },
@@ -96,7 +97,6 @@ export const MediaCarouselBlock: Block = {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
-            createContentActionModeField(),
             {
               name: 'actionVariant',
               label: 'Button Variant',

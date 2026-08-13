@@ -2,10 +2,7 @@ import type { ArrayField, Block, CheckboxField, RadioField, SelectField, TabsFie
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import {
-  createContentActionModeField,
-  createContentActionsField,
-} from '@/blocks/shared/contentActionsFields'
+import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
 
 type ReasonSiblingData = {
   linkType?: 'custom' | 'none' | 'page' | null
@@ -128,17 +125,15 @@ export const EditorialReasonsBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
+            ...createContentActionsWithModeFields({ label: 'Section Actions', maxRows: 2 }),
             reasonsField,
-            createContentActionsField({ name: 'listActions', label: 'List Footer Actions', maxRows: 2 }),
+            ...createContentActionsWithModeFields({ name: 'listActions', label: 'List Footer Actions', maxRows: 2 }),
           ],
         },
         {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
-            createContentActionModeField(),
-            createContentActionModeField({ name: 'listActionMode', label: 'List Footer Action Mode' }),
             {
               name: 'contentAlignment',
               label: 'Section Content Alignment',

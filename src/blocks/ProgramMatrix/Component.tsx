@@ -4,6 +4,7 @@ import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
@@ -43,6 +44,8 @@ type ProgramMatrixBlockLike = {
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   itemActionLabel?: string | null
   items?: ProgramMatrixItem[] | null
   size?: RegularBlockSize | null
@@ -112,6 +115,8 @@ export function ProgramMatrixBlockComponent({
   contentAlignment = 'left',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   itemActionLabel = 'Learn More',
   items,
   size = 'default',
@@ -293,6 +298,7 @@ export function ProgramMatrixBlockComponent({
             )
           })}
         </div>
+        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
       </div>
     </section>
   )

@@ -2,7 +2,7 @@ import type { Block, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
 
 export const EventGalleryBlock: Block = {
   slug: 'eventGallery',
@@ -31,7 +31,7 @@ export const EventGalleryBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
+            ...createContentActionsWithModeFields({ label: 'Section Actions', maxRows: 2 }),
             {
               name: 'galleryAlbums',
               label: 'Gallery Albums',
@@ -63,6 +63,7 @@ export const EventGalleryBlock: Block = {
               ],
               required: true,
             } satisfies SelectField,
+            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
           ],
         },
         {

@@ -2,10 +2,7 @@ import type { Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
-import {
-  createContentActionModeField,
-  createContentActionsField,
-} from '@/blocks/shared/contentActionsFields'
+import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
 
 const aspectRatioField = {
   name: 'aspectRatio',
@@ -81,7 +78,8 @@ export const VideoEmbedBlock: Block = {
               label: 'Description',
               type: 'textarea',
             },
-            createContentActionsField(),
+            ...createContentActionsWithModeFields(),
+            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             {
               name: 'url',
               label: 'Video URL',
@@ -127,7 +125,6 @@ export const VideoEmbedBlock: Block = {
               ],
               required: true,
             } satisfies SelectField,
-            createContentActionModeField(),
             aspectRatioField,
             maxWidthField,
             sizeField,

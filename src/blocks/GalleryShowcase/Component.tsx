@@ -1,4 +1,5 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import {
   GalleryShowcase,
@@ -19,6 +20,8 @@ type GalleryShowcaseBlockLike = {
   contentAlignment?: GalleryShowcaseAlignment | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   images?:
     | {
         image?: unknown
@@ -37,6 +40,8 @@ export function GalleryShowcaseBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   images,
   size = 'default',
   title,
@@ -66,23 +71,26 @@ export function GalleryShowcaseBlockComponent({
   const alignment = contentAlignment ?? 'center'
 
   return (
-    <GalleryShowcase
-      accentTitle={accentTitle}
-      actions={
-        <ContentActions
-          actions={resolveCmsActions(actions).slice(0, 1)}
-          alignment={alignment}
-          data-gallery-showcase-actions="true"
-          mode={actionMode ?? 'link'}
-        />
-      }
-      alignment={alignment}
-      appearance={appearance}
-      description={description?.trim() || undefined}
-      eyebrow={eyebrow?.trim() || undefined}
-      images={resolvedImages}
-      size={size ?? 'default'}
-      title={resolvedTitle}
-    />
+    <>
+      <GalleryShowcase
+        accentTitle={accentTitle}
+        actions={
+          <ContentActions
+            actions={resolveCmsActions(actions).slice(0, 1)}
+            alignment={alignment}
+            data-gallery-showcase-actions="true"
+            mode={actionMode ?? 'link'}
+          />
+        }
+        alignment={alignment}
+        appearance={appearance}
+        description={description?.trim() || undefined}
+        eyebrow={eyebrow?.trim() || undefined}
+        images={resolvedImages}
+        size={size ?? 'default'}
+        title={resolvedTitle}
+      />
+      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+    </>
   )
 }

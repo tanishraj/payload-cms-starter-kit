@@ -1,4 +1,5 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import {
   RatingSpotlight,
@@ -16,6 +17,8 @@ export type RatingSpotlightBlockLike = {
   contentAlignment?: RatingSpotlightAlignment | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   ratingData?: {
     dataMode?: 'live' | 'manual' | null
     manualRating?: number | null
@@ -57,6 +60,8 @@ export function RatingSpotlightBlockPresentation({
   contentAlignment = 'left',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   liveSummary,
   ratingData,
   size = 'default',
@@ -89,5 +94,10 @@ export function RatingSpotlightBlockPresentation({
     title: resolvedTitle,
   }
 
-  return <RatingSpotlight {...presentationProps} />
+  return (
+    <>
+      <RatingSpotlight {...presentationProps} />
+      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+    </>
+  )
 }

@@ -1,4 +1,5 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import {
   ContentHighlights,
@@ -31,6 +32,8 @@ type ContentHighlightsBlockLike = {
   description?: string | null
   enableSplitLayout?: boolean | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   items?: ContentHighlightItemValue[] | null
   layout?: ContentHighlightsLayout | null
   size?: ContentHighlightsSize | null
@@ -46,6 +49,8 @@ export function ContentHighlightsBlockComponent({
   description,
   enableSplitLayout = false,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   items,
   layout = 'highlightsGrid',
   size = 'default',
@@ -102,18 +107,21 @@ export function ContentHighlightsBlockComponent({
   ) : null
 
   return (
-    <ContentHighlights
-      actions={resolvedActionNode}
-      appearance={appearance}
-      contentAlignment={resolvedAlignment}
-      description={description?.trim() || undefined}
-      enableSplitLayout={isSplit}
-      eyebrow={eyebrow?.trim() || undefined}
-      items={resolvedItems}
-      layout={resolvedLayout}
-      size={size ?? 'default'}
-      splitContentAlignment={splitContentAlignment ?? 'top'}
-      title={resolvedTitle}
-    />
+    <>
+      <ContentHighlights
+        actions={resolvedActionNode}
+        appearance={appearance}
+        contentAlignment={resolvedAlignment}
+        description={description?.trim() || undefined}
+        enableSplitLayout={isSplit}
+        eyebrow={eyebrow?.trim() || undefined}
+        items={resolvedItems}
+        layout={resolvedLayout}
+        size={size ?? 'default'}
+        splitContentAlignment={splitContentAlignment ?? 'top'}
+        title={resolvedTitle}
+      />
+      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+    </>
   )
 }

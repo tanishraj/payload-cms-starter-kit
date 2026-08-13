@@ -7,6 +7,7 @@ import {
   regularBlockContainerClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
@@ -35,6 +36,8 @@ type DownloadListBlockLike = {
   displayMode?: 'list' | 'cards' | 'compact' | null
   downloads?: DownloadItem[] | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   showFilter?: boolean | null
   size?: RegularBlockSize | null
   title?: string | null
@@ -62,6 +65,8 @@ export function DownloadListBlockComponent({
   displayMode = 'list',
   downloads,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   showFilter = false,
   size = 'default',
   title,
@@ -141,6 +146,7 @@ export function DownloadListBlockComponent({
           sectionBackground={appearance?.background ?? 'none'}
           showFilter={showFilter}
         />
+        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
       </div>
     </section>
   )

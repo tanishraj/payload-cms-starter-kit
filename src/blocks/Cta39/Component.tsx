@@ -1,5 +1,6 @@
 import { ContentActions } from '@/components/ContentActions'
 import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
@@ -19,6 +20,8 @@ type Cta39BlockLike = {
   borderStyle?: Cta39BorderStyle | null
   contentAlignment?: Cta39Alignment | null
   description?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   size?: Cta39Size | null
   title?: string | null
 }
@@ -44,6 +47,8 @@ export function Cta39BlockComponent({
   borderStyle = 'dashed',
   contentAlignment = 'center',
   description,
+  footerActionMode = 'link',
+  footerActions,
   size = 'default',
   title,
 }: Cta39BlockLike) {
@@ -97,6 +102,7 @@ export function Cta39BlockComponent({
             mode={actionMode ?? 'link'}
           />
         </div>
+        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
       </div>
     </section>
   )

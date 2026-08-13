@@ -1,4 +1,5 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import {
   EventGallery,
   type EventGalleryAlignment,
@@ -20,6 +21,8 @@ export type EventGalleryBlockLike = {
   description?: string | null
   displayOrder?: EventGalleryDisplayOrder | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   galleryAlbums?: unknown
   size?: EventGallerySize | null
   title?: string | null
@@ -33,6 +36,8 @@ export function EventGalleryBlockPresentation({
   contentAlignment = 'center',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   size = 'default',
   title,
 }: EventGalleryBlockLike & { albums: EventGalleryAlbum[] }) {
@@ -45,16 +50,19 @@ export function EventGalleryBlockPresentation({
   const resolvedActions = resolveCmsActions(actions)
 
   return (
-    <EventGallery
-      actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
-      albums={albums}
-      alignment={contentAlignment ?? 'center'}
-      appearance={appearance}
-      cardTextLayout={cardTextLayout ?? 'center'}
-      description={description?.trim() || undefined}
-      eyebrow={eyebrow?.trim() || undefined}
-      size={size ?? 'default'}
-      title={resolvedTitle}
-    />
+    <>
+      <EventGallery
+        actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
+        albums={albums}
+        alignment={contentAlignment ?? 'center'}
+        appearance={appearance}
+        cardTextLayout={cardTextLayout ?? 'center'}
+        description={description?.trim() || undefined}
+        eyebrow={eyebrow?.trim() || undefined}
+        size={size ?? 'default'}
+        title={resolvedTitle}
+      />
+      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+    </>
   )
 }

@@ -2,7 +2,7 @@ import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
-import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 const downloadsField: ArrayField = {
@@ -96,8 +96,9 @@ export const DownloadListBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
+            ...createContentActionsWithModeFields({ label: 'Section Actions', maxRows: 2 }),
             downloadsField,
+            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
           ],
         },
         {

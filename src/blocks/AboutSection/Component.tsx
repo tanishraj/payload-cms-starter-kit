@@ -7,6 +7,7 @@ import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
@@ -32,6 +33,8 @@ type AboutSectionBlockLike = {
   body?: string | null
   contentAlignment?: 'left' | 'center' | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   title?: string | null
   image?: string | number | Media | null
   imagePosition?: 'left' | 'right' | null
@@ -103,6 +106,8 @@ export function AboutSectionBlockComponent({
   body,
   contentAlignment = 'center',
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   title,
   image,
   imagePosition = 'right',
@@ -224,6 +229,7 @@ export function AboutSectionBlockComponent({
         {variant === 'text' ? (
           <div className="mx-auto max-w-3xl">{textContent}</div>
         ) : null}
+        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
       </div>
     </section>
   )

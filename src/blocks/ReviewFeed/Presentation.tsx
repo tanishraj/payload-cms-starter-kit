@@ -1,4 +1,5 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ReviewFeed, type ReviewFeedSize } from '@/components/review-feed'
 import { ContentActions } from '@/components/ContentActions'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
@@ -13,6 +14,8 @@ export type ReviewFeedBlockLike = {
   description?: string | null
   emptyStateMessage?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   loadMoreLabel?: string | null
   pageSize?: number | null
   size?: ReviewFeedSize | null
@@ -32,6 +35,8 @@ export function ReviewFeedBlockPresentation({
   description,
   emptyStateMessage,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   initialPage,
   loadMoreLabel,
   pageSize,
@@ -48,20 +53,23 @@ export function ReviewFeedBlockPresentation({
   const resolvedActions = resolveCmsActions(actions)
 
   return (
-    <ReviewFeed
-      accentTitle={accentTitle}
-      actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
-      appearance={appearance}
-      contentAlignment={contentAlignment}
-      description={description?.trim()}
-      emptyStateMessage={emptyStateMessage?.trim() || 'No published reviews yet.'}
-      eyebrow={eyebrow?.trim()}
-      initialPage={initialPage}
-      loadMoreLabel={loadMoreLabel?.trim() || 'Load More Reviews'}
-      pageSize={normalizeReviewFeedPageSize(pageSize)}
-      size={size ?? 'default'}
-      summary={summary}
-      title={resolvedTitle}
-    />
+    <>
+      <ReviewFeed
+        accentTitle={accentTitle}
+        actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
+        appearance={appearance}
+        contentAlignment={contentAlignment}
+        description={description?.trim()}
+        emptyStateMessage={emptyStateMessage?.trim() || 'No published reviews yet.'}
+        eyebrow={eyebrow?.trim()}
+        initialPage={initialPage}
+        loadMoreLabel={loadMoreLabel?.trim() || 'Load More Reviews'}
+        pageSize={normalizeReviewFeedPageSize(pageSize)}
+        size={size ?? 'default'}
+        summary={summary}
+        title={resolvedTitle}
+      />
+      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+    </>
   )
 }

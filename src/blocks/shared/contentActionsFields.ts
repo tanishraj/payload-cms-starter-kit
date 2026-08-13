@@ -19,6 +19,10 @@ type CreateContentActionsFieldOptions = {
   name?: string
 }
 
+type CreateContentActionsWithModeFieldsOptions = CreateContentActionsFieldOptions & {
+  modeLabel?: string
+}
+
 type ActionLayoutSiblingData = {
   mode?: 'button' | 'link' | null
 }
@@ -148,6 +152,24 @@ export const createContentActionModeField = ({
       }
     : {}),
 })
+
+// Returns [modeSelectField, actionsArrayField] so both can be spread together in the
+// Content tab, keeping "how" next to "what" without splitting across tabs.
+export const createContentActionsWithModeFields = ({
+  includeDisplayMode = false,
+  label = 'Actions',
+  maxRows = 2,
+  modeLabel,
+  name = 'actions',
+}: CreateContentActionsWithModeFieldsOptions = {}): Field[] => {
+  // actions → actionMode, footerActions → footerActionMode
+  const modeName = name.replace(/s$/, 'Mode')
+  const resolvedModeLabel = modeLabel ?? label.replace(/s$/, '') + ' Mode'
+  return [
+    { ...createContentActionModeField({ label: resolvedModeLabel, name: modeName }), required: false },
+    createContentActionsField({ includeDisplayMode, label, maxRows, name }),
+  ]
+}
 
 export const createContentActionsField = ({
   includeDisplayMode = false,

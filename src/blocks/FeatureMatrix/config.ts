@@ -3,10 +3,7 @@ import type { ArrayField, Block, CheckboxField, SelectField, TabsField } from 'p
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
-import {
-  createContentActionModeField,
-  createContentActionsField,
-} from '@/blocks/shared/contentActionsFields'
+import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
 
 const featuresField = {
   name: 'features',
@@ -83,7 +80,8 @@ export const FeatureMatrixBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            createContentActionsField(),
+            ...createContentActionsWithModeFields(),
+            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             featuresField,
           ],
         },
@@ -91,7 +89,6 @@ export const FeatureMatrixBlock: Block = {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
-            createContentActionModeField(),
             {
               name: 'contentAlignment',
               label: 'Section Content Alignment',

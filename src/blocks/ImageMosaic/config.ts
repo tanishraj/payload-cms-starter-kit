@@ -3,8 +3,8 @@ import type { ArrayField, Block, CheckboxField, SelectField, TabsField } from 'p
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import {
-  createContentActionModeField,
   createContentActionsField,
+  createContentActionsWithModeFields,
 } from '@/blocks/shared/contentActionsFields'
 
 const itemsField = {
@@ -79,7 +79,8 @@ export const ImageMosaicBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            createContentActionsField(),
+            ...createContentActionsWithModeFields(),
+            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             itemsField,
           ],
         },
@@ -87,7 +88,6 @@ export const ImageMosaicBlock: Block = {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
-            createContentActionModeField(),
             {
               name: 'contentAlignment',
               label: 'Section Content Alignment',

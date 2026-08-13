@@ -7,6 +7,7 @@ import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
@@ -30,6 +31,8 @@ type GalleryCoverflowBlockLike = {
   contentAlignment?: GalleryCoverflowAlignment | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   images?: { image?: unknown }[] | null
   size?: RegularBlockSize | null
   title?: string | null
@@ -75,6 +78,8 @@ export function GalleryCoverflowBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   images,
   size = 'default',
   title,
@@ -142,6 +147,7 @@ export function GalleryCoverflowBlockComponent({
           />
         </div>
       ) : null}
+      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
     </section>
   )
 }

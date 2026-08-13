@@ -7,6 +7,7 @@ import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import {
   contentIntroClasses,
   contentItemDescriptionClasses,
@@ -53,6 +54,8 @@ type EditorialReasonsBlockLike = {
   contentAlignment?: EditorialReasonsContentAlignment | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   introVerticalAlignment?: 'bottom' | 'center' | 'top' | null
   layoutProportion?: EditorialReasonsLayoutProportion | null
   listActionMode?: 'button' | 'link' | null
@@ -167,6 +170,8 @@ export function EditorialReasonsBlockComponent({
   contentAlignment = 'left',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   introVerticalAlignment = 'top',
   layoutProportion = 'listFocus',
   listActionMode = 'link',
@@ -233,17 +238,19 @@ export function EditorialReasonsBlockComponent({
       data-editorial-reasons="true"
     >
       <div
-        className={cn(
-          regularBlockContainerClasses,
-          'grid gap-10 lg:gap-16',
-          !isFullWidth &&
-            (resolvedListPosition === 'left'
-              ? leftListLayoutProportionClasses[resolvedLayoutProportion]
-              : layoutProportionClasses[resolvedLayoutProportion]),
-        )}
+        className={cn(regularBlockContainerClasses)}
         data-editorial-reasons-layout={resolvedLayoutProportion}
         data-editorial-reasons-list-position={isFullWidth ? 'below' : resolvedListPosition}
       >
+        <div
+          className={cn(
+            'grid gap-10 lg:gap-16',
+            !isFullWidth &&
+              (resolvedListPosition === 'left'
+                ? leftListLayoutProportionClasses[resolvedLayoutProportion]
+                : layoutProportionClasses[resolvedLayoutProportion]),
+          )}
+        >
         <div
           className={cn(
             'min-w-0',
@@ -371,6 +378,8 @@ export function EditorialReasonsBlockComponent({
             />
           ) : null}
         </div>
+      </div>
+      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
       </div>
     </section>
   )

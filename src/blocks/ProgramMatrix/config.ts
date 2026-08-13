@@ -3,7 +3,7 @@ import type { ArrayField, Block, CheckboxField, RadioField, SelectField, TabsFie
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
-import { createContentActionModeField, createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
 import { createIconField } from '@/blocks/shared/iconField'
 
 type ProgrammeItemSiblingData = {
@@ -128,7 +128,8 @@ export const ProgramMatrixBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
+            ...createContentActionsWithModeFields({ label: 'Section Actions', maxRows: 2 }),
+            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             itemsField,
           ],
         },
@@ -136,7 +137,6 @@ export const ProgramMatrixBlock: Block = {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
-            createContentActionModeField(),
             {
               name: 'actionVariant',
               label: 'Programme Button Variant',

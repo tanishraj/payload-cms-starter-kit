@@ -1,3 +1,4 @@
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { BorderButton } from '@/components/shadcnblocks/border-button'
 import { Services21, type Services21Item, type Services21Alignment } from '@/components/services21'
@@ -22,6 +23,8 @@ type Services21BlockLike = {
   contentAlignment?: Services21Alignment | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   services?: Services21BlockService[] | null
   size?: 'none' | 'comfortable' | 'compact' | 'default' | null
   title?: string | null
@@ -49,6 +52,8 @@ export function Services21BlockComponent({
   appearance,
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   contentAlignment = 'center',
   services,
   size = 'default',
@@ -115,16 +120,19 @@ export function Services21BlockComponent({
   }
 
   return (
-    <Services21
-      accentTitle={accentTitle}
-      appearance={appearance}
-      actions={actionNode}
-      contentAlignment={resolvedContentAlignment}
-      description={resolvedDescription}
-      eyebrow={resolvedEyebrow}
-      items={resolvedServices}
-      size={size ?? 'default'}
-      title={resolvedTitle}
-    />
+    <>
+      <Services21
+        accentTitle={accentTitle}
+        appearance={appearance}
+        actions={actionNode}
+        contentAlignment={resolvedContentAlignment}
+        description={resolvedDescription}
+        eyebrow={resolvedEyebrow}
+        items={resolvedServices}
+        size={size ?? 'default'}
+        title={resolvedTitle}
+      />
+      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+    </>
   )
 }

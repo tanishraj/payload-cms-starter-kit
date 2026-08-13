@@ -3,6 +3,7 @@ import {
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
 import type { RegularBlockSize } from '@/blocks/shared/blockSpacing'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import { getMediaAbsoluteUrl, isMediaDoc } from '@/lib/media'
 import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@/lib/cmsLinks'
@@ -38,6 +39,8 @@ type ProgramGridBlockLike = {
   ctaLabel?: string | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   programs?: ProgramItem[] | null
   showFilter?: boolean | null
   size?: RegularBlockSize | null
@@ -56,6 +59,8 @@ export function ProgramGridBlockComponent({
   ctaLabel = 'Learn More',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   programs,
   showFilter = false,
   size = 'default',
@@ -110,27 +115,30 @@ export function ProgramGridBlockComponent({
   const resolvedSectionActions = resolveCmsActions(actions)
 
   return (
-    <ProgramGridClient
-      accentTitle={accentTitle}
-      actionMode={actionMode ?? 'link'}
-      actionVariant={actionVariant ?? 'default'}
-      appearance={appearanceClassName}
-      columns={resolvedColumns}
-      contentAlignment={contentAlignment ?? 'center'}
-      ctaLabel={ctaLabel?.trim() || 'Learn More'}
-      description={description?.trim() || undefined}
-      eyebrow={eyebrow?.trim() || undefined}
-      programs={resolvedPrograms}
-      sectionActions={
-        resolvedSectionActions.length > 0 ? (
-          <ContentActions actions={resolvedSectionActions} />
-        ) : undefined
-      }
-      sectionBackground={appearance?.background ?? 'none'}
-      showFilter={showFilter ?? false}
-      size={size ?? 'default'}
-      title={resolvedTitle}
-      viewMode={viewMode ?? 'grid'}
-    />
+    <>
+      <ProgramGridClient
+        accentTitle={accentTitle}
+        actionMode={actionMode ?? 'link'}
+        actionVariant={actionVariant ?? 'default'}
+        appearance={appearanceClassName}
+        columns={resolvedColumns}
+        contentAlignment={contentAlignment ?? 'center'}
+        ctaLabel={ctaLabel?.trim() || 'Learn More'}
+        description={description?.trim() || undefined}
+        eyebrow={eyebrow?.trim() || undefined}
+        programs={resolvedPrograms}
+        sectionActions={
+          resolvedSectionActions.length > 0 ? (
+            <ContentActions actions={resolvedSectionActions} />
+          ) : undefined
+        }
+        sectionBackground={appearance?.background ?? 'none'}
+        showFilter={showFilter ?? false}
+        size={size ?? 'default'}
+        title={resolvedTitle}
+        viewMode={viewMode ?? 'grid'}
+      />
+      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+    </>
   )
 }

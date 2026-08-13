@@ -3,8 +3,7 @@ import type { ArrayField, Block, CheckboxField, RadioField, SelectField, TabsFie
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import {
-  createContentActionModeField,
-  createContentActionsField,
+  createContentActionsWithModeFields,
 } from '@/blocks/shared/contentActionsFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
@@ -154,7 +153,8 @@ export const ProgramGridBlock: Block = {
               name: 'description',
               type: 'textarea',
             },
-            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
+            ...createContentActionsWithModeFields({ label: 'Section Actions', maxRows: 2 }),
+            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             programsField,
           ],
         },
@@ -162,7 +162,6 @@ export const ProgramGridBlock: Block = {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
-            createContentActionModeField(),
             {
               name: 'actionVariant',
               label: 'Button Variant',

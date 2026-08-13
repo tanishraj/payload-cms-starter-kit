@@ -2,7 +2,7 @@ import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
-import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { createContentActionsWithModeFields } from '@/blocks/shared/contentActionsFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 const awardsField = {
@@ -86,7 +86,8 @@ export const AwardsListBlock: Block = {
             { name: 'title', type: 'text' },
             { name: 'accentTitle', label: 'Accent Title (Italic)', type: 'text' },
             { name: 'description', type: 'textarea' },
-            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
+            ...createContentActionsWithModeFields({ label: 'Section Actions', maxRows: 2 }),
+            ...createContentActionsWithModeFields({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             awardsField,
           ],
         },

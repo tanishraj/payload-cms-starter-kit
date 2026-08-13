@@ -3,6 +3,7 @@ import {
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
 import type { RegularBlockSize } from '@/blocks/shared/blockSpacing'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import { getMediaAbsoluteUrl, isMediaDoc } from '@/lib/media'
 import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@/lib/cmsLinks'
@@ -27,6 +28,8 @@ type MediaCarouselBlockLike = {
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   items?: MediaCarouselItemValue[] | null
   sectionActions?: CmsActionValue[] | null
   size?: RegularBlockSize | null
@@ -41,6 +44,8 @@ export function MediaCarouselBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   items,
   sectionActions,
   size = 'default',
@@ -88,23 +93,26 @@ export function MediaCarouselBlockComponent({
   const resolvedSectionActions = resolveCmsActions(sectionActions)
 
   return (
-    <MediaCarouselClient
-      actionMode={actionMode ?? 'link'}
-      actionVariant={actionVariant ?? 'default'}
-      appearance={appearanceClassName}
-      columns={resolvedColumns}
-      contentAlignment={contentAlignment ?? 'center'}
-      description={description?.trim() || undefined}
-      eyebrow={eyebrow?.trim() || undefined}
-      items={resolvedItems}
-      sectionActions={
-        resolvedSectionActions.length > 0 ? (
-          <ContentActions actions={resolvedSectionActions} />
-        ) : undefined
-      }
-      sectionBackground={appearance?.background ?? 'none'}
-      size={size ?? 'default'}
-      title={resolvedTitle}
-    />
+    <>
+      <MediaCarouselClient
+        actionMode={actionMode ?? 'link'}
+        actionVariant={actionVariant ?? 'default'}
+        appearance={appearanceClassName}
+        columns={resolvedColumns}
+        contentAlignment={contentAlignment ?? 'center'}
+        description={description?.trim() || undefined}
+        eyebrow={eyebrow?.trim() || undefined}
+        items={resolvedItems}
+        sectionActions={
+          resolvedSectionActions.length > 0 ? (
+            <ContentActions actions={resolvedSectionActions} />
+          ) : undefined
+        }
+        sectionBackground={appearance?.background ?? 'none'}
+        size={size ?? 'default'}
+        title={resolvedTitle}
+      />
+      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+    </>
   )
 }

@@ -10,6 +10,7 @@ import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
@@ -32,6 +33,8 @@ type TimelineBlockLike = {
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   items?: TimelineItem[] | null
   showConnectors?: boolean | null
   size?: RegularBlockSize | null
@@ -324,6 +327,8 @@ export function TimelineBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   items,
   showConnectors = true,
   size = 'default',
@@ -363,6 +368,7 @@ export function TimelineBlockComponent({
             <VerticalTimeline items={validItems} sectionBackground={appearance?.background ?? 'none'} />
           </div>
         )}
+        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
       </div>
     </section>
   )

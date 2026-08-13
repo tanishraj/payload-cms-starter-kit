@@ -4,6 +4,7 @@ import {
   regularBlockContainerClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
@@ -30,6 +31,8 @@ type TabsContentBlockLike = {
   contentLayout?: 'imageRight' | 'imageLeft' | 'imageTop' | 'textOnly' | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   size?: RegularBlockSize | null
   tabContentAlignment?: 'left' | 'center' | null
   tabStyle?: 'underline' | 'pills' | 'boxed' | null
@@ -45,6 +48,8 @@ export function TabsContentBlockComponent({
   contentLayout = 'imageRight',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   size = 'default',
   tabContentAlignment = 'left',
   tabStyle = 'underline',
@@ -120,6 +125,7 @@ export function TabsContentBlockComponent({
           contentLayout={contentLayout}
           tabContentAlignment={tabContentAlignment ?? 'left'}
         />
+        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
       </div>
     </section>
   )

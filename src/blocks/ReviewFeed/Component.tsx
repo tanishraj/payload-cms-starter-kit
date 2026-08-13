@@ -14,6 +14,8 @@ export async function ReviewFeedBlockComponent({
   description,
   emptyStateMessage,
   eyebrow,
+  footerActionMode,
+  footerActions,
   loadMoreLabel,
   pageSize,
   size,
@@ -39,6 +41,8 @@ export async function ReviewFeedBlockComponent({
       description={description}
       emptyStateMessage={emptyStateMessage}
       eyebrow={eyebrow}
+      footerActionMode={footerActionMode}
+      footerActions={footerActions}
       initialPage={initialPage}
       loadMoreLabel={loadMoreLabel}
       pageSize={resolvedPageSize}

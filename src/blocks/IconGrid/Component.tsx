@@ -6,6 +6,7 @@ import {
   type BlockAppearance,
   type BlockBackground,
 } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import {
   regularBlockMobilePaddingClasses,
   regularBlockContainerClasses,
@@ -41,6 +42,8 @@ type IconGridBlockLike = {
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   iconStyle?: 'square' | 'circle' | 'outline' | 'plain' | null
   itemActionLabel?: string | null
   items?: IconGridItem[] | null
@@ -316,6 +319,8 @@ export function IconGridBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   iconStyle = 'square',
   itemActionLabel,
   items,
@@ -398,6 +403,7 @@ export function IconGridBlockComponent({
             return <CardItem key={index} item={item} {...itemProps} />
           })}
         </div>
+        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
       </div>
     </section>
   )

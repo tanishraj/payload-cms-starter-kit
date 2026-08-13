@@ -4,6 +4,7 @@ import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
@@ -23,6 +24,8 @@ type FeatureSpotlightBlockLike = {
   contentVerticalAlignment?: 'bottom' | 'center' | 'top' | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   image?: unknown
   imagePosition?: 'bottom' | 'center' | 'left' | 'right' | 'top' | null
   layoutMode?: 'contentOnly' | 'split' | null
@@ -82,6 +85,8 @@ export function FeatureSpotlightBlockComponent({
   contentVerticalAlignment = 'center',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   image,
   imagePosition = 'center',
   layoutMode = 'split',
@@ -185,6 +190,7 @@ export function FeatureSpotlightBlockComponent({
       data-feature-spotlight-size={resolvedSize}
     >
       {renderAsEdgeToEdge ? (
+        <>
         <div
           className={cn(
             'grid items-stretch gap-8 md:grid-cols-2 md:gap-0',
@@ -235,6 +241,8 @@ export function FeatureSpotlightBlockComponent({
             )}
           </div>
         </div>
+        <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+        </>
       ) : renderAsContainedFill ? (
         <div className={regularBlockContainerClasses}>
           <div
@@ -266,6 +274,7 @@ export function FeatureSpotlightBlockComponent({
               </div>
             </div>
           </div>
+          <BlockFooterActions actions={footerActions} mode={footerActionMode} />
         </div>
       ) : (
         <div
@@ -300,6 +309,7 @@ export function FeatureSpotlightBlockComponent({
           ) : (
             <div className="block">{content}</div>
           )}
+          <BlockFooterActions actions={footerActions} mode={footerActionMode} />
         </div>
       )}
     </section>

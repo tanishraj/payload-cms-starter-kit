@@ -1,4 +1,5 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
 import {
   ProfileCarousel,
@@ -21,6 +22,8 @@ type ProfileCarouselBlockLike = {
   contentAlignment?: ProfileCarouselAlignment | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   profiles?:
     | {
         cardBackground?: string | null
@@ -44,6 +47,8 @@ export function ProfileCarouselBlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   overlayAlignment = 'left',
   profiles,
   size = 'default',
@@ -79,25 +84,28 @@ export function ProfileCarouselBlockComponent({
   const resolvedActions = resolveCmsActions(actions).slice(0, 1)
 
   return (
-    <ProfileCarousel
-      accentTitle={accentTitle}
-      actions={
-        <ContentActions
-          actions={resolvedActions}
-          alignment={resolvedAlignment}
-          data-profile-carousel-actions="true"
-          mode={actionMode ?? 'link'}
-        />
-      }
-      alignment={resolvedAlignment}
-      appearance={appearance}
-      cardVariant={cardVariant ?? 'stacked'}
-      description={description?.trim() || undefined}
-      eyebrow={eyebrow?.trim() || undefined}
-      overlayAlignment={overlayAlignment ?? 'left'}
-      profiles={resolvedProfiles}
-      size={size ?? 'default'}
-      title={resolvedTitle}
-    />
+    <>
+      <ProfileCarousel
+        accentTitle={accentTitle}
+        actions={
+          <ContentActions
+            actions={resolvedActions}
+            alignment={resolvedAlignment}
+            data-profile-carousel-actions="true"
+            mode={actionMode ?? 'link'}
+          />
+        }
+        alignment={resolvedAlignment}
+        appearance={appearance}
+        cardVariant={cardVariant ?? 'stacked'}
+        description={description?.trim() || undefined}
+        eyebrow={eyebrow?.trim() || undefined}
+        overlayAlignment={overlayAlignment ?? 'left'}
+        profiles={resolvedProfiles}
+        size={size ?? 'default'}
+        title={resolvedTitle}
+      />
+      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+    </>
   )
 }

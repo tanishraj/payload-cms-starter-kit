@@ -1,4 +1,5 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { Contact33 } from '@/components/contact33'
 import { ContentActions } from '@/components/ContentActions'
 import type { Contact33FormLike } from '@/lib/contact33Form'
@@ -12,6 +13,8 @@ type Contact33BlockLike = {
   contentAlignment?: 'center' | 'left' | 'right' | null
   description?: string | null
   eyebrow?: string | null
+  footerActionMode?: 'button' | 'link' | null
+  footerActions?: CmsActionValue[] | null
   form?: Contact33FormLike | number | string | null
   image?: unknown
   imageAlt?: string | null
@@ -26,6 +29,8 @@ export function Contact33BlockComponent({
   contentAlignment = 'center',
   description,
   eyebrow,
+  footerActionMode = 'link',
+  footerActions,
   form,
   image,
   imageAlt,
@@ -50,17 +55,20 @@ export function Contact33BlockComponent({
   const resolvedActions = resolveCmsActions(actions)
 
   return (
-    <Contact33
-      actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
-      appearance={appearance}
-      contentAlignment={contentAlignment ?? 'center'}
-      description={description?.trim()}
-      eyebrow={eyebrow?.trim()}
-      form={resolvedForm}
-      image={{ ...resolvedImage, alt: resolvedImageAlt }}
-      imagePosition={imagePosition ?? 'right'}
-      size={size ?? 'default'}
-      title={resolvedTitle}
-    />
+    <>
+      <Contact33
+        actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
+        appearance={appearance}
+        contentAlignment={contentAlignment ?? 'center'}
+        description={description?.trim()}
+        eyebrow={eyebrow?.trim()}
+        form={resolvedForm}
+        image={{ ...resolvedImage, alt: resolvedImageAlt }}
+        imagePosition={imagePosition ?? 'right'}
+        size={size ?? 'default'}
+        title={resolvedTitle}
+      />
+      <BlockFooterActions actions={footerActions} mode={footerActionMode} />
+    </>
   )
 }
