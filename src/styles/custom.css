@@ -130,6 +130,42 @@
   );
 }
 
+/* Button and link surface overrides — primary section background.
+   Without these, default/outline buttons are invisible (same color as section)
+   and ContentLink is invisible (text-primary === section color). */
+.bg-primary [data-slot='button'][data-variant='default'] {
+  background-color: var(--primary-foreground);
+  color: var(--primary);
+}
+.bg-primary [data-slot='button'][data-variant='default']:hover {
+  background-color: color-mix(in oklch, var(--primary-foreground) 90%, var(--primary));
+}
+.bg-primary [data-slot='button'][data-variant='outline'] {
+  background-color: transparent;
+  border-color: color-mix(in oklch, var(--primary-foreground) 35%, transparent);
+  color: var(--primary-foreground);
+}
+.bg-primary [data-slot='button'][data-variant='outline']:hover {
+  background-color: color-mix(in oklch, var(--primary-foreground) 10%, transparent);
+}
+.bg-primary [data-slot='button'][data-variant='secondary'] {
+  background-color: color-mix(in oklch, var(--primary-foreground) 12%, transparent);
+  color: var(--primary-foreground);
+}
+.bg-primary [data-slot='button'][data-variant='secondary']:hover {
+  background-color: color-mix(in oklch, var(--primary-foreground) 20%, transparent);
+}
+.bg-primary [data-slot='button'][data-variant='ghost'] {
+  color: var(--primary-foreground);
+}
+.bg-primary [data-slot='button'][data-variant='ghost']:hover {
+  background-color: color-mix(in oklch, var(--primary-foreground) 10%, transparent);
+  color: var(--primary-foreground);
+}
+.bg-primary [data-content-link='true'] {
+  color: var(--primary-foreground);
+}
+
 /* Feature Matrix internal-divider motion */
 .feature-matrix-divider-beam {
   position: absolute;
