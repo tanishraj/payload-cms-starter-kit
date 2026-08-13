@@ -952,6 +952,10 @@ export interface EditorialReasonsBlock {
   listPosition?: ('right' | 'left') | null;
   introVerticalAlignment?: ('top' | 'center' | 'bottom') | null;
   /**
+   * Bottom drops the actions to the foot of the introduction column, level with the end of the list. It fills the column height, so it overrides Keep Introduction Visible.
+   */
+  actionsPosition?: ('inline' | 'bottom') | null;
+  /**
    * Keeps the introduction visible beside longer lists on large screens.
    */
   stickyIntro?: boolean | null;
@@ -5040,6 +5044,7 @@ export interface EditorialReasonsBlockSelect<T extends boolean = true> {
   listBorderStyle?: T;
   listPosition?: T;
   introVerticalAlignment?: T;
+  actionsPosition?: T;
   stickyIntro?: T;
   size?: T;
   id?: T;

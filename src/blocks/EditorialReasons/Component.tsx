@@ -46,8 +46,11 @@ type EditorialReasonsListBorderStyle = 'framed' | 'open' | 'ruled'
 
 type EditorialReasonsNumberLayout = 'inline' | 'stacked'
 
+type EditorialReasonsActionsPosition = 'bottom' | 'inline'
+
 type EditorialReasonsBlockLike = {
   accentTitle?: string | null
+  actionsPosition?: EditorialReasonsActionsPosition | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: EditorialReasonsContentAlignment | null
@@ -162,6 +165,7 @@ const resolveNumberLayout = (
 export function EditorialReasonsBlockComponent({
   accentTitle,
   actions,
+  actionsPosition = 'inline',
   appearance,
   contentAlignment = 'left',
   description,
@@ -222,7 +226,10 @@ export function EditorialReasonsBlockComponent({
   const resolvedIntroAlignment = isFullWidth ? 'top' : (introVerticalAlignment ?? 'top')
   const resolvedSectionBackground = appearance?.background ?? 'none'
   const resolvedSize = size ?? 'default'
-  const resolvedStickyIntro = !isFullWidth && (stickyIntro ?? true)
+  // Dropping the actions to the foot of the column needs the column to fill the
+  // row, which a sticky element cannot do — so this wins over stickyIntro.
+  const pushesActionsDown = !isFullWidth && (actionsPosition ?? 'inline') === 'bottom'
+  const resolvedStickyIntro = !isFullWidth && !pushesActionsDown && (stickyIntro ?? true)
 
   return (
     <section
@@ -246,16 +253,21 @@ export function EditorialReasonsBlockComponent({
         <div
           className={cn(
             'min-w-0',
-            !isFullWidth && introAlignmentClasses[resolvedIntroAlignment],
+            !isFullWidth &&
+              (pushesActionsDown
+                ? 'lg:flex lg:flex-col lg:self-stretch'
+                : introAlignmentClasses[resolvedIntroAlignment]),
             !isFullWidth && (resolvedListPosition === 'right' ? 'lg:order-1' : 'lg:order-2'),
           )}
           data-editorial-reasons-intro="true"
+          data-editorial-reasons-actions-position={pushesActionsDown ? 'bottom' : 'inline'}
           data-editorial-reasons-intro-alignment={resolvedIntroAlignment}
         >
           <div
             className={cn(
               contentIntroClasses,
               contentAlignmentClasses[resolvedContentAlignment],
+              pushesActionsDown && 'lg:h-full',
               !isFullWidth && resolvedStickyIntro && 'lg:sticky lg:top-28',
             )}
             data-content-alignment={resolvedContentAlignment}
@@ -282,6 +294,7 @@ export function EditorialReasonsBlockComponent({
             <ContentActions
               actions={resolvedActions}
               alignment={resolvedContentAlignment}
+              className={cn(pushesActionsDown && 'lg:mt-auto')}
               data-editorial-reasons-actions="true"
             />
           </div>

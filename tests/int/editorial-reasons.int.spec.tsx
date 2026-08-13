@@ -654,6 +654,55 @@ describe('EditorialReasonsBlockComponent', () => {
       ),
     ).toBe('')
   })
+
+  it('drops the section actions to the foot of the column when asked', () => {
+    const actions = [{ label: 'Learn more', linkType: 'custom' as const, url: '/about' }]
+    const reasons = [{ description: 'Round-the-clock support.', title: '24x7 Emergency Care' }]
+
+    const bottomHtml = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        actions={actions}
+        actionsPosition="bottom"
+        reasons={reasons}
+        title="Learning through care."
+      />,
+    )
+    const inlineHtml = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        actions={actions}
+        actionsPosition="inline"
+        reasons={reasons}
+        title="Learning through care."
+      />,
+    )
+    // Full Width has no second column to align against, so it stays inline.
+    const fullWidthHtml = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        actions={actions}
+        actionsPosition="bottom"
+        layoutProportion="fullWidth"
+        reasons={reasons}
+        title="Learning through care."
+      />,
+    )
+
+    expect(bottomHtml).toContain('data-editorial-reasons-actions-position="bottom"')
+    expect(bottomHtml).toContain('lg:self-stretch')
+    expect(bottomHtml).toContain('lg:h-full')
+    expect(bottomHtml).toContain('lg:mt-auto')
+    // Filling the row height and sticking to the viewport are incompatible.
+    expect(bottomHtml).toContain('data-editorial-reasons-sticky="false"')
+    expect(bottomHtml).not.toContain('lg:sticky')
+
+    expect(inlineHtml).toContain('data-editorial-reasons-actions-position="inline"')
+    expect(inlineHtml).toContain('lg:sticky')
+    expect(inlineHtml).not.toContain('lg:mt-auto')
+    expect(inlineHtml).not.toContain('lg:self-stretch')
+
+    expect(fullWidthHtml).toContain('data-editorial-reasons-actions-position="inline"')
+    expect(fullWidthHtml).not.toContain('lg:mt-auto')
+  })
+
 })
 
 describe('Editorial Reasons registration', () => {

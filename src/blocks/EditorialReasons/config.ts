@@ -241,6 +241,21 @@ export const EditorialReasonsBlock: Block = {
               },
             } satisfies SelectField,
             {
+              name: 'actionsPosition',
+              label: 'Section Actions Position',
+              type: 'select',
+              defaultValue: 'inline',
+              options: [
+                { label: 'Directly under the description', value: 'inline' },
+                { label: 'Bottom of the column', value: 'bottom' },
+              ],
+              admin: {
+                condition: isSplitLayout,
+                description:
+                  'Bottom drops the actions to the foot of the introduction column, level with the end of the list. It fills the column height, so it overrides Keep Introduction Visible.',
+              },
+            } satisfies SelectField,
+            {
               name: 'stickyIntro',
               label: 'Keep Introduction Visible',
               type: 'checkbox',
