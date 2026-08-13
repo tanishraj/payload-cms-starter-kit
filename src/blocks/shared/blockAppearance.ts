@@ -9,6 +9,10 @@ export type BlockBackground =
   | 'gradient-secondary'
   | 'gradient-muted'
   | 'gradient-accent'
+  | 'gradient-success'
+  | 'gradient-error'
+  | 'gradient-info'
+  | 'gradient-warning'
 
 export type BlockAppearance = {
   background?: BlockBackground | null
@@ -24,6 +28,10 @@ const backgroundClasses = {
   'gradient-secondary': 'bg-gradient-secondary',
   'gradient-muted': 'bg-gradient-muted',
   'gradient-accent': 'bg-gradient-accent',
+  'gradient-success': 'bg-gradient-success',
+  'gradient-error': 'bg-gradient-error',
+  'gradient-info': 'bg-gradient-info',
+  'gradient-warning': 'bg-gradient-warning',
 } as const
 
 const surfaceForegroundClasses = {
@@ -35,6 +43,10 @@ const surfaceForegroundClasses = {
   'gradient-secondary': 'text-secondary-foreground',
   'gradient-muted': 'text-foreground',
   'gradient-accent': 'text-accent-foreground',
+  'gradient-success': 'text-foreground',
+  'gradient-error': 'text-foreground',
+  'gradient-info': 'text-foreground',
+  'gradient-warning': 'text-foreground',
 } as const
 
 const borderClasses = {

@@ -75,6 +75,10 @@ const defaultDividerClasses: Record<BlockBackground, string> = {
   'gradient-secondary': 'border-current/10',
   'gradient-muted': 'border-current/10',
   'gradient-accent': 'border-current/10',
+  'gradient-success': 'border-current/10',
+  'gradient-error': 'border-current/10',
+  'gradient-info': 'border-current/10',
+  'gradient-warning': 'border-current/10',
 }
 
 const resolveDefaultCardSurface = (

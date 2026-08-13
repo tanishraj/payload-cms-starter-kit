@@ -19,6 +19,10 @@ const backgroundField = {
     { label: 'Gradient: Secondary', value: 'gradient-secondary' },
     { label: 'Gradient: Muted', value: 'gradient-muted' },
     { label: 'Gradient: Accent', value: 'gradient-accent' },
+    { label: 'Gradient: Success', value: 'gradient-success' },
+    { label: 'Gradient: Error', value: 'gradient-error' },
+    { label: 'Gradient: Info', value: 'gradient-info' },
+    { label: 'Gradient: Warning', value: 'gradient-warning' },
   ],
   required: true,
 } satisfies SelectField
