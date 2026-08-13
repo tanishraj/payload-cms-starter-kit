@@ -11,6 +11,10 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { resolveSiteSocialLinks, type SiteSocialLinks } from '@/blocks/shared/siteSocialLinks'
+import {
+  sectionEyebrowClasses,
+  type SectionEyebrowSurface,
+} from '@/components/SectionEyebrow'
 import { type LogoMediaLike } from '@/components/site/SiteLogo'
 import { resolveHeaderLink } from '@/lib/headerNavigation'
 import { getMediaImageProps } from '@/lib/media'
@@ -115,6 +119,8 @@ export function FooterMinimalBlockComponent({
   termsAndConditionsPage,
 }: FooterMinimalBlockLike) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
+  // Column headings borrow the eyebrow accent, which is picked per surface.
+  const eyebrowSurface: SectionEyebrowSurface = appearanceClasses.background
   const resolvedSiteName = siteName?.trim()
   const resolvedLogoHeight = typeof logoHeight === 'number' ? logoHeight : 44
 
@@ -252,7 +258,12 @@ export function FooterMinimalBlockComponent({
 
           {groups.map((group) => (
             <div key={group.title} data-footer-minimal-group="true">
-              <h2 className="text-sm font-semibold text-current">{group.title}</h2>
+              <h2
+                className={sectionEyebrowClasses}
+                data-section-eyebrow-surface={eyebrowSurface}
+              >
+                {group.title}
+              </h2>
               <ul className="mt-5 flex flex-col gap-3 text-sm">
                 {group.links.map((link) => (
                   <li key={`${group.title}-${link.href}-${link.label}`}>

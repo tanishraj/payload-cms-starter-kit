@@ -216,4 +216,25 @@ describe('FooterMinimal', () => {
     expect(html).not.toContain('tel:/contact')
     expect(html).not.toContain('mailto:https')
   })
+
+  it('styles link column headings as eyebrows while keeping heading semantics', () => {
+    const html = renderToStaticMarkup(
+      <FooterMinimalBlockComponent
+        appearance={{ background: 'brand', border: 'none' }}
+        linkGroups={[
+          { links: [{ label: 'About', linkType: 'custom', url: '/about' }], title: 'Explore' },
+        ]}
+        siteName="SNMIH"
+      />,
+    )
+
+    // Still an h2, so the footer keeps its heading outline.
+    expect(html).toMatch(/<h2[^>]*>Explore<\/h2>/)
+    expect(html).toContain('font-mono')
+    expect(html).toContain('tracking-[0.24em]')
+    // Carries the eyebrow surface hook, so it picks up the per-surface accent.
+    expect(html).toContain('data-section-eyebrow-surface="brand"')
+    // The serif display face the base layer applies to headings is overridden.
+    expect(html).not.toMatch(/<h2 class="text-sm font-semibold text-current"/)
+  })
 })

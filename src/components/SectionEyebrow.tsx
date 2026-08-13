@@ -5,6 +5,15 @@ import { cn } from '@/lib/utils'
 
 export type SectionEyebrowSurface = BlockBackground | 'darkOverlay'
 
+/**
+ * Eyebrow typography, exported so elements that should read as an eyebrow but
+ * need different semantics — a footer column heading, say — can match it without
+ * copying the classes. Pair it with `data-section-eyebrow-surface` to pick up the
+ * per-surface accent colour too.
+ */
+export const sectionEyebrowClasses =
+  'font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70'
+
 type SectionEyebrowProps = ComponentPropsWithoutRef<'p'> & {
   surface?: SectionEyebrowSurface
 }
@@ -18,10 +27,7 @@ export function SectionEyebrow({
   return (
     <p
       {...props}
-      className={cn(
-        'font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70',
-        className,
-      )}
+      className={cn(sectionEyebrowClasses, className)}
       data-section-eyebrow="true"
       data-section-eyebrow-surface={surface}
     >
