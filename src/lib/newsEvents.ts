@@ -25,6 +25,7 @@ export type NewsEventsPayload = Pick<Payload, 'find' | 'findGlobal' | 'logger'>
 type NewsEventCardRecord = Pick<
   NewsEvent,
   | 'contentType'
+  | 'createdAt'
   | 'eventEnd'
   | 'eventStart'
   | 'excerpt'
@@ -40,6 +41,7 @@ type NewsEventCardRecord = Pick<
 
 const cardSelect = {
   contentType: true,
+  createdAt: true,
   eventEnd: true,
   eventStart: true,
   excerpt: true,
@@ -91,8 +93,7 @@ const categoryWhere = (category?: string): Where[] =>
       ]
     : []
 
-const tagWhere = (tag?: string): Where[] =>
-  tag ? [{ 'tags.slug': { equals: tag } }] : []
+const tagWhere = (tag?: string): Where[] => (tag ? [{ 'tags.slug': { equals: tag } }] : [])
 
 const toPublicPage = (
   result: {
@@ -154,6 +155,36 @@ export async function fetchNewsEventsHighlights(
   )
 
   return interleaveNewsEvents(news, events, resolvedLimit)
+}
+
+export async function fetchNewsGridItems(
+  payload: Pick<NewsEventsPayload, 'find'>,
+  { limit, nowISO }: { limit: number; nowISO: string },
+): Promise<PublicNewsEventCard[]> {
+  const resolvedLimit = normalizeHighlightsItemCount(limit)
+  const result = await payload.find({
+    collection: 'news-events',
+    depth: 1,
+    limit: resolvedLimit,
+    overrideAccess: true,
+    select: cardSelect,
+    sort: ['-updatedAt', '-createdAt', '-id'],
+    where: {
+      and: [
+        ...publishedWhere,
+        {
+          or: [
+            { contentType: { equals: 'news' } },
+            {
+              and: [{ contentType: { equals: 'event' } }, currentOrUpcomingEventWhere(nowISO)],
+            },
+          ],
+        },
+      ],
+    },
+  })
+
+  return (result.docs as NewsEventCardRecord[]).map((entry) => toPublicNewsEventCard(entry, nowISO))
 }
 
 export async function fetchNewsEventsArchivePage(
@@ -251,6 +282,17 @@ export const getNewsEventsHighlights = cache(async (limit: number, nowISO: strin
     return await fetchNewsEventsHighlights(payload, { limit, nowISO })
   } catch (error) {
     payload.logger.error({ err: error, msg: 'Failed to load News & Events highlights.' })
+    throw error
+  }
+})
+
+export const getNewsGridItems = cache(async (limit: number, nowISO: string) => {
+  const payload = await loadPayload()
+
+  try {
+    return await fetchNewsGridItems(payload, { limit, nowISO })
+  } catch (error) {
+    payload.logger.error({ err: error, msg: 'Failed to load News Grid items.' })
     throw error
   }
 })
@@ -411,10 +453,9 @@ const _getNewsEventTags = async (): Promise<
   return [...tags.values()].sort((left, right) => left.title.localeCompare(right.title))
 }
 
-export const getNewsEventTags = unstable_cache(
-  _getNewsEventTags,
-  ['news-events-tags'],
-  { tags: [CMS_CACHE_TAGS.newsEvents], revalidate: false },
-)
+export const getNewsEventTags = unstable_cache(_getNewsEventTags, ['news-events-tags'], {
+  tags: [CMS_CACHE_TAGS.newsEvents],
+  revalidate: false,
+})
 
 export { createEmptyNewsEventsPage }

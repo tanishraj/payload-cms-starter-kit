@@ -9,6 +9,7 @@ import { FooterMinimalBlockComponent } from '@/blocks/FooterMinimal/Component'
 import { GalleryShowcaseBlockComponent } from '@/blocks/GalleryShowcase/Component'
 import { GalleryCoverflowBlockComponent } from '@/blocks/GalleryCoverflow/Component'
 import { BannerCtaBlockComponent } from '@/blocks/BannerCta/Component'
+import { NewsGridBlockPresentation } from '@/blocks/NewsGrid/Presentation'
 import { Cta39BlockComponent } from '@/blocks/Cta39/Component'
 import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
 import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
@@ -290,6 +291,52 @@ const footerGroupsFixture = [
 ]
 
 export const blockThumbnailFixtures = {
+  newsGrid: (
+    <NewsGridBlockPresentation
+      accentTitle="announcements."
+      actions={[{ label: 'View all news', linkType: 'custom', url: '/news-events' }]}
+      cardsPerRow="3"
+      eyebrow="Latest from Northstar"
+      featureCard={{
+        actionLabel: 'Explore campus',
+        enabled: true,
+        eyebrow: 'Campus',
+        image: { alt: 'Campus at dusk', url: editorialLandscape },
+        linkType: 'custom',
+        title: 'Discover life and learning on campus',
+        url: '/campus',
+      }}
+      items={[
+        {
+          category: { id: 1, slug: 'academics', title: 'Academics' },
+          contentType: 'news',
+          dateISO: '2026-08-12',
+          dateLabel: '12 Aug 2026',
+          excerpt: '',
+          href: '/news-events/pg-courses',
+          id: 'news-1',
+          isPastEvent: false,
+          slug: 'pg-courses',
+          title: 'PG Courses move forward with State Government NOC milestone',
+        },
+        {
+          category: { id: 2, slug: 'admissions', title: 'Admissions' },
+          contentType: 'event',
+          dateISO: '2026-08-20',
+          dateLabel: 'Admission update',
+          excerpt: '',
+          href: '/news-events/mbbs-approval',
+          id: 'event-1',
+          isPastEvent: false,
+          slug: 'mbbs-approval',
+          title: 'Fifth MBBS batch receives admission approval',
+        },
+      ]}
+      size="default"
+      title="News &"
+      totalCards={3}
+    />
+  ),
   bannerCta: (
     <BannerCtaBlockComponent
       accentTitle="starts here."

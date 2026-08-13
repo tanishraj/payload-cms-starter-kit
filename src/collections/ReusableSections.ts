@@ -6,6 +6,7 @@ import { EditorialReasonsBlock } from '@/blocks/EditorialReasons/config'
 import { QaAccordionBlock } from '@/blocks/QaAccordion/config'
 import { FeatureMatrixBlock } from '@/blocks/FeatureMatrix/config'
 import { BannerCtaBlock } from '@/blocks/BannerCta/config'
+import { NewsGridBlock } from '@/blocks/NewsGrid/config'
 import { Cta39Block } from '@/blocks/Cta39/config'
 import { GalleryShowcaseBlock } from '@/blocks/GalleryShowcase/config'
 import { EventGalleryBlock } from '@/blocks/EventGallery/config'
@@ -97,6 +98,7 @@ export const ReusableSections: CollectionConfig = {
       blocks: [
         AnnouncementBlock,
         BannerCtaBlock,
+        NewsGridBlock,
         Cta39Block,
         HeroBannerBlock,
         HeroCarouselBlock,

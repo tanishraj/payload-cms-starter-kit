@@ -16,7 +16,7 @@ This is the maintained technical map of the starter. It records what is register
 
 | Group          | Collection                             | Responsibilities                                                                                                          |
 | -------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Content        | Pages                                  | Hierarchical routes, 40-block layouts, drafts, workflow, SEO, live preview, page-owned links, path-change redirects       |
+| Content        | Pages                                  | Hierarchical routes, 43-block layouts, drafts, workflow, SEO, live preview, page-owned links, path-change redirects       |
 | Content        | Articles                               | Long-form Lexical content, topics/tags, related content, SEO, workflow, live preview                                      |
 | Content        | News & Events                          | News/event records, event validation and registration actions, taxonomy, archive/detail/feed data, workflow, live preview |
 | Content        | Reviews                                | Moderated ratings and testimonials, source-submission linkage, taxonomy, SEO, workflow, live preview                      |
@@ -67,7 +67,7 @@ Globals with versions retain history. Relevant changes invalidate cached fronten
 
 ## Page And Shell Block Systems
 
-Normal Pages register 41 choices: Announcement, Call to Action, Hero Banner, Hero Carousel, Gallery Coverflow, Feature Spotlight, Feature Matrix, Content Highlights, Editorial Reasons, News & Events Highlights, Profile Carousel, Gallery Showcase, Event Gallery, Image Mosaic, Stats Strip, Q&A Accordion, Rating Spotlight, Review Feed, Review Submission, Contact Form, Regional Offices, Team Showcase, Services, Rich Text, Video Embed, Media Carousel, Program Grid, Program Matrix, Logo Strip, Page Header, Timeline, Icon Grid, Quote Block, Tabs Content, Download List, Numbered Steps, Bento Grid, Testimonial Grid, Awards List, About Section, and Reusable Section.
+Normal Pages register 43 choices: Announcement, Banner CTA, News Grid, Call to Action, Hero Banner, Hero Carousel, Gallery Coverflow, Feature Spotlight, Feature Matrix, Content Highlights, Editorial Reasons, News & Events Highlights, Profile Carousel, Gallery Showcase, Event Gallery, Image Mosaic, Stats Strip, Q&A Accordion, Rating Spotlight, Review Feed, Review Submission, Contact Form, Regional Offices, Team Showcase, Services, Rich Text, Video Embed, Media Carousel, Program Grid, Program Matrix, Logo Strip, Page Header, Timeline, Icon Grid, Quote Block, Tabs Content, Download List, Numbered Steps, Bento Grid, Testimonial Grid, Awards List, About Section, and Reusable Section.
 
 Headers register only Header Navbar 12; Footers register only Footer 56; System Pages register one matching System 404, System Maintenance, or System Coming Soon block. The admin picker uses generated JPEG thumbnails. `/block-thumbnail-previews/[slug]` is development-only. See [Page Blocks](../guides/blocks.md) for the operator catalog.
 

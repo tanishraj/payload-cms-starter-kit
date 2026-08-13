@@ -43,6 +43,12 @@ export const blockThumbnailDefinitions = [
     slug: 'footerMinimal',
   }),
   defineThumbnail({
+    alt: 'News Grid block preview',
+    filename: 'news-grid.jpg',
+    label: 'News Grid',
+    slug: 'newsGrid',
+  }),
+  defineThumbnail({
     alt: 'Banner CTA block preview',
     filename: 'banner-cta.jpg',
     label: 'Banner CTA',

@@ -26,6 +26,8 @@ export type PublicNewsEventCard = {
   contentType: NewsEventContentType
   dateISO: string
   dateLabel: string
+  eventEnd?: string
+  eventStart?: string
   excerpt: string
   href: string
   id: string
@@ -100,6 +102,15 @@ const eventDateFormatter = new Intl.DateTimeFormat('en-US', {
   timeZoneName: 'short',
   year: 'numeric',
 })
+const rangeMonthFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  timeZone: 'UTC',
+})
+const rangeMonthDayFormatter = new Intl.DateTimeFormat('en-US', {
+  day: 'numeric',
+  month: 'short',
+  timeZone: 'UTC',
+})
 
 const firstSearchParam = (value: string | string[] | undefined): string | undefined =>
   Array.isArray(value) ? value[0] : value
@@ -125,6 +136,31 @@ export const formatNewsEventDate = (value: string | null | undefined): string =>
 
 export const formatNewsEventDateTime = (value: string | null | undefined): string =>
   formatDate(value, true)
+
+export function formatNewsEventDateRange(
+  startValue: string | null | undefined,
+  endValue?: string | null,
+): string {
+  if (!startValue) return ''
+
+  const start = new Date(startValue)
+  const end = endValue ? new Date(endValue) : undefined
+
+  if (Number.isNaN(start.getTime())) return ''
+  if (!end || Number.isNaN(end.getTime())) return formatNewsEventDate(startValue)
+
+  const sameYear = start.getUTCFullYear() === end.getUTCFullYear()
+  const sameMonth = sameYear && start.getUTCMonth() === end.getUTCMonth()
+  const sameDay = sameMonth && start.getUTCDate() === end.getUTCDate()
+
+  if (sameDay) return formatNewsEventDate(startValue)
+
+  if (sameMonth) {
+    return `${rangeMonthFormatter.format(start)} ${start.getUTCDate()}–${end.getUTCDate()}, ${end.getUTCFullYear()}`
+  }
+
+  return `${rangeMonthDayFormatter.format(start)}, ${start.getUTCFullYear()} – ${rangeMonthDayFormatter.format(end)}, ${end.getUTCFullYear()}`
+}
 
 export const normalizeHighlightsItemCount = (value: number | null | undefined): number =>
   typeof value === 'number' && Number.isInteger(value)
@@ -246,6 +282,8 @@ export function toPublicNewsEventCard(
     contentType: entry.contentType,
     dateISO,
     dateLabel: formatNewsEventDate(dateISO),
+    eventEnd: isEvent ? entry.eventEnd || undefined : undefined,
+    eventStart: isEvent ? entry.eventStart || undefined : undefined,
     excerpt: entry.excerpt?.trim() || '',
     href: `/news-events/${slug}`,
     id: String(entry.id),

@@ -25,11 +25,16 @@ The primary topic is automatically included in additional topics. Tags are optio
 - `/news-events/category/[slug]` and `/news-events/tag/[slug]` are canonical taxonomy archives. Content type, pagination, and combined category/tag browsing remain query parameters on the active archive.
 - `/news-events/[slug]` renders a detail page and Event structured data when applicable.
 - `/news-events/feed.xml` publishes the feed.
-- `News & Events Highlights` can surface recent news and current/upcoming events on Pages.
+- `News & Events Highlights` surfaces the standard image-led feed on Pages.
+- `News Grid` presents the same governed selection as a denser editorial grid. Editors choose a
+  total of 1–6 cards and 2, 3, or 4 desktop columns; mobile stays one column and tablet stays two.
+  An optional editor-authored feature card occupies the final configured slot rather than adding
+  another card beyond the selected total. Entries are ordered by most recently updated, with
+  creation time as the fallback.
 - `News & Events Settings` controls archive copy, filters, page size, appearance, empty states, and SEO.
 - Live preview is available at desktop, tablet, and mobile breakpoints.
 
-Past events remain available in the archive and at their detail URL, but Highlights only selects current or upcoming events.
+Past events remain available in the archive and at their detail URL, but Highlights and News Grid only select current or upcoming events.
 
 The sitemap includes dedicated topic and tag archives only when an indexable published News & Events entry uses the term and the term's own SEO settings allow sitemap inclusion. It does not generate URLs for filter combinations or pagination.
 

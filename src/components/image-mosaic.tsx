@@ -192,7 +192,7 @@ export function ImageMosaic({
                   width={item.image.width}
                 />
                 {hasOverlay ? (
-                  <div className="image-mosaic-overlay absolute inset-x-0 bottom-0 bg-gradient-to-t from-background via-background/85 to-transparent p-5 pt-16 text-foreground">
+                  <div className="image-mosaic-overlay absolute inset-x-0 bottom-0 bg-linear-to-t from-background via-background/85 to-transparent p-5 pt-16 text-foreground">
                     <div
                       className="flex flex-col items-start gap-2"
                       data-image-mosaic-overlay="true"

@@ -194,6 +194,7 @@ export interface Page {
     | (
         | AnnouncementBlock
         | BannerCtaBlock
+        | NewsGridBlock
         | Cta39Block
         | HeroBannerBlock
         | HeroCarouselBlock
@@ -467,6 +468,98 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsGridBlock".
+ */
+export interface NewsGridBlock {
+  /**
+   * Small label above the heading.
+   */
+  eyebrow?: string | null;
+  title: string;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Total visible cards, including the optional feature card. When enabled, the feature uses the final slot.
+   */
+  totalCards: number;
+  /**
+   * Maximum cards in each desktop row. Additional cards continue on the next row.
+   */
+  cardsPerRow: '2' | '3' | '4';
+  newsActionLabel?: string | null;
+  eventActionLabel?: string | null;
+  /**
+   * Shown when nothing is published and the feature card is off.
+   */
+  emptyStateMessage?: string | null;
+  /**
+   * An optional editor-authored card that fills the last slot in the grid, over a background image.
+   */
+  featureCard?: {
+    enabled?: boolean | null;
+    image?: (string | null) | Media;
+    eyebrow?: string | null;
+    /**
+     * Required for the card to render.
+     */
+    title?: string | null;
+    actionLabel?: string | null;
+    linkType?: ('none' | 'page' | 'custom') | null;
+    page?: (string | null) | Page;
+    url?: string | null;
+    openInNewTab?: boolean | null;
+  };
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Header actions only sit beside the heading when aligned left.
+   */
+  contentAlignment?: ('left' | 'center') | null;
+  /**
+   * Aligns header actions against the content when they appear beside the heading.
+   */
+  headerActionAlignment?: ('center' | 'top' | 'bottom') | null;
+  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'newsGrid';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3274,6 +3367,7 @@ export interface ReusableSection {
     | (
         | AnnouncementBlock
         | BannerCtaBlock
+        | NewsGridBlock
         | Cta39Block
         | HeroBannerBlock
         | HeroCarouselBlock
@@ -4578,6 +4672,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         announcement?: T | AnnouncementBlockSelect<T>;
         bannerCta?: T | BannerCtaBlockSelect<T>;
+        newsGrid?: T | NewsGridBlockSelect<T>;
         cta39?: T | Cta39BlockSelect<T>;
         heroBanner?: T | HeroBannerBlockSelect<T>;
         heroCarousel?: T | HeroCarouselBlockSelect<T>;
@@ -4722,6 +4817,71 @@ export interface BannerCtaBlockSelect<T extends boolean = true> {
   overlayStyle?: T;
   overlayDirection?: T;
   height?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsGridBlock_select".
+ */
+export interface NewsGridBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  totalCards?: T;
+  cardsPerRow?: T;
+  newsActionLabel?: T;
+  eventActionLabel?: T;
+  emptyStateMessage?: T;
+  featureCard?:
+    | T
+    | {
+        enabled?: T;
+        image?: T;
+        eyebrow?: T;
+        title?: T;
+        actionLabel?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  headerActionAlignment?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -6977,6 +7137,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
     | {
         announcement?: T | AnnouncementBlockSelect<T>;
         bannerCta?: T | BannerCtaBlockSelect<T>;
+        newsGrid?: T | NewsGridBlockSelect<T>;
         cta39?: T | Cta39BlockSelect<T>;
         heroBanner?: T | HeroBannerBlockSelect<T>;
         heroCarousel?: T | HeroCarouselBlockSelect<T>;

@@ -21,6 +21,7 @@ import { Contact24BlockComponent } from './Contact24/Component'
 import { Contact33BlockComponent } from './Contact33/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
 import { BannerCtaBlockComponent } from './BannerCta/Component'
+import { NewsGridBlockComponent } from './NewsGrid/Component'
 import { Cta39BlockComponent } from './Cta39/Component'
 import { TeamShowcaseBlockComponent } from './TeamShowcase/Component'
 import { PageBlockStack } from './PageBlockStack'
@@ -108,6 +109,8 @@ function renderSingleBlock(block: PageBlock, index: number, depth = 0): React.Re
       return wrap(<TeamShowcaseBlockComponent {...block} />)
     case 'services21':
       return wrap(<Services21BlockComponent {...block} />)
+    case 'newsGrid':
+      return wrap(<NewsGridBlockComponent {...block} />)
     case 'bannerCta':
       return wrap(<BannerCtaBlockComponent {...block} />)
     case 'cta39':
