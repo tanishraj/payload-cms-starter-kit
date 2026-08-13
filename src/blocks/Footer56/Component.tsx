@@ -6,7 +6,10 @@ import { getPageHref } from '@/lib/pagePaths'
 import { resolveHeaderLink } from '@/lib/headerNavigation'
 import { Footer56 } from '@/components/footer56'
 import { type LogoMediaLike } from '@/components/site/SiteLogo'
-import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube } from 'react-icons/fa'
+import {
+  resolveSiteSocialLinks,
+  type SiteSocialLinks,
+} from '@/blocks/shared/siteSocialLinks'
 
 type FooterSection = {
   title: string
@@ -30,27 +33,8 @@ type Footer56BlockComponentProps = Footer56BlockType & {
   sitePhone?: string | null
   privacyPolicyPage?: Page | null
   termsAndConditionsPage?: Page | null
-  siteSocialLinks?: {
-    facebook?: string | null
-    instagram?: string | null
-    linkedin?: string | null
-    youtube?: string | null
-  } | null
+  siteSocialLinks?: SiteSocialLinks
 }
-
-const socialIconByPlatform = {
-  facebook: 'Facebook',
-  instagram: 'Instagram',
-  linkedin: 'LinkedIn',
-  youtube: 'YouTube',
-} as const
-
-const socialIconByPlatformComponent = {
-  facebook: FaFacebook,
-  instagram: FaInstagram,
-  linkedin: FaLinkedin,
-  youtube: FaYoutube,
-} as const
 
 const resolveSections = (
   linkGroups?: Footer56BlockType['linkGroups'] | null,
@@ -74,38 +58,12 @@ const resolveSections = (
     .filter((group): group is FooterSection => group !== null)
 }
 
-const resolveSocialLinks = (
-  siteSocialLinks?: Footer56BlockComponentProps['siteSocialLinks'],
-): FooterSocialLink[] => {
-  const socialEntries = Object.entries(siteSocialLinks ?? {}) as Array<
-    [
-      keyof typeof socialIconByPlatform,
-      string | null | undefined,
-    ]
-  >
-
-  return socialEntries
-    .map<FooterSocialLink | null>(([platform, href]) => {
-      if (typeof href !== 'string') {
-        return null
-      }
-
-      const trimmed = href.trim()
-
-      if (!trimmed.length) {
-        return null
-      }
-
-      const Icon = socialIconByPlatformComponent[platform]
-
-      return {
-        icon: <Icon className="size-5" />,
-        href: trimmed,
-        label: socialIconByPlatform[platform] as string,
-      }
-    })
-    .filter((socialLink): socialLink is FooterSocialLink => socialLink !== null)
-}
+const resolveSocialLinks = (siteSocialLinks?: SiteSocialLinks): FooterSocialLink[] =>
+  resolveSiteSocialLinks(siteSocialLinks).map(({ Icon, href, label }) => ({
+    href,
+    icon: <Icon className="size-5" />,
+    label,
+  }))
 
 const resolveLegalLinks = (
   bottomLinks?: Footer56BlockType['bottomLinks'],

@@ -37,6 +37,12 @@ export const blockThumbnailDefinitions = [
     slug: 'heroCarousel',
   }),
   defineThumbnail({
+    alt: 'Footer Minimal block preview',
+    filename: 'footer-minimal.jpg',
+    label: 'Footer Minimal',
+    slug: 'footerMinimal',
+  }),
+  defineThumbnail({
     alt: 'Banner CTA block preview',
     filename: 'banner-cta.jpg',
     label: 'Banner CTA',

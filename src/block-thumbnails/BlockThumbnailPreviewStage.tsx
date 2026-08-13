@@ -57,7 +57,17 @@ export function BlockThumbnailPreviewStage({
       }
 
       await document.fonts.ready
-      await Promise.all(Array.from(content.querySelectorAll('img')).map(waitForImage))
+
+      const images = Array.from(content.querySelectorAll('img'))
+
+      // Blocks that render a logo per breakpoint leave the hidden copy lazy and
+      // zero-sized, so it never enters the viewport and its load event never
+      // fires. Forcing eager loading keeps that from stalling the capture.
+      for (const image of images) {
+        image.loading = 'eager'
+      }
+
+      await Promise.all(images.map(waitForImage))
       await afterAnimationFrame()
       await afterAnimationFrame()
 

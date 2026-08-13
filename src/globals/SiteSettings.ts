@@ -153,6 +153,15 @@ export const SiteSettings: GlobalConfig = {
                   validate: validateExternalSocialUrl,
                 },
                 {
+                  name: 'x',
+                  label: 'X External URL',
+                  type: 'text',
+                  admin: {
+                    description: 'Must be a full external URL, for example https://x.com/your-handle.',
+                  },
+                  validate: validateExternalSocialUrl,
+                },
+                {
                   name: 'linkedin',
                   label: 'LinkedIn External URL',
                   type: 'text',

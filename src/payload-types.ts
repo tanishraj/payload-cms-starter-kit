@@ -3969,7 +3969,7 @@ export interface Footer {
    */
   generateSlug?: boolean | null;
   slug: string;
-  layout?: Footer56Block[] | null;
+  layout?: (Footer56Block | FooterMinimalBlock)[] | null;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -4038,6 +4038,74 @@ export interface Footer56Block {
   id?: string | null;
   blockName?: string | null;
   blockType: 'footer56';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FooterMinimalBlock".
+ */
+export interface FooterMinimalBlock {
+  logoMode?: ('siteDefault' | 'customLogo' | 'nameOnly') | null;
+  customLogo?: (string | null) | Media;
+  showSiteName?: boolean | null;
+  /**
+   * Optional copy under the logo. Leave empty to fall back to the address from Site Settings.
+   */
+  description?: string | null;
+  /**
+   * Each column renders as a heading with its links beneath.
+   */
+  linkGroups?:
+    | {
+        title: string;
+        /**
+         * Pulls the contact phone and email from Site Settings and lists them above this column’s links, as a click-to-call and click-to-email.
+         */
+        includeSiteContact?: boolean | null;
+        links?:
+          | {
+              label: string;
+              linkType?: ('page' | 'custom') | null;
+              page?: (string | null) | Page;
+              url?: string | null;
+              openInNewTab?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Sits opposite the copyright. The Privacy Policy and Terms pages from Site Settings are appended automatically.
+   */
+  bottomLinks?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Leave empty to fall back to the site name.
+   */
+  copyrightText?: string | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Icons come from Site Settings › Social Links. Only the platforms with a URL are shown.
+   */
+  showSocialLinks?: boolean | null;
+  socialIconStyle?: ('tile' | 'plain') | null;
+  socialPlacement?: ('brand' | 'bottomBar') | null;
+  logoHeight?: number | null;
+  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'footerMinimal';
 }
 /**
  * URL redirects managed from the CMS — changes go live within 60 seconds, no rebuild needed. Auto-generated when a published page URL changes.
@@ -7080,6 +7148,7 @@ export interface FootersSelect<T extends boolean = true> {
     | T
     | {
         footer56?: T | Footer56BlockSelect<T>;
+        footerMinimal?: T | FooterMinimalBlockSelect<T>;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -7141,6 +7210,57 @@ export interface Footer56BlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FooterMinimalBlock_select".
+ */
+export interface FooterMinimalBlockSelect<T extends boolean = true> {
+  logoMode?: T;
+  customLogo?: T;
+  showSiteName?: T;
+  description?: T;
+  linkGroups?:
+    | T
+    | {
+        title?: T;
+        includeSiteContact?: T;
+        links?:
+          | T
+          | {
+              label?: T;
+              linkType?: T;
+              page?: T;
+              url?: T;
+              openInNewTab?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  bottomLinks?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        id?: T;
+      };
+  copyrightText?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  showSocialLinks?: T;
+  socialIconStyle?: T;
+  socialPlacement?: T;
+  logoHeight?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -7609,6 +7729,10 @@ export interface SiteSetting {
      */
     instagram?: string | null;
     /**
+     * Must be a full external URL, for example https://x.com/your-handle.
+     */
+    x?: string | null;
+    /**
      * Must be a full external URL, for example https://linkedin.com/company/your-org.
      */
     linkedin?: string | null;
@@ -7905,6 +8029,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | {
         facebook?: T;
         instagram?: T;
+        x?: T;
         linkedin?: T;
         youtube?: T;
       };

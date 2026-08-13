@@ -6,6 +6,7 @@ import {
   requireCapability,
 } from '@/access/adminCapabilities'
 import { Footer56Block } from '@/blocks/Footer56/config'
+import { FooterMinimalBlock } from '@/blocks/FooterMinimal/config'
 import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 
@@ -57,7 +58,7 @@ export const Footers: CollectionConfig = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [Footer56Block],
+      blocks: [Footer56Block, FooterMinimalBlock],
       admin: {
         initCollapsed: true,
       },

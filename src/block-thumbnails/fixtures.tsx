@@ -5,6 +5,7 @@ import { ContentHighlightsBlockComponent } from '@/blocks/ContentHighlights/Comp
 import { EditorialReasonsBlockComponent } from '@/blocks/EditorialReasons/Component'
 import { FeatureMatrixBlockComponent } from '@/blocks/FeatureMatrix/Component'
 import { Footer56BlockComponent } from '@/blocks/Footer56/Component'
+import { FooterMinimalBlockComponent } from '@/blocks/FooterMinimal/Component'
 import { GalleryShowcaseBlockComponent } from '@/blocks/GalleryShowcase/Component'
 import { GalleryCoverflowBlockComponent } from '@/blocks/GalleryCoverflow/Component'
 import { BannerCtaBlockComponent } from '@/blocks/BannerCta/Component'
@@ -909,6 +910,24 @@ export const blockThumbnailFixtures = {
       ]}
       size="compact"
       title="A closer look at life here"
+    />
+  ),
+  footerMinimal: (
+    <FooterMinimalBlockComponent
+      appearance={{ background: 'brand', border: 'none' }}
+      copyrightText="© 2026 Northstar. All rights reserved."
+      description={'100 Market Street,\nSpringfield, 01234\nBypass NH 107'}
+      linkGroups={footerGroupsFixture}
+      logoMode="siteDefault"
+      siteLogo={{ alt: 'Northstar', url: brandMark }}
+      siteName="Northstar Medical Institute"
+      siteSocialLinks={{
+        facebook: 'https://facebook.com/northstar',
+        instagram: 'https://instagram.com/northstar',
+        x: 'https://x.com/northstar',
+        youtube: 'https://youtube.com/@northstar',
+      }}
+      size="default"
     />
   ),
   footer56: (

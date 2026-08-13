@@ -2,6 +2,7 @@ import type { LogoMediaLike } from '@/components/site/SiteLogo'
 import type { Footer, Page } from '@/payload-types'
 
 import { Footer56BlockComponent } from './Footer56/Component'
+import { FooterMinimalBlockComponent } from './FooterMinimal/Component'
 
 export type FooterBlock = NonNullable<Footer['layout']>[number]
 
@@ -43,6 +44,21 @@ export function renderFooterBlocks(
                 siteName={context?.siteName}
                 sitePhone={context?.sitePhone}
                 siteSocialLinks={context?.siteSocialLinks}
+                {...block}
+              />
+            )
+          case 'footerMinimal':
+            return (
+              <FooterMinimalBlockComponent
+                key={block.id ?? `${block.blockType}-${index}`}
+                privacyPolicyPage={context?.privacyPolicyPage}
+                siteAddress={context?.siteAddress}
+                siteEmail={context?.siteEmail}
+                siteLogo={context?.siteLogo}
+                siteName={context?.siteName}
+                sitePhone={context?.sitePhone}
+                siteSocialLinks={context?.siteSocialLinks}
+                termsAndConditionsPage={context?.termsAndConditionsPage}
                 {...block}
               />
             )

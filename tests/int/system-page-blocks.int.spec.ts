@@ -148,7 +148,7 @@ describe('system page block schemas', () => {
     )
     expect(collectBlockSlugs(Reviews.fields)).toEqual([])
     expect(collectBlockSlugs(Headers.fields)).toEqual(['headerNavbar12'])
-    expect(collectBlockSlugs(Footers.fields)).toEqual(['footer56'])
+    expect(collectBlockSlugs(Footers.fields)).toEqual(['footer56', 'footerMinimal'])
     expect(collectBlockSlugs(SystemPages.fields)).toEqual([
       'system404',
       'systemMaintenance',
