@@ -1,8 +1,94 @@
-import type { ArrayField, Block, SelectField, TabsField, TextField } from 'payload'
+import type {
+  ArrayField,
+  Block,
+  CheckboxField,
+  GroupField,
+  SelectField,
+  TabsField,
+  TextField,
+} from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { createIconField } from '@/blocks/shared/iconField'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
+
+const listItemsField = {
+  name: 'listItems',
+  label: 'List Items',
+  type: 'array',
+  maxRows: 12,
+  admin: {
+    initCollapsed: true,
+    description:
+      'Optional supporting points shown below the body. Add an icon to override the default number or checkmark for that item.',
+  },
+  fields: [
+    {
+      name: 'text',
+      label: 'Text',
+      type: 'text',
+      required: true,
+    } satisfies TextField,
+    createIconField({
+      description:
+        'Optional Lucide icon. When empty, ordered lists show the item number and unordered lists show a checkmark.',
+    }),
+  ],
+} satisfies ArrayField
+
+type ImageDetailSiblingData = {
+  enabled?: boolean | null
+}
+
+const showImageDetailFields = (_data: unknown, siblingData: ImageDetailSiblingData) =>
+  siblingData?.enabled === true
+
+const imageDetailField = {
+  name: 'imageDetail',
+  label: 'Image Detail Panel',
+  type: 'group',
+  admin: {
+    description: 'Optional milestone or key detail displayed over the lower corner of the image.',
+  },
+  fields: [
+    {
+      name: 'enabled',
+      label: 'Show image detail panel',
+      type: 'checkbox',
+      defaultValue: false,
+    } satisfies CheckboxField,
+    {
+      name: 'eyebrow',
+      type: 'text',
+      admin: {
+        condition: showImageDetailFields,
+        description: 'Small uppercase label, e.g. “Established”.',
+      },
+    },
+    {
+      name: 'value',
+      label: 'Primary Value',
+      type: 'text',
+      admin: {
+        condition: showImageDetailFields,
+        description: 'Large focal value, e.g. “2021”. Required when the panel is enabled.',
+      },
+      validate: (value: unknown, { siblingData }: { siblingData?: ImageDetailSiblingData }) =>
+        siblingData?.enabled !== true || (typeof value === 'string' && value.trim().length > 0)
+          ? true
+          : 'Primary Value is required when the image detail panel is enabled.',
+    } satisfies TextField,
+    {
+      name: 'description',
+      type: 'textarea',
+      admin: {
+        condition: showImageDetailFields,
+        description: 'Short supporting detail shown below the primary value.',
+      },
+    },
+  ],
+} satisfies GroupField
 
 const valuesField = {
   name: 'values',
@@ -18,7 +104,10 @@ const valuesField = {
       name: 'icon',
       label: 'Icon Name',
       type: 'text',
-      admin: { description: 'Lucide icon name — e.g. "Star", "Rocket", "GraduationCap". Browse all icons at lucide.dev/icons' },
+      admin: {
+        description:
+          'Lucide icon name — e.g. "Star", "Rocket", "GraduationCap". Browse all icons at lucide.dev/icons',
+      },
     },
     {
       name: 'title',
@@ -74,7 +163,11 @@ export const AboutSectionBlock: Block = {
         {
           label: 'Content',
           fields: [
-            { name: 'eyebrow', type: 'text', admin: { description: 'e.g. "About Us" or "Our Story"' } },
+            {
+              name: 'eyebrow',
+              type: 'text',
+              admin: { description: 'e.g. "About Us" or "Our Story"' },
+            },
             { name: 'title', type: 'text' },
             { name: 'accentTitle', label: 'Accent Title (Italic)', type: 'text' },
             {
@@ -82,8 +175,26 @@ export const AboutSectionBlock: Block = {
               label: 'Body Text',
               type: 'textarea',
               required: true,
-              admin: { description: 'Main about text. Paragraphs separated by blank lines are rendered as separate paragraphs.' },
+              admin: {
+                description:
+                  'Main about text. Paragraphs separated by blank lines are rendered as separate paragraphs.',
+              },
             },
+            {
+              name: 'listStyle',
+              label: 'List Type',
+              type: 'select',
+              defaultValue: 'unordered',
+              options: [
+                { label: 'Unordered', value: 'unordered' },
+                { label: 'Ordered', value: 'ordered' },
+              ],
+              required: true,
+              admin: {
+                description: 'Controls the semantic and visual fallback marker for List Items.',
+              },
+            } satisfies SelectField,
+            listItemsField,
             {
               name: 'image',
               label: 'Image',
@@ -91,10 +202,15 @@ export const AboutSectionBlock: Block = {
               relationTo: 'media',
               admin: { description: 'Featured image — shown beside the text in split layouts.' },
             },
+            imageDetailField,
             statsField,
             valuesField,
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
-            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({
+              name: 'footerActions',
+              label: 'Footer Actions',
+              maxRows: 2,
+            }),
           ],
         },
         {
@@ -133,6 +249,53 @@ export const AboutSectionBlock: Block = {
                 { label: 'Right', value: 'right' },
               ],
               admin: { condition: (_data, siblingData) => siblingData?.variant === 'split' },
+            } satisfies SelectField,
+            {
+              name: 'mediaFillMode',
+              label: 'Media Fill',
+              type: 'select',
+              defaultValue: 'contained',
+              options: [
+                { label: 'Contained', value: 'contained' },
+                { label: 'Contained Fill', value: 'containedFill' },
+                { label: 'Edge to Edge', value: 'edgeToEdge' },
+              ],
+              admin: {
+                condition: (_data, siblingData) => siblingData?.variant === 'split',
+                description:
+                  'Contained keeps the image proportional. Contained Fill matches the content height inside the container. Edge to Edge extends the split to the viewport edge.',
+              },
+            } satisfies SelectField,
+            {
+              name: 'imageDetailPosition',
+              label: 'Image Detail Position',
+              type: 'select',
+              defaultValue: 'right',
+              options: [
+                { label: 'Bottom Left', value: 'left' },
+                { label: 'Bottom Right', value: 'right' },
+              ],
+              admin: {
+                condition: (_data, siblingData) => siblingData?.variant !== 'text',
+              },
+            } satisfies SelectField,
+            {
+              name: 'imageDetailBackground',
+              label: 'Image Detail Background',
+              type: 'select',
+              defaultValue: 'brand',
+              options: [
+                { label: 'Subtle', value: 'subtle' },
+                { label: 'Brand', value: 'brand' },
+                { label: 'Gradient: Subtle', value: 'gradient-subtle' },
+                { label: 'Gradient: Brand', value: 'gradient-brand' },
+              ],
+              required: true,
+              admin: {
+                condition: (_data, siblingData) => siblingData?.variant !== 'text',
+                description:
+                  'Uses the active theme tokens and automatically adjusts panel contrast.',
+              },
             } satisfies SelectField,
             {
               name: 'size',

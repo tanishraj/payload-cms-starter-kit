@@ -3426,9 +3426,44 @@ export interface AboutSectionBlock {
    */
   body: string;
   /**
+   * Controls the semantic and visual fallback marker for List Items.
+   */
+  listStyle: 'unordered' | 'ordered';
+  /**
+   * Optional supporting points shown below the body. Add an icon to override the default number or checkmark for that item.
+   */
+  listItems?:
+    | {
+        text: string;
+        /**
+         * Optional Lucide icon. When empty, ordered lists show the item number and unordered lists show a checkmark.
+         */
+        icon?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * Featured image — shown beside the text in split layouts.
    */
   image?: (string | null) | Media;
+  /**
+   * Optional milestone or key detail displayed over the lower corner of the image.
+   */
+  imageDetail?: {
+    enabled?: boolean | null;
+    /**
+     * Small uppercase label, e.g. “Established”.
+     */
+    eyebrow?: string | null;
+    /**
+     * Large focal value, e.g. “2021”. Required when the panel is enabled.
+     */
+    value?: string | null;
+    /**
+     * Short supporting detail shown below the primary value.
+     */
+    description?: string | null;
+  };
   /**
    * Optional inline stats shown alongside the about text.
    */
@@ -3498,6 +3533,15 @@ export interface AboutSectionBlock {
   contentAlignment?: ('left' | 'center') | null;
   variant: 'split' | 'centered' | 'text';
   imagePosition?: ('left' | 'right') | null;
+  /**
+   * Contained keeps the image proportional. Contained Fill matches the content height inside the container. Edge to Edge extends the split to the viewport edge.
+   */
+  mediaFillMode?: ('contained' | 'containedFill' | 'edgeToEdge') | null;
+  imageDetailPosition?: ('left' | 'right') | null;
+  /**
+   * Uses the active theme tokens and automatically adjusts panel contrast.
+   */
+  imageDetailBackground?: ('subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand') | null;
   size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
@@ -7199,7 +7243,23 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   body?: T;
+  listStyle?: T;
+  listItems?:
+    | T
+    | {
+        text?: T;
+        icon?: T;
+        id?: T;
+      };
   image?: T;
+  imageDetail?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        value?: T;
+        description?: T;
+      };
   stats?:
     | T
     | {
@@ -7250,6 +7310,9 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
   contentAlignment?: T;
   variant?: T;
   imagePosition?: T;
+  mediaFillMode?: T;
+  imageDetailPosition?: T;
+  imageDetailBackground?: T;
   size?: T;
   id?: T;
   blockName?: T;
