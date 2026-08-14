@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { AnnouncementBlockComponent } from '@/blocks/Announcement/Component'
 import { ContentHighlightsBlockComponent } from '@/blocks/ContentHighlights/Component'
 import { EditorialReasonsBlockComponent } from '@/blocks/EditorialReasons/Component'
+import { AcademicProgrammesBlockComponent } from '@/blocks/AcademicProgrammes/Component'
 import { FeatureMatrixBlockComponent } from '@/blocks/FeatureMatrix/Component'
 import { Footer56BlockComponent } from '@/blocks/Footer56/Component'
 import { FooterMinimalBlockComponent } from '@/blocks/FooterMinimal/Component'
@@ -292,6 +293,54 @@ const footerGroupsFixture = [
 ]
 
 export const blockThumbnailFixtures = {
+  academicProgrammes: (
+    <AcademicProgrammesBlockComponent
+      accentTitle="in medicine."
+      appearance={{ background: 'subtle', border: 'none' }}
+      description="Programmes designed to build strong scientific foundations, clinical confidence and a professional approach to patient care."
+      eyebrow="Academic programmes"
+      programmes={[
+        {
+          ctaLabel: 'Explore MBBS',
+          description:
+            'Build a strong foundation in medical science through competency-based education, practical training and clinical exposure.',
+          eyebrow: 'Undergraduate',
+          image: {
+            alt: 'Medical learning environment',
+            url: '/block-thumbnail-assets/editorial-landscape.svg',
+          },
+          linkType: 'custom',
+          title: 'MBBS',
+          url: '/programmes/mbbs',
+        },
+        {
+          ctaLabel: 'Explore programmes',
+          description:
+            'Advanced learning designed to develop specialists, educators and future healthcare leaders.',
+          eyebrow: 'Advanced study',
+          image: { alt: 'Medical professional', url: '/block-thumbnail-assets/portrait.svg' },
+          linkType: 'custom',
+          title: 'Postgraduate Education',
+          url: '/programmes/postgraduate',
+        },
+        {
+          ctaLabel: 'Discover more',
+          description:
+            'Practical learning focused on clinical skills, collaboration and compassionate healthcare delivery.',
+          eyebrow: 'Allied health',
+          image: {
+            alt: 'Clinical study facilities',
+            url: '/block-thumbnail-assets/collaboration.svg',
+          },
+          linkType: 'custom',
+          title: 'Nursing & Allied Education',
+          url: '/programmes/nursing',
+        },
+      ]}
+      size="compact"
+      title="Begin your journey"
+    />
+  ),
   newsGrid: (
     <NewsGridBlockPresentation
       accentTitle="announcements."

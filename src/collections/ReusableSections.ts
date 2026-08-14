@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { AnnouncementBlock } from '@/blocks/Announcement/config'
 import { ContentHighlightsBlock } from '@/blocks/ContentHighlights/config'
 import { EditorialReasonsBlock } from '@/blocks/EditorialReasons/config'
+import { AcademicProgrammesBlock } from '@/blocks/AcademicProgrammes/config'
 import { QaAccordionBlock } from '@/blocks/QaAccordion/config'
 import { FeatureMatrixBlock } from '@/blocks/FeatureMatrix/config'
 import { BannerCtaBlock } from '@/blocks/BannerCta/config'
@@ -109,6 +110,7 @@ export const ReusableSections: CollectionConfig = {
         FeatureMatrixBlock,
         ContentHighlightsBlock,
         EditorialReasonsBlock,
+        AcademicProgrammesBlock,
         NewsEventsHighlightsBlock,
         ProfileCarouselBlock,
         GalleryShowcaseBlock,

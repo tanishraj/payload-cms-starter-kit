@@ -203,6 +203,7 @@ export interface Page {
         | FeatureMatrixBlock
         | ContentHighlightsBlock
         | EditorialReasonsBlock
+        | AcademicProgrammesBlock
         | NewsEventsHighlightsBlock
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
@@ -1057,6 +1058,98 @@ export interface EditorialReasonsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'editorialReasons';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AcademicProgrammesBlock".
+ */
+export interface AcademicProgrammesBlock {
+  /**
+   * Small label above the section title.
+   */
+  eyebrow?: string | null;
+  title: string;
+  /**
+   * Optional italic second line of the heading.
+   */
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Image-led programme cards shown in their displayed order.
+   */
+  programmes: {
+    image: string | Media;
+    eyebrow?: string | null;
+    title: string;
+    /**
+     * A concise one- or two-sentence programme summary.
+     */
+    description?: string | null;
+    ctaLabel?: string | null;
+    linkType?: ('none' | 'page' | 'custom') | null;
+    page?: (string | null) | Page;
+    url?: string | null;
+    openInNewTab?: boolean | null;
+    /**
+     * Default Card inherits the section background. Other choices use the active theme and automatically adjust card contrast.
+     */
+    cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
+    id?: string | null;
+  }[];
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section eyebrow, heading, description, and actions together.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  headerLayout: 'split' | 'stacked';
+  columns: '2' | '3' | '4';
+  /**
+   * Moves the section description between the title column and the right column.
+   */
+  descriptionPosition?: ('side' | 'underTitle') | null;
+  /**
+   * Aligns the right-column description and section actions to the top or bottom.
+   */
+  sideContentAlignment?: ('top' | 'bottom') | null;
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'academicProgrammes';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3435,6 +3528,7 @@ export interface ReusableSection {
         | FeatureMatrixBlock
         | ContentHighlightsBlock
         | EditorialReasonsBlock
+        | AcademicProgrammesBlock
         | NewsEventsHighlightsBlock
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
@@ -4741,6 +4835,7 @@ export interface PagesSelect<T extends boolean = true> {
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
         contentHighlights?: T | ContentHighlightsBlockSelect<T>;
         editorialReasons?: T | EditorialReasonsBlockSelect<T>;
+        academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
         newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
@@ -5353,6 +5448,71 @@ export interface EditorialReasonsBlockSelect<T extends boolean = true> {
   introVerticalAlignment?: T;
   actionsPosition?: T;
   stickyIntro?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AcademicProgrammesBlock_select".
+ */
+export interface AcademicProgrammesBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  programmes?:
+    | T
+    | {
+        image?: T;
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        ctaLabel?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        cardBackground?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  headerLayout?: T;
+  columns?: T;
+  descriptionPosition?: T;
+  sideContentAlignment?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -7245,6 +7405,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
         contentHighlights?: T | ContentHighlightsBlockSelect<T>;
         editorialReasons?: T | EditorialReasonsBlockSelect<T>;
+        academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
         newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;

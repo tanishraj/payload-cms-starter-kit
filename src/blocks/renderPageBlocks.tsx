@@ -5,6 +5,7 @@ import { resolveAutomaticPageBreadcrumbs, type ResolvedPageBreadcrumb } from '@/
 import { AnnouncementBlockComponent } from './Announcement/Component'
 import { ContentHighlightsBlockComponent } from './ContentHighlights/Component'
 import { EditorialReasonsBlockComponent } from './EditorialReasons/Component'
+import { AcademicProgrammesBlockComponent } from './AcademicProgrammes/Component'
 import { QaAccordionBlockComponent } from './QaAccordion/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
@@ -97,6 +98,8 @@ function renderSingleBlock(
       return wrap(<ContentHighlightsBlockComponent {...block} />)
     case 'editorialReasons':
       return wrap(<EditorialReasonsBlockComponent {...block} />)
+    case 'academicProgrammes':
+      return wrap(<AcademicProgrammesBlockComponent {...block} />)
     case 'newsEventsHighlights':
       return wrap(<NewsEventsHighlightsBlockComponent {...block} />)
     case 'profileCarousel':

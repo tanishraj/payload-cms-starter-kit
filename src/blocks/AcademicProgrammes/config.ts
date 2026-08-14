@@ -1,0 +1,244 @@
+import type { ArrayField, Block, CheckboxField, RadioField, SelectField, TabsField } from 'payload'
+
+import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
+import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createCardTabs } from '@/blocks/shared/cardThemeFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+
+type ProgrammeSiblingData = {
+  linkType?: 'custom' | 'none' | 'page' | null
+}
+
+type AcademicProgrammesLayoutSiblingData = {
+  headerLayout?: 'split' | 'stacked' | null
+}
+
+const isSplitHeader = (_data: unknown, siblingData: AcademicProgrammesLayoutSiblingData) =>
+  siblingData?.headerLayout !== 'stacked'
+
+const isPageLink = (_data: unknown, siblingData: ProgrammeSiblingData) =>
+  siblingData?.linkType === 'page'
+
+const isCustomLink = (_data: unknown, siblingData: ProgrammeSiblingData) =>
+  siblingData?.linkType === 'custom'
+
+const hasLink = (_data: unknown, siblingData: ProgrammeSiblingData) =>
+  siblingData?.linkType === 'page' || siblingData?.linkType === 'custom'
+
+const programmesField = {
+  name: 'programmes',
+  label: 'Programmes',
+  type: 'array',
+  required: true,
+  minRows: 1,
+  maxRows: 6,
+  admin: {
+    description: 'Image-led programme cards shown in their displayed order.',
+    initCollapsed: true,
+  },
+  fields: [
+    createCardTabs({
+      contentFields: [
+        {
+          name: 'image',
+          label: 'Programme Image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+        },
+        {
+          name: 'eyebrow',
+          label: 'Study Level / Category',
+          type: 'text',
+        },
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          admin: {
+            description: 'A concise one- or two-sentence programme summary.',
+          },
+        },
+        {
+          name: 'ctaLabel',
+          label: 'Link Label',
+          type: 'text',
+          defaultValue: 'Explore programme',
+        },
+        {
+          name: 'linkType',
+          label: 'Link',
+          type: 'radio',
+          defaultValue: 'none',
+          options: [
+            { label: 'None', value: 'none' },
+            { label: 'Page', value: 'page' },
+            { label: 'Custom URL', value: 'custom' },
+          ],
+          admin: { layout: 'horizontal' },
+        } satisfies RadioField,
+        {
+          name: 'page',
+          type: 'relationship',
+          relationTo: 'pages',
+          admin: { condition: isPageLink },
+        },
+        {
+          name: 'url',
+          label: 'Custom URL',
+          type: 'text',
+          admin: { condition: isCustomLink },
+        },
+        {
+          name: 'openInNewTab',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: { condition: hasLink },
+        } satisfies CheckboxField,
+      ],
+    }),
+  ],
+} satisfies ArrayField
+
+export const AcademicProgrammesBlock: Block = {
+  admin: getBlockThumbnailAdmin('academicProgrammes'),
+  slug: 'academicProgrammes',
+  interfaceName: 'AcademicProgrammesBlock',
+  labels: {
+    singular: 'Academic Programmes',
+    plural: 'Academic Programmes',
+  },
+  fields: [
+    {
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'eyebrow',
+              type: 'text',
+              admin: { description: 'Small label above the section title.' },
+            },
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'accentTitle',
+              label: 'Accent Title',
+              type: 'text',
+              admin: { description: 'Optional italic second line of the heading.' },
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+            },
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
+            programmesField,
+            createContentActionsField({
+              name: 'footerActions',
+              label: 'Footer Actions',
+              maxRows: 2,
+            }),
+          ],
+        },
+        {
+          label: 'Theme Settings',
+          fields: [
+            createBlockAppearanceFields(),
+            {
+              name: 'contentAlignment',
+              label: 'Section Content Alignment',
+              type: 'select',
+              defaultValue: 'left',
+              required: true,
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+                { label: 'Right', value: 'right' },
+              ],
+              admin: {
+                description:
+                  'Aligns the section eyebrow, heading, description, and actions together.',
+              },
+            } satisfies SelectField,
+            {
+              name: 'headerLayout',
+              label: 'Header Layout',
+              type: 'select',
+              defaultValue: 'split',
+              required: true,
+              options: [
+                { label: 'Split', value: 'split' },
+                { label: 'Stacked', value: 'stacked' },
+              ],
+            } satisfies SelectField,
+            {
+              name: 'columns',
+              label: 'Programme Columns',
+              type: 'select',
+              defaultValue: '3',
+              required: true,
+              options: [
+                { label: '2 Columns', value: '2' },
+                { label: '3 Columns', value: '3' },
+                { label: '4 Columns', value: '4' },
+              ],
+            } satisfies SelectField,
+            {
+              name: 'descriptionPosition',
+              label: 'Description Placement',
+              type: 'select',
+              defaultValue: 'side',
+              required: true,
+              options: [
+                { label: 'Right Column', value: 'side' },
+                { label: 'Under Title', value: 'underTitle' },
+              ],
+              admin: {
+                condition: isSplitHeader,
+                description:
+                  'Moves the section description between the title column and the right column.',
+              },
+            } satisfies SelectField,
+            {
+              name: 'sideContentAlignment',
+              label: 'Right Column Alignment',
+              type: 'select',
+              defaultValue: 'bottom',
+              required: true,
+              options: [
+                { label: 'Top', value: 'top' },
+                { label: 'Bottom', value: 'bottom' },
+              ],
+              admin: {
+                condition: isSplitHeader,
+                description:
+                  'Aligns the right-column description and section actions to the top or bottom.',
+              },
+            } satisfies SelectField,
+            {
+              name: 'size',
+              label: 'Section Padding',
+              type: 'select',
+              defaultValue: 'default',
+              required: true,
+              options: [
+                { label: 'None', value: 'none' },
+                { label: 'Compact', value: 'compact' },
+                { label: 'Default', value: 'default' },
+                { label: 'Comfortable', value: 'comfortable' },
+              ],
+            } satisfies SelectField,
+          ],
+        },
+      ],
+    } satisfies TabsField,
+  ],
+}

@@ -9,6 +9,7 @@ import { resolveAutomaticPageBreadcrumbs, type ResolvedPageBreadcrumb } from '@/
 import { AnnouncementBlockComponent } from './Announcement/Component'
 import { ContentHighlightsBlockComponent } from './ContentHighlights/Component'
 import { EditorialReasonsBlockComponent } from './EditorialReasons/Component'
+import { AcademicProgrammesBlockComponent } from './AcademicProgrammes/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
 import { BannerCtaBlockComponent } from './BannerCta/Component'
@@ -101,6 +102,8 @@ function renderSingleLivePreviewBlock(
       return <ContentHighlightsBlockComponent key={key} {...block} />
     case 'editorialReasons':
       return <EditorialReasonsBlockComponent key={key} {...block} />
+    case 'academicProgrammes':
+      return <AcademicProgrammesBlockComponent key={key} {...block} />
     case 'newsEventsHighlights':
       return (
         <NewsEventsHighlightsPreviewBlockComponent
