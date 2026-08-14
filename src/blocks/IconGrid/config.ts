@@ -20,6 +20,49 @@ const isCustomLink = (_data: unknown, siblingData: ItemSiblingData) =>
 const hasLink = (_data: unknown, siblingData: ItemSiblingData) =>
   siblingData?.linkType !== 'none' && siblingData?.linkType != null
 
+const iconGridCardBackgroundValues = [
+  'default',
+  'subtle',
+  'brand',
+  'gradient-subtle',
+  'gradient-brand',
+] as const
+
+type IconGridCardBackground = (typeof iconGridCardBackgroundValues)[number]
+
+const normalizeIconGridCardBackground = (value?: string | null): IconGridCardBackground => {
+  if (iconGridCardBackgroundValues.includes(value as IconGridCardBackground)) {
+    return value as IconGridCardBackground
+  }
+
+  if (value === 'primary') return 'brand'
+  if (value === 'secondary' || value === 'muted' || value === 'accent') return 'subtle'
+
+  return 'default'
+}
+
+const iconGridCardBackgroundField = {
+  name: 'cardBackground',
+  label: 'Background',
+  type: 'select',
+  defaultValue: 'default',
+  required: true,
+  options: [
+    { label: 'Match Section', value: 'default' },
+    { label: 'Subtle', value: 'subtle' },
+    { label: 'Brand', value: 'brand' },
+    { label: 'Gradient: Subtle', value: 'gradient-subtle' },
+    { label: 'Gradient: Brand', value: 'gradient-brand' },
+  ],
+  admin: {
+    description:
+      'Applied to the Card and Contact Cards presentations. Match Section inherits the section surface; Minimal and Icon Top remain unboxed.',
+  },
+  hooks: {
+    afterRead: [({ value }) => normalizeIconGridCardBackground(value as string | null | undefined)],
+  },
+} satisfies SelectField
+
 const itemsField: ArrayField = {
   name: 'items',
   type: 'array',
@@ -31,10 +74,8 @@ const itemsField: ArrayField = {
   },
   fields: [
     createCardTabs({
-      backgroundFieldOptions: {
-        adminDescription:
-          'Applied to the Card presentation. Minimal and Icon Top remain intentionally unboxed.',
-      },
+      includeBackground: false,
+      themeFields: [iconGridCardBackgroundField],
       contentFields: [
         createIconField({ required: true }),
         {
@@ -45,7 +86,8 @@ const itemsField: ArrayField = {
           name: 'description',
           type: 'textarea',
           admin: {
-            description: 'Short supporting text shown below the title.',
+            description:
+              'Short supporting text shown below the title. Contact Cards render each phone number or email on its own line.',
           },
         },
         {
@@ -118,8 +160,12 @@ export const IconGridBlock: Block = {
               admin: { description: 'Optional supporting paragraph below the title.' },
             },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
-            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
             itemsField,
+            createContentActionsField({
+              name: 'footerActions',
+              label: 'Footer Actions',
+              maxRows: 2,
+            }),
           ],
         },
         {
@@ -160,6 +206,7 @@ export const IconGridBlock: Block = {
               defaultValue: 'card',
               options: [
                 { label: 'Card (bordered box)', value: 'card' },
+                { label: 'Contact Cards', value: 'contactCards' },
                 { label: 'Minimal (icon + text, no box)', value: 'minimal' },
                 { label: 'Icon Top (centered icon above title)', value: 'iconTop' },
               ],

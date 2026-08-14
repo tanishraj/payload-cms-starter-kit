@@ -104,6 +104,22 @@ describe('nested card Theme Settings contract', () => {
     },
   )
 
+  it('uses section surface options for Icon Grid cards', () => {
+    const background = findNamedField(IconGridBlock.fields, 'cardBackground')
+
+    expect(background).toMatchObject({
+      type: 'select',
+      defaultValue: 'default',
+      options: [
+        { label: 'Match Section', value: 'default' },
+        { label: 'Subtle', value: 'subtle' },
+        { label: 'Brand', value: 'brand' },
+        { label: 'Gradient: Subtle', value: 'gradient-subtle' },
+        { label: 'Gradient: Brand', value: 'gradient-brand' },
+      ],
+    })
+  })
+
   it.each(utilityRows)('%s.%s stays a utility row without card theming', (block, fieldName) => {
     const array = findNamedField(block.fields, fieldName) as ArrayField
 

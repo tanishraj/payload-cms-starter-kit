@@ -29,10 +29,20 @@
   );
 }
 
+/* Cards use a restrained brand tint rather than the section's full navy
+   surface, preserving the light card treatment and dark readable content. */
+.bg-card-gradient-brand {
+  background: linear-gradient(
+    145deg,
+    var(--muted) 0%,
+    color-mix(in oklch, var(--primary) 10%, var(--background)) 100%
+  );
+}
+
 /* SNMIH fades the subtle gradient into mint instead of the page background. */
 :root[data-theme-color='snmih'] .bg-gradient-subtle {
   background: linear-gradient(
-    180deg,
+    145deg,
     var(--muted) 0%,
     color-mix(in oklch, var(--success) 10%, var(--background)) 100%
   );

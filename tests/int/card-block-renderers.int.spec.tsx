@@ -79,7 +79,7 @@ describe('semantic card surface rendering', () => {
   it('themes Icon Grid cards without turning minimal items into cards', () => {
     const card = renderToStaticMarkup(
       <IconGridBlockComponent
-        items={[{ cardBackground: 'primary', icon: 'Hospital', title: 'Hospital training' }]}
+        items={[{ cardBackground: 'brand', icon: 'Hospital', title: 'Hospital training' }]}
         title="Why choose us"
         variant="card"
       />,
@@ -92,8 +92,73 @@ describe('semantic card surface rendering', () => {
       />,
     )
 
-    expectPrimarySurface(card)
+    expect(card).toContain('data-card-background="brand"')
+    expect(card).toContain('bg-brand text-primary-foreground')
+    expect(card).toContain('bg-primary-foreground/10 text-primary-foreground')
     expect(minimal).not.toContain('data-card-background')
+  })
+
+  it('supports section-aware surfaces on Icon Grid contact cards', () => {
+    const html = renderToStaticMarkup(
+      <IconGridBlockComponent
+        appearance={{ background: 'subtle' }}
+        items={[
+          { cardBackground: 'default', icon: 'Phone', title: 'Admissions' },
+          { cardBackground: 'gradient-brand', icon: 'Phone', title: 'Hospital Enquiry' },
+        ]}
+        variant="contactCards"
+      />,
+    )
+
+    expect(html).toContain('data-card-background="default"')
+    expect(html).toContain('bg-transparent text-current')
+    expect(html).toContain('data-card-background="gradient-brand"')
+    expect(html).toContain('bg-card-gradient-brand text-foreground')
+    expect(html).toContain('bg-primary/10 text-primary')
+    expect(html).not.toContain('bg-gradient-brand text-primary-foreground')
+  })
+
+  it('renders Icon Grid contact cards with multiline contact links', () => {
+    const html = renderToStaticMarkup(
+      <IconGridBlockComponent
+        columns="3"
+        items={[
+          {
+            description: '+91 91990 44557\n064782 99985\nadmissions@example.edu',
+            icon: 'Phone',
+            title: 'College Admissions',
+          },
+        ]}
+        title="Enquiries"
+        variant="contactCards"
+      />,
+    )
+
+    expect(html).toContain('data-icon-grid-presentation="contactCards"')
+    expect(html).toContain('font-[family-name:var(--font-display)]')
+    expect(html).toContain('min-h-64')
+    expect(html).toContain('href="tel:+919199044557"')
+    expect(html).toContain('href="tel:06478299985"')
+    expect(html).toContain('href="mailto:admissions@example.edu"')
+  })
+
+  it('renders Icon Grid items without optional section content', () => {
+    const html = renderToStaticMarkup(
+      <IconGridBlockComponent
+        items={[
+          {
+            description: '+91 91990 44557',
+            icon: 'Phone',
+            title: 'College Admissions',
+          },
+        ]}
+        variant="contactCards"
+      />,
+    )
+
+    expect(html).toContain('College Admissions')
+    expect(html).toContain('data-icon-grid-presentation="contactCards"')
+    expect(html).not.toContain('mb-12')
   })
 
   it('themes Content Highlights only in the numbered-card presentation', () => {

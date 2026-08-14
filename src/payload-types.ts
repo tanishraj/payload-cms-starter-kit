@@ -2832,6 +2832,31 @@ export interface IconGridBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Each item shows an icon, title, and optional description.
+   */
+  items?:
+    | {
+        /**
+         * Lucide icon name — e.g. "Star", "Rocket", "GraduationCap". Browse all icons at lucide.dev/icons
+         */
+        icon: string;
+        title?: string | null;
+        /**
+         * Short supporting text shown below the title. Contact Cards render each phone number or email on its own line.
+         */
+        description?: string | null;
+        linkType?: ('none' | 'page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Applied to the Card and Contact Cards presentations. Match Section inherits the section surface; Minimal and Icon Top remain unboxed.
+         */
+        cardBackground: 'default' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+        id?: string | null;
+      }[]
+    | null;
   footerActions?:
     | {
         label: string;
@@ -2848,31 +2873,6 @@ export interface IconGridBlock {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Each item shows an icon, title, and optional description.
-   */
-  items?:
-    | {
-        /**
-         * Lucide icon name — e.g. "Star", "Rocket", "GraduationCap". Browse all icons at lucide.dev/icons
-         */
-        icon: string;
-        title?: string | null;
-        /**
-         * Short supporting text shown below the title.
-         */
-        description?: string | null;
-        linkType?: ('none' | 'page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        /**
-         * Applied to the Card presentation. Minimal and Icon Top remain intentionally unboxed.
-         */
-        cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
-        id?: string | null;
-      }[]
-    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
@@ -2883,7 +2883,7 @@ export interface IconGridBlock {
    * Label shown on the button or link for each item.
    */
   itemActionLabel?: string | null;
-  variant?: ('card' | 'minimal' | 'iconTop') | null;
+  variant?: ('card' | 'contactCards' | 'minimal' | 'iconTop') | null;
   columns?: ('2' | '3' | '4') | null;
   iconStyle?: ('square' | 'circle' | 'outline' | 'plain') | null;
   contentAlignment?: ('left' | 'center') | null;
@@ -6757,19 +6757,6 @@ export interface IconGridBlockSelect<T extends boolean = true> {
         showArrow?: T;
         id?: T;
       };
-  footerActions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
   items?:
     | T
     | {
@@ -6781,6 +6768,19 @@ export interface IconGridBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
         cardBackground?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
         id?: T;
       };
   appearance?:

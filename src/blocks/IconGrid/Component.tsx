@@ -14,6 +14,7 @@ import {
 } from '@/blocks/shared/blockSpacing'
 import { Button } from '@/components/ui/button'
 import { ContentActions } from '@/components/ContentActions'
+import { ContentLink } from '@/components/ContentLink'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@/lib/cmsLinks'
 import { getPageHref } from '@/lib/pagePaths'
@@ -21,8 +22,14 @@ import type { Page } from '@/payload-types'
 import { cn } from '@/lib/utils'
 import { resolveCardSurface, type CardSurfaceClasses } from '@/blocks/shared/cardSurface'
 
+type IconGridCardBackground = 'default' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand'
+
+type IconGridCardSurface = Omit<CardSurfaceClasses, 'value'> & {
+  value: IconGridCardBackground
+}
+
 type IconGridItem = {
-  cardBackground?: string | null
+  cardBackground?: IconGridCardBackground | 'primary' | 'secondary' | 'muted' | 'accent' | null
   description?: string | null
   icon?: string | null
   linkType?: 'none' | 'page' | 'custom' | null
@@ -49,7 +56,7 @@ type IconGridBlockLike = {
   items?: IconGridItem[] | null
   size?: RegularBlockSize | null
   title?: string | null
-  variant?: 'card' | 'minimal' | 'iconTop' | null
+  variant?: 'card' | 'contactCards' | 'minimal' | 'iconTop' | null
 }
 
 const columnClasses = {
@@ -66,6 +73,53 @@ const iconContainerClasses = {
     'flex size-11 shrink-0 items-center justify-center rounded-lg border border-border text-primary',
   plain: 'flex size-11 shrink-0 items-center justify-center text-primary',
 } as const
+
+function normalizeIconGridCardBackground(value?: string | null): IconGridCardBackground {
+  if (
+    value === 'subtle' ||
+    value === 'brand' ||
+    value === 'gradient-subtle' ||
+    value === 'gradient-brand'
+  ) {
+    return value
+  }
+
+  if (value === 'primary') return 'brand'
+  if (value === 'secondary' || value === 'muted' || value === 'accent') return 'subtle'
+
+  return 'default'
+}
+
+function resolveIconGridCardSurface(
+  value: IconGridItem['cardBackground'],
+  sectionBackground: BlockBackground,
+): IconGridCardSurface {
+  const background = normalizeIconGridCardBackground(value)
+  const surfaceBackground =
+    background === 'default'
+      ? sectionBackground
+      : background === 'gradient-brand'
+        ? 'gradient-subtle'
+        : background
+  const inheritedSurface = resolveCardSurface('default', surfaceBackground)
+
+  if (background === 'default') {
+    return { ...inheritedSurface, value: background }
+  }
+
+  const className =
+    background === 'gradient-brand'
+      ? 'bg-card-gradient-brand text-foreground'
+      : resolveBlockAppearanceClasses({ background, border: 'none' }).className
+  const icon =
+    background === 'brand'
+      ? 'bg-primary-foreground/10 text-primary-foreground'
+      : background === 'gradient-brand'
+        ? 'bg-primary/10 text-primary'
+        : inheritedSurface.icon
+
+  return { ...inheritedSurface, className, icon, value: background }
+}
 
 function resolveHref(item: IconGridItem): { href: string; openInNewTab: boolean } | undefined {
   if (item.linkType === 'custom' && item.url?.trim()) {
@@ -85,7 +139,7 @@ function IconContainer({
 }: {
   icon: string
   iconStyle: keyof typeof iconContainerClasses
-  surface?: CardSurfaceClasses
+  surface?: Pick<IconGridCardSurface, 'icon'>
 }) {
   const Icon = ((LucideIcons as Record<string, unknown>)[icon] as LucideIcon | undefined) ?? Star
   return (
@@ -100,7 +154,7 @@ type ActionProps = {
   actionVariant: CmsActionVariant
   actionLabel: string
   link: { href: string; openInNewTab: boolean }
-  surface?: CardSurfaceClasses
+  surface?: IconGridCardSurface
 }
 
 function CardAction({ actionMode, actionVariant, actionLabel, link, surface }: ActionProps) {
@@ -152,7 +206,7 @@ function CardItem({
   sectionBackground: BlockBackground
 }) {
   const link = resolveHref(item)
-  const surface = resolveCardSurface(item.cardBackground, sectionBackground)
+  const surface = resolveIconGridCardSurface(item.cardBackground, sectionBackground)
   const inner = (
     <div
       data-card-background={surface.value}
@@ -201,6 +255,116 @@ function CardItem({
     )
   }
   return <div className="h-full">{inner}</div>
+}
+
+const phonePattern = /^\+?[\d][\d\s()./-]{5,}$/
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+function resolveContactLine(value: string): { href?: string; label: string } {
+  const label = value.trim()
+
+  if (phonePattern.test(label)) {
+    return { href: `tel:${label.replace(/[^\d+]/g, '')}`, label }
+  }
+
+  if (emailPattern.test(label)) {
+    return { href: `mailto:${label}`, label }
+  }
+
+  return { label }
+}
+
+function ContactCardItem({
+  actionLabel,
+  actionMode,
+  actionVariant,
+  iconStyle,
+  item,
+  sectionBackground,
+}: {
+  actionLabel: string
+  actionMode: 'button' | 'link'
+  actionVariant: CmsActionVariant
+  iconStyle: keyof typeof iconContainerClasses
+  item: IconGridItem
+  sectionBackground: BlockBackground
+}) {
+  const link = resolveHref(item)
+  const surface = resolveIconGridCardSurface(item.cardBackground, sectionBackground)
+  const contactLines = (item.description ?? '')
+    .split(/\r?\n/)
+    .map(resolveContactLine)
+    .filter(({ label }) => label.length > 0)
+
+  return (
+    <article
+      className={cn(
+        'flex min-h-64 flex-col gap-6 rounded-[var(--radius)] border p-8 sm:min-h-72',
+        surface.className,
+        surface.divider,
+      )}
+      data-card-background={surface.value}
+      data-icon-grid-presentation="contactCards"
+    >
+      {item.icon ? (
+        <div className="[&>div]:size-14 [&>div]:rounded-xl [&_svg]:size-6">
+          <IconContainer icon={item.icon} iconStyle={iconStyle} surface={surface} />
+        </div>
+      ) : null}
+
+      <div className="flex flex-1 flex-col gap-3">
+        <h3 className="font-[family-name:var(--font-display)] text-2xl leading-tight font-semibold tracking-tight text-current">
+          {item.title?.trim()}
+        </h3>
+
+        {contactLines.length ? (
+          <address
+            className={cn('flex flex-col gap-1 not-italic text-base leading-7', surface.secondary)}
+          >
+            {contactLines.map(({ href, label }, index) =>
+              href ? (
+                <a
+                  className="w-fit rounded-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
+                  href={href}
+                  key={`${label}-${index}`}
+                >
+                  {label}
+                </a>
+              ) : (
+                <span key={`${label}-${index}`}>{label}</span>
+              ),
+            )}
+          </address>
+        ) : null}
+      </div>
+
+      {link ? (
+        actionMode === 'button' ? (
+          <Button
+            asChild
+            className={cn('self-start', surface.button[actionVariant])}
+            size="sm"
+            variant={actionVariant}
+          >
+            <a
+              href={link.href}
+              rel={link.openInNewTab ? 'noopener noreferrer' : undefined}
+              target={link.openInNewTab ? '_blank' : undefined}
+            >
+              {actionLabel}
+            </a>
+          </Button>
+        ) : (
+          <ContentLink
+            className={surface.link}
+            href={link.href}
+            label={actionLabel}
+            openInNewTab={link.openInNewTab}
+          />
+        )
+      ) : null}
+    </article>
+  )
 }
 
 // ── Minimal variant ───────────────────────────────────────────────────────────
@@ -328,13 +492,13 @@ export function IconGridBlockComponent({
   variant = 'card',
 }: IconGridBlockLike) {
   const resolvedTitle = title?.trim()
-  if (!resolvedTitle) return null
   const resolvedAccentTitle = accentTitle?.trim() || undefined
 
   const validItems = (items ?? []).filter((item) => item.title?.trim())
   if (validItems.length === 0) return null
 
-  const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
+  const { background: sectionBackground, className: appearanceClassName } =
+    resolveBlockAppearanceClasses(appearance)
   const isCenter = (contentAlignment ?? 'center') === 'center'
   const resolvedActions = resolveCmsActions(actions)
   const resolvedColumns = columns ?? '3'
@@ -343,8 +507,6 @@ export function IconGridBlockComponent({
   const resolvedActionMode = actionMode ?? 'link'
   const resolvedActionVariant = actionVariant ?? 'default'
   const resolvedActionLabel = itemActionLabel?.trim() || 'Learn More'
-  const sectionBackground: BlockBackground = appearance?.background ?? 'none'
-
   const itemProps = {
     iconStyle: resolvedIconStyle,
     actionMode: resolvedActionMode,
@@ -352,6 +514,9 @@ export function IconGridBlockComponent({
     actionLabel: resolvedActionLabel,
     sectionBackground,
   }
+  const hasHeader = Boolean(
+    eyebrow?.trim() || resolvedTitle || description?.trim() || resolvedActions.length,
+  )
 
   return (
     <section
@@ -359,40 +524,45 @@ export function IconGridBlockComponent({
     >
       <div className={regularBlockContainerClasses}>
         {/* Header */}
-        <div
-          className={cn(
-            'mb-12 flex flex-col gap-4',
-            isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start',
-          )}
-        >
-          {eyebrow?.trim() ? (
-            <SectionEyebrow surface={sectionBackground}>
-              {eyebrow.trim()}
-            </SectionEyebrow>
-          ) : null}
-          <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-            {resolvedAccentTitle ? (
-              <>
-                <span className="block font-[inherit]">{resolvedTitle}</span>
-                <em className="block font-[inherit]">{resolvedAccentTitle}</em>
-              </>
-            ) : (
-              resolvedTitle
+        {hasHeader ? (
+          <div
+            className={cn(
+              'mb-12 flex flex-col gap-4',
+              isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start',
             )}
-          </h2>
-          {description?.trim() ? (
-            <p className="text-base leading-7 text-current/70">{description.trim()}</p>
-          ) : null}
-          {resolvedActions.length > 0 ? (
-            <div className="mt-2">
-              <ContentActions actions={resolvedActions} />
-            </div>
-          ) : null}
-        </div>
+          >
+            {eyebrow?.trim() ? (
+              <SectionEyebrow surface={sectionBackground}>{eyebrow.trim()}</SectionEyebrow>
+            ) : null}
+            {resolvedTitle ? (
+              <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
+                {resolvedAccentTitle ? (
+                  <>
+                    <span className="block font-[inherit]">{resolvedTitle}</span>
+                    <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+                  </>
+                ) : (
+                  resolvedTitle
+                )}
+              </h2>
+            ) : null}
+            {description?.trim() ? (
+              <p className="text-base leading-7 text-current/70">{description.trim()}</p>
+            ) : null}
+            {resolvedActions.length > 0 ? (
+              <div className="mt-2">
+                <ContentActions actions={resolvedActions} />
+              </div>
+            ) : null}
+          </div>
+        ) : null}
 
         {/* Grid */}
         <div className={cn('grid grid-cols-1 gap-6', columnClasses[resolvedColumns])}>
           {validItems.map((item, index) => {
+            if (resolvedVariant === 'contactCards') {
+              return <ContactCardItem key={index} item={item} {...itemProps} />
+            }
             if (resolvedVariant === 'minimal') {
               return <MinimalItem key={index} item={item} {...itemProps} />
             }
