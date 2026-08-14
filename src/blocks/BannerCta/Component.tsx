@@ -4,6 +4,22 @@ import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
+import {
+  bannerActionAlignmentClasses,
+  bannerAlignmentClasses,
+  bannerContentWidthClasses,
+  bannerHeightClasses,
+  bannerOverlayClasses,
+  bannerTextToneClasses,
+  bannerTitleSizeClasses,
+  type BannerActionPlacement,
+  type BannerContentAlignment,
+  type BannerContentWidth,
+  type BannerHeight,
+  type BannerOverlayDirection,
+  type BannerOverlayStyle,
+  type BannerThemeMode,
+} from '@/blocks/shared/bannerCtaPresentation'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import {
   regularBlockContainerClasses,
@@ -16,127 +32,24 @@ import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
 
-type BannerCtaAlignment = 'center' | 'left' | 'right'
-type BannerCtaContentWidth = 'default' | 'narrow' | 'wide'
-type BannerCtaHeight = 'compact' | 'default' | 'immersive'
-type BannerCtaOverlayDirection = 'leftToRight' | 'rightToLeft' | 'vertical'
-type BannerCtaOverlayStyle = 'dark' | 'darker' | 'light'
-type BannerCtaPlacement = 'below' | 'side'
-type BannerCtaThemeMode = 'auto' | 'dark' | 'light'
-
 type BannerCtaBlockLike = {
   accentTitle?: string | null
-  actionPlacement?: BannerCtaPlacement | null
+  actionPlacement?: BannerActionPlacement | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   backgroundImage?: unknown
-  contentAlignment?: BannerCtaAlignment | null
-  contentWidth?: BannerCtaContentWidth | null
+  contentAlignment?: BannerContentAlignment | null
+  contentWidth?: BannerContentWidth | null
   description?: string | null
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
-  height?: BannerCtaHeight | null
-  overlayDirection?: BannerCtaOverlayDirection | null
-  overlayStyle?: BannerCtaOverlayStyle | null
+  height?: BannerHeight | null
+  overlayDirection?: BannerOverlayDirection | null
+  overlayStyle?: BannerOverlayStyle | null
   size?: RegularBlockSize | null
-  themeMode?: BannerCtaThemeMode | null
+  themeMode?: BannerThemeMode | null
   title?: string | null
 }
-
-// `auto` tints with --primary so the scrim tracks the active theme; `light`
-// tints with --background for a pale scrim under dark copy; `dark` tints with
-// black so white copy stays readable in either mode.
-const overlayClasses = {
-  auto: {
-    light: {
-      vertical: 'bg-linear-to-b from-primary/72 via-primary/56 to-primary/78',
-      leftToRight: 'bg-linear-to-r from-primary/72 via-primary/56 to-primary/78',
-      rightToLeft: 'bg-linear-to-l from-primary/72 via-primary/56 to-primary/78',
-    },
-    dark: {
-      vertical: 'bg-linear-to-b from-primary/86 via-primary/72 to-primary/88',
-      leftToRight: 'bg-linear-to-r from-primary/86 via-primary/72 to-primary/88',
-      rightToLeft: 'bg-linear-to-l from-primary/86 via-primary/72 to-primary/88',
-    },
-    // Weighted toward the copy edge so the image stays visible opposite it.
-    darker: {
-      vertical: 'bg-linear-to-b from-primary/95 via-primary/82 to-primary/45',
-      leftToRight: 'bg-linear-to-r from-primary/95 via-primary/82 to-primary/45',
-      rightToLeft: 'bg-linear-to-l from-primary/95 via-primary/82 to-primary/45',
-    },
-  },
-  light: {
-    light: {
-      vertical: 'bg-linear-to-b from-background/72 via-background/56 to-background/78',
-      leftToRight: 'bg-linear-to-r from-background/72 via-background/56 to-background/78',
-      rightToLeft: 'bg-linear-to-l from-background/72 via-background/56 to-background/78',
-    },
-    dark: {
-      vertical: 'bg-linear-to-b from-background/82 via-background/68 to-background/86',
-      leftToRight: 'bg-linear-to-r from-background/82 via-background/68 to-background/86',
-      rightToLeft: 'bg-linear-to-l from-background/82 via-background/68 to-background/86',
-    },
-    darker: {
-      vertical: 'bg-linear-to-b from-background/94 via-background/80 to-background/40',
-      leftToRight: 'bg-linear-to-r from-background/94 via-background/80 to-background/40',
-      rightToLeft: 'bg-linear-to-l from-background/94 via-background/80 to-background/40',
-    },
-  },
-  dark: {
-    light: {
-      vertical: 'bg-linear-to-b from-black/56 via-black/42 to-black/62',
-      leftToRight: 'bg-linear-to-r from-black/56 via-black/42 to-black/62',
-      rightToLeft: 'bg-linear-to-l from-black/56 via-black/42 to-black/62',
-    },
-    dark: {
-      vertical: 'bg-linear-to-b from-black/68 via-black/54 to-black/74',
-      leftToRight: 'bg-linear-to-r from-black/68 via-black/54 to-black/74',
-      rightToLeft: 'bg-linear-to-l from-black/68 via-black/54 to-black/74',
-    },
-    // Weighted toward the copy edge so the image stays visible opposite it.
-    darker: {
-      vertical: 'bg-linear-to-b from-black/86 via-black/70 to-black/34',
-      leftToRight: 'bg-linear-to-r from-black/86 via-black/70 to-black/34',
-      rightToLeft: 'bg-linear-to-l from-black/86 via-black/70 to-black/34',
-    },
-  },
-} as const
-
-const textToneClasses = {
-  auto: { title: 'text-primary-foreground', description: 'text-primary-foreground/84' },
-  light: { title: 'text-foreground', description: 'text-foreground/84' },
-  dark: { title: 'text-white', description: 'text-white/84' },
-} as const
-
-const alignmentClasses = {
-  left: 'items-start text-left',
-  center: 'items-center text-center',
-  right: 'items-end text-right',
-} as const
-
-const actionAlignmentClasses = {
-  left: 'justify-start',
-  center: 'justify-center',
-  right: 'justify-end',
-} as const
-
-const contentWidthClasses = {
-  narrow: 'max-w-xl',
-  default: 'max-w-2xl',
-  wide: 'max-w-4xl',
-} as const
-
-const titleSizeClasses = {
-  compact: 'text-3xl sm:text-4xl md:text-5xl',
-  default: 'text-4xl sm:text-5xl md:text-6xl',
-  immersive: 'text-4xl sm:text-6xl md:text-7xl',
-} as const
-
-const heightClasses = {
-  compact: 'min-h-[32dvh]',
-  default: 'min-h-[46dvh]',
-  immersive: 'min-h-[68dvh]',
-} as const
 
 export function BannerCtaBlockComponent({
   accentTitle,
@@ -198,6 +111,7 @@ export function BannerCtaBlockComponent({
       className={cn(
         'relative isolate overflow-hidden',
         !image && appearanceClasses.className,
+        image && bannerTextToneClasses[resolvedThemeMode].title,
         regularBlockMobilePaddingClasses[resolvedSize],
       )}
       data-banner-cta-background={appearanceClasses.background}
@@ -213,7 +127,9 @@ export function BannerCtaBlockComponent({
           <div
             className={cn(
               'absolute inset-0 -z-10',
-              overlayClasses[resolvedThemeMode][resolvedOverlayStyle][resolvedOverlayDirection],
+              bannerOverlayClasses[resolvedThemeMode][resolvedOverlayStyle][
+                resolvedOverlayDirection
+              ],
             )}
             data-banner-cta-overlay={resolvedOverlayStyle}
             data-banner-cta-overlay-direction={resolvedOverlayDirection}
@@ -226,7 +142,7 @@ export function BannerCtaBlockComponent({
         className={cn(
           regularBlockContainerClasses,
           'flex flex-col justify-center gap-10',
-          heightClasses[resolvedHeight],
+          bannerHeightClasses[resolvedHeight],
           // The side column only splits off once there is room for two columns.
           isSideColumn && 'lg:flex-row lg:items-center lg:justify-between lg:gap-16',
         )}
@@ -235,8 +151,8 @@ export function BannerCtaBlockComponent({
         <div
           className={cn(
             'flex w-full flex-col gap-6',
-            contentWidthClasses[resolvedContentWidth],
-            alignmentClasses[resolvedAlignment],
+            bannerContentWidthClasses[resolvedContentWidth],
+            bannerAlignmentClasses[resolvedAlignment],
           )}
           data-banner-cta-content="true"
           data-banner-cta-content-width={resolvedContentWidth}
@@ -250,8 +166,8 @@ export function BannerCtaBlockComponent({
           <h2
             className={cn(
               'font-semibold tracking-tight text-balance',
-              titleSizeClasses[resolvedHeight],
-              textToneClasses[resolvedThemeMode].title,
+              bannerTitleSizeClasses[resolvedHeight],
+              bannerTextToneClasses[resolvedThemeMode].title,
             )}
           >
             <span className="block font-[inherit]">{resolvedTitle}</span>
@@ -264,7 +180,7 @@ export function BannerCtaBlockComponent({
             <p
               className={cn(
                 'max-w-[60ch] text-base leading-7 text-balance',
-                textToneClasses[resolvedThemeMode].description,
+                bannerTextToneClasses[resolvedThemeMode].description,
               )}
               data-banner-cta-description="true"
             >
@@ -283,7 +199,10 @@ export function BannerCtaBlockComponent({
 
         {isSideColumn && resolvedActions.length > 0 ? (
           <div
-            className={cn('flex w-full lg:w-auto lg:min-w-56', actionAlignmentClasses[resolvedAlignment])}
+            className={cn(
+              'flex w-full lg:w-auto lg:min-w-56',
+              bannerActionAlignmentClasses[resolvedAlignment],
+            )}
             data-banner-cta-action-column="true"
           >
             {/* Forced to a column so each action fills the rail at any width. */}

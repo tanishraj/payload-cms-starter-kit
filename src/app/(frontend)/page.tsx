@@ -15,7 +15,7 @@ export default async function HomePage() {
   const systemPageState = await getHomepageRenderState()
 
   if (systemPageState.page) {
-    return <PageContent page={systemPageState.page} />
+    return <PageContent isHomepage page={systemPageState.page} />
   }
 
   if (systemPageState.mode) {
@@ -28,5 +28,5 @@ export default async function HomePage() {
     notFound()
   }
 
-  return <PageContent page={page} />
+  return <PageContent isHomepage page={page} />
 }

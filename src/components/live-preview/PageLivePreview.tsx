@@ -14,6 +14,7 @@ const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 type Props = {
   eventGalleryAlbums: EventGalleryAlbum[]
   initialData: Page
+  isHomepage: boolean
   newsEventsSnapshot: NewsEventsPreviewSnapshot
   officeLocations: SiteOfficeLocation[]
   reviewSnapshot: ReviewPreviewSnapshot
@@ -22,13 +23,14 @@ type Props = {
 export function PageLivePreview({
   eventGalleryAlbums,
   initialData,
+  isHomepage,
   newsEventsSnapshot,
   officeLocations,
   reviewSnapshot,
 }: Props) {
   const router = useRouter()
   const { data } = useLivePreview<Page>({
-    depth: 2,
+    depth: 8,
     initialData,
     serverURL,
   })
@@ -41,8 +43,9 @@ export function PageLivePreview({
         newsEventsSnapshot,
         officeLocations,
         eventGalleryAlbums,
+        { isHomepage, page: data },
       )}
-      <RefreshRouteOnSave depth={2} refresh={() => router.refresh()} serverURL={serverURL} />
+      <RefreshRouteOnSave depth={8} refresh={() => router.refresh()} serverURL={serverURL} />
     </>
   )
 }

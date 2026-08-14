@@ -10,6 +10,10 @@ import {
   getSystemPageRenderState,
 } from '../pageData'
 import { getRedirectByPath } from '@/lib/redirects'
+import {
+  resolvePageBreadcrumbsForLayout,
+  toBreadcrumbListStructuredData,
+} from '@/lib/pageBreadcrumbs'
 import { toAbsoluteSiteUrl } from '@/lib/siteUrl'
 
 type PageProps = {
@@ -59,12 +63,10 @@ export default async function CmsPage({ params }: PageProps) {
   }
 
   const pageUrl = toAbsoluteSiteUrl(`/${slug.join('/')}`)
-  const breadcrumbItems = slug.map((segment, i) => ({
-    '@type': 'ListItem',
-    item: toAbsoluteSiteUrl(`/${slug.slice(0, i + 1).join('/')}`),
-    name: segment.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
-    position: i + 2,
-  }))
+  const breadcrumbStructuredData = toBreadcrumbListStructuredData(
+    resolvePageBreadcrumbsForLayout(page),
+    toAbsoluteSiteUrl,
+  )
 
   const structuredData = [
     {
@@ -73,18 +75,7 @@ export default async function CmsPage({ params }: PageProps) {
       name: page.title,
       url: pageUrl,
     },
-    ...(breadcrumbItems.length > 0
-      ? [
-          {
-            '@context': 'https://schema.org',
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              { '@type': 'ListItem', item: toAbsoluteSiteUrl('/'), name: 'Home', position: 1 },
-              ...breadcrumbItems,
-            ],
-          },
-        ]
-      : []),
+    ...(breadcrumbStructuredData ? [breadcrumbStructuredData] : []),
   ]
 
   return (

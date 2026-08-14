@@ -4,6 +4,7 @@ import type { ReviewPreviewSnapshot } from '@/lib/reviewPreviewShared'
 import type { NewsEventsPreviewSnapshot } from '@/lib/newsEventsPreviewShared'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
 import type { EventGalleryAlbum } from '@/lib/eventGalleryShared'
+import { resolveAutomaticPageBreadcrumbs, type ResolvedPageBreadcrumb } from '@/lib/pageBreadcrumbs'
 
 import { AnnouncementBlockComponent } from './Announcement/Component'
 import { ContentHighlightsBlockComponent } from './ContentHighlights/Component'
@@ -38,6 +39,7 @@ import { ProgramGridBlockComponent } from './ProgramGrid/Component'
 import { ProgramMatrixBlockComponent } from './ProgramMatrix/Component'
 import { LogoStripBlockComponent } from './LogoStrip/Component'
 import { PageHeaderBlockComponent } from './PageHeader/Component'
+import { BreadcrumbBlockComponent } from './Breadcrumb/Component'
 import { TimelineBlockComponent } from './Timeline/Component'
 import { IconGridBlockComponent } from './IconGrid/Component'
 import { QuoteBlockBlockComponent } from './QuoteBlock/Component'
@@ -58,6 +60,7 @@ type PopulatedReusableSection = {
 }
 
 type SnapshotArgs = {
+  automaticBreadcrumbs: ResolvedPageBreadcrumb[]
   snapshot: ReviewPreviewSnapshot
   newsEventsSnapshot: NewsEventsPreviewSnapshot
   officeLocations: SiteOfficeLocation[]
@@ -73,7 +76,13 @@ function renderSingleLivePreviewBlock(
   if (depth > 10) return null
 
   const key = block.id ?? `${block.blockType}-${index}`
-  const { snapshot, newsEventsSnapshot, officeLocations, eventGalleryAlbums } = args
+  const {
+    automaticBreadcrumbs,
+    snapshot,
+    newsEventsSnapshot,
+    officeLocations,
+    eventGalleryAlbums,
+  } = args
 
   switch (block.blockType) {
     case 'announcement':
@@ -105,9 +114,7 @@ function renderSingleLivePreviewBlock(
     case 'galleryShowcase':
       return <GalleryShowcaseBlockComponent key={key} {...block} />
     case 'eventGallery':
-      return (
-        <EventGalleryPreviewBlockComponent albums={eventGalleryAlbums} key={key} {...block} />
-      )
+      return <EventGalleryPreviewBlockComponent albums={eventGalleryAlbums} key={key} {...block} />
     case 'imageMosaic':
       return <ImageMosaicBlockComponent key={key} {...block} />
     case 'reviewSubmission':
@@ -131,9 +138,7 @@ function renderSingleLivePreviewBlock(
     case 'services21':
       return <Services21BlockComponent key={key} {...block} />
     case 'newsGrid':
-      return (
-        <NewsGridPreviewBlockComponent key={key} snapshot={newsEventsSnapshot} {...block} />
-      )
+      return <NewsGridPreviewBlockComponent key={key} snapshot={newsEventsSnapshot} {...block} />
     case 'bannerCta':
       return <BannerCtaBlockComponent key={key} {...block} />
     case 'cta39':
@@ -151,7 +156,21 @@ function renderSingleLivePreviewBlock(
     case 'logoStrip':
       return <LogoStripBlockComponent key={key} {...block} />
     case 'pageHeader':
-      return <PageHeaderBlockComponent key={key} {...block} />
+      return (
+        <PageHeaderBlockComponent
+          key={key}
+          {...block}
+          automaticBreadcrumbs={automaticBreadcrumbs}
+        />
+      )
+    case 'breadcrumb':
+      return (
+        <BreadcrumbBlockComponent
+          key={key}
+          {...block}
+          automaticBreadcrumbs={automaticBreadcrumbs}
+        />
+      )
     case 'timeline':
       return <TimelineBlockComponent key={key} {...block} />
     case 'iconGrid':
@@ -197,12 +216,21 @@ export function renderLivePreviewPageBlocks(
   newsEventsSnapshot: NewsEventsPreviewSnapshot,
   officeLocations: SiteOfficeLocation[],
   eventGalleryAlbums: EventGalleryAlbum[],
+  context: { isHomepage?: boolean; page?: Page | null } = {},
 ) {
   if (!blocks?.length) {
     return null
   }
 
-  const args: SnapshotArgs = { snapshot, newsEventsSnapshot, officeLocations, eventGalleryAlbums }
+  const args: SnapshotArgs = {
+    automaticBreadcrumbs: context.page
+      ? resolveAutomaticPageBreadcrumbs(context.page, { isHomepage: context.isHomepage })
+      : [],
+    snapshot,
+    newsEventsSnapshot,
+    officeLocations,
+    eventGalleryAlbums,
+  }
 
   return (
     <PageBlockStack>

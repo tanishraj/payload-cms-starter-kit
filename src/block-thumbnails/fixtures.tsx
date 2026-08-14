@@ -43,6 +43,7 @@ import { LogoStripBlockComponent } from '@/blocks/LogoStrip/Component'
 import { MediaCarouselBlockComponent } from '@/blocks/MediaCarousel/Component'
 import { NumberedStepsBlockComponent } from '@/blocks/NumberedSteps/Component'
 import { PageHeaderBlockComponent } from '@/blocks/PageHeader/Component'
+import { BreadcrumbBlockComponent } from '@/blocks/Breadcrumb/Component'
 import { ProgramGridBlockComponent } from '@/blocks/ProgramGrid/Component'
 import { ProgramMatrixBlockComponent } from '@/blocks/ProgramMatrix/Component'
 import { QuoteBlockBlockComponent } from '@/blocks/QuoteBlock/Component'
@@ -1604,19 +1605,57 @@ export const blockThumbnailFixtures = {
   ),
   pageHeader: (
     <PageHeaderBlockComponent
-      appearance={{ background: 'none', border: 'none' }}
-      backgroundImage={fakeMedia(editorialLandscape, 'Campus overview', 1600, 900)}
-      breadcrumbs={[
-        { label: 'Home', linkType: 'custom', url: '/' },
-        { label: 'Programs', linkType: 'custom', url: '/programs' },
+      actionPlacement="side"
+      actions={[
+        {
+          label: 'Explore Admissions',
+          linkType: 'custom',
+          mode: 'button',
+          showArrow: true,
+          url: '/admissions',
+          variant: 'default',
+        },
+        {
+          label: 'Download Brochure',
+          linkType: 'custom',
+          mode: 'button',
+          showArrow: true,
+          url: '/brochure.pdf',
+          variant: 'outline',
+        },
       ]}
+      appearance={{ background: 'brand', border: 'none' }}
+      backgroundImage={fakeMedia(editorialLandscape, 'Medical learning environment', 1600, 900)}
+      breadcrumbMode="hidden"
       contentAlignment="left"
-      eyebrow="Academic programs"
+      contentWidth="default"
+      eyebrow="Admissions"
       height="default"
-      overlayStyle="dark"
-      title="Find the program that fits your goals."
-      subtitle="Over forty specialisations across business, technology, health, and the arts."
+      overlayDirection="leftToRight"
+      overlayStyle="darker"
+      size="default"
+      subtitle="Discover an academic environment built around knowledge, clinical experience, and compassionate care."
+      themeMode="dark"
+      title="Your journey in medicine starts here."
+      topContent="eyebrow"
       variant="banner"
+    />
+  ),
+  breadcrumb: (
+    <BreadcrumbBlockComponent
+      alignment="left"
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
+      automaticBreadcrumbs={[
+        { label: 'Home', url: '/' },
+        { label: 'Academics', url: '/academics' },
+        { label: 'MBBS Programme', url: '/academics/mbbs' },
+      ]}
+      breadcrumbMode="automatic"
+      sectionPadding="compact"
+      separator="chevron"
+      showCurrentPage
+      showHome
+      size="default"
     />
   ),
   programGrid: (

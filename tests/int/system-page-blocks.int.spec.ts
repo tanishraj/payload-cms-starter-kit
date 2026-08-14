@@ -139,10 +139,11 @@ describe('system page block schemas', () => {
     const pageSlugs = collectBlockSlugs(Pages.fields)
     const reusableSectionSlugs = collectBlockSlugs(ReusableSections.fields)
 
-    expect(pageSlugs).toHaveLength(43)
+    expect(pageSlugs).toHaveLength(44)
     expect(new Set(pageSlugs).size).toBe(pageSlugs.length)
     expect(pageSlugs).toContain('programMatrix')
     expect(pageSlugs).toContain('newsGrid')
+    expect(pageSlugs).toContain('breadcrumb')
     expect(pageSlugs).not.toContain('feature166')
     expect(reusableSectionSlugs.slice().sort()).toEqual(
       pageSlugs.filter((slug) => slug !== 'reusableSection').sort(),

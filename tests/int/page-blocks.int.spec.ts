@@ -167,10 +167,11 @@ describe('page block pipeline', () => {
     const livePreviewRenderer = readFileSync('src/blocks/renderLivePreviewPageBlocks.tsx', 'utf8')
 
     expect(layoutField?.type).toBe('blocks')
-    expect(registeredSlugs).toHaveLength(43)
+    expect(registeredSlugs).toHaveLength(44)
     expect(new Set(registeredSlugs).size).toBe(registeredSlugs.length)
     expect(registeredSlugs).toContain('programMatrix')
     expect(registeredSlugs).toContain('newsGrid')
+    expect(registeredSlugs).toContain('breadcrumb')
     expect(registeredSlugs).not.toContain('feature166')
 
     for (const slug of registeredSlugs) {

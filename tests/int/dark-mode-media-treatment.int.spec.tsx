@@ -17,17 +17,14 @@ const media = {
 describe('dark-mode media treatments', () => {
   it('keeps dark source logos visible on dark Logo Strip surfaces', () => {
     const html = renderToStaticMarkup(
-      <LogoStripBlockComponent
-        displayMode="grid"
-        logos={[{ image: media, label: 'Northstar' }]}
-      />,
+      <LogoStripBlockComponent displayMode="grid" logos={[{ image: media, label: 'Northstar' }]} />,
     )
 
     expect(html).toContain('dark:brightness-0')
     expect(html).toContain('dark:invert')
   })
 
-  it('uses a neutral dark Page Header overlay in every color scheme', () => {
+  it('uses the shared neutral dark Page Header overlay treatment', () => {
     const html = renderToStaticMarkup(
       <PageHeaderBlockComponent
         backgroundImage={media}
@@ -38,7 +35,9 @@ describe('dark-mode media treatments', () => {
       />,
     )
 
-    expect(html).toContain('bg-black/20')
+    expect(html).toContain('bg-linear-to-r from-black/56 via-black/42 to-black/62')
+    expect(html).toContain('data-page-header-theme="dark"')
+    expect(html).toContain('data-page-header-overlay="light"')
     expect(html).toContain('data-section-eyebrow-surface="darkOverlay"')
     expect(html).not.toContain('bg-foreground/20')
   })

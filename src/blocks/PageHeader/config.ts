@@ -1,58 +1,40 @@
-import type { ArrayField, Block, RadioField, SelectField, TabsField } from 'payload'
+import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import {
+  createBannerActionPlacementField,
+  createBannerContentAlignmentField,
+  createBannerContentWidthField,
+  createBannerHeightField,
+  createBannerOverlayDirectionField,
+  createBannerOverlayStyleField,
+  createBannerSectionPaddingField,
+  createBannerThemeModeField,
+} from '@/blocks/shared/bannerCtaFields'
+import { createBreadcrumbModeField, createBreadcrumbsField } from '@/blocks/shared/breadcrumbFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
-type BreadcrumbSiblingData = {
-  linkType?: 'page' | 'custom' | null
+const isBanner = (_data: unknown, siblingData: { variant?: string | null }) =>
+  siblingData?.variant === 'banner'
+
+type PageHeaderTopContentSiblings = {
+  topContent?: 'breadcrumb' | 'eyebrow' | null
 }
 
-const isPageLink = (_data: unknown, siblingData: BreadcrumbSiblingData) =>
-  siblingData?.linkType === 'page'
+const usesBreadcrumbTopContent = (_data: unknown, siblingData: PageHeaderTopContentSiblings) =>
+  siblingData?.topContent !== 'eyebrow'
 
-const isCustomLink = (_data: unknown, siblingData: BreadcrumbSiblingData) =>
-  siblingData?.linkType === 'custom'
+const usesEyebrowTopContent = (_data: unknown, siblingData: PageHeaderTopContentSiblings) =>
+  siblingData?.topContent === 'eyebrow'
 
-const breadcrumbsField: ArrayField = {
-  name: 'breadcrumbs',
-  label: 'Breadcrumbs',
-  type: 'array',
-  maxRows: 6,
-  admin: {
-    initCollapsed: true,
-    description: 'Navigation trail shown above the page title. Last item is treated as the current page (not a link).',
-  },
-  fields: [
-    {
-      name: 'label',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'linkType',
-      type: 'radio',
-      defaultValue: 'page',
-      options: [
-        { label: 'Page', value: 'page' },
-        { label: 'Custom URL', value: 'custom' },
-      ],
-      admin: { layout: 'horizontal' },
-    } satisfies RadioField,
-    {
-      name: 'page',
-      type: 'relationship',
-      relationTo: 'pages',
-      admin: { condition: isPageLink },
-    },
-    {
-      name: 'url',
-      label: 'Custom URL',
-      type: 'text',
-      admin: { condition: isCustomLink },
-    },
-  ],
-}
+const breadcrumbModeField = createBreadcrumbModeField({
+  condition: usesBreadcrumbTopContent,
+  includeHidden: true,
+  label: 'Breadcrumb Display',
+})
+
+const breadcrumbsField = createBreadcrumbsField({ condition: usesBreadcrumbTopContent })
 
 const keyFactsField: ArrayField = {
   name: 'keyFacts',
@@ -60,21 +42,26 @@ const keyFactsField: ArrayField = {
   type: 'array',
   maxRows: 6,
   admin: {
+    hidden: true,
     initCollapsed: true,
-    description: 'Displayed in the right panel for the Split variant (e.g. Duration: 4 Years).',
+    description: 'Legacy Page Header data retained for backwards compatibility. Not displayed.',
   },
   fields: [
     {
       name: 'label',
       type: 'text',
-      required: true,
-      admin: { description: 'e.g. Duration, Intake, Mode, Eligibility' },
+      admin: {
+        hidden: true,
+        description: 'Legacy field retained for existing content. It is no longer displayed.',
+      },
     },
     {
       name: 'value',
       type: 'text',
       required: true,
-      admin: { description: 'e.g. 4 Years, 60 Seats, Full Time' },
+      admin: {
+        description: 'Primary statement, e.g. Medical education connected with patient care.',
+      },
     },
   ],
 }
@@ -94,11 +81,37 @@ export const PageHeaderBlock: Block = {
         {
           label: 'Content',
           fields: [
+            {
+              name: 'backgroundImage',
+              label: 'Background Image',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description: 'Used as the full-bleed backdrop for the Banner variant.',
+              },
+            },
+            {
+              name: 'topContent',
+              label: 'Top Content',
+              type: 'select',
+              defaultValue: 'breadcrumb',
+              options: [
+                { label: 'Breadcrumb', value: 'breadcrumb' },
+                { label: 'Eyebrow', value: 'eyebrow' },
+              ],
+              required: true,
+              admin: {
+                description: 'Choose the single element displayed above the page title.',
+              },
+            } satisfies SelectField,
             breadcrumbsField,
             {
               name: 'eyebrow',
               type: 'text',
-              admin: { description: 'Small label above the page title.' },
+              admin: {
+                condition: usesEyebrowTopContent,
+                description: 'Small label above the page title.',
+              },
             },
             {
               name: 'title',
@@ -110,17 +123,12 @@ export const PageHeaderBlock: Block = {
               type: 'textarea',
               admin: { description: 'Supporting line below the title.' },
             },
-            createContentActionsField({ label: 'Actions', maxRows: 2 }),
-            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
-            {
-              name: 'backgroundImage',
-              label: 'Background Image',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Used by the Banner and Split variants.',
-              },
-            },
+            createContentActionsField({ label: 'Actions', maxRows: 3 }),
+            createContentActionsField({
+              name: 'footerActions',
+              label: 'Footer Actions',
+              maxRows: 2,
+            }),
             keyFactsField,
           ],
         },
@@ -134,56 +142,40 @@ export const PageHeaderBlock: Block = {
               defaultValue: 'minimal',
               options: [
                 {
-                  label: 'Minimal — title, subtitle, breadcrumb',
+                  label: 'Minimal — theme surface page introduction',
                   value: 'minimal',
                 },
                 {
-                  label: 'Banner — full-bleed background image',
+                  label: 'Banner — optional full-bleed background image',
                   value: 'banner',
                 },
-                {
-                  label: 'Split — title left, key facts panel right',
-                  value: 'split',
-                },
               ],
               required: true,
+            } satisfies SelectField,
+            breadcrumbModeField,
+            {
+              name: 'keyFactsNumberPosition',
+              label: 'Number Position',
+              type: 'select',
+              defaultValue: 'inline',
+              options: [
+                { label: 'Inline with text', value: 'inline' },
+                { label: 'Above text', value: 'above' },
+              ],
+              admin: {
+                hidden: true,
+                description: 'Legacy Key Facts setting retained for backwards compatibility.',
+              },
             } satisfies SelectField,
             createBlockAppearanceFields(),
-            {
-              name: 'contentAlignment',
-              label: 'Content Alignment',
-              type: 'select',
-              defaultValue: 'left',
-              options: [
-                { label: 'Left', value: 'left' },
-                { label: 'Center', value: 'center' },
-              ],
-              required: true,
-            } satisfies SelectField,
-            {
-              name: 'overlayStyle',
-              label: 'Image Overlay (Banner)',
-              type: 'select',
-              defaultValue: 'dark',
-              options: [
-                { label: 'Light', value: 'light' },
-                { label: 'Dark', value: 'dark' },
-                { label: 'Darker', value: 'darker' },
-              ],
-              required: true,
-            } satisfies SelectField,
-            {
-              name: 'height',
-              label: 'Height',
-              type: 'select',
-              defaultValue: 'default',
-              options: [
-                { label: 'Compact', value: 'compact' },
-                { label: 'Default', value: 'default' },
-                { label: 'Immersive', value: 'immersive' },
-              ],
-              required: true,
-            } satisfies SelectField,
+            createBannerActionPlacementField(),
+            createBannerContentAlignmentField(),
+            createBannerContentWidthField(),
+            createBannerThemeModeField(isBanner),
+            createBannerOverlayStyleField(isBanner),
+            createBannerOverlayDirectionField(isBanner),
+            createBannerHeightField(),
+            createBannerSectionPaddingField(),
           ],
         },
       ],

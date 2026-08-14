@@ -224,6 +224,7 @@ export interface Page {
         | ProgramMatrixBlock
         | LogoStripBlock
         | PageHeaderBlock
+        | BreadcrumbBlock
         | TimelineBlock
         | IconGridBlock
         | QuoteBlockBlock
@@ -2486,7 +2487,15 @@ export interface LogoStripBlock {
  */
 export interface PageHeaderBlock {
   /**
-   * Navigation trail shown above the page title. Last item is treated as the current page (not a link).
+   * Used as the full-bleed backdrop for the Banner variant.
+   */
+  backgroundImage?: (string | null) | Media;
+  /**
+   * Choose the single element displayed above the page title.
+   */
+  topContent: 'breadcrumb' | 'eyebrow';
+  /**
+   * The last item is the current page and is not linked. Empty or unresolved destinations render as text.
    */
   breadcrumbs?:
     | {
@@ -2540,36 +2549,86 @@ export interface PageHeaderBlock {
       }[]
     | null;
   /**
-   * Used by the Banner and Split variants.
-   */
-  backgroundImage?: (string | null) | Media;
-  /**
-   * Displayed in the right panel for the Split variant (e.g. Duration: 4 Years).
+   * Legacy Page Header data retained for backwards compatibility. Not displayed.
    */
   keyFacts?:
     | {
         /**
-         * e.g. Duration, Intake, Mode, Eligibility
+         * Legacy field retained for existing content. It is no longer displayed.
          */
-        label: string;
+        label?: string | null;
         /**
-         * e.g. 4 Years, 60 Seats, Full Time
+         * Primary statement, e.g. Medical education connected with patient care.
          */
         value: string;
         id?: string | null;
       }[]
     | null;
-  variant: 'minimal' | 'banner' | 'split';
+  variant: 'minimal' | 'banner';
+  /**
+   * Use the page hierarchy, configure a custom trail, or hide breadcrumbs.
+   */
+  breadcrumbMode?: ('automatic' | 'custom' | 'hidden') | null;
+  /**
+   * Legacy Key Facts setting retained for backwards compatibility.
+   */
+  keyFactsNumberPosition?: ('inline' | 'above') | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  contentAlignment: 'left' | 'center';
-  overlayStyle: 'light' | 'dark' | 'darker';
-  height: 'compact' | 'default' | 'immersive';
+  /**
+   * The side column stacks back under the copy on small screens.
+   */
+  actionPlacement?: ('side' | 'below') | null;
+  contentAlignment?: ('left' | 'center' | 'right') | null;
+  contentWidth?: ('narrow' | 'default' | 'wide') | null;
+  /**
+   * Auto tints with the theme primary and follows it into dark mode. Light uses a pale scrim under dark copy. Dark keeps white copy over the image regardless of the site theme.
+   */
+  themeMode?: ('auto' | 'light' | 'dark') | null;
+  overlayStyle?: ('light' | 'dark' | 'darker') | null;
+  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft') | null;
+  height?: ('compact' | 'default' | 'immersive') | null;
+  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'pageHeader';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BreadcrumbBlock".
+ */
+export interface BreadcrumbBlock {
+  /**
+   * Use the page hierarchy or configure a custom trail.
+   */
+  breadcrumbMode: 'automatic' | 'custom';
+  /**
+   * The last item is the current page and is not linked. Empty or unresolved destinations render as text.
+   */
+  breadcrumbs?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  separator: 'chevron' | 'slash' | 'arrow' | 'dot';
+  alignment: 'left' | 'center' | 'right';
+  size: 'compact' | 'default';
+  showHome?: boolean | null;
+  showCurrentPage?: boolean | null;
+  sectionPadding: 'none' | 'compact' | 'default';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'breadcrumb';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3397,6 +3456,7 @@ export interface ReusableSection {
         | ProgramMatrixBlock
         | LogoStripBlock
         | PageHeaderBlock
+        | BreadcrumbBlock
         | TimelineBlock
         | IconGridBlock
         | QuoteBlockBlock
@@ -4702,6 +4762,7 @@ export interface PagesSelect<T extends boolean = true> {
         programMatrix?: T | ProgramMatrixBlockSelect<T>;
         logoStrip?: T | LogoStripBlockSelect<T>;
         pageHeader?: T | PageHeaderBlockSelect<T>;
+        breadcrumb?: T | BreadcrumbBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;
         iconGrid?: T | IconGridBlockSelect<T>;
         quoteBlock?: T | QuoteBlockBlockSelect<T>;
@@ -6358,6 +6419,8 @@ export interface LogoStripBlockSelect<T extends boolean = true> {
  * via the `definition` "PageHeaderBlock_select".
  */
 export interface PageHeaderBlockSelect<T extends boolean = true> {
+  backgroundImage?: T;
+  topContent?: T;
   breadcrumbs?:
     | T
     | {
@@ -6397,7 +6460,6 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
         showArrow?: T;
         id?: T;
       };
-  backgroundImage?: T;
   keyFacts?:
     | T
     | {
@@ -6406,15 +6468,52 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
         id?: T;
       };
   variant?: T;
+  breadcrumbMode?: T;
+  keyFactsNumberPosition?: T;
   appearance?:
     | T
     | {
         background?: T;
         border?: T;
       };
+  actionPlacement?: T;
   contentAlignment?: T;
+  contentWidth?: T;
+  themeMode?: T;
   overlayStyle?: T;
+  overlayDirection?: T;
   height?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BreadcrumbBlock_select".
+ */
+export interface BreadcrumbBlockSelect<T extends boolean = true> {
+  breadcrumbMode?: T;
+  breadcrumbs?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  separator?: T;
+  alignment?: T;
+  size?: T;
+  showHome?: T;
+  showCurrentPage?: T;
+  sectionPadding?: T;
   id?: T;
   blockName?: T;
 }
@@ -7167,6 +7266,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         programMatrix?: T | ProgramMatrixBlockSelect<T>;
         logoStrip?: T | LogoStripBlockSelect<T>;
         pageHeader?: T | PageHeaderBlockSelect<T>;
+        breadcrumb?: T | BreadcrumbBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;
         iconGrid?: T | IconGridBlockSelect<T>;
         quoteBlock?: T | QuoteBlockBlockSelect<T>;

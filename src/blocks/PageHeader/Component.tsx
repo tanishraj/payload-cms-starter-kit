@@ -1,301 +1,275 @@
 import Image from 'next/image'
-import { ChevronRight } from 'lucide-react'
 
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
-import { regularBlockMobilePaddingClasses } from '@/blocks/shared/blockSpacing'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
+import {
+  bannerActionAlignmentClasses,
+  bannerAlignmentClasses,
+  bannerContentWidthClasses,
+  bannerHeightClasses,
+  bannerOverlayClasses,
+  bannerTextToneClasses,
+  bannerTitleSizeClasses,
+  resolveBannerActionPlacement,
+  type BannerActionPlacement,
+  type BannerContentAlignment,
+  type BannerContentWidth,
+  type BannerHeight,
+  type BannerOverlayDirection,
+  type BannerOverlayStyle,
+  type BannerThemeMode,
+} from '@/blocks/shared/bannerCtaPresentation'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
+import {
+  regularBlockContainerClasses,
+  regularBlockMobilePaddingClasses,
+  type RegularBlockSize,
+} from '@/blocks/shared/blockSpacing'
+import { BreadcrumbTrail } from '@/components/BreadcrumbTrail'
 import { ContentActions } from '@/components/ContentActions'
-import { SectionEyebrow } from '@/components/SectionEyebrow'
-import { getMediaImageProps } from '@/lib/media'
+import { SectionEyebrow, type SectionEyebrowSurface } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
-import { getPageHref } from '@/lib/pagePaths'
-import type { Media, Page } from '@/payload-types'
+import { getMediaImageProps } from '@/lib/media'
+import { resolvePageHeaderBreadcrumbs, type ResolvedPageBreadcrumb } from '@/lib/pageBreadcrumbs'
 import { cn } from '@/lib/utils'
+import type { Media, PageHeaderBlock } from '@/payload-types'
 
-type BreadcrumbItem = {
-  label?: string | null
-  linkType?: 'page' | 'custom' | null
-  page?: unknown
-  url?: string | null
-}
-
-type KeyFact = {
-  label?: string | null
-  value?: string | null
-}
+type PageHeaderTopContent = 'breadcrumb' | 'eyebrow'
 
 type PageHeaderBlockLike = {
   accentTitle?: string | null
+  actionPlacement?: BannerActionPlacement | 'inline' | null
   actions?: CmsActionValue[] | null
+  automaticBreadcrumbs?: ResolvedPageBreadcrumb[]
   appearance?: BlockAppearance | null
   backgroundImage?: string | number | Media | null
-  breadcrumbs?: BreadcrumbItem[] | null
-  contentAlignment?: 'left' | 'center' | null
+  breadcrumbMode?: PageHeaderBlock['breadcrumbMode'] | null
+  breadcrumbs?: PageHeaderBlock['breadcrumbs']
+  contentAlignment?: BannerContentAlignment | null
+  contentWidth?: BannerContentWidth | null
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
-  height?: 'compact' | 'default' | 'immersive' | null
-  keyFacts?: KeyFact[] | null
-  overlayStyle?: 'light' | 'dark' | 'darker' | null
+  height?: BannerHeight | null
+  overlayDirection?: BannerOverlayDirection | null
+  overlayStyle?: BannerOverlayStyle | null
+  size?: RegularBlockSize | null
   subtitle?: string | null
+  themeMode?: BannerThemeMode | null
   title?: string | null
-  variant?: 'minimal' | 'banner' | 'split' | null
+  topContent?: PageHeaderTopContent | null
+  variant?: 'banner' | 'minimal' | 'split' | null
 }
 
-const overlayClasses = {
-  light: 'bg-black/20',
-  dark: 'bg-black/50',
-  darker: 'bg-black/70',
+const breadcrumbLinkClasses = {
+  auto: 'text-primary-foreground hover:text-primary-foreground/80',
+  dark: 'text-white hover:text-white/80',
+  light: 'text-foreground hover:text-foreground/80',
 } as const
-
-const bannerHeightClasses = {
-  compact: 'min-h-[14rem] md:min-h-[18rem]',
-  default: 'min-h-[20rem] md:min-h-[26rem]',
-  immersive: 'min-h-[28rem] md:min-h-[38rem]',
-} as const
-
-function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
-  if (items.length === 0) return null
-
-  return (
-    <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap items-center gap-1 text-sm">
-      {items.map((crumb, index) => {
-        const label = crumb.label?.trim()
-        if (!label) return null
-
-        const isLast = index === items.length - 1
-        let href: string | undefined
-
-        if (!isLast) {
-          if (crumb.linkType === 'page') {
-            href = getPageHref(crumb.page as Page | string | number | null | undefined)
-          } else if (crumb.linkType === 'custom') {
-            href = crumb.url?.trim() || undefined
-          }
-        }
-
-        return (
-          <span key={index} className="flex items-center gap-1">
-            {index > 0 ? (
-              <ChevronRight className="size-3.5 shrink-0 text-current/40" aria-hidden="true" />
-            ) : null}
-            {href && !isLast ? (
-              <a href={href} className="text-current/60 transition-colors hover:text-current">
-                {label}
-              </a>
-            ) : (
-              <span className={isLast ? 'text-current/90 font-medium' : 'text-current/60'}>
-                {label}
-              </span>
-            )}
-          </span>
-        )
-      })}
-    </nav>
-  )
-}
 
 export function PageHeaderBlockComponent({
   accentTitle,
+  actionPlacement,
   actions,
+  automaticBreadcrumbs,
   appearance,
   backgroundImage,
+  breadcrumbMode,
   breadcrumbs,
   contentAlignment = 'left',
+  contentWidth = 'default',
   eyebrow,
   footerActions,
   height = 'default',
-  keyFacts,
-  overlayStyle = 'dark',
+  overlayDirection = 'leftToRight',
+  overlayStyle = 'darker',
+  size = 'default',
   subtitle,
+  themeMode = 'dark',
   title,
+  topContent,
   variant = 'minimal',
 }: PageHeaderBlockLike) {
   const resolvedTitle = title?.trim()
   if (!resolvedTitle) return null
+
+  const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const resolvedAccentTitle = accentTitle?.trim() || undefined
-
-  const resolvedBreadcrumbs = (breadcrumbs ?? []).filter((b) => b.label?.trim())
   const resolvedActions = resolveCmsActions(actions)
-  const resolvedKeyFacts = (keyFacts ?? []).filter((f) => f.label?.trim() && f.value?.trim())
-  const bgImage = getMediaImageProps({ media: backgroundImage, preset: 'hero' })
-  const isCenter = contentAlignment === 'center'
+  const resolvedAlignment = contentAlignment ?? 'left'
+  const resolvedContentWidth = contentWidth ?? 'default'
+  const resolvedDescription = subtitle?.trim()
+  const resolvedEyebrow = eyebrow?.trim()
+  const resolvedHeight = height ?? 'default'
+  const resolvedOverlayDirection = overlayDirection ?? 'leftToRight'
+  const resolvedOverlayStyle = overlayStyle ?? 'darker'
+  const resolvedPlacement =
+    variant === 'split' ? 'side' : resolveBannerActionPlacement(actionPlacement)
+  const resolvedSize = size ?? 'default'
+  const resolvedThemeMode = themeMode ?? 'dark'
+  const resolvedTopContent: PageHeaderTopContent =
+    topContent ?? (resolvedEyebrow ? 'eyebrow' : 'breadcrumb')
+  const resolvedVariant = variant === 'banner' ? 'banner' : 'minimal'
+  const resolvedBreadcrumbs = resolvePageHeaderBreadcrumbs({
+    automatic: automaticBreadcrumbs ?? [],
+    breadcrumbMode,
+    breadcrumbs,
+  })
 
-  // ── BANNER variant ───────────────────────────────────────────────────────────
-  if (variant === 'banner') {
-    return (
-      <section
-        className={cn(
-          'relative flex flex-col justify-end overflow-hidden text-white',
-          bannerHeightClasses[height ?? 'default'],
-        )}
-        data-block-surface="brand"
-      >
-        {bgImage ? (
-          <Image
-            src={bgImage.src}
-            alt={bgImage.alt}
-            fill
-            className="object-cover"
-            priority
-            sizes="100vw"
-          />
-        ) : (
-          <div className="absolute inset-0 bg-primary" />
-        )}
-        <div
-          className={cn(
-            'absolute inset-0',
-            overlayClasses[overlayStyle ?? 'dark'],
-          )}
-        />
-        <div className="relative mx-auto w-full max-w-screen-2xl px-4 py-10 md:py-14">
-          <Breadcrumbs items={resolvedBreadcrumbs} />
-          {eyebrow?.trim() ? (
-            <SectionEyebrow className="mb-2 text-white/70" surface="darkOverlay">
-              {eyebrow.trim()}
-            </SectionEyebrow>
-          ) : null}
-          <h1
-            className={cn(
-              'text-4xl font-bold leading-tight tracking-tight text-white md:text-5xl xl:text-6xl',
-              isCenter && 'text-center',
-            )}
-          >
-            {resolvedAccentTitle ? (
-              <>
-                <span className="block">{resolvedTitle}</span>
-                <em className="block">{resolvedAccentTitle}</em>
-              </>
-            ) : (
-              resolvedTitle
-            )}
-          </h1>
-          {subtitle?.trim() ? (
-            <p
-              className={cn(
-                'mt-4 max-w-2xl text-lg text-white/80',
-                isCenter && 'mx-auto text-center',
-              )}
-            >
-              {subtitle.trim()}
-            </p>
-          ) : null}
-          {resolvedActions.length > 0 ? (
-            <div className={cn('mt-6', isCenter && 'flex justify-center')}>
-              <ContentActions actions={resolvedActions} alignment={isCenter ? 'center' : 'left'} />
-            </div>
-          ) : null}
-          <BlockFooterActions actions={footerActions} />
-        </div>
-      </section>
-    )
-  }
+  const image =
+    resolvedVariant === 'banner'
+      ? getMediaImageProps({
+          media: backgroundImage,
+          preset: 'hero',
+          fallbackAlt: resolvedTitle,
+        })
+      : null
+  const hasImage = Boolean(image)
+  const isBrandTone = hasImage && resolvedThemeMode === 'auto'
+  const isDarkOverlay = hasImage && resolvedThemeMode === 'dark'
+  const blockSurface = hasImage
+    ? resolvedThemeMode === 'light'
+      ? 'light'
+      : 'brand'
+    : appearanceClasses.surface
+  const eyebrowSurface: SectionEyebrowSurface = isBrandTone
+    ? 'brand'
+    : isDarkOverlay
+      ? 'darkOverlay'
+      : appearanceClasses.background
+  const titleToneClass = hasImage ? bannerTextToneClasses[resolvedThemeMode].title : undefined
+  const descriptionToneClass = hasImage
+    ? bannerTextToneClasses[resolvedThemeMode].description
+    : 'text-current/70'
+  const breadcrumbLinkClassName = hasImage
+    ? breadcrumbLinkClasses[resolvedThemeMode]
+    : appearanceClasses.surface === 'light'
+      ? 'text-primary hover:text-primary/80'
+      : 'text-current hover:text-current/80'
+  const usesSideActions = resolvedPlacement === 'side' && resolvedActions.length > 0
 
-  // ── SPLIT variant ────────────────────────────────────────────────────────────
-  if (variant === 'split') {
-    const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
-
-    return (
-      <section className={cn(regularBlockMobilePaddingClasses['default'], appearanceClassName)}>
-        <div className="mx-auto w-full max-w-screen-2xl px-4">
-          <Breadcrumbs items={resolvedBreadcrumbs} />
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
-            <div className="flex flex-1 flex-col gap-4">
-              {eyebrow?.trim() ? (
-                <SectionEyebrow surface={appearance?.background ?? 'none'}>
-                  {eyebrow.trim()}
-                </SectionEyebrow>
-              ) : null}
-              <h1 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
-                {resolvedAccentTitle ? (
-                  <>
-                    <span className="block">{resolvedTitle}</span>
-                    <em className="block">{resolvedAccentTitle}</em>
-                  </>
-                ) : (
-                  resolvedTitle
-                )}
-              </h1>
-              {subtitle?.trim() ? (
-                <p className="text-lg text-current/70">{subtitle.trim()}</p>
-              ) : null}
-              {resolvedActions.length > 0 ? (
-                <div className="mt-2">
-                  <ContentActions actions={resolvedActions} alignment="left" />
-                </div>
-              ) : null}
-            </div>
-
-            {resolvedKeyFacts.length > 0 ? (
-              <div className="shrink-0 rounded-xl border border-border bg-muted/50 p-6 text-foreground lg:w-72">
-                <dl className="grid grid-cols-2 gap-x-6 gap-y-4 lg:grid-cols-1">
-                  {resolvedKeyFacts.map((fact, index) => (
-                    <div key={index} className="flex flex-col gap-0.5">
-                      <dt className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70">
-                        {fact.label!.trim()}
-                      </dt>
-                      <dd className="text-base font-semibold text-current">
-                        {fact.value!.trim()}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            ) : null}
-          </div>
-          <BlockFooterActions actions={footerActions} />
-        </div>
-      </section>
-    )
-  }
-
-  // ── MINIMAL variant (default) ─────────────────────────────────────────────
-  const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
+  const topContentNode =
+    resolvedTopContent === 'breadcrumb' && resolvedBreadcrumbs.length > 0 ? (
+      <BreadcrumbTrail items={resolvedBreadcrumbs} linkClassName={breadcrumbLinkClassName} />
+    ) : resolvedTopContent === 'eyebrow' && resolvedEyebrow ? (
+      <SectionEyebrow surface={eyebrowSurface}>{resolvedEyebrow}</SectionEyebrow>
+    ) : null
 
   return (
-    <section className={cn(regularBlockMobilePaddingClasses['compact'], appearanceClassName)}>
-      <div className="mx-auto w-full max-w-screen-2xl px-4">
-        <Breadcrumbs items={resolvedBreadcrumbs} />
-        {eyebrow?.trim() ? (
-          <SectionEyebrow
-            className={cn('mb-2', isCenter && 'text-center')}
-            surface={appearance?.background ?? 'none'}
-          >
-            {eyebrow.trim()}
-          </SectionEyebrow>
-        ) : null}
-        <h1
-          className={cn(
-            'text-4xl font-bold leading-tight tracking-tight md:text-5xl',
-            isCenter && 'text-center',
-          )}
-        >
-          {resolvedAccentTitle ? (
-            <>
-              <span className="block">{resolvedTitle}</span>
-              <em className="block">{resolvedAccentTitle}</em>
-            </>
-          ) : (
-            resolvedTitle
-          )}
-        </h1>
-        {subtitle?.trim() ? (
-          <p
+    <section
+      className={cn(
+        'relative isolate overflow-hidden',
+        !hasImage && appearanceClasses.className,
+        hasImage && titleToneClass,
+        regularBlockMobilePaddingClasses[resolvedSize],
+      )}
+      data-block-surface={blockSurface}
+      data-page-header-variant={resolvedVariant}
+    >
+      {image ? (
+        <>
+          <div className="absolute inset-0 -z-10">
+            <Image
+              alt={image.alt}
+              className="object-cover"
+              fill
+              priority
+              sizes="100vw"
+              src={image.src}
+            />
+          </div>
+          <div
             className={cn(
-              'mt-3 max-w-2xl text-lg text-current/70',
-              isCenter && 'mx-auto text-center',
+              'absolute inset-0 -z-10',
+              bannerOverlayClasses[resolvedThemeMode][resolvedOverlayStyle][
+                resolvedOverlayDirection
+              ],
+            )}
+            data-page-header-overlay={resolvedOverlayStyle}
+            data-page-header-overlay-direction={resolvedOverlayDirection}
+            data-page-header-theme={resolvedThemeMode}
+          />
+        </>
+      ) : null}
+
+      <div
+        className={cn(
+          regularBlockContainerClasses,
+          'flex flex-col justify-center gap-10',
+          bannerHeightClasses[resolvedHeight],
+          usesSideActions && 'lg:flex-row lg:items-center lg:justify-between lg:gap-16',
+        )}
+        data-page-header-action-placement={resolvedPlacement}
+        data-page-header-height={resolvedHeight}
+      >
+        <div
+          className={cn(
+            'flex w-full min-w-0 flex-col gap-6',
+            bannerContentWidthClasses[resolvedContentWidth],
+            bannerAlignmentClasses[resolvedAlignment],
+          )}
+          data-page-header-content-alignment={resolvedAlignment}
+          data-page-header-content-width={resolvedContentWidth}
+          data-page-header-copy="true"
+        >
+          {topContentNode ? (
+            <div data-page-header-top-content={resolvedTopContent}>{topContentNode}</div>
+          ) : null}
+
+          <h1
+            className={cn(
+              'font-semibold tracking-tight text-balance',
+              bannerTitleSizeClasses[resolvedHeight],
+              titleToneClass,
             )}
           >
-            {subtitle.trim()}
-          </p>
-        ) : null}
-        {resolvedActions.length > 0 ? (
-          <div className={cn('mt-5', isCenter && 'flex justify-center')}>
-            <ContentActions actions={resolvedActions} alignment={isCenter ? 'center' : 'left'} />
+            <span className="block font-[inherit]">{resolvedTitle}</span>
+            {resolvedAccentTitle ? (
+              <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+            ) : null}
+          </h1>
+
+          {resolvedDescription ? (
+            <p
+              className={cn('max-w-[60ch] text-base leading-7 text-balance', descriptionToneClass)}
+              data-page-header-description="true"
+            >
+              {resolvedDescription}
+            </p>
+          ) : null}
+
+          {!usesSideActions && resolvedActions.length > 0 ? (
+            <ContentActions
+              actions={resolvedActions}
+              alignment={resolvedAlignment}
+              data-page-header-actions="below"
+            />
+          ) : null}
+        </div>
+
+        {usesSideActions ? (
+          <div
+            className={cn(
+              'flex w-full lg:w-auto lg:min-w-56',
+              bannerActionAlignmentClasses[resolvedAlignment],
+            )}
+            data-page-header-actions="side"
+          >
+            <ContentActions
+              actions={resolvedActions}
+              alignment={resolvedAlignment}
+              className="flex-col gap-3 sm:flex-col [&>*]:w-full"
+            />
           </div>
         ) : null}
-        <BlockFooterActions actions={footerActions} />
       </div>
+
+      {footerActions?.length ? (
+        <div className={regularBlockContainerClasses}>
+          <BlockFooterActions actions={footerActions} alignment={resolvedAlignment} />
+        </div>
+      ) : null}
     </section>
   )
 }

@@ -4,6 +4,7 @@ import { getEventGalleryAlbumIDsFromBlocks } from '@/lib/eventGalleryShared'
 import { loadNewsEventsPreviewSnapshot } from '@/lib/newsEventsPreviewSnapshot'
 import { loadReviewPreviewSnapshot } from '@/lib/reviewPreviewSnapshot'
 import { getDraftSiteOfficeLocations } from '@/lib/siteOffices'
+import { getPageID } from '@/lib/pagePaths'
 import configPromise from '@payload-config'
 import { headers as getHeaders } from 'next/headers'
 import { notFound } from 'next/navigation'
@@ -36,16 +37,25 @@ export default async function AdminPreviewPage({ params }: PageProps) {
     notFound()
   }
 
-  const page = await payload.findByID({
-    collection: 'pages',
-    id: pageID,
-    depth: 2,
-    draft: true,
-  })
+  const [page, pageSettings] = await Promise.all([
+    payload.findByID({
+      collection: 'pages',
+      id: pageID,
+      depth: 8,
+      draft: true,
+    }),
+    payload.findGlobal({
+      slug: 'page-settings',
+      depth: 0,
+      draft: true,
+    }),
+  ])
 
   if (!page) {
     notFound()
   }
+
+  const isHomepage = String(getPageID(pageSettings.homepage)) === String(page.id)
 
   const hasContact24 = page.layout?.some((block) => block.blockType === 'contact24') ?? false
   const selectedEventGalleryAlbumIDs = getEventGalleryAlbumIDsFromBlocks(page.layout)
@@ -63,6 +73,7 @@ export default async function AdminPreviewPage({ params }: PageProps) {
     <PageLivePreview
       eventGalleryAlbums={eventGalleryAlbums}
       initialData={page}
+      isHomepage={isHomepage}
       newsEventsSnapshot={newsEventsSnapshot}
       officeLocations={officeLocations}
       reviewSnapshot={reviewSnapshot}

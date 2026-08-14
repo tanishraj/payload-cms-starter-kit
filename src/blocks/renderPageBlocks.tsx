@@ -1,5 +1,6 @@
 import React from 'react'
 import type { Page } from '@/payload-types'
+import { resolveAutomaticPageBreadcrumbs, type ResolvedPageBreadcrumb } from '@/lib/pageBreadcrumbs'
 
 import { AnnouncementBlockComponent } from './Announcement/Component'
 import { ContentHighlightsBlockComponent } from './ContentHighlights/Component'
@@ -34,6 +35,7 @@ import { ProgramGridBlockComponent } from './ProgramGrid/Component'
 import { ProgramMatrixBlockComponent } from './ProgramMatrix/Component'
 import { LogoStripBlockComponent } from './LogoStrip/Component'
 import { PageHeaderBlockComponent } from './PageHeader/Component'
+import { BreadcrumbBlockComponent } from './Breadcrumb/Component'
 import { TimelineBlockComponent } from './Timeline/Component'
 import { IconGridBlockComponent } from './IconGrid/Component'
 import { QuoteBlockBlockComponent } from './QuoteBlock/Component'
@@ -54,7 +56,21 @@ type PopulatedReusableSection = {
   layout?: PageBlock[] | null
 }
 
-function renderSingleBlock(block: PageBlock, index: number, depth = 0): React.ReactNode {
+export type PageRenderContext = {
+  isHomepage?: boolean
+  page?: Page | null
+}
+
+type RenderArgs = {
+  automaticBreadcrumbs: ResolvedPageBreadcrumb[]
+}
+
+function renderSingleBlock(
+  block: PageBlock,
+  index: number,
+  args: RenderArgs,
+  depth = 0,
+): React.ReactNode {
   if (depth > 10) return null
 
   const key = block.id ?? `${block.blockType}-${index}`
@@ -128,7 +144,13 @@ function renderSingleBlock(block: PageBlock, index: number, depth = 0): React.Re
     case 'logoStrip':
       return wrap(<LogoStripBlockComponent {...block} />)
     case 'pageHeader':
-      return wrap(<PageHeaderBlockComponent {...block} />)
+      return wrap(
+        <PageHeaderBlockComponent {...block} automaticBreadcrumbs={args.automaticBreadcrumbs} />,
+      )
+    case 'breadcrumb':
+      return wrap(
+        <BreadcrumbBlockComponent {...block} automaticBreadcrumbs={args.automaticBreadcrumbs} />,
+      )
     case 'timeline':
       return wrap(<TimelineBlockComponent {...block} />)
     case 'iconGrid':
@@ -159,7 +181,7 @@ function renderSingleBlock(block: PageBlock, index: number, depth = 0): React.Re
       if (!innerBlocks.length) return null
       return (
         <React.Fragment key={key}>
-          {innerBlocks.map((inner, i) => renderSingleBlock(inner, i, depth + 1))}
+          {innerBlocks.map((inner, i) => renderSingleBlock(inner, i, args, depth + 1))}
         </React.Fragment>
       )
     }
@@ -168,14 +190,20 @@ function renderSingleBlock(block: PageBlock, index: number, depth = 0): React.Re
   }
 }
 
-export function renderPageBlocks(blocks?: PageBlock[] | null) {
+export function renderPageBlocks(blocks?: PageBlock[] | null, context: PageRenderContext = {}) {
   if (!blocks?.length) {
     return null
   }
 
+  const args: RenderArgs = {
+    automaticBreadcrumbs: context.page
+      ? resolveAutomaticPageBreadcrumbs(context.page, { isHomepage: context.isHomepage })
+      : [],
+  }
+
   return (
     <PageBlockStack>
-      {blocks.map((block, index) => renderSingleBlock(block, index))}
+      {blocks.map((block, index) => renderSingleBlock(block, index, args))}
     </PageBlockStack>
   )
 }

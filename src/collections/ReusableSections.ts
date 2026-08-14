@@ -32,6 +32,7 @@ import { ProgramGridBlock } from '@/blocks/ProgramGrid/config'
 import { ProgramMatrixBlock } from '@/blocks/ProgramMatrix/config'
 import { LogoStripBlock } from '@/blocks/LogoStrip/config'
 import { PageHeaderBlock } from '@/blocks/PageHeader/config'
+import { BreadcrumbBlock } from '@/blocks/Breadcrumb/config'
 import { TimelineBlock } from '@/blocks/Timeline/config'
 import { IconGridBlock } from '@/blocks/IconGrid/config'
 import { QuoteBlockBlock } from '@/blocks/QuoteBlock/config'
@@ -57,7 +58,8 @@ export const ReusableSections: CollectionConfig = {
     plural: 'Reusable Sections',
   },
   admin: {
-    description: 'Shared block groups that sync across every page that references them. Edit once, update everywhere.',
+    description:
+      'Shared block groups that sync across every page that references them. Edit once, update everywhere.',
     group: 'Content',
     hidden: hideFromUsersWithoutCapability('manage_pages'),
     useAsTitle: 'title',
@@ -128,6 +130,7 @@ export const ReusableSections: CollectionConfig = {
         ProgramMatrixBlock,
         LogoStripBlock,
         PageHeaderBlock,
+        BreadcrumbBlock,
         TimelineBlock,
         IconGridBlock,
         QuoteBlockBlock,

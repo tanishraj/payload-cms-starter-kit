@@ -135,7 +135,10 @@ describe('SNMIH section eyebrows', () => {
     expect(read('src/blocks/ProgramGrid/ProgramGridClient.tsx')).toContain(
       'font-mono text-xs font-semibold uppercase tracking-[0.24em]',
     )
-    expect(read('src/blocks/PageHeader/Component.tsx')).toContain('{fact.label!.trim()}')
+    const pageHeader = read('src/blocks/PageHeader/Component.tsx')
+    expect(pageHeader).toContain('SectionEyebrow')
+    expect(pageHeader).not.toContain('sectionEyebrowClasses')
+    expect(pageHeader).not.toContain('data-page-header-key-facts')
     expect(read('src/components/contact24.tsx')).toContain('{office.region}')
   })
 

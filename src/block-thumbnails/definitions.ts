@@ -285,6 +285,12 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Breadcrumb block preview',
+    filename: 'breadcrumb.jpg',
+    label: 'Breadcrumb',
+    slug: 'breadcrumb',
+  }),
+  defineThumbnail({
     alt: 'Program Grid block preview',
     filename: 'program-grid.jpg',
     label: 'Program Grid',

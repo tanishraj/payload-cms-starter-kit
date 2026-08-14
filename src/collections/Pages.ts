@@ -33,6 +33,7 @@ import { ProgramGridBlock } from '@/blocks/ProgramGrid/config'
 import { ProgramMatrixBlock } from '@/blocks/ProgramMatrix/config'
 import { LogoStripBlock } from '@/blocks/LogoStrip/config'
 import { PageHeaderBlock } from '@/blocks/PageHeader/config'
+import { BreadcrumbBlock } from '@/blocks/Breadcrumb/config'
 import { TimelineBlock } from '@/blocks/Timeline/config'
 import { IconGridBlock } from '@/blocks/IconGrid/config'
 import { QuoteBlockBlock } from '@/blocks/QuoteBlock/config'
@@ -270,6 +271,7 @@ export const Pages: CollectionConfig = {
                 ProgramMatrixBlock,
                 LogoStripBlock,
                 PageHeaderBlock,
+                BreadcrumbBlock,
                 TimelineBlock,
                 IconGridBlock,
                 QuoteBlockBlock,
