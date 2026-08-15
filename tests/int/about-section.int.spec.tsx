@@ -229,7 +229,7 @@ describe('About Section lists', () => {
     expect(html).toContain('2021')
     expect(html).toContain('Growing medical education and healthcare access in Bihar.')
     expect(html).toContain('text-4xl')
-    expect(html).toContain('text-sm leading-6')
+    expect(html).toContain('text-xs leading-6 text-current/75 sm:text-sm sm:leading-6')
   })
 
   it('uses the selected theme surface for the image detail panel', () => {

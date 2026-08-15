@@ -161,6 +161,7 @@ describe('website theme contracts', () => {
     expect(buttonSource).toContain("link: 'text-primary underline-offset-4 hover:underline'")
     expect(checkboxSource).toContain('rounded-sm')
     expect(checkboxSource).not.toContain('rounded-[5px]')
-    expect(tabsSource).toContain("? 'border-primary text-primary'")
+    expect(tabsSource).toContain("'border-primary text-primary'")
+    expect(tabsSource).toContain("'border-primary-foreground text-primary-foreground'")
   })
 })

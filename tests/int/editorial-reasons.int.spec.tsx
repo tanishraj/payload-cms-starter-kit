@@ -254,7 +254,7 @@ describe('EditorialReasonsBlockComponent', () => {
     expect(html).toContain('data-editorial-reasons-columns="2"')
     expect(html).not.toContain('grid-cols-[2rem_minmax(0,1fr)]')
     expect(html).toContain('font-sans text-md leading-tight font-semibold text-current')
-    expect(html).toContain('text-sm leading-6 text-current/70')
+    expect(html).toContain('text-sm leading-5 text-current/70')
   })
 
   it.each([
