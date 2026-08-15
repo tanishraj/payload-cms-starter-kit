@@ -12,8 +12,13 @@ import { HeroCarouselBlock } from '@/blocks/HeroCarousel/config'
 import { IconGridBlock } from '@/blocks/IconGrid/config'
 import { ProgramGridBlock } from '@/blocks/ProgramGrid/config'
 import { ProgramMatrixBlock } from '@/blocks/ProgramMatrix/config'
-import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import {
+  buttonVariantOptions,
+  buttonVariantWithLinkOptions,
+  createContentActionsField,
+} from '@/blocks/shared/contentActionsFields'
 import { ContentActions } from '@/components/ContentActions'
+import { Button } from '@/components/ui/button'
 import { resolveCmsActions } from '@/lib/cmsLinks'
 
 type TestField = {
@@ -47,7 +52,7 @@ const getOptionPairs = (field: TestField) =>
       : { label: option.label, value: option.value },
   )
 
-describe('CMS button Default and Primary variants', () => {
+describe('shared CMS button variants', () => {
   it.each([
     [
       'shared content actions',
@@ -78,6 +83,8 @@ describe('CMS button Default and Primary variants', () => {
         expect.arrayContaining([
           { label: 'Default', value: 'default' },
           { label: 'Primary', value: 'primary' },
+          { label: 'White Filled', value: 'white' },
+          { label: 'White Outline', value: 'whiteOutline' },
         ]),
       )
       expect(pairs.find((option) => option.label === 'Default')?.value).not.toBe(
@@ -85,6 +92,16 @@ describe('CMS button Default and Primary variants', () => {
       )
     },
   )
+
+  it('adds fixed white variants to both shared option lists', () => {
+    const expected = [
+      { label: 'White Filled', value: 'white' },
+      { label: 'White Outline', value: 'whiteOutline' },
+    ]
+
+    expect(buttonVariantOptions).toEqual(expect.arrayContaining(expected))
+    expect(buttonVariantWithLinkOptions).toEqual(expect.arrayContaining(expected))
+  })
 
   it('preserves Primary through action resolution and renders both variant hooks', () => {
     const actions = resolveCmsActions([
@@ -109,6 +126,51 @@ describe('CMS button Default and Primary variants', () => {
 
     expect(html).toContain('data-action-variant="primary"')
     expect(html).toContain('data-variant="primary"')
+  })
+
+  it('preserves both white variants through action resolution', () => {
+    const actions = resolveCmsActions([
+      {
+        label: 'White filled',
+        linkType: 'custom',
+        mode: 'button',
+        url: '/filled',
+        variant: 'white',
+      },
+      {
+        label: 'White outline',
+        linkType: 'custom',
+        mode: 'button',
+        url: '/outline',
+        variant: 'whiteOutline',
+      },
+    ])
+
+    expect(actions.map(({ variant }) => variant)).toEqual(['white', 'whiteOutline'])
+
+    const html = renderToStaticMarkup(createElement(ContentActions, { actions }))
+
+    expect(html).toContain('data-action-variant="white"')
+    expect(html).toContain('data-variant="white"')
+    expect(html).toContain('data-action-variant="whiteOutline"')
+    expect(html).toContain('data-variant="whiteOutline"')
+  })
+
+  it('renders fixed white presentation and focus classes', () => {
+    const filled = renderToStaticMarkup(createElement(Button, { variant: 'white' }, 'White filled'))
+    const outline = renderToStaticMarkup(
+      createElement(Button, { variant: 'whiteOutline' }, 'White outline'),
+    )
+
+    expect(filled).toContain('border-white bg-white text-black')
+    expect(filled).toContain('hover:bg-white/90')
+    expect(filled).toContain('focus-visible:border-white')
+    expect(filled).toContain('focus-visible:ring-white/30')
+
+    expect(outline).toContain('border-white bg-transparent text-white')
+    expect(outline).toContain('hover:bg-white/10')
+    expect(outline).toContain('focus-visible:border-white')
+    expect(outline).toContain('focus-visible:ring-white/30')
   })
 
   it('keeps the Dark + Light + Even Hero overlay while distinguishing its actions', () => {
@@ -153,6 +215,13 @@ describe('CMS button Default and Primary variants', () => {
     )
     expect(
       overlayButtonSelectors.some((selector) => selector.includes("[data-variant='primary']")),
+    ).toBe(false)
+    expect(
+      overlayButtonSelectors.some(
+        (selector) =>
+          selector.includes("[data-variant='white']") ||
+          selector.includes("[data-variant='whiteOutline']"),
+      ),
     ).toBe(false)
 
     const heroDefaultSelectors = overlayButtonSelectors.filter((selector) =>

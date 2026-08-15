@@ -11,7 +11,8 @@ export type CmsLinkValue = {
   url?: string | null
 }
 
-export type CmsActionVariant = 'default' | 'link' | 'outline' | 'primary' | 'secondary'
+export type CmsActionVariant =
+  'default' | 'link' | 'outline' | 'primary' | 'secondary' | 'white' | 'whiteOutline'
 
 export type CmsActionMode = 'button' | 'link'
 

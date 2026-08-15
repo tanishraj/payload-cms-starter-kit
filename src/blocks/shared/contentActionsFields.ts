@@ -34,6 +34,8 @@ export const buttonVariantOptions = [
   { label: 'Primary', value: 'primary' },
   { label: 'Secondary', value: 'secondary' },
   { label: 'Outline', value: 'outline' },
+  { label: 'White Filled', value: 'white' },
+  { label: 'White Outline', value: 'whiteOutline' },
 ] satisfies SelectField['options']
 
 export const buttonVariantWithLinkOptions = [
@@ -42,7 +44,7 @@ export const buttonVariantWithLinkOptions = [
 ] satisfies SelectField['options']
 
 export const buttonVariantDescription =
-  "Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color."
+  "Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds."
 
 const isPageLink = (_data: unknown, siblingData: LinkSiblingData) =>
   siblingData?.linkType === 'page'
