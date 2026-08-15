@@ -183,6 +183,18 @@ describe('page block pipeline', () => {
     }
   })
 
+  it('keeps page renderer boundaries free of explicit any casts', () => {
+    const rendererSources = [
+      readFileSync('src/blocks/renderPageBlocks.tsx', 'utf8'),
+      readFileSync('src/blocks/renderLivePreviewPageBlocks.tsx', 'utf8'),
+    ]
+
+    for (const source of rendererSources) {
+      expect(source).not.toContain('block as any')
+      expect(source).not.toContain('@typescript-eslint/no-explicit-any')
+    }
+  })
+
   it('defines the eventGallery album selection and ordering fields', async () => {
     const { EventGalleryBlock } = await import('@/blocks/EventGallery/config')
     const tabsField = EventGalleryBlock.fields[0] as

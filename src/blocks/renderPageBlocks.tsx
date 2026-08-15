@@ -175,15 +175,12 @@ function renderSingleBlock(
       return wrap(<NumberedStepsBlockComponent {...block} />)
     case 'bentoGrid':
       return wrap(<BentoGridBlockComponent {...block} />)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     case 'testimonialGrid':
-      return wrap(<TestimonialGridBlockComponent {...(block as any)} />)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return wrap(<TestimonialGridBlockComponent {...block} />)
     case 'awardsList':
-      return wrap(<AwardsListBlockComponent {...(block as any)} />)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return wrap(<AwardsListBlockComponent {...block} />)
     case 'aboutSection':
-      return wrap(<AboutSectionBlockComponent {...(block as any)} />)
+      return wrap(<AboutSectionBlockComponent {...block} />)
     case 'accreditationCards':
       return wrap(<AccreditationCardsBlockComponent {...block} />)
     case 'reusableSection': {

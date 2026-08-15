@@ -196,14 +196,11 @@ function renderSingleLivePreviewBlock(
     case 'bentoGrid':
       return <BentoGridBlockComponent key={key} {...block} />
     case 'testimonialGrid':
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return <TestimonialGridBlockComponent key={key} {...(block as any)} />
+      return <TestimonialGridBlockComponent key={key} {...block} />
     case 'awardsList':
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return <AwardsListBlockComponent key={key} {...(block as any)} />
+      return <AwardsListBlockComponent key={key} {...block} />
     case 'aboutSection':
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return <AboutSectionBlockComponent key={key} {...(block as any)} />
+      return <AboutSectionBlockComponent key={key} {...block} />
     case 'accreditationCards':
       return <AccreditationCardsBlockComponent key={key} {...block} />
     case 'reusableSection': {
