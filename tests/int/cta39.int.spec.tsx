@@ -214,7 +214,15 @@ describe('Call to Action block', () => {
     const html = renderToStaticMarkup(
       <Cta39BlockComponent
         actionLayout={actionLayout}
-        actions={[{ label: 'Apply', linkType: 'custom', url: '/apply' }]}
+        actions={[
+          {
+            label: 'Apply',
+            linkType: 'custom',
+            mode: 'button',
+            url: '/apply',
+            variant: 'primary',
+          },
+        ]}
         contentAlignment="center"
         headerLayout="actionSplit"
         title="Take the next step."

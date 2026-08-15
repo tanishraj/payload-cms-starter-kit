@@ -18,11 +18,13 @@ import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 
 type Cta39Alignment = 'center' | 'left' | 'right'
-type Cta39HeaderLayout = 'split' | 'stacked'
+type Cta39ActionLayout = 'inline' | 'stacked'
+type Cta39HeaderLayout = 'actionSplit' | 'split' | 'stacked'
 type Cta39SplitContentAlignment = 'bottom' | 'center' | 'top'
 
 type Cta39BlockLike = {
   accentTitle?: string | null
+  actionLayout?: Cta39ActionLayout | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: Cta39Alignment | null
@@ -59,11 +61,17 @@ const splitContentAlignmentClasses = {
   bottom: 'lg:self-end',
 } as const
 
+const actionLayoutClasses = {
+  inline: 'lg:w-auto lg:flex-row lg:flex-nowrap lg:justify-end',
+  stacked: 'lg:w-auto lg:flex-col lg:flex-nowrap lg:items-end',
+} as const
+
 const validAlignments = new Set<Cta39Alignment>(['left', 'center', 'right'])
 const validSizes = new Set<RegularBlockSize>(['none', 'compact', 'default', 'comfortable'])
 
 export function Cta39BlockComponent({
   accentTitle,
+  actionLayout = 'inline',
   actions,
   appearance,
   contentAlignment = 'center',
@@ -95,9 +103,15 @@ export function Cta39BlockComponent({
     splitContentAlignment === 'top' || splitContentAlignment === 'bottom'
       ? splitContentAlignment
       : 'center'
+  const resolvedActionLayout: Cta39ActionLayout =
+    actionLayout === 'stacked' ? 'stacked' : 'inline'
   const hasSupportingContent = Boolean(resolvedDescription || resolvedActions.length)
   const resolvedHeaderLayout: Cta39HeaderLayout =
-    headerLayout === 'split' && hasSupportingContent ? 'split' : 'stacked'
+    headerLayout === 'actionSplit' && resolvedActions.length
+      ? 'actionSplit'
+      : headerLayout === 'split' && hasSupportingContent
+        ? 'split'
+        : 'stacked'
   const { background, className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
 
   const heading = (
@@ -113,25 +127,24 @@ export function Cta39BlockComponent({
     </h2>
   )
 
-  const supportingContent = (
-    <>
-      {resolvedDescription ? (
-        <p
-          className={cn(
-            contentSectionDescriptionClasses,
-            'max-w-2xl',
-            descriptionAlignmentClasses[resolvedContentAlignment],
-          )}
-        >
-          {resolvedDescription}
-        </p>
-      ) : null}
-      <ContentActions
-        actions={resolvedActions}
-        alignment={resolvedContentAlignment}
-        data-cta39-actions="true"
-      />
-    </>
+  const descriptionNode = resolvedDescription ? (
+    <p
+      className={cn(
+        contentSectionDescriptionClasses,
+        'max-w-2xl',
+        descriptionAlignmentClasses[resolvedContentAlignment],
+      )}
+    >
+      {resolvedDescription}
+    </p>
+  ) : null
+
+  const actionsNode = (
+    <ContentActions
+      actions={resolvedActions}
+      alignment={resolvedContentAlignment}
+      data-cta39-actions="true"
+    />
   )
 
   return (
@@ -147,7 +160,9 @@ export function Cta39BlockComponent({
             'grid gap-6',
             resolvedHeaderLayout === 'split'
               ? 'lg:grid-cols-[minmax(0,3fr)_minmax(18rem,2fr)] lg:gap-16'
-              : cn('max-w-3xl', blockAlignmentClasses[resolvedContentAlignment]),
+              : resolvedHeaderLayout === 'actionSplit'
+                ? 'lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-16'
+                : cn('max-w-3xl', blockAlignmentClasses[resolvedContentAlignment]),
           )}
         >
           <div
@@ -161,7 +176,8 @@ export function Cta39BlockComponent({
               <SectionEyebrow surface={background}>{resolvedEyebrow}</SectionEyebrow>
             ) : null}
             {heading}
-            {resolvedHeaderLayout === 'stacked' ? supportingContent : null}
+            {resolvedHeaderLayout !== 'split' ? descriptionNode : null}
+            {resolvedHeaderLayout === 'stacked' ? actionsNode : null}
           </div>
 
           {resolvedHeaderLayout === 'split' ? (
@@ -174,7 +190,22 @@ export function Cta39BlockComponent({
               )}
               data-cta39-split-alignment={resolvedSplitContentAlignment}
             >
-              {supportingContent}
+              {descriptionNode}
+              {actionsNode}
+            </div>
+          ) : null}
+
+          {resolvedHeaderLayout === 'actionSplit' ? (
+            <div
+              className="flex min-w-0 lg:justify-self-end"
+              data-cta39-action-layout={resolvedActionLayout}
+            >
+              <ContentActions
+                actions={resolvedActions}
+                alignment={resolvedContentAlignment}
+                className={actionLayoutClasses[resolvedActionLayout]}
+                data-cta39-actions="true"
+              />
             </div>
           ) : null}
         </header>

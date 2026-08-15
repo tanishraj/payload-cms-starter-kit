@@ -5,11 +5,14 @@ import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFiel
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 type Cta39SiblingData = {
-  headerLayout?: 'split' | 'stacked' | null
+  headerLayout?: 'actionSplit' | 'split' | 'stacked' | null
 }
 
 const isSplitLayout = (_data: unknown, siblingData: Cta39SiblingData) =>
   siblingData?.headerLayout === 'split'
+
+const isActionSplitLayout = (_data: unknown, siblingData: Cta39SiblingData) =>
+  siblingData?.headerLayout === 'actionSplit'
 
 const ctaSizeField = {
   name: 'size',
@@ -32,11 +35,29 @@ const headerLayoutField = {
   defaultValue: 'stacked',
   options: [
     { label: 'Stacked', value: 'stacked' },
-    { label: 'Split', value: 'split' },
+    { label: 'Content Split', value: 'split' },
+    { label: 'Action Split', value: 'actionSplit' },
   ],
   required: true,
   admin: {
-    description: 'Stack content in one column or place supporting content beside the heading.',
+    description:
+      'Keep all content together, split copy from the heading, or place actions on the right.',
+  },
+} satisfies SelectField
+
+const actionLayoutField = {
+  name: 'actionLayout',
+  label: 'Action Layout',
+  type: 'select',
+  defaultValue: 'inline',
+  options: [
+    { label: 'Inline', value: 'inline' },
+    { label: 'Stacked', value: 'stacked' },
+  ],
+  required: true,
+  admin: {
+    condition: isActionSplitLayout,
+    description: 'Arrange the right-column actions in a row or a vertical stack on desktop.',
   },
 } satisfies SelectField
 
@@ -123,6 +144,7 @@ export const Cta39Block: Block = {
             headerLayoutField,
             contentAlignmentField,
             splitContentAlignmentField,
+            actionLayoutField,
             ctaSizeField,
           ],
         },
