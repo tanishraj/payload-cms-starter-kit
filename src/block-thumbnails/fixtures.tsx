@@ -624,9 +624,12 @@ export const blockThumbnailFixtures = {
           variant: 'outline',
         },
       ]}
-      appearance={{ background: 'none', border: 'topAndBottom' }}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
       description="Learn quickly, build confidently, and deliver with quality using a modern production workflow."
+      eyebrow="Ready when you are"
+      headerLayout="split"
       size="compact"
+      splitContentAlignment="center"
       title="Turn goals into action with focused execution."
     />
   ),

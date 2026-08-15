@@ -843,7 +843,7 @@ describe('page block pipeline', () => {
     expect(tabsField?.type).toBe('tabs')
     expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(titleField?.type).toBe('text')
-    expect(titleField?.required).not.toBe(true)
+    expect(titleField?.required).toBe(true)
     expect(descriptionField?.type).toBe('textarea')
     expectContentActionsFieldSet(contentTab?.fields ?? [], layoutTab?.fields ?? [])
     expect(sizeField?.type).toBe('select')
@@ -894,7 +894,8 @@ describe('page block pipeline', () => {
     expect(html).toContain('Everything you need to launch your next website block.')
     expect(html).toContain('href="/start"')
     expect(html).toContain('Get started')
-    expect(html).toContain('data-cta39-background="accent"')
+    expect(html).toContain('data-cta39-background="subtle"')
+    expect(html).not.toContain('bg-background')
   })
 
   it('renders a heroBanner page block through PageContent', () => {

@@ -1,28 +1,45 @@
-import { ContentActions } from '@/components/ContentActions'
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
 import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
+  type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import {
+  contentSectionDescriptionClasses,
+  contentSectionHeadingClasses,
+} from '@/blocks/shared/contentStyles'
+import { ContentActions } from '@/components/ContentActions'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 
-type Cta39Size = 'none' | 'comfortable' | 'compact' | 'default'
 type Cta39Alignment = 'center' | 'left' | 'right'
-type Cta39BorderStyle = 'dashed' | 'dotted' | 'none' | 'solid'
+type Cta39HeaderLayout = 'split' | 'stacked'
+type Cta39SplitContentAlignment = 'bottom' | 'center' | 'top'
 
 type Cta39BlockLike = {
   accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
-  borderStyle?: Cta39BorderStyle | null
   contentAlignment?: Cta39Alignment | null
   description?: string | null
+  eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
-  size?: Cta39Size | null
+  headerLayout?: Cta39HeaderLayout | null
+  size?: RegularBlockSize | null
+  splitContentAlignment?: Cta39SplitContentAlignment | null
   title?: string | null
 }
+
+const blockAlignmentClasses = {
+  left: '',
+  center: 'mx-auto',
+  right: 'ml-auto',
+} as const
 
 const contentAlignmentClasses = {
   left: 'items-start text-left',
@@ -30,74 +47,139 @@ const contentAlignmentClasses = {
   right: 'items-end text-right',
 } as const
 
-const borderStyleClasses: Record<Cta39BorderStyle, string> = {
-  dashed: 'border border-dashed border-border',
-  dotted: 'border border-dotted border-border',
-  solid: 'border border-solid border-border',
-  none: '',
-}
+const descriptionAlignmentClasses = {
+  left: '',
+  center: 'mx-auto',
+  right: 'ml-auto',
+} as const
+
+const splitContentAlignmentClasses = {
+  top: 'lg:self-start',
+  center: 'lg:self-center',
+  bottom: 'lg:self-end',
+} as const
+
+const validAlignments = new Set<Cta39Alignment>(['left', 'center', 'right'])
+const validSizes = new Set<RegularBlockSize>(['none', 'compact', 'default', 'comfortable'])
 
 export function Cta39BlockComponent({
   accentTitle,
   actions,
   appearance,
-  borderStyle = 'dashed',
   contentAlignment = 'center',
   description,
+  eyebrow,
   footerActions,
+  headerLayout = 'stacked',
   size = 'default',
+  splitContentAlignment = 'center',
   title,
 }: Cta39BlockLike) {
   const resolvedTitle = title?.trim()
-  const resolvedAccentTitle = accentTitle?.trim() || undefined
-  const resolvedDescription = description?.trim()
-  const resolvedSize: Cta39Size = size ?? 'default'
-  const resolvedActions = resolveCmsActions(actions)
-  const appearanceClasses = resolveBlockAppearanceClasses(appearance)
-  const resolvedContentAlignment = contentAlignment ?? 'center'
-  const resolvedBorderStyle: Cta39BorderStyle = borderStyle ?? 'dashed'
 
   if (!resolvedTitle) {
     return null
   }
 
-  return (
-    <section
-      className={cn(
-        regularBlockMobilePaddingClasses[resolvedSize],
-        appearanceClasses.className,
+  const resolvedAccentTitle = accentTitle?.trim() || undefined
+  const resolvedDescription = description?.trim()
+  const resolvedEyebrow = eyebrow?.trim()
+  const resolvedActions = resolveCmsActions(actions)
+  const resolvedContentAlignment = validAlignments.has(contentAlignment as Cta39Alignment)
+    ? (contentAlignment as Cta39Alignment)
+    : 'center'
+  const resolvedSize = validSizes.has(size as RegularBlockSize)
+    ? (size as RegularBlockSize)
+    : 'default'
+  const resolvedSplitContentAlignment: Cta39SplitContentAlignment =
+    splitContentAlignment === 'top' || splitContentAlignment === 'bottom'
+      ? splitContentAlignment
+      : 'center'
+  const hasSupportingContent = Boolean(resolvedDescription || resolvedActions.length)
+  const resolvedHeaderLayout: Cta39HeaderLayout =
+    headerLayout === 'split' && hasSupportingContent ? 'split' : 'stacked'
+  const { background, className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
+
+  const heading = (
+    <h2 className={contentSectionHeadingClasses}>
+      {resolvedAccentTitle ? (
+        <>
+          <span className="block">{resolvedTitle}</span>
+          <em className="block">{resolvedAccentTitle}</em>
+        </>
+      ) : (
+        resolvedTitle
       )}
-      data-cta39-background={appearance?.background ?? 'none'}
-    >
-      <div className={regularBlockContainerClasses}>
-        <div
+    </h2>
+  )
+
+  const supportingContent = (
+    <>
+      {resolvedDescription ? (
+        <p
           className={cn(
-            'flex w-full flex-col gap-4 rounded-xl bg-background text-foreground p-8 sm:gap-5 sm:p-12 md:p-16',
-            borderStyleClasses[resolvedBorderStyle],
-            contentAlignmentClasses[resolvedContentAlignment],
+            contentSectionDescriptionClasses,
+            'max-w-2xl',
+            descriptionAlignmentClasses[resolvedContentAlignment],
           )}
         >
-          <h2 className="text-3xl font-semibold leading-tight tracking-tight md:text-4xl">
-            {resolvedAccentTitle ? (
-              <>
-                <span className="block">{resolvedTitle}</span>
-                <em className="block">{resolvedAccentTitle}</em>
-              </>
-            ) : (
-              resolvedTitle
+          {resolvedDescription}
+        </p>
+      ) : null}
+      <ContentActions
+        actions={resolvedActions}
+        alignment={resolvedContentAlignment}
+        data-cta39-actions="true"
+      />
+    </>
+  )
+
+  return (
+    <section
+      className={cn(regularBlockMobilePaddingClasses[resolvedSize], appearanceClassName)}
+      data-cta39="true"
+      data-cta39-background={background}
+      data-cta39-layout={resolvedHeaderLayout}
+    >
+      <div className={regularBlockContainerClasses}>
+        <header
+          className={cn(
+            'grid gap-6',
+            resolvedHeaderLayout === 'split'
+              ? 'lg:grid-cols-[minmax(0,3fr)_minmax(18rem,2fr)] lg:gap-16'
+              : cn('max-w-3xl', blockAlignmentClasses[resolvedContentAlignment]),
+          )}
+        >
+          <div
+            className={cn(
+              'flex min-w-0 flex-col gap-4',
+              contentAlignmentClasses[resolvedContentAlignment],
             )}
-          </h2>
-          {resolvedDescription ? (
-            <p className="text-base leading-7 text-muted-foreground">{resolvedDescription}</p>
+            data-content-alignment={resolvedContentAlignment}
+          >
+            {resolvedEyebrow ? (
+              <SectionEyebrow surface={background}>{resolvedEyebrow}</SectionEyebrow>
+            ) : null}
+            {heading}
+            {resolvedHeaderLayout === 'stacked' ? supportingContent : null}
+          </div>
+
+          {resolvedHeaderLayout === 'split' ? (
+            <div
+              className={cn(
+                'flex min-w-0 max-w-2xl flex-col gap-4',
+                blockAlignmentClasses[resolvedContentAlignment],
+                contentAlignmentClasses[resolvedContentAlignment],
+                splitContentAlignmentClasses[resolvedSplitContentAlignment],
+              )}
+              data-cta39-split-alignment={resolvedSplitContentAlignment}
+            >
+              {supportingContent}
+            </div>
           ) : null}
-          <ContentActions
-            actions={resolvedActions}
-            alignment={resolvedContentAlignment}
-            className={resolvedContentAlignment === 'center' ? 'justify-center' : undefined}
-            data-cta39-actions="true"
-          />
-        </div>
-        <BlockFooterActions actions={footerActions} />
+        </header>
+
+        <BlockFooterActions actions={footerActions} alignment={resolvedContentAlignment} />
       </div>
     </section>
   )

@@ -4,19 +4,12 @@ import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
-const borderStyleField = {
-  name: 'borderStyle',
-  label: 'Border Style',
-  type: 'select',
-  defaultValue: 'dashed',
-  options: [
-    { label: 'None', value: 'none' },
-    { label: 'Solid', value: 'solid' },
-    { label: 'Dashed', value: 'dashed' },
-    { label: 'Dotted', value: 'dotted' },
-  ],
-  required: true,
-} satisfies SelectField
+type Cta39SiblingData = {
+  headerLayout?: 'split' | 'stacked' | null
+}
+
+const isSplitLayout = (_data: unknown, siblingData: Cta39SiblingData) =>
+  siblingData?.headerLayout === 'split'
 
 const ctaSizeField = {
   name: 'size',
@@ -32,6 +25,21 @@ const ctaSizeField = {
   required: true,
 } satisfies SelectField
 
+const headerLayoutField = {
+  name: 'headerLayout',
+  label: 'Header Layout',
+  type: 'select',
+  defaultValue: 'stacked',
+  options: [
+    { label: 'Stacked', value: 'stacked' },
+    { label: 'Split', value: 'split' },
+  ],
+  required: true,
+  admin: {
+    description: 'Stack content in one column or place supporting content beside the heading.',
+  },
+} satisfies SelectField
+
 const contentAlignmentField = {
   name: 'contentAlignment',
   label: 'Section Content Alignment',
@@ -43,6 +51,23 @@ const contentAlignmentField = {
     { label: 'Right', value: 'right' },
   ],
   required: true,
+} satisfies SelectField
+
+const splitContentAlignmentField = {
+  name: 'splitContentAlignment',
+  label: 'Split Content Position',
+  type: 'select',
+  defaultValue: 'center',
+  options: [
+    { label: 'Top', value: 'top' },
+    { label: 'Center', value: 'center' },
+    { label: 'Bottom', value: 'bottom' },
+  ],
+  required: true,
+  admin: {
+    condition: isSplitLayout,
+    description: 'Position the description and actions relative to the heading.',
+  },
 } satisfies SelectField
 
 export const Cta39Block: Block = {
@@ -61,9 +86,18 @@ export const Cta39Block: Block = {
           label: 'Content',
           fields: [
             {
+              name: 'eyebrow',
+              label: 'Eyebrow',
+              type: 'text',
+              admin: {
+                description: 'Optional short label shown above the title.',
+              },
+            },
+            {
               name: 'title',
               label: 'Title',
               type: 'text',
+              required: true,
             },
             {
               name: 'accentTitle',
@@ -74,16 +108,21 @@ export const Cta39Block: Block = {
               name: 'description',
               type: 'textarea',
             },
-            createContentActionsField(),
-            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
+            createContentActionsField({
+              name: 'footerActions',
+              label: 'Footer Actions',
+              maxRows: 2,
+            }),
           ],
         },
         {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
+            headerLayoutField,
             contentAlignmentField,
-            borderStyleField,
+            splitContentAlignmentField,
             ctaSizeField,
           ],
         },

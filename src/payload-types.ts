@@ -590,7 +590,11 @@ export interface NewsGridBlock {
  * via the `definition` "Cta39Block".
  */
 export interface Cta39Block {
-  title?: string | null;
+  /**
+   * Optional short label shown above the title.
+   */
+  eyebrow?: string | null;
+  title: string;
   accentTitle?: string | null;
   description?: string | null;
   actions?:
@@ -635,8 +639,15 @@ export interface Cta39Block {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Stack content in one column or place supporting content beside the heading.
+   */
+  headerLayout: 'stacked' | 'split';
   contentAlignment: 'left' | 'center' | 'right';
-  borderStyle: 'none' | 'solid' | 'dashed' | 'dotted';
+  /**
+   * Position the description and actions relative to the heading.
+   */
+  splitContentAlignment?: ('top' | 'center' | 'bottom') | null;
   size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
@@ -5733,6 +5744,7 @@ export interface NewsGridBlockSelect<T extends boolean = true> {
  * via the `definition` "Cta39Block_select".
  */
 export interface Cta39BlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   title?: T;
   accentTitle?: T;
   description?: T;
@@ -5768,8 +5780,9 @@ export interface Cta39BlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  headerLayout?: T;
   contentAlignment?: T;
-  borderStyle?: T;
+  splitContentAlignment?: T;
   size?: T;
   id?: T;
   blockName?: T;

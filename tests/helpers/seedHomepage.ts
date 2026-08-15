@@ -24,7 +24,6 @@ const homepagePageData = {
       ],
     },
     {
-      actionMode: 'button' as const,
       actions: [
         {
           label: 'Get started',
@@ -39,8 +38,8 @@ const homepagePageData = {
       },
       contentAlignment: 'center' as const,
       description: 'Use this section as a quick call-to-action at the end of the page.',
+      headerLayout: 'stacked' as const,
       size: 'compact' as const,
-      borderStyle: 'dashed' as const,
       blockType: 'cta39' as const,
       title: 'Ready to explore more?',
     },
