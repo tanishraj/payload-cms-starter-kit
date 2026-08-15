@@ -172,4 +172,32 @@ describe('stats strip block', () => {
 
     expect(screen.getByTestId('stats-strip-value').textContent).toBe('96%')
   })
+
+  it('switches immediately to the final value when reduced-motion preference changes', () => {
+    let matches = false
+    let changeListener: (() => void) | undefined
+
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn().mockReturnValue({
+        addEventListener: (_type: string, listener: () => void) => {
+          changeListener = listener
+        },
+        get matches() {
+          return matches
+        },
+        removeEventListener: vi.fn(),
+      }),
+    )
+
+    render(createElement(AnimatedMetricValue, { suffix: '%', value: 96 }))
+    expect(screen.getByTestId('stats-strip-value').textContent).toBe('0%')
+
+    act(() => {
+      matches = true
+      changeListener?.()
+    })
+
+    expect(screen.getByTestId('stats-strip-value').textContent).toBe('96%')
+  })
 })

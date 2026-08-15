@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export type AnimatedMetricValueProps = {
   durationMs?: number | null
@@ -41,14 +41,11 @@ export function AnimatedMetricValue({
   }, [])
 
   useEffect(() => {
-    if (prefersReducedMotion) {
-      setDisplayValue(value)
-      return
-    }
+    if (prefersReducedMotion) return
 
     if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') {
-      setHasStarted(true)
-      return
+      const animationFrame = window.requestAnimationFrame(() => setHasStarted(true))
+      return () => window.cancelAnimationFrame(animationFrame)
     }
 
     const node = rootRef.current
@@ -79,17 +76,10 @@ export function AnimatedMetricValue({
     return () => {
       observer.disconnect()
     }
-  }, [prefersReducedMotion, triggerOnce, value])
+  }, [prefersReducedMotion, triggerOnce])
 
   useEffect(() => {
-    if (prefersReducedMotion) {
-      setDisplayValue(value)
-      return
-    }
-
-    if (!hasStarted) {
-      return
-    }
+    if (prefersReducedMotion || !hasStarted) return
 
     const safeDuration = Math.max(durationMs ?? 1200, 1)
     const stepMs = 16
@@ -112,9 +102,8 @@ export function AnimatedMetricValue({
     }
   }, [durationMs, hasStarted, prefersReducedMotion, value])
 
-  const text = useMemo(() => {
-    return `${prefix ?? ''}${displayValue}${suffix ?? ''}`
-  }, [displayValue, prefix, suffix])
+  const renderedValue = prefersReducedMotion ? value : displayValue
+  const text = `${prefix ?? ''}${renderedValue}${suffix ?? ''}`
 
   return (
     <span ref={rootRef} data-testid="stats-strip-value">

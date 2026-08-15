@@ -2,14 +2,7 @@
 
 import Image from 'next/image'
 import { AnimatePresence, motion, useAnimationControls } from 'framer-motion'
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  Pause,
-  Play,
-  RotateCcw,
-  XIcon,
-} from 'lucide-react'
+import { ChevronLeftIcon, ChevronRightIcon, Pause, Play, RotateCcw, XIcon } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
@@ -93,9 +86,7 @@ export const getEventGalleryCaption = (
   const caption = image.caption?.trim()
   if (caption) return caption
   const alt = image.alt.trim()
-  return !alt || alt.toLocaleLowerCase() === albumTitle.trim().toLocaleLowerCase()
-    ? undefined
-    : alt
+  return !alt || alt.toLocaleLowerCase() === albumTitle.trim().toLocaleLowerCase() ? undefined : alt
 }
 
 export const getAdjacentImageIndexes = (
@@ -109,17 +100,26 @@ export const getAdjacentImageIndexes = (
   }
 }
 
+export const getEventGalleryAutoplayAction = ({
+  isAtEnd,
+  isMultiple,
+  isPlaying,
+}: {
+  isAtEnd: boolean
+  isMultiple: boolean
+  isPlaying: boolean
+}) => {
+  if (!isPlaying || !isMultiple) return 'idle' as const
+  return isAtEnd ? ('stop' as const) : ('schedule' as const)
+}
+
 type EventGalleryViewerProps = {
   album: EventGalleryAlbum
   initialIndex?: number
   onClose: () => void
 }
 
-export function EventGalleryViewer({
-  album,
-  initialIndex = 0,
-  onClose,
-}: EventGalleryViewerProps) {
+export function EventGalleryViewer({ album, initialIndex = 0, onClose }: EventGalleryViewerProps) {
   const [currentIndex, setCurrentIndex] = useState(
     Math.min(Math.max(initialIndex, 0), album.images.length - 1),
   )
@@ -157,24 +157,41 @@ export function EventGalleryViewer({
 
   // Autoplay
   useEffect(() => {
-    if (!isPlaying || !isMultiple) return
-    if (isAtEnd) {
-      setIsPlaying(false)
-      return
-    }
-    autoplayRef.current = setTimeout(goNext, AUTOPLAY_DELAY_MS)
+    const action = getEventGalleryAutoplayAction({ isAtEnd, isMultiple, isPlaying })
+    if (action === 'idle') return
+
+    autoplayRef.current = setTimeout(
+      () => {
+        if (action === 'stop') {
+          setIsPlaying(false)
+          return
+        }
+        goNext()
+      },
+      action === 'stop' ? 0 : AUTOPLAY_DELAY_MS,
+    )
+
     return () => {
       if (autoplayRef.current) clearTimeout(autoplayRef.current)
     }
-  }, [isPlaying, isMultiple, isAtEnd, currentIndex, goNext])
+  }, [goNext, isAtEnd, isMultiple, isPlaying])
 
   // Keyboard navigation
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
-      if (e.key === 'ArrowRight') { setIsPlaying(false); goNext() }
-      if (e.key === 'ArrowLeft') { setIsPlaying(false); goPrev() }
-      if (e.key === ' ') { e.preventDefault(); setIsPlaying((p) => !p) }
+      if (e.key === 'ArrowRight') {
+        setIsPlaying(false)
+        goNext()
+      }
+      if (e.key === 'ArrowLeft') {
+        setIsPlaying(false)
+        goPrev()
+      }
+      if (e.key === ' ') {
+        e.preventDefault()
+        setIsPlaying((p) => !p)
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -184,7 +201,9 @@ export function EventGalleryViewer({
   useEffect(() => {
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    return () => { document.body.style.overflow = prev }
+    return () => {
+      document.body.style.overflow = prev
+    }
   }, [])
 
   const image = album.images[currentIndex]
@@ -242,7 +261,11 @@ export function EventGalleryViewer({
             onDragEnd={(_, info) => {
               if (Math.abs(info.offset.x) > 50) {
                 setIsPlaying(false)
-                info.offset.x < 0 ? goNext() : goPrev()
+                if (info.offset.x < 0) {
+                  goNext()
+                } else {
+                  goPrev()
+                }
               }
             }}
           >
@@ -263,14 +286,20 @@ export function EventGalleryViewer({
           <>
             <button
               aria-label="Previous image"
-              onClick={() => { setIsPlaying(false); goPrev() }}
+              onClick={() => {
+                setIsPlaying(false)
+                goPrev()
+              }}
               className="absolute left-3 z-20 flex size-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md ring-1 ring-inset ring-white/15 transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:left-4 sm:size-11"
             >
               <ChevronLeftIcon className="size-5" />
             </button>
             <button
               aria-label="Next image"
-              onClick={() => { setIsPlaying(false); goNext() }}
+              onClick={() => {
+                setIsPlaying(false)
+                goNext()
+              }}
               className="absolute right-3 z-20 flex size-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md ring-1 ring-inset ring-white/15 transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:right-4 sm:size-11"
             >
               <ChevronRightIcon className="size-5" />
@@ -297,7 +326,10 @@ export function EventGalleryViewer({
                   index={index}
                   currentIndex={currentIndex}
                   isPlaying={isPlaying}
-                  onClick={() => { setIsPlaying(false); goTo(index) }}
+                  onClick={() => {
+                    setIsPlaying(false)
+                    goTo(index)
+                  }}
                 />
               ))}
             </div>

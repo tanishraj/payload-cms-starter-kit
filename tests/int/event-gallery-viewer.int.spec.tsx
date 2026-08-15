@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import {
   getAdjacentImageIndexes,
+  getEventGalleryAutoplayAction,
   getEventGalleryCaption,
 } from '@/components/event-gallery-viewer'
 import type { EventGalleryAlbum } from '@/lib/eventGalleryShared'
@@ -53,10 +54,22 @@ describe('event gallery viewer utilities', () => {
       'Students celebrate together',
     )
     expect(
-      getEventGalleryCaption(
-        { ...album.images[0]!, alt: ' independence day ' },
-        album.title,
-      ),
+      getEventGalleryCaption({ ...album.images[0]!, alt: ' independence day ' }, album.title),
     ).toBeUndefined()
+  })
+
+  it('derives idle, scheduled, and terminal autoplay actions', () => {
+    expect(
+      getEventGalleryAutoplayAction({ isAtEnd: false, isMultiple: true, isPlaying: false }),
+    ).toBe('idle')
+    expect(
+      getEventGalleryAutoplayAction({ isAtEnd: false, isMultiple: false, isPlaying: true }),
+    ).toBe('idle')
+    expect(
+      getEventGalleryAutoplayAction({ isAtEnd: false, isMultiple: true, isPlaying: true }),
+    ).toBe('schedule')
+    expect(
+      getEventGalleryAutoplayAction({ isAtEnd: true, isMultiple: true, isPlaying: true }),
+    ).toBe('stop')
   })
 })
