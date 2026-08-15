@@ -12,12 +12,14 @@ import { HeroCarouselBlock } from '@/blocks/HeroCarousel/config'
 import { IconGridBlock } from '@/blocks/IconGrid/config'
 import { ProgramGridBlock } from '@/blocks/ProgramGrid/config'
 import { ProgramMatrixBlock } from '@/blocks/ProgramMatrix/config'
+import { Services21BlockComponent } from '@/blocks/Services21/Component'
 import {
   buttonVariantOptions,
   buttonVariantWithLinkOptions,
   createContentActionsField,
 } from '@/blocks/shared/contentActionsFields'
 import { ContentActions } from '@/components/ContentActions'
+import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { BorderButton } from '@/components/shadcnblocks/border-button'
 import { Button } from '@/components/ui/button'
 import { resolveCmsActions } from '@/lib/cmsLinks'
@@ -163,7 +165,10 @@ describe('shared CMS button variants', () => {
       createElement(Button, { variant: 'whiteOutline' }, 'White outline'),
     )
 
-    expect(filled).toContain('border-white bg-white text-black')
+    expect(filled).toContain(
+      'border-white bg-white text-primary hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/30 dark:text-primary-foreground',
+    )
+    expect(filled).not.toContain('text-black')
     expect(filled).toContain('hover:bg-white/90')
     expect(filled).toContain('focus-visible:border-white')
     expect(filled).toContain('focus-visible:ring-white/30')
@@ -178,6 +183,47 @@ describe('shared CMS button variants', () => {
     )
     expect(decorated).toContain('data-variant="whiteOutline"')
     expect(decorated).toContain('border-white bg-transparent text-white')
+
+    const withIcon = renderToStaticMarkup(
+      <Button variant="white">
+        <ActionButtonContent label="Continue" showArrow />
+      </Button>,
+    )
+
+    expect(withIcon).toContain('data-action-arrow="true"')
+    expect(withIcon).toContain('text-primary')
+    expect(withIcon).toContain('dark:text-primary-foreground')
+    expect(withIcon).not.toMatch(/data-action-arrow="true"[^>]*class="[^"]*text-/)
+  })
+
+  it('uses the branded white-filled foreground in decorated service actions', () => {
+    const html = renderToStaticMarkup(
+      <Services21BlockComponent
+        actions={[
+          {
+            label: 'Explore services',
+            linkType: 'custom',
+            mode: 'button',
+            showArrow: true,
+            url: '/services',
+            variant: 'white',
+          },
+        ]}
+        services={[
+          {
+            image: { alt: 'Clinical service', url: '/media/clinical-service.jpg' },
+            title: 'Clinical service',
+          },
+        ]}
+        title="Services"
+      />,
+    )
+
+    expect(html).toContain('data-variant="white"')
+    expect(html).toContain('text-primary')
+    expect(html).toContain('dark:text-primary-foreground')
+    expect(html).not.toContain('text-black')
+    expect(html).toContain('data-action-arrow="true"')
   })
 
   it('includes both white variants in generated Payload action unions', () => {

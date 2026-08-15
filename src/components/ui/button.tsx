@@ -24,7 +24,7 @@ const buttonVariants = cva(
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground',
         white:
-          'border-white bg-white text-black hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/30',
+          'border-white bg-white text-primary hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/30 dark:text-primary-foreground',
         whiteOutline:
           'border-white bg-transparent text-white hover:bg-white/10 focus-visible:border-white focus-visible:ring-white/30',
         ghost:

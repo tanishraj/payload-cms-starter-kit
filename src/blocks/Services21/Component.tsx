@@ -45,7 +45,7 @@ const buttonClassNameByVariant: Record<ActionButtonMode, string> = {
     'border-primary bg-primary text-primary-foreground hover:bg-[color-mix(in_oklch,var(--primary),var(--foreground)_8%)]',
   secondary: 'border-secondary/40 bg-secondary/10 text-secondary hover:bg-secondary/20',
   white:
-    'border-white bg-white text-black hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/30',
+    'border-white bg-white text-primary hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/30 dark:text-primary-foreground',
   whiteOutline:
     'border-white bg-transparent text-white hover:bg-white/10 focus-visible:border-white focus-visible:ring-white/30',
 }
