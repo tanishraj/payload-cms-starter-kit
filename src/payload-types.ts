@@ -991,7 +991,7 @@ export interface FeatureMatrixBlock {
  */
 export interface ContentHighlightsBlock {
   eyebrow?: string | null;
-  title?: string | null;
+  title: string;
   accentTitle?: string | null;
   description?: string | null;
   actions?:
@@ -1033,15 +1033,37 @@ export interface ContentHighlightsBlock {
       }[]
     | null;
   items: {
-    metadata?: string | null;
-    title?: string | null;
-    description?: string | null;
-    linkType: 'none' | 'page' | 'custom';
-    page?: (string | null) | Page;
-    url?: string | null;
-    openInNewTab?: boolean | null;
     /**
-     * Applied only when the block uses the Numbered Steps presentation.
+     * Choose how this card is identified before its title.
+     */
+    markerMode: 'numbered' | 'custom' | 'hidden';
+    /**
+     * Short text such as Clinical, Year 1, or Research.
+     */
+    markerLabel?: string | null;
+    title: string;
+    description?: string | null;
+    cardAction?:
+      | {
+          label: string;
+          linkType?: ('page' | 'custom') | null;
+          page?: (string | null) | Page;
+          url?: string | null;
+          openInNewTab?: boolean | null;
+          mode?: ('link' | 'button') | null;
+          /**
+           * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+           */
+          variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+          /**
+           * Adds a trailing arrow when this action is displayed as a button.
+           */
+          showArrow?: boolean | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Default Card inherits the section background. Other choices use the active theme and automatically adjust card contrast.
      */
     cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
     id?: string | null;
@@ -1050,8 +1072,8 @@ export interface ContentHighlightsBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  layout: 'editorialRow' | 'highlightsGrid' | 'simpleGrid' | 'numberedSteps';
-  enableSplitLayout?: boolean | null;
+  layout: 'editorialRow' | 'highlightsGrid' | 'simpleGrid';
+  headerLayout: 'stacked' | 'split';
   contentAlignment?: ('left' | 'center' | 'right') | null;
   splitContentAlignment?: ('top' | 'center' | 'bottom') | null;
   size: 'none' | 'compact' | 'default' | 'comfortable';
@@ -6071,13 +6093,23 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
   items?:
     | T
     | {
-        metadata?: T;
+        markerMode?: T;
+        markerLabel?: T;
         title?: T;
         description?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
+        cardAction?:
+          | T
+          | {
+              label?: T;
+              linkType?: T;
+              page?: T;
+              url?: T;
+              openInNewTab?: T;
+              mode?: T;
+              variant?: T;
+              showArrow?: T;
+              id?: T;
+            };
         cardBackground?: T;
         id?: T;
       };
@@ -6088,7 +6120,7 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
         border?: T;
       };
   layout?: T;
-  enableSplitLayout?: T;
+  headerLayout?: T;
   contentAlignment?: T;
   splitContentAlignment?: T;
   size?: T;

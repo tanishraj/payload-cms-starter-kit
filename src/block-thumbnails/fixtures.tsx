@@ -540,37 +540,42 @@ export const blockThumbnailFixtures = {
       appearance={{ background: 'subtle', border: 'topAndBottom' }}
       description="Resources, communities, and opportunities designed to support every part of the student experience."
       eyebrow="Life here"
+      headerLayout="stacked"
       items={[
         {
+          cardAction: [
+            {
+              label: 'Explore housing',
+              linkType: 'custom',
+              mode: 'link',
+              url: '/student-life/housing',
+            },
+          ],
           description: 'On-campus and supported off-campus options for every stage.',
-          linkType: 'custom',
+          markerMode: 'numbered',
           title: 'Housing',
-          url: '/student-life/housing',
         },
         {
+          cardBackground: 'primary',
           description: 'Dedicated people and resources for physical and mental wellbeing.',
-          linkType: 'none',
+          markerLabel: 'Care',
+          markerMode: 'custom',
           title: 'Wellness',
         },
         {
+          cardAction: [
+            {
+              label: 'Discover organizations',
+              linkType: 'custom',
+              mode: 'button',
+              showArrow: true,
+              url: '/student-life/organizations',
+              variant: 'default',
+            },
+          ],
           description: 'Student-led groups spanning academic, creative, and community interests.',
-          linkType: 'none',
+          markerMode: 'hidden',
           title: 'Organizations',
-        },
-        {
-          description: 'Recreation, team activities, and modern fitness facilities.',
-          linkType: 'none',
-          title: 'Athletics',
-        },
-        {
-          description: 'Volunteer programs connect learning with meaningful community work.',
-          linkType: 'none',
-          title: 'Service',
-        },
-        {
-          description: 'A welcoming community shaped by many backgrounds and perspectives.',
-          linkType: 'none',
-          title: 'Diversity',
         },
       ]}
       layout="highlightsGrid"
