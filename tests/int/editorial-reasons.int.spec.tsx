@@ -740,7 +740,7 @@ describe('Editorial Reasons catalogs', () => {
 
 describe('Editorial Reasons documentation', () => {
   it('is recorded in architecture and operator documentation', () => {
-    expect(featureInventorySource).toContain('Normal Pages register 43 choices')
+    expect(featureInventorySource).toContain('Normal Pages register 48 choices')
     expect(featureInventorySource).toContain('Editorial Reasons')
     expect(blocksGuideSource).toMatch(/\| Editorial Reasons\s+\|/)
     expect(blocksGuideSource).toContain('sticky introduction')
