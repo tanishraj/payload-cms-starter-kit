@@ -24,7 +24,14 @@ const eslintConfig = [
     },
   },
   {
-    ignores: ['.agents/**', '.next/', '.understand-anything/**', 'src/payload-types.ts'],
+    ignores: [
+      '.agents/**',
+      '.claude/**',
+      '.next/',
+      '.superpowers/**',
+      '.understand-anything/**',
+      'src/payload-types.ts',
+    ],
   },
 ]
 

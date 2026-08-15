@@ -35,7 +35,7 @@ import { SystemMaintenanceBlockComponent } from '@/blocks/SystemMaintenance/Comp
 import { Contact24 } from '@/components/contact24'
 import { EventGallery } from '@/components/event-gallery'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
-import type { Form, Media } from '@/payload-types'
+import type { Form, Media, RichTextBlock } from '@/payload-types'
 
 import { AboutSectionBlockComponent } from '@/blocks/AboutSection/Component'
 import { AccreditationCardsBlockComponent } from '@/blocks/AccreditationCards/Component'
@@ -69,7 +69,7 @@ export const blockThumbnailAssetPaths = [
 
 const [editorialLandscape, collaboration, portrait, brandMark, officeMap] = blockThumbnailAssetPaths
 
-const richTextParagraph = (text: string) => ({
+const richTextParagraph = (text: string): RichTextBlock['content'] => ({
   root: {
     type: 'root',
     children: [
@@ -1912,12 +1912,9 @@ export const blockThumbnailFixtures = {
   richText: (
     <RichTextBlockComponent
       appearance={{ background: 'none', border: 'none' }}
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      content={
-        richTextParagraph(
-          'Our approach to education is grounded in the belief that practical experience and critical thinking are inseparable. We design programs that challenge students to engage deeply with real-world problems, building skills that last well beyond graduation. Every course, every assessment, and every learning space reflects a commitment to outcomes that matter — to students, to employers, and to the communities they serve.',
-        ) as any
-      }
+      content={richTextParagraph(
+        'Our approach to education is grounded in the belief that practical experience and critical thinking are inseparable. We design programs that challenge students to engage deeply with real-world problems, building skills that last well beyond graduation. Every course, every assessment, and every learning space reflects a commitment to outcomes that matter — to students, to employers, and to the communities they serve.',
+      )}
       maxWidth="prose"
       size="compact"
     />

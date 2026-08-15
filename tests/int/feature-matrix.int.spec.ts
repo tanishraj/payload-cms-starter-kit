@@ -128,7 +128,6 @@ describe('Feature Matrix presentation', () => {
     expect(contentTab).toBeDefined()
     expect(layoutTab).toBeDefined()
 
-    const titleField = getField(contentTab?.fields ?? [], 'title')
     const featuresField = getField(contentTab?.fields ?? [], 'features')
     const actionsField = getField(contentTab?.fields ?? [], 'actions')
     // Features use createCardTabs which wraps fields in a tabs structure
