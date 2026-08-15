@@ -161,24 +161,18 @@ describe('semantic card surface rendering', () => {
     expect(html).not.toContain('mb-12')
   })
 
-  it('themes Content Highlights only in the numbered-card presentation', () => {
-    const numbered = renderToStaticMarkup(
-      <ContentHighlightsBlockComponent
-        items={[{ cardBackground: 'primary', title: 'Apply' }]}
-        layout="numberedSteps"
-        title="Admissions"
-      />,
-    )
-    const simple = renderToStaticMarkup(
-      <ContentHighlightsBlockComponent
-        items={[{ cardBackground: 'primary', title: 'Apply' }]}
-        layout="simpleGrid"
-        title="Admissions"
-      />,
-    )
+  it('themes Content Highlights cards in every presentation', () => {
+    for (const layout of ['editorialRow', 'highlightsGrid', 'simpleGrid'] as const) {
+      const html = renderToStaticMarkup(
+        <ContentHighlightsBlockComponent
+          items={[{ cardBackground: 'primary', title: 'Apply' }]}
+          layout={layout}
+          title="Admissions"
+        />,
+      )
 
-    expectPrimarySurface(numbered)
-    expect(simple).not.toContain('data-card-background')
+      expectPrimarySurface(html)
+    }
   })
 
   it('themes testimonial and award card variants without changing their row variants', () => {

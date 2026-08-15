@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 
 import type { BlockAppearance, BlockBackground } from '@/blocks/shared/blockAppearance'
 import { resolveBlockAppearanceClasses } from '@/blocks/shared/blockAppearance'
+import { resolveCardSurface } from '@/blocks/shared/cardSurface'
 import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
@@ -9,30 +10,29 @@ import {
 import {
   contentIntroClasses,
   contentItemDescriptionClasses,
-  contentItemLinkClasses,
   contentItemMetadataClasses,
   contentItemTitleClasses,
   contentSectionDescriptionClasses,
   contentSectionHeadingClasses,
 } from '@/blocks/shared/contentStyles'
-import { Separator } from '@/components/ui/separator'
+import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
-import { resolveCardSurface } from '@/blocks/shared/cardSurface'
+import type { ResolvedCmsAction } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 
 export type ContentHighlightsAlignment = 'center' | 'left' | 'right'
-export type ContentHighlightsLayout =
-  'editorialRow' | 'highlightsGrid' | 'numberedSteps' | 'simpleGrid'
+export type ContentHighlightsHeaderLayout = 'split' | 'stacked'
+export type ContentHighlightsLayout = 'editorialRow' | 'highlightsGrid' | 'simpleGrid'
 export type ContentHighlightsSize = 'none' | 'comfortable' | 'compact' | 'default'
 export type ContentHighlightsSplitAlignment = 'bottom' | 'center' | 'top'
 
 export type ContentHighlightItem = {
+  cardAction?: ResolvedCmsAction
   cardBackground?: string | null
   description?: string
-  href?: string
-  metadata?: string
-  openInNewTab?: boolean
-  title?: string | null
+  markerLabel?: string
+  markerMode: 'custom' | 'hidden' | 'numbered'
+  title: string
 }
 
 export type ContentHighlightsProps = {
@@ -41,8 +41,8 @@ export type ContentHighlightsProps = {
   appearance?: BlockAppearance | null
   contentAlignment?: ContentHighlightsAlignment
   description?: string | null
-  enableSplitLayout?: boolean
   eyebrow?: string | null
+  headerLayout?: ContentHighlightsHeaderLayout
   items: ContentHighlightItem[]
   layout?: ContentHighlightsLayout
   size?: ContentHighlightsSize
@@ -51,16 +51,14 @@ export type ContentHighlightsProps = {
 }
 
 const fullWidthItemGridClasses = {
-  editorialRow: 'grid gap-x-8 gap-y-8 md:grid-cols-2 lg:grid-cols-3',
-  highlightsGrid: 'grid gap-x-8 gap-y-8 md:grid-cols-2 lg:grid-cols-3',
-  numberedSteps: 'grid gap-4 md:grid-cols-2 lg:grid-cols-4',
-  simpleGrid: 'grid gap-x-16 gap-y-10 md:grid-cols-2',
+  editorialRow: 'grid gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3',
+  highlightsGrid: 'grid gap-6 md:grid-cols-2 lg:grid-cols-3',
+  simpleGrid: 'grid gap-x-12 gap-y-10 md:grid-cols-2',
 } as const satisfies Record<ContentHighlightsLayout, string>
 
 const splitItemGridClasses = {
-  editorialRow: 'grid gap-x-8 gap-y-8 md:grid-cols-2',
-  highlightsGrid: 'grid gap-x-8 gap-y-8 md:grid-cols-2',
-  numberedSteps: 'grid gap-4 md:grid-cols-2',
+  editorialRow: 'grid gap-x-8 gap-y-10 md:grid-cols-2',
+  highlightsGrid: 'grid gap-6 md:grid-cols-2',
   simpleGrid: 'grid gap-x-8 gap-y-10 md:grid-cols-2',
 } as const satisfies Record<ContentHighlightsLayout, string>
 
@@ -75,17 +73,6 @@ const splitAlignmentClasses = {
   center: 'lg:self-center',
   top: 'lg:self-start',
 } as const satisfies Record<ContentHighlightsSplitAlignment, string>
-
-const contentHighlightsLayouts = new Set<ContentHighlightsLayout>([
-  'editorialRow',
-  'highlightsGrid',
-  'numberedSteps',
-  'simpleGrid',
-])
-
-function resolveContentHighlightsLayout(layout?: ContentHighlightsLayout | null) {
-  return layout && contentHighlightsLayouts.has(layout) ? layout : 'highlightsGrid'
-}
 
 const sectionGapClasses = {
   none: 'gap-10',
@@ -107,6 +94,7 @@ function ContentHighlightsIntro({
   surface: BlockBackground
 }) {
   const resolvedAccentTitle = accentTitle?.trim() || undefined
+
   return (
     <div className={cn(contentIntroClasses, className)}>
       {eyebrow ? <SectionEyebrow surface={surface}>{eyebrow}</SectionEyebrow> : null}
@@ -126,6 +114,57 @@ function ContentHighlightsIntro({
   )
 }
 
+function resolveMarker(item: ContentHighlightItem, index: number) {
+  if (item.markerMode === 'hidden') return undefined
+  if (item.markerMode === 'custom') {
+    return item.markerLabel?.trim() || String(index + 1).padStart(2, '0')
+  }
+  return String(index + 1).padStart(2, '0')
+}
+
+function HighlightBody({
+  hasAction,
+  item,
+  marker,
+  markerClassName,
+  secondaryClassName,
+}: {
+  hasAction: boolean
+  item: ContentHighlightItem
+  marker?: string
+  markerClassName: string
+  secondaryClassName: string
+}) {
+  return (
+    <div className={cn('flex min-w-0 flex-1 flex-col gap-2', hasAction && 'pb-6')}>
+      {marker ? (
+        <p
+          className={cn(
+            contentItemMetadataClasses,
+            'font-semibold uppercase tracking-[0.18em]',
+            markerClassName,
+          )}
+          data-content-highlight-marker={marker}
+        >
+          {marker}
+        </p>
+      ) : null}
+      <h3 className={contentItemTitleClasses}>{item.title}</h3>
+      {item.description ? (
+        <p
+          className={cn(
+            contentItemDescriptionClasses,
+            'max-w-[65ch] leading-6',
+            secondaryClassName,
+          )}
+        >
+          {item.description}
+        </p>
+      ) : null}
+    </div>
+  )
+}
+
 function ContentHighlightItemComponent({
   index,
   item,
@@ -137,74 +176,110 @@ function ContentHighlightItemComponent({
   layout: ContentHighlightsLayout
   sectionBackground: BlockBackground
 }) {
-  const isNumbered = layout === 'numberedSteps'
-  const isSimple = layout === 'simpleGrid'
-  const step = String(index + 1).padStart(2, '0')
   const surface = resolveCardSurface(item.cardBackground, sectionBackground)
-  const title = item.href ? (
-    <a
-      className={cn(contentItemTitleClasses, contentItemLinkClasses)}
-      href={item.href}
-      rel={item.openInNewTab ? 'noreferrer' : undefined}
-      target={item.openInNewTab ? '_blank' : undefined}
+  const marker = resolveMarker(item, index)
+  const hasExplicitSurface = surface.value !== 'default'
+  const hasAction = Boolean(item.cardAction)
+  const body = (
+    <HighlightBody
+      hasAction={hasAction}
+      item={item}
+      marker={marker}
+      markerClassName={surface.icon}
+      secondaryClassName={surface.secondary}
+    />
+  )
+  const actionFooter = item.cardAction ? (
+    <div
+      className={cn('mt-auto border-t pt-4', surface.divider)}
+      data-content-highlight-action-footer="true"
     >
-      {item.title}
-    </a>
-  ) : (
-    <p className={contentItemTitleClasses}>{item.title}</p>
-  )
-
-  const content = (
-    <div className="flex flex-col gap-2">
-      {item.metadata ? (
-        <p className={cn(contentItemMetadataClasses, 'uppercase')}>{item.metadata}</p>
-      ) : null}
-      {title}
-      {item.description ? (
-        <p className={contentItemDescriptionClasses}>{item.description}</p>
-      ) : null}
+      <ContentActions
+        actions={[item.cardAction]}
+        alignment="left"
+        buttonClassNames={surface.button}
+        className="w-auto"
+        linkClassName={surface.link}
+      />
     </div>
+  ) : null
+  const containedClasses = cn(
+    'rounded-[var(--radius)] border p-6 md:p-7',
+    surface.className,
+    surface.divider,
   )
 
-  if (isNumbered) {
+  if (layout === 'editorialRow') {
     return (
       <article
         className={cn(
-          'flex min-w-0 flex-col gap-4 rounded-md border p-6',
-          surface.className,
+          'flex min-w-0 flex-col border-t pt-5',
           surface.divider,
+          hasExplicitSurface && containedClasses,
         )}
         data-card-background={surface.value}
         data-content-highlight-item="true"
-        data-content-highlight-presentation="numbered"
+        data-content-highlight-presentation="editorial"
       >
-        <p
-          className={cn('text-2xl leading-none font-semibold', surface.icon)}
-          data-content-highlight-step={step}
-        >
-          {step}
-        </p>
-        {content}
+        {body}
+        {actionFooter}
       </article>
     )
   }
 
-  if (isSimple) {
+  if (layout === 'simpleGrid') {
     return (
       <article
-        className="flex min-w-0 flex-col"
+        className={cn(
+          'flex min-w-0 flex-col',
+          hasExplicitSurface ? containedClasses : surface.className,
+        )}
+        data-card-background={surface.value}
         data-content-highlight-item="true"
         data-content-highlight-presentation="simple"
       >
-        {content}
+        <div className={cn('grid flex-1 gap-4', marker && 'grid-cols-[3.5rem_minmax(0,1fr)]')}>
+          {marker ? (
+            <p
+              className={cn(
+                contentItemMetadataClasses,
+                'pt-1 font-semibold uppercase tracking-[0.18em]',
+                surface.icon,
+              )}
+              data-content-highlight-marker={marker}
+            >
+              {marker}
+            </p>
+          ) : null}
+          <div className={cn('flex min-w-0 flex-col gap-2', hasAction && 'pb-6')}>
+            <h3 className={contentItemTitleClasses}>{item.title}</h3>
+            {item.description ? (
+              <p
+                className={cn(
+                  contentItemDescriptionClasses,
+                  'max-w-[65ch] leading-6',
+                  surface.secondary,
+                )}
+              >
+                {item.description}
+              </p>
+            ) : null}
+          </div>
+        </div>
+        {actionFooter}
       </article>
     )
   }
 
   return (
-    <article className="flex min-w-0 flex-col gap-4" data-content-highlight-item="true">
-      <Separator />
-      {content}
+    <article
+      className={cn('flex min-w-0 flex-col', containedClasses)}
+      data-card-background={surface.value}
+      data-content-highlight-item="true"
+      data-content-highlight-presentation="calm"
+    >
+      {body}
+      {actionFooter}
     </article>
   )
 }
@@ -244,8 +319,8 @@ export function ContentHighlights({
   appearance,
   contentAlignment = 'left',
   description,
-  enableSplitLayout = false,
   eyebrow,
+  headerLayout = 'stacked',
   items,
   layout = 'highlightsGrid',
   size = 'default',
@@ -253,11 +328,18 @@ export function ContentHighlights({
   title,
 }: ContentHighlightsProps) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
-  const resolvedAlignment = contentAlignment ?? 'left'
-  const resolvedLayout = resolveContentHighlightsLayout(layout)
-  const resolvedSize = size ?? 'default'
-  const resolvedSplitAlignment = splitContentAlignment ?? 'top'
-  const isSplit = enableSplitLayout === true
+  const resolvedAlignment =
+    contentAlignment === 'center' || contentAlignment === 'right' ? contentAlignment : 'left'
+  const resolvedHeaderLayout = headerLayout === 'split' ? 'split' : 'stacked'
+  const resolvedLayout: ContentHighlightsLayout =
+    layout === 'editorialRow' || layout === 'simpleGrid' ? layout : 'highlightsGrid'
+  const resolvedSize: ContentHighlightsSize =
+    size === 'none' || size === 'compact' || size === 'comfortable' ? size : 'default'
+  const resolvedSplitAlignment: ContentHighlightsSplitAlignment =
+    splitContentAlignment === 'bottom' || splitContentAlignment === 'center'
+      ? splitContentAlignment
+      : 'top'
+  const isSplit = resolvedHeaderLayout === 'split'
   const sectionBackground: BlockBackground = appearance?.background ?? 'none'
 
   return (
@@ -266,9 +348,9 @@ export function ContentHighlights({
       data-content-highlights="true"
       data-content-highlights-alignment={resolvedAlignment}
       data-content-highlights-background={appearance?.background ?? 'none'}
+      data-content-highlights-header-layout={resolvedHeaderLayout}
       data-content-highlights-layout={resolvedLayout}
       data-content-highlights-size={resolvedSize}
-      data-content-highlights-split={String(isSplit)}
       data-content-highlights-split-alignment={resolvedSplitAlignment}
     >
       <div className={regularBlockContainerClasses}>
@@ -292,33 +374,15 @@ export function ContentHighlights({
           </div>
         ) : (
           <div className={cn('flex flex-col', sectionGapClasses[resolvedSize])}>
-            {resolvedLayout === 'editorialRow' ? (
-              <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-                <ContentHighlightsIntro
-                  accentTitle={accentTitle}
-                  className={horizontalAlignmentClasses[resolvedAlignment]}
-                  description={description}
-                  eyebrow={eyebrow}
-                  surface={sectionBackground}
-                  title={title}
-                />
-                {actions ? (
-                  <div className="lg:shrink-0 lg:pb-1" data-content-highlights-action-slot="true">
-                    {actions}
-                  </div>
-                ) : null}
-              </div>
-            ) : (
-              <ContentHighlightsIntro
-                accentTitle={accentTitle}
-                actions={actions}
-                className={horizontalAlignmentClasses[resolvedAlignment]}
-                description={description}
-                eyebrow={eyebrow}
-                surface={sectionBackground}
-                title={title}
-              />
-            )}
+            <ContentHighlightsIntro
+              accentTitle={accentTitle}
+              actions={actions}
+              className={horizontalAlignmentClasses[resolvedAlignment]}
+              description={description}
+              eyebrow={eyebrow}
+              surface={sectionBackground}
+              title={title}
+            />
             <ContentHighlightsItems
               items={items}
               layout={resolvedLayout}

@@ -5,22 +5,19 @@ import {
   ContentHighlights,
   type ContentHighlightItem,
   type ContentHighlightsAlignment,
+  type ContentHighlightsHeaderLayout,
   type ContentHighlightsLayout,
   type ContentHighlightsSize,
   type ContentHighlightsSplitAlignment,
 } from '@/components/content-highlights'
-import {
-  resolveCmsActions,
-  resolveCmsLink,
-  type CmsActionValue,
-  type CmsLinkValue,
-} from '@/lib/cmsLinks'
+import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 
-type ContentHighlightItemValue = Omit<CmsLinkValue, 'linkType'> & {
+type ContentHighlightItemValue = {
+  cardAction?: CmsActionValue[] | null
   cardBackground?: string | null
   description?: string | null
-  linkType?: 'custom' | 'none' | 'page' | null
-  metadata?: string | null
+  markerLabel?: string | null
+  markerMode?: 'custom' | 'hidden' | 'numbered' | null
   title?: string | null
 }
 
@@ -33,8 +30,9 @@ type ContentHighlightsBlockLike = {
   enableSplitLayout?: boolean | null
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
+  headerLayout?: ContentHighlightsHeaderLayout | null
   items?: ContentHighlightItemValue[] | null
-  layout?: ContentHighlightsLayout | null
+  layout?: ContentHighlightsLayout | 'numberedSteps' | null
   size?: ContentHighlightsSize | null
   splitContentAlignment?: ContentHighlightsSplitAlignment | null
   title?: string | null
@@ -44,11 +42,12 @@ export function ContentHighlightsBlockComponent({
   accentTitle,
   actions,
   appearance,
-  contentAlignment = 'center',
+  contentAlignment = 'left',
   description,
   enableSplitLayout = false,
   eyebrow,
   footerActions,
+  headerLayout,
   items,
   layout = 'highlightsGrid',
   size = 'default',
@@ -63,20 +62,16 @@ export function ContentHighlightsBlockComponent({
       return []
     }
 
-    const destination = resolveCmsLink({
-      linkType: item.linkType === 'none' ? null : item.linkType,
-      openInNewTab: item.openInNewTab,
-      page: item.page,
-      url: item.url,
-    })
+    const markerMode =
+      item.markerMode === 'custom' || item.markerMode === 'hidden' ? item.markerMode : 'numbered'
 
     return [
       {
+        cardAction: resolveCmsActions(item.cardAction)[0],
         cardBackground: item.cardBackground,
         description: item.description?.trim() || undefined,
-        href: destination.href,
-        metadata: item.metadata?.trim() || undefined,
-        openInNewTab: destination.openInNewTab,
+        markerLabel: markerMode === 'custom' ? item.markerLabel?.trim() || undefined : undefined,
+        markerMode,
         title: itemTitle,
       },
     ]
@@ -86,19 +81,21 @@ export function ContentHighlightsBlockComponent({
     return null
   }
 
-  const resolvedLayout = layout ?? 'highlightsGrid'
+  const resolvedLayout: ContentHighlightsLayout =
+    layout === 'editorialRow' || layout === 'simpleGrid' ? layout : 'highlightsGrid'
   const resolvedActions = resolveCmsActions(actions)
-  const resolvedAlignment = contentAlignment ?? 'left'
-  const isSplit = enableSplitLayout === true
+  const resolvedAlignment: ContentHighlightsAlignment =
+    contentAlignment === 'center' || contentAlignment === 'right' ? contentAlignment : 'left'
+  const resolvedHeaderLayout: ContentHighlightsHeaderLayout =
+    headerLayout === 'split' || headerLayout === 'stacked'
+      ? headerLayout
+      : enableSplitLayout === true
+        ? 'split'
+        : 'stacked'
   const resolvedActionNode = resolvedActions.length ? (
     <ContentActions
       actions={resolvedActions}
-      alignment={isSplit ? 'left' : resolvedAlignment}
-      className={
-        resolvedLayout === 'editorialRow' && !isSplit
-          ? 'lg:w-auto lg:shrink-0 lg:items-end lg:justify-end'
-          : undefined
-      }
+      alignment={resolvedHeaderLayout === 'split' ? 'left' : resolvedAlignment}
       data-content-highlights-actions="true"
     />
   ) : null
@@ -111,15 +108,18 @@ export function ContentHighlightsBlockComponent({
         appearance={appearance}
         contentAlignment={resolvedAlignment}
         description={description?.trim() || undefined}
-        enableSplitLayout={isSplit}
         eyebrow={eyebrow?.trim() || undefined}
+        headerLayout={resolvedHeaderLayout}
         items={resolvedItems}
         layout={resolvedLayout}
         size={size ?? 'default'}
         splitContentAlignment={splitContentAlignment ?? 'top'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} />
+      <BlockFooterActions
+        actions={footerActions}
+        alignment={resolvedHeaderLayout === 'split' ? 'left' : resolvedAlignment}
+      />
     </>
   )
 }

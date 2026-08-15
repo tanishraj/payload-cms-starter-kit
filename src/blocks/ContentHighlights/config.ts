@@ -1,32 +1,26 @@
-import type { ArrayField, Block, CheckboxField, SelectField, TabsField } from 'payload'
+import type { ArrayField, Block, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
-type ItemLinkSiblingData = {
-  linkType?: 'custom' | 'none' | 'page' | null
+type MarkerSiblingData = {
+  markerMode?: 'custom' | 'hidden' | 'numbered' | null
 }
 
-type ContentHighlightsLayoutSiblingData = {
-  enableSplitLayout?: boolean | null
+type HeaderLayoutSiblingData = {
+  headerLayout?: 'split' | 'stacked' | null
 }
 
-const isSplitEnabled = (_data: unknown, siblingData: ContentHighlightsLayoutSiblingData) =>
-  siblingData?.enableSplitLayout === true
+const isCustomMarker = (_data: unknown, siblingData: MarkerSiblingData) =>
+  siblingData?.markerMode === 'custom'
 
-const isSplitDisabled = (_data: unknown, siblingData: ContentHighlightsLayoutSiblingData) =>
-  siblingData?.enableSplitLayout !== true
+const isStackedHeader = (_data: unknown, siblingData: HeaderLayoutSiblingData) =>
+  siblingData?.headerLayout !== 'split'
 
-const isPageLink = (_data: unknown, siblingData: ItemLinkSiblingData) =>
-  siblingData?.linkType === 'page'
-
-const isCustomLink = (_data: unknown, siblingData: ItemLinkSiblingData) =>
-  siblingData?.linkType === 'custom'
-
-const hasItemLink = (_data: unknown, siblingData: ItemLinkSiblingData) =>
-  siblingData?.linkType === 'page' || siblingData?.linkType === 'custom'
+const isSplitHeader = (_data: unknown, siblingData: HeaderLayoutSiblingData) =>
+  siblingData?.headerLayout === 'split'
 
 const itemsField = {
   name: 'items',
@@ -40,58 +34,41 @@ const itemsField = {
   },
   fields: [
     createCardTabs({
-      backgroundFieldOptions: {
-        adminDescription: 'Applied only when the block uses the Numbered Steps presentation.',
-      },
       contentFields: [
         {
-          name: 'metadata',
+          name: 'markerMode',
+          label: 'Marker',
+          type: 'select',
+          defaultValue: 'numbered',
+          options: [
+            { label: 'Numbered', value: 'numbered' },
+            { label: 'Custom Label', value: 'custom' },
+            { label: 'Hidden', value: 'hidden' },
+          ],
+          required: true,
+          admin: {
+            description: 'Choose how this card is identified before its title.',
+          },
+        } satisfies SelectField,
+        {
+          name: 'markerLabel',
+          label: 'Custom Label',
           type: 'text',
+          admin: {
+            condition: isCustomMarker,
+            description: 'Short text such as Clinical, Year 1, or Research.',
+          },
         },
         {
           name: 'title',
           type: 'text',
+          required: true,
         },
         {
           name: 'description',
           type: 'textarea',
         },
-        {
-          name: 'linkType',
-          label: 'Item Link',
-          type: 'select',
-          defaultValue: 'none',
-          options: [
-            { label: 'No Link', value: 'none' },
-            { label: 'Page', value: 'page' },
-            { label: 'Custom URL', value: 'custom' },
-          ],
-          required: true,
-        } satisfies SelectField,
-        {
-          name: 'page',
-          type: 'relationship',
-          relationTo: 'pages',
-          admin: {
-            condition: isPageLink,
-          },
-        },
-        {
-          name: 'url',
-          label: 'Custom URL',
-          type: 'text',
-          admin: {
-            condition: isCustomLink,
-          },
-        },
-        {
-          name: 'openInNewTab',
-          type: 'checkbox',
-          defaultValue: false,
-          admin: {
-            condition: hasItemLink,
-          },
-        } satisfies CheckboxField,
+        createContentActionsField({ name: 'cardAction', label: 'Card Action', maxRows: 1 }),
       ],
     }),
   ],
@@ -119,6 +96,7 @@ export const ContentHighlightsBlock: Block = {
             {
               name: 'title',
               type: 'text',
+              required: true,
             },
             {
               name: 'accentTitle',
@@ -130,7 +108,11 @@ export const ContentHighlightsBlock: Block = {
               type: 'textarea',
             },
             createContentActionsField(),
-            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({
+              name: 'footerActions',
+              label: 'Footer Actions',
+              maxRows: 2,
+            }),
             itemsField,
           ],
         },
@@ -144,24 +126,28 @@ export const ContentHighlightsBlock: Block = {
               type: 'select',
               defaultValue: 'highlightsGrid',
               options: [
-                { label: 'Editorial Row', value: 'editorialRow' },
-                { label: 'Highlights Grid', value: 'highlightsGrid' },
+                { label: 'Editorial List', value: 'editorialRow' },
+                { label: 'Calm Grid', value: 'highlightsGrid' },
                 { label: 'Simple Grid', value: 'simpleGrid' },
-                { label: 'Numbered Steps', value: 'numberedSteps' },
               ],
               required: true,
             } satisfies SelectField,
             {
-              name: 'enableSplitLayout',
-              label: 'Enable Split Layout',
-              type: 'checkbox',
-              defaultValue: false,
-            } satisfies CheckboxField,
+              name: 'headerLayout',
+              label: 'Header Layout',
+              type: 'select',
+              defaultValue: 'stacked',
+              options: [
+                { label: 'Stacked', value: 'stacked' },
+                { label: 'Split', value: 'split' },
+              ],
+              required: true,
+            } satisfies SelectField,
             {
               name: 'contentAlignment',
               label: 'Section Content Alignment',
               type: 'select',
-              defaultValue: 'center',
+              defaultValue: 'left',
               options: [
                 { label: 'Left', value: 'left' },
                 { label: 'Center', value: 'center' },
@@ -169,7 +155,7 @@ export const ContentHighlightsBlock: Block = {
               ],
               required: true,
               admin: {
-                condition: isSplitDisabled,
+                condition: isStackedHeader,
               },
             } satisfies SelectField,
             {
@@ -184,7 +170,7 @@ export const ContentHighlightsBlock: Block = {
               ],
               required: true,
               admin: {
-                condition: isSplitEnabled,
+                condition: isSplitHeader,
               },
             } satisfies SelectField,
             {

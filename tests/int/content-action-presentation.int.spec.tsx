@@ -23,7 +23,7 @@ type TestField = {
 
 const getActionTabs = (includeDisplayMode = false) => {
   const field = createContentActionsField({ includeDisplayMode })
-  return ((field.fields[0] as TestField).tabs ?? [])
+  return (field.fields[0] as TestField).tabs ?? []
 }
 
 const findFieldsByName = (value: unknown, name: string): TestField[] => {
@@ -38,16 +38,12 @@ const findFieldsByName = (value: unknown, name: string): TestField[] => {
   const field = value as TestField & Record<string, unknown>
   const matches = field.name === name ? [field] : []
 
-  return [
-    ...matches,
-    ...Object.values(field).flatMap((item) => findFieldsByName(item, name)),
-  ]
+  return [...matches, ...Object.values(field).flatMap((item) => findFieldsByName(item, name))]
 }
 
 describe('content action presentation', () => {
   it('defines an opt-in button arrow in shared action theme settings', () => {
-    const themeFields =
-      getActionTabs().find((tab) => tab.label === 'Theme Settings')?.fields ?? []
+    const themeFields = getActionTabs().find((tab) => tab.label === 'Theme Settings')?.fields ?? []
 
     expect(themeFields.find((field) => field.name === 'showArrow')).toMatchObject({
       defaultValue: false,
@@ -61,8 +57,7 @@ describe('content action presentation', () => {
       getActionTabs(true).find((tab) => tab.label === 'Theme Settings')?.fields ?? []
     const field = themeFields.find((item) => item.name === 'showArrow')
     const condition = field?.admin?.condition as
-      | ((_data: unknown, siblings: { mode?: string }) => boolean)
-      | undefined
+      ((_data: unknown, siblings: { mode?: string }) => boolean) | undefined
 
     expect(condition?.({}, { mode: 'button' })).toBe(true)
     expect(condition?.({}, { mode: 'link' })).toBe(false)
@@ -116,7 +111,7 @@ describe('content action presentation', () => {
       }),
     )
 
-    expect((html.match(/data-action-arrow="true"/g) ?? [])).toHaveLength(1)
+    expect(html.match(/data-action-arrow="true"/g) ?? []).toHaveLength(1)
     expect(html).toContain('aria-hidden="true"')
   })
 
@@ -137,8 +132,20 @@ describe('content action presentation', () => {
     const html = renderToStaticMarkup(
       createElement(ContentActions, {
         actions: [
-          { href: '/apply', label: 'Apply now', mode: 'button', showArrow: false, variant: 'default' },
-          { href: '/learn-more', label: 'Learn more', mode: 'link', showArrow: false, variant: 'default' },
+          {
+            href: '/apply',
+            label: 'Apply now',
+            mode: 'button',
+            showArrow: false,
+            variant: 'default',
+          },
+          {
+            href: '/learn-more',
+            label: 'Learn more',
+            mode: 'link',
+            showArrow: false,
+            variant: 'default',
+          },
         ],
       }),
     )
@@ -148,6 +155,28 @@ describe('content action presentation', () => {
     expect(html).toContain('href="/apply"')
     expect(html).toContain('data-content-link="true"')
     expect(html).toContain('href="/learn-more"')
+  })
+
+  it('applies optional card-surface classes to buttons and links', () => {
+    const html = renderToStaticMarkup(
+      createElement(ContentActions, {
+        actions: [
+          { href: '/apply', label: 'Apply', mode: 'button', showArrow: false, variant: 'default' },
+          {
+            href: '/details',
+            label: 'Details',
+            mode: 'link',
+            showArrow: false,
+            variant: 'default',
+          },
+        ],
+        buttonClassNames: { default: 'surface-default-button' },
+        linkClassName: 'surface-link',
+      }),
+    )
+
+    expect(html).toContain('surface-default-button')
+    expect(html).toContain('surface-link')
   })
 
   it.each([

@@ -22,7 +22,6 @@ describe('shared block content styles', () => {
       'contentSectionHeadingClasses',
       'contentSectionDescriptionClasses',
       'contentItemTitleClasses',
-      'contentItemLinkClasses',
       'contentItemDescriptionClasses',
       'contentItemMetadataClasses',
     ]

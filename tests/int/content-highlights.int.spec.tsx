@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 
 import { ContentHighlightsBlockComponent } from '@/blocks/ContentHighlights/Component'
 import { ContentHighlightsBlock } from '@/blocks/ContentHighlights/config'
-import { ContentHighlights, type ContentHighlightsLayout } from '@/components/content-highlights'
+import { ContentHighlights } from '@/components/content-highlights'
 
 type TestField = {
   admin?: {
@@ -77,11 +77,9 @@ describe('Content Highlights', () => {
       required: true,
       type: 'select',
     })
-    expect(getField(itemContent?.fields ?? [], 'markerMode')?.options?.map(({ value }) => value)).toEqual([
-      'numbered',
-      'custom',
-      'hidden',
-    ])
+    expect(
+      getField(itemContent?.fields ?? [], 'markerMode')?.options?.map(({ value }) => value),
+    ).toEqual(['numbered', 'custom', 'hidden'])
     const markerLabel = getField(itemContent?.fields ?? [], 'markerLabel')
     expect(markerLabel?.admin?.condition).toBeTypeOf('function')
     expect(markerLabel?.admin?.condition?.({}, { markerMode: 'custom' })).toBe(true)
@@ -118,10 +116,9 @@ describe('Content Highlights', () => {
       required: true,
       type: 'select',
     })
-    expect(getField(theme?.fields ?? [], 'headerLayout')?.options?.map(({ value }) => value)).toEqual([
-      'stacked',
-      'split',
-    ])
+    expect(
+      getField(theme?.fields ?? [], 'headerLayout')?.options?.map(({ value }) => value),
+    ).toEqual(['stacked', 'split'])
     expect(getField(theme?.fields ?? [], 'enableSplitLayout')).toBeUndefined()
 
     const horizontal = getField(theme?.fields ?? [], 'contentAlignment')

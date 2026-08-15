@@ -3,7 +3,7 @@ import type { ComponentProps } from 'react'
 import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { ContentLink } from '@/components/ContentLink'
 import { Button } from '@/components/ui/button'
-import type { ResolvedCmsAction } from '@/lib/cmsLinks'
+import type { CmsActionVariant, ResolvedCmsAction } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 
 type ContentActionAlignment = 'center' | 'left' | 'right'
@@ -11,6 +11,8 @@ type ContentActionAlignment = 'center' | 'left' | 'right'
 type ContentActionsProps = Omit<ComponentProps<'div'>, 'children'> & {
   actions: ResolvedCmsAction[]
   alignment?: ContentActionAlignment
+  buttonClassNames?: Partial<Record<CmsActionVariant, string>>
+  linkClassName?: string
 }
 
 const linkAlignmentClasses = {
@@ -31,7 +33,9 @@ const rendersAsButton = (action: ResolvedCmsAction) =>
 export function ContentActions({
   actions,
   alignment = 'left',
+  buttonClassNames,
   className,
+  linkClassName,
   ...divProps
 }: ContentActionsProps) {
   if (!actions.length) {
@@ -58,6 +62,7 @@ export function ContentActions({
         return rendersAsButton(action) ? (
           <Button
             asChild
+            className={buttonClassNames?.[action.variant]}
             data-action-variant={action.variant}
             key={`${action.label}-${action.href}-${index}`}
             size="lg"
@@ -73,6 +78,7 @@ export function ContentActions({
           </Button>
         ) : (
           <ContentLink
+            className={linkClassName}
             href={action.href}
             key={`${action.label}-${action.href}-${index}`}
             label={action.label}
