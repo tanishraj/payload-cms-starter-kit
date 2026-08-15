@@ -102,6 +102,8 @@ const expectContentActionsFieldSet = (
     'primary',
     'secondary',
     'outline',
+    'white',
+    'whiteOutline',
   ])
 }
 
@@ -489,6 +491,8 @@ describe('page block pipeline', () => {
       'primary',
       'secondary',
       'outline',
+      'white',
+      'whiteOutline',
       'link',
     ])
   })
@@ -1188,6 +1192,8 @@ describe('page block pipeline', () => {
       'primary',
       'secondary',
       'outline',
+      'white',
+      'whiteOutline',
     ])
     expect(appearanceField?.type).toBe('group')
     expect(contentAlignmentField?.type).toBe('select')

@@ -3,7 +3,7 @@ import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { BorderButton } from '@/components/shadcnblocks/border-button'
 import { Services21, type Services21Item, type Services21Alignment } from '@/components/services21'
 import { ContentLink } from '@/components/ContentLink'
-import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
+import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
 import type { Media } from '@/payload-types'
@@ -28,7 +28,7 @@ type Services21BlockLike = {
   title?: string | null
 }
 
-type ActionButtonMode = 'default' | 'outline' | 'primary' | 'secondary'
+type ActionButtonMode = Exclude<CmsActionVariant, 'link'>
 
 const resolveServiceCode = (code: string | null | undefined, index: number) => {
   const trimmed = code?.trim()
@@ -44,6 +44,10 @@ const buttonClassNameByVariant: Record<ActionButtonMode, string> = {
   primary:
     'border-primary bg-primary text-primary-foreground hover:bg-[color-mix(in_oklch,var(--primary),var(--foreground)_8%)]',
   secondary: 'border-secondary/40 bg-secondary/10 text-secondary hover:bg-secondary/20',
+  white:
+    'border-white bg-white text-black hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/30',
+  whiteOutline:
+    'border-white bg-transparent text-white hover:bg-white/10 focus-visible:border-white focus-visible:ring-white/30',
 }
 
 export function Services21BlockComponent({

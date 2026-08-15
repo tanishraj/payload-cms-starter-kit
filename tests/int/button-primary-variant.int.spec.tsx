@@ -18,6 +18,7 @@ import {
   createContentActionsField,
 } from '@/blocks/shared/contentActionsFields'
 import { ContentActions } from '@/components/ContentActions'
+import { BorderButton } from '@/components/shadcnblocks/border-button'
 import { Button } from '@/components/ui/button'
 import { resolveCmsActions } from '@/lib/cmsLinks'
 
@@ -171,6 +172,19 @@ describe('shared CMS button variants', () => {
     expect(outline).toContain('hover:bg-white/10')
     expect(outline).toContain('focus-visible:border-white')
     expect(outline).toContain('focus-visible:ring-white/30')
+
+    const decorated = renderToStaticMarkup(
+      <BorderButton variant="whiteOutline">Decorated white outline</BorderButton>,
+    )
+    expect(decorated).toContain('data-variant="whiteOutline"')
+    expect(decorated).toContain('border-white bg-transparent text-white')
+  })
+
+  it('includes both white variants in generated Payload action unions', () => {
+    const payloadTypes = readFileSync('src/payload-types.ts', 'utf8')
+
+    expect(payloadTypes).toContain("'white'")
+    expect(payloadTypes).toContain("'whiteOutline'")
   })
 
   it('keeps the Dark + Light + Even Hero overlay while distinguishing its actions', () => {

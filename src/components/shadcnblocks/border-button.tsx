@@ -76,7 +76,7 @@ type BorderButtonProps = Omit<
   'children' | 'className' | 'variant'
 > & {
   children: ReactNode
-  variant?: 'outline' | 'default' | 'destructive' | 'primary' | 'secondary' | 'ghost' | 'link'
+  variant?: NonNullable<ComponentProps<typeof Button>['variant']>
   corners?: BorderCornerStyle
   className?: string
 }

@@ -614,17 +614,17 @@ export const blockThumbnailFixtures = {
           label: 'Get started',
           linkType: 'custom',
           url: '/get-started',
-          variant: 'default',
+          variant: 'white',
         },
         {
           mode: 'button',
           label: 'Talk to our team',
           linkType: 'custom',
           url: '/contact',
-          variant: 'outline',
+          variant: 'whiteOutline',
         },
       ]}
-      appearance={{ background: 'subtle', border: 'topAndBottom' }}
+      appearance={{ background: 'brand', border: 'topAndBottom' }}
       description="Learn quickly, build confidently, and deliver with quality using a modern production workflow."
       eyebrow="Ready when you are"
       headerLayout="split"
