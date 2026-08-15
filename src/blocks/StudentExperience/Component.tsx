@@ -161,8 +161,8 @@ export function StudentExperienceBlockComponent({
   const resolvedSize = size ?? 'default'
   const resolvedTitle = title?.trim()
   const resolvedAccentTitle = accentTitle?.trim()
-  const visibleExperiences = resolvedExperiences.slice(0, 4)
-  const usesEditorialMosaic = visibleExperiences.length === 4
+  const visibleExperiences = resolvedExperiences.slice(0, 5)
+  const usesEditorialMosaic = visibleExperiences.length >= 4
   const hasHeader = Boolean(
     resolvedEyebrow ||
     resolvedTitle ||

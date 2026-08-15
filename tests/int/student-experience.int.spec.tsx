@@ -59,7 +59,7 @@ describe('StudentExperienceBlock schema', () => {
     expect(tabs.tabs.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
 
     const experiences = findNamedField(StudentExperienceBlock.fields, 'experiences') as ArrayField
-    expect(experiences).toMatchObject({ required: true, minRows: 1, maxRows: 4 })
+    expect(experiences).toMatchObject({ required: true, minRows: 1, maxRows: 5 })
     expect(findNamedField(StudentExperienceBlock.fields, 'title')).not.toHaveProperty(
       'required',
       true,
@@ -131,14 +131,14 @@ describe('StudentExperienceBlock schema', () => {
 })
 
 describe('StudentExperienceBlockComponent', () => {
-  it('renders the asymmetric four-card composition with themed editorial type', () => {
+  it('renders the asymmetric five-card composition with themed editorial type', () => {
     const html = renderToStaticMarkup(
       <StudentExperienceBlockComponent
         accentTitle="medical college."
         appearance={{ background: 'subtle', border: 'top' }}
         description="Learning extends beyond lectures."
         eyebrow="The student experience"
-        experiences={[1, 2, 3, 4].map((id) => ({ image: media(id), title: `Card ${id}` }))}
+        experiences={[1, 2, 3, 4, 5].map((id) => ({ image: media(id), title: `Card ${id}` }))}
         title="More than a"
       />,
     )
@@ -154,13 +154,16 @@ describe('StudentExperienceBlockComponent', () => {
       html.match(
         /font-sans text-lg leading-tight font-semibold tracking-tight text-balance sm:text-xl/g,
       ) ?? [],
-    ).toHaveLength(4)
+    ).toHaveLength(5)
     expect(html).not.toContain(
       'font-sans text-xl leading-tight font-semibold tracking-tight text-balance sm:text-2xl',
     )
     expect(html).toContain('xl:row-span-2')
+    expect(html).toContain('data-student-experience-grid-layout="mosaic"')
+    expect(html.match(/<article/g) ?? []).toHaveLength(5)
+    expect(html).toContain('Card 5')
     expect(html).toContain('01')
-    expect(html).toContain('04')
+    expect(html).toContain('05')
     expect(html).toContain('data-section-eyebrow-surface="darkOverlay"')
   })
 

@@ -1674,7 +1674,7 @@ export interface StudentExperienceBlock {
       }[]
     | null;
   /**
-   * Add up to four image cards. On wide screens, the first card spans both rows and the remaining cards form the supporting mosaic.
+   * Add up to five image cards. On wide screens, the first card spans both rows and the remaining cards form the supporting mosaic.
    */
   experiences: {
     image: string | Media;

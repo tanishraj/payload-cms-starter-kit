@@ -30,10 +30,10 @@ const experiencesField = {
   type: 'array',
   required: true,
   minRows: 1,
-  maxRows: 4,
+  maxRows: 5,
   admin: {
     description:
-      'Add up to four image cards. On wide screens, the first card spans both rows and the remaining cards form the supporting mosaic.',
+      'Add up to five image cards. On wide screens, the first card spans both rows and the remaining cards form the supporting mosaic.',
     initCollapsed: true,
   },
   fields: [
