@@ -18,6 +18,7 @@ import { HeroCarouselBlockComponent } from '@/blocks/HeroCarousel/Component'
 import { ImageMosaicBlockComponent } from '@/blocks/ImageMosaic/Component'
 import { StudentExperienceBlockComponent } from '@/blocks/StudentExperience/Component'
 import { NewsEventsHighlightsBlockPresentation } from '@/blocks/NewsEventsHighlights/Presentation'
+import { StudyPathwaysBlockComponent } from '@/blocks/StudyPathways/Component'
 import { ProfileCarouselBlockComponent } from '@/blocks/ProfileCarousel/Component'
 import { QaAccordionBlockComponent } from '@/blocks/QaAccordion/Component'
 import { RatingSpotlightBlockComponent } from '@/blocks/RatingSpotlight/Component'
@@ -1070,6 +1071,39 @@ export const blockThumbnailFixtures = {
       showNumbers
       size="compact"
       title="More than a"
+    />
+  ),
+  studyPathways: (
+    <StudyPathwaysBlockComponent
+      accentTitle="direction."
+      appearance={{ background: 'none', border: 'none' }}
+      cardHeight="default"
+      description="Compare pathway options, outcomes, and clinical training built for your next career step."
+      eyebrow="Study and train with"
+      pathways={[
+        {
+          description: 'Start with strong foundations, practical exposure, and guided mentorship.',
+          image: fakeMedia(editorialLandscape, 'Medical pathway', 1600, 1067),
+          imagePosition: 'center',
+          overlayDirection: 'bottomToTop',
+          linkType: 'custom',
+          title: 'MBBS Pathway',
+          url: '/pathways/mbbs',
+        },
+        {
+          description:
+            'Advance through specialist tracks with applied clinical practice and patient-focused care.',
+          image: fakeMedia(collaboration, 'Specialist pathway', 1600, 1067),
+          imagePosition: 'right',
+          overlayDirection: 'bottomToTop',
+          linkType: 'custom',
+          title: 'Specialist Pathway',
+          url: '/pathways/specialist',
+        },
+      ]}
+      headerLayout="split"
+      title="Study"
+      size="compact"
     />
   ),
   footerMinimal: (

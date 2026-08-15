@@ -208,6 +208,7 @@ export interface Page {
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
         | EventGalleryBlock
+        | StudyPathwaysBlock
         | ImageMosaicBlock
         | StudentExperienceBlock
         | StatsStripBlock
@@ -1542,6 +1543,102 @@ export interface GalleryAlbum {
   createdAt: string;
   deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StudyPathwaysBlock".
+ */
+export interface StudyPathwaysBlock {
+  /**
+   * Small label above the section title.
+   */
+  eyebrow?: string | null;
+  title?: string | null;
+  /**
+   * Optional italic second line of the heading.
+   */
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Add 2 to 4 pathway cards.
+   */
+  pathways: {
+    image: string | Media;
+    title: string;
+    /**
+     * Optional supporting text shown below the card title.
+     */
+    description?: string | null;
+    linkType?: ('none' | 'page' | 'custom') | null;
+    page?: (string | null) | Page;
+    url?: string | null;
+    openInNewTab?: boolean | null;
+    imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+    /**
+     * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+     */
+    themeMode: 'auto' | 'light' | 'dark' | 'brand';
+    overlayStrength: 'light' | 'dark' | 'darker';
+    /**
+     * The named edge receives the strongest tint; Even keeps coverage balanced.
+     */
+    overlayDirection: 'vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom';
+    /**
+     * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+     */
+    overlayCoverage: 'full' | 'split';
+    id?: string | null;
+  }[];
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  contentAlignment: 'left' | 'center' | 'right';
+  cardSplit: '60-40' | 'equal' | '40-60' | '30-30-60' | '60-30-30';
+  headerLayout: 'split' | 'stacked';
+  cardHeight: 'compact' | 'default' | 'comfortable';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'studyPathways';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -4106,6 +4203,7 @@ export interface ReusableSection {
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
         | EventGalleryBlock
+        | StudyPathwaysBlock
         | ImageMosaicBlock
         | StudentExperienceBlock
         | StatsStripBlock
@@ -5424,6 +5522,7 @@ export interface PagesSelect<T extends boolean = true> {
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
         eventGallery?: T | EventGalleryBlockSelect<T>;
+        studyPathways?: T | StudyPathwaysBlockSelect<T>;
         imageMosaic?: T | ImageMosaicBlockSelect<T>;
         studentExperience?: T | StudentExperienceBlockSelect<T>;
         statsStrip?: T | StatsStripBlockSelect<T>;
@@ -6314,6 +6413,72 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
       };
   cardTextLayout?: T;
   contentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StudyPathwaysBlock_select".
+ */
+export interface StudyPathwaysBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  pathways?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        description?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        imagePosition?: T;
+        themeMode?: T;
+        overlayStrength?: T;
+        overlayDirection?: T;
+        overlayCoverage?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  cardSplit?: T;
+  headerLayout?: T;
+  cardHeight?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -8164,6 +8329,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
         eventGallery?: T | EventGalleryBlockSelect<T>;
+        studyPathways?: T | StudyPathwaysBlockSelect<T>;
         imageMosaic?: T | ImageMosaicBlockSelect<T>;
         studentExperience?: T | StudentExperienceBlockSelect<T>;
         statsStrip?: T | StatsStripBlockSelect<T>;

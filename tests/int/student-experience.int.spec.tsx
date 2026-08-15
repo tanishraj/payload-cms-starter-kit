@@ -191,6 +191,22 @@ describe('StudentExperienceBlockComponent', () => {
     expect(html).not.toContain('data-section-eyebrow-surface="darkOverlay"')
   })
 
+  it('positions stacked section content according to its alignment setting', () => {
+    const html = renderToStaticMarkup(
+      <StudentExperienceBlockComponent
+        contentAlignment="center"
+        description="Learning extends beyond lectures."
+        experiences={[{ image: media(1), title: 'Campus Life' }]}
+        headerLayout="stacked"
+        title="More than a medical college."
+      />,
+    )
+
+    expect(html).toContain('data-student-experience-content-alignment="center"')
+    expect(html).toContain('grid gap-6 w-full max-w-3xl mx-auto')
+    expect(html).toContain('items-center text-center')
+  })
+
   it('renders each card with its own overlay tone, strength, and direction', () => {
     const html = renderToStaticMarkup(
       <StudentExperienceBlockComponent

@@ -73,6 +73,12 @@ const alignmentClasses = {
   right: 'ml-auto items-end text-right',
 } as const
 
+const stackedHeaderAlignmentClasses = {
+  left: 'mr-auto',
+  center: 'mx-auto',
+  right: 'ml-auto',
+} as const
+
 const gridRowClasses = {
   compact: 'auto-rows-[15rem] sm:auto-rows-[17rem] xl:auto-rows-[14rem]',
   default: 'auto-rows-[18rem] sm:auto-rows-[20rem] xl:auto-rows-[17rem]',
@@ -191,8 +197,9 @@ export function StudentExperienceBlockComponent({
               'grid gap-6',
               resolvedHeaderLayout === 'split'
                 ? 'lg:grid-cols-[minmax(0,3fr)_minmax(18rem,2fr)] lg:items-end lg:gap-16'
-                : 'max-w-3xl',
+                : cn('w-full max-w-3xl', stackedHeaderAlignmentClasses[resolvedAlignment]),
             )}
+            data-student-experience-content-alignment={resolvedAlignment}
           >
             <div className={cn(contentIntroClasses, alignmentClasses[resolvedAlignment])}>
               {resolvedEyebrow ? (

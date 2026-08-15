@@ -30,6 +30,7 @@ import { TeamShowcaseBlockComponent } from './TeamShowcase/Component'
 import { PageBlockStack } from './PageBlockStack'
 import { StatsStripBlockComponent } from './StatsStrip/Component'
 import { Services21BlockComponent } from './Services21/Component'
+import { StudyPathwaysBlockComponent } from './StudyPathways/Component'
 import { RichTextBlockComponent } from './RichTextBlock/Component'
 import { VideoEmbedBlockComponent } from './VideoEmbed/Component'
 import { MediaCarouselBlockComponent } from './MediaCarousel/Component'
@@ -114,6 +115,8 @@ function renderSingleBlock(
       return wrap(<ImageMosaicBlockComponent {...block} />)
     case 'studentExperience':
       return wrap(<StudentExperienceBlockComponent {...block} />)
+    case 'studyPathways':
+      return wrap(<StudyPathwaysBlockComponent {...block} />)
     case 'reviewSubmission':
       return wrap(<ReviewSubmissionBlockComponent {...block} />)
     case 'contact33':
