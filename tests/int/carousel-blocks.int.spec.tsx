@@ -62,7 +62,26 @@ describe('carousel block schemas', () => {
     const slides = getField(slidesTab.fields, 'slides')
 
     expect(slides).toMatchObject({ minRows: 1, maxRows: 8, type: 'array' })
+    expect(getField(layoutTab.fields, 'themeMode')).toMatchObject({
+      defaultValue: 'auto',
+      options: [{ value: 'auto' }, { value: 'light' }, { value: 'dark' }, { value: 'brand' }],
+    })
     expect(getField(layoutTab.fields, 'overlayStyle')?.defaultValue).toBe('dark')
+    expect(getField(layoutTab.fields, 'overlayDirection')).toMatchObject({
+      defaultValue: 'vertical',
+      options: [
+        { value: 'vertical' },
+        { value: 'leftToRight' },
+        { value: 'rightToLeft' },
+        { value: 'bottomToTop' },
+        { value: 'topToBottom' },
+      ],
+    })
+    expect(getField(layoutTab.fields, 'overlayCoverage')).toMatchObject({
+      defaultValue: 'full',
+      options: [{ value: 'full' }, { value: 'split' }],
+      required: false,
+    })
     expect(getField(layoutTab.fields, 'height')?.defaultValue).toBe('default')
     expect(getField(layoutTab.fields, 'contentAlignment')).toMatchObject({
       defaultValue: 'left',
@@ -92,8 +111,7 @@ describe('carousel block schemas', () => {
     const actionsField = getField(contentTab.fields, 'actions')
     expect(actionsField?.maxRows).toBe(1)
     const actionsTabsField = actionsField?.fields?.[0] as unknown as
-      | { tabs: TestTab[]; type: string }
-      | undefined
+      { tabs: TestTab[]; type: string } | undefined
     const actionsThemeTab = actionsTabsField?.tabs?.find(({ label }) => label === 'Theme Settings')
     expect(getField(actionsThemeTab?.fields ?? [], 'mode')).toMatchObject({
       defaultValue: 'link',
@@ -213,7 +231,7 @@ describe('carousel block schemas', () => {
     const source = readFileSync('src/blocks/HeroCarousel/HeroCarouselClient.tsx', 'utf8')
 
     expect(source).not.toContain('rounded-full')
-    expect(source).toContain("'size-2.5 rounded-md border border-white transition-colors'")
+    expect(source).toContain("'size-2.5 rounded-md border border-current transition-colors'")
     expect(source).toContain(
       'font-serif font-semibold text-5xl leading-none tracking-tight text-balance',
     )
@@ -262,6 +280,34 @@ describe('carousel block schemas', () => {
     expect(html).toContain('data-hero-carousel-alignment="left"')
   })
 
+  it('renders Hero Carousel with shared tone, strength, and directional emphasis', () => {
+    const html = renderToStaticMarkup(
+      <HeroCarouselBlockComponent
+        overlayCoverage="split"
+        overlayDirection="bottomToTop"
+        overlayStyle="darker"
+        slides={[
+          {
+            backgroundImage: { alt: 'Campus', id: 'campus', url: '/campus.jpg' },
+            description: 'Learn in a connected environment.',
+            eyebrow: 'Experience',
+            title: 'Campus life',
+          },
+        ]}
+        themeMode="brand"
+      />,
+    )
+
+    expect(html).toContain('data-hero-carousel-theme="brand"')
+    expect(html).toContain('data-hero-carousel-overlay="darker"')
+    expect(html).toContain('data-hero-carousel-overlay-direction="bottomToTop"')
+    expect(html).toContain('data-hero-carousel-overlay-coverage="split"')
+    expect(html).toContain('inset-x-0 bottom-0 h-1/2')
+    expect(html).toContain('bg-linear-to-t from-primary via-primary/82 to-transparent')
+    expect(html).toContain('text-primary-foreground')
+    expect(html).toContain('data-section-eyebrow-surface="brand"')
+  })
+
   it('renders arrows only for opted-in Hero Carousel buttons', () => {
     const html = renderToStaticMarkup(
       <HeroCarouselBlockComponent
@@ -290,7 +336,7 @@ describe('carousel block schemas', () => {
       />,
     )
 
-    expect((html.match(/data-action-arrow="true"/g) ?? [])).toHaveLength(1)
+    expect(html.match(/data-action-arrow="true"/g) ?? []).toHaveLength(1)
     expect(html).toContain('data-content-link="true"')
   })
 

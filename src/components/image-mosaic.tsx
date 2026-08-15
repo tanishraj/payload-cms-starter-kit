@@ -9,6 +9,13 @@ import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
 } from '@/blocks/shared/blockSpacing'
+import {
+  resolveMediaOverlay,
+  type MediaOverlayCoverage,
+  type MediaOverlayDirection,
+  type MediaOverlayStrength,
+  type MediaOverlayTone,
+} from '@/blocks/shared/mediaOverlayPresentation'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import type { ResolvedCmsAction } from '@/lib/cmsLinks'
@@ -42,8 +49,12 @@ type ImageMosaicProps = {
   description?: string | null
   eyebrow?: string | null
   items: ImageMosaicItem[]
+  overlayCoverage?: MediaOverlayCoverage
+  overlayDirection?: MediaOverlayDirection
+  overlayStyle?: MediaOverlayStrength
   showImageOverlays?: boolean
   size?: ImageMosaicSize
+  themeMode?: MediaOverlayTone
   title?: string | null
 }
 
@@ -113,8 +124,12 @@ export function ImageMosaic({
   description,
   eyebrow,
   items,
+  overlayCoverage = 'full',
+  overlayDirection = 'bottomToTop',
+  overlayStyle = 'dark',
   showImageOverlays = true,
   size = 'default',
+  themeMode = 'auto',
   title,
 }: ImageMosaicProps) {
   const visibleItems = items.slice(0, 8)
@@ -124,6 +139,13 @@ export function ImageMosaic({
   }
 
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
+  const overlay = resolveMediaOverlay({
+    coverage: overlayCoverage,
+    direction: overlayDirection,
+    sectionBackground: appearanceClasses.background,
+    strength: overlayStyle,
+    tone: themeMode,
+  })
   const resolvedAccentTitle = accentTitle?.trim() || undefined
   const count = visibleItems.length as keyof typeof desktopGridClasses
 
@@ -133,6 +155,10 @@ export function ImageMosaic({
       data-image-mosaic="true"
       data-image-mosaic-alignment={alignment}
       data-image-mosaic-background={appearance?.background ?? 'none'}
+      data-image-mosaic-overlay-coverage={overlay.coverage}
+      data-image-mosaic-overlay-direction={overlay.direction}
+      data-image-mosaic-overlay-strength={overlay.strength}
+      data-image-mosaic-overlay-tone={overlay.tone}
       data-image-mosaic-overlays={showImageOverlays ? 'shown' : 'hidden'}
       data-image-mosaic-size={size}
     >
@@ -192,9 +218,20 @@ export function ImageMosaic({
                   width={item.image.width}
                 />
                 {hasOverlay ? (
-                  <div className="image-mosaic-overlay absolute inset-x-0 bottom-0 bg-linear-to-t from-background via-background/85 to-transparent p-5 pt-16 text-foreground">
+                  <div className="image-mosaic-overlay absolute inset-0">
                     <div
-                      className="flex flex-col items-start gap-2"
+                      className={cn(
+                        'pointer-events-none absolute',
+                        overlay.frameClassName,
+                        overlay.className,
+                      )}
+                    />
+                    <div
+                      className={cn(
+                        'absolute inset-x-0 bottom-0 flex flex-col items-start gap-2 p-5',
+                        overlay.text.title,
+                      )}
+                      data-block-surface={overlay.blockSurface}
                       data-image-mosaic-overlay="true"
                     >
                       {resolvedTitle ? (
@@ -206,6 +243,7 @@ export function ImageMosaic({
                         <ContentActions
                           actions={[item.action]}
                           alignment="left"
+                          className={cn(overlay.text.link, '[&_[data-content-link]]:text-current')}
                           data-image-mosaic-item-action="true"
                         />
                       ) : null}

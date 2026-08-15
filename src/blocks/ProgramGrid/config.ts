@@ -3,6 +3,8 @@ import type { ArrayField, Block, CheckboxField, RadioField, SelectField, TabsFie
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import {
+  buttonVariantDescription,
+  buttonVariantOptions,
   createContentActionModeField,
   createContentActionsField,
 } from '@/blocks/shared/contentActionsFields'
@@ -155,7 +157,11 @@ export const ProgramGridBlock: Block = {
               type: 'textarea',
             },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
-            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({
+              name: 'footerActions',
+              label: 'Footer Actions',
+              maxRows: 2,
+            }),
             programsField,
           ],
         },
@@ -172,13 +178,10 @@ export const ProgramGridBlock: Block = {
               label: 'Button Variant',
               type: 'select',
               defaultValue: 'default',
-              options: [
-                { label: 'Primary', value: 'default' },
-                { label: 'Secondary', value: 'secondary' },
-                { label: 'Outline', value: 'outline' },
-              ],
+              options: buttonVariantOptions,
               admin: {
                 condition: (_, siblingData) => siblingData?.actionMode === 'button',
+                description: buttonVariantDescription,
               },
             } satisfies SelectField,
             {

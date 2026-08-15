@@ -1,6 +1,12 @@
 import { getMediaImageProps } from '@/lib/media'
-import { resolveCmsLink } from '@/lib/cmsLinks'
+import { resolveCmsLink, type CmsActionVariant } from '@/lib/cmsLinks'
 import type { Page } from '@/payload-types'
+import type {
+  MediaOverlayCoverage,
+  MediaOverlayDirection,
+  MediaOverlayStrength,
+  MediaOverlayTone,
+} from '@/blocks/shared/mediaOverlayPresentation'
 
 import {
   HeroCarouselClient,
@@ -15,7 +21,7 @@ type HeroButton = {
   page?: Page | number | string | null
   showArrow?: boolean | null
   url?: string | null
-  variant?: 'default' | 'link' | 'outline' | 'secondary' | null
+  variant?: CmsActionVariant | null
 }
 
 export type SlideData = {
@@ -77,15 +83,21 @@ type HeroCarouselBlockLike = {
   autoplay?: boolean | null
   contentAlignment?: HeroCarouselContentAlignment | null
   height?: 'compact' | 'default' | 'immersive' | null
-  overlayStyle?: 'light' | 'dark' | 'darker' | null
+  overlayCoverage?: MediaOverlayCoverage | null
+  overlayDirection?: MediaOverlayDirection | null
+  overlayStyle?: MediaOverlayStrength | null
   showArrows?: boolean | null
   showDots?: boolean | null
   slides?: SlideData[] | null
+  themeMode?: MediaOverlayTone | null
 }
 
 export function HeroCarouselBlockComponent({
   slides,
+  themeMode = 'auto',
   overlayStyle = 'dark',
+  overlayDirection = 'vertical',
+  overlayCoverage = 'full',
   height = 'default',
   contentAlignment = 'left',
   autoplay = true,
@@ -101,16 +113,22 @@ export function HeroCarouselBlockComponent({
       data-hero-carousel="true"
       data-hero-carousel-alignment={contentAlignment ?? 'left'}
       data-hero-carousel-height={height ?? 'default'}
+      data-hero-carousel-overlay-coverage={overlayCoverage ?? 'full'}
+      data-hero-carousel-overlay-direction={overlayDirection ?? 'vertical'}
       data-hero-carousel-overlay={overlayStyle ?? 'dark'}
+      data-hero-carousel-theme={themeMode ?? 'auto'}
     >
       <HeroCarouselClient
         autoplay={autoplay ?? true}
         contentAlignment={contentAlignment ?? 'left'}
         height={height ?? 'default'}
+        overlayCoverage={overlayCoverage ?? 'full'}
+        overlayDirection={overlayDirection ?? 'vertical'}
         overlayStyle={overlayStyle ?? 'dark'}
         showArrows={showArrows ?? true}
         showDots={showDots ?? true}
         slides={resolvedSlides}
+        themeMode={themeMode ?? 'auto'}
       />
     </section>
   )

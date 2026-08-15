@@ -28,7 +28,7 @@ type Services21BlockLike = {
   title?: string | null
 }
 
-type ActionButtonMode = 'default' | 'outline' | 'secondary'
+type ActionButtonMode = 'default' | 'outline' | 'primary' | 'secondary'
 
 const resolveServiceCode = (code: string | null | undefined, index: number) => {
   const trimmed = code?.trim()
@@ -38,8 +38,11 @@ const resolveServiceCode = (code: string | null | undefined, index: number) => {
 }
 
 const buttonClassNameByVariant: Record<ActionButtonMode, string> = {
-  default: 'border-primary/40 bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground',
+  default:
+    'border-primary/40 bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground',
   outline: 'border-current/20 text-current hover:bg-muted hover:text-current/80',
+  primary:
+    'border-primary bg-primary text-primary-foreground hover:bg-[color-mix(in_oklch,var(--primary),var(--foreground)_8%)]',
   secondary: 'border-secondary/40 bg-secondary/10 text-secondary hover:bg-secondary/20',
 }
 

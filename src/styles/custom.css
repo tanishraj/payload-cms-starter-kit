@@ -125,6 +125,87 @@
   color: var(--primary-foreground);
 }
 
+/* Image overlays can request a fixed light or dark treatment independently of
+   the site's current color mode. These local action colors stay readable when
+   the global --primary / --primary-foreground pair inverts in dark mode. */
+[data-block-surface='darkOverlay'] {
+  --media-overlay-action: color-mix(in oklch, var(--primary) 35%, white);
+  --media-overlay-action-foreground: black;
+  --media-overlay-copy: white;
+}
+
+[data-block-surface='lightOverlay'] {
+  --media-overlay-action: color-mix(in oklch, var(--primary) 55%, black);
+  --media-overlay-action-foreground: white;
+  --media-overlay-copy: var(--media-overlay-action);
+}
+
+[data-block-surface='darkOverlay'] [data-slot='button'][data-variant='default'],
+[data-block-surface='lightOverlay'] [data-slot='button'][data-variant='default'] {
+  background-color: var(--media-overlay-action);
+  color: var(--media-overlay-action-foreground);
+}
+
+[data-block-surface='darkOverlay'] [data-slot='button'][data-variant='default']:hover,
+[data-block-surface='lightOverlay'] [data-slot='button'][data-variant='default']:hover {
+  background-color: color-mix(
+    in oklch,
+    var(--media-overlay-action) 88%,
+    var(--media-overlay-action-foreground)
+  );
+}
+
+/* Explicit Dark Hero banners retain their established inverse Default CTA.
+   Primary remains the opt-in brand-filled treatment. */
+[data-hero-banner-block='true'][data-block-surface='darkOverlay'][data-hero-banner-theme='dark']
+  [data-slot='button'][data-variant='default'] {
+  background-color: var(--primary-foreground);
+  color: var(--primary);
+}
+
+[data-hero-banner-block='true'][data-block-surface='darkOverlay'][data-hero-banner-theme='dark']
+  [data-slot='button'][data-variant='default']:hover {
+  background-color: color-mix(in oklch, var(--primary-foreground) 90%, var(--primary));
+}
+
+[data-block-surface='darkOverlay'] [data-slot='button'][data-variant='outline'],
+[data-block-surface='lightOverlay'] [data-slot='button'][data-variant='outline'] {
+  background-color: transparent;
+  border-color: color-mix(in oklch, var(--media-overlay-copy) 60%, transparent);
+  color: var(--media-overlay-copy);
+}
+
+[data-block-surface='darkOverlay'] [data-slot='button'][data-variant='outline']:hover,
+[data-block-surface='lightOverlay'] [data-slot='button'][data-variant='outline']:hover {
+  background-color: color-mix(in oklch, var(--media-overlay-copy) 12%, transparent);
+  border-color: var(--media-overlay-copy);
+  color: var(--media-overlay-copy);
+}
+
+[data-block-surface='darkOverlay'] [data-slot='button'][data-variant='secondary'],
+[data-block-surface='lightOverlay'] [data-slot='button'][data-variant='secondary'] {
+  background-color: color-mix(in oklch, var(--media-overlay-copy) 14%, transparent);
+  color: var(--media-overlay-copy);
+}
+
+[data-block-surface='darkOverlay'] [data-slot='button'][data-variant='secondary']:hover,
+[data-block-surface='lightOverlay'] [data-slot='button'][data-variant='secondary']:hover {
+  background-color: color-mix(in oklch, var(--media-overlay-copy) 22%, transparent);
+}
+
+[data-block-surface='darkOverlay'] [data-slot='button'][data-variant='ghost'],
+[data-block-surface='lightOverlay'] [data-slot='button'][data-variant='ghost'],
+[data-block-surface='darkOverlay'] [data-content-link='true'],
+[data-block-surface='lightOverlay'] [data-content-link='true'] {
+  color: var(--media-overlay-copy);
+}
+
+[data-block-surface='darkOverlay'] [data-slot='button'][data-variant='ghost']:hover,
+[data-block-surface='lightOverlay'] [data-slot='button'][data-variant='ghost']:hover {
+  background-color: color-mix(in oklch, var(--media-overlay-copy) 12%, transparent);
+  color: var(--media-overlay-copy);
+}
+
 /* ==========================================================================
    SNMIH brand accents
    ========================================================================== */
@@ -161,8 +242,15 @@
 :root[data-theme-color='snmih'].dark
   [data-section-eyebrow-surface]:not([data-section-eyebrow-surface='brand']):not(
     [data-section-eyebrow-surface='gradient-brand']
-  ):not([data-section-eyebrow-surface='primary']) {
+  ):not([data-section-eyebrow-surface='primary']):not(
+    [data-section-eyebrow-surface='lightOverlay']
+  ) {
   color: var(--ring);
+}
+
+/* Explicit light image overlays remain light even in site dark mode. */
+:root[data-theme-color='snmih'] [data-section-eyebrow-surface='lightOverlay'] {
+  color: color-mix(in oklch, var(--success) 74%, black);
 }
 
 /* In dark mode the brand surface inverts to a light tint, where both greens

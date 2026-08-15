@@ -6,6 +6,10 @@ import {
   type BlockBackground,
 } from './blockAppearance'
 import { cardSurfaceValues, type CardSurfaceValue } from './cardThemeFields'
+import {
+  normalizeMediaOverlayStrength,
+  type MediaOverlayStrength,
+} from './mediaOverlayPresentation'
 
 export type CardSurfaceClasses = {
   button: Partial<Record<CmsActionVariant, string>>
@@ -78,6 +82,55 @@ const defaultDividerClasses: Record<BlockBackground, string> = {
   'gradient-brand': 'border-current/15',
 }
 
+const alternateOverlayStrengthClasses = {
+  light: {
+    default: 'from-black/56 via-black/32 to-black/5 text-white',
+    primary: 'from-primary/72 via-primary/48 to-primary/5 text-primary-foreground',
+    secondary: 'from-secondary/72 via-secondary/48 to-secondary/5 text-secondary-foreground',
+    muted: 'from-muted/72 via-muted/48 to-muted/5 text-foreground',
+    accent: 'from-accent/72 via-accent/48 to-accent/5 text-accent-foreground',
+  },
+  darker: {
+    default: 'from-black/92 via-black/68 to-black/16 text-white',
+    primary: 'from-primary via-primary/90 to-primary/20 text-primary-foreground',
+    secondary: 'from-secondary via-secondary/90 to-secondary/20 text-secondary-foreground',
+    muted: 'from-muted via-muted/90 to-muted/20 text-foreground',
+    accent: 'from-accent via-accent/90 to-accent/20 text-accent-foreground',
+  },
+} as const satisfies Record<Exclude<MediaOverlayStrength, 'dark'>, Record<CardSurfaceValue, string>>
+
+const evenOverlayStrengthClasses = {
+  light: {
+    default: 'bg-black/64 text-white',
+    primary: 'bg-primary/78 text-primary-foreground',
+    secondary: 'bg-secondary/78 text-secondary-foreground',
+    muted: 'bg-muted/78 text-foreground',
+    accent: 'bg-accent/78 text-accent-foreground',
+  },
+  dark: {
+    default: 'bg-black/74 text-white',
+    primary: 'bg-primary/86 text-primary-foreground',
+    secondary: 'bg-secondary/86 text-secondary-foreground',
+    muted: 'bg-muted/86 text-foreground',
+    accent: 'bg-accent/86 text-accent-foreground',
+  },
+  darker: {
+    default: 'bg-black/86 text-white',
+    primary: 'bg-primary/94 text-primary-foreground',
+    secondary: 'bg-secondary/94 text-secondary-foreground',
+    muted: 'bg-muted/94 text-foreground',
+    accent: 'bg-accent/94 text-accent-foreground',
+  },
+} as const satisfies Record<MediaOverlayStrength, Record<CardSurfaceValue, string>>
+
+const overlayTextClasses = {
+  default: 'text-white',
+  primary: 'text-primary-foreground',
+  secondary: 'text-secondary-foreground',
+  muted: 'text-foreground',
+  accent: 'text-accent-foreground',
+} as const satisfies Record<CardSurfaceValue, string>
+
 const resolveDefaultCardSurface = (
   rawSectionBackground: BlockBackground | string = 'none',
 ): CardSurfaceClasses => {
@@ -118,4 +171,23 @@ export const resolveCardSurface = (
   return resolvedValue === 'default'
     ? resolveDefaultCardSurface(sectionBackground)
     : explicitCardSurfaceClasses[resolvedValue]
+}
+
+export const resolveCardSurfaceOverlay = (
+  value?: string | null,
+  sectionBackground: BlockBackground | string = 'none',
+  strength?: string | null,
+) => {
+  const surface = resolveCardSurface(value, sectionBackground)
+  const resolvedStrength = normalizeMediaOverlayStrength(strength)
+
+  return {
+    className:
+      resolvedStrength === 'dark'
+        ? surface.overlay
+        : alternateOverlayStrengthClasses[resolvedStrength][surface.value],
+    evenClassName: evenOverlayStrengthClasses[resolvedStrength][surface.value],
+    strength: resolvedStrength,
+    textClassName: overlayTextClasses[surface.value],
+  }
 }

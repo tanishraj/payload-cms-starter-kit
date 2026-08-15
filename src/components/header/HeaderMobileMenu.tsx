@@ -13,13 +13,14 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import type { CmsActionVariant } from '@/lib/cmsLinks'
 import type { ResolvedHeaderLink, ResolvedHeaderMenuItem } from '@/lib/headerNavigation'
 
 type HeaderMobileMenuProps = {
   ctas: Array<
     ResolvedHeaderLink & {
       showArrow?: boolean
-      variant?: 'default' | 'link' | 'outline' | null
+      variant?: CmsActionVariant | null
     }
   >
   menuItems: ResolvedHeaderMenuItem[]
@@ -42,7 +43,9 @@ export function HeaderMobileMenu({ ctas, menuItems }: HeaderMobileMenuProps) {
     }
 
     const triggerElement = triggerRef.current
-    const headerElement = triggerElement?.closest('[data-global-header="true"]') as HTMLElement | null
+    const headerElement = triggerElement?.closest(
+      '[data-global-header="true"]',
+    ) as HTMLElement | null
 
     if (!headerElement) {
       setSheetTopOffset('0px')

@@ -1,6 +1,14 @@
 import Image from 'next/image'
-import { resolveCardSurface } from '@/blocks/shared/cardSurface'
+import { resolveCardSurface, resolveCardSurfaceOverlay } from '@/blocks/shared/cardSurface'
 import type { BlockBackground } from '@/blocks/shared/blockAppearance'
+import {
+  normalizeMediaOverlayTone,
+  resolveMediaOverlay,
+  type MediaOverlayCoverage,
+  type MediaOverlayDirection,
+  type MediaOverlayStrength,
+  type MediaOverlayTone,
+} from '@/blocks/shared/mediaOverlayPresentation'
 import { cn } from '@/lib/utils'
 
 export type ProfileCarouselImagePosition = 'bottom' | 'center' | 'left' | 'right' | 'top'
@@ -23,9 +31,13 @@ export type ProfileCarouselProfile = {
 
 type ProfileCarouselCardProps = {
   overlayAlignment: ProfileCarouselOverlayAlignment
+  overlayCoverage: MediaOverlayCoverage
+  overlayDirection: MediaOverlayDirection
+  overlayStyle: MediaOverlayStrength
   profile: ProfileCarouselProfile
   sectionBackground: BlockBackground
   size: ProfileCarouselSize
+  themeMode: MediaOverlayTone
   variant: ProfileCarouselCardVariant
 }
 
@@ -50,15 +62,48 @@ const overlayAlignmentClasses = {
   right: 'items-end text-right',
 } as const
 
+const overlayDirectionClasses = {
+  vertical: 'bg-linear-to-b',
+  leftToRight: 'bg-linear-to-r',
+  rightToLeft: 'bg-linear-to-l',
+  bottomToTop: 'bg-linear-to-t',
+  topToBottom: 'bg-linear-to-b',
+} as const satisfies Record<MediaOverlayDirection, string>
+
 export function ProfileCarouselCard({
   overlayAlignment,
+  overlayCoverage,
+  overlayDirection,
+  overlayStyle,
   profile,
   sectionBackground,
   size,
+  themeMode,
   variant,
 }: ProfileCarouselCardProps) {
   const imagePosition = profile.imagePosition ?? 'center'
   const surface = resolveCardSurface(profile.cardBackground, sectionBackground)
+  const surfaceOverlay = resolveCardSurfaceOverlay(
+    profile.cardBackground,
+    sectionBackground,
+    overlayStyle,
+  )
+  const overlay = resolveMediaOverlay({
+    coverage: overlayCoverage,
+    direction: overlayDirection,
+    sectionBackground,
+    strength: overlayStyle,
+    tone: themeMode,
+  })
+  const usesCardSurfaceOverlay = normalizeMediaOverlayTone(themeMode) === 'auto'
+  const overlayClassName = usesCardSurfaceOverlay
+    ? overlay.direction === 'vertical'
+      ? surfaceOverlay.evenClassName
+      : cn(overlayDirectionClasses[overlay.direction], surfaceOverlay.className)
+    : overlay.className
+  const overlaySecondaryClassName = usesCardSurfaceOverlay
+    ? surface.secondary
+    : overlay.text.secondary
   const mediaFrame = (
     <div
       className={cn('relative w-full overflow-hidden rounded-md', imageHeightClasses[size])}
@@ -77,18 +122,24 @@ export function ProfileCarouselCard({
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
       />
       {variant === 'overlay' ? (
-        <div
-          className={cn(
-            'absolute inset-x-0 bottom-0 flex flex-col gap-0.5 bg-linear-to-t p-5 pt-16',
-            surface.overlay,
-            overlayAlignmentClasses[overlayAlignment],
-          )}
-        >
-          <p className="text-base leading-tight font-semibold">{profile.name}</p>
-          {profile.role ? (
-            <p className={cn('text-sm leading-6', surface.secondary)}>{profile.role}</p>
-          ) : null}
-        </div>
+        <>
+          <div
+            className={cn('pointer-events-none absolute', overlay.frameClassName, overlayClassName)}
+          />
+          <div
+            className={cn(
+              'absolute inset-0 flex flex-col justify-end gap-0.5 p-5 pt-16',
+              usesCardSurfaceOverlay ? surfaceOverlay.textClassName : overlay.text.title,
+              overlayAlignmentClasses[overlayAlignment],
+            )}
+            data-block-surface={usesCardSurfaceOverlay ? undefined : overlay.blockSurface}
+          >
+            <p className="text-base leading-tight font-semibold">{profile.name}</p>
+            {profile.role ? (
+              <p className={cn('text-sm leading-6', overlaySecondaryClassName)}>{profile.role}</p>
+            ) : null}
+          </div>
+        </>
       ) : null}
     </div>
   )
@@ -100,6 +151,12 @@ export function ProfileCarouselCard({
         data-card-background={surface.value}
         data-profile-carousel-card-variant="overlay"
         data-profile-carousel-overlay-alignment={overlayAlignment}
+        data-profile-carousel-overlay-coverage={overlay.coverage}
+        data-profile-carousel-overlay-direction={overlay.direction}
+        data-profile-carousel-overlay-strength={
+          usesCardSurfaceOverlay ? surfaceOverlay.strength : overlay.strength
+        }
+        data-profile-carousel-overlay-tone={usesCardSurfaceOverlay ? 'auto' : overlay.tone}
       >
         {mediaFrame}
       </article>

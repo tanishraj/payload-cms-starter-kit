@@ -3,6 +3,8 @@ import type { Block, CheckboxField, SelectField, TabsField } from 'payload'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import {
+  buttonVariantDescription,
+  buttonVariantOptions,
   createContentActionModeField,
   createContentActionsField,
 } from '@/blocks/shared/contentActionsFields'
@@ -82,7 +84,11 @@ export const Contact24Block: Block = {
               type: 'textarea',
             },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
-            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({
+              name: 'footerActions',
+              label: 'Footer Actions',
+              maxRows: 2,
+            }),
             {
               name: 'offices',
               label: 'Offices to Show',
@@ -91,7 +97,8 @@ export const Contact24Block: Block = {
               hasMany: true,
               filterOptions: { _status: { equals: 'published' } },
               admin: {
-                description: 'Leave empty to show all published offices. Select specific offices to show only those, in the order chosen.',
+                description:
+                  'Leave empty to show all published offices. Select specific offices to show only those, in the order chosen.',
                 allowCreate: false,
               },
             },
@@ -123,13 +130,10 @@ export const Contact24Block: Block = {
               label: 'Map Button Variant',
               type: 'select',
               defaultValue: 'outline',
-              options: [
-                { label: 'Primary', value: 'default' },
-                { label: 'Secondary', value: 'secondary' },
-                { label: 'Outline', value: 'outline' },
-              ],
+              options: buttonVariantOptions,
               admin: {
                 condition: (_, siblingData) => siblingData?.mapActionMode === 'button',
+                description: buttonVariantDescription,
               },
             } satisfies SelectField,
           ],

@@ -24,6 +24,7 @@ const regularSectionEyebrowFiles = [
   'src/blocks/ProgramMatrix/Component.tsx',
   'src/blocks/QuoteBlock/Component.tsx',
   'src/blocks/ReviewSubmission/Component.tsx',
+  'src/blocks/StudentExperience/Component.tsx',
   'src/blocks/TabsContent/Component.tsx',
   'src/blocks/TabsContent/TabsContentClient.tsx',
   'src/blocks/TestimonialGrid/Component.tsx',
@@ -52,6 +53,7 @@ describe('SNMIH section eyebrows', () => {
     'gradient-subtle',
     'gradient-brand',
     'darkOverlay',
+    'lightOverlay',
   ] as const)('renders the %s surface contract with the inherited fallback', (surface) => {
     const html = renderToStaticMarkup(
       <SectionEyebrow className="mb-2" surface={surface}>
@@ -89,7 +91,9 @@ describe('SNMIH section eyebrows', () => {
   it('gives genuinely dark surfaces the ring token, flipping which surfaces qualify per mode', () => {
     const css = read('src/styles/custom.css')
     const ringRule = css.slice(
-      css.indexOf(":root[data-theme-color='snmih']:not(.dark) [data-section-eyebrow-surface='brand']"),
+      css.indexOf(
+        ":root[data-theme-color='snmih']:not(.dark) [data-section-eyebrow-surface='brand']",
+      ),
     )
     const ringBlock = ringRule.slice(0, ringRule.indexOf('}') + 1)
 
@@ -127,6 +131,15 @@ describe('SNMIH section eyebrows', () => {
     )
   })
 
+  it('keeps explicit light-overlay eyebrows dark in both site modes', () => {
+    const css = read('src/styles/custom.css')
+
+    expect(css).toContain(
+      ":root[data-theme-color='snmih'] [data-section-eyebrow-surface='lightOverlay']",
+    )
+    expect(css).toContain("[data-section-eyebrow-surface='lightOverlay']\n  )")
+  })
+
   it.each(regularSectionEyebrowFiles)('%s consumes the shared section eyebrow', (file) => {
     expect(read(file)).toContain('SectionEyebrow')
   })
@@ -156,10 +169,10 @@ describe('SNMIH section eyebrows', () => {
     expect(html).toContain('data-section-eyebrow-surface="brand"')
   })
 
-  it('marks Hero Carousel eyebrows as dark-overlay content', () => {
+  it('matches Hero Carousel eyebrows to the selected overlay tone', () => {
     const source = read('src/blocks/HeroCarousel/HeroCarouselClient.tsx')
 
     expect(source).toContain('SectionEyebrow')
-    expect(source).toContain('surface="darkOverlay"')
+    expect(source).toContain('surface={overlay.eyebrowSurface}')
   })
 })

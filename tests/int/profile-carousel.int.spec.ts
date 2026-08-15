@@ -9,6 +9,7 @@ import { Pages } from '@/collections/Pages'
 import { ProfileCarousel, type ProfileCarouselProfile } from '@/components/profile-carousel'
 
 type TestField = {
+  admin?: { condition?: (data: unknown, siblingData?: Record<string, unknown>) => boolean }
   defaultValue?: unknown
   fields?: TestField[]
   label?: string
@@ -78,8 +79,7 @@ describe('Profile Carousel', () => {
     const actionsField = getField(contentTab?.fields ?? [], 'actions')
     const profilesField = getField(contentTab?.fields ?? [], 'profiles')
     const profileCardTabs = profilesField?.fields?.[0] as unknown as
-      | { tabs: TestTab[]; type: string }
-      | undefined
+      { tabs: TestTab[]; type: string } | undefined
     const profileContentTab = profileCardTabs?.tabs?.find(({ label }) => label === 'Content')
     const profileThemeTab = profileCardTabs?.tabs?.find(({ label }) => label === 'Theme Settings')
     const imageField = getField(profileContentTab?.fields ?? [], 'image')
@@ -88,14 +88,17 @@ describe('Profile Carousel', () => {
     const imagePositionField = getField(profileThemeTab?.fields ?? [], 'imagePosition')
     const appearanceField = getField(layoutTab?.fields ?? [], 'appearance')
     const actionsTabsField = actionsField?.fields?.[0] as unknown as
-      | { tabs: TestTab[]; type: string }
-      | undefined
+      { tabs: TestTab[]; type: string } | undefined
     const actionsThemeTab = actionsTabsField?.tabs?.find(({ label }) => label === 'Theme Settings')
     const actionModeField = getField(actionsThemeTab?.fields ?? [], 'mode')
     const contentAlignmentField = getField(layoutTab?.fields ?? [], 'contentAlignment')
     const sizeField = getField(layoutTab?.fields ?? [], 'size')
     const cardVariantField = getField(layoutTab?.fields ?? [], 'cardVariant')
     const overlayAlignmentField = getField(layoutTab?.fields ?? [], 'overlayAlignment')
+    const themeModeField = getField(layoutTab?.fields ?? [], 'themeMode')
+    const overlayStyleField = getField(layoutTab?.fields ?? [], 'overlayStyle')
+    const overlayDirectionField = getField(layoutTab?.fields ?? [], 'overlayDirection')
+    const overlayCoverageField = getField(layoutTab?.fields ?? [], 'overlayCoverage')
 
     expect(tabsField.type).toBe('tabs')
     expect(tabsField.tabs.map(({ label }) => label)).toEqual(['Content', 'Theme Settings'])
@@ -142,6 +145,50 @@ describe('Profile Carousel', () => {
       'center',
       'right',
     ])
+    expect(themeModeField).toMatchObject({
+      defaultValue: 'auto',
+      options: [{ value: 'auto' }, { value: 'light' }, { value: 'dark' }, { value: 'brand' }],
+      required: false,
+      type: 'select',
+    })
+    expect(overlayStyleField).toMatchObject({
+      defaultValue: 'dark',
+      options: [{ value: 'light' }, { value: 'dark' }, { value: 'darker' }],
+      required: false,
+      type: 'select',
+    })
+    expect(overlayDirectionField).toMatchObject({
+      defaultValue: 'bottomToTop',
+      options: [
+        { value: 'vertical' },
+        { value: 'leftToRight' },
+        { value: 'rightToLeft' },
+        { value: 'bottomToTop' },
+        { value: 'topToBottom' },
+      ],
+      required: false,
+      type: 'select',
+    })
+    expect(overlayCoverageField).toMatchObject({
+      defaultValue: 'full',
+      options: [{ value: 'full' }, { value: 'split' }],
+      required: false,
+      type: 'select',
+    })
+
+    const layoutNames = (layoutTab?.fields ?? []).flatMap(({ name }) => (name ? [name] : []))
+    expect(layoutNames.indexOf('overlayCoverage')).toBe(layoutNames.indexOf('overlayDirection') + 1)
+
+    for (const field of [
+      overlayAlignmentField,
+      themeModeField,
+      overlayStyleField,
+      overlayDirectionField,
+      overlayCoverageField,
+    ]) {
+      expect(field?.admin?.condition?.({}, { cardVariant: 'overlay' })).toBe(true)
+      expect(field?.admin?.condition?.({}, { cardVariant: 'stacked' })).toBe(false)
+    }
   })
 
   it('renders one through four profiles as a fixed responsive grid without controls', () => {
@@ -200,24 +247,88 @@ describe('Profile Carousel', () => {
     expect(html).toContain('h-72 sm:h-80 md:h-96')
   })
 
-  it('renders a theme-aware image overlay with one alignment for every profile', () => {
+  it('renders a configurable image overlay with one alignment for every profile', () => {
     const html = renderToStaticMarkup(
       ProfileCarousel({
         cardVariant: 'overlay',
         overlayAlignment: 'center',
+        overlayCoverage: 'split',
+        overlayDirection: 'rightToLeft',
+        overlayStyle: 'darker',
         profiles: profiles.slice(0, 4),
         size: 'comfortable',
+        themeMode: 'light',
         title: 'Our people',
       }),
     )
 
     expect(html.match(/<article[^>]*data-profile-carousel-card-variant="overlay"/g)).toHaveLength(4)
     expect(html.match(/data-profile-carousel-overlay-alignment="center"/g)).toHaveLength(4)
+    expect(html.match(/data-profile-carousel-overlay-tone="light"/g)).toHaveLength(4)
+    expect(html.match(/data-profile-carousel-overlay-strength="darker"/g)).toHaveLength(4)
+    expect(html.match(/data-profile-carousel-overlay-direction="rightToLeft"/g)).toHaveLength(4)
+    expect(html.match(/data-profile-carousel-overlay-coverage="split"/g)).toHaveLength(4)
     expect(
-      html.match(/bg-linear-to-t[^\"]*from-black\/80 via-black\/50 to-transparent text-white/g),
+      html.match(/absolute inset-y-0 right-0 w-1\/2 bg-linear-to-l[^\"]*from-white/g),
     ).toHaveLength(4)
+    expect(html.match(/absolute inset-0 flex flex-col justify-end/g)).toHaveLength(4)
+    expect(html.match(/pt-16 text-black items-center text-center/g)).toHaveLength(4)
     expect(html.match(/items-center text-center/g)).toHaveLength(4)
     expect(html.match(/h-80 sm:h-96 md:h-\[28rem\]/g)).toHaveLength(4)
+  })
+
+  it('preserves each card surface overlay in Auto mode while applying its direction', () => {
+    const html = renderToStaticMarkup(
+      ProfileCarousel({
+        cardVariant: 'overlay',
+        overlayCoverage: 'split',
+        overlayDirection: 'leftToRight',
+        profiles: [{ ...profiles[0], cardBackground: 'secondary' }],
+        themeMode: 'auto',
+        title: 'Our people',
+      }),
+    )
+
+    expect(html).toContain('data-profile-carousel-overlay-tone="auto"')
+    expect(html).toContain('data-profile-carousel-overlay-direction="leftToRight"')
+    expect(html).toContain('data-profile-carousel-overlay-coverage="split"')
+    expect(html).toContain(
+      'absolute inset-y-0 left-0 w-1/2 bg-linear-to-r from-secondary via-secondary/75 to-transparent text-secondary-foreground',
+    )
+  })
+
+  it('varies Auto overlay strength without losing the card surface hue', () => {
+    const html = renderToStaticMarkup(
+      ProfileCarousel({
+        cardVariant: 'overlay',
+        overlayStyle: 'darker',
+        profiles: [{ ...profiles[0], cardBackground: 'secondary' }],
+        themeMode: 'auto',
+        title: 'Our people',
+      }),
+    )
+
+    expect(html).toContain('data-profile-carousel-overlay-tone="auto"')
+    expect(html).toContain('data-profile-carousel-overlay-strength="darker"')
+    expect(html).toContain(
+      'from-secondary via-secondary/90 to-secondary/20 text-secondary-foreground',
+    )
+  })
+
+  it('renders Auto Even as a flat card-surface tint rather than a directional gradient', () => {
+    const html = renderToStaticMarkup(
+      ProfileCarousel({
+        cardVariant: 'overlay',
+        overlayDirection: 'vertical',
+        profiles: [{ ...profiles[0], cardBackground: 'secondary' }],
+        themeMode: 'auto',
+        title: 'Our people',
+      }),
+    )
+
+    expect(html).toContain('data-profile-carousel-overlay-direction="vertical"')
+    expect(html).toContain('absolute inset-0 bg-secondary/86 text-secondary-foreground')
+    expect(html).not.toContain('bg-linear-to-b from-secondary')
   })
 
   it.each([

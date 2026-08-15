@@ -4,11 +4,19 @@ import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
+import {
+  normalizeMediaOverlayTone,
+  resolveMediaOverlay,
+  type MediaOverlayCoverage,
+  type MediaOverlayDirection,
+  type MediaOverlayStrength,
+  type MediaOverlayTone,
+} from '@/blocks/shared/mediaOverlayPresentation'
 import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { ContentLink } from '@/components/ContentLink'
 import { Button } from '@/components/ui/button'
 import { SectionEyebrow, type SectionEyebrowSurface } from '@/components/SectionEyebrow'
-import { resolveCmsLink } from '@/lib/cmsLinks'
+import { resolveCmsLink, type CmsActionVariant } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
 import type { Page } from '@/payload-types'
@@ -20,7 +28,7 @@ type HeroButton = {
   page?: Page | number | string | null
   showArrow?: boolean | null
   url?: string | null
-  variant?: 'default' | 'link' | 'outline' | 'secondary' | null
+  variant?: CmsActionVariant | null
 }
 
 type HeroBannerBlockLike = {
@@ -34,87 +42,13 @@ type HeroBannerBlockLike = {
   eyebrow?: string | null
   height?: '40' | '60' | '80' | 'balanced' | 'compact' | 'default' | 'immersive' | null
   horizontalAlignment?: 'center' | 'left' | 'right' | null
-  overlayDirection?: 'leftToRight' | 'rightToLeft' | 'vertical' | null
-  overlayStyle?: 'brand' | 'dark' | 'darker' | 'darkest' | 'ink' | 'light' | 'soft' | null
-  themeMode?: 'auto' | 'dark' | 'light' | null
+  overlayCoverage?: MediaOverlayCoverage | null
+  overlayDirection?: MediaOverlayDirection | null
+  overlayStyle?: MediaOverlayStrength | 'brand' | 'darkest' | 'ink' | 'soft' | null
+  themeMode?: MediaOverlayTone | null
   title?: string | null
   verticalAlignment?: 'bottom' | 'center' | 'top' | null
 }
-
-const overlayClasses = {
-  auto: {
-    light: {
-      vertical: 'bg-linear-to-b from-background/72 via-background/56 to-background/78',
-      leftToRight: 'bg-linear-to-r from-background/72 via-background/56 to-background/78',
-      rightToLeft: 'bg-linear-to-l from-background/72 via-background/56 to-background/78',
-    },
-    dark: {
-      vertical: 'bg-linear-to-b from-background/82 via-background/68 to-background/86',
-      leftToRight: 'bg-linear-to-r from-background/82 via-background/68 to-background/86',
-      rightToLeft: 'bg-linear-to-l from-background/82 via-background/68 to-background/86',
-    },
-    darker: {
-      vertical: 'bg-linear-to-b from-background/90 via-background/80 to-background/92',
-      leftToRight: 'bg-linear-to-r from-background/90 via-background/80 to-background/92',
-      rightToLeft: 'bg-linear-to-l from-background/90 via-background/80 to-background/92',
-    },
-  },
-  light: {
-    light: {
-      vertical: 'bg-linear-to-b from-background/72 via-background/56 to-background/78',
-      leftToRight: 'bg-linear-to-r from-background/72 via-background/56 to-background/78',
-      rightToLeft: 'bg-linear-to-l from-background/72 via-background/56 to-background/78',
-    },
-    dark: {
-      vertical: 'bg-linear-to-b from-background/82 via-background/68 to-background/86',
-      leftToRight: 'bg-linear-to-r from-background/82 via-background/68 to-background/86',
-      rightToLeft: 'bg-linear-to-l from-background/82 via-background/68 to-background/86',
-    },
-    darker: {
-      vertical: 'bg-linear-to-b from-background/90 via-background/80 to-background/92',
-      leftToRight: 'bg-linear-to-r from-background/90 via-background/80 to-background/92',
-      rightToLeft: 'bg-linear-to-l from-background/90 via-background/80 to-background/92',
-    },
-  },
-  dark: {
-    light: {
-      vertical: 'bg-linear-to-b from-black/56 via-black/42 to-black/62',
-      leftToRight: 'bg-linear-to-r from-black/56 via-black/42 to-black/62',
-      rightToLeft: 'bg-linear-to-l from-black/56 via-black/42 to-black/62',
-    },
-    dark: {
-      vertical: 'bg-linear-to-b from-black/68 via-black/54 to-black/74',
-      leftToRight: 'bg-linear-to-r from-black/68 via-black/54 to-black/74',
-      rightToLeft: 'bg-linear-to-l from-black/68 via-black/54 to-black/74',
-    },
-    darker: {
-      vertical: 'bg-linear-to-b from-black/80 via-black/68 to-black/84',
-      leftToRight: 'bg-linear-to-r from-black/80 via-black/68 to-black/84',
-      rightToLeft: 'bg-linear-to-l from-black/80 via-black/68 to-black/84',
-    },
-  },
-} as const
-
-const textToneClasses = {
-  auto: {
-    title: 'text-foreground',
-    description: 'text-foreground/84',
-    eyebrow: 'text-foreground/78',
-    link: 'text-foreground',
-  },
-  light: {
-    title: 'text-foreground',
-    description: 'text-foreground/84',
-    eyebrow: 'text-foreground/78',
-    link: 'text-foreground',
-  },
-  dark: {
-    title: 'text-white',
-    description: 'text-white/84',
-    eyebrow: 'text-white/78',
-    link: 'text-white',
-  },
-} as const
 
 const horizontalShellClasses = {
   left: 'justify-start',
@@ -187,6 +121,8 @@ const heroLinkArrowShadowStyle = {
   filter: 'drop-shadow(0 2px 6px rgb(0 0 0 / 55%))',
 } as const
 
+const legacyDarkLightVerticalOverlay = 'bg-linear-to-b from-black/56 via-black/42 to-black/62'
+
 export function HeroBannerBlockComponent({
   accentTitle,
   appearance,
@@ -198,6 +134,7 @@ export function HeroBannerBlockComponent({
   eyebrow,
   height = 'default',
   horizontalAlignment = 'left',
+  overlayCoverage = 'full',
   overlayDirection = 'vertical',
   overlayStyle = 'dark',
   themeMode = 'auto',
@@ -207,19 +144,30 @@ export function HeroBannerBlockComponent({
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const resolvedContentWidth = contentWidth ?? 'default'
   const resolvedHorizontalAlignment = horizontalAlignment ?? 'left'
-  const resolvedOverlayStyle =
-    overlayStyle === 'light' || overlayStyle === 'darker'
-      ? overlayStyle
-      : overlayStyle === 'soft'
-        ? 'light'
-        : overlayStyle === 'ink' || overlayStyle === 'darkest'
-        ? 'darker'
-        : 'dark'
-  const resolvedOverlayDirection = overlayDirection ?? 'vertical'
-  const resolvedThemeMode = themeMode ?? 'auto'
+  const legacyOverlayStrength =
+    overlayStyle === 'ink' || overlayStyle === 'darkest'
+      ? 'darker'
+      : overlayStyle === 'brand'
+        ? 'dark'
+        : overlayStyle
+  const selectedThemeMode = normalizeMediaOverlayTone(themeMode)
+  const mediaOverlay = resolveMediaOverlay({
+    coverage: overlayCoverage ?? 'full',
+    direction: overlayDirection ?? 'vertical',
+    sectionBackground: appearanceClasses.background,
+    strength: legacyOverlayStrength ?? 'dark',
+    tone: selectedThemeMode,
+  })
+  // Preserve the established Hero treatment for saved Dark + Light content.
+  // Other tones, strengths, directions, and coverage modes use the shared system.
+  const heroOverlayClassName =
+    selectedThemeMode === 'dark' &&
+    mediaOverlay.strength === 'light' &&
+    mediaOverlay.direction === 'vertical'
+      ? legacyDarkLightVerticalOverlay
+      : mediaOverlay.className
   const usesTextShadow = Boolean(enableTextShadow)
-  const eyebrowSurface: SectionEyebrowSurface =
-    resolvedThemeMode === 'dark' ? 'darkOverlay' : 'none'
+  const eyebrowSurface: SectionEyebrowSurface = mediaOverlay.eyebrowSurface
   const resolvedVerticalAlignment = verticalAlignment ?? 'center'
   const resolvedHeight =
     height === '40'
@@ -263,23 +211,20 @@ export function HeroBannerBlockComponent({
   return (
     <section
       className={cn('relative isolate overflow-hidden', appearanceClasses.className)}
-      // Over a dark overlay the section carries no background class, so buttons
-      // need the brand-surface treatment declared explicitly.
-      data-block-surface={eyebrowSurface === 'darkOverlay' ? 'brand' : undefined}
+      data-block-surface={mediaOverlay.blockSurface}
       data-hero-banner-background={appearanceClasses.background}
       data-hero-banner-block="true"
+      data-hero-banner-theme={selectedThemeMode}
     >
       <div className="absolute inset-0">
         <Image fill alt={image.alt} className="object-cover" src={image.src} sizes="100vw" />
       </div>
       <div
-        className={cn(
-          'absolute inset-0',
-          overlayClasses[resolvedThemeMode][resolvedOverlayStyle][resolvedOverlayDirection],
-        )}
-        data-hero-banner-overlay={resolvedOverlayStyle}
-        data-hero-banner-overlay-direction={resolvedOverlayDirection}
-        data-hero-banner-theme={resolvedThemeMode}
+        className={cn('absolute', mediaOverlay.frameClassName, heroOverlayClassName)}
+        data-hero-banner-overlay={mediaOverlay.strength}
+        data-hero-banner-overlay-coverage={mediaOverlay.coverage}
+        data-hero-banner-overlay-direction={mediaOverlay.direction}
+        data-hero-banner-theme={selectedThemeMode}
       />
       <div
         className={cn('relative mx-auto flex max-w-screen-2xl px-4', heightClasses[resolvedHeight])}
@@ -305,7 +250,7 @@ export function HeroBannerBlockComponent({
             <div className="flex flex-col gap-6">
               {eyebrow ? (
                 <SectionEyebrow
-                  className={cn('tracking-[0.28em]', textToneClasses[resolvedThemeMode].eyebrow)}
+                  className={cn('tracking-[0.28em]', mediaOverlay.text.eyebrow)}
                   data-hero-banner-eyebrow="true"
                   surface={eyebrowSurface}
                   style={usesTextShadow ? heroTextShadowStyle : undefined}
@@ -317,7 +262,7 @@ export function HeroBannerBlockComponent({
                 className={cn(
                   'font-semibold tracking-tight text-balance',
                   titleSizeClasses[resolvedHeight],
-                  textToneClasses[resolvedThemeMode].title,
+                  mediaOverlay.text.title,
                   titleWidthClasses[resolvedContentWidth],
                   constrainedItemAlignmentClasses[resolvedHorizontalAlignment],
                 )}
@@ -338,7 +283,7 @@ export function HeroBannerBlockComponent({
                     'text-balance',
                     descriptionSizeClasses[resolvedHeight],
                     descriptionWidthClasses[resolvedContentWidth],
-                    textToneClasses[resolvedThemeMode].description,
+                    mediaOverlay.text.secondary,
                     constrainedItemAlignmentClasses[resolvedHorizontalAlignment],
                   )}
                   data-hero-banner-description="true"
@@ -360,10 +305,7 @@ export function HeroBannerBlockComponent({
                   action.variant === 'link' ? (
                     <ContentLink
                       arrowStyle={usesTextShadow ? heroLinkArrowShadowStyle : undefined}
-                      className={cn(
-                        'w-full sm:w-auto',
-                        textToneClasses[resolvedThemeMode].link,
-                      )}
+                      className={cn('w-full sm:w-auto', mediaOverlay.text.link)}
                       href={action.href}
                       key={`${action.label}-${action.href}`}
                       label={action.label}

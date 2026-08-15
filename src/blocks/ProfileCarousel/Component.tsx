@@ -1,5 +1,11 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
+import type {
+  MediaOverlayCoverage,
+  MediaOverlayDirection,
+  MediaOverlayStrength,
+  MediaOverlayTone,
+} from '@/blocks/shared/mediaOverlayPresentation'
 import { ContentActions } from '@/components/ContentActions'
 import {
   ProfileCarousel,
@@ -22,6 +28,9 @@ type ProfileCarouselBlockLike = {
   description?: string | null
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
+  overlayCoverage?: MediaOverlayCoverage | null
+  overlayDirection?: MediaOverlayDirection | null
+  overlayStyle?: MediaOverlayStrength | null
   profiles?:
     | {
         cardBackground?: string | null
@@ -33,6 +42,7 @@ type ProfileCarouselBlockLike = {
     | null
   overlayAlignment?: ProfileCarouselOverlayAlignment | null
   size?: ProfileCarouselSize | null
+  themeMode?: MediaOverlayTone | null
   title?: string | null
 }
 
@@ -46,8 +56,12 @@ export function ProfileCarouselBlockComponent({
   eyebrow,
   footerActions,
   overlayAlignment = 'left',
+  overlayCoverage = 'full',
+  overlayDirection = 'bottomToTop',
+  overlayStyle = 'dark',
   profiles,
   size = 'default',
+  themeMode = 'auto',
   title,
 }: ProfileCarouselBlockLike) {
   const resolvedTitle = title?.trim()
@@ -96,8 +110,12 @@ export function ProfileCarouselBlockComponent({
         description={description?.trim() || undefined}
         eyebrow={eyebrow?.trim() || undefined}
         overlayAlignment={overlayAlignment ?? 'left'}
+        overlayCoverage={overlayCoverage ?? 'full'}
+        overlayDirection={overlayDirection ?? 'bottomToTop'}
+        overlayStyle={overlayStyle ?? 'dark'}
         profiles={resolvedProfiles}
         size={size ?? 'default'}
+        themeMode={themeMode ?? 'auto'}
         title={resolvedTitle}
       />
       <BlockFooterActions actions={footerActions} />

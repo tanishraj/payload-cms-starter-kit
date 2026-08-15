@@ -35,9 +35,10 @@ describe('dark-mode media treatments', () => {
       />,
     )
 
-    expect(html).toContain('bg-linear-to-r from-black/56 via-black/42 to-black/62')
+    expect(html).toContain('bg-linear-to-r from-black/76 via-black/54 to-transparent')
     expect(html).toContain('data-page-header-theme="dark"')
     expect(html).toContain('data-page-header-overlay="light"')
+    expect(html).toContain('data-block-surface="darkOverlay"')
     expect(html).toContain('data-section-eyebrow-surface="darkOverlay"')
     expect(html).not.toContain('bg-foreground/20')
   })

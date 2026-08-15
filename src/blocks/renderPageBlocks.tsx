@@ -14,6 +14,7 @@ import { HeroBannerBlockComponent } from './HeroBanner/Component'
 import { HeroCarouselBlockComponent } from './HeroCarousel/Component'
 import { GalleryCoverflowBlockComponent } from './GalleryCoverflow/Component'
 import { ImageMosaicBlockComponent } from './ImageMosaic/Component'
+import { StudentExperienceBlockComponent } from './StudentExperience/Component'
 import { NewsEventsHighlightsBlockComponent } from './NewsEventsHighlights/Component'
 import { ProfileCarouselBlockComponent } from './ProfileCarousel/Component'
 import { RatingSpotlightBlockComponent } from './RatingSpotlight/Component'
@@ -111,6 +112,8 @@ function renderSingleBlock(
       return wrap(<EventGalleryBlockComponent {...block} />)
     case 'imageMosaic':
       return wrap(<ImageMosaicBlockComponent {...block} />)
+    case 'studentExperience':
+      return wrap(<StudentExperienceBlockComponent {...block} />)
     case 'reviewSubmission':
       return wrap(<ReviewSubmissionBlockComponent {...block} />)
     case 'contact33':

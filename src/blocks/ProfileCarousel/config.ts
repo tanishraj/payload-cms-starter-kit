@@ -1,9 +1,17 @@
-import type { ArrayField, Block, SelectField, TabsField } from 'payload'
+import type { ArrayField, Block, Condition, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import {
+  createMediaOverlayCoverageField,
+  createMediaOverlayDirectionField,
+  createMediaOverlayStrengthField,
+  createMediaOverlayToneField,
+} from '@/blocks/shared/mediaOverlayFields'
+
+const usesImageOverlay: Condition = (_data, siblingData) => siblingData?.cardVariant === 'overlay'
 
 const imagePositionOptions = [
   { label: 'Center', value: 'center' },
@@ -85,7 +93,11 @@ export const ProfileCarouselBlock: Block = {
               type: 'textarea',
             },
             createContentActionsField({ label: 'Action', maxRows: 1 }),
-            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({
+              name: 'footerActions',
+              label: 'Footer Actions',
+              maxRows: 2,
+            }),
             profilesField,
           ],
         },
@@ -128,9 +140,20 @@ export const ProfileCarouselBlock: Block = {
               ],
               required: true,
               admin: {
-                condition: (_data, siblingData) => siblingData?.cardVariant === 'overlay',
+                condition: usesImageOverlay,
               },
             } satisfies SelectField,
+            createMediaOverlayToneField({ condition: usesImageOverlay, required: false }),
+            createMediaOverlayStrengthField({ condition: usesImageOverlay, required: false }),
+            createMediaOverlayDirectionField({
+              condition: usesImageOverlay,
+              defaultValue: 'bottomToTop',
+              required: false,
+            }),
+            createMediaOverlayCoverageField({
+              condition: usesImageOverlay,
+              required: false,
+            }),
             {
               name: 'size',
               label: 'Section Padding',

@@ -1,8 +1,17 @@
-import type { ArrayField, Block, CheckboxField, SelectField, TabsField } from 'payload'
+import type { ArrayField, Block, CheckboxField, Condition, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import {
+  createMediaOverlayCoverageField,
+  createMediaOverlayDirectionField,
+  createMediaOverlayStrengthField,
+  createMediaOverlayToneField,
+} from '@/blocks/shared/mediaOverlayFields'
+
+const showImageOverlayControls: Condition = (_data, siblingData) =>
+  siblingData?.showImageOverlays !== false
 
 const itemsField = {
   name: 'items',
@@ -77,7 +86,11 @@ export const ImageMosaicBlock: Block = {
               type: 'textarea',
             },
             createContentActionsField(),
-            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({
+              name: 'footerActions',
+              label: 'Footer Actions',
+              maxRows: 2,
+            }),
             itemsField,
           ],
         },
@@ -116,6 +129,23 @@ export const ImageMosaicBlock: Block = {
               type: 'checkbox',
               defaultValue: true,
             } satisfies CheckboxField,
+            createMediaOverlayToneField({
+              condition: showImageOverlayControls,
+              required: false,
+            }),
+            createMediaOverlayStrengthField({
+              condition: showImageOverlayControls,
+              required: false,
+            }),
+            createMediaOverlayDirectionField({
+              condition: showImageOverlayControls,
+              defaultValue: 'bottomToTop',
+              required: false,
+            }),
+            createMediaOverlayCoverageField({
+              condition: showImageOverlayControls,
+              required: false,
+            }),
           ],
         },
       ],

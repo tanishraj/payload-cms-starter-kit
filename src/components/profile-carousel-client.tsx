@@ -15,21 +15,35 @@ import {
   type ProfileCarouselSize,
 } from '@/components/profile-carousel-card'
 import type { BlockBackground } from '@/blocks/shared/blockAppearance'
+import type {
+  MediaOverlayCoverage,
+  MediaOverlayDirection,
+  MediaOverlayStrength,
+  MediaOverlayTone,
+} from '@/blocks/shared/mediaOverlayPresentation'
 
 type ProfileCarouselClientProps = {
   cardVariant: ProfileCarouselCardVariant
   overlayAlignment: ProfileCarouselOverlayAlignment
+  overlayCoverage: MediaOverlayCoverage
+  overlayDirection: MediaOverlayDirection
+  overlayStyle: MediaOverlayStrength
   profiles: ProfileCarouselProfile[]
   sectionBackground: BlockBackground
   size: ProfileCarouselSize
+  themeMode: MediaOverlayTone
 }
 
 export function ProfileCarouselClient({
   cardVariant,
   overlayAlignment,
+  overlayCoverage,
+  overlayDirection,
+  overlayStyle,
   profiles,
   sectionBackground,
   size,
+  themeMode,
 }: ProfileCarouselClientProps) {
   return (
     <Carousel
@@ -54,9 +68,13 @@ export function ProfileCarouselClient({
           <CarouselItem className="pl-5 md:basis-1/2 lg:basis-1/4" key={`${profile.name}-${index}`}>
             <ProfileCarouselCard
               overlayAlignment={overlayAlignment}
+              overlayCoverage={overlayCoverage}
+              overlayDirection={overlayDirection}
+              overlayStyle={overlayStyle}
               profile={profile}
               sectionBackground={sectionBackground}
               size={size}
+              themeMode={themeMode}
               variant={cardVariant}
             />
           </CarouselItem>

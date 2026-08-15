@@ -16,6 +16,7 @@ import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
 import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
 import { HeroCarouselBlockComponent } from '@/blocks/HeroCarousel/Component'
 import { ImageMosaicBlockComponent } from '@/blocks/ImageMosaic/Component'
+import { StudentExperienceBlockComponent } from '@/blocks/StudentExperience/Component'
 import { NewsEventsHighlightsBlockPresentation } from '@/blocks/NewsEventsHighlights/Presentation'
 import { ProfileCarouselBlockComponent } from '@/blocks/ProfileCarousel/Component'
 import { QaAccordionBlockComponent } from '@/blocks/QaAccordion/Component'
@@ -1037,6 +1038,38 @@ export const blockThumbnailFixtures = {
       ]}
       size="compact"
       title="A closer look at life here"
+    />
+  ),
+  studentExperience: (
+    <StudentExperienceBlockComponent
+      accentTitle="medical college."
+      appearance={{ background: 'none', border: 'none' }}
+      cardHeight="compact"
+      description="Medical education extends beyond lectures. Students learn, collaborate, practise, compete, and grow within a connected campus environment."
+      eyebrow="The student experience"
+      experiences={[
+        {
+          image: fakeMedia(portrait, 'Campus life', 900, 1200),
+          imagePosition: 'center',
+          title: 'Campus Life',
+        },
+        {
+          image: fakeMedia(editorialLandscape, 'Library and learning'),
+          title: 'Library & Learning',
+        },
+        {
+          image: fakeMedia(collaboration, 'Clinical training'),
+          title: 'Clinical Training',
+        },
+        {
+          image: fakeMedia(officeMap, 'Student activities'),
+          title: 'Student Activities',
+        },
+      ]}
+      headerLayout="split"
+      showNumbers
+      size="compact"
+      title="More than a"
     />
   ),
   footerMinimal: (

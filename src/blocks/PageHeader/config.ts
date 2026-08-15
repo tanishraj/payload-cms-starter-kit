@@ -14,6 +14,7 @@ import {
 import { createBreadcrumbModeField, createBreadcrumbsField } from '@/blocks/shared/breadcrumbFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { createMediaOverlayCoverageField } from '@/blocks/shared/mediaOverlayFields'
 
 const isBanner = (_data: unknown, siblingData: { variant?: string | null }) =>
   siblingData?.variant === 'banner'
@@ -174,6 +175,7 @@ export const PageHeaderBlock: Block = {
             createBannerThemeModeField(isBanner),
             createBannerOverlayStyleField(isBanner),
             createBannerOverlayDirectionField(isBanner),
+            createMediaOverlayCoverageField({ condition: isBanner, required: false }),
             createBannerHeightField(),
             createBannerSectionPaddingField(),
           ],

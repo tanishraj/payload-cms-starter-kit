@@ -1,5 +1,11 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
+import type {
+  MediaOverlayCoverage,
+  MediaOverlayDirection,
+  MediaOverlayStrength,
+  MediaOverlayTone,
+} from '@/blocks/shared/mediaOverlayPresentation'
 import { ContentActions } from '@/components/ContentActions'
 import {
   ImageMosaic,
@@ -32,8 +38,12 @@ type ImageMosaicBlockLike = {
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
   items?: ImageMosaicItemValue[] | null
+  overlayCoverage?: MediaOverlayCoverage | null
+  overlayDirection?: MediaOverlayDirection | null
+  overlayStyle?: MediaOverlayStrength | null
   showImageOverlays?: boolean | null
   size?: ImageMosaicSize | null
+  themeMode?: MediaOverlayTone | null
   title?: string | null
 }
 
@@ -46,8 +56,12 @@ export function ImageMosaicBlockComponent({
   eyebrow,
   footerActions,
   items,
+  overlayCoverage = 'full',
+  overlayDirection = 'bottomToTop',
+  overlayStyle = 'dark',
   showImageOverlays = true,
   size = 'default',
+  themeMode = 'auto',
   title,
 }: ImageMosaicBlockLike) {
   const resolvedTitle = title?.trim()
@@ -112,8 +126,12 @@ export function ImageMosaicBlockComponent({
         description={description?.trim() || undefined}
         eyebrow={eyebrow?.trim() || undefined}
         items={resolvedItems}
+        overlayCoverage={overlayCoverage ?? 'full'}
+        overlayDirection={overlayDirection ?? 'bottomToTop'}
+        overlayStyle={overlayStyle ?? 'dark'}
         showImageOverlays={showImageOverlays ?? true}
         size={size ?? 'default'}
+        themeMode={themeMode ?? 'auto'}
         title={resolvedTitle}
       />
       <BlockFooterActions actions={footerActions} />

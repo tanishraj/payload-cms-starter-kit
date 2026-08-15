@@ -10,7 +10,15 @@ import { ContentLink } from '@/components/ContentLink'
 import { Button } from '@/components/ui/button'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+import type { CmsActionVariant } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
+import {
+  resolveMediaOverlay,
+  type MediaOverlayCoverage,
+  type MediaOverlayDirection,
+  type MediaOverlayStrength,
+  type MediaOverlayTone,
+} from '@/blocks/shared/mediaOverlayPresentation'
 
 export type CarouselSlide = {
   backgroundImageAlt?: string
@@ -21,7 +29,7 @@ export type CarouselSlide = {
     label: string
     openInNewTab?: boolean
     showArrow: boolean
-    variant?: 'default' | 'link' | 'outline' | 'secondary'
+    variant?: CmsActionVariant
   }>
   description?: string | null
   eyebrow?: string | null
@@ -35,22 +43,19 @@ type HeroCarouselClientProps = {
   autoplay?: boolean
   contentAlignment?: HeroCarouselContentAlignment
   height?: 'compact' | 'default' | 'immersive'
-  overlayStyle?: 'light' | 'dark' | 'darker'
+  overlayCoverage?: MediaOverlayCoverage
+  overlayDirection?: MediaOverlayDirection
+  overlayStyle?: MediaOverlayStrength
   showArrows?: boolean
   showDots?: boolean
   slides: CarouselSlide[]
+  themeMode?: MediaOverlayTone
 }
 
 const heightClasses = {
   compact: 'min-h-[50dvh]',
   default: 'min-h-[70dvh]',
   immersive: 'h-dvh min-h-[42.5rem]',
-} as const
-
-const overlayClasses = {
-  light: 'bg-black/30',
-  dark: 'bg-black/50',
-  darker: 'bg-black/72',
 } as const
 
 const contentAlignmentClasses = {
@@ -75,10 +80,13 @@ export function HeroCarouselClient({
   autoplay = true,
   contentAlignment = 'left',
   height = 'default',
+  overlayCoverage = 'full',
+  overlayDirection = 'vertical',
   overlayStyle = 'dark',
   showArrows = true,
   showDots = true,
   slides,
+  themeMode = 'auto',
 }: HeroCarouselClientProps) {
   const [api, setApi] = useState<CarouselApi>()
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -87,6 +95,13 @@ export function HeroCarouselClient({
     () => (autoplay && slides.length > 1 ? [Autoplay({ delay: 6000 })] : undefined),
     [autoplay, slides.length],
   )
+  const overlay = resolveMediaOverlay({
+    autoTone: 'dark',
+    coverage: overlayCoverage,
+    direction: overlayDirection,
+    strength: overlayStyle,
+    tone: themeMode,
+  })
 
   useEffect(() => {
     if (!api) return
@@ -108,7 +123,7 @@ export function HeroCarouselClient({
 
   return (
     <Carousel
-      className="overflow-hidden"
+      className={cn('overflow-hidden', overlay.text.title)}
       opts={{ loop: slides.length > 1 }}
       plugins={plugins}
       setApi={setApi}
@@ -127,7 +142,7 @@ export function HeroCarouselClient({
                   'group relative flex items-center overflow-hidden px-4 py-24 md:px-12 lg:px-40',
                   heightClasses[height],
                 )}
-                data-block-surface="brand"
+                data-block-surface={overlay.blockSurface}
                 data-hero-carousel-slide={index}
               >
                 <div className="absolute inset-0">
@@ -150,7 +165,10 @@ export function HeroCarouselClient({
                       src={slide.backgroundImageSrc}
                     />
                   ) : null}
-                  <div className={cn('absolute inset-0', overlayClasses[overlayStyle])} />
+                  <div
+                    className={cn('absolute', overlay.frameClassName, overlay.className)}
+                    data-hero-carousel-overlay-coverage={overlay.coverage}
+                  />
                 </div>
 
                 <div
@@ -161,14 +179,15 @@ export function HeroCarouselClient({
                 >
                   <div
                     className={cn(
-                      'flex max-w-3xl flex-col gap-4 text-white',
+                      'flex max-w-3xl flex-col gap-4',
+                      overlay.text.title,
                       contentAlignmentClasses[contentAlignment].content,
                     )}
                   >
                     {slide.eyebrow ? (
                       <SectionEyebrow
-                        className="tracking-[0.28em] text-white/75"
-                        surface="darkOverlay"
+                        className="tracking-[0.28em]"
+                        surface={overlay.eyebrowSurface}
                       >
                         {slide.eyebrow}
                       </SectionEyebrow>
@@ -179,7 +198,12 @@ export function HeroCarouselClient({
                       </Heading>
                     ) : null}
                     {slide.description ? (
-                      <p className="max-w-2xl text-base leading-7 text-balance text-white/85 lg:text-lg">
+                      <p
+                        className={cn(
+                          'max-w-2xl text-base leading-7 text-balance lg:text-lg',
+                          overlay.text.secondary,
+                        )}
+                      >
                         {slide.description}
                       </p>
                     ) : null}
@@ -193,7 +217,7 @@ export function HeroCarouselClient({
                         {slide.buttons.map((button) =>
                           button.variant === 'link' ? (
                             <ContentLink
-                              className="text-white"
+                              className={overlay.text.link}
                               href={button.href}
                               key={`${button.label}-${button.href}`}
                               label={button.label}
@@ -255,14 +279,19 @@ export function HeroCarouselClient({
       ) : null}
 
       {showDots && slides.length > 1 ? (
-        <div className="absolute inset-x-0 bottom-8 flex items-center justify-center gap-3">
+        <div
+          className={cn(
+            'absolute inset-x-0 bottom-8 flex items-center justify-center gap-3',
+            overlay.text.title,
+          )}
+        >
           {scrollSnaps.map((_, index) => (
             <button
               aria-current={selectedIndex === index ? 'true' : undefined}
               aria-label={`Go to slide ${index + 1}`}
               className={cn(
-                'size-2.5 rounded-md border border-white transition-colors',
-                selectedIndex === index ? 'bg-white' : 'bg-transparent',
+                'size-2.5 rounded-md border border-current transition-colors',
+                selectedIndex === index ? 'bg-current' : 'bg-transparent',
               )}
               key={index}
               onClick={() => api?.scrollTo(index)}

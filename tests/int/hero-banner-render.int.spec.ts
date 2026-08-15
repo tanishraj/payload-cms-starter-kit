@@ -38,18 +38,18 @@ describe('Hero Banner block', () => {
     expect(html).toContain('data-hero-banner-height="immersive"')
     expect(html).toContain('data-hero-banner-background="brand"')
     expect(html).toContain('data-hero-banner-theme="auto"')
-    expect(html).toContain('data-section-eyebrow-surface="none"')
+    expect(html).toContain('data-section-eyebrow-surface="brand"')
     expect(html).toContain('bg-brand')
     expect(html).toContain('text-primary-foreground')
     expect(html).toContain(
       'bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)]',
     )
     expect(html).toContain('border-y border-border')
-    expect(html).toContain('from-background/90')
+    expect(html).toContain('bg-primary/94')
     expect(html).toContain('flex w-full flex-col gap-8 max-w-5xl')
     expect(html).toContain('flex flex-col gap-6')
     expect(html).toContain('text-balance')
-    expect(html).toContain('text-foreground/84')
+    expect(html).toContain('text-primary-foreground/82')
     expect(html).toContain('lg:text-xl')
     expect(html).toContain('h-12 w-full sm:w-auto')
   })
@@ -87,28 +87,46 @@ describe('Hero Banner block', () => {
 
     expect(darkHtml).toContain('data-hero-banner-theme="dark"')
     expect(darkHtml).toContain('data-section-eyebrow-surface="darkOverlay"')
-    expect(darkHtml).toContain('from-black/68')
+    expect(darkHtml).toContain('bg-black/74')
     expect(darkHtml).toContain('text-white')
-    expect(darkHtml).toContain('text-white/84')
+    expect(darkHtml).toContain('text-white/82')
     expect(darkHtml).toContain(
       'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklch,var(--primary),var(--foreground)_8%)]',
     )
-    expect(darkHtml).toContain(
-      'border-primary/70 bg-transparent text-primary hover:border-primary',
-    )
+    expect(darkHtml).toContain('border-primary/70 bg-transparent text-primary hover:border-primary')
 
     expect(lightHtml).toContain('data-hero-banner-theme="light"')
     expect(lightHtml).toContain('data-hero-banner-overlay="light"')
-    expect(lightHtml).toContain('data-section-eyebrow-surface="none"')
-    expect(lightHtml).toContain('from-background/72')
-    expect(lightHtml).toContain('text-foreground')
-    expect(lightHtml).toContain('text-foreground/84')
+    expect(lightHtml).toContain('data-section-eyebrow-surface="lightOverlay"')
+    expect(lightHtml).toContain('bg-white/80')
+    expect(lightHtml).toContain('text-black')
+    expect(lightHtml).toContain('text-black/80')
     expect(lightHtml).toContain(
       'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklch,var(--primary),var(--foreground)_8%)]',
     )
     expect(lightHtml).toContain(
       'border-primary/70 bg-transparent text-primary hover:border-primary',
     )
+  })
+
+  it('restores the legacy Dark + Light default-direction overlay', () => {
+    const html = renderToStaticMarkup(
+      createElement(HeroBannerBlockComponent, {
+        backgroundImage: { alt: 'Operating theatre', url: '/media/theatre.jpg' } as never,
+        overlayCoverage: 'full',
+        overlayDirection: 'vertical',
+        overlayStyle: 'light',
+        themeMode: 'dark',
+        title: 'Learn medicine. Serve humanity.',
+      }),
+    )
+
+    expect(html).toContain('data-hero-banner-theme="dark"')
+    expect(html).toContain('data-hero-banner-overlay="light"')
+    expect(html).toContain('data-hero-banner-overlay-direction="vertical"')
+    expect(html).toContain('data-hero-banner-overlay-coverage="full"')
+    expect(html).toContain('absolute inset-0 bg-linear-to-b from-black/56 via-black/42 to-black/62')
+    expect(html).not.toContain('absolute inset-0 bg-black/64')
   })
 
   it('maps legacy darkest overlay content to the develop branch darker style', () => {
@@ -123,33 +141,55 @@ describe('Hero Banner block', () => {
 
     expect(html).toContain('data-hero-banner-overlay="darker"')
     expect(html).toContain('bg-linear-to-r')
-    expect(html).toContain('from-background/90')
-    expect(html).toContain('via-background/80')
-    expect(html).toContain('to-background/92')
+    expect(html).toContain('from-black/94')
+    expect(html).toContain('via-black/74')
+    expect(html).toContain('to-transparent')
   })
 
   it.each([
-    ['vertical', 'bg-linear-to-b'],
-    ['leftToRight', 'bg-linear-to-r'],
-    ['rightToLeft', 'bg-linear-to-l'],
-  ] as const)(
-    'renders the %s navy overlay direction',
-    (overlayDirection, gradient) => {
-      const html = renderToStaticMarkup(
-        createElement(HeroBannerBlockComponent, {
-          backgroundImage: { alt: 'Campus', url: '/media/campus.jpg' } as never,
-          overlayDirection,
-          overlayStyle: 'dark',
-          title: 'A clear path into medicine.',
-        }),
-      )
+    ['vertical', 'bg-black/74'],
+    ['leftToRight', 'bg-linear-to-r from-black/86'],
+    ['rightToLeft', 'bg-linear-to-l from-black/86'],
+    ['bottomToTop', 'bg-linear-to-t from-black/86'],
+    ['topToBottom', 'bg-linear-to-b from-black/86'],
+  ] as const)('renders the %s overlay direction', (overlayDirection, classes) => {
+    const html = renderToStaticMarkup(
+      createElement(HeroBannerBlockComponent, {
+        backgroundImage: { alt: 'Campus', url: '/media/campus.jpg' } as never,
+        overlayDirection,
+        overlayStyle: 'dark',
+        title: 'A clear path into medicine.',
+      }),
+    )
 
-      expect(html).toContain(`data-hero-banner-overlay-direction="${overlayDirection}"`)
-      expect(html).toContain(gradient)
-      expect(html).toContain('from-background/82')
-      expect(html).toContain('text-foreground')
-    },
-  )
+    expect(html).toContain(`data-hero-banner-overlay-direction="${overlayDirection}"`)
+    expect(html).toContain(classes)
+    expect(html).toContain('text-white')
+  })
+
+  it('frames split coverage at the strong edge and normalizes Even to full coverage', () => {
+    const splitHtml = renderToStaticMarkup(
+      createElement(HeroBannerBlockComponent, {
+        backgroundImage: { alt: 'Campus', url: '/media/campus.jpg' } as never,
+        overlayCoverage: 'split',
+        overlayDirection: 'rightToLeft',
+        title: 'A focused split treatment.',
+      }),
+    )
+    const evenHtml = renderToStaticMarkup(
+      createElement(HeroBannerBlockComponent, {
+        backgroundImage: { alt: 'Campus', url: '/media/campus.jpg' } as never,
+        overlayCoverage: 'split',
+        overlayDirection: 'vertical',
+        title: 'An even treatment.',
+      }),
+    )
+
+    expect(splitHtml).toContain('data-hero-banner-overlay-coverage="split"')
+    expect(splitHtml).toContain('inset-y-0 right-0 w-1/2 bg-linear-to-l')
+    expect(evenHtml).toContain('data-hero-banner-overlay-coverage="full"')
+    expect(evenHtml).toContain('absolute inset-0 bg-black/74')
+  })
 
   it('maps overlay and alignment presets into deterministic class hooks', () => {
     const html = renderToStaticMarkup(

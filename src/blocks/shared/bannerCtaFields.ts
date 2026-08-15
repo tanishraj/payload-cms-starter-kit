@@ -1,5 +1,11 @@
 import type { Condition, SelectField } from 'payload'
 
+import {
+  createMediaOverlayDirectionField,
+  createMediaOverlayStrengthField,
+  createMediaOverlayToneField,
+} from './mediaOverlayFields'
+
 const withCondition = (field: SelectField, condition?: Condition): SelectField =>
   condition ? { ...field, admin: { ...field.admin, condition } } : field
 
@@ -54,56 +60,13 @@ export const createBannerContentWidthField = (condition?: Condition): SelectFiel
   )
 
 export const createBannerThemeModeField = (condition?: Condition): SelectField =>
-  withCondition(
-    {
-      name: 'themeMode',
-      label: 'Overlay Tone',
-      type: 'select',
-      defaultValue: 'dark',
-      options: [
-        { label: 'Auto (theme primary)', value: 'auto' },
-        { label: 'Light', value: 'light' },
-        { label: 'Dark', value: 'dark' },
-      ],
-      admin: {
-        description:
-          'Auto tints with the theme primary and follows it into dark mode. Light uses a pale scrim under dark copy. Dark keeps white copy over the image regardless of the site theme.',
-      },
-    },
-    condition,
-  )
+  createMediaOverlayToneField({ condition, defaultValue: 'dark', required: false })
 
 export const createBannerOverlayStyleField = (condition?: Condition): SelectField =>
-  withCondition(
-    {
-      name: 'overlayStyle',
-      label: 'Overlay Strength',
-      type: 'select',
-      defaultValue: 'darker',
-      options: [
-        { label: 'Light', value: 'light' },
-        { label: 'Dark', value: 'dark' },
-        { label: 'Darker', value: 'darker' },
-      ],
-    },
-    condition,
-  )
+  createMediaOverlayStrengthField({ condition, defaultValue: 'darker', required: false })
 
 export const createBannerOverlayDirectionField = (condition?: Condition): SelectField =>
-  withCondition(
-    {
-      name: 'overlayDirection',
-      label: 'Overlay Direction',
-      type: 'select',
-      defaultValue: 'leftToRight',
-      options: [
-        { label: 'Vertical', value: 'vertical' },
-        { label: 'Left to Right', value: 'leftToRight' },
-        { label: 'Right to Left', value: 'rightToLeft' },
-      ],
-    },
-    condition,
-  )
+  createMediaOverlayDirectionField({ condition, defaultValue: 'leftToRight', required: false })
 
 export const createBannerHeightField = (condition?: Condition): SelectField =>
   withCondition(

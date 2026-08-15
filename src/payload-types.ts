@@ -209,6 +209,7 @@ export interface Page {
         | GalleryShowcaseBlock
         | EventGalleryBlock
         | ImageMosaicBlock
+        | StudentExperienceBlock
         | StatsStripBlock
         | QaAccordionBlock
         | RatingSpotlightBlock
@@ -341,7 +342,10 @@ export interface BannerCtaBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -357,7 +361,10 @@ export interface BannerCtaBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -376,11 +383,18 @@ export interface BannerCtaBlock {
   contentAlignment?: ('left' | 'center' | 'right') | null;
   contentWidth?: ('narrow' | 'default' | 'wide') | null;
   /**
-   * Auto tints with the theme primary and follows it into dark mode. Light uses a pale scrim under dark copy. Dark keeps white copy over the image regardless of the site theme.
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
    */
-  themeMode?: ('auto' | 'light' | 'dark') | null;
+  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
   overlayStyle?: ('light' | 'dark' | 'darker') | null;
-  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft') | null;
+  /**
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   */
+  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  overlayCoverage?: ('full' | 'split') | null;
   height?: ('compact' | 'default' | 'immersive') | null;
   size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
   id?: string | null;
@@ -492,7 +506,10 @@ export interface NewsGridBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -508,7 +525,10 @@ export interface NewsGridBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -580,7 +600,10 @@ export interface Cta39Block {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -596,7 +619,10 @@ export interface Cta39Block {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -632,7 +658,10 @@ export interface HeroBannerBlock {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant: 'default' | 'outline' | 'secondary' | 'link';
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant: 'default' | 'primary' | 'secondary' | 'outline' | 'link';
         /**
          * Adds a trailing arrow to this button.
          */
@@ -640,9 +669,19 @@ export interface HeroBannerBlock {
         id?: string | null;
       }[]
     | null;
-  themeMode: 'auto' | 'light' | 'dark';
+  /**
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+   */
+  themeMode: 'auto' | 'light' | 'dark' | 'brand';
   overlayStyle: 'light' | 'dark' | 'darker';
-  overlayDirection: 'vertical' | 'leftToRight' | 'rightToLeft';
+  /**
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   */
+  overlayDirection: 'vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom';
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  overlayCoverage?: ('full' | 'split') | null;
   /**
    * Adds a restrained shadow to text and editorial links over dark image overlays.
    */
@@ -690,7 +729,10 @@ export interface HeroCarouselBlock {
               page?: (string | null) | Page;
               url?: string | null;
               openInNewTab?: boolean | null;
-              variant: 'default' | 'outline' | 'secondary' | 'link';
+              /**
+               * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+               */
+              variant: 'default' | 'primary' | 'secondary' | 'outline' | 'link';
               /**
                * Adds a trailing arrow to this button.
                */
@@ -701,7 +743,19 @@ export interface HeroCarouselBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+   */
+  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
   overlayStyle: 'light' | 'dark' | 'darker';
+  /**
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   */
+  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  overlayCoverage?: ('full' | 'split') | null;
   height: 'compact' | 'default' | 'immersive';
   contentAlignment?: ('left' | 'center' | 'right') | null;
   /**
@@ -731,7 +785,10 @@ export interface GalleryCoverflowBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -747,7 +804,10 @@ export interface GalleryCoverflowBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -792,7 +852,10 @@ export interface FeatureSpotlightBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -808,7 +871,10 @@ export interface FeatureSpotlightBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -848,7 +914,10 @@ export interface FeatureMatrixBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -864,7 +933,10 @@ export interface FeatureMatrixBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -914,7 +986,10 @@ export interface ContentHighlightsBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -930,7 +1005,10 @@ export interface ContentHighlightsBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -988,7 +1066,10 @@ export interface EditorialReasonsBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1016,7 +1097,10 @@ export interface EditorialReasonsBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1083,7 +1167,10 @@ export interface AcademicProgrammesBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1121,7 +1208,10 @@ export interface AcademicProgrammesBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1168,7 +1258,10 @@ export interface NewsEventsHighlightsBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1184,7 +1277,10 @@ export interface NewsEventsHighlightsBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1224,7 +1320,10 @@ export interface ProfileCarouselBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1240,7 +1339,10 @@ export interface ProfileCarouselBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1268,6 +1370,19 @@ export interface ProfileCarouselBlock {
   contentAlignment: 'left' | 'center' | 'right';
   cardVariant: 'stacked' | 'overlay';
   overlayAlignment?: ('left' | 'center' | 'right') | null;
+  /**
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+   */
+  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
+  overlayStyle?: ('light' | 'dark' | 'darker') | null;
+  /**
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   */
+  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  overlayCoverage?: ('full' | 'split') | null;
   size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
@@ -1290,7 +1405,10 @@ export interface GalleryShowcaseBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1306,7 +1424,10 @@ export interface GalleryShowcaseBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1347,7 +1468,10 @@ export interface EventGalleryBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1368,7 +1492,10 @@ export interface EventGalleryBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1433,7 +1560,10 @@ export interface ImageMosaicBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1449,7 +1579,10 @@ export interface ImageMosaicBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1469,7 +1602,10 @@ export interface ImageMosaicBlock {
           url?: string | null;
           openInNewTab?: boolean | null;
           mode?: ('link' | 'button') | null;
-          variant?: ('default' | 'secondary' | 'outline') | null;
+          /**
+           * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+           */
+          variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
           /**
            * Adds a trailing arrow when this action is displayed as a button.
            */
@@ -1486,9 +1622,114 @@ export interface ImageMosaicBlock {
   contentAlignment: 'left' | 'center' | 'right';
   size: 'none' | 'compact' | 'default' | 'comfortable';
   showImageOverlays?: boolean | null;
+  /**
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+   */
+  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
+  overlayStyle?: ('light' | 'dark' | 'darker') | null;
+  /**
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   */
+  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  overlayCoverage?: ('full' | 'split') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'imageMosaic';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StudentExperienceBlock".
+ */
+export interface StudentExperienceBlock {
+  /**
+   * Small label above the section title.
+   */
+  eyebrow?: string | null;
+  title?: string | null;
+  /**
+   * Optional italic second line of the heading.
+   */
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Add up to four image cards. On wide screens, the first card spans both rows and the remaining cards form the supporting mosaic.
+   */
+  experiences: {
+    image: string | Media;
+    title: string;
+    linkType?: ('none' | 'page' | 'custom') | null;
+    page?: (string | null) | Page;
+    url?: string | null;
+    openInNewTab?: boolean | null;
+    imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+    /**
+     * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+     */
+    themeMode: 'auto' | 'light' | 'dark' | 'brand';
+    overlayStrength: 'light' | 'dark' | 'darker';
+    /**
+     * The named edge receives the strongest tint; Even keeps coverage balanced.
+     */
+    overlayDirection: 'vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom';
+    /**
+     * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+     */
+    overlayCoverage: 'full' | 'split';
+    id?: string | null;
+  }[];
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  contentAlignment: 'left' | 'center' | 'right';
+  headerLayout: 'split' | 'stacked';
+  cardHeight: 'compact' | 'default' | 'comfortable';
+  showNumbers?: boolean | null;
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'studentExperience';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1532,7 +1773,10 @@ export interface QaAccordionBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1548,7 +1792,10 @@ export interface QaAccordionBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1594,7 +1841,10 @@ export interface QaAccordionBlock {
             url?: string | null;
             openInNewTab?: boolean | null;
             mode?: ('link' | 'button') | null;
-            variant?: ('default' | 'secondary' | 'outline') | null;
+            /**
+             * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+             */
+            variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
             /**
              * Adds a trailing arrow when this action is displayed as a button.
              */
@@ -1633,7 +1883,10 @@ export interface RatingSpotlightBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1649,7 +1902,10 @@ export interface RatingSpotlightBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1689,7 +1945,10 @@ export interface ReviewFeedBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1708,7 +1967,10 @@ export interface ReviewFeedBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1742,7 +2004,10 @@ export interface ReviewSubmissionBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1758,7 +2023,10 @@ export interface ReviewSubmissionBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1863,7 +2131,10 @@ export interface Contact33Block {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1879,7 +2150,10 @@ export interface Contact33Block {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1920,7 +2194,10 @@ export interface Contact24Block {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1936,7 +2213,10 @@ export interface Contact24Block {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -1961,7 +2241,10 @@ export interface Contact24Block {
    */
   mapActionLabel?: string | null;
   mapActionMode?: ('link' | 'button') | null;
-  mapActionVariant?: ('default' | 'secondary' | 'outline') | null;
+  /**
+   * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+   */
+  mapActionVariant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'contact24';
@@ -2019,7 +2302,10 @@ export interface TeamShowcaseBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2035,7 +2321,10 @@ export interface TeamShowcaseBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2084,7 +2373,10 @@ export interface Services21Block {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2100,7 +2392,10 @@ export interface Services21Block {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2176,7 +2471,10 @@ export interface VideoEmbedBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2192,7 +2490,10 @@ export interface VideoEmbedBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2243,7 +2544,10 @@ export interface MediaCarouselBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2259,7 +2563,10 @@ export interface MediaCarouselBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2293,7 +2600,10 @@ export interface MediaCarouselBlock {
               url?: string | null;
               openInNewTab?: boolean | null;
               mode?: ('link' | 'button') | null;
-              variant?: ('default' | 'secondary' | 'outline') | null;
+              /**
+               * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+               */
+              variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
               /**
                * Adds a trailing arrow when this action is displayed as a button.
                */
@@ -2339,7 +2649,10 @@ export interface ProgramGridBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2355,7 +2668,10 @@ export interface ProgramGridBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2406,7 +2722,10 @@ export interface ProgramGridBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode?: ('link' | 'button') | null;
-  actionVariant?: ('default' | 'secondary' | 'outline') | null;
+  /**
+   * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+   */
+  actionVariant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
   columns?: ('2' | '3' | '4') | null;
   viewMode: 'grid' | 'list';
   /**
@@ -2443,7 +2762,10 @@ export interface ProgramMatrixBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2459,7 +2781,10 @@ export interface ProgramMatrixBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2496,7 +2821,10 @@ export interface ProgramMatrixBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode?: ('link' | 'button') | null;
-  actionVariant?: ('default' | 'secondary' | 'outline') | null;
+  /**
+   * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+   */
+  actionVariant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
   itemActionLabel?: string | null;
   contentAlignment: 'left' | 'center';
   size: 'none' | 'compact' | 'default' | 'comfortable';
@@ -2529,7 +2857,10 @@ export interface LogoStripBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2618,7 +2949,10 @@ export interface PageHeaderBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2634,7 +2968,10 @@ export interface PageHeaderBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2678,11 +3015,18 @@ export interface PageHeaderBlock {
   contentAlignment?: ('left' | 'center' | 'right') | null;
   contentWidth?: ('narrow' | 'default' | 'wide') | null;
   /**
-   * Auto tints with the theme primary and follows it into dark mode. Light uses a pale scrim under dark copy. Dark keeps white copy over the image regardless of the site theme.
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
    */
-  themeMode?: ('auto' | 'light' | 'dark') | null;
+  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
   overlayStyle?: ('light' | 'dark' | 'darker') | null;
-  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft') | null;
+  /**
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   */
+  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  overlayCoverage?: ('full' | 'split') | null;
   height?: ('compact' | 'default' | 'immersive') | null;
   size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
   id?: string | null;
@@ -2744,7 +3088,10 @@ export interface TimelineBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2779,7 +3126,10 @@ export interface TimelineBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2825,7 +3175,10 @@ export interface IconGridBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2866,7 +3219,10 @@ export interface IconGridBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2879,7 +3235,10 @@ export interface IconGridBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   actionMode?: ('link' | 'button') | null;
-  actionVariant?: ('default' | 'secondary' | 'outline') | null;
+  /**
+   * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+   */
+  actionVariant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
   /**
    * Label shown on the button or link for each item.
    */
@@ -2951,7 +3310,10 @@ export interface TabsContentBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -2994,7 +3356,10 @@ export interface TabsContentBlock {
               url?: string | null;
               openInNewTab?: boolean | null;
               mode?: ('link' | 'button') | null;
-              variant?: ('default' | 'secondary' | 'outline') | null;
+              /**
+               * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+               */
+              variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
               /**
                * Adds a trailing arrow when this action is displayed as a button.
                */
@@ -3013,7 +3378,10 @@ export interface TabsContentBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3060,7 +3428,10 @@ export interface DownloadListBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3109,7 +3480,10 @@ export interface DownloadListBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3148,7 +3522,10 @@ export interface NumberedStepsBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3164,7 +3541,10 @@ export interface NumberedStepsBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3224,7 +3604,10 @@ export interface BentoGridBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3240,7 +3623,10 @@ export interface BentoGridBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3300,7 +3686,10 @@ export interface TestimonialGridBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3333,7 +3722,10 @@ export interface TestimonialGridBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3373,7 +3765,10 @@ export interface AwardsListBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3389,7 +3784,10 @@ export interface AwardsListBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3526,7 +3924,10 @@ export interface AboutSectionBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3542,7 +3943,10 @@ export interface AboutSectionBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3594,7 +3998,10 @@ export interface AccreditationCardsBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3632,7 +4039,10 @@ export interface AccreditationCardsBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -3697,6 +4107,7 @@ export interface ReusableSection {
         | GalleryShowcaseBlock
         | EventGalleryBlock
         | ImageMosaicBlock
+        | StudentExperienceBlock
         | StatsStripBlock
         | QaAccordionBlock
         | RatingSpotlightBlock
@@ -4097,7 +4508,10 @@ export interface NewsEvent {
         url?: string | null;
         openInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
-        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline') | null;
         /**
          * Adds a trailing arrow when this action is displayed as a button.
          */
@@ -4348,7 +4762,10 @@ export interface HeaderNavbar12Block {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant?: ('link' | 'outline' | 'default') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'link') | null;
         /**
          * Adds a trailing arrow to this button.
          */
@@ -4423,7 +4840,10 @@ export interface Footer56Block {
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
-        variant?: ('link' | 'outline' | 'default') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'link') | null;
         /**
          * Adds a trailing arrow to this button.
          */
@@ -5005,6 +5425,7 @@ export interface PagesSelect<T extends boolean = true> {
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
         eventGallery?: T | EventGalleryBlockSelect<T>;
         imageMosaic?: T | ImageMosaicBlockSelect<T>;
+        studentExperience?: T | StudentExperienceBlockSelect<T>;
         statsStrip?: T | StatsStripBlockSelect<T>;
         qaAccordion?: T | QaAccordionBlockSelect<T>;
         ratingSpotlight?: T | RatingSpotlightBlockSelect<T>;
@@ -5137,6 +5558,7 @@ export interface BannerCtaBlockSelect<T extends boolean = true> {
   themeMode?: T;
   overlayStyle?: T;
   overlayDirection?: T;
+  overlayCoverage?: T;
   height?: T;
   size?: T;
   id?: T;
@@ -5278,6 +5700,7 @@ export interface HeroBannerBlockSelect<T extends boolean = true> {
   themeMode?: T;
   overlayStyle?: T;
   overlayDirection?: T;
+  overlayCoverage?: T;
   enableTextShadow?: T;
   appearance?:
     | T
@@ -5319,7 +5742,10 @@ export interface HeroCarouselBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  themeMode?: T;
   overlayStyle?: T;
+  overlayDirection?: T;
+  overlayCoverage?: T;
   height?: T;
   contentAlignment?: T;
   autoplay?: T;
@@ -5783,6 +6209,10 @@ export interface ProfileCarouselBlockSelect<T extends boolean = true> {
   contentAlignment?: T;
   cardVariant?: T;
   overlayAlignment?: T;
+  themeMode?: T;
+  overlayStyle?: T;
+  overlayDirection?: T;
+  overlayCoverage?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -5953,6 +6383,75 @@ export interface ImageMosaicBlockSelect<T extends boolean = true> {
   contentAlignment?: T;
   size?: T;
   showImageOverlays?: T;
+  themeMode?: T;
+  overlayStyle?: T;
+  overlayDirection?: T;
+  overlayCoverage?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StudentExperienceBlock_select".
+ */
+export interface StudentExperienceBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  experiences?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        imagePosition?: T;
+        themeMode?: T;
+        overlayStrength?: T;
+        overlayDirection?: T;
+        overlayCoverage?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  headerLayout?: T;
+  cardHeight?: T;
+  showNumbers?: T;
+  size?: T;
   id?: T;
   blockName?: T;
 }
@@ -6807,6 +7306,7 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
   themeMode?: T;
   overlayStyle?: T;
   overlayDirection?: T;
+  overlayCoverage?: T;
   height?: T;
   size?: T;
   id?: T;
@@ -7665,6 +8165,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
         eventGallery?: T | EventGalleryBlockSelect<T>;
         imageMosaic?: T | ImageMosaicBlockSelect<T>;
+        studentExperience?: T | StudentExperienceBlockSelect<T>;
         statsStrip?: T | StatsStripBlockSelect<T>;
         qaAccordion?: T | QaAccordionBlockSelect<T>;
         ratingSpotlight?: T | RatingSpotlightBlockSelect<T>;

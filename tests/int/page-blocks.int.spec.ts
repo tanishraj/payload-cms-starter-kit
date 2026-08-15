@@ -99,6 +99,7 @@ const expectContentActionsFieldSet = (
   expect(variantField?.defaultValue).toBe('default')
   expect(variantField?.options?.map((option) => option.value)).toEqual([
     'default',
+    'primary',
     'secondary',
     'outline',
   ])
@@ -167,8 +168,9 @@ describe('page block pipeline', () => {
     const livePreviewRenderer = readFileSync('src/blocks/renderLivePreviewPageBlocks.tsx', 'utf8')
 
     expect(layoutField?.type).toBe('blocks')
-    expect(registeredSlugs).toHaveLength(45)
+    expect(registeredSlugs).toHaveLength(47)
     expect(registeredSlugs).toContain('academicProgrammes')
+    expect(registeredSlugs).toContain('studentExperience')
     expect(new Set(registeredSlugs).size).toBe(registeredSlugs.length)
     expect(registeredSlugs).toContain('programMatrix')
     expect(registeredSlugs).toContain('newsGrid')
@@ -353,6 +355,12 @@ describe('page block pipeline', () => {
       options?: Array<{ value: string }>
       type?: string
     }>(layoutTab?.fields ?? [], 'overlayStyle')
+    const overlayCoverageField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      required?: boolean
+      type?: string
+    }>(layoutTab?.fields ?? [], 'overlayCoverage')
     const themeModeField = getNamedField<{
       defaultValue?: string
       options?: Array<{ value: string }>
@@ -408,12 +416,17 @@ describe('page block pipeline', () => {
       'dark',
       'darker',
     ])
+    expect(overlayCoverageField?.type).toBe('select')
+    expect(overlayCoverageField?.defaultValue).toBe('full')
+    expect(overlayCoverageField?.required).toBe(false)
+    expect(overlayCoverageField?.options?.map((option) => option.value)).toEqual(['full', 'split'])
     expect(themeModeField?.type).toBe('select')
     expect(themeModeField?.defaultValue).toBe('auto')
     expect(themeModeField?.options?.map((option) => option.value)).toEqual([
       'auto',
       'light',
       'dark',
+      'brand',
     ])
     expect(horizontalAlignmentField?.options?.map((option) => option.value)).toEqual([
       'left',
@@ -460,8 +473,9 @@ describe('page block pipeline', () => {
     expect(buttonVariantField?.defaultValue).toBe('default')
     expect(buttonVariantField?.options?.map((option) => option.value)).toEqual([
       'default',
-      'outline',
+      'primary',
       'secondary',
+      'outline',
       'link',
     ])
   })
@@ -489,6 +503,8 @@ describe('page block pipeline', () => {
       'vertical',
       'leftToRight',
       'rightToLeft',
+      'bottomToTop',
+      'topToBottom',
     ])
   })
 
@@ -527,13 +543,16 @@ describe('page block pipeline', () => {
       'themeMode',
       'overlayStyle',
       'overlayDirection',
-      'enableTextShadow',
+      'overlayCoverage',
     ])
     expect(namedFields.indexOf('themeMode')).toBeLessThan(namedFields.indexOf('overlayStyle'))
     expect(namedFields.indexOf('overlayStyle')).toBeLessThan(
       namedFields.indexOf('overlayDirection'),
     )
     expect(namedFields.indexOf('overlayDirection')).toBeLessThan(
+      namedFields.indexOf('overlayCoverage'),
+    )
+    expect(namedFields.indexOf('overlayCoverage')).toBeLessThan(
       namedFields.indexOf('enableTextShadow'),
     )
   })
@@ -1078,8 +1097,7 @@ describe('page block pipeline', () => {
       type?: string
     }>(contactField?.fields ?? [], 'actions')
     const contactActionTabsField = contactActionsField?.fields?.[0] as
-      | { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string }
-      | undefined
+      { tabs?: Array<{ fields: unknown[]; label: string }>; type?: string } | undefined
     const contactActionContentTab = contactActionTabsField?.tabs?.find(
       (tab) => tab.label === 'Content',
     )
@@ -1153,6 +1171,7 @@ describe('page block pipeline', () => {
     expect(contactVariantField?.defaultValue).toBe('default')
     expect(contactVariantField?.options?.map((option) => option.value)).toEqual([
       'default',
+      'primary',
       'secondary',
       'outline',
     ])

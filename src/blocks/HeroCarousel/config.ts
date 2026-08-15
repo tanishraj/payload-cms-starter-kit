@@ -9,6 +9,16 @@ import type {
 } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
+import {
+  buttonVariantDescription,
+  buttonVariantWithLinkOptions,
+} from '@/blocks/shared/contentActionsFields'
+import {
+  createMediaOverlayCoverageField,
+  createMediaOverlayDirectionField,
+  createMediaOverlayStrengthField,
+  createMediaOverlayToneField,
+} from '@/blocks/shared/mediaOverlayFields'
 
 type LinkType = 'page' | 'custom'
 
@@ -74,13 +84,9 @@ const buttonsField: ArrayField = {
               name: 'variant',
               type: 'select',
               defaultValue: 'secondary',
-              options: [
-                { label: 'Default', value: 'default' },
-                { label: 'Outline', value: 'outline' },
-                { label: 'Secondary', value: 'secondary' },
-                { label: 'Link', value: 'link' },
-              ],
+              options: buttonVariantWithLinkOptions,
               required: true,
+              admin: { description: buttonVariantDescription },
             } satisfies SelectField,
             {
               name: 'showArrow',
@@ -166,18 +172,10 @@ export const HeroCarouselBlock: Block = {
         {
           label: 'Theme Settings',
           fields: [
-            {
-              name: 'overlayStyle',
-              label: 'Overlay Style',
-              type: 'select',
-              defaultValue: 'dark',
-              options: [
-                { label: 'Light', value: 'light' },
-                { label: 'Dark', value: 'dark' },
-                { label: 'Darker', value: 'darker' },
-              ],
-              required: true,
-            } satisfies SelectField,
+            createMediaOverlayToneField({ required: false }),
+            createMediaOverlayStrengthField(),
+            createMediaOverlayDirectionField({ required: false }),
+            createMediaOverlayCoverageField({ required: false }),
             {
               name: 'height',
               label: 'Height',

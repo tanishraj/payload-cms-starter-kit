@@ -21,6 +21,7 @@ import { GalleryCoverflowBlockComponent } from './GalleryCoverflow/Component'
 import { HeroBannerBlockComponent } from './HeroBanner/Component'
 import { HeroCarouselBlockComponent } from './HeroCarousel/Component'
 import { ImageMosaicBlockComponent } from './ImageMosaic/Component'
+import { StudentExperienceBlockComponent } from './StudentExperience/Component'
 import { NewsEventsHighlightsPreviewBlockComponent } from './NewsEventsHighlights/PreviewComponent'
 import { PageBlockStack } from './PageBlockStack'
 import { ProfileCarouselBlockComponent } from './ProfileCarousel/Component'
@@ -121,6 +122,8 @@ function renderSingleLivePreviewBlock(
       return <EventGalleryPreviewBlockComponent albums={eventGalleryAlbums} key={key} {...block} />
     case 'imageMosaic':
       return <ImageMosaicBlockComponent key={key} {...block} />
+    case 'studentExperience':
+      return <StudentExperienceBlockComponent key={key} {...block} />
     case 'reviewSubmission':
       return <ReviewSubmissionBlockComponent key={key} {...block} />
     case 'contact33':

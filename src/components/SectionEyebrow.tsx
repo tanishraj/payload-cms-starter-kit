@@ -3,7 +3,7 @@ import type { ComponentPropsWithoutRef } from 'react'
 import type { BlockBackground } from '@/blocks/shared/blockAppearance'
 import { cn } from '@/lib/utils'
 
-export type SectionEyebrowSurface = BlockBackground | 'darkOverlay'
+export type SectionEyebrowSurface = BlockBackground | 'darkOverlay' | 'lightOverlay'
 
 /**
  * Eyebrow typography, exported so elements that should read as an eyebrow but

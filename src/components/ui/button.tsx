@@ -17,6 +17,8 @@ const buttonVariants = cva(
       variant: {
         default:
           'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklch,var(--primary),var(--foreground)_8%)]',
+        primary:
+          'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklch,var(--primary),var(--foreground)_8%)]',
         outline:
           'border-primary/70 bg-transparent text-primary hover:border-primary hover:bg-[color-mix(in_oklch,var(--primary)_8%,transparent)] aria-expanded:border-primary aria-expanded:bg-[color-mix(in_oklch,var(--primary)_8%,transparent)]',
         secondary:

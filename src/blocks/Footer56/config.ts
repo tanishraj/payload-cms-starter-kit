@@ -10,6 +10,10 @@ import type {
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import {
+  buttonVariantDescription,
+  buttonVariantWithLinkOptions,
+} from '@/blocks/shared/contentActionsFields'
 
 type LinkType = 'page' | 'custom'
 type LogoMode = 'siteDefault' | 'customLogo'
@@ -161,11 +165,8 @@ export const Footer56Block: Block = {
                   name: 'variant',
                   type: 'select',
                   defaultValue: 'outline',
-                  options: [
-                    { label: 'Link', value: 'link' },
-                    { label: 'Outline', value: 'outline' },
-                    { label: 'Default', value: 'default' },
-                  ],
+                  options: buttonVariantWithLinkOptions,
+                  admin: { description: buttonVariantDescription },
                 } satisfies SelectField,
                 {
                   name: 'showArrow',

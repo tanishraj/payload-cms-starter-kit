@@ -10,6 +10,16 @@ import type {
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import {
+  buttonVariantDescription,
+  buttonVariantWithLinkOptions,
+} from '@/blocks/shared/contentActionsFields'
+import {
+  createMediaOverlayCoverageField,
+  createMediaOverlayDirectionField,
+  createMediaOverlayStrengthField,
+  createMediaOverlayToneField,
+} from '@/blocks/shared/mediaOverlayFields'
 
 type LinkType = 'page' | 'custom'
 
@@ -89,31 +99,11 @@ const verticalAlignmentField = {
   required: true,
 } satisfies SelectField
 
-const overlayStyleField = {
-  name: 'overlayStyle',
-  label: 'Overlay Style',
-  type: 'select',
-  defaultValue: 'dark',
-  options: [
-    { label: 'Light', value: 'light' },
-    { label: 'Dark', value: 'dark' },
-    { label: 'Darker', value: 'darker' },
-  ],
-  required: true,
-} satisfies SelectField
+const overlayStyleField = createMediaOverlayStrengthField({ defaultValue: 'dark' })
 
-const overlayDirectionField = {
-  name: 'overlayDirection',
-  label: 'Overlay Direction',
-  type: 'select',
-  defaultValue: 'vertical',
-  options: [
-    { label: 'Even / Vertical', value: 'vertical' },
-    { label: 'Left to Right', value: 'leftToRight' },
-    { label: 'Right to Left', value: 'rightToLeft' },
-  ],
-  required: true,
-} satisfies SelectField
+const overlayDirectionField = createMediaOverlayDirectionField({ defaultValue: 'vertical' })
+
+const overlayCoverageField = createMediaOverlayCoverageField({ required: false })
 
 const enableTextShadowField = {
   name: 'enableTextShadow',
@@ -125,18 +115,7 @@ const enableTextShadowField = {
   },
 } satisfies CheckboxField
 
-const themeModeField = {
-  name: 'themeMode',
-  label: 'Theme Mode',
-  type: 'select',
-  defaultValue: 'auto',
-  options: [
-    { label: 'Auto', value: 'auto' },
-    { label: 'Light', value: 'light' },
-    { label: 'Dark', value: 'dark' },
-  ],
-  required: true,
-} satisfies SelectField
+const themeModeField = createMediaOverlayToneField({ defaultValue: 'auto' })
 
 const contentWidthField = {
   name: 'contentWidth',
@@ -187,13 +166,9 @@ const buttonsField = {
               name: 'variant',
               type: 'select',
               defaultValue: 'default',
-              options: [
-                { label: 'Default', value: 'default' },
-                { label: 'Outline', value: 'outline' },
-                { label: 'Secondary', value: 'secondary' },
-                { label: 'Link', value: 'link' },
-              ],
+              options: buttonVariantWithLinkOptions,
               required: true,
+              admin: { description: buttonVariantDescription },
             } satisfies SelectField,
             {
               name: 'showArrow',
@@ -260,6 +235,7 @@ export const HeroBannerBlock: Block = {
             themeModeField,
             overlayStyleField,
             overlayDirectionField,
+            overlayCoverageField,
             enableTextShadowField,
             createBlockAppearanceFields(),
             horizontalAlignmentField,

@@ -3,6 +3,8 @@ import type { ArrayField, Block, RadioField, SelectField, TabsField } from 'payl
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import {
+  buttonVariantDescription,
+  buttonVariantOptions,
   createContentActionModeField,
   createContentActionsField,
 } from '@/blocks/shared/contentActionsFields'
@@ -181,13 +183,10 @@ export const IconGridBlock: Block = {
               label: 'Button Variant',
               type: 'select',
               defaultValue: 'default',
-              options: [
-                { label: 'Primary', value: 'default' },
-                { label: 'Secondary', value: 'secondary' },
-                { label: 'Outline', value: 'outline' },
-              ],
+              options: buttonVariantOptions,
               admin: {
                 condition: (_, siblingData) => siblingData?.actionMode === 'button',
+                description: buttonVariantDescription,
               },
             } satisfies SelectField,
             {

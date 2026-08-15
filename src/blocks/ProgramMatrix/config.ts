@@ -4,6 +4,8 @@ import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import {
+  buttonVariantDescription,
+  buttonVariantOptions,
   createContentActionModeField,
   createContentActionsField,
 } from '@/blocks/shared/contentActionsFields'
@@ -132,7 +134,11 @@ export const ProgramMatrixBlock: Block = {
               type: 'textarea',
             },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
-            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({
+              name: 'footerActions',
+              label: 'Footer Actions',
+              maxRows: 2,
+            }),
             itemsField,
           ],
         },
@@ -149,13 +155,10 @@ export const ProgramMatrixBlock: Block = {
               label: 'Programme Button Variant',
               type: 'select',
               defaultValue: 'default',
-              options: [
-                { label: 'Primary', value: 'default' },
-                { label: 'Secondary', value: 'secondary' },
-                { label: 'Outline', value: 'outline' },
-              ],
+              options: buttonVariantOptions,
               admin: {
                 condition: (_data, siblingData) => siblingData?.actionMode === 'button',
+                description: buttonVariantDescription,
               },
             } satisfies SelectField,
             {

@@ -9,13 +9,12 @@ import {
   bannerAlignmentClasses,
   bannerContentWidthClasses,
   bannerHeightClasses,
-  bannerOverlayClasses,
-  bannerTextToneClasses,
   bannerTitleSizeClasses,
   type BannerActionPlacement,
   type BannerContentAlignment,
   type BannerContentWidth,
   type BannerHeight,
+  type BannerOverlayCoverage,
   type BannerOverlayDirection,
   type BannerOverlayStyle,
   type BannerThemeMode,
@@ -26,6 +25,10 @@ import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import {
+  normalizeMediaOverlayTone,
+  resolveMediaOverlay,
+} from '@/blocks/shared/mediaOverlayPresentation'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow, type SectionEyebrowSurface } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
@@ -44,6 +47,7 @@ type BannerCtaBlockLike = {
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
   height?: BannerHeight | null
+  overlayCoverage?: BannerOverlayCoverage | null
   overlayDirection?: BannerOverlayDirection | null
   overlayStyle?: BannerOverlayStyle | null
   size?: RegularBlockSize | null
@@ -63,6 +67,7 @@ export function BannerCtaBlockComponent({
   eyebrow,
   footerActions,
   height = 'default',
+  overlayCoverage = 'full',
   overlayDirection = 'leftToRight',
   overlayStyle = 'darker',
   size = 'default',
@@ -80,30 +85,26 @@ export function BannerCtaBlockComponent({
   const resolvedDescription = description?.trim()
   const resolvedEyebrow = eyebrow?.trim()
   const resolvedHeight = height ?? 'default'
-  const resolvedOverlayDirection = overlayDirection ?? 'leftToRight'
-  const resolvedOverlayStyle = overlayStyle ?? 'darker'
   const resolvedPlacement = actionPlacement ?? 'side'
   const resolvedSize = size ?? 'default'
-  const resolvedThemeMode = themeMode ?? 'dark'
+  const selectedThemeMode = normalizeMediaOverlayTone(themeMode, 'dark')
 
   const image = getMediaImageProps({
     media: backgroundImage as never,
     preset: 'hero',
     fallbackAlt: resolvedTitle,
   })
-
-  // `auto` paints the section in --primary, making it a brand surface.
-  const isBrandTone = resolvedThemeMode === 'auto'
-  const isDarkOverlay = resolvedThemeMode === 'dark'
-  const eyebrowSurface: SectionEyebrowSurface = isBrandTone
-    ? 'brand'
-    : isDarkOverlay
-      ? 'darkOverlay'
-      : appearanceClasses.background
-  // Copy sits on the image rather than a background class, so the brand-surface
-  // button treatment has to be declared explicitly. The auto and dark scrims
-  // both carry light copy, so both need it.
-  const blockSurface = isBrandTone || isDarkOverlay ? 'brand' : undefined
+  const mediaOverlay = resolveMediaOverlay({
+    coverage: overlayCoverage ?? 'full',
+    direction: overlayDirection ?? 'leftToRight',
+    sectionBackground: appearanceClasses.background,
+    strength: overlayStyle ?? 'darker',
+    tone: selectedThemeMode,
+  })
+  const eyebrowSurface: SectionEyebrowSurface = image
+    ? mediaOverlay.eyebrowSurface
+    : appearanceClasses.background
+  const blockSurface = image ? mediaOverlay.blockSurface : appearanceClasses.surface
   const isSideColumn = resolvedPlacement === 'side'
 
   return (
@@ -111,7 +112,7 @@ export function BannerCtaBlockComponent({
       className={cn(
         'relative isolate overflow-hidden',
         !image && appearanceClasses.className,
-        image && bannerTextToneClasses[resolvedThemeMode].title,
+        image && mediaOverlay.text.title,
         regularBlockMobilePaddingClasses[resolvedSize],
       )}
       data-banner-cta-background={appearanceClasses.background}
@@ -125,15 +126,11 @@ export function BannerCtaBlockComponent({
             <Image alt={image.alt} className="object-cover" fill sizes="100vw" src={image.src} />
           </div>
           <div
-            className={cn(
-              'absolute inset-0 -z-10',
-              bannerOverlayClasses[resolvedThemeMode][resolvedOverlayStyle][
-                resolvedOverlayDirection
-              ],
-            )}
-            data-banner-cta-overlay={resolvedOverlayStyle}
-            data-banner-cta-overlay-direction={resolvedOverlayDirection}
-            data-banner-cta-theme={resolvedThemeMode}
+            className={cn('absolute -z-10', mediaOverlay.frameClassName, mediaOverlay.className)}
+            data-banner-cta-overlay={mediaOverlay.strength}
+            data-banner-cta-overlay-coverage={mediaOverlay.coverage}
+            data-banner-cta-overlay-direction={mediaOverlay.direction}
+            data-banner-cta-theme={selectedThemeMode}
           />
         </>
       ) : null}
@@ -167,7 +164,7 @@ export function BannerCtaBlockComponent({
             className={cn(
               'font-semibold tracking-tight text-balance',
               bannerTitleSizeClasses[resolvedHeight],
-              bannerTextToneClasses[resolvedThemeMode].title,
+              image && mediaOverlay.text.title,
             )}
           >
             <span className="block font-[inherit]">{resolvedTitle}</span>
@@ -180,7 +177,7 @@ export function BannerCtaBlockComponent({
             <p
               className={cn(
                 'max-w-[60ch] text-base leading-7 text-balance',
-                bannerTextToneClasses[resolvedThemeMode].description,
+                image ? mediaOverlay.text.secondary : 'text-current/70',
               )}
               data-banner-cta-description="true"
             >

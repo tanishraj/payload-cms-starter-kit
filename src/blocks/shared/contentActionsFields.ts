@@ -29,6 +29,21 @@ type CreateContentActionModeFieldOptions = {
   name?: string
 }
 
+export const buttonVariantOptions = [
+  { label: 'Default', value: 'default' },
+  { label: 'Primary', value: 'primary' },
+  { label: 'Secondary', value: 'secondary' },
+  { label: 'Outline', value: 'outline' },
+] satisfies SelectField['options']
+
+export const buttonVariantWithLinkOptions = [
+  ...buttonVariantOptions,
+  { label: 'Link', value: 'link' },
+] satisfies SelectField['options']
+
+export const buttonVariantDescription =
+  "Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color."
+
 const isPageLink = (_data: unknown, siblingData: LinkSiblingData) =>
   siblingData?.linkType === 'page'
 
@@ -100,19 +115,12 @@ const createActionLayoutFields = (includeDisplayMode: boolean): Field[] => [
     label: 'Button Variant',
     type: 'select',
     defaultValue: 'default',
-    options: [
-      { label: 'Primary', value: 'default' },
-      { label: 'Secondary', value: 'secondary' },
-      { label: 'Outline', value: 'outline' },
-    ],
+    options: buttonVariantOptions,
     required: true,
-    ...(includeDisplayMode
-      ? {
-          admin: {
-            condition: isButtonMode,
-          },
-        }
-      : {}),
+    admin: {
+      description: buttonVariantDescription,
+      ...(includeDisplayMode ? { condition: isButtonMode } : {}),
+    },
   } satisfies SelectField,
   {
     name: 'showArrow',

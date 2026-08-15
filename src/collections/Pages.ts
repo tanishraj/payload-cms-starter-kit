@@ -12,6 +12,7 @@ import { Cta39Block } from '@/blocks/Cta39/config'
 import { GalleryShowcaseBlock } from '@/blocks/GalleryShowcase/config'
 import { EventGalleryBlock } from '@/blocks/EventGallery/config'
 import { ImageMosaicBlock } from '@/blocks/ImageMosaic/config'
+import { StudentExperienceBlock } from '@/blocks/StudentExperience/config'
 import { NewsEventsHighlightsBlock } from '@/blocks/NewsEventsHighlights/config'
 import { ProfileCarouselBlock } from '@/blocks/ProfileCarousel/config'
 import { HeroBannerBlock } from '@/blocks/HeroBanner/config'
@@ -258,6 +259,7 @@ export const Pages: CollectionConfig = {
                 GalleryShowcaseBlock,
                 EventGalleryBlock,
                 ImageMosaicBlock,
+                StudentExperienceBlock,
                 StatsStripBlock,
                 QaAccordionBlock,
                 RatingSpotlightBlock,

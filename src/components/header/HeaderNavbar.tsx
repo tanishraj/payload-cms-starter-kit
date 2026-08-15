@@ -10,6 +10,7 @@ import { HeaderMobileMenu } from '@/components/header/HeaderMobileMenu'
 import { HeaderNavMenu } from '@/components/header/HeaderNavMenu'
 import { SearchTriggerButton } from '@/components/header/SearchTriggerButton'
 import { Button } from '@/components/ui/button'
+import type { CmsActionVariant } from '@/lib/cmsLinks'
 import type { ResolvedHeaderLink, ResolvedHeaderMenuItem } from '@/lib/headerNavigation'
 import { cn } from '@/lib/utils'
 
@@ -18,7 +19,7 @@ type HeaderNavbarProps = {
   ctas: Array<
     ResolvedHeaderLink & {
       showArrow?: boolean
-      variant?: 'default' | 'link' | 'outline' | null
+      variant?: CmsActionVariant | null
     }
   >
   logo: ReactNode

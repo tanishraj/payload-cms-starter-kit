@@ -9,14 +9,13 @@ import {
   bannerAlignmentClasses,
   bannerContentWidthClasses,
   bannerHeightClasses,
-  bannerOverlayClasses,
-  bannerTextToneClasses,
   bannerTitleSizeClasses,
   resolveBannerActionPlacement,
   type BannerActionPlacement,
   type BannerContentAlignment,
   type BannerContentWidth,
   type BannerHeight,
+  type BannerOverlayCoverage,
   type BannerOverlayDirection,
   type BannerOverlayStyle,
   type BannerThemeMode,
@@ -27,6 +26,10 @@ import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import {
+  normalizeMediaOverlayTone,
+  resolveMediaOverlay,
+} from '@/blocks/shared/mediaOverlayPresentation'
 import { BreadcrumbTrail } from '@/components/BreadcrumbTrail'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow, type SectionEyebrowSurface } from '@/components/SectionEyebrow'
@@ -52,6 +55,7 @@ type PageHeaderBlockLike = {
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
   height?: BannerHeight | null
+  overlayCoverage?: BannerOverlayCoverage | null
   overlayDirection?: BannerOverlayDirection | null
   overlayStyle?: BannerOverlayStyle | null
   size?: RegularBlockSize | null
@@ -61,12 +65,6 @@ type PageHeaderBlockLike = {
   topContent?: PageHeaderTopContent | null
   variant?: 'banner' | 'minimal' | 'split' | null
 }
-
-const breadcrumbLinkClasses = {
-  auto: 'text-primary-foreground hover:text-primary-foreground/80',
-  dark: 'text-white hover:text-white/80',
-  light: 'text-foreground hover:text-foreground/80',
-} as const
 
 export function PageHeaderBlockComponent({
   accentTitle,
@@ -82,6 +80,7 @@ export function PageHeaderBlockComponent({
   eyebrow,
   footerActions,
   height = 'default',
+  overlayCoverage = 'full',
   overlayDirection = 'leftToRight',
   overlayStyle = 'darker',
   size = 'default',
@@ -102,12 +101,10 @@ export function PageHeaderBlockComponent({
   const resolvedDescription = subtitle?.trim()
   const resolvedEyebrow = eyebrow?.trim()
   const resolvedHeight = height ?? 'default'
-  const resolvedOverlayDirection = overlayDirection ?? 'leftToRight'
-  const resolvedOverlayStyle = overlayStyle ?? 'darker'
   const resolvedPlacement =
     variant === 'split' ? 'side' : resolveBannerActionPlacement(actionPlacement)
   const resolvedSize = size ?? 'default'
-  const resolvedThemeMode = themeMode ?? 'dark'
+  const selectedThemeMode = normalizeMediaOverlayTone(themeMode, 'dark')
   const resolvedTopContent: PageHeaderTopContent =
     topContent ?? (resolvedEyebrow ? 'eyebrow' : 'breadcrumb')
   const resolvedVariant = variant === 'banner' ? 'banner' : 'minimal'
@@ -126,24 +123,21 @@ export function PageHeaderBlockComponent({
         })
       : null
   const hasImage = Boolean(image)
-  const isBrandTone = hasImage && resolvedThemeMode === 'auto'
-  const isDarkOverlay = hasImage && resolvedThemeMode === 'dark'
-  const blockSurface = hasImage
-    ? resolvedThemeMode === 'light'
-      ? 'light'
-      : 'brand'
-    : appearanceClasses.surface
-  const eyebrowSurface: SectionEyebrowSurface = isBrandTone
-    ? 'brand'
-    : isDarkOverlay
-      ? 'darkOverlay'
-      : appearanceClasses.background
-  const titleToneClass = hasImage ? bannerTextToneClasses[resolvedThemeMode].title : undefined
-  const descriptionToneClass = hasImage
-    ? bannerTextToneClasses[resolvedThemeMode].description
-    : 'text-current/70'
+  const mediaOverlay = resolveMediaOverlay({
+    coverage: overlayCoverage ?? 'full',
+    direction: overlayDirection ?? 'leftToRight',
+    sectionBackground: appearanceClasses.background,
+    strength: overlayStyle ?? 'darker',
+    tone: selectedThemeMode,
+  })
+  const blockSurface = hasImage ? mediaOverlay.blockSurface : appearanceClasses.surface
+  const eyebrowSurface: SectionEyebrowSurface = hasImage
+    ? mediaOverlay.eyebrowSurface
+    : appearanceClasses.background
+  const titleToneClass = hasImage ? mediaOverlay.text.title : undefined
+  const descriptionToneClass = hasImage ? mediaOverlay.text.secondary : 'text-current/70'
   const breadcrumbLinkClassName = hasImage
-    ? breadcrumbLinkClasses[resolvedThemeMode]
+    ? cn(mediaOverlay.text.link, 'hover:opacity-80')
     : appearanceClasses.surface === 'light'
       ? 'text-primary hover:text-primary/80'
       : 'text-current hover:text-current/80'
@@ -180,15 +174,11 @@ export function PageHeaderBlockComponent({
             />
           </div>
           <div
-            className={cn(
-              'absolute inset-0 -z-10',
-              bannerOverlayClasses[resolvedThemeMode][resolvedOverlayStyle][
-                resolvedOverlayDirection
-              ],
-            )}
-            data-page-header-overlay={resolvedOverlayStyle}
-            data-page-header-overlay-direction={resolvedOverlayDirection}
-            data-page-header-theme={resolvedThemeMode}
+            className={cn('absolute -z-10', mediaOverlay.frameClassName, mediaOverlay.className)}
+            data-page-header-overlay={mediaOverlay.strength}
+            data-page-header-overlay-coverage={mediaOverlay.coverage}
+            data-page-header-overlay-direction={mediaOverlay.direction}
+            data-page-header-theme={selectedThemeMode}
           />
         </>
       ) : null}

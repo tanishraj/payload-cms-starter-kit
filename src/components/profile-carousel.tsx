@@ -9,6 +9,12 @@ import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
 } from '@/blocks/shared/blockSpacing'
+import type {
+  MediaOverlayCoverage,
+  MediaOverlayDirection,
+  MediaOverlayStrength,
+  MediaOverlayTone,
+} from '@/blocks/shared/mediaOverlayPresentation'
 import {
   ProfileCarouselCard,
   type ProfileCarouselCardVariant,
@@ -40,8 +46,12 @@ type ProfileCarouselProps = {
   description?: string | null
   eyebrow?: string | null
   overlayAlignment?: ProfileCarouselOverlayAlignment
+  overlayCoverage?: MediaOverlayCoverage
+  overlayDirection?: MediaOverlayDirection
+  overlayStyle?: MediaOverlayStrength
   profiles: ProfileCarouselProfile[]
   size?: ProfileCarouselSize
+  themeMode?: MediaOverlayTone
   title?: string | null
 }
 
@@ -68,8 +78,12 @@ export function ProfileCarousel({
   description,
   eyebrow,
   overlayAlignment = 'left',
+  overlayCoverage = 'full',
+  overlayDirection = 'bottomToTop',
+  overlayStyle = 'dark',
   profiles,
   size = 'default',
+  themeMode = 'auto',
   title,
 }: ProfileCarouselProps) {
   const resolvedAccentTitle = accentTitle?.trim() || undefined
@@ -100,9 +114,7 @@ export function ProfileCarousel({
     >
       <div className={regularBlockContainerClasses}>
         <div className={cn('flex max-w-3xl flex-col gap-4', alignmentClasses[resolvedAlignment])}>
-          {eyebrow ? (
-            <SectionEyebrow surface={sectionBackground}>{eyebrow}</SectionEyebrow>
-          ) : null}
+          {eyebrow ? <SectionEyebrow surface={sectionBackground}>{eyebrow}</SectionEyebrow> : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
             {resolvedAccentTitle ? (
               <>
@@ -124,9 +136,13 @@ export function ProfileCarousel({
             <ProfileCarouselClient
               cardVariant={cardVariant}
               overlayAlignment={overlayAlignment}
+              overlayCoverage={overlayCoverage}
+              overlayDirection={overlayDirection}
+              overlayStyle={overlayStyle}
               profiles={visibleProfiles}
               sectionBackground={sectionBackground}
               size={resolvedSize}
+              themeMode={themeMode}
             />
           ) : (
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
@@ -134,9 +150,13 @@ export function ProfileCarousel({
                 <ProfileCarouselCard
                   key={`${profile.name}-${index}`}
                   overlayAlignment={overlayAlignment}
+                  overlayCoverage={overlayCoverage}
+                  overlayDirection={overlayDirection}
+                  overlayStyle={overlayStyle}
                   profile={profile}
                   sectionBackground={sectionBackground}
                   size={resolvedSize}
+                  themeMode={themeMode}
                   variant={cardVariant}
                 />
               ))}

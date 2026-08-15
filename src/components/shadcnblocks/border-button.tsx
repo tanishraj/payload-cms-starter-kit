@@ -56,13 +56,7 @@ const cornerPaths: Record<BorderCornerStyle, ReactNode> = {
   ),
 }
 
-const CornerArt = ({
-  style,
-  className,
-}: {
-  style: BorderCornerStyle
-  className?: string
-}) => {
+const CornerArt = ({ style, className }: { style: BorderCornerStyle; className?: string }) => {
   return (
     <svg
       aria-hidden
@@ -82,7 +76,7 @@ type BorderButtonProps = Omit<
   'children' | 'className' | 'variant'
 > & {
   children: ReactNode
-  variant?: 'outline' | 'default' | 'destructive' | 'secondary' | 'ghost' | 'link'
+  variant?: 'outline' | 'default' | 'destructive' | 'primary' | 'secondary' | 'ghost' | 'link'
   corners?: BorderCornerStyle
   className?: string
 }

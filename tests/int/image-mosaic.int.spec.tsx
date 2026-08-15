@@ -11,7 +11,7 @@ import { Pages } from '@/collections/Pages'
 import { ImageMosaic, type ImageMosaicItem } from '@/components/image-mosaic'
 
 type TestField = {
-  admin?: { condition?: unknown }
+  admin?: { condition?: (data: unknown, siblingData?: Record<string, unknown>) => boolean }
   defaultValue?: unknown
   fields?: TestField[]
   label?: string
@@ -182,6 +182,54 @@ describe('Image Mosaic', () => {
       defaultValue: true,
       type: 'checkbox',
     })
+    const themeModeField = getField(layoutTab?.fields ?? [], 'themeMode')
+    const overlayStyleField = getField(layoutTab?.fields ?? [], 'overlayStyle')
+    const overlayDirectionField = getField(layoutTab?.fields ?? [], 'overlayDirection')
+    const overlayCoverageField = getField(layoutTab?.fields ?? [], 'overlayCoverage')
+
+    expect(themeModeField).toMatchObject({
+      defaultValue: 'auto',
+      options: [{ value: 'auto' }, { value: 'light' }, { value: 'dark' }, { value: 'brand' }],
+      required: false,
+      type: 'select',
+    })
+    expect(overlayStyleField).toMatchObject({
+      defaultValue: 'dark',
+      options: [{ value: 'light' }, { value: 'dark' }, { value: 'darker' }],
+      required: false,
+      type: 'select',
+    })
+    expect(overlayDirectionField).toMatchObject({
+      defaultValue: 'bottomToTop',
+      options: [
+        { value: 'vertical' },
+        { value: 'leftToRight' },
+        { value: 'rightToLeft' },
+        { value: 'bottomToTop' },
+        { value: 'topToBottom' },
+      ],
+      required: false,
+      type: 'select',
+    })
+    expect(overlayCoverageField).toMatchObject({
+      defaultValue: 'full',
+      options: [{ value: 'full' }, { value: 'split' }],
+      required: false,
+      type: 'select',
+    })
+
+    const layoutNames = (layoutTab?.fields ?? []).flatMap(({ name }) => (name ? [name] : []))
+    expect(layoutNames.indexOf('overlayCoverage')).toBe(layoutNames.indexOf('overlayDirection') + 1)
+
+    for (const field of [
+      themeModeField,
+      overlayStyleField,
+      overlayDirectionField,
+      overlayCoverageField,
+    ]) {
+      expect(field?.admin?.condition?.({}, { showImageOverlays: true })).toBe(true)
+      expect(field?.admin?.condition?.({}, { showImageOverlays: false })).toBe(false)
+    }
   })
 
   it.each([1, 2, 3, 4, 5, 6, 7, 8])('renders %i items without horizontal overflow', (count) => {
@@ -244,6 +292,28 @@ describe('Image Mosaic', () => {
     expect(disabledHtml).not.toContain('data-image-mosaic-overlay="true"')
     expect(disabledHtml).not.toContain('href="/stories/1"')
     expect(disabledHtml).not.toContain('Story 1')
+  })
+
+  it('applies section-level overlay tone, strength, direction, and surface', () => {
+    const html = renderToStaticMarkup(
+      <ImageMosaic
+        items={mosaicItems.slice(0, 1)}
+        overlayCoverage="split"
+        overlayDirection="topToBottom"
+        overlayStyle="darker"
+        themeMode="brand"
+        title="Gallery"
+      />,
+    )
+
+    expect(html).toContain('data-image-mosaic-overlay-tone="brand"')
+    expect(html).toContain('data-image-mosaic-overlay-strength="darker"')
+    expect(html).toContain('data-image-mosaic-overlay-direction="topToBottom"')
+    expect(html).toContain('data-image-mosaic-overlay-coverage="split"')
+    expect(html).toContain('absolute inset-x-0 top-0 h-1/2 bg-linear-to-b')
+    expect(html).toContain('from-primary via-primary/82 to-transparent')
+    expect(html).toContain('text-primary-foreground')
+    expect(html).toContain('data-block-surface="brand"')
   })
 
   it('renders image actions through the shared link and button behavior', () => {

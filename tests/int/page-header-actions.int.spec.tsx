@@ -212,6 +212,7 @@ describe('Page Header action layout renderer', () => {
       } as never,
       contentWidth: 'wide',
       height: 'immersive',
+      overlayCoverage: 'split',
       overlayDirection: 'rightToLeft',
       overlayStyle: 'darker',
       size: 'comfortable',
@@ -227,7 +228,10 @@ describe('Page Header action layout renderer', () => {
     expect(html).toContain('data-page-header-theme="auto"')
     expect(html).toContain('data-page-header-overlay="darker"')
     expect(html).toContain('data-page-header-overlay-direction="rightToLeft"')
-    expect(html).toContain('bg-linear-to-l from-primary/95 via-primary/82 to-primary/45')
+    expect(html).toContain('data-page-header-overlay-coverage="split"')
+    expect(html).toContain(
+      'inset-y-0 right-0 w-1/2 bg-linear-to-l from-black/96 via-black/76 to-transparent',
+    )
   })
 
   it('keeps footer actions after the primary action layout', () => {

@@ -13,6 +13,7 @@ import {
   createBannerThemeModeField,
 } from '@/blocks/shared/bannerCtaFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { createMediaOverlayCoverageField } from '@/blocks/shared/mediaOverlayFields'
 
 export const BannerCtaBlock: Block = {
   admin: getBlockThumbnailAdmin('bannerCta'),
@@ -77,6 +78,7 @@ export const BannerCtaBlock: Block = {
             createBannerThemeModeField(),
             createBannerOverlayStyleField(),
             createBannerOverlayDirectionField(),
+            createMediaOverlayCoverageField({ required: false }),
             createBannerHeightField(),
             createBannerSectionPaddingField(),
           ],
