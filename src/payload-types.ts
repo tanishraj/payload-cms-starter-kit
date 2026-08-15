@@ -640,14 +640,18 @@ export interface Cta39Block {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   /**
-   * Stack content in one column or place supporting content beside the heading.
+   * Keep all content together, split copy from the heading, or place actions on the right.
    */
-  headerLayout: 'stacked' | 'split';
+  headerLayout: 'stacked' | 'split' | 'actionSplit';
   contentAlignment: 'left' | 'center' | 'right';
   /**
    * Position the description and actions relative to the heading.
    */
   splitContentAlignment?: ('top' | 'center' | 'bottom') | null;
+  /**
+   * Arrange the right-column actions in a row or a vertical stack on desktop.
+   */
+  actionLayout?: ('inline' | 'stacked') | null;
   size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
@@ -5783,6 +5787,7 @@ export interface Cta39BlockSelect<T extends boolean = true> {
   headerLayout?: T;
   contentAlignment?: T;
   splitContentAlignment?: T;
+  actionLayout?: T;
   size?: T;
   id?: T;
   blockName?: T;
