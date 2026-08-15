@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 
@@ -11,6 +13,7 @@ type TestField = {
   }
   defaultValue?: unknown
   fields?: TestField[]
+  label?: string
   maxRows?: number
   minRows?: number
   name?: string
@@ -24,8 +27,10 @@ type TestTab = { fields: TestField[]; label: string }
 
 const getField = (fields: TestField[], name: string) => fields.find((field) => field.name === name)
 
+const item = (title: string) => ({ markerMode: 'numbered' as const, title })
+
 describe('Content Highlights', () => {
-  it('defines the approved Payload schema', () => {
+  it('defines the aligned Payload schema', () => {
     expect(ContentHighlightsBlock).toMatchObject({
       interfaceName: 'ContentHighlightsBlock',
       labels: { plural: 'Content Highlights', singular: 'Content Highlights' },
@@ -37,7 +42,7 @@ describe('Content Highlights', () => {
       type: string
     }
     const content = tabs.tabs.find(({ label }) => label === 'Content')
-    const layout = tabs.tabs.find(({ label }) => label === 'Theme Settings')
+    const theme = tabs.tabs.find(({ label }) => label === 'Theme Settings')
     const items = getField(content?.fields ?? [], 'items')
 
     expect(tabs.type).toBe('tabs')
@@ -51,295 +56,262 @@ describe('Content Highlights', () => {
       'items',
     ])
     expect(getField(content?.fields ?? [], 'title')).toMatchObject({
+      required: true,
       type: 'text',
     })
     expect(items).toMatchObject({ maxRows: 6, minRows: 1, required: true, type: 'array' })
-    const itemsTabsField = items?.fields?.[0] as TestField | undefined
-    const itemsContentTab = itemsTabsField?.tabs?.find(({ label }) => label === 'Content')
-    expect(itemsContentTab?.fields?.map(({ name }) => name)).toEqual([
-      'metadata',
+
+    const itemTabs = items?.fields?.[0]
+    const itemContent = itemTabs?.tabs?.find(({ label }) => label === 'Content')
+    const itemTheme = itemTabs?.tabs?.find(({ label }) => label === 'Theme Settings')
+
+    expect(itemContent?.fields.map(({ name }) => name)).toEqual([
+      'markerMode',
+      'markerLabel',
       'title',
       'description',
-      'linkType',
-      'page',
-      'url',
-      'openInNewTab',
+      'cardAction',
     ])
-    expect(getField(itemsContentTab?.fields ?? [], 'title')).toMatchObject({
+    expect(getField(itemContent?.fields ?? [], 'markerMode')).toMatchObject({
+      defaultValue: 'numbered',
+      required: true,
+      type: 'select',
+    })
+    expect(getField(itemContent?.fields ?? [], 'markerMode')?.options?.map(({ value }) => value)).toEqual([
+      'numbered',
+      'custom',
+      'hidden',
+    ])
+    const markerLabel = getField(itemContent?.fields ?? [], 'markerLabel')
+    expect(markerLabel?.admin?.condition).toBeTypeOf('function')
+    expect(markerLabel?.admin?.condition?.({}, { markerMode: 'custom' })).toBe(true)
+    expect(markerLabel?.admin?.condition?.({}, { markerMode: 'numbered' })).toBe(false)
+    expect(getField(itemContent?.fields ?? [], 'title')).toMatchObject({
+      required: true,
       type: 'text',
     })
-    expect(getField(itemsContentTab?.fields ?? [], 'linkType')).toMatchObject({
-      defaultValue: 'none',
-      required: true,
-      type: 'select',
+    expect(getField(itemContent?.fields ?? [], 'cardAction')).toMatchObject({
+      maxRows: 1,
+      type: 'array',
     })
-    expect(getField(layout?.fields ?? [], 'appearance')?.type).toBe('group')
-    const actionsField = getField(content?.fields ?? [], 'actions')
-    const actionsTabsField = actionsField?.fields?.[0] as TestField | undefined
-    const actionsThemeTab = actionsTabsField?.tabs?.find(({ label }) => label === 'Theme Settings')
-    expect(actionsThemeTab?.fields?.map(({ name }) => name)).toEqual([
-      'mode',
-      'variant',
-      'showArrow',
-    ])
-    expect(getField(actionsThemeTab?.fields ?? [], 'mode')).toMatchObject({
-      defaultValue: 'link',
-      label: 'Display As',
-      required: false,
-      type: 'select',
-    })
-    expect(getField(layout?.fields ?? [], 'layout')).toMatchObject({
-      defaultValue: 'highlightsGrid',
-      required: true,
-    })
-    expect(getField(layout?.fields ?? [], 'layout')?.options?.map(({ value }) => value)).toEqual([
-      'editorialRow',
-      'highlightsGrid',
-      'simpleGrid',
-      'numberedSteps',
-    ])
-    const split = getField(layout?.fields ?? [], 'enableSplitLayout')
-    const horizontal = getField(layout?.fields ?? [], 'contentAlignment')
-    const vertical = getField(layout?.fields ?? [], 'splitContentAlignment')
+    expect(itemTheme?.fields.map(({ name }) => name)).toEqual(['cardBackground'])
 
-    expect(split).toMatchObject({ defaultValue: false, type: 'checkbox' })
-    expect(horizontal).toMatchObject({ defaultValue: 'center', type: 'select' })
-    expect(horizontal?.options?.map(({ value }) => value)).toEqual(['left', 'center', 'right'])
-    expect(vertical).toMatchObject({ defaultValue: 'top', type: 'select' })
-    expect(vertical?.options?.map(({ value }) => value)).toEqual(['top', 'center', 'bottom'])
-    expect(horizontal?.admin?.condition?.({}, { enableSplitLayout: false })).toBe(true)
-    expect(horizontal?.admin?.condition?.({}, { enableSplitLayout: true })).toBe(false)
-    expect(vertical?.admin?.condition?.({}, { enableSplitLayout: false })).toBe(false)
-    expect(vertical?.admin?.condition?.({}, { enableSplitLayout: true })).toBe(true)
-    expect(getField(layout?.fields ?? [], 'size')?.defaultValue).toBe('default')
-  })
-
-  it('renders the existing responsive presentation contracts', () => {
-    const renderLayout = (layout: ContentHighlightsLayout, enableSplitLayout = false) =>
-      renderToStaticMarkup(
-        <ContentHighlights
-          actions={<span>All stories</span>}
-          appearance={{ background: 'subtle', border: 'topAndBottom' }}
-          description="A concise introduction to the highlighted content."
-          eyebrow="Latest"
-          enableSplitLayout={enableSplitLayout}
-          items={[
-            {
-              description: 'A supporting description.',
-              metadata: 'Research · Jul 08, 2026',
-              title: 'Precision Cardiology',
-            },
-            { description: 'A second description.', title: 'Campus life' },
-            { title: 'Community programs' },
-          ]}
-          layout={layout}
-          size="compact"
-          title="Content worth exploring"
-        />,
-      )
-
-    const editorialHtml = renderLayout('editorialRow')
-    const gridHtml = renderLayout('highlightsGrid')
-    const splitHtml = renderLayout('highlightsGrid', true)
-
-    expect(editorialHtml).toContain('data-content-highlights-layout="editorialRow"')
-    expect(editorialHtml).toContain('md:grid-cols-2')
-    expect(editorialHtml).toContain('lg:grid-cols-3')
-    expect(editorialHtml).toContain('Research · Jul 08, 2026')
-    expect(editorialHtml).toContain('All stories')
-
-    expect(gridHtml).toContain('data-content-highlights-layout="highlightsGrid"')
-    expect(gridHtml).toContain('md:grid-cols-2')
-    expect(gridHtml).toContain('lg:grid-cols-3')
-
-    expect(splitHtml).toContain('data-content-highlights-layout="highlightsGrid"')
-    expect(splitHtml).toContain('data-content-highlights-split="true"')
-    expect(splitHtml).toContain('lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]')
-    expect(splitHtml).toContain('md:grid-cols-2')
-
-    for (const html of [editorialHtml, gridHtml, splitHtml]) {
-      expect(html).toContain('max-w-screen-2xl')
-      expect(html).toContain('px-4')
-      expect(html).toContain('bg-subtle')
-      expect(html).toContain('border-y border-border')
-      expect(html).toContain('data-slot="separator"')
+    for (const removedField of ['metadata', 'linkType', 'page', 'url', 'openInNewTab']) {
+      expect(getField(itemContent?.fields ?? [], removedField)).toBeUndefined()
     }
+
+    expect(theme?.fields.map(({ name }) => name)).toEqual([
+      'appearance',
+      'layout',
+      'headerLayout',
+      'contentAlignment',
+      'splitContentAlignment',
+      'size',
+    ])
+    expect(getField(theme?.fields ?? [], 'layout')?.options).toEqual([
+      { label: 'Editorial List', value: 'editorialRow' },
+      { label: 'Calm Grid', value: 'highlightsGrid' },
+      { label: 'Simple Grid', value: 'simpleGrid' },
+    ])
+    expect(getField(theme?.fields ?? [], 'headerLayout')).toMatchObject({
+      defaultValue: 'stacked',
+      required: true,
+      type: 'select',
+    })
+    expect(getField(theme?.fields ?? [], 'headerLayout')?.options?.map(({ value }) => value)).toEqual([
+      'stacked',
+      'split',
+    ])
+    expect(getField(theme?.fields ?? [], 'enableSplitLayout')).toBeUndefined()
+
+    const horizontal = getField(theme?.fields ?? [], 'contentAlignment')
+    const vertical = getField(theme?.fields ?? [], 'splitContentAlignment')
+    expect(horizontal).toMatchObject({ defaultValue: 'left', type: 'select' })
+    expect(horizontal?.admin?.condition?.({}, { headerLayout: 'stacked' })).toBe(true)
+    expect(horizontal?.admin?.condition?.({}, { headerLayout: 'split' })).toBe(false)
+    expect(vertical).toMatchObject({ defaultValue: 'top', type: 'select' })
+    expect(vertical?.admin?.condition?.({}, { headerLayout: 'stacked' })).toBe(false)
+    expect(vertical?.admin?.condition?.({}, { headerLayout: 'split' })).toBe(true)
+    expect(getField(theme?.fields ?? [], 'size')?.defaultValue).toBe('default')
   })
 
   it.each([
-    'editorialRow',
-    'highlightsGrid',
-    'simpleGrid',
-    'numberedSteps',
-  ] satisfies ContentHighlightsLayout[])(
-    'supports stacked and split composition for %s',
-    (layout) => {
-      const items = [
-        { description: 'First description', title: 'First' },
-        { description: 'Second description', title: 'Second' },
-      ]
-      const stacked = renderToStaticMarkup(
-        <ContentHighlights
-          actions={<span>Explore</span>}
-          contentAlignment="right"
-          items={items}
-          layout={layout}
-          title="Highlights"
-        />,
-      )
-      const split = renderToStaticMarkup(
-        <ContentHighlights
-          actions={<span>Explore</span>}
-          enableSplitLayout
-          items={items}
-          layout={layout}
-          splitContentAlignment="bottom"
-          title="Highlights"
-        />,
-      )
-
-      expect(stacked).toContain('data-content-highlights-split="false"')
-      expect(stacked).toContain('data-content-highlights-alignment="right"')
-      expect(stacked).toContain('ml-auto items-end text-right')
-      expect(split).toContain('data-content-highlights-split="true"')
-      expect(split).toContain('data-content-highlights-split-alignment="bottom"')
-      expect(split).toContain('lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]')
-      expect(split).toContain('lg:self-end')
-      expect(split).not.toContain('lg:grid-cols-3')
-      expect(split).not.toContain('lg:grid-cols-4')
-    },
-  )
-
-  it('keeps the Editorial Row action slot only in stacked composition', () => {
-    const props = {
-      actions: <span>All stories</span>,
-      items: [{ title: 'Story' }],
-      layout: 'editorialRow' as const,
-      title: 'Latest',
-    }
-    const stacked = renderToStaticMarkup(<ContentHighlights {...props} />)
-    const split = renderToStaticMarkup(<ContentHighlights {...props} enableSplitLayout />)
-
-    expect(stacked).toContain('data-content-highlights-action-slot="true"')
-    expect(split).not.toContain('data-content-highlights-action-slot="true"')
-    expect(split).toContain('All stories')
-  })
-
-  it('falls back to Highlights Grid for an unknown layout value', () => {
+    ['editorialRow', 'editorial', 'gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3'],
+    ['highlightsGrid', 'calm', 'gap-6 md:grid-cols-2 lg:grid-cols-3'],
+    ['simpleGrid', 'simple', 'gap-x-12 gap-y-10 md:grid-cols-2'],
+  ] as const)('renders the %s presentation', (layout, presentation, gridClasses) => {
     const html = renderToStaticMarkup(
       <ContentHighlights
-        items={[{ title: 'Item' }]}
-        layout={'removed-layout' as ContentHighlightsLayout}
+        appearance={{ background: 'subtle', border: 'topAndBottom' }}
+        description="A concise introduction to the highlighted content."
+        eyebrow="Latest"
+        items={[item('First'), item('Second'), item('Third')]}
+        layout={layout}
+        size="compact"
+        title="Content worth exploring"
+      />,
+    )
+
+    expect(html).toContain(`data-content-highlights-layout="${layout}"`)
+    expect(html).toContain(`data-content-highlight-presentation="${presentation}"`)
+    expect(html).toContain(gridClasses)
+    expect(html).toContain('max-w-screen-2xl')
+    expect(html).toContain('bg-subtle')
+    expect(html).toContain('border-y border-border')
+  })
+
+  it('supports Stacked and Split header compositions', () => {
+    const stacked = renderToStaticMarkup(
+      <ContentHighlights
+        contentAlignment="right"
+        headerLayout="stacked"
+        items={[item('First'), item('Second')]}
+        title="Highlights"
+      />,
+    )
+    const split = renderToStaticMarkup(
+      <ContentHighlights
+        headerLayout="split"
+        items={[item('First'), item('Second')]}
+        splitContentAlignment="bottom"
         title="Highlights"
       />,
     )
 
-    expect(html).toContain('data-content-highlights-layout="highlightsGrid"')
-    expect(html).toContain('lg:grid-cols-3')
+    expect(stacked).toContain('data-content-highlights-header-layout="stacked"')
+    expect(stacked).toContain('ml-auto items-end text-right')
+    expect(split).toContain('data-content-highlights-header-layout="split"')
+    expect(split).toContain('lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]')
+    expect(split).toContain('lg:self-end')
+    expect(split).not.toContain('lg:grid-cols-3')
   })
 
-  it('renders simple and numbered layouts with their responsive contracts', () => {
-    const items = Array.from({ length: 6 }, (_, index) => ({
-      description: `Description ${index + 1}`,
-      metadata: index === 0 ? 'Required' : undefined,
-      title: `Item ${index + 1}`,
-    }))
-
-    const simpleHtml = renderToStaticMarkup(
-      <ContentHighlights items={items} layout="simpleGrid" title="What we look for" />,
-    )
-    const numberedHtml = renderToStaticMarkup(
-      <ContentHighlights items={items} layout="numberedSteps" title="How your application moves" />,
-    )
-
-    expect(simpleHtml).toContain('data-content-highlights-layout="simpleGrid"')
-    expect(simpleHtml).toContain('grid gap-x-16 gap-y-10 md:grid-cols-2')
-    expect(simpleHtml).toContain('data-content-highlight-presentation="simple"')
-    expect(simpleHtml).not.toContain('data-slot="separator"')
-    expect(simpleHtml).not.toContain('data-content-highlight-step=')
-
-    expect(numberedHtml).toContain('data-content-highlights-layout="numberedSteps"')
-    expect(numberedHtml).toContain('grid gap-4 md:grid-cols-2 lg:grid-cols-4')
-    expect(numberedHtml).toContain('data-content-highlight-presentation="numbered"')
-    expect(numberedHtml).toContain('border-current/10')
-    expect(numberedHtml).not.toContain('border-border')
-    expect(numberedHtml).toContain('data-content-highlight-step="01"')
-    expect(numberedHtml).toContain('data-content-highlight-step="06"')
-    expect(numberedHtml).not.toContain('data-slot="separator"')
-
-    const splitNumberedHtml = renderToStaticMarkup(
-      <ContentHighlights
-        appearance={{ background: 'subtle' }}
-        enableSplitLayout
-        items={items}
-        layout="numberedSteps"
-        title="How your application moves"
+  it('normalizes per-card markers after unusable rows are removed', () => {
+    const html = renderToStaticMarkup(
+      <ContentHighlightsBlockComponent
+        items={[
+          { markerMode: 'numbered', title: 'First usable card' },
+          { markerMode: 'numbered', title: '   ' },
+          { markerLabel: 'Clinical', markerMode: 'custom', title: 'Custom marker' },
+          { markerMode: 'hidden', title: 'No marker' },
+          { markerLabel: '   ', markerMode: 'custom', title: 'Blank custom marker' },
+          { markerMode: 'stale' as never, title: 'Safe default' },
+        ]}
+        title="Highlights"
       />,
     )
 
-    expect(splitNumberedHtml).toContain('bg-subtle')
-    expect(splitNumberedHtml).toContain('text-foreground')
-    expect(splitNumberedHtml).toContain('border-current/10')
-    expect(splitNumberedHtml).not.toContain('border-border')
-
-    for (const html of [simpleHtml, numberedHtml]) {
-      expect(html).toContain('py-12 md:py-16')
-      expect(html).toContain('max-w-screen-2xl')
-    }
+    expect(html).toContain('data-content-highlight-marker="01"')
+    expect(html).toContain('data-content-highlight-marker="Clinical"')
+    expect(html).toContain('data-content-highlight-marker="05"')
+    expect(html).not.toContain('data-content-highlight-marker="02"')
+    expect(html).not.toContain('data-content-highlight-marker="03"')
+    expect(html).not.toContain('data-content-highlight-marker=""')
+    expect(html).not.toContain('data-content-highlight-metadata')
   })
 
-  it('resolves shared actions and optional item destinations defensively', () => {
+  it('renders one explicit card action and ignores legacy title-link fields', () => {
     const html = renderToStaticMarkup(
       <ContentHighlightsBlockComponent
-        actions={[
-          {
-            label: 'Explore all',
-            linkType: 'custom',
-            mode: 'button',
-            url: '/explore',
-            variant: 'outline',
-          },
-        ]}
         items={[
           {
-            description: 'A linked item.',
+            cardAction: [
+              {
+                label: 'Explore programme',
+                linkType: 'custom',
+                mode: 'button',
+                openInNewTab: true,
+                showArrow: true,
+                url: '/programmes',
+                variant: 'default',
+              },
+            ],
+            cardBackground: 'primary',
             linkType: 'custom',
-            openInNewTab: true,
-            title: 'Programs',
-            url: '/programs',
-          },
+            metadata: 'Discard me',
+            title: 'Clinical learning',
+            url: '/legacy-title-link',
+          } as never,
           {
-            description: 'No destination is required.',
-            linkType: 'none',
-            title: 'Static item',
-          },
-          {
-            linkType: 'custom',
-            title: '   ',
-            url: '/missing',
+            cardAction: [{ label: 'Broken action', linkType: 'custom', url: '' }],
+            title: 'No empty footer',
           },
         ]}
-        layout="editorialRow"
+        title="Highlights"
+      />,
+    )
+
+    expect(html).toContain('data-content-highlight-action-footer="true"')
+    expect(html).toContain('border-t')
+    expect(html).toContain('mt-auto')
+    expect(html).toContain('href="/programmes"')
+    expect(html).toContain('target="_blank"')
+    expect(html).toContain('rel="noreferrer"')
+    expect(html).toContain('data-action-arrow="true"')
+    expect(html).toContain('bg-primary-foreground text-primary')
+    expect(html).not.toContain('/legacy-title-link')
+    expect(html).not.toContain('Discard me')
+    expect(html.match(/data-content-highlight-action-footer="true"/g)).toHaveLength(1)
+  })
+
+  it.each([
+    ['editorialRow', 'editorialRow'],
+    ['highlightsGrid', 'highlightsGrid'],
+    ['simpleGrid', 'simpleGrid'],
+    ['numberedSteps', 'highlightsGrid'],
+    ['stale', 'highlightsGrid'],
+  ] as const)('normalizes %s to %s', (layout, expected) => {
+    const html = renderToStaticMarkup(
+      <ContentHighlightsBlockComponent
+        items={[{ title: 'Item' }]}
+        layout={layout as never}
+        title="Highlights"
+      />,
+    )
+    expect(html).toContain(`data-content-highlights-layout="${expected}"`)
+  })
+
+  it('uses legacy split data only when Header Layout is absent', () => {
+    const legacy = renderToStaticMarkup(
+      <ContentHighlightsBlockComponent
+        enableSplitLayout
+        items={[{ title: 'Item' }]}
+        title="Legacy split"
+      />,
+    )
+    const explicit = renderToStaticMarkup(
+      <ContentHighlightsBlockComponent
+        enableSplitLayout
+        headerLayout="stacked"
+        items={[{ title: 'Item' }]}
+        title="Explicit stacked"
+      />,
+    )
+    expect(legacy).toContain('data-content-highlights-header-layout="split"')
+    expect(explicit).toContain('data-content-highlights-header-layout="stacked"')
+  })
+
+  it('keeps section and footer actions independent from card actions', () => {
+    const html = renderToStaticMarkup(
+      <ContentHighlightsBlockComponent
+        actions={[{ label: 'Explore all', linkType: 'custom', url: '/explore' }]}
+        footerActions={[{ label: 'Contact us', linkType: 'custom', url: '/contact' }]}
+        items={[item('Static card')]}
         title="Useful links"
       />,
     )
 
-    expect(html).toContain('data-action-mode="button"')
-    expect(html).toContain('Explore all')
+    expect(html).toContain('data-content-highlights-actions="true"')
     expect(html).toContain('href="/explore"')
-    expect(html).toContain('href="/programs"')
-    expect(html).toContain('target="_blank"')
-    expect(html).toContain('rel="noreferrer"')
-    expect(html).toContain('Static item')
-    expect(html).not.toContain('/missing')
-    expect(html).not.toContain('href=""')
+    expect(html).toContain('href="/contact"')
+    expect(html).not.toContain('data-content-highlight-action-footer="true"')
   })
 
   it('renders the editor-authored accent title', () => {
     const html = renderToStaticMarkup(
       <ContentHighlightsBlockComponent
         accentTitle="worth exploring."
-        items={[{ title: 'Research' }]}
+        items={[item('Research')]}
         title="Content"
       />,
     )
@@ -348,75 +320,33 @@ describe('Content Highlights', () => {
     expect(html).toContain('<em class="block font-[inherit]">worth exploring.</em>')
   })
 
-  it.each(['simpleGrid', 'numberedSteps'] satisfies ContentHighlightsLayout[])(
-    'preserves normalized actions and item links in %s',
-    (layout) => {
-      const html = renderToStaticMarkup(
-        <ContentHighlightsBlockComponent
-          actions={[
-            {
-              label: 'Explore all',
-              linkType: 'custom',
-              mode: 'button',
-              url: '/explore',
-              variant: 'outline',
-            },
-          ]}
-          items={[
-            {
-              description: 'A linked item.',
-              linkType: 'custom',
-              openInNewTab: true,
-              title: 'Programs',
-              url: '/programs',
-            },
-            {
-              description: 'No destination is required.',
-              linkType: 'none',
-              title: 'Static item',
-            },
-          ]}
-          layout={layout}
-          title="Useful links"
-        />,
-      )
-
-      expect(html).toContain('data-action-mode="button"')
-      expect(html).toContain('href="/explore"')
-      expect(html).toContain('href="/programs"')
-      expect(html).toContain('target="_blank"')
-      expect(html).toContain('rel="noreferrer"')
-      expect(html).toContain('Static item')
-      expect(html).not.toContain('href=""')
-    },
-  )
-
   it('renders nothing when required display content is unusable', () => {
+    expect(ContentHighlightsBlockComponent({ items: [item('Item')], title: '   ' })).toBeNull()
     expect(
       ContentHighlightsBlockComponent({
-        items: [{ title: 'Item' }],
-        title: '   ',
-      }),
-    ).toBeNull()
-    expect(
-      ContentHighlightsBlockComponent({
-        items: [{ title: '   ' }],
+        items: [{ markerMode: 'numbered', title: '   ' }],
         title: 'Valid title',
       }),
     ).toBeNull()
   })
 
-  it('does not reserve an editorial action slot when no valid action exists', () => {
-    const html = renderToStaticMarkup(
-      <ContentHighlightsBlockComponent
-        actions={[{ label: 'Missing destination', linkType: 'custom' }]}
-        items={[{ title: 'Static item' }]}
-        layout="editorialRow"
-        title="No section action"
-      />,
+  it('uses the current generated Payload contract', () => {
+    const generatedTypes = readFileSync('src/payload-types.ts', 'utf8')
+    const contentHighlightsType = generatedTypes.slice(
+      generatedTypes.indexOf('export interface ContentHighlightsBlock {'),
+      generatedTypes.indexOf('export interface EditorialReasonsBlock {'),
     )
 
-    expect(html).not.toContain('data-content-highlights-actions="true"')
-    expect(html).not.toContain('data-content-highlights-action-slot="true"')
+    expect(contentHighlightsType).toContain("markerMode: 'numbered' | 'custom' | 'hidden';")
+    expect(contentHighlightsType).toContain('markerLabel?: string | null;')
+    expect(contentHighlightsType).toContain('cardAction?:')
+    expect(contentHighlightsType).toContain(
+      "layout: 'editorialRow' | 'highlightsGrid' | 'simpleGrid';",
+    )
+    expect(contentHighlightsType).toContain("headerLayout: 'stacked' | 'split';")
+    expect(contentHighlightsType).not.toContain('metadata?:')
+    expect(contentHighlightsType).not.toContain("linkType: 'none' | 'page' | 'custom';")
+    expect(contentHighlightsType).not.toContain('enableSplitLayout')
+    expect(contentHighlightsType).not.toContain('numberedSteps')
   })
 })
