@@ -3,6 +3,8 @@ import type { NextConfig } from 'next'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+import { SERVER_ACTION_BODY_SIZE_LIMIT } from './src/config/uploadLimits'
+
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
@@ -15,7 +17,12 @@ const securityHeaders = [
   { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
 ]
 
-const nextConfig: NextConfig = {
+export const nextConfig: NextConfig = {
+  experimental: {
+    serverActions: {
+      bodySizeLimit: SERVER_ACTION_BODY_SIZE_LIMIT,
+    },
+  },
   output: 'standalone',
   async headers() {
     return [

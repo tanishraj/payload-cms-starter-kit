@@ -26,6 +26,7 @@ import { SystemPages } from './collections/SystemPages'
 import { createDatabaseAdapter, createEmailAdapter, createStoragePlugins } from './config/providers'
 import { assertSupportedStarterContract, getStarterContract } from './config/starterContract'
 import { getRuntimeConfig } from './config/runtime'
+import { payloadUploadConfig } from './config/uploadLimits'
 import { PageSettings } from './globals/PageSettings'
 import { SEOSettings } from './globals/SEOSettings'
 import { SiteSettings } from './globals/SiteSettings'
@@ -104,6 +105,7 @@ export default buildConfig({
   editor: lexicalEditor(),
   email,
   secret: process.env.PAYLOAD_SECRET || '',
+  upload: payloadUploadConfig,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
