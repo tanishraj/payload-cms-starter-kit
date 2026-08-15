@@ -12,9 +12,10 @@
 
 - Stored values are exactly `white` and `whiteOutline`.
 - Admin labels are exactly **White Filled** and **White Outline**.
-- Both variants remain white regardless of active theme or surrounding section surface.
-- White Filled uses a white background and border with black text.
+- White Filled keeps a white background and border regardless of active theme or surrounding section surface.
+- White Filled uses `primary` text and icon color in light mode and `primary-foreground` in dark mode.
 - White Outline uses a transparent background with a white border and white text.
+- Button icons inherit the label color through `currentColor`; do not add a separate icon-color override.
 - Both variants use a white focus border and translucent white focus ring.
 - Existing variants, defaults, and surface-specific behavior must not change.
 - Admin guidance must warn that white variants are intended for dark, brand, or image backgrounds.
@@ -133,7 +134,9 @@ it('renders fixed white presentation and focus classes', () => {
     createElement(Button, { variant: 'whiteOutline' as never }, 'White outline'),
   )
 
-  expect(filled).toContain('border-white bg-white text-black')
+  expect(filled).toContain(
+    'border-white bg-white text-primary dark:text-primary-foreground',
+  )
   expect(filled).toContain('hover:bg-white/90')
   expect(filled).toContain('focus-visible:border-white')
   expect(filled).toContain('focus-visible:ring-white/30')
@@ -214,7 +217,7 @@ In the `variant` object in `src/components/ui/button.tsx`, add:
 
 ```ts
 white:
-  'border-white bg-white text-black hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/30',
+  'border-white bg-white text-primary hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/30 dark:text-primary-foreground',
 whiteOutline:
   'border-white bg-transparent text-white hover:bg-white/10 focus-visible:border-white focus-visible:ring-white/30',
 ```
@@ -336,7 +339,7 @@ Expected: `public/block-thumbnails/cta-39.jpg` is regenerated as a 1600×900 JPE
 Open `public/block-thumbnails/cta-39.jpg` and confirm:
 
 - The section is a brand surface.
-- White Filled has white fill, dark text, and a white border.
+- White Filled has white fill, a theme-aware dark brand foreground, and a white border.
 - White Outline has transparent fill, white text, and a visible white border.
 - The two variants are visually distinct.
 - Text and actions remain aligned with the split CTA layout.
@@ -379,4 +382,211 @@ Commit:
 ```bash
 git add tests/int/button-primary-variant.int.spec.tsx src/payload-types.ts src/block-thumbnails/fixtures.tsx public/block-thumbnails/cta-39.jpg
 git commit -m "test(button): cover white variants"
+```
+
+---
+
+### Task 3: Use the theme brand foreground in White Filled
+
+**Files:**
+
+- Modify: `tests/int/button-primary-variant.int.spec.tsx`
+- Modify: `src/components/ui/button.tsx`
+- Modify: `src/blocks/Services21/Component.tsx`
+- Modify: `public/block-thumbnails/cta-39.jpg`
+
+**Interfaces:**
+
+- Consumes: the existing `white` and `whiteOutline` variants and the theme tokens `primary` and `primary-foreground`.
+- Produces: a fixed-white filled button whose label and any `currentColor` icon use the theme's dark brand foreground in both color modes.
+
+- [ ] **Step 1: Change the shared renderer test to require branded foreground tokens**
+
+In `tests/int/button-primary-variant.int.spec.tsx`, replace the White Filled class assertion:
+
+```tsx
+expect(filled).toContain(
+  'border-white bg-white text-primary hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/30 dark:text-primary-foreground',
+)
+expect(filled).not.toContain('text-black')
+```
+
+Add an icon-inheritance assertion using the production content renderer:
+
+```tsx
+const withIcon = renderToStaticMarkup(
+  <Button variant="white">
+    <ActionButtonContent label="Continue" showArrow />
+  </Button>,
+)
+
+expect(withIcon).toContain('data-action-arrow="true"')
+expect(withIcon).toContain('text-primary')
+expect(withIcon).toContain('dark:text-primary-foreground')
+expect(withIcon).not.toMatch(/data-action-arrow="true"[^>]*class="[^"]*text-/)
+```
+
+Import the production icon wrapper at the top of the test:
+
+```tsx
+import { ActionButtonContent } from '@/components/ActionButtonContent'
+```
+
+Keep the existing White Outline assertions unchanged:
+
+```tsx
+expect(outline).toContain('border-white bg-transparent text-white')
+```
+
+- [ ] **Step 2: Add a regression test for the Services21 decorated-button path**
+
+Import the block component:
+
+```tsx
+import { Services21BlockComponent } from '@/blocks/Services21/Component'
+```
+
+Add this test:
+
+```tsx
+it('uses the branded white-filled foreground in decorated service actions', () => {
+  const html = renderToStaticMarkup(
+    <Services21BlockComponent
+      actions={[
+        {
+          label: 'Explore services',
+          linkType: 'custom',
+          mode: 'button',
+          showArrow: true,
+          url: '/services',
+          variant: 'white',
+        },
+      ]}
+      services={[
+        {
+          image: { alt: 'Clinical service', url: '/media/clinical-service.jpg' },
+          title: 'Clinical service',
+        },
+      ]}
+      title="Services"
+    />,
+  )
+
+  expect(html).toContain('data-variant="white"')
+  expect(html).toContain('text-primary')
+  expect(html).toContain('dark:text-primary-foreground')
+  expect(html).not.toContain('text-black')
+  expect(html).toContain('data-action-arrow="true"')
+})
+```
+
+- [ ] **Step 3: Run the focused test and verify the red state**
+
+Run:
+
+```bash
+pnpm exec vitest run --config ./vitest.config.mts tests/int/button-primary-variant.int.spec.tsx --reporter=dot
+```
+
+Expected: FAIL because White Filled still emits `text-black` in both the canonical button and the Services21 decorated-button mapping.
+
+- [ ] **Step 4: Replace the canonical White Filled foreground**
+
+In `src/components/ui/button.tsx`, replace only the `white` variant value:
+
+```ts
+white:
+  'border-white bg-white text-primary hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/30 dark:text-primary-foreground',
+```
+
+Do not modify `whiteOutline`; its text and icons remain fixed white.
+
+- [ ] **Step 5: Keep the Services21 override aligned with the canonical variant**
+
+In `src/blocks/Services21/Component.tsx`, replace only `buttonClassNameByVariant.white`:
+
+```ts
+white:
+  'border-white bg-white text-primary hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/30 dark:text-primary-foreground',
+```
+
+This local mapping is required because Services21 deliberately supplies custom classes to `BorderButton`. Do not add icon-specific classes; its corner art and action arrow both inherit `currentColor`.
+
+- [ ] **Step 6: Format and run focused verification**
+
+Run:
+
+```bash
+pnpm exec prettier --write src/components/ui/button.tsx src/blocks/Services21/Component.tsx tests/int/button-primary-variant.int.spec.tsx
+pnpm exec tsc --noEmit
+pnpm exec eslint src/components/ui/button.tsx src/blocks/Services21/Component.tsx tests/int/button-primary-variant.int.spec.tsx
+pnpm exec vitest run --config ./vitest.config.mts tests/int/button-primary-variant.int.spec.tsx tests/int/content-action-presentation.int.spec.tsx --reporter=dot
+```
+
+Expected: TypeScript and ESLint exit 0, and both focused test files pass.
+
+- [ ] **Step 7: Regenerate and inspect the CTA visual fixture**
+
+Run:
+
+```bash
+BLOCK_THUMBNAIL_BASE_URL=http://localhost:3000 BLOCK_THUMBNAIL_SLUG=cta39 pnpm generate:block-thumbnails
+```
+
+Expected: `public/block-thumbnails/cta-39.jpg` shows a white filled button with the active theme's brand-colored text and a White Outline button with white text. Inspect the 1600×900 JPEG and a temporary 390×844 render; labels and icons must remain readable without overflow.
+
+- [ ] **Step 8: Verify cross-theme contrast**
+
+Use local Chrome to read `--primary` in light mode and `--primary-foreground` in dark mode for Default, Blue, Kodama, SNMIH, and Sunset. Convert each computed color to sRGB and calculate WCAG contrast against white.
+
+Expected minimum results from the approved design audit:
+
+```text
+Default light: 4.95:1
+Default dark: 19.80:1
+Blue light: 6.83:1
+Blue dark: 19.76:1
+Kodama light: 8.00:1
+Kodama dark: 19.81:1
+SNMIH light: 14.29:1
+SNMIH dark: 14.29:1
+Sunset light: 5.88:1
+Sunset dark: 15.67:1
+```
+
+Every value must remain at or above WCAG AA's 4.5:1 requirement for button labels.
+
+- [ ] **Step 9: Run the complete integration suite**
+
+Run:
+
+```bash
+pnpm test:int
+```
+
+Expected: all integration tests pass. If MongoDB-backed suites cannot bind a local port in the sandbox, rerun the complete command with local-port permission.
+
+- [ ] **Step 10: Review and commit the foreground refinement**
+
+Run:
+
+```bash
+git diff --check
+git status --short
+```
+
+Confirm that only these files changed:
+
+```text
+src/components/ui/button.tsx
+src/blocks/Services21/Component.tsx
+tests/int/button-primary-variant.int.spec.tsx
+public/block-thumbnails/cta-39.jpg
+```
+
+Commit:
+
+```bash
+git add src/components/ui/button.tsx src/blocks/Services21/Component.tsx tests/int/button-primary-variant.int.spec.tsx public/block-thumbnails/cta-39.jpg
+git commit -m "fix(button): use branded white foreground"
 ```
