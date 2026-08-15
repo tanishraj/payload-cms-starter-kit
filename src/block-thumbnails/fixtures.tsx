@@ -1870,34 +1870,34 @@ export const blockThumbnailFixtures = {
     <TabsContentBlockComponent
       appearance={{ background: 'subtle', border: 'topAndBottom' }}
       contentAlignment="center"
-      contentLayout="imageRight"
-      description="Each stage of student life is supported by dedicated resources, people, and programs."
-      eyebrow="Life here"
+      contentLayout="curriculum"
+      curriculumColumns="2"
+      eyebrow="MBBS curriculum"
       size="compact"
-      tabStyle="underline"
+      tabStyle="segmented"
       tabs={[
         {
-          label: 'Learning',
-          title: 'Spaces built for how you work',
-          description:
-            'Flexible studios, collaborative labs, and quiet study rooms available across campus.',
-          image: fakeMedia(editorialLandscape, 'Learning space'),
+          label: '1st Year',
+          title: '1st Year',
+          items: [
+            { title: 'Anatomy', icon: 'Clock3' },
+            { title: 'Physiology', icon: 'Clock3' },
+            { title: 'Biochemistry', icon: 'Clock3' },
+            { title: 'Foundation Course', icon: 'Clock3' },
+          ],
         },
         {
-          label: 'Community',
-          title: 'Connect with people who share your goals',
-          description: 'Student clubs, mentorship programs, and campus events run year-round.',
-          image: fakeMedia(collaboration, 'Community gathering'),
+          label: '2nd Year',
+          title: '2nd Year',
+          items: [{ title: 'Pathology', icon: 'Clock3' }],
         },
         {
-          label: 'Support',
-          title: 'Help available at every stage',
-          description:
-            'Academic advisors, career coaches, and wellbeing services are all on campus.',
-          image: fakeMedia(portrait, 'Support team', 800, 1000),
+          label: '3rd Year',
+          title: '3rd Year',
+          items: [{ title: 'Community Medicine', icon: 'Clock3' }],
         },
       ]}
-      title="Everything you need, all in one place."
+      title="A closer look at 4.5 years + internship"
     />
   ),
   testimonialGrid: (

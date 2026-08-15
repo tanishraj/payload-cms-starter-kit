@@ -2938,6 +2938,7 @@ export interface TabsContentBlock {
    */
   eyebrow?: string | null;
   title?: string | null;
+  accentTitle?: string | null;
   /**
    * Optional subtitle shown above the tab bar.
    */
@@ -2971,6 +2972,19 @@ export interface TabsContentBlock {
         title?: string | null;
         accentTitle?: string | null;
         description?: string | null;
+        /**
+         * Items shown in the Curriculum List layout. If no icon is entered, Clock is used.
+         */
+        items?:
+          | {
+              /**
+               * Optional Lucide icon name, for example Clock, BookOpen, or Stethoscope.
+               */
+              icon?: string | null;
+              title: string;
+              id?: string | null;
+            }[]
+          | null;
         image?: (string | null) | Media;
         actions?:
           | {
@@ -3011,9 +3025,18 @@ export interface TabsContentBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  tabStyle?: ('underline' | 'pills' | 'boxed') | null;
-  contentLayout?: ('imageRight' | 'imageLeft' | 'imageTop' | 'textOnly') | null;
-  contentAlignment?: ('left' | 'center') | null;
+  /**
+   * Split places the section introduction on the left and the tabs with their content on the right.
+   */
+  sectionLayout?: ('stacked' | 'split') | null;
+  tabStyle?: ('underline' | 'pills' | 'boxed' | 'segmented') | null;
+  /**
+   * Positions the tab control independently from the section content alignment.
+   */
+  tabAlignment?: ('left' | 'center' | 'right' | 'stretch') | null;
+  contentLayout?: ('imageRight' | 'imageLeft' | 'imageTop' | 'textOnly' | 'curriculum') | null;
+  curriculumColumns?: ('1' | '2' | '3') | null;
+  contentAlignment?: ('left' | 'center' | 'right') | null;
   tabContentAlignment?: ('left' | 'center') | null;
   size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
   id?: string | null;
@@ -6973,6 +6996,7 @@ export interface QuoteBlockBlockSelect<T extends boolean = true> {
 export interface TabsContentBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  accentTitle?: T;
   description?: T;
   actions?:
     | T
@@ -6995,6 +7019,13 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
         title?: T;
         accentTitle?: T;
         description?: T;
+        items?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              id?: T;
+            };
         image?: T;
         actions?:
           | T
@@ -7030,8 +7061,11 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  sectionLayout?: T;
   tabStyle?: T;
+  tabAlignment?: T;
   contentLayout?: T;
+  curriculumColumns?: T;
   contentAlignment?: T;
   tabContentAlignment?: T;
   size?: T;
