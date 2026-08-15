@@ -11,7 +11,7 @@ The feature adds two shared variants:
 - `white`, labeled **White Filled**
 - `whiteOutline`, labeled **White Outline**
 
-Both variants remain white regardless of the active site theme or surrounding section surface. They are intended primarily for brand, dark, gradient-brand, and image-overlay surfaces. The admin description will state this constraint because either variant may have insufficient contrast on a white or similarly light background.
+The White Filled background and border remain white regardless of the active site theme or surrounding section surface. White Outline keeps a white border and foreground. Both are intended primarily for brand, dark, gradient-brand, and image-overlay surfaces. The admin description will state this constraint because either variant may have insufficient contrast on a white or similarly light background.
 
 No existing variant, default selection, or surface-specific behavior changes.
 
@@ -20,7 +20,9 @@ No existing variant, default selection, or surface-specific behavior changes.
 ### White Filled
 
 - White background and border
-- Black text for strong, theme-independent contrast
+- Theme-aware dark brand foreground for text and icons
+  - `primary` in light mode
+  - `primary-foreground` in dark mode
 - Slightly dimmed white background on hover
 - White focus border and translucent white focus ring
 
@@ -30,6 +32,10 @@ No existing variant, default selection, or surface-specific behavior changes.
 - White border and text
 - Subtle translucent white background on hover
 - White focus border and translucent white focus ring
+
+Button icons inherit `currentColor`, so their color must always match the label without a separate icon override. White Filled therefore uses the theme-aware dark brand foreground for both label and icon, while White Outline keeps both fixed white.
+
+The White Filled foreground pairing passes WCAG AA against white across all installed themes. Measured contrast ranges from 4.95:1 to 19.81:1 across Default, Blue, Kodama, SNMIH, and Sunset in light and dark modes. SNMIH resolves to its navy primary color in both modes at 14.29:1.
 
 The variants will be defined directly in the shared button component. Existing global surface selectors target only current variant names, so they must not alter either new variant.
 
@@ -47,7 +53,9 @@ Automated coverage will verify:
 
 - Both labels and values appear in the central shared option list and all consumers continue to preserve their existing defaults.
 - Action resolution preserves both values.
-- The shared button renderer emits the correct variant hooks and fixed-white classes.
+- The shared button renderer emits the correct variant hooks and fixed-white surface classes.
+- White Filled resolves its text and icon foreground to `primary` in light mode and `primary-foreground` in dark mode.
+- White Outline keeps its text and icon color fixed white.
 - Existing brand and overlay CSS does not capture or override the new variants.
 - Generated Payload types include both values.
 - TypeScript, lint, focused integration tests, and the full relevant integration suite pass.
