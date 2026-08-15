@@ -287,10 +287,10 @@ export function StudyPathwaysBlockComponent({
   const resolvedAccentTitle = accentTitle?.trim()
   const hasHeader = Boolean(
     resolvedEyebrow ||
-      resolvedTitle ||
-      resolvedAccentTitle ||
-      resolvedDescription ||
-      resolvedActions.length,
+    resolvedTitle ||
+    resolvedAccentTitle ||
+    resolvedDescription ||
+    resolvedActions.length,
   )
 
   return (
