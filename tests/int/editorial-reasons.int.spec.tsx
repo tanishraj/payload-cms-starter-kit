@@ -702,7 +702,6 @@ describe('EditorialReasonsBlockComponent', () => {
     expect(fullWidthHtml).toContain('data-editorial-reasons-actions-position="inline"')
     expect(fullWidthHtml).not.toContain('lg:mt-auto')
   })
-
 })
 
 describe('Editorial Reasons registration', () => {

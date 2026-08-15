@@ -90,9 +90,14 @@ describe('global header wiring', () => {
   })
 
   it('fetches and renders the active header preset in the frontend shell', () => {
-    const layoutSource = fs.readFileSync(path.resolve(process.cwd(), 'src/app/(frontend)/layout.tsx'), 'utf8')
+    const layoutSource = fs.readFileSync(
+      path.resolve(process.cwd(), 'src/app/(frontend)/layout.tsx'),
+      'utf8',
+    )
 
-    expect(layoutSource).toContain("import { GlobalHeader } from '@/components/global/GlobalHeader'")
+    expect(layoutSource).toContain(
+      "import { GlobalHeader } from '@/components/global/GlobalHeader'",
+    )
     expect(layoutSource).toContain('const activeHeaderID =')
     expect(layoutSource).toContain('const activeHeader =')
     expect(layoutSource).toContain("collection: 'headers'")

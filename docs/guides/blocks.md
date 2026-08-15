@@ -37,7 +37,7 @@ The setting follows the selected presentation. Content Highlights applies it to 
 | Profile Carousel         | People/profile cards                        | Client carousel behavior and independent card backgrounds                                                                                                 |
 | Gallery Showcase         | Layered image showcase                      | Interactive presentation                                                                                                                                  |
 | Event Gallery            | Album cards and full-screen viewer          | Requires selected Gallery Albums                                                                                                                          |
-| Study Pathways           | Two-to-four image-led pathway cards          | Configurable split proportions, overlays, links, and card heights                                                                                         |
+| Study Pathways           | Two-to-four image-led pathway cards         | Configurable split proportions, overlays, links, and card heights                                                                                         |
 | Image Mosaic             | Multi-image composition                     | Uses Media images                                                                                                                                         |
 | Student Experience       | Asymmetric image-led experience mosaic      | Uses up to five Media images; first card spans both rows in the desktop composition                                                                       |
 | Stats Strip              | Animated metrics                            | Numeric values and labels                                                                                                                                 |
@@ -67,7 +67,7 @@ The setting follows the selected presentation. Content Highlights applies it to 
 | Testimonial Grid         | Curated testimonials                        | Backgrounds apply to Grid and Featured cards                                                                                                              |
 | Awards List              | Awards and recognition                      | Backgrounds apply to Cards, not table/row presentations                                                                                                   |
 | About Section            | Editorial about layout                      | Media and actions                                                                                                                                         |
-| Accreditation Cards      | Accreditation and certification summary      | Two-to-four columns with shared semantic card and icon treatments                                                                                         |
+| Accreditation Cards      | Accreditation and certification summary     | Two-to-four columns with shared semantic card and icon treatments                                                                                         |
 | Reusable Section         | Shared block group                          | Reads one published Reusable Section                                                                                                                      |
 
 Editorial Reasons uses Full Width to place its introduction above a container-wide list. Its

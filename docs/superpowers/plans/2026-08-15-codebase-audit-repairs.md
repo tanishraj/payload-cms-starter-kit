@@ -38,12 +38,14 @@
 ### Task 1: Repair Content Highlights and Header admin contracts
 
 **Files:**
+
 - Modify: `tests/int/content-highlights.int.spec.tsx`
 - Modify: `src/blocks/ContentHighlights/Component.tsx`
 - Modify: `tests/int/global-header.int.spec.ts`
 - Modify: `src/components/global/GlobalHeader.tsx`
 
 **Interfaces:**
+
 - Consumes: `ContentHighlightsProps['accentTitle']`, `Header['layout']`.
 - Produces: rendered Content Highlights accent titles and `GlobalHeader` behavior where `sticky !== false` is sticky.
 
@@ -109,14 +111,16 @@ const renderHeader = (sticky?: boolean) =>
   renderToStaticMarkup(
     createElement(GlobalHeader, {
       header: {
-        layout: [{
-          blockType: 'headerNavbar12',
-          logoMode: 'siteDefault',
-          menuItems: [],
-          navAlignment: 'center',
-          size: 'default',
-          ...(sticky === undefined ? {} : { sticky }),
-        }],
+        layout: [
+          {
+            blockType: 'headerNavbar12',
+            logoMode: 'siteDefault',
+            menuItems: [],
+            navAlignment: 'center',
+            size: 'default',
+            ...(sticky === undefined ? {} : { sticky }),
+          },
+        ],
       } as never,
       stickyTopOffset: 'calc(3rem + 3rem)',
     }),
@@ -166,6 +170,7 @@ git commit -m "fix(blocks): honor configured content"
 ### Task 2: Remove renderer type escape hatches
 
 **Files:**
+
 - Modify: `src/blocks/TestimonialGrid/Component.tsx`
 - Modify: `src/blocks/AwardsList/Component.tsx`
 - Modify: `src/blocks/AboutSection/Component.tsx`
@@ -174,6 +179,7 @@ git commit -m "fix(blocks): honor configured content"
 - Modify: `tests/int/page-blocks.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: generated `TestimonialGridBlock`, `AwardsListBlock`, and `AboutSectionBlock` interfaces.
 - Produces: component props assignable directly from the discriminated `Page['layout']` union.
 
@@ -278,12 +284,14 @@ git commit -m "refactor(blocks): type renderer boundaries"
 ### Task 3: Complete Study Pathways integration
 
 **Files:**
+
 - Create: `tests/int/study-pathways.int.spec.tsx`
 - Create: `public/block-thumbnails/study-pathways.jpg`
 - Modify: `src/collections/Pages.ts`
 - Modify: `src/blocks/StudyPathways/Component.tsx`
 
 **Interfaces:**
+
 - Consumes: `StudyPathwaysBlock`, `StudyPathwaysBlockComponent`, the Pages and Reusable Sections block fields, and the thumbnail manifest.
 - Produces: focused schema/rendering coverage and a 1600×900 JPEG admin asset.
 
@@ -303,13 +311,7 @@ expect(findNamedField(StudyPathwaysBlock.fields, 'pathways')).toMatchObject({
   required: true,
   type: 'array',
 })
-expect(selectValues('cardSplit')).toEqual([
-  '60-40',
-  'equal',
-  '40-60',
-  '30-30-60',
-  '60-30-30',
-])
+expect(selectValues('cardSplit')).toEqual(['60-40', 'equal', '40-60', '30-30-60', '60-30-30'])
 expect(selectValues('cardHeight')).toEqual(['compact', 'default', 'comfortable'])
 expect(selectValues('contentAlignment')).toEqual(['left', 'center', 'right'])
 ```
@@ -337,9 +339,7 @@ const threeCards = renderToStaticMarkup(
     pathways={[pathway(1), pathway(2), pathway(3)]}
   />,
 )
-expect(threeCards).toContain(
-  'lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(18rem,2fr)]',
-)
+expect(threeCards).toContain('lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(18rem,2fr)]')
 ```
 
 Also assert four-card span behavior, stacked headers, center/right alignment, compact/comfortable heights, overlay attributes, valid custom links, blank-row filtering, and `null` for no usable pathways.
@@ -384,6 +384,7 @@ git commit -m "test(study-pathways): complete integration"
 ### Task 4: Align block inventory tests and operator documentation
 
 **Files:**
+
 - Modify: `tests/int/page-blocks.int.spec.ts`
 - Modify: `tests/int/system-page-blocks.int.spec.ts`
 - Modify: `tests/int/program-matrix.int.spec.tsx`
@@ -392,6 +393,7 @@ git commit -m "test(study-pathways): complete integration"
 - Modify: `docs/guides/blocks.md`
 
 **Interfaces:**
+
 - Consumes: current 48-entry Pages block list and 47-entry Reusable Sections list.
 - Produces: one consistent source/test/operator inventory.
 
@@ -426,11 +428,11 @@ Update the Pages table row from `43-block layouts` to `48-block layouts`. Update
 Add these rows in source order:
 
 ```markdown
-| Banner CTA               | Image-backed conversion banner              | Media overlay, alignment, height, and section actions                                                                                                     |
-| Academic Programmes      | Programme cards and pathways                 | Responsive columns, section actions, and independent card backgrounds                                                                                     |
-| Study Pathways           | Two-to-four image-led pathway cards          | Configurable split proportions, overlays, links, and card heights                                                                                         |
-| Breadcrumb               | Standalone page trail                        | Uses automatic hierarchy or editor-authored breadcrumb items                                                                                              |
-| Accreditation Cards      | Accreditation and certification summary      | Two-to-four columns with shared semantic card and icon treatments                                                                                         |
+| Banner CTA | Image-backed conversion banner | Media overlay, alignment, height, and section actions |
+| Academic Programmes | Programme cards and pathways | Responsive columns, section actions, and independent card backgrounds |
+| Study Pathways | Two-to-four image-led pathway cards | Configurable split proportions, overlays, links, and card heights |
+| Breadcrumb | Standalone page trail | Uses automatic hierarchy or editor-authored breadcrumb items |
+| Accreditation Cards | Accreditation and certification summary | Two-to-four columns with shared semantic card and icon treatments |
 ```
 
 - [ ] **Step 5: Verify inventory contracts**
@@ -451,6 +453,7 @@ git commit -m "docs(blocks): sync 48-block inventory"
 ### Task 5: Reconcile shared style contracts without visual regressions
 
 **Files:**
+
 - Modify: `tests/int/content-style-parity.int.spec.ts`
 - Modify: `tests/int/editorial-reasons.int.spec.tsx`
 - Modify: `tests/int/about-section.int.spec.tsx`
@@ -459,6 +462,7 @@ git commit -m "docs(blocks): sync 48-block inventory"
 - Test: `src/blocks/TabsContent/TabsContentClient.tsx`
 
 **Interfaces:**
+
 - Consumes: `contentItemDescriptionClasses = 'text-sm leading-5 text-current/70'` and rendered semantic attributes/classes.
 - Produces: resilient tests for the current shared typography and tab active-state contracts.
 
@@ -510,6 +514,7 @@ git commit -m "test(styles): align shared contracts"
 ### Task 6: Resolve React and Next.js lint failures
 
 **Files:**
+
 - Modify: `src/blocks/StatsStrip/AnimatedMetricValue.tsx`
 - Modify: `tests/int/stats-strip-render.int.spec.ts`
 - Modify: `src/components/event-gallery-viewer.tsx`
@@ -517,6 +522,7 @@ git commit -m "test(styles): align shared contracts"
 - Modify: `src/app/(frontend)/error.tsx`
 
 **Interfaces:**
+
 - Consumes: browser `matchMedia`, `IntersectionObserver`, and Event Gallery navigation state.
 - Produces: effect-safe metric rendering, pure autoplay transition logic, and Next-native internal navigation.
 
@@ -575,13 +581,16 @@ useEffect(() => {
   const action = getEventGalleryAutoplayAction({ isAtEnd, isMultiple, isPlaying })
   if (action === 'idle') return
 
-  autoplayRef.current = setTimeout(() => {
-    if (action === 'stop') {
-      setIsPlaying(false)
-      return
-    }
-    goNext()
-  }, action === 'stop' ? 0 : AUTOPLAY_DELAY_MS)
+  autoplayRef.current = setTimeout(
+    () => {
+      if (action === 'stop') {
+        setIsPlaying(false)
+        return
+      }
+      goNext()
+    },
+    action === 'stop' ? 0 : AUTOPLAY_DELAY_MS,
+  )
 
   return () => {
     if (autoplayRef.current) clearTimeout(autoplayRef.current)
@@ -624,6 +633,7 @@ git commit -m "fix(frontend): clear React lint errors"
 ### Task 7: Clean repository tooling and remove the example route
 
 **Files:**
+
 - Modify: `eslint.config.mjs`
 - Modify: `src/block-thumbnails/fixtures.tsx`
 - Modify: `tests/int/feature-matrix.int.spec.ts`
@@ -631,6 +641,7 @@ git commit -m "fix(frontend): clear React lint errors"
 - Create: `tests/int/repository-hygiene.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: ESLint flat-config ignores and Next App Router filesystem routing.
 - Produces: lint scoped to authored product code and no public starter example endpoint.
 
@@ -702,10 +713,12 @@ git commit -m "chore: remove starter audit debt"
 ### Task 8: Final formatting and verification
 
 **Files:**
+
 - Modify: only files reformatted by the approved repair.
 - Test: all authored project source and integration tests.
 
 **Interfaces:**
+
 - Consumes: deliverables from Tasks 1–7.
 - Produces: a clean, verified working tree ready for review.
 

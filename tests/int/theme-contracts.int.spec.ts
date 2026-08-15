@@ -27,10 +27,7 @@ const readTokenBlocks = (source: string) =>
     selector: match[1].trim(),
   }))
 
-const getModeTokens = (
-  theme: (typeof themes)[number],
-  mode: ThemeMode,
-): Record<string, string> => {
+const getModeTokens = (theme: (typeof themes)[number], mode: ThemeMode): Record<string, string> => {
   const expectedSelector = `data-theme-color='${theme}'`
   const block = readTokenBlocks(readTheme(theme)).find(({ selector }) => {
     const isDark = selector.includes('.dark')
@@ -64,9 +61,7 @@ describe('website theme contracts', () => {
 
       if (theme === 'default') {
         for (const item of selectors) {
-          expect(item).toMatch(
-            /data-theme-color='default'|:root:not\(\[data-theme-color\]\)/,
-          )
+          expect(item).toMatch(/data-theme-color='default'|:root:not\(\[data-theme-color\]\)/)
         }
       } else {
         for (const item of selectors) {

@@ -142,8 +142,7 @@ describe('Feature Matrix presentation', () => {
     const featureImagePositionField = getField(featureThemeTab?.fields ?? [], 'imagePosition')
     const alignmentField = getField(layoutTab?.fields ?? [], 'contentAlignment')
     const actionsTabsField = actionsField?.fields?.[0] as unknown as
-      | { tabs: TestTab[]; type: string }
-      | undefined
+      { tabs: TestTab[]; type: string } | undefined
     const actionsThemeTab = actionsTabsField?.tabs?.find(({ label }) => label === 'Theme Settings')
     const actionModeField = getField(actionsThemeTab?.fields ?? [], 'mode')
     const sizeField = getField(layoutTab?.fields ?? [], 'size')
