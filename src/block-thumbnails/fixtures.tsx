@@ -36,6 +36,7 @@ import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
 import type { Form, Media } from '@/payload-types'
 
 import { AboutSectionBlockComponent } from '@/blocks/AboutSection/Component'
+import { AccreditationCardsBlockComponent } from '@/blocks/AccreditationCards/Component'
 import { AwardsListBlockComponent } from '@/blocks/AwardsList/Component'
 import { BentoGridBlockComponent } from '@/blocks/BentoGrid/Component'
 import { DownloadListBlockComponent } from '@/blocks/DownloadList/Component'
@@ -293,6 +294,35 @@ const footerGroupsFixture = [
 ]
 
 export const blockThumbnailFixtures = {
+  accreditationCards: (
+    <AccreditationCardsBlockComponent
+      accreditations={[
+        {
+          title: 'NMC',
+          description: 'National Medical Commission Approved',
+          icon: 'Medal',
+        },
+        {
+          title: 'NABH',
+          description: 'Hospital accreditation in progress',
+          icon: 'Medal',
+        },
+        {
+          title: 'NAAC',
+          description: 'Applying for grading 2025',
+          icon: 'Medal',
+        },
+        {
+          title: 'ISO',
+          description: '9001:2015 Quality Certified',
+          icon: 'Medal',
+        },
+      ]}
+      appearance={{ background: 'brand', border: 'none' }}
+      columns="4"
+      size="compact"
+    />
+  ),
   academicProgrammes: (
     <AcademicProgrammesBlockComponent
       accentTitle="in medicine."

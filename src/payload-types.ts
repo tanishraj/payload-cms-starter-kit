@@ -236,6 +236,7 @@ export interface Page {
         | TestimonialGridBlock
         | AwardsListBlock
         | AboutSectionBlock
+        | AccreditationCardsBlock
         | {
             /**
              * Select a reusable section to embed on this page.
@@ -3548,6 +3549,101 @@ export interface AboutSectionBlock {
   blockType: 'aboutSection';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccreditationCardsBlock".
+ */
+export interface AccreditationCardsBlock {
+  /**
+   * Small label shown above the section title.
+   */
+  eyebrow?: string | null;
+  title?: string | null;
+  accentTitle?: string | null;
+  /**
+   * Optional supporting paragraph below the title.
+   */
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Accreditation, certification, or recognition cards shown in display order.
+   */
+  accreditations: {
+    /**
+     * Lucide icon name — e.g. "Star", "Rocket", "GraduationCap". Browse all icons at lucide.dev/icons
+     */
+    icon: string;
+    /**
+     * Short accreditation name, e.g. “NMC”, “NABH”, “NAAC”, or “ISO”.
+     */
+    title: string;
+    /**
+     * Approval, grading, certification, or accreditation detail.
+     */
+    description?: string | null;
+    /**
+     * Match Section creates a lightly elevated card on the current section surface. Other options use the active theme tokens.
+     */
+    cardBackground: 'default' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    id?: string | null;
+  }[];
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        variant?: ('default' | 'secondary' | 'outline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section eyebrow, heading, description, and actions together.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  columns: '2' | '3' | '4';
+  /**
+   * Stepped Rules alternates connected rules. Grouped uses one outer frame with item dividers. Boxed frames every card. Open uses dividers without an outer frame.
+   */
+  cardFrame: 'stepped' | 'grouped' | 'boxed' | 'open';
+  /**
+   * Controls the card padding. Height follows the card content.
+   */
+  cardSize: 'compact' | 'default' | 'comfortable';
+  /**
+   * Applies one consistent icon treatment across the cards.
+   */
+  iconStyle: 'plain' | 'square' | 'circle' | 'outline';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'accreditationCards';
+}
+/**
  * Shared block groups that sync across every page that references them. Edit once, update everywhere.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3605,6 +3701,7 @@ export interface ReusableSection {
         | TestimonialGridBlock
         | AwardsListBlock
         | AboutSectionBlock
+        | AccreditationCardsBlock
       )[]
     | null;
   updatedAt: string;
@@ -4912,6 +5009,7 @@ export interface PagesSelect<T extends boolean = true> {
         testimonialGrid?: T | TestimonialGridBlockSelect<T>;
         awardsList?: T | AwardsListBlockSelect<T>;
         aboutSection?: T | AboutSectionBlockSelect<T>;
+        accreditationCards?: T | AccreditationCardsBlockSelect<T>;
         reusableSection?:
           | T
           | {
@@ -7319,6 +7417,65 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccreditationCardsBlock_select".
+ */
+export interface AccreditationCardsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  accreditations?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        cardBackground?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  columns?: T;
+  cardFrame?: T;
+  cardSize?: T;
+  iconStyle?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "articles_select".
  */
 export interface ArticlesSelect<T extends boolean = true> {
@@ -7501,6 +7658,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         testimonialGrid?: T | TestimonialGridBlockSelect<T>;
         awardsList?: T | AwardsListBlockSelect<T>;
         aboutSection?: T | AboutSectionBlockSelect<T>;
+        accreditationCards?: T | AccreditationCardsBlockSelect<T>;
       };
   updatedAt?: T;
   createdAt?: T;

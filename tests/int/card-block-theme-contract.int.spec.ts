@@ -2,6 +2,7 @@ import type { ArrayField, Block, Field, TabsField } from 'payload'
 import { describe, expect, it } from 'vitest'
 
 import { AboutSectionBlock } from '@/blocks/AboutSection/config'
+import { AccreditationCardsBlock } from '@/blocks/AccreditationCards/config'
 import { AnnouncementBlock } from '@/blocks/Announcement/config'
 import { AwardsListBlock } from '@/blocks/AwardsList/config'
 import { BentoGridBlock } from '@/blocks/BentoGrid/config'
@@ -49,6 +50,7 @@ const findNamedField = (fields: Field[], name: string): Field | undefined => {
 }
 
 const cardRows = [
+  [AccreditationCardsBlock, 'accreditations', 'cardBackground'],
   [ProgramMatrixBlock, 'items', 'cardBackground'],
   [ProgramGridBlock, 'programs', 'cardBackground'],
   [IconGridBlock, 'items', 'cardBackground'],
@@ -117,6 +119,35 @@ describe('nested card Theme Settings contract', () => {
         { label: 'Gradient: Subtle', value: 'gradient-subtle' },
         { label: 'Gradient: Brand', value: 'gradient-brand' },
       ],
+    })
+  })
+
+  it('exposes theme-aligned Accreditation Card presentation controls', () => {
+    expect(findNamedField(AccreditationCardsBlock.fields, 'cardFrame')).toMatchObject({
+      type: 'select',
+      defaultValue: 'stepped',
+      required: true,
+      options: [
+        { label: 'Stepped Rules', value: 'stepped' },
+        { label: 'Grouped', value: 'grouped' },
+        { label: 'Boxed', value: 'boxed' },
+        { label: 'Open', value: 'open' },
+      ],
+    })
+    expect(findNamedField(AccreditationCardsBlock.fields, 'cardSize')).toMatchObject({
+      type: 'select',
+      defaultValue: 'default',
+      required: true,
+    })
+    expect(findNamedField(AccreditationCardsBlock.fields, 'iconStyle')).toMatchObject({
+      type: 'select',
+      defaultValue: 'plain',
+      required: true,
+    })
+    expect(findNamedField(AccreditationCardsBlock.fields, 'cardBackground')).toMatchObject({
+      type: 'select',
+      defaultValue: 'default',
+      required: true,
     })
   })
 

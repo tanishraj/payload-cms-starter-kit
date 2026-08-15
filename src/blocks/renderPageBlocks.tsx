@@ -47,6 +47,7 @@ import { BentoGridBlockComponent } from './BentoGrid/Component'
 import { TestimonialGridBlockComponent } from './TestimonialGrid/Component'
 import { AwardsListBlockComponent } from './AwardsList/Component'
 import { AboutSectionBlockComponent } from './AboutSection/Component'
+import { AccreditationCardsBlockComponent } from './AccreditationCards/Component'
 import { BlockErrorBoundary } from './shared/BlockErrorBoundary'
 
 export type PageBlock = NonNullable<Page['layout']>[number]
@@ -177,6 +178,8 @@ function renderSingleBlock(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     case 'aboutSection':
       return wrap(<AboutSectionBlockComponent {...(block as any)} />)
+    case 'accreditationCards':
+      return wrap(<AccreditationCardsBlockComponent {...block} />)
     case 'reusableSection': {
       const populated = block.section as PopulatedReusableSection | string | null | undefined
       if (!populated || typeof populated === 'string') return null

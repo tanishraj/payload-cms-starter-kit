@@ -10,7 +10,7 @@ export const contentItemTitleClasses =
 
 export const contentItemLinkClasses = 'transition-opacity hover:opacity-70 hover:underline'
 
-export const contentItemDescriptionClasses = 'text-sm leading-6 text-current/70'
+export const contentItemDescriptionClasses = 'text-sm leading-5 text-current/70'
 
 export const contentItemMetadataClasses =
   'font-mono text-xs font-medium tracking-[0.14em] text-current/65'

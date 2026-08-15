@@ -44,6 +44,7 @@ import { BentoGridBlock } from '@/blocks/BentoGrid/config'
 import { TestimonialGridBlock } from '@/blocks/TestimonialGrid/config'
 import { AwardsListBlock } from '@/blocks/AwardsList/config'
 import { AboutSectionBlock } from '@/blocks/AboutSection/config'
+import { AccreditationCardsBlock } from '@/blocks/AccreditationCards/config'
 import {
   allowPublicReadOrCapability,
   hideFromUsersWithoutCapability,
@@ -143,6 +144,7 @@ export const ReusableSections: CollectionConfig = {
         TestimonialGridBlock,
         AwardsListBlock,
         AboutSectionBlock,
+        AccreditationCardsBlock,
       ],
     },
   ],

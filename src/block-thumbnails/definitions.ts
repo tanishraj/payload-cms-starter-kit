@@ -237,6 +237,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Accreditation Cards block preview',
+    filename: 'accreditation-cards.jpg',
+    label: 'Accreditation Cards',
+    slug: 'accreditationCards',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Awards List block preview',
     filename: 'awards-list.jpg',
     label: 'Awards List',

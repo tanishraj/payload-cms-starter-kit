@@ -45,6 +45,7 @@ import { BentoGridBlock } from '@/blocks/BentoGrid/config'
 import { TestimonialGridBlock } from '@/blocks/TestimonialGrid/config'
 import { AwardsListBlock } from '@/blocks/AwardsList/config'
 import { AboutSectionBlock } from '@/blocks/AboutSection/config'
+import { AccreditationCardsBlock } from '@/blocks/AccreditationCards/config'
 import type { Page } from '@/payload-types'
 import {
   allowPublicReadOrCapability,
@@ -284,6 +285,7 @@ export const Pages: CollectionConfig = {
                 TestimonialGridBlock,
                 AwardsListBlock,
                 AboutSectionBlock,
+                AccreditationCardsBlock,
                 ReusableSectionBlock,
               ],
               required: false,

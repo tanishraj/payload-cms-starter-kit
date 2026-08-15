@@ -51,6 +51,7 @@ import { BentoGridBlockComponent } from './BentoGrid/Component'
 import { TestimonialGridBlockComponent } from './TestimonialGrid/Component'
 import { AwardsListBlockComponent } from './AwardsList/Component'
 import { AboutSectionBlockComponent } from './AboutSection/Component'
+import { AccreditationCardsBlockComponent } from './AccreditationCards/Component'
 
 export type LivePreviewPageBlock = NonNullable<Page['layout']>[number]
 
@@ -197,6 +198,8 @@ function renderSingleLivePreviewBlock(
     case 'aboutSection':
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return <AboutSectionBlockComponent key={key} {...(block as any)} />
+    case 'accreditationCards':
+      return <AccreditationCardsBlockComponent key={key} {...block} />
     case 'reusableSection': {
       const populated = block.section as PopulatedReusableSection | string | null | undefined
       if (!populated || typeof populated === 'string') return null

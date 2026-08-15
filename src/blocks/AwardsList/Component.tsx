@@ -111,9 +111,7 @@ export function AwardsListBlockComponent({
             )}
           >
             {eyebrow?.trim() ? (
-              <SectionEyebrow surface={sectionBackground}>
-                {eyebrow.trim()}
-              </SectionEyebrow>
+              <SectionEyebrow surface={sectionBackground}>{eyebrow.trim()}</SectionEyebrow>
             ) : null}
             {title?.trim() ? (
               <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
@@ -172,7 +170,7 @@ export function AwardsListBlockComponent({
                       </span>
                     ) : null}
                   </div>
-                  <div className="flex flex-col gap-1">
+                  <div className="flex flex-col gap-2">
                     <h3 className="font-sans font-semibold leading-tight text-current">
                       {item.title?.trim()}
                     </h3>
