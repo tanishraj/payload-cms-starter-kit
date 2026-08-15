@@ -62,6 +62,33 @@ describe('global header wiring', () => {
     expect(html).toContain('Contact')
   })
 
+  it('honors the header preset sticky setting and keeps legacy presets sticky', () => {
+    const renderHeader = (sticky?: boolean) =>
+      renderToStaticMarkup(
+        createElement(GlobalHeader, {
+          header: {
+            layout: [
+              {
+                blockType: 'headerNavbar12',
+                logoMode: 'siteDefault',
+                menuItems: [],
+                navAlignment: 'center',
+                size: 'default',
+                ...(sticky === undefined ? {} : { sticky }),
+              },
+            ],
+          } as never,
+          stickyTopOffset: 'calc(3rem + 3rem)',
+        }),
+      )
+
+    expect(renderHeader()).toContain('data-global-header-sticky="true"')
+    expect(renderHeader(true)).toContain('position:sticky')
+    expect(renderHeader(false)).toContain('data-global-header-sticky="false"')
+    expect(renderHeader(false)).not.toContain('position:sticky')
+    expect(renderHeader(false)).not.toContain('top:calc(3rem + 3rem)')
+  })
+
   it('fetches and renders the active header preset in the frontend shell', () => {
     const layoutSource = fs.readFileSync(path.resolve(process.cwd(), 'src/app/(frontend)/layout.tsx'), 'utf8')
 

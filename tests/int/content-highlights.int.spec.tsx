@@ -335,6 +335,19 @@ describe('Content Highlights', () => {
     expect(html).not.toContain('href=""')
   })
 
+  it('renders the editor-authored accent title', () => {
+    const html = renderToStaticMarkup(
+      <ContentHighlightsBlockComponent
+        accentTitle="worth exploring."
+        items={[{ title: 'Research' }]}
+        title="Content"
+      />,
+    )
+
+    expect(html).toContain('<span class="block font-[inherit]">Content</span>')
+    expect(html).toContain('<em class="block font-[inherit]">worth exploring.</em>')
+  })
+
   it.each(['simpleGrid', 'numberedSteps'] satisfies ContentHighlightsLayout[])(
     'preserves normalized actions and item links in %s',
     (layout) => {

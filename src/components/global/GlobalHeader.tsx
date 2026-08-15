@@ -19,14 +19,22 @@ export function GlobalHeader({
     return null
   }
 
+  const firstBlock = header.layout[0]
+  const isSticky = firstBlock.blockType !== 'headerNavbar12' || firstBlock.sticky !== false
+
   return (
     <div
       data-global-header="true"
-      style={{
-        position: 'sticky',
-        top: stickyTopOffset,
-        zIndex: 30,
-      }}
+      data-global-header-sticky={isSticky ? 'true' : 'false'}
+      style={
+        isSticky
+          ? {
+              position: 'sticky',
+              top: stickyTopOffset,
+              zIndex: 30,
+            }
+          : undefined
+      }
     >
       {renderHeaderBlocks(header.layout, { siteLogo, siteName })}
     </div>

@@ -25,6 +25,7 @@ type ContentHighlightItemValue = Omit<CmsLinkValue, 'linkType'> & {
 }
 
 type ContentHighlightsBlockLike = {
+  accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   contentAlignment?: ContentHighlightsAlignment | null
@@ -40,6 +41,7 @@ type ContentHighlightsBlockLike = {
 }
 
 export function ContentHighlightsBlockComponent({
+  accentTitle,
   actions,
   appearance,
   contentAlignment = 'center',
@@ -104,6 +106,7 @@ export function ContentHighlightsBlockComponent({
   return (
     <>
       <ContentHighlights
+        accentTitle={accentTitle?.trim() || undefined}
         actions={resolvedActionNode}
         appearance={appearance}
         contentAlignment={resolvedAlignment}
