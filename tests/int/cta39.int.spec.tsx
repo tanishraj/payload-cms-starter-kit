@@ -13,7 +13,7 @@ type NamedField = {
   label?: string
   maxRows?: number
   name?: string
-  options?: Array<{ value: string }>
+  options?: Array<{ label: string; value: string }>
   required?: boolean
   tabs?: Array<{ fields: NamedField[]; label: string }>
   type?: string
@@ -58,6 +58,7 @@ describe('Call to Action block', () => {
       'headerLayout',
       'contentAlignment',
       'splitContentAlignment',
+      'actionLayout',
       'size',
     ])
     expect(findNamedField(allFields, 'eyebrow')).toMatchObject({ type: 'text' })
@@ -79,7 +80,12 @@ describe('Call to Action block', () => {
       required: true,
       type: 'select',
     })
-    expect(selectValues(allFields, 'headerLayout')).toEqual(['stacked', 'split'])
+    expect(selectValues(allFields, 'headerLayout')).toEqual(['stacked', 'split', 'actionSplit'])
+    expect(findNamedField(allFields, 'headerLayout')?.options).toEqual([
+      { label: 'Stacked', value: 'stacked' },
+      { label: 'Content Split', value: 'split' },
+      { label: 'Action Split', value: 'actionSplit' },
+    ])
     expect(selectValues(allFields, 'contentAlignment')).toEqual(['left', 'center', 'right'])
     expect(findNamedField(allFields, 'splitContentAlignment')).toMatchObject({
       defaultValue: 'center',
@@ -90,6 +96,13 @@ describe('Call to Action block', () => {
       'function',
     )
     expect(selectValues(allFields, 'splitContentAlignment')).toEqual(['top', 'center', 'bottom'])
+    expect(findNamedField(allFields, 'actionLayout')).toMatchObject({
+      defaultValue: 'inline',
+      required: true,
+      type: 'select',
+    })
+    expect(findNamedField(allFields, 'actionLayout')?.admin?.condition).toBeTypeOf('function')
+    expect(selectValues(allFields, 'actionLayout')).toEqual(['inline', 'stacked'])
     expect(selectValues(allFields, 'size')).toEqual(['none', 'compact', 'default', 'comfortable'])
   })
 
@@ -165,6 +178,54 @@ describe('Call to Action block', () => {
     )
   })
 
+  it('renders Action Split with copy left and actions on the desktop right edge', () => {
+    const html = renderToStaticMarkup(
+      <Cta39BlockComponent
+        actions={[
+          { label: 'Apply now', linkType: 'custom', url: '/apply' },
+          { label: 'Book a visit', linkType: 'custom', url: '/visit' },
+        ]}
+        description="Choose your route and take the next step."
+        eyebrow="Admissions"
+        headerLayout="actionSplit"
+        title="Start your application."
+      />,
+    )
+
+    expect(html).toContain('data-cta39-layout="actionSplit"')
+    expect(html).toContain('lg:grid-cols-[minmax(0,1fr)_auto]')
+    expect(html).toContain('lg:justify-self-end')
+    expect(html).toContain('data-cta39-action-layout="inline"')
+    expect(html).toContain('lg:flex-row')
+    expect(html).toContain('max-w-2xl')
+    expect(html.indexOf('Admissions')).toBeLessThan(html.indexOf('Start your application.'))
+    expect(html.indexOf('Start your application.')).toBeLessThan(
+      html.indexOf('Choose your route and take the next step.'),
+    )
+    expect(html.indexOf('Choose your route and take the next step.')).toBeLessThan(
+      html.indexOf('Apply now'),
+    )
+  })
+
+  it.each([
+    ['inline', 'lg:flex-row'],
+    ['stacked', 'lg:flex-col'],
+  ] as const)('arranges Action Split buttons %s on desktop', (actionLayout, className) => {
+    const html = renderToStaticMarkup(
+      <Cta39BlockComponent
+        actionLayout={actionLayout}
+        actions={[{ label: 'Apply', linkType: 'custom', url: '/apply' }]}
+        contentAlignment="center"
+        headerLayout="actionSplit"
+        title="Take the next step."
+      />,
+    )
+
+    expect(html).toContain(`data-cta39-action-layout="${actionLayout}"`)
+    expect(html).toContain(className)
+    expect(html).toContain('items-center sm:justify-center')
+  })
+
   it.each([
     ['left', 'items-start text-left'],
     ['center', 'items-center text-center'],
@@ -203,6 +264,18 @@ describe('Call to Action block', () => {
     )
     expect(staleSplit).toContain('data-cta39-split-alignment="center"')
     expect(staleSplit).toContain('lg:self-center')
+
+    const staleActionSplit = renderToStaticMarkup(
+      <Cta39BlockComponent
+        actionLayout={'stale' as never}
+        actions={[{ label: 'Apply', linkType: 'custom', url: '/apply' }]}
+        headerLayout="actionSplit"
+        title="Take the next step."
+      />,
+    )
+    expect(staleActionSplit).toContain('data-cta39-layout="actionSplit"')
+    expect(staleActionSplit).toContain('data-cta39-action-layout="inline"')
+    expect(staleActionSplit).toContain('lg:flex-row')
   })
 
   it('falls back to stacked when split has no supporting content', () => {
@@ -212,6 +285,22 @@ describe('Call to Action block', () => {
 
     expect(html).toContain('data-cta39-layout="stacked"')
     expect(html).not.toContain('lg:grid-cols-[minmax(0,3fr)_minmax(18rem,2fr)]')
+  })
+
+  it('falls back to Stacked when Action Split has no valid section actions', () => {
+    const html = renderToStaticMarkup(
+      <Cta39BlockComponent
+        actions={[{ label: 'Missing destination', linkType: 'custom', url: '' }]}
+        description="Supporting copy remains with the CTA."
+        headerLayout="actionSplit"
+        title="Take the next step."
+      />,
+    )
+
+    expect(html).toContain('data-cta39-layout="stacked"')
+    expect(html).toContain('Supporting copy remains with the CTA.')
+    expect(html).not.toContain('data-cta39-action-layout')
+    expect(html).not.toContain('lg:justify-self-end')
   })
 
   it('returns no markup without a usable title', () => {
@@ -236,8 +325,9 @@ describe('Call to Action block', () => {
       generatedTypes.indexOf('export interface HeroBannerBlock {'),
     )
     expect(ctaType).toContain('eyebrow?: string | null;')
-    expect(ctaType).toContain("headerLayout: 'stacked' | 'split';")
+    expect(ctaType).toContain("headerLayout: 'stacked' | 'split' | 'actionSplit';")
     expect(ctaType).toContain("splitContentAlignment?: ('top' | 'center' | 'bottom') | null;")
+    expect(ctaType).toContain("actionLayout?: ('inline' | 'stacked') | null;")
     expect(ctaType).not.toContain('borderStyle')
   })
 })
