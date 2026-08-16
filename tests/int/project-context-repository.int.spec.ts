@@ -46,4 +46,16 @@ describe('project context repository contract', () => {
 
     expect(stableStringify(checkedIn)).toBe(stableStringify(inventory))
   })
+
+  it('keeps maintained Page block and global counts aligned with source', async () => {
+    const inventory = await buildProjectInventory(process.cwd())
+    const readme = readFileSync('README.md', 'utf8')
+    const featureInventory = readFileSync('docs/architecture/feature-inventory.md', 'utf8')
+
+    expect(readme).toContain(`${inventory.blocks.page.length} selectable Page blocks`)
+    expect(readme).toContain(`${inventory.payload.globals.length} globals own`)
+    expect(featureInventory).toContain(`${inventory.blocks.page.length}-block layouts`)
+    expect(featureInventory).toContain('Icon Card Showcase')
+    expect(featureInventory).toContain('| Configuration | Search Settings')
+  })
 })

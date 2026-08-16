@@ -36,7 +36,7 @@ Production containers require a durable external MongoDB database and `MEDIA_PRO
 - articles with lexical rich text, taxonomies (categories + tags), SEO fields, and live preview
 - moderated reviews promoted from form submissions into public editorial content
 - news and events with type-specific layouts, gallery albums, and live preview
-- 39 selectable Page blocks covering editorial, media, forms, reviews, galleries, offices, and reusable sections
+- 49 selectable Page blocks covering editorial, media, forms, reviews, galleries, offices, and reusable sections
 - production Page block error boundaries that prevent one broken layout block from crashing the remaining Page
 
 **SEO and discoverability**
@@ -111,7 +111,7 @@ The CMS separates content, taxonomy, structure, media, intake, administration, a
 - `media` and `gallery-albums` own governed assets and albums
 - `forms` and `form-submissions` own intake and lead operations
 - `work-queue`, `operational-audit-events`, and `users` own administration
-- eight globals own identity, appearance, SEO, analytics, consent, layout defaults, news/archive settings, and maintenance modes
+- 9 globals own identity, appearance, SEO, analytics, consent, layout defaults, news/archive settings, search suggestions, and maintenance modes
 
 ## Admin Information Architecture
 
@@ -148,7 +148,7 @@ See [docs/architecture/content-model-map.md](docs/architecture/content-model-map
 - [Redirects](docs/guides/redirects.md) — CMS-managed URL redirects
 - [Forms](docs/guides/forms.md) — form definitions and submitter confirmation email
 - [News & Events](docs/guides/news-events.md) — news/event authoring, archive, live preview, and feed
-- [Page Blocks](docs/guides/blocks.md) — all 39 Page layout choices and their data dependencies
+- [Page Blocks](docs/guides/blocks.md) — all 49 Page layout choices and their data dependencies
 - [Cookie Consent Banner](docs/guides/cookie-consent.md) — consent variants, copy, and analytics behavior
 
 ## Environment
