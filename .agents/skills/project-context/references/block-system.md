@@ -45,6 +45,11 @@ Production Page blocks are wrapped in `BlockErrorBoundary`, so one broken block 
 - `bannerCtaFields.ts` and `bannerCtaPresentation.ts`: banner layout controls and class resolution.
 - `siteSocialLinks.ts`: normalized CMS social destinations.
 
+Editorial Reasons supports Stacked, Inline, and Three Columns number layouts. Three Columns uses one
+outer reasons column so each row can place its generated number, title, and description in separate
+large-screen columns; compact screens place the description beneath the title. Selecting it hides
+the outer List Columns control without deleting that stored value.
+
 The generated inventory contains every current export under [src/blocks/shared](../../../../src/blocks/shared).
 
 ## Required Commands

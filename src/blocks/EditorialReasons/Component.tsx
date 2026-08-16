@@ -44,7 +44,7 @@ type EditorialReasonsListColumns = '1' | '2' | '3' | '4'
 
 type EditorialReasonsListBorderStyle = 'framed' | 'open' | 'ruled'
 
-type EditorialReasonsNumberLayout = 'inline' | 'stacked'
+type EditorialReasonsNumberLayout = 'columns' | 'inline' | 'stacked'
 
 type EditorialReasonsActionsPosition = 'bottom' | 'inline'
 
@@ -130,7 +130,7 @@ const listColumnValues = new Set<EditorialReasonsListColumns>(['1', '2', '3', '4
 
 const listBorderStyles = new Set<EditorialReasonsListBorderStyle>(['open', 'ruled', 'framed'])
 
-const numberLayoutValues = new Set<EditorialReasonsNumberLayout>(['inline', 'stacked'])
+const numberLayoutValues = new Set<EditorialReasonsNumberLayout>(['stacked', 'inline', 'columns'])
 
 const resolveLayoutProportion = (
   value: EditorialReasonsLayoutProportion | null | undefined,
@@ -218,10 +218,11 @@ export function EditorialReasonsBlockComponent({
   const resolvedContentAlignment = resolveContentAlignment(contentAlignment)
   const resolvedLayoutProportion = resolveLayoutProportion(layoutProportion)
   const resolvedListBorderStyle = resolveListBorderStyle(listBorderStyle)
-  const resolvedListColumns = resolveListColumns(listColumns)
+  const resolvedNumberLayout = resolveNumberLayout(numberLayout)
+  const resolvedListColumns =
+    resolvedNumberLayout === 'columns' ? '1' : resolveListColumns(listColumns)
   const resolvedListPosition = resolveListPosition(listPosition)
   const resolvedListActions = resolveCmsActions(listActions)
-  const resolvedNumberLayout = resolveNumberLayout(numberLayout)
   const isFullWidth = resolvedLayoutProportion === 'fullWidth'
   const resolvedIntroAlignment = isFullWidth ? 'top' : (introVerticalAlignment ?? 'top')
   const resolvedSectionBackground = appearance?.background ?? 'none'
@@ -250,139 +251,166 @@ export function EditorialReasonsBlockComponent({
                 : layoutProportionClasses[resolvedLayoutProportion]),
           )}
         >
-        <div
-          className={cn(
-            'min-w-0',
-            !isFullWidth &&
-              (pushesActionsDown
-                ? 'lg:flex lg:flex-col lg:self-stretch'
-                : introAlignmentClasses[resolvedIntroAlignment]),
-            !isFullWidth && (resolvedListPosition === 'right' ? 'lg:order-1' : 'lg:order-2'),
-          )}
-          data-editorial-reasons-intro="true"
-          data-editorial-reasons-actions-position={pushesActionsDown ? 'bottom' : 'inline'}
-          data-editorial-reasons-intro-alignment={resolvedIntroAlignment}
-        >
           <div
             className={cn(
-              contentIntroClasses,
-              contentAlignmentClasses[resolvedContentAlignment],
-              pushesActionsDown && 'lg:h-full',
-              !isFullWidth && resolvedStickyIntro && 'lg:sticky lg:top-28',
+              'min-w-0',
+              !isFullWidth &&
+                (pushesActionsDown
+                  ? 'lg:flex lg:flex-col lg:self-stretch'
+                  : introAlignmentClasses[resolvedIntroAlignment]),
+              !isFullWidth && (resolvedListPosition === 'right' ? 'lg:order-1' : 'lg:order-2'),
             )}
-            data-content-alignment={resolvedContentAlignment}
-            data-editorial-reasons-content-alignment={resolvedContentAlignment}
-            data-editorial-reasons-sticky={resolvedStickyIntro ? 'true' : 'false'}
-          >
-            {resolvedEyebrow ? (
-              <SectionEyebrow surface={resolvedSectionBackground}>{resolvedEyebrow}</SectionEyebrow>
-            ) : null}
-
-            <h2 className={contentSectionHeadingClasses}>
-              <span className="block font-[inherit]">{resolvedTitle}</span>
-              {resolvedAccentTitle ? (
-                <em className="block font-[inherit]">
-                  {resolvedAccentTitle}
-                </em>
-              ) : null}
-            </h2>
-
-            {resolvedDescription ? (
-              <p className={contentSectionDescriptionClasses}>{resolvedDescription}</p>
-            ) : null}
-
-            <ContentActions
-              actions={resolvedActions}
-              alignment={resolvedContentAlignment}
-              className={cn(pushesActionsDown && 'lg:mt-auto')}
-              data-editorial-reasons-actions="true"
-            />
-          </div>
-        </div>
-
-        <div
-          className={cn(
-            'min-w-0',
-            !isFullWidth && (resolvedListPosition === 'right' ? 'lg:order-2' : 'lg:order-1'),
-          )}
-        >
-          <div
-            className={cn(listBorderStyleClasses[resolvedListBorderStyle])}
-            data-editorial-reasons-border-style={resolvedListBorderStyle}
-            data-editorial-reasons-columns={resolvedListColumns}
-            data-editorial-reasons-list="true"
+            data-editorial-reasons-intro="true"
+            data-editorial-reasons-actions-position={pushesActionsDown ? 'bottom' : 'inline'}
+            data-editorial-reasons-intro-alignment={resolvedIntroAlignment}
           >
             <div
               className={cn(
-                '-mb-px grid',
-                resolvedListBorderStyle !== 'framed' && '-mx-6',
-                listColumnClasses[resolvedListColumns],
+                contentIntroClasses,
+                contentAlignmentClasses[resolvedContentAlignment],
+                pushesActionsDown && 'lg:h-full',
+                !isFullWidth && resolvedStickyIntro && 'lg:sticky lg:top-28',
               )}
-              data-editorial-reasons-grid="true"
+              data-content-alignment={resolvedContentAlignment}
+              data-editorial-reasons-content-alignment={resolvedContentAlignment}
+              data-editorial-reasons-sticky={resolvedStickyIntro ? 'true' : 'false'}
             >
-              {resolvedReasons.map((reason, index) => {
-                return (
-                  <article
-                    className={cn(
-                      'min-w-0 border-b border-current/15 px-6 py-7 sm:py-8',
-                      resolvedNumberLayout === 'inline'
-                        ? 'grid grid-cols-[3.5rem_minmax(0,1fr)] items-start gap-5 sm:grid-cols-[4.5rem_minmax(0,1fr)] sm:gap-6'
-                        : 'flex flex-col',
-                    )}
-                    data-editorial-reason="true"
-                    data-editorial-reason-number-layout={resolvedNumberLayout}
-                    key={reason.id}
-                  >
-                    <span
-                      aria-hidden="true"
-                      className={cn(
-                        contentItemMetadataClasses,
-                        resolvedNumberLayout === 'inline' ? 'pt-1 tabular-nums' : 'mb-6 tabular-nums',
-                      )}
-                      data-section-eyebrow-surface={resolvedSectionBackground}
-                    >
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
+              {resolvedEyebrow ? (
+                <SectionEyebrow surface={resolvedSectionBackground}>
+                  {resolvedEyebrow}
+                </SectionEyebrow>
+              ) : null}
 
-                    <div className="min-w-0">
-                      {reason.href ? (
-                        <h3>
-                          <a
-                            className={cn(contentItemTitleClasses, contentItemLinkClasses)}
-                            href={reason.href}
-                            rel={reason.openInNewTab ? 'noreferrer' : undefined}
-                            target={reason.openInNewTab ? '_blank' : undefined}
-                          >
-                            {reason.title}
-                          </a>
-                        </h3>
-                      ) : (
-                        <h3 className={contentItemTitleClasses}>{reason.title}</h3>
-                      )}
+              <h2 className={contentSectionHeadingClasses}>
+                <span className="block font-[inherit]">{resolvedTitle}</span>
+                {resolvedAccentTitle ? (
+                  <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+                ) : null}
+              </h2>
 
-                      {reason.description ? (
-                        <p className={cn(contentItemDescriptionClasses, 'mt-2')}>
-                          {reason.description}
-                        </p>
-                      ) : null}
-                    </div>
-                  </article>
-                )
-              })}
+              {resolvedDescription ? (
+                <p className={contentSectionDescriptionClasses}>{resolvedDescription}</p>
+              ) : null}
+
+              <ContentActions
+                actions={resolvedActions}
+                alignment={resolvedContentAlignment}
+                className={cn(pushesActionsDown && 'lg:mt-auto')}
+                data-editorial-reasons-actions="true"
+              />
             </div>
           </div>
 
-          {resolvedListActions.length > 0 ? (
-            <ContentActions
-              actions={resolvedListActions}
-              alignment={resolvedContentAlignment}
-              className="mt-8"
-              data-editorial-reasons-list-actions="true"
-            />
-          ) : null}
+          <div
+            className={cn(
+              'min-w-0',
+              !isFullWidth && (resolvedListPosition === 'right' ? 'lg:order-2' : 'lg:order-1'),
+            )}
+          >
+            <div
+              className={cn(listBorderStyleClasses[resolvedListBorderStyle])}
+              data-editorial-reasons-border-style={resolvedListBorderStyle}
+              data-editorial-reasons-columns={resolvedListColumns}
+              data-editorial-reasons-list="true"
+            >
+              <div
+                className={cn(
+                  '-mb-px grid',
+                  resolvedListBorderStyle !== 'framed' && '-mx-6',
+                  listColumnClasses[resolvedListColumns],
+                )}
+                data-editorial-reasons-grid="true"
+              >
+                {resolvedReasons.map((reason, index) => {
+                  const reasonTitle = reason.href ? (
+                    <h3>
+                      <a
+                        className={cn(contentItemTitleClasses, contentItemLinkClasses)}
+                        href={reason.href}
+                        rel={reason.openInNewTab ? 'noreferrer' : undefined}
+                        target={reason.openInNewTab ? '_blank' : undefined}
+                      >
+                        {reason.title}
+                      </a>
+                    </h3>
+                  ) : (
+                    <h3 className={contentItemTitleClasses}>{reason.title}</h3>
+                  )
+
+                  return (
+                    <article
+                      className={cn(
+                        'min-w-0 border-b border-current/15 px-6 py-7 sm:py-8',
+                        resolvedNumberLayout === 'columns'
+                          ? 'grid grid-cols-[3.5rem_minmax(0,1fr)] items-start gap-x-5 gap-y-2 sm:grid-cols-[4.5rem_minmax(0,1fr)] sm:gap-x-6 lg:grid-cols-[4.5rem_minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-x-8'
+                          : resolvedNumberLayout === 'inline'
+                            ? 'grid grid-cols-[3.5rem_minmax(0,1fr)] items-start gap-5 sm:grid-cols-[4.5rem_minmax(0,1fr)] sm:gap-6'
+                            : 'flex flex-col',
+                      )}
+                      data-editorial-reason="true"
+                      data-editorial-reason-number-layout={resolvedNumberLayout}
+                      key={reason.id}
+                    >
+                      <span
+                        aria-hidden="true"
+                        className={cn(
+                          contentItemMetadataClasses,
+                          resolvedNumberLayout === 'stacked'
+                            ? 'mb-6 tabular-nums'
+                            : 'pt-1 tabular-nums',
+                        )}
+                        data-section-eyebrow-surface={resolvedSectionBackground}
+                      >
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+
+                      {resolvedNumberLayout === 'columns' ? (
+                        <>
+                          <div
+                            className={cn('min-w-0', !reason.description && 'lg:col-span-2')}
+                            data-editorial-reason-title="true"
+                          >
+                            {reasonTitle}
+                          </div>
+                          {reason.description ? (
+                            <p
+                              className={cn(
+                                contentItemDescriptionClasses,
+                                'col-start-2 lg:col-start-3 lg:row-start-1',
+                              )}
+                              data-editorial-reason-description="true"
+                            >
+                              {reason.description}
+                            </p>
+                          ) : null}
+                        </>
+                      ) : (
+                        <div className="min-w-0">
+                          {reasonTitle}
+                          {reason.description ? (
+                            <p className={cn(contentItemDescriptionClasses, 'mt-2')}>
+                              {reason.description}
+                            </p>
+                          ) : null}
+                        </div>
+                      )}
+                    </article>
+                  )
+                })}
+              </div>
+            </div>
+
+            {resolvedListActions.length > 0 ? (
+              <ContentActions
+                actions={resolvedListActions}
+                alignment={resolvedContentAlignment}
+                className="mt-8"
+                data-editorial-reasons-list-actions="true"
+              />
+            ) : null}
+          </div>
         </div>
-      </div>
-      <BlockFooterActions actions={footerActions} />
+        <BlockFooterActions actions={footerActions} />
       </div>
     </section>
   )

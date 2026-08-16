@@ -1169,10 +1169,10 @@ export interface EditorialReasonsBlock {
    */
   layoutProportion: 'listFocus' | 'balanced' | 'introFocus' | 'fullWidth';
   /**
-   * Sets the desktop list layout. Two to four columns collapse responsively on smaller screens.
+   * Sets the desktop list layout. Two to four columns collapse responsively on smaller screens. Three Columns number layout uses one full-width list column.
    */
-  listColumns: '1' | '2' | '3' | '4';
-  numberLayout: 'stacked' | 'inline';
+  listColumns?: ('1' | '2' | '3' | '4') | null;
+  numberLayout: 'stacked' | 'inline' | 'columns';
   /**
    * Open removes the outer top and bottom rules. Ruled keeps them. Framed wraps the list on all sides.
    */

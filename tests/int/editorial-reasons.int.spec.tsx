@@ -171,12 +171,20 @@ describe('EditorialReasonsBlock schema', () => {
         { label: '4 Columns', value: '4' },
       ],
     })
+    expect(listColumns.admin?.condition?.({}, { numberLayout: 'stacked' }, {} as never)).toBe(true)
+    expect(listColumns.admin?.condition?.({}, { numberLayout: 'inline' }, {} as never)).toBe(true)
+    expect(listColumns.admin?.condition?.({}, { numberLayout: 'columns' }, {} as never)).toBe(false)
     expect(numberLayout).toMatchObject({
       type: 'select',
       defaultValue: 'stacked',
+      required: true,
       options: [
         { label: 'Stacked (number above title)', value: 'stacked' },
         { label: 'Inline (number beside title)', value: 'inline' },
+        {
+          label: 'Three Columns (number + title + description)',
+          value: 'columns',
+        },
       ],
     })
     expect(listBorderStyle).toMatchObject({
@@ -514,6 +522,47 @@ describe('EditorialReasonsBlockComponent', () => {
     expect(inlineTwoColumns).toContain('data-editorial-reason-number-layout="inline"')
   })
 
+  it('renders three-column rows responsively and forces one outer list column', () => {
+    const html = renderToStaticMarkup(
+      <EditorialReasonsBlockComponent
+        listColumns="4"
+        numberLayout="columns"
+        reasons={[
+          {
+            description: 'Maintain high standards of teaching and assessment.',
+            title: 'Academic Excellence',
+          },
+          {
+            linkType: 'custom',
+            openInNewTab: true,
+            title: 'Student Development',
+            url: 'https://example.edu/student-development',
+          },
+        ]}
+        title="What shapes the learning environment"
+      />,
+    )
+
+    expect(html).toContain('data-editorial-reasons-columns="1"')
+    expect(html).toContain('grid-cols-1')
+    expect(html).not.toContain('xl:grid-cols-4')
+    expect(html.match(/data-editorial-reason-number-layout="columns"/g)).toHaveLength(2)
+    expect(html.match(/data-editorial-reason-title="true"/g)).toHaveLength(2)
+    expect(html.match(/data-editorial-reason-description="true"/g)).toHaveLength(1)
+    expect(html).toContain('grid-cols-[3.5rem_minmax(0,1fr)]')
+    expect(html).toContain('sm:grid-cols-[4.5rem_minmax(0,1fr)]')
+    expect(html).toContain('lg:grid-cols-[4.5rem_minmax(0,1.1fr)_minmax(0,1fr)]')
+    expect(html).toContain('col-start-2 lg:col-start-3 lg:row-start-1')
+    expect(html).toContain('lg:col-span-2')
+    expect(html.indexOf('>01<')).toBeLessThan(html.indexOf('data-editorial-reason-title="true"'))
+    expect(html.indexOf('data-editorial-reason-title="true"')).toBeLessThan(
+      html.indexOf('data-editorial-reason-description="true"'),
+    )
+    expect(html).toContain('href="https://example.edu/student-development"')
+    expect(html).toContain('target="_blank"')
+    expect(html).toContain('rel="noreferrer"')
+  })
+
   it.each([
     ['open', 'overflow-hidden', 'data-editorial-reasons-border-style="open"'],
     [
@@ -722,7 +771,8 @@ describe('Editorial Reasons catalogs', () => {
     )
     expect(payloadTypesSource).toContain("listPosition?: ('right' | 'left') | null")
     expect(payloadTypesSource).toContain("contentAlignment: 'left' | 'center' | 'right'")
-    expect(payloadTypesSource).toContain("listColumns: '1' | '2' | '3' | '4'")
+    expect(payloadTypesSource).toContain("listColumns?: ('1' | '2' | '3' | '4') | null")
+    expect(payloadTypesSource).toContain("numberLayout: 'stacked' | 'inline' | 'columns'")
     expect(payloadTypesSource).toContain("listBorderStyle: 'open' | 'ruled' | 'framed'")
     expect(payloadTypesSource).toContain(
       "introVerticalAlignment?: ('top' | 'center' | 'bottom') | null",
@@ -734,6 +784,9 @@ describe('Editorial Reasons catalogs', () => {
     expect(thumbnailDefinitionsSource).toContain("slug: 'editorialReasons'")
     expect(thumbnailFixturesSource).toContain('editorialReasons:')
     expect(thumbnailFixturesSource).toContain('<EditorialReasonsBlockComponent')
+    expect(thumbnailFixturesSource).toMatch(
+      /editorialReasons:[\s\S]*listColumns="1"[\s\S]*numberLayout="columns"[\s\S]*cta39:/,
+    )
   })
 })
 
@@ -745,5 +798,7 @@ describe('Editorial Reasons documentation', () => {
     expect(blocksGuideSource).toContain('sticky introduction')
     expect(blocksGuideSource).toContain('responsive one-to-four-column numbered grid')
     expect(blocksGuideSource).toContain('Full Width')
+    expect(blocksGuideSource).toContain('Three Columns')
+    expect(blocksGuideSource).toContain('number, title, and description')
   })
 })

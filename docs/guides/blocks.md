@@ -79,6 +79,10 @@ four-column desktop composition; multi-column layouts collapse responsively on s
 List Border Style can leave only internal dividers (`Open`), retain the top and bottom rules
 (`Ruled`), or wrap the entire list (`Framed`). Dividers inherit the active surface foreground at
 low opacity, matching Stats Strip on light, dark, and Primary backgrounds.
+Number Layout offers Stacked, Inline, and Three Columns. Three Columns places each generated
+number, title, and description in separate desktop columns, then moves the description beneath the
+title on smaller screens. It always uses one outer list column; choose List Focus, List Position
+Right, Introduction Alignment Top, and Ruled borders to reproduce the reference-style composition.
 
 Headers use the `Header Navbar 12` block, Footers use `Footer 56`, and System Pages use exactly one matching `System 404`, `System Maintenance`, or `System Coming Soon` block. Those structural blocks are not selectable in normal Page layouts.
 

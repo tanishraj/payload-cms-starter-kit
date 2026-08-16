@@ -10,10 +10,14 @@ type ReasonSiblingData = {
 
 type EditorialReasonsLayoutSiblingData = {
   layoutProportion?: 'balanced' | 'fullWidth' | 'introFocus' | 'listFocus' | null
+  numberLayout?: 'columns' | 'inline' | 'stacked' | null
 }
 
 const isSplitLayout = (_data: unknown, siblingData: EditorialReasonsLayoutSiblingData) =>
   siblingData?.layoutProportion !== 'fullWidth'
+
+const supportsOuterListColumns = (_data: unknown, siblingData: EditorialReasonsLayoutSiblingData) =>
+  siblingData?.numberLayout !== 'columns'
 
 const isPageLink = (_data: unknown, siblingData: ReasonSiblingData) =>
   siblingData?.linkType === 'page'
@@ -127,7 +131,11 @@ export const EditorialReasonsBlock: Block = {
             },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             reasonsField,
-            createContentActionsField({ name: 'listActions', label: 'List Footer Actions', maxRows: 2 }),
+            createContentActionsField({
+              name: 'listActions',
+              label: 'List Footer Actions',
+              maxRows: 2,
+            }),
           ],
         },
         {
@@ -180,8 +188,9 @@ export const EditorialReasonsBlock: Block = {
                 { label: '4 Columns', value: '4' },
               ],
               admin: {
+                condition: supportsOuterListColumns,
                 description:
-                  'Sets the desktop list layout. Two to four columns collapse responsively on smaller screens.',
+                  'Sets the desktop list layout. Two to four columns collapse responsively on smaller screens. Three Columns number layout uses one full-width list column.',
               },
             } satisfies SelectField,
             {
@@ -193,6 +202,10 @@ export const EditorialReasonsBlock: Block = {
               options: [
                 { label: 'Stacked (number above title)', value: 'stacked' },
                 { label: 'Inline (number beside title)', value: 'inline' },
+                {
+                  label: 'Three Columns (number + title + description)',
+                  value: 'columns',
+                },
               ],
             } satisfies SelectField,
             {
