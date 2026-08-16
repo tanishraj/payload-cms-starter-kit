@@ -69,7 +69,9 @@ export function extractImports(source, filePath) {
     }
   }
 
-  return Object.fromEntries(Object.entries(imports).sort(([left], [right]) => left.localeCompare(right)))
+  return Object.fromEntries(
+    Object.entries(imports).sort(([left], [right]) => left.localeCompare(right)),
+  )
 }
 
 export function extractArrayPropertyIdentifiers(source, filePath, targetProperty) {
@@ -223,7 +225,9 @@ export function extractExportedObjectKeys(source, filePath, exportName) {
         throw new Error(`${exportName} is not an object literal in ${filePath}`)
       }
 
-      return initializer.properties.map((property) => getPropertyName(property.name)).filter(Boolean)
+      return initializer.properties
+        .map((property) => getPropertyName(property.name))
+        .filter(Boolean)
     }
   }
 
@@ -324,17 +328,17 @@ const resolveConfigImportPath = (ownerPath, importPath) => {
 }
 
 async function readBlockDefinitions(projectRoot) {
-  const configPaths = await walkFiles(
-    projectRoot,
-    'src/blocks',
-    (filePath) => filePath.endsWith('/config.ts'),
+  const configPaths = await walkFiles(projectRoot, 'src/blocks', (filePath) =>
+    filePath.endsWith('/config.ts'),
   )
   const definitions = []
 
   for (const configPath of configPaths) {
     const definition = extractBlockDefinition(await readText(projectRoot, configPath), configPath)
     const directory = path.posix.dirname(configPath)
-    const files = await walkFiles(projectRoot, directory, (filePath) => /\.(ts|tsx)$/.test(filePath))
+    const files = await walkFiles(projectRoot, directory, (filePath) =>
+      /\.(ts|tsx)$/.test(filePath),
+    )
 
     definitions.push({
       ...definition,
@@ -414,7 +418,9 @@ export async function buildProjectInventory(projectRoot) {
   const root = path.resolve(projectRoot)
   const packageJson = JSON.parse(await readText(root, 'package.json'))
   const definitions = await readBlockDefinitions(root)
-  const definitionsBySymbol = new Map(definitions.map((definition) => [definition.symbol, definition]))
+  const definitionsBySymbol = new Map(
+    definitions.map((definition) => [definition.symbol, definition]),
+  )
   const thumbnailDefinitions = extractThumbnailDefinitions(
     await readText(root, 'src/block-thumbnails/definitions.ts'),
     'src/block-thumbnails/definitions.ts',
@@ -429,10 +435,8 @@ export async function buildProjectInventory(projectRoot) {
   const graphMeta = existsSync(graphMetaPath)
     ? JSON.parse(await fs.readFile(graphMetaPath, 'utf8'))
     : null
-  const sharedPaths = await walkFiles(
-    root,
-    'src/blocks/shared',
-    (filePath) => /\.(ts|tsx)$/.test(filePath),
+  const sharedPaths = await walkFiles(root, 'src/blocks/shared', (filePath) =>
+    /\.(ts|tsx)$/.test(filePath),
   )
 
   return {
@@ -465,7 +469,9 @@ export async function buildProjectInventory(projectRoot) {
         await readText(root, 'src/blocks/renderLivePreviewPageBlocks.tsx'),
       ),
       page: await getRegistrySlugs(root, 'src/collections/Pages.ts', definitionsBySymbol),
-      productionRenderer: extractSwitchCases(await readText(root, 'src/blocks/renderPageBlocks.tsx')),
+      productionRenderer: extractSwitchCases(
+        await readText(root, 'src/blocks/renderPageBlocks.tsx'),
+      ),
       reusableSection: await getRegistrySlugs(
         root,
         'src/collections/ReusableSections.ts',
@@ -483,10 +489,8 @@ export async function buildProjectInventory(projectRoot) {
         definitionsBySymbol,
       ),
       thumbnails: {
-        assets: await walkFiles(
-          root,
-          'public/block-thumbnails',
-          (filePath) => filePath.endsWith('.jpg'),
+        assets: await walkFiles(root, 'public/block-thumbnails', (filePath) =>
+          filePath.endsWith('.jpg'),
         ),
         definitions: thumbnailDefinitions,
         fixtures: thumbnailFixtures,
@@ -506,10 +510,8 @@ export async function buildProjectInventory(projectRoot) {
       fields: await walkFiles(root, 'src/fields', (filePath) => filePath.endsWith('.ts')),
       hooks: await walkFiles(root, 'src/hooks', (filePath) => filePath.endsWith('.ts')),
       libraries: await walkFiles(root, 'src/lib', (filePath) => /\.(ts|tsx)$/.test(filePath)),
-      routes: await walkFiles(
-        root,
-        'src/app',
-        (filePath) => /\/(page|route|layout|robots|sitemap|opengraph-image)\.(ts|tsx)$/.test(filePath),
+      routes: await walkFiles(root, 'src/app', (filePath) =>
+        /\/(page|route|layout|robots|sitemap|opengraph-image)\.(ts|tsx)$/.test(filePath),
       ),
       tests: await walkFiles(root, 'tests', (filePath) => /\.spec\.(ts|tsx)$/.test(filePath)),
       themes: await walkFiles(root, 'src/styles/themes', (filePath) => filePath.endsWith('.css')),
@@ -551,7 +553,9 @@ export async function validateProjectContracts(projectRoot, inventory, options =
     errors.push(`Duplicate Page block slug: ${slug}`)
   }
 
-  for (const slug of findDuplicates(inventory.blocks.definitions.map((definition) => definition.slug))) {
+  for (const slug of findDuplicates(
+    inventory.blocks.definitions.map((definition) => definition.slug),
+  )) {
     errors.push(`Duplicate block definition slug: ${slug}`)
   }
 
@@ -771,9 +775,13 @@ const narrativeGroups = [
     label: 'architecture',
     matches: (filePath) =>
       /^src\/(app|config|lib|styles)\//.test(filePath) ||
-      ['Dockerfile', 'next.config.ts', 'package.json', 'src/middleware.ts', 'tsconfig.json'].includes(
-        filePath,
-      ),
+      [
+        'Dockerfile',
+        'next.config.ts',
+        'package.json',
+        'src/middleware.ts',
+        'tsconfig.json',
+      ].includes(filePath),
     reference: '.agents/skills/project-context/references/architecture.md',
   },
 ]
@@ -782,10 +790,7 @@ export function getNarrativeReviewWarnings(changedFiles) {
   const warnings = []
 
   for (const group of narrativeGroups) {
-    if (
-      changedFiles.some(group.matches) &&
-      !changedFiles.includes(group.reference)
-    ) {
+    if (changedFiles.some(group.matches) && !changedFiles.includes(group.reference)) {
       warnings.push(
         `${group.label} files changed; review ${group.reference} and update it if the project contract changed.`,
       )

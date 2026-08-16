@@ -38,10 +38,7 @@ describe('project context repository contract', () => {
   it('matches the checked-in deterministic inventory', async () => {
     const inventory = await buildProjectInventory(process.cwd())
     const checkedIn = JSON.parse(
-      await readFile(
-        '.agents/skills/project-context/references/project-inventory.json',
-        'utf8',
-      ),
+      await readFile('.agents/skills/project-context/references/project-inventory.json', 'utf8'),
     )
 
     expect(stableStringify(checkedIn)).toBe(stableStringify(inventory))

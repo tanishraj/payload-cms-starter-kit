@@ -83,10 +83,7 @@ describe('project context parser', () => {
   })
 
   it('extracts renderer, thumbnail, and fixture coverage', () => {
-    expect(extractSwitchCases("case 'alpha': break; case 'beta': break")).toEqual([
-      'alpha',
-      'beta',
-    ])
+    expect(extractSwitchCases("case 'alpha': break; case 'beta': break")).toEqual(['alpha', 'beta'])
     expect(extractThumbnailDefinitions(thumbnailFixture, 'definitions.ts')).toEqual([
       { filename: 'alpha.jpg', slug: 'alpha' },
     ])
@@ -125,11 +122,7 @@ describe('project context parser', () => {
     const target = path.join(directory, 'inventory.json')
 
     await writeFile(target, '{"old":true}\n')
-    await writeProjectInventory(
-      directory,
-      { schemaVersion: 1, value: 'stable' },
-      target,
-    )
+    await writeProjectInventory(directory, { schemaVersion: 1, value: 'stable' }, target)
 
     expect(await readFile(target, 'utf8')).toBe(
       '{\n  "schemaVersion": 1,\n  "value": "stable"\n}\n',
@@ -157,7 +150,11 @@ describe('project context parser', () => {
   it('treats stale knowledge graph metadata as a warning', async () => {
     const inventory = await buildProjectInventory(process.cwd())
 
-    inventory.knowledgeGraph = { gitCommitHash: 'stale-commit' }
+    inventory.knowledgeGraph = {
+      analyzedFiles: 0,
+      gitCommitHash: 'stale-commit',
+      lastAnalyzedAt: '2026-01-01T00:00:00.000Z',
+    }
 
     const result = await validateProjectContracts(process.cwd(), inventory, {
       gitHead: 'current-commit',
