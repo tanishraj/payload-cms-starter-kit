@@ -240,15 +240,7 @@ export interface Page {
         | AwardsListBlock
         | AboutSectionBlock
         | AccreditationCardsBlock
-        | {
-            /**
-             * Select a reusable section to embed on this page.
-             */
-            section: string | ReusableSection;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'reusableSection';
-          }
+        | ReusableSectionBlock
       )[]
     | null;
   metaTitle?: string | null;
@@ -4356,6 +4348,19 @@ export interface AccreditationCardsBlock {
   blockType: 'accreditationCards';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReusableSectionBlock".
+ */
+export interface ReusableSectionBlock {
+  /**
+   * Select a reusable section to embed on this page.
+   */
+  section: string | ReusableSection;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'reusableSection';
+}
+/**
  * Shared block groups that sync across every page that references them. Edit once, update everywhere.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -5737,13 +5742,7 @@ export interface PagesSelect<T extends boolean = true> {
         awardsList?: T | AwardsListBlockSelect<T>;
         aboutSection?: T | AboutSectionBlockSelect<T>;
         accreditationCards?: T | AccreditationCardsBlockSelect<T>;
-        reusableSection?:
-          | T
-          | {
-              section?: T;
-              id?: T;
-              blockName?: T;
-            };
+        reusableSection?: T | ReusableSectionBlockSelect<T>;
       };
   metaTitle?: T;
   metaDescription?: T;
@@ -8451,6 +8450,15 @@ export interface AccreditationCardsBlockSelect<T extends boolean = true> {
   cardSize?: T;
   iconStyle?: T;
   size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReusableSectionBlock_select".
+ */
+export interface ReusableSectionBlockSelect<T extends boolean = true> {
+  section?: T;
   id?: T;
   blockName?: T;
 }

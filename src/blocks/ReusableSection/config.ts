@@ -4,6 +4,7 @@ import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 export const ReusableSectionBlock: Block = {
   slug: 'reusableSection',
+  interfaceName: 'ReusableSectionBlock',
   labels: {
     singular: 'Reusable Section',
     plural: 'Reusable Sections',

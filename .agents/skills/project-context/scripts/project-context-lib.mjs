@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto'
+import { execFileSync } from 'node:child_process'
 import { existsSync, promises as fs } from 'node:fs'
 import path from 'node:path'
 
@@ -533,4 +534,160 @@ export async function writeProjectInventory(projectRoot, inventory, explicitTarg
   }
 
   return target
+}
+
+const findDuplicates = (values) =>
+  [...new Set(values.filter((value, index) => values.indexOf(value) !== index))].sort()
+
+const findMissing = (expected, actual) => expected.filter((value) => !actual.includes(value))
+
+const sameOrderedValues = (left, right) => stableStringify(left) === stableStringify(right)
+
+export async function validateProjectContracts(projectRoot, inventory, options = {}) {
+  const errors = []
+  const warnings = []
+
+  for (const slug of findDuplicates(inventory.blocks.page)) {
+    errors.push(`Duplicate Page block slug: ${slug}`)
+  }
+
+  for (const slug of findDuplicates(inventory.blocks.definitions.map((definition) => definition.slug))) {
+    errors.push(`Duplicate block definition slug: ${slug}`)
+  }
+
+  const interfaceNames = inventory.blocks.definitions
+    .map((definition) => definition.interfaceName)
+    .filter(Boolean)
+
+  for (const interfaceName of findDuplicates(interfaceNames)) {
+    errors.push(`Duplicate block interfaceName: ${interfaceName}`)
+  }
+
+  for (const definition of inventory.blocks.definitions) {
+    if (!definition.interfaceName) {
+      errors.push(`Block ${definition.slug} has no interfaceName in ${definition.configPath}`)
+    } else if (!inventory.blocks.generatedInterfaces.includes(definition.interfaceName)) {
+      errors.push(
+        `Generated Payload type ${definition.interfaceName} is missing for ${definition.slug}.`,
+      )
+    }
+  }
+
+  for (const slug of findMissing(inventory.blocks.page, inventory.blocks.productionRenderer)) {
+    errors.push(`Page block ${slug} is missing from src/blocks/renderPageBlocks.tsx`)
+  }
+
+  for (const slug of findMissing(inventory.blocks.page, inventory.blocks.livePreviewRenderer)) {
+    errors.push(`Page block ${slug} is missing from src/blocks/renderLivePreviewPageBlocks.tsx`)
+  }
+
+  if (
+    !sameOrderedValues(
+      [...inventory.blocks.productionRenderer].sort(),
+      [...inventory.blocks.livePreviewRenderer].sort(),
+    )
+  ) {
+    errors.push('Production and live-preview Page renderer coverage differs.')
+  }
+
+  const expectedReusable = inventory.blocks.page.filter((slug) => slug !== 'reusableSection')
+
+  if (!sameOrderedValues(expectedReusable, inventory.blocks.reusableSection)) {
+    errors.push(
+      'Reusable Sections must expose every Page block except reusableSection in Page order.',
+    )
+  }
+
+  const restrictedSlugs = [
+    ...inventory.blocks.header,
+    ...inventory.blocks.footer,
+    ...inventory.blocks.systemPage,
+  ]
+
+  for (const slug of restrictedSlugs.filter((value) => inventory.blocks.page.includes(value))) {
+    errors.push(`Restricted block ${slug} must not be registered on Pages.`)
+  }
+
+  const registeredSlugs = [...new Set([...inventory.blocks.page, ...restrictedSlugs])]
+  const thumbnailDefinitionSlugs = inventory.blocks.thumbnails.definitions.map(
+    (definition) => definition.slug,
+  )
+  const thumbnailAssetNames = inventory.blocks.thumbnails.assets.map((filePath) =>
+    path.posix.basename(filePath),
+  )
+
+  for (const slug of findDuplicates(thumbnailDefinitionSlugs)) {
+    errors.push(`Duplicate thumbnail definition: ${slug}`)
+  }
+
+  for (const slug of registeredSlugs) {
+    const definition = inventory.blocks.thumbnails.definitions.find(
+      (thumbnail) => thumbnail.slug === slug,
+    )
+
+    if (!definition) {
+      errors.push(`Registered block ${slug} has no thumbnail definition.`)
+    }
+
+    if (!inventory.blocks.thumbnails.fixtures.includes(slug)) {
+      errors.push(`Registered block ${slug} has no thumbnail fixture.`)
+    }
+
+    if (definition && !thumbnailAssetNames.includes(definition.filename)) {
+      errors.push(
+        `Registered block ${slug} is missing public/block-thumbnails/${definition.filename}.`,
+      )
+    }
+  }
+
+  const pageRendererSource = await readText(projectRoot, 'src/blocks/renderPageBlocks.tsx')
+
+  if (!pageRendererSource.includes('if (depth > 10) return null')) {
+    errors.push('Reusable Section renderer depth guard must remain at 10.')
+  }
+
+  const gitHead =
+    options.gitHead ??
+    execFileSync('git', ['rev-parse', 'HEAD'], {
+      cwd: projectRoot,
+      encoding: 'utf8',
+    }).trim()
+
+  if (
+    inventory.knowledgeGraph?.gitCommitHash &&
+    inventory.knowledgeGraph.gitCommitHash !== gitHead
+  ) {
+    warnings.push(
+      `Knowledge graph is stale: analyzed ${inventory.knowledgeGraph.gitCommitHash}, current ${gitHead}.`,
+    )
+  }
+
+  return {
+    errors: errors.sort(),
+    warnings: warnings.sort(),
+  }
+}
+
+export async function checkProjectContext(projectRoot) {
+  const expected = await buildProjectInventory(projectRoot)
+  const inventoryPath = path.join(
+    projectRoot,
+    '.agents/skills/project-context/references/project-inventory.json',
+  )
+
+  if (!existsSync(inventoryPath)) {
+    return {
+      errors: ['Project inventory is missing. Run pnpm project-context:update.'],
+      warnings: [],
+    }
+  }
+
+  const checkedIn = JSON.parse(await fs.readFile(inventoryPath, 'utf8'))
+  const result = await validateProjectContracts(projectRoot, expected)
+
+  if (stableStringify(checkedIn) !== stableStringify(expected)) {
+    result.errors.unshift('Project inventory is stale. Run pnpm project-context:update.')
+  }
+
+  return result
 }

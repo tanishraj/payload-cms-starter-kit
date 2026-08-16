@@ -13,6 +13,7 @@ import {
   extractThumbnailDefinitions,
   buildProjectInventory,
   stableStringify,
+  validateProjectContracts,
   writeProjectInventory,
 } from '../../.agents/skills/project-context/scripts/project-context-lib.mjs'
 
@@ -132,5 +133,37 @@ describe('project context parser', () => {
       '{\n  "schemaVersion": 1,\n  "value": "stable"\n}\n',
     )
     await expect(readFile(`${target}.tmp`, 'utf8')).rejects.toMatchObject({ code: 'ENOENT' })
+  })
+
+  it('names duplicate and missing block contracts', async () => {
+    const inventory = await buildProjectInventory(process.cwd())
+    const broken = structuredClone(inventory)
+
+    broken.blocks.page.push(broken.blocks.page[0])
+    broken.blocks.productionRenderer = broken.blocks.productionRenderer.filter(
+      (slug: string) => slug !== 'contentHighlights',
+    )
+
+    const result = await validateProjectContracts(process.cwd(), broken)
+
+    expect(result.errors).toContain(`Duplicate Page block slug: ${broken.blocks.page[0]}`)
+    expect(result.errors).toContain(
+      'Page block contentHighlights is missing from src/blocks/renderPageBlocks.tsx',
+    )
+  })
+
+  it('treats stale knowledge graph metadata as a warning', async () => {
+    const inventory = await buildProjectInventory(process.cwd())
+
+    inventory.knowledgeGraph = { gitCommitHash: 'stale-commit' }
+
+    const result = await validateProjectContracts(process.cwd(), inventory, {
+      gitHead: 'current-commit',
+    })
+
+    expect(result.errors).toEqual([])
+    expect(result.warnings).toContain(
+      'Knowledge graph is stale: analyzed stale-commit, current current-commit.',
+    )
   })
 })
