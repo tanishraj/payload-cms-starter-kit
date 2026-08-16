@@ -1041,6 +1041,10 @@ export interface ContentHighlightsBlock {
      * Short text such as Clinical, Year 1, or Research.
      */
     markerLabel?: string | null;
+    /**
+     * Optional context such as a date, category, duration, or source.
+     */
+    metadata?: string | null;
     title: string;
     description?: string | null;
     cardAction?:
@@ -1072,7 +1076,20 @@ export interface ContentHighlightsBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  itemsLayout: '1' | '2' | '3' | '4';
+  cardStyle: 'open' | 'leftRule' | 'boxed' | 'divided';
+  eyebrowPlacement: 'stacked' | 'inline';
+  cardLayout: 'grid' | 'list';
+  gridColumns: '2' | '3';
   layout: 'editorialRow' | 'highlightsGrid' | 'simpleGrid';
+  /**
+   * Automatic uses Ruled for Editorial List, Boxed for Calm Grid, and Open for Simple Grid.
+   */
+  itemTreatment: 'auto' | 'open' | 'ruled' | 'boxed';
+  /**
+   * Rows Only draws continuous horizontal rules. Full Grid also divides responsive columns. Individual Items gives every item its own 2px left rule.
+   */
+  ruledDividers?: ('rows' | 'grid' | 'individual') | null;
   headerLayout: 'stacked' | 'split';
   contentAlignment?: ('left' | 'center' | 'right') | null;
   splitContentAlignment?: ('top' | 'center' | 'bottom') | null;
@@ -6095,6 +6112,7 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
     | {
         markerMode?: T;
         markerLabel?: T;
+        metadata?: T;
         title?: T;
         description?: T;
         cardAction?:
@@ -6119,7 +6137,14 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  itemsLayout?: T;
+  cardStyle?: T;
+  eyebrowPlacement?: T;
+  cardLayout?: T;
+  gridColumns?: T;
   layout?: T;
+  itemTreatment?: T;
+  ruledDividers?: T;
   headerLayout?: T;
   contentAlignment?: T;
   splitContentAlignment?: T;

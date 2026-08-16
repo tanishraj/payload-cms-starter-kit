@@ -13,6 +13,11 @@ type HeaderLayoutSiblingData = {
   headerLayout?: 'split' | 'stacked' | null
 }
 
+type ItemTreatmentSiblingData = {
+  itemTreatment?: 'auto' | 'boxed' | 'open' | 'ruled' | null
+  layout?: 'editorialRow' | 'highlightsGrid' | 'simpleGrid' | null
+}
+
 const isCustomMarker = (_data: unknown, siblingData: MarkerSiblingData) =>
   siblingData?.markerMode === 'custom'
 
@@ -21,6 +26,11 @@ const isStackedHeader = (_data: unknown, siblingData: HeaderLayoutSiblingData) =
 
 const isSplitHeader = (_data: unknown, siblingData: HeaderLayoutSiblingData) =>
   siblingData?.headerLayout === 'split'
+
+const usesRuledTreatment = (_data: unknown, siblingData: ItemTreatmentSiblingData) =>
+  siblingData?.itemTreatment === 'ruled' ||
+  ((siblingData?.itemTreatment === 'auto' || siblingData?.itemTreatment == null) &&
+    siblingData?.layout === 'editorialRow')
 
 const itemsField = {
   name: 'items',
@@ -37,12 +47,12 @@ const itemsField = {
       contentFields: [
         {
           name: 'markerMode',
-          label: 'Marker',
+          label: 'Card Eyebrow',
           type: 'select',
           defaultValue: 'numbered',
           options: [
             { label: 'Numbered', value: 'numbered' },
-            { label: 'Custom Label', value: 'custom' },
+            { label: 'Custom Text', value: 'custom' },
             { label: 'Hidden', value: 'hidden' },
           ],
           required: true,
@@ -52,11 +62,19 @@ const itemsField = {
         } satisfies SelectField,
         {
           name: 'markerLabel',
-          label: 'Custom Label',
+          label: 'Custom Eyebrow',
           type: 'text',
           admin: {
             condition: isCustomMarker,
             description: 'Short text such as Clinical, Year 1, or Research.',
+          },
+        },
+        {
+          name: 'metadata',
+          label: 'Metadata',
+          type: 'text',
+          admin: {
+            description: 'Optional context such as a date, category, duration, or source.',
           },
         },
         {
@@ -121,6 +139,71 @@ export const ContentHighlightsBlock: Block = {
           fields: [
             createBlockAppearanceFields(),
             {
+              name: 'itemsLayout',
+              label: 'Items Layout',
+              type: 'select',
+              defaultValue: '3',
+              options: [
+                { label: '1 Column', value: '1' },
+                { label: '2 Columns', value: '2' },
+                { label: '3 Columns', value: '3' },
+                { label: '4 Columns', value: '4' },
+              ],
+              required: true,
+            } satisfies SelectField,
+            {
+              name: 'cardStyle',
+              label: 'Card Style',
+              type: 'select',
+              defaultValue: 'open',
+              options: [
+                { label: 'Open', value: 'open' },
+                { label: 'Left Rule', value: 'leftRule' },
+                { label: 'Boxed', value: 'boxed' },
+                { label: 'Rule', value: 'divided' },
+              ],
+              required: true,
+            } satisfies SelectField,
+            {
+              name: 'eyebrowPlacement',
+              label: 'Eyebrow Placement',
+              type: 'select',
+              defaultValue: 'stacked',
+              options: [
+                { label: 'Stacked', value: 'stacked' },
+                { label: 'Inline', value: 'inline' },
+              ],
+              required: true,
+            } satisfies SelectField,
+            {
+              name: 'cardLayout',
+              label: 'Card Layout',
+              type: 'select',
+              defaultValue: 'grid',
+              options: [
+                { label: 'Grid', value: 'grid' },
+                { label: 'List', value: 'list' },
+              ],
+              required: true,
+              admin: {
+                hidden: true,
+              },
+            } satisfies SelectField,
+            {
+              name: 'gridColumns',
+              label: 'Grid Columns',
+              type: 'select',
+              defaultValue: '3',
+              options: [
+                { label: '2 Columns', value: '2' },
+                { label: '3 Columns', value: '3' },
+              ],
+              required: true,
+              admin: {
+                hidden: true,
+              },
+            } satisfies SelectField,
+            {
               name: 'layout',
               label: 'Layout',
               type: 'select',
@@ -131,6 +214,45 @@ export const ContentHighlightsBlock: Block = {
                 { label: 'Simple Grid', value: 'simpleGrid' },
               ],
               required: true,
+              admin: {
+                hidden: true,
+              },
+            } satisfies SelectField,
+            {
+              name: 'itemTreatment',
+              label: 'Item Treatment',
+              type: 'select',
+              defaultValue: 'auto',
+              options: [
+                { label: 'Automatic', value: 'auto' },
+                { label: 'Open', value: 'open' },
+                { label: 'Ruled', value: 'ruled' },
+                { label: 'Boxed', value: 'boxed' },
+              ],
+              required: true,
+              admin: {
+                description:
+                  'Automatic uses Ruled for Editorial List, Boxed for Calm Grid, and Open for Simple Grid.',
+                hidden: true,
+              },
+            } satisfies SelectField,
+            {
+              name: 'ruledDividers',
+              label: 'Ruled Dividers',
+              type: 'select',
+              defaultValue: 'rows',
+              options: [
+                { label: 'Rows Only', value: 'rows' },
+                { label: 'Full Grid', value: 'grid' },
+                { label: 'Individual Items', value: 'individual' },
+              ],
+              required: true,
+              admin: {
+                condition: usesRuledTreatment,
+                description:
+                  'Rows Only draws continuous horizontal rules. Full Grid also divides responsive columns. Individual Items gives every item its own 2px left rule.',
+                hidden: true,
+              },
             } satisfies SelectField,
             {
               name: 'headerLayout',

@@ -10,6 +10,7 @@ import { ContentHighlights } from '@/components/content-highlights'
 type TestField = {
   admin?: {
     condition?: (data: unknown, siblingData: Record<string, unknown>) => boolean
+    hidden?: boolean
   }
   defaultValue?: unknown
   fields?: TestField[]
@@ -68,24 +69,33 @@ describe('Content Highlights', () => {
     expect(itemContent?.fields.map(({ name }) => name)).toEqual([
       'markerMode',
       'markerLabel',
+      'metadata',
       'title',
       'description',
       'cardAction',
     ])
     expect(getField(itemContent?.fields ?? [], 'markerMode')).toMatchObject({
       defaultValue: 'numbered',
+      label: 'Card Eyebrow',
       required: true,
       type: 'select',
     })
-    expect(
-      getField(itemContent?.fields ?? [], 'markerMode')?.options?.map(({ value }) => value),
-    ).toEqual(['numbered', 'custom', 'hidden'])
+    expect(getField(itemContent?.fields ?? [], 'markerMode')?.options).toEqual([
+      { label: 'Numbered', value: 'numbered' },
+      { label: 'Custom Text', value: 'custom' },
+      { label: 'Hidden', value: 'hidden' },
+    ])
     const markerLabel = getField(itemContent?.fields ?? [], 'markerLabel')
+    expect(markerLabel?.label).toBe('Custom Eyebrow')
     expect(markerLabel?.admin?.condition).toBeTypeOf('function')
     expect(markerLabel?.admin?.condition?.({}, { markerMode: 'custom' })).toBe(true)
     expect(markerLabel?.admin?.condition?.({}, { markerMode: 'numbered' })).toBe(false)
     expect(getField(itemContent?.fields ?? [], 'title')).toMatchObject({
       required: true,
+      type: 'text',
+    })
+    expect(getField(itemContent?.fields ?? [], 'metadata')).toMatchObject({
+      label: 'Metadata',
       type: 'text',
     })
     expect(getField(itemContent?.fields ?? [], 'cardAction')).toMatchObject({
@@ -94,23 +104,122 @@ describe('Content Highlights', () => {
     })
     expect(itemTheme?.fields.map(({ name }) => name)).toEqual(['cardBackground'])
 
-    for (const removedField of ['metadata', 'linkType', 'page', 'url', 'openInNewTab']) {
+    for (const removedField of ['linkType', 'page', 'url', 'openInNewTab']) {
       expect(getField(itemContent?.fields ?? [], removedField)).toBeUndefined()
     }
 
     expect(theme?.fields.map(({ name }) => name)).toEqual([
       'appearance',
+      'itemsLayout',
+      'cardStyle',
+      'eyebrowPlacement',
+      'cardLayout',
+      'gridColumns',
       'layout',
+      'itemTreatment',
+      'ruledDividers',
       'headerLayout',
       'contentAlignment',
       'splitContentAlignment',
       'size',
     ])
+    expect(getField(theme?.fields ?? [], 'itemsLayout')).toMatchObject({
+      defaultValue: '3',
+      label: 'Items Layout',
+      options: [
+        { label: '1 Column', value: '1' },
+        { label: '2 Columns', value: '2' },
+        { label: '3 Columns', value: '3' },
+        { label: '4 Columns', value: '4' },
+      ],
+      required: true,
+      type: 'select',
+    })
+    expect(getField(theme?.fields ?? [], 'cardStyle')).toMatchObject({
+      defaultValue: 'open',
+      label: 'Card Style',
+      options: [
+        { label: 'Open', value: 'open' },
+        { label: 'Left Rule', value: 'leftRule' },
+        { label: 'Boxed', value: 'boxed' },
+        { label: 'Rule', value: 'divided' },
+      ],
+      required: true,
+      type: 'select',
+    })
+    expect(getField(theme?.fields ?? [], 'cardLayout')).toMatchObject({
+      defaultValue: 'grid',
+      label: 'Card Layout',
+      options: [
+        { label: 'Grid', value: 'grid' },
+        { label: 'List', value: 'list' },
+      ],
+      required: true,
+      type: 'select',
+    })
+    expect(getField(theme?.fields ?? [], 'cardLayout')?.admin?.hidden).toBe(true)
+    expect(getField(theme?.fields ?? [], 'gridColumns')).toMatchObject({
+      defaultValue: '3',
+      label: 'Grid Columns',
+      options: [
+        { label: '2 Columns', value: '2' },
+        { label: '3 Columns', value: '3' },
+      ],
+      required: true,
+      type: 'select',
+    })
+    expect(getField(theme?.fields ?? [], 'gridColumns')?.admin?.hidden).toBe(true)
+    expect(getField(theme?.fields ?? [], 'eyebrowPlacement')).toMatchObject({
+      defaultValue: 'stacked',
+      label: 'Eyebrow Placement',
+      options: [
+        { label: 'Stacked', value: 'stacked' },
+        { label: 'Inline', value: 'inline' },
+      ],
+      required: true,
+      type: 'select',
+    })
     expect(getField(theme?.fields ?? [], 'layout')?.options).toEqual([
       { label: 'Editorial List', value: 'editorialRow' },
       { label: 'Calm Grid', value: 'highlightsGrid' },
       { label: 'Simple Grid', value: 'simpleGrid' },
     ])
+    expect(getField(theme?.fields ?? [], 'layout')?.admin?.hidden).toBe(true)
+    expect(getField(theme?.fields ?? [], 'itemTreatment')).toMatchObject({
+      defaultValue: 'auto',
+      label: 'Item Treatment',
+      required: true,
+      type: 'select',
+    })
+    expect(getField(theme?.fields ?? [], 'itemTreatment')?.options).toEqual([
+      { label: 'Automatic', value: 'auto' },
+      { label: 'Open', value: 'open' },
+      { label: 'Ruled', value: 'ruled' },
+      { label: 'Boxed', value: 'boxed' },
+    ])
+    expect(getField(theme?.fields ?? [], 'itemTreatment')?.admin?.hidden).toBe(true)
+    const ruledDividers = getField(theme?.fields ?? [], 'ruledDividers')
+    expect(ruledDividers).toMatchObject({
+      defaultValue: 'rows',
+      label: 'Ruled Dividers',
+      required: true,
+      type: 'select',
+    })
+    expect(ruledDividers?.options).toEqual([
+      { label: 'Rows Only', value: 'rows' },
+      { label: 'Full Grid', value: 'grid' },
+      { label: 'Individual Items', value: 'individual' },
+    ])
+    expect(ruledDividers?.admin?.hidden).toBe(true)
+    expect(ruledDividers?.admin?.condition?.({}, { itemTreatment: 'ruled' })).toBe(true)
+    expect(
+      ruledDividers?.admin?.condition?.({}, { itemTreatment: 'auto', layout: 'editorialRow' }),
+    ).toBe(true)
+    expect(
+      ruledDividers?.admin?.condition?.({}, { itemTreatment: 'auto', layout: 'highlightsGrid' }),
+    ).toBe(false)
+    expect(ruledDividers?.admin?.condition?.({}, { itemTreatment: 'boxed' })).toBe(false)
+    expect(getField(theme?.fields ?? [], 'simpleGridColumnDivider')).toBeUndefined()
     expect(getField(theme?.fields ?? [], 'headerLayout')).toMatchObject({
       defaultValue: 'stacked',
       required: true,
@@ -132,29 +241,315 @@ describe('Content Highlights', () => {
     expect(getField(theme?.fields ?? [], 'size')?.defaultValue).toBe('default')
   })
 
-  it.each([
-    ['editorialRow', 'editorial', 'gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3'],
-    ['highlightsGrid', 'calm', 'gap-6 md:grid-cols-2 lg:grid-cols-3'],
-    ['simpleGrid', 'simple', 'gap-x-12 gap-y-10 md:grid-cols-2'],
-  ] as const)('renders the %s presentation', (layout, presentation, gridClasses) => {
+  it('renders explicit cleaned presentation controls', () => {
     const html = renderToStaticMarkup(
-      <ContentHighlights
-        appearance={{ background: 'subtle', border: 'topAndBottom' }}
-        description="A concise introduction to the highlighted content."
-        eyebrow="Latest"
-        items={[item('First'), item('Second'), item('Third')]}
-        layout={layout}
-        size="compact"
-        title="Content worth exploring"
+      <ContentHighlightsBlockComponent
+        cardLayout="list"
+        cardStyle="leftRule"
+        eyebrowPlacement="inline"
+        gridColumns="2"
+        items={[item('First')]}
+        itemsLayout="4"
+        title="Highlights"
       />,
     )
 
-    expect(html).toContain(`data-content-highlights-layout="${layout}"`)
-    expect(html).toContain(`data-content-highlight-presentation="${presentation}"`)
-    expect(html).toContain(gridClasses)
-    expect(html).toContain('max-w-screen-2xl')
-    expect(html).toContain('bg-subtle')
-    expect(html).toContain('border-y border-border')
+    expect(html).toContain('data-content-highlights-items-layout="4"')
+    expect(html).toContain('data-content-highlights-card-layout="grid"')
+    expect(html).toContain('data-content-highlights-card-style="leftRule"')
+    expect(html).toContain('data-content-highlights-grid-columns="4"')
+    expect(html).toContain('data-content-highlights-eyebrow-placement="inline"')
+  })
+
+  it.each([
+    ['editorialRow', undefined, undefined, '1', 'grid', 'divided', '1', 'stacked'],
+    ['highlightsGrid', undefined, undefined, '3', 'grid', 'boxed', '3', 'stacked'],
+    ['simpleGrid', undefined, undefined, '2', 'grid', 'open', '2', 'inline'],
+    ['numberedSteps', undefined, undefined, '3', 'grid', 'boxed', '3', 'stacked'],
+    ['highlightsGrid', 'ruled', 'individual', '3', 'grid', 'leftRule', '3', 'stacked'],
+    ['highlightsGrid', 'ruled', 'grid', '3', 'grid', 'divided', '3', 'stacked'],
+  ] as const)(
+    'normalizes legacy %s/%s/%s presentation values',
+    (
+      layout,
+      itemTreatment,
+      ruledDividers,
+      expectedItemsLayout,
+      expectedLayout,
+      expectedStyle,
+      expectedColumns,
+      expectedEyebrowPlacement,
+    ) => {
+      const html = renderToStaticMarkup(
+        <ContentHighlightsBlockComponent
+          itemTreatment={itemTreatment}
+          items={[item('First')]}
+          layout={layout}
+          ruledDividers={ruledDividers}
+          title="Highlights"
+        />,
+      )
+
+      expect(html).toContain(`data-content-highlights-items-layout="${expectedItemsLayout}"`)
+      expect(html).toContain(`data-content-highlights-card-layout="${expectedLayout}"`)
+      expect(html).toContain(`data-content-highlights-card-style="${expectedStyle}"`)
+      expect(html).toContain(`data-content-highlights-grid-columns="${expectedColumns}"`)
+      expect(html).toContain(
+        `data-content-highlights-eyebrow-placement="${expectedEyebrowPlacement}"`,
+      )
+    },
+  )
+
+  it('normalizes a stale List selection to 1 Column', () => {
+    const html = renderToStaticMarkup(
+      <ContentHighlightsBlockComponent
+        items={[item('First')]}
+        itemsLayout={'list' as never}
+        title="Highlights"
+      />,
+    )
+
+    expect(html).toContain('data-content-highlights-items-layout="1"')
+    expect(html).toContain('data-content-highlights-grid-columns="1"')
+  })
+
+  it('renders the complete card hierarchy with an inline eyebrow', () => {
+    const html = renderToStaticMarkup(
+      <ContentHighlightsBlockComponent
+        cardLayout="list"
+        cardStyle="open"
+        eyebrowPlacement="inline"
+        items={[
+          {
+            cardAction: [{ label: 'Read', linkType: 'custom', url: '/read' }],
+            description: 'A concise supporting description.',
+            markerLabel: 'Clinical',
+            markerMode: 'custom',
+            metadata: '15/07/2026',
+            title: 'Precision cardiology',
+          },
+        ]}
+        title="Highlights"
+      />,
+    )
+    const eyebrowIndex = html.indexOf('Clinical')
+    const metadataIndex = html.indexOf('15/07/2026')
+    const titleIndex = html.indexOf('Precision cardiology')
+    const descriptionIndex = html.indexOf('A concise supporting description.')
+    const actionIndex = html.indexOf('Read')
+
+    expect(html).toContain('data-content-highlight-eyebrow-placement="inline"')
+    expect(html).toContain('grid-cols-[3.5rem_minmax(0,1fr)]')
+    expect(html).toContain('data-content-highlight-metadata="true"')
+    expect(html).toContain('data-content-highlight-inline-content="true"')
+    expect(eyebrowIndex).toBeGreaterThan(-1)
+    expect(metadataIndex).toBeGreaterThan(eyebrowIndex)
+    expect(titleIndex).toBeGreaterThan(metadataIndex)
+    expect(descriptionIndex).toBeGreaterThan(titleIndex)
+    expect(actionIndex).toBeGreaterThan(descriptionIndex)
+  })
+
+  it('does not reserve an inline eyebrow rail when the eyebrow is hidden', () => {
+    const html = renderToStaticMarkup(
+      <ContentHighlights
+        cardLayout="list"
+        cardStyle="open"
+        eyebrowPlacement="inline"
+        items={[{ markerMode: 'hidden', metadata: 'Current', title: 'No eyebrow' }]}
+        title="Highlights"
+      />,
+    )
+
+    expect(html).toContain('data-content-highlight-eyebrow-placement="inline"')
+    expect(html).toContain('data-content-highlight-metadata="true"')
+    expect(html).not.toContain('grid-cols-[3.5rem_minmax(0,1fr)]')
+    expect(html).not.toContain('data-content-highlight-marker')
+  })
+
+  it('omits blank metadata without reserving space', () => {
+    const html = renderToStaticMarkup(
+      <ContentHighlightsBlockComponent
+        items={[{ markerMode: 'numbered', metadata: '   ', title: 'No metadata' }]}
+        title="Highlights"
+      />,
+    )
+
+    expect(html).not.toContain('data-content-highlight-metadata')
+  })
+
+  it.each([
+    ['1', 'grid grid-cols-1 gap-x-6 gap-y-8'],
+    ['2', 'grid grid-cols-1 gap-x-6 gap-y-8 md:grid-cols-2'],
+    ['3', 'grid grid-cols-1 gap-x-6 gap-y-8 md:grid-cols-2 lg:grid-cols-3'],
+    ['4', 'grid grid-cols-1 gap-x-6 gap-y-8 md:grid-cols-2 xl:grid-cols-4'],
+  ] as const)('renders the %s Items Layout geometry', (itemsLayout, expectedClasses) => {
+    const html = renderToStaticMarkup(
+      <ContentHighlights
+        cardStyle="open"
+        items={[item('One'), item('Two'), item('Three'), item('Four')]}
+        itemsLayout={itemsLayout}
+        title="Highlights"
+      />,
+    )
+
+    expect(html).toContain(`data-content-highlights-items-layout="${itemsLayout}"`)
+    expect(html).toContain(expectedClasses)
+  })
+
+  describe.each(['1', '2', '3', '4'] as const)('%s Items Layout', (itemsLayout) => {
+    it.each(['open', 'leftRule', 'boxed', 'divided'] as const)(
+      'renders the %s card style',
+      (cardStyle) => {
+        const html = renderToStaticMarkup(
+          <ContentHighlights
+            cardStyle={cardStyle}
+            items={[item('One'), item('Two'), item('Three'), item('Four')]}
+            itemsLayout={itemsLayout}
+            title="Highlights"
+          />,
+        )
+        const articleTags = html.match(/<article class="[^"]*"[^>]*>/g) ?? []
+
+        expect(html).toContain(`data-content-highlights-items-layout="${itemsLayout}"`)
+        expect(html).toContain(`data-content-highlights-card-style="${cardStyle}"`)
+        expect(articleTags).toHaveLength(4)
+        expect(
+          articleTags.every((tag) => tag.includes(`data-content-highlight-style="${cardStyle}"`)),
+        ).toBe(true)
+
+        if (cardStyle === 'open') {
+          expect(articleTags.every((tag) => !tag.includes('border'))).toBe(true)
+        } else if (cardStyle === 'leftRule') {
+          expect(articleTags.every((tag) => tag.includes('border-l-2'))).toBe(true)
+        } else if (cardStyle === 'boxed') {
+          expect(
+            articleTags.every((tag) => tag.includes('rounded-[var(--radius)] border p-6 md:p-7')),
+          ).toBe(true)
+        } else {
+          expect(articleTags.every((tag) => tag.includes('border-b py-8 md:py-10'))).toBe(true)
+          expect(html).toContain('[&amp;&gt;*:first-child]:border-t')
+
+          if (itemsLayout === '1') {
+            expect(html).not.toContain('nth-child(2n)]:border-l')
+          } else {
+            expect(html).toContain('md:[&amp;&gt;*:nth-child(2n)]:border-l')
+          }
+
+          if (itemsLayout === '3') {
+            expect(html).toContain('lg:[&amp;&gt;*:nth-child(3n+1)]:border-l-0')
+          }
+
+          if (itemsLayout === '4') {
+            expect(html).toContain('xl:[&amp;&gt;*:nth-child(4n+1)]:border-l-0')
+            expect(html).toContain('xl:[&amp;&gt;*:nth-child(4n+3)]:border-l')
+          }
+        }
+      },
+    )
+  })
+
+  it('uses editorial Rule spacing without horizontal inset on the inherited surface', () => {
+    const html = renderToStaticMarkup(
+      <ContentHighlights
+        cardStyle="divided"
+        items={[item('One'), item('Two')]}
+        itemsLayout="1"
+        title="Highlights"
+      />,
+    )
+    const articleTags = html.match(/<article class="[^"]*"[^>]*>/g) ?? []
+
+    expect(articleTags).toHaveLength(2)
+    expect(articleTags.every((tag) => tag.includes('border-b py-8 md:py-10'))).toBe(true)
+    expect(articleTags.every((tag) => !tag.includes('px-6'))).toBe(true)
+  })
+
+  it('keeps Rule cards padded when they use an explicit surface', () => {
+    const html = renderToStaticMarkup(
+      <ContentHighlights
+        cardStyle="divided"
+        items={[{ ...item('One'), cardBackground: 'primary' }]}
+        itemsLayout="1"
+        title="Highlights"
+      />,
+    )
+    const articleTag = html.match(/<article class="[^"]*"[^>]*>/)?.[0]
+
+    expect(articleTag).toContain('border-b py-8 md:py-10 px-6 md:px-7')
+  })
+
+  it('uses a wider inline eyebrow rail for the one-column Rule layout', () => {
+    const oneColumn = renderToStaticMarkup(
+      <ContentHighlights
+        cardStyle="divided"
+        eyebrowPlacement="inline"
+        items={[item('One')]}
+        itemsLayout="1"
+        title="Highlights"
+      />,
+    )
+    const threeColumns = renderToStaticMarkup(
+      <ContentHighlights
+        cardStyle="divided"
+        eyebrowPlacement="inline"
+        items={[item('One'), item('Two'), item('Three')]}
+        itemsLayout="3"
+        title="Highlights"
+      />,
+    )
+
+    expect(oneColumn).toContain('md:grid-cols-[8rem_minmax(0,1fr)]')
+    expect(threeColumns).toContain('grid-cols-[3.5rem_minmax(0,1fr)]')
+    expect(threeColumns).not.toContain('md:grid-cols-[8rem_minmax(0,1fr)]')
+  })
+
+  it('honors four columns beside a Split header', () => {
+    const html = renderToStaticMarkup(
+      <ContentHighlights
+        cardStyle="open"
+        headerLayout="split"
+        items={[item('One'), item('Two'), item('Three')]}
+        itemsLayout="4"
+        title="Highlights"
+      />,
+    )
+
+    expect(html).toContain('md:grid-cols-2')
+    expect(html).toContain('xl:grid-cols-4')
+  })
+
+  it('renders a 2px left rule for each Individual Item', () => {
+    const html = renderToStaticMarkup(
+      <ContentHighlights
+        itemTreatment="ruled"
+        items={[item('One'), item('Two'), item('Three'), item('Four')]}
+        layout="highlightsGrid"
+        ruledDividers="individual"
+        title="Highlights"
+      />,
+    )
+
+    expect(html).toContain('data-content-highlights-ruled-dividers="individual"')
+    expect(html).toContain('grid grid-cols-1 gap-x-6 gap-y-8 md:grid-cols-2 lg:grid-cols-3')
+    expect(html.match(/class="flex min-w-0 flex-col border-l-2 p-6 md:p-7/g)).toHaveLength(4)
+    expect(html).not.toContain('[&amp;&gt;*:first-child]:border-t')
+    expect(html).not.toContain('nth-child(2n)]:border-l')
+    expect(html).not.toContain('class="overflow-hidden" data-content-highlights-items="true"')
+  })
+
+  it('keeps explicit card backgrounds padded without forcing a border in Open mode', () => {
+    const html = renderToStaticMarkup(
+      <ContentHighlights
+        itemTreatment="open"
+        items={[{ ...item('First'), cardBackground: 'primary' }]}
+        title="Highlights"
+      />,
+    )
+    const articleTag = html.match(/<article class="[^"]*"[^>]*>/)?.[0]
+
+    expect(articleTag).toContain('p-6 md:p-7 bg-primary text-primary-foreground')
+    expect(articleTag).not.toContain(' border ')
+    expect(articleTag).not.toContain('border-t')
   })
 
   it('supports Stacked and Split header compositions', () => {
@@ -180,7 +575,7 @@ describe('Content Highlights', () => {
     expect(split).toContain('data-content-highlights-header-layout="split"')
     expect(split).toContain('lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]')
     expect(split).toContain('lg:self-end')
-    expect(split).not.toContain('lg:grid-cols-3')
+    expect(split).toContain('lg:grid-cols-3')
   })
 
   it('normalizes per-card markers after unusable rows are removed', () => {
@@ -234,7 +629,7 @@ describe('Content Highlights', () => {
     expect(markerTags[1]).toContain('data-section-eyebrow-surface="primary"')
   })
 
-  it('renders one explicit card action and ignores legacy title-link fields', () => {
+  it('renders metadata and one explicit card action while ignoring legacy title-link fields', () => {
     const html = renderToStaticMarkup(
       <ContentHighlightsBlockComponent
         items={[
@@ -273,8 +668,9 @@ describe('Content Highlights', () => {
     expect(html).toContain('rel="noreferrer"')
     expect(html).toContain('data-action-arrow="true"')
     expect(html).toContain('bg-primary-foreground text-primary')
+    expect(html).toContain('data-content-highlight-metadata="true"')
+    expect(html).toContain('Discard me')
     expect(html).not.toContain('/legacy-title-link')
-    expect(html).not.toContain('Discard me')
     expect(html.match(/data-content-highlight-action-footer="true"/g)).toHaveLength(1)
   })
 
@@ -361,15 +757,25 @@ describe('Content Highlights', () => {
       generatedTypes.indexOf('export interface EditorialReasonsBlock {'),
     )
 
-    expect(contentHighlightsType).toContain("markerMode: 'numbered' | 'custom' | 'hidden';")
-    expect(contentHighlightsType).toContain('markerLabel?: string | null;')
+    expect(contentHighlightsType).toContain("markerMode: 'numbered' | 'custom' | 'hidden'")
+    expect(contentHighlightsType).toContain('markerLabel?: string | null')
+    expect(contentHighlightsType).toContain('metadata?: string | null')
     expect(contentHighlightsType).toContain('cardAction?:')
+    expect(contentHighlightsType).toContain("itemsLayout: '1' | '2' | '3' | '4'")
+    expect(contentHighlightsType).toContain("cardLayout: 'grid' | 'list'")
+    expect(contentHighlightsType).toContain("cardStyle: 'open' | 'leftRule' | 'boxed' | 'divided'")
+    expect(contentHighlightsType).toContain("gridColumns: '2' | '3'")
+    expect(contentHighlightsType).toContain("eyebrowPlacement: 'stacked' | 'inline'")
     expect(contentHighlightsType).toContain(
-      "layout: 'editorialRow' | 'highlightsGrid' | 'simpleGrid';",
+      "layout: 'editorialRow' | 'highlightsGrid' | 'simpleGrid'",
     )
-    expect(contentHighlightsType).toContain("headerLayout: 'stacked' | 'split';")
-    expect(contentHighlightsType).not.toContain('metadata?:')
-    expect(contentHighlightsType).not.toContain("linkType: 'none' | 'page' | 'custom';")
+    expect(contentHighlightsType).toContain("itemTreatment: 'auto' | 'open' | 'ruled' | 'boxed'")
+    expect(contentHighlightsType).toContain(
+      "ruledDividers?: ('rows' | 'grid' | 'individual') | null",
+    )
+    expect(contentHighlightsType).not.toContain('simpleGridColumnDivider')
+    expect(contentHighlightsType).toContain("headerLayout: 'stacked' | 'split'")
+    expect(contentHighlightsType).not.toContain("linkType: 'none' | 'page' | 'custom'")
     expect(contentHighlightsType).not.toContain('enableSplitLayout')
     expect(contentHighlightsType).not.toContain('numberedSteps')
   })
