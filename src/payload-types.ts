@@ -200,6 +200,7 @@ export interface Page {
         | HeroCarouselBlock
         | GalleryCoverflowBlock
         | FeatureSpotlightBlock
+        | TestimonialSpotlightBlock
         | FeatureMatrixBlock
         | ContentHighlightsBlock
         | EditorialReasonsBlock
@@ -905,6 +906,36 @@ export interface FeatureSpotlightBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'featureSpotlight';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialSpotlightBlock".
+ */
+export interface TestimonialSpotlightBlock {
+  image: string | Media;
+  eyebrow?: string | null;
+  title: string;
+  testimonial?: string | null;
+  description?: string | null;
+  personName: string;
+  designation?: string | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Match Section inherits the section surface. Other choices apply a semantic theme surface to the complete image and content container.
+   */
+  containerBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
+  containerOutline: 'none' | 'outline';
+  mediaPosition: 'left' | 'right';
+  imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+  mediaFillMode: 'contained' | 'containedFill' | 'edgeToEdge';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  contentVerticalAlignment: 'top' | 'center' | 'bottom';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonialSpotlight';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -4382,6 +4413,7 @@ export interface ReusableSection {
         | HeroCarouselBlock
         | GalleryCoverflowBlock
         | FeatureSpotlightBlock
+        | TestimonialSpotlightBlock
         | FeatureMatrixBlock
         | ContentHighlightsBlock
         | EditorialReasonsBlock
@@ -5702,6 +5734,7 @@ export interface PagesSelect<T extends boolean = true> {
         heroCarousel?: T | HeroCarouselBlockSelect<T>;
         galleryCoverflow?: T | GalleryCoverflowBlockSelect<T>;
         featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
+        testimonialSpotlight?: T | TestimonialSpotlightBlockSelect<T>;
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
         contentHighlights?: T | ContentHighlightsBlockSelect<T>;
         editorialReasons?: T | EditorialReasonsBlockSelect<T>;
@@ -6139,6 +6172,34 @@ export interface FeatureSpotlightBlockSelect<T extends boolean = true> {
   mediaFillMode?: T;
   size?: T;
   contentAlignment?: T;
+  contentVerticalAlignment?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialSpotlightBlock_select".
+ */
+export interface TestimonialSpotlightBlockSelect<T extends boolean = true> {
+  image?: T;
+  eyebrow?: T;
+  title?: T;
+  testimonial?: T;
+  description?: T;
+  personName?: T;
+  designation?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  containerBackground?: T;
+  containerOutline?: T;
+  mediaPosition?: T;
+  imagePosition?: T;
+  mediaFillMode?: T;
+  size?: T;
   contentVerticalAlignment?: T;
   id?: T;
   blockName?: T;
@@ -8610,6 +8671,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         heroCarousel?: T | HeroCarouselBlockSelect<T>;
         galleryCoverflow?: T | GalleryCoverflowBlockSelect<T>;
         featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
+        testimonialSpotlight?: T | TestimonialSpotlightBlockSelect<T>;
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
         contentHighlights?: T | ContentHighlightsBlockSelect<T>;
         editorialReasons?: T | EditorialReasonsBlockSelect<T>;

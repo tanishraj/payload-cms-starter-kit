@@ -2,9 +2,9 @@
 
 ## Registries
 
-[Pages.ts](../../../../src/collections/Pages.ts) registers 49 blocks in this order:
+[Pages.ts](../../../../src/collections/Pages.ts) registers 50 blocks in this order:
 
-`announcement`, `bannerCta`, `newsGrid`, `cta39`, `heroBanner`, `heroCarousel`, `galleryCoverflow`, `featureSpotlight`, `featureMatrix`, `contentHighlights`, `editorialReasons`, `academicProgrammes`, `newsEventsHighlights`, `profileCarousel`, `galleryShowcase`, `eventGallery`, `studyPathways`, `imageMosaic`, `studentExperience`, `statsStrip`, `qaAccordion`, `ratingSpotlight`, `reviewFeed`, `reviewSubmission`, `contact33`, `contact24`, `teamShowcase`, `services21`, `richText`, `videoEmbed`, `mediaCarousel`, `programGrid`, `programMatrix`, `logoStrip`, `pageHeader`, `breadcrumb`, `timeline`, `iconCardShowcase`, `iconGrid`, `quoteBlock`, `tabsContent`, `downloadList`, `numberedSteps`, `bentoGrid`, `testimonialGrid`, `awardsList`, `aboutSection`, `accreditationCards`, `reusableSection`.
+`announcement`, `bannerCta`, `newsGrid`, `cta39`, `heroBanner`, `heroCarousel`, `galleryCoverflow`, `featureSpotlight`, `testimonialSpotlight`, `featureMatrix`, `contentHighlights`, `editorialReasons`, `academicProgrammes`, `newsEventsHighlights`, `profileCarousel`, `galleryShowcase`, `eventGallery`, `studyPathways`, `imageMosaic`, `studentExperience`, `statsStrip`, `qaAccordion`, `ratingSpotlight`, `reviewFeed`, `reviewSubmission`, `contact33`, `contact24`, `teamShowcase`, `services21`, `richText`, `videoEmbed`, `mediaCarousel`, `programGrid`, `programMatrix`, `logoStrip`, `pageHeader`, `breadcrumb`, `timeline`, `iconCardShowcase`, `iconGrid`, `quoteBlock`, `tabsContent`, `downloadList`, `numberedSteps`, `bentoGrid`, `testimonialGrid`, `awardsList`, `aboutSection`, `accreditationCards`, `reusableSection`.
 
 [ReusableSections.ts](../../../../src/collections/ReusableSections.ts) exposes the same order except `reusableSection`, preventing direct recursion.
 
@@ -49,6 +49,14 @@ Editorial Reasons supports Stacked, Inline, and Three Columns number layouts. Th
 outer reasons column so each row can place its generated number, title, and description in separate
 large-screen columns; compact screens place the description beneath the title. Selecting it hides
 the outer List Columns control without deleting that stored value.
+
+Testimonial Spotlight keeps section appearance independent from its complete image-and-content
+container. The inner container supports Match Section/Primary/Secondary/Muted/Accent semantic
+surfaces and an optional divider-colored outline; missing legacy values render as Match Section with
+no outline. Testimonial copy is optional: present copy uses the existing sans-serif family at a
+responsive 18–20px size with one normalized pair of curly double quotation marks and semantic quote
+markup, while absent copy leaves the image, title, description, and attribution visible without empty
+quotation elements. The person name and designation retain distinct body and metadata sizes.
 
 The generated inventory contains every current export under [src/blocks/shared](../../../../src/blocks/shared).
 

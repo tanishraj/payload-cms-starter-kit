@@ -15,6 +15,7 @@ const regularSectionEyebrowFiles = [
   'src/blocks/DownloadList/Component.tsx',
   'src/blocks/EditorialReasons/Component.tsx',
   'src/blocks/FeatureSpotlight/Component.tsx',
+  'src/blocks/TestimonialSpotlight/Component.tsx',
   'src/blocks/GalleryCoverflow/Component.tsx',
   'src/blocks/IconGrid/Component.tsx',
   'src/blocks/LogoStrip/Component.tsx',

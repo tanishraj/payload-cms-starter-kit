@@ -25,6 +25,7 @@ import { RatingSpotlightBlockComponent } from '@/blocks/RatingSpotlight/Componen
 import { ReviewSubmissionBlockComponent } from '@/blocks/ReviewSubmission/Component'
 import { Contact33BlockComponent } from '@/blocks/Contact33/Component'
 import { FeatureSpotlightBlockComponent } from '@/blocks/FeatureSpotlight/Component'
+import { TestimonialSpotlightBlockComponent } from '@/blocks/TestimonialSpotlight/Component'
 import { StatsStripBlockComponent } from '@/blocks/StatsStrip/Component'
 import { TeamShowcase } from '@/components/team-showcase'
 import { ReviewFeed } from '@/components/review-feed'
@@ -1422,6 +1423,23 @@ export const blockThumbnailFixtures = {
       mediaPosition="left"
       size="compact"
       title="Designed around the way people learn."
+    />
+  ),
+  testimonialSpotlight: (
+    <TestimonialSpotlightBlockComponent
+      appearance={{ background: 'none', border: 'none' }}
+      containerBackground="muted"
+      containerOutline="outline"
+      description="A long-term commitment to education, healthcare, and service guides every institutional decision."
+      designation="Founder"
+      eyebrow="Message from management"
+      image={{ alt: 'Institutional leader portrait', url: portrait }}
+      mediaFillMode="containedFill"
+      mediaPosition="left"
+      personName="Shri Ravindra Kumar Singh"
+      size="compact"
+      testimonial="Our aim is to build an institution where education, healthcare, and service strengthen one another."
+      title="Leadership with a long-term purpose."
     />
   ),
   statsStrip: (

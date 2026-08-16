@@ -778,6 +778,20 @@
       },
       {
         "clientFiles": [],
+        "componentPath": "src/blocks/TestimonialSpotlight/Component.tsx",
+        "configPath": "src/blocks/TestimonialSpotlight/config.ts",
+        "files": [
+          "src/blocks/TestimonialSpotlight/Component.tsx",
+          "src/blocks/TestimonialSpotlight/config.ts"
+        ],
+        "interfaceName": "TestimonialSpotlightBlock",
+        "presentationPath": null,
+        "previewComponentPath": null,
+        "slug": "testimonialSpotlight",
+        "symbol": "TestimonialSpotlightBlock"
+      },
+      {
+        "clientFiles": [],
         "componentPath": "src/blocks/Timeline/Component.tsx",
         "configPath": "src/blocks/Timeline/config.ts",
         "files": [
@@ -863,6 +877,7 @@
       "TabsContentBlock",
       "TeamShowcaseBlock",
       "TestimonialGridBlock",
+      "TestimonialSpotlightBlock",
       "TimelineBlock",
       "VideoEmbedBlock"
     ],
@@ -892,6 +907,7 @@
       "ratingSpotlight",
       "reviewFeed",
       "featureSpotlight",
+      "testimonialSpotlight",
       "statsStrip",
       "teamShowcase",
       "services21",
@@ -929,6 +945,7 @@
       "heroCarousel",
       "galleryCoverflow",
       "featureSpotlight",
+      "testimonialSpotlight",
       "featureMatrix",
       "contentHighlights",
       "editorialReasons",
@@ -994,6 +1011,7 @@
       "ratingSpotlight",
       "reviewFeed",
       "featureSpotlight",
+      "testimonialSpotlight",
       "statsStrip",
       "teamShowcase",
       "services21",
@@ -1031,6 +1049,7 @@
       "heroCarousel",
       "galleryCoverflow",
       "featureSpotlight",
+      "testimonialSpotlight",
       "featureMatrix",
       "contentHighlights",
       "editorialReasons",
@@ -1272,6 +1291,7 @@
         "public/block-thumbnails/tabs-content.jpg",
         "public/block-thumbnails/team-showcase.jpg",
         "public/block-thumbnails/testimonial-grid.jpg",
+        "public/block-thumbnails/testimonial-spotlight.jpg",
         "public/block-thumbnails/timeline.jpg",
         "public/block-thumbnails/video-embed.jpg"
       ],
@@ -1307,6 +1327,10 @@
         {
           "filename": "feature-spotlight.jpg",
           "slug": "featureSpotlight"
+        },
+        {
+          "filename": "testimonial-spotlight.jpg",
+          "slug": "testimonialSpotlight"
         },
         {
           "filename": "feature-matrix.jpg",
@@ -1529,6 +1553,7 @@
         "ratingSpotlight",
         "teamShowcase",
         "featureSpotlight",
+        "testimonialSpotlight",
         "statsStrip",
         "system404",
         "systemComingSoon",
@@ -1938,6 +1963,8 @@
       "src/blocks/TeamShowcase/config.ts",
       "src/blocks/TestimonialGrid/Component.tsx",
       "src/blocks/TestimonialGrid/config.ts",
+      "src/blocks/TestimonialSpotlight/Component.tsx",
+      "src/blocks/TestimonialSpotlight/config.ts",
       "src/blocks/Timeline/Component.tsx",
       "src/blocks/Timeline/config.ts",
       "src/blocks/VideoEmbed/Component.tsx",
@@ -2291,12 +2318,14 @@
       "tests/int/system-page-rendering.int.spec.ts",
       "tests/int/tabs-content-active-color.int.spec.ts",
       "tests/int/taxonomy.int.spec.ts",
+      "tests/int/testimonial-spotlight-config.int.spec.ts",
+      "tests/int/testimonial-spotlight-render.int.spec.tsx",
       "tests/int/theme-contracts.int.spec.ts",
       "tests/int/theme-settings.int.spec.ts",
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "d8dbebdf62704f790008b8d637aabce9b12079766d8b32af0ddce00b75cae1a1"
+    "sha256": "27ceaf61772bb64782b9e76ed25d938fb8d67bea107afb190e73fefece564508"
   },
   "surfaces": {
     "access": [
@@ -2545,6 +2574,8 @@
       "tests/int/system-page-rendering.int.spec.ts",
       "tests/int/tabs-content-active-color.int.spec.ts",
       "tests/int/taxonomy.int.spec.ts",
+      "tests/int/testimonial-spotlight-config.int.spec.ts",
+      "tests/int/testimonial-spotlight-render.int.spec.tsx",
       "tests/int/theme-contracts.int.spec.ts",
       "tests/int/theme-settings.int.spec.ts",
       "tests/int/work-queue.int.spec.ts"

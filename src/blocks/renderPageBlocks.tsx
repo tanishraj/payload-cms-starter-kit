@@ -23,6 +23,7 @@ import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
 import { Contact24BlockComponent } from './Contact24/Component'
 import { Contact33BlockComponent } from './Contact33/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
+import { TestimonialSpotlightBlockComponent } from './TestimonialSpotlight/Component'
 import { BannerCtaBlockComponent } from './BannerCta/Component'
 import { NewsGridBlockComponent } from './NewsGrid/Component'
 import { Cta39BlockComponent } from './Cta39/Component'
@@ -130,6 +131,8 @@ function renderSingleBlock(
       return wrap(<ReviewFeedBlockComponent {...block} />)
     case 'featureSpotlight':
       return wrap(<FeatureSpotlightBlockComponent {...block} />)
+    case 'testimonialSpotlight':
+      return wrap(<TestimonialSpotlightBlockComponent {...block} />)
     case 'statsStrip':
       return wrap(<StatsStripBlockComponent {...block} />)
     case 'teamShowcase':

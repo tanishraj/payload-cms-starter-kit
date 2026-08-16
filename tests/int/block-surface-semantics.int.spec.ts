@@ -6,6 +6,7 @@ const read = (file: string) => fs.readFileSync(path.resolve(process.cwd(), file)
 
 const inheritedSurfaceFiles = [
   'src/blocks/FeatureSpotlight/Component.tsx',
+  'src/blocks/TestimonialSpotlight/Component.tsx',
   'src/blocks/QaAccordion/Component.tsx',
   'src/blocks/ReviewSubmission/Component.tsx',
   'src/blocks/PageHeader/Component.tsx',

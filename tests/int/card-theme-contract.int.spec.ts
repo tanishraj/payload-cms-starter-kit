@@ -26,6 +26,16 @@ describe('card theme contract', () => {
     })
   })
 
+  it('allows a consumer-specific label for the inherited surface option', () => {
+    expect(createCardBackgroundField({ defaultOptionLabel: 'Match Section' }).options).toEqual([
+      { label: 'Match Section', value: 'default' },
+      { label: 'Primary', value: 'primary' },
+      { label: 'Secondary', value: 'secondary' },
+      { label: 'Muted', value: 'muted' },
+      { label: 'Accent', value: 'accent' },
+    ])
+  })
+
   it('creates fresh unnamed Content and Theme Settings tabs', () => {
     const first = createCardTabs({
       contentFields: [{ name: 'title', type: 'text' }],

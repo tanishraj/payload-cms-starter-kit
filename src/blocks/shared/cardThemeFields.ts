@@ -6,6 +6,7 @@ export type CardSurfaceValue = (typeof cardSurfaceValues)[number]
 
 type CreateCardBackgroundFieldOptions = {
   adminDescription?: string
+  defaultOptionLabel?: string
   label?: string
   name?: string
 }
@@ -19,6 +20,7 @@ type CreateCardTabsOptions = {
 
 export const createCardBackgroundField = ({
   adminDescription = 'Default Card inherits the section background. Other choices use the active theme and automatically adjust card contrast.',
+  defaultOptionLabel = 'Default Card',
   label = 'Background',
   name = 'cardBackground',
 }: CreateCardBackgroundFieldOptions = {}): SelectField => ({
@@ -28,7 +30,7 @@ export const createCardBackgroundField = ({
   defaultValue: 'default',
   required: true,
   options: [
-    { label: 'Default Card', value: 'default' },
+    { label: defaultOptionLabel, value: 'default' },
     { label: 'Primary', value: 'primary' },
     { label: 'Secondary', value: 'secondary' },
     { label: 'Muted', value: 'muted' },

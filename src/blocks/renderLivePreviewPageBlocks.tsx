@@ -12,6 +12,7 @@ import { EditorialReasonsBlockComponent } from './EditorialReasons/Component'
 import { AcademicProgrammesBlockComponent } from './AcademicProgrammes/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
+import { TestimonialSpotlightBlockComponent } from './TestimonialSpotlight/Component'
 import { BannerCtaBlockComponent } from './BannerCta/Component'
 import { NewsGridPreviewBlockComponent } from './NewsGrid/PreviewComponent'
 import { Cta39BlockComponent } from './Cta39/Component'
@@ -142,6 +143,8 @@ function renderSingleLivePreviewBlock(
       return <ReviewFeedPreviewBlockComponent key={key} snapshot={snapshot} {...block} />
     case 'featureSpotlight':
       return <FeatureSpotlightBlockComponent key={key} {...block} />
+    case 'testimonialSpotlight':
+      return <TestimonialSpotlightBlockComponent key={key} {...block} />
     case 'statsStrip':
       return <StatsStripBlockComponent key={key} {...block} />
     case 'teamShowcase':

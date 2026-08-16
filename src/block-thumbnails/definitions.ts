@@ -68,6 +68,12 @@ export const blockThumbnailDefinitions = [
     slug: 'featureSpotlight',
   }),
   defineThumbnail({
+    alt: 'Testimonial Spotlight block preview',
+    filename: 'testimonial-spotlight.jpg',
+    label: 'Testimonial Spotlight',
+    slug: 'testimonialSpotlight',
+  }),
+  defineThumbnail({
     alt: 'Feature Matrix block preview',
     filename: 'feature-matrix.jpg',
     label: 'Feature Matrix',

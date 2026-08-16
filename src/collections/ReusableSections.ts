@@ -28,6 +28,7 @@ import { StatsStripBlock } from '@/blocks/StatsStrip/config'
 import { Services21Block } from '@/blocks/Services21/config'
 import { TeamShowcaseBlock } from '@/blocks/TeamShowcase/config'
 import { FeatureSpotlightBlock } from '@/blocks/FeatureSpotlight/config'
+import { TestimonialSpotlightBlock } from '@/blocks/TestimonialSpotlight/config'
 import { RichTextBlock } from '@/blocks/RichTextBlock/config'
 import { VideoEmbedBlock } from '@/blocks/VideoEmbed/config'
 import { MediaCarouselBlock } from '@/blocks/MediaCarousel/config'
@@ -111,6 +112,7 @@ export const ReusableSections: CollectionConfig = {
         HeroCarouselBlock,
         GalleryCoverflowBlock,
         FeatureSpotlightBlock,
+        TestimonialSpotlightBlock,
         FeatureMatrixBlock,
         ContentHighlightsBlock,
         EditorialReasonsBlock,
