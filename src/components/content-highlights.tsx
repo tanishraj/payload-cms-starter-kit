@@ -259,11 +259,7 @@ function HighlightBody({
 }) {
   const eyebrow = marker ? (
     <p
-      className={cn(
-        contentItemMetadataClasses,
-        eyebrowPlacement === 'inline' && 'pt-1',
-        'font-semibold text-current/70 uppercase tracking-[0.18em]',
-      )}
+      className={cn(contentItemMetadataClasses, eyebrowPlacement === 'inline' && 'pt-1')}
       data-content-highlight-marker={marker}
       data-section-eyebrow-surface={markerSurface}
     >
