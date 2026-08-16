@@ -5,6 +5,10 @@ import { describe, expect, it } from 'vitest'
 
 import { IconGridBlockComponent } from '@/blocks/IconGrid/Component'
 import { IconGridBlock } from '@/blocks/IconGrid/config'
+import {
+  contentItemDescriptionClasses,
+  contentItemTitleClasses,
+} from '@/blocks/shared/contentStyles'
 
 const findField = (
   fields: unknown[],
@@ -132,7 +136,15 @@ describe('Icon Grid Ruled Columns', () => {
     )
 
     expect(html).toContain('data-icon-grid-presentation="ruled"')
-    expect(html).toContain('font-[family-name:var(--font-display)]')
+    for (const className of contentItemTitleClasses.split(' ')) {
+      expect(html).toContain(className)
+    }
+    for (const className of contentItemDescriptionClasses.split(' ')) {
+      expect(html).toContain(className)
+    }
+    expect(html).not.toContain('font-[family-name:var(--font-display)]')
+    expect(html).not.toContain('text-2xl')
+    expect(html).not.toContain('text-base leading-7')
     expect(html).toContain('border-current/15')
     expect(html).toContain('text-current/70')
     expect(html).toContain('rounded-lg border')

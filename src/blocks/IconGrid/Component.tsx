@@ -12,6 +12,10 @@ import {
   regularBlockContainerClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import {
+  contentItemDescriptionClasses,
+  contentItemTitleClasses,
+} from '@/blocks/shared/contentStyles'
 import { Button } from '@/components/ui/button'
 import { ContentActions } from '@/components/ContentActions'
 import { ContentLink } from '@/components/ContentLink'
@@ -515,11 +519,11 @@ function RuledItem({
         />
       ) : null}
       <div className="flex flex-1 flex-col gap-3">
-        <h3 className="font-[family-name:var(--font-display)] text-2xl leading-tight font-semibold tracking-tight">
-          {item.title?.trim()}
-        </h3>
+        <h3 className={contentItemTitleClasses}>{item.title?.trim()}</h3>
         {item.description?.trim() ? (
-          <p className={cn('text-base leading-7 whitespace-pre-line', surface.secondary)}>
+          <p
+            className={cn(contentItemDescriptionClasses, 'whitespace-pre-line', surface.secondary)}
+          >
             {item.description.trim()}
           </p>
         ) : null}
