@@ -43,7 +43,7 @@ The baseline inventory will capture at least:
 - Access, hooks, library modules, runtime/provider configuration, themes, and test files.
 - The current knowledge-graph metadata so structural staleness can be reported.
 
-The initial narrative references will explicitly document the current Payload architecture: 20 registered collections, nine registered globals, 48 Page blocks, governed editorial workflow, reusable-section recursion limits, block error boundaries, shared theme surfaces, local/S3 media providers, optional Resend email, public/draft filtering, and the repository's test layers. These counts are regenerated facts, not hard-coded assumptions in validation logic.
+The initial narrative references will explicitly document the current Payload architecture: 20 registered collections, nine registered globals, 49 Page blocks, governed editorial workflow, reusable-section recursion limits, block error boundaries, shared theme surfaces, local/S3 media providers, optional Resend email, public/draft filtering, and the repository's test layers. These counts are regenerated facts, not hard-coded assumptions in validation logic.
 
 ## Update Workflow
 
@@ -130,7 +130,7 @@ Unit tests will cover:
 Repository-level tests will run the extractor against the current source tree and verify:
 
 - Generated output matches the checked-in inventory.
-- All 48 current Page blocks satisfy production and live-preview contracts.
+- All 49 current Page blocks satisfy production and live-preview contracts.
 - Current thumbnail and generated-type coverage passes.
 - Restricted block systems remain isolated.
 - Running the updater twice produces no second change.
