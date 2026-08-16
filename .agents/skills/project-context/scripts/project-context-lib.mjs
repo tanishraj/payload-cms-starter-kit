@@ -278,3 +278,259 @@ export const stableStringify = (value) => `${JSON.stringify(sortObjectKeys(value
 
 export const sha256 = (value) => createHash('sha256').update(value).digest('hex')
 
+const toPosix = (value) => value.split(path.sep).join('/')
+
+async function readText(projectRoot, relativePath) {
+  return fs.readFile(path.join(projectRoot, relativePath), 'utf8')
+}
+
+async function walkFiles(projectRoot, relativeDirectory, predicate = () => true) {
+  const absoluteDirectory = path.join(projectRoot, relativeDirectory)
+
+  if (!existsSync(absoluteDirectory)) {
+    return []
+  }
+
+  const files = []
+
+  for (const entry of await fs.readdir(absoluteDirectory, { withFileTypes: true })) {
+    const relativePath = toPosix(path.join(relativeDirectory, entry.name))
+
+    if (entry.isDirectory()) {
+      files.push(...(await walkFiles(projectRoot, relativePath, predicate)))
+    } else if (entry.isFile() && predicate(relativePath)) {
+      files.push(relativePath)
+    }
+  }
+
+  return files.sort()
+}
+
+const resolveConfigImportPath = (ownerPath, importPath) => {
+  let resolved
+
+  if (importPath.startsWith('@/')) {
+    resolved = `src/${importPath.slice(2)}`
+  } else {
+    resolved = toPosix(path.posix.join(path.posix.dirname(ownerPath), importPath))
+  }
+
+  if (/\.(ts|tsx)$/.test(resolved)) {
+    return resolved
+  }
+
+  return `${resolved}.ts`
+}
+
+async function readBlockDefinitions(projectRoot) {
+  const configPaths = await walkFiles(
+    projectRoot,
+    'src/blocks',
+    (filePath) => filePath.endsWith('/config.ts'),
+  )
+  const definitions = []
+
+  for (const configPath of configPaths) {
+    const definition = extractBlockDefinition(await readText(projectRoot, configPath), configPath)
+    const directory = path.posix.dirname(configPath)
+    const files = await walkFiles(projectRoot, directory, (filePath) => /\.(ts|tsx)$/.test(filePath))
+
+    definitions.push({
+      ...definition,
+      clientFiles: files.filter((filePath) => /Client\.tsx$/.test(filePath)),
+      componentPath: files.find((filePath) => filePath.endsWith('/Component.tsx')) ?? null,
+      files,
+      presentationPath: files.find((filePath) => filePath.endsWith('/Presentation.tsx')) ?? null,
+      previewComponentPath:
+        files.find((filePath) => filePath.endsWith('/PreviewComponent.tsx')) ?? null,
+    })
+  }
+
+  return definitions.sort((left, right) => left.slug.localeCompare(right.slug))
+}
+
+async function getRegistrySlugs(projectRoot, collectionPath, definitionsBySymbol) {
+  const source = await readText(projectRoot, collectionPath)
+
+  return extractArrayPropertyIdentifiers(source, collectionPath, 'blocks').map((symbol) => {
+    const definition = definitionsBySymbol.get(symbol)
+
+    if (!definition) {
+      throw new Error(`Unknown block symbol ${symbol} in ${collectionPath}`)
+    }
+
+    return definition.slug
+  })
+}
+
+async function getRegisteredConfigs(projectRoot, propertyName) {
+  const configPath = 'src/payload.config.ts'
+  const source = await readText(projectRoot, configPath)
+  const imports = extractImports(source, configPath)
+
+  return extractArrayPropertyIdentifiers(source, configPath, propertyName).map((symbol) => {
+    const importPath = imports[symbol]
+
+    if (!importPath) {
+      throw new Error(`Missing import for ${symbol} in ${configPath}`)
+    }
+
+    return {
+      source: resolveConfigImportPath(configPath, importPath),
+      symbol,
+    }
+  })
+}
+
+async function getSourceDigest(projectRoot) {
+  const monitoredFiles = [
+    ...(await walkFiles(projectRoot, 'src', (filePath) => /\.(ts|tsx|css|scss)$/.test(filePath))),
+    ...(await walkFiles(projectRoot, 'tests', (filePath) => /\.(ts|tsx)$/.test(filePath))),
+    ...(await walkFiles(projectRoot, 'docs/architecture', (filePath) => filePath.endsWith('.md'))),
+    ...(await walkFiles(projectRoot, 'docs/guides', (filePath) => filePath.endsWith('.md'))),
+    ...(await walkFiles(projectRoot, 'docs/operations', (filePath) => filePath.endsWith('.md'))),
+    'AGENTS.md',
+    'Dockerfile',
+    'README.md',
+    'next.config.ts',
+    'package.json',
+    'tsconfig.json',
+  ]
+  const files = [...new Set(monitoredFiles)].sort()
+  const chunks = []
+
+  for (const filePath of files) {
+    chunks.push(`${filePath}\0${await readText(projectRoot, filePath)}\0`)
+  }
+
+  return {
+    files,
+    sha256: sha256(chunks.join('')),
+  }
+}
+
+export async function buildProjectInventory(projectRoot) {
+  const root = path.resolve(projectRoot)
+  const packageJson = JSON.parse(await readText(root, 'package.json'))
+  const definitions = await readBlockDefinitions(root)
+  const definitionsBySymbol = new Map(definitions.map((definition) => [definition.symbol, definition]))
+  const thumbnailDefinitions = extractThumbnailDefinitions(
+    await readText(root, 'src/block-thumbnails/definitions.ts'),
+    'src/block-thumbnails/definitions.ts',
+  )
+  const thumbnailFixtures = extractExportedObjectKeys(
+    await readText(root, 'src/block-thumbnails/fixtures.tsx'),
+    'src/block-thumbnails/fixtures.tsx',
+    'blockThumbnailFixtures',
+  )
+  const generatedTypes = await readText(root, 'src/payload-types.ts')
+  const graphMetaPath = path.join(root, '.understand-anything/meta.json')
+  const graphMeta = existsSync(graphMetaPath)
+    ? JSON.parse(await fs.readFile(graphMetaPath, 'utf8'))
+    : null
+  const sharedPaths = await walkFiles(
+    root,
+    'src/blocks/shared',
+    (filePath) => /\.(ts|tsx)$/.test(filePath),
+  )
+
+  return {
+    schemaVersion: 1,
+    project: {
+      frameworks: {
+        next: packageJson.dependencies?.next ?? null,
+        payload: packageJson.dependencies?.payload ?? null,
+        react: packageJson.dependencies?.react ?? null,
+        tailwindcss: packageJson.dependencies?.tailwindcss ?? null,
+        typescript: packageJson.devDependencies?.typescript ?? null,
+        vitest: packageJson.devDependencies?.vitest ?? null,
+      },
+      name: packageJson.name,
+      scripts: Object.keys(packageJson.scripts ?? {}).sort(),
+      version: packageJson.version,
+    },
+    payload: {
+      collections: await getRegisteredConfigs(root, 'collections'),
+      globals: await getRegisteredConfigs(root, 'globals'),
+    },
+    blocks: {
+      definitions,
+      footer: await getRegistrySlugs(root, 'src/collections/Footers.ts', definitionsBySymbol),
+      generatedInterfaces: [...generatedTypes.matchAll(/export interface (\w+Block)\b/g)]
+        .map((match) => match[1])
+        .sort(),
+      header: await getRegistrySlugs(root, 'src/collections/Headers.ts', definitionsBySymbol),
+      livePreviewRenderer: extractSwitchCases(
+        await readText(root, 'src/blocks/renderLivePreviewPageBlocks.tsx'),
+      ),
+      page: await getRegistrySlugs(root, 'src/collections/Pages.ts', definitionsBySymbol),
+      productionRenderer: extractSwitchCases(await readText(root, 'src/blocks/renderPageBlocks.tsx')),
+      reusableSection: await getRegistrySlugs(
+        root,
+        'src/collections/ReusableSections.ts',
+        definitionsBySymbol,
+      ),
+      shared: await Promise.all(
+        sharedPaths.map(async (filePath) => ({
+          exports: extractExportNames(await readText(root, filePath), filePath),
+          file: filePath,
+        })),
+      ),
+      systemPage: await getRegistrySlugs(
+        root,
+        'src/collections/SystemPages.ts',
+        definitionsBySymbol,
+      ),
+      thumbnails: {
+        assets: await walkFiles(
+          root,
+          'public/block-thumbnails',
+          (filePath) => filePath.endsWith('.jpg'),
+        ),
+        definitions: thumbnailDefinitions,
+        fixtures: thumbnailFixtures,
+      },
+    },
+    knowledgeGraph: graphMeta
+      ? {
+          analyzedFiles: graphMeta.analyzedFiles,
+          gitCommitHash: graphMeta.gitCommitHash,
+          lastAnalyzedAt: graphMeta.lastAnalyzedAt,
+        }
+      : null,
+    sourceDigest: await getSourceDigest(root),
+    surfaces: {
+      access: await walkFiles(root, 'src/access', (filePath) => filePath.endsWith('.ts')),
+      config: await walkFiles(root, 'src/config', (filePath) => filePath.endsWith('.ts')),
+      fields: await walkFiles(root, 'src/fields', (filePath) => filePath.endsWith('.ts')),
+      hooks: await walkFiles(root, 'src/hooks', (filePath) => filePath.endsWith('.ts')),
+      libraries: await walkFiles(root, 'src/lib', (filePath) => /\.(ts|tsx)$/.test(filePath)),
+      routes: await walkFiles(
+        root,
+        'src/app',
+        (filePath) => /\/(page|route|layout|robots|sitemap|opengraph-image)\.(ts|tsx)$/.test(filePath),
+      ),
+      tests: await walkFiles(root, 'tests', (filePath) => /\.spec\.(ts|tsx)$/.test(filePath)),
+      themes: await walkFiles(root, 'src/styles/themes', (filePath) => filePath.endsWith('.css')),
+    },
+  }
+}
+
+export async function writeProjectInventory(projectRoot, inventory, explicitTarget) {
+  const target =
+    explicitTarget ??
+    path.join(projectRoot, '.agents/skills/project-context/references/project-inventory.json')
+  const temporary = `${target}.tmp`
+
+  await fs.mkdir(path.dirname(target), { recursive: true })
+
+  try {
+    await fs.writeFile(temporary, stableStringify(inventory))
+    await fs.rename(temporary, target)
+  } catch (error) {
+    await fs.rm(temporary, { force: true })
+    throw error
+  }
+
+  return target
+}

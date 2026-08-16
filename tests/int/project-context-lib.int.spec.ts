@@ -1,3 +1,7 @@
+import { mkdtemp, readFile, writeFile } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import path from 'node:path'
+
 import { describe, expect, it } from 'vitest'
 
 import {
@@ -7,7 +11,9 @@ import {
   extractImports,
   extractSwitchCases,
   extractThumbnailDefinitions,
+  buildProjectInventory,
   stableStringify,
+  writeProjectInventory,
 } from '../../.agents/skills/project-context/scripts/project-context-lib.mjs'
 
 const importFixture = `
@@ -90,5 +96,41 @@ describe('project context parser', () => {
     expect(stableStringify({ z: 1, a: { d: 2, b: 1 }, rows: ['b', 'a'] })).toBe(
       '{\n  "a": {\n    "b": 1,\n    "d": 2\n  },\n  "rows": [\n    "b",\n    "a"\n  ],\n  "z": 1\n}\n',
     )
+  })
+
+  it('builds the current registered Payload and block inventory', async () => {
+    const inventory = await buildProjectInventory(process.cwd())
+
+    expect(inventory.schemaVersion).toBe(1)
+    expect(inventory.payload.collections).toHaveLength(20)
+    expect(inventory.payload.globals).toHaveLength(9)
+    expect(inventory.blocks.page).toHaveLength(49)
+    expect(inventory.blocks.reusableSection).toEqual(
+      inventory.blocks.page.filter((slug: string) => slug !== 'reusableSection'),
+    )
+    expect(inventory.blocks.header).toEqual(['headerNavbar12'])
+    expect(inventory.blocks.footer).toEqual(['footer56', 'footerMinimal'])
+    expect(inventory.blocks.systemPage).toEqual([
+      'system404',
+      'systemMaintenance',
+      'systemComingSoon',
+    ])
+  })
+
+  it('writes stable inventory and leaves no temporary sibling', async () => {
+    const directory = await mkdtemp(path.join(tmpdir(), 'project-context-'))
+    const target = path.join(directory, 'inventory.json')
+
+    await writeFile(target, '{"old":true}\n')
+    await writeProjectInventory(
+      directory,
+      { schemaVersion: 1, value: 'stable' },
+      target,
+    )
+
+    expect(await readFile(target, 'utf8')).toBe(
+      '{\n  "schemaVersion": 1,\n  "value": "stable"\n}\n',
+    )
+    await expect(readFile(`${target}.tmp`, 'utf8')).rejects.toMatchObject({ code: 'ENOENT' })
   })
 })
