@@ -684,10 +684,113 @@ export async function checkProjectContext(projectRoot) {
 
   const checkedIn = JSON.parse(await fs.readFile(inventoryPath, 'utf8'))
   const result = await validateProjectContracts(projectRoot, expected)
+  const referenceErrors = await validateSkillReferences(projectRoot)
+  result.errors.push(...referenceErrors)
+
+  const changedFiles = execFileSync('git', ['diff', '--name-only', 'HEAD'], {
+    cwd: projectRoot,
+    encoding: 'utf8',
+  })
+    .split('\n')
+    .map((filePath) => filePath.trim())
+    .filter(Boolean)
+  result.warnings.push(...getNarrativeReviewWarnings(changedFiles))
 
   if (stableStringify(checkedIn) !== stableStringify(expected)) {
     result.errors.unshift('Project inventory is stale. Run pnpm project-context:update.')
   }
 
   return result
+}
+
+const requiredSkillFiles = [
+  'SKILL.md',
+  'agents/openai.yaml',
+  'references/architecture.md',
+  'references/block-system.md',
+  'references/change-impact-map.md',
+  'references/payload-model.md',
+  'references/project-inventory.json',
+]
+
+export async function validateSkillReferences(projectRoot) {
+  const skillRoot = path.join(projectRoot, '.agents/skills/project-context')
+  const errors = []
+
+  for (const relativePath of requiredSkillFiles) {
+    if (!existsSync(path.join(skillRoot, relativePath))) {
+      errors.push(`Missing required project-context file: ${relativePath}.`)
+    }
+  }
+
+  const markdownFiles = requiredSkillFiles.filter((filePath) => filePath.endsWith('.md'))
+
+  for (const relativePath of markdownFiles) {
+    const documentPath = path.join(skillRoot, relativePath)
+
+    if (!existsSync(documentPath)) {
+      continue
+    }
+
+    const markdown = await fs.readFile(documentPath, 'utf8')
+
+    for (const match of markdown.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)) {
+      const target = match[1].split('#')[0]
+
+      if (!target || /^(?:https?:|mailto:)/.test(target)) {
+        continue
+      }
+
+      const resolved = path.resolve(path.dirname(documentPath), decodeURIComponent(target))
+
+      if (!existsSync(resolved)) {
+        errors.push(`Broken project-context reference: ${target} from ${relativePath}.`)
+      }
+    }
+  }
+
+  return errors.sort()
+}
+
+const narrativeGroups = [
+  {
+    label: 'Payload model',
+    matches: (filePath) =>
+      filePath === 'src/payload.config.ts' ||
+      /^src\/(access|collections|fields|globals|hooks|plugins)\//.test(filePath),
+    reference: '.agents/skills/project-context/references/payload-model.md',
+  },
+  {
+    label: 'block system',
+    matches: (filePath) =>
+      /^src\/(block-thumbnails|blocks)\//.test(filePath) ||
+      /^src\/collections\/(Pages|ReusableSections|SystemPages)\.ts$/.test(filePath),
+    reference: '.agents/skills/project-context/references/block-system.md',
+  },
+  {
+    label: 'architecture',
+    matches: (filePath) =>
+      /^src\/(app|config|lib|styles)\//.test(filePath) ||
+      ['Dockerfile', 'next.config.ts', 'package.json', 'src/middleware.ts', 'tsconfig.json'].includes(
+        filePath,
+      ),
+    reference: '.agents/skills/project-context/references/architecture.md',
+  },
+]
+
+export function getNarrativeReviewWarnings(changedFiles) {
+  const warnings = []
+
+  for (const group of narrativeGroups) {
+    if (
+      changedFiles.some(group.matches) &&
+      !changedFiles.includes(group.reference)
+    ) {
+      warnings.push(
+        `${group.label} files changed; review ${group.reference} and update it if the project contract changed.`,
+      )
+    }
+  }
+
+  return warnings.sort()
 }

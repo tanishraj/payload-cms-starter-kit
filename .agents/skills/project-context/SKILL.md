@@ -1,85 +1,35 @@
 ---
 name: project-context
-description: [TODO: Complete and informative explanation of what the skill does and when to use it. Include WHEN to use this skill - specific scenarios, file types, or tasks that trigger it.]
+description: Understand, implement, review, or diagnose changes in this Payload CMS starter while preserving its project-specific architecture and keeping generated project knowledge current. Use for repository work involving collections, globals, blocks, renderers, routes, themes, access, hooks, providers, tests, documentation, or cross-file change impact.
 ---
 
 # Project Context
 
-## Overview
+Read the repository [AGENTS.md](../../../AGENTS.md). Before changing Payload configuration, also read the neighboring [Payload skill](../payload/SKILL.md) and only the relevant detailed reference it routes.
 
-[TODO: 1-2 sentences explaining what this skill enables]
+Treat current source, registered configuration, generated Payload types, and maintained architecture documentation as authoritative in that order. Historical plans explain why work happened but do not override current source.
 
-## Structuring This Skill
+## Route Context
 
-[TODO: Choose the structure that best fits this skill's purpose. Common patterns:
+- Read [architecture.md](references/architecture.md) for runtime layers, routes, rendering, providers, caching, themes, and testing boundaries.
+- Read [payload-model.md](references/payload-model.md) for collections, globals, access, fields, hooks, workflow, and relationships.
+- Read [block-system.md](references/block-system.md) for block config, registration, renderers, live preview, reusable sections, thumbnails, generated types, and block tests.
+- Read [change-impact-map.md](references/change-impact-map.md) before implementation and again before handoff.
+- Read [project-inventory.json](references/project-inventory.json) when exact names, paths, versions, registrations, or coverage lists are needed.
 
-**1. Workflow-Based** (best for sequential processes)
-- Works well when there are clear step-by-step procedures
-- Example: DOCX skill with "Workflow Decision Tree" -> "Reading" -> "Creating" -> "Editing"
-- Structure: ## Overview -> ## Workflow Decision Tree -> ## Step 1 -> ## Step 2...
+## Work Safely
 
-**2. Task-Based** (best for tool collections)
-- Works well when the skill offers different operations/capabilities
-- Example: PDF skill with "Quick Start" -> "Merge PDFs" -> "Split PDFs" -> "Extract Text"
-- Structure: ## Overview -> ## Quick Start -> ## Task Category 1 -> ## Task Category 2...
+Inspect the schema/config producer, frontend consumer, hooks/helpers, generated types, tests, and maintained docs together. Keep Local API access enforcement for user-scoped operations, pass `req` through nested Payload operations, guard hook recursion with context, preserve draft/public filtering, and never run destructive data workflows against production.
 
-**3. Reference/Guidelines** (best for standards or specifications)
-- Works well for brand guidelines, coding standards, or requirements
-- Example: Brand styling with "Brand Guidelines" -> "Colors" -> "Typography" -> "Features"
-- Structure: ## Overview -> ## Guidelines -> ## Specifications -> ## Usage...
+Follow existing explicit registration patterns. Do not introduce a cross-environment block registry that mixes server-only and client-capable imports merely to reduce repetition.
 
-**4. Capabilities-Based** (best for integrated systems)
-- Works well when the skill provides multiple interrelated features
-- Example: Product Management with "Core Capabilities" -> numbered capability list
-- Structure: ## Overview -> ## Core Capabilities -> ### 1. Feature -> ### 2. Feature...
+## Complete Every Implementation
 
-Patterns can be mixed and matched as needed. Most skills combine patterns (e.g., start with task-based, add workflow for complex operations).
+1. Run `pnpm project-context:update`.
+2. Inspect the final diff using [change-impact-map.md](references/change-impact-map.md).
+3. Update narrative references only when architecture, ownership, behavior, or operator contracts changed.
+4. Run `pnpm project-context:check`.
+5. Run affected tests and required Payload generators.
+6. Report which project-context files changed, or explicitly report that the skill remained current.
 
-Delete this entire "Structuring This Skill" section when done - it's just guidance.]
-
-## [TODO: Replace with the first main section based on chosen structure]
-
-[TODO: Add content here. See examples in existing skills:
-- Code samples for technical skills
-- Decision trees for complex workflows
-- Concrete examples with realistic user requests
-- References to scripts/templates/references as needed]
-
-## Resources (optional)
-
-Create only the resource directories this skill actually needs. Delete this section if no resources are required.
-
-### scripts/
-Executable code (Python/Bash/etc.) that can be run directly to perform specific operations.
-
-**Examples from other skills:**
-- PDF skill: `fill_fillable_fields.py`, `extract_form_field_info.py` - utilities for PDF manipulation
-- DOCX skill: `document.py`, `utilities.py` - Python modules for document processing
-
-**Appropriate for:** Python scripts, shell scripts, or any executable code that performs automation, data processing, or specific operations.
-
-**Note:** Scripts may be executed without loading into context, but can still be read by Codex for patching or environment adjustments.
-
-### references/
-Documentation and reference material intended to be loaded into context to inform Codex's process and thinking.
-
-**Examples from other skills:**
-- Product management: `communication.md`, `context_building.md` - detailed workflow guides
-- BigQuery: API reference documentation and query examples
-- Finance: Schema documentation, company policies
-
-**Appropriate for:** In-depth documentation, API references, database schemas, comprehensive guides, or any detailed information that Codex should reference while working.
-
-### assets/
-Files not intended to be loaded into context, but rather used within the output Codex produces.
-
-**Examples from other skills:**
-- Brand styling: PowerPoint template files (.pptx), logo files
-- Frontend builder: HTML/React boilerplate project directories
-- Typography: Font files (.ttf, .woff2)
-
-**Appropriate for:** Templates, boilerplate code, document templates, images, icons, fonts, or any files meant to be copied or used in the final output.
-
----
-
-**Not every skill requires all three types of resources.**
+A no-op inventory update is valid. Treat a stale knowledge graph as a warning; refresh it incrementally after structural architecture changes.

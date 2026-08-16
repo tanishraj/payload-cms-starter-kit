@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 
@@ -11,9 +11,11 @@ import {
   extractImports,
   extractSwitchCases,
   extractThumbnailDefinitions,
+  getNarrativeReviewWarnings,
   buildProjectInventory,
   stableStringify,
   validateProjectContracts,
+  validateSkillReferences,
   writeProjectInventory,
 } from '../../.agents/skills/project-context/scripts/project-context-lib.mjs'
 
@@ -164,6 +166,35 @@ describe('project context parser', () => {
     expect(result.errors).toEqual([])
     expect(result.warnings).toContain(
       'Knowledge graph is stale: analyzed stale-commit, current current-commit.',
+    )
+  })
+
+  it('warns when changed block files have no narrative review', () => {
+    expect(getNarrativeReviewWarnings(['src/blocks/Example/config.ts'])).toEqual([
+      'block system files changed; review .agents/skills/project-context/references/block-system.md and update it if the project contract changed.',
+    ])
+    expect(
+      getNarrativeReviewWarnings([
+        'src/blocks/Example/config.ts',
+        '.agents/skills/project-context/references/block-system.md',
+      ]),
+    ).toEqual([])
+  })
+
+  it('reports broken local Markdown references', async () => {
+    const projectRoot = await mkdtemp(path.join(tmpdir(), 'project-context-links-'))
+    const skillRoot = path.join(projectRoot, '.agents/skills/project-context')
+
+    await mkdir(skillRoot, { recursive: true })
+    await writeFile(
+      path.join(skillRoot, 'SKILL.md'),
+      '# Fixture\n\n[Missing](references/missing.md)\n',
+    )
+
+    const errors = await validateSkillReferences(projectRoot)
+
+    expect(errors).toContain(
+      'Broken project-context reference: references/missing.md from SKILL.md.',
     )
   })
 })

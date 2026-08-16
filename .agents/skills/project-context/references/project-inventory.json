@@ -2295,7 +2295,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "c0723a98798530b5c14b7fc689dd16658be273dd15c89a42d9790c9e3cc87eb0"
+    "sha256": "8bd586e531b850281897e89d39c67f2f920d6b49006b516aaa88238deec4c19c"
   },
   "surfaces": {
     "access": [

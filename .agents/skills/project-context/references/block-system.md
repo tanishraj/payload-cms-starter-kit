@@ -1,0 +1,65 @@
+# Block System
+
+## Registries
+
+[Pages.ts](../../../../src/collections/Pages.ts) registers 49 blocks in this order:
+
+`announcement`, `bannerCta`, `newsGrid`, `cta39`, `heroBanner`, `heroCarousel`, `galleryCoverflow`, `featureSpotlight`, `featureMatrix`, `contentHighlights`, `editorialReasons`, `academicProgrammes`, `newsEventsHighlights`, `profileCarousel`, `galleryShowcase`, `eventGallery`, `studyPathways`, `imageMosaic`, `studentExperience`, `statsStrip`, `qaAccordion`, `ratingSpotlight`, `reviewFeed`, `reviewSubmission`, `contact33`, `contact24`, `teamShowcase`, `services21`, `richText`, `videoEmbed`, `mediaCarousel`, `programGrid`, `programMatrix`, `logoStrip`, `pageHeader`, `breadcrumb`, `timeline`, `iconCardShowcase`, `iconGrid`, `quoteBlock`, `tabsContent`, `downloadList`, `numberedSteps`, `bentoGrid`, `testimonialGrid`, `awardsList`, `aboutSection`, `accreditationCards`, `reusableSection`.
+
+[ReusableSections.ts](../../../../src/collections/ReusableSections.ts) exposes the same order except `reusableSection`, preventing direct recursion.
+
+Restricted shell/system registries are separate:
+
+- Headers: `headerNavbar12`.
+- Footers: `footer56`, `footerMinimal`.
+- System Pages: `system404`, `systemMaintenance`, `systemComingSoon`; exactly one block must match the selected system-page type.
+
+Use [project-inventory.json](project-inventory.json) for generated paths, interfaces, files, and coverage rather than manually counting.
+
+## Complete Block Change Contract
+
+A Page block normally touches all of these surfaces:
+
+1. `src/blocks/<Block>/config.ts` with a unique slug and explicit interface name.
+2. `src/blocks/<Block>/Component.tsx`, plus optional client/presentation/preview modules.
+3. Pages and Reusable Sections registration when the block is reusable.
+4. [renderPageBlocks.tsx](../../../../src/blocks/renderPageBlocks.tsx).
+5. [renderLivePreviewPageBlocks.tsx](../../../../src/blocks/renderLivePreviewPageBlocks.tsx).
+6. Thumbnail definition, production-component fixture, and 1600×900 JPEG.
+7. Generated Payload types.
+8. Focused schema/rendering tests plus registration, preview, thumbnail, theme, and documentation contracts.
+9. The maintained [block operator guide](../../../../docs/guides/blocks.md) and [feature inventory](../../../../docs/architecture/feature-inventory.md).
+
+Production Page blocks are wrapped in `BlockErrorBoundary`, so one broken block does not crash the remaining layout. Reusable Section rendering stops after depth 10. Keep production/live-preview case coverage equal.
+
+## Shared Configuration and Presentation
+
+- `blockAppearanceFields.ts` and `blockAppearance.ts`: page/subtle/brand surfaces, gradients, borders, legacy normalization, and foreground resolution.
+- `blockSpacing.ts`: regular container and responsive vertical spacing contracts.
+- `cardThemeFields.ts` and `cardSurface.ts`: Default/Primary/Secondary/Muted/Accent card semantics.
+- `contentActionsFields.ts` and `BlockFooterActions.tsx`: per-action links/buttons, variants, arrows, and footer actions.
+- `contentStyles.ts`: shared section/card typography and link classes.
+- `iconField.ts` and `resolveLucideIcon.ts`: icon authoring and safe runtime resolution.
+- `mediaOverlayFields.ts` and `mediaOverlayPresentation.ts`: tone, strength, direction, coverage, and text contrast.
+- `breadcrumbFields.ts`: manual/automatic breadcrumb authoring.
+- `bannerCtaFields.ts` and `bannerCtaPresentation.ts`: banner layout controls and class resolution.
+- `siteSocialLinks.ts`: normalized CMS social destinations.
+
+The generated inventory contains every current export under [src/blocks/shared](../../../../src/blocks/shared).
+
+## Required Commands
+
+After block schema or Admin changes, run the applicable generators:
+
+```bash
+pnpm generate:types
+pnpm generate:importmap
+pnpm generate:block-thumbnails
+```
+
+Run focused block tests, then the Page block, live preview, thumbnail, and theme contracts. Finish with:
+
+```bash
+pnpm project-context:update
+pnpm project-context:check
+```
