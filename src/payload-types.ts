@@ -229,6 +229,7 @@ export interface Page {
         | PageHeaderBlock
         | BreadcrumbBlock
         | TimelineBlock
+        | IconCardShowcaseBlock
         | IconGridBlock
         | QuoteBlockBlock
         | TabsContentBlock
@@ -3305,6 +3306,133 @@ export interface TimelineBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IconCardShowcaseBlock".
+ */
+export interface IconCardShowcaseBlock {
+  /**
+   * Optional decorative full-width image behind the header and cards.
+   */
+  backgroundImage?: (string | null) | Media;
+  eyebrow?: string | null;
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Equal-size icon cards arranged using the showcase width setting.
+   */
+  cards: {
+    /**
+     * Lucide icon name — e.g. "Star", "Rocket", "GraduationCap". Browse all icons at lucide.dev/icons
+     */
+    icon?: string | null;
+    /**
+     * Optional short label shown above the card title.
+     */
+    eyebrow?: string | null;
+    title: string;
+    /**
+     * Optional short supporting text.
+     */
+    description?: string | null;
+    /**
+     * Adds a visible action when a valid destination is selected.
+     */
+    actionLabel?: string | null;
+    linkType?: ('none' | 'page' | 'custom') | null;
+    page?: (string | null) | Page;
+    url?: string | null;
+    openInNewTab?: boolean | null;
+    actionMode?: ('link' | 'button') | null;
+    /**
+     * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+     */
+    actionVariant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+    /**
+     * Adds a trailing arrow to this button action.
+     */
+    showArrow?: boolean | null;
+    /**
+     * Override the showcase default for this card only.
+     */
+    cardBackground: 'inherit' | 'default' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    id?: string | null;
+  }[];
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+   */
+  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
+  overlayStyle?: ('light' | 'dark' | 'darker') | null;
+  /**
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   */
+  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  overlayCoverage?: ('full' | 'split') | null;
+  headerLayout: 'stacked' | 'split';
+  /**
+   * Aligns the description and actions beside the heading in Split mode.
+   */
+  splitContentAlignment?: ('top' | 'center' | 'bottom') | null;
+  contentAlignment: 'left' | 'center' | 'right';
+  cardContentAlignment: 'left' | 'center' | 'right';
+  cardWidth: 'compact' | 'standard' | 'wide';
+  cardHeight: 'compact' | 'standard' | 'tall';
+  iconSize: 'small' | 'standard' | 'large' | 'extraLarge';
+  /**
+   * Applied to every card unless that card has an override.
+   */
+  defaultCardBackground: 'default' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'iconCardShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "IconGridBlock".
  */
 export interface IconGridBlock {
@@ -4278,6 +4406,7 @@ export interface ReusableSection {
         | PageHeaderBlock
         | BreadcrumbBlock
         | TimelineBlock
+        | IconCardShowcaseBlock
         | IconGridBlock
         | QuoteBlockBlock
         | TabsContentBlock
@@ -5597,6 +5726,7 @@ export interface PagesSelect<T extends boolean = true> {
         pageHeader?: T | PageHeaderBlockSelect<T>;
         breadcrumb?: T | BreadcrumbBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;
+        iconCardShowcase?: T | IconCardShowcaseBlockSelect<T>;
         iconGrid?: T | IconGridBlockSelect<T>;
         quoteBlock?: T | QuoteBlockBlockSelect<T>;
         tabsContent?: T | TabsContentBlockSelect<T>;
@@ -7642,6 +7772,82 @@ export interface TimelineBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IconCardShowcaseBlock_select".
+ */
+export interface IconCardShowcaseBlockSelect<T extends boolean = true> {
+  backgroundImage?: T;
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  cards?:
+    | T
+    | {
+        icon?: T;
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        actionLabel?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        actionMode?: T;
+        actionVariant?: T;
+        showArrow?: T;
+        cardBackground?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  themeMode?: T;
+  overlayStyle?: T;
+  overlayDirection?: T;
+  overlayCoverage?: T;
+  headerLayout?: T;
+  splitContentAlignment?: T;
+  contentAlignment?: T;
+  cardContentAlignment?: T;
+  cardWidth?: T;
+  cardHeight?: T;
+  iconSize?: T;
+  defaultCardBackground?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "IconGridBlock_select".
  */
 export interface IconGridBlockSelect<T extends boolean = true> {
@@ -8425,6 +8631,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         pageHeader?: T | PageHeaderBlockSelect<T>;
         breadcrumb?: T | BreadcrumbBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;
+        iconCardShowcase?: T | IconCardShowcaseBlockSelect<T>;
         iconGrid?: T | IconGridBlockSelect<T>;
         quoteBlock?: T | QuoteBlockBlockSelect<T>;
         tabsContent?: T | TabsContentBlockSelect<T>;

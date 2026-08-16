@@ -40,6 +40,7 @@ import { LogoStripBlockComponent } from './LogoStrip/Component'
 import { PageHeaderBlockComponent } from './PageHeader/Component'
 import { BreadcrumbBlockComponent } from './Breadcrumb/Component'
 import { TimelineBlockComponent } from './Timeline/Component'
+import { IconCardShowcaseBlockComponent } from './IconCardShowcase/Component'
 import { IconGridBlockComponent } from './IconGrid/Component'
 import { QuoteBlockBlockComponent } from './QuoteBlock/Component'
 import { TabsContentBlockComponent } from './TabsContent/Component'
@@ -163,6 +164,8 @@ function renderSingleBlock(
       )
     case 'timeline':
       return wrap(<TimelineBlockComponent {...block} />)
+    case 'iconCardShowcase':
+      return wrap(<IconCardShowcaseBlockComponent {...block} />)
     case 'iconGrid':
       return wrap(<IconGridBlockComponent {...block} />)
     case 'quoteBlock':

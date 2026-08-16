@@ -44,6 +44,7 @@ import { LogoStripBlockComponent } from './LogoStrip/Component'
 import { PageHeaderBlockComponent } from './PageHeader/Component'
 import { BreadcrumbBlockComponent } from './Breadcrumb/Component'
 import { TimelineBlockComponent } from './Timeline/Component'
+import { IconCardShowcaseBlockComponent } from './IconCardShowcase/Component'
 import { IconGridBlockComponent } from './IconGrid/Component'
 import { QuoteBlockBlockComponent } from './QuoteBlock/Component'
 import { TabsContentBlockComponent } from './TabsContent/Component'
@@ -183,6 +184,8 @@ function renderSingleLivePreviewBlock(
       )
     case 'timeline':
       return <TimelineBlockComponent key={key} {...block} />
+    case 'iconCardShowcase':
+      return <IconCardShowcaseBlockComponent key={key} {...block} />
     case 'iconGrid':
       return <IconGridBlockComponent key={key} {...block} />
     case 'quoteBlock':

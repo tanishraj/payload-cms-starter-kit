@@ -37,6 +37,7 @@ import { LogoStripBlock } from '@/blocks/LogoStrip/config'
 import { PageHeaderBlock } from '@/blocks/PageHeader/config'
 import { BreadcrumbBlock } from '@/blocks/Breadcrumb/config'
 import { TimelineBlock } from '@/blocks/Timeline/config'
+import { IconCardShowcaseBlock } from '@/blocks/IconCardShowcase/config'
 import { IconGridBlock } from '@/blocks/IconGrid/config'
 import { QuoteBlockBlock } from '@/blocks/QuoteBlock/config'
 import { TabsContentBlock } from '@/blocks/TabsContent/config'
@@ -139,6 +140,7 @@ export const ReusableSections: CollectionConfig = {
         PageHeaderBlock,
         BreadcrumbBlock,
         TimelineBlock,
+        IconCardShowcaseBlock,
         IconGridBlock,
         QuoteBlockBlock,
         TabsContentBlock,

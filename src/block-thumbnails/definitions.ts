@@ -286,6 +286,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Icon Card Showcase block preview',
+    filename: 'icon-card-showcase.jpg',
+    label: 'Icon Card Showcase',
+    slug: 'iconCardShowcase',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Logo Strip block preview',
     filename: 'logo-strip.jpg',
     label: 'Logo Strip',

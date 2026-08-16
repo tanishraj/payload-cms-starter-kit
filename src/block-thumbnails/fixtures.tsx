@@ -42,6 +42,7 @@ import { AccreditationCardsBlockComponent } from '@/blocks/AccreditationCards/Co
 import { AwardsListBlockComponent } from '@/blocks/AwardsList/Component'
 import { BentoGridBlockComponent } from '@/blocks/BentoGrid/Component'
 import { DownloadListBlockComponent } from '@/blocks/DownloadList/Component'
+import { IconCardShowcaseBlockComponent } from '@/blocks/IconCardShowcase/Component'
 import { IconGridBlockComponent } from '@/blocks/IconGrid/Component'
 import { LogoStripBlockComponent } from '@/blocks/LogoStrip/Component'
 import { MediaCarouselBlockComponent } from '@/blocks/MediaCarousel/Component'
@@ -1668,6 +1669,33 @@ export const blockThumbnailFixtures = {
       size="compact"
       title="A full-service approach to meaningful work."
       variant="iconTop"
+    />
+  ),
+  iconCardShowcase: (
+    <IconCardShowcaseBlockComponent
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
+      cardContentAlignment="center"
+      cardHeight="standard"
+      cards={[
+        { eyebrow: 'Value', icon: 'Handshake', title: 'Integrity' },
+        {
+          actionLabel: 'Learn more',
+          actionMode: 'link',
+          eyebrow: 'Value',
+          icon: 'Scale',
+          linkType: 'custom',
+          title: 'Compassion',
+          url: '#',
+        },
+        { eyebrow: 'Value', title: 'Excellence' },
+      ]}
+      cardWidth="standard"
+      defaultCardBackground="brand"
+      description="The principles that shape how we learn, serve, and work together."
+      eyebrow="Our values"
+      iconSize="large"
+      size="compact"
+      title="What we stand for"
     />
   ),
   logoStrip: (
