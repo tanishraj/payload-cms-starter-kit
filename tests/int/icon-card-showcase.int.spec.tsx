@@ -118,14 +118,18 @@ describe('Icon Card Showcase', () => {
       'center',
       'right',
     ])
-    expect(findField(IconCardShowcaseBlock.fields, 'cardWidth')).toMatchObject({
+    const cardWidthField = findField(IconCardShowcaseBlock.fields, 'cardWidth')
+    expect(cardWidthField).toMatchObject({
       defaultValue: 'standard',
+      label: 'Cards per Row',
+      name: 'cardWidth',
       required: true,
+      type: 'select',
     })
-    expect(optionValues(findField(IconCardShowcaseBlock.fields, 'cardWidth'))).toEqual([
-      'compact',
-      'standard',
-      'wide',
+    expect(cardWidthField?.options).toEqual([
+      { label: '2 Cards', value: 'wide' },
+      { label: '3 Cards', value: 'standard' },
+      { label: '4 Cards', value: 'compact' },
     ])
     expect(findField(IconCardShowcaseBlock.fields, 'cardHeight')).toMatchObject({
       defaultValue: 'standard',
@@ -486,7 +490,7 @@ describe('Icon Card Showcase', () => {
       source.indexOf('export interface IconGridBlock {'),
     )
 
-    expect(contract).toContain("cardWidth: 'compact' | 'standard' | 'wide'")
+    expect(contract).toContain("cardWidth: 'wide' | 'standard' | 'compact'")
     expect(contract).toContain("cardHeight: 'compact' | 'standard' | 'tall'")
     expect(contract).toContain("iconSize: 'small' | 'standard' | 'large' | 'extraLarge'")
     expect(contract).toContain("cardContentAlignment: 'left' | 'center' | 'right'")

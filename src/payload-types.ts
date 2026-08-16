@@ -3411,7 +3411,7 @@ export interface IconCardShowcaseBlock {
   splitContentAlignment?: ('top' | 'center' | 'bottom') | null;
   contentAlignment: 'left' | 'center' | 'right';
   cardContentAlignment: 'left' | 'center' | 'right';
-  cardWidth: 'compact' | 'standard' | 'wide';
+  cardWidth: 'wide' | 'standard' | 'compact';
   cardHeight: 'compact' | 'standard' | 'tall';
   iconSize: 'small' | 'standard' | 'large' | 'extraLarge';
   /**

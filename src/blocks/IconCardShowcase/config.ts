@@ -295,10 +295,10 @@ export const IconCardShowcaseBlock: Block = {
               { label: 'Center', value: 'center' },
               { label: 'Right', value: 'right' },
             ]),
-            select('cardWidth', 'Card Width', 'standard', [
-              { label: 'Compact', value: 'compact' },
-              { label: 'Standard', value: 'standard' },
-              { label: 'Wide', value: 'wide' },
+            select('cardWidth', 'Cards per Row', 'standard', [
+              { label: '2 Cards', value: 'wide' },
+              { label: '3 Cards', value: 'standard' },
+              { label: '4 Cards', value: 'compact' },
             ]),
             select('cardHeight', 'Card Height', 'standard', [
               { label: 'Compact', value: 'compact' },
