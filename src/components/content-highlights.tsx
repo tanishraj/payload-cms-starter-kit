@@ -126,13 +126,13 @@ function HighlightBody({
   hasAction,
   item,
   marker,
-  markerClassName,
+  markerSurface,
   secondaryClassName,
 }: {
   hasAction: boolean
   item: ContentHighlightItem
   marker?: string
-  markerClassName: string
+  markerSurface: string
   secondaryClassName: string
 }) {
   return (
@@ -141,10 +141,10 @@ function HighlightBody({
         <p
           className={cn(
             contentItemMetadataClasses,
-            'font-semibold uppercase tracking-[0.18em]',
-            markerClassName,
+            'font-semibold text-current/70 uppercase tracking-[0.18em]',
           )}
           data-content-highlight-marker={marker}
+          data-section-eyebrow-surface={markerSurface}
         >
           {marker}
         </p>
@@ -178,6 +178,7 @@ function ContentHighlightItemComponent({
 }) {
   const surface = resolveCardSurface(item.cardBackground, sectionBackground)
   const marker = resolveMarker(item, index)
+  const markerSurface = surface.value === 'default' ? sectionBackground : surface.value
   const hasExplicitSurface = surface.value !== 'default'
   const hasAction = Boolean(item.cardAction)
   const body = (
@@ -185,7 +186,7 @@ function ContentHighlightItemComponent({
       hasAction={hasAction}
       item={item}
       marker={marker}
-      markerClassName={surface.icon}
+      markerSurface={markerSurface}
       secondaryClassName={surface.secondary}
     />
   )
@@ -243,10 +244,10 @@ function ContentHighlightItemComponent({
             <p
               className={cn(
                 contentItemMetadataClasses,
-                'pt-1 font-semibold uppercase tracking-[0.18em]',
-                surface.icon,
+                'pt-1 font-semibold text-current/70 uppercase tracking-[0.18em]',
               )}
               data-content-highlight-marker={marker}
+              data-section-eyebrow-surface={markerSurface}
             >
               {marker}
             </p>

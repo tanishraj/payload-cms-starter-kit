@@ -207,6 +207,33 @@ describe('Content Highlights', () => {
     expect(html).not.toContain('data-content-highlight-metadata')
   })
 
+  it('matches card marker colors to the shared eyebrow surface contract', () => {
+    const html = renderToStaticMarkup(
+      <ContentHighlights
+        appearance={{ background: 'subtle' }}
+        eyebrow="Latest"
+        items={[
+          item('Inherited surface'),
+          {
+            cardBackground: 'primary',
+            markerLabel: 'Care',
+            markerMode: 'custom',
+            title: 'Explicit surface',
+          },
+        ]}
+        title="Highlights"
+      />,
+    )
+    const markerTags = html.match(/<p class="[^"]*" data-content-highlight-marker[^>]*>/g) ?? []
+
+    expect(html).toContain('data-section-eyebrow-surface="subtle"')
+    expect(markerTags).toHaveLength(2)
+    expect(markerTags[0]).toContain('text-current/70')
+    expect(markerTags[0]).toContain('data-section-eyebrow-surface="subtle"')
+    expect(markerTags[1]).toContain('text-current/70')
+    expect(markerTags[1]).toContain('data-section-eyebrow-surface="primary"')
+  })
+
   it('renders one explicit card action and ignores legacy title-link fields', () => {
     const html = renderToStaticMarkup(
       <ContentHighlightsBlockComponent
