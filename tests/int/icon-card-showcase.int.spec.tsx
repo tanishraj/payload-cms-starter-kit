@@ -37,6 +37,7 @@ const cards = [
   { icon: 'Scale', title: 'Compassion' },
   { icon: 'Gem', title: 'Excellence' },
 ]
+const blocksGuideSource = readFileSync('docs/guides/blocks.md', 'utf8')
 
 describe('Icon Card Showcase', () => {
   it('defines the complete Payload schema and defaults', () => {
@@ -481,6 +482,12 @@ describe('Icon Card Showcase', () => {
 
   it('renders nothing without usable cards', () => {
     expect(IconCardShowcaseBlockComponent({ cards: [{ icon: 'Gem', title: '   ' }] })).toBeNull()
+  })
+
+  it('documents the explicit cards-per-row control', () => {
+    expect(blocksGuideSource).toMatch(/\| Icon Card Showcase\s+\|/)
+    expect(blocksGuideSource).toContain('Cards per Row supports 2–4 desktop columns')
+    expect(blocksGuideSource).toContain('collapse responsively')
   })
 
   it('uses the generated Payload contract', () => {
