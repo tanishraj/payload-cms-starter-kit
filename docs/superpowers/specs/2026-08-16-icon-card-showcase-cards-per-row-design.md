@@ -23,10 +23,10 @@ The editor currently sees these choices as card widths, so the resulting number 
 Keep the internal `cardWidth` field and its existing stored values for backward compatibility. Change only its editor-facing vocabulary:
 
 | Editor option | Stored value | Desktop result |
-| --- | --- | --- |
-| 2 Cards | `wide` | 2 columns |
-| 3 Cards | `standard` | 3 columns |
-| 4 Cards | `compact` | 4 columns |
+| ------------- | ------------ | -------------- |
+| 2 Cards       | `wide`       | 2 columns      |
+| 3 Cards       | `standard`   | 3 columns      |
+| 4 Cards       | `compact`    | 4 columns      |
 
 The field label becomes `Cards per Row`. The default remains `standard`, presented to editors as `3 Cards`.
 
@@ -49,7 +49,7 @@ Equal-height cards, gaps, internal padding, wrapping, alignment, backgrounds, ac
 - No data migration is required.
 - Existing `wide`, `standard`, and `compact` values preserve their current rendering.
 - A missing or stale `cardWidth` value continues to normalize to `standard`, which editors understand as 3 cards per row.
-- The generated Payload union remains `'compact' | 'standard' | 'wide'`; type generation should be run and committed only if it produces a change.
+- The generated Payload union keeps the same three members. Because Payload follows option order, its textual order may become `'wide' | 'standard' | 'compact'`; that generated reorder is expected and does not change accepted data.
 
 ## Scope
 
@@ -58,6 +58,7 @@ Implementation is limited to:
 - The Icon Card Showcase Payload field label and option labels/order.
 - Focused schema assertions for the editor contract.
 - Maintained block documentation describing the control.
+- Generated Payload types when their textual union order follows the reordered options.
 - Generated project context if the repository inventory changes.
 
 The renderer mapping does not need to change. The active SNMIH theme and unrelated blocks are outside scope.
