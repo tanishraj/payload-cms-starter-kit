@@ -2225,6 +2225,7 @@
       "tests/int/header-presets.int.spec.ts",
       "tests/int/hero-banner-render.int.spec.ts",
       "tests/int/icon-card-showcase.int.spec.tsx",
+      "tests/int/icon-grid-ruled-columns.int.spec.tsx",
       "tests/int/image-mosaic.int.spec.tsx",
       "tests/int/live-preview-import-boundary.int.spec.ts",
       "tests/int/live-preview-renderer.int.spec.tsx",
@@ -2295,7 +2296,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "375d35425c02238267e3b385b9febf18f703e9e27d1efe35d039ff366b29a449"
+    "sha256": "9ce99a4deb8ce1c40454bce2fd9eb2c508f211a6873c8e4ae17a95dff82a6672"
   },
   "surfaces": {
     "access": [
@@ -2478,6 +2479,7 @@
       "tests/int/header-presets.int.spec.ts",
       "tests/int/hero-banner-render.int.spec.ts",
       "tests/int/icon-card-showcase.int.spec.tsx",
+      "tests/int/icon-grid-ruled-columns.int.spec.tsx",
       "tests/int/image-mosaic.int.spec.tsx",
       "tests/int/live-preview-import-boundary.int.spec.ts",
       "tests/int/live-preview-renderer.int.spec.tsx",

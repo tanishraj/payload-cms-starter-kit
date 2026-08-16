@@ -58,7 +58,7 @@ const iconGridCardBackgroundField = {
   ],
   admin: {
     description:
-      'Applied to the Card and Contact Cards presentations. Match Section inherits the section surface; Minimal and Icon Top remain unboxed.',
+      'Applied to the Card and Contact Cards presentations. Match Section inherits the section surface; Minimal, Icon Top, and Ruled Columns inherit the section surface.',
   },
   hooks: {
     afterRead: [({ value }) => normalizeIconGridCardBackground(value as string | null | undefined)],
@@ -208,6 +208,7 @@ export const IconGridBlock: Block = {
                 { label: 'Contact Cards', value: 'contactCards' },
                 { label: 'Minimal (icon + text, no box)', value: 'minimal' },
                 { label: 'Icon Top (centered icon above title)', value: 'iconTop' },
+                { label: 'Ruled Columns', value: 'ruled' },
               ],
             } satisfies SelectField,
             {

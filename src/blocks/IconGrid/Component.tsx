@@ -56,7 +56,7 @@ type IconGridBlockLike = {
   items?: IconGridItem[] | null
   size?: RegularBlockSize | null
   title?: string | null
-  variant?: 'card' | 'contactCards' | 'minimal' | 'iconTop' | null
+  variant?: 'card' | 'contactCards' | 'minimal' | 'iconTop' | 'ruled' | null
 }
 
 const columnClasses = {
@@ -64,6 +64,12 @@ const columnClasses = {
   '3': 'sm:grid-cols-2 lg:grid-cols-3',
   '4': 'sm:grid-cols-2 lg:grid-cols-4',
 } as const
+
+const ruledColumnClasses: Record<NonNullable<IconGridBlockLike['columns']>, string> = {
+  '2': 'sm:grid-cols-2 sm:[&>*:nth-child(-n+2)]:border-t-0 sm:[&>*:nth-child(2n)]:border-l',
+  '3': 'sm:grid-cols-2 sm:[&>*:nth-child(-n+2)]:border-t-0 sm:[&>*:nth-child(2n)]:border-l lg:grid-cols-3 lg:[&>*:nth-child(-n+3)]:border-t-0 lg:[&>*:nth-child(3n+1)]:border-l-0 lg:[&>*:nth-child(3n+2)]:border-l lg:[&>*:nth-child(3n)]:border-l',
+  '4': 'sm:grid-cols-2 sm:[&>*:nth-child(-n+2)]:border-t-0 sm:[&>*:nth-child(2n)]:border-l lg:grid-cols-4 lg:[&>*:nth-child(-n+4)]:border-t-0 lg:[&>*:nth-child(4n+1)]:border-l-0 lg:[&>*:nth-child(4n+2)]:border-l lg:[&>*:nth-child(4n+3)]:border-l lg:[&>*:nth-child(4n)]:border-l',
+}
 
 const iconContainerClasses = {
   square: 'flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary',
@@ -135,15 +141,23 @@ function resolveHref(item: IconGridItem): { href: string; openInNewTab: boolean 
 function IconContainer({
   icon,
   iconStyle,
+  inheritOutlineBorder = false,
   surface,
 }: {
   icon: string
   iconStyle: keyof typeof iconContainerClasses
-  surface?: Pick<IconGridCardSurface, 'icon'>
+  inheritOutlineBorder?: boolean
+  surface?: Pick<CardSurfaceClasses, 'divider' | 'icon'>
 }) {
   const Icon = ((LucideIcons as Record<string, unknown>)[icon] as LucideIcon | undefined) ?? Star
   return (
-    <div className={cn(iconContainerClasses[iconStyle], surface?.icon)}>
+    <div
+      className={cn(
+        iconContainerClasses[iconStyle],
+        surface?.icon,
+        inheritOutlineBorder && iconStyle === 'outline' && surface?.divider,
+      )}
+    >
       <Icon className="size-5" />
     </div>
   )
@@ -154,7 +168,7 @@ type ActionProps = {
   actionVariant: CmsActionVariant
   actionLabel: string
   link: { href: string; openInNewTab: boolean }
-  surface?: IconGridCardSurface
+  surface?: Pick<CardSurfaceClasses, 'button' | 'link'>
 }
 
 function CardAction({ actionMode, actionVariant, actionLabel, link, surface }: ActionProps) {
@@ -473,6 +487,83 @@ function IconTopItem({
   return <div className="h-full">{inner}</div>
 }
 
+// ── Ruled Columns variant ─────────────────────────────────────────────────────
+function RuledItem({
+  actionLabel,
+  actionMode,
+  actionVariant,
+  iconStyle,
+  item,
+  surface,
+}: {
+  actionLabel: string
+  actionMode: 'button' | 'link'
+  actionVariant: CmsActionVariant
+  iconStyle: keyof typeof iconContainerClasses
+  item: IconGridItem
+  surface: CardSurfaceClasses
+}) {
+  const link = resolveHref(item)
+  const content = (
+    <>
+      {item.icon ? (
+        <IconContainer
+          icon={item.icon}
+          iconStyle={iconStyle}
+          inheritOutlineBorder
+          surface={surface}
+        />
+      ) : null}
+      <div className="flex flex-1 flex-col gap-3">
+        <h3 className="font-[family-name:var(--font-display)] text-2xl leading-tight font-semibold tracking-tight">
+          {item.title?.trim()}
+        </h3>
+        {item.description?.trim() ? (
+          <p className={cn('text-base leading-7 whitespace-pre-line', surface.secondary)}>
+            {item.description.trim()}
+          </p>
+        ) : null}
+      </div>
+      {link ? (
+        <CardAction
+          actionLabel={actionLabel}
+          actionMode={actionMode}
+          actionVariant={actionVariant}
+          link={link}
+          surface={surface}
+        />
+      ) : null}
+    </>
+  )
+  const itemClasses = cn(
+    'group flex h-full min-w-0 flex-col gap-6 px-6 py-8 sm:p-8 lg:p-10',
+    surface.divider,
+  )
+
+  if (link && actionMode === 'link') {
+    return (
+      <a
+        className={cn(
+          itemClasses,
+          'focus-visible:ring-2 focus-visible:ring-current focus-visible:outline-none',
+        )}
+        data-icon-grid-presentation="ruled"
+        href={link.href}
+        rel={link.openInNewTab ? 'noopener noreferrer' : undefined}
+        target={link.openInNewTab ? '_blank' : undefined}
+      >
+        {content}
+      </a>
+    )
+  }
+
+  return (
+    <article className={itemClasses} data-icon-grid-presentation="ruled">
+      {content}
+    </article>
+  )
+}
+
 export function IconGridBlockComponent({
   accentTitle,
   actionMode,
@@ -499,6 +590,7 @@ export function IconGridBlockComponent({
 
   const { background: sectionBackground, className: appearanceClassName } =
     resolveBlockAppearanceClasses(appearance)
+  const ruledSurface = resolveCardSurface('default', sectionBackground)
   const isCenter = (contentAlignment ?? 'center') === 'center'
   const resolvedActions = resolveCmsActions(actions)
   const resolvedColumns = columns ?? '3'
@@ -558,7 +650,19 @@ export function IconGridBlockComponent({
         ) : null}
 
         {/* Grid */}
-        <div className={cn('grid grid-cols-1 gap-6', columnClasses[resolvedColumns])}>
+        <div
+          className={cn(
+            'grid grid-cols-1',
+            resolvedVariant === 'ruled'
+              ? cn(
+                  'gap-0 border-y [&>*]:border-t [&>*:first-child]:border-t-0',
+                  ruledColumnClasses[resolvedColumns],
+                  ruledSurface.divider,
+                )
+              : cn('gap-6', columnClasses[resolvedColumns]),
+          )}
+          data-icon-grid-grid={resolvedVariant === 'ruled' ? 'ruled' : undefined}
+        >
           {validItems.map((item, index) => {
             if (resolvedVariant === 'contactCards') {
               return <ContactCardItem key={index} item={item} {...itemProps} />
@@ -568,6 +672,9 @@ export function IconGridBlockComponent({
             }
             if (resolvedVariant === 'iconTop') {
               return <IconTopItem key={index} item={item} {...itemProps} />
+            }
+            if (resolvedVariant === 'ruled') {
+              return <RuledItem key={index} item={item} {...itemProps} surface={ruledSurface} />
             }
             return <CardItem key={index} item={item} {...itemProps} />
           })}

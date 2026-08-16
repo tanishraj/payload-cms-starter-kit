@@ -3476,7 +3476,7 @@ export interface IconGridBlock {
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
-         * Applied to the Card and Contact Cards presentations. Match Section inherits the section surface; Minimal and Icon Top remain unboxed.
+         * Applied to the Card and Contact Cards presentations. Match Section inherits the section surface; Minimal, Icon Top, and Ruled Columns inherit the section surface.
          */
         cardBackground: 'default' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
         id?: string | null;
@@ -3514,7 +3514,7 @@ export interface IconGridBlock {
    * Label shown on the button or link for each item.
    */
   itemActionLabel?: string | null;
-  variant?: ('card' | 'contactCards' | 'minimal' | 'iconTop') | null;
+  variant?: ('card' | 'contactCards' | 'minimal' | 'iconTop' | 'ruled') | null;
   columns?: ('2' | '3' | '4') | null;
   iconStyle?: ('square' | 'circle' | 'outline' | 'plain') | null;
   contentAlignment?: ('left' | 'center') | null;

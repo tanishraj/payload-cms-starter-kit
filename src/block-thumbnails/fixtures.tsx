@@ -1628,47 +1628,34 @@ export const blockThumbnailFixtures = {
   ),
   iconGrid: (
     <IconGridBlockComponent
-      appearance={{ background: 'subtle', border: 'topAndBottom' }}
+      appearance={{ background: 'none', border: 'none' }}
       columns="3"
       contentAlignment="center"
-      description="Six capabilities that define how we approach every engagement — from first conversation to final delivery."
-      eyebrow="What we do"
-      iconStyle="square"
+      description="Education, healthcare and community service are treated as connected responsibilities rather than separate activities."
+      eyebrow="Our purpose"
+      iconStyle="outline"
       items={[
         {
-          title: 'Strategy',
-          description: 'Clear thinking before any execution begins.',
-          icon: 'Target',
+          title: 'Education',
+          description:
+            'Build strong academic foundations through teaching, laboratories and clinical learning.',
+          icon: 'GraduationCap',
         },
         {
-          title: 'Research',
-          description: 'Evidence-based decisions rooted in real context.',
-          icon: 'Search',
-        },
-        {
-          title: 'Design',
-          description: 'Purposeful visuals and experiences for every audience.',
-          icon: 'Palette',
-        },
-        {
-          title: 'Technology',
-          description: 'Modern tools built for scale and reliability.',
-          icon: 'Code2',
+          title: 'Healthcare',
+          description:
+            'Support multidisciplinary diagnosis and treatment through associated clinical services.',
+          icon: 'Hospital',
         },
         {
           title: 'Community',
-          description: 'Partnerships that extend reach and deepen impact.',
+          description: 'Develop medical professionals and expand access to regional care.',
           icon: 'Users',
-        },
-        {
-          title: 'Delivery',
-          description: 'Consistent execution with measurable outcomes.',
-          icon: 'CheckCircle',
         },
       ]}
       size="compact"
-      title="A full-service approach to meaningful work."
-      variant="iconTop"
+      title="Three responsibilities. One institution."
+      variant="ruled"
     />
   ),
   iconCardShowcase: (
