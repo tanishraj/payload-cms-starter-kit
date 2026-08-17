@@ -4,6 +4,7 @@ import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
@@ -14,11 +15,14 @@ import {
   contentSectionDescriptionClasses,
   contentSectionHeadingClasses,
 } from '@/blocks/shared/contentStyles'
+import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow, type SectionEyebrowSurface } from '@/components/SectionEyebrow'
+import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
 
 type TestimonialSpotlightBlockLike = {
+  actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   containerBackground?: CardSurfaceValue | null
   containerOutline?: 'none' | 'outline' | null
@@ -26,11 +30,16 @@ type TestimonialSpotlightBlockLike = {
   description?: string | null
   designation?: string | null
   eyebrow?: string | null
+  footerActions?: CmsActionValue[] | null
   image?: unknown
   imagePosition?: 'bottom' | 'center' | 'left' | 'right' | 'top' | null
   mediaFillMode?: 'contained' | 'containedFill' | 'edgeToEdge' | null
   mediaPosition?: 'left' | 'right' | null
   personName?: string | null
+  sectionContentAlignment?: 'center' | 'left' | null
+  sectionDescription?: string | null
+  sectionEyebrow?: string | null
+  sectionTitle?: string | null
   size?: 'comfortable' | 'compact' | 'default' | 'none' | null
   testimonial?: string | null
   title?: string | null
@@ -98,6 +107,7 @@ const normalizeTestimonial = (value?: string | null) => {
 }
 
 export function TestimonialSpotlightBlockComponent({
+  actions,
   appearance,
   containerBackground,
   containerOutline,
@@ -105,11 +115,16 @@ export function TestimonialSpotlightBlockComponent({
   description,
   designation,
   eyebrow,
+  footerActions,
   image,
   imagePosition = 'center',
   mediaFillMode = 'contained',
   mediaPosition = 'left',
   personName,
+  sectionContentAlignment = 'center',
+  sectionDescription,
+  sectionEyebrow,
+  sectionTitle,
   size = 'default',
   testimonial,
   title,
@@ -120,6 +135,19 @@ export function TestimonialSpotlightBlockComponent({
   const resolvedDescription = description?.trim()
   const resolvedDesignation = designation?.trim()
   const resolvedEyebrow = eyebrow?.trim()
+  const resolvedSectionEyebrow = sectionEyebrow?.trim()
+  const resolvedSectionTitle = sectionTitle?.trim()
+  const resolvedSectionDescription = sectionDescription?.trim()
+  const resolvedSectionActions = resolveCmsActions(actions)
+  const hasFooterActions = resolveCmsActions(footerActions).length > 0
+  const resolvedSectionContentAlignment =
+    sectionContentAlignment === 'left' ? 'left' : 'center'
+  const hasSectionHeader = Boolean(
+    resolvedSectionEyebrow ||
+      resolvedSectionTitle ||
+      resolvedSectionDescription ||
+      resolvedSectionActions.length,
+  )
   const resolvedImagePosition = imagePosition ?? 'center'
   const resolvedMediaFillMode = mediaFillMode ?? 'contained'
   const resolvedMediaPosition = mediaPosition ?? 'left'
@@ -152,8 +180,42 @@ export function TestimonialSpotlightBlockComponent({
 
   if (!media || !resolvedTitle || !resolvedPersonName) return null
 
+  const MessageHeading = resolvedSectionTitle ? 'h3' : 'h2'
+  const isSectionCentered = resolvedSectionContentAlignment === 'center'
   const ContentGroup = resolvedTestimonial ? 'figure' : 'div'
   const Attribution = resolvedTestimonial ? 'figcaption' : 'div'
+
+  const sectionHeader = hasSectionHeader ? (
+    <div
+      className={cn(
+        'flex max-w-3xl flex-col gap-4',
+        isSectionCentered ? 'mx-auto items-center text-center' : 'items-start text-left',
+      )}
+      data-testimonial-spotlight-section-alignment={resolvedSectionContentAlignment}
+      data-testimonial-spotlight-section-header="true"
+    >
+      {resolvedSectionEyebrow ? (
+        <SectionEyebrow surface={appearanceClasses.background}>
+          {resolvedSectionEyebrow}
+        </SectionEyebrow>
+      ) : null}
+      {resolvedSectionTitle ? (
+        <h2 className={contentSectionHeadingClasses}>{resolvedSectionTitle}</h2>
+      ) : null}
+      {resolvedSectionDescription ? (
+        <p className={contentSectionDescriptionClasses}>{resolvedSectionDescription}</p>
+      ) : null}
+      {resolvedSectionActions.length ? (
+        <div className="mt-2 w-full">
+          <ContentActions
+            actions={resolvedSectionActions}
+            alignment={resolvedSectionContentAlignment}
+            data-testimonial-spotlight-section-actions="true"
+          />
+        </div>
+      ) : null}
+    </div>
+  ) : null
 
   const order = orderClasses[resolvedMediaPosition]
   const mediaFrame = (
@@ -180,7 +242,7 @@ export function TestimonialSpotlightBlockComponent({
       {resolvedEyebrow ? (
         <SectionEyebrow surface={containerEyebrowSurface}>{resolvedEyebrow}</SectionEyebrow>
       ) : null}
-      <h2 className={contentSectionHeadingClasses}>{resolvedTitle}</h2>
+      <MessageHeading className={contentSectionHeadingClasses}>{resolvedTitle}</MessageHeading>
       <ContentGroup className="flex flex-col gap-5">
         {resolvedTestimonial ? (
           <blockquote className="font-sans text-lg leading-relaxed font-medium text-pretty text-current sm:text-xl">
@@ -231,11 +293,45 @@ export function TestimonialSpotlightBlockComponent({
     </div>
   )
 
+  const legacyLayout =
+    resolvedMediaFillMode === 'edgeToEdge' ? (
+      splitLayout
+    ) : (
+      <div
+        className={cn(
+          regularBlockContainerClasses,
+          !isFilled && regularBlockMobilePaddingClasses[resolvedSize],
+        )}
+      >
+        {splitLayout}
+      </div>
+    )
+
+  if (!hasSectionHeader && !hasFooterActions) {
+    return (
+      <section
+        className={cn(
+          isFilled && regularBlockMobilePaddingClasses[resolvedSize],
+          isFilled && 'md:py-0',
+          appearanceClasses.className,
+        )}
+        data-testimonial-spotlight="true"
+        data-testimonial-spotlight-background={appearanceClasses.background}
+        data-testimonial-spotlight-content-vertical-alignment={resolvedVerticalAlignment}
+        data-testimonial-spotlight-image-position={resolvedImagePosition}
+        data-testimonial-spotlight-media-fill={resolvedMediaFillMode}
+        data-testimonial-spotlight-media-position={resolvedMediaPosition}
+        data-testimonial-spotlight-size={resolvedSize}
+      >
+        {legacyLayout}
+      </section>
+    )
+  }
+
   return (
     <section
       className={cn(
-        isFilled && regularBlockMobilePaddingClasses[resolvedSize],
-        isFilled && 'md:py-0',
+        regularBlockMobilePaddingClasses[resolvedSize],
         appearanceClasses.className,
       )}
       data-testimonial-spotlight="true"
@@ -247,15 +343,22 @@ export function TestimonialSpotlightBlockComponent({
       data-testimonial-spotlight-size={resolvedSize}
     >
       {resolvedMediaFillMode === 'edgeToEdge' ? (
-        splitLayout
-      ) : (
-        <div
-          className={cn(
-            regularBlockContainerClasses,
-            !isFilled && regularBlockMobilePaddingClasses[resolvedSize],
-          )}
-        >
+        <>
+          {sectionHeader ? (
+            <div className={cn(regularBlockContainerClasses, 'mb-12')}>{sectionHeader}</div>
+          ) : null}
           {splitLayout}
+          {hasFooterActions ? (
+            <div className={regularBlockContainerClasses}>
+              <BlockFooterActions actions={footerActions} />
+            </div>
+          ) : null}
+        </>
+      ) : (
+        <div className={regularBlockContainerClasses}>
+          {sectionHeader ? <div className="mb-12">{sectionHeader}</div> : null}
+          {splitLayout}
+          <BlockFooterActions actions={footerActions} />
         </div>
       )}
     </section>

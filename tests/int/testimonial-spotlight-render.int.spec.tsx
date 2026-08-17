@@ -103,6 +103,77 @@ describe('testimonial spotlight rendering', () => {
     expect(html).not.toContain('<a')
   })
 
+  it('renders section content before the existing composition and footer actions after it', () => {
+    const html = renderToStaticMarkup(
+      createElement(TestimonialSpotlightBlockComponent, {
+        ...baseProps,
+        actions: [{ label: 'Meet our leadership', linkType: 'custom', url: '/leadership' }],
+        footerActions: [
+          {
+            label: 'Contact the college',
+            linkType: 'custom',
+            mode: 'button',
+            showArrow: true,
+            url: '/contact',
+            variant: 'primary',
+          },
+        ],
+        sectionDescription: 'Perspectives from the people guiding our institution.',
+        sectionEyebrow: 'Leadership',
+        sectionTitle: 'Messages from our leadership',
+      }),
+    )
+
+    const headerIndex = html.indexOf('data-testimonial-spotlight-section-header="true"')
+    const compositionIndex = html.indexOf('data-testimonial-spotlight-container-background')
+    const footerIndex = html.indexOf('Contact the college')
+
+    expect(headerIndex).toBeGreaterThan(-1)
+    expect(headerIndex).toBeLessThan(compositionIndex)
+    expect(compositionIndex).toBeLessThan(footerIndex)
+    expect(html).toContain('href="/leadership"')
+    expect(html).toContain('href="/contact"')
+    expect(html).toContain('data-action-mode="button"')
+  })
+
+  it.each([
+    ['left', 'items-start text-left', 'justify-start'],
+    ['center', 'mx-auto items-center text-center', 'justify-center'],
+  ] as const)('aligns %s section content and actions', (alignment, headerClass, actionClass) => {
+    const html = renderToStaticMarkup(
+      createElement(TestimonialSpotlightBlockComponent, {
+        ...baseProps,
+        actions: [{ label: 'Learn more', linkType: 'custom', url: '/learn' }],
+        sectionContentAlignment: alignment,
+        sectionTitle: 'Leadership voices',
+      }),
+    )
+    const headerTag = getTagWithAttribute(html, 'data-testimonial-spotlight-section-header')
+    const actionsTag = getTagWithAttribute(html, 'data-testimonial-spotlight-section-actions')
+
+    expect(headerTag).toContain(
+      `data-testimonial-spotlight-section-alignment="${alignment}"`,
+    )
+    expect(headerTag).toContain(headerClass)
+    expect(actionsTag).toContain(actionClass)
+  })
+
+  it('resolves outer and inner eyebrows against their independent surfaces', () => {
+    const html = renderToStaticMarkup(
+      createElement(TestimonialSpotlightBlockComponent, {
+        ...baseProps,
+        appearance: { background: 'brand', border: 'none' },
+        containerBackground: 'muted',
+        sectionEyebrow: 'Leadership',
+      }),
+    )
+
+    const outerIndex = html.indexOf('data-section-eyebrow-surface="brand"')
+    const innerIndex = html.indexOf('data-section-eyebrow-surface="subtle"')
+    expect(outerIndex).toBeGreaterThan(-1)
+    expect(outerIndex).toBeLessThan(innerIndex)
+  })
+
   it('mirrors a right-side image on desktop while keeping media first in source order', () => {
     const html = renderToStaticMarkup(
       createElement(TestimonialSpotlightBlockComponent, {
