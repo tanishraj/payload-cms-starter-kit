@@ -41,13 +41,17 @@ describe('testimonial spotlight config', () => {
     expect(tabsField.tabs?.map(({ label }) => label)).toEqual(['Content', 'Theme Settings'])
   })
 
-  it('defines required image, title, and person with an optional testimonial and no actions', () => {
+  it('defines section content around the required testimonial composition', () => {
     const tabsField = TestimonialSpotlightBlock.fields[0] as {
       tabs?: Array<{ fields: unknown[]; label: string }>
     }
     const contentFields = tabsField.tabs?.find(({ label }) => label === 'Content')?.fields ?? []
 
     expect(contentFields.map((field) => (field as { name?: string }).name)).toEqual([
+      'sectionEyebrow',
+      'sectionTitle',
+      'sectionDescription',
+      'actions',
       'image',
       'eyebrow',
       'title',
@@ -55,6 +59,7 @@ describe('testimonial spotlight config', () => {
       'description',
       'personName',
       'designation',
+      'footerActions',
     ])
     expect(
       getNamedField<{ relationTo?: string; required?: boolean; type?: string }>(
@@ -75,8 +80,21 @@ describe('testimonial spotlight config', () => {
     expect(
       getNamedField<{ required?: boolean }>(contentFields, 'testimonial')?.required,
     ).toBeUndefined()
-    expect(getNamedField(contentFields, 'actions')).toBeUndefined()
-    expect(getNamedField(contentFields, 'footerActions')).toBeUndefined()
+    for (const name of ['sectionEyebrow', 'sectionTitle', 'sectionDescription']) {
+      expect(getNamedField<{ required?: boolean }>(contentFields, name)?.required).toBeUndefined()
+    }
+    for (const [name, label] of [
+      ['actions', 'Section Actions'],
+      ['footerActions', 'Footer Actions'],
+    ] as const) {
+      expect(
+        getNamedField<{ label?: string; maxRows?: number; type?: string }>(contentFields, name),
+      ).toMatchObject({
+        label,
+        maxRows: 2,
+        type: 'array',
+      })
+    }
   })
 
   it('reuses shared appearance and the complete split-layout control set', () => {
@@ -112,6 +130,10 @@ describe('testimonial spotlight config', () => {
         defaultValue: 'center',
         values: ['top', 'center', 'bottom'],
       },
+      sectionContentAlignment: {
+        defaultValue: 'center',
+        values: ['left', 'center'],
+      },
     }
 
     expect(getNamedField<{ type?: string }>(fields, 'appearance')?.type).toBe('group')
@@ -132,6 +154,9 @@ describe('testimonial spotlight config', () => {
     }
     expect(getNamedField(fields, 'layoutMode')).toBeUndefined()
     expect(getNamedField(fields, 'contentAlignment')).toBeUndefined()
+    expect(
+      getNamedField<{ label?: string }>(fields, 'sectionContentAlignment')?.label,
+    ).toBe('Section Content Alignment')
   })
 
   it('registers the block for Pages and Reusable Sections', () => {

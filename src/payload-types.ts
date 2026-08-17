@@ -912,6 +912,31 @@ export interface FeatureSpotlightBlock {
  * via the `definition` "TestimonialSpotlightBlock".
  */
 export interface TestimonialSpotlightBlock {
+  /**
+   * Small label above the section title.
+   */
+  sectionEyebrow?: string | null;
+  sectionTitle?: string | null;
+  sectionDescription?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   image: string | Media;
   eyebrow?: string | null;
   title: string;
@@ -919,10 +944,30 @@ export interface TestimonialSpotlightBlock {
   description?: string | null;
   personName: string;
   designation?: string | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  sectionContentAlignment: 'left' | 'center';
   /**
    * Match Section inherits the section surface. Other choices apply a semantic theme surface to the complete image and content container.
    */
@@ -6181,6 +6226,22 @@ export interface FeatureSpotlightBlockSelect<T extends boolean = true> {
  * via the `definition` "TestimonialSpotlightBlock_select".
  */
 export interface TestimonialSpotlightBlockSelect<T extends boolean = true> {
+  sectionEyebrow?: T;
+  sectionTitle?: T;
+  sectionDescription?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
   image?: T;
   eyebrow?: T;
   title?: T;
@@ -6188,12 +6249,26 @@ export interface TestimonialSpotlightBlockSelect<T extends boolean = true> {
   description?: T;
   personName?: T;
   designation?: T;
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
   appearance?:
     | T
     | {
         background?: T;
         border?: T;
       };
+  sectionContentAlignment?: T;
   containerBackground?: T;
   containerOutline?: T;
   mediaPosition?: T;

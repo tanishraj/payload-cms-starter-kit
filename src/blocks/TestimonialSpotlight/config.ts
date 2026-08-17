@@ -3,6 +3,7 @@ import type { Block, SelectField, TabsField } from 'payload'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardBackgroundField } from '@/blocks/shared/cardThemeFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 export const TestimonialSpotlightBlock: Block = {
   slug: 'testimonialSpotlight',
@@ -19,6 +20,23 @@ export const TestimonialSpotlightBlock: Block = {
         {
           label: 'Content',
           fields: [
+            {
+              name: 'sectionEyebrow',
+              label: 'Section Eyebrow',
+              type: 'text',
+              admin: { description: 'Small label above the section title.' },
+            },
+            {
+              name: 'sectionTitle',
+              label: 'Section Title',
+              type: 'text',
+            },
+            {
+              name: 'sectionDescription',
+              label: 'Section Description',
+              type: 'textarea',
+            },
+            createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
             {
               name: 'image',
               type: 'upload',
@@ -52,12 +70,28 @@ export const TestimonialSpotlightBlock: Block = {
               name: 'designation',
               type: 'text',
             },
+            createContentActionsField({
+              name: 'footerActions',
+              label: 'Footer Actions',
+              maxRows: 2,
+            }),
           ],
         },
         {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
+            {
+              name: 'sectionContentAlignment',
+              label: 'Section Content Alignment',
+              type: 'select',
+              defaultValue: 'center',
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+              ],
+              required: true,
+            } satisfies SelectField,
             createCardBackgroundField({
               adminDescription:
                 'Match Section inherits the section surface. Other choices apply a semantic theme surface to the complete image and content container.',
