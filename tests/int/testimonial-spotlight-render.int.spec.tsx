@@ -7,6 +7,8 @@ import { describe, expect, it } from 'vitest'
 import { TestimonialSpotlightBlockComponent } from '@/blocks/TestimonialSpotlight/Component'
 import { renderLivePreviewPageBlocks } from '@/blocks/renderLivePreviewPageBlocks'
 import { renderPageBlocks } from '@/blocks/renderPageBlocks'
+import { regularBlockContainerClasses } from '@/blocks/shared/blockSpacing'
+import { contentSectionHeadingClasses } from '@/blocks/shared/contentStyles'
 
 const baseProps = {
   appearance: { background: 'subtle' as const, border: 'topAndBottom' as const },
@@ -173,6 +175,80 @@ describe('testimonial spotlight rendering', () => {
     expect(outerIndex).toBeGreaterThan(-1)
     expect(outerIndex).toBeLessThan(innerIndex)
   })
+
+  it('uses an outer h2 and visually identical inner h3 only when a section title exists', () => {
+    const withSectionTitle = renderToStaticMarkup(
+      createElement(TestimonialSpotlightBlockComponent, {
+        ...baseProps,
+        sectionTitle: 'Leadership voices',
+      }),
+    )
+    const withoutSectionTitle = renderToStaticMarkup(
+      createElement(TestimonialSpotlightBlockComponent, {
+        ...baseProps,
+        sectionEyebrow: 'Leadership',
+      }),
+    )
+
+    expect(withSectionTitle).toContain(
+      `<h2 class="${contentSectionHeadingClasses}">Leadership voices</h2>`,
+    )
+    expect(withSectionTitle).toContain(
+      `<h3 class="${contentSectionHeadingClasses}">${baseProps.title}</h3>`,
+    )
+    expect(withoutSectionTitle).toContain(
+      `<h2 class="${contentSectionHeadingClasses}">${baseProps.title}</h2>`,
+    )
+    expect(withoutSectionTitle).not.toContain('<h3')
+  })
+
+  it('preserves the legacy branch when every new field is absent or invalid', () => {
+    const html = renderToStaticMarkup(
+      createElement(TestimonialSpotlightBlockComponent, {
+        ...baseProps,
+        actions: [{ label: 'Broken', linkType: 'custom', url: '' }],
+        footerActions: [{ label: 'Broken footer', linkType: 'custom', url: '' }],
+        sectionDescription: '   ',
+        sectionEyebrow: '',
+        sectionTitle: null,
+      }),
+    )
+
+    expect(html).not.toContain('data-testimonial-spotlight-section-header')
+    expect(html).not.toContain('data-testimonial-spotlight-section-actions')
+    expect(html).not.toContain('Broken')
+    expect(html).not.toContain('<h3')
+    expect(html).toContain('py-12')
+    expect(html).toContain(
+      `<h2 class="${contentSectionHeadingClasses}">${baseProps.title}</h2>`,
+    )
+  })
+
+  it.each(['contained', 'containedFill', 'edgeToEdge'] as const)(
+    'keeps section chrome ordered and contained in %s mode',
+    (mediaFillMode) => {
+      const html = renderToStaticMarkup(
+        createElement(TestimonialSpotlightBlockComponent, {
+          ...baseProps,
+          footerActions: [{ label: 'Contact us', linkType: 'custom', url: '/contact' }],
+          mediaFillMode,
+          sectionTitle: 'Leadership voices',
+        }),
+      )
+
+      expect(html.indexOf('Leadership voices')).toBeLessThan(
+        html.indexOf('data-testimonial-spotlight-container-background'),
+      )
+      expect(html.indexOf('data-testimonial-spotlight-container-background')).toBeLessThan(
+        html.indexOf('Contact us'),
+      )
+      expect(html).toContain(regularBlockContainerClasses)
+      if (mediaFillMode === 'edgeToEdge') {
+        expect(html).toContain('data-testimonial-spotlight-media-fill="edgeToEdge"')
+        expect(html).toContain('mx-auto w-full max-w-screen-2xl px-4 mb-12')
+      }
+    },
+  )
 
   it('mirrors a right-side image on desktop while keeping media first in source order', () => {
     const html = renderToStaticMarkup(
