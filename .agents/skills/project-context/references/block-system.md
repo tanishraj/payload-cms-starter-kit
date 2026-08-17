@@ -57,6 +57,10 @@ no outline. Testimonial copy is optional: present copy uses the existing sans-se
 responsive 18–20px size with one normalized pair of curly double quotation marks and semantic quote
 markup, while absent copy leaves the image, title, description, and attribution visible without empty
 quotation elements. The person name and designation retain distinct body and metadata sizes.
+An optional outer section layer adds prefixed eyebrow/title/description fields, shared section and
+footer actions, and Left/Center header alignment without renaming the existing inner message fields.
+The outer eyebrow follows the section appearance; the existing inner eyebrow follows the container
+surface. Documents without valid outer content retain the legacy render branch.
 
 The generated inventory contains every current export under [src/blocks/shared](../../../../src/blocks/shared).
 
