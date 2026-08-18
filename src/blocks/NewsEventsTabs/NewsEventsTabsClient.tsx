@@ -3,10 +3,12 @@
 import { useId, useRef, useState, type KeyboardEvent } from 'react'
 
 import { NewsEventsTabsCard } from '@/blocks/NewsEventsTabs/NewsEventsTabsCard'
+import { NewsEventsTabsRow } from '@/blocks/NewsEventsTabs/NewsEventsTabsRow'
 import {
   getNewsEventsTabsGridClasses,
   type NewsEventsTabsCardsPerRow,
   type NewsEventsTabsItemsPerTab,
+  type NewsEventsTabsLayoutStyle,
   type NewsEventsTabsResolvedTab,
 } from '@/blocks/NewsEventsTabs/newsEventsTabsShared'
 import { Button } from '@/components/ui/button'
@@ -41,6 +43,7 @@ type NewsEventsTabsClientProps = {
   eventActionLabel: string
   groups: PublicNewsEventGroups
   itemsPerTab: NewsEventsTabsItemsPerTab
+  layoutStyle: NewsEventsTabsLayoutStyle
   loadMoreLabel: string
   newsActionLabel: string
   tabs: readonly NewsEventsTabsResolvedTab[]
@@ -52,6 +55,7 @@ export function NewsEventsTabsClient({
   eventActionLabel,
   groups,
   itemsPerTab,
+  layoutStyle,
   loadMoreLabel,
   newsActionLabel,
   tabs,
@@ -193,17 +197,26 @@ export function NewsEventsTabsClient({
         {activeItems.length > 0 ? (
           <>
             <div
-              className={cn('grid items-stretch gap-4', getNewsEventsTabsGridClasses(cardsPerRow))}
+              className={cn(
+                layoutStyle === 'editorialList'
+                  ? 'border-b border-border'
+                  : cn('grid items-stretch gap-4', getNewsEventsTabsGridClasses(cardsPerRow)),
+              )}
               data-news-events-tabs-items="true"
+              data-news-events-tabs-layout={layoutStyle}
             >
-              {activeItems.map((item) => (
-                <NewsEventsTabsCard
-                  eventActionLabel={eventActionLabel}
-                  item={item}
-                  key={item.id}
-                  newsActionLabel={newsActionLabel}
-                />
-              ))}
+              {activeItems.map((item) =>
+                layoutStyle === 'editorialList' ? (
+                  <NewsEventsTabsRow item={item} key={item.id} />
+                ) : (
+                  <NewsEventsTabsCard
+                    eventActionLabel={eventActionLabel}
+                    item={item}
+                    key={item.id}
+                    newsActionLabel={newsActionLabel}
+                  />
+                ),
+              )}
             </div>
 
             {activePage.hasNextPage || activePage.hasError ? (

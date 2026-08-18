@@ -76,18 +76,24 @@ From tablet widths, the featured panel and vertical rail share a 36rem height. T
 cards, separated by consistent gaps, fill that height; card titles use one line and descriptions use
 two lines. The rail centers card content vertically and keeps end-card outlines inside the viewport.
 Phone widths retain the horizontal supporting-card rail below the feature.
-The separate News & Events Tabs block renders text-only cards with a
+The separate News & Events Tabs block renders Card Grid or Editorial List entries with a
 mandatory first All tab and an editor-ordered subset of the seven classification tabs. Editors can
 rename classification tab labels, while duplicate classifications are rejected. Legacy blocks fall
 back to the complete tab set. The block server-renders page one for each tab as a page-aware public
 group, with 3, 6, 9, or 12 entries per batch. When more entries exist, the client appends the next
 batch through the read-only `/api/news-events-tabs` route and retains independent progress for each
 tab until refresh. Editors can customize the Load More label. The block retains shared appearance,
-alignment, spacing, header actions, and footer actions, and uses only semantic theme surfaces.
-Highlights and tabbed cards use the theme-scale `text-xl` token for semibold titles and retain the
-`text-base` token for normal-weight descriptions; tabbed cards keep their existing three-line title
-and four-line description limits. The tab pills wrap in configured order when the available width is
-insufficient, keeping every tab visible without a horizontal scrolling region.
+alignment, spacing, header actions, and footer actions, and uses only semantic theme surfaces. Card
+Grid is the admin default and legacy runtime fallback; its Cards Per Row control remains 2–4 and is
+shown only for that layout under Theme Settings. Editorial List uses full-row detail links with a
+date-only first column, classification above the title in the second column, excerpt, and the shared
+animated arrow. The title and excerpt use equal-width tracks, the arrow receives a wider trailing
+track, and one equal horizontal gutter separates every desktop column. The date and arrow center
+vertically while the badge/title and excerpt remain top-aligned, then stack on smaller screens. Both
+variants use the theme-scale `text-xl` token for semibold titles and retain the
+`text-base` token for normal-weight descriptions with bounded line lengths. The tab pills wrap in
+configured order when the available width is insufficient, keeping every tab visible without a
+horizontal scrolling region.
 
 NewsEventsDetailTemplate is a Page-compatible ordered block layout with one additional global-only
 `newsEventsContent` block. That dynamic block is deliberately excluded from Pages and Reusable

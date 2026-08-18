@@ -466,6 +466,7 @@
           "src/blocks/NewsEventsTabs/Component.tsx",
           "src/blocks/NewsEventsTabs/NewsEventsTabsCard.tsx",
           "src/blocks/NewsEventsTabs/NewsEventsTabsClient.tsx",
+          "src/blocks/NewsEventsTabs/NewsEventsTabsRow.tsx",
           "src/blocks/NewsEventsTabs/Presentation.tsx",
           "src/blocks/NewsEventsTabs/PreviewComponent.tsx",
           "src/blocks/NewsEventsTabs/config.ts",
@@ -1959,6 +1960,7 @@
       "src/blocks/NewsEventsTabs/Component.tsx",
       "src/blocks/NewsEventsTabs/NewsEventsTabsCard.tsx",
       "src/blocks/NewsEventsTabs/NewsEventsTabsClient.tsx",
+      "src/blocks/NewsEventsTabs/NewsEventsTabsRow.tsx",
       "src/blocks/NewsEventsTabs/Presentation.tsx",
       "src/blocks/NewsEventsTabs/PreviewComponent.tsx",
       "src/blocks/NewsEventsTabs/config.ts",
@@ -2398,7 +2400,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "a0dcd7e1e607b841cb7e680e550155e2c05bb6e85494460b99321890bed29553"
+    "sha256": "345278375ebf52f7f7ccdb9f8d85eb8ab233e8566785a4a40d396234293b290b"
   },
   "surfaces": {
     "access": [

@@ -658,10 +658,6 @@ export interface NewsEventsTabsBlock {
    * Shown when the selected tab has more published entries.
    */
   loadMoreLabel?: string | null;
-  /**
-   * Maximum cards in each desktop row.
-   */
-  cardsPerRow: '2' | '3' | '4';
   newsActionLabel?: string | null;
   eventActionLabel?: string | null;
   /**
@@ -672,6 +668,14 @@ export interface NewsEventsTabsBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Choose cards or a full-width editorial list for the tab results.
+   */
+  layoutStyle: 'cardGrid' | 'editorialList';
+  /**
+   * Maximum cards in each desktop row.
+   */
+  cardsPerRow?: ('2' | '3' | '4') | null;
   /**
    * Header actions only sit beside the heading when aligned left.
    */
@@ -6161,7 +6165,6 @@ export interface NewsEventsTabsBlockSelect<T extends boolean = true> {
       };
   itemsPerTab?: T;
   loadMoreLabel?: T;
-  cardsPerRow?: T;
   newsActionLabel?: T;
   eventActionLabel?: T;
   emptyStateMessage?: T;
@@ -6171,6 +6174,8 @@ export interface NewsEventsTabsBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  layoutStyle?: T;
+  cardsPerRow?: T;
   contentAlignment?: T;
   headerActionAlignment?: T;
   size?: T;

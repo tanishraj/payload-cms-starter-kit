@@ -492,6 +492,7 @@ export const blockThumbnailFixtures = {
       eyebrow="Campus updates"
       groups={thumbnailNewsEventsTabsGroups}
       itemsPerTab="6"
+      layoutStyle="editorialList"
       size="compact"
       title="News &"
     />

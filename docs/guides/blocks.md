@@ -35,7 +35,7 @@ The setting follows the selected presentation. Content Highlights applies it to 
 | Academic Programmes      | Programme cards and pathways                | Responsive columns, section actions, and independent card backgrounds                                                                                                                        |
 | News & Events Highlights | Automatic News & Events carousel            | One synchronized featured carousel with automatic collection data, configurable top/bottom controls, shared image/overlay settings, and the bundled SNMIH image fallback                     |
 | News Grid                | Editorial news-and-event grid               | Automatically mixes published News and current/upcoming Events, supports 2–4 desktop columns, and can reserve the final slot for an optional feature card                                    |
-| News & Events Tabs       | Filterable News & Events directory          | Text-only cards under configurable classification tabs; All stays first, with 2–4 desktop columns and shared section settings                                                                |
+| News & Events Tabs       | Filterable News & Events directory          | Card Grid or full-row Editorial List under configurable classification tabs; All stays first and both layouts share Load More and section settings                                           |
 | Profile Carousel         | People/profile cards                        | Client carousel behavior and independent card backgrounds                                                                                                                                    |
 | Gallery Showcase         | Layered image showcase                      | Interactive presentation                                                                                                                                                                     |
 | Event Gallery            | Album cards and full-screen viewer          | Requires selected Gallery Albums                                                                                                                                                             |
@@ -104,16 +104,21 @@ line and descriptions use two lines. Phone widths retain the horizontal supporti
 News Grid retains its established mixed grid, feature-card option, and title requirement. Use the
 separate News & Events Tabs block for a configurable directory. All always renders first; editors
 can add, remove, rename, and reorder the seven supported classification tabs without changing the
-classification assigned to each entry. Editors choose 3, 6, 9, or 12 entries per tab and 2, 3, or
-4 desktop columns. **Items Per Tab** controls the initial number of cards and each later Load More
-batch. **Load More Label** customizes the button shown only when the active tab has another page.
-Loaded cards remain available when visitors switch tabs; refreshing the page returns to the initial
-batch. The section header is optional; shared appearance, header actions, footer actions, alignment,
-spacing, empty-state, and action-label controls remain available. Its cards are text-only and use
-semantic theme surfaces. Highlights and tabbed cards use the theme-scale `text-xl` token for semibold
-titles and retain the `text-base` token for normal-weight descriptions; the larger tabbed cards retain
-their existing content limits. The tab pills wrap in configured order when the available width is
-insufficient, keeping every tab visible without a horizontal scrolling region.
+classification assigned to each entry. Editors choose 3, 6, 9, or 12 entries per tab. Under **Theme
+Settings**, **Layout** selects Card Grid (the default and legacy fallback) or Editorial List; **Cards
+Per Row** appears only for Card Grid and retains the existing 2, 3, or 4 desktop-column choices.
+**Items Per Tab** controls the initial number of entries and each later Load More batch. **Load More
+Label** customizes the button shown only when the active tab has another page. Loaded entries remain
+available when visitors switch tabs; refreshing the page returns to the initial batch. The section
+header is optional; shared appearance, header actions, footer actions, alignment, spacing,
+empty-state, and action-label controls remain available. Card Grid keeps its text-only semantic card
+surfaces. Editorial List renders each entry as a responsive full-row link with a date column, a
+badge-above-title column, excerpt, and the shared animated arrow. Both layouts use theme-scale
+`text-xl` semibold titles and `text-base` normal-weight descriptions with bounded line lengths. In
+Editorial List, the title and description use equal-width tracks, the arrow has a wider trailing
+track, and the date and arrow center vertically while one equal desktop gutter separates every
+column. The tab pills wrap in configured order when the available width is insufficient, keeping
+every tab visible without a horizontal scrolling region.
 
 `News & Events Content` is a global-only dynamic block for `Configuration > News & Events Detail
 Page`; it is intentionally absent from Pages and Reusable Sections. The global accepts the same

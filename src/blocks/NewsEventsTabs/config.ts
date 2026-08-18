@@ -125,22 +125,6 @@ export const NewsEventsTabsBlock: Block = {
               },
             },
             {
-              name: 'cardsPerRow',
-              label: 'Cards Per Row',
-              type: 'radio',
-              defaultValue: '3',
-              options: [
-                { label: '2', value: '2' },
-                { label: '3', value: '3' },
-                { label: '4', value: '4' },
-              ],
-              required: true,
-              admin: {
-                description: 'Maximum cards in each desktop row.',
-                layout: 'horizontal',
-              },
-            } satisfies RadioField,
-            {
               name: 'newsActionLabel',
               label: 'News Action Label',
               type: 'text',
@@ -167,6 +151,37 @@ export const NewsEventsTabsBlock: Block = {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
+            {
+              name: 'layoutStyle',
+              label: 'Layout',
+              type: 'select',
+              defaultValue: 'cardGrid',
+              options: [
+                { label: 'Card Grid', value: 'cardGrid' },
+                { label: 'Editorial List', value: 'editorialList' },
+              ],
+              required: true,
+              admin: {
+                description: 'Choose cards or a full-width editorial list for the tab results.',
+              },
+            } satisfies SelectField,
+            {
+              name: 'cardsPerRow',
+              label: 'Cards Per Row',
+              type: 'radio',
+              defaultValue: '3',
+              options: [
+                { label: '2', value: '2' },
+                { label: '3', value: '3' },
+                { label: '4', value: '4' },
+              ],
+              required: true,
+              admin: {
+                condition: (_data, siblingData) => siblingData?.layoutStyle !== 'editorialList',
+                description: 'Maximum cards in each desktop row.',
+                layout: 'horizontal',
+              },
+            } satisfies RadioField,
             {
               name: 'contentAlignment',
               label: 'Section Content Alignment',

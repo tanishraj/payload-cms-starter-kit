@@ -14,28 +14,28 @@ This is the maintained technical map of the starter. It records what is register
 
 ## Payload Collections
 
-| Group          | Collection                             | Responsibilities                                                                                                               |
-| -------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| Content        | Pages                                  | Hierarchical routes, 51-block layouts, drafts, workflow, SEO, live preview, page-owned links, path-change redirects            |
-| Content        | Articles                               | Long-form Lexical content, topics/tags, related content, SEO, workflow, live preview                                           |
-| Content        | News & Events                          | Seven single-choice classifications, event validation/registration, taxonomy, block/detail/feed data, workflow, live preview   |
-| Content        | Reviews                                | Moderated ratings and testimonials, source-submission linkage, taxonomy, SEO, workflow, live preview                           |
-| Content        | Reusable Sections                      | Shared versioned block stacks with recursion and high-complexity block restrictions                                            |
-| Taxonomy       | Topics (`categories`)                  | Hierarchical editorial topics with SEO data                                                                                    |
-| Taxonomy       | Tags                                   | Flat editorial keywords with SEO data                                                                                          |
-| Navigation     | Navigation Links                       | Page/custom destinations, including records synchronized from Pages                                                            |
-| Navigation     | Redirects                              | Normalized unique incoming paths, page/custom targets, 301/302 choice, enable state                                            |
-| Site Structure | Headers                                | Versioned Header Navbar presets                                                                                                |
-| Site Structure | Footers                                | Versioned Footer 56 presets                                                                                                    |
-| Site Structure | Office Locations                       | Versioned map/contact records used by Regional Offices                                                                         |
-| Site Structure | System Pages                           | Governed 404, maintenance, and coming-soon presets with matching block validation                                              |
-| Media          | Media                                  | Uploads, classification, alt validation, usage detection, deletion guards, storage health, operational sync                    |
-| Media          | Gallery Albums                         | Versioned ordered image albums used by Event Gallery                                                                           |
-| Forms          | Forms                                  | Versioned general, lead, and review-intent field schemas plus email configuration                                              |
-| Forms          | Form Submissions                       | Stored immutable payload/metadata, operational status/assignment/activity, optional review promotion                           |
-| Administration | Action Queue (`work-queue`)            | Deduplicated CMS-generated approval, moderation, follow-up, publishing, media, and system work                                 |
-| Administration | Audit Log (`operational-audit-events`) | Immutable selected operational events and actor metadata                                                                       |
-| Administration | Users                                  | Payload authentication, roles, capability presets and overrides                                                                |
+| Group          | Collection                             | Responsibilities                                                                                                             |
+| -------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Content        | Pages                                  | Hierarchical routes, 51-block layouts, drafts, workflow, SEO, live preview, page-owned links, path-change redirects          |
+| Content        | Articles                               | Long-form Lexical content, topics/tags, related content, SEO, workflow, live preview                                         |
+| Content        | News & Events                          | Seven single-choice classifications, event validation/registration, taxonomy, block/detail/feed data, workflow, live preview |
+| Content        | Reviews                                | Moderated ratings and testimonials, source-submission linkage, taxonomy, SEO, workflow, live preview                         |
+| Content        | Reusable Sections                      | Shared versioned block stacks with recursion and high-complexity block restrictions                                          |
+| Taxonomy       | Topics (`categories`)                  | Hierarchical editorial topics with SEO data                                                                                  |
+| Taxonomy       | Tags                                   | Flat editorial keywords with SEO data                                                                                        |
+| Navigation     | Navigation Links                       | Page/custom destinations, including records synchronized from Pages                                                          |
+| Navigation     | Redirects                              | Normalized unique incoming paths, page/custom targets, 301/302 choice, enable state                                          |
+| Site Structure | Headers                                | Versioned Header Navbar presets                                                                                              |
+| Site Structure | Footers                                | Versioned Footer 56 presets                                                                                                  |
+| Site Structure | Office Locations                       | Versioned map/contact records used by Regional Offices                                                                       |
+| Site Structure | System Pages                           | Governed 404, maintenance, and coming-soon presets with matching block validation                                            |
+| Media          | Media                                  | Uploads, classification, alt validation, usage detection, deletion guards, storage health, operational sync                  |
+| Media          | Gallery Albums                         | Versioned ordered image albums used by Event Gallery                                                                         |
+| Forms          | Forms                                  | Versioned general, lead, and review-intent field schemas plus email configuration                                            |
+| Forms          | Form Submissions                       | Stored immutable payload/metadata, operational status/assignment/activity, optional review promotion                         |
+| Administration | Action Queue (`work-queue`)            | Deduplicated CMS-generated approval, moderation, follow-up, publishing, media, and system work                               |
+| Administration | Audit Log (`operational-audit-events`) | Immutable selected operational events and actor metadata                                                                     |
+| Administration | Users                                  | Payload authentication, roles, capability presets and overrides                                                              |
 
 All collections use timestamps and Trash. Draft/version support is enabled where the individual config declares it; operational records and users are not public content.
 
@@ -82,9 +82,15 @@ model, overlay controls, image-position precedence, bundled missing-image fallba
 carousel. Editors can place the status and previous/next controls above or below the carousel; Bottom
 remains the default and legacy fallback.
 News Grid retains its legacy mixed grid and optional editor-authored feature card. The separate News
-& Events Tabs block provides text-only cards under an editor-configurable subset of
-News/Events/Notice/Holiday/Achievements/Announcement/Others classifications, with All fixed first and
-3, 6, 9, or 12 server-loaded entries per tab.
+& Events Tabs block provides Card Grid and Editorial List presentations under an editor-configurable
+subset of News/Events/Notice/Holiday/Achievements/Announcement/Others classifications, with All fixed
+first and 3, 6, 9, or 12 server-loaded entries per tab. Both presentations share the same automatic
+collection data and incremental Load More state. Card Grid retains its configurable 2–4 desktop
+columns. Editorial List renders a full-row detail link with date, a badge-above-title group, excerpt,
+and the shared animated arrow. The title and excerpt use equal-width tracks, the arrow receives a
+wider trailing track, and one equal horizontal gutter separates the desktop columns. The date and
+arrow center vertically while the badge/title and excerpt remain top-aligned before stacking without
+horizontal scrolling on smaller screens.
 
 The SNMIH preset uses `#031d44` as its light-mode Primary brand color. Its dark palette uses a deep navy canvas with a lighter accessible Primary surface so the same semantic block and card settings remain readable across color schemes.
 

@@ -1,10 +1,12 @@
 import { NewsEventsTabsClient } from '@/blocks/NewsEventsTabs/NewsEventsTabsClient'
 import {
   normalizeNewsEventsTabsItemsPerTab,
+  normalizeNewsEventsTabsLayoutStyle,
   resolveNewsEventsTabs,
   resolveNewsEventsTabsLoadMoreLabel,
   type NewsEventsTabsCardsPerRow,
   type NewsEventsTabsConfiguredTab,
+  type NewsEventsTabsLayoutStyle,
 } from '@/blocks/NewsEventsTabs/newsEventsTabsShared'
 import {
   resolveBlockAppearanceClasses,
@@ -43,6 +45,7 @@ export type NewsEventsTabsBlockLike = {
   footerActions?: CmsActionValue[] | null
   headerActionAlignment?: NewsEventsTabsHeaderActionAlignment | null
   itemsPerTab?: number | string | null
+  layoutStyle?: NewsEventsTabsLayoutStyle | null
   loadMoreLabel?: string | null
   newsActionLabel?: string | null
   size?: RegularBlockSize | null
@@ -74,6 +77,7 @@ export function NewsEventsTabsBlockPresentation({
   groups,
   headerActionAlignment = 'center',
   itemsPerTab,
+  layoutStyle,
   loadMoreLabel,
   newsActionLabel,
   size = 'default',
@@ -167,6 +171,7 @@ export function NewsEventsTabsBlockPresentation({
           eventActionLabel={eventActionLabel?.trim() || 'View details'}
           groups={groups ?? createEmptyNewsEventGroups()}
           itemsPerTab={normalizeNewsEventsTabsItemsPerTab(itemsPerTab)}
+          layoutStyle={normalizeNewsEventsTabsLayoutStyle(layoutStyle)}
           loadMoreLabel={resolveNewsEventsTabsLoadMoreLabel(loadMoreLabel)}
           newsActionLabel={newsActionLabel?.trim() || 'Read update'}
           tabs={resolvedTabs}

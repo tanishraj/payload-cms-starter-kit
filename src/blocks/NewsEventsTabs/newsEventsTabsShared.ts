@@ -74,6 +74,10 @@ export type NewsEventsTabsItemsPerTabValue = (typeof NEWS_EVENTS_TABS_ITEM_VALUE
 export type NewsEventsTabsItemsPerTab = 3 | 6 | 9 | 12
 export type NewsEventsTabsCardsPerRow = '2' | '3' | '4'
 
+export const NEWS_EVENTS_TABS_LAYOUT_STYLES = ['cardGrid', 'editorialList'] as const
+
+export type NewsEventsTabsLayoutStyle = (typeof NEWS_EVENTS_TABS_LAYOUT_STYLES)[number]
+
 const gridClassesByCardsPerRow = {
   '2': 'grid-cols-1 md:grid-cols-2',
   '3': 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3',
@@ -100,6 +104,12 @@ export function normalizeNewsEventsTabsCardsPerRow(
   value?: string | null,
 ): NewsEventsTabsCardsPerRow {
   return value === '2' || value === '4' ? value : '3'
+}
+
+export function normalizeNewsEventsTabsLayoutStyle(
+  value?: string | null,
+): NewsEventsTabsLayoutStyle {
+  return value === 'editorialList' ? 'editorialList' : 'cardGrid'
 }
 
 export function getNewsEventsTabsGridClasses(value?: string | null): string {

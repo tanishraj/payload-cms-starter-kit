@@ -6,6 +6,7 @@ import type { Block, Field } from 'payload'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { NewsEventsTabsClient } from '@/blocks/NewsEventsTabs/NewsEventsTabsClient'
+import { NewsEventsTabsRow } from '@/blocks/NewsEventsTabs/NewsEventsTabsRow'
 import { NewsEventsTabsBlockPresentation } from '@/blocks/NewsEventsTabs/Presentation'
 import { NewsEventsTabsBlock } from '@/blocks/NewsEventsTabs/config'
 import {
@@ -14,6 +15,7 @@ import {
   NEWS_EVENTS_TABS_DEFAULT_CONFIGURED_TABS,
   normalizeNewsEventsTabsCardsPerRow,
   normalizeNewsEventsTabsItemsPerTab,
+  normalizeNewsEventsTabsLayoutStyle,
   resolveNewsEventsTabs,
   resolveNewsEventsTabsLoadMoreLabel,
   validateNewsEventsTabsConfiguredTabs,
@@ -72,6 +74,7 @@ const baseClientProps = {
   eventActionLabel: 'View details',
   groups,
   itemsPerTab: 6 as const,
+  layoutStyle: 'cardGrid' as const,
   loadMoreLabel: 'Load More',
   newsActionLabel: 'Read update',
   tabs: resolveNewsEventsTabs(null, undefined),
@@ -161,7 +164,17 @@ describe('News & Events Tabs', () => {
       label: 'Load More Label',
       type: 'text',
     })
-    expect(findNamedField(NewsEventsTabsBlock.fields, 'cardsPerRow')).toMatchObject({
+    expect(findNamedField(NewsEventsTabsBlock.fields, 'layoutStyle')).toMatchObject({
+      defaultValue: 'cardGrid',
+      options: [
+        { label: 'Card Grid', value: 'cardGrid' },
+        { label: 'Editorial List', value: 'editorialList' },
+      ],
+      required: true,
+      type: 'select',
+    })
+    const cardsPerRowField = findNamedField(NewsEventsTabsBlock.fields, 'cardsPerRow')
+    expect(cardsPerRowField).toMatchObject({
       defaultValue: '3',
       options: [
         { label: '2', value: '2' },
@@ -171,6 +184,15 @@ describe('News & Events Tabs', () => {
       required: true,
       type: 'radio',
     })
+    const cardsPerRowCondition = (
+      cardsPerRowField?.admin as
+        | {
+            condition?: (data: unknown, siblingData: { layoutStyle?: string }) => boolean
+          }
+        | undefined
+    )?.condition
+    expect(cardsPerRowCondition?.({}, { layoutStyle: 'cardGrid' })).toBe(true)
+    expect(cardsPerRowCondition?.({}, { layoutStyle: 'editorialList' })).toBe(false)
   })
 
   it('normalizes stored item and column values', () => {
@@ -180,6 +202,10 @@ describe('News & Events Tabs', () => {
     expect(normalizeNewsEventsTabsItemsPerTab('invalid')).toBe(6)
     expect(normalizeNewsEventsTabsCardsPerRow('2')).toBe('2')
     expect(normalizeNewsEventsTabsCardsPerRow('invalid')).toBe('3')
+    expect(normalizeNewsEventsTabsLayoutStyle('editorialList')).toBe('editorialList')
+    expect(normalizeNewsEventsTabsLayoutStyle('cardGrid')).toBe('cardGrid')
+    expect(normalizeNewsEventsTabsLayoutStyle('invalid')).toBe('cardGrid')
+    expect(normalizeNewsEventsTabsLayoutStyle(undefined)).toBe('cardGrid')
     expect(getNewsEventsTabsGridClasses('4')).toContain('xl:grid-cols-4')
     expect(resolveNewsEventsTabsLoadMoreLabel(' More updates ')).toBe('More updates')
     expect(resolveNewsEventsTabsLoadMoreLabel('   ')).toBe('Load More')
@@ -287,6 +313,21 @@ describe('News & Events Tabs', () => {
     expect(html).not.toContain('>News</button>')
   })
 
+  it('normalizes the configured presentation layout with a card-grid legacy fallback', () => {
+    const editorialHTML = renderToStaticMarkup(
+      <NewsEventsTabsBlockPresentation groups={groups} layoutStyle="editorialList" />,
+    )
+    const fallbackHTML = renderToStaticMarkup(
+      <NewsEventsTabsBlockPresentation groups={groups} layoutStyle={'invalid' as never} />,
+    )
+
+    expect(editorialHTML).toContain('data-news-events-tabs-layout="editorialList"')
+    expect(editorialHTML).toContain('data-news-events-tabs-row="true"')
+    expect(editorialHTML).not.toContain('data-news-events-tabs-card="true"')
+    expect(fallbackHTML).toContain('data-news-events-tabs-layout="cardGrid"')
+    expect(fallbackHTML).toContain('data-news-events-tabs-card="true"')
+  })
+
   it('renders the default tabs and filters the visible panel', () => {
     render(<NewsEventsTabsClient {...baseClientProps} />)
 
@@ -352,6 +393,79 @@ describe('News & Events Tabs', () => {
     expect(date?.className).toContain('text-xs')
     expect(date?.className).not.toContain('font-mono')
     expect(card?.querySelector('[data-news-event-classification="news"]')).toBeTruthy()
+  })
+
+  it('renders an accessible full-row editorial link with responsive columns and shared metadata', () => {
+    const { container } = render(<NewsEventsTabsRow item={baseCard} />)
+    const row = container.querySelector('[data-news-events-tabs-row="true"]')
+
+    expect(row?.tagName).toBe('A')
+    expect(row?.getAttribute('href')).toBe(baseCard.href)
+    expect(row?.className).toContain('group/button')
+    expect(row?.className).toContain(
+      'lg:grid-cols-[minmax(9rem,0.8fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(6rem,0.35fr)]',
+    )
+    expect(row?.className).toContain('lg:items-start')
+    expect(row?.className).toContain('gap-y-5')
+    expect(row?.className).toContain('lg:gap-x-8')
+    expect(row?.className).not.toContain('lg:gap-8')
+
+    const dateColumn = row?.querySelector('[data-news-events-tabs-row-date="true"]')
+    const titleColumn = row?.querySelector('[data-news-events-tabs-row-title="true"]')
+    const arrow = row?.querySelector('[data-news-events-tabs-row-arrow="true"]')
+
+    expect(dateColumn?.className).toContain('lg:self-center')
+    expect(dateColumn?.querySelector('.lucide-calendar-days')).toBeTruthy()
+    expect(dateColumn?.querySelector('[data-news-event-classification]')).toBeNull()
+    expect(titleColumn?.querySelector('[data-news-event-classification="news"]')).toBeTruthy()
+    expect(titleColumn?.className).toContain('flex-col')
+    expect(titleColumn?.className).toContain('items-start')
+    expect(titleColumn?.className).toContain('gap-3')
+    expect(titleColumn?.querySelector('h3')?.className).toContain('text-xl')
+    expect(titleColumn?.querySelector('h3')?.className).toContain('font-semibold')
+    expect(titleColumn?.querySelector('h3')?.className).toContain('line-clamp-2')
+    expect(row?.querySelector('p')?.className).toContain('text-base')
+    expect(row?.querySelector('p')?.className).toContain('font-normal')
+    expect(row?.querySelector('p')?.className).toContain('line-clamp-3')
+    expect(arrow?.className).toContain('lg:self-center')
+    expect(arrow?.querySelector('[aria-hidden="true"] .lucide-arrow-right')).toBeTruthy()
+  })
+
+  it('formats editorial event ranges and omits missing optional date and excerpt content', () => {
+    const eventCard: PublicNewsEventCard = {
+      ...baseCard,
+      contentType: 'event',
+      dateISO: '2026-08-13T00:00:00.000Z',
+      dateLabel: 'Aug 13, 2026',
+      eventEnd: '2026-08-20T00:00:00.000Z',
+      eventStart: '2026-08-13T00:00:00.000Z',
+      id: 'event-range',
+    }
+    const { container, rerender } = render(<NewsEventsTabsRow item={eventCard} />)
+
+    expect(container.querySelector('time')?.textContent).toContain('Aug 13–20, 2026')
+
+    rerender(
+      <NewsEventsTabsRow
+        item={{
+          ...baseCard,
+          dateISO: '',
+          dateLabel: '',
+          excerpt: '   ',
+        }}
+      />,
+    )
+
+    const row = container.querySelector('[data-news-events-tabs-row="true"]')
+    const dateColumn = row?.querySelector('[data-news-events-tabs-row-date="true"]')
+    const titleColumn = row?.querySelector('[data-news-events-tabs-row-title="true"]')
+    expect(dateColumn?.querySelector('time')).toBeNull()
+    expect(dateColumn?.querySelector('[data-news-event-classification]')).toBeNull()
+    expect(titleColumn?.querySelector('[data-news-event-classification="news"]')).toBeTruthy()
+    expect(row?.querySelector('p')).toBeNull()
+    expect(
+      row?.querySelector('[data-news-events-tabs-row-description-placeholder="true"]'),
+    ).toBeTruthy()
   })
 
   it('renders configured labels and order while keeping All first', () => {
@@ -457,15 +571,17 @@ describe('News & Events Tabs', () => {
       <NewsEventsTabsClient
         {...baseClientProps}
         groups={pagedGroups}
+        layoutStyle="editorialList"
         loadMoreLabel="More updates"
       />,
     )
 
-    expect(document.querySelectorAll('[data-news-events-tabs-card="true"]')).toHaveLength(6)
+    expect(document.querySelectorAll('[data-news-events-tabs-row="true"]')).toHaveLength(6)
+    expect(document.querySelectorAll('[data-news-events-tabs-card="true"]')).toHaveLength(0)
     fireEvent.click(screen.getByRole('button', { name: 'More updates' }))
 
     await screen.findByText('News 12')
-    expect(document.querySelectorAll('[data-news-events-tabs-card="true"]')).toHaveLength(12)
+    expect(document.querySelectorAll('[data-news-events-tabs-row="true"]')).toHaveLength(12)
     expect(fetchMock).toHaveBeenCalledWith(
       '/api/news-events-tabs?classification=all&page=2&limit=6',
       { headers: { Accept: 'application/json' } },
