@@ -199,8 +199,16 @@ describe('live-preview page block renderer', () => {
     const layout = [
       {
         blockType: 'eventGallery',
+        cardTextLayout: 'middleCenter',
         displayOrder: 'manual',
         galleryAlbums: ['draft-album'],
+        overlayCoverage: 'full',
+        overlayDirection: 'bottomToTop',
+        overlayStyle: 'darker',
+        showCardOverlay: true,
+        showEventDate: false,
+        showImageCount: false,
+        themeMode: 'brand',
         title: 'Event gallery',
       },
     ] as unknown as NonNullable<Page['layout']>
@@ -248,6 +256,11 @@ describe('live-preview page block renderer', () => {
     expect(html).toContain('Event gallery')
     expect(html).toContain('Draft Yoga Day')
     expect(html).toContain('data-event-gallery="true"')
+    expect(html).toContain('data-event-gallery-layout="rectangular-quilt"')
+    expect(html).toContain('data-event-gallery-card-position="middleCenter"')
+    expect(html).toContain('data-event-gallery-overlay-tone="brand"')
+    expect(html).toContain('data-event-gallery-overlay-strength="darker"')
+    expect(html).not.toContain('data-event-gallery-image-count="true"')
   })
 
   it('filters a shared album snapshot independently for multiple blocks', () => {

@@ -64,6 +64,19 @@ surface. Documents without valid outer content retain the legacy render branch.
 
 The generated inventory contains every current export under [src/blocks/shared](../../../../src/blocks/shared).
 
+Event Gallery renders selected Gallery Albums in their resolved manual or latest-event-date order.
+Each selected album contributes its first valid image as one cover tile, while the accessible card
+button opens every image in that album through the existing full-screen viewer. The count-aware
+rectangular quilt uses one phone, two tablet, three laptop, and four wide-desktop columns, bounded by
+the number of rendered albums. The first few tiles span two rows only when required to fill the active
+grid exactly, so every album count ends on a straight boundary without horizontal spans, dense
+backfilling, or an oversized lead card. Card details are optional. When enabled,
+every overlay position stacks the image icon and numeric count, event date, and a clamped text-family
+title. Bottom Left aligns the stack left; Bottom Center and Center — Vertical & Horizontal center it.
+Missing or disabled metadata rows close naturally. The shared overlay tone, strength, direction, and
+coverage fields control the presentation. Disabling Show Album Details Overlay produces image-only
+cards and hides its dependent metadata, position, and overlay controls in Admin.
+
 News & Events Highlights retains the `newsEventsHighlights` slug and renders one synchronized carousel
 from automatically loaded News & Events collection records. It interleaves recent published non-event
 entries with current or upcoming Events up to the configured one-to-six item limit. Autoplay, Empty

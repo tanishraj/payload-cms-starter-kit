@@ -1022,12 +1022,50 @@ export const blockThumbnailFixtures = {
           ],
           title: 'Yoga Day',
         },
+        {
+          cover: {
+            alt: 'Community portrait',
+            height: 1200,
+            id: 'event-cover-3',
+            src: portrait,
+            width: 900,
+          },
+          createdAt: '2026-05-12T00:00:00.000Z',
+          eventDate: '2026-05-12T00:00:00.000Z',
+          id: 'event-album-3',
+          imageCount: 2,
+          images: [
+            {
+              alt: 'Community portrait',
+              height: 1200,
+              id: 'event-cover-3',
+              src: portrait,
+              width: 900,
+            },
+            {
+              alt: 'Collaborative environment',
+              height: 900,
+              id: 'event-image-5',
+              src: collaboration,
+              width: 1600,
+            },
+          ],
+          title: 'Student Orientation',
+        },
       ]}
       alignment="left"
       appearance={{ background: 'subtle', border: 'topAndBottom' }}
+      cardTextLayout="split"
       description="Browse recent celebrations, programs, and community events."
       eyebrow="Moments"
+      overlayCoverage="full"
+      overlayDirection="bottomToTop"
+      overlayStyle="darker"
+      showCardOverlay
+      showEventDate
+      showImageCount
       size="compact"
+      themeMode="dark"
       title="Event gallery"
     />
   ),

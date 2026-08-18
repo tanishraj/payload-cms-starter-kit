@@ -1,8 +1,16 @@
-import type { Block, SelectField, TabsField } from 'payload'
+import type { Block, CheckboxField, Condition, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import {
+  createMediaOverlayCoverageField,
+  createMediaOverlayDirectionField,
+  createMediaOverlayStrengthField,
+  createMediaOverlayToneField,
+} from '@/blocks/shared/mediaOverlayFields'
+
+const showsCardOverlay: Condition = (_data, siblingData) => siblingData?.showCardOverlay !== false
 
 export const EventGalleryBlock: Block = {
   slug: 'eventGallery',
@@ -63,7 +71,11 @@ export const EventGalleryBlock: Block = {
               ],
               required: true,
             } satisfies SelectField,
-            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({
+              name: 'footerActions',
+              label: 'Footer Actions',
+              maxRows: 2,
+            }),
           ],
         },
         {
@@ -71,16 +83,63 @@ export const EventGalleryBlock: Block = {
           fields: [
             createBlockAppearanceFields(),
             {
+              name: 'showCardOverlay',
+              label: 'Show Album Details Overlay',
+              type: 'checkbox',
+              defaultValue: true,
+              admin: {
+                description:
+                  'Show the album title, event date, and image count over each cover image.',
+              },
+            } satisfies CheckboxField,
+            {
+              name: 'showEventDate',
+              label: 'Show Event Date',
+              type: 'checkbox',
+              defaultValue: true,
+              admin: {
+                condition: showsCardOverlay,
+              },
+            } satisfies CheckboxField,
+            {
+              name: 'showImageCount',
+              label: 'Show Image Count',
+              type: 'checkbox',
+              defaultValue: true,
+              admin: {
+                condition: showsCardOverlay,
+              },
+            } satisfies CheckboxField,
+            {
               name: 'cardTextLayout',
-              label: 'Card Text Placement',
+              label: 'Overlay Content Position',
               type: 'select',
-              defaultValue: 'center',
+              defaultValue: 'split',
               options: [
-                { label: 'Split — title left, count right', value: 'split' },
-                { label: 'Center — all text centered', value: 'center' },
+                { label: 'Bottom Left', value: 'split' },
+                { label: 'Bottom Center', value: 'center' },
+                { label: 'Center — Vertical & Horizontal', value: 'middleCenter' },
               ],
               required: true,
+              admin: {
+                condition: showsCardOverlay,
+                description:
+                  'Every position stacks the image count, event date, and title. Choose where that stack sits and whether it aligns left or center.',
+              },
             } satisfies SelectField,
+            createMediaOverlayToneField({ condition: showsCardOverlay, defaultValue: 'dark' }),
+            createMediaOverlayStrengthField({
+              condition: showsCardOverlay,
+              defaultValue: 'darker',
+            }),
+            createMediaOverlayDirectionField({
+              condition: showsCardOverlay,
+              defaultValue: 'bottomToTop',
+            }),
+            createMediaOverlayCoverageField({
+              condition: showsCardOverlay,
+              defaultValue: 'full',
+            }),
             {
               name: 'contentAlignment',
               label: 'Section Content Alignment',

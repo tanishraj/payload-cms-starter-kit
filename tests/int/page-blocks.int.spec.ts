@@ -200,7 +200,7 @@ describe('page block pipeline', () => {
     }
   })
 
-  it('defines the eventGallery album selection and ordering fields', async () => {
+  it('defines the eventGallery album selection, mosaic, and overlay fields', async () => {
     const { EventGalleryBlock } = await import('@/blocks/EventGallery/config')
     const tabsField = EventGalleryBlock.fields[0] as
       | {
@@ -236,6 +236,42 @@ describe('page block pipeline', () => {
       options?: Array<{ value: string }>
       type?: string
     }>(layoutTab?.fields ?? [], 'size')
+    const cardTextLayout = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      required?: boolean
+      type?: string
+    }>(layoutTab?.fields ?? [], 'cardTextLayout')
+    const cardsPerRow = getNamedField(layoutTab?.fields ?? [], 'cardsPerRow')
+    const cardRatio = getNamedField(layoutTab?.fields ?? [], 'cardRatio')
+    const showEventDate = getNamedField<{ defaultValue?: boolean; type?: string }>(
+      layoutTab?.fields ?? [],
+      'showEventDate',
+    )
+    const showCardOverlay = getNamedField<{ defaultValue?: boolean; type?: string }>(
+      layoutTab?.fields ?? [],
+      'showCardOverlay',
+    )
+    const showImageCount = getNamedField<{ defaultValue?: boolean; type?: string }>(
+      layoutTab?.fields ?? [],
+      'showImageCount',
+    )
+    const themeMode = getNamedField<{ defaultValue?: string; type?: string }>(
+      layoutTab?.fields ?? [],
+      'themeMode',
+    )
+    const overlayStyle = getNamedField<{ defaultValue?: string; type?: string }>(
+      layoutTab?.fields ?? [],
+      'overlayStyle',
+    )
+    const overlayDirection = getNamedField<{ defaultValue?: string; type?: string }>(
+      layoutTab?.fields ?? [],
+      'overlayDirection',
+    )
+    const overlayCoverage = getNamedField<{ defaultValue?: string; type?: string }>(
+      layoutTab?.fields ?? [],
+      'overlayCoverage',
+    )
 
     expect(tabsField?.type).toBe('tabs')
     expect(tabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
@@ -271,6 +307,25 @@ describe('page block pipeline', () => {
       'latestEventDate',
       'manual',
     ])
+    expect(cardTextLayout).toMatchObject({
+      defaultValue: 'split',
+      required: true,
+      type: 'select',
+    })
+    expect(cardTextLayout?.options?.map((option) => option.value)).toEqual([
+      'split',
+      'center',
+      'middleCenter',
+    ])
+    expect(cardsPerRow).toBeUndefined()
+    expect(cardRatio).toBeUndefined()
+    expect(showCardOverlay).toMatchObject({ defaultValue: true, type: 'checkbox' })
+    expect(showEventDate).toMatchObject({ defaultValue: true, type: 'checkbox' })
+    expect(showImageCount).toMatchObject({ defaultValue: true, type: 'checkbox' })
+    expect(themeMode).toMatchObject({ defaultValue: 'dark', type: 'select' })
+    expect(overlayStyle).toMatchObject({ defaultValue: 'darker', type: 'select' })
+    expect(overlayDirection).toMatchObject({ defaultValue: 'bottomToTop', type: 'select' })
+    expect(overlayCoverage).toMatchObject({ defaultValue: 'full', type: 'select' })
     expect(contentAlignment).toMatchObject({
       defaultValue: 'center',
       type: 'select',

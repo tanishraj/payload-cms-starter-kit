@@ -1760,7 +1760,29 @@ export interface EventGalleryBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  cardTextLayout: 'split' | 'center';
+  /**
+   * Show the album title, event date, and image count over each cover image.
+   */
+  showCardOverlay?: boolean | null;
+  showEventDate?: boolean | null;
+  showImageCount?: boolean | null;
+  /**
+   * Every position stacks the image count, event date, and title. Choose where that stack sits and whether it aligns left or center.
+   */
+  cardTextLayout?: ('split' | 'center' | 'middleCenter') | null;
+  /**
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+   */
+  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
+  overlayStyle?: ('light' | 'dark' | 'darker') | null;
+  /**
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   */
+  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  overlayCoverage?: ('full' | 'split') | null;
   contentAlignment: 'left' | 'center' | 'right';
   size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
@@ -6954,7 +6976,14 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  showCardOverlay?: T;
+  showEventDate?: T;
+  showImageCount?: T;
   cardTextLayout?: T;
+  themeMode?: T;
+  overlayStyle?: T;
+  overlayDirection?: T;
+  overlayCoverage?: T;
   contentAlignment?: T;
   size?: T;
   id?: T;

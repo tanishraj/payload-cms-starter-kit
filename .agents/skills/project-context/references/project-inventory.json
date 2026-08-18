@@ -2090,6 +2090,7 @@
       "src/components/contact33.tsx",
       "src/components/content-highlights.tsx",
       "src/components/event-gallery-client.tsx",
+      "src/components/event-gallery-presentation.ts",
       "src/components/event-gallery-viewer.tsx",
       "src/components/event-gallery.tsx",
       "src/components/feature-matrix.tsx",
@@ -2302,6 +2303,7 @@
       "tests/int/editorial-reasons.int.spec.tsx",
       "tests/int/editorial-workflow.int.spec.ts",
       "tests/int/event-gallery-data.int.spec.ts",
+      "tests/int/event-gallery-presentation.int.spec.ts",
       "tests/int/event-gallery-render.int.spec.tsx",
       "tests/int/event-gallery-selection.int.spec.tsx",
       "tests/int/event-gallery-viewer.int.spec.tsx",
@@ -2400,7 +2402,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "4168e0b6dcc4330c29a059382e856ff28e8d2bde0f9345f34fdf2e9edfc1c0ee"
+    "sha256": "efd74e822b9e455042ccb1517b418182a60c0d6d05b56dd2cb546ef189f9abbf"
   },
   "surfaces": {
     "access": [
@@ -2566,6 +2568,7 @@
       "tests/int/editorial-reasons.int.spec.tsx",
       "tests/int/editorial-workflow.int.spec.ts",
       "tests/int/event-gallery-data.int.spec.ts",
+      "tests/int/event-gallery-presentation.int.spec.ts",
       "tests/int/event-gallery-render.int.spec.tsx",
       "tests/int/event-gallery-selection.int.spec.tsx",
       "tests/int/event-gallery-viewer.int.spec.tsx",

@@ -30,7 +30,7 @@ This is the maintained technical map of the starter. It records what is register
 | Site Structure | Office Locations                       | Versioned map/contact records used by Regional Offices                                                                       |
 | Site Structure | System Pages                           | Governed 404, maintenance, and coming-soon presets with matching block validation                                            |
 | Media          | Media                                  | Uploads, classification, alt validation, usage detection, deletion guards, storage health, operational sync                  |
-| Media          | Gallery Albums                         | Versioned ordered image albums used by Event Gallery                                                                         |
+| Media          | Gallery Albums                         | Versioned ordered image albums used by Event Gallery's count-aware rectangular quilt and full-screen viewer                  |
 | Forms          | Forms                                  | Versioned general, lead, and review-intent field schemas plus email configuration                                            |
 | Forms          | Form Submissions                       | Stored immutable payload/metadata, operational status/assignment/activity, optional review promotion                         |
 | Administration | Action Queue (`work-queue`)            | Deduplicated CMS-generated approval, moderation, follow-up, publishing, media, and system work                               |
