@@ -21,6 +21,18 @@ const item = (id: string, contentType: NewsEventClassification): FeaturedHighlig
 
 const items = [item('news-1', 'news'), item('notice-1', 'notice'), item('event-1', 'event')]
 
+function getCarouselChildOrder(container: HTMLElement) {
+  const shell = container.querySelector('[data-news-events-carousel-shell="true"]')
+  if (!shell) throw new Error('Expected carousel shell')
+
+  return Array.from(shell.children).map((child) => {
+    if (child.hasAttribute('data-news-events-carousel-layout')) return 'layout'
+    if (child.hasAttribute('data-news-events-carousel-controls-position')) return 'controls'
+    if (child.querySelector('[data-news-events-carousel-rail="horizontal"]')) return 'mobile-rail'
+    return 'other'
+  })
+}
+
 describe('NewsEventsFeaturedCarouselClient', () => {
   beforeEach(() => {
     ;(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
@@ -207,6 +219,48 @@ describe('NewsEventsFeaturedCarouselClient', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Next story' }))
     expect(screen.getByText('1 of 3')).toBeTruthy()
+  })
+
+  it('places one controls row above the carousel when configured', () => {
+    const { container } = render(
+      <NewsEventsFeaturedCarouselClient
+        autoplay={false}
+        carouselControlsPosition="top"
+        items={items}
+      />,
+    )
+
+    const controls = container.querySelectorAll(
+      '[data-news-events-carousel-controls-position="top"]',
+    )
+    expect(controls).toHaveLength(1)
+    expect(getCarouselChildOrder(container).slice(0, 2)).toEqual(['controls', 'layout'])
+    expect(controls[0]?.className).toContain('border-b')
+    expect(controls[0]?.className).toContain('pb-4')
+  })
+
+  it('defaults missing and invalid controls positions to the bottom', () => {
+    const { container, rerender } = render(
+      <NewsEventsFeaturedCarouselClient autoplay={false} items={items} />,
+    )
+
+    expect(
+      container.querySelectorAll('[data-news-events-carousel-controls-position="bottom"]'),
+    ).toHaveLength(1)
+    expect(getCarouselChildOrder(container).slice(-2)).toEqual(['mobile-rail', 'controls'])
+
+    rerender(
+      <NewsEventsFeaturedCarouselClient
+        autoplay={false}
+        carouselControlsPosition={'side' as never}
+        items={items}
+      />,
+    )
+
+    expect(
+      container.querySelectorAll('[data-news-events-carousel-controls-position="bottom"]'),
+    ).toHaveLength(1)
+    expect(getCarouselChildOrder(container).slice(-2)).toEqual(['mobile-rail', 'controls'])
   })
 
   it('advances every six seconds and pauses for hover and focus', () => {

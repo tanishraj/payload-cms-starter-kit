@@ -1520,6 +1520,7 @@ export interface NewsEventsHighlightsBlock {
     | null;
   itemCount: number;
   autoplay?: boolean | null;
+  carouselControlsPosition: 'bottom' | 'top';
   /**
    * Optional message shown when there are no News & Events entries.
    */
@@ -6770,6 +6771,7 @@ export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
       };
   itemCount?: T;
   autoplay?: T;
+  carouselControlsPosition?: T;
   emptyStateMessage?: T;
   imagePositionOverride?: T;
   themeMode?: T;

@@ -84,6 +84,17 @@ describe('News & Events Highlights block', () => {
       defaultValue: true,
       type: 'checkbox',
     })
+    const carouselControlsPosition = findNamedField(themeFields, 'carouselControlsPosition')
+    expect(carouselControlsPosition).toMatchObject({
+      defaultValue: 'bottom',
+      label: 'Carousel Controls Position',
+      required: true,
+      type: 'select',
+    })
+    expect(carouselControlsPosition?.options).toEqual([
+      { label: 'Bottom', value: 'bottom' },
+      { label: 'Top', value: 'top' },
+    ])
     expect(findNamedField(themeFields, 'emptyStateMessage')).toMatchObject({ type: 'text' })
     expect(findNamedField(themeFields, 'imagePositionOverride')).toMatchObject({
       defaultValue: 'item',
@@ -155,6 +166,7 @@ describe('News & Events Highlights block', () => {
   it('ignores stale manual fields and renders collection data in live preview', () => {
     const markup = renderToStaticMarkup(
       NewsEventsHighlightsPreviewBlockComponent({
+        carouselControlsPosition: 'top',
         contentSource: 'manual',
         itemCount: 3,
         manualSlides: [{ badgeLabel: 'Campus', title: 'Stale manual highlight' }],
@@ -180,6 +192,7 @@ describe('News & Events Highlights block', () => {
     )
 
     expect(markup).toContain('Preview collection highlight')
+    expect(markup).toContain('data-news-events-carousel-controls-position="top"')
     expect(markup).not.toContain('Stale manual highlight')
   })
 
@@ -276,6 +289,7 @@ describe('News & Events Highlights block', () => {
     const markup = renderToStaticMarkup(
       <NewsEventsHighlightsBlockPresentation
         actions={[{ label: 'All stories', linkType: 'custom', url: '/news-events' }]}
+        carouselControlsPosition="top"
         contentAlignment="center"
         eyebrow="Latest"
         items={[
@@ -305,6 +319,7 @@ describe('News & Events Highlights block', () => {
     expect(markup).toContain('lg:grid-cols-[minmax(0,1fr)_auto]')
     expect(markup).toContain('justify-end')
     expect(markup).toContain('data-news-events-carousel-feature="true"')
+    expect(markup).toContain('data-news-events-carousel-controls-position="top"')
     expect(markup).toContain('<h2')
     expect(markup).toContain('Public story')
     expect(markup).toContain('Read more')

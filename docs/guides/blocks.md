@@ -33,7 +33,7 @@ The setting follows the selected presentation. Content Highlights applies it to 
 | Content Highlights       | Curated content cards                       | Per-item backgrounds apply to Numbered Steps                                                                                                                                                 |
 | Editorial Reasons        | Institutional strengths                     | Four proportion presets, aligned section content, left/right placement, optional sticky introduction, and a responsive one-to-four-column numbered grid                                      |
 | Academic Programmes      | Programme cards and pathways                | Responsive columns, section actions, and independent card backgrounds                                                                                                                        |
-| News & Events Highlights | Automatic News & Events carousel            | One synchronized featured carousel with automatic collection data, shared image/overlay settings, and the bundled SNMIH image fallback                                                       |
+| News & Events Highlights | Automatic News & Events carousel            | One synchronized featured carousel with automatic collection data, configurable top/bottom controls, shared image/overlay settings, and the bundled SNMIH image fallback                     |
 | News Grid                | Editorial news-and-event grid               | Automatically mixes published News and current/upcoming Events, supports 2–4 desktop columns, and can reserve the final slot for an optional feature card                                    |
 | News & Events Tabs       | Filterable News & Events directory          | Text-only cards under configurable classification tabs; All stays first, with 2–4 desktop columns and shared section settings                                                                |
 | Profile Carousel         | People/profile cards                        | Client carousel behavior and independent card backgrounds                                                                                                                                    |
@@ -89,7 +89,8 @@ Right, Introduction Alignment Top, and Ruled borders to reproduce the reference-
 News & Events Highlights keeps the internal `newsEventsHighlights` block identity and automatically
 interleaves recent published non-event entries with current or upcoming Events up to the configured
 one-to-six item limit. Editors configure Number of Items, Autoplay, and the Empty State Message; slide
-content remains owned by the News & Events collection.
+content remains owned by the News & Events collection. Carousel Controls Position places the status
+and previous/next controls above or below the carousel. Bottom remains the default and legacy fallback.
 
 Image Position Override can retain each item setting or force Center, Top, Bottom, Left, or Right
 across the block. Overlay Tone, Strength, Direction, and Coverage use the shared semantic media

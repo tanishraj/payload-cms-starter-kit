@@ -63,6 +63,17 @@ export const NewsEventsHighlightsBlock: Block = {
               defaultValue: true,
             } satisfies CheckboxField,
             {
+              name: 'carouselControlsPosition',
+              label: 'Carousel Controls Position',
+              type: 'select',
+              defaultValue: 'bottom',
+              options: [
+                { label: 'Bottom', value: 'bottom' },
+                { label: 'Top', value: 'top' },
+              ],
+              required: true,
+            } satisfies SelectField,
+            {
               name: 'emptyStateMessage',
               label: 'Empty State Message',
               type: 'text',

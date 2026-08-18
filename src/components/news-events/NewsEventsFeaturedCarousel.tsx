@@ -15,6 +15,7 @@ import { NewsEventsFeaturedCarouselClient } from '@/components/news-events/NewsE
 import type {
   FeaturedHighlightImagePositionOverride,
   FeaturedHighlightItem,
+  FeaturedHighlightsControlsPosition,
   FeaturedHighlightsOverlayOptions,
 } from '@/components/news-events/featuredHighlightsShared'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
@@ -29,6 +30,7 @@ type NewsEventsFeaturedCarouselProps = {
   alignment?: NewsEventsHighlightsAlignment
   appearance?: BlockAppearance | null
   autoplay?: boolean
+  carouselControlsPosition?: FeaturedHighlightsControlsPosition
   description?: string
   emptyStateMessage?: string
   eyebrow?: string
@@ -51,6 +53,7 @@ export function NewsEventsFeaturedCarousel({
   alignment = 'left',
   appearance,
   autoplay = true,
+  carouselControlsPosition = 'bottom',
   description,
   emptyStateMessage,
   eyebrow,
@@ -93,6 +96,7 @@ export function NewsEventsFeaturedCarousel({
         {items.length ? (
           <NewsEventsFeaturedCarouselClient
             autoplay={autoplay}
+            carouselControlsPosition={carouselControlsPosition}
             imagePositionOverride={imagePositionOverride}
             items={items}
             overlay={overlay}

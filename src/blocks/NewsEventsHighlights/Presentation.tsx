@@ -8,6 +8,7 @@ import {
   resolveFeaturedHighlightsOverlay,
   type FeaturedHighlightImagePositionOverride,
   type FeaturedHighlightItem,
+  type FeaturedHighlightsControlsPosition,
 } from '@/components/news-events/featuredHighlightsShared'
 import type { CmsActionValue } from '@/lib/cmsLinks'
 import type {
@@ -21,6 +22,7 @@ export type NewsEventsHighlightsBlockLike = {
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   autoplay?: boolean | null
+  carouselControlsPosition?: FeaturedHighlightsControlsPosition | null
   contentAlignment?: NewsEventsHighlightsAlignment | null
   description?: string | null
   emptyStateMessage?: string | null
@@ -44,6 +46,7 @@ export function NewsEventsHighlightsBlockPresentation({
   actions,
   appearance,
   autoplay,
+  carouselControlsPosition,
   contentAlignment = 'left',
   description,
   emptyStateMessage,
@@ -71,6 +74,7 @@ export function NewsEventsHighlightsBlockPresentation({
       alignment={contentAlignment ?? 'left'}
       appearance={appearance}
       autoplay={autoplay ?? true}
+      carouselControlsPosition={carouselControlsPosition ?? 'bottom'}
       description={description?.trim() || undefined}
       emptyStateMessage={emptyStateMessage?.trim() || undefined}
       eyebrow={eyebrow?.trim() || undefined}

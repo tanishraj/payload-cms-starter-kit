@@ -79,7 +79,8 @@ Configurable visual blocks standardize their Payload editor structure as top-lev
 News & Events Highlights retains the `newsEventsHighlights` block slug and automatically interleaves
 recent published non-event entries with current or upcoming Events. It keeps the shared presentation
 model, overlay controls, image-position precedence, bundled missing-image fallback, and synchronized
-carousel.
+carousel. Editors can place the status and previous/next controls above or below the carousel; Bottom
+remains the default and legacy fallback.
 News Grid retains its legacy mixed grid and optional editor-authored feature card. The separate News
 & Events Tabs block provides text-only cards under an editor-configurable subset of
 News/Events/Notice/Holiday/Achievements/Announcement/Others classifications, with All fixed first and

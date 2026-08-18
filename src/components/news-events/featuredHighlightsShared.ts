@@ -12,6 +12,7 @@ import type { NewsEventClassification } from '@/lib/newsEventClassifications'
 
 export type FeaturedHighlightImagePosition = 'bottom' | 'center' | 'left' | 'right' | 'top'
 export type FeaturedHighlightImagePositionOverride = 'item' | FeaturedHighlightImagePosition
+export type FeaturedHighlightsControlsPosition = 'bottom' | 'top'
 
 export type FeaturedHighlightImage = {
   alt: string
@@ -60,6 +61,12 @@ export const featuredHighlightObjectPositionClasses = {
   right: 'object-right',
   top: 'object-top',
 } as const satisfies Record<FeaturedHighlightImagePosition, string>
+
+export function normalizeFeaturedHighlightsControlsPosition(
+  value: unknown,
+): FeaturedHighlightsControlsPosition {
+  return value === 'top' ? 'top' : 'bottom'
+}
 
 export function resolveFeaturedHighlightImagePosition(
   itemPosition: string | null | undefined,

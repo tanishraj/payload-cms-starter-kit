@@ -722,6 +722,7 @@ export const blockThumbnailFixtures = {
       actions={[{ label: 'View all stories', linkType: 'custom', url: '/news-events' }]}
       appearance={{ background: 'subtle', border: 'topAndBottom' }}
       autoplay={false}
+      carouselControlsPosition="bottom"
       description="Discover the latest stories, milestones, and opportunities from across our community."
       eyebrow="Latest"
       items={[

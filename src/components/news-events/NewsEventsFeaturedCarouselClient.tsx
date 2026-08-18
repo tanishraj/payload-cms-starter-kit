@@ -14,8 +14,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import {
   featuredHighlightObjectPositionClasses,
+  normalizeFeaturedHighlightsControlsPosition,
   resolveFeaturedHighlightImagePosition,
   resolveFeaturedHighlightsOverlay,
+  type FeaturedHighlightsControlsPosition,
   type FeaturedHighlightImagePositionOverride,
   type FeaturedHighlightItem,
   type FeaturedHighlightsOverlayOptions,
@@ -24,6 +26,7 @@ import { cn } from '@/lib/utils'
 
 type NewsEventsFeaturedCarouselClientProps = {
   autoplay?: boolean
+  carouselControlsPosition?: FeaturedHighlightsControlsPosition
   imagePositionOverride?: FeaturedHighlightImagePositionOverride
   items: FeaturedHighlightItem[]
   overlay?: Partial<FeaturedHighlightsOverlayOptions>
@@ -146,6 +149,7 @@ function Rail({
 
 export function NewsEventsFeaturedCarouselClient({
   autoplay = true,
+  carouselControlsPosition,
   imagePositionOverride = 'item',
   items,
   overlay,
@@ -168,6 +172,8 @@ export function NewsEventsFeaturedCarouselClient({
     ...overlayOptions,
     sectionBackground,
   })
+  const resolvedControlsPosition =
+    normalizeFeaturedHighlightsControlsPosition(carouselControlsPosition)
 
   const selectIndex = useCallback(
     (index: number) => {
@@ -194,6 +200,42 @@ export function NewsEventsFeaturedCarouselClient({
 
   if (!activeItem) return null
 
+  const controlsRow = (
+    <div
+      className={cn(
+        'flex items-center justify-between gap-4 border-current/15',
+        resolvedControlsPosition === 'top' ? 'mb-5 border-b pb-4' : 'mt-5 border-t pt-4',
+      )}
+      data-news-events-carousel-controls-position={resolvedControlsPosition}
+    >
+      <p aria-live="polite" className="text-sm tabular-nums text-current/70">
+        {resolvedActiveIndex + 1} of {itemCount}
+      </p>
+      {itemCount > 1 ? (
+        <div className="flex items-center gap-2">
+          <Button
+            aria-label="Previous story"
+            onClick={() => selectIndex(resolvedActiveIndex - 1)}
+            size="icon-sm"
+            type="button"
+            variant="outline"
+          >
+            <ChevronLeft aria-hidden="true" />
+          </Button>
+          <Button
+            aria-label="Next story"
+            onClick={() => selectIndex(resolvedActiveIndex + 1)}
+            size="icon-sm"
+            type="button"
+            variant="outline"
+          >
+            <ChevronRight aria-hidden="true" />
+          </Button>
+        </div>
+      ) : null}
+    </div>
+  )
+
   return (
     <div
       data-news-events-carousel-shell="true"
@@ -205,6 +247,8 @@ export function NewsEventsFeaturedCarouselClient({
       onMouseEnter={() => setPausedByHover(true)}
       onMouseLeave={() => setPausedByHover(false)}
     >
+      {resolvedControlsPosition === 'top' ? controlsRow : null}
+
       <div
         className="grid gap-6 md:h-[36rem] md:grid-cols-[minmax(0,1.5fr)_minmax(18rem,0.9fr)] lg:gap-8"
         data-news-events-carousel-layout="true"
@@ -317,33 +361,7 @@ export function NewsEventsFeaturedCarouselClient({
         setApi={setMobileApi}
       />
 
-      <div className="mt-5 flex items-center justify-between gap-4 border-t border-current/15 pt-4">
-        <p aria-live="polite" className="text-sm tabular-nums text-current/70">
-          {resolvedActiveIndex + 1} of {itemCount}
-        </p>
-        {itemCount > 1 ? (
-          <div className="flex items-center gap-2">
-            <Button
-              aria-label="Previous story"
-              onClick={() => selectIndex(resolvedActiveIndex - 1)}
-              size="icon-sm"
-              type="button"
-              variant="outline"
-            >
-              <ChevronLeft aria-hidden="true" />
-            </Button>
-            <Button
-              aria-label="Next story"
-              onClick={() => selectIndex(resolvedActiveIndex + 1)}
-              size="icon-sm"
-              type="button"
-              variant="outline"
-            >
-              <ChevronRight aria-hidden="true" />
-            </Button>
-          </div>
-        ) : null}
-      </div>
+      {resolvedControlsPosition === 'bottom' ? controlsRow : null}
     </div>
   )
 }
