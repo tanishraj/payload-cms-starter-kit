@@ -12,9 +12,16 @@ const source = (path: string) => readFileSync(resolve(process.cwd(), path), 'utf
 
 describe('shared Lexical presentation', () => {
   it('defines the complete long-form semantic and responsive contract', () => {
+    const compactTokens = compactRichTextClasses.split(/\s+/)
+    const longFormTokens = longFormRichTextClasses.split(/\s+/)
+
     expect(longFormRichTextClasses).toContain('font-[family-name:var(--font-text)]')
     expect(longFormRichTextClasses).toContain('prose-headings:font-[family-name:var(--font-text)]')
     expect(longFormRichTextClasses).not.toContain('var(--font-display)')
+    expect(longFormTokens).toContain('prose-headings:text-current/90')
+    expect(longFormTokens).not.toContain('prose-headings:text-current')
+    expect(compactTokens).toContain('prose-headings:text-current/90')
+    expect(compactTokens).not.toContain('prose-headings:text-current')
 
     for (const className of [
       'prose-h1:text-4xl',
@@ -36,10 +43,23 @@ describe('shared Lexical presentation', () => {
     expect(source('src/styles/globals.css')).toContain('--text-prose-h2: 1.75rem')
 
     for (const className of [
-      'prose-p:leading-8',
+      'prose-p:text-base',
+      'sm:prose-p:text-lg',
+      'prose-p:leading-7',
+      'prose-p:text-current/80',
+      'prose-li:text-base',
+      'sm:prose-li:text-lg',
+      'prose-li:leading-7',
+      'prose-li:text-current/80',
+      'prose-strong:text-current',
+      '[&_figcaption]:text-current/80',
       'prose-ul:pl-6',
       'prose-ol:pl-6',
       'prose-blockquote:bg-muted/60',
+      'prose-blockquote:text-current/80',
+      'prose-blockquote:text-base',
+      'sm:prose-blockquote:text-lg',
+      'prose-blockquote:leading-7',
       'prose-strong:font-semibold',
       'prose-em:text-current',
       '[&_span[style*="underline"]]:underline-offset-4',
@@ -86,13 +106,22 @@ describe('shared Lexical presentation', () => {
     ]) {
       expect(longFormRichTextClasses).toContain(className)
     }
+
+    expect(longFormRichTextClasses).not.toContain('prose-p:leading-8')
+    expect(longFormRichTextClasses).not.toContain('[&_figcaption]:text-current/65')
+    expect(longFormTokens).not.toContain('prose-blockquote:text-current')
+    expect(compactTokens).not.toContain('prose-blockquote:text-current')
+    expect(longFormRichTextClasses).toContain('prose-a:text-primary')
+    expect(longFormRichTextClasses).toContain('prose-pre:text-card-foreground')
   })
 
   it('keeps the compact preset dense while sharing semantic treatment', () => {
     expect(compactRichTextClasses).toContain('text-sm')
     expect(compactRichTextClasses).toContain('sm:text-base')
     expect(compactRichTextClasses).toContain('prose-p:my-2')
+    expect(compactRichTextClasses).toContain('prose-p:text-current/80')
     expect(compactRichTextClasses).toContain('prose-li:my-1')
+    expect(compactRichTextClasses).toContain('prose-li:text-current/80')
     expect(compactRichTextClasses).toContain('[&_ul_ul]:my-2')
     expect(compactRichTextClasses).toContain('prose-a:text-primary')
     expect(compactRichTextClasses).toContain('prose-code:font-mono')
@@ -115,6 +144,9 @@ describe('shared Lexical presentation', () => {
 
     expect(compactRichTextClasses).not.toContain('var(--font-display)')
     expect(compactRichTextClasses).not.toContain('prose-h2:text-3xl')
+    expect(compactRichTextClasses.split(/\s+/)).not.toContain('prose-blockquote:text-base')
+    expect(compactRichTextClasses.split(/\s+/)).not.toContain('sm:prose-blockquote:text-lg')
+    expect(compactRichTextClasses.split(/\s+/)).not.toContain('prose-blockquote:leading-7')
   })
 
   it('is adopted by every long-form Lexical consumer', () => {

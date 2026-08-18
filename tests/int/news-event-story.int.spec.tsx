@@ -132,6 +132,9 @@ describe('News & Events individual story', () => {
     expect(markup).toContain('md:min-h-0')
     expect(markup).toContain('>News<')
     expect(markup).toContain('Campus story')
+    expect(markup).toContain(
+      'class="text-base leading-7 text-current/80 sm:text-lg" data-news-event-excerpt="true"',
+    )
     expect(image).toBeLessThan(eyebrow)
     expect(eyebrow).toBeLessThan(title)
     expect(title).toBeLessThan(excerpt)

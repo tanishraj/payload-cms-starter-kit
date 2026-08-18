@@ -247,7 +247,7 @@ export function NewsEventStory({
           </div>
 
           <p
-            className="text-base leading-7 text-current/70 sm:text-lg"
+            className="text-base leading-7 text-current/80 sm:text-lg"
             data-news-event-excerpt="true"
           >
             {entry.excerpt}

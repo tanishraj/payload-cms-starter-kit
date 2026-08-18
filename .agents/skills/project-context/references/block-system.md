@@ -117,8 +117,13 @@ Payload's semantic paragraph, list, checklist, blockquote, emphasis, link, code,
 horizontal-rule output using theme tokens; rich-text headings use the text-family token rather than
 the display family. Long-form H2–H6 use a compact descending text-family scale, with H2 capped by the
 shared 28px editorial token, plus tuned heading, paragraph, list, quote, code, image, and rule rhythm.
-The shared preset suppresses Payload's empty `<p><br></p>` output. News/Event Story Details keeps
-regular mono labels while values use the normal text family; only date values use tabular numerals.
+Long-form paragraphs, list items, and blockquotes share the responsive `text-base sm:text-lg`,
+`leading-7`, and excerpt-aligned `text-current/80` tone. Lexical H1–H6 use `text-current/90`;
+other ordinary long-form and compact content, including blockquotes, uses `text-current/80`. Primary links,
+card-surface preformatted blocks, and softer completed/struck states retain their semantic
+exceptions. The shared preset suppresses
+Payload's empty `<p><br></p>` output. News/Event Story Details keeps regular mono labels while values
+use the normal text family; only date values use tabular numerals.
 
 ## Required Commands
 
