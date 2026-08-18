@@ -175,9 +175,12 @@ export const NewsGridBlock: Block = {
             } satisfies RadioField,
             {
               name: 'newsActionLabel',
-              label: 'News Action Label',
+              label: 'Default Action Label',
               type: 'text',
               defaultValue: 'Read update',
+              admin: {
+                description: 'Used by every non-event classification.',
+              },
             },
             {
               name: 'eventActionLabel',

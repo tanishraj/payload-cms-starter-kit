@@ -540,6 +540,9 @@ export interface NewsGridBlock {
    * Maximum cards in each desktop row. Additional cards continue on the next row.
    */
   cardsPerRow: '2' | '3' | '4';
+  /**
+   * Used by every non-event classification.
+   */
   newsActionLabel?: string | null;
   eventActionLabel?: string | null;
   /**

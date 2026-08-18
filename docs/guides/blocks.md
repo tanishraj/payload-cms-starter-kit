@@ -34,7 +34,7 @@ The setting follows the selected presentation. Content Highlights applies it to 
 | Editorial Reasons        | Institutional strengths                     | Four proportion presets, aligned section content, left/right placement, optional sticky introduction, and a responsive one-to-four-column numbered grid                                      |
 | Academic Programmes      | Programme cards and pathways                | Responsive columns, section actions, and independent card backgrounds                                                                                                                        |
 | News & Events Highlights | Automatic News & Events carousel            | One synchronized featured carousel with automatic collection data, configurable top/bottom controls, shared image/overlay settings, and the bundled SNMIH image fallback                     |
-| News Grid                | Editorial news-and-event grid               | Automatically mixes published News and current/upcoming Events, supports 2–4 desktop columns, and can reserve the final slot for an optional feature card                                    |
+| News Grid                | Editorial News & Events grid                | Shows every published classification in newest-published order while excluding expired Events; supports 2–4 desktop columns and an optional final feature card                               |
 | News & Events Tabs       | Filterable News & Events directory          | Card Grid or full-row Editorial List under configurable classification tabs; All stays first and both layouts share Load More and section settings                                           |
 | Profile Carousel         | People/profile cards                        | Client carousel behavior and independent card backgrounds                                                                                                                                    |
 | Gallery Showcase         | Layered image showcase                      | Interactive presentation                                                                                                                                                                     |
@@ -101,8 +101,11 @@ on interaction and respects reduced-motion preferences. From tablet widths, the 
 vertical rail share a 36rem height. Three equal supporting cards fill that height; card titles use one
 line and descriptions use two lines. Phone widths retain the horizontal supporting-card rail.
 
-News Grid retains its established mixed grid, feature-card option, and title requirement. Use the
-separate News & Events Tabs block for a configurable directory. All always renders first; editors
+News Grid automatically shows all published News & Events classifications in newest-published order
+while excluding expired Events. It retains its established grid, feature-card option, and title
+requirement, supports 2–4 desktop columns, and can reserve the final slot for an optional feature
+card. **Default Action Label** applies to non-event records; **Event Action Label** applies only to
+Events. Use the separate News & Events Tabs block for a configurable directory. All always renders first; editors
 can add, remove, rename, and reorder the seven supported classification tabs without changing the
 classification assigned to each entry. Editors choose 3, 6, 9, or 12 entries per tab. Under **Theme
 Settings**, **Layout** selects Card Grid (the default and legacy fallback) or Editorial List; **Cards

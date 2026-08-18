@@ -24,6 +24,7 @@ import {
   type CmsLinkValue,
 } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
+import { getNewsEventClassificationLabel } from '@/lib/newsEventClassifications'
 import { formatNewsEventDateRange, type PublicNewsEventCard } from '@/lib/newsEventsShared'
 import { cn } from '@/lib/utils'
 import {
@@ -107,7 +108,7 @@ export function NewsGridBlockPresentation({
   const resolvedDescription = description?.trim()
   const resolvedEyebrow = eyebrow?.trim()
   const resolvedActions = resolveCmsActions(actions)
-  const resolvedNewsLabel = newsActionLabel?.trim() || 'Read update'
+  const resolvedDefaultActionLabel = newsActionLabel?.trim() || 'Read update'
   const resolvedEventLabel = eventActionLabel?.trim() || 'View details'
 
   // Editor-supplied, so it survives even when the collection has nothing to show.
@@ -206,7 +207,7 @@ export function NewsGridBlockPresentation({
                 key={item.id}
               >
                 <SectionEyebrow surface={surface}>
-                  {item.contentType === 'event' ? 'Event' : 'News'}
+                  {getNewsEventClassificationLabel(item.contentType)}
                 </SectionEyebrow>
 
                 {item.dateLabel ? (
@@ -225,7 +226,9 @@ export function NewsGridBlockPresentation({
                 <div className="mt-auto pt-4">
                   <ContentLink
                     href={item.href}
-                    label={item.contentType === 'event' ? resolvedEventLabel : resolvedNewsLabel}
+                    label={
+                      item.contentType === 'event' ? resolvedEventLabel : resolvedDefaultActionLabel
+                    }
                   />
                 </div>
               </article>

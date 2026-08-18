@@ -70,8 +70,11 @@ entries with current or upcoming Events up to the configured one-to-six item lim
 State Message, semantic section settings, block-wide image-position override, and shared media overlay
 controls remain configurable. Missing overlay values preserve Dark/Darker/Bottom-to-Top/Full; missing
 or failed images use the centered bundled SNMIH fallback. News Grid retains its legacy grid and optional
-feature card. Editors can place the carousel status and previous/next controls above or below the
-carousel; Bottom remains the default and legacy fallback.
+feature card. It loads all published classifications in published-date order, retains the
+current/upcoming Event predicate, uses canonical classification labels, and preserves the stored
+`newsActionLabel` field as the Admin-facing Default Action Label for non-event records. Editors can
+place the carousel status and previous/next controls above or below the carousel; Bottom remains the
+default and legacy fallback.
 From tablet widths, the featured panel and vertical rail share a 36rem height. Three equal supporting
 cards, separated by consistent gaps, fill that height; card titles use one line and descriptions use
 two lines. Each vertical slide, button, and card surface spans its complete allocated width and

@@ -44,6 +44,18 @@ const eventCard: PublicNewsEventCard = {
   title: 'Fifth MBBS batch approved',
 }
 
+const createClassificationCard = (
+  contentType: PublicNewsEventCard['contentType'],
+  id: string,
+): PublicNewsEventCard => ({
+  ...newsCard,
+  contentType,
+  href: `/news-events/${contentType}`,
+  id,
+  slug: contentType,
+  title: `${contentType} update`,
+})
+
 const findNamedField = (value: unknown, name: string): Record<string, unknown> | undefined => {
   if (Array.isArray(value)) {
     for (const child of value) {
@@ -79,7 +91,7 @@ describe('News Grid', () => {
     )
   })
 
-  it('loads published news and current events in newest-updated order', async () => {
+  it('loads every published classification in newest-published order while excluding past events', async () => {
     const find = vi.fn().mockResolvedValue({ docs: [] })
 
     await fetchNewsGridItems({ find } as never, {
@@ -92,16 +104,25 @@ describe('News Grid', () => {
       expect.objectContaining({
         collection: 'news-events',
         limit: 4,
-        sort: ['-updatedAt', '-createdAt', '-id'],
+        sort: ['-publishedAt', '-createdAt', '-id'],
         where: {
           and: expect.arrayContaining([
             { _status: { equals: 'published' } },
             { workflowState: { equals: 'published' } },
             {
-              or: expect.arrayContaining([
-                { contentType: { equals: 'news' } },
-                expect.objectContaining({ and: expect.any(Array) }),
-              ]),
+              or: [
+                {
+                  contentType: {
+                    in: ['news', 'notice', 'holiday', 'achievement', 'announcement', 'other'],
+                  },
+                },
+                {
+                  and: [
+                    { contentType: { equals: 'event' } },
+                    expect.objectContaining({ or: expect.any(Array) }),
+                  ],
+                },
+              ],
             },
           ]),
         },
@@ -194,6 +215,52 @@ describe('News Grid', () => {
     expect(html).toContain('View details')
     expect(html).toContain('href="/news-events/pg-courses"')
     expect(html).toContain('line-clamp-3')
+  })
+
+  it('renders canonical labels and the default CTA for every non-event classification', () => {
+    const cards = ['news', 'notice', 'holiday', 'achievement', 'announcement', 'other'].map(
+      (contentType, index) =>
+        createClassificationCard(
+          contentType as PublicNewsEventCard['contentType'],
+          `${contentType}-${index}`,
+        ),
+    )
+    const html = renderToStaticMarkup(
+      <NewsGridBlockPresentation
+        items={cards}
+        newsActionLabel="Read update"
+        title="Updates"
+        totalCards={6}
+      />,
+    )
+
+    for (const label of ['News', 'Notice', 'Holiday', 'Achievement', 'Announcement', 'Other']) {
+      expect(html).toContain(`>${label}</p>`)
+    }
+    expect(html.match(/Read update/g)).toHaveLength(6)
+
+    const eventHTML = renderToStaticMarkup(
+      <NewsGridBlockPresentation
+        eventActionLabel="View event"
+        items={[eventCard]}
+        newsActionLabel="Read update"
+        title="Updates"
+      />,
+    )
+    expect(eventHTML).toContain('>Event</p>')
+    expect(eventHTML).toContain('View event')
+    expect(eventHTML).not.toContain('Read update')
+  })
+
+  it('presents the stored News CTA field as the default non-event label', () => {
+    expect(findNamedField(NewsGridBlock.fields, 'newsActionLabel')).toMatchObject({
+      label: 'Default Action Label',
+      type: 'text',
+    })
+    expect(findNamedField(NewsGridBlock.fields, 'eventActionLabel')).toMatchObject({
+      label: 'Event Action Label',
+      type: 'text',
+    })
   })
 
   it('places the header actions beside the heading when aligned left', () => {

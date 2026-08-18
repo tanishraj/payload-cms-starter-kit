@@ -310,13 +310,13 @@ export async function fetchNewsGridItems(
     limit: resolvedLimit,
     overrideAccess: true,
     select: cardSelect,
-    sort: ['-updatedAt', '-createdAt', '-id'],
+    sort: ['-publishedAt', '-createdAt', '-id'],
     where: {
       and: [
         ...publishedWhere,
         {
           or: [
-            { contentType: { equals: 'news' } },
+            { contentType: { in: nonEventClassifications } },
             {
               and: [{ contentType: { equals: 'event' } }, currentOrUpcomingEventWhere(nowISO)],
             },
