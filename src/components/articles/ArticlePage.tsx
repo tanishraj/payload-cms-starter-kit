@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 
+import { longFormRichTextClasses } from '@/components/rich-text/richTextStyles'
 import { getMediaImageProps } from '@/lib/media'
 import { getTaxonomyTerm, getTaxonomyTerms } from '@/lib/taxonomy'
 import type { Article } from '@/payload-types'
@@ -47,7 +48,13 @@ export function ArticlePage({
         </div>
         {featuredImage ? (
           <div className="relative aspect-video w-full overflow-hidden rounded-3xl border">
-            <Image fill alt={featuredImage.alt} className="object-cover" src={featuredImage.src} sizes="(max-width: 768px) 100vw, 80vw" />
+            <Image
+              fill
+              alt={featuredImage.alt}
+              className="object-cover"
+              src={featuredImage.src}
+              sizes="(max-width: 768px) 100vw, 80vw"
+            />
           </div>
         ) : null}
         {tags.length ? (
@@ -64,7 +71,7 @@ export function ArticlePage({
           </div>
         ) : null}
       </header>
-      <div className="prose prose-neutral max-w-none">
+      <div className={longFormRichTextClasses}>
         <RichText data={article.body} />
       </div>
       {relatedArticles.length ? (

@@ -66,7 +66,6 @@ That shared example shows how pages, content, structure, forms, settings, and op
 ### Configuration
 
 - [Layout Defaults](./site-defaults.md)
-- [News & Events Settings](./news-events-settings.md)
 - [Maintenance & Modes](./system-modes.md)
 
 ### Administration

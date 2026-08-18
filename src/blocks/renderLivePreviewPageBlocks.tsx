@@ -15,6 +15,7 @@ import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
 import { TestimonialSpotlightBlockComponent } from './TestimonialSpotlight/Component'
 import { BannerCtaBlockComponent } from './BannerCta/Component'
 import { NewsGridPreviewBlockComponent } from './NewsGrid/PreviewComponent'
+import { NewsEventsTabsPreviewBlockComponent } from './NewsEventsTabs/PreviewComponent'
 import { Cta39BlockComponent } from './Cta39/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
 import { EventGalleryPreviewBlockComponent } from './EventGallery/PreviewComponent'
@@ -65,7 +66,7 @@ type PopulatedReusableSection = {
   layout?: LivePreviewPageBlock[] | null
 }
 
-type SnapshotArgs = {
+export type LivePreviewPageBlockRenderArgs = {
   automaticBreadcrumbs: ResolvedPageBreadcrumb[]
   snapshot: ReviewPreviewSnapshot
   newsEventsSnapshot: NewsEventsPreviewSnapshot
@@ -73,10 +74,10 @@ type SnapshotArgs = {
   eventGalleryAlbums: EventGalleryAlbum[]
 }
 
-function renderSingleLivePreviewBlock(
+export function renderLivePreviewPageBlockNode(
   block: LivePreviewPageBlock,
   index: number,
-  args: SnapshotArgs,
+  args: LivePreviewPageBlockRenderArgs,
   depth = 0,
 ): React.ReactNode {
   if (depth > 10) return null
@@ -153,6 +154,10 @@ function renderSingleLivePreviewBlock(
       return <Services21BlockComponent key={key} {...block} />
     case 'newsGrid':
       return <NewsGridPreviewBlockComponent key={key} snapshot={newsEventsSnapshot} {...block} />
+    case 'newsEventsTabs':
+      return (
+        <NewsEventsTabsPreviewBlockComponent key={key} snapshot={newsEventsSnapshot} {...block} />
+      )
     case 'bannerCta':
       return <BannerCtaBlockComponent key={key} {...block} />
     case 'cta39':
@@ -216,7 +221,7 @@ function renderSingleLivePreviewBlock(
       if (!innerBlocks.length) return null
       return (
         <React.Fragment key={key}>
-          {innerBlocks.map((inner, i) => renderSingleLivePreviewBlock(inner, i, args, depth + 1))}
+          {innerBlocks.map((inner, i) => renderLivePreviewPageBlockNode(inner, i, args, depth + 1))}
         </React.Fragment>
       )
     }
@@ -237,7 +242,7 @@ export function renderLivePreviewPageBlocks(
     return null
   }
 
-  const args: SnapshotArgs = {
+  const args: LivePreviewPageBlockRenderArgs = {
     automaticBreadcrumbs: context.page
       ? resolveAutomaticPageBreadcrumbs(context.page, { isHomepage: context.isHomepage })
       : [],
@@ -249,7 +254,7 @@ export function renderLivePreviewPageBlocks(
 
   return (
     <PageBlockStack>
-      {blocks.map((block, index) => renderSingleLivePreviewBlock(block, index, args))}
+      {blocks.map((block, index) => renderLivePreviewPageBlockNode(block, index, args))}
     </PageBlockStack>
   )
 }

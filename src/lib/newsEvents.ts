@@ -7,18 +7,27 @@ import { cache } from 'react'
 
 import { CMS_CACHE_TAGS } from '@/hooks/revalidateCmsContent'
 import {
-  createEmptyNewsEventsPage,
+  isNewsEventsTabsItemsPerTab,
+  type NewsEventsTabsItemsPerTab,
+} from '@/blocks/NewsEventsTabs/newsEventsTabsShared'
+import {
+  NEWS_EVENT_CLASSIFICATIONS,
+  NEWS_EVENT_CLASSIFICATION_TABS,
+  type NewsEventClassification,
+  type NewsEventClassificationTab,
+} from '@/lib/newsEventClassifications'
+import {
+  createEmptyNewsEventGroups,
   interleaveNewsEvents,
   normalizeHighlightsItemCount,
-  type NewsEventsArchiveQuery,
   type PublicNewsEventCard,
   type PublicNewsEventDetail,
-  type PublicNewsEventsPage,
+  type PublicNewsEventGroups,
+  type PublicNewsEventPage,
   toPublicNewsEventCard,
   toPublicNewsEventDetail,
 } from '@/lib/newsEventsShared'
-import { getTaxonomyTerm, getTaxonomyTerms } from '@/lib/taxonomy'
-import type { Category, NewsEvent, NewsEventsSetting, SeoSetting, Tag } from '@/payload-types'
+import type { NewsEvent, SeoSetting } from '@/payload-types'
 
 export type NewsEventsPayload = Pick<Payload, 'find' | 'findGlobal' | 'logger'>
 
@@ -59,6 +68,56 @@ const publishedWhere: Where[] = [
   { workflowState: { equals: 'published' } },
 ]
 
+const nonEventClassifications = NEWS_EVENT_CLASSIFICATIONS.flatMap(({ value }) =>
+  value === 'event' ? [] : [value],
+)
+
+const normalizeGroupLimit = (value: number): number =>
+  Number.isInteger(value) ? Math.min(12, Math.max(1, value)) : 6
+
+const positiveIntegerPattern = /^[1-9]\d*$/
+const classificationTabValues = new Set<string>(
+  NEWS_EVENT_CLASSIFICATION_TABS.map(({ value }) => value),
+)
+
+const isNewsEventClassificationTab = (value: unknown): value is NewsEventClassificationTab =>
+  typeof value === 'string' && classificationTabValues.has(value)
+
+export function parseNewsEventsTabsPagination(searchParams: URLSearchParams):
+  | {
+      classification: NewsEventClassificationTab
+      limit: NewsEventsTabsItemsPerTab
+      ok: true
+      page: number
+    }
+  | { message: string; ok: false } {
+  const classification = searchParams.get('classification')
+
+  if (!isNewsEventClassificationTab(classification)) {
+    return { message: 'Classification is invalid.', ok: false }
+  }
+
+  const pageValue = searchParams.get('page')
+
+  if (!pageValue || !positiveIntegerPattern.test(pageValue)) {
+    return { message: 'Page must be a positive integer.', ok: false }
+  }
+
+  const limitValue = searchParams.get('limit')
+  const limit = limitValue && positiveIntegerPattern.test(limitValue) ? Number(limitValue) : NaN
+
+  if (!isNewsEventsTabsItemsPerTab(limit)) {
+    return { message: 'Limit must be one of 3, 6, 9, or 12.', ok: false }
+  }
+
+  return {
+    classification,
+    limit,
+    ok: true,
+    page: Number(pageValue),
+  }
+}
+
 const missingEventEndWhere: Where = {
   or: [{ eventEnd: { exists: false } }, { eventEnd: { equals: null } }],
 }
@@ -72,68 +131,26 @@ export const currentOrUpcomingEventWhere = (nowISO: string): Where => ({
   ],
 })
 
-export const pastEventWhere = (nowISO: string): Where => ({
-  or: [
-    { eventEnd: { less_than: nowISO } },
-    {
-      and: [missingEventEndWhere, { eventStart: { less_than: nowISO } }],
-    },
-  ],
-})
-
-const categoryWhere = (category?: string): Where[] =>
-  category
-    ? [
-        {
-          or: [
-            { 'primaryCategory.slug': { equals: category } },
-            { 'categories.slug': { equals: category } },
-          ],
-        },
-      ]
-    : []
-
-const tagWhere = (tag?: string): Where[] => (tag ? [{ 'tags.slug': { equals: tag } }] : [])
-
-const toPublicPage = (
-  result: {
-    docs: unknown[]
-    hasNextPage: boolean
-    hasPrevPage: boolean
-    page?: number
-    totalPages: number
-  },
-  requestedPage: number,
-  nowISO: string,
-): PublicNewsEventsPage => ({
-  docs: (result.docs as NewsEventCardRecord[]).map((entry) => toPublicNewsEventCard(entry, nowISO)),
-  hasNextPage: result.hasNextPage,
-  hasPrevPage: result.hasPrevPage,
-  page: result.page ?? requestedPage,
-  totalPages: result.totalPages,
-})
-
-export async function fetchNewsEventsHighlights(
+async function fetchMixedNewsEventSources(
   payload: Pick<NewsEventsPayload, 'find'>,
   { limit, nowISO }: { limit: number; nowISO: string },
-): Promise<PublicNewsEventCard[]> {
-  const resolvedLimit = normalizeHighlightsItemCount(limit)
+): Promise<{ events: PublicNewsEventCard[]; news: PublicNewsEventCard[] }> {
   const [newsResult, eventsResult] = await Promise.all([
     payload.find({
       collection: 'news-events',
       depth: 1,
-      limit: resolvedLimit,
+      limit,
       overrideAccess: true,
       select: cardSelect,
       sort: ['-publishedAt', '-id'],
       where: {
-        and: [...publishedWhere, { contentType: { equals: 'news' } }],
+        and: [...publishedWhere, { contentType: { in: nonEventClassifications } }],
       },
     }),
     payload.find({
       collection: 'news-events',
       depth: 1,
-      limit: resolvedLimit,
+      limit,
       overrideAccess: true,
       select: cardSelect,
       sort: ['eventStart', 'id'],
@@ -154,7 +171,132 @@ export async function fetchNewsEventsHighlights(
     toPublicNewsEventCard(entry, nowISO),
   )
 
-  return interleaveNewsEvents(news, events, resolvedLimit)
+  return { events, news }
+}
+
+async function fetchMixedNewsEvents(
+  payload: Pick<NewsEventsPayload, 'find'>,
+  { limit, nowISO }: { limit: number; nowISO: string },
+): Promise<PublicNewsEventCard[]> {
+  const { events, news } = await fetchMixedNewsEventSources(payload, { limit, nowISO })
+
+  return interleaveNewsEvents(news, events, limit)
+}
+
+async function fetchMixedNewsEventsPage(
+  payload: Pick<NewsEventsPayload, 'find'>,
+  { limit, nowISO, page }: { limit: number; nowISO: string; page: number },
+): Promise<PublicNewsEventPage> {
+  const offset = (page - 1) * limit
+  const end = page * limit
+  const prefixLimit = end + 1
+  const { events, news } = await fetchMixedNewsEventSources(payload, {
+    limit: prefixLimit,
+    nowISO,
+  })
+  const mixed = interleaveNewsEvents(news, events, prefixLimit)
+
+  return {
+    docs: mixed.slice(offset, end),
+    hasNextPage: mixed.length > end,
+    page,
+  }
+}
+
+export async function fetchNewsEventsHighlights(
+  payload: Pick<NewsEventsPayload, 'find'>,
+  { limit, nowISO }: { limit: number; nowISO: string },
+): Promise<PublicNewsEventCard[]> {
+  return fetchMixedNewsEvents(payload, {
+    limit: normalizeHighlightsItemCount(limit),
+    nowISO,
+  })
+}
+
+export async function fetchNewsEventGroups(
+  payload: Pick<NewsEventsPayload, 'find'>,
+  { limit, nowISO }: { limit: number; nowISO: string },
+): Promise<PublicNewsEventGroups> {
+  const resolvedLimit = normalizeGroupLimit(limit)
+  const allPromise = fetchNewsEventPage(payload, {
+    classification: 'all',
+    limit: resolvedLimit,
+    nowISO,
+    page: 1,
+  })
+  const classificationPromises = NEWS_EVENT_CLASSIFICATIONS.map(async ({ value }) => {
+    const page = await fetchNewsEventPage(payload, {
+      classification: value,
+      limit: resolvedLimit,
+      nowISO,
+      page: 1,
+    })
+
+    return [value, page] as const satisfies readonly [NewsEventClassification, PublicNewsEventPage]
+  })
+  const [all, classifications] = await Promise.all([
+    allPromise,
+    Promise.all(classificationPromises),
+  ])
+  const groups = createEmptyNewsEventGroups()
+  groups.all = all
+
+  for (const [classification, items] of classifications) {
+    groups[classification] = items
+  }
+
+  return groups
+}
+
+export async function fetchNewsEventPage(
+  payload: Pick<NewsEventsPayload, 'find'>,
+  {
+    classification,
+    limit,
+    nowISO,
+    page,
+  }: {
+    classification: NewsEventClassificationTab
+    limit: number
+    nowISO: string
+    page: number
+  },
+): Promise<PublicNewsEventPage> {
+  const resolvedLimit = normalizeGroupLimit(limit)
+  const resolvedPage = Number.isInteger(page) && page > 0 ? page : 1
+
+  if (classification === 'all') {
+    return fetchMixedNewsEventsPage(payload, {
+      limit: resolvedLimit,
+      nowISO,
+      page: resolvedPage,
+    })
+  }
+
+  const result = await payload.find({
+    collection: 'news-events',
+    depth: 1,
+    limit: resolvedLimit,
+    overrideAccess: true,
+    page: resolvedPage,
+    select: cardSelect,
+    sort: classification === 'event' ? ['eventStart', 'id'] : ['-publishedAt', '-id'],
+    where: {
+      and: [
+        ...publishedWhere,
+        { contentType: { equals: classification } },
+        ...(classification === 'event' ? [currentOrUpcomingEventWhere(nowISO)] : []),
+      ],
+    },
+  })
+
+  return {
+    docs: (result.docs as NewsEventCardRecord[]).map((entry) =>
+      toPublicNewsEventCard(entry, nowISO),
+    ),
+    hasNextPage: result.hasNextPage,
+    page: result.page ?? resolvedPage,
+  }
 }
 
 export async function fetchNewsGridItems(
@@ -185,72 +327,6 @@ export async function fetchNewsGridItems(
   })
 
   return (result.docs as NewsEventCardRecord[]).map((entry) => toPublicNewsEventCard(entry, nowISO))
-}
-
-export async function fetchNewsEventsArchivePage(
-  payload: Pick<NewsEventsPayload, 'find'>,
-  { limit, nowISO, query }: { limit: number; nowISO: string; query: NewsEventsArchiveQuery },
-): Promise<PublicNewsEventsPage> {
-  const typeWhere: Where[] = query.type === 'all' ? [] : [{ contentType: { equals: query.type } }]
-  const result = await payload.find({
-    collection: 'news-events',
-    depth: 1,
-    limit,
-    overrideAccess: true,
-    page: query.page,
-    select: cardSelect,
-    sort: ['-publishedAt', '-id'],
-    where: {
-      and: [
-        ...publishedWhere,
-        ...typeWhere,
-        ...categoryWhere(query.category),
-        ...tagWhere(query.tag),
-      ],
-    },
-  })
-
-  return toPublicPage(result, query.page, nowISO)
-}
-
-async function fetchEventsPage(
-  payload: Pick<NewsEventsPayload, 'find'>,
-  {
-    limit,
-    nowISO,
-    page,
-    query,
-    timeframe,
-  }: {
-    limit: number
-    nowISO: string
-    page: number
-    query: NewsEventsArchiveQuery
-    timeframe: 'past' | 'upcoming'
-  },
-): Promise<PublicNewsEventsPage> {
-  const result = await payload.find({
-    collection: 'news-events',
-    depth: 1,
-    limit,
-    overrideAccess: true,
-    page,
-    select: cardSelect,
-    sort: timeframe === 'upcoming' ? ['eventStart', 'id'] : ['-eventStart', '-id'],
-    where: {
-      and: [
-        ...publishedWhere,
-        { contentType: { equals: 'event' } },
-        ...(timeframe === 'upcoming'
-          ? [currentOrUpcomingEventWhere(nowISO)]
-          : [pastEventWhere(nowISO)]),
-        ...categoryWhere(query.category),
-        ...tagWhere(query.tag),
-      ],
-    },
-  })
-
-  return toPublicPage(result, page, nowISO)
 }
 
 export async function fetchNewsEventBySlug(
@@ -286,6 +362,29 @@ export const getNewsEventsHighlights = cache(async (limit: number, nowISO: strin
   }
 })
 
+export const getNewsEventGroups = cache(async (limit: number, nowISO: string) => {
+  const payload = await loadPayload()
+
+  try {
+    return await fetchNewsEventGroups(payload, { limit, nowISO })
+  } catch (error) {
+    payload.logger.error({ err: error, msg: 'Failed to load grouped News & Events.' })
+    return createEmptyNewsEventGroups()
+  }
+})
+
+export const getNewsEventPage = cache(
+  async (
+    classification: NewsEventClassificationTab,
+    page: number,
+    limit: number,
+    nowISO: string,
+  ) => {
+    const payload = await loadPayload()
+    return fetchNewsEventPage(payload, { classification, limit, nowISO, page })
+  },
+)
+
 export const getNewsGridItems = cache(async (limit: number, nowISO: string) => {
   const payload = await loadPayload()
 
@@ -296,39 +395,6 @@ export const getNewsGridItems = cache(async (limit: number, nowISO: string) => {
     throw error
   }
 })
-
-export const getNewsEventsArchivePage = cache(
-  async (query: NewsEventsArchiveQuery, limit: number, nowISO: string) => {
-    const payload = await loadPayload()
-    return fetchNewsEventsArchivePage(payload, { limit, nowISO, query })
-  },
-)
-
-export const getUpcomingEventsPage = cache(
-  async (query: NewsEventsArchiveQuery, limit: number, nowISO: string) => {
-    const payload = await loadPayload()
-    return fetchEventsPage(payload, {
-      limit,
-      nowISO,
-      page: query.upcomingPage,
-      query,
-      timeframe: 'upcoming',
-    })
-  },
-)
-
-export const getPastEventsPage = cache(
-  async (query: NewsEventsArchiveQuery, limit: number, nowISO: string) => {
-    const payload = await loadPayload()
-    return fetchEventsPage(payload, {
-      limit,
-      nowISO,
-      page: query.pastPage,
-      query,
-      timeframe: 'past',
-    })
-  },
-)
 
 export const getNewsEventBySlug = cache(async (slug: string, nowISO: string) => {
   const payload = await loadPayload()
@@ -349,17 +415,6 @@ export async function getNewsEventPreviewBySlug(slug: string): Promise<NewsEvent
   return result.docs[0] ?? null
 }
 
-const _getNewsEventsSettings = async (): Promise<NewsEventsSetting> => {
-  const payload = await loadPayload()
-  return payload.findGlobal({ slug: 'news-events-settings', depth: 1 })
-}
-
-export const getNewsEventsSettings = unstable_cache(
-  _getNewsEventsSettings,
-  ['news-events-settings'],
-  { tags: [CMS_CACHE_TAGS.newsEvents], revalidate: false },
-)
-
 const _getNewsEventsInheritedRobots = async (): Promise<SeoSetting['robots']> => {
   const payload = await loadPayload()
   const settings = await payload.findGlobal({ slug: 'seo-settings', depth: 0 })
@@ -371,91 +426,3 @@ export const getNewsEventsInheritedRobots = unstable_cache(
   ['news-events-inherited-robots'],
   { tags: [CMS_CACHE_TAGS.globals], revalidate: false },
 )
-
-export const getNewsEventCategoryBySlug = cache(async (slug: string): Promise<Category | null> => {
-  const payload = await loadPayload()
-  const result = await payload.find({
-    collection: 'categories',
-    depth: 1,
-    limit: 1,
-    where: { slug: { equals: slug } },
-  })
-  return result.docs[0] ?? null
-})
-
-export const getNewsEventTagBySlug = cache(async (slug: string): Promise<Tag | null> => {
-  const payload = await loadPayload()
-  const result = await payload.find({
-    collection: 'tags',
-    depth: 1,
-    limit: 1,
-    where: { slug: { equals: slug } },
-  })
-  return result.docs[0] ?? null
-})
-
-const _getNewsEventCategories = async (): Promise<
-  Array<{ id: number | string; slug: string; title: string }>
-> => {
-  const payload = await loadPayload()
-  const result = await payload.find({
-    collection: 'news-events',
-    depth: 1,
-    limit: 1000,
-    overrideAccess: true,
-    pagination: false,
-    select: { categories: true, primaryCategory: true },
-    where: { and: publishedWhere },
-  })
-  const categories = new Map<string, { id: number | string; slug: string; title: string }>()
-
-  for (const entry of result.docs) {
-    const primaryCategory = getTaxonomyTerm(entry.primaryCategory)
-
-    for (const category of [
-      ...(primaryCategory ? [primaryCategory] : []),
-      ...getTaxonomyTerms(entry.categories),
-    ]) {
-      categories.set(String(category.id), category)
-    }
-  }
-
-  return [...categories.values()].sort((left, right) => left.title.localeCompare(right.title))
-}
-
-export const getNewsEventCategories = unstable_cache(
-  _getNewsEventCategories,
-  ['news-events-categories'],
-  { tags: [CMS_CACHE_TAGS.newsEvents], revalidate: false },
-)
-
-const _getNewsEventTags = async (): Promise<
-  Array<{ id: number | string; slug: string; title: string }>
-> => {
-  const payload = await loadPayload()
-  const result = await payload.find({
-    collection: 'news-events',
-    depth: 1,
-    limit: 1000,
-    overrideAccess: true,
-    pagination: false,
-    select: { tags: true },
-    where: { and: publishedWhere },
-  })
-  const tags = new Map<string, { id: number | string; slug: string; title: string }>()
-
-  for (const entry of result.docs) {
-    for (const tag of getTaxonomyTerms(entry.tags)) {
-      tags.set(String(tag.id), tag)
-    }
-  }
-
-  return [...tags.values()].sort((left, right) => left.title.localeCompare(right.title))
-}
-
-export const getNewsEventTags = unstable_cache(_getNewsEventTags, ['news-events-tags'], {
-  tags: [CMS_CACHE_TAGS.newsEvents],
-  revalidate: false,
-})
-
-export { createEmptyNewsEventsPage }

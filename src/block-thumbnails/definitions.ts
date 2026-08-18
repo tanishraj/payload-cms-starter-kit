@@ -49,6 +49,13 @@ export const blockThumbnailDefinitions = [
     slug: 'newsGrid',
   }),
   defineThumbnail({
+    alt: 'News and Events Tabs block preview',
+    filename: 'news-events-tabs.jpg',
+    label: 'News & Events Tabs',
+    slug: 'newsEventsTabs',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Banner CTA block preview',
     filename: 'banner-cta.jpg',
     label: 'Banner CTA',

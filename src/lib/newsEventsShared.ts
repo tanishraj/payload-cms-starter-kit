@@ -2,16 +2,18 @@ import type { ResolvedCmsAction } from '@/lib/cmsLinks'
 import { resolveCmsActions } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { getTaxonomyTerm, getTaxonomyTerms } from '@/lib/taxonomy'
+import {
+  NEWS_EVENT_CLASSIFICATION_TABS,
+  type NewsEventClassification,
+  type NewsEventClassificationTab,
+} from '@/lib/newsEventClassifications'
 import type { NewsEvent } from '@/payload-types'
 
-export const NEWS_EVENTS_DEFAULT_PAGE_SIZE = 9
-export const NEWS_EVENTS_MAX_PAGE_SIZE = 24
 export const NEWS_EVENTS_DEFAULT_HIGHLIGHT_COUNT = 3
 export const NEWS_EVENTS_MAX_HIGHLIGHT_COUNT = 6
 
-export type NewsEventContentType = 'event' | 'news'
+export type NewsEventContentType = NewsEventClassification
 export type NewsEventImagePosition = 'bottom' | 'center' | 'left' | 'right' | 'top'
-export type NewsEventsArchiveType = 'all' | NewsEventContentType
 
 export type PublicNewsEventImage = {
   alt: string
@@ -38,7 +40,6 @@ export type PublicNewsEventCard = {
 }
 
 export type PublicNewsEventDetail = PublicNewsEventCard & {
-  authorName?: string
   body: NewsEvent['body']
   categories: Array<{ id: number | string; slug: string; title: string }>
   eventEnd?: string
@@ -58,22 +59,13 @@ export type PublicNewsEventDetail = PublicNewsEventCard & {
   updatedAt: string
 }
 
-export type PublicNewsEventsPage = {
+export type PublicNewsEventPage = {
   docs: PublicNewsEventCard[]
   hasNextPage: boolean
-  hasPrevPage: boolean
   page: number
-  totalPages: number
 }
 
-export type NewsEventsArchiveQuery = {
-  category?: string
-  page: number
-  pastPage: number
-  tag?: string
-  type: NewsEventsArchiveType
-  upcomingPage: number
-}
+export type PublicNewsEventGroups = Record<NewsEventClassificationTab, PublicNewsEventPage>
 
 export const newsEventObjectPositionClasses = {
   bottom: 'object-bottom',
@@ -83,10 +75,6 @@ export const newsEventObjectPositionClasses = {
   top: 'object-top',
 } as const satisfies Record<NewsEventImagePosition, string>
 
-const archiveTypeValues = new Set<NewsEventsArchiveType>(['all', 'event', 'news'])
-const categorySlugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
-const tagSlugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
-const positiveIntegerPattern = /^[1-9]\d*$/
 const cardDateFormatter = new Intl.DateTimeFormat('en-US', {
   day: 'numeric',
   month: 'short',
@@ -111,12 +99,6 @@ const rangeMonthDayFormatter = new Intl.DateTimeFormat('en-US', {
   month: 'short',
   timeZone: 'UTC',
 })
-
-const firstSearchParam = (value: string | string[] | undefined): string | undefined =>
-  Array.isArray(value) ? value[0] : value
-
-const parsePositiveInteger = (value: string | undefined): number =>
-  value && positiveIntegerPattern.test(value) ? Number(value) : 1
 
 const formatDate = (value: string | null | undefined, includeTime = false): string => {
   if (!value) {
@@ -166,34 +148,6 @@ export const normalizeHighlightsItemCount = (value: number | null | undefined): 
   typeof value === 'number' && Number.isInteger(value)
     ? Math.min(NEWS_EVENTS_MAX_HIGHLIGHT_COUNT, Math.max(1, value))
     : NEWS_EVENTS_DEFAULT_HIGHLIGHT_COUNT
-
-export const normalizeNewsEventsPageSize = (value: number | null | undefined): number =>
-  typeof value === 'number' && Number.isInteger(value)
-    ? Math.min(NEWS_EVENTS_MAX_PAGE_SIZE, Math.max(3, value))
-    : NEWS_EVENTS_DEFAULT_PAGE_SIZE
-
-export function parseNewsEventsSearchParams(
-  searchParams: Record<string, string | string[] | undefined>,
-): NewsEventsArchiveQuery {
-  const requestedType = firstSearchParam(searchParams.type)
-  const requestedCategory = firstSearchParam(searchParams.category)?.trim().toLowerCase()
-  const requestedTag = firstSearchParam(searchParams.tag)?.trim().toLowerCase()
-  const type = archiveTypeValues.has(requestedType as NewsEventsArchiveType)
-    ? (requestedType as NewsEventsArchiveType)
-    : 'all'
-
-  return {
-    category:
-      requestedCategory && categorySlugPattern.test(requestedCategory)
-        ? requestedCategory
-        : undefined,
-    page: parsePositiveInteger(firstSearchParam(searchParams.page)),
-    pastPage: parsePositiveInteger(firstSearchParam(searchParams.pastPage)),
-    tag: requestedTag && tagSlugPattern.test(requestedTag) ? requestedTag : undefined,
-    type,
-    upcomingPage: parsePositiveInteger(firstSearchParam(searchParams.upcomingPage)),
-  }
-}
 
 export function interleaveNewsEvents(
   news: PublicNewsEventCard[],
@@ -314,7 +268,6 @@ export function toPublicNewsEventDetail(entry: NewsEvent, nowISO: string): Publi
 
   return {
     ...card,
-    authorName: entry.authorName?.trim() || undefined,
     body: entry.body,
     categories: getTaxonomyTerms(entry.categories),
     eventEnd: entry.eventEnd || undefined,
@@ -335,10 +288,14 @@ export function toPublicNewsEventDetail(entry: NewsEvent, nowISO: string): Publi
   }
 }
 
-export const createEmptyNewsEventsPage = (): PublicNewsEventsPage => ({
+export const createEmptyNewsEventPage = (page = 1): PublicNewsEventPage => ({
   docs: [],
   hasNextPage: false,
-  hasPrevPage: false,
-  page: 1,
-  totalPages: 0,
+  page,
 })
+
+export function createEmptyNewsEventGroups(): PublicNewsEventGroups {
+  return Object.fromEntries(
+    NEWS_EVENT_CLASSIFICATION_TABS.map(({ value }) => [value, createEmptyNewsEventPage()]),
+  ) as PublicNewsEventGroups
+}

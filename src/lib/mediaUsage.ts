@@ -42,10 +42,13 @@ const mediaUsageSourceLabelByCollection: Record<string, string> = {
 }
 
 const mediaUsageSourceLabelByGlobal: Record<string, string> = {
+  'news-events-detail-template': 'News & Events Detail Template',
   'seo-settings': 'SEO & Metadata',
-  'news-events-settings': 'News & Events Settings',
   'site-settings': 'Site Identity',
 }
+
+const asRecord = (value: unknown): Record<string, unknown> =>
+  value && typeof value === 'object' ? (value as Record<string, unknown>) : {}
 
 const getRelationshipID = (value: RelationshipValue): number | string | null => {
   if (typeof value === 'number' || typeof value === 'string') {
@@ -443,20 +446,21 @@ const collectionSources: CollectionUsageSource[] = [
 
 const globalSources: GlobalUsageSource[] = [
   {
-    slug: 'news-events-settings',
-    sourceLabel: 'News & Events Settings',
+    slug: 'news-events-detail-template',
+    sourceLabel: 'News & Events Detail Template',
     resolve: (doc, mediaID) => {
       const references: MediaUsageReference[] = []
+      const header = asRecord(doc.header)
 
       pushIfMatched({
         mediaID,
         reference: createGlobalReference({
-          documentLabel: 'News & Events Settings',
-          fieldPath: 'ogImage',
-          slug: 'news-events-settings',
+          documentLabel: 'News & Events Detail Template',
+          fieldPath: 'header.backgroundImage',
+          slug: 'news-events-detail-template',
         }),
         references,
-        value: doc.ogImage as RelationshipValue,
+        value: header.backgroundImage as RelationshipValue,
       })
 
       return references

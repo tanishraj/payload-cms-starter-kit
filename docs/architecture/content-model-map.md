@@ -70,9 +70,14 @@ All collections receive Payload Trash through the project plugin, subject to the
 
 `page-settings`, labeled `Layout Defaults`, chooses the homepage, active Header/Footer, default Page appearance, and site-wide announcement behavior.
 
-`news-events-settings` owns the `/news-events` archive copy, labels, item count, empty state, appearance, and SEO.
+Pages own the `/news-events` index route and its layout, appearance, and Page SEO. The News & Events collection owns individual entries, while the News & Events Highlights and News & Events Tabs blocks query published entries for Page composition.
 
-`system-mode-settings`, labeled `Maintenance & Modes`, selects the published type-safe 404/maintenance/coming-soon presets and activates maintenance or coming-soon mode. Current mode overrides apply to the homepage and catch-all CMS Page routes, not every dedicated route.
+`news-events-detail-template`, labeled `News & Events Detail Template`, owns the fixed Page Header,
+automatic Breadcrumb appearance, article/sidebar presentation, featured-image ratio, and shared
+public author label for every `/news-events/[slug]` route. Entry title, excerpt, featured image,
+Lexical body, dates, category, location, and registration remain collection-owned.
+
+`system-mode-settings`, labeled `Maintenance & Modes`, selects the published type-safe 404/maintenance/coming-soon presets and activates maintenance or coming-soon mode. Current mode overrides apply to the homepage, catch-all CMS Page routes, and the explicit Page-backed `/news-events` route, not every dedicated domain route.
 
 ## Runtime-Owned Features
 

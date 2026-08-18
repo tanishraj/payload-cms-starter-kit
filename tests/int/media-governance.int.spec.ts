@@ -136,6 +136,10 @@ describe('media governance resolver', () => {
       }),
       findGlobal: vi.fn(async ({ slug }: { slug: string }) => {
         switch (slug) {
+          case 'news-events-detail-template':
+            return {
+              header: { backgroundImage: 7 },
+            }
           case 'site-settings':
             return {
               favicon: 3,
@@ -144,10 +148,6 @@ describe('media governance resolver', () => {
           case 'seo-settings':
             return {
               defaultImage: 7,
-            }
-          case 'news-events-settings':
-            return {
-              ogImage: 7,
             }
           default:
             throw new Error(`Unexpected global lookup: ${slug}`)
@@ -203,12 +203,6 @@ describe('media governance resolver', () => {
           sourceType: 'collection',
         }),
         expect.objectContaining({
-          documentLabel: 'News & Events Settings',
-          fieldPath: 'ogImage',
-          sourceSlug: 'news-events-settings',
-          sourceType: 'global',
-        }),
-        expect.objectContaining({
           documentID: 40,
           documentLabel: 'Main Header',
           fieldPath: 'layout[0].customLogoLight',
@@ -239,6 +233,12 @@ describe('media governance resolver', () => {
           locationLabel: 'Footers > Site Footer > layout[0].customLogoDark',
           sourceSlug: 'footers',
           sourceType: 'collection',
+        }),
+        expect.objectContaining({
+          documentLabel: 'News & Events Detail Template',
+          fieldPath: 'header.backgroundImage',
+          sourceSlug: 'news-events-detail-template',
+          sourceType: 'global',
         }),
         expect.objectContaining({
           documentLabel: 'Site Identity',

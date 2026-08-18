@@ -15,6 +15,7 @@ import {
 } from '@/blocks/shared/blockSpacing'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
+import { compactRichTextClasses } from '@/components/rich-text/richTextStyles'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
@@ -236,9 +237,7 @@ export function QaAccordionBlockComponent({
           )}
         </h2>
         {description?.trim() ? (
-          <p className="text-balance text-base leading-7 text-current/70">
-            {description.trim()}
-          </p>
+          <p className="text-balance text-base leading-7 text-current/70">{description.trim()}</p>
         ) : null}
         <ContentActions
           actions={resolvedHeaderActions}
@@ -255,7 +254,10 @@ export function QaAccordionBlockComponent({
       >
         {validItems.map((item, index) => (
           <QaAccordionItem
-            className={cn('border-0', index !== validItems.length - 1 && 'border-b border-current/15')}
+            className={cn(
+              'border-0',
+              index !== validItems.length - 1 && 'border-b border-current/15',
+            )}
             key={`${item.question}-${index}`}
             value={`item-${index}`}
           >
@@ -263,11 +265,8 @@ export function QaAccordionBlockComponent({
               <span className="pr-4">{item.question}</span>
             </QaAccordionTrigger>
             <QaAccordionContent className="pb-6 pr-8 text-left text-sm leading-relaxed text-current/70 sm:text-base">
-              <div className="prose max-w-none text-left text-sm leading-relaxed [--tw-prose-body:currentColor] [--tw-prose-bold:currentColor] [--tw-prose-bullets:var(--border)] [--tw-prose-counters:currentColor] [--tw-prose-headings:currentColor] [--tw-prose-links:var(--primary)] sm:text-base">
-                <RichText
-                  className="[&>p]:m-0 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:opacity-80"
-                  data={item.answer as RichTextData}
-                />
+              <div className={cn(compactRichTextClasses, 'text-left')}>
+                <RichText data={item.answer as RichTextData} />
               </div>
             </QaAccordionContent>
           </QaAccordionItem>
@@ -289,7 +288,13 @@ export function QaAccordionBlockComponent({
           <div className="mb-8 flex items-start gap-3 sm:gap-4 lg:mb-12">
             {profileImage ? (
               <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg sm:h-16 sm:w-16">
-                <Image fill alt={profileImage.alt} className="object-cover" src={profileImage.src} sizes="64px" />
+                <Image
+                  fill
+                  alt={profileImage.alt}
+                  className="object-cover"
+                  src={profileImage.src}
+                  sizes="64px"
+                />
               </div>
             ) : null}
             <div className="min-w-0">

@@ -1,8 +1,8 @@
 import type { Block, SelectField, TabsField } from 'payload'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
+import { embeddedContentEditor } from '@/fields/bodyEditorConfig'
 
 const sizeField = {
   name: 'size',
@@ -52,7 +52,7 @@ export const RichTextBlock: Block = {
               label: 'Content',
               type: 'richText',
               required: true,
-              editor: lexicalEditor({}),
+              editor: embeddedContentEditor,
             },
           ],
         },

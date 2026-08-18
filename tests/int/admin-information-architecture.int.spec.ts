@@ -22,8 +22,8 @@ import { Users } from '@/collections/Users'
 import { WorkQueue } from '@/collections/WorkQueue'
 import { AnalyticsSettings } from '@/globals/AnalyticsSettings'
 import { CookieConsentSettings } from '@/globals/CookieConsentSettings'
-import { NewsEventsSettings } from '@/globals/NewsEventsSettings'
 import { PageSettings } from '@/globals/PageSettings'
+import { NewsEventsDetailTemplate } from '@/globals/NewsEventsDetailTemplate'
 import { SEOSettings } from '@/globals/SEOSettings'
 import { SiteSettings } from '@/globals/SiteSettings'
 import { SystemModeSettings } from '@/globals/SystemModeSettings'
@@ -51,9 +51,9 @@ describe('admin information architecture', () => {
     }
 
     expect(PageSettings.label).toBe('Layout Defaults')
-    expect(NewsEventsSettings.label).toBe('News & Events Settings')
+    expect(NewsEventsDetailTemplate.label).toBe('News & Events Detail Page')
     expect(SystemModeSettings.label).toBe('Maintenance & Modes')
-    for (const global of [PageSettings, NewsEventsSettings, SystemModeSettings]) {
+    for (const global of [PageSettings, NewsEventsDetailTemplate, SystemModeSettings]) {
       expect(global.admin?.group).toBe('Configuration')
     }
 

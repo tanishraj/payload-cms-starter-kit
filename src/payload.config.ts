@@ -28,11 +28,11 @@ import { assertSupportedStarterContract, getStarterContract } from './config/sta
 import { getRuntimeConfig } from './config/runtime'
 import { payloadUploadConfig } from './config/uploadLimits'
 import { PageSettings } from './globals/PageSettings'
+import { NewsEventsDetailTemplate } from './globals/NewsEventsDetailTemplate'
 import { SEOSettings } from './globals/SEOSettings'
 import { SiteSettings } from './globals/SiteSettings'
 import { SystemModeSettings } from './globals/SystemModeSettings'
 import { ThemeSettings } from './globals/ThemeSettings'
-import { NewsEventsSettings } from './globals/NewsEventsSettings'
 import { AnalyticsSettings } from './globals/AnalyticsSettings'
 import { CookieConsentSettings } from './globals/CookieConsentSettings'
 import { SearchSettings } from './globals/SearchSettings'
@@ -98,7 +98,7 @@ export default buildConfig({
     CookieConsentSettings,
     // Configuration (set-and-forget)
     PageSettings,
-    NewsEventsSettings,
+    NewsEventsDetailTemplate,
     SearchSettings,
     SystemModeSettings,
   ],

@@ -1,71 +1,85 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
 import type { RegularBlockSize } from '@/blocks/shared/blockSpacing'
-import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
-import { ContentActions } from '@/components/ContentActions'
 import {
-  NewsEventsHighlights,
+  NewsEventsFeaturedCarousel,
   type NewsEventsHighlightsAlignment,
-} from '@/components/news-events/NewsEventsHighlights'
+} from '@/components/news-events/NewsEventsFeaturedCarousel'
+import {
+  resolveFeaturedHighlightsOverlay,
+  type FeaturedHighlightImagePositionOverride,
+  type FeaturedHighlightItem,
+} from '@/components/news-events/featuredHighlightsShared'
 import type { CmsActionValue } from '@/lib/cmsLinks'
-import { resolveCmsActions } from '@/lib/cmsLinks'
-import type { PublicNewsEventCard } from '@/lib/newsEventsShared'
+import type {
+  MediaOverlayCoverage,
+  MediaOverlayDirection,
+  MediaOverlayStrength,
+  MediaOverlayTone,
+} from '@/blocks/shared/mediaOverlayPresentation'
 
 export type NewsEventsHighlightsBlockLike = {
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
+  autoplay?: boolean | null
   contentAlignment?: NewsEventsHighlightsAlignment | null
   description?: string | null
   emptyStateMessage?: string | null
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
   itemCount?: number | null
+  imagePositionOverride?: FeaturedHighlightImagePositionOverride | null
+  overlayCoverage?: MediaOverlayCoverage | null
+  overlayDirection?: MediaOverlayDirection | null
+  overlayStyle?: MediaOverlayStrength | null
   size?: RegularBlockSize | null
+  themeMode?: MediaOverlayTone | null
   title?: string | null
 }
 
 type NewsEventsHighlightsBlockPresentationProps = NewsEventsHighlightsBlockLike & {
-  items: PublicNewsEventCard[]
+  items: FeaturedHighlightItem[]
 }
 
 export function NewsEventsHighlightsBlockPresentation({
   actions,
   appearance,
+  autoplay,
   contentAlignment = 'left',
   description,
   emptyStateMessage,
   eyebrow,
   footerActions,
+  imagePositionOverride,
   items,
+  overlayCoverage,
+  overlayDirection,
+  overlayStyle,
   size = 'default',
+  themeMode,
   title,
 }: NewsEventsHighlightsBlockPresentationProps) {
-  const resolvedTitle = title?.trim()
-
-  if (!resolvedTitle) {
-    return null
-  }
-
-  const resolvedAlignment = contentAlignment ?? 'left'
-  const resolvedActions = resolveCmsActions(actions)
+  const overlay = resolveFeaturedHighlightsOverlay({
+    coverage: overlayCoverage ?? undefined,
+    direction: overlayDirection ?? undefined,
+    strength: overlayStyle ?? undefined,
+    tone: themeMode ?? undefined,
+  })
 
   return (
-    <>
-      <NewsEventsHighlights
-        actions={
-          resolvedActions.length ? (
-            <ContentActions actions={resolvedActions} alignment="right" className="lg:w-auto" />
-          ) : null
-        }
-        alignment={resolvedAlignment}
-        appearance={appearance}
-        description={description?.trim() || undefined}
-        emptyStateMessage={emptyStateMessage?.trim() || undefined}
-        eyebrow={eyebrow?.trim() || undefined}
-        items={items}
-        size={size ?? 'default'}
-        title={resolvedTitle}
-      />
-      <BlockFooterActions actions={footerActions} />
-    </>
+    <NewsEventsFeaturedCarousel
+      actions={actions}
+      alignment={contentAlignment ?? 'left'}
+      appearance={appearance}
+      autoplay={autoplay ?? true}
+      description={description?.trim() || undefined}
+      emptyStateMessage={emptyStateMessage?.trim() || undefined}
+      eyebrow={eyebrow?.trim() || undefined}
+      footerActions={footerActions}
+      imagePositionOverride={imagePositionOverride ?? 'item'}
+      items={items}
+      overlay={overlay}
+      size={size ?? 'default'}
+      title={title?.trim() || undefined}
+    />
   )
 }

@@ -24,7 +24,6 @@ describe('admin documentation vocabulary', () => {
 
     for (const guide of [
       '[News & Events](./news-events.md)',
-      '[News & Events Settings](./news-events-settings.md)',
       '[Gallery Albums](./gallery-albums.md)',
       '[Office Locations](./office-locations.md)',
       '[Cookie Consent Banner](./cookie-consent.md)',
@@ -41,5 +40,12 @@ describe('admin documentation vocabulary', () => {
     ]) {
       expect(guideIndex).toContain(guide)
     }
+
+    const newsEventsGuide = readFileSync('docs/guides/news-events.md', 'utf8')
+    expect(newsEventsGuide).toContain('root Page with the slug `news-events`')
+    expect(newsEventsGuide).toContain('News & Events Highlights')
+    expect(newsEventsGuide).toContain('News & Events Tabs')
+    expect(newsEventsGuide).not.toContain('/news-events/category/[slug]')
+    expect(newsEventsGuide).not.toContain('/news-events/tag/[slug]')
   })
 })

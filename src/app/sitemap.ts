@@ -3,7 +3,6 @@ import type { MetadataRoute } from 'next'
 import { getPayload } from 'payload'
 
 import { getPageHrefFromSourceWithResolver, getPageID } from '@/lib/pagePaths'
-import { getNewsEventsCategoryPath, getNewsEventsTagPath } from '@/lib/newsEventsPaths'
 import { resolveRobotsMode, resolveSitemapInclusion, type RobotsFieldValue } from '@/lib/seo'
 import { getTaxonomyRelationshipIDs, getTaxonomyTerm } from '@/lib/taxonomy'
 import { toAbsoluteSiteUrl } from '@/lib/siteUrl'
@@ -92,10 +91,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     config: configPromise,
   })
 
-  const [pageSettings, seoSettings, newsEventsSettings] = await Promise.all([
+  const [pageSettings, seoSettings] = await Promise.all([
     payload.findGlobal({ slug: 'page-settings', depth: 0 }),
     payload.findGlobal({ slug: 'seo-settings', depth: 0 }),
-    payload.findGlobal({ slug: 'news-events-settings', depth: 0 }),
   ])
 
   const inheritedRobots = seoSettings.robots
@@ -159,11 +157,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     addEntry({ entries, lastModified: review.updatedAt, pathname: `/reviews/${review.slug}` })
   }
 
-  // ─── News & Events index ────────────────────────────────────────────────────
-  if (isRouteEligibleForSitemap({ entry: newsEventsSettings, inheritedRobots })) {
-    addEntry({ entries, lastModified: newsEventsSettings.updatedAt, pathname: '/news-events' })
-  }
-
   // ─── News & Events entries ──────────────────────────────────────────────────
   const newsEvents = await fetchAllDocs((page) =>
     payload.find({
@@ -178,19 +171,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   )
 
-  const newsEventCategoryIDs = new Set<number | string>()
-  const newsEventTagIDs = new Set<number | string>()
-
   for (const entry of newsEvents) {
     if (!entry.slug || !isRouteEligibleForSitemap({ entry, inheritedRobots })) continue
     addEntry({ entries, lastModified: entry.updatedAt, pathname: `/news-events/${entry.slug}` })
-
-    const primaryCategory = getTaxonomyTerm(entry.primaryCategory)
-    if (primaryCategory) newsEventCategoryIDs.add(primaryCategory.id)
-    for (const categoryID of getTaxonomyRelationshipIDs(entry.categories)) {
-      newsEventCategoryIDs.add(categoryID)
-    }
-    for (const tagID of getTaxonomyRelationshipIDs(entry.tags)) newsEventTagIDs.add(tagID)
   }
 
   // ─── Categories & Tags ─────────────────────────────────────────────────────
@@ -235,13 +218,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })
     }
 
-    if (newsEventCategoryIDs.has(category.id)) {
-      addEntry({
-        entries,
-        lastModified: category.updatedAt,
-        pathname: getNewsEventsCategoryPath(category.slug),
-      })
-    }
   }
 
   for (const tag of allTags) {
@@ -253,13 +229,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       addEntry({ entries, lastModified: tag.updatedAt, pathname: `/articles/tag/${tag.slug}` })
     }
 
-    if (newsEventTagIDs.has(tag.id)) {
-      addEntry({
-        entries,
-        lastModified: tag.updatedAt,
-        pathname: getNewsEventsTagPath(tag.slug),
-      })
-    }
   }
 
   return [...entries.values()]

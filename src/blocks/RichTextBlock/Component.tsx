@@ -1,12 +1,16 @@
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
 import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
+import { longFormRichTextClasses } from '@/components/rich-text/richTextStyles'
 import { cn } from '@/lib/utils'
 
 type MaxWidth = 'full' | 'lg' | 'md' | 'prose'
@@ -41,7 +45,7 @@ export function RichTextBlockComponent({
     <section className={cn(regularBlockMobilePaddingClasses[resolvedSize], appearanceClassName)}>
       <div className={regularBlockContainerClasses}>
         <div className={cn('mx-auto', maxWidthClasses[resolvedMaxWidth])}>
-          <div className="prose max-w-none text-current [--tw-prose-body:currentColor] [--tw-prose-headings:currentColor] [--tw-prose-lead:color-mix(in_oklch,currentColor_70%,transparent)] [--tw-prose-links:var(--primary)] [--tw-prose-bold:currentColor] [--tw-prose-counters:color-mix(in_oklch,currentColor_70%,transparent)] [--tw-prose-bullets:var(--border)] [--tw-prose-hr:var(--border)] [--tw-prose-quotes:currentColor] [--tw-prose-quote-borders:var(--border)] [--tw-prose-captions:color-mix(in_oklch,currentColor_70%,transparent)] [--tw-prose-code:currentColor] [--tw-prose-pre-code:var(--card-foreground)] [--tw-prose-pre-bg:var(--card)] [--tw-prose-th-borders:var(--border)] [--tw-prose-td-borders:var(--border)] [&_a]:underline [&_a]:underline-offset-4 [&_a]:focus-visible:outline-none [&_a]:focus-visible:ring-2 [&_a]:focus-visible:ring-ring">
+          <div className={longFormRichTextClasses}>
             <RichText data={content} />
           </div>
         </div>

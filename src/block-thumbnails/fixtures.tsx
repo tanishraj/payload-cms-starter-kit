@@ -11,6 +11,7 @@ import { GalleryShowcaseBlockComponent } from '@/blocks/GalleryShowcase/Componen
 import { GalleryCoverflowBlockComponent } from '@/blocks/GalleryCoverflow/Component'
 import { BannerCtaBlockComponent } from '@/blocks/BannerCta/Component'
 import { NewsGridBlockPresentation } from '@/blocks/NewsGrid/Presentation'
+import { NewsEventsTabsBlockPresentation } from '@/blocks/NewsEventsTabs/Presentation'
 import { Cta39BlockComponent } from '@/blocks/Cta39/Component'
 import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
 import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
@@ -36,6 +37,7 @@ import { SystemMaintenanceBlockComponent } from '@/blocks/SystemMaintenance/Comp
 import { Contact24 } from '@/components/contact24'
 import { EventGallery } from '@/components/event-gallery'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
+import type { PublicNewsEventCard, PublicNewsEventPage } from '@/lib/newsEventsShared'
 import type { Form, Media, RichTextBlock } from '@/payload-types'
 
 import { AboutSectionBlockComponent } from '@/blocks/AboutSection/Component'
@@ -297,6 +299,66 @@ const footerGroupsFixture = [
   },
 ]
 
+const thumbnailNewsEventsTabsItems: PublicNewsEventCard[] = [
+  {
+    contentType: 'notice',
+    dateISO: '2026-08-12',
+    dateLabel: '12 Aug 2026',
+    excerpt: 'The latest academic notice for students and faculty.',
+    href: '/news-events/academic-notice',
+    id: 'notice-1',
+    isPastEvent: false,
+    slug: 'academic-notice',
+    title: 'Academic calendar and admissions notice',
+  },
+  {
+    contentType: 'event',
+    dateISO: '2026-08-20',
+    dateLabel: '20 Aug 2026',
+    eventStart: '2026-08-20',
+    excerpt: 'Join faculty and students for a campus-wide programme.',
+    href: '/news-events/open-day',
+    id: 'event-1',
+    isPastEvent: false,
+    slug: 'open-day',
+    title: 'Community open day returns in August',
+  },
+  {
+    contentType: 'achievement',
+    dateISO: '2026-08-08',
+    dateLabel: '8 Aug 2026',
+    excerpt: 'Students are recognised for outstanding clinical learning.',
+    href: '/news-events/student-achievement',
+    id: 'achievement-1',
+    isPastEvent: false,
+    slug: 'student-achievement',
+    title: 'Students earn state-level recognition',
+  },
+]
+
+const thumbnailNewsEventsTabsPage = (docs: PublicNewsEventCard[]): PublicNewsEventPage => ({
+  docs,
+  hasNextPage: false,
+  page: 1,
+})
+
+const thumbnailNewsEventsTabsGroups = {
+  achievement: thumbnailNewsEventsTabsPage(
+    thumbnailNewsEventsTabsItems.filter((item) => item.contentType === 'achievement'),
+  ),
+  all: thumbnailNewsEventsTabsPage(thumbnailNewsEventsTabsItems),
+  announcement: thumbnailNewsEventsTabsPage([]),
+  event: thumbnailNewsEventsTabsPage(
+    thumbnailNewsEventsTabsItems.filter((item) => item.contentType === 'event'),
+  ),
+  holiday: thumbnailNewsEventsTabsPage([]),
+  news: thumbnailNewsEventsTabsPage([]),
+  notice: thumbnailNewsEventsTabsPage(
+    thumbnailNewsEventsTabsItems.filter((item) => item.contentType === 'notice'),
+  ),
+  other: thumbnailNewsEventsTabsPage([]),
+}
+
 export const blockThumbnailFixtures = {
   accreditationCards: (
     <AccreditationCardsBlockComponent
@@ -419,6 +481,19 @@ export const blockThumbnailFixtures = {
       size="default"
       title="News &"
       totalCards={3}
+    />
+  ),
+  newsEventsTabs: (
+    <NewsEventsTabsBlockPresentation
+      accentTitle="events."
+      actions={[{ label: 'View archive', linkType: 'custom', url: '/news-events' }]}
+      cardsPerRow="3"
+      description="Browse notices, events, achievements and institutional announcements."
+      eyebrow="Campus updates"
+      groups={thumbnailNewsEventsTabsGroups}
+      itemsPerTab="6"
+      size="compact"
+      title="News &"
     />
   ),
   bannerCta: (
@@ -646,47 +721,51 @@ export const blockThumbnailFixtures = {
     <NewsEventsHighlightsBlockPresentation
       actions={[{ label: 'View all stories', linkType: 'custom', url: '/news-events' }]}
       appearance={{ background: 'subtle', border: 'topAndBottom' }}
+      autoplay={false}
       description="Discover the latest stories, milestones, and opportunities from across our community."
       eyebrow="Latest"
       items={[
         {
-          category: { id: 'category-1', slug: 'research', title: 'Research' },
-          contentType: 'news',
+          action: { href: '/news-events/research-center', label: 'Read more' },
+          classification: 'news',
           dateISO: '2026-07-18T00:00:00.000Z',
           dateLabel: 'Jul 18, 2026',
-          excerpt: 'A new center brings collaborative research and practical learning together.',
-          href: '/news-events/research-center',
+          description:
+            'A new center brings collaborative research and practical learning together.',
           id: 'news-1',
           image: { alt: 'Campus landscape', position: 'center', src: editorialLandscape },
-          isPastEvent: false,
-          slug: 'research-center',
           title: 'New research center opens this summer',
         },
         {
-          category: { id: 'category-2', slug: 'campus', title: 'Campus' },
-          contentType: 'event',
+          action: { href: '/news-events/open-day', label: 'Read more' },
+          classification: 'event',
           dateISO: '2026-08-12T00:00:00.000Z',
           dateLabel: 'Aug 12, 2026',
-          excerpt: 'Meet faculty, explore learning spaces, and discover the programs on offer.',
-          href: '/news-events/open-day',
+          description: 'Meet faculty, explore learning spaces, and discover the programs on offer.',
           id: 'event-1',
           image: { alt: 'Community gathering', position: 'center', src: collaboration },
-          isPastEvent: false,
-          slug: 'open-day',
           title: 'Community open day returns in August',
         },
         {
-          category: { id: 'category-3', slug: 'people', title: 'People' },
-          contentType: 'news',
+          action: { href: '/news-events/community-impact', label: 'Read more' },
+          classification: 'news',
           dateISO: '2026-07-10T00:00:00.000Z',
           dateLabel: 'Jul 10, 2026',
-          excerpt: 'Student-led projects are creating meaningful connections across the region.',
-          href: '/news-events/community-impact',
+          description:
+            'Student-led projects are creating meaningful connections across the region.',
           id: 'news-2',
           image: { alt: 'Student portrait', position: 'top', src: portrait },
-          isPastEvent: false,
-          slug: 'community-impact',
           title: 'Student initiatives make a community impact',
+        },
+        {
+          action: { href: '/news-events/campus-holiday', label: 'Read more' },
+          classification: 'holiday',
+          dateISO: '2026-08-28T00:00:00.000Z',
+          dateLabel: 'Aug 28, 2026',
+          description: 'Campus services and teaching schedules for the upcoming holiday.',
+          id: 'holiday-1',
+          image: { alt: 'Campus landscape', position: 'center', src: editorialLandscape },
+          title: 'Campus holiday schedule announced',
         },
       ]}
       size="compact"

@@ -1,9 +1,9 @@
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import type { ArrayField, Block, CheckboxField, GroupField, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { embeddedContentEditor } from '@/fields/bodyEditorConfig'
 type QaAccordionBlockSiblingData = {
   layoutMode?: 'fiftyFifty' | 'fullWidth' | 'oneThird' | null
 }
@@ -28,7 +28,7 @@ const qaAccordionItemsField = {
     {
       name: 'answer',
       type: 'richText',
-      editor: lexicalEditor(),
+      editor: embeddedContentEditor,
       required: true,
     },
   ],
@@ -108,7 +108,11 @@ export const QaAccordionBlock: Block = {
               type: 'textarea',
             },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
-            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({
+              name: 'footerActions',
+              label: 'Footer Actions',
+              maxRows: 2,
+            }),
             qaAccordionItemsField,
             sideColumnField,
           ],

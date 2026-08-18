@@ -21,11 +21,12 @@ React Server Components load public CMS data. Focused client components own inte
 
 - `/` loads the published homepage selected in Layout Defaults.
 - `/[...slug]` resolves hierarchical Pages, breadcrumbs, metadata, and WebPage JSON-LD.
-- Article, Review, and News/Event detail and taxonomy routes load published domain records.
-- `/news-events` is the built-in filtered archive. Article and Review archive landing pages are ordinary CMS Pages.
+- Article and Review detail and taxonomy routes load published domain records. News/Event retains its detail route while its Topics and Tags are non-interactive metadata. The News/Event route loads its record and cached shared detail-page global in parallel, renders the saved Page-compatible block order, and injects the entry only into the global-only `newsEventsContent` block. Production uses the server renderer; authenticated preview uses the matching client-safe renderer with server-provided data snapshots so its client graph never imports Payload or `server-only` modules.
+- `/news-events` explicitly resolves the published CMS Page at that path so editors can compose its collection-backed listings from Page blocks. Article and Review archive landing pages are also ordinary CMS Pages.
 - `/search`, `/api/search`, feeds, sitemap, robots, and Open Graph image routes implement discovery.
 - `/preview/page/[id]` and live-preview components render authenticated draft data.
-- Form submission, review-feed, redirects, and media reconciliation have focused route handlers.
+- Form submission, review-feed, News & Events Tabs pagination, redirects, and media reconciliation
+  have focused route handlers.
 - `/admin`, Payload REST, GraphQL, and GraphQL Playground live under the Payload route group.
 - Development-only block thumbnail previews live under their own route group.
 
@@ -39,9 +40,9 @@ MongoDB is the supported database. Local development may use local-disk media. V
 
 ## Caching and Delivery Safety
 
-Layout globals, Pages, and redirects use tagged caching and focused invalidation hooks. Feeds, robots, and sitemap use explicit time revalidation. Article and Review helpers also use request-level deduplication. Preserve draft/public filtering and cache invalidation together when changing queries or hooks.
+Layout globals, the News & Events detail template, Pages, and redirects use tagged caching and focused invalidation hooks. Feeds, robots, and sitemap use explicit time revalidation. Article and Review helpers also use request-level deduplication. Preserve draft/public filtering and cache invalidation together when changing queries or hooks.
 
-Maintenance and coming-soon overrides currently wrap homepage and catch-all Page routes; dedicated domain, search, feed, Admin, and API routes remain reachable.
+Maintenance and coming-soon overrides currently wrap the homepage, catch-all Page routes, and the explicit Page-backed `/news-events` route; other dedicated domain, search, feed, Admin, and API routes remain reachable.
 
 ## Themes and Analytics
 

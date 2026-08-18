@@ -77,6 +77,14 @@ describe('sitemap route', () => {
               slug: 'hidden',
               updatedAt: '2026-07-09T00:00:00.000Z',
             },
+            {
+              id: 3,
+              includeInSitemap: 'default',
+              path: '/news-events',
+              robotsMode: 'index',
+              slug: 'news-events',
+              updatedAt: '2026-08-17T00:00:00.000Z',
+            },
           ],
           totalPages: 1,
         }
@@ -267,7 +275,7 @@ describe('sitemap route', () => {
     })
   })
 
-  it('includes public pages, entries, and taxonomy archives while excluding contradictory routes', async () => {
+  it('includes public Pages and detail entries without removed News & Events taxonomy routes', async () => {
     const { default: sitemap } = await loadSitemap()
     const result = await sitemap()
     const urls = result.map((entry) => entry.url)
@@ -283,9 +291,9 @@ describe('sitemap route', () => {
     expect(urls).toContain('http://localhost:3000/reviews/category/guides')
     expect(urls).toContain('http://localhost:3000/articles/tag/featured')
     expect(urls).not.toContain('http://localhost:3000/articles/category/archive-only')
-    expect(urls).toContain('http://localhost:3000/news-events/category/community')
-    expect(urls).toContain('http://localhost:3000/news-events/category/open-days')
-    expect(urls).toContain('http://localhost:3000/news-events/tag/featured-event')
+    expect(urls).not.toContain('http://localhost:3000/news-events/category/community')
+    expect(urls).not.toContain('http://localhost:3000/news-events/category/open-days')
+    expect(urls).not.toContain('http://localhost:3000/news-events/tag/featured-event')
     expect(urls.some((url) => url.includes('news-events?category='))).toBe(false)
     expect(urls.some((url) => url.includes('news-events?tag='))).toBe(false)
     expect(urls).not.toContain('http://localhost:3000/news-events/category/staff-only')
@@ -294,5 +302,9 @@ describe('sitemap route', () => {
     expect(urls).not.toContain('http://localhost:3000/news-events/tag/internal')
     expect(urls).not.toContain('http://localhost:3000/news-events/tag/hidden-event')
     expect(urls).not.toContain('http://localhost:3000/news-events/tag/unused-event')
+    expect(payloadMocks.findGlobal.mock.calls.map(([query]) => query.slug)).toEqual([
+      'page-settings',
+      'seo-settings',
+    ])
   })
 })

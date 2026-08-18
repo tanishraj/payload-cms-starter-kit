@@ -1,25 +1,14 @@
 import type { Metadata } from 'next'
 
-import { NewsEventsArchivePage } from '@/components/news-events/NewsEventsArchivePage'
-import {
-  getNewsEventsInheritedRobots,
-  getNewsEventsSettings,
-} from '@/lib/newsEvents'
-import { getNewsEventsArchiveMetadata } from '@/lib/newsEventsMetadata'
+import { ManagedCmsPage } from '../ManagedCmsPage'
+import { getPageMetadataByPath } from '../pageData'
 
-type PageProps = {
-  searchParams: Promise<Record<string, string | string[] | undefined>>
-}
+const newsEventsPageSegments = ['news-events']
 
 export async function generateMetadata(): Promise<Metadata> {
-  const [settings, inheritedRobots] = await Promise.all([
-    getNewsEventsSettings(),
-    getNewsEventsInheritedRobots(),
-  ])
-
-  return getNewsEventsArchiveMetadata(settings, inheritedRobots)
+  return getPageMetadataByPath(newsEventsPageSegments)
 }
 
-export default async function NewsEventsArchiveRoute({ searchParams }: PageProps) {
-  return <NewsEventsArchivePage searchParams={searchParams} />
+export default function NewsEventsPage() {
+  return <ManagedCmsPage segments={newsEventsPageSegments} />
 }

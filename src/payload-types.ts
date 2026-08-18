@@ -130,7 +130,7 @@ export interface Config {
     'analytics-settings': AnalyticsSetting;
     'cookie-consent-settings': CookieConsentSetting;
     'page-settings': PageSetting;
-    'news-events-settings': NewsEventsSetting;
+    'news-events-detail-template': NewsEventsDetailTemplate;
     'search-settings': SearchSetting;
     'system-mode-settings': SystemModeSetting;
   };
@@ -141,7 +141,7 @@ export interface Config {
     'analytics-settings': AnalyticsSettingsSelect<false> | AnalyticsSettingsSelect<true>;
     'cookie-consent-settings': CookieConsentSettingsSelect<false> | CookieConsentSettingsSelect<true>;
     'page-settings': PageSettingsSelect<false> | PageSettingsSelect<true>;
-    'news-events-settings': NewsEventsSettingsSelect<false> | NewsEventsSettingsSelect<true>;
+    'news-events-detail-template': NewsEventsDetailTemplateSelect<false> | NewsEventsDetailTemplateSelect<true>;
     'search-settings': SearchSettingsSelect<false> | SearchSettingsSelect<true>;
     'system-mode-settings': SystemModeSettingsSelect<false> | SystemModeSettingsSelect<true>;
   };
@@ -195,6 +195,7 @@ export interface Page {
         | AnnouncementBlock
         | BannerCtaBlock
         | NewsGridBlock
+        | NewsEventsTabsBlock
         | Cta39Block
         | HeroBannerBlock
         | HeroCarouselBlock
@@ -578,6 +579,111 @@ export interface NewsGridBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'newsGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsEventsTabsBlock".
+ */
+export interface NewsEventsTabsBlock {
+  /**
+   * Small label above the optional section heading.
+   */
+  eyebrow?: string | null;
+  /**
+   * Optional. The classification tabs can render without a heading.
+   */
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * The mandatory first tab. Leave blank to use “All”.
+   */
+  allTabLabel?: string | null;
+  /**
+   * Add, remove, rename, or drag tabs into order. Each classification can be used once; All is always first.
+   */
+  tabs?:
+    | {
+        classification: 'news' | 'event' | 'notice' | 'holiday' | 'achievement' | 'announcement' | 'other';
+        /**
+         * Visitor-facing label for this tab.
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Number of published entries shown initially and appended by each Load More request.
+   */
+  itemsPerTab: '3' | '6' | '9' | '12';
+  /**
+   * Shown when the selected tab has more published entries.
+   */
+  loadMoreLabel?: string | null;
+  /**
+   * Maximum cards in each desktop row.
+   */
+  cardsPerRow: '2' | '3' | '4';
+  newsActionLabel?: string | null;
+  eventActionLabel?: string | null;
+  /**
+   * Shown when the selected classification has no published entries.
+   */
+  emptyStateMessage?: string | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Header actions only sit beside the heading when aligned left.
+   */
+  contentAlignment?: ('left' | 'center') | null;
+  /**
+   * Aligns header actions against the content when they appear beside the heading.
+   */
+  headerActionAlignment?: ('center' | 'top' | 'bottom') | null;
+  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'newsEventsTabs';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1413,10 +1519,25 @@ export interface NewsEventsHighlightsBlock {
       }[]
     | null;
   itemCount: number;
+  autoplay?: boolean | null;
   /**
-   * Optional message shown when no published news or upcoming events exist.
+   * Optional message shown when there are no News & Events entries.
    */
   emptyStateMessage?: string | null;
+  imagePositionOverride: 'item' | 'center' | 'top' | 'bottom' | 'left' | 'right';
+  /**
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+   */
+  themeMode: 'auto' | 'light' | 'dark' | 'brand';
+  overlayStyle: 'light' | 'dark' | 'darker';
+  /**
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   */
+  overlayDirection: 'vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom';
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  overlayCoverage: 'full' | 'split';
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
@@ -4453,6 +4574,7 @@ export interface ReusableSection {
         | AnnouncementBlock
         | BannerCtaBlock
         | NewsGridBlock
+        | NewsEventsTabsBlock
         | Cta39Block
         | HeroBannerBlock
         | HeroCarouselBlock
@@ -4824,11 +4946,14 @@ export interface NewsEvent {
    */
   generateSlug?: boolean | null;
   slug: string;
-  contentType: 'news' | 'event';
+  contentType: 'news' | 'event' | 'notice' | 'holiday' | 'achievement' | 'announcement' | 'other';
   /**
    * Short summary used in cards, archives, previews, and SEO fallbacks.
    */
   excerpt: string;
+  /**
+   * Legacy field retained for existing entries. The shared detail template now controls the public author label.
+   */
   authorName?: string | null;
   /**
    * Complete story or event description.
@@ -5774,6 +5899,7 @@ export interface PagesSelect<T extends boolean = true> {
         announcement?: T | AnnouncementBlockSelect<T>;
         bannerCta?: T | BannerCtaBlockSelect<T>;
         newsGrid?: T | NewsGridBlockSelect<T>;
+        newsEventsTabs?: T | NewsEventsTabsBlockSelect<T>;
         cta39?: T | Cta39BlockSelect<T>;
         heroBanner?: T | HeroBannerBlockSelect<T>;
         heroCarousel?: T | HeroCarouselBlockSelect<T>;
@@ -5977,6 +6103,67 @@ export interface NewsGridBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
       };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  headerActionAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsEventsTabsBlock_select".
+ */
+export interface NewsEventsTabsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  allTabLabel?: T;
+  tabs?:
+    | T
+    | {
+        classification?: T;
+        label?: T;
+        id?: T;
+      };
+  itemsPerTab?: T;
+  loadMoreLabel?: T;
+  cardsPerRow?: T;
+  newsActionLabel?: T;
+  eventActionLabel?: T;
+  emptyStateMessage?: T;
   appearance?:
     | T
     | {
@@ -6582,7 +6769,13 @@ export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
         id?: T;
       };
   itemCount?: T;
+  autoplay?: T;
   emptyStateMessage?: T;
+  imagePositionOverride?: T;
+  themeMode?: T;
+  overlayStyle?: T;
+  overlayDirection?: T;
+  overlayCoverage?: T;
   appearance?:
     | T
     | {
@@ -8741,6 +8934,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         announcement?: T | AnnouncementBlockSelect<T>;
         bannerCta?: T | BannerCtaBlockSelect<T>;
         newsGrid?: T | NewsGridBlockSelect<T>;
+        newsEventsTabs?: T | NewsEventsTabsBlockSelect<T>;
         cta39?: T | Cta39BlockSelect<T>;
         heroBanner?: T | HeroBannerBlockSelect<T>;
         heroCarousel?: T | HeroCarouselBlockSelect<T>;
@@ -9709,48 +9903,113 @@ export interface PageSetting {
   createdAt?: string | null;
 }
 /**
+ * Build the shared page used by every News & Events detail entry.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news-events-settings".
+ * via the `definition` "news-events-detail-template".
  */
-export interface NewsEventsSetting {
+export interface NewsEventsDetailTemplate {
   id: string;
-  eyebrow?: string | null;
-  title: string;
-  description?: string | null;
-  allLabel: string;
-  newsLabel: string;
-  eventsLabel: string;
-  upcomingEventsLabel: string;
-  pastEventsLabel: string;
-  readMoreLabel: string;
-  emptyStateTitle: string;
-  emptyStateDescription?: string | null;
-  entriesPerPage: number;
+  /**
+   * Add exactly one News & Events Content block, then arrange shared blocks around it.
+   */
+  layout?:
+    | (
+        | AnnouncementBlock
+        | BannerCtaBlock
+        | NewsGridBlock
+        | NewsEventsTabsBlock
+        | Cta39Block
+        | HeroBannerBlock
+        | HeroCarouselBlock
+        | GalleryCoverflowBlock
+        | FeatureSpotlightBlock
+        | TestimonialSpotlightBlock
+        | FeatureMatrixBlock
+        | ContentHighlightsBlock
+        | EditorialReasonsBlock
+        | AcademicProgrammesBlock
+        | NewsEventsHighlightsBlock
+        | ProfileCarouselBlock
+        | GalleryShowcaseBlock
+        | EventGalleryBlock
+        | StudyPathwaysBlock
+        | ImageMosaicBlock
+        | StudentExperienceBlock
+        | StatsStripBlock
+        | QaAccordionBlock
+        | RatingSpotlightBlock
+        | ReviewFeedBlock
+        | ReviewSubmissionBlock
+        | Contact33Block
+        | Contact24Block
+        | TeamShowcaseBlock
+        | Services21Block
+        | RichTextBlock
+        | VideoEmbedBlock
+        | MediaCarouselBlock
+        | ProgramGridBlock
+        | ProgramMatrixBlock
+        | LogoStripBlock
+        | PageHeaderBlock
+        | BreadcrumbBlock
+        | TimelineBlock
+        | IconCardShowcaseBlock
+        | IconGridBlock
+        | QuoteBlockBlock
+        | TabsContentBlock
+        | DownloadListBlock
+        | NumberedStepsBlock
+        | BentoGridBlock
+        | TestimonialGridBlock
+        | AwardsListBlock
+        | AboutSectionBlock
+        | AccreditationCardsBlock
+        | ReusableSectionBlock
+        | NewsEventsContentBlock
+      )[]
+    | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsEventsContentBlock".
+ */
+export interface NewsEventsContentBlock {
+  /**
+   * Shared author shown for every News & Events entry.
+   */
+  authorLabel: string;
+  showShareActions?: boolean | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  size: 'compact' | 'default' | 'comfortable';
-  metaTitle?: string | null;
-  metaDescription?: string | null;
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   /**
-   * Optional. Leave empty to use the resolved public URL. Supports site-relative paths or full URLs.
+   * Default Card inherits the section background. Other choices use the active theme and automatically adjust card contrast.
    */
-  canonicalURL?: string | null;
+  sidebarCardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
+  sidebarCardOutline?: boolean | null;
+  featuredImageRatio: 'wide' | 'video' | 'standard';
   /**
-   * Default inherits the global robots setting.
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
    */
-  robotsMode?: ('default' | 'index' | 'noindex') | null;
+  themeMode: 'auto' | 'light' | 'dark' | 'brand';
+  overlayStyle: 'light' | 'dark' | 'darker';
   /**
-   * Default includes public published routes that remain indexable.
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
    */
-  includeInSitemap?: ('default' | 'include' | 'exclude') | null;
-  ogTitle?: string | null;
-  ogImage?: (string | null) | Media;
-  ogDescription?: string | null;
-  _status?: ('draft' | 'published') | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
+  overlayDirection: 'vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom';
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  overlayCoverage: 'full' | 'split';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'newsEventsContent';
 }
 /**
  * Suggested search terms displayed on the search page.
@@ -9931,21 +10190,77 @@ export interface PageSettingsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news-events-settings_select".
+ * via the `definition` "news-events-detail-template_select".
  */
-export interface NewsEventsSettingsSelect<T extends boolean = true> {
-  eyebrow?: T;
-  title?: T;
-  description?: T;
-  allLabel?: T;
-  newsLabel?: T;
-  eventsLabel?: T;
-  upcomingEventsLabel?: T;
-  pastEventsLabel?: T;
-  readMoreLabel?: T;
-  emptyStateTitle?: T;
-  emptyStateDescription?: T;
-  entriesPerPage?: T;
+export interface NewsEventsDetailTemplateSelect<T extends boolean = true> {
+  layout?:
+    | T
+    | {
+        announcement?: T | AnnouncementBlockSelect<T>;
+        bannerCta?: T | BannerCtaBlockSelect<T>;
+        newsGrid?: T | NewsGridBlockSelect<T>;
+        newsEventsTabs?: T | NewsEventsTabsBlockSelect<T>;
+        cta39?: T | Cta39BlockSelect<T>;
+        heroBanner?: T | HeroBannerBlockSelect<T>;
+        heroCarousel?: T | HeroCarouselBlockSelect<T>;
+        galleryCoverflow?: T | GalleryCoverflowBlockSelect<T>;
+        featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
+        testimonialSpotlight?: T | TestimonialSpotlightBlockSelect<T>;
+        featureMatrix?: T | FeatureMatrixBlockSelect<T>;
+        contentHighlights?: T | ContentHighlightsBlockSelect<T>;
+        editorialReasons?: T | EditorialReasonsBlockSelect<T>;
+        academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
+        newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
+        profileCarousel?: T | ProfileCarouselBlockSelect<T>;
+        galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
+        eventGallery?: T | EventGalleryBlockSelect<T>;
+        studyPathways?: T | StudyPathwaysBlockSelect<T>;
+        imageMosaic?: T | ImageMosaicBlockSelect<T>;
+        studentExperience?: T | StudentExperienceBlockSelect<T>;
+        statsStrip?: T | StatsStripBlockSelect<T>;
+        qaAccordion?: T | QaAccordionBlockSelect<T>;
+        ratingSpotlight?: T | RatingSpotlightBlockSelect<T>;
+        reviewFeed?: T | ReviewFeedBlockSelect<T>;
+        reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
+        contact33?: T | Contact33BlockSelect<T>;
+        contact24?: T | Contact24BlockSelect<T>;
+        teamShowcase?: T | TeamShowcaseBlockSelect<T>;
+        services21?: T | Services21BlockSelect<T>;
+        richText?: T | RichTextBlockSelect<T>;
+        videoEmbed?: T | VideoEmbedBlockSelect<T>;
+        mediaCarousel?: T | MediaCarouselBlockSelect<T>;
+        programGrid?: T | ProgramGridBlockSelect<T>;
+        programMatrix?: T | ProgramMatrixBlockSelect<T>;
+        logoStrip?: T | LogoStripBlockSelect<T>;
+        pageHeader?: T | PageHeaderBlockSelect<T>;
+        breadcrumb?: T | BreadcrumbBlockSelect<T>;
+        timeline?: T | TimelineBlockSelect<T>;
+        iconCardShowcase?: T | IconCardShowcaseBlockSelect<T>;
+        iconGrid?: T | IconGridBlockSelect<T>;
+        quoteBlock?: T | QuoteBlockBlockSelect<T>;
+        tabsContent?: T | TabsContentBlockSelect<T>;
+        downloadList?: T | DownloadListBlockSelect<T>;
+        numberedSteps?: T | NumberedStepsBlockSelect<T>;
+        bentoGrid?: T | BentoGridBlockSelect<T>;
+        testimonialGrid?: T | TestimonialGridBlockSelect<T>;
+        awardsList?: T | AwardsListBlockSelect<T>;
+        aboutSection?: T | AboutSectionBlockSelect<T>;
+        accreditationCards?: T | AccreditationCardsBlockSelect<T>;
+        reusableSection?: T | ReusableSectionBlockSelect<T>;
+        newsEventsContent?: T | NewsEventsContentBlockSelect<T>;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsEventsContentBlock_select".
+ */
+export interface NewsEventsContentBlockSelect<T extends boolean = true> {
+  authorLabel?: T;
+  showShareActions?: T;
   appearance?:
     | T
     | {
@@ -9953,18 +10268,15 @@ export interface NewsEventsSettingsSelect<T extends boolean = true> {
         border?: T;
       };
   size?: T;
-  metaTitle?: T;
-  metaDescription?: T;
-  canonicalURL?: T;
-  robotsMode?: T;
-  includeInSitemap?: T;
-  ogTitle?: T;
-  ogImage?: T;
-  ogDescription?: T;
-  _status?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
+  sidebarCardBackground?: T;
+  sidebarCardOutline?: T;
+  featuredImageRatio?: T;
+  themeMode?: T;
+  overlayStyle?: T;
+  overlayDirection?: T;
+  overlayCoverage?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

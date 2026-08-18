@@ -1,105 +1,271 @@
-import Image from 'next/image'
-import Link from 'next/link'
 import { RichText } from '@payloadcms/richtext-lexical/react'
-import { CalendarDays, MapPin } from 'lucide-react'
+import { CalendarDays, FolderOpen, MapPin, UserRound } from 'lucide-react'
+import Image from 'next/image'
+import type { ReactNode } from 'react'
 
-import { regularBlockContainerClasses } from '@/blocks/shared/blockSpacing'
-import { ContentActions } from '@/components/ContentActions'
-import { Badge } from '@/components/ui/badge'
+import { resolveBlockAppearanceClasses } from '@/blocks/shared/blockAppearance'
+import { resolveMediaOverlay } from '@/blocks/shared/mediaOverlayPresentation'
 import {
-  formatNewsEventDateTime,
+  regularBlockContainerClasses,
+  regularBlockMobilePaddingClasses,
+} from '@/blocks/shared/blockSpacing'
+import { resolveCardSurface, type CardSurfaceClasses } from '@/blocks/shared/cardSurface'
+import { ContentActions } from '@/components/ContentActions'
+import { NewsEventShareActions } from '@/components/news-events/NewsEventShareActions'
+import { longFormRichTextClasses } from '@/components/rich-text/richTextStyles'
+import { SectionEyebrow } from '@/components/SectionEyebrow'
+import { getNewsEventClassificationLabel } from '@/lib/newsEventClassifications'
+import type { ResolvedNewsEventsContentSettings } from '@/lib/newsEventDetailTemplateShared'
+import {
+  formatNewsEventDateRange,
   newsEventObjectPositionClasses,
   type PublicNewsEventDetail,
 } from '@/lib/newsEventsShared'
-import { getNewsEventsCategoryPath, getNewsEventsTagPath } from '@/lib/newsEventsPaths'
+import { toAbsoluteSiteUrl } from '@/lib/siteUrl'
 import { cn } from '@/lib/utils'
 
-export function NewsEventStory({ entry }: { entry: PublicNewsEventDetail }) {
-  return (
-    <article className="py-12 text-current md:py-16" data-news-event-story="true">
-      <div className={cn(regularBlockContainerClasses, 'flex flex-col gap-8')}>
-        <header className="flex w-full flex-col gap-5">
-          <div className="flex flex-wrap items-center gap-2 text-sm text-current/70">
-            <Badge variant="secondary">{entry.contentType === 'event' ? 'Event' : 'News'}</Badge>
-            {entry.category ? (
-              <Link
-                className="transition-colors underline-offset-4 hover:text-current hover:underline"
-                href={getNewsEventsCategoryPath(entry.category.slug)}
-              >
-                {entry.category.title}
-              </Link>
-            ) : null}
-            <span aria-hidden="true">·</span>
-            <time dateTime={entry.dateISO}>{entry.dateLabel}</time>
-            {entry.authorName ? <span>By {entry.authorName}</span> : null}
-          </div>
-          <h1 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-            {entry.title}
-          </h1>
-          <p className="text-base leading-7 text-current/70">{entry.excerpt}</p>
-          {entry.contentType === 'event' ? (
-            <div className="flex flex-col gap-3 border-y border-border py-5 text-sm text-current/80 sm:flex-row sm:flex-wrap sm:gap-x-8">
-              {entry.eventStart ? (
-                <p className="flex items-center gap-2">
-                  <CalendarDays className="size-4" aria-hidden="true" />
-                  <span>{formatNewsEventDateTime(entry.eventStart)}</span>
-                  {entry.eventEnd ? <span>– {formatNewsEventDateTime(entry.eventEnd)}</span> : null}
-                </p>
-              ) : null}
-              {entry.eventLocation ? (
-                <p className="flex items-center gap-2">
-                  <MapPin className="size-4" aria-hidden="true" />
-                  {entry.eventLocation}
-                </p>
-              ) : null}
-              {entry.eventRegistrationAction ? (
-                <ContentActions
-                  actions={[entry.eventRegistrationAction]}
-                  className="sm:ml-auto sm:w-auto"
-                />
-              ) : null}
-            </div>
-          ) : null}
-        </header>
+type ArticleTemplate = ResolvedNewsEventsContentSettings
 
-        {entry.image ? (
-          <div className="relative aspect-16/8 overflow-hidden rounded-md border border-border bg-muted">
+const featuredImageRatioClasses = {
+  wide: 'aspect-[2/1]',
+  video: 'aspect-video',
+  standard: 'aspect-[4/3]',
+} as const
+
+function StoryDetail({
+  icon,
+  label,
+  value,
+  valueClassName,
+  surface,
+}: {
+  icon: ReactNode
+  label: string
+  value: ReactNode
+  valueClassName?: string
+  surface: CardSurfaceClasses
+}) {
+  return (
+    <div className="grid grid-cols-[2rem_minmax(0,1fr)] gap-3">
+      <span
+        aria-hidden="true"
+        className={cn('mt-0.5 flex size-8 items-center justify-center bg-current/5', surface.icon)}
+      >
+        {icon}
+      </span>
+      <div className="min-w-0">
+        <dt
+          className={cn(
+            'font-mono text-xs font-normal tracking-[0.14em] uppercase',
+            surface.secondary,
+          )}
+          data-news-event-detail-label="true"
+        >
+          {label}
+        </dt>
+        <dd
+          className={cn(
+            'mt-1 break-words font-[family-name:var(--font-text)] text-sm leading-5 font-medium',
+            valueClassName,
+          )}
+          data-news-event-detail-value="true"
+        >
+          {value}
+        </dd>
+      </div>
+    </div>
+  )
+}
+
+function SidebarCard({
+  article,
+  children,
+  heading,
+  surface,
+}: {
+  article: ArticleTemplate
+  children: ReactNode
+  heading: string
+  surface: CardSurfaceClasses
+}) {
+  return (
+    <section
+      className={cn(
+        'flex flex-col gap-5 rounded-[var(--radius)] p-5 sm:p-6',
+        surface.className,
+        article.sidebarCardOutline && 'border',
+        article.sidebarCardOutline && surface.divider,
+      )}
+    >
+      <h2 className="text-base font-semibold tracking-tight">{heading}</h2>
+      {children}
+    </section>
+  )
+}
+
+function StoryDetailsCard({
+  article,
+  entry,
+  surface,
+}: {
+  article: ArticleTemplate
+  entry: PublicNewsEventDetail
+  surface: CardSurfaceClasses
+}) {
+  const isEvent = entry.contentType === 'event'
+  const dateLabel = isEvent
+    ? formatNewsEventDateRange(entry.eventStart, entry.eventEnd)
+    : entry.dateLabel
+  const categoryLabel = entry.category?.title ?? getNewsEventClassificationLabel(entry.contentType)
+
+  return (
+    <SidebarCard article={article} heading="Story Details" surface={surface}>
+      <dl className="flex flex-col gap-5" data-news-event-story-details="true">
+        <StoryDetail
+          icon={<UserRound className="size-4" />}
+          label="Author"
+          surface={surface}
+          value={article.authorLabel}
+        />
+        {dateLabel ? (
+          <StoryDetail
+            icon={<CalendarDays className="size-4" />}
+            label={isEvent ? 'Event Date' : 'Date'}
+            surface={surface}
+            value={<time dateTime={entry.dateISO}>{dateLabel}</time>}
+            valueClassName="tabular-nums"
+          />
+        ) : null}
+        <StoryDetail
+          icon={<FolderOpen className="size-4" />}
+          label="Category"
+          surface={surface}
+          value={categoryLabel}
+        />
+        {isEvent && entry.eventLocation ? (
+          <StoryDetail
+            icon={<MapPin className="size-4" />}
+            label="Location"
+            surface={surface}
+            value={entry.eventLocation}
+          />
+        ) : null}
+      </dl>
+      {isEvent && entry.eventRegistrationAction ? (
+        <div className={cn('border-t pt-5', surface.divider)}>
+          <ContentActions
+            actions={[entry.eventRegistrationAction]}
+            buttonClassNames={surface.button}
+            linkClassName={surface.link}
+          />
+        </div>
+      ) : null}
+    </SidebarCard>
+  )
+}
+
+export function NewsEventStory({
+  article,
+  entry,
+}: {
+  article: ArticleTemplate
+  entry: PublicNewsEventDetail
+}) {
+  const appearance = resolveBlockAppearanceClasses(article.appearance)
+  const cardSurface = resolveCardSurface(article.sidebarCardBackground, appearance.background)
+  const classificationLabel = getNewsEventClassificationLabel(entry.contentType)
+  const usesFallbackImage = !entry.image
+  const image = entry.image ?? {
+    alt: '',
+    position: 'center' as const,
+    src: '/images/snmih-news-events-default.png',
+  }
+  const overlay = resolveMediaOverlay({
+    coverage: article.coverage,
+    direction: article.direction,
+    sectionBackground: appearance.background,
+    strength: article.strength,
+    tone: article.tone,
+  })
+
+  return (
+    <article
+      className={cn(regularBlockMobilePaddingClasses[article.size], appearance.className)}
+      data-block-surface={appearance.surface}
+      data-news-event-story="true"
+    >
+      <div
+        className={cn(
+          regularBlockContainerClasses,
+          'grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_30rem] lg:gap-12',
+        )}
+      >
+        <div className="flex min-w-0 flex-col gap-8" data-news-event-main-content="true">
+          <div
+            className={cn(
+              'relative isolate min-h-80 overflow-hidden rounded-[var(--radius)] border border-border bg-muted md:min-h-0',
+              featuredImageRatioClasses[article.featuredImageRatio],
+            )}
+            data-news-event-featured-image="true"
+          >
             <Image
               fill
-              alt={entry.image.alt}
-              className={cn('object-cover', newsEventObjectPositionClasses[entry.image.position])}
-              src={entry.image.src}
-              sizes="(max-width: 768px) 100vw, 80vw"
+              alt={image.alt}
+              className={cn('-z-20 object-cover', newsEventObjectPositionClasses[image.position])}
+              data-news-event-image-fallback={usesFallbackImage ? 'true' : undefined}
+              priority
+              sizes="(max-width: 1024px) 100vw, calc(100vw - 24rem)"
+              src={image.src}
             />
+            <div
+              className={cn('absolute -z-10', overlay.frameClassName, overlay.className)}
+              data-news-event-image-overlay="true"
+              data-overlay-coverage={overlay.coverage}
+              data-overlay-direction={overlay.direction}
+              data-overlay-strength={overlay.strength}
+              data-overlay-tone={overlay.tone}
+            />
+            <div
+              className={cn(
+                'absolute inset-x-0 bottom-0 z-10 flex flex-col gap-3 p-6 sm:p-8',
+                overlay.text.title,
+              )}
+            >
+              <SectionEyebrow
+                data-news-event-overlay-eyebrow="true"
+                surface={overlay.eyebrowSurface}
+              >
+                {classificationLabel}
+              </SectionEyebrow>
+              <h1
+                className="max-w-4xl text-3xl leading-tight font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl"
+                data-news-event-overlay-title="true"
+              >
+                {entry.title}
+              </h1>
+            </div>
           </div>
-        ) : null}
 
-        <div className="prose w-full max-w-none text-current prose-headings:text-current prose-p:text-current/80 prose-a:text-current prose-a:underline-offset-4 prose-strong:text-current prose-blockquote:border-border prose-blockquote:text-current/80 prose-hr:border-border prose-li:text-current/80">
-          <RichText data={entry.body} />
+          <p
+            className="text-base leading-7 text-current/70 sm:text-lg"
+            data-news-event-excerpt="true"
+          >
+            {entry.excerpt}
+          </p>
+
+          <div className={cn('min-w-0', longFormRichTextClasses)} data-news-event-rich-text="true">
+            <RichText data={entry.body} />
+          </div>
         </div>
 
-        {entry.categories.length || entry.tags.length ? (
-          <footer className="flex w-full flex-wrap gap-2 border-t border-border pt-6">
-            {entry.categories.map((term) => (
-              <Link
-                className="rounded-md border border-border px-3 py-1 text-sm text-current/70 transition-colors hover:bg-muted hover:text-current"
-                href={getNewsEventsCategoryPath(term.slug)}
-                key={`category-${term.id}`}
-              >
-                {term.title}
-              </Link>
-            ))}
-            {entry.tags.map((tag) => (
-              <Link
-                className="rounded-md border border-border px-3 py-1 text-sm text-current/70 transition-colors hover:bg-muted hover:text-current"
-                href={getNewsEventsTagPath(tag.slug)}
-                key={`tag-${tag.id}`}
-              >
-                {tag.title}
-              </Link>
-            ))}
-          </footer>
-        ) : null}
+        <aside className="flex min-w-0 flex-col gap-4 lg:sticky lg:top-28">
+          <StoryDetailsCard article={article} entry={entry} surface={cardSurface} />
+          {article.showShareActions ? (
+            <SidebarCard article={article} heading="Share This" surface={cardSurface}>
+              <NewsEventShareActions title={entry.title} url={toAbsoluteSiteUrl(entry.href)} />
+            </SidebarCard>
+          ) : null}
+        </aside>
       </div>
     </article>
   )

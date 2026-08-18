@@ -14,44 +14,44 @@ This is the maintained technical map of the starter. It records what is register
 
 ## Payload Collections
 
-| Group          | Collection                             | Responsibilities                                                                                                          |
-| -------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Content        | Pages                                  | Hierarchical routes, 50-block layouts, drafts, workflow, SEO, live preview, page-owned links, path-change redirects       |
-| Content        | Articles                               | Long-form Lexical content, topics/tags, related content, SEO, workflow, live preview                                      |
-| Content        | News & Events                          | News/event records, event validation and registration actions, taxonomy, archive/detail/feed data, workflow, live preview |
-| Content        | Reviews                                | Moderated ratings and testimonials, source-submission linkage, taxonomy, SEO, workflow, live preview                      |
-| Content        | Reusable Sections                      | Shared versioned block stacks with recursion and high-complexity block restrictions                                       |
-| Taxonomy       | Topics (`categories`)                  | Hierarchical editorial topics with SEO data                                                                               |
-| Taxonomy       | Tags                                   | Flat editorial keywords with SEO data                                                                                     |
-| Navigation     | Navigation Links                       | Page/custom destinations, including records synchronized from Pages                                                       |
-| Navigation     | Redirects                              | Normalized unique incoming paths, page/custom targets, 301/302 choice, enable state                                       |
-| Site Structure | Headers                                | Versioned Header Navbar presets                                                                                           |
-| Site Structure | Footers                                | Versioned Footer 56 presets                                                                                               |
-| Site Structure | Office Locations                       | Versioned map/contact records used by Regional Offices                                                                    |
-| Site Structure | System Pages                           | Governed 404, maintenance, and coming-soon presets with matching block validation                                         |
-| Media          | Media                                  | Uploads, classification, alt validation, usage detection, deletion guards, storage health, operational sync               |
-| Media          | Gallery Albums                         | Versioned ordered image albums used by Event Gallery                                                                      |
-| Forms          | Forms                                  | Versioned general, lead, and review-intent field schemas plus email configuration                                         |
-| Forms          | Form Submissions                       | Stored immutable payload/metadata, operational status/assignment/activity, optional review promotion                      |
-| Administration | Action Queue (`work-queue`)            | Deduplicated CMS-generated approval, moderation, follow-up, publishing, media, and system work                            |
-| Administration | Audit Log (`operational-audit-events`) | Immutable selected operational events and actor metadata                                                                  |
-| Administration | Users                                  | Payload authentication, roles, capability presets and overrides                                                           |
+| Group          | Collection                             | Responsibilities                                                                                                               |
+| -------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Content        | Pages                                  | Hierarchical routes, 51-block layouts, drafts, workflow, SEO, live preview, page-owned links, path-change redirects            |
+| Content        | Articles                               | Long-form Lexical content, topics/tags, related content, SEO, workflow, live preview                                           |
+| Content        | News & Events                          | Seven single-choice classifications, event validation/registration, taxonomy, block/detail/feed data, workflow, live preview   |
+| Content        | Reviews                                | Moderated ratings and testimonials, source-submission linkage, taxonomy, SEO, workflow, live preview                           |
+| Content        | Reusable Sections                      | Shared versioned block stacks with recursion and high-complexity block restrictions                                            |
+| Taxonomy       | Topics (`categories`)                  | Hierarchical editorial topics with SEO data                                                                                    |
+| Taxonomy       | Tags                                   | Flat editorial keywords with SEO data                                                                                          |
+| Navigation     | Navigation Links                       | Page/custom destinations, including records synchronized from Pages                                                            |
+| Navigation     | Redirects                              | Normalized unique incoming paths, page/custom targets, 301/302 choice, enable state                                            |
+| Site Structure | Headers                                | Versioned Header Navbar presets                                                                                                |
+| Site Structure | Footers                                | Versioned Footer 56 presets                                                                                                    |
+| Site Structure | Office Locations                       | Versioned map/contact records used by Regional Offices                                                                         |
+| Site Structure | System Pages                           | Governed 404, maintenance, and coming-soon presets with matching block validation                                              |
+| Media          | Media                                  | Uploads, classification, alt validation, usage detection, deletion guards, storage health, operational sync                    |
+| Media          | Gallery Albums                         | Versioned ordered image albums used by Event Gallery                                                                           |
+| Forms          | Forms                                  | Versioned general, lead, and review-intent field schemas plus email configuration                                              |
+| Forms          | Form Submissions                       | Stored immutable payload/metadata, operational status/assignment/activity, optional review promotion                           |
+| Administration | Action Queue (`work-queue`)            | Deduplicated CMS-generated approval, moderation, follow-up, publishing, media, and system work                                 |
+| Administration | Audit Log (`operational-audit-events`) | Immutable selected operational events and actor metadata                                                                       |
+| Administration | Users                                  | Payload authentication, roles, capability presets and overrides                                                                |
 
 All collections use timestamps and Trash. Draft/version support is enabled where the individual config declares it; operational records and users are not public content.
 
 ## Payload Globals
 
-| Group         | Global                 | Responsibilities                                                                |
-| ------------- | ---------------------- | ------------------------------------------------------------------------------- |
-| Settings      | Site Identity          | Brand, contact, address, legal Page relationships, and social destinations      |
-| Settings      | Appearance             | Default/Sunset/Blue/Kodama/SNMIH theme and system/light/dark color scheme       |
-| Settings      | SEO & Metadata         | Fallback title, template, description, image, robots, and Google verification   |
-| Settings      | Analytics & Tracking   | GTM or standalone GA4 identifiers and enablement                                |
-| Settings      | Cookie Consent Banner  | Enablement, four presentation variants, corner position, and copy               |
-| Configuration | Layout Defaults        | Homepage, active header/footer, page appearance, and global announcement bar    |
-| Configuration | News & Events Settings | Archive copy, labels, 3–24 item page size, appearance, empty state, and SEO     |
-| Configuration | Search Settings        | Up to 12 operator-managed suggested search terms shown on the search page       |
-| Configuration | Maintenance & Modes    | Published type-safe system-page references and off/maintenance/coming-soon mode |
+| Group         | Global                        | Responsibilities                                                                           |
+| ------------- | ----------------------------- | ------------------------------------------------------------------------------------------ |
+| Settings      | Site Identity                 | Brand, contact, address, legal Page relationships, and social destinations                 |
+| Settings      | Appearance                    | Default/Sunset/Blue/Kodama/SNMIH theme and system/light/dark color scheme                  |
+| Settings      | SEO & Metadata                | Fallback title, template, description, image, robots, and Google verification              |
+| Settings      | Analytics & Tracking          | GTM or standalone GA4 identifiers and enablement                                           |
+| Settings      | Cookie Consent Banner         | Enablement, four presentation variants, corner position, and copy                          |
+| Configuration | Layout Defaults               | Homepage, active header/footer, page appearance, and global announcement bar               |
+| Configuration | News & Events Detail Template | Shared detail Page Header, Breadcrumb, article/sidebar appearance, image ratio, and author |
+| Configuration | Search Settings               | Up to 12 operator-managed suggested search terms shown on the search page                  |
+| Configuration | Maintenance & Modes           | Published type-safe system-page references and off/maintenance/coming-soon mode            |
 
 Globals with versions retain history. Relevant changes invalidate cached frontend data; selected higher-risk changes are written to the Audit Log.
 
@@ -68,7 +68,7 @@ Globals with versions retain history. Relevant changes invalidate cached fronten
 
 ## Page And Shell Block Systems
 
-Normal Pages register 50 choices: Announcement, Banner CTA, News Grid, Call to Action, Hero Banner, Hero Carousel, Gallery Coverflow, Feature Spotlight, Testimonial Spotlight, Feature Matrix, Content Highlights, Editorial Reasons, Academic Programmes, News & Events Highlights, Profile Carousel, Gallery Showcase, Event Gallery, Study Pathways, Image Mosaic, Student Experience, Stats Strip, Q&A Accordion, Rating Spotlight, Review Feed, Review Submission, Contact Form, Regional Offices, Team Showcase, Services, Rich Text, Video Embed, Media Carousel, Program Grid, Program Matrix, Logo Strip, Page Header, Breadcrumb, Timeline, Icon Card Showcase, Icon Grid, Quote Block, Tabs Content, Download List, Numbered Steps, Bento Grid, Testimonial Grid, Awards List, About Section, Accreditation Cards, and Reusable Section.
+Normal Pages register 51 choices: Announcement, Banner CTA, News Grid, News & Events Tabs, Call to Action, Hero Banner, Hero Carousel, Gallery Coverflow, Feature Spotlight, Testimonial Spotlight, Feature Matrix, Content Highlights, Editorial Reasons, Academic Programmes, News & Events Highlights, Profile Carousel, Gallery Showcase, Event Gallery, Study Pathways, Image Mosaic, Student Experience, Stats Strip, Q&A Accordion, Rating Spotlight, Review Feed, Review Submission, Contact Form, Regional Offices, Team Showcase, Services, Rich Text, Video Embed, Media Carousel, Program Grid, Program Matrix, Logo Strip, Page Header, Breadcrumb, Timeline, Icon Card Showcase, Icon Grid, Quote Block, Tabs Content, Download List, Numbered Steps, Bento Grid, Testimonial Grid, Awards List, About Section, Accreditation Cards, and Reusable Section.
 
 Headers register only Header Navbar 12; Footers register only Footer 56; System Pages register one matching System 404, System Maintenance, or System Coming Soon block. The admin picker uses generated JPEG thumbnails. `/block-thumbnail-previews/[slug]` is development-only. See [Page Blocks](../guides/blocks.md) for the operator catalog.
 
@@ -76,32 +76,39 @@ Production Page blocks are wrapped in a block-level error boundary. Live Page pr
 
 Configurable visual blocks standardize their Payload editor structure as top-level `Content` and `Theme Settings` tabs. Genuine repeating card rows use the same nested tab structure and a shared semantic surface vocabulary: Default Card, Primary, Secondary, Muted, and Accent. The renderer resolves foreground, supporting text, icon, divider, link, and matching button contrast from the active theme. Variant-dependent controls only render a surface for existing card presentations; utility rows, connected timelines, lists, tables, galleries, logos, and navigation structures remain unboxed.
 
+News & Events Highlights retains the `newsEventsHighlights` block slug and automatically interleaves
+recent published non-event entries with current or upcoming Events. It keeps the shared presentation
+model, overlay controls, image-position precedence, bundled missing-image fallback, and synchronized
+carousel.
+News Grid retains its legacy mixed grid and optional editor-authored feature card. The separate News
+& Events Tabs block provides text-only cards under an editor-configurable subset of
+News/Events/Notice/Holiday/Achievements/Announcement/Others classifications, with All fixed first and
+3, 6, 9, or 12 server-loaded entries per tab.
+
 The SNMIH preset uses `#031d44` as its light-mode Primary brand color. Its dark palette uses a deep navy canvas with a lighter accessible Primary surface so the same semantic block and card settings remain readable across color schemes.
 
 ## Public Routes
 
-| Route                                                   | Behavior                                                                              |
-| ------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `/`                                                     | Renders the published homepage selected in Layout Defaults                            |
-| `/[...slug]`                                            | Renders hierarchical Pages, canonical metadata, breadcrumbs, and WebPage JSON-LD      |
-| `/articles/[slug]`                                      | Article detail, related content, metadata, and Article JSON-LD                        |
-| `/articles/category/[slug]`                             | Topic-filtered article archive                                                        |
-| `/articles/tag/[slug]`                                  | Tag-filtered article archive                                                          |
-| `/reviews/[slug]`                                       | Review detail, related reviews, metadata                                              |
-| `/reviews/category/[slug]`                              | Topic-filtered review archive                                                         |
-| `/news-events`                                          | Filtered and paginated all/news/event archive with separate upcoming/past event pages |
-| `/news-events/category/[slug]`                          | Canonical topic-filtered News & Events archive                                        |
-| `/news-events/tag/[slug]`                               | Canonical tag-filtered News & Events archive                                          |
-| `/news-events/[slug]`                                   | NewsArticle or Event detail and structured data                                       |
-| `/search`                                               | SSR search, capped at eight results per content type                                  |
-| `/preview/page/[id]`                                    | Authenticated Page preview                                                            |
-| `/articles/feed.xml`                                    | RSS 2.0 feed with Atom self-link; newest 50; one-hour cache                           |
-| `/news-events/feed.xml`                                 | RSS 2.0 feed with Atom self-link; newest 50; one-hour cache                           |
-| `/robots.txt`                                           | CMS-controlled robots response; one-hour revalidation                                 |
-| `/sitemap.xml`                                          | Paginated published content map; five-minute revalidation                             |
-| root/article/review/news-event `opengraph-image` routes | Server-generated fallback/detail social images                                        |
+| Route                                                   | Behavior                                                                                                   |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `/`                                                     | Renders the published homepage selected in Layout Defaults                                                 |
+| `/[...slug]`                                            | Renders hierarchical Pages, canonical metadata, breadcrumbs, and WebPage JSON-LD                           |
+| `/articles/[slug]`                                      | Article detail, related content, metadata, and Article JSON-LD                                             |
+| `/articles/category/[slug]`                             | Topic-filtered article archive                                                                             |
+| `/articles/tag/[slug]`                                  | Tag-filtered article archive                                                                               |
+| `/reviews/[slug]`                                       | Review detail, related reviews, metadata                                                                   |
+| `/reviews/category/[slug]`                              | Topic-filtered review archive                                                                              |
+| `/news-events`                                          | Published CMS Page composed from normal and collection-backed Page blocks                                  |
+| `/news-events/[slug]`                                   | Global-templated NewsArticle/Event detail, Lexical article, right metadata/share rail, and structured data |
+| `/search`                                               | SSR search, capped at eight results per content type                                                       |
+| `/preview/page/[id]`                                    | Authenticated Page preview                                                                                 |
+| `/articles/feed.xml`                                    | RSS 2.0 feed with Atom self-link; newest 50; one-hour cache                                                |
+| `/news-events/feed.xml`                                 | RSS 2.0 feed with Atom self-link; newest 50; one-hour cache                                                |
+| `/robots.txt`                                           | CMS-controlled robots response; one-hour revalidation                                                      |
+| `/sitemap.xml`                                          | Paginated published content map; five-minute revalidation                                                  |
+| root/article/review/news-event `opengraph-image` routes | Server-generated fallback/detail social images                                                             |
 
-There is no built-in `/articles` or `/reviews` index route; create CMS Pages at those paths when the site needs archive landing pages. Generic Pages inherit configured metadata/default media rather than having their own dynamic Open Graph image route.
+There is no built-in `/articles` or `/reviews` index route; create CMS Pages at those paths when the site needs archive landing pages. `/news-events` keeps an explicit route that resolves the published Page at that path so it can coexist with News & Events detail and feed routes. Generic Pages inherit configured metadata/default media rather than having their own dynamic Open Graph image route.
 
 Maintenance and coming-soon overrides are currently applied by the homepage and catch-all CMS Page routes. Dedicated article, review, news-event, search, feed, and API routes remain reachable.
 

@@ -8,7 +8,7 @@ const regularBlockSources = [
   'src/components/profile-carousel.tsx',
   'src/components/content-highlights.tsx',
   'src/components/image-mosaic.tsx',
-  'src/components/news-events/NewsEventsHighlights.tsx',
+  'src/components/news-events/NewsEventsFeaturedCarousel.tsx',
   'src/components/review-feed.tsx',
 ] as const
 

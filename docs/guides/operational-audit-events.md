@@ -30,7 +30,6 @@ The current implementation captures selected events for:
 - `System Pages`
 - `Reusable Sections`
 - `Layout Defaults`
-- `News & Events Settings`
 - `Maintenance & Modes`
 - `Action Queue` updates such as status, assignee, priority, due date, notes, and resolution changes
 - Media deletion and missing/restored storage transitions

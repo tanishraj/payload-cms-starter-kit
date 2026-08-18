@@ -21,6 +21,10 @@ import { syncPrimaryCategoryMembership } from '@/hooks/syncPrimaryCategoryMember
 import { createWorkflowQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
+import {
+  isEventClassification,
+  NEWS_EVENT_CLASSIFICATIONS,
+} from '@/lib/newsEventClassifications'
 import { revalidateNewsEventsCache } from '@/hooks/revalidateCmsContent'
 
 const previewBreakpoints = [
@@ -29,7 +33,8 @@ const previewBreakpoints = [
   { name: 'mobile', label: 'Mobile', width: 390, height: 844 },
 ] as const
 
-const isEventEntry = (data: Record<string, unknown> | undefined) => data?.contentType === 'event'
+const isEventEntry = (data: Record<string, unknown> | undefined) =>
+  isEventClassification(typeof data?.contentType === 'string' ? data.contentType : undefined)
 
 const validateEventStart: DateFieldValidation = (value, { data }) => {
   const entryData = data as Record<string, unknown> | undefined
@@ -84,7 +89,7 @@ export const NewsEvents: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'contentType', 'workflowState', 'eventStart', 'updatedAt'],
     description: 'Published news stories and scheduled events for the public website.',
-    listSearchableFields: ['title', 'slug', 'authorName', 'eventLocation'],
+    listSearchableFields: ['title', 'slug', 'eventLocation'],
     livePreview: {
       breakpoints: [...previewBreakpoints],
       url: ({ data }) => {
@@ -163,13 +168,13 @@ export const NewsEvents: CollectionConfig = {
           fields: [
             {
               name: 'contentType',
-              label: 'Entry Type',
+              label: 'Entry Classification',
               type: 'select',
               defaultValue: 'news',
-              options: [
-                { label: 'News', value: 'news' },
-                { label: 'Event', value: 'event' },
-              ],
+              options: NEWS_EVENT_CLASSIFICATIONS.map(({ adminLabel, value }) => ({
+                label: adminLabel,
+                value,
+              })),
               required: true,
             },
             {
@@ -184,6 +189,11 @@ export const NewsEvents: CollectionConfig = {
               name: 'authorName',
               label: 'Byline',
               type: 'text',
+              admin: {
+                hidden: true,
+                description:
+                  'Legacy field retained for existing entries. The shared detail template now controls the public author label.',
+              },
             },
             {
               name: 'body',

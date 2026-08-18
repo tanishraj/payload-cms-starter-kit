@@ -159,6 +159,9 @@ Uncomment to import Google fonts if you want to use them in your project.
   --font-text: var(--font-text);
   --font-handwriting: var(--font-handwriting);
 
+  /* Editorial type scale */
+  --text-prose-h2: 1.75rem;
+
   /* --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;

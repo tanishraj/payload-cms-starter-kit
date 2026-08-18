@@ -1,0 +1,157 @@
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+
+import { describe, expect, it } from 'vitest'
+
+import {
+  compactRichTextClasses,
+  longFormRichTextClasses,
+} from '@/components/rich-text/richTextStyles'
+
+const source = (path: string) => readFileSync(resolve(process.cwd(), path), 'utf8')
+
+describe('shared Lexical presentation', () => {
+  it('defines the complete long-form semantic and responsive contract', () => {
+    expect(longFormRichTextClasses).toContain('font-[family-name:var(--font-text)]')
+    expect(longFormRichTextClasses).toContain('prose-headings:font-[family-name:var(--font-text)]')
+    expect(longFormRichTextClasses).not.toContain('var(--font-display)')
+
+    for (const className of [
+      'prose-h1:text-4xl',
+      'sm:prose-h1:text-5xl',
+      'prose-h2:text-2xl',
+      'sm:prose-h2:text-prose-h2',
+      'prose-h3:text-xl',
+      'sm:prose-h3:text-2xl',
+      'prose-h4:text-lg',
+      'sm:prose-h4:text-xl',
+      'prose-h5:text-base',
+      'sm:prose-h5:text-lg',
+      'prose-h6:text-sm',
+      'sm:prose-h6:text-base',
+    ]) {
+      expect(longFormRichTextClasses).toContain(className)
+    }
+
+    expect(source('src/styles/globals.css')).toContain('--text-prose-h2: 1.75rem')
+
+    for (const className of [
+      'prose-p:leading-8',
+      'prose-ul:pl-6',
+      'prose-ol:pl-6',
+      'prose-blockquote:bg-muted/60',
+      'prose-strong:font-semibold',
+      'prose-em:text-current',
+      '[&_span[style*="underline"]]:underline-offset-4',
+      '[&_span[style*="line-through"]]:text-current/65',
+      'prose-code:font-mono',
+      'prose-pre:overflow-x-auto',
+      'prose-a:text-primary',
+      '[&_a]:focus-visible:ring-2',
+      '[&_picture]:max-w-full',
+      '[&_img]:h-auto',
+      '[&_img]:max-w-full',
+      '[&_figcaption]:text-sm',
+      'prose-hr:border-border',
+      '[&_.list-check]:list-none',
+      '[&_li[role=checkbox]_input]:accent-primary',
+      '[&_li[aria-checked=true]_label]:line-through',
+      '[&_li[role=checkbox]_br]:hidden',
+      '[&_[style*="padding-inline-start"]]:max-w-full',
+      '[&_p:has(>br:only-child)]:hidden',
+      '[&>*:first-child]:mt-0',
+      '[&>*:last-child]:mb-0',
+      'prose-h2:mt-9',
+      'prose-h2:mb-2.5',
+      'prose-h3:mt-7',
+      'prose-h3:mb-2.5',
+      'prose-h4:mt-6',
+      'prose-h4:mb-1.5',
+      'prose-h5:mt-5',
+      'prose-h5:mb-1.5',
+      'prose-h6:mt-4',
+      'prose-h6:mb-1.5',
+      'prose-p:my-3',
+      'prose-ul:my-4',
+      'prose-ol:my-4',
+      'prose-li:my-1',
+      '[&_ul_ul]:my-1.5',
+      '[&_ul_ol]:my-1.5',
+      '[&_ol_ul]:my-1.5',
+      '[&_ol_ol]:my-1.5',
+      'prose-blockquote:my-5',
+      'prose-pre:my-5',
+      'prose-figure:my-5',
+      'prose-hr:my-6',
+    ]) {
+      expect(longFormRichTextClasses).toContain(className)
+    }
+  })
+
+  it('keeps the compact preset dense while sharing semantic treatment', () => {
+    expect(compactRichTextClasses).toContain('text-sm')
+    expect(compactRichTextClasses).toContain('sm:text-base')
+    expect(compactRichTextClasses).toContain('prose-p:my-2')
+    expect(compactRichTextClasses).toContain('prose-li:my-1')
+    expect(compactRichTextClasses).toContain('[&_ul_ul]:my-2')
+    expect(compactRichTextClasses).toContain('prose-a:text-primary')
+    expect(compactRichTextClasses).toContain('prose-code:font-mono')
+
+    for (const className of [
+      'prose-h1:text-3xl',
+      'prose-h2:text-xl',
+      'prose-h3:text-lg',
+      'prose-h4:text-base',
+      'prose-h5:text-sm',
+      'prose-h6:text-xs',
+      'prose-h2:mt-4',
+      'prose-h3:mt-3',
+      'prose-h4:mt-3',
+      'prose-h5:mt-3',
+      'prose-h6:mt-3',
+    ]) {
+      expect(compactRichTextClasses).toContain(className)
+    }
+
+    expect(compactRichTextClasses).not.toContain('var(--font-display)')
+    expect(compactRichTextClasses).not.toContain('prose-h2:text-3xl')
+  })
+
+  it('is adopted by every long-form Lexical consumer', () => {
+    for (const path of [
+      'src/components/news-events/NewsEventStory.tsx',
+      'src/components/articles/ArticlePage.tsx',
+      'src/blocks/RichTextBlock/Component.tsx',
+    ]) {
+      expect(source(path)).toContain('longFormRichTextClasses')
+    }
+  })
+
+  it('uses the compact preset for Q&A answers', () => {
+    expect(source('src/blocks/QaAccordion/Component.tsx')).toContain('compactRichTextClasses')
+  })
+})
+
+describe('shared Lexical editor configuration', () => {
+  it('offers H2 through H6 while reserving H1 for page titles', () => {
+    const editorConfig = source('src/fields/bodyEditorConfig.ts')
+
+    expect(editorConfig).toContain(
+      "HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4', 'h5', 'h6'] })",
+    )
+    expect(editorConfig).toContain("export const bodyEditor = createProjectEditor('fixed')")
+    expect(editorConfig).toContain(
+      "export const embeddedContentEditor = createProjectEditor('inline')",
+    )
+  })
+
+  it('uses the explicit embedded editor for block-owned rich text fields', () => {
+    for (const path of ['src/blocks/RichTextBlock/config.ts', 'src/blocks/QaAccordion/config.ts']) {
+      const config = source(path)
+
+      expect(config).toContain("import { embeddedContentEditor } from '@/fields/bodyEditorConfig'")
+      expect(config).toContain('editor: embeddedContentEditor')
+      expect(config).not.toContain('lexicalEditor(')
+    }
+  })
+})

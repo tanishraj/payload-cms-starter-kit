@@ -1,56 +1,97 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { createElement } from 'react'
 
 const mocks = vi.hoisted(() => ({
+  auth: vi.fn(),
+  getDraftEventGalleryAlbums: vi.fn(),
+  getDraftSiteOfficeLocations: vi.fn(),
+  getEventGalleryAlbumIDsFromBlocks: vi.fn(),
   getNewsEventBySlug: vi.fn(),
   getNewsEventDetailMetadata: vi.fn(),
-  getNewsEventsArchiveMetadata: vi.fn(),
+  getNewsEventDetailTemplate: vi.fn(),
+  getNewsEventPreviewBySlug: vi.fn(),
+  getNewsEventStructuredData: vi.fn(),
   getNewsEventsInheritedRobots: vi.fn(),
-  getNewsEventsSettings: vi.fn(),
+  getPayload: vi.fn(),
+  loadNewsEventsPreviewSnapshot: vi.fn(),
+  loadReviewPreviewSnapshot: vi.fn(),
+  newsEventLivePreview: vi.fn(),
 }))
 
+vi.mock('@payload-config', () => ({ default: {} }))
+vi.mock('next/headers', () => ({ headers: vi.fn().mockResolvedValue(new Headers()) }))
+vi.mock('next/navigation', () => ({ notFound: vi.fn(() => new Error('Not found')) }))
+vi.mock('payload', () => ({ getPayload: mocks.getPayload }))
 vi.mock('@/components/live-preview/NewsEventLivePreview', () => ({
-  NewsEventLivePreview: () => null,
+  NewsEventLivePreview: (props: unknown) => {
+    mocks.newsEventLivePreview(props)
+    return createElement('div', { 'data-news-event-live-preview': 'true' })
+  },
 }))
-vi.mock('@/components/news-events/NewsEventStory', () => ({
-  NewsEventStory: () => null,
+vi.mock('@/components/news-events/NewsEventDetailPage', () => ({
+  NewsEventDetailPage: ({ entry }: { entry: { title: string } }) =>
+    createElement('div', null, entry.title),
 }))
-vi.mock('@/components/news-events/NewsEventsFeed', () => ({
-  NewsEventsFeed: () => null,
+vi.mock('@/lib/newsEventDetailTemplate', () => ({
+  getNewsEventDetailTemplate: mocks.getNewsEventDetailTemplate,
+}))
+vi.mock('@/lib/eventGallery', () => ({
+  getDraftEventGalleryAlbums: mocks.getDraftEventGalleryAlbums,
+}))
+vi.mock('@/lib/eventGalleryShared', () => ({
+  getEventGalleryAlbumIDsFromBlocks: mocks.getEventGalleryAlbumIDsFromBlocks,
 }))
 vi.mock('@/lib/newsEvents', () => ({
-  createEmptyNewsEventsPage: vi.fn(() => ({ docs: [] })),
   getNewsEventBySlug: mocks.getNewsEventBySlug,
-  getNewsEventCategories: vi.fn(),
-  getNewsEventPreviewBySlug: vi.fn(),
-  getNewsEventTags: vi.fn(),
-  getNewsEventsArchivePage: vi.fn(),
+  getNewsEventPreviewBySlug: mocks.getNewsEventPreviewBySlug,
   getNewsEventsInheritedRobots: mocks.getNewsEventsInheritedRobots,
-  getNewsEventsSettings: mocks.getNewsEventsSettings,
-  getPastEventsPage: vi.fn(),
-  getUpcomingEventsPage: vi.fn(),
 }))
 vi.mock('@/lib/newsEventsMetadata', () => ({
   getNewsEventDetailMetadata: mocks.getNewsEventDetailMetadata,
-  getNewsEventStructuredData: vi.fn(),
-  getNewsEventsArchiveMetadata: mocks.getNewsEventsArchiveMetadata,
+  getNewsEventStructuredData: mocks.getNewsEventStructuredData,
+}))
+vi.mock('@/lib/newsEventsPreviewSnapshot', () => ({
+  loadNewsEventsPreviewSnapshot: mocks.loadNewsEventsPreviewSnapshot,
+}))
+vi.mock('@/lib/reviewPreviewSnapshot', () => ({
+  loadReviewPreviewSnapshot: mocks.loadReviewPreviewSnapshot,
+}))
+vi.mock('@/lib/siteOffices', () => ({
+  getDraftSiteOfficeLocations: mocks.getDraftSiteOfficeLocations,
 }))
 
-import { generateMetadata as generateArchiveMetadata } from '@/app/(frontend)/news-events/page'
-import { generateMetadata as generateDetailMetadata } from '@/app/(frontend)/news-events/[slug]/page'
+import NewsEventEntryPage, {
+  generateMetadata as generateDetailMetadata,
+} from '@/app/(frontend)/news-events/[slug]/page'
 
 describe('News & Events metadata routes', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mocks.auth.mockResolvedValue({ user: { id: 'admin' } })
+    mocks.getPayload.mockResolvedValue({ auth: mocks.auth })
+    mocks.getDraftEventGalleryAlbums.mockResolvedValue([])
+    mocks.getDraftSiteOfficeLocations.mockResolvedValue([])
+    mocks.getEventGalleryAlbumIDsFromBlocks.mockReturnValue([])
     mocks.getNewsEventsInheritedRobots.mockResolvedValue('noindex,follow')
-  })
-
-  it('passes inherited robots to archive metadata', async () => {
-    const settings = { title: 'News & Events' }
-    mocks.getNewsEventsSettings.mockResolvedValue(settings)
-    mocks.getNewsEventsArchiveMetadata.mockReturnValue({ title: 'Archive metadata' })
-
-    await expect(generateArchiveMetadata()).resolves.toEqual({ title: 'Archive metadata' })
-    expect(mocks.getNewsEventsArchiveMetadata).toHaveBeenCalledWith(settings, 'noindex,follow')
+    mocks.getNewsEventDetailTemplate.mockResolvedValue({
+      layout: [
+        {
+          authorLabel: 'Management, SNMIH',
+          blockType: 'newsEventsContent',
+        },
+      ],
+    })
+    mocks.getNewsEventStructuredData.mockReturnValue({ '@type': 'NewsArticle' })
+    mocks.loadNewsEventsPreviewSnapshot.mockResolvedValue({
+      groupsByCount: {},
+      highlightsByCount: {},
+      newsGridByCount: {},
+    })
+    mocks.loadReviewPreviewSnapshot.mockResolvedValue({
+      feedPagesBySize: {},
+      ratingDistribution: null,
+    })
   })
 
   it('passes inherited robots to detail metadata', async () => {
@@ -65,5 +106,70 @@ describe('News & Events metadata routes', () => {
       }),
     ).resolves.toEqual({ title: 'Detail metadata' })
     expect(mocks.getNewsEventDetailMetadata).toHaveBeenCalledWith(entry, 'noindex,follow')
+  })
+
+  it('loads the shared template for production presentation and structured data', async () => {
+    const entry = { href: '/news-events/example', title: 'Example' }
+    mocks.getNewsEventBySlug.mockResolvedValue(entry)
+
+    const result = await NewsEventEntryPage({
+      params: Promise.resolve({ slug: 'example' }),
+      searchParams: Promise.resolve({}),
+    })
+    const markup = renderToStaticMarkup(result)
+
+    expect(mocks.getNewsEventDetailTemplate).toHaveBeenCalledOnce()
+    expect(mocks.getNewsEventStructuredData).toHaveBeenCalledWith(entry, 'Management, SNMIH')
+    expect(markup).toContain('Example')
+  })
+
+  it('server-loads detail preview snapshots and passes them to the client-safe renderer', async () => {
+    const entry = { id: 'entry-1', title: 'Draft example' }
+    const pageBlocks = [
+      { blockType: 'reviewFeed', pageSize: 6 },
+      { blockType: 'newsGrid', totalCards: 3 },
+      { blockType: 'contact24' },
+      { blockType: 'eventGallery', galleryAlbums: ['album-1'] },
+    ]
+    const template = {
+      layout: [...pageBlocks, { blockType: 'newsEventsContent' }],
+    }
+    const reviewSnapshot = { feedPagesBySize: { 6: { docs: [] } }, ratingDistribution: null }
+    const newsEventsSnapshot = {
+      groupsByCount: {},
+      highlightsByCount: {},
+      newsGridByCount: { 3: [] },
+    }
+    const officeLocations = [{ id: 'office-1', name: 'Main Office' }]
+    const eventGalleryAlbums = [{ id: 'album-1', title: 'Annual Day' }]
+    mocks.getNewsEventPreviewBySlug.mockResolvedValue(entry)
+    mocks.getNewsEventDetailTemplate.mockResolvedValue(template)
+    mocks.getEventGalleryAlbumIDsFromBlocks.mockReturnValue(['album-1'])
+    mocks.loadReviewPreviewSnapshot.mockResolvedValue(reviewSnapshot)
+    mocks.loadNewsEventsPreviewSnapshot.mockResolvedValue(newsEventsSnapshot)
+    mocks.getDraftSiteOfficeLocations.mockResolvedValue(officeLocations)
+    mocks.getDraftEventGalleryAlbums.mockResolvedValue(eventGalleryAlbums)
+
+    const result = await NewsEventEntryPage({
+      params: Promise.resolve({ slug: 'draft-example' }),
+      searchParams: Promise.resolve({ preview: 'true' }),
+    })
+    const markup = renderToStaticMarkup(result)
+
+    expect(mocks.getNewsEventPreviewBySlug).toHaveBeenCalledWith('draft-example')
+    expect(mocks.getNewsEventDetailTemplate).toHaveBeenCalledOnce()
+    expect(mocks.loadReviewPreviewSnapshot).toHaveBeenCalledWith(pageBlocks)
+    expect(mocks.loadNewsEventsPreviewSnapshot).toHaveBeenCalledWith(pageBlocks)
+    expect(mocks.getDraftSiteOfficeLocations).toHaveBeenCalledOnce()
+    expect(mocks.getDraftEventGalleryAlbums).toHaveBeenCalledWith(['album-1'])
+    expect(mocks.newsEventLivePreview.mock.calls.at(-1)?.[0]).toMatchObject({
+      eventGalleryAlbums,
+      initialData: entry,
+      initialTemplate: template,
+      newsEventsSnapshot,
+      officeLocations,
+      reviewSnapshot,
+    })
+    expect(markup).toContain('data-news-event-live-preview="true"')
   })
 })

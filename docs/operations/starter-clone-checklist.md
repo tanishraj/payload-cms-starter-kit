@@ -27,7 +27,7 @@ Use this checklist when copying the starter into a new client repository. The go
 - Confirm the published 404, maintenance, and coming-soon presets in `system-pages`, then select them in `system-mode-settings`.
 - Review default SEO values in `seo-settings`.
 - Review `analytics-settings` and `cookie-consent-settings` with the client's privacy owner.
-- Review `news-events-settings` archive labels, page size, appearance, and SEO.
+- Create and publish the root `news-events` Page, configure its Page SEO and appearance, and add the required News & Events listing blocks.
 - Create and publish Office Locations and Gallery Albums required by data-backed Page blocks.
 - Review admin users and editor capabilities before handing the project to a client team.
 

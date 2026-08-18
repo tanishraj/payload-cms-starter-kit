@@ -26,6 +26,7 @@ import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
 import { TestimonialSpotlightBlockComponent } from './TestimonialSpotlight/Component'
 import { BannerCtaBlockComponent } from './BannerCta/Component'
 import { NewsGridBlockComponent } from './NewsGrid/Component'
+import { NewsEventsTabsBlockComponent } from './NewsEventsTabs/Component'
 import { Cta39BlockComponent } from './Cta39/Component'
 import { TeamShowcaseBlockComponent } from './TeamShowcase/Component'
 import { PageBlockStack } from './PageBlockStack'
@@ -67,14 +68,14 @@ export type PageRenderContext = {
   page?: Page | null
 }
 
-type RenderArgs = {
+export type PageBlockRenderArgs = {
   automaticBreadcrumbs: ResolvedPageBreadcrumb[]
 }
 
-function renderSingleBlock(
+export function renderPageBlockNode(
   block: PageBlock,
   index: number,
-  args: RenderArgs,
+  args: PageBlockRenderArgs,
   depth = 0,
 ): React.ReactNode {
   if (depth > 10) return null
@@ -141,6 +142,8 @@ function renderSingleBlock(
       return wrap(<Services21BlockComponent {...block} />)
     case 'newsGrid':
       return wrap(<NewsGridBlockComponent {...block} />)
+    case 'newsEventsTabs':
+      return wrap(<NewsEventsTabsBlockComponent {...block} />)
     case 'bannerCta':
       return wrap(<BannerCtaBlockComponent {...block} />)
     case 'cta39':
@@ -196,7 +199,7 @@ function renderSingleBlock(
       if (!innerBlocks.length) return null
       return (
         <React.Fragment key={key}>
-          {innerBlocks.map((inner, i) => renderSingleBlock(inner, i, args, depth + 1))}
+          {innerBlocks.map((inner, i) => renderPageBlockNode(inner, i, args, depth + 1))}
         </React.Fragment>
       )
     }
@@ -210,7 +213,7 @@ export function renderPageBlocks(blocks?: PageBlock[] | null, context: PageRende
     return null
   }
 
-  const args: RenderArgs = {
+  const args: PageBlockRenderArgs = {
     automaticBreadcrumbs: context.page
       ? resolveAutomaticPageBreadcrumbs(context.page, { isHomepage: context.isHomepage })
       : [],
@@ -218,7 +221,7 @@ export function renderPageBlocks(blocks?: PageBlock[] | null, context: PageRende
 
   return (
     <PageBlockStack>
-      {blocks.map((block, index) => renderSingleBlock(block, index, args))}
+      {blocks.map((block, index) => renderPageBlockNode(block, index, args))}
     </PageBlockStack>
   )
 }

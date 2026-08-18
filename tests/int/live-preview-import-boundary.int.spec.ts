@@ -4,7 +4,11 @@ import ts from 'typescript'
 import { describe, expect, it } from 'vitest'
 
 const projectRoot = process.cwd()
-const entryPath = path.join(projectRoot, 'src/components/live-preview/PageLivePreview.tsx')
+const pageEntryPath = path.join(projectRoot, 'src/components/live-preview/PageLivePreview.tsx')
+const newsEventEntryPath = path.join(
+  projectRoot,
+  'src/components/live-preview/NewsEventLivePreview.tsx',
+)
 const extensions = ['', '.ts', '.tsx', '.js', '.jsx'] as const
 
 const resolveLocalImport = (fromPath: string, specifier: string): string | null => {
@@ -100,16 +104,32 @@ const collectReachableRuntimeModules = (entry: string): Set<string> => {
   )
 }
 
+const expectNoServerOnlyModules = (reachablePaths: Set<string>) => {
+  for (const reachablePath of reachablePaths) {
+    const source = readFileSync(path.join(projectRoot, reachablePath), 'utf8')
+
+    expect(source, `${reachablePath} imported server-only`).not.toContain("import 'server-only'")
+  }
+}
+
 describe('live-preview client import boundary', () => {
-  it('uses the client-safe renderer', () => {
-    const source = readFileSync(entryPath, 'utf8')
+  it('keeps Page preview on the client-safe renderer', () => {
+    const source = readFileSync(pageEntryPath, 'utf8')
 
     expect(source).toContain("from '@/blocks/renderLivePreviewPageBlocks'")
     expect(source).not.toContain("from '@/blocks/renderPageBlocks'")
   })
 
-  it('cannot reach Payload-backed review or news modules', () => {
-    const reachablePaths = collectReachableRuntimeModules(entryPath)
+  it('keeps News Event preview off the production detail and Page renderers', () => {
+    const source = readFileSync(newsEventEntryPath, 'utf8')
+
+    expect(source).toContain("from '@/blocks/renderLivePreviewNewsEventDetailBlocks'")
+    expect(source).not.toContain("from '@/components/news-events/NewsEventDetailPage'")
+    expect(source).not.toContain("from '@/blocks/renderPageBlocks'")
+  })
+
+  it('keeps Page preview from reaching Payload-backed modules', () => {
+    const reachablePaths = collectReachableRuntimeModules(pageEntryPath)
 
     for (const serverPath of [
       'src/payload.config.ts',
@@ -125,6 +145,33 @@ describe('live-preview client import boundary', () => {
       expect(reachablePaths.has(serverPath), `${serverPath} entered the client graph`).toBe(false)
     }
 
+    expectNoServerOnlyModules(reachablePaths)
     expect(reachablePaths.has('src/lib/eventGalleryShared.ts')).toBe(true)
+  })
+
+  it('keeps News Event preview from reaching production or server-only modules', () => {
+    const reachablePaths = collectReachableRuntimeModules(newsEventEntryPath)
+
+    for (const serverPath of [
+      'src/payload.config.ts',
+      'src/blocks/renderPageBlocks.tsx',
+      'src/blocks/renderNewsEventDetailBlocks.tsx',
+      'src/components/news-events/NewsEventDetailPage.tsx',
+      'src/lib/reviewFeed.ts',
+      'src/lib/reviewRatingSummary.ts',
+      'src/blocks/ReviewFeed/Component.tsx',
+      'src/blocks/RatingSpotlight/Component.tsx',
+      'src/lib/newsEvents.ts',
+      'src/blocks/NewsGrid/Component.tsx',
+      'src/blocks/NewsEventsHighlights/Component.tsx',
+      'src/lib/siteOffices.ts',
+      'src/lib/eventGallery.ts',
+    ]) {
+      expect(reachablePaths.has(serverPath), `${serverPath} entered the client graph`).toBe(false)
+    }
+
+    expectNoServerOnlyModules(reachablePaths)
+    expect(reachablePaths.has('src/blocks/renderLivePreviewPageBlocks.tsx')).toBe(true)
+    expect(reachablePaths.has('src/blocks/NewsEventsContent/Component.tsx')).toBe(true)
   })
 })

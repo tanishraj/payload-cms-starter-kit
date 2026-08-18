@@ -1,7 +1,9 @@
 import type { CollectionBeforeChangeHook } from 'payload'
 
+import { isEventClassification } from '@/lib/newsEventClassifications'
+
 export const normalizeNewsEventFields: CollectionBeforeChangeHook = async ({ data }) => {
-  if (!data || data.contentType !== 'news') {
+  if (!data || isEventClassification(data.contentType)) {
     return data
   }
 

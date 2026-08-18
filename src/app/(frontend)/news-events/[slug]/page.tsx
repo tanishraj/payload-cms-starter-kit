@@ -5,13 +5,23 @@ import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 
 import { NewsEventLivePreview } from '@/components/live-preview/NewsEventLivePreview'
-import { NewsEventStory } from '@/components/news-events/NewsEventStory'
+import { NewsEventDetailPage } from '@/components/news-events/NewsEventDetailPage'
+import { getDraftEventGalleryAlbums } from '@/lib/eventGallery'
+import { getEventGalleryAlbumIDsFromBlocks } from '@/lib/eventGalleryShared'
+import { getNewsEventDetailTemplate } from '@/lib/newsEventDetailTemplate'
+import {
+  getNewsEventDetailAuthorLabel,
+  getNewsEventDetailPageBlocks,
+} from '@/lib/newsEventDetailTemplateShared'
 import {
   getNewsEventBySlug,
   getNewsEventPreviewBySlug,
   getNewsEventsInheritedRobots,
 } from '@/lib/newsEvents'
 import { getNewsEventDetailMetadata, getNewsEventStructuredData } from '@/lib/newsEventsMetadata'
+import { loadNewsEventsPreviewSnapshot } from '@/lib/newsEventsPreviewSnapshot'
+import { loadReviewPreviewSnapshot } from '@/lib/reviewPreviewSnapshot'
+import { getDraftSiteOfficeLocations } from '@/lib/siteOffices'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -23,10 +33,7 @@ export async function generateStaticParams() {
     pagination: false,
     select: { slug: true },
     where: {
-      and: [
-        { _status: { equals: 'published' } },
-        { workflowState: { equals: 'published' } },
-      ],
+      and: [{ _status: { equals: 'published' } }, { workflowState: { equals: 'published' } }],
     },
   })
   return result.docs.map((entry) => ({ slug: entry.slug }))
@@ -61,16 +68,45 @@ export default async function NewsEventEntryPage({ params, searchParams }: PageP
 
     if (!user) notFound()
 
-    const draftEntry = await getNewsEventPreviewBySlug(slug)
+    const [draftEntry, template] = await Promise.all([
+      getNewsEventPreviewBySlug(slug),
+      getNewsEventDetailTemplate(),
+    ])
     if (!draftEntry) notFound()
 
-    return <NewsEventLivePreview initialData={draftEntry} nowISO={nowISO} />
+    const pageBlocks = getNewsEventDetailPageBlocks(template)
+    const hasContact24 = pageBlocks.some((block) => block.blockType === 'contact24')
+    const selectedEventGalleryAlbumIDs = getEventGalleryAlbumIDsFromBlocks(pageBlocks)
+    const [reviewSnapshot, newsEventsSnapshot, officeLocations, eventGalleryAlbums] =
+      await Promise.all([
+        loadReviewPreviewSnapshot(pageBlocks),
+        loadNewsEventsPreviewSnapshot(pageBlocks),
+        hasContact24 ? getDraftSiteOfficeLocations() : Promise.resolve([]),
+        selectedEventGalleryAlbumIDs.length
+          ? getDraftEventGalleryAlbums(selectedEventGalleryAlbumIDs)
+          : Promise.resolve([]),
+      ])
+
+    return (
+      <NewsEventLivePreview
+        eventGalleryAlbums={eventGalleryAlbums}
+        initialData={draftEntry}
+        initialTemplate={template}
+        newsEventsSnapshot={newsEventsSnapshot}
+        nowISO={nowISO}
+        officeLocations={officeLocations}
+        reviewSnapshot={reviewSnapshot}
+      />
+    )
   }
 
-  const entry = await getNewsEventBySlug(slug, nowISO)
+  const [entry, template] = await Promise.all([
+    getNewsEventBySlug(slug, nowISO),
+    getNewsEventDetailTemplate(),
+  ])
   if (!entry) notFound()
 
-  const structuredData = getNewsEventStructuredData(entry)
+  const structuredData = getNewsEventStructuredData(entry, getNewsEventDetailAuthorLabel(template))
 
   return (
     <>
@@ -80,7 +116,7 @@ export default async function NewsEventEntryPage({ params, searchParams }: PageP
         }}
         type="application/ld+json"
       />
-      <NewsEventStory entry={entry} />
+      <NewsEventDetailPage entry={entry} template={template} />
     </>
   )
 }

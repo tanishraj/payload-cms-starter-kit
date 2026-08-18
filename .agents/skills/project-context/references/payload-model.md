@@ -23,14 +23,14 @@ Nine globals are registered:
 4. AnalyticsSettings — GTM or GA4 configuration.
 5. CookieConsentSettings — banner enablement, variants, placement, copy.
 6. PageSettings — homepage, header/footer presets, announcement, Page defaults.
-7. NewsEventsSettings — archive content, pagination, appearance, empty state, SEO.
+7. NewsEventsDetailTemplate — ordered Page-compatible News/Event detail layout plus one global-only dynamic content block.
 8. SearchSettings — up to 12 operator-managed suggested search terms.
 9. SystemModeSettings — off, maintenance, or coming-soon behavior and referenced presets.
 
 ## Ownership and Relationships
 
-- Pages own hierarchical public routes and composed layouts. Parent validation prevents cycles; hooks populate URL previews, synchronize links, create redirects after path changes, and revalidate caches.
-- Articles, NewsEvents, and Reviews own their detail content, taxonomy, SEO, editorial state, and preview behavior.
+- Pages own hierarchical public routes and composed layouts, including the Page-backed `/news-events` index. Parent validation prevents cycles; hooks populate URL previews, synchronize links, create redirects after path changes, and revalidate caches.
+- Articles, NewsEvents, and Reviews own their detail content, taxonomy, SEO, editorial state, and preview behavior. Every NewsEvents record has exactly one of seven classifications: `news`, `event`, `notice`, `holiday`, `achievement`, `announcement`, or `other`; only `event` retains event dates, location, and registration fields. NewsEventsDetailTemplate owns the shared ordered Page-block composition. Its global-only `newsEventsContent` block binds the current entry and owns article/sidebar appearance, image ratio and shared overlay settings, share visibility, and public author label. Published templates require exactly one dynamic block; drafts may remain incomplete. The retained legacy entry Byline is hidden and ignored publicly.
 - ReusableSections own shared block stacks. Direct recursive selection is excluded; renderers stop nesting after depth 10.
 - NavigationLinks provide reusable destinations and page-synchronized records. Headers and Footers provide versioned shell presets.
 - SystemPages pair one type with its matching block and are referenced from system modes.

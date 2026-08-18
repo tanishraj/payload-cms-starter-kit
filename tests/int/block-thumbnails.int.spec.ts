@@ -105,9 +105,16 @@ describe('block thumbnail metadata', () => {
       stageAlignment: 'top',
     })
     expect(getBlockThumbnailDefinition('newsEventsHighlights')).toMatchObject({
+      alt: 'News & Events Highlights block preview',
       filename: 'news-events-highlights.jpg',
       label: 'News & Events Highlights',
       slug: 'newsEventsHighlights',
+      stageAlignment: 'top',
+    })
+    expect(getBlockThumbnailDefinition('newsEventsTabs')).toMatchObject({
+      filename: 'news-events-tabs.jpg',
+      label: 'News & Events Tabs',
+      slug: 'newsEventsTabs',
       stageAlignment: 'top',
     })
     expect(getBlockThumbnailDefinition('featureSpotlight')).toMatchObject({

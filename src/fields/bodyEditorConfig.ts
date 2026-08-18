@@ -8,6 +8,7 @@ import {
   HorizontalRuleFeature,
   IndentFeature,
   InlineCodeFeature,
+  InlineToolbarFeature,
   ItalicFeature,
   lexicalEditor,
   LinkFeature,
@@ -20,51 +21,43 @@ import {
 } from '@payloadcms/richtext-lexical'
 
 /**
- * Shared Lexical editor for article/news-event body fields.
- *
- * Includes a fixed top toolbar plus the full set of writing-focused features:
- * headings H2–H4, inline formatting, lists, blockquote, links, inline images,
- * horizontal rule, alignment, and indentation.
- *
- * H1 is intentionally excluded — the document title field serves that role.
- * Font-family, font-size, and colour pickers are excluded to keep the writing
- * experience clean and consistent with the site's typography system.
+ * Project-owned editors share one writing feature set. H1 remains reserved for
+ * the surrounding document title; toolbar variants change only the Admin UI.
  */
-export const bodyEditor = lexicalEditor({
-  admin: {
-    hideGutter: true,
-    hideAddBlockButton: true,
-    hideDraggableBlockElement: true,
-    hideInsertParagraphAtEnd: true,
-  },
-  features: [
-    // Structure
-    ParagraphFeature(),
-    HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
-    BlockquoteFeature(),
-    HorizontalRuleFeature(),
+type ProjectEditorToolbar = 'fixed' | 'inline'
 
-    // Inline formatting
-    BoldFeature(),
-    ItalicFeature(),
-    UnderlineFeature(),
-    StrikethroughFeature(),
-    InlineCodeFeature(),
+const createProjectEditor = (toolbar: ProjectEditorToolbar) =>
+  lexicalEditor({
+    ...(toolbar === 'fixed'
+      ? {
+          admin: {
+            hideGutter: true,
+            hideAddBlockButton: true,
+            hideDraggableBlockElement: true,
+            hideInsertParagraphAtEnd: true,
+          },
+        }
+      : {}),
+    features: [
+      ParagraphFeature(),
+      HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4', 'h5', 'h6'] }),
+      BlockquoteFeature(),
+      HorizontalRuleFeature(),
+      BoldFeature(),
+      ItalicFeature(),
+      UnderlineFeature(),
+      StrikethroughFeature(),
+      InlineCodeFeature(),
+      OrderedListFeature(),
+      UnorderedListFeature(),
+      ChecklistFeature(),
+      LinkFeature({ enabledCollections: ['pages'] }),
+      UploadFeature({ enabledCollections: ['media'] }),
+      AlignFeature(),
+      IndentFeature(),
+      toolbar === 'fixed' ? FixedToolbarFeature() : InlineToolbarFeature(),
+    ],
+  })
 
-    // Lists
-    OrderedListFeature(),
-    UnorderedListFeature(),
-    ChecklistFeature(),
-
-    // Links & media
-    LinkFeature({ enabledCollections: ['pages'] }),
-    UploadFeature({ enabledCollections: ['media'] }),
-
-    // Layout
-    AlignFeature(),
-    IndentFeature(),
-
-    // FixedToolbarFeature renders the persistent top bar (always visible)
-    FixedToolbarFeature(),
-  ],
-})
+export const bodyEditor = createProjectEditor('fixed')
+export const embeddedContentEditor = createProjectEditor('inline')

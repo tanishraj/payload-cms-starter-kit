@@ -38,7 +38,7 @@ Resolve the source condition first, then allow synchronization to update the que
 
 ## Audit Coverage
 
-The Audit Log records selected high-value actions for governed editorial collections, Reusable Sections, Layout Defaults, News & Events Settings, Maintenance & Modes, Action Queue operator changes, and Media deletion/storage transitions. It is not an immutable record of every field change, user change, or delete across the database.
+The Audit Log records selected high-value actions for governed editorial collections, Reusable Sections, Layout Defaults, Maintenance & Modes, Action Queue operator changes, and Media deletion/storage transitions. It is not an immutable record of every field change, user change, or delete across the database.
 
 ## High-Risk Surfaces
 

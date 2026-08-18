@@ -1,8 +1,9 @@
 import 'server-only'
 
-import { getNewsEventsHighlights, getNewsGridItems } from '@/lib/newsEvents'
+import { getNewsEventGroups, getNewsEventsHighlights, getNewsGridItems } from '@/lib/newsEvents'
 import {
   getNewsEventsPreviewItemCounts,
+  getNewsEventsTabsPreviewGroupCounts,
   getNewsGridPreviewItemCounts,
   type NewsEventsPreviewSnapshot,
 } from '@/lib/newsEventsPreviewShared'
@@ -26,8 +27,16 @@ export async function loadNewsEventsPreviewSnapshot(
       return [String(count), items] as const
     }),
   )
+  const groupEntries = await Promise.all(
+    getNewsEventsTabsPreviewGroupCounts(layout).map(async (count) => {
+      const groups = await getNewsEventGroups(count, nowISO)
+
+      return [String(count), groups] as const
+    }),
+  )
 
   return {
+    groupsByCount: Object.fromEntries(groupEntries),
     highlightsByCount: Object.fromEntries(highlightEntries),
     newsGridByCount: Object.fromEntries(newsGridEntries),
   }

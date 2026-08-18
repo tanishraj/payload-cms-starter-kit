@@ -30,13 +30,14 @@ describe('block surface semantics', () => {
     expect(read(file)).toContain('text-current')
   })
 
-  it.each([
-    'src/components/news-events/NewsEventsHighlights.tsx',
-  ])('%s pairs card backgrounds with card foregrounds', (file) => {
-    const source = read(file)
+  it.each(['src/components/news-events/NewsEventsFeaturedCarouselClient.tsx'])(
+    '%s pairs card backgrounds with card foregrounds',
+    (file) => {
+      const source = read(file)
 
-    expect(source).toMatch(/bg-card[^"']*text-card-foreground|text-card-foreground[^"']*bg-card/)
-  })
+      expect(source).toMatch(/bg-card[^"']*text-card-foreground|text-card-foreground[^"']*bg-card/)
+    },
+  )
 
   it.each([
     'src/blocks/TestimonialGrid/Component.tsx',
