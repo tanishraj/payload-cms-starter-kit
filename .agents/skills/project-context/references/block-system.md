@@ -74,8 +74,10 @@ feature card. Editors can place the carousel status and previous/next controls a
 carousel; Bottom remains the default and legacy fallback.
 From tablet widths, the featured panel and vertical rail share a 36rem height. Three equal supporting
 cards, separated by consistent gaps, fill that height; card titles use one line and descriptions use
-two lines. The rail centers card content vertically and keeps end-card outlines inside the viewport.
-Phone widths retain the horizontal supporting-card rail below the feature.
+two lines. Each vertical slide, button, and card surface spans its complete allocated width and
+height, so sparse supporting content cannot shrink the visible card. The rail centers card content
+vertically and keeps end-card outlines inside the viewport. Phone widths retain the horizontal
+supporting-card rail below the feature.
 The separate News & Events Tabs block renders Card Grid or Editorial List entries with a
 mandatory first All tab and an editor-ordered subset of the seven classification tabs. Editors can
 rename classification tab labels, while duplicate classifications are rejected. Legacy blocks fall

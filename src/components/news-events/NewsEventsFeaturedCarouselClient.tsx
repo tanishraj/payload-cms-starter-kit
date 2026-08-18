@@ -57,7 +57,7 @@ function RailCard({ active, item }: { active: boolean; item: FeaturedHighlightIt
   return (
     <Card
       className={cn(
-        'h-full justify-center gap-0 overflow-hidden rounded-[var(--radius)] bg-card py-0 text-left text-card-foreground shadow-none ring-1 ring-inset transition-colors motion-reduce:transition-none',
+        'h-full w-full justify-center gap-0 overflow-hidden rounded-[var(--radius)] bg-card py-0 text-left text-card-foreground shadow-none ring-1 ring-inset transition-colors motion-reduce:transition-none',
         active ? 'ring-primary' : 'ring-border hover:bg-muted/50',
       )}
       data-news-events-carousel-rail-card="true"
@@ -123,7 +123,9 @@ function Rail({
         {items.map((item, index) => (
           <CarouselItem
             className={
-              isVertical ? 'basis-[calc((100%_-_2rem)/3)] pt-0' : 'basis-[88%] sm:basis-[58%]'
+              isVertical
+                ? 'w-full basis-[calc((100%_-_2rem)/3)] pt-0'
+                : 'basis-[88%] sm:basis-[58%]'
             }
             key={`${orientation}-${item.id}`}
           >

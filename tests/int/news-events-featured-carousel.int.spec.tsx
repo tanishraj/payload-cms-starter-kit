@@ -345,11 +345,29 @@ describe('NewsEventsFeaturedCarouselClient', () => {
       <NewsEventsFeaturedCarouselClient autoplay={false} items={[minimalItem]} />,
     )
 
+    const verticalContent = container.querySelector('[data-news-events-carousel-rail="vertical"]')
+    const verticalSlide = verticalContent?.querySelector('[data-slot="carousel-item"]')
+    const verticalButton = verticalSlide?.querySelector('[data-slot="button"]')
+    const verticalCard = verticalSlide?.querySelector(
+      '[data-news-events-carousel-rail-card="true"]',
+    )
+    const horizontalContent = container.querySelector(
+      '[data-news-events-carousel-rail="horizontal"]',
+    )
+    const horizontalButton = horizontalContent?.querySelector('[data-slot="button"]')
+
     expect(screen.getByRole('heading', { name: 'Minimal highlight' })).toBeTruthy()
     expect(container.querySelector('.lucide-calendar-days')).toBeNull()
     expect(container.querySelector('[data-slot="badge"]')).toBeNull()
     expect(container.querySelector('[data-content-link="true"]')).toBeNull()
     expect(container.querySelector('[data-slot="card-content"]')).toBeNull()
+    expect(verticalSlide?.className).toContain('w-full')
+    expect(verticalButton?.className).toContain('h-full')
+    expect(verticalButton?.className).toContain('w-full')
+    expect(verticalCard?.className).toContain('h-full')
+    expect(verticalCard?.className).toContain('w-full')
+    expect(horizontalButton?.className).toContain('h-auto')
+    expect(horizontalButton?.className).toContain('w-full')
   })
 
   it('applies block-wide image positioning and overlay settings', () => {
