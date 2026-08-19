@@ -20,6 +20,7 @@ import { Cta39Block } from '@/blocks/Cta39/config'
 import { DownloadListBlock } from '@/blocks/DownloadList/config'
 import { EditorialReasonsBlock } from '@/blocks/EditorialReasons/config'
 import { EventGalleryBlock } from '@/blocks/EventGallery/config'
+import { GalleryAlbumTabsBlock } from '@/blocks/GalleryAlbumTabs/config'
 import { FeatureMatrixBlock } from '@/blocks/FeatureMatrix/config'
 import { FeatureSpotlightBlock } from '@/blocks/FeatureSpotlight/config'
 import { GalleryCoverflowBlock } from '@/blocks/GalleryCoverflow/config'
@@ -93,6 +94,7 @@ const detailTemplateBlocks = [
   ProfileCarouselBlock,
   GalleryShowcaseBlock,
   EventGalleryBlock,
+  GalleryAlbumTabsBlock,
   StudyPathwaysBlock,
   ImageMosaicBlock,
   StudentExperienceBlock,

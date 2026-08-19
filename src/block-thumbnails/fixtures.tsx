@@ -36,6 +36,7 @@ import { SystemComingSoonBlockComponent } from '@/blocks/SystemComingSoon/Compon
 import { SystemMaintenanceBlockComponent } from '@/blocks/SystemMaintenance/Component'
 import { Contact24 } from '@/components/contact24'
 import { EventGallery } from '@/components/event-gallery'
+import { GalleryAlbumTabsBlockPresentation } from '@/blocks/GalleryAlbumTabs/Presentation'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
 import type { PublicNewsEventCard, PublicNewsEventPage } from '@/lib/newsEventsShared'
 import type { Form, Media, RichTextBlock } from '@/payload-types'
@@ -1067,6 +1068,98 @@ export const blockThumbnailFixtures = {
       size="compact"
       themeMode="dark"
       title="Event gallery"
+    />
+  ),
+  galleryAlbumTabs: (
+    <GalleryAlbumTabsBlockPresentation
+      albums={[
+        {
+          cover: {
+            alt: 'Learning environment',
+            height: 900,
+            id: 'tabs-campus-1',
+            mediaID: 'tabs-campus-media-1',
+            src: editorialLandscape,
+            width: 1600,
+          },
+          createdAt: '2026-07-25T00:00:00.000Z',
+          id: 'tabs-campus',
+          imageCount: 3,
+          images: [
+            {
+              alt: 'Learning environment',
+              height: 900,
+              id: 'tabs-campus-1',
+              mediaID: 'tabs-campus-media-1',
+              src: editorialLandscape,
+              width: 1600,
+            },
+            {
+              alt: 'Collaborative learning',
+              height: 900,
+              id: 'tabs-campus-2',
+              mediaID: 'tabs-campus-media-2',
+              src: collaboration,
+              width: 1600,
+            },
+            {
+              alt: 'Community portrait',
+              height: 1200,
+              id: 'tabs-campus-3',
+              mediaID: 'tabs-campus-media-3',
+              src: portrait,
+              width: 900,
+            },
+          ],
+          title: 'Campus Life',
+        },
+        {
+          cover: {
+            alt: 'Community gathering',
+            height: 900,
+            id: 'tabs-events-1',
+            mediaID: 'tabs-events-media-1',
+            src: collaboration,
+            width: 1600,
+          },
+          createdAt: '2026-07-20T00:00:00.000Z',
+          id: 'tabs-events',
+          imageCount: 3,
+          images: [
+            {
+              alt: 'Community gathering',
+              height: 900,
+              id: 'tabs-events-1',
+              mediaID: 'tabs-events-media-1',
+              src: collaboration,
+              width: 1600,
+            },
+            {
+              alt: 'Campus landscape',
+              height: 900,
+              id: 'tabs-events-2',
+              mediaID: 'tabs-events-media-2',
+              src: editorialLandscape,
+              width: 1600,
+            },
+            {
+              alt: 'Student community',
+              height: 1200,
+              id: 'tabs-events-3',
+              mediaID: 'tabs-events-media-3',
+              src: portrait,
+              width: 900,
+            },
+          ],
+          title: 'Events',
+        },
+      ]}
+      description="Choose an album to explore photographs from campus life and community events."
+      eyebrow="Photo stories"
+      imagesPerLoad="6"
+      size="compact"
+      tabVariant="underline"
+      title="Explore our gallery"
     />
   ),
   imageMosaic: (

@@ -214,6 +214,7 @@ export interface Page {
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
         | EventGalleryBlock
+        | GalleryAlbumTabsBlock
         | StudyPathwaysBlock
         | ImageMosaicBlock
         | StudentExperienceBlock
@@ -683,6 +684,10 @@ export interface NewsEventsTabsBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand'
     border: 'none' | 'top' | 'bottom' | 'topAndBottom'
   }
+  /**
+   * Choose a contained, pill-shaped, or minimal underline tab treatment.
+   */
+  tabVariant: 'contained' | 'pill' | 'underline'
   /**
    * Choose cards or a full-width editorial list for the tab results.
    */
@@ -1866,6 +1871,100 @@ export interface GalleryAlbum {
   createdAt: string
   deletedAt?: string | null
   _status?: ('draft' | 'published') | null
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryAlbumTabsBlock".
+ */
+export interface GalleryAlbumTabsBlock {
+  /**
+   * Small label above the optional section heading.
+   */
+  eyebrow?: string | null
+  /**
+   * Optional. Album tabs can render without a section heading.
+   */
+  title?: string | null
+  accentTitle?: string | null
+  description?: string | null
+  actions?:
+    | {
+        label: string
+        linkType?: ('page' | 'custom') | null
+        page?: (string | null) | Page
+        url?: string | null
+        openInNewTab?: boolean | null
+        mode?: ('link' | 'button') | null
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?:
+          ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null
+        id?: string | null
+      }[]
+    | null
+  /**
+   * Select albums to create visitor tabs. Album titles become tab labels; drag selections to control Manual order.
+   */
+  galleryAlbums: (string | GalleryAlbum)[]
+  displayOrder: 'latestEventDate' | 'manual'
+  /**
+   * The mandatory first tab. Leave blank to use “All”.
+   */
+  allTabLabel?: string | null
+  /**
+   * Number of images shown initially and revealed by each Load More action.
+   */
+  imagesPerLoad: '6' | '9' | '12'
+  loadMoreLabel?: string | null
+  /**
+   * Shown when selected published albums contain no usable images.
+   */
+  emptyStateMessage?: string | null
+  footerActions?:
+    | {
+        label: string
+        linkType?: ('page' | 'custom') | null
+        page?: (string | null) | Page
+        url?: string | null
+        openInNewTab?: boolean | null
+        mode?: ('link' | 'button') | null
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?:
+          ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null
+        id?: string | null
+      }[]
+    | null
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand'
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom'
+  }
+  /**
+   * Choose a contained, pill-shaped, or minimal underline tab treatment.
+   */
+  tabVariant: 'contained' | 'pill' | 'underline'
+  /**
+   * Header actions only sit beside the heading when aligned left.
+   */
+  contentAlignment?: ('left' | 'center') | null
+  /**
+   * Aligns header actions against the content when they appear beside the heading.
+   */
+  headerActionAlignment?: ('center' | 'top' | 'bottom') | null
+  size: 'none' | 'compact' | 'default' | 'comfortable'
+  id?: string | null
+  blockName?: string | null
+  blockType: 'galleryAlbumTabs'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -4758,6 +4857,7 @@ export interface ReusableSection {
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
         | EventGalleryBlock
+        | GalleryAlbumTabsBlock
         | StudyPathwaysBlock
         | ImageMosaicBlock
         | StudentExperienceBlock
@@ -6089,6 +6189,7 @@ export interface PagesSelect<T extends boolean = true> {
         profileCarousel?: T | ProfileCarouselBlockSelect<T>
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>
         eventGallery?: T | EventGalleryBlockSelect<T>
+        galleryAlbumTabs?: T | GalleryAlbumTabsBlockSelect<T>
         studyPathways?: T | StudyPathwaysBlockSelect<T>
         imageMosaic?: T | ImageMosaicBlockSelect<T>
         studentExperience?: T | StudentExperienceBlockSelect<T>
@@ -6344,6 +6445,7 @@ export interface NewsEventsTabsBlockSelect<T extends boolean = true> {
         background?: T
         border?: T
       }
+  tabVariant?: T
   layoutStyle?: T
   cardsPerRow?: T
   contentAlignment?: T
@@ -7132,6 +7234,60 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
   overlayDirection?: T
   overlayCoverage?: T
   contentAlignment?: T
+  size?: T
+  id?: T
+  blockName?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryAlbumTabsBlock_select".
+ */
+export interface GalleryAlbumTabsBlockSelect<T extends boolean = true> {
+  eyebrow?: T
+  title?: T
+  accentTitle?: T
+  description?: T
+  actions?:
+    | T
+    | {
+        label?: T
+        linkType?: T
+        page?: T
+        url?: T
+        openInNewTab?: T
+        mode?: T
+        variant?: T
+        showArrow?: T
+        id?: T
+      }
+  galleryAlbums?: T
+  displayOrder?: T
+  allTabLabel?: T
+  imagesPerLoad?: T
+  loadMoreLabel?: T
+  emptyStateMessage?: T
+  footerActions?:
+    | T
+    | {
+        label?: T
+        linkType?: T
+        page?: T
+        url?: T
+        openInNewTab?: T
+        mode?: T
+        variant?: T
+        showArrow?: T
+        id?: T
+      }
+  appearance?:
+    | T
+    | {
+        background?: T
+        border?: T
+      }
+  tabVariant?: T
+  contentAlignment?: T
+  headerActionAlignment?: T
   size?: T
   id?: T
   blockName?: T
@@ -9143,6 +9299,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         profileCarousel?: T | ProfileCarouselBlockSelect<T>
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>
         eventGallery?: T | EventGalleryBlockSelect<T>
+        galleryAlbumTabs?: T | GalleryAlbumTabsBlockSelect<T>
         studyPathways?: T | StudyPathwaysBlockSelect<T>
         imageMosaic?: T | ImageMosaicBlockSelect<T>
         studentExperience?: T | StudentExperienceBlockSelect<T>
@@ -10127,6 +10284,7 @@ export interface NewsEventsDetailTemplate {
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
         | EventGalleryBlock
+        | GalleryAlbumTabsBlock
         | StudyPathwaysBlock
         | ImageMosaicBlock
         | StudentExperienceBlock
@@ -10408,6 +10566,7 @@ export interface NewsEventsDetailTemplateSelect<T extends boolean = true> {
         profileCarousel?: T | ProfileCarouselBlockSelect<T>
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>
         eventGallery?: T | EventGalleryBlockSelect<T>
+        galleryAlbumTabs?: T | GalleryAlbumTabsBlockSelect<T>
         studyPathways?: T | StudyPathwaysBlockSelect<T>
         imageMosaic?: T | ImageMosaicBlockSelect<T>
         studentExperience?: T | StudentExperienceBlockSelect<T>

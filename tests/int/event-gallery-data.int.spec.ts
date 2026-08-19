@@ -55,6 +55,10 @@ describe('event gallery data path', () => {
           galleryAlbums: ['album-3', 'album-2'],
         },
         {
+          blockType: 'galleryAlbumTabs',
+          galleryAlbums: ['album-5', 'album-3'],
+        },
+        {
           blockType: 'imageMosaic',
           contentSource: 'manualImages',
           galleryAlbums: ['ignored-manual'],
@@ -68,6 +72,10 @@ describe('event gallery data path', () => {
                 contentSource: 'galleryAlbums',
                 galleryAlbums: [{ id: 'album-4' }],
               },
+              {
+                blockType: 'galleryAlbumTabs',
+                galleryAlbums: [{ id: 'album-6' }],
+              },
             ],
           },
         },
@@ -75,7 +83,7 @@ describe('event gallery data path', () => {
         cyclicSection,
         null,
       ]),
-    ).toEqual(['album-2', 'album-1', 'album-3', 'album-4'])
+    ).toEqual(['album-2', 'album-1', 'album-3', 'album-5', 'album-4', 'album-6'])
   })
 
   it('preserves relationship order in manual mode', () => {
@@ -189,10 +197,14 @@ describe('event gallery data path', () => {
 
     expect(albums.map((album) => album.title)).toEqual(['New Batch Day', 'Yoga Day'])
     expect(albums[0]).toMatchObject({
-      cover: { src: '/media/batch.jpg' },
+      cover: { mediaID: '11', src: '/media/batch.jpg' },
       imageCount: 1,
     })
-    expect(albums[1]?.images[0]?.caption).toBe('Morning session')
+    expect(albums[1]?.images[0]).toMatchObject({
+      caption: 'Morning session',
+      id: 'row-1',
+      mediaID: '10',
+    })
   })
 
   it('filters albums without a title or resolvable image', () => {

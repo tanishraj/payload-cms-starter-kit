@@ -83,6 +83,19 @@ Missing or disabled metadata rows close naturally. The shared overlay tone, stre
 coverage fields control the presentation. Disabling Show Album Details Overlay produces image-only
 cards and hides its dependent metadata, position, and overlay controls in Admin.
 
+Gallery Album Tabs renders explicitly selected Gallery Albums as a collection-backed image
+directory. All is fixed first and initially active; its label is configurable, while every remaining
+tab label follows the current album title. Albums use the shared manual/latest-event-date ordering
+resolver. All preserves resolved album and image order while de-duplicating repeated Media IDs;
+album-specific tabs keep every image. The client reveals 6, 9, or 12 images per action, remembers
+visible progress independently per tab, and opens the complete active-tab image set in the shared
+slideshow at the selected index. Contained, Pill, and Underline variants share semantic theme tokens;
+Underline is the saved default and runtime fallback. Each tab sizes to its label while the rail spans
+the block container; the compact single-row rail scrolls horizontally when its intrinsic content
+overflows. Tiles use the count-aware rectangular quilt and do
+not render captions outside the slideshow. Production loads only selected published albums, while
+authenticated Page and News/Event detail previews use their server-provided draft album snapshot.
+
 Image Mosaic supports Manual Images and Gallery Albums sources. Missing or invalid source values
 retain the legacy Manual Images behavior, including one-to-eight uploaded images, crop positions,
 titles, and independent actions. Gallery Albums mode accepts up to eight explicitly selected albums,
@@ -130,9 +143,10 @@ animated arrow. The title and excerpt use equal-width tracks, the arrow receives
 track, and one equal horizontal gutter separates every desktop column. The date and arrow center
 vertically while the badge/title and excerpt remain top-aligned, then stack on smaller screens. Both
 variants use the theme-scale `text-xl` token for semibold titles and retain the
-`text-base` token for normal-weight descriptions with bounded line lengths. The tab pills wrap in
-configured order when the available width is insufficient, keeping every tab visible without a
-horizontal scrolling region.
+`text-base` token for normal-weight descriptions with bounded line lengths. News & Events Tabs uses
+the same Contained, Pill, and Underline presentation contract as Gallery Album Tabs; Underline is the
+saved default and runtime fallback. Tabs size to their labels inside a full-width rail and remain in
+configured order on one horizontally scrollable row when their intrinsic content overflows.
 
 NewsEventsDetailTemplate is a Page-compatible ordered block layout with one additional global-only
 `newsEventsContent` block. That dynamic block is deliberately excluded from Pages and Reusable

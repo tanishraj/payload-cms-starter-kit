@@ -276,6 +276,26 @@
       },
       {
         "clientFiles": [
+          "src/blocks/GalleryAlbumTabs/GalleryAlbumTabsClient.tsx"
+        ],
+        "componentPath": "src/blocks/GalleryAlbumTabs/Component.tsx",
+        "configPath": "src/blocks/GalleryAlbumTabs/config.ts",
+        "files": [
+          "src/blocks/GalleryAlbumTabs/Component.tsx",
+          "src/blocks/GalleryAlbumTabs/GalleryAlbumTabsClient.tsx",
+          "src/blocks/GalleryAlbumTabs/Presentation.tsx",
+          "src/blocks/GalleryAlbumTabs/PreviewComponent.tsx",
+          "src/blocks/GalleryAlbumTabs/config.ts",
+          "src/blocks/GalleryAlbumTabs/galleryAlbumTabsShared.ts"
+        ],
+        "interfaceName": "GalleryAlbumTabsBlock",
+        "presentationPath": "src/blocks/GalleryAlbumTabs/Presentation.tsx",
+        "previewComponentPath": "src/blocks/GalleryAlbumTabs/PreviewComponent.tsx",
+        "slug": "galleryAlbumTabs",
+        "symbol": "GalleryAlbumTabsBlock"
+      },
+      {
+        "clientFiles": [
           "src/blocks/GalleryCoverflow/GalleryCoverflowClient.tsx"
         ],
         "componentPath": "src/blocks/GalleryCoverflow/Component.tsx",
@@ -882,6 +902,7 @@
       "FeatureSpotlightBlock",
       "Footer56Block",
       "FooterMinimalBlock",
+      "GalleryAlbumTabsBlock",
       "GalleryCoverflowBlock",
       "GalleryShowcaseBlock",
       "HeaderNavbar12Block",
@@ -939,6 +960,7 @@
       "profileCarousel",
       "galleryShowcase",
       "eventGallery",
+      "galleryAlbumTabs",
       "imageMosaic",
       "studentExperience",
       "studyPathways",
@@ -997,6 +1019,7 @@
       "profileCarousel",
       "galleryShowcase",
       "eventGallery",
+      "galleryAlbumTabs",
       "studyPathways",
       "imageMosaic",
       "studentExperience",
@@ -1045,6 +1068,7 @@
       "profileCarousel",
       "galleryShowcase",
       "eventGallery",
+      "galleryAlbumTabs",
       "imageMosaic",
       "studentExperience",
       "studyPathways",
@@ -1103,6 +1127,7 @@
       "profileCarousel",
       "galleryShowcase",
       "eventGallery",
+      "galleryAlbumTabs",
       "studyPathways",
       "imageMosaic",
       "studentExperience",
@@ -1238,6 +1263,15 @@
       },
       {
         "exports": [
+          "CONTENT_TAB_VARIANTS",
+          "getContentTabClasses",
+          "getContentTabRailClasses",
+          "normalizeContentTabVariant"
+        ],
+        "file": "src/blocks/shared/contentTabRail.ts"
+      },
+      {
+        "exports": [
           "createIconField"
         ],
         "file": "src/blocks/shared/iconField.ts"
@@ -1314,6 +1348,7 @@
         "public/block-thumbnails/feature-spotlight.jpg",
         "public/block-thumbnails/footer-56.jpg",
         "public/block-thumbnails/footer-minimal.jpg",
+        "public/block-thumbnails/gallery-album-tabs.jpg",
         "public/block-thumbnails/gallery-coverflow.jpg",
         "public/block-thumbnails/gallery-showcase.jpg",
         "public/block-thumbnails/header-navbar-12.jpg",
@@ -1429,6 +1464,10 @@
         {
           "filename": "event-gallery.jpg",
           "slug": "eventGallery"
+        },
+        {
+          "filename": "gallery-album-tabs.jpg",
+          "slug": "galleryAlbumTabs"
         },
         {
           "filename": "image-mosaic.jpg",
@@ -1600,6 +1639,7 @@
         "galleryShowcase",
         "galleryCoverflow",
         "eventGallery",
+        "galleryAlbumTabs",
         "imageMosaic",
         "studentExperience",
         "studyPathways",
@@ -1939,6 +1979,12 @@
       "src/blocks/Footer56/config.ts",
       "src/blocks/FooterMinimal/Component.tsx",
       "src/blocks/FooterMinimal/config.ts",
+      "src/blocks/GalleryAlbumTabs/Component.tsx",
+      "src/blocks/GalleryAlbumTabs/GalleryAlbumTabsClient.tsx",
+      "src/blocks/GalleryAlbumTabs/Presentation.tsx",
+      "src/blocks/GalleryAlbumTabs/PreviewComponent.tsx",
+      "src/blocks/GalleryAlbumTabs/config.ts",
+      "src/blocks/GalleryAlbumTabs/galleryAlbumTabsShared.ts",
       "src/blocks/GalleryCoverflow/Component.tsx",
       "src/blocks/GalleryCoverflow/GalleryCoverflowClient.tsx",
       "src/blocks/GalleryCoverflow/config.ts",
@@ -2062,6 +2108,7 @@
       "src/blocks/shared/cardThemeFields.ts",
       "src/blocks/shared/contentActionsFields.ts",
       "src/blocks/shared/contentStyles.ts",
+      "src/blocks/shared/contentTabRail.ts",
       "src/blocks/shared/iconField.ts",
       "src/blocks/shared/mediaOverlayFields.ts",
       "src/blocks/shared/mediaOverlayPresentation.ts",
@@ -2335,6 +2382,7 @@
       "tests/int/footer-spacing.int.spec.ts",
       "tests/int/footer56-presentation.int.spec.tsx",
       "tests/int/forms-submission.int.spec.ts",
+      "tests/int/gallery-album-tabs.int.spec.tsx",
       "tests/int/gallery-albums.int.spec.ts",
       "tests/int/gallery-showcase.int.spec.ts",
       "tests/int/global-announcement.int.spec.ts",
@@ -2424,7 +2472,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "f244020e68c0cb4eacf6f3252d15a4888ad0bc7b81b64f12927afe74ace22a28"
+    "sha256": "dbc70a06891e750720cbe4b135b94be08c89c14eacc39c394dfb8ca146a862d1"
   },
   "surfaces": {
     "access": [
@@ -2600,6 +2648,7 @@
       "tests/int/footer-spacing.int.spec.ts",
       "tests/int/footer56-presentation.int.spec.tsx",
       "tests/int/forms-submission.int.spec.ts",
+      "tests/int/gallery-album-tabs.int.spec.tsx",
       "tests/int/gallery-albums.int.spec.ts",
       "tests/int/gallery-showcase.int.spec.ts",
       "tests/int/global-announcement.int.spec.ts",

@@ -152,6 +152,21 @@ export const NewsEventsTabsBlock: Block = {
           fields: [
             createBlockAppearanceFields(),
             {
+              name: 'tabVariant',
+              label: 'Tab Variant',
+              type: 'select',
+              defaultValue: 'underline',
+              options: [
+                { label: 'Contained', value: 'contained' },
+                { label: 'Pill', value: 'pill' },
+                { label: 'Underline', value: 'underline' },
+              ],
+              required: true,
+              admin: {
+                description: 'Choose a contained, pill-shaped, or minimal underline tab treatment.',
+              },
+            } satisfies SelectField,
+            {
               name: 'layoutStyle',
               label: 'Layout',
               type: 'select',

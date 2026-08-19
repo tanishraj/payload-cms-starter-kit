@@ -39,6 +39,7 @@ The setting follows the selected presentation. Content Highlights applies it to 
 | Profile Carousel         | People/profile cards                        | Client carousel behavior and independent card backgrounds                                                                                                                                    |
 | Gallery Showcase         | Layered image showcase                      | Interactive presentation                                                                                                                                                                     |
 | Event Gallery            | Rectangular album quilt and optional viewer | Uses one first-image cover per selected Gallery Album; count-aware 1–4 column spans close every grid cleanly, with a positionable details stack, shared overlays, and optional slideshow     |
+| Gallery Album Tabs       | Filterable album image directory            | Derives tabs from selected Gallery Albums, keeps All first, reveals images in batches, and opens the complete active tab in the shared slideshow                                             |
 | Study Pathways           | Two-to-four image-led pathway cards         | Configurable split proportions, overlays, links, and card heights                                                                                                                            |
 | Image Mosaic             | Manual or album-backed image composition    | Uses up to eight manual Media images or explicitly selected Gallery Albums; album tiles can open the shared slideshow                                                                        |
 | Student Experience       | Asymmetric image-led experience mosaic      | Uses up to five Media images; first card spans both rows in the desktop composition                                                                                                          |
@@ -97,6 +98,19 @@ numeric count, event date, and text-family title in that order. Bottom Left alig
 Bottom Center and Center — Vertical & Horizontal center it. Disabled or unavailable metadata closes
 naturally without leaving an empty row.
 
+Gallery Album Tabs is the directory-style companion to Event Gallery. Editors explicitly select
+and order Gallery Albums; each album title becomes a tab, while a configurable **All** tab always
+appears first. All combines the selected albums in resolved order and removes duplicate Media
+images, while individual album tabs retain their complete contents. **Images Per Load** supports 6,
+9, or 12 images and the local Load More action remembers progress independently for each tab. Tiles
+use the shared rectangular quilt without overlay copy; selecting one opens the complete active-tab
+image set at that position in the shared slideshow. Contained, Pill, and Underline tab variants use
+semantic theme tokens, with Underline as the default and fallback. Tabs size to their labels while
+the outer rail spans the block container. On compact screens or with long labels, the single-row rail
+scrolls horizontally rather than wrapping or distributing tabs equally. Production uses selected
+published albums; authenticated live preview uses the selected draft album snapshot loaded by the
+server.
+
 Image Mosaic defaults to **Manual Images**, including saved blocks created before the Content Source
 field existed. Manual mode preserves its one-to-eight uploaded images, per-image crop position,
 optional title, and action; manual images never open an album slideshow. **Gallery Albums** mode
@@ -142,8 +156,10 @@ badge-above-title column, excerpt, and the shared animated arrow. Both layouts u
 `text-xl` semibold titles and `text-base` normal-weight descriptions with bounded line lengths. In
 Editorial List, the title and description use equal-width tracks, the arrow has a wider trailing
 track, and the date and arrow center vertically while one equal desktop gutter separates every
-column. The tab pills wrap in configured order when the available width is insufficient, keeping
-every tab visible without a horizontal scrolling region.
+column. Under **Theme Settings**, **Tab Variant** offers the same Contained, Pill, and Underline
+treatments as Gallery Album Tabs; Underline is the default and fallback. Tabs size to their labels
+while the outer rail spans the block container. At narrow widths or with long labels, the configured
+tabs remain on one horizontally scrollable row instead of wrapping or distributing equally.
 
 `News & Events Content` is a global-only dynamic block for `Configuration > News & Events Detail
 Page`; it is intentionally absent from Pages and Reusable Sections. The global accepts the same

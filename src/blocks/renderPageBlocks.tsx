@@ -10,6 +10,7 @@ import { QaAccordionBlockComponent } from './QaAccordion/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
 import { EventGalleryBlockComponent } from './EventGallery/Component'
+import { GalleryAlbumTabsBlockComponent } from './GalleryAlbumTabs/Component'
 import { HeroBannerBlockComponent } from './HeroBanner/Component'
 import { HeroCarouselBlockComponent } from './HeroCarousel/Component'
 import { GalleryCoverflowBlockComponent } from './GalleryCoverflow/Component'
@@ -114,6 +115,8 @@ export function renderPageBlockNode(
       return wrap(<GalleryShowcaseBlockComponent {...block} />)
     case 'eventGallery':
       return wrap(<EventGalleryBlockComponent {...block} />)
+    case 'galleryAlbumTabs':
+      return wrap(<GalleryAlbumTabsBlockComponent {...block} />)
     case 'imageMosaic':
       return wrap(<ImageMosaicBlockComponent {...block} />)
     case 'studentExperience':

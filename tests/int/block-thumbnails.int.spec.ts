@@ -145,6 +145,12 @@ describe('block thumbnail metadata', () => {
       slug: 'imageMosaic',
       stageAlignment: 'top',
     })
+    expect(getBlockThumbnailDefinition('galleryAlbumTabs')).toMatchObject({
+      filename: 'gallery-album-tabs.jpg',
+      label: 'Gallery Album Tabs',
+      slug: 'galleryAlbumTabs',
+      stageAlignment: 'top',
+    })
     expect(getBlockThumbnailDefinition('ratingSpotlight')).toMatchObject({
       filename: 'rating-spotlight.jpg',
       label: 'Rating Spotlight',

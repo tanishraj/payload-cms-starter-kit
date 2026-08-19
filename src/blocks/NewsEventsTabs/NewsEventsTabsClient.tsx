@@ -11,6 +11,11 @@ import {
   type NewsEventsTabsLayoutStyle,
   type NewsEventsTabsResolvedTab,
 } from '@/blocks/NewsEventsTabs/newsEventsTabsShared'
+import {
+  getContentTabClasses,
+  getContentTabRailClasses,
+  type ContentTabVariant,
+} from '@/blocks/shared/contentTabRail'
 import { Button } from '@/components/ui/button'
 import { Empty, EmptyDescription, EmptyHeader } from '@/components/ui/empty'
 import type { NewsEventClassificationTab } from '@/lib/newsEventClassifications'
@@ -47,6 +52,7 @@ type NewsEventsTabsClientProps = {
   loadMoreLabel: string
   newsActionLabel: string
   tabs: readonly NewsEventsTabsResolvedTab[]
+  variant: ContentTabVariant
 }
 
 export function NewsEventsTabsClient({
@@ -59,6 +65,7 @@ export function NewsEventsTabsClient({
   loadMoreLabel,
   newsActionLabel,
   tabs,
+  variant,
 }: NewsEventsTabsClientProps) {
   const instanceID = useId()
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([])
@@ -73,7 +80,9 @@ export function NewsEventsTabsClient({
     if (!tab) return
 
     setActiveTab(tab.value)
-    tabRefs.current[index]?.focus()
+    const nextButton = tabRefs.current[index]
+    nextButton?.focus()
+    nextButton?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
   }
 
   const handleTabKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
@@ -153,10 +162,11 @@ export function NewsEventsTabsClient({
 
   return (
     <div className="flex flex-col gap-8" data-news-events-tabs-content="true">
-      <div className="pb-1" data-news-events-tabs-list-wrap="true">
+      <div className="overflow-x-auto pb-1" data-news-events-tabs-list-wrap="true">
         <div
           aria-label="News and events classifications"
-          className="flex flex-wrap gap-2"
+          className={cn('flex w-max min-w-full flex-nowrap', getContentTabRailClasses(variant))}
+          data-content-tab-variant={variant}
           role="tablist"
         >
           {tabs.map((tab, index) => {
@@ -165,13 +175,13 @@ export function NewsEventsTabsClient({
             const panelID = `${instanceID}-panel-${tab.value}`
 
             return (
-              <Button
+              <button
                 aria-controls={panelID}
                 aria-selected={isActive}
-                className={cn('rounded-full px-4', !isActive && 'text-current')}
+                className={getContentTabClasses(variant, isActive)}
                 id={tabID}
                 key={tab.value}
-                onClick={() => setActiveTab(tab.value)}
+                onClick={() => selectTab(index)}
                 onKeyDown={(event) => handleTabKeyDown(event, index)}
                 ref={(node) => {
                   tabRefs.current[index] = node
@@ -179,10 +189,9 @@ export function NewsEventsTabsClient({
                 role="tab"
                 tabIndex={isActive ? 0 : -1}
                 type="button"
-                variant={isActive ? 'default' : 'outline'}
               >
                 {tab.label}
-              </Button>
+              </button>
             )
           })}
         </div>

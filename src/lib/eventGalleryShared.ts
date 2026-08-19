@@ -6,6 +6,7 @@ export type EventGalleryImage = {
   caption?: string
   height: number
   id: string
+  mediaID?: string
   src: string
   width: number
 }
@@ -92,6 +93,14 @@ export const getGalleryAlbumIDsFromBlocks = (value: unknown): string[] => {
 
       if (
         block.blockType === 'eventGallery' &&
+        'galleryAlbums' in block &&
+        Array.isArray(block.galleryAlbums)
+      ) {
+        addRelationships(block.galleryAlbums)
+      }
+
+      if (
+        block.blockType === 'galleryAlbumTabs' &&
         'galleryAlbums' in block &&
         Array.isArray(block.galleryAlbums)
       ) {
@@ -219,6 +228,7 @@ export const normalizeEventGalleryAlbums = (value: unknown): EventGalleryAlbum[]
             ...(caption ? { caption } : {}),
             height: image.height ?? 900,
             id: row.id ?? String(media.id),
+            mediaID: String(media.id),
             src: image.src,
             width: image.width ?? 1600,
           },

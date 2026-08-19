@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import type { Block, Field } from 'payload'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 
 import { NewsEventsTabsClient } from '@/blocks/NewsEventsTabs/NewsEventsTabsClient'
 import { NewsEventsTabsRow } from '@/blocks/NewsEventsTabs/NewsEventsTabsRow'
@@ -78,7 +78,15 @@ const baseClientProps = {
   loadMoreLabel: 'Load More',
   newsActionLabel: 'Read update',
   tabs: resolveNewsEventsTabs(null, undefined),
+  variant: 'underline' as const,
 }
+
+beforeAll(() => {
+  Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+    configurable: true,
+    value: vi.fn(),
+  })
+})
 
 const findNamedField = (value: unknown, name: string): Record<string, unknown> | undefined => {
   if (Array.isArray(value)) {
@@ -169,6 +177,16 @@ describe('News & Events Tabs', () => {
       options: [
         { label: 'Card Grid', value: 'cardGrid' },
         { label: 'Editorial List', value: 'editorialList' },
+      ],
+      required: true,
+      type: 'select',
+    })
+    expect(findNamedField(NewsEventsTabsBlock.fields, 'tabVariant')).toMatchObject({
+      defaultValue: 'underline',
+      options: [
+        { label: 'Contained', value: 'contained' },
+        { label: 'Pill', value: 'pill' },
+        { label: 'Underline', value: 'underline' },
       ],
       required: true,
       type: 'select',
@@ -324,8 +342,10 @@ describe('News & Events Tabs', () => {
     expect(editorialHTML).toContain('data-news-events-tabs-layout="editorialList"')
     expect(editorialHTML).toContain('data-news-events-tabs-row="true"')
     expect(editorialHTML).not.toContain('data-news-events-tabs-card="true"')
+    expect(editorialHTML).toContain('data-content-tab-variant="underline"')
     expect(fallbackHTML).toContain('data-news-events-tabs-layout="cardGrid"')
     expect(fallbackHTML).toContain('data-news-events-tabs-card="true"')
+    expect(fallbackHTML).toContain('data-content-tab-variant="underline"')
   })
 
   it('renders the default tabs and filters the visible panel', () => {
@@ -348,16 +368,26 @@ describe('News & Events Tabs', () => {
     expect(screen.getByRole('tabpanel').textContent).not.toContain('Research notice')
   })
 
-  it('wraps configured tabs instead of requiring horizontal scrolling', () => {
+  it('uses intrinsic tab widths inside a full-width, horizontally scrollable rail', () => {
     const { container } = render(<NewsEventsTabsClient {...baseClientProps} />)
     const wrapper = container.querySelector('[data-news-events-tabs-list-wrap="true"]')
     const tabList = screen.getByRole('tablist', {
       name: 'News and events classifications',
     })
 
-    expect(wrapper?.className).not.toContain('overflow-x-auto')
-    expect(tabList.className).toContain('flex-wrap')
-    expect(tabList.className).not.toContain('min-w-max')
+    expect(wrapper?.className).toContain('overflow-x-auto')
+    expect(tabList.className).toContain('min-w-full')
+    expect(tabList.className).toContain('w-max')
+    expect(tabList.className).toContain('flex-nowrap')
+    expect(tabList.getAttribute('data-content-tab-variant')).toBe('underline')
+
+    for (const tab of screen.getAllByRole('tab')) {
+      expect(tab.className).toContain('w-auto')
+      expect(tab.className).toContain('shrink-0')
+      expect(tab.className).not.toContain('flex-1')
+      expect(tab.className).not.toContain('sm:min-w-32')
+    }
+
     expect(screen.getAllByRole('tab').map((tab) => tab.textContent)).toEqual([
       'All',
       'News',
@@ -368,6 +398,21 @@ describe('News & Events Tabs', () => {
       'Announcement',
       'Others',
     ])
+  })
+
+  it('renders the contained, pill, and underline tab treatments from one contract', () => {
+    for (const variant of ['contained', 'pill', 'underline'] as const) {
+      const { unmount } = render(<NewsEventsTabsClient {...baseClientProps} variant={variant} />)
+      const tabList = screen.getByRole('tablist', {
+        name: 'News and events classifications',
+      })
+
+      expect(tabList.getAttribute('data-content-tab-variant')).toBe(variant)
+      expect(tabList.className).toContain('min-w-full')
+      expect(tabList.className).toContain('w-max')
+      expect(tabList.className).toContain('flex-nowrap')
+      unmount()
+    }
   })
 
   it('uses the shared card title and description typography', () => {

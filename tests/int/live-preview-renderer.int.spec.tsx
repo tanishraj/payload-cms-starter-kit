@@ -354,6 +354,63 @@ describe('live-preview page block renderer', () => {
     )
   })
 
+  it('renders Gallery Album Tabs from the selected draft album snapshot', () => {
+    const layout = [
+      {
+        allTabLabel: 'Every moment',
+        blockType: 'galleryAlbumTabs',
+        displayOrder: 'manual',
+        galleryAlbums: ['draft-gallery'],
+        imagesPerLoad: '6',
+        tabVariant: 'pill',
+      },
+    ] as unknown as NonNullable<Page['layout']>
+    const albums = [
+      {
+        cover: {
+          alt: 'Draft gallery image',
+          height: 900,
+          id: 'draft-row',
+          mediaID: 'draft-media',
+          src: '/media/draft-gallery.jpg',
+          width: 1600,
+        },
+        createdAt: '2026-08-18T00:00:00.000Z',
+        id: 'draft-gallery',
+        imageCount: 1,
+        images: [
+          {
+            alt: 'Draft gallery image',
+            height: 900,
+            id: 'draft-row',
+            mediaID: 'draft-media',
+            src: '/media/draft-gallery.jpg',
+            width: 1600,
+          },
+        ],
+        title: 'Draft campus life',
+      },
+    ]
+    const html = renderToStaticMarkup(
+      renderLivePreviewPageBlocks(
+        layout,
+        {
+          feedPagesBySize: {},
+          ratingDistribution: { average: 0, count: 0, counts: [0, 0, 0, 0, 0] },
+        },
+        EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT,
+        [],
+        albums,
+      ),
+    )
+
+    expect(html).toContain('data-gallery-album-tabs-block="true"')
+    expect(html).toContain('data-gallery-album-tabs-variant="pill"')
+    expect(html).toContain('Every moment')
+    expect(html).toContain('Draft campus life')
+    expect(html).toContain('Draft gallery image')
+  })
+
   it('renders album-backed Image Mosaic from the server-provided draft snapshot', () => {
     const sharedAlbums = [
       {

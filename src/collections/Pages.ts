@@ -13,6 +13,7 @@ import { StudyPathwaysBlock } from '@/blocks/StudyPathways/config'
 import { Cta39Block } from '@/blocks/Cta39/config'
 import { GalleryShowcaseBlock } from '@/blocks/GalleryShowcase/config'
 import { EventGalleryBlock } from '@/blocks/EventGallery/config'
+import { GalleryAlbumTabsBlock } from '@/blocks/GalleryAlbumTabs/config'
 import { ImageMosaicBlock } from '@/blocks/ImageMosaic/config'
 import { StudentExperienceBlock } from '@/blocks/StudentExperience/config'
 import { NewsEventsHighlightsBlock } from '@/blocks/NewsEventsHighlights/config'
@@ -264,6 +265,7 @@ export const Pages: CollectionConfig = {
                 ProfileCarouselBlock,
                 GalleryShowcaseBlock,
                 EventGalleryBlock,
+                GalleryAlbumTabsBlock,
                 StudyPathwaysBlock,
                 ImageMosaicBlock,
                 StudentExperienceBlock,

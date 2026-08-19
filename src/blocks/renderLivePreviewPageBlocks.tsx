@@ -19,6 +19,7 @@ import { NewsEventsTabsPreviewBlockComponent } from './NewsEventsTabs/PreviewCom
 import { Cta39BlockComponent } from './Cta39/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
 import { EventGalleryPreviewBlockComponent } from './EventGallery/PreviewComponent'
+import { GalleryAlbumTabsPreviewBlockComponent } from './GalleryAlbumTabs/PreviewComponent'
 import { GalleryCoverflowBlockComponent } from './GalleryCoverflow/Component'
 import { HeroBannerBlockComponent } from './HeroBanner/Component'
 import { HeroCarouselBlockComponent } from './HeroCarousel/Component'
@@ -124,6 +125,10 @@ export function renderLivePreviewPageBlockNode(
       return <GalleryShowcaseBlockComponent key={key} {...block} />
     case 'eventGallery':
       return <EventGalleryPreviewBlockComponent albums={eventGalleryAlbums} key={key} {...block} />
+    case 'galleryAlbumTabs':
+      return (
+        <GalleryAlbumTabsPreviewBlockComponent albums={eventGalleryAlbums} key={key} {...block} />
+      )
     case 'imageMosaic':
       return <ImageMosaicPreviewBlockComponent albums={eventGalleryAlbums} key={key} {...block} />
     case 'studentExperience':

@@ -170,7 +170,7 @@ describe('page block pipeline', () => {
     const livePreviewRenderer = readFileSync('src/blocks/renderLivePreviewPageBlocks.tsx', 'utf8')
 
     expect(layoutField?.type).toBe('blocks')
-    expect(registeredSlugs).toHaveLength(51)
+    expect(registeredSlugs).toHaveLength(52)
     expect(registeredSlugs).toContain('academicProgrammes')
     expect(registeredSlugs).toContain('studentExperience')
     expect(registeredSlugs).toContain('studyPathways')
@@ -180,6 +180,7 @@ describe('page block pipeline', () => {
     expect(registeredSlugs).toContain('breadcrumb')
     expect(registeredSlugs).toContain('iconCardShowcase')
     expect(registeredSlugs).toContain('testimonialSpotlight')
+    expect(registeredSlugs).toContain('galleryAlbumTabs')
     expect(registeredSlugs).not.toContain('feature166')
 
     for (const slug of registeredSlugs) {

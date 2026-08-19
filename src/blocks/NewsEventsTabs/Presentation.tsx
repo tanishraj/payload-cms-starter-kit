@@ -8,6 +8,7 @@ import {
   type NewsEventsTabsConfiguredTab,
   type NewsEventsTabsLayoutStyle,
 } from '@/blocks/NewsEventsTabs/newsEventsTabsShared'
+import { normalizeContentTabVariant, type ContentTabVariant } from '@/blocks/shared/contentTabRail'
 import {
   resolveBlockAppearanceClasses,
   type BlockAppearance,
@@ -49,6 +50,7 @@ export type NewsEventsTabsBlockLike = {
   loadMoreLabel?: string | null
   newsActionLabel?: string | null
   size?: RegularBlockSize | null
+  tabVariant?: ContentTabVariant | string | null
   tabs?: NewsEventsTabsConfiguredTab[] | null
   title?: string | null
 }
@@ -81,6 +83,7 @@ export function NewsEventsTabsBlockPresentation({
   loadMoreLabel,
   newsActionLabel,
   size = 'default',
+  tabVariant,
   tabs,
   title,
 }: NewsEventsTabsBlockPresentationProps) {
@@ -175,6 +178,7 @@ export function NewsEventsTabsBlockPresentation({
           loadMoreLabel={resolveNewsEventsTabsLoadMoreLabel(loadMoreLabel)}
           newsActionLabel={newsActionLabel?.trim() || 'Read update'}
           tabs={resolvedTabs}
+          variant={normalizeContentTabVariant(tabVariant)}
         />
 
         <BlockFooterActions

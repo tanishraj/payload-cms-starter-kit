@@ -144,6 +144,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Gallery Album Tabs block preview',
+    filename: 'gallery-album-tabs.jpg',
+    label: 'Gallery Album Tabs',
+    slug: 'galleryAlbumTabs',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Image Mosaic block preview',
     filename: 'image-mosaic.jpg',
     label: 'Image Mosaic',
