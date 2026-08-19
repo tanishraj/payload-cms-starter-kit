@@ -7,7 +7,7 @@ import { getPayload } from 'payload'
 import { NewsEventLivePreview } from '@/components/live-preview/NewsEventLivePreview'
 import { NewsEventDetailPage } from '@/components/news-events/NewsEventDetailPage'
 import { getDraftEventGalleryAlbums } from '@/lib/eventGallery'
-import { getEventGalleryAlbumIDsFromBlocks } from '@/lib/eventGalleryShared'
+import { getGalleryAlbumIDsFromBlocks } from '@/lib/eventGalleryShared'
 import { getNewsEventDetailTemplate } from '@/lib/newsEventDetailTemplate'
 import {
   getNewsEventDetailAuthorLabel,
@@ -76,14 +76,14 @@ export default async function NewsEventEntryPage({ params, searchParams }: PageP
 
     const pageBlocks = getNewsEventDetailPageBlocks(template)
     const hasContact24 = pageBlocks.some((block) => block.blockType === 'contact24')
-    const selectedEventGalleryAlbumIDs = getEventGalleryAlbumIDsFromBlocks(pageBlocks)
+    const selectedGalleryAlbumIDs = getGalleryAlbumIDsFromBlocks(pageBlocks)
     const [reviewSnapshot, newsEventsSnapshot, officeLocations, eventGalleryAlbums] =
       await Promise.all([
         loadReviewPreviewSnapshot(pageBlocks),
         loadNewsEventsPreviewSnapshot(pageBlocks),
         hasContact24 ? getDraftSiteOfficeLocations() : Promise.resolve([]),
-        selectedEventGalleryAlbumIDs.length
-          ? getDraftEventGalleryAlbums(selectedEventGalleryAlbumIDs)
+        selectedGalleryAlbumIDs.length
+          ? getDraftEventGalleryAlbums(selectedGalleryAlbumIDs)
           : Promise.resolve([]),
       ])
 

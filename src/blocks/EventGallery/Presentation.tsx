@@ -23,6 +23,7 @@ export type EventGalleryBlockLike = {
   contentAlignment?: EventGalleryAlignment | null
   description?: string | null
   displayOrder?: EventGalleryDisplayOrder | null
+  enableAlbumSlideshow?: boolean | null
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
   galleryAlbums?: unknown
@@ -44,6 +45,7 @@ export function EventGalleryBlockPresentation({
   cardTextLayout,
   contentAlignment = 'center',
   description,
+  enableAlbumSlideshow,
   eyebrow,
   footerActions,
   overlayCoverage,
@@ -58,7 +60,7 @@ export function EventGalleryBlockPresentation({
 }: EventGalleryBlockLike & { albums: EventGalleryAlbum[] }) {
   const resolvedTitle = title?.trim()
 
-  if (!resolvedTitle || !albums.length) {
+  if (!albums.length) {
     return null
   }
 
@@ -75,6 +77,7 @@ export function EventGalleryBlockPresentation({
         appearance={appearance}
         cardTextLayout={cardTextLayout ?? 'split'}
         description={description?.trim() || undefined}
+        enableAlbumSlideshow={enableAlbumSlideshow ?? true}
         eyebrow={eyebrow?.trim() || undefined}
         overlayCoverage={overlayCoverage ?? 'full'}
         overlayDirection={overlayDirection ?? 'bottomToTop'}
@@ -84,7 +87,7 @@ export function EventGalleryBlockPresentation({
         showImageCount={showImageCount ?? true}
         size={size ?? 'default'}
         themeMode={themeMode ?? 'dark'}
-        title={resolvedTitle}
+        title={resolvedTitle || undefined}
       />
       <BlockFooterActions actions={footerActions} />
     </>

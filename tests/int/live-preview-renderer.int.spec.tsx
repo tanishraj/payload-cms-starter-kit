@@ -353,4 +353,82 @@ describe('live-preview page block renderer', () => {
       secondBlockHTML.indexOf('Yoga Day'),
     )
   })
+
+  it('renders album-backed Image Mosaic from the server-provided draft snapshot', () => {
+    const sharedAlbums = [
+      {
+        cover: {
+          alt: 'Draft mosaic album',
+          height: 900,
+          id: 'mosaic-image',
+          src: '/media/mosaic.jpg',
+          width: 1600,
+        },
+        createdAt: '2026-08-18T00:00:00.000Z',
+        eventDate: '2026-08-18T00:00:00.000Z',
+        id: 'draft-mosaic-album',
+        imageCount: 1,
+        images: [
+          {
+            alt: 'Draft mosaic album',
+            height: 900,
+            id: 'mosaic-image',
+            src: '/media/mosaic.jpg',
+            width: 1600,
+          },
+        ],
+        title: 'Selected draft mosaic album',
+      },
+      {
+        cover: {
+          alt: 'Unselected album',
+          height: 900,
+          id: 'unselected-image',
+          src: '/media/unselected.jpg',
+          width: 1600,
+        },
+        createdAt: '2026-08-19T00:00:00.000Z',
+        id: 'unselected-album',
+        imageCount: 1,
+        images: [
+          {
+            alt: 'Unselected album',
+            height: 900,
+            id: 'unselected-image',
+            src: '/media/unselected.jpg',
+            width: 1600,
+          },
+        ],
+        title: 'Unselected album',
+      },
+    ]
+    const layout = [
+      {
+        blockType: 'imageMosaic',
+        contentSource: 'galleryAlbums',
+        displayOrder: 'manual',
+        enableAlbumSlideshow: false,
+        galleryAlbums: ['draft-mosaic-album'],
+        title: 'Draft mosaic albums',
+      },
+    ] as unknown as NonNullable<Page['layout']>
+    const html = renderToStaticMarkup(
+      renderLivePreviewPageBlocks(
+        layout,
+        {
+          feedPagesBySize: {},
+          ratingDistribution: { average: 0, count: 0, counts: [0, 0, 0, 0, 0] },
+        },
+        EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT,
+        [],
+        sharedAlbums,
+      ),
+    )
+
+    expect(html).toContain('Draft mosaic albums')
+    expect(html).toContain('data-image-mosaic-source="galleryAlbums"')
+    expect(html).toContain('Selected draft mosaic album')
+    expect(html).toContain('data-image-mosaic-album-interaction="static"')
+    expect(html).not.toContain('Unselected album')
+  })
 })

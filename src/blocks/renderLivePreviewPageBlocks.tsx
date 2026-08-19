@@ -22,7 +22,7 @@ import { EventGalleryPreviewBlockComponent } from './EventGallery/PreviewCompone
 import { GalleryCoverflowBlockComponent } from './GalleryCoverflow/Component'
 import { HeroBannerBlockComponent } from './HeroBanner/Component'
 import { HeroCarouselBlockComponent } from './HeroCarousel/Component'
-import { ImageMosaicBlockComponent } from './ImageMosaic/Component'
+import { ImageMosaicPreviewBlockComponent } from './ImageMosaic/PreviewComponent'
 import { StudentExperienceBlockComponent } from './StudentExperience/Component'
 import { NewsEventsHighlightsPreviewBlockComponent } from './NewsEventsHighlights/PreviewComponent'
 import { PageBlockStack } from './PageBlockStack'
@@ -125,7 +125,7 @@ export function renderLivePreviewPageBlockNode(
     case 'eventGallery':
       return <EventGalleryPreviewBlockComponent albums={eventGalleryAlbums} key={key} {...block} />
     case 'imageMosaic':
-      return <ImageMosaicBlockComponent key={key} {...block} />
+      return <ImageMosaicPreviewBlockComponent albums={eventGalleryAlbums} key={key} {...block} />
     case 'studentExperience':
       return <StudentExperienceBlockComponent key={key} {...block} />
     case 'studyPathways':

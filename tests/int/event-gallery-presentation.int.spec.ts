@@ -6,9 +6,14 @@ import {
   getEventGalleryQuiltRowSpans,
   normalizeEventGalleryCardTextLayout,
 } from '@/components/event-gallery-presentation'
+import { normalizeGalleryAlbumContentPosition } from '@/components/gallery-album-overlay-content'
 
 describe('Event Gallery presentation settings', () => {
   it('normalizes legacy and current overlay content positions', () => {
+    expect(normalizeGalleryAlbumContentPosition('split')).toBe('split')
+    expect(normalizeGalleryAlbumContentPosition('center')).toBe('center')
+    expect(normalizeGalleryAlbumContentPosition('middleCenter')).toBe('middleCenter')
+    expect(normalizeGalleryAlbumContentPosition('invalid')).toBe('split')
     expect(normalizeEventGalleryCardTextLayout('split')).toBe('split')
     expect(normalizeEventGalleryCardTextLayout('center')).toBe('center')
     expect(normalizeEventGalleryCardTextLayout('middleCenter')).toBe('middleCenter')

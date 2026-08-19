@@ -385,11 +385,13 @@
         "configPath": "src/blocks/ImageMosaic/config.ts",
         "files": [
           "src/blocks/ImageMosaic/Component.tsx",
+          "src/blocks/ImageMosaic/Presentation.tsx",
+          "src/blocks/ImageMosaic/PreviewComponent.tsx",
           "src/blocks/ImageMosaic/config.ts"
         ],
         "interfaceName": "ImageMosaicBlock",
-        "presentationPath": null,
-        "previewComponentPath": null,
+        "presentationPath": "src/blocks/ImageMosaic/Presentation.tsx",
+        "previewComponentPath": "src/blocks/ImageMosaic/PreviewComponent.tsx",
         "slug": "imageMosaic",
         "symbol": "ImageMosaicBlock"
       },
@@ -1943,6 +1945,8 @@
       "src/blocks/IconGrid/Component.tsx",
       "src/blocks/IconGrid/config.ts",
       "src/blocks/ImageMosaic/Component.tsx",
+      "src/blocks/ImageMosaic/Presentation.tsx",
+      "src/blocks/ImageMosaic/PreviewComponent.tsx",
       "src/blocks/ImageMosaic/config.ts",
       "src/blocks/LogoStrip/Component.tsx",
       "src/blocks/LogoStrip/LogoStripMarquee.tsx",
@@ -2095,8 +2099,10 @@
       "src/components/event-gallery.tsx",
       "src/components/feature-matrix.tsx",
       "src/components/footer56.tsx",
+      "src/components/gallery-album-overlay-content.tsx",
       "src/components/gallery-showcase-fan.tsx",
       "src/components/gallery-showcase.tsx",
+      "src/components/gallery-slideshow-viewer.tsx",
       "src/components/global/CookieConsentBanner.tsx",
       "src/components/global/GlobalAnnouncement.tsx",
       "src/components/global/GlobalFooter.tsx",
@@ -2106,6 +2112,8 @@
       "src/components/header/HeaderNavMenu.tsx",
       "src/components/header/HeaderNavbar.tsx",
       "src/components/header/SearchTriggerButton.tsx",
+      "src/components/image-mosaic-album-grid.tsx",
+      "src/components/image-mosaic-presentation.ts",
       "src/components/image-mosaic.tsx",
       "src/components/live-preview/ArticleLivePreview.tsx",
       "src/components/live-preview/NewsEventLivePreview.tsx",
@@ -2402,7 +2410,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "efd74e822b9e455042ccb1517b418182a60c0d6d05b56dd2cb546ef189f9abbf"
+    "sha256": "8cdf2ba8fdd0bae6d680e499ce0727655821b20b37aae5e02d62ec23a2660849"
   },
   "surfaces": {
     "access": [

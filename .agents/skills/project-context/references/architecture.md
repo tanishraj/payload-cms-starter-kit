@@ -25,6 +25,10 @@ React Server Components load public CMS data. Focused client components own inte
 - `/news-events` explicitly resolves the published CMS Page at that path so editors can compose its collection-backed listings from Page blocks. Article and Review archive landing pages are also ordinary CMS Pages.
 - `/search`, `/api/search`, feeds, sitemap, robots, and Open Graph image routes implement discovery.
 - `/preview/page/[id]` and live-preview components render authenticated draft data.
+- Gallery Album-backed blocks discover explicitly selected album dependencies across Event Gallery,
+  Image Mosaic, and populated Reusable Sections. Production block adapters load only selected
+  published albums; authenticated routes load selected draft albums on the server and pass the same
+  serializable snapshot to client-safe preview adapters. Gallery clients never query Payload.
 - Form submission, review-feed, News & Events Tabs pagination, redirects, and media reconciliation
   have focused route handlers.
 - `/admin`, Payload REST, GraphQL, and GraphQL Playground live under the Payload route group.

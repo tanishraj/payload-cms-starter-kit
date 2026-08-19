@@ -1,6 +1,6 @@
 import { PageLivePreview } from '@/components/live-preview/PageLivePreview'
 import { getDraftEventGalleryAlbums } from '@/lib/eventGallery'
-import { getEventGalleryAlbumIDsFromBlocks } from '@/lib/eventGalleryShared'
+import { getGalleryAlbumIDsFromBlocks } from '@/lib/eventGalleryShared'
 import { loadNewsEventsPreviewSnapshot } from '@/lib/newsEventsPreviewSnapshot'
 import { loadReviewPreviewSnapshot } from '@/lib/reviewPreviewSnapshot'
 import { getDraftSiteOfficeLocations } from '@/lib/siteOffices'
@@ -58,14 +58,14 @@ export default async function AdminPreviewPage({ params }: PageProps) {
   const isHomepage = String(getPageID(pageSettings.homepage)) === String(page.id)
 
   const hasContact24 = page.layout?.some((block) => block.blockType === 'contact24') ?? false
-  const selectedEventGalleryAlbumIDs = getEventGalleryAlbumIDsFromBlocks(page.layout)
+  const selectedGalleryAlbumIDs = getGalleryAlbumIDsFromBlocks(page.layout)
   const [reviewSnapshot, newsEventsSnapshot, officeLocations, eventGalleryAlbums] =
     await Promise.all([
       loadReviewPreviewSnapshot(page.layout),
       loadNewsEventsPreviewSnapshot(page.layout),
       hasContact24 ? getDraftSiteOfficeLocations() : Promise.resolve([]),
-      selectedEventGalleryAlbumIDs.length
-        ? getDraftEventGalleryAlbums(selectedEventGalleryAlbumIDs)
+      selectedGalleryAlbumIDs.length
+        ? getDraftEventGalleryAlbums(selectedGalleryAlbumIDs)
         : Promise.resolve([]),
     ])
 

@@ -1737,6 +1737,10 @@ export interface EventGalleryBlock {
    */
   galleryAlbums: (string | GalleryAlbum)[];
   displayOrder: 'latestEventDate' | 'manual';
+  /**
+   * Open the selected album in the full-screen slideshow when a gallery tile is selected.
+   */
+  enableAlbumSlideshow?: boolean | null;
   footerActions?:
     | {
         label: string;
@@ -1961,31 +1965,43 @@ export interface ImageMosaicBlock {
         id?: string | null;
       }[]
     | null;
-  items: {
-    image: string | Media;
-    imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
-    title?: string | null;
-    action?:
-      | {
-          label: string;
-          linkType?: ('page' | 'custom') | null;
-          page?: (string | null) | Page;
-          url?: string | null;
-          openInNewTab?: boolean | null;
-          mode?: ('link' | 'button') | null;
-          /**
-           * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-           */
-          variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-          /**
-           * Adds a trailing arrow when this action is displayed as a button.
-           */
-          showArrow?: boolean | null;
-          id?: string | null;
-        }[]
-      | null;
-    id?: string | null;
-  }[];
+  contentSource: 'manualImages' | 'galleryAlbums';
+  items?:
+    | {
+        image: string | Media;
+        imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+        title?: string | null;
+        action?:
+          | {
+              label: string;
+              linkType?: ('page' | 'custom') | null;
+              page?: (string | null) | Page;
+              url?: string | null;
+              openInNewTab?: boolean | null;
+              mode?: ('link' | 'button') | null;
+              /**
+               * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+               */
+              variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+              /**
+               * Adds a trailing arrow when this action is displayed as a button.
+               */
+              showArrow?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Select up to eight albums. Each album contributes its first usable image to the mosaic.
+   */
+  galleryAlbums?: (string | GalleryAlbum)[] | null;
+  displayOrder?: ('latestEventDate' | 'manual') | null;
+  /**
+   * Open all images from the selected album in the full-screen slideshow when its tile is selected.
+   */
+  enableAlbumSlideshow?: boolean | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
@@ -1993,6 +2009,12 @@ export interface ImageMosaicBlock {
   contentAlignment: 'left' | 'center' | 'right';
   size: 'none' | 'compact' | 'default' | 'comfortable';
   showImageOverlays?: boolean | null;
+  showEventDate?: boolean | null;
+  showImageCount?: boolean | null;
+  /**
+   * Choose where the image or album details appear over every tile.
+   */
+  cardTextLayout?: ('split' | 'center' | 'middleCenter') | null;
   /**
    * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
    */
@@ -6957,6 +6979,7 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
       };
   galleryAlbums?: T;
   displayOrder?: T;
+  enableAlbumSlideshow?: T;
   footerActions?:
     | T
     | {
@@ -7090,6 +7113,7 @@ export interface ImageMosaicBlockSelect<T extends boolean = true> {
         showArrow?: T;
         id?: T;
       };
+  contentSource?: T;
   items?:
     | T
     | {
@@ -7111,6 +7135,9 @@ export interface ImageMosaicBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  galleryAlbums?: T;
+  displayOrder?: T;
+  enableAlbumSlideshow?: T;
   appearance?:
     | T
     | {
@@ -7120,6 +7147,9 @@ export interface ImageMosaicBlockSelect<T extends boolean = true> {
   contentAlignment?: T;
   size?: T;
   showImageOverlays?: T;
+  showEventDate?: T;
+  showImageCount?: T;
+  cardTextLayout?: T;
   themeMode?: T;
   overlayStyle?: T;
   overlayDirection?: T;

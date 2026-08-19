@@ -1,11 +1,9 @@
 'use client'
 
 import Image from 'next/image'
-import { Images } from 'lucide-react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { useCallback, useRef, useState, useSyncExternalStore } from 'react'
 
-import { EventGalleryViewer } from '@/components/event-gallery-viewer'
 import type { EventGalleryResolvedOverlay } from '@/components/event-gallery'
 import {
   getEventGalleryQuiltGridClassName,
@@ -13,112 +11,22 @@ import {
   getEventGalleryQuiltRowSpans,
   type EventGalleryCardTextLayout,
 } from '@/components/event-gallery-presentation'
+import {
+  formatGalleryAlbumEventDate,
+  GalleryAlbumOverlayContent,
+} from '@/components/gallery-album-overlay-content'
+import { GallerySlideshowViewer } from '@/components/gallery-slideshow-viewer'
 import type { EventGalleryAlbum } from '@/lib/eventGalleryShared'
 import { cn } from '@/lib/utils'
-
-const eventDateFormatter = new Intl.DateTimeFormat('en', {
-  day: 'numeric',
-  month: 'short',
-  timeZone: 'UTC',
-  year: 'numeric',
-})
-
-const formatEventDate = (value: string | undefined): string | undefined => {
-  if (!value) {
-    return undefined
-  }
-
-  const date = new Date(value)
-
-  return Number.isNaN(date.getTime()) ? undefined : eventDateFormatter.format(date)
-}
 
 type EventGalleryClientProps = {
   albums: EventGalleryAlbum[]
   cardTextLayout?: EventGalleryCardTextLayout
+  enableAlbumSlideshow?: boolean
   overlay: EventGalleryResolvedOverlay
   showCardOverlay?: boolean
   showEventDate?: boolean
   showImageCount?: boolean
-}
-
-const contentPositionClasses = {
-  center: 'items-end justify-center text-center',
-  middleCenter: 'items-center justify-center text-center',
-  split: 'items-end justify-start text-left',
-} as const satisfies Record<EventGalleryCardTextLayout, string>
-
-type EventGalleryCardContentProps = {
-  album: EventGalleryAlbum
-  eventDate?: string
-  layout: EventGalleryCardTextLayout
-  overlay: EventGalleryResolvedOverlay
-  showEventDate: boolean
-  showImageCount: boolean
-}
-
-function EventGalleryCardContent({
-  album,
-  eventDate,
-  layout,
-  overlay,
-  showEventDate,
-  showImageCount,
-}: EventGalleryCardContentProps) {
-  const hasEventDate = showEventDate && Boolean(eventDate)
-  const hasMetadata = showImageCount || hasEventDate
-  const contentAlignment = layout === 'split' ? 'left' : 'center'
-  const isLeftAligned = contentAlignment === 'left'
-
-  return (
-    <div
-      className={cn('absolute inset-0 flex p-4 sm:p-5', contentPositionClasses[layout])}
-      data-event-gallery-card-content="true"
-      data-event-gallery-card-position={layout}
-    >
-      <div
-        className={cn(
-          'flex min-w-0 flex-col',
-          layout === 'middleCenter' ? 'w-full max-w-sm' : 'w-full',
-          isLeftAligned ? 'items-start text-left' : 'items-center text-center',
-        )}
-        data-event-gallery-content-alignment={contentAlignment}
-      >
-        {hasMetadata ? (
-          <div
-            className={cn(
-              'mb-3 flex w-full flex-col gap-2 font-mono text-xs font-normal uppercase tracking-wider',
-              isLeftAligned ? 'items-start text-left' : 'items-center text-center',
-              overlay.text.eyebrow,
-            )}
-            data-event-gallery-card-meta="true"
-            data-event-gallery-metadata-layout="stacked"
-          >
-            {showImageCount ? (
-              <span
-                aria-label={`${album.imageCount} ${album.imageCount === 1 ? 'image' : 'images'}`}
-                className="inline-flex items-center justify-center gap-1.5"
-                data-event-gallery-image-count="true"
-              >
-                <Images aria-hidden="true" className="size-3.5" />
-                {album.imageCount}
-              </span>
-            ) : null}
-            {hasEventDate ? <span className="max-w-full truncate">{eventDate}</span> : null}
-          </div>
-        ) : null}
-        <p
-          className={cn(
-            'line-clamp-2 font-[family-name:var(--font-text)] text-lg font-semibold tracking-tight text-balance sm:text-xl',
-            overlay.text.title,
-            isLeftAligned ? 'max-w-md' : 'mx-auto max-w-md',
-          )}
-        >
-          {album.title}
-        </p>
-      </div>
-    </div>
-  )
 }
 
 const subscribeToHydration = () => () => undefined
@@ -128,6 +36,7 @@ const getServerHydrationSnapshot = () => false
 export function EventGalleryClient({
   albums,
   cardTextLayout = 'split',
+  enableAlbumSlideshow = true,
   overlay,
   showCardOverlay = true,
   showEventDate = true,
@@ -159,9 +68,42 @@ export function EventGalleryClient({
         data-event-gallery-layout="rectangular-quilt"
       >
         {albums.map((album, index) => {
-          const eventDate = formatEventDate(album.eventDate)
+          const eventDate = formatGalleryAlbumEventDate(album.eventDate)
           const rowSpans = getEventGalleryQuiltRowSpans(albums.length, index)
           const rowSpanClassName = getEventGalleryQuiltRowSpanClassName(rowSpans)
+          const cardContent = (
+            <div className="relative h-full min-h-0 w-full overflow-hidden">
+              <Image
+                fill
+                alt={album.cover.alt}
+                className="object-cover transition-transform duration-700 ease-out motion-reduce:transition-none [@media(hover:hover)]:group-hover:scale-[1.03]"
+                src={album.cover.src}
+                sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, (max-width: 1279px) 33vw, 25vw"
+              />
+
+              {showCardOverlay ? (
+                <>
+                  <div
+                    aria-hidden="true"
+                    className={cn(
+                      'pointer-events-none absolute',
+                      overlay.frameClassName,
+                      overlay.className,
+                    )}
+                    data-event-gallery-card-overlay="true"
+                  />
+                  <GalleryAlbumOverlayContent
+                    album={album}
+                    formattedEventDate={eventDate}
+                    overlay={overlay}
+                    position={cardTextLayout}
+                    showEventDate={showEventDate}
+                    showImageCount={showImageCount}
+                  />
+                </>
+              ) : null}
+            </div>
+          )
 
           return (
             <motion.article
@@ -180,56 +122,39 @@ export function EventGalleryClient({
               viewport={{ amount: 0.2, once: true }}
               whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
             >
-              <button
-                aria-label={`Open ${album.title} gallery with ${album.imageCount} ${
-                  album.imageCount === 1 ? 'image' : 'images'
-                }`}
-                className="block h-full w-full cursor-pointer overflow-hidden rounded-md border border-border text-left focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:ring-offset-2"
-                data-block-surface={overlay.blockSurface}
-                onClick={(event) => {
-                  openerRef.current = event.currentTarget
-                  setActiveAlbum(album)
-                }}
-                type="button"
-              >
-                <div className="relative h-full min-h-0 w-full overflow-hidden">
-                  <Image
-                    fill
-                    alt={album.cover.alt}
-                    className="object-cover transition-transform duration-700 ease-out motion-reduce:transition-none [@media(hover:hover)]:group-hover:scale-[1.03]"
-                    src={album.cover.src}
-                    sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, (max-width: 1279px) 33vw, 25vw"
-                  />
-
-                  {showCardOverlay ? (
-                    <>
-                      <div
-                        aria-hidden="true"
-                        className={cn(
-                          'pointer-events-none absolute',
-                          overlay.frameClassName,
-                          overlay.className,
-                        )}
-                        data-event-gallery-card-overlay="true"
-                      />
-                      <EventGalleryCardContent
-                        album={album}
-                        eventDate={eventDate}
-                        layout={cardTextLayout}
-                        overlay={overlay}
-                        showEventDate={showEventDate}
-                        showImageCount={showImageCount}
-                      />
-                    </>
-                  ) : null}
+              {enableAlbumSlideshow ? (
+                <button
+                  aria-label={`Open ${album.title} gallery with ${album.imageCount} ${
+                    album.imageCount === 1 ? 'image' : 'images'
+                  }`}
+                  className="block h-full w-full cursor-pointer overflow-hidden rounded-md border border-border text-left focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:ring-offset-2"
+                  data-block-surface={overlay.blockSurface}
+                  data-event-gallery-interaction="slideshow"
+                  onClick={(event) => {
+                    openerRef.current = event.currentTarget
+                    setActiveAlbum(album)
+                  }}
+                  type="button"
+                >
+                  {cardContent}
+                </button>
+              ) : (
+                <div
+                  className="block h-full w-full overflow-hidden rounded-md border border-border text-left"
+                  data-block-surface={overlay.blockSurface}
+                  data-event-gallery-interaction="static"
+                >
+                  {cardContent}
                 </div>
-              </button>
+              )}
             </motion.article>
           )
         })}
       </div>
 
-      {activeAlbum ? <EventGalleryViewer album={activeAlbum} onClose={closeViewer} /> : null}
+      {enableAlbumSlideshow && activeAlbum ? (
+        <GallerySlideshowViewer album={activeAlbum} onClose={closeViewer} />
+      ) : null}
     </>
   )
 }

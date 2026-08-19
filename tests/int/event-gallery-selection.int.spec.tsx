@@ -91,6 +91,18 @@ describe('Event Gallery public selection', () => {
     expect(html.indexOf('Independence Day')).toBeLessThan(html.indexOf('Yoga Day'))
   })
 
+  it('renders selected albums without requiring a section title', async () => {
+    const element = await EventGalleryBlockComponent({
+      displayOrder: 'latestEventDate',
+      galleryAlbums: ['yoga-day', 'independence-day'],
+    })
+    const html = renderToStaticMarkup(element)
+
+    expect(html).toContain('data-event-gallery="true"')
+    expect(html).toContain('Independence Day')
+    expect(html).not.toContain('<h2')
+  })
+
   it('renders nothing and skips the loader without a selection', async () => {
     await expect(
       EventGalleryBlockComponent({

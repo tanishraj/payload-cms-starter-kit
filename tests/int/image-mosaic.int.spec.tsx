@@ -1,19 +1,53 @@
 import { existsSync, readFileSync } from 'node:fs'
 
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+
+const mocks = vi.hoisted(() => ({
+  getPublishedEventGalleryAlbums: vi.fn(),
+}))
+
+vi.mock('@/lib/eventGallery', () => ({
+  getPublishedEventGalleryAlbums: mocks.getPublishedEventGalleryAlbums,
+}))
+vi.mock('@/components/gallery-slideshow-viewer', async (importOriginal) => {
+  const original = await importOriginal<typeof import('@/components/gallery-slideshow-viewer')>()
+
+  return {
+    ...original,
+    GallerySlideshowViewer: ({
+      album,
+      onClose,
+    }: {
+      album: { title: string }
+      onClose: () => void
+    }) => (
+      <div data-testid="image-mosaic-viewer">
+        {album.title}
+        <button onClick={onClose} type="button">
+          Close mosaic viewer
+        </button>
+      </div>
+    ),
+  }
+})
 
 import { ImageMosaicBlockComponent } from '@/blocks/ImageMosaic/Component'
 import { ImageMosaicBlock } from '@/blocks/ImageMosaic/config'
+import { ImageMosaicBlockPresentation } from '@/blocks/ImageMosaic/Presentation'
 import { renderPageBlocks } from '@/blocks/renderPageBlocks'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import { Pages } from '@/collections/Pages'
 import { ImageMosaic, type ImageMosaicItem } from '@/components/image-mosaic'
+import { normalizeImageMosaicContentSource } from '@/components/image-mosaic-presentation'
+import type { EventGalleryAlbum } from '@/lib/eventGalleryShared'
 
 type TestField = {
   admin?: { condition?: (data: unknown, siblingData?: Record<string, unknown>) => boolean }
   defaultValue?: unknown
   fields?: TestField[]
+  hasMany?: boolean
   label?: string
   maxRows?: number
   minRows?: number
@@ -23,6 +57,10 @@ type TestField = {
   required?: boolean
   tabs?: TestTab[]
   type?: string
+  validate?: (
+    value: unknown,
+    context: { siblingData?: Record<string, unknown> },
+  ) => boolean | string
 }
 
 type TestTab = {
@@ -53,7 +91,164 @@ const mosaicItems: ImageMosaicItem[] = Array.from({ length: 8 }, (_, index) => (
   title: `Story ${index + 1}`,
 }))
 
+const albumFixtures: EventGalleryAlbum[] = [
+  {
+    cover: {
+      alt: 'Campus life',
+      height: 900,
+      id: 'album-1-cover',
+      src: '/media/album-1.jpg',
+      width: 1200,
+    },
+    createdAt: '2026-08-01T00:00:00.000Z',
+    eventDate: '2026-08-10T00:00:00.000Z',
+    id: 'album-1',
+    imageCount: 2,
+    images: [
+      {
+        alt: 'Campus life',
+        height: 900,
+        id: 'album-1-cover',
+        src: '/media/album-1.jpg',
+        width: 1200,
+      },
+      {
+        alt: 'Campus auditorium',
+        height: 900,
+        id: 'album-1-secondary',
+        src: '/media/album-1-secondary.jpg',
+        width: 1200,
+      },
+    ],
+    title: 'Campus Life',
+  },
+  {
+    cover: {
+      alt: 'Annual day',
+      height: 900,
+      id: 'album-2-cover',
+      src: '/media/album-2.jpg',
+      width: 1200,
+    },
+    createdAt: '2026-08-02T00:00:00.000Z',
+    eventDate: '2026-08-18T00:00:00.000Z',
+    id: 'album-2',
+    imageCount: 1,
+    images: [
+      {
+        alt: 'Annual day',
+        height: 900,
+        id: 'album-2-cover',
+        src: '/media/album-2.jpg',
+        width: 1200,
+      },
+    ],
+    title: 'Annual Day',
+  },
+]
+
+beforeEach(() => {
+  mocks.getPublishedEventGalleryAlbums.mockReset()
+  mocks.getPublishedEventGalleryAlbums.mockResolvedValue(albumFixtures)
+})
+afterEach(cleanup)
+
 describe('Image Mosaic', () => {
+  it('normalizes legacy and invalid content sources to Manual Images', () => {
+    expect(normalizeImageMosaicContentSource(undefined)).toBe('manualImages')
+    expect(normalizeImageMosaicContentSource('galleryAlbums')).toBe('galleryAlbums')
+    expect(normalizeImageMosaicContentSource('invalid')).toBe('manualImages')
+  })
+
+  it('renders selected Gallery Albums with shared metadata and configurable interaction', () => {
+    const enabled = renderToStaticMarkup(
+      <ImageMosaicBlockPresentation
+        albums={albumFixtures}
+        cardTextLayout="middleCenter"
+        contentSource="galleryAlbums"
+        displayOrder="manual"
+        enableAlbumSlideshow
+        galleryAlbums={['album-2', 'album-1']}
+        showEventDate
+        showImageCount
+        title="Campus albums"
+      />,
+    )
+    const disabled = renderToStaticMarkup(
+      <ImageMosaicBlockPresentation
+        albums={albumFixtures}
+        contentSource="galleryAlbums"
+        enableAlbumSlideshow={false}
+        galleryAlbums={['album-1']}
+        title="Static albums"
+      />,
+    )
+
+    expect(enabled).toContain('data-image-mosaic-source="galleryAlbums"')
+    expect(enabled).toContain('data-gallery-album-image-count="true"')
+    expect(enabled).toContain('data-image-mosaic-album-interaction="slideshow"')
+    expect(enabled.indexOf('Annual Day')).toBeLessThan(enabled.indexOf('Campus Life'))
+    expect(disabled).toContain('data-image-mosaic-album-interaction="static"')
+    expect(disabled).not.toContain('<button')
+  })
+
+  it('loads only selected published albums in album mode and skips the loader for legacy manual data', async () => {
+    const albumElement = await ImageMosaicBlockComponent({
+      contentSource: 'galleryAlbums',
+      displayOrder: 'manual',
+      galleryAlbums: ['album-2', { id: 'album-1' }],
+      title: 'Selected albums',
+    })
+    const albumHtml = renderToStaticMarkup(albumElement)
+
+    expect(mocks.getPublishedEventGalleryAlbums).toHaveBeenCalledOnce()
+    expect(mocks.getPublishedEventGalleryAlbums).toHaveBeenCalledWith(['album-2', 'album-1'])
+    expect(albumHtml.indexOf('Annual Day')).toBeLessThan(albumHtml.indexOf('Campus Life'))
+
+    mocks.getPublishedEventGalleryAlbums.mockClear()
+    const manualElement = await ImageMosaicBlockComponent({
+      items: [
+        {
+          image: {
+            alt: 'Legacy image',
+            height: 900,
+            id: 30,
+            url: '/media/legacy.jpg',
+            width: 1200,
+          },
+          title: 'Legacy image',
+        },
+      ],
+      title: 'Legacy mosaic',
+    })
+
+    expect(renderToStaticMarkup(manualElement)).toContain('data-image-mosaic-source="manualImages"')
+    expect(mocks.getPublishedEventGalleryAlbums).not.toHaveBeenCalled()
+  })
+
+  it('opens the selected album, restores focus, and keeps interaction independent from overlays', async () => {
+    render(
+      <ImageMosaicBlockPresentation
+        albums={albumFixtures}
+        contentSource="galleryAlbums"
+        galleryAlbums={['album-1']}
+        showImageOverlays={false}
+        title="Campus albums"
+      />,
+    )
+
+    const opener = screen.getByRole('button', {
+      name: 'Open Campus Life gallery with 2 images',
+    })
+    expect(document.querySelector('[data-image-mosaic-card-content="true"]')).toBeNull()
+
+    fireEvent.click(opener)
+    expect(screen.getByTestId('image-mosaic-viewer').textContent).toContain('Campus Life')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Close mosaic viewer' }))
+    await waitFor(() => expect(document.activeElement).toBe(opener))
+  })
+
   it('includes the per-action display mode field by default, with an opt-out', () => {
     const defaultField = createContentActionsField()
     const imageActionField = createContentActionsField({
@@ -110,7 +305,7 @@ describe('Image Mosaic', () => {
     })
   })
 
-  it('defines the approved one-to-eight-item Payload schema', () => {
+  it('defines manual and Gallery Album sources with source-aware validation', () => {
     expect(ImageMosaicBlock).toMatchObject({
       interfaceName: 'ImageMosaicBlock',
       labels: {
@@ -126,7 +321,11 @@ describe('Image Mosaic', () => {
     }
     const contentTab = tabsField.tabs.find(({ label }) => label === 'Content')
     const layoutTab = tabsField.tabs.find(({ label }) => label === 'Theme Settings')
+    const contentSourceField = getField(contentTab?.fields ?? [], 'contentSource')
     const itemsField = getField(contentTab?.fields ?? [], 'items')
+    const galleryAlbumsField = getField(contentTab?.fields ?? [], 'galleryAlbums')
+    const displayOrderField = getField(contentTab?.fields ?? [], 'displayOrder')
+    const enableAlbumSlideshowField = getField(contentTab?.fields ?? [], 'enableAlbumSlideshow')
 
     expect(tabsField.type).toBe('tabs')
     expect(tabsField.tabs.map(({ label }) => label)).toEqual(['Content', 'Theme Settings'])
@@ -134,12 +333,59 @@ describe('Image Mosaic', () => {
       type: 'text',
     })
     expect(getField(contentTab?.fields ?? [], 'actions')?.maxRows).toBe(2)
+    expect(contentSourceField).toMatchObject({
+      defaultValue: 'manualImages',
+      options: [{ value: 'manualImages' }, { value: 'galleryAlbums' }],
+      required: true,
+      type: 'select',
+    })
     expect(itemsField).toMatchObject({
       maxRows: 8,
       minRows: 1,
-      required: true,
       type: 'array',
     })
+    expect(itemsField?.required).not.toBe(true)
+    expect(itemsField?.admin?.condition?.({}, { contentSource: 'manualImages' })).toBe(true)
+    expect(itemsField?.admin?.condition?.({}, { contentSource: undefined })).toBe(true)
+    expect(itemsField?.admin?.condition?.({}, { contentSource: 'galleryAlbums' })).toBe(false)
+    expect(itemsField?.validate?.([], { siblingData: { contentSource: 'manualImages' } })).toBe(
+      'Add at least one image.',
+    )
+    expect(itemsField?.validate?.([], { siblingData: { contentSource: 'galleryAlbums' } })).toBe(
+      true,
+    )
+    expect(galleryAlbumsField).toMatchObject({
+      hasMany: true,
+      maxRows: 8,
+      relationTo: 'gallery-albums',
+      type: 'relationship',
+    })
+    expect(galleryAlbumsField?.admin?.condition?.({}, { contentSource: 'galleryAlbums' })).toBe(
+      true,
+    )
+    expect(galleryAlbumsField?.admin?.condition?.({}, { contentSource: 'manualImages' })).toBe(
+      false,
+    )
+    expect(
+      galleryAlbumsField?.validate?.([], { siblingData: { contentSource: 'galleryAlbums' } }),
+    ).toBe('Select at least one Gallery Album.')
+    expect(
+      galleryAlbumsField?.validate?.([], { siblingData: { contentSource: 'manualImages' } }),
+    ).toBe(true)
+    expect(displayOrderField).toMatchObject({
+      defaultValue: 'latestEventDate',
+      options: [{ value: 'latestEventDate' }, { value: 'manual' }],
+      required: true,
+      type: 'select',
+    })
+    expect(displayOrderField?.admin?.condition?.({}, { contentSource: 'galleryAlbums' })).toBe(true)
+    expect(enableAlbumSlideshowField).toMatchObject({
+      defaultValue: true,
+      type: 'checkbox',
+    })
+    expect(
+      enableAlbumSlideshowField?.admin?.condition?.({}, { contentSource: 'galleryAlbums' }),
+    ).toBe(true)
     expect(getField(itemsField?.fields ?? [], 'image')).toMatchObject({
       relationTo: 'media',
       required: true,
@@ -182,6 +428,26 @@ describe('Image Mosaic', () => {
       defaultValue: true,
       type: 'checkbox',
     })
+    const cardTextLayoutField = getField(layoutTab?.fields ?? [], 'cardTextLayout')
+    const showEventDateField = getField(layoutTab?.fields ?? [], 'showEventDate')
+    const showImageCountField = getField(layoutTab?.fields ?? [], 'showImageCount')
+    expect(cardTextLayoutField).toMatchObject({
+      defaultValue: 'split',
+      options: [{ value: 'split' }, { value: 'center' }, { value: 'middleCenter' }],
+      required: true,
+      type: 'select',
+    })
+    expect(cardTextLayoutField?.admin?.condition?.({}, { showImageOverlays: true })).toBe(true)
+    expect(cardTextLayoutField?.admin?.condition?.({}, { showImageOverlays: false })).toBe(false)
+    for (const field of [showEventDateField, showImageCountField]) {
+      expect(field).toMatchObject({ defaultValue: true, type: 'checkbox' })
+      expect(
+        field?.admin?.condition?.({}, { contentSource: 'galleryAlbums', showImageOverlays: true }),
+      ).toBe(true)
+      expect(
+        field?.admin?.condition?.({}, { contentSource: 'manualImages', showImageOverlays: true }),
+      ).toBe(false)
+    }
     const themeModeField = getField(layoutTab?.fields ?? [], 'themeMode')
     const overlayStyleField = getField(layoutTab?.fields ?? [], 'overlayStyle')
     const overlayDirectionField = getField(layoutTab?.fields ?? [], 'overlayDirection')

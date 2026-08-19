@@ -2,12 +2,18 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { renderToStaticMarkup } from 'react-dom/server'
 
-vi.mock('@/components/event-gallery-viewer', async (importOriginal) => {
-  const original = await importOriginal<typeof import('@/components/event-gallery-viewer')>()
+vi.mock('@/components/gallery-slideshow-viewer', async (importOriginal) => {
+  const original = await importOriginal<typeof import('@/components/gallery-slideshow-viewer')>()
 
   return {
     ...original,
-    EventGalleryViewer: ({ album, onClose }: { album: { title: string }; onClose: () => void }) => (
+    GallerySlideshowViewer: ({
+      album,
+      onClose,
+    }: {
+      album: { title: string }
+      onClose: () => void
+    }) => (
       <div data-testid="event-gallery-viewer">
         {album.title}
         <button onClick={onClose} type="button">
@@ -19,6 +25,7 @@ vi.mock('@/components/event-gallery-viewer', async (importOriginal) => {
 })
 
 import { EventGallery } from '@/components/event-gallery'
+import { EventGalleryBlock } from '@/blocks/EventGallery/config'
 import type { EventGalleryAlbum } from '@/lib/eventGalleryShared'
 
 const albums: EventGalleryAlbum[] = [
@@ -108,6 +115,23 @@ afterAll(() => vi.unstubAllGlobals())
 afterEach(cleanup)
 
 describe('event gallery presentation', () => {
+  it('defines a block-wide slideshow switch enabled by default', () => {
+    const tabsField = EventGalleryBlock.fields[0]
+
+    if (tabsField.type !== 'tabs') throw new Error('Expected Event Gallery tabs')
+
+    const contentTab = tabsField.tabs.find(({ label }) => label === 'Content')
+    const slideshowField = contentTab?.fields.find(
+      (field) => 'name' in field && field.name === 'enableAlbumSlideshow',
+    )
+
+    expect(slideshowField).toMatchObject({
+      defaultValue: true,
+      label: 'Enable Album Slideshow',
+      type: 'checkbox',
+    })
+  })
+
   it('uses shared section sizing and renders album cards in the provided order', () => {
     const html = renderToStaticMarkup(
       <EventGallery
@@ -231,6 +255,30 @@ describe('event gallery presentation', () => {
 
     expect(html).not.toContain('data-event-gallery-card-overlay="true"')
     expect(html).not.toContain('data-event-gallery-card-content="true"')
+  })
+
+  it('keeps legacy and enabled cards interactive while disabled cards are static', () => {
+    const enabled = renderToStaticMarkup(
+      <EventGallery albums={albums} enableAlbumSlideshow title="Event gallery" />,
+    )
+    const disabled = renderToStaticMarkup(
+      <EventGallery albums={albums} enableAlbumSlideshow={false} title="Static gallery" />,
+    )
+    const legacy = renderToStaticMarkup(<EventGallery albums={albums} title="Legacy gallery" />)
+
+    expect(enabled).toContain('data-event-gallery-interaction="slideshow"')
+    expect(enabled).toContain('<button')
+    expect(disabled).toContain('data-event-gallery-interaction="static"')
+    expect(disabled).not.toContain('<button')
+    expect(disabled).toContain('Yoga Day')
+    expect(legacy).toContain('data-event-gallery-interaction="slideshow"')
+  })
+
+  it('does not expose button semantics when the slideshow is disabled', () => {
+    render(<EventGallery albums={albums} enableAlbumSlideshow={false} title="Static gallery" />)
+
+    expect(screen.queryByRole('button')).toBeNull()
+    expect(screen.getByText('Yoga Day')).toBeTruthy()
   })
 
   it('opens the selected album viewer and restores focus when it closes', async () => {

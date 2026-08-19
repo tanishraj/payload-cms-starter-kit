@@ -35,6 +35,7 @@ type EventGalleryProps = {
   cardTextLayout?: EventGalleryCardTextLayout | string | null
   className?: string
   description?: string | null
+  enableAlbumSlideshow?: boolean
   eyebrow?: string | null
   overlayCoverage?: MediaOverlayCoverage | null
   overlayDirection?: MediaOverlayDirection | null
@@ -68,6 +69,7 @@ export function EventGallery({
   cardTextLayout = 'split',
   className,
   description,
+  enableAlbumSlideshow = true,
   eyebrow,
   overlayCoverage = 'full',
   overlayDirection = 'bottomToTop',
@@ -92,6 +94,7 @@ export function EventGallery({
     strength: overlayStyle,
     tone: themeMode,
   })
+  const hasHeaderContent = Boolean(eyebrow || title || description || actions)
 
   return (
     <section
@@ -107,23 +110,28 @@ export function EventGallery({
       data-event-gallery-size={size}
     >
       <div className={regularBlockContainerClasses}>
-        <div className={cn('flex max-w-3xl flex-col gap-4', alignmentClasses[alignment])}>
-          {eyebrow ? (
-            <SectionEyebrow surface={appearance?.background ?? 'none'}>{eyebrow}</SectionEyebrow>
-          ) : null}
-          <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-            {title}
-          </h2>
-          {description ? (
-            <p className="text-base leading-7 text-balance text-current/70">{description}</p>
-          ) : null}
-          {actions ? <div className="mt-2">{actions}</div> : null}
-        </div>
+        {hasHeaderContent ? (
+          <div className={cn('flex max-w-3xl flex-col gap-4', alignmentClasses[alignment])}>
+            {eyebrow ? (
+              <SectionEyebrow surface={appearance?.background ?? 'none'}>{eyebrow}</SectionEyebrow>
+            ) : null}
+            {title ? (
+              <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
+                {title}
+              </h2>
+            ) : null}
+            {description ? (
+              <p className="text-base leading-7 text-balance text-current/70">{description}</p>
+            ) : null}
+            {actions ? <div className="mt-2">{actions}</div> : null}
+          </div>
+        ) : null}
 
-        <div className={gridMarginClasses[size]}>
+        <div className={hasHeaderContent ? gridMarginClasses[size] : undefined}>
           <EventGalleryClient
             albums={albums}
             cardTextLayout={resolvedCardTextLayout}
+            enableAlbumSlideshow={enableAlbumSlideshow}
             overlay={overlay}
             showCardOverlay={showCardOverlay}
             showEventDate={showEventDate}

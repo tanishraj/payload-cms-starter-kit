@@ -64,28 +64,67 @@ export const getEventGalleryAlbumRelationshipIDs = (value: unknown): string[] =>
   })
 }
 
-export const getEventGalleryAlbumIDsFromBlocks = (value: unknown): string[] => {
-  if (!Array.isArray(value)) {
-    return []
+const MAX_GALLERY_BLOCK_DEPTH = 10
+
+export const getGalleryAlbumIDsFromBlocks = (value: unknown): string[] => {
+  const albumIDs: string[] = []
+  const seenAlbumIDs = new Set<string>()
+  const visitedLayouts = new WeakSet<object>()
+
+  const addRelationships = (relationships: unknown): void => {
+    getEventGalleryAlbumRelationshipIDs(relationships).forEach((id) => {
+      if (seenAlbumIDs.has(id)) return
+
+      seenAlbumIDs.add(id)
+      albumIDs.push(id)
+    })
   }
 
-  const relationships = value.flatMap((block): unknown[] => {
-    if (
-      typeof block !== 'object' ||
-      block === null ||
-      !('blockType' in block) ||
-      block.blockType !== 'eventGallery' ||
-      !('galleryAlbums' in block) ||
-      !Array.isArray(block.galleryAlbums)
-    ) {
-      return []
+  const visitLayout = (layout: unknown, depth: number): void => {
+    if (!Array.isArray(layout) || depth > MAX_GALLERY_BLOCK_DEPTH || visitedLayouts.has(layout)) {
+      return
     }
 
-    return block.galleryAlbums
-  })
+    visitedLayouts.add(layout)
 
-  return getEventGalleryAlbumRelationshipIDs(relationships)
+    layout.forEach((block) => {
+      if (typeof block !== 'object' || block === null || !('blockType' in block)) return
+
+      if (
+        block.blockType === 'eventGallery' &&
+        'galleryAlbums' in block &&
+        Array.isArray(block.galleryAlbums)
+      ) {
+        addRelationships(block.galleryAlbums)
+      }
+
+      if (
+        block.blockType === 'imageMosaic' &&
+        'contentSource' in block &&
+        block.contentSource === 'galleryAlbums' &&
+        'galleryAlbums' in block &&
+        Array.isArray(block.galleryAlbums)
+      ) {
+        addRelationships(block.galleryAlbums)
+      }
+
+      if (
+        block.blockType === 'reusableSection' &&
+        'section' in block &&
+        typeof block.section === 'object' &&
+        block.section !== null &&
+        'layout' in block.section
+      ) {
+        visitLayout(block.section.layout, depth + 1)
+      }
+    })
+  }
+
+  visitLayout(value, 0)
+  return albumIDs
 }
+
+export const getEventGalleryAlbumIDsFromBlocks = getGalleryAlbumIDsFromBlocks
 
 const parseOptionalTimestamp = (value: string | undefined): number | null => {
   if (!value) {

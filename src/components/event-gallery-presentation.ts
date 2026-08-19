@@ -1,4 +1,10 @@
-export type EventGalleryCardTextLayout = 'center' | 'middleCenter' | 'split'
+import {
+  normalizeGalleryAlbumContentPosition,
+  type GalleryAlbumContentPosition,
+} from '@/components/gallery-album-overlay-content'
+
+export type EventGalleryCardTextLayout = GalleryAlbumContentPosition
+export type { GalleryAlbumContentPosition }
 
 export type EventGalleryQuiltRowSpans = {
   base: 1
@@ -56,5 +62,5 @@ export function getEventGalleryQuiltRowSpanClassName({
 }
 
 export function normalizeEventGalleryCardTextLayout(value: unknown): EventGalleryCardTextLayout {
-  return value === 'center' || value === 'middleCenter' || value === 'split' ? value : 'split'
+  return normalizeGalleryAlbumContentPosition(value)
 }

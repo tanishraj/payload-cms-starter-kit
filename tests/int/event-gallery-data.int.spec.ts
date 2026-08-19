@@ -8,13 +8,10 @@ const mocks = vi.hoisted(() => ({
 vi.mock('@payload-config', () => ({ default: Promise.resolve({}) }))
 vi.mock('payload', () => ({ getPayload: mocks.getPayload }))
 
+import { getDraftEventGalleryAlbums, getPublishedEventGalleryAlbums } from '@/lib/eventGallery'
 import {
-  getDraftEventGalleryAlbums,
-  getPublishedEventGalleryAlbums,
-} from '@/lib/eventGallery'
-import {
-  getEventGalleryAlbumIDsFromBlocks,
   getEventGalleryAlbumRelationshipIDs,
+  getGalleryAlbumIDsFromBlocks,
   normalizeEventGalleryAlbums,
   selectAndOrderEventGalleryAlbums,
   type EventGalleryAlbum,
@@ -40,23 +37,45 @@ describe('event gallery data path', () => {
     ).toEqual(['album-2', 'album-1'])
   })
 
-  it('collects the selected album union across Event Gallery blocks', () => {
+  it('collects the selected album union across gallery-backed blocks and reusable sections', () => {
+    const cyclicSection: { blockType: string; section?: unknown } = {
+      blockType: 'reusableSection',
+    }
+    cyclicSection.section = { layout: [cyclicSection] }
+
     expect(
-      getEventGalleryAlbumIDsFromBlocks([
+      getGalleryAlbumIDsFromBlocks([
         {
           blockType: 'eventGallery',
           galleryAlbums: ['album-2', { id: 'album-1' }],
         },
         {
-          blockType: 'cta39',
-          galleryAlbums: ['ignored'],
-        },
-        {
-          blockType: 'eventGallery',
+          blockType: 'imageMosaic',
+          contentSource: 'galleryAlbums',
           galleryAlbums: ['album-3', 'album-2'],
         },
+        {
+          blockType: 'imageMosaic',
+          contentSource: 'manualImages',
+          galleryAlbums: ['ignored-manual'],
+        },
+        {
+          blockType: 'reusableSection',
+          section: {
+            layout: [
+              {
+                blockType: 'imageMosaic',
+                contentSource: 'galleryAlbums',
+                galleryAlbums: [{ id: 'album-4' }],
+              },
+            ],
+          },
+        },
+        { blockType: 'cta39', galleryAlbums: ['ignored-other-block'] },
+        cyclicSection,
+        null,
       ]),
-    ).toEqual(['album-2', 'album-1', 'album-3'])
+    ).toEqual(['album-2', 'album-1', 'album-3', 'album-4'])
   })
 
   it('preserves relationship order in manual mode', () => {
@@ -120,13 +139,7 @@ describe('event gallery data path', () => {
       selectAndOrderEventGalleryAlbums({
         albums,
         displayOrder: 'latestEventDate',
-        selectedAlbumIDs: [
-          'missing-old',
-          'same-older',
-          'latest',
-          'same-newer',
-          'missing-new',
-        ],
+        selectedAlbumIDs: ['missing-old', 'same-older', 'latest', 'same-newer', 'missing-new'],
       }).map((album) => album.id),
     ).toEqual(['latest', 'same-newer', 'same-older', 'missing-new', 'missing-old'])
   })
@@ -224,10 +237,7 @@ describe('event gallery data path', () => {
         pagination: false,
         sort: '-createdAt',
         where: {
-          and: [
-            { id: { in: ['album-2', 'album-1'] } },
-            { _status: { equals: 'published' } },
-          ],
+          and: [{ id: { in: ['album-2', 'album-1'] } }, { _status: { equals: 'published' } }],
         },
       }),
     )

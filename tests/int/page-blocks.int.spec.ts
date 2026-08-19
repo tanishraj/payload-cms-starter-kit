@@ -226,6 +226,10 @@ describe('page block pipeline', () => {
       required?: boolean
       type?: string
     }>(contentTab?.fields ?? [], 'displayOrder')
+    const enableAlbumSlideshow = getNamedField<{ defaultValue?: boolean; type?: string }>(
+      contentTab?.fields ?? [],
+      'enableAlbumSlideshow',
+    )
     const contentAlignment = getNamedField<{
       defaultValue?: string
       options?: Array<{ value: string }>
@@ -286,6 +290,7 @@ describe('page block pipeline', () => {
       'actions',
       'galleryAlbums',
       'displayOrder',
+      'enableAlbumSlideshow',
       'footerActions',
     ])
     expect(galleryAlbums).toMatchObject({
@@ -307,6 +312,7 @@ describe('page block pipeline', () => {
       'latestEventDate',
       'manual',
     ])
+    expect(enableAlbumSlideshow).toMatchObject({ defaultValue: true, type: 'checkbox' })
     expect(cardTextLayout).toMatchObject({
       defaultValue: 'split',
       required: true,

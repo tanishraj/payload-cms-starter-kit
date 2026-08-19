@@ -6,7 +6,7 @@ const mocks = vi.hoisted(() => ({
   auth: vi.fn(),
   getDraftEventGalleryAlbums: vi.fn(),
   getDraftSiteOfficeLocations: vi.fn(),
-  getEventGalleryAlbumIDsFromBlocks: vi.fn(),
+  getGalleryAlbumIDsFromBlocks: vi.fn(),
   getNewsEventBySlug: vi.fn(),
   getNewsEventDetailMetadata: vi.fn(),
   getNewsEventDetailTemplate: vi.fn(),
@@ -40,7 +40,7 @@ vi.mock('@/lib/eventGallery', () => ({
   getDraftEventGalleryAlbums: mocks.getDraftEventGalleryAlbums,
 }))
 vi.mock('@/lib/eventGalleryShared', () => ({
-  getEventGalleryAlbumIDsFromBlocks: mocks.getEventGalleryAlbumIDsFromBlocks,
+  getGalleryAlbumIDsFromBlocks: mocks.getGalleryAlbumIDsFromBlocks,
 }))
 vi.mock('@/lib/newsEvents', () => ({
   getNewsEventBySlug: mocks.getNewsEventBySlug,
@@ -72,7 +72,7 @@ describe('News & Events metadata routes', () => {
     mocks.getPayload.mockResolvedValue({ auth: mocks.auth })
     mocks.getDraftEventGalleryAlbums.mockResolvedValue([])
     mocks.getDraftSiteOfficeLocations.mockResolvedValue([])
-    mocks.getEventGalleryAlbumIDsFromBlocks.mockReturnValue([])
+    mocks.getGalleryAlbumIDsFromBlocks.mockReturnValue([])
     mocks.getNewsEventsInheritedRobots.mockResolvedValue('noindex,follow')
     mocks.getNewsEventDetailTemplate.mockResolvedValue({
       layout: [
@@ -130,6 +130,11 @@ describe('News & Events metadata routes', () => {
       { blockType: 'newsGrid', totalCards: 3 },
       { blockType: 'contact24' },
       { blockType: 'eventGallery', galleryAlbums: ['album-1'] },
+      {
+        blockType: 'imageMosaic',
+        contentSource: 'galleryAlbums',
+        galleryAlbums: ['album-2'],
+      },
     ]
     const template = {
       layout: [...pageBlocks, { blockType: 'newsEventsContent' }],
@@ -141,10 +146,13 @@ describe('News & Events metadata routes', () => {
       newsGridByCount: { 3: [] },
     }
     const officeLocations = [{ id: 'office-1', name: 'Main Office' }]
-    const eventGalleryAlbums = [{ id: 'album-1', title: 'Annual Day' }]
+    const eventGalleryAlbums = [
+      { id: 'album-1', title: 'Annual Day' },
+      { id: 'album-2', title: 'Campus Life' },
+    ]
     mocks.getNewsEventPreviewBySlug.mockResolvedValue(entry)
     mocks.getNewsEventDetailTemplate.mockResolvedValue(template)
-    mocks.getEventGalleryAlbumIDsFromBlocks.mockReturnValue(['album-1'])
+    mocks.getGalleryAlbumIDsFromBlocks.mockReturnValue(['album-1', 'album-2'])
     mocks.loadReviewPreviewSnapshot.mockResolvedValue(reviewSnapshot)
     mocks.loadNewsEventsPreviewSnapshot.mockResolvedValue(newsEventsSnapshot)
     mocks.getDraftSiteOfficeLocations.mockResolvedValue(officeLocations)
@@ -161,7 +169,7 @@ describe('News & Events metadata routes', () => {
     expect(mocks.loadReviewPreviewSnapshot).toHaveBeenCalledWith(pageBlocks)
     expect(mocks.loadNewsEventsPreviewSnapshot).toHaveBeenCalledWith(pageBlocks)
     expect(mocks.getDraftSiteOfficeLocations).toHaveBeenCalledOnce()
-    expect(mocks.getDraftEventGalleryAlbums).toHaveBeenCalledWith(['album-1'])
+    expect(mocks.getDraftEventGalleryAlbums).toHaveBeenCalledWith(['album-1', 'album-2'])
     expect(mocks.newsEventLivePreview.mock.calls.at(-1)?.[0]).toMatchObject({
       eventGalleryAlbums,
       initialData: entry,

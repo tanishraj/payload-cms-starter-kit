@@ -141,12 +141,14 @@ describe('live-preview client import boundary', () => {
       'src/blocks/NewsEventsHighlights/Component.tsx',
       'src/lib/siteOffices.ts',
       'src/lib/eventGallery.ts',
+      'src/blocks/ImageMosaic/Component.tsx',
     ]) {
       expect(reachablePaths.has(serverPath), `${serverPath} entered the client graph`).toBe(false)
     }
 
     expectNoServerOnlyModules(reachablePaths)
     expect(reachablePaths.has('src/lib/eventGalleryShared.ts')).toBe(true)
+    expect(reachablePaths.has('src/blocks/ImageMosaic/PreviewComponent.tsx')).toBe(true)
   })
 
   it('keeps News Event preview from reaching production or server-only modules', () => {
@@ -166,6 +168,7 @@ describe('live-preview client import boundary', () => {
       'src/blocks/NewsEventsHighlights/Component.tsx',
       'src/lib/siteOffices.ts',
       'src/lib/eventGallery.ts',
+      'src/blocks/ImageMosaic/Component.tsx',
     ]) {
       expect(reachablePaths.has(serverPath), `${serverPath} entered the client graph`).toBe(false)
     }
@@ -173,5 +176,6 @@ describe('live-preview client import boundary', () => {
     expectNoServerOnlyModules(reachablePaths)
     expect(reachablePaths.has('src/blocks/renderLivePreviewPageBlocks.tsx')).toBe(true)
     expect(reachablePaths.has('src/blocks/NewsEventsContent/Component.tsx')).toBe(true)
+    expect(reachablePaths.has('src/blocks/ImageMosaic/PreviewComponent.tsx')).toBe(true)
   })
 })

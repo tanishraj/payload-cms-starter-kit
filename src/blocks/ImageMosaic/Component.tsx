@@ -1,140 +1,22 @@
-import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
-import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
-import type {
-  MediaOverlayCoverage,
-  MediaOverlayDirection,
-  MediaOverlayStrength,
-  MediaOverlayTone,
-} from '@/blocks/shared/mediaOverlayPresentation'
-import { ContentActions } from '@/components/ContentActions'
 import {
-  ImageMosaic,
-  type ImageMosaicAlignment,
-  type ImageMosaicImagePosition,
-  type ImageMosaicItem,
-  type ImageMosaicSize,
-} from '@/components/image-mosaic'
-import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
-import { getMediaImageProps, isMediaDoc } from '@/lib/media'
-import type { Media } from '@/payload-types'
+  ImageMosaicBlockPresentation,
+  type ImageMosaicBlockLike,
+} from '@/blocks/ImageMosaic/Presentation'
+import { normalizeImageMosaicContentSource } from '@/components/image-mosaic-presentation'
+import { getPublishedEventGalleryAlbums } from '@/lib/eventGallery'
+import { getEventGalleryAlbumRelationshipIDs } from '@/lib/eventGalleryShared'
 
-type ImageMosaicActionValue = CmsActionValue & {
-  mode?: 'button' | 'link' | null
-}
+export function ImageMosaicBlockComponent(props: ImageMosaicBlockLike) {
+  const source = normalizeImageMosaicContentSource(props.contentSource)
 
-type ImageMosaicItemValue = {
-  action?: ImageMosaicActionValue[] | null
-  image?: unknown
-  imagePosition?: ImageMosaicImagePosition | null
-  title?: string | null
-}
-
-type ImageMosaicBlockLike = {
-  accentTitle?: string | null
-  actions?: CmsActionValue[] | null
-  appearance?: BlockAppearance | null
-  contentAlignment?: ImageMosaicAlignment | null
-  description?: string | null
-  eyebrow?: string | null
-  footerActions?: CmsActionValue[] | null
-  items?: ImageMosaicItemValue[] | null
-  overlayCoverage?: MediaOverlayCoverage | null
-  overlayDirection?: MediaOverlayDirection | null
-  overlayStyle?: MediaOverlayStrength | null
-  showImageOverlays?: boolean | null
-  size?: ImageMosaicSize | null
-  themeMode?: MediaOverlayTone | null
-  title?: string | null
-}
-
-export function ImageMosaicBlockComponent({
-  accentTitle,
-  actions,
-  appearance,
-  contentAlignment = 'center',
-  description,
-  eyebrow,
-  footerActions,
-  items,
-  overlayCoverage = 'full',
-  overlayDirection = 'bottomToTop',
-  overlayStyle = 'dark',
-  showImageOverlays = true,
-  size = 'default',
-  themeMode = 'auto',
-  title,
-}: ImageMosaicBlockLike) {
-  const resolvedTitle = title?.trim()
-
-  if (!resolvedTitle) {
-    return null
+  if (source === 'manualImages') {
+    return <ImageMosaicBlockPresentation {...props} contentSource={source} />
   }
 
-  const resolvedItems = (items ?? [])
-    .flatMap((item): ImageMosaicItem[] => {
-      const itemTitle = item.title?.trim()
-      const media = item.image as Media | number | string | null | undefined
-      const image = getMediaImageProps({
-        fallbackAlt: itemTitle,
-        media,
-        preset: 'generic',
-      })
+  const selectedAlbumIDs = getEventGalleryAlbumRelationshipIDs(props.galleryAlbums).slice(0, 8)
+  if (!selectedAlbumIDs.length) return null
 
-      if (!image) {
-        return []
-      }
-
-      const actionValue = item.action?.[0]
-      const resolvedAction = resolveCmsActions(actionValue ? [actionValue] : [])[0]
-
-      return [
-        {
-          id: isMediaDoc(media) ? media.id : image.src,
-          image,
-          imagePosition: item.imagePosition ?? 'center',
-          action: resolvedAction
-            ? {
-                ...resolvedAction,
-                mode: actionValue?.mode ?? 'link',
-              }
-            : undefined,
-          title: itemTitle,
-        },
-      ]
-    })
-    .slice(0, 8)
-
-  if (resolvedItems.length === 0) {
-    return null
-  }
-
-  const alignment = contentAlignment ?? 'center'
-
-  return (
-    <>
-      <ImageMosaic
-        accentTitle={accentTitle}
-        actions={
-          <ContentActions
-            actions={resolveCmsActions(actions).slice(0, 2)}
-            alignment={alignment}
-            data-image-mosaic-actions="true"
-          />
-        }
-        alignment={alignment}
-        appearance={appearance}
-        description={description?.trim() || undefined}
-        eyebrow={eyebrow?.trim() || undefined}
-        items={resolvedItems}
-        overlayCoverage={overlayCoverage ?? 'full'}
-        overlayDirection={overlayDirection ?? 'bottomToTop'}
-        overlayStyle={overlayStyle ?? 'dark'}
-        showImageOverlays={showImageOverlays ?? true}
-        size={size ?? 'default'}
-        themeMode={themeMode ?? 'auto'}
-        title={resolvedTitle}
-      />
-      <BlockFooterActions actions={footerActions} />
-    </>
-  )
+  return getPublishedEventGalleryAlbums(selectedAlbumIDs).then((albums) => (
+    <ImageMosaicBlockPresentation {...props} albums={albums} contentSource={source} />
+  ))
 }

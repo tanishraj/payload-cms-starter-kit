@@ -1080,6 +1080,7 @@ export const blockThumbnailFixtures = {
       ]}
       appearance={{ background: 'subtle', border: 'topAndBottom' }}
       contentAlignment="center"
+      contentSource="manualImages"
       description="Explore the spaces, people, and moments that shape our community."
       eyebrow="Inside our community"
       items={[

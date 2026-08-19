@@ -71,6 +71,16 @@ export const EventGalleryBlock: Block = {
               ],
               required: true,
             } satisfies SelectField,
+            {
+              name: 'enableAlbumSlideshow',
+              label: 'Enable Album Slideshow',
+              type: 'checkbox',
+              defaultValue: true,
+              admin: {
+                description:
+                  'Open the selected album in the full-screen slideshow when a gallery tile is selected.',
+              },
+            } satisfies CheckboxField,
             createContentActionsField({
               name: 'footerActions',
               label: 'Footer Actions',

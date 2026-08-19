@@ -66,7 +66,11 @@ The generated inventory contains every current export under [src/blocks/shared](
 
 Event Gallery renders selected Gallery Albums in their resolved manual or latest-event-date order.
 Each selected album contributes its first valid image as one cover tile, while the accessible card
-button opens every image in that album through the existing full-screen viewer. The count-aware
+button opens every image in that album through the shared full-screen viewer. Enable Album Slideshow
+defaults on, including for legacy documents; disabling it retains identical images and overlays on
+static, non-focusable tiles. The section title is optional: albums render without any header content,
+and the header wrapper and its grid gap are omitted when eyebrow, title, description, and section
+actions are all absent. The count-aware
 rectangular quilt uses one phone, two tablet, three laptop, and four wide-desktop columns, bounded by
 the number of rendered albums. The first few tiles span two rows only when required to fill the active
 grid exactly, so every album count ends on a straight boundary without horizontal spans, dense
@@ -76,6 +80,18 @@ title. Bottom Left aligns the stack left; Bottom Center and Center — Vertical 
 Missing or disabled metadata rows close naturally. The shared overlay tone, strength, direction, and
 coverage fields control the presentation. Disabling Show Album Details Overlay produces image-only
 cards and hides its dependent metadata, position, and overlay controls in Admin.
+
+Image Mosaic supports Manual Images and Gallery Albums sources. Missing or invalid source values
+retain the legacy Manual Images behavior, including one-to-eight uploaded images, crop positions,
+titles, and independent actions. Gallery Albums mode accepts up to eight explicitly selected albums,
+uses the shared manual/latest-event-date ordering utility, and contributes one first-valid-image cover
+tile per album. Album overlays share Event Gallery's numeric count, UTC Event Date, sans title, and
+Bottom Left, Bottom Center, or Center — Vertical & Horizontal positions while retaining Image Mosaic's
+existing overlay resolver and grid geometry. Album slideshow interaction defaults on and can be
+disabled without changing presentation; manual images never open the album viewer. Production loads
+only selected published albums. Authenticated Page and News/Event detail previews discover album
+dependencies through supported populated Reusable Sections, load draft albums on the server, and use
+the client-safe Image Mosaic preview adapter without importing the Payload-backed loader.
 
 News & Events Highlights retains the `newsEventsHighlights` slug and renders one synchronized carousel
 from automatically loaded News & Events collection records. It interleaves recent published non-event
