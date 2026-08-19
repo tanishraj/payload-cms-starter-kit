@@ -1,4 +1,4 @@
-import { slugField, type CollectionConfig, type RelationshipFieldSingleValidation } from 'payload'
+import { type CollectionConfig, type RelationshipFieldSingleValidation } from 'payload'
 
 import { AnnouncementBlock } from '@/blocks/Announcement/config'
 import { ContentHighlightsBlock } from '@/blocks/ContentHighlights/config'
@@ -15,6 +15,7 @@ import { GalleryShowcaseBlock } from '@/blocks/GalleryShowcase/config'
 import { EventGalleryBlock } from '@/blocks/EventGallery/config'
 import { GalleryAlbumTabsBlock } from '@/blocks/GalleryAlbumTabs/config'
 import { ImageMosaicBlock } from '@/blocks/ImageMosaic/config'
+import { projectSlugField } from '@/fields/projectSlugField'
 import { StudentExperienceBlock } from '@/blocks/StudentExperience/config'
 import { NewsEventsHighlightsBlock } from '@/blocks/NewsEventsHighlights/config'
 import { ProfileCarouselBlock } from '@/blocks/ProfileCarousel/config'
@@ -233,7 +234,7 @@ export const Pages: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    slugField({
+    projectSlugField({
       useAsSlug: 'title',
     }),
     {

@@ -1,5 +1,4 @@
 import {
-  slugField,
   type CollectionConfig,
   type DateFieldValidation,
   type TextFieldSingleValidation,
@@ -14,6 +13,7 @@ import {
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import { bodyEditor } from '@/fields/bodyEditorConfig'
 import { buildSEOFields } from '@/fields/buildSEOFields'
+import { projectSlugField } from '@/fields/projectSlugField'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
 import { normalizeNewsEventFields } from '@/hooks/normalizeNewsEventFields'
@@ -157,7 +157,7 @@ export const NewsEvents: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    slugField({
+    projectSlugField({
       useAsSlug: 'title',
     }),
     {

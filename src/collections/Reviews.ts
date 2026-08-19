@@ -1,4 +1,4 @@
-import { slugField, type CollectionConfig } from 'payload'
+import { type CollectionConfig } from 'payload'
 
 import {
   allowPublicReadOrCapability,
@@ -7,6 +7,7 @@ import {
   requireCapability,
 } from '@/access/adminCapabilities'
 import { buildSEOFields } from '@/fields/buildSEOFields'
+import { projectSlugField } from '@/fields/projectSlugField'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
 import { syncReviewToWorkQueue } from '@/hooks/syncReviewToWorkQueue'
@@ -97,7 +98,7 @@ export const Reviews: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    slugField({
+    projectSlugField({
       useAsSlug: 'title',
     }),
     {

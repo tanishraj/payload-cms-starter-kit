@@ -1,4 +1,4 @@
-import { slugField, type CollectionConfig } from 'payload'
+import { type CollectionConfig } from 'payload'
 
 import {
   allowPublicReadOrCapability,
@@ -6,6 +6,7 @@ import {
   requireCapability,
 } from '@/access/adminCapabilities'
 import { HeaderNavbar12Block } from '@/blocks/HeaderNavbar12/config'
+import { projectSlugField } from '@/fields/projectSlugField'
 import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 
@@ -51,7 +52,7 @@ export const Headers: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    slugField({
+    projectSlugField({
       useAsSlug: 'title',
     }),
     {

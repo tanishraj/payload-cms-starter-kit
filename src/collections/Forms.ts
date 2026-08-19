@@ -1,13 +1,11 @@
-import {
-  slugField,
-  type CollectionConfig,
-} from 'payload'
+import { type CollectionConfig } from 'payload'
 
 import {
   allowPublicReadOrCapability,
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { projectSlugField } from '@/fields/projectSlugField'
 import {
   formFieldTypeOptions,
   formSubmissionIntentOptions,
@@ -47,7 +45,7 @@ export const Forms: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    slugField({
+    projectSlugField({
       useAsSlug: 'title',
     }),
     {

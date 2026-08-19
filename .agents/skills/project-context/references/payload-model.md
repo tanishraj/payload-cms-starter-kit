@@ -51,5 +51,6 @@ Read [adminCapabilities.ts](../../../../src/access/adminCapabilities.ts), [edito
 - [bodyEditorConfig.ts](../../../../src/fields/bodyEditorConfig.ts) defines the writing-focused Lexical editor for Article and News/Event bodies.
 - [buildSEOFields.ts](../../../../src/fields/buildSEOFields.ts) defines reusable route SEO controls.
 - [cmsLinkFields.ts](../../../../src/fields/cmsLinkFields.ts) defines reusable Navigation Link relationships.
+- [projectSlugField.ts](../../../../src/fields/projectSlugField.ts) wraps Payload's generated slug field for all slug-based collections. It collapses separators and assigns the first available `-copy`, `-copy-2`, and later suffix while preserving existing stored slugs.
 
 Payload Local API calls bypass access by default. Use `overrideAccess: false` when acting for a user. Pass `req` into nested operations so they share transactions. Use request context flags when a hook writes data that could trigger itself. Run `pnpm generate:types` after schema changes and keep [payload-types.ts](../../../../src/payload-types.ts) synchronized.

@@ -1,4 +1,4 @@
-import { slugField, type CollectionConfig } from 'payload'
+import { type CollectionConfig } from 'payload'
 
 import {
   allowPublicReadOrCapability,
@@ -7,6 +7,7 @@ import {
 } from '@/access/adminCapabilities'
 import { Footer56Block } from '@/blocks/Footer56/config'
 import { FooterMinimalBlock } from '@/blocks/FooterMinimal/config'
+import { projectSlugField } from '@/fields/projectSlugField'
 import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 
@@ -52,7 +53,7 @@ export const Footers: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    slugField({
+    projectSlugField({
       useAsSlug: 'title',
     }),
     {

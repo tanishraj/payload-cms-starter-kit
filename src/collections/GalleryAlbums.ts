@@ -1,10 +1,11 @@
-import { slugField, type CollectionConfig } from 'payload'
+import { type CollectionConfig } from 'payload'
 
 import {
   allowPublicReadOrCapability,
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import { projectSlugField } from '@/fields/projectSlugField'
 
 export const GalleryAlbums: CollectionConfig = {
   slug: 'gallery-albums',
@@ -42,7 +43,7 @@ export const GalleryAlbums: CollectionConfig = {
               type: 'text',
               required: true,
             },
-            slugField({
+            projectSlugField({
               useAsSlug: 'title',
             }),
             {
