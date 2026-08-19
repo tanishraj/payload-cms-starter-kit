@@ -1265,6 +1265,18 @@
       },
       {
         "exports": [
+          "createOverlayDisplayField"
+        ],
+        "file": "src/blocks/shared/overlayDisplayFields.ts"
+      },
+      {
+        "exports": [
+          "normalizeOverlayDisplayMode"
+        ],
+        "file": "src/blocks/shared/overlayDisplayPresentation.ts"
+      },
+      {
+        "exports": [
           "resolveLucideIcon"
         ],
         "file": "src/blocks/shared/resolveLucideIcon.ts"
@@ -2053,6 +2065,8 @@
       "src/blocks/shared/iconField.ts",
       "src/blocks/shared/mediaOverlayFields.ts",
       "src/blocks/shared/mediaOverlayPresentation.ts",
+      "src/blocks/shared/overlayDisplayFields.ts",
+      "src/blocks/shared/overlayDisplayPresentation.ts",
       "src/blocks/shared/resolveLucideIcon.ts",
       "src/blocks/shared/siteSocialLinks.ts",
       "src/blocks/systemPageFields.ts",
@@ -2410,7 +2424,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "8cdf2ba8fdd0bae6d680e499ce0727655821b20b37aae5e02d62ec23a2660849"
+    "sha256": "f244020e68c0cb4eacf6f3252d15a4888ad0bc7b81b64f12927afe74ace22a28"
   },
   "surfaces": {
     "access": [

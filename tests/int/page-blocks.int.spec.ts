@@ -256,6 +256,13 @@ describe('page block pipeline', () => {
       layoutTab?.fields ?? [],
       'showCardOverlay',
     )
+    const overlayDisplay = getNamedField<{
+      admin?: { condition?: (data: unknown, siblingData?: Record<string, unknown>) => boolean }
+      defaultValue?: string
+      options?: Array<{ label: string; value: string }>
+      required?: boolean
+      type?: string
+    }>(layoutTab?.fields ?? [], 'overlayDisplay')
     const showImageCount = getNamedField<{ defaultValue?: boolean; type?: string }>(
       layoutTab?.fields ?? [],
       'showImageCount',
@@ -326,6 +333,17 @@ describe('page block pipeline', () => {
     expect(cardsPerRow).toBeUndefined()
     expect(cardRatio).toBeUndefined()
     expect(showCardOverlay).toMatchObject({ defaultValue: true, type: 'checkbox' })
+    expect(overlayDisplay).toMatchObject({
+      defaultValue: 'always',
+      options: [
+        { label: 'Always Visible', value: 'always' },
+        { label: 'Reveal on Hover', value: 'hover' },
+      ],
+      required: true,
+      type: 'select',
+    })
+    expect(overlayDisplay?.admin?.condition?.({}, { showCardOverlay: true })).toBe(true)
+    expect(overlayDisplay?.admin?.condition?.({}, { showCardOverlay: false })).toBe(false)
     expect(showEventDate).toMatchObject({ defaultValue: true, type: 'checkbox' })
     expect(showImageCount).toMatchObject({ defaultValue: true, type: 'checkbox' })
     expect(themeMode).toMatchObject({ defaultValue: 'dark', type: 'select' })

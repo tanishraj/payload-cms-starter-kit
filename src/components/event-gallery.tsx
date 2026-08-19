@@ -10,6 +10,10 @@ import {
   type MediaOverlayTone,
 } from '@/blocks/shared/mediaOverlayPresentation'
 import {
+  normalizeOverlayDisplayMode,
+  type OverlayDisplayMode,
+} from '@/blocks/shared/overlayDisplayPresentation'
+import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
 } from '@/blocks/shared/blockSpacing'
@@ -38,6 +42,7 @@ type EventGalleryProps = {
   enableAlbumSlideshow?: boolean
   eyebrow?: string | null
   overlayCoverage?: MediaOverlayCoverage | null
+  overlayDisplay?: OverlayDisplayMode | string | null
   overlayDirection?: MediaOverlayDirection | null
   overlayStyle?: MediaOverlayStrength | null
   showCardOverlay?: boolean
@@ -72,6 +77,7 @@ export function EventGallery({
   enableAlbumSlideshow = true,
   eyebrow,
   overlayCoverage = 'full',
+  overlayDisplay,
   overlayDirection = 'bottomToTop',
   overlayStyle = 'darker',
   showCardOverlay = true,
@@ -86,6 +92,7 @@ export function EventGallery({
   }
 
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
+  const resolvedOverlayDisplay = normalizeOverlayDisplayMode(overlayDisplay, 'always')
   const resolvedCardTextLayout = normalizeEventGalleryCardTextLayout(cardTextLayout)
   const overlay = resolveMediaOverlay({
     coverage: overlayCoverage,
@@ -133,6 +140,7 @@ export function EventGallery({
             cardTextLayout={resolvedCardTextLayout}
             enableAlbumSlideshow={enableAlbumSlideshow}
             overlay={overlay}
+            overlayDisplay={resolvedOverlayDisplay}
             showCardOverlay={showCardOverlay}
             showEventDate={showEventDate}
             showImageCount={showImageCount}

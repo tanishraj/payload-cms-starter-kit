@@ -191,6 +191,21 @@ describe('event gallery presentation', () => {
     expect(firstCardContent).not.toContain('>2 images</span>')
   })
 
+  it('supports always-visible and hover-reveal overlay display modes', () => {
+    const legacyHtml = renderToStaticMarkup(<EventGallery albums={albums} title="Legacy gallery" />)
+    const hoverHtml = renderToStaticMarkup(
+      <EventGallery albums={albums} overlayDisplay="hover" title="Hover gallery" />,
+    )
+    const hiddenHtml = renderToStaticMarkup(
+      <EventGallery albums={albums} showCardOverlay={false} title="Image-only gallery" />,
+    )
+
+    expect(legacyHtml).toContain('data-gallery-overlay-display="always"')
+    expect(hoverHtml).toContain('data-gallery-overlay-display="hover"')
+    expect(hoverHtml).toContain('gallery-overlay-layer')
+    expect(hiddenHtml).not.toContain('gallery-overlay-layer')
+  })
+
   it('stacks count, date, and a text-family title for every overlay position', () => {
     for (const position of ['split', 'center', 'middleCenter'] as const) {
       const html = renderToStaticMarkup(

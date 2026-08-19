@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { useCallback, useRef, useState, useSyncExternalStore } from 'react'
 
 import type { EventGalleryResolvedOverlay } from '@/components/event-gallery'
+import type { OverlayDisplayMode } from '@/blocks/shared/overlayDisplayPresentation'
 import {
   getEventGalleryQuiltGridClassName,
   getEventGalleryQuiltRowSpanClassName,
@@ -24,6 +25,7 @@ type EventGalleryClientProps = {
   cardTextLayout?: EventGalleryCardTextLayout
   enableAlbumSlideshow?: boolean
   overlay: EventGalleryResolvedOverlay
+  overlayDisplay: OverlayDisplayMode
   showCardOverlay?: boolean
   showEventDate?: boolean
   showImageCount?: boolean
@@ -38,6 +40,7 @@ export function EventGalleryClient({
   cardTextLayout = 'split',
   enableAlbumSlideshow = true,
   overlay,
+  overlayDisplay,
   showCardOverlay = true,
   showEventDate = true,
   showImageCount = true,
@@ -82,7 +85,7 @@ export function EventGalleryClient({
               />
 
               {showCardOverlay ? (
-                <>
+                <div className="gallery-overlay-layer absolute inset-0">
                   <div
                     aria-hidden="true"
                     className={cn(
@@ -100,7 +103,7 @@ export function EventGalleryClient({
                     showEventDate={showEventDate}
                     showImageCount={showImageCount}
                   />
-                </>
+                </div>
               ) : null}
             </div>
           )
@@ -109,6 +112,7 @@ export function EventGalleryClient({
             <motion.article
               animate={shouldReduceMotion ? { opacity: 1, y: 0 } : undefined}
               className={cn('group min-h-0 min-w-0', rowSpanClassName)}
+              data-gallery-overlay-display={showCardOverlay ? overlayDisplay : undefined}
               data-event-gallery-row-span-lg={rowSpans.lg}
               data-event-gallery-row-span-sm={rowSpans.sm}
               data-event-gallery-row-span-xl={rowSpans.xl}

@@ -7,6 +7,10 @@ import type {
   MediaOverlayTone,
 } from '@/blocks/shared/mediaOverlayPresentation'
 import {
+  normalizeOverlayDisplayMode,
+  type OverlayDisplayMode,
+} from '@/blocks/shared/overlayDisplayPresentation'
+import {
   EventGallery,
   type EventGalleryAlignment,
   type EventGalleryCardTextLayout,
@@ -28,6 +32,7 @@ export type EventGalleryBlockLike = {
   footerActions?: CmsActionValue[] | null
   galleryAlbums?: unknown
   overlayCoverage?: MediaOverlayCoverage | null
+  overlayDisplay?: OverlayDisplayMode | null
   overlayDirection?: MediaOverlayDirection | null
   overlayStyle?: MediaOverlayStrength | null
   showCardOverlay?: boolean | null
@@ -49,6 +54,7 @@ export function EventGalleryBlockPresentation({
   eyebrow,
   footerActions,
   overlayCoverage,
+  overlayDisplay,
   overlayDirection,
   overlayStyle,
   showCardOverlay,
@@ -59,6 +65,7 @@ export function EventGalleryBlockPresentation({
   title,
 }: EventGalleryBlockLike & { albums: EventGalleryAlbum[] }) {
   const resolvedTitle = title?.trim()
+  const resolvedOverlayDisplay = normalizeOverlayDisplayMode(overlayDisplay, 'always')
 
   if (!albums.length) {
     return null
@@ -80,6 +87,7 @@ export function EventGalleryBlockPresentation({
         enableAlbumSlideshow={enableAlbumSlideshow ?? true}
         eyebrow={eyebrow?.trim() || undefined}
         overlayCoverage={overlayCoverage ?? 'full'}
+        overlayDisplay={resolvedOverlayDisplay}
         overlayDirection={overlayDirection ?? 'bottomToTop'}
         overlayStyle={overlayStyle ?? 'darker'}
         showCardOverlay={showCardOverlay ?? true}

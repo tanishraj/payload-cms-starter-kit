@@ -19,6 +19,7 @@ import {
   createMediaOverlayStrengthField,
   createMediaOverlayToneField,
 } from '@/blocks/shared/mediaOverlayFields'
+import { createOverlayDisplayField } from '@/blocks/shared/overlayDisplayFields'
 
 const showImageOverlayControls: Condition = (_data, siblingData) =>
   siblingData?.showImageOverlays !== false
@@ -211,6 +212,10 @@ export const ImageMosaicBlock: Block = {
               type: 'checkbox',
               defaultValue: true,
             } satisfies CheckboxField,
+            createOverlayDisplayField({
+              condition: showImageOverlayControls,
+              defaultValue: 'hover',
+            }),
             {
               name: 'showEventDate',
               label: 'Show Event Date',

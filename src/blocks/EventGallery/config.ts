@@ -9,6 +9,7 @@ import {
   createMediaOverlayStrengthField,
   createMediaOverlayToneField,
 } from '@/blocks/shared/mediaOverlayFields'
+import { createOverlayDisplayField } from '@/blocks/shared/overlayDisplayFields'
 
 const showsCardOverlay: Condition = (_data, siblingData) => siblingData?.showCardOverlay !== false
 
@@ -102,6 +103,10 @@ export const EventGalleryBlock: Block = {
                   'Show the album title, event date, and image count over each cover image.',
               },
             } satisfies CheckboxField,
+            createOverlayDisplayField({
+              condition: showsCardOverlay,
+              defaultValue: 'always',
+            }),
             {
               name: 'showEventDate',
               label: 'Show Event Date',

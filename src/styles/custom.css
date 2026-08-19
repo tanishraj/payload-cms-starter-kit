@@ -361,21 +361,21 @@
   }
 }
 
-/* Image Mosaic hover treatment */
+/* Shared gallery overlay display and image hover treatment */
 .image-mosaic-image {
   transform: scale(1);
   transform-origin: center;
   transition: transform 200ms ease-out;
 }
 
-.image-mosaic-overlay {
+.gallery-overlay-layer {
   pointer-events: auto;
   opacity: 1;
   transition: opacity 200ms ease-out;
 }
 
 @media (min-width: 64rem) and (hover: hover) and (pointer: fine) {
-  .image-mosaic-overlay {
+  [data-gallery-overlay-display='hover'] .gallery-overlay-layer {
     pointer-events: none;
     opacity: 0;
   }
@@ -385,8 +385,8 @@
     transform: scale(1.05);
   }
 
-  .group\/image-mosaic:hover .image-mosaic-overlay,
-  .group\/image-mosaic:focus-within .image-mosaic-overlay {
+  [data-gallery-overlay-display='hover']:hover .gallery-overlay-layer,
+  [data-gallery-overlay-display='hover']:focus-within .gallery-overlay-layer {
     pointer-events: auto;
     opacity: 1;
   }
@@ -394,7 +394,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .image-mosaic-image,
-  .image-mosaic-overlay {
+  .gallery-overlay-layer {
     transition: none;
   }
 }

@@ -70,7 +70,9 @@ button opens every image in that album through the shared full-screen viewer. En
 defaults on, including for legacy documents; disabling it retains identical images and overlays on
 static, non-focusable tiles. The section title is optional: albums render without any header content,
 and the header wrapper and its grid gap are omitted when eyebrow, title, description, and section
-actions are all absent. The count-aware
+actions are all absent. Overlay Display supports Always Visible and Reveal on Hover; Event Gallery
+defaults and legacy documents resolve to Always Visible. Hover mode reveals on keyboard focus and
+remains visible on touch/coarse-pointer devices, independently of slideshow interaction. The count-aware
 rectangular quilt uses one phone, two tablet, three laptop, and four wide-desktop columns, bounded by
 the number of rendered albums. The first few tiles span two rows only when required to fill the active
 grid exactly, so every album count ends on a straight boundary without horizontal spans, dense
@@ -87,7 +89,10 @@ titles, and independent actions. Gallery Albums mode accepts up to eight explici
 uses the shared manual/latest-event-date ordering utility, and contributes one first-valid-image cover
 tile per album. Album overlays share Event Gallery's numeric count, UTC Event Date, sans title, and
 Bottom Left, Bottom Center, or Center — Vertical & Horizontal positions while retaining Image Mosaic's
-existing overlay resolver and grid geometry. Album slideshow interaction defaults on and can be
+existing overlay resolver and grid geometry. Overlay Display supports Always Visible and Reveal on
+Hover for both content sources; Image Mosaic defaults and legacy documents resolve to Reveal on
+Hover. Hover mode reveals on keyboard focus and remains visible on touch/coarse-pointer devices.
+Album slideshow interaction defaults on and can be
 disabled without changing presentation; manual images never open the album viewer. Production loads
 only selected published albums. Authenticated Page and News/Event detail previews discover album
 dependencies through supported populated Reusable Sections, load draft albums on the server, and use

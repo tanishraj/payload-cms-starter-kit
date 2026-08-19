@@ -10,6 +10,10 @@ import {
   type MediaOverlayStrength,
   type MediaOverlayTone,
 } from '@/blocks/shared/mediaOverlayPresentation'
+import {
+  normalizeOverlayDisplayMode,
+  type OverlayDisplayMode,
+} from '@/blocks/shared/overlayDisplayPresentation'
 import { ContentActions } from '@/components/ContentActions'
 import {
   normalizeGalleryAlbumContentPosition,
@@ -63,6 +67,7 @@ export type ImageMosaicBlockLike = {
   galleryAlbums?: unknown
   items?: ImageMosaicItemValue[] | null
   overlayCoverage?: MediaOverlayCoverage | null
+  overlayDisplay?: OverlayDisplayMode | null
   overlayDirection?: MediaOverlayDirection | null
   overlayStyle?: MediaOverlayStrength | null
   showEventDate?: boolean | null
@@ -117,6 +122,7 @@ export function ImageMosaicBlockPresentation({
   galleryAlbums,
   items,
   overlayCoverage,
+  overlayDisplay,
   overlayDirection,
   overlayStyle,
   showEventDate,
@@ -133,6 +139,7 @@ export function ImageMosaicBlockPresentation({
   const alignment = contentAlignment ?? 'center'
   const resolvedSize = size ?? 'default'
   const resolvedShowOverlays = showImageOverlays ?? true
+  const resolvedOverlayDisplay = normalizeOverlayDisplayMode(overlayDisplay, 'hover')
   const resolvedOverlayCoverage = overlayCoverage ?? 'full'
   const resolvedOverlayDirection = overlayDirection ?? 'bottomToTop'
   const resolvedOverlayStyle = overlayStyle ?? 'dark'
@@ -154,6 +161,7 @@ export function ImageMosaicBlockPresentation({
     description: description?.trim() || undefined,
     eyebrow: eyebrow?.trim() || undefined,
     overlayCoverage: resolvedOverlayCoverage,
+    overlayDisplay: resolvedOverlayDisplay,
     overlayDirection: resolvedOverlayDirection,
     overlayStyle: resolvedOverlayStyle,
     showImageOverlays: resolvedShowOverlays,
@@ -191,6 +199,7 @@ export function ImageMosaicBlockPresentation({
               cardTextLayout={position}
               enableAlbumSlideshow={enableAlbumSlideshow ?? true}
               overlay={overlay}
+              overlayDisplay={resolvedOverlayDisplay}
               showEventDate={showEventDate ?? true}
               showImageCount={showImageCount ?? true}
               showImageOverlays={resolvedShowOverlays}

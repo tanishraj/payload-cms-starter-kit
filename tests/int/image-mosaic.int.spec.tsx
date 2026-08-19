@@ -38,6 +38,7 @@ import { ImageMosaicBlock } from '@/blocks/ImageMosaic/config'
 import { ImageMosaicBlockPresentation } from '@/blocks/ImageMosaic/Presentation'
 import { renderPageBlocks } from '@/blocks/renderPageBlocks'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { normalizeOverlayDisplayMode } from '@/blocks/shared/overlayDisplayPresentation'
 import { Pages } from '@/collections/Pages'
 import { ImageMosaic, type ImageMosaicItem } from '@/components/image-mosaic'
 import { normalizeImageMosaicContentSource } from '@/components/image-mosaic-presentation'
@@ -428,6 +429,17 @@ describe('Image Mosaic', () => {
       defaultValue: true,
       type: 'checkbox',
     })
+    const overlayDisplayField = getField(layoutTab?.fields ?? [], 'overlayDisplay')
+    expect(overlayDisplayField).toMatchObject({
+      defaultValue: 'hover',
+      options: [{ value: 'always' }, { value: 'hover' }],
+      required: true,
+      type: 'select',
+    })
+    expect(overlayDisplayField?.admin?.condition?.({}, { showImageOverlays: true })).toBe(true)
+    expect(overlayDisplayField?.admin?.condition?.({}, { showImageOverlays: false })).toBe(false)
+    expect(normalizeOverlayDisplayMode(undefined, 'always')).toBe('always')
+    expect(normalizeOverlayDisplayMode('invalid', 'hover')).toBe('hover')
     const cardTextLayoutField = getField(layoutTab?.fields ?? [], 'cardTextLayout')
     const showEventDateField = getField(layoutTab?.fields ?? [], 'showEventDate')
     const showImageCountField = getField(layoutTab?.fields ?? [], 'showImageCount')
@@ -560,6 +572,31 @@ describe('Image Mosaic', () => {
     expect(disabledHtml).not.toContain('Story 1')
   })
 
+  it('supports hover-reveal and always-visible overlay display modes', () => {
+    const legacyHtml = renderToStaticMarkup(
+      <ImageMosaic items={mosaicItems.slice(0, 1)} title="Legacy gallery" />,
+    )
+    const alwaysHtml = renderToStaticMarkup(
+      <ImageMosaic
+        items={mosaicItems.slice(0, 1)}
+        overlayDisplay="always"
+        title="Always-visible gallery"
+      />,
+    )
+    const hiddenHtml = renderToStaticMarkup(
+      <ImageMosaic
+        items={mosaicItems.slice(0, 1)}
+        showImageOverlays={false}
+        title="Image-only gallery"
+      />,
+    )
+
+    expect(legacyHtml).toContain('data-gallery-overlay-display="hover"')
+    expect(alwaysHtml).toContain('data-gallery-overlay-display="always"')
+    expect(alwaysHtml).toContain('gallery-overlay-layer')
+    expect(hiddenHtml).not.toContain('gallery-overlay-layer')
+  })
+
   it('applies section-level overlay tone, strength, direction, and surface', () => {
     const html = renderToStaticMarkup(
       <ImageMosaic
@@ -615,7 +652,7 @@ describe('Image Mosaic', () => {
     const customCss = readFileSync('src/styles/custom.css', 'utf8')
     const obsoleteClientPath = 'src/components/ui/direction-aware-hover.tsx'
     const imageRuleStart = customCss.indexOf('.image-mosaic-image')
-    const overlayRuleStart = customCss.indexOf('.image-mosaic-overlay')
+    const overlayRuleStart = customCss.indexOf('.gallery-overlay-layer')
     const desktopOverlayMediaStart = customCss.indexOf(
       '@media (min-width: 64rem) and (hover: hover) and (pointer: fine)',
     )
@@ -645,7 +682,8 @@ describe('Image Mosaic', () => {
     expect(customCss).not.toContain('translate3d')
     expect(customCss).not.toContain('@media (hover: none), (pointer: coarse)')
     expect(customCss).toContain('@media (prefers-reduced-motion: reduce)')
-    expect(customCss).toContain('.image-mosaic-overlay')
+    expect(customCss).toContain("[data-gallery-overlay-display='hover'] .gallery-overlay-layer")
+    expect(customCss).toContain(':focus-within .gallery-overlay-layer')
   })
 
   it('resolves Payload media, item actions, section actions, and image positions', () => {

@@ -90,7 +90,9 @@ Event Gallery uses the first valid image from every selected Gallery Album as th
 can open the complete album in its full-screen viewer. Disable **Enable Album Slideshow** to retain
 the same image and overlay presentation as a static, non-focusable tile. The section title is optional;
 when all header fields and Section Actions are empty, the album quilt renders without a header or an
-empty header gap. Every overlay position stacks the image icon and
+empty header gap. **Overlay Display** offers Always Visible and Reveal on Hover; existing Event
+Gallery blocks remain Always Visible. Hover mode also reveals on keyboard focus and remains visible
+on touch devices. This choice does not change slideshow interaction. Every overlay position stacks the image icon and
 numeric count, event date, and text-family title in that order. Bottom Left aligns the stack left;
 Bottom Center and Center — Vertical & Horizontal center it. Disabled or unavailable metadata closes
 naturally without leaving an empty row.
@@ -101,7 +103,9 @@ optional title, and action; manual images never open an album slideshow. **Galle
 accepts up to eight explicitly selected albums and renders one first-image cover per album. Editors
 choose Manual order or Latest Event Date, can hide the date/count rows, place the overlay Bottom Left,
 Bottom Center, or fully centered, and can disable album slideshow interaction without hiding the
-tiles. Production loads only selected published albums. Authenticated live preview receives the
+tiles. **Overlay Display** offers Always Visible and Reveal on Hover for both Manual Images and
+Gallery Albums; existing Image Mosaic blocks retain Reveal on Hover. Keyboard focus reveals hover
+content, while touch devices keep it visible. Production loads only selected published albums. Authenticated live preview receives the
 selected draft album snapshot from the server and performs no browser-side Payload query.
 
 News & Events Highlights keeps the internal `newsEventsHighlights` block identity and automatically

@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useCallback, useRef, useState } from 'react'
 
 import type { EventGalleryResolvedOverlay } from '@/components/event-gallery'
+import type { OverlayDisplayMode } from '@/blocks/shared/overlayDisplayPresentation'
 import {
   formatGalleryAlbumEventDate,
   GalleryAlbumOverlayContent,
@@ -24,6 +25,7 @@ export type ImageMosaicAlbumGridProps = {
   cardTextLayout: GalleryAlbumContentPosition
   enableAlbumSlideshow: boolean
   overlay: EventGalleryResolvedOverlay
+  overlayDisplay: OverlayDisplayMode
   showEventDate: boolean
   showImageCount: boolean
   showImageOverlays: boolean
@@ -35,6 +37,7 @@ export function ImageMosaicAlbumGrid({
   cardTextLayout,
   enableAlbumSlideshow,
   overlay,
+  overlayDisplay,
   showEventDate,
   showImageCount,
   showImageOverlays,
@@ -65,7 +68,7 @@ export function ImageMosaicAlbumGrid({
                 src={album.cover.src}
               />
               {showImageOverlays ? (
-                <div className="image-mosaic-overlay absolute inset-0">
+                <div className="gallery-overlay-layer image-mosaic-overlay absolute inset-0">
                   <div
                     aria-hidden="true"
                     className={cn(
@@ -91,6 +94,7 @@ export function ImageMosaicAlbumGrid({
           return (
             <article
               className={cn(tileClassName, showImageOverlays && 'group/image-mosaic')}
+              data-gallery-overlay-display={showImageOverlays ? overlayDisplay : undefined}
               data-image-mosaic-album-interaction={enableAlbumSlideshow ? 'slideshow' : 'static'}
               data-image-mosaic-item={index + 1}
               key={album.id}

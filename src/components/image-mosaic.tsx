@@ -16,6 +16,10 @@ import {
   type MediaOverlayStrength,
   type MediaOverlayTone,
 } from '@/blocks/shared/mediaOverlayPresentation'
+import {
+  normalizeOverlayDisplayMode,
+  type OverlayDisplayMode,
+} from '@/blocks/shared/overlayDisplayPresentation'
 import { ContentActions } from '@/components/ContentActions'
 import {
   normalizeGalleryAlbumContentPosition,
@@ -64,6 +68,7 @@ type ImageMosaicProps = {
   itemCount?: number
   items?: ImageMosaicItem[]
   overlayCoverage?: MediaOverlayCoverage
+  overlayDisplay?: OverlayDisplayMode | string | null
   overlayDirection?: MediaOverlayDirection
   overlayStyle?: MediaOverlayStrength
   showImageOverlays?: boolean
@@ -107,6 +112,7 @@ export function ImageMosaic({
   itemCount,
   items = [],
   overlayCoverage = 'full',
+  overlayDisplay,
   overlayDirection = 'bottomToTop',
   overlayStyle = 'dark',
   showImageOverlays = true,
@@ -131,6 +137,7 @@ export function ImageMosaic({
   })
   const resolvedAccentTitle = accentTitle?.trim() || undefined
   const resolvedCardTextLayout = normalizeGalleryAlbumContentPosition(cardTextLayout)
+  const resolvedOverlayDisplay = normalizeOverlayDisplayMode(overlayDisplay, 'hover')
   const isLeftAligned = resolvedCardTextLayout === 'split'
   const manualOverlayPositionClasses =
     resolvedCardTextLayout === 'middleCenter'
@@ -187,6 +194,7 @@ export function ImageMosaic({
               return (
                 <div
                   className={cn(tileClassName, hasOverlay ? 'group/image-mosaic' : undefined)}
+                  data-gallery-overlay-display={hasOverlay ? resolvedOverlayDisplay : undefined}
                   data-image-mosaic-item={index + 1}
                   key={itemKey}
                 >
@@ -199,7 +207,7 @@ export function ImageMosaic({
                     width={item.image.width}
                   />
                   {hasOverlay ? (
-                    <div className="image-mosaic-overlay absolute inset-0">
+                    <div className="gallery-overlay-layer image-mosaic-overlay absolute inset-0">
                       <div
                         className={cn(
                           'pointer-events-none absolute',
