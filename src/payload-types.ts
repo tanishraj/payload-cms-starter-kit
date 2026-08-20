@@ -3464,6 +3464,10 @@ export interface ProgramMatrixBlock {
    * Position the section introduction relative to the matrix on large screens.
    */
   headerVerticalAlignment?: ('top' | 'center' | 'bottom') | null
+  /**
+   * Use one column on mobile, up to two on tablet, and this count on desktop.
+   */
+  columns: '1' | '2' | '3' | '4'
   contentAlignment: 'left' | 'center'
   size: 'none' | 'compact' | 'default' | 'comfortable'
   id?: string | null
@@ -8354,6 +8358,7 @@ export interface ProgramMatrixBlockSelect<T extends boolean = true> {
   headerLayout?: T
   headerPosition?: T
   headerVerticalAlignment?: T
+  columns?: T
   contentAlignment?: T
   size?: T
   id?: T

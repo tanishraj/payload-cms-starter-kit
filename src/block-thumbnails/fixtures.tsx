@@ -2177,8 +2177,9 @@ export const blockThumbnailFixtures = {
   programMatrix: (
     <ProgramMatrixBlockComponent
       appearance={{ background: 'subtle', border: 'topAndBottom' }}
+      columns="3"
       contentAlignment="left"
-      description="Four routes into clinical practice, each with a defined intake, published curriculum, and supervised hospital rotations."
+      description="Three routes into clinical practice, each with a defined intake, published curriculum, and supervised hospital rotations."
       eyebrow="Academics"
       headerLayout="split"
       headerPosition="left"
@@ -2217,18 +2218,11 @@ export const blockThumbnailFixtures = {
           description: 'Residencies across medicine, surgery, paediatrics, and radiology.',
         },
         {
-          cardBackground: 'default',
+          cardBackground: 'primary',
           icon: 'heart-pulse',
           title: 'GNM & B.Sc Nursing',
           metadata: '3–4 Years',
           description: 'Recognised nursing programmes with supervised hospital rotations.',
-        },
-        {
-          cardBackground: 'primary',
-          icon: 'microscope',
-          title: 'Allied Health Sciences',
-          metadata: '2–3 Years',
-          description: 'Diploma and degree tracks in clinical support disciplines.',
         },
       ]}
       size="compact"

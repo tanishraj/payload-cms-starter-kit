@@ -66,7 +66,9 @@ The generated inventory contains every current export under [src/blocks/shared](
 
 Program Matrix keeps its introduction before the matrix and footer actions in document order. Editors
 can use a stacked layout or a large-screen 40/60 split with the introduction on either visual side
-and aligned to the top, center, or bottom of its column. Each card owns at most one optional Link or
+and aligned to the top, center, or bottom of its column. Its one-to-four Columns setting renders one
+column on mobile, caps tablet layouts at two, and uses the selected count on desktop; seamless divider
+geometry follows the effective count at each breakpoint. Each card owns at most one optional Link or
 Button action; hidden legacy link and block-wide action fields remain registered only for saved-content
 compatibility.
 
