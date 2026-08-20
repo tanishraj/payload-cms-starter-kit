@@ -4207,10 +4207,6 @@ export interface DownloadListBlock {
          */
         description?: string | null
         /**
-         * Optional group label (e.g. "Prospectus", "Forms", "Reports").
-         */
-        category?: string | null
-        /**
          * Upload a file to Payload media. Takes priority over external URL.
          */
         file?: (string | null) | Media
@@ -4219,9 +4215,9 @@ export interface DownloadListBlock {
          */
         externalUrl?: string | null
         /**
-         * Override auto-detected type (e.g. "PDF", "XLSX"). Shown as a badge.
+         * Optional override. Leave empty to detect the type from the uploaded file.
          */
-        fileType?: string | null
+        fileType?: ('PDF' | 'DOC' | 'DOCX' | 'XLS' | 'XLSX' | 'CSV' | 'PPT' | 'PPTX' | 'ZIP') | null
         /**
          * Add up to two actions. Valid manual actions replace the automatic View and Download fallback for this document.
          */
@@ -4289,10 +4285,6 @@ export interface DownloadListBlock {
    * Show every grid action with its label or as an accessible icon-only control.
    */
   gridActionDisplay?: ('labelled' | 'icons') | null
-  /**
-   * Show filter buttons when items have different categories.
-   */
-  showFilter?: boolean | null
   contentAlignment?: ('left' | 'center') | null
   size?: ('none' | 'compact' | 'default' | 'comfortable') | null
   id?: string | null
@@ -8807,7 +8799,6 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
     | {
         title?: T
         description?: T
-        category?: T
         file?: T
         externalUrl?: T
         fileType?: T
@@ -8851,7 +8842,6 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
   showDocumentIcon?: T
   gridIconPosition?: T
   gridActionDisplay?: T
-  showFilter?: T
   contentAlignment?: T
   size?: T
   id?: T

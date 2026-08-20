@@ -71,7 +71,10 @@ dividers while its left/right edges remain open; Framed Grid adds one complete s
 only Boxed Card Grid consumes independent semantic item backgrounds. Every boxed-family item fixes
 the file-type badge at the top right while the block-level icon position places the Small, Medium, or
 Large optional main document icon Above Title or Left of Content. Show File Icon defaults on across
-all presentations. Inline List never renders a file-type badge. Its ruled items place
+all presentations. File Type Label is an optional PDF/DOC/DOCX/XLS/XLSX/CSV/PPT/PPTX/ZIP preset
+override; empty values auto-detect from uploaded Media, while historical explicit values remain
+readable in uppercase. Document categories and category filtering are no longer part of this block.
+Inline List never renders a file-type badge. Its ruled items place
 the optional file icon at the upper-left, a flexible wrapping content column, a permanent vertical
 divider, and icon-only Eye/ArrowDown actions at the far right at every width. Boxed-family items render
 View and Download through one grid-wide action-display setting. Labelled is the default and runtime

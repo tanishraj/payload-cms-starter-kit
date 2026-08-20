@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, render, screen } from '@testing-library/react'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ArrayField, CheckboxField, Field, SelectField } from 'payload'
@@ -6,7 +6,6 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { afterEach, describe, expect, it } from 'vitest'
 
 import { DownloadListBlockComponent } from '@/blocks/DownloadList/Component'
-import { DownloadListClient } from '@/blocks/DownloadList/DownloadListClient'
 import { DownloadListBlock } from '@/blocks/DownloadList/config'
 import { normalizeGridColumns } from '@/blocks/DownloadList/Presentation'
 import { resolveDocumentActions } from '@/blocks/DownloadList/resolveActions'
@@ -88,6 +87,36 @@ describe('DownloadListBlock schema', () => {
         { label: 'Left of Content', value: 'inline' },
       ],
     })
+  })
+
+  it('offers an optional preset file-type override with automatic fallback', () => {
+    const downloads = findNamedField(DownloadListBlock.fields, 'downloads') as ArrayField
+    const fileType = findNamedField(downloads.fields, 'fileType') as SelectField
+
+    expect(fileType).toMatchObject({
+      type: 'select',
+      label: 'File Type Label',
+      options: [
+        { label: 'PDF', value: 'PDF' },
+        { label: 'DOC', value: 'DOC' },
+        { label: 'DOCX', value: 'DOCX' },
+        { label: 'XLS', value: 'XLS' },
+        { label: 'XLSX', value: 'XLSX' },
+        { label: 'CSV', value: 'CSV' },
+        { label: 'PPT', value: 'PPT' },
+        { label: 'PPTX', value: 'PPTX' },
+        { label: 'ZIP', value: 'ZIP' },
+      ],
+    })
+    expect(fileType.required).not.toBe(true)
+    expect(fileType.defaultValue).toBeUndefined()
+  })
+
+  it('removes document categories and category filtering', () => {
+    const downloads = findNamedField(DownloadListBlock.fields, 'downloads') as ArrayField
+
+    expect(findNamedField(downloads.fields, 'category')).toBeUndefined()
+    expect(findNamedField(DownloadListBlock.fields, 'showFilter')).toBeUndefined()
   })
 
   it('offers one grid-wide labelled or icon-only action setting', () => {
@@ -560,6 +589,48 @@ describe('DownloadList rendering', () => {
     expect(html).toContain(iconClass)
   })
 
+  it.each([
+    ['application/pdf', 'PDF'],
+    ['application/msword', 'DOC'],
+    ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'DOCX'],
+    ['application/vnd.ms-excel', 'XLS'],
+    ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'XLSX'],
+    ['text/csv', 'CSV'],
+    ['application/vnd.ms-powerpoint', 'PPT'],
+    ['application/vnd.openxmlformats-officedocument.presentationml.presentation', 'PPTX'],
+    ['application/zip', 'ZIP'],
+    ['image/png', 'PNG'],
+  ] as const)('detects %s as %s', (mimeType, expected) => {
+    const html = renderToStaticMarkup(
+      <DownloadListBlockComponent
+        displayMode="framedGrid"
+        downloads={[
+          {
+            file: {
+              id: mimeType,
+              mimeType,
+              url: `/files/${expected.toLowerCase()}`,
+            } as unknown as Media,
+            title: expected,
+          },
+        ]}
+      />,
+    )
+
+    expect(html).toContain(`data-document-file-type="true">${expected}`)
+  })
+
+  it('keeps historical explicit file-type values readable', () => {
+    const html = renderToStaticMarkup(
+      <DownloadListBlockComponent
+        displayMode="framedGrid"
+        downloads={[{ file: sharedMedia, fileType: 'odt', title: 'Historical document' }]}
+      />,
+    )
+
+    expect(html).toContain('data-document-file-type="true">ODT')
+  })
+
   it('resolves uploaded files independently for View and Download', () => {
     const html = renderToStaticMarkup(
       <DownloadListBlockComponent
@@ -619,35 +690,20 @@ describe('DownloadList rendering', () => {
     expect(html).toContain('data-document-action-icon="arrow-down"')
   })
 
-  it('filters categories with an exposed selected state', () => {
-    render(
-      <DownloadListClient
-        downloads={[
-          {
-            actions: [
-              { href: '/policy', kind: 'link', label: 'View Document', openInNewTab: false },
-            ],
-            category: 'NMC',
-            id: 'a',
-            title: 'Policy',
-          },
-          {
-            actions: [
-              { href: '/affiliation', kind: 'link', label: 'View Document', openInNewTab: false },
-            ],
-            category: 'BUHS',
-            id: 'b',
-            title: 'Affiliation',
-          },
-        ]}
-        sectionBackground="none"
-        showFilter
-      />,
+  it('contains no category filtering or category presentation markup', () => {
+    const client = readFileSync(
+      join(process.cwd(), 'src/blocks/DownloadList/DownloadListClient.tsx'),
+      'utf8',
     )
-    fireEvent.click(screen.getByRole('button', { name: 'BUHS' }))
-    expect(screen.getByRole('button', { name: 'BUHS' }).getAttribute('aria-pressed')).toBe('true')
-    expect(screen.queryByText('Policy')).toBeNull()
-    expect(screen.getByText('Affiliation')).toBeTruthy()
+    const presentation = readFileSync(
+      join(process.cwd(), 'src/blocks/DownloadList/Presentation.tsx'),
+      'utf8',
+    )
+
+    expect(client).not.toContain('showFilter')
+    expect(client).not.toContain('activeCategory')
+    expect(client).not.toContain('data-download-filters')
+    expect(presentation).not.toContain('document.category')
   })
 })
 
@@ -661,6 +717,8 @@ describe('DownloadList thumbnail fixture', () => {
     expect(fixture).toContain('gridActionDisplay="labelled"')
     expect(fixture).toContain('gridIconPosition="inline"')
     expect(fixture).toContain('showDocumentIcon')
+    expect(fixture).not.toContain('category:')
+    expect(fixture).toContain("fileType: 'PDF'")
     expect(fixture).not.toContain("actionType: 'link'")
     expect(fixture).not.toContain("actionType: 'download'")
   })

@@ -310,13 +310,6 @@ function GridDocumentItem({
           </div>
         </div>
       )}
-      {document.category ? (
-        <p
-          className={cn('mt-3 text-xs font-medium uppercase tracking-[0.12em]', surface.secondary)}
-        >
-          {document.category}
-        </p>
-      ) : null}
       <DocumentActions
         buttonClassName={surface.button.default}
         className="mt-auto pt-6"
@@ -429,11 +422,6 @@ function InlinePresentation({
                 <DocumentTitle>{document.title}</DocumentTitle>
                 {document.description ? (
                   <p className="mt-1 text-sm leading-6 text-current/70">{document.description}</p>
-                ) : null}
-                {document.category ? (
-                  <p className="mt-2 text-xs font-medium uppercase tracking-[0.12em] text-current/70">
-                    {document.category}
-                  </p>
                 ) : null}
               </div>
               <span

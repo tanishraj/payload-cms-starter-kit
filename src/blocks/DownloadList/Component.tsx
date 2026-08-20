@@ -28,7 +28,6 @@ import type {
 type DownloadItem = {
   actions?: DownloadManualActionInput[] | null
   cardBackground?: string | null
-  category?: string | null
   description?: string | null
   externalUrl?: string | null
   file?: string | number | Media | null
@@ -54,21 +53,30 @@ type DownloadListBlockLike = {
   openViewInNewTab?: boolean | null
   showDownloadAction?: boolean | null
   showDocumentIcon?: boolean | null
-  showFilter?: boolean | null
   showViewAction?: boolean | null
   size?: RegularBlockSize | null
   title?: string | null
 }
 
+const fileTypeByMime: Record<string, string> = {
+  'application/msword': 'DOC',
+  'application/pdf': 'PDF',
+  'application/vnd.ms-excel': 'XLS',
+  'application/vnd.ms-powerpoint': 'PPT',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'PPTX',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'XLSX',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'DOCX',
+  'application/x-zip-compressed': 'ZIP',
+  'application/zip': 'ZIP',
+  'text/csv': 'CSV',
+}
+
 function detectFileType(item: DownloadItem): string | undefined {
   if (item.fileType?.trim()) return item.fileType.trim().toUpperCase()
   if (isMediaDoc(item.file) && item.file.mimeType) {
-    const mime = item.file.mimeType
-    if (mime === 'application/pdf') return 'PDF'
-    if (mime.includes('spreadsheet') || mime.includes('excel')) return 'XLSX'
-    if (mime.includes('csv')) return 'CSV'
+    const mime = item.file.mimeType.toLowerCase()
+    if (fileTypeByMime[mime]) return fileTypeByMime[mime]
     if (mime.startsWith('image/')) return mime.split('/')[1]?.toUpperCase()
-    if (mime.includes('word')) return 'DOC'
   }
   return undefined
 }
@@ -90,7 +98,6 @@ export function DownloadListBlockComponent({
   openViewInNewTab = true,
   showDownloadAction = true,
   showDocumentIcon = true,
-  showFilter = false,
   showViewAction = false,
   size = 'default',
   title,
@@ -123,7 +130,6 @@ export function DownloadListBlockComponent({
         id: item.id ?? index,
         title: item.title!.trim(),
         description: item.description?.trim() || undefined,
-        category: item.category?.trim() || undefined,
         cardBackground: item.cardBackground ?? undefined,
         fileType: detectFileType(item),
       },
@@ -181,7 +187,6 @@ export function DownloadListBlockComponent({
           gridIconPosition={gridIconPosition ?? 'above'}
           sectionBackground={appearance?.background ?? 'none'}
           showDocumentIcon={showDocumentIcon ?? true}
-          showFilter={showFilter}
         />
         <BlockFooterActions actions={footerActions} />
       </div>

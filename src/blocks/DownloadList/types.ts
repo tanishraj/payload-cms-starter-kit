@@ -26,7 +26,6 @@ export type ResolvedDownloadAction = {
 export type ResolvedDownload = {
   actions: ResolvedDownloadAction[]
   cardBackground?: string
-  category?: string
   description?: string
   fileType?: string
   id: string | number

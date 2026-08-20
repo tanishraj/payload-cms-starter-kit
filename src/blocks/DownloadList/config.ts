@@ -164,11 +164,6 @@ const downloadsField: ArrayField = {
           },
         },
         {
-          name: 'category',
-          type: 'text',
-          admin: { description: 'Optional group label (e.g. "Prospectus", "Forms", "Reports").' },
-        },
-        {
           name: 'file',
           label: 'File Upload',
           type: 'upload',
@@ -189,11 +184,23 @@ const downloadsField: ArrayField = {
         {
           name: 'fileType',
           label: 'File Type Label',
-          type: 'text',
+          type: 'select',
+          options: [
+            { label: 'PDF', value: 'PDF' },
+            { label: 'DOC', value: 'DOC' },
+            { label: 'DOCX', value: 'DOCX' },
+            { label: 'XLS', value: 'XLS' },
+            { label: 'XLSX', value: 'XLSX' },
+            { label: 'CSV', value: 'CSV' },
+            { label: 'PPT', value: 'PPT' },
+            { label: 'PPTX', value: 'PPTX' },
+            { label: 'ZIP', value: 'ZIP' },
+          ],
           admin: {
-            description: 'Override auto-detected type (e.g. "PDF", "XLSX"). Shown as a badge.',
+            description:
+              'Optional override. Leave empty to detect the type from the uploaded file.',
           },
-        },
+        } satisfies SelectField,
         documentActionsField,
       ],
     }),
@@ -349,15 +356,6 @@ export const DownloadListBlock: Block = {
                   'Show every grid action with its label or as an accessible icon-only control.',
               },
             } satisfies SelectField,
-            {
-              name: 'showFilter',
-              label: 'Show Category Filter',
-              type: 'checkbox',
-              defaultValue: false,
-              admin: {
-                description: 'Show filter buttons when items have different categories.',
-              },
-            },
             {
               name: 'contentAlignment',
               label: 'Section Content Alignment',

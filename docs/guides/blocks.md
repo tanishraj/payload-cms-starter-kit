@@ -65,7 +65,7 @@ The setting follows the selected presentation. Content Highlights applies it to 
 | Icon Grid                | Icon-led benefits and responsibilities      | Card, Contact Cards, Minimal, Icon Top, or Ruled Columns; ruled items use continuous responsive dividers and inherit the section surface                                                     |
 | Quote Block              | Quotation or pull quote                     | Quote and attribution                                                                                                                                                                        |
 | Tabs Content             | Grouped tab panels                          | Client tab interaction                                                                                                                                                                       |
-| Download List            | Files and document libraries                | Four layouts, one shared 1–8 Columns setting, optional file icons, fixed layout-owned View/Download actions, manual destinations, and optional category filtering                            |
+| Download List            | Files and document libraries                | Four layouts, one shared 1–8 Columns setting, optional file icons, controlled file-type labels, fixed layout-owned View/Download actions, and manual destinations                            |
 | Numbered Steps           | Ordered process                             | Backgrounds apply to numbered Cards, not connected/alternating layouts                                                                                                                       |
 | Bento Grid               | Mixed-size feature cards                    | Grid layout and semantic background controls                                                                                                                                                 |
 | Testimonial Grid         | Curated testimonials                        | Backgrounds apply to Grid and Featured cards                                                                                                                                                 |
@@ -95,6 +95,10 @@ Only Boxed Card Grid applies independent semantic item backgrounds. Boxed Card, 
 Framed Grid always keep the file-type badge at the top right. Their **Grid Icon Position** places the
 Small, Medium, or Large main document icon either Above Title or Left of Content without moving the
 badge. **Show File Icon** defaults on and controls the main icon in every presentation.
+**File Type Label** is an optional PDF, DOC, DOCX, XLS, XLSX, CSV, PPT, PPTX, or ZIP override.
+Leaving it empty detects the type from the uploaded Media file. Historical explicit labels remain
+readable in uppercase, while document categories and visitor category filtering are no longer part
+of the block.
 
 Inline List never shows the file-type badge. Each ruled item keeps the optional file icon at the
 upper-left, title and supporting text in a flexible wrapping column, a permanent vertical divider,

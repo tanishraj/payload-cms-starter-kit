@@ -81,7 +81,9 @@ Download List provides Boxed Card, Open Grid, Framed Grid, and Inline List prese
 keep file-type badges at the top right while their main icons can sit above or inline with the
 document content. One shared one-to-eight Columns setting applies to every presentation and defaults
 or falls back to three. The main file icon is optional across the block and defaults on. Inline never
-shows a file-type badge; its ruled items keep a permanent vertical divider and icon-only
+shows a file-type badge. File Type Label provides an optional PDF/DOC/DOCX/XLS/XLSX/CSV/PPT/PPTX/ZIP
+preset override; empty values auto-detect from uploaded Media, and historical explicit values remain
+readable. Document categories and visitor filtering are removed. Inline ruled items keep a permanent vertical divider and icon-only
 Eye/ArrowDown actions at the far right at every width. One grid-wide action-display setting switches
 boxed-family View/Download actions between the default labelled link/button treatment and accessible
 icon-only Eye/animated ArrowDown controls. Missing or invalid values fall back to Labelled, while

@@ -1876,7 +1876,6 @@ export const blockThumbnailFixtures = {
       downloads={[
         {
           title: 'NMC Letter of Intent – MBBS',
-          category: 'NMC · MBBS',
           fileType: 'PDF',
           file: {
             id: 'nmc-letter-of-intent',
@@ -1887,7 +1886,6 @@ export const blockThumbnailFixtures = {
         },
         {
           title: 'NMC Letter of Permission – MBBS',
-          category: 'NMC · MBBS',
           fileType: 'PDF',
           file: {
             id: 'nmc-permission',
@@ -1898,7 +1896,6 @@ export const blockThumbnailFixtures = {
         },
         {
           title: 'MBBS Batch Permission – 2025',
-          category: 'NMC · 2025',
           fileType: 'PDF',
           file: {
             id: 'batch-permission',
@@ -1909,7 +1906,6 @@ export const blockThumbnailFixtures = {
         },
         {
           title: 'BUHS Affiliation – UG & PG',
-          category: 'BUHS · Affiliation',
           fileType: 'PDF',
           file: {
             id: 'buhs-affiliation',
