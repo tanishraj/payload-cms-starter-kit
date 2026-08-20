@@ -18,6 +18,7 @@ import { Contact33Block } from '@/blocks/Contact33/config'
 import { ContentHighlightsBlock } from '@/blocks/ContentHighlights/config'
 import { Cta39Block } from '@/blocks/Cta39/config'
 import { DownloadListBlock } from '@/blocks/DownloadList/config'
+import { FeeStructureBlock } from '@/blocks/FeeStructure/config'
 import { EditorialReasonsBlock } from '@/blocks/EditorialReasons/config'
 import { EventGalleryBlock } from '@/blocks/EventGallery/config'
 import { GalleryAlbumTabsBlock } from '@/blocks/GalleryAlbumTabs/config'
@@ -121,6 +122,7 @@ const detailTemplateBlocks = [
   QuoteBlockBlock,
   TabsContentBlock,
   DownloadListBlock,
+  FeeStructureBlock,
   NumberedStepsBlock,
   BentoGridBlock,
   TestimonialGridBlock,

@@ -48,6 +48,7 @@ import { IconGridBlockComponent } from './IconGrid/Component'
 import { QuoteBlockBlockComponent } from './QuoteBlock/Component'
 import { TabsContentBlockComponent } from './TabsContent/Component'
 import { DownloadListBlockComponent } from './DownloadList/Component'
+import { FeeStructureBlockComponent } from './FeeStructure/Component'
 import { NumberedStepsBlockComponent } from './NumberedSteps/Component'
 import { BentoGridBlockComponent } from './BentoGrid/Component'
 import { TestimonialGridBlockComponent } from './TestimonialGrid/Component'
@@ -183,6 +184,8 @@ export function renderPageBlockNode(
       return wrap(<TabsContentBlockComponent {...block} />)
     case 'downloadList':
       return wrap(<DownloadListBlockComponent {...block} />)
+    case 'feeStructure':
+      return wrap(<FeeStructureBlockComponent {...block} />)
     case 'numberedSteps':
       return wrap(<NumberedStepsBlockComponent {...block} />)
     case 'bentoGrid':

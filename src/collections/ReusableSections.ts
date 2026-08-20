@@ -45,6 +45,7 @@ import { IconGridBlock } from '@/blocks/IconGrid/config'
 import { QuoteBlockBlock } from '@/blocks/QuoteBlock/config'
 import { TabsContentBlock } from '@/blocks/TabsContent/config'
 import { DownloadListBlock } from '@/blocks/DownloadList/config'
+import { FeeStructureBlock } from '@/blocks/FeeStructure/config'
 import { NumberedStepsBlock } from '@/blocks/NumberedSteps/config'
 import { BentoGridBlock } from '@/blocks/BentoGrid/config'
 import { TestimonialGridBlock } from '@/blocks/TestimonialGrid/config'
@@ -151,6 +152,7 @@ export const ReusableSections: CollectionConfig = {
         QuoteBlockBlock,
         TabsContentBlock,
         DownloadListBlock,
+        FeeStructureBlock,
         NumberedStepsBlock,
         BentoGridBlock,
         TestimonialGridBlock,

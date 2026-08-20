@@ -1,10 +1,13 @@
-import type { GroupField, SelectField } from 'payload'
+import type { Condition, GroupField, SelectField } from 'payload'
 
 import { normalizeBlockBackground } from './blockAppearance'
 
 type CreateBlockAppearanceFieldsOptions = {
+  condition?: Condition
   includeBackground?: boolean
   includeBorder?: boolean
+  label?: string
+  name?: string
 }
 
 const backgroundField = {
@@ -44,13 +47,17 @@ const borderField = {
 } satisfies SelectField
 
 export const createBlockAppearanceFields = ({
+  condition,
   includeBackground = true,
   includeBorder = true,
+  label = 'Appearance',
+  name = 'appearance',
 }: CreateBlockAppearanceFieldsOptions = {}): GroupField =>
   ({
-    name: 'appearance',
-    label: 'Appearance',
+    name,
+    label,
     type: 'group',
+    ...(condition ? { admin: { condition } } : {}),
     fields: [
       ...(includeBackground ? [backgroundField] : []),
       ...(includeBorder ? [borderField] : []),

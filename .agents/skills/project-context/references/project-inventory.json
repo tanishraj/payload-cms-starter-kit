@@ -250,6 +250,25 @@
         "symbol": "FeatureSpotlightBlock"
       },
       {
+        "clientFiles": [
+          "src/blocks/FeeStructure/FeeStructureClient.tsx"
+        ],
+        "componentPath": "src/blocks/FeeStructure/Component.tsx",
+        "configPath": "src/blocks/FeeStructure/config.ts",
+        "files": [
+          "src/blocks/FeeStructure/Component.tsx",
+          "src/blocks/FeeStructure/FeeStructureClient.tsx",
+          "src/blocks/FeeStructure/config.ts",
+          "src/blocks/FeeStructure/normalizeFeeStructure.ts",
+          "src/blocks/FeeStructure/types.ts"
+        ],
+        "interfaceName": "FeeStructureBlock",
+        "presentationPath": null,
+        "previewComponentPath": null,
+        "slug": "feeStructure",
+        "symbol": "FeeStructureBlock"
+      },
+      {
         "clientFiles": [],
         "componentPath": "src/blocks/Footer56/Component.tsx",
         "configPath": "src/blocks/Footer56/config.ts",
@@ -903,6 +922,7 @@
       "EventGalleryBlock",
       "FeatureMatrixBlock",
       "FeatureSpotlightBlock",
+      "FeeStructureBlock",
       "Footer56Block",
       "FooterMinimalBlock",
       "GalleryAlbumTabsBlock",
@@ -995,6 +1015,7 @@
       "quoteBlock",
       "tabsContent",
       "downloadList",
+      "feeStructure",
       "numberedSteps",
       "bentoGrid",
       "testimonialGrid",
@@ -1049,6 +1070,7 @@
       "quoteBlock",
       "tabsContent",
       "downloadList",
+      "feeStructure",
       "numberedSteps",
       "bentoGrid",
       "testimonialGrid",
@@ -1103,6 +1125,7 @@
       "quoteBlock",
       "tabsContent",
       "downloadList",
+      "feeStructure",
       "numberedSteps",
       "bentoGrid",
       "testimonialGrid",
@@ -1157,6 +1180,7 @@
       "quoteBlock",
       "tabsContent",
       "downloadList",
+      "feeStructure",
       "numberedSteps",
       "bentoGrid",
       "testimonialGrid",
@@ -1349,6 +1373,7 @@
         "public/block-thumbnails/event-gallery.jpg",
         "public/block-thumbnails/feature-matrix.jpg",
         "public/block-thumbnails/feature-spotlight.jpg",
+        "public/block-thumbnails/fee-structure.jpg",
         "public/block-thumbnails/footer-56.jpg",
         "public/block-thumbnails/footer-minimal.jpg",
         "public/block-thumbnails/gallery-album-tabs.jpg",
@@ -1561,6 +1586,10 @@
           "slug": "downloadList"
         },
         {
+          "filename": "fee-structure.jpg",
+          "slug": "feeStructure"
+        },
+        {
           "filename": "icon-grid.jpg",
           "slug": "iconGrid"
         },
@@ -1668,6 +1697,7 @@
         "awardsList",
         "bentoGrid",
         "downloadList",
+        "feeStructure",
         "iconGrid",
         "iconCardShowcase",
         "logoStrip",
@@ -1985,6 +2015,11 @@
       "src/blocks/FeatureMatrix/config.ts",
       "src/blocks/FeatureSpotlight/Component.tsx",
       "src/blocks/FeatureSpotlight/config.ts",
+      "src/blocks/FeeStructure/Component.tsx",
+      "src/blocks/FeeStructure/FeeStructureClient.tsx",
+      "src/blocks/FeeStructure/config.ts",
+      "src/blocks/FeeStructure/normalizeFeeStructure.ts",
+      "src/blocks/FeeStructure/types.ts",
       "src/blocks/Footer56/Component.tsx",
       "src/blocks/Footer56/config.ts",
       "src/blocks/FooterMinimal/Component.tsx",
@@ -2239,6 +2274,7 @@
       "src/components/ui/select.tsx",
       "src/components/ui/separator.tsx",
       "src/components/ui/sheet.tsx",
+      "src/components/ui/table.tsx",
       "src/components/ui/textarea.tsx",
       "src/components/ui/toggle-group.tsx",
       "src/components/ui/toggle.tsx",
@@ -2395,6 +2431,7 @@
       "tests/int/event-gallery-viewer.int.spec.tsx",
       "tests/int/feature-matrix.int.spec.ts",
       "tests/int/feature-spotlight.int.spec.ts",
+      "tests/int/fee-structure.int.spec.tsx",
       "tests/int/footer-minimal.int.spec.tsx",
       "tests/int/footer-spacing.int.spec.ts",
       "tests/int/footer56-presentation.int.spec.tsx",
@@ -2493,7 +2530,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "26ba04a726d4e8417b99b42d3554a1f8b3aec9948d55e7e95584b5dfafcb1474"
+    "sha256": "9a3ad7779a420d32f41387a912b1b9f15467238ebddf2f72051d1cd19bf6702e"
   },
   "surfaces": {
     "access": [
@@ -2671,6 +2708,7 @@
       "tests/int/event-gallery-viewer.int.spec.tsx",
       "tests/int/feature-matrix.int.spec.ts",
       "tests/int/feature-spotlight.int.spec.ts",
+      "tests/int/fee-structure.int.spec.tsx",
       "tests/int/footer-minimal.int.spec.tsx",
       "tests/int/footer-spacing.int.spec.ts",
       "tests/int/footer56-presentation.int.spec.tsx",

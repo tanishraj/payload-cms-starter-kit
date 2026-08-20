@@ -13,6 +13,12 @@
       "skillPath": "skills/caveman-commit/SKILL.md",
       "computedHash": "790a4eeace0be35c6691faf923518ba5bd50f1f1305d1101d09dd4971be94e00"
     },
+    "content-research-writer": {
+      "source": "composiohq/awesome-claude-skills",
+      "sourceType": "github",
+      "skillPath": "content-research-writer/SKILL.md",
+      "computedHash": "de7e9085e875a651f209c826d1a5e7dd5f2436fb38fe565ef76b54492c1a0c22"
+    },
     "extract-design-system": {
       "source": "arvindrk/extract-design-system",
       "sourceType": "github",

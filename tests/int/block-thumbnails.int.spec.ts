@@ -128,6 +128,13 @@ describe('block thumbnail metadata', () => {
       label: 'Testimonial Spotlight',
       slug: 'testimonialSpotlight',
     })
+    expect(getBlockThumbnailDefinition('feeStructure')).toMatchObject({
+      alt: 'Fee Structure block preview',
+      filename: 'fee-structure.jpg',
+      label: 'Fee Structure',
+      slug: 'feeStructure',
+      stageAlignment: 'top',
+    })
     expect(getBlockThumbnailDefinition('profileCarousel')).toMatchObject({
       filename: 'profile-carousel.jpg',
       label: 'Profile Carousel',

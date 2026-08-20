@@ -2,9 +2,9 @@
 
 ## Registries
 
-[Pages.ts](../../../../src/collections/Pages.ts) registers 51 blocks in this order:
+[Pages.ts](../../../../src/collections/Pages.ts) registers 53 blocks in this order:
 
-`announcement`, `bannerCta`, `newsGrid`, `newsEventsTabs`, `cta39`, `heroBanner`, `heroCarousel`, `galleryCoverflow`, `featureSpotlight`, `testimonialSpotlight`, `featureMatrix`, `contentHighlights`, `editorialReasons`, `academicProgrammes`, `newsEventsHighlights`, `profileCarousel`, `galleryShowcase`, `eventGallery`, `studyPathways`, `imageMosaic`, `studentExperience`, `statsStrip`, `qaAccordion`, `ratingSpotlight`, `reviewFeed`, `reviewSubmission`, `contact33`, `contact24`, `teamShowcase`, `services21`, `richText`, `videoEmbed`, `mediaCarousel`, `programGrid`, `programMatrix`, `logoStrip`, `pageHeader`, `breadcrumb`, `timeline`, `iconCardShowcase`, `iconGrid`, `quoteBlock`, `tabsContent`, `downloadList`, `numberedSteps`, `bentoGrid`, `testimonialGrid`, `awardsList`, `aboutSection`, `accreditationCards`, `reusableSection`.
+`announcement`, `bannerCta`, `newsGrid`, `newsEventsTabs`, `cta39`, `heroBanner`, `heroCarousel`, `galleryCoverflow`, `featureSpotlight`, `testimonialSpotlight`, `featureMatrix`, `contentHighlights`, `editorialReasons`, `academicProgrammes`, `newsEventsHighlights`, `profileCarousel`, `galleryShowcase`, `eventGallery`, `galleryAlbumTabs`, `studyPathways`, `imageMosaic`, `studentExperience`, `statsStrip`, `qaAccordion`, `ratingSpotlight`, `reviewFeed`, `reviewSubmission`, `contact33`, `contact24`, `teamShowcase`, `services21`, `richText`, `videoEmbed`, `mediaCarousel`, `programGrid`, `programMatrix`, `logoStrip`, `pageHeader`, `breadcrumb`, `timeline`, `iconCardShowcase`, `iconGrid`, `quoteBlock`, `tabsContent`, `downloadList`, `feeStructure`, `numberedSteps`, `bentoGrid`, `testimonialGrid`, `awardsList`, `aboutSection`, `accreditationCards`, `reusableSection`.
 
 [ReusableSections.ts](../../../../src/collections/ReusableSections.ts) exposes the same order except `reusableSection`, preventing direct recursion.
 
@@ -94,6 +94,28 @@ can add up to two manual Link or Download destinations per document; any valid m
 that document's fallback. Historical visual-action properties are ignored without a migration. Every
 presentation uses sans-serif document titles. Existing `compact` values fall back to Inline List and
 the shared Columns value without a migration and are no longer selectable in Admin.
+
+Fee Structure models exactly one programme and one academic session per block. Editors configure one
+to four fee categories with one to six ordered academic-period columns, one to thirty fee rows,
+editor-authored text cells, manual total emphasis, category-owned fee notes, and an optional Media
+download. New rows validate one cell per configured column. Runtime normalization trims text, omits
+invalid categories and rows, maps empty or missing cells to an em dash, ignores extra cells, and never
+calculates totals, converts currencies, or infers missing values. The schema intentionally has no bank
+or payment-account fields. One category renders directly; multiple categories use accessible tabs.
+Tablet and desktop use a semantic horizontally scrollable table with a sticky fee-head column, while
+mobile uses one card per academic period from the same normalized data.
+Multiple categories reuse the shared Contained, Pill, and Underline content-tab presentation while
+preserving the Fee Structure `boxed`, `pills`, and `underline` saved values through runtime mapping.
+Light sections use semantic card surfaces; Brand and Gradient Brand sections use
+primary-foreground overlays, borders, and text for the table and mobile cards. Every fee-value cell
+is right-aligned, including em-dash placeholders, while numeric values alone receive tabular
+numerals. Category tabs support intrinsic Content Width or Equal Full Width across every breakpoint.
+The programme/session band follows the shared `max-w-3xl` introduction measure. Standard desktop
+fee-name cells use normal weight, Total rows are bold, and every body-row cell shares the same opaque
+Card/Accent or Primary/Primary Foreground base and hover surface so the sticky fee-name column remains
+visually continuous and follows the active theme. The
+optional fee document remains the fixed download destination; editors can present it as a Link or
+semantic Button and apply the shared section backgrounds to its outlined container.
 
 Event Gallery renders selected Gallery Albums in their resolved manual or latest-event-date order.
 Each selected album contributes its first valid image as one cover tile, while the accessible card

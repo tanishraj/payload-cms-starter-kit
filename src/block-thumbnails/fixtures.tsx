@@ -50,6 +50,7 @@ import { AccreditationCardsBlockComponent } from '@/blocks/AccreditationCards/Co
 import { AwardsListBlockComponent } from '@/blocks/AwardsList/Component'
 import { BentoGridBlockComponent } from '@/blocks/BentoGrid/Component'
 import { DownloadListBlockComponent } from '@/blocks/DownloadList/Component'
+import { FeeStructureBlockComponent } from '@/blocks/FeeStructure/Component'
 import { IconCardShowcaseBlockComponent } from '@/blocks/IconCardShowcase/Component'
 import { IconGridBlockComponent } from '@/blocks/IconGrid/Component'
 import { LogoStripBlockComponent } from '@/blocks/LogoStrip/Component'
@@ -1921,6 +1922,123 @@ export const blockThumbnailFixtures = {
       showDocumentIcon
       size="compact"
       title="Approvals & Affiliation Documents"
+    />
+  ),
+  feeStructure: (
+    <FeeStructureBlockComponent
+      academicSession="2026-27"
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
+      description="Official programme fees arranged by category and academic year."
+      downloadAppearance={{ background: 'brand', border: 'none' }}
+      downloadButtonVariant="whiteOutline"
+      eyebrow="Admissions"
+      feeCategories={[
+        {
+          label: 'General',
+          caption: 'General category fee structure for MBBS, session 2026-27.',
+          columns: [
+            { label: '1st Year' },
+            { label: '2nd Year' },
+            { label: '3rd Year' },
+            { label: '4th Year' },
+            { label: '5th Year' },
+          ],
+          rows: [
+            {
+              label: 'Tuition Fee',
+              cells: [
+                { value: '12,75,000' },
+                { value: '12,75,000' },
+                { value: '12,75,000' },
+                { value: '12,75,000' },
+                { value: '6,37,500' },
+              ],
+            },
+            {
+              label: 'Admission Fee',
+              note: 'One time',
+              cells: [
+                { value: '1,00,000' },
+                { value: '—' },
+                { value: '—' },
+                { value: '—' },
+                { value: '—' },
+              ],
+            },
+            {
+              label: 'Security Money',
+              note: 'One time',
+              cells: [
+                { value: '1,00,000' },
+                { value: '—' },
+                { value: '—' },
+                { value: '—' },
+                { value: '—' },
+              ],
+            },
+            {
+              label: 'Accommodation and Fooding etc.',
+              cells: [
+                { value: '2,75,000' },
+                { value: '2,75,000' },
+                { value: '2,75,000' },
+                { value: '2,75,000' },
+                { value: '1,37,500' },
+              ],
+            },
+            {
+              label: 'Total',
+              emphasis: 'total',
+              cells: [
+                { value: '17,50,000' },
+                { value: '15,50,000' },
+                { value: '15,50,000' },
+                { value: '15,50,000' },
+                { value: '7,75,000' },
+              ],
+            },
+          ],
+          notes: [
+            {
+              text: 'Total package for 4.5 years: Rs. 71.75 lakhs.',
+              emphasis: true,
+            },
+          ],
+        },
+        {
+          label: 'NRI',
+          columns: [
+            { label: '1st Year' },
+            { label: '2nd Year' },
+            { label: '3rd Year' },
+            { label: '4th Year' },
+            { label: '5th Year' },
+          ],
+          rows: [
+            {
+              label: 'Tuition Fee',
+              cells: [
+                { value: 'USD 35,000' },
+                { value: 'USD 35,000' },
+                { value: 'USD 35,000' },
+                { value: 'USD 35,000' },
+                { value: 'USD 17,500' },
+              ],
+            },
+          ],
+        },
+      ]}
+      feeDocument={
+        {
+          id: 'fee-structure-pdf',
+          mimeType: 'application/pdf',
+          url: '#fee-structure',
+        } as Media
+      }
+      programmeName="MBBS"
+      size="compact"
+      tabWidth="equal"
+      title="Fee Structure"
     />
   ),
   iconGrid: (

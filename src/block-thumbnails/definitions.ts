@@ -299,6 +299,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Fee Structure block preview',
+    filename: 'fee-structure.jpg',
+    label: 'Fee Structure',
+    slug: 'feeStructure',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Icon Grid block preview',
     filename: 'icon-grid.jpg',
     label: 'Icon Grid',
