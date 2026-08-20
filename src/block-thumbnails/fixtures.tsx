@@ -38,6 +38,10 @@ import { Contact24 } from '@/components/contact24'
 import { EventGallery } from '@/components/event-gallery'
 import { GalleryAlbumTabsBlockPresentation } from '@/blocks/GalleryAlbumTabs/Presentation'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
+import type {
+  NewsEventClassificationBehavior,
+  ResolvedNewsEventClassification,
+} from '@/lib/newsEventClassifications'
 import type { PublicNewsEventCard, PublicNewsEventPage } from '@/lib/newsEventsShared'
 import type { Form, Media, RichTextBlock } from '@/payload-types'
 
@@ -300,8 +304,33 @@ const footerGroupsFixture = [
   },
 ]
 
+const thumbnailNewsEventClassification = (
+  slug: string,
+  badgeLabel: string,
+  behavior: NewsEventClassificationBehavior = 'story',
+): ResolvedNewsEventClassification => ({
+  active: true,
+  badgeLabel,
+  behavior,
+  id: `thumbnail-classification-${slug}`,
+  legacyValue: null,
+  slug,
+  title: badgeLabel,
+})
+
+const thumbnailNewsClassification = thumbnailNewsEventClassification('news', 'News')
+const thumbnailEventClassification = thumbnailNewsEventClassification('event', 'Event', 'event')
+const thumbnailNoticeClassification = thumbnailNewsEventClassification('notice', 'Notice')
+const thumbnailAchievementClassification = thumbnailNewsEventClassification(
+  'achievement',
+  'Achievement',
+)
+const thumbnailHolidayClassification = thumbnailNewsEventClassification('holiday', 'Holiday')
+
 const thumbnailNewsEventsTabsItems: PublicNewsEventCard[] = [
   {
+    behavior: 'story',
+    classification: thumbnailNoticeClassification,
     contentType: 'notice',
     dateISO: '2026-08-12',
     dateLabel: '12 Aug 2026',
@@ -313,6 +342,8 @@ const thumbnailNewsEventsTabsItems: PublicNewsEventCard[] = [
     title: 'Academic calendar and admissions notice',
   },
   {
+    behavior: 'event',
+    classification: thumbnailEventClassification,
     contentType: 'event',
     dateISO: '2026-08-20',
     dateLabel: '20 Aug 2026',
@@ -325,6 +356,8 @@ const thumbnailNewsEventsTabsItems: PublicNewsEventCard[] = [
     title: 'Community open day returns in August',
   },
   {
+    behavior: 'story',
+    classification: thumbnailAchievementClassification,
     contentType: 'achievement',
     dateISO: '2026-08-08',
     dateLabel: '8 Aug 2026',
@@ -344,20 +377,22 @@ const thumbnailNewsEventsTabsPage = (docs: PublicNewsEventCard[]): PublicNewsEve
 })
 
 const thumbnailNewsEventsTabsGroups = {
-  achievement: thumbnailNewsEventsTabsPage(
-    thumbnailNewsEventsTabsItems.filter((item) => item.contentType === 'achievement'),
+  [thumbnailAchievementClassification.id]: thumbnailNewsEventsTabsPage(
+    thumbnailNewsEventsTabsItems.filter(
+      (item) => item.classification.id === thumbnailAchievementClassification.id,
+    ),
   ),
   all: thumbnailNewsEventsTabsPage(thumbnailNewsEventsTabsItems),
-  announcement: thumbnailNewsEventsTabsPage([]),
-  event: thumbnailNewsEventsTabsPage(
-    thumbnailNewsEventsTabsItems.filter((item) => item.contentType === 'event'),
+  [thumbnailEventClassification.id]: thumbnailNewsEventsTabsPage(
+    thumbnailNewsEventsTabsItems.filter(
+      (item) => item.classification.id === thumbnailEventClassification.id,
+    ),
   ),
-  holiday: thumbnailNewsEventsTabsPage([]),
-  news: thumbnailNewsEventsTabsPage([]),
-  notice: thumbnailNewsEventsTabsPage(
-    thumbnailNewsEventsTabsItems.filter((item) => item.contentType === 'notice'),
+  [thumbnailNoticeClassification.id]: thumbnailNewsEventsTabsPage(
+    thumbnailNewsEventsTabsItems.filter(
+      (item) => item.classification.id === thumbnailNoticeClassification.id,
+    ),
   ),
-  other: thumbnailNewsEventsTabsPage([]),
 }
 
 export const blockThumbnailFixtures = {
@@ -455,7 +490,9 @@ export const blockThumbnailFixtures = {
       }}
       items={[
         {
+          behavior: 'story',
           category: { id: 1, slug: 'academics', title: 'Academics' },
+          classification: thumbnailNewsClassification,
           contentType: 'news',
           dateISO: '2026-08-12',
           dateLabel: '12 Aug 2026',
@@ -467,7 +504,9 @@ export const blockThumbnailFixtures = {
           title: 'PG Courses move forward with State Government NOC milestone',
         },
         {
+          behavior: 'event',
           category: { id: 2, slug: 'admissions', title: 'Admissions' },
+          classification: thumbnailEventClassification,
           contentType: 'event',
           dateISO: '2026-08-20',
           dateLabel: 'Admission update',
@@ -489,6 +528,11 @@ export const blockThumbnailFixtures = {
       accentTitle="events."
       actions={[{ label: 'View archive', linkType: 'custom', url: '/news-events' }]}
       cardsPerRow="3"
+      classifications={[
+        thumbnailNoticeClassification,
+        thumbnailEventClassification,
+        thumbnailAchievementClassification,
+      ]}
       description="Browse notices, events, achievements and institutional announcements."
       eyebrow="Campus updates"
       groups={thumbnailNewsEventsTabsGroups}
@@ -730,7 +774,7 @@ export const blockThumbnailFixtures = {
       items={[
         {
           action: { href: '/news-events/research-center', label: 'Read more' },
-          classification: 'news',
+          classification: thumbnailNewsClassification,
           dateISO: '2026-07-18T00:00:00.000Z',
           dateLabel: 'Jul 18, 2026',
           description:
@@ -741,7 +785,7 @@ export const blockThumbnailFixtures = {
         },
         {
           action: { href: '/news-events/open-day', label: 'Read more' },
-          classification: 'event',
+          classification: thumbnailEventClassification,
           dateISO: '2026-08-12T00:00:00.000Z',
           dateLabel: 'Aug 12, 2026',
           description: 'Meet faculty, explore learning spaces, and discover the programs on offer.',
@@ -751,7 +795,7 @@ export const blockThumbnailFixtures = {
         },
         {
           action: { href: '/news-events/community-impact', label: 'Read more' },
-          classification: 'news',
+          classification: thumbnailNewsClassification,
           dateISO: '2026-07-10T00:00:00.000Z',
           dateLabel: 'Jul 10, 2026',
           description:
@@ -762,7 +806,7 @@ export const blockThumbnailFixtures = {
         },
         {
           action: { href: '/news-events/campus-holiday', label: 'Read more' },
-          classification: 'holiday',
+          classification: thumbnailHolidayClassification,
           dateISO: '2026-08-28T00:00:00.000Z',
           dateLabel: 'Aug 28, 2026',
           description: 'Campus services and teaching schedules for the upcoming holiday.',

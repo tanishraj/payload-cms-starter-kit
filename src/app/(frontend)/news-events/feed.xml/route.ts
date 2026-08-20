@@ -2,6 +2,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 
 import { getMediaAbsoluteUrl } from '@/lib/media'
+import { resolveNewsEventClassificationRecord } from '@/lib/newsEventClassifications'
 import { toAbsoluteSiteUrl } from '@/lib/siteUrl'
 
 export const revalidate = 3600
@@ -14,12 +15,20 @@ export async function GET() {
       collection: 'news-events',
       depth: 1,
       limit: 50,
+      select: {
+        authorName: true,
+        classification: true,
+        contentType: true,
+        excerpt: true,
+        featuredImage: true,
+        publishedAt: true,
+        slug: true,
+        title: true,
+        updatedAt: true,
+      },
       sort: '-publishedAt',
       where: {
-        and: [
-          { _status: { equals: 'published' } },
-          { workflowState: { equals: 'published' } },
-        ],
+        and: [{ _status: { equals: 'published' } }, { workflowState: { equals: 'published' } }],
       },
     }),
     payload.findGlobal({ slug: 'site-settings', depth: 1 }),
@@ -36,7 +45,9 @@ export async function GET() {
       const pubDate = new Date(
         (entry as { publishedAt?: string | null }).publishedAt ?? entry.updatedAt,
       ).toUTCString()
-      const label = entry.contentType === 'event' ? 'Event' : 'News'
+      const label =
+        resolveNewsEventClassificationRecord(entry.classification, entry.contentType)?.badgeLabel ??
+        'News & Events'
 
       return `    <item>
       <title><![CDATA[${entry.title}]]></title>

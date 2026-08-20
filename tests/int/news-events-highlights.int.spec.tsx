@@ -11,6 +11,7 @@ import {
   resolveFeaturedHighlightsOverlay,
 } from '@/components/news-events/featuredHighlightsShared'
 import { getNewsEventsHighlights } from '@/lib/newsEvents'
+import { getLegacyNewsEventClassificationRecord } from '@/lib/newsEventClassifications'
 import {
   EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT,
   getNewsEventsPreviewItemCounts,
@@ -131,8 +132,11 @@ describe('News & Events Highlights block', () => {
   })
 
   it('ignores stale manual fields and always loads the News & Events collection', async () => {
+    const classification = getLegacyNewsEventClassificationRecord('news')!
     vi.mocked(getNewsEventsHighlights).mockResolvedValueOnce([
       {
+        behavior: classification.behavior,
+        classification,
         contentType: 'news',
         dateISO: '2026-08-18T00:00:00.000Z',
         dateLabel: 'Aug 18, 2026',
@@ -164,6 +168,7 @@ describe('News & Events Highlights block', () => {
   })
 
   it('ignores stale manual fields and renders collection data in live preview', () => {
+    const classification = getLegacyNewsEventClassificationRecord('notice')!
     const markup = renderToStaticMarkup(
       NewsEventsHighlightsPreviewBlockComponent({
         carouselControlsPosition: 'top',
@@ -175,6 +180,8 @@ describe('News & Events Highlights block', () => {
           highlightsByCount: {
             '3': [
               {
+                behavior: classification.behavior,
+                classification,
                 contentType: 'notice',
                 dateISO: '2026-08-18T00:00:00.000Z',
                 dateLabel: 'Aug 18, 2026',
@@ -197,8 +204,11 @@ describe('News & Events Highlights block', () => {
   })
 
   it('keeps legacy blocks collection-driven when contentSource is missing', async () => {
+    const classification = getLegacyNewsEventClassificationRecord('notice')!
     vi.mocked(getNewsEventsHighlights).mockResolvedValueOnce([
       {
+        behavior: classification.behavior,
+        classification,
         contentType: 'notice',
         dateISO: '2026-08-17T00:00:00.000Z',
         dateLabel: 'Aug 17, 2026',
@@ -218,9 +228,12 @@ describe('News & Events Highlights block', () => {
   })
 
   it('normalizes automatic records into the generic carousel model', () => {
+    const classification = getLegacyNewsEventClassificationRecord('news')!
     expect(
       toAutomaticFeaturedHighlightItems([
         {
+          behavior: classification.behavior,
+          classification,
           contentType: 'news',
           dateISO: '2026-07-20T00:00:00.000Z',
           dateLabel: 'Jul 20, 2026',
@@ -240,7 +253,7 @@ describe('News & Events Highlights block', () => {
     ).toEqual([
       expect.objectContaining({
         action: expect.objectContaining({ href: '/news-events/story', label: 'Read more' }),
-        classification: 'news',
+        classification,
         dateLabel: 'Jul 20, 2026',
         description: 'A public story.',
         id: 'story',
@@ -286,6 +299,7 @@ describe('News & Events Highlights block', () => {
   )
 
   it('renders normalized headings, carousel content, badges, and actions', () => {
+    const classification = getLegacyNewsEventClassificationRecord('news')!
     const markup = renderToStaticMarkup(
       <NewsEventsHighlightsBlockPresentation
         actions={[{ label: 'All stories', linkType: 'custom', url: '/news-events' }]}
@@ -295,7 +309,7 @@ describe('News & Events Highlights block', () => {
         items={[
           {
             action: { href: '/news-events/story', label: 'Read more' },
-            classification: 'news',
+            classification,
             dateISO: '2026-07-20T00:00:00.000Z',
             dateLabel: 'Jul 20, 2026',
             description: 'A public story.',
@@ -327,11 +341,12 @@ describe('News & Events Highlights block', () => {
   })
 
   it('renders the carousel without requiring a section heading', () => {
+    const classification = getLegacyNewsEventClassificationRecord('notice')!
     const markup = renderToStaticMarkup(
       <NewsEventsHighlightsBlockPresentation
         items={[
           {
-            classification: 'notice',
+            classification,
             dateISO: '2026-08-17T00:00:00.000Z',
             dateLabel: 'Aug 17, 2026',
             description: 'An important notice.',

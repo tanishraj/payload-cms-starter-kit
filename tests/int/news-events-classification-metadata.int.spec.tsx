@@ -5,6 +5,7 @@ import { NewsEventClassificationBadge } from '@/components/news-events/NewsEvent
 import { NewsEventDateMeta } from '@/components/news-events/NewsEventDateMeta'
 import {
   NEWS_EVENT_CLASSIFICATIONS,
+  getLegacyNewsEventClassificationRecord,
   normalizeNewsEventClassification,
 } from '@/lib/newsEventClassifications'
 
@@ -15,19 +16,26 @@ describe('News & Events classification and date metadata', () => {
     expect(normalizeNewsEventClassification(null)).toBe('other')
   })
 
-  it('renders every classification with a visible label and shared accent treatment', () => {
-    const markup = NEWS_EVENT_CLASSIFICATIONS.map(({ value }) =>
-      renderToStaticMarkup(<NewsEventClassificationBadge classification={value} />),
-    )
+  it('renders configured badge labels while using the slug only as metadata', () => {
+    const cme = {
+      badgeLabel: 'CME',
+      slug: 'continuing-medical-education',
+    }
+    const markup = renderToStaticMarkup(<NewsEventClassificationBadge classification={cme} />)
 
-    NEWS_EVENT_CLASSIFICATIONS.forEach(({ label, value }, index) => {
-      expect(markup[index]).toContain(`data-news-event-classification="${value}"`)
-      expect(markup[index]).toContain(label)
-      expect(markup[index]).toContain('border-border')
-      expect(markup[index]).toContain('bg-accent')
-      expect(markup[index]).toContain('text-accent-foreground')
-      expect(markup[index]).not.toContain('bg-transparent')
-    })
+    expect(markup).toContain('data-news-event-classification="continuing-medical-education"')
+    expect(markup).toContain('CME')
+    expect(markup).not.toContain('Continuing Medical Education')
+    expect(markup).toContain('border-border')
+    expect(markup).toContain('bg-accent')
+    expect(markup).toContain('text-accent-foreground')
+    expect(markup).not.toContain('bg-transparent')
+  })
+
+  it('keeps every seeded legacy classification available during local compatibility', () => {
+    for (const { label, value } of NEWS_EVENT_CLASSIFICATIONS) {
+      expect(getLegacyNewsEventClassificationRecord(value)?.badgeLabel).toBe(label)
+    }
   })
 
   it('renders a semantic, regular-weight date with a calendar icon', () => {

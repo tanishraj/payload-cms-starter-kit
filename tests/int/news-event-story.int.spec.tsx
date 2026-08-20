@@ -64,9 +64,19 @@ const body = {
 } as PublicNewsEventDetail['body']
 
 const entry: PublicNewsEventDetail = {
+  behavior: 'story',
   body,
   categories: [{ id: 'campus', slug: 'campus', title: 'Campus' }],
   category: { id: 'campus', slug: 'campus', title: 'Campus' },
+  classification: {
+    active: true,
+    badgeLabel: 'Campus',
+    behavior: 'story',
+    id: 'campus-classification',
+    legacyValue: null,
+    slug: 'campus-update',
+    title: 'Campus Updates',
+  },
   contentType: 'news',
   dateISO: '2026-07-19T00:00:00.000Z',
   dateLabel: 'Jul 19, 2026',
@@ -130,7 +140,7 @@ describe('News & Events individual story', () => {
     expect(markup).toContain('data-news-event-image-overlay="true"')
     expect(markup).toContain('min-h-80')
     expect(markup).toContain('md:min-h-0')
-    expect(markup).toContain('>News<')
+    expect(markup).toContain('>Campus<')
     expect(markup).toContain('Campus story')
     expect(markup).toContain(
       'class="text-base leading-7 text-current/80 sm:text-lg" data-news-event-excerpt="true"',
@@ -190,7 +200,16 @@ describe('News & Events individual story', () => {
   it('adds event-only details and registration only for Event entries', () => {
     const markup = renderStory({
       ...entry,
-      contentType: 'event',
+      behavior: 'event',
+      classification: {
+        active: true,
+        badgeLabel: 'CME',
+        behavior: 'event',
+        id: 'cme-classification',
+        legacyValue: null,
+        slug: 'continuing-medical-education',
+        title: 'Continuing Medical Education',
+      },
       eventEnd: '2026-09-11T09:00:00.000Z',
       eventLocation: 'Main Auditorium',
       eventRegistrationAction: {

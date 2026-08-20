@@ -13,6 +13,7 @@ import { Forms } from './collections/Forms'
 import { GalleryAlbums } from './collections/GalleryAlbums'
 import { Media } from './collections/Media'
 import { NavigationLinks } from './collections/NavigationLinks'
+import { NewsEventClassifications } from './collections/NewsEventClassifications'
 import { NewsEvents } from './collections/NewsEvents'
 import { Pages } from './collections/Pages'
 import { Redirects } from './collections/Redirects'
@@ -65,6 +66,7 @@ export default buildConfig({
     // Content
     Pages,
     Articles,
+    NewsEventClassifications,
     NewsEvents,
     Reviews,
     ReusableSections,
@@ -111,5 +113,10 @@ export default buildConfig({
   },
   db: createDatabaseAdapter(runtimeConfig),
   sharp,
-  plugins: [...storagePlugins, withTrash()],
+  plugins: [
+    ...storagePlugins,
+    withTrash({
+      exclude: [NewsEventClassifications.slug],
+    }),
+  ],
 })

@@ -1,13 +1,9 @@
-import type { ArrayField, Block, RadioField, SelectField, TabsField } from 'payload'
+import type { Block, RadioField, RelationshipField, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
-import {
-  NEWS_EVENTS_TABS_DEFAULT_CONFIGURED_TABS,
-  validateNewsEventsTabsConfiguredTabs,
-} from '@/blocks/NewsEventsTabs/newsEventsTabsShared'
+import { NEWS_EVENTS_TABS_MAX_CLASSIFICATIONS } from '@/blocks/NewsEventsTabs/newsEventsTabsShared'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
-import { NEWS_EVENT_CLASSIFICATIONS } from '@/lib/newsEventClassifications'
 
 export const NewsEventsTabsBlock: Block = {
   admin: getBlockThumbnailAdmin('newsEventsTabs'),
@@ -61,43 +57,20 @@ export const NewsEventsTabsBlock: Block = {
               },
             },
             {
-              name: 'tabs',
+              name: 'classifications',
               label: 'Classification Tabs',
-              type: 'array',
-              defaultValue: NEWS_EVENTS_TABS_DEFAULT_CONFIGURED_TABS,
-              maxRows: NEWS_EVENT_CLASSIFICATIONS.length,
-              labels: {
-                singular: 'Tab',
-                plural: 'Tabs',
-              },
-              validate: validateNewsEventsTabsConfiguredTabs,
+              type: 'relationship',
+              relationTo: 'news-event-classifications',
+              hasMany: true,
+              maxRows: NEWS_EVENTS_TABS_MAX_CLASSIFICATIONS,
+              filterOptions: { active: { equals: true } },
               admin: {
+                allowCreate: true,
                 description:
-                  'Add, remove, rename, or drag tabs into order. Each classification can be used once; All is always first.',
-                initCollapsed: true,
+                  'Select and drag classifications into visitor tab order. Leave empty to show only All.',
+                isSortable: true,
               },
-              fields: [
-                {
-                  name: 'classification',
-                  label: 'Category',
-                  type: 'select',
-                  options: NEWS_EVENT_CLASSIFICATIONS.map(({ adminLabel, value }) => ({
-                    label: adminLabel,
-                    value,
-                  })),
-                  required: true,
-                } satisfies SelectField,
-                {
-                  name: 'label',
-                  label: 'Display Label',
-                  type: 'text',
-                  required: true,
-                  admin: {
-                    description: 'Visitor-facing label for this tab.',
-                  },
-                },
-              ],
-            } satisfies ArrayField,
+            } satisfies RelationshipField,
             {
               name: 'itemsPerTab',
               label: 'Items Per Tab',

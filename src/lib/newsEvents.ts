@@ -8,16 +8,18 @@ import { cache } from 'react'
 import { CMS_CACHE_TAGS } from '@/hooks/revalidateCmsContent'
 import {
   isNewsEventsTabsItemsPerTab,
+  NEWS_EVENTS_TABS_MAX_CLASSIFICATIONS,
   type NewsEventsTabsItemsPerTab,
 } from '@/blocks/NewsEventsTabs/newsEventsTabsShared'
 import {
-  NEWS_EVENT_CLASSIFICATIONS,
-  NEWS_EVENT_CLASSIFICATION_TABS,
+  normalizeLegacyNewsEventClassification,
+  normalizeNewsEventClassificationRecord,
   type NewsEventClassification,
-  type NewsEventClassificationTab,
+  type ResolvedNewsEventClassification,
 } from '@/lib/newsEventClassifications'
 import {
   createEmptyNewsEventGroups,
+  createEmptyNewsEventPage,
   interleaveNewsEvents,
   normalizeHighlightsItemCount,
   type PublicNewsEventCard,
@@ -33,6 +35,7 @@ export type NewsEventsPayload = Pick<Payload, 'find' | 'findGlobal' | 'logger'>
 
 type NewsEventCardRecord = Pick<
   NewsEvent,
+  | 'classification'
   | 'contentType'
   | 'createdAt'
   | 'eventEnd'
@@ -49,6 +52,7 @@ type NewsEventCardRecord = Pick<
 >
 
 const cardSelect = {
+  classification: true,
   contentType: true,
   createdAt: true,
   eventEnd: true,
@@ -68,24 +72,29 @@ const publishedWhere: Where[] = [
   { workflowState: { equals: 'published' } },
 ]
 
-const nonEventClassifications = NEWS_EVENT_CLASSIFICATIONS.flatMap(({ value }) =>
-  value === 'event' ? [] : [value],
-)
-
 const normalizeGroupLimit = (value: number): number =>
   Number.isInteger(value) ? Math.min(12, Math.max(1, value)) : 6
 
 const positiveIntegerPattern = /^[1-9]\d*$/
-const classificationTabValues = new Set<string>(
-  NEWS_EVENT_CLASSIFICATION_TABS.map(({ value }) => value),
-)
+const normalizeRequestedClassificationIDs = (value: string | null): string[] | null => {
+  if (!value) return null
 
-const isNewsEventClassificationTab = (value: unknown): value is NewsEventClassificationTab =>
-  typeof value === 'string' && classificationTabValues.has(value)
+  const rawIDs = value.split(',')
+  if (
+    rawIDs.length === 0 ||
+    rawIDs.length > NEWS_EVENTS_TABS_MAX_CLASSIFICATIONS ||
+    rawIDs.some((id) => !id.trim())
+  ) {
+    return null
+  }
+
+  return [...new Set(rawIDs.map((id) => id.trim()))]
+}
 
 export function parseNewsEventsTabsPagination(searchParams: URLSearchParams):
   | {
-      classification: NewsEventClassificationTab
+      classification: 'all' | string
+      classificationIDs: string[]
       limit: NewsEventsTabsItemsPerTab
       ok: true
       page: number
@@ -93,8 +102,24 @@ export function parseNewsEventsTabsPagination(searchParams: URLSearchParams):
   | { message: string; ok: false } {
   const classification = searchParams.get('classification')
 
-  if (!isNewsEventClassificationTab(classification)) {
+  if (!classification?.trim()) {
     return { message: 'Classification is invalid.', ok: false }
+  }
+
+  const requestedClassification = classification.trim()
+
+  const rawClassificationIDs = searchParams.get('classifications')
+  const classificationIDs =
+    requestedClassification === 'all' && rawClassificationIDs === null
+      ? []
+      : normalizeRequestedClassificationIDs(rawClassificationIDs)
+
+  if (!classificationIDs) {
+    return { message: 'Select at least one classification.', ok: false }
+  }
+
+  if (requestedClassification !== 'all' && !classificationIDs.includes(requestedClassification)) {
+    return { message: 'Classification must be included in the selected scope.', ok: false }
   }
 
   const pageValue = searchParams.get('page')
@@ -111,10 +136,94 @@ export function parseNewsEventsTabsPagination(searchParams: URLSearchParams):
   }
 
   return {
-    classification,
+    classification: requestedClassification,
+    classificationIDs,
     limit,
     ok: true,
     page: Number(pageValue),
+  }
+}
+
+const legacyScopePrefix = 'legacy:'
+
+const getLegacyScopeValue = (id: string): NewsEventClassification | null =>
+  id.startsWith(legacyScopePrefix)
+    ? normalizeLegacyNewsEventClassification(id.slice(legacyScopePrefix.length))
+    : null
+
+export async function resolveActiveNewsEventClassifications(
+  payload: Pick<NewsEventsPayload, 'find'>,
+  requestedIDs: readonly string[],
+): Promise<ResolvedNewsEventClassification[]> {
+  const normalizedIDs = [...new Set(requestedIDs.map((id) => id.trim()).filter(Boolean))]
+  if (normalizedIDs.length === 0) return []
+
+  const directIDs: string[] = []
+  const legacyValues: NewsEventClassification[] = []
+
+  for (const id of normalizedIDs) {
+    const legacyValue = getLegacyScopeValue(id)
+
+    if (legacyValue) legacyValues.push(legacyValue)
+    else directIDs.push(id)
+  }
+
+  const or: Where[] = []
+  if (directIDs.length > 0) or.push({ id: { in: directIDs } })
+  if (legacyValues.length > 0) or.push({ legacyValue: { in: legacyValues } })
+
+  const result = await payload.find({
+    collection: 'news-event-classifications',
+    depth: 0,
+    overrideAccess: true,
+    pagination: false,
+    where: {
+      and: [{ active: { equals: true } }, { or }],
+    },
+  })
+  const records = result.docs.flatMap((value) => {
+    const classification = normalizeNewsEventClassificationRecord(value)
+
+    return classification?.active ? [classification] : []
+  })
+  const byID = new Map(records.map((classification) => [classification.id, classification]))
+  const byLegacyValue = new Map(
+    records.flatMap((classification) =>
+      classification.legacyValue ? ([[classification.legacyValue, classification]] as const) : [],
+    ),
+  )
+
+  return normalizedIDs.flatMap((id) => {
+    const legacyValue = getLegacyScopeValue(id)
+    const classification = legacyValue ? byLegacyValue.get(legacyValue) : byID.get(id)
+
+    return classification ? [classification] : []
+  })
+}
+
+export async function resolveAllActiveNewsEventClassifications(
+  payload: Pick<NewsEventsPayload, 'find'>,
+): Promise<ResolvedNewsEventClassification[]> {
+  const result = await payload.find({
+    collection: 'news-event-classifications',
+    depth: 0,
+    overrideAccess: true,
+    pagination: false,
+    sort: ['title', 'id'],
+    where: { active: { equals: true } },
+  })
+
+  return result.docs.flatMap((value) => {
+    const classification = normalizeNewsEventClassificationRecord(value)
+
+    return classification?.active ? [classification] : []
+  })
+}
+
+export class NewsEventsTabsRequestError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'NewsEventsTabsRequestError'
   }
 }
 
@@ -131,37 +240,86 @@ export const currentOrUpcomingEventWhere = (nowISO: string): Where => ({
   ],
 })
 
+const missingClassificationWhere: Where = {
+  or: [{ classification: { exists: false } }, { classification: { equals: null } }],
+}
+
+/**
+ * During the compatibility release, unmigrated entries have only contentType.
+ * The missing-relationship guard prevents stale legacy values on migrated entries
+ * from placing them in a second or behavior-incompatible stream.
+ */
+const classificationScopeWhere = (
+  classifications: ResolvedNewsEventClassification[],
+  single = false,
+): Where | null => {
+  const ids = classifications.map(({ id }) => id)
+  if (ids.length === 0) return null
+
+  const legacyValues = classifications.flatMap(({ legacyValue }) =>
+    legacyValue ? [legacyValue] : [],
+  )
+  const relationshipWhere: Where = {
+    classification: single && ids.length === 1 ? { equals: ids[0] } : { in: ids },
+  }
+
+  if (legacyValues.length === 0) return relationshipWhere
+
+  const legacyValueWhere: Where = {
+    contentType:
+      single && legacyValues.length === 1 ? { equals: legacyValues[0] } : { in: legacyValues },
+  }
+
+  return {
+    or: [relationshipWhere, { and: [missingClassificationWhere, legacyValueWhere] }],
+  }
+}
+
 async function fetchMixedNewsEventSources(
   payload: Pick<NewsEventsPayload, 'find'>,
-  { limit, nowISO }: { limit: number; nowISO: string },
+  {
+    classifications,
+    limit,
+    nowISO,
+  }: {
+    classifications: ResolvedNewsEventClassification[]
+    limit: number
+    nowISO: string
+  },
 ): Promise<{ events: PublicNewsEventCard[]; news: PublicNewsEventCard[] }> {
+  const storyWhere = classificationScopeWhere(
+    classifications.filter(({ behavior }) => behavior === 'story'),
+  )
+  const eventWhere = classificationScopeWhere(
+    classifications.filter(({ behavior }) => behavior === 'event'),
+  )
   const [newsResult, eventsResult] = await Promise.all([
-    payload.find({
-      collection: 'news-events',
-      depth: 1,
-      limit,
-      overrideAccess: true,
-      select: cardSelect,
-      sort: ['-publishedAt', '-id'],
-      where: {
-        and: [...publishedWhere, { contentType: { in: nonEventClassifications } }],
-      },
-    }),
-    payload.find({
-      collection: 'news-events',
-      depth: 1,
-      limit,
-      overrideAccess: true,
-      select: cardSelect,
-      sort: ['eventStart', 'id'],
-      where: {
-        and: [
-          ...publishedWhere,
-          { contentType: { equals: 'event' } },
-          currentOrUpcomingEventWhere(nowISO),
-        ],
-      },
-    }),
+    storyWhere
+      ? payload.find({
+          collection: 'news-events',
+          depth: 1,
+          limit,
+          overrideAccess: true,
+          select: cardSelect,
+          sort: ['-publishedAt', '-id'],
+          where: {
+            and: [...publishedWhere, storyWhere],
+          },
+        })
+      : Promise.resolve({ docs: [] }),
+    eventWhere
+      ? payload.find({
+          collection: 'news-events',
+          depth: 1,
+          limit,
+          overrideAccess: true,
+          select: cardSelect,
+          sort: ['eventStart', 'id'],
+          where: {
+            and: [...publishedWhere, eventWhere, currentOrUpcomingEventWhere(nowISO)],
+          },
+        })
+      : Promise.resolve({ docs: [] }),
   ])
 
   const news = (newsResult.docs as NewsEventCardRecord[]).map((entry) =>
@@ -174,23 +332,25 @@ async function fetchMixedNewsEventSources(
   return { events, news }
 }
 
-async function fetchMixedNewsEvents(
-  payload: Pick<NewsEventsPayload, 'find'>,
-  { limit, nowISO }: { limit: number; nowISO: string },
-): Promise<PublicNewsEventCard[]> {
-  const { events, news } = await fetchMixedNewsEventSources(payload, { limit, nowISO })
-
-  return interleaveNewsEvents(news, events, limit)
-}
-
 async function fetchMixedNewsEventsPage(
   payload: Pick<NewsEventsPayload, 'find'>,
-  { limit, nowISO, page }: { limit: number; nowISO: string; page: number },
+  {
+    classifications,
+    limit,
+    nowISO,
+    page,
+  }: {
+    classifications: ResolvedNewsEventClassification[]
+    limit: number
+    nowISO: string
+    page: number
+  },
 ): Promise<PublicNewsEventPage> {
   const offset = (page - 1) * limit
   const end = page * limit
   const prefixLimit = end + 1
   const { events, news } = await fetchMixedNewsEventSources(payload, {
+    classifications,
     limit: prefixLimit,
     nowISO,
   })
@@ -207,42 +367,59 @@ export async function fetchNewsEventsHighlights(
   payload: Pick<NewsEventsPayload, 'find'>,
   { limit, nowISO }: { limit: number; nowISO: string },
 ): Promise<PublicNewsEventCard[]> {
-  return fetchMixedNewsEvents(payload, {
-    limit: normalizeHighlightsItemCount(limit),
+  const resolvedLimit = normalizeHighlightsItemCount(limit)
+  const classifications = await resolveAllActiveNewsEventClassifications(payload)
+  if (classifications.length === 0) return []
+
+  const { events, news } = await fetchMixedNewsEventSources(payload, {
+    classifications,
+    limit: resolvedLimit,
     nowISO,
   })
+
+  return interleaveNewsEvents(news, events, resolvedLimit)
 }
 
 export async function fetchNewsEventGroups(
   payload: Pick<NewsEventsPayload, 'find'>,
-  { limit, nowISO }: { limit: number; nowISO: string },
+  {
+    classifications,
+    limit,
+    nowISO,
+  }: {
+    classifications: ResolvedNewsEventClassification[]
+    limit: number
+    nowISO: string
+  },
 ): Promise<PublicNewsEventGroups> {
   const resolvedLimit = normalizeGroupLimit(limit)
   const allPromise = fetchNewsEventPage(payload, {
     classification: 'all',
+    classifications,
     limit: resolvedLimit,
     nowISO,
     page: 1,
   })
-  const classificationPromises = NEWS_EVENT_CLASSIFICATIONS.map(async ({ value }) => {
+  const classificationPromises = classifications.map(async (classification) => {
     const page = await fetchNewsEventPage(payload, {
-      classification: value,
+      classification,
+      classifications,
       limit: resolvedLimit,
       nowISO,
       page: 1,
     })
 
-    return [value, page] as const satisfies readonly [NewsEventClassification, PublicNewsEventPage]
+    return [classification, page] as const
   })
-  const [all, classifications] = await Promise.all([
+  const [all, classificationPages] = await Promise.all([
     allPromise,
     Promise.all(classificationPromises),
   ])
-  const groups = createEmptyNewsEventGroups()
-  groups.all = all
+  const groups: PublicNewsEventGroups = { all }
 
-  for (const [classification, items] of classifications) {
-    groups[classification] = items
+  for (const [classification, items] of classificationPages) {
+    groups[classification.id] = items
+    if (classification.legacyValue) groups[classification.legacyValue] = items
   }
 
   return groups
@@ -252,11 +429,13 @@ export async function fetchNewsEventPage(
   payload: Pick<NewsEventsPayload, 'find'>,
   {
     classification,
+    classifications,
     limit,
     nowISO,
     page,
   }: {
-    classification: NewsEventClassificationTab
+    classification: 'all' | ResolvedNewsEventClassification
+    classifications: ResolvedNewsEventClassification[]
     limit: number
     nowISO: string
     page: number
@@ -267,11 +446,16 @@ export async function fetchNewsEventPage(
 
   if (classification === 'all') {
     return fetchMixedNewsEventsPage(payload, {
+      classifications,
       limit: resolvedLimit,
       nowISO,
       page: resolvedPage,
     })
   }
+
+  const isEvent = classification.behavior === 'event'
+  const scopeWhere = classificationScopeWhere([classification], true)
+  if (!scopeWhere) return createEmptyNewsEventPage(resolvedPage)
 
   const result = await payload.find({
     collection: 'news-events',
@@ -280,12 +464,12 @@ export async function fetchNewsEventPage(
     overrideAccess: true,
     page: resolvedPage,
     select: cardSelect,
-    sort: classification === 'event' ? ['eventStart', 'id'] : ['-publishedAt', '-id'],
+    sort: isEvent ? ['eventStart', 'id'] : ['-publishedAt', '-id'],
     where: {
       and: [
         ...publishedWhere,
-        { contentType: { equals: classification } },
-        ...(classification === 'event' ? [currentOrUpcomingEventWhere(nowISO)] : []),
+        scopeWhere,
+        ...(isEvent ? [currentOrUpcomingEventWhere(nowISO)] : []),
       ],
     },
   })
@@ -299,11 +483,73 @@ export async function fetchNewsEventPage(
   }
 }
 
+export async function fetchNewsEventPageForScope(
+  payload: Pick<NewsEventsPayload, 'find'>,
+  {
+    classification,
+    classificationIDs,
+    limit,
+    nowISO,
+    page,
+  }: {
+    classification: 'all' | string
+    classificationIDs: readonly string[]
+    limit: number
+    nowISO: string
+    page: number
+  },
+): Promise<PublicNewsEventPage> {
+  const requestedIDs = [...new Set(classificationIDs.map((id) => id.trim()).filter(Boolean))]
+  const classifications =
+    requestedIDs.length > 0
+      ? await resolveActiveNewsEventClassifications(payload, requestedIDs)
+      : classification === 'all'
+        ? await resolveAllActiveNewsEventClassifications(payload)
+        : []
+
+  if (requestedIDs.length > 0 && classifications.length !== requestedIDs.length) {
+    throw new NewsEventsTabsRequestError('Classification scope is invalid.')
+  }
+
+  const selectedIndex = classification === 'all' ? -1 : requestedIDs.indexOf(classification)
+  const selectedClassification = classification === 'all' ? 'all' : classifications[selectedIndex]
+
+  if (!selectedClassification) {
+    throw new NewsEventsTabsRequestError('Classification scope is invalid.')
+  }
+
+  return fetchNewsEventPage(payload, {
+    classification: selectedClassification,
+    classifications,
+    limit,
+    nowISO,
+    page,
+  })
+}
+
 export async function fetchNewsGridItems(
   payload: Pick<NewsEventsPayload, 'find'>,
   { limit, nowISO }: { limit: number; nowISO: string },
 ): Promise<PublicNewsEventCard[]> {
   const resolvedLimit = normalizeHighlightsItemCount(limit)
+  const classifications = await resolveAllActiveNewsEventClassifications(payload)
+  const storyWhere = classificationScopeWhere(
+    classifications.filter(({ behavior }) => behavior === 'story'),
+  )
+  const eventWhere = classificationScopeWhere(
+    classifications.filter(({ behavior }) => behavior === 'event'),
+  )
+  const classificationWhere: Where[] = []
+
+  if (storyWhere) classificationWhere.push(storyWhere)
+  if (eventWhere) {
+    classificationWhere.push({
+      and: [eventWhere, currentOrUpcomingEventWhere(nowISO)],
+    })
+  }
+
+  if (classificationWhere.length === 0) return []
+
   const result = await payload.find({
     collection: 'news-events',
     depth: 1,
@@ -312,17 +558,7 @@ export async function fetchNewsGridItems(
     select: cardSelect,
     sort: ['-publishedAt', '-createdAt', '-id'],
     where: {
-      and: [
-        ...publishedWhere,
-        {
-          or: [
-            { contentType: { in: nonEventClassifications } },
-            {
-              and: [{ contentType: { equals: 'event' } }, currentOrUpcomingEventWhere(nowISO)],
-            },
-          ],
-        },
-      ],
+      and: [...publishedWhere, { or: classificationWhere }],
     },
   })
 
@@ -362,26 +598,42 @@ export const getNewsEventsHighlights = cache(async (limit: number, nowISO: strin
   }
 })
 
-export const getNewsEventGroups = cache(async (limit: number, nowISO: string) => {
+export async function getNewsEventGroups(
+  classificationIDs: readonly string[],
+  limit: number,
+  nowISO: string,
+): Promise<PublicNewsEventGroups> {
   const payload = await loadPayload()
 
   try {
-    return await fetchNewsEventGroups(payload, { limit, nowISO })
+    const classifications =
+      classificationIDs.length > 0
+        ? await resolveActiveNewsEventClassifications(payload, classificationIDs)
+        : await resolveAllActiveNewsEventClassifications(payload)
+
+    return await fetchNewsEventGroups(payload, { classifications, limit, nowISO })
   } catch (error) {
     payload.logger.error({ err: error, msg: 'Failed to load grouped News & Events.' })
-    return createEmptyNewsEventGroups()
+    return { all: createEmptyNewsEventGroups().all }
   }
-})
+}
 
 export const getNewsEventPage = cache(
   async (
-    classification: NewsEventClassificationTab,
+    classification: 'all' | string,
+    classificationIDs: string[],
     page: number,
     limit: number,
     nowISO: string,
   ) => {
     const payload = await loadPayload()
-    return fetchNewsEventPage(payload, { classification, limit, nowISO, page })
+    return fetchNewsEventPageForScope(payload, {
+      classification,
+      classificationIDs,
+      limit,
+      nowISO,
+      page,
+    })
   },
 )
 

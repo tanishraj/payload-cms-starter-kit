@@ -14,7 +14,6 @@ import { ContentActions } from '@/components/ContentActions'
 import { NewsEventShareActions } from '@/components/news-events/NewsEventShareActions'
 import { longFormRichTextClasses } from '@/components/rich-text/richTextStyles'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
-import { getNewsEventClassificationLabel } from '@/lib/newsEventClassifications'
 import type { ResolvedNewsEventsContentSettings } from '@/lib/newsEventDetailTemplateShared'
 import {
   formatNewsEventDateRange,
@@ -112,11 +111,11 @@ function StoryDetailsCard({
   entry: PublicNewsEventDetail
   surface: CardSurfaceClasses
 }) {
-  const isEvent = entry.contentType === 'event'
+  const isEvent = entry.behavior === 'event'
   const dateLabel = isEvent
     ? formatNewsEventDateRange(entry.eventStart, entry.eventEnd)
     : entry.dateLabel
-  const categoryLabel = entry.category?.title ?? getNewsEventClassificationLabel(entry.contentType)
+  const categoryLabel = entry.classification.title
 
   return (
     <SidebarCard article={article} heading="Story Details" surface={surface}>
@@ -173,7 +172,7 @@ export function NewsEventStory({
 }) {
   const appearance = resolveBlockAppearanceClasses(article.appearance)
   const cardSurface = resolveCardSurface(article.sidebarCardBackground, appearance.background)
-  const classificationLabel = getNewsEventClassificationLabel(entry.contentType)
+  const classificationLabel = entry.classification.badgeLabel
   const usesFallbackImage = !entry.image
   const image = entry.image ?? {
     alt: '',

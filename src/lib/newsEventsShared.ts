@@ -3,16 +3,17 @@ import { resolveCmsActions } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { getTaxonomyTerm, getTaxonomyTerms } from '@/lib/taxonomy'
 import {
-  NEWS_EVENT_CLASSIFICATION_TABS,
-  type NewsEventClassification,
-  type NewsEventClassificationTab,
+  resolveNewsEventClassificationRecord,
+  type NewsEventClassificationBehavior,
+  type ResolvedNewsEventClassification,
 } from '@/lib/newsEventClassifications'
 import type { NewsEvent } from '@/payload-types'
 
 export const NEWS_EVENTS_DEFAULT_HIGHLIGHT_COUNT = 3
 export const NEWS_EVENTS_MAX_HIGHLIGHT_COUNT = 6
 
-export type NewsEventContentType = NewsEventClassification
+/** @deprecated Classifications are now dynamic; use ResolvedNewsEventClassification. */
+export type NewsEventContentType = string
 export type NewsEventImagePosition = 'bottom' | 'center' | 'left' | 'right' | 'top'
 
 export type PublicNewsEventImage = {
@@ -24,8 +25,11 @@ export type PublicNewsEventImage = {
 }
 
 export type PublicNewsEventCard = {
+  behavior: NewsEventClassificationBehavior
   category?: { id: number | string; slug: string; title: string }
-  contentType: NewsEventContentType
+  classification: ResolvedNewsEventClassification
+  /** @deprecated Use classification.slug and behavior. */
+  contentType: string
   dateISO: string
   dateLabel: string
   eventEnd?: string
@@ -65,7 +69,7 @@ export type PublicNewsEventPage = {
   page: number
 }
 
-export type PublicNewsEventGroups = Record<NewsEventClassificationTab, PublicNewsEventPage>
+export type PublicNewsEventGroups = Record<string, PublicNewsEventPage>
 
 export const newsEventObjectPositionClasses = {
   bottom: 'object-bottom',
@@ -204,6 +208,7 @@ const getEffectiveEventEnd = (
 export function toPublicNewsEventCard(
   entry: Pick<
     NewsEvent,
+    | 'classification'
     | 'contentType'
     | 'eventEnd'
     | 'eventStart'
@@ -219,7 +224,16 @@ export function toPublicNewsEventCard(
   >,
   nowISO: string,
 ): PublicNewsEventCard {
-  const isEvent = entry.contentType === 'event'
+  const classification = resolveNewsEventClassificationRecord(
+    entry.classification,
+    entry.contentType,
+  )
+
+  if (!classification) {
+    throw new Error(`News & Events entry ${String(entry.id)} has no usable classification.`)
+  }
+
+  const isEvent = classification.behavior === 'event'
   const title = entry.title?.trim() || 'Untitled entry'
   const slug = entry.slug?.trim() || 'untitled-entry'
   const dateISO = (isEvent ? entry.eventStart : entry.publishedAt) || entry.updatedAt
@@ -232,8 +246,10 @@ export function toPublicNewsEventCard(
   const category = getTaxonomyTerm(entry.primaryCategory)
 
   return {
+    behavior: classification.behavior,
     category: category ?? undefined,
-    contentType: entry.contentType,
+    classification,
+    contentType: classification.slug,
     dateISO,
     dateLabel: formatNewsEventDate(dateISO),
     eventEnd: isEvent ? entry.eventEnd || undefined : undefined,
@@ -270,11 +286,12 @@ export function toPublicNewsEventDetail(entry: NewsEvent, nowISO: string): Publi
     ...card,
     body: entry.body,
     categories: getTaxonomyTerms(entry.categories),
-    eventEnd: entry.eventEnd || undefined,
-    eventLocation: entry.eventLocation?.trim() || undefined,
-    eventRegistrationAction: resolvedRegistration,
-    eventRegistrationMode: registration?.mode ?? undefined,
-    eventStart: entry.eventStart || undefined,
+    eventEnd: card.behavior === 'event' ? entry.eventEnd || undefined : undefined,
+    eventLocation: card.behavior === 'event' ? entry.eventLocation?.trim() || undefined : undefined,
+    eventRegistrationAction: card.behavior === 'event' ? resolvedRegistration : undefined,
+    eventRegistrationMode:
+      card.behavior === 'event' ? (registration?.mode ?? undefined) : undefined,
+    eventStart: card.behavior === 'event' ? entry.eventStart || undefined : undefined,
     canonicalURL: entry.canonicalURL?.trim() || undefined,
     metaDescription: entry.metaDescription?.trim() || undefined,
     metaTitle: entry.metaTitle?.trim() || undefined,
@@ -295,7 +312,5 @@ export const createEmptyNewsEventPage = (page = 1): PublicNewsEventPage => ({
 })
 
 export function createEmptyNewsEventGroups(): PublicNewsEventGroups {
-  return Object.fromEntries(
-    NEWS_EVENT_CLASSIFICATION_TABS.map(({ value }) => [value, createEmptyNewsEventPage()]),
-  ) as PublicNewsEventGroups
+  return { all: createEmptyNewsEventPage() }
 }

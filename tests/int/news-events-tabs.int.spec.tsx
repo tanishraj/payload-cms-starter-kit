@@ -6,26 +6,84 @@ import type { Block, Field } from 'payload'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 
 import { NewsEventsTabsClient } from '@/blocks/NewsEventsTabs/NewsEventsTabsClient'
+import { NewsEventsTabsPreviewBlockComponent } from '@/blocks/NewsEventsTabs/PreviewComponent'
 import { NewsEventsTabsRow } from '@/blocks/NewsEventsTabs/NewsEventsTabsRow'
 import { NewsEventsTabsBlockPresentation } from '@/blocks/NewsEventsTabs/Presentation'
 import { NewsEventsTabsBlock } from '@/blocks/NewsEventsTabs/config'
 import {
   getNewsEventsTabsGridClasses,
+  getNewsEventsTabsClassificationRelationshipIDs,
   isNewsEventsTabsItemsPerTab,
-  NEWS_EVENTS_TABS_DEFAULT_CONFIGURED_TABS,
   normalizeNewsEventsTabsCardsPerRow,
   normalizeNewsEventsTabsItemsPerTab,
   normalizeNewsEventsTabsLayoutStyle,
+  NEWS_EVENTS_TABS_MAX_CLASSIFICATIONS,
   resolveNewsEventsTabs,
   resolveNewsEventsTabsLoadMoreLabel,
-  validateNewsEventsTabsConfiguredTabs,
 } from '@/blocks/NewsEventsTabs/newsEventsTabsShared'
 import { Pages } from '@/collections/Pages'
 import { ReusableSections } from '@/collections/ReusableSections'
-import { getNewsEventsTabsPreviewGroupCounts } from '@/lib/newsEventsPreviewShared'
-import { createEmptyNewsEventGroups, type PublicNewsEventCard } from '@/lib/newsEventsShared'
+import {
+  getNewsEventsTabsPreviewGroupCounts,
+  getNewsEventsTabsPreviewGroupKey,
+  getNewsEventsTabsPreviewGroupScopes,
+} from '@/lib/newsEventsPreviewShared'
+import {
+  createEmptyNewsEventGroups,
+  type PublicNewsEventCard,
+  type PublicNewsEventGroups,
+} from '@/lib/newsEventsShared'
+
+const newsClassification = {
+  active: true,
+  badgeLabel: 'News',
+  behavior: 'story' as const,
+  id: 'classification-news',
+  legacyValue: 'news' as const,
+  slug: 'news',
+  title: 'News',
+}
+
+const eventClassification = {
+  active: true,
+  badgeLabel: 'Event',
+  behavior: 'event' as const,
+  id: 'classification-event',
+  legacyValue: 'event' as const,
+  slug: 'events',
+  title: 'Events',
+}
+
+const noticeClassification = {
+  active: true,
+  badgeLabel: 'Notice',
+  behavior: 'story' as const,
+  id: 'classification-notice',
+  legacyValue: 'notice' as const,
+  slug: 'notice',
+  title: 'Campus notices',
+}
+
+const holidayClassification = {
+  active: true,
+  badgeLabel: 'Holiday',
+  behavior: 'story' as const,
+  id: 'classification-holiday',
+  legacyValue: 'holiday' as const,
+  slug: 'holiday',
+  title: 'Closures',
+}
+
+const selectedClassifications = [
+  newsClassification,
+  eventClassification,
+  noticeClassification,
+  holidayClassification,
+]
 
 const baseCard: PublicNewsEventCard = {
+  behavior: 'story',
+  classification: newsClassification,
   contentType: 'news',
   dateISO: '2026-08-17T00:00:00.000Z',
   dateLabel: 'Aug 17, 2026',
@@ -37,12 +95,13 @@ const baseCard: PublicNewsEventCard = {
   title: 'Current update',
 }
 
-const groups = createEmptyNewsEventGroups()
+const groups: PublicNewsEventGroups = createEmptyNewsEventGroups()
 groups.all = { docs: [baseCard], hasNextPage: false, page: 1 }
-groups.holiday = {
+groups[holidayClassification.id] = {
   docs: [
     {
       ...baseCard,
+      classification: holidayClassification,
       contentType: 'holiday',
       href: '/news-events/campus-holiday',
       id: 'campus-holiday',
@@ -53,10 +112,11 @@ groups.holiday = {
   hasNextPage: false,
   page: 1,
 }
-groups.notice = {
+groups[noticeClassification.id] = {
   docs: [
     {
       ...baseCard,
+      classification: noticeClassification,
       contentType: 'notice',
       href: '/news-events/research-notice',
       id: 'research-notice',
@@ -77,7 +137,7 @@ const baseClientProps = {
   layoutStyle: 'cardGrid' as const,
   loadMoreLabel: 'Load More',
   newsActionLabel: 'Read update',
-  tabs: resolveNewsEventsTabs(null, undefined),
+  tabs: resolveNewsEventsTabs(null, selectedClassifications),
   variant: 'underline' as const,
 }
 
@@ -134,24 +194,18 @@ describe('News & Events Tabs', () => {
       defaultValue: 'All',
       type: 'text',
     })
-    expect(findNamedField(NewsEventsTabsBlock.fields, 'tabs')).toMatchObject({
-      defaultValue: NEWS_EVENTS_TABS_DEFAULT_CONFIGURED_TABS,
-      maxRows: 7,
-      type: 'array',
+    expect(findNamedField(NewsEventsTabsBlock.fields, 'classifications')).toMatchObject({
+      filterOptions: { active: { equals: true } },
+      hasMany: true,
+      maxRows: NEWS_EVENTS_TABS_MAX_CLASSIFICATIONS,
+      relationTo: 'news-event-classifications',
+      type: 'relationship',
+      admin: {
+        allowCreate: true,
+        isSortable: true,
+      },
     })
-    expect(findNamedField(NewsEventsTabsBlock.fields, 'classification')).toMatchObject({
-      options: [
-        { label: 'News', value: 'news' },
-        { label: 'Events', value: 'event' },
-        { label: 'Notice', value: 'notice' },
-        { label: 'Holiday', value: 'holiday' },
-        { label: 'Achievements', value: 'achievement' },
-        { label: 'Announcement', value: 'announcement' },
-        { label: 'Others', value: 'other' },
-      ],
-      required: true,
-      type: 'select',
-    })
+    expect(findNamedField(NewsEventsTabsBlock.fields, 'tabs')).toBeUndefined()
     expect(findNamedField(NewsEventsTabsBlock.fields, 'itemsPerTab')).toMatchObject({
       admin: {
         description:
@@ -232,27 +286,33 @@ describe('News & Events Tabs', () => {
     expect(isNewsEventsTabsItemsPerTab(5)).toBe(false)
   })
 
-  it('resolves legacy, custom, and explicitly empty tab configuration', () => {
-    expect(resolveNewsEventsTabs(null, undefined)).toEqual([
-      { label: 'All', value: 'all' },
-      ...NEWS_EVENTS_TABS_DEFAULT_CONFIGURED_TABS.map(({ classification, label }) => ({
-        label,
-        value: classification,
-      })),
+  it('resolves relationship titles in saved order and renders only All when empty', () => {
+    expect(resolveNewsEventsTabs(null, [])).toEqual([{ label: 'All', value: 'all' }])
+    expect(resolveNewsEventsTabs(' Everything ', undefined)).toEqual([
+      { label: 'Everything', value: 'all' },
     ])
 
     expect(
       resolveNewsEventsTabs(' Everything ', [
-        { classification: 'holiday', label: ' Breaks ' },
-        { classification: 'news', label: 'Latest' },
-        { classification: 'holiday', label: 'Repeated' },
-        { classification: 'invalid', label: 'Invalid' },
-        { classification: 'notice', label: '   ' },
+        holidayClassification,
+        newsClassification,
+        holidayClassification,
+        { ...noticeClassification, active: false },
+        'classification-missing',
+        { ...eventClassification, title: '   ' },
       ]),
     ).toEqual([
       { label: 'Everything', value: 'all' },
-      { label: 'Breaks', value: 'holiday' },
-      { label: 'Latest', value: 'news' },
+      {
+        classification: holidayClassification,
+        label: 'Closures',
+        value: holidayClassification.id,
+      },
+      {
+        classification: newsClassification,
+        label: 'News',
+        value: newsClassification.id,
+      },
     ])
 
     expect(resolveNewsEventsTabs('All updates', [])).toEqual([
@@ -260,20 +320,15 @@ describe('News & Events Tabs', () => {
     ])
   })
 
-  it('rejects duplicate configured classifications', () => {
+  it('extracts de-duplicated relationship IDs', () => {
     expect(
-      validateNewsEventsTabsConfiguredTabs([
-        { classification: 'news', label: 'News' },
-        { classification: 'news', label: 'Latest' },
+      getNewsEventsTabsClassificationRelationshipIDs([
+        newsClassification,
+        newsClassification.id,
+        eventClassification.id,
+        null,
       ]),
-    ).toBe('Each classification can only be added once.')
-
-    expect(
-      validateNewsEventsTabsConfiguredTabs([
-        { classification: 'news', label: 'News' },
-        { classification: 'event', label: 'Events' },
-      ]),
-    ).toBe(true)
+    ).toEqual([newsClassification.id, eventClassification.id])
   })
 
   it('renders optional section content, semantic surfaces, and footer actions without images', () => {
@@ -314,21 +369,135 @@ describe('News & Events Tabs', () => {
     expect(fallbackHTML).toContain('Load More')
   })
 
-  it('passes configured tab labels and order through the presentation layer', () => {
+  it('passes relationship titles and order through the presentation layer', () => {
     const html = renderToStaticMarkup(
       <NewsEventsTabsBlockPresentation
         allTabLabel="Everything"
+        classifications={[noticeClassification, holidayClassification]}
         groups={groups}
-        tabs={[
-          { classification: 'notice', label: 'Campus notices' },
-          { classification: 'holiday', label: 'Closures' },
-        ]}
       />,
     )
 
     expect(html.indexOf('Everything')).toBeLessThan(html.indexOf('Campus notices'))
     expect(html.indexOf('Campus notices')).toBeLessThan(html.indexOf('Closures'))
     expect(html).not.toContain('>News</button>')
+  })
+
+  it('renders ordered classification metadata for ID-only live-preview relationships', () => {
+    const classificationIDs = [noticeClassification.id, holidayClassification.id]
+    const limit = 6
+    const key = getNewsEventsTabsPreviewGroupKey(classificationIDs, limit)
+    const previewGroups = createEmptyNewsEventGroups()
+    previewGroups.all = {
+      docs: [groups[noticeClassification.id]!.docs[0]!, groups[holidayClassification.id]!.docs[0]!],
+      hasNextPage: false,
+      page: 1,
+    }
+    previewGroups[noticeClassification.id] = groups[noticeClassification.id]!
+    previewGroups[holidayClassification.id] = groups[holidayClassification.id]!
+
+    render(
+      <NewsEventsTabsPreviewBlockComponent
+        classifications={classificationIDs}
+        itemsPerTab={limit}
+        snapshot={{
+          classificationsByScope: {
+            [key]: [noticeClassification, holidayClassification],
+          },
+          groupsByScope: { [key]: previewGroups },
+          highlightsByCount: {},
+          newsGridByCount: {},
+        }}
+      />,
+    )
+
+    expect(screen.getAllByRole('tab').map((tab) => tab.textContent)).toEqual([
+      'All',
+      'Campus notices',
+      'Closures',
+    ])
+    fireEvent.click(screen.getByRole('tab', { name: 'Closures' }))
+    expect(screen.getByRole('tabpanel').textContent).toContain('Campus holiday')
+  })
+
+  it('renders only All from an empty live-preview selection', () => {
+    const limit = 6
+    const key = getNewsEventsTabsPreviewGroupKey([], limit)
+    const previewGroups = createEmptyNewsEventGroups()
+    previewGroups.all = {
+      docs: [baseCard],
+      hasNextPage: false,
+      page: 1,
+    }
+
+    render(
+      <NewsEventsTabsPreviewBlockComponent
+        classifications={[]}
+        itemsPerTab={limit}
+        snapshot={{
+          classificationsByScope: { [key]: [] },
+          groupsByScope: { [key]: previewGroups },
+          highlightsByCount: {},
+          newsGridByCount: {},
+        }}
+      />,
+    )
+
+    expect(screen.getAllByRole('tab').map((tab) => tab.textContent)).toEqual(['All'])
+    expect(screen.getByRole('tabpanel').textContent).toContain('Current update')
+  })
+
+  it('remounts client pagination state when preview scope, tabs, or initial pages change', () => {
+    const initialGroups = createEmptyNewsEventGroups()
+    initialGroups.all = { docs: [baseCard], hasNextPage: false, page: 1 }
+    initialGroups[newsClassification.id] = initialGroups.all
+    const replacementCard = {
+      ...baseCard,
+      id: 'replacement-update',
+      slug: 'replacement-update',
+      title: 'Replacement update',
+    }
+    const replacementGroups = createEmptyNewsEventGroups()
+    replacementGroups.all = { docs: [replacementCard], hasNextPage: false, page: 1 }
+    replacementGroups[newsClassification.id] = replacementGroups.all
+    const { rerender } = render(
+      <NewsEventsTabsBlockPresentation
+        classifications={[newsClassification]}
+        groups={initialGroups}
+        itemsPerTab={6}
+      />,
+    )
+
+    expect(screen.getByText('Current update')).toBeTruthy()
+
+    rerender(
+      <NewsEventsTabsBlockPresentation
+        classifications={[newsClassification]}
+        groups={replacementGroups}
+        itemsPerTab={9}
+      />,
+    )
+
+    expect(screen.queryByText('Current update')).toBeNull()
+    expect(screen.getByText('Replacement update')).toBeTruthy()
+
+    const noticeGroups = createEmptyNewsEventGroups()
+    noticeGroups.all = groups[noticeClassification.id]!
+    noticeGroups[noticeClassification.id] = groups[noticeClassification.id]!
+    rerender(
+      <NewsEventsTabsBlockPresentation
+        classifications={[noticeClassification]}
+        groups={noticeGroups}
+        itemsPerTab={9}
+      />,
+    )
+
+    expect(screen.getAllByRole('tab').map((tab) => tab.textContent)).toEqual([
+      'All',
+      'Campus notices',
+    ])
+    expect(screen.queryByText('Replacement update')).toBeNull()
+    expect(screen.getByText('Research notice')).toBeTruthy()
   })
 
   it('normalizes the configured presentation layout with a card-grid legacy fallback', () => {
@@ -355,15 +524,12 @@ describe('News & Events Tabs', () => {
       'All',
       'News',
       'Events',
-      'Notice',
-      'Holiday',
-      'Achievements',
-      'Announcement',
-      'Others',
+      'Campus notices',
+      'Closures',
     ])
     expect(screen.getByRole('tab', { name: 'All' }).getAttribute('aria-selected')).toBe('true')
 
-    fireEvent.click(screen.getByRole('tab', { name: 'Holiday' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Closures' }))
     expect(screen.getByRole('tabpanel').textContent).toContain('Campus holiday')
     expect(screen.getByRole('tabpanel').textContent).not.toContain('Research notice')
   })
@@ -392,11 +558,8 @@ describe('News & Events Tabs', () => {
       'All',
       'News',
       'Events',
-      'Notice',
-      'Holiday',
-      'Achievements',
-      'Announcement',
-      'Others',
+      'Campus notices',
+      'Closures',
     ])
   })
 
@@ -479,6 +642,8 @@ describe('News & Events Tabs', () => {
   it('formats editorial event ranges and omits missing optional date and excerpt content', () => {
     const eventCard: PublicNewsEventCard = {
       ...baseCard,
+      behavior: 'event',
+      classification: eventClassification,
       contentType: 'event',
       dateISO: '2026-08-13T00:00:00.000Z',
       dateLabel: 'Aug 13, 2026',
@@ -513,14 +678,11 @@ describe('News & Events Tabs', () => {
     ).toBeTruthy()
   })
 
-  it('renders configured labels and order while keeping All first', () => {
+  it('renders relationship titles and order while keeping All first', () => {
     render(
       <NewsEventsTabsClient
         {...baseClientProps}
-        tabs={resolveNewsEventsTabs('Everything', [
-          { classification: 'notice', label: 'Campus notices' },
-          { classification: 'holiday', label: 'Closures' },
-        ])}
+        tabs={resolveNewsEventsTabs('Everything', [noticeClassification, holidayClassification])}
       />,
     )
 
@@ -544,22 +706,50 @@ describe('News & Events Tabs', () => {
     expect(screen.getByRole('tabpanel').textContent).toContain('Current update')
   })
 
+  it('omits the classification scope when loading more from an All-only block', async () => {
+    const allOnlyGroups = createEmptyNewsEventGroups()
+    allOnlyGroups.all = { docs: [baseCard], hasNextPage: true, page: 1 }
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          docs: [{ ...baseCard, id: 'next-all', slug: 'next-all', title: 'Next All update' }],
+          hasNextPage: false,
+          page: 2,
+        }),
+        { status: 200 },
+      ),
+    )
+    vi.stubGlobal('fetch', fetchMock)
+
+    render(
+      <NewsEventsTabsClient
+        {...baseClientProps}
+        groups={allOnlyGroups}
+        tabs={resolveNewsEventsTabs('All updates', [])}
+      />,
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Load More' }))
+
+    await screen.findByText('Next All update')
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/news-events-tabs?classification=all&limit=6&page=2',
+      { headers: { Accept: 'application/json' } },
+    )
+  })
+
   it('uses configured order for keyboard navigation', () => {
     render(
       <NewsEventsTabsClient
         {...baseClientProps}
-        tabs={resolveNewsEventsTabs(null, [
-          { classification: 'holiday', label: 'Holiday' },
-          { classification: 'notice', label: 'Notice' },
-        ])}
+        tabs={resolveNewsEventsTabs(null, [holidayClassification, noticeClassification])}
       />,
     )
 
     const all = screen.getByRole('tab', { name: 'All' })
     fireEvent.keyDown(all, { key: 'ArrowLeft' })
-    expect(document.activeElement).toBe(screen.getByRole('tab', { name: 'Notice' }))
+    expect(document.activeElement).toBe(screen.getByRole('tab', { name: 'Campus notices' }))
 
-    fireEvent.keyDown(screen.getByRole('tab', { name: 'Notice' }), { key: 'Home' })
+    fireEvent.keyDown(screen.getByRole('tab', { name: 'Campus notices' }), { key: 'Home' })
     expect(document.activeElement).toBe(all)
   })
 
@@ -571,13 +761,13 @@ describe('News & Events Tabs', () => {
     expect(screen.getByRole('tab', { name: 'News' }).getAttribute('aria-selected')).toBe('true')
 
     fireEvent.keyDown(screen.getByRole('tab', { name: 'News' }), { key: 'End' })
-    expect(document.activeElement).toBe(screen.getByRole('tab', { name: 'Others' }))
+    expect(document.activeElement).toBe(screen.getByRole('tab', { name: 'Closures' }))
 
-    fireEvent.keyDown(screen.getByRole('tab', { name: 'Others' }), { key: 'Home' })
+    fireEvent.keyDown(screen.getByRole('tab', { name: 'Closures' }), { key: 'Home' })
     expect(document.activeElement).toBe(screen.getByRole('tab', { name: 'All' }))
 
     fireEvent.keyDown(screen.getByRole('tab', { name: 'All' }), { key: 'ArrowLeft' })
-    expect(document.activeElement).toBe(screen.getByRole('tab', { name: 'Others' }))
+    expect(document.activeElement).toBe(screen.getByRole('tab', { name: 'Closures' }))
   })
 
   it('keeps the tabs visible when a classification is empty', () => {
@@ -585,7 +775,7 @@ describe('News & Events Tabs', () => {
 
     fireEvent.click(screen.getByRole('tab', { name: 'Events' }))
     expect(screen.getByRole('tabpanel').textContent).toContain('No entries in this classification.')
-    expect(screen.getAllByRole('tab')).toHaveLength(8)
+    expect(screen.getAllByRole('tab')).toHaveLength(5)
   })
 
   it('loads, appends, and completes pagination for the active tab', async () => {
@@ -628,7 +818,9 @@ describe('News & Events Tabs', () => {
     await screen.findByText('News 12')
     expect(document.querySelectorAll('[data-news-events-tabs-row="true"]')).toHaveLength(12)
     expect(fetchMock).toHaveBeenCalledWith(
-      '/api/news-events-tabs?classification=all&page=2&limit=6',
+      `/api/news-events-tabs?classification=all&classifications=${selectedClassifications
+        .map(({ id }) => id)
+        .join('%2C')}&limit=6&page=2`,
       { headers: { Accept: 'application/json' } },
     )
     expect(screen.queryByRole('button', { name: 'More updates' })).toBeNull()
@@ -697,11 +889,13 @@ describe('News & Events Tabs', () => {
 
   it('retains independent loaded progress for each tab', async () => {
     const pagedGroups = createEmptyNewsEventGroups()
-    pagedGroups.news = { docs: [baseCard], hasNextPage: true, page: 1 }
-    pagedGroups.event = {
+    pagedGroups[newsClassification.id] = { docs: [baseCard], hasNextPage: true, page: 1 }
+    pagedGroups[eventClassification.id] = {
       docs: [
         {
           ...baseCard,
+          behavior: 'event',
+          classification: eventClassification,
           contentType: 'event',
           id: 'event-1',
           slug: 'event-1',
@@ -712,12 +906,14 @@ describe('News & Events Tabs', () => {
       page: 1,
     }
     const fetchMock = vi.fn(async (url: string) => {
-      const isNews = url.includes('classification=news')
+      const isNews = url.includes(`classification=${newsClassification.id}`)
       return new Response(
         JSON.stringify({
           docs: [
             {
               ...baseCard,
+              behavior: isNews ? 'story' : 'event',
+              classification: isNews ? newsClassification : eventClassification,
               contentType: isNews ? 'news' : 'event',
               id: isNews ? 'news-2' : 'event-2',
               slug: isNews ? 'news-2' : 'event-2',
@@ -744,8 +940,12 @@ describe('News & Events Tabs', () => {
     fireEvent.click(screen.getByRole('tab', { name: 'News' }))
     expect(screen.getByText('News 2')).toBeTruthy()
     expect(fetchMock.mock.calls.map(([url]) => url)).toEqual([
-      '/api/news-events-tabs?classification=news&page=2&limit=6',
-      '/api/news-events-tabs?classification=event&page=2&limit=6',
+      `/api/news-events-tabs?classification=${newsClassification.id}&classifications=${selectedClassifications
+        .map(({ id }) => id)
+        .join('%2C')}&limit=6&page=2`,
+      `/api/news-events-tabs?classification=${eventClassification.id}&classifications=${selectedClassifications
+        .map(({ id }) => id)
+        .join('%2C')}&limit=6&page=2`,
     ])
   })
 
@@ -781,13 +981,56 @@ describe('News & Events Tabs', () => {
     )
   })
 
-  it('requests one grouped preview snapshot for every unique item count', () => {
-    expect(
-      getNewsEventsTabsPreviewGroupCounts([
-        { blockType: 'newsEventsTabs', itemsPerTab: '9' },
-        { blockType: 'newsEventsTabs', itemsPerTab: '9' },
-        { blockType: 'newsEventsTabs', itemsPerTab: 'invalid' },
-      ] as never),
-    ).toEqual([6, 9])
+  it('keys grouped preview snapshots by ordered classification scope and traverses reusable sections', () => {
+    const cyclicSection: { blockType: string; section?: unknown } = {
+      blockType: 'reusableSection',
+    }
+    cyclicSection.section = { layout: [cyclicSection] }
+    const layout = [
+      {
+        blockType: 'newsEventsTabs',
+        classifications: [newsClassification.id, eventClassification.id],
+        itemsPerTab: '9',
+      },
+      {
+        blockType: 'newsEventsTabs',
+        classifications: [noticeClassification.id, holidayClassification.id],
+        itemsPerTab: '9',
+      },
+      {
+        blockType: 'reusableSection',
+        section: {
+          layout: [
+            {
+              blockType: 'newsEventsTabs',
+              itemsPerTab: 'invalid',
+              classifications: [],
+            },
+          ],
+        },
+      },
+      cyclicSection,
+    ] as never
+    const scopes = getNewsEventsTabsPreviewGroupScopes(layout)
+
+    expect(scopes).toEqual([
+      {
+        classificationIDs: [newsClassification.id, eventClassification.id],
+        key: JSON.stringify([9, newsClassification.id, eventClassification.id]),
+        limit: 9,
+      },
+      {
+        classificationIDs: [noticeClassification.id, holidayClassification.id],
+        key: JSON.stringify([9, noticeClassification.id, holidayClassification.id]),
+        limit: 9,
+      },
+      {
+        classificationIDs: [],
+        key: JSON.stringify([6]),
+        limit: 6,
+      },
+    ])
+    expect(scopes[0]?.key).not.toBe(scopes[1]?.key)
+    expect(getNewsEventsTabsPreviewGroupCounts(layout)).toEqual([6, 9])
   })
 })

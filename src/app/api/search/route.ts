@@ -2,6 +2,7 @@ import configPromise from '@payload-config'
 import { NextResponse } from 'next/server'
 import { getPayload, type Where } from 'payload'
 
+import { resolveNewsEventClassificationRecord } from '@/lib/newsEventClassifications'
 import { resolveSearchPageHrefs } from '@/lib/searchPagePaths'
 
 // In-memory rate limiter: 20 requests / IP / 10 s.
@@ -79,10 +80,7 @@ export async function GET(request: Request) {
       limit: PER_TYPE_LIMIT,
       select: { id: true, title: true, slug: true, parent: true, metaDescription: true },
       where: {
-        and: [
-          ...publishedFilter,
-          { or: [{ title: textLike }, { metaDescription: textLike }] },
-        ],
+        and: [...publishedFilter, { or: [{ title: textLike }, { metaDescription: textLike }] }],
       },
     }),
     payload.find({
@@ -99,9 +97,17 @@ export async function GET(request: Request) {
     }),
     payload.find({
       collection: 'news-events',
-      depth: 0,
+      depth: 1,
       limit: PER_TYPE_LIMIT,
-      select: { id: true, title: true, slug: true, excerpt: true, contentType: true, authorName: true },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        excerpt: true,
+        classification: true,
+        contentType: true,
+        authorName: true,
+      },
       where: {
         and: [
           ...publishedFilter,
@@ -156,13 +162,18 @@ export async function GET(request: Request) {
 
   if (newsEventsResult.status === 'fulfilled') {
     for (const entry of newsEventsResult.value.docs) {
+      const classification = resolveNewsEventClassificationRecord(
+        entry.classification,
+        entry.contentType,
+      )
+
       results.push({
         id: String(entry.id),
         title: entry.title,
         excerpt: entry.excerpt ?? '',
         href: `/news-events/${entry.slug}`,
         type: 'news-event',
-        label: entry.contentType === 'event' ? 'Event' : 'News',
+        label: classification?.badgeLabel ?? 'News & Events',
       })
     }
   }

@@ -1,11 +1,12 @@
 import { NewsEventsTabsClient } from '@/blocks/NewsEventsTabs/NewsEventsTabsClient'
 import {
+  alignNewsEventsTabsGroups,
+  getNewsEventsTabsClientStateKey,
   normalizeNewsEventsTabsItemsPerTab,
   normalizeNewsEventsTabsLayoutStyle,
   resolveNewsEventsTabs,
   resolveNewsEventsTabsLoadMoreLabel,
   type NewsEventsTabsCardsPerRow,
-  type NewsEventsTabsConfiguredTab,
   type NewsEventsTabsLayoutStyle,
 } from '@/blocks/NewsEventsTabs/newsEventsTabsShared'
 import { normalizeContentTabVariant, type ContentTabVariant } from '@/blocks/shared/contentTabRail'
@@ -38,6 +39,7 @@ export type NewsEventsTabsBlockLike = {
   allTabLabel?: string | null
   appearance?: BlockAppearance | null
   cardsPerRow?: NewsEventsTabsCardsPerRow | null
+  classifications?: unknown
   contentAlignment?: NewsEventsTabsAlignment | null
   description?: string | null
   emptyStateMessage?: string | null
@@ -51,7 +53,6 @@ export type NewsEventsTabsBlockLike = {
   newsActionLabel?: string | null
   size?: RegularBlockSize | null
   tabVariant?: ContentTabVariant | string | null
-  tabs?: NewsEventsTabsConfiguredTab[] | null
   title?: string | null
 }
 
@@ -70,6 +71,7 @@ export function NewsEventsTabsBlockPresentation({
   allTabLabel,
   appearance,
   cardsPerRow,
+  classifications,
   contentAlignment = 'left',
   description,
   emptyStateMessage,
@@ -84,7 +86,6 @@ export function NewsEventsTabsBlockPresentation({
   newsActionLabel,
   size = 'default',
   tabVariant,
-  tabs,
   title,
 }: NewsEventsTabsBlockPresentationProps) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
@@ -97,7 +98,17 @@ export function NewsEventsTabsBlockPresentation({
   const resolvedAccentTitle = accentTitle?.trim()
   const resolvedDescription = description?.trim()
   const resolvedEyebrow = eyebrow?.trim()
-  const resolvedTabs = resolveNewsEventsTabs(allTabLabel, tabs)
+  const resolvedTabs = resolveNewsEventsTabs(allTabLabel, classifications)
+  const resolvedGroups = alignNewsEventsTabsGroups(
+    groups ?? createEmptyNewsEventGroups(),
+    resolvedTabs,
+  )
+  const resolvedItemsPerTab = normalizeNewsEventsTabsItemsPerTab(itemsPerTab)
+  const clientStateKey = getNewsEventsTabsClientStateKey(
+    resolvedGroups,
+    resolvedTabs,
+    resolvedItemsPerTab,
+  )
   const resolvedTitle = title?.trim()
   const resolvedActions = resolveCmsActions(actions)
   const hasHeader = Boolean(
@@ -169,11 +180,12 @@ export function NewsEventsTabsBlockPresentation({
         ) : null}
 
         <NewsEventsTabsClient
+          key={clientStateKey}
           cardsPerRow={cardsPerRow}
           emptyStateMessage={emptyStateMessage?.trim() || 'No entries in this classification.'}
           eventActionLabel={eventActionLabel?.trim() || 'View details'}
-          groups={groups ?? createEmptyNewsEventGroups()}
-          itemsPerTab={normalizeNewsEventsTabsItemsPerTab(itemsPerTab)}
+          groups={resolvedGroups}
+          itemsPerTab={resolvedItemsPerTab}
           layoutStyle={normalizeNewsEventsTabsLayoutStyle(layoutStyle)}
           loadMoreLabel={resolveNewsEventsTabsLoadMoreLabel(loadMoreLabel)}
           newsActionLabel={newsActionLabel?.trim() || 'Read update'}

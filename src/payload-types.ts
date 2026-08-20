@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     pages: Page
     articles: Article
+    'news-event-classifications': NewsEventClassification
     'news-events': NewsEvent
     reviews: Review
     'reusable-sections': ReusableSection
@@ -96,6 +97,8 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>
     articles: ArticlesSelect<false> | ArticlesSelect<true>
+    'news-event-classifications':
+      NewsEventClassificationsSelect<false> | NewsEventClassificationsSelect<true>
     'news-events': NewsEventsSelect<false> | NewsEventsSelect<true>
     reviews: ReviewsSelect<false> | ReviewsSelect<true>
     'reusable-sections': ReusableSectionsSelect<false> | ReusableSectionsSelect<true>
@@ -653,19 +656,9 @@ export interface NewsEventsTabsBlock {
    */
   allTabLabel?: string | null
   /**
-   * Add, remove, rename, or drag tabs into order. Each classification can be used once; All is always first.
+   * Select and drag classifications into visitor tab order. Leave empty to show only All.
    */
-  tabs?:
-    | {
-        classification:
-          'news' | 'event' | 'notice' | 'holiday' | 'achievement' | 'announcement' | 'other'
-        /**
-         * Visitor-facing label for this tab.
-         */
-        label: string
-        id?: string | null
-      }[]
-    | null
+  classifications?: (string | NewsEventClassification)[] | null
   /**
    * Number of published entries shown initially and appended by each Load More request.
    */
@@ -708,6 +701,44 @@ export interface NewsEventsTabsBlock {
   id?: string | null
   blockName?: string | null
   blockType: 'newsEventsTabs'
+}
+/**
+ * Central classifications used by News & Events entries, badges, tabs, and date behavior.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news-event-classifications".
+ */
+export interface NewsEventClassification {
+  id: string
+  /**
+   * Visitor-facing tab name, such as News, Events, or Achievements.
+   */
+  title: string
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null
+  slug: string
+  /**
+   * Short card badge text. When empty, the title is used.
+   */
+  badgeLabel?: string | null
+  legacyValue?:
+    ('news' | 'event' | 'notice' | 'holiday' | 'achievement' | 'announcement' | 'other') | null
+  /**
+   * Event enables event dates and location behavior. Story uses the publication/display date.
+   */
+  behavior: 'story' | 'event'
+  /**
+   * Optional internal guidance describing when editors should use this option.
+   */
+  description?: string | null
+  /**
+   * Inactive classifications remain readable on existing entries but cannot be newly selected.
+   */
+  active: boolean
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -5215,7 +5246,12 @@ export interface NewsEvent {
    */
   generateSlug?: boolean | null
   slug: string
-  contentType: 'news' | 'event' | 'notice' | 'holiday' | 'achievement' | 'announcement' | 'other'
+  /**
+   * Controls the public badge, tab, date behavior, and detail metadata.
+   */
+  classification: string | NewsEventClassification
+  contentType?:
+    ('news' | 'event' | 'notice' | 'holiday' | 'achievement' | 'announcement' | 'other') | null
   /**
    * Short summary used in cards, archives, previews, and SEO fallbacks.
    */
@@ -5254,8 +5290,17 @@ export interface NewsEvent {
    * Additional topics for cross-linking. The primary topic is included automatically.
    */
   categories?: (string | Category)[] | null
+  /**
+   * Required only when the selected classification uses Event behavior.
+   */
   eventStart?: string | null
+  /**
+   * Optional, but cannot be earlier than Event Start.
+   */
   eventEnd?: string | null
+  /**
+   * Required only when the selected classification uses Event behavior.
+   */
   eventLocation?: string | null
   eventRegistrationAction?:
     | {
@@ -6047,6 +6092,10 @@ export interface PayloadLockedDocument {
         value: string | Article
       } | null)
     | ({
+        relationTo: 'news-event-classifications'
+        value: string | NewsEventClassification
+      } | null)
+    | ({
         relationTo: 'news-events'
         value: string | NewsEvent
       } | null)
@@ -6427,13 +6476,7 @@ export interface NewsEventsTabsBlockSelect<T extends boolean = true> {
         id?: T
       }
   allTabLabel?: T
-  tabs?:
-    | T
-    | {
-        classification?: T
-        label?: T
-        id?: T
-      }
+  classifications?: T
   itemsPerTab?: T
   loadMoreLabel?: T
   newsActionLabel?: T
@@ -9179,12 +9222,29 @@ export interface ArticlesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news-event-classifications_select".
+ */
+export interface NewsEventClassificationsSelect<T extends boolean = true> {
+  title?: T
+  generateSlug?: T
+  slug?: T
+  badgeLabel?: T
+  legacyValue?: T
+  behavior?: T
+  description?: T
+  active?: T
+  updatedAt?: T
+  createdAt?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "news-events_select".
  */
 export interface NewsEventsSelect<T extends boolean = true> {
   title?: T
   generateSlug?: T
   slug?: T
+  classification?: T
   contentType?: T
   excerpt?: T
   authorName?: T

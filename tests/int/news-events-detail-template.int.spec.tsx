@@ -38,6 +38,7 @@ import type { NewsEvent } from '@/payload-types'
 import config from '@/payload.config'
 
 const entry: PublicNewsEventDetail = {
+  behavior: 'story',
   body: {
     root: {
       type: 'root',
@@ -49,6 +50,15 @@ const entry: PublicNewsEventDetail = {
     },
   },
   categories: [],
+  classification: {
+    active: true,
+    badgeLabel: 'Campus',
+    behavior: 'story',
+    id: 'campus-classification',
+    legacyValue: null,
+    slug: 'campus-update',
+    title: 'Campus Updates',
+  },
   contentType: 'news',
   dateISO: '2026-07-19T00:00:00.000Z',
   dateLabel: 'Jul 19, 2026',

@@ -18,8 +18,11 @@ import {
 } from '@/blocks/shared/contentTabRail'
 import { Button } from '@/components/ui/button'
 import { Empty, EmptyDescription, EmptyHeader } from '@/components/ui/empty'
-import type { NewsEventClassificationTab } from '@/lib/newsEventClassifications'
-import type { PublicNewsEventGroups, PublicNewsEventPage } from '@/lib/newsEventsShared'
+import {
+  createEmptyNewsEventPage,
+  type PublicNewsEventGroups,
+  type PublicNewsEventPage,
+} from '@/lib/newsEventsShared'
 import { cn } from '@/lib/utils'
 
 type TabPageState = PublicNewsEventPage & {
@@ -29,18 +32,23 @@ type TabPageState = PublicNewsEventPage & {
 
 const createInitialTabState = (
   groups: PublicNewsEventGroups,
-): Record<NewsEventClassificationTab, TabPageState> =>
+  tabs: readonly NewsEventsTabsResolvedTab[],
+): Record<string, TabPageState> =>
   Object.fromEntries(
-    Object.entries(groups).map(([classification, page]) => [
-      classification,
-      {
-        ...page,
-        docs: [...page.docs],
-        hasError: false,
-        isLoading: false,
-      },
-    ]),
-  ) as Record<NewsEventClassificationTab, TabPageState>
+    tabs.map(({ value }) => {
+      const page = groups[value] ?? createEmptyNewsEventPage()
+
+      return [
+        value,
+        {
+          ...page,
+          docs: [...page.docs],
+          hasError: false,
+          isLoading: false,
+        },
+      ]
+    }),
+  )
 
 type NewsEventsTabsClientProps = {
   cardsPerRow?: NewsEventsTabsCardsPerRow | null
@@ -69,11 +77,16 @@ export function NewsEventsTabsClient({
 }: NewsEventsTabsClientProps) {
   const instanceID = useId()
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([])
-  const [activeTab, setActiveTab] = useState<NewsEventClassificationTab>('all')
-  const [pages, setPages] = useState(() => createInitialTabState(groups))
+  const [activeTab, setActiveTab] = useState<string>('all')
+  const [pages, setPages] = useState(() => createInitialTabState(groups, tabs))
   const resolvedActiveTab = tabs.some(({ value }) => value === activeTab) ? activeTab : 'all'
-  const activePage = pages[resolvedActiveTab]
+  const activePage = pages[resolvedActiveTab] ?? {
+    ...createEmptyNewsEventPage(),
+    hasError: false,
+    isLoading: false,
+  }
   const activeItems = activePage.docs
+  const selectedIDs = tabs.flatMap(({ value }) => (value === 'all' ? [] : [value]))
 
   const selectTab = (index: number) => {
     const tab = tabs[index]
@@ -116,10 +129,13 @@ export function NewsEventsTabsClient({
     }))
 
     try {
-      const response = await fetch(
-        `/api/news-events-tabs?classification=${classification}&page=${currentPage.page + 1}&limit=${itemsPerTab}`,
-        { headers: { Accept: 'application/json' } },
-      )
+      const params = new URLSearchParams({ classification })
+      if (selectedIDs.length > 0) params.set('classifications', selectedIDs.join(','))
+      params.set('limit', String(itemsPerTab))
+      params.set('page', String(currentPage.page + 1))
+      const response = await fetch(`/api/news-events-tabs?${params}`, {
+        headers: { Accept: 'application/json' },
+      })
 
       if (!response.ok) throw new Error('Unable to load News & Events.')
 

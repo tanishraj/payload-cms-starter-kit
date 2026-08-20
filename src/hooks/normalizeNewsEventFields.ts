@@ -1,16 +1,12 @@
 import type { CollectionBeforeChangeHook } from 'payload'
 
-import { isEventClassification } from '@/lib/newsEventClassifications'
+import {
+  clearNewsEventEventFields,
+  getNewsEventClassificationBehavior,
+} from '@/hooks/resolveNewsEventClassification'
 
-export const normalizeNewsEventFields: CollectionBeforeChangeHook = async ({ data }) => {
-  if (!data || isEventClassification(data.contentType)) {
-    return data
-  }
+export const normalizeNewsEventFields: CollectionBeforeChangeHook = async ({ data, req }) => {
+  if (!data || getNewsEventClassificationBehavior(req) !== 'story') return data
 
-  data.eventStart = null
-  data.eventEnd = null
-  data.eventLocation = null
-  data.eventRegistrationAction = []
-
-  return data
+  return clearNewsEventEventFields(data)
 }

@@ -10,6 +10,7 @@ import { Headers } from '@/collections/Headers'
 import { Media } from '@/collections/Media'
 import { NavigationLinks } from '@/collections/NavigationLinks'
 import { NewsEvents } from '@/collections/NewsEvents'
+import { NewsEventClassifications } from '@/collections/NewsEventClassifications'
 import { OfficeLocations } from '@/collections/OfficeLocations'
 import { OperationalAuditEvents } from '@/collections/OperationalAuditEvents'
 import { Pages } from '@/collections/Pages'
@@ -31,7 +32,14 @@ import { ThemeSettings } from '@/globals/ThemeSettings'
 
 describe('admin information architecture', () => {
   it('assigns the documented groups and operator-facing labels', () => {
-    for (const collection of [Pages, Articles, NewsEvents, Reviews, ReusableSections]) {
+    for (const collection of [
+      Pages,
+      Articles,
+      NewsEventClassifications,
+      NewsEvents,
+      Reviews,
+      ReusableSections,
+    ]) {
       expect(collection.admin?.group).toBe('Content')
     }
     expect(Categories.admin?.group).toBe('Taxonomy')

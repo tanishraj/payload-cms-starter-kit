@@ -1,5 +1,9 @@
 import { revalidateTag } from 'next/cache'
-import type { CollectionAfterChangeHook, GlobalAfterChangeHook } from 'payload'
+import type {
+  CollectionAfterChangeHook,
+  CollectionAfterDeleteHook,
+  GlobalAfterChangeHook,
+} from 'payload'
 
 /**
  * Cache tag constants.
@@ -71,6 +75,29 @@ export const revalidateNewsEventsCache: CollectionAfterChangeHook = ({ doc, prev
     revalidateTag(CMS_CACHE_TAGS.sitemap, REVALIDATE_PROFILE)
   }
 
+  return doc
+}
+
+const revalidateNewsEventClassificationTags = () => {
+  revalidateTag(CMS_CACHE_TAGS.newsEvents, REVALIDATE_PROFILE)
+  revalidateTag(CMS_CACHE_TAGS.pages, REVALIDATE_PROFILE)
+}
+
+/**
+ * Revalidates every public surface whose labels or filters depend on classifications.
+ */
+export const revalidateNewsEventClassificationsCache: CollectionAfterChangeHook = ({ doc }) => {
+  revalidateNewsEventClassificationTags()
+  return doc
+}
+
+/**
+ * Revalidates classification-backed public surfaces after an unused classification is deleted.
+ */
+export const revalidateDeletedNewsEventClassificationCache: CollectionAfterDeleteHook = ({
+  doc,
+}) => {
+  revalidateNewsEventClassificationTags()
   return doc
 }
 

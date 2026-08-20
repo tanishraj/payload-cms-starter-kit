@@ -8,6 +8,7 @@ import { Forms } from '@/collections/Forms'
 import { GalleryAlbums } from '@/collections/GalleryAlbums'
 import { Headers } from '@/collections/Headers'
 import { NewsEvents } from '@/collections/NewsEvents'
+import { NewsEventClassifications } from '@/collections/NewsEventClassifications'
 import { Pages } from '@/collections/Pages'
 import { Reviews } from '@/collections/Reviews'
 import { SystemPages } from '@/collections/SystemPages'
@@ -166,6 +167,7 @@ describe('project slug field', () => {
       Footers,
       GalleryAlbums,
       Headers,
+      NewsEventClassifications,
       NewsEvents,
       Pages,
       Reviews,

@@ -8,7 +8,7 @@ import {
   type MediaOverlayStrength,
   type MediaOverlayTone,
 } from '@/blocks/shared/mediaOverlayPresentation'
-import type { NewsEventClassification } from '@/lib/newsEventClassifications'
+import type { ResolvedNewsEventClassification } from '@/lib/newsEventClassifications'
 
 export type FeaturedHighlightImagePosition = 'bottom' | 'center' | 'left' | 'right' | 'top'
 export type FeaturedHighlightImagePositionOverride = 'item' | FeaturedHighlightImagePosition
@@ -30,7 +30,7 @@ export type FeaturedHighlightAction = {
 
 export type FeaturedHighlightItem = {
   action?: FeaturedHighlightAction
-  classification?: NewsEventClassification
+  classification?: ResolvedNewsEventClassification
   dateISO?: string
   dateLabel?: string
   description?: string

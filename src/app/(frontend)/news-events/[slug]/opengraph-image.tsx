@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 import { ImageResponse } from 'next/og'
 
 import { getOpenGraphMediaUrl } from '@/lib/media'
+import { resolveNewsEventClassificationRecord } from '@/lib/newsEventClassifications'
 
 export const alt = 'News & Events preview'
 export const contentType = 'image/png'
@@ -17,8 +18,14 @@ export default async function NewsEventOgImage({ params }: Props) {
   const [result, siteSettings] = await Promise.all([
     payload.find({
       collection: 'news-events',
-      depth: 0,
+      depth: 1,
       limit: 1,
+      select: {
+        classification: true,
+        contentType: true,
+        excerpt: true,
+        title: true,
+      },
       where: {
         and: [
           { slug: { equals: slug } },
@@ -33,11 +40,15 @@ export default async function NewsEventOgImage({ params }: Props) {
   const entry = result.docs[0]
   const title = entry?.title ?? 'News & Events'
   const excerpt = entry?.excerpt ?? ''
-  const contentType_ = entry?.contentType === 'event' ? 'Event' : 'News'
+  const classification = resolveNewsEventClassificationRecord(
+    entry?.classification,
+    entry?.contentType,
+  )
+  const classificationLabel = classification?.badgeLabel ?? 'News & Events'
   const siteName = siteSettings.siteName
   const logoUrl = getOpenGraphMediaUrl(siteSettings.logo)
 
-  const accentColor = entry?.contentType === 'event' ? '#7c3aed' : '#2563eb'
+  const accentColor = classification?.behavior === 'event' ? '#7c3aed' : '#2563eb'
 
   return new ImageResponse(
     <div
@@ -55,9 +66,15 @@ export default async function NewsEventOgImage({ params }: Props) {
       {/* Top */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         {logoUrl ? (
-          <img src={logoUrl} alt={siteName} style={{ height: 32, maxWidth: 160, objectFit: 'contain' }} />
+          <img
+            src={logoUrl}
+            alt={siteName}
+            style={{ height: 32, maxWidth: 160, objectFit: 'contain' }}
+          />
         ) : (
-          <span style={{ color: '#6b7280', fontSize: 16, letterSpacing: '0.05em' }}>{siteName}</span>
+          <span style={{ color: '#6b7280', fontSize: 16, letterSpacing: '0.05em' }}>
+            {siteName}
+          </span>
         )}
         <span style={{ color: '#374151', fontSize: 16 }}>·</span>
         <span
@@ -71,7 +88,7 @@ export default async function NewsEventOgImage({ params }: Props) {
             letterSpacing: '0.04em',
           }}
         >
-          {contentType_}
+          {classificationLabel}
         </span>
       </div>
 

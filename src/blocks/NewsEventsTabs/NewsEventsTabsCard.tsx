@@ -15,7 +15,7 @@ export function NewsEventsTabsCard({
   item,
   newsActionLabel,
 }: NewsEventsTabsCardProps) {
-  const isEvent = item.contentType === 'event'
+  const isEvent = item.behavior === 'event'
   const dateLabel = isEvent
     ? formatNewsEventDateRange(item.eventStart ?? item.dateISO, item.eventEnd)
     : item.dateLabel
@@ -24,11 +24,11 @@ export function NewsEventsTabsCard({
     <Card
       className="h-full min-h-[18rem] gap-0 rounded-[var(--radius)] bg-card py-0 text-card-foreground shadow-none ring-1 ring-border dark:ring-border"
       data-news-events-tabs-card="true"
-      data-news-events-tabs-card-type={item.contentType}
+      data-news-events-tabs-card-type={item.classification.slug}
     >
       <CardHeader className="gap-4 rounded-none px-6 pt-6 sm:px-7 sm:pt-7">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <NewsEventClassificationBadge classification={item.contentType} />
+          <NewsEventClassificationBadge classification={item.classification} />
           {dateLabel ? (
             <NewsEventDateMeta
               className="text-muted-foreground"

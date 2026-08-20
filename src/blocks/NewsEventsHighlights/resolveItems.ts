@@ -9,10 +9,10 @@ export function toAutomaticFeaturedHighlightItems(
       href: entry.href,
       label: 'Read more',
     },
-    classification: entry.contentType,
+    classification: entry.classification,
     dateISO: entry.dateISO,
     dateLabel:
-      entry.contentType === 'event'
+      entry.behavior === 'event'
         ? formatNewsEventDateRange(entry.eventStart ?? entry.dateISO, entry.eventEnd)
         : entry.dateLabel,
     description: entry.excerpt?.trim() || undefined,

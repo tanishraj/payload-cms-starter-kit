@@ -1,8 +1,4 @@
-import {
-  type CollectionConfig,
-  type DateFieldValidation,
-  type TextFieldSingleValidation,
-} from 'payload'
+import { type CollectionConfig } from 'payload'
 
 import {
   allowPublishedReadOrCapability,
@@ -17,14 +13,12 @@ import { projectSlugField } from '@/fields/projectSlugField'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
 import { normalizeNewsEventFields } from '@/hooks/normalizeNewsEventFields'
+import { resolveNewsEventClassification } from '@/hooks/resolveNewsEventClassification'
 import { syncPrimaryCategoryMembership } from '@/hooks/syncPrimaryCategoryMembership'
 import { createWorkflowQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
-import {
-  isEventClassification,
-  NEWS_EVENT_CLASSIFICATIONS,
-} from '@/lib/newsEventClassifications'
+import { NEWS_EVENT_CLASSIFICATIONS } from '@/lib/newsEventClassifications'
 import { revalidateNewsEventsCache } from '@/hooks/revalidateCmsContent'
 
 const previewBreakpoints = [
@@ -32,50 +26,6 @@ const previewBreakpoints = [
   { name: 'tablet', label: 'Tablet', width: 834, height: 1112 },
   { name: 'mobile', label: 'Mobile', width: 390, height: 844 },
 ] as const
-
-const isEventEntry = (data: Record<string, unknown> | undefined) =>
-  isEventClassification(typeof data?.contentType === 'string' ? data.contentType : undefined)
-
-const validateEventStart: DateFieldValidation = (value, { data }) => {
-  const entryData = data as Record<string, unknown> | undefined
-
-  if (!isEventEntry(entryData)) {
-    return true
-  }
-
-  if (typeof value !== 'string' || Number.isNaN(new Date(value).getTime())) {
-    return 'Event Start is required for Event entries.'
-  }
-
-  return true
-}
-
-const validateEventEnd: DateFieldValidation = (value, { data }) => {
-  const entryData = data as Record<string, unknown> | undefined
-
-  if (!isEventEntry(entryData) || !value) {
-    return true
-  }
-
-  const start = typeof entryData?.eventStart === 'string' ? new Date(entryData.eventStart) : null
-  const end = new Date(value)
-
-  if (!start || Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
-    return 'Enter a valid Event End date.'
-  }
-
-  return end.getTime() >= start.getTime() ? true : 'Event End cannot be earlier than Event Start.'
-}
-
-const validateEventLocation: TextFieldSingleValidation = (value, { data }) => {
-  if (!isEventEntry(data as Record<string, unknown> | undefined)) {
-    return true
-  }
-
-  return typeof value === 'string' && value.trim()
-    ? true
-    : 'Event Location is required for Event entries.'
-}
 
 export const NewsEvents: CollectionConfig = {
   slug: 'news-events',
@@ -87,7 +37,7 @@ export const NewsEvents: CollectionConfig = {
     group: 'Content',
     hidden: hideFromUsersWithoutCapability('manage_news_events'),
     useAsTitle: 'title',
-    defaultColumns: ['title', 'contentType', 'workflowState', 'eventStart', 'updatedAt'],
+    defaultColumns: ['title', 'classification', 'workflowState', 'eventStart', 'updatedAt'],
     description: 'Published news stories and scheduled events for the public website.',
     listSearchableFields: ['title', 'slug', 'eventLocation'],
     livePreview: {
@@ -146,6 +96,7 @@ export const NewsEvents: CollectionConfig = {
       validateSEOContract(),
       enforceEditorialWorkflow('publish_news_events', 'news-events'),
     ],
+    beforeValidate: [resolveNewsEventClassification],
   },
   versions: {
     drafts: true,
@@ -167,15 +118,28 @@ export const NewsEvents: CollectionConfig = {
           label: 'Content',
           fields: [
             {
-              name: 'contentType',
+              name: 'classification',
               label: 'Entry Classification',
+              type: 'relationship',
+              relationTo: 'news-event-classifications',
+              required: true,
+              filterOptions: { active: { equals: true } },
+              admin: {
+                allowCreate: true,
+                description: 'Controls the public badge, tab, date behavior, and detail metadata.',
+              },
+            },
+            {
+              name: 'contentType',
+              label: 'Legacy Entry Classification',
               type: 'select',
-              defaultValue: 'news',
               options: NEWS_EVENT_CLASSIFICATIONS.map(({ adminLabel, value }) => ({
                 label: adminLabel,
                 value,
               })),
-              required: true,
+              admin: {
+                hidden: true,
+              },
             },
             {
               name: 'excerpt',
@@ -249,9 +213,6 @@ export const NewsEvents: CollectionConfig = {
         },
         {
           label: 'Event Details',
-          admin: {
-            condition: isEventEntry,
-          },
           fields: [
             {
               type: 'row',
@@ -259,20 +220,19 @@ export const NewsEvents: CollectionConfig = {
                 {
                   name: 'eventStart',
                   type: 'date',
-                  validate: validateEventStart,
                   admin: {
-                    condition: isEventEntry,
                     date: { pickerAppearance: 'dayAndTime' },
+                    description:
+                      'Required only when the selected classification uses Event behavior.',
                     width: '50%',
                   },
                 },
                 {
                   name: 'eventEnd',
                   type: 'date',
-                  validate: validateEventEnd,
                   admin: {
-                    condition: isEventEntry,
                     date: { pickerAppearance: 'dayAndTime' },
+                    description: 'Optional, but cannot be earlier than Event Start.',
                     width: '50%',
                   },
                 },
@@ -281,9 +241,8 @@ export const NewsEvents: CollectionConfig = {
             {
               name: 'eventLocation',
               type: 'text',
-              validate: validateEventLocation,
               admin: {
-                condition: isEventEntry,
+                description: 'Required only when the selected classification uses Event behavior.',
               },
             },
             {
@@ -294,7 +253,6 @@ export const NewsEvents: CollectionConfig = {
                 name: 'eventRegistrationAction',
               }),
               admin: {
-                condition: isEventEntry,
                 initCollapsed: true,
               },
             },

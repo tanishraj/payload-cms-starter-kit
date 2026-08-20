@@ -4,20 +4,28 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { NewsEventsFeaturedCarouselClient } from '@/components/news-events/NewsEventsFeaturedCarouselClient'
 import type { FeaturedHighlightItem } from '@/components/news-events/featuredHighlightsShared'
-import type { NewsEventClassification } from '@/lib/newsEventClassifications'
+import {
+  getLegacyNewsEventClassificationRecord,
+  type NewsEventClassification,
+} from '@/lib/newsEventClassifications'
 
 const motionPreference = { reduced: false }
 
-const item = (id: string, contentType: NewsEventClassification): FeaturedHighlightItem => ({
-  action: { href: `/news-events/${id}`, label: 'Read more' },
-  classification: contentType,
-  dateISO: '2026-08-20T09:00:00.000Z',
-  dateLabel: 'Aug 20, 2026',
-  description: `${id} excerpt`,
-  id,
-  image: { alt: `${id} image`, position: 'center', src: `/media/${id}.jpg` },
-  title: `${id} title`,
-})
+const item = (id: string, contentType: NewsEventClassification): FeaturedHighlightItem => {
+  const classification = getLegacyNewsEventClassificationRecord(contentType)
+  if (!classification) throw new Error(`Expected ${contentType} classification fixture.`)
+
+  return {
+    action: { href: `/news-events/${id}`, label: 'Read more' },
+    classification,
+    dateISO: '2026-08-20T09:00:00.000Z',
+    dateLabel: 'Aug 20, 2026',
+    description: `${id} excerpt`,
+    id,
+    image: { alt: `${id} image`, position: 'center', src: `/media/${id}.jpg` },
+    title: `${id} title`,
+  }
+}
 
 const items = [item('news-1', 'news'), item('notice-1', 'notice'), item('event-1', 'event')]
 

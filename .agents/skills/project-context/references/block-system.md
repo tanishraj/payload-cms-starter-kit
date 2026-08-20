@@ -128,13 +128,17 @@ two lines. Each vertical slide, button, and card surface spans its complete allo
 height, so sparse supporting content cannot shrink the visible card. The rail centers card content
 vertically and keeps end-card outlines inside the viewport. Phone widths retain the horizontal
 supporting-card rail below the feature.
-The separate News & Events Tabs block renders Card Grid or Editorial List entries with a
-mandatory first All tab and an editor-ordered subset of the seven classification tabs. Editors can
-rename classification tab labels, while duplicate classifications are rejected. Legacy blocks fall
-back to the complete tab set. The block server-renders page one for each tab as a page-aware public
-group, with 3, 6, 9, or 12 entries per batch. When more entries exist, the client appends the next
-batch through the read-only `/api/news-events-tabs` route and retains independent progress for each
-tab until refresh. Editors can customize the Load More label. The block retains shared appearance,
+The separate News & Events Tabs block renders Card Grid or Editorial List entries with a mandatory
+first All tab and an editor-ordered set of active News & Event Classification relationships. Central
+classification titles become visitor tab labels; duplicate, inactive, missing, or unusable selected
+records are omitted without disturbing the remaining saved order. When no relationships are selected,
+the block intentionally renders only All and loads that group from every active classification. The
+block server-renders page one for each tab as a page-aware public group, with 3, 6, 9, or 12 entries
+per batch. When more entries exist, the client appends the next batch through the read-only
+`/api/news-events-tabs` route. Selected configurations carry their ordered classification scope for
+All requests; All-only configurations omit the scope and resolve all active classifications. The
+client retains independent progress for each classification ID until refresh. Editors can customize the
+Load More label. The block retains shared appearance,
 alignment, spacing, header actions, and footer actions, and uses only semantic theme surfaces. Card
 Grid is the admin default and legacy runtime fallback; its Cards Per Row control remains 2–4 and is
 shown only for that layout under Theme Settings. Editorial List uses full-row detail links with a
@@ -147,6 +151,12 @@ variants use the theme-scale `text-xl` token for semibold titles and retain the
 the same Contained, Pill, and Underline presentation contract as Gallery Album Tabs; Underline is the
 saved default and runtime fallback. Tabs size to their labels inside a full-width rail and remain in
 configured order on one horizontally scrollable row when their intrinsic content overflows.
+The loader resolves ordered active relationship records before querying entries, then uses each
+classification ID and Story/Event behavior for filtering and ordering. It rejects unknown, inactive,
+out-of-scope, malformed, or oversized pagination scopes before querying entries. Preview snapshots
+discover relationship scopes, including the empty All-only scope, through populated Reusable Sections
+with cycle/depth guards and key groups by ordered IDs plus item limit, preventing equal-count blocks
+with different selections from sharing data.
 
 NewsEventsDetailTemplate is a Page-compatible ordered block layout with one additional global-only
 `newsEventsContent` block. That dynamic block is deliberately excluded from Pages and Reusable

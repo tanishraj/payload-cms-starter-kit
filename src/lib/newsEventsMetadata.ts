@@ -45,7 +45,7 @@ export function getNewsEventStructuredData(
 ) {
   const url = toAbsoluteSiteUrl(entry.href)
 
-  if (entry.contentType === 'event') {
+  if (entry.behavior === 'event') {
     return {
       '@context': 'https://schema.org',
       '@type': 'Event',

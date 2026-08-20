@@ -1,9 +1,17 @@
 import 'server-only'
 
-import { getNewsEventGroups, getNewsEventsHighlights, getNewsGridItems } from '@/lib/newsEvents'
+import configPromise from '@payload-config'
+import { getPayload } from 'payload'
+
+import {
+  getNewsEventGroups,
+  getNewsEventsHighlights,
+  getNewsGridItems,
+  resolveActiveNewsEventClassifications,
+} from '@/lib/newsEvents'
 import {
   getNewsEventsPreviewItemCounts,
-  getNewsEventsTabsPreviewGroupCounts,
+  getNewsEventsTabsPreviewGroupScopes,
   getNewsGridPreviewItemCounts,
   type NewsEventsPreviewSnapshot,
 } from '@/lib/newsEventsPreviewShared'
@@ -13,6 +21,7 @@ export async function loadNewsEventsPreviewSnapshot(
   layout?: Page['layout'] | null,
 ): Promise<NewsEventsPreviewSnapshot> {
   const nowISO = new Date().toISOString()
+  const payload = await getPayload({ config: configPromise })
   const highlightEntries = await Promise.all(
     getNewsEventsPreviewItemCounts(layout).map(async (count) => {
       const items = await getNewsEventsHighlights(count, nowISO).catch(() => [])
@@ -28,15 +37,21 @@ export async function loadNewsEventsPreviewSnapshot(
     }),
   )
   const groupEntries = await Promise.all(
-    getNewsEventsTabsPreviewGroupCounts(layout).map(async (count) => {
-      const groups = await getNewsEventGroups(count, nowISO)
+    getNewsEventsTabsPreviewGroupScopes(layout).map(async ({ classificationIDs, key, limit }) => {
+      const [groups, classifications] = await Promise.all([
+        getNewsEventGroups(classificationIDs, limit, nowISO),
+        resolveActiveNewsEventClassifications(payload, classificationIDs),
+      ])
 
-      return [String(count), groups] as const
+      return [key, { classifications, groups }] as const
     }),
   )
 
   return {
-    groupsByCount: Object.fromEntries(groupEntries),
+    classificationsByScope: Object.fromEntries(
+      groupEntries.map(([key, { classifications }]) => [key, classifications]),
+    ),
+    groupsByScope: Object.fromEntries(groupEntries.map(([key, { groups }]) => [key, groups])),
     highlightsByCount: Object.fromEntries(highlightEntries),
     newsGridByCount: Object.fromEntries(newsGridEntries),
   }

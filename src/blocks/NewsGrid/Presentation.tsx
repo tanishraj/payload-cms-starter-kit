@@ -16,6 +16,7 @@ import {
 } from '@/blocks/shared/contentStyles'
 import { ContentActions } from '@/components/ContentActions'
 import { ContentLink } from '@/components/ContentLink'
+import { NewsEventClassificationBadge } from '@/components/news-events/NewsEventClassificationBadge'
 import { SectionEyebrow, type SectionEyebrowSurface } from '@/components/SectionEyebrow'
 import {
   resolveCmsActions,
@@ -24,7 +25,6 @@ import {
   type CmsLinkValue,
 } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
-import { getNewsEventClassificationLabel } from '@/lib/newsEventClassifications'
 import { formatNewsEventDateRange, type PublicNewsEventCard } from '@/lib/newsEventsShared'
 import { cn } from '@/lib/utils'
 import {
@@ -203,16 +203,14 @@ export function NewsGridBlockPresentation({
               <article
                 className="flex h-full min-h-[18rem] flex-col gap-4 rounded-[var(--radius)] border border-current/15 p-6 sm:p-7"
                 data-news-grid-card="true"
-                data-news-grid-card-type={item.contentType}
+                data-news-grid-card-type={item.classification.slug}
                 key={item.id}
               >
-                <SectionEyebrow surface={surface}>
-                  {getNewsEventClassificationLabel(item.contentType)}
-                </SectionEyebrow>
+                <NewsEventClassificationBadge classification={item.classification} />
 
                 {item.dateLabel ? (
                   <p className="font-sans text-xs leading-4 text-current/70">
-                    {item.contentType === 'event'
+                    {item.behavior === 'event'
                       ? formatNewsEventDateRange(item.eventStart ?? item.dateISO, item.eventEnd)
                       : item.dateLabel}
                   </p>
@@ -227,7 +225,7 @@ export function NewsGridBlockPresentation({
                   <ContentLink
                     href={item.href}
                     label={
-                      item.contentType === 'event' ? resolvedEventLabel : resolvedDefaultActionLabel
+                      item.behavior === 'event' ? resolvedEventLabel : resolvedDefaultActionLabel
                     }
                   />
                 </div>

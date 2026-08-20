@@ -4,14 +4,14 @@
 
 Registration order in [payload.config.ts](../../../../src/payload.config.ts) is intentional:
 
-1. Content: Pages, Articles, NewsEvents, Reviews, ReusableSections.
+1. Content: Pages, Articles, NewsEventClassifications, NewsEvents, Reviews, ReusableSections.
 2. Taxonomy: Categories (Topics), Tags.
 3. Navigation and structure: NavigationLinks, Headers, Footers, OfficeLocations, Redirects, SystemPages.
 4. Media: Media, GalleryAlbums.
 5. Intake: Forms, FormSubmissions.
 6. Administration: WorkQueue (Action Queue), OperationalAuditEvents (Audit Log), Users.
 
-Exact symbols and files are generated in [project-inventory.json](project-inventory.json). All collections receive Trash through [withTrash.ts](../../../../src/plugins/withTrash.ts). Content and structural presets opt into drafts/versions in their own configs; operational records and users are not public content.
+Exact symbols and files are generated in [project-inventory.json](project-inventory.json). Collections receive Trash through [withTrash.ts](../../../../src/plugins/withTrash.ts), except NewsEventClassifications: classification deletion remains a guarded hard delete so referenced records must be archived instead. Content and structural presets opt into drafts/versions in their own configs; operational records and users are not public content.
 
 ## Registered Globals
 
@@ -30,7 +30,7 @@ Nine globals are registered:
 ## Ownership and Relationships
 
 - Pages own hierarchical public routes and composed layouts, including the Page-backed `/news-events` index. Parent validation prevents cycles; hooks populate URL previews, synchronize links, create redirects after path changes, and revalidate caches.
-- Articles, NewsEvents, and Reviews own their detail content, taxonomy, SEO, editorial state, and preview behavior. Every NewsEvents record has exactly one of seven classifications: `news`, `event`, `notice`, `holiday`, `achievement`, `announcement`, or `other`; only `event` retains event dates, location, and registration fields. NewsEventsDetailTemplate owns the shared ordered Page-block composition. Its global-only `newsEventsContent` block binds the current entry and owns article/sidebar appearance, image ratio and shared overlay settings, share visibility, and public author label. Published templates require exactly one dynamic block; drafts may remain incomplete. The retained legacy entry Byline is hidden and ignored publicly.
+- Articles, NewsEvents, and Reviews own their detail content, taxonomy, SEO, editorial state, and preview behavior. NewsEventClassifications provides centrally managed, public classification records with Story/Event behavior and archive-in-place lifecycle controls. Seeded records retain a hidden immutable legacy value; referenced records cannot be deleted or change behavior. NewsEvents entries require one classification relationship; request-aware validation resolves its behavior, keeps Event fields visible, validates dates and location for Event behavior, and clears Event-only data for Story behavior. The hidden optional `contentType` field and an original-document fallback remain only for unmigrated entry updates during the compatibility release. Public News/Event adapters expose the resolved classification and behavior while retaining the classification slug as deprecated `contentType`. Public list loaders query canonical relationship IDs and also match a seeded legacy value only when an entry has no classification relationship, so unmigrated records remain visible without allowing stale compatibility data to override migrated behavior. NewsEventsDetailTemplate owns the shared ordered Page-block composition. Its global-only `newsEventsContent` block binds the current entry and owns article/sidebar appearance, image ratio and shared overlay settings, share visibility, and public author label. Published templates require exactly one dynamic block; drafts may remain incomplete. The retained legacy entry Byline is hidden and ignored publicly.
 - ReusableSections own shared block stacks. Direct recursive selection is excluded; renderers stop nesting after depth 10.
 - NavigationLinks provide reusable destinations and page-synchronized records. Headers and Footers provide versioned shell presets.
 - SystemPages pair one type with its matching block and are referenced from system modes.

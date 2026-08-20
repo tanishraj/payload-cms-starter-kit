@@ -5,6 +5,16 @@ import type { PublicNewsEventDetail } from '@/lib/newsEventsShared'
 
 const detailFixture = (robotsMode: 'default' | 'index' | 'noindex'): PublicNewsEventDetail =>
   ({
+    behavior: 'story',
+    classification: {
+      active: true,
+      badgeLabel: 'Campus',
+      behavior: 'story',
+      id: 'campus-id',
+      legacyValue: null,
+      slug: 'campus-update',
+      title: 'Campus Updates',
+    },
     contentType: 'news',
     excerpt: 'News entry excerpt',
     href: '/news-events/example',
@@ -42,7 +52,16 @@ describe('News & Events metadata', () => {
     expect(
       getNewsEventStructuredData({
         ...detailFixture('default'),
-        contentType: 'event',
+        behavior: 'event',
+        classification: {
+          active: true,
+          badgeLabel: 'CME',
+          behavior: 'event',
+          id: 'cme-id',
+          legacyValue: null,
+          slug: 'continuing-medical-education',
+          title: 'Continuing Medical Education',
+        },
         eventLocation: 'Main Auditorium',
         eventStart: '2026-09-10T09:00:00.000Z',
       }),
@@ -54,7 +73,7 @@ describe('News & Events metadata', () => {
     expect(
       getNewsEventStructuredData({
         ...detailFixture('default'),
-        contentType: 'event',
+        behavior: 'event',
       }),
     ).not.toHaveProperty('author')
   })

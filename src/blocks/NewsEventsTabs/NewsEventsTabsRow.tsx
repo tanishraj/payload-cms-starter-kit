@@ -10,7 +10,7 @@ type NewsEventsTabsRowProps = {
 }
 
 export function NewsEventsTabsRow({ item }: NewsEventsTabsRowProps) {
-  const isEvent = item.contentType === 'event'
+  const isEvent = item.behavior === 'event'
   const dateLabel = isEvent
     ? formatNewsEventDateRange(item.eventStart ?? item.dateISO, item.eventEnd)
     : item.dateLabel
@@ -36,7 +36,7 @@ export function NewsEventsTabsRow({ item }: NewsEventsTabsRowProps) {
         className="flex min-w-0 flex-col items-start gap-3"
         data-news-events-tabs-row-title="true"
       >
-        <NewsEventClassificationBadge classification={item.contentType} />
+        <NewsEventClassificationBadge classification={item.classification} />
         <h3 className="line-clamp-2 font-sans text-xl leading-snug font-semibold tracking-tight">
           {item.title}
         </h3>

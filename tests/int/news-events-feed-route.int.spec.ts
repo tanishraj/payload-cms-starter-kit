@@ -31,7 +31,15 @@ describe('News & Events RSS route', () => {
       docs: [
         {
           authorName: 'Editorial Team',
-          contentType: 'news',
+          classification: {
+            active: true,
+            badgeLabel: 'Campus',
+            behavior: 'story',
+            id: 'campus-classification',
+            legacyValue: null,
+            slug: 'campus-update',
+            title: 'Campus Updates',
+          },
           excerpt: 'A public update.',
           featuredImage: null,
           publishedAt: '2026-08-17T00:00:00.000Z',
@@ -52,5 +60,6 @@ describe('News & Events RSS route', () => {
     expect(xml).toContain(
       '<guid isPermaLink="true">http://localhost:3000/news-events/public-update</guid>',
     )
+    expect(xml).toContain('<category><![CDATA[Campus]]></category>')
   })
 })

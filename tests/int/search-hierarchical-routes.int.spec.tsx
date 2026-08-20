@@ -55,7 +55,15 @@ describe('hierarchical Page search URLs', () => {
       return {
         docs: [
           {
-            contentType: 'news',
+            classification: {
+              active: true,
+              badgeLabel: 'Campus',
+              behavior: 'story',
+              id: 'campus-classification',
+              legacyValue: null,
+              slug: 'campus-update',
+              title: 'Campus Updates',
+            },
             excerpt: 'News excerpt',
             id: 'news',
             slug: 'news',
@@ -80,6 +88,7 @@ describe('hierarchical Page search URLs', () => {
     expect(html).not.toContain('href="/child"')
     expect(html).toContain('href="/articles/article"')
     expect(html).toContain('href="/news-events/news"')
+    expect(html).toContain('Campus')
   })
 
   it('returns full hierarchical Page URLs from the search API', async () => {
@@ -95,6 +104,11 @@ describe('hierarchical Page search URLs', () => {
         expect.objectContaining({ href: '/parent/child', type: 'page' }),
         expect.objectContaining({ href: '/articles/article', type: 'article' }),
         expect.objectContaining({ href: '/news-events/news', type: 'news-event' }),
+      ]),
+    )
+    expect(body.results).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ href: '/news-events/news', label: 'Campus' }),
       ]),
     )
     expect(body.results).not.toEqual(

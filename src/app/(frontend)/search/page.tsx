@@ -4,6 +4,7 @@ import { getPayload, type Where } from 'payload'
 import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
+import { resolveNewsEventClassificationRecord } from '@/lib/newsEventClassifications'
 import { resolveSearchPageHrefs } from '@/lib/searchPagePaths'
 import { SearchInput } from './SearchInput'
 import type { SearchSetting } from '@/payload-types'
@@ -55,10 +56,7 @@ async function runSearch(query: string): Promise<SearchGroup[]> {
       limit: PER_TYPE_LIMIT,
       select: { id: true, title: true, slug: true, parent: true, metaDescription: true },
       where: {
-        and: [
-          ...publishedFilter,
-          { or: [{ title: textLike }, { metaDescription: textLike }] },
-        ],
+        and: [...publishedFilter, { or: [{ title: textLike }, { metaDescription: textLike }] }],
       },
     }),
     payload.find({
@@ -75,9 +73,17 @@ async function runSearch(query: string): Promise<SearchGroup[]> {
     }),
     payload.find({
       collection: 'news-events',
-      depth: 0,
+      depth: 1,
       limit: PER_TYPE_LIMIT,
-      select: { id: true, title: true, slug: true, excerpt: true, contentType: true, authorName: true },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        excerpt: true,
+        classification: true,
+        contentType: true,
+        authorName: true,
+      },
       where: {
         and: [
           ...publishedFilter,
@@ -143,7 +149,9 @@ async function runSearch(query: string): Promise<SearchGroup[]> {
         title: entry.title,
         excerpt: entry.excerpt ?? '',
         href: `/news-events/${entry.slug}`,
-        label: entry.contentType === 'event' ? 'Event' : 'News',
+        label:
+          resolveNewsEventClassificationRecord(entry.classification, entry.contentType)
+            ?.badgeLabel ?? 'News & Events',
         accent: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
       })),
     })

@@ -12,6 +12,10 @@ import {
 import { Pages } from '@/collections/Pages'
 import { ReusableSections } from '@/collections/ReusableSections'
 import { fetchNewsGridItems } from '@/lib/newsEvents'
+import type {
+  NewsEventClassificationBehavior,
+  ResolvedNewsEventClassification,
+} from '@/lib/newsEventClassifications'
 import { formatNewsEventDateRange } from '@/lib/newsEventsShared'
 import {
   getNewsEventsPreviewItemCounts,
@@ -19,8 +23,27 @@ import {
 } from '@/lib/newsEventsPreviewShared'
 import type { PublicNewsEventCard } from '@/lib/newsEventsShared'
 
+const classification = (
+  id: string,
+  badgeLabel: string,
+  behavior: NewsEventClassificationBehavior = 'story',
+): ResolvedNewsEventClassification => ({
+  active: true,
+  badgeLabel,
+  behavior,
+  id,
+  legacyValue: null,
+  slug: id.replace(/-id$/, ''),
+  title: badgeLabel,
+})
+
+const newsClassification = classification('news-id', 'News')
+const eventClassification = classification('event-id', 'Event', 'event')
+
 const newsCard: PublicNewsEventCard = {
+  behavior: 'story',
   category: { id: 1, slug: 'academics', title: 'Academics' },
+  classification: newsClassification,
   contentType: 'news',
   dateISO: '2026-08-12',
   dateLabel: '12 Aug 2026',
@@ -34,7 +57,9 @@ const newsCard: PublicNewsEventCard = {
 
 const eventCard: PublicNewsEventCard = {
   ...newsCard,
+  behavior: 'event',
   category: { id: 2, slug: 'admissions', title: 'Admissions' },
+  classification: eventClassification,
   contentType: 'event',
   eventEnd: '2026-08-16T17:00:00.000Z',
   eventStart: '2026-08-14T09:00:00.000Z',
@@ -44,11 +69,19 @@ const eventCard: PublicNewsEventCard = {
   title: 'Fifth MBBS batch approved',
 }
 
-const createClassificationCard = (
-  contentType: PublicNewsEventCard['contentType'],
-  id: string,
-): PublicNewsEventCard => ({
+const createClassificationCard = (contentType: string, id: string): PublicNewsEventCard => ({
   ...newsCard,
+  classification: classification(
+    `${contentType}-id`,
+    {
+      achievement: 'Achievement',
+      announcement: 'Announcement',
+      holiday: 'Holiday',
+      news: 'News',
+      notice: 'Notice',
+      other: 'Other',
+    }[contentType] ?? contentType,
+  ),
   contentType,
   href: `/news-events/${contentType}`,
   id,
@@ -92,14 +125,66 @@ describe('News Grid', () => {
   })
 
   it('loads every published classification in newest-published order while excluding past events', async () => {
-    const find = vi.fn().mockResolvedValue({ docs: [] })
+    const cme = classification('cme-id', 'CME', 'event')
+    const campus = classification('campus-id', 'Campus')
+    const seededNews = { ...classification('news-id', 'News'), legacyValue: 'news' as const }
+    const seededEvent = {
+      ...classification('event-id', 'Event', 'event'),
+      legacyValue: 'event' as const,
+    }
+    const loaderRecord = (
+      id: string,
+      resolvedClassification: ResolvedNewsEventClassification | null,
+      contentType: string,
+      event = false,
+    ) => ({
+      classification: resolvedClassification,
+      contentType,
+      createdAt: '2026-08-10T00:00:00.000Z',
+      eventEnd: event ? '2026-08-20T12:00:00.000Z' : null,
+      eventStart: event ? '2026-08-20T09:00:00.000Z' : null,
+      excerpt: `${id} excerpt`,
+      featuredImage: null,
+      featuredImagePosition: 'center' as const,
+      id,
+      primaryCategory: null,
+      publishedAt: '2026-08-10T00:00:00.000Z',
+      slug: id,
+      title: `${id} title`,
+      updatedAt: '2026-08-10T00:00:00.000Z',
+    })
+    const find = vi
+      .fn()
+      .mockResolvedValueOnce({ docs: [cme, campus, seededNews, seededEvent] })
+      .mockResolvedValueOnce({
+        docs: [
+          loaderRecord('migrated-campus', campus, 'event'),
+          loaderRecord('migrated-cme', cme, 'news', true),
+          loaderRecord('legacy-news', null, 'news'),
+          loaderRecord('legacy-event', null, 'event', true),
+        ],
+      })
 
-    await fetchNewsGridItems({ find } as never, {
+    const items = await fetchNewsGridItems({ find } as never, {
       limit: 4,
       nowISO: '2026-08-14T00:00:00.000Z',
     })
 
-    expect(find).toHaveBeenCalledTimes(1)
+    expect(items.map(({ behavior, id }) => [id, behavior])).toEqual([
+      ['migrated-campus', 'story'],
+      ['migrated-cme', 'event'],
+      ['legacy-news', 'story'],
+      ['legacy-event', 'event'],
+    ])
+
+    expect(find).toHaveBeenCalledTimes(2)
+    expect(find).toHaveBeenCalledWith(
+      expect.objectContaining({
+        collection: 'news-event-classifications',
+        pagination: false,
+        where: { active: { equals: true } },
+      }),
+    )
     expect(find).toHaveBeenCalledWith(
       expect.objectContaining({
         collection: 'news-events',
@@ -112,13 +197,29 @@ describe('News Grid', () => {
             {
               or: [
                 {
-                  contentType: {
-                    in: ['news', 'notice', 'holiday', 'achievement', 'announcement', 'other'],
-                  },
+                  or: [
+                    { classification: { in: [campus.id, seededNews.id] } },
+                    {
+                      and: [
+                        expect.objectContaining({ or: expect.any(Array) }),
+                        { contentType: { in: ['news'] } },
+                      ],
+                    },
+                  ],
                 },
                 {
                   and: [
-                    { contentType: { equals: 'event' } },
+                    {
+                      or: [
+                        { classification: { in: [cme.id, seededEvent.id] } },
+                        {
+                          and: [
+                            expect.objectContaining({ or: expect.any(Array) }),
+                            { contentType: { in: ['event'] } },
+                          ],
+                        },
+                      ],
+                    },
                     expect.objectContaining({ or: expect.any(Array) }),
                   ],
                 },
@@ -204,8 +305,8 @@ describe('News Grid', () => {
 
     expect(html).toContain('data-news-grid-card-type="news"')
     expect(html).toContain('data-news-grid-card-type="event"')
-    expect(html).toContain('>News</p>')
-    expect(html).toContain('>Event</p>')
+    expect(html).toContain('>News</span>')
+    expect(html).toContain('>Event</span>')
     expect(html).not.toContain('Academics')
     expect(html).toContain('12 Aug 2026')
     expect(html).toContain('Aug 14–16, 2026')
@@ -219,11 +320,7 @@ describe('News Grid', () => {
 
   it('renders canonical labels and the default CTA for every non-event classification', () => {
     const cards = ['news', 'notice', 'holiday', 'achievement', 'announcement', 'other'].map(
-      (contentType, index) =>
-        createClassificationCard(
-          contentType as PublicNewsEventCard['contentType'],
-          `${contentType}-${index}`,
-        ),
+      (contentType, index) => createClassificationCard(contentType, `${contentType}-${index}`),
     )
     const html = renderToStaticMarkup(
       <NewsGridBlockPresentation
@@ -235,7 +332,7 @@ describe('News Grid', () => {
     )
 
     for (const label of ['News', 'Notice', 'Holiday', 'Achievement', 'Announcement', 'Other']) {
-      expect(html).toContain(`>${label}</p>`)
+      expect(html).toContain(`>${label}</span>`)
     }
     expect(html.match(/Read update/g)).toHaveLength(6)
 
@@ -247,7 +344,7 @@ describe('News Grid', () => {
         title="Updates"
       />,
     )
-    expect(eventHTML).toContain('>Event</p>')
+    expect(eventHTML).toContain('>Event</span>')
     expect(eventHTML).toContain('View event')
     expect(eventHTML).not.toContain('Read update')
   })
@@ -444,9 +541,9 @@ describe('News Grid', () => {
       generatedTypes.indexOf('export interface Cta39Block {'),
     )
 
-    expect(newsGridInterface).toContain('totalCards: number;')
-    expect(newsGridInterface).toContain("cardsPerRow: '2' | '3' | '4';")
-    expect(newsGridInterface).toContain("blockType: 'newsGrid';")
+    expect(newsGridInterface).toContain('totalCards: number')
+    expect(newsGridInterface).toContain("cardsPerRow: '2' | '3' | '4'")
+    expect(newsGridInterface).toContain("blockType: 'newsGrid'")
     expect(newsGridInterface).not.toContain('itemCount')
   })
 })

@@ -1,72 +1,98 @@
 import {
-  NEWS_EVENT_CLASSIFICATIONS,
-  type NewsEventClassification,
-  type NewsEventClassificationTab,
+  normalizeNewsEventClassificationRecord,
+  type ResolvedNewsEventClassification,
 } from '@/lib/newsEventClassifications'
-
-export type NewsEventsTabsConfiguredTab = {
-  classification?: string | null
-  label?: string | null
-}
+import { createEmptyNewsEventPage, type PublicNewsEventGroups } from '@/lib/newsEventsShared'
 
 export type NewsEventsTabsResolvedTab = {
+  classification?: ResolvedNewsEventClassification
   label: string
-  value: NewsEventClassificationTab
+  value: 'all' | string
 }
 
-export const NEWS_EVENTS_TABS_DEFAULT_CONFIGURED_TABS = NEWS_EVENT_CLASSIFICATIONS.map(
-  ({ tabLabel, value }) => ({ classification: value, label: tabLabel }),
-) satisfies Array<{ classification: NewsEventClassification; label: string }>
+const getRelationshipID = (value: unknown): string | null => {
+  if (typeof value === 'string' || typeof value === 'number') {
+    return String(value).trim() || null
+  }
 
-const classificationValues = new Set<string>(NEWS_EVENT_CLASSIFICATIONS.map(({ value }) => value))
+  if (!value || typeof value !== 'object' || Array.isArray(value) || !('id' in value)) {
+    return null
+  }
 
-function isNewsEventClassification(value: unknown): value is NewsEventClassification {
-  return typeof value === 'string' && classificationValues.has(value)
+  const id = value.id
+
+  return typeof id === 'string' || typeof id === 'number' ? String(id).trim() || null : null
 }
 
-export function validateNewsEventsTabsConfiguredTabs(value: unknown): true | string {
-  if (!Array.isArray(value)) return true
+export function getNewsEventsTabsClassificationRelationshipIDs(value: unknown): string[] {
+  if (!Array.isArray(value)) return []
 
   const seen = new Set<string>()
 
-  for (const row of value) {
-    if (!row || typeof row !== 'object') continue
+  return value.flatMap((entry): string[] => {
+    const id = getRelationshipID(entry)
 
-    const classification = (row as NewsEventsTabsConfiguredTab).classification
-    if (!classification) continue
-    if (seen.has(classification)) return 'Each classification can only be added once.'
+    if (!id || seen.has(id)) return []
 
-    seen.add(classification)
-  }
-
-  return true
+    seen.add(id)
+    return [id]
+  })
 }
 
 export function resolveNewsEventsTabs(
   allTabLabel?: string | null,
-  tabs?: NewsEventsTabsConfiguredTab[] | null,
+  classifications?: unknown,
 ): NewsEventsTabsResolvedTab[] {
   const resolved: NewsEventsTabsResolvedTab[] = [
     { label: allTabLabel?.trim() || 'All', value: 'all' },
   ]
-  const configured = tabs == null ? NEWS_EVENTS_TABS_DEFAULT_CONFIGURED_TABS : tabs
-  const seen = new Set<NewsEventClassification>()
+  const relationshipValues = Array.isArray(classifications) ? classifications : []
 
-  for (const tab of configured) {
-    const classification = tab?.classification
-    const label = tab?.label?.trim()
+  const seen = new Set<string>()
 
-    if (!isNewsEventClassification(classification) || !label || seen.has(classification)) continue
+  for (const value of relationshipValues) {
+    const classification = normalizeNewsEventClassificationRecord(value)
 
-    seen.add(classification)
-    resolved.push({ label, value: classification })
+    if (
+      !classification ||
+      !classification.active ||
+      !classification.title.trim() ||
+      seen.has(classification.id)
+    ) {
+      continue
+    }
+
+    seen.add(classification.id)
+    resolved.push({
+      classification,
+      label: classification.title,
+      value: classification.id,
+    })
   }
 
   return resolved
 }
 
+export function alignNewsEventsTabsGroups(
+  groups: PublicNewsEventGroups,
+  tabs: readonly NewsEventsTabsResolvedTab[],
+): PublicNewsEventGroups {
+  const aligned: PublicNewsEventGroups = {
+    all: groups.all ?? createEmptyNewsEventPage(),
+  }
+
+  for (const tab of tabs) {
+    if (tab.value === 'all') continue
+
+    aligned[tab.value] = groups[tab.value] ?? createEmptyNewsEventPage()
+  }
+
+  return aligned
+}
+
 export const NEWS_EVENTS_TABS_DEFAULT_ITEMS_PER_TAB = 6
 export const NEWS_EVENTS_TABS_DEFAULT_LOAD_MORE_LABEL = 'Load More'
+export const NEWS_EVENTS_TABS_MAX_CLASSIFICATIONS = 50
 
 export const NEWS_EVENTS_TABS_ITEM_VALUES = ['3', '6', '9', '12'] as const
 
@@ -114,4 +140,30 @@ export function normalizeNewsEventsTabsLayoutStyle(
 
 export function getNewsEventsTabsGridClasses(value?: string | null): string {
   return gridClassesByCardsPerRow[normalizeNewsEventsTabsCardsPerRow(value)]
+}
+
+export function getNewsEventsTabsClientStateKey(
+  groups: PublicNewsEventGroups,
+  tabs: readonly NewsEventsTabsResolvedTab[],
+  itemsPerTab: NewsEventsTabsItemsPerTab,
+): string {
+  const initialPages = tabs.map(({ value }) => {
+    const page = groups[value] ?? createEmptyNewsEventPage()
+
+    return [
+      value,
+      page.page,
+      page.hasNextPage,
+      page.docs.map((item) => [
+        item.id,
+        item.title,
+        item.excerpt,
+        item.dateISO,
+        item.classification.id,
+        item.behavior,
+      ]),
+    ]
+  })
+
+  return JSON.stringify([itemsPerTab, initialPages])
 }
