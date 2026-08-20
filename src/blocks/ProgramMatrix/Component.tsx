@@ -37,6 +37,7 @@ type ProgramMatrixItem = {
 
 type ProgramMatrixBlockLike = {
   accentTitle?: string | null
+  actionMode?: 'button' | 'link' | null
   actionVariant?: CmsActionVariant | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
@@ -106,6 +107,7 @@ function ProgrammeAction({
 
 export function ProgramMatrixBlockComponent({
   accentTitle,
+  actionMode = 'link',
   actionVariant = 'default',
   actions,
   appearance,
@@ -151,6 +153,7 @@ export function ProgramMatrixBlockComponent({
 
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const { className: appearanceClassName } = appearanceClasses
+  const resolvedActionMode = actionMode === 'button' ? 'button' : 'link'
   const resolvedActionVariant = actionVariant ?? 'default'
   const resolvedAlignment = contentAlignment ?? 'left'
   const resolvedItemActionLabel = itemActionLabel?.trim() || 'Learn More'
@@ -268,7 +271,7 @@ export function ProgramMatrixBlockComponent({
                   <div className="mt-auto pt-6">
                     <ProgrammeAction
                       actionLabel={resolvedItemActionLabel}
-                      actionMode="link"
+                      actionMode={resolvedActionMode}
                       actionVariant={resolvedActionVariant}
                       buttonClassName={buttonClassName}
                       href={item.href}

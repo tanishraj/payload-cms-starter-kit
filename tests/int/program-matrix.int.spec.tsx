@@ -252,11 +252,11 @@ describe('ProgramMatrixBlockComponent', () => {
     expect(html).toContain('bg-transparent text-current')
   })
 
-  it('keeps item surface links readable across card backgrounds', () => {
-    // Per-item CTAs always render as ContentLink now (see Component.tsx),
-    // so this only exercises the link-color treatment per card surface.
-    const primaryHtml = renderToStaticMarkup(
+  it('honors link, button, and legacy programme action modes', () => {
+    const linkHtml = renderToStaticMarkup(
       <ProgramMatrixBlockComponent
+        actionMode="link"
+        itemActionLabel="View programme"
         items={[
           {
             cardBackground: 'primary',
@@ -268,8 +268,11 @@ describe('ProgramMatrixBlockComponent', () => {
         title="Programmes"
       />,
     )
-    const secondaryHtml = renderToStaticMarkup(
+    const buttonHtml = renderToStaticMarkup(
       <ProgramMatrixBlockComponent
+        actionMode="button"
+        actionVariant="secondary"
+        itemActionLabel="Apply"
         items={[
           {
             cardBackground: 'secondary',
@@ -281,9 +284,21 @@ describe('ProgramMatrixBlockComponent', () => {
         title="Programmes"
       />,
     )
+    const legacyHtml = renderToStaticMarkup(
+      <ProgramMatrixBlockComponent
+        items={[{ linkType: 'custom', title: 'Allied Health', url: '/allied-health' }]}
+        title="Programmes"
+      />,
+    )
 
-    expect(primaryHtml).toContain('text-primary-foreground')
-    expect(secondaryHtml).toContain('text-secondary-foreground')
+    expect(linkHtml).toContain('data-content-link="true"')
+    expect(linkHtml).toContain('text-primary-foreground')
+    expect(linkHtml).not.toContain('data-slot="button"')
+    expect(buttonHtml).toContain('data-slot="button"')
+    expect(buttonHtml).toContain('data-variant="secondary"')
+    expect(buttonHtml).toContain('bg-secondary-foreground text-secondary')
+    expect(buttonHtml).not.toContain('data-content-link="true"')
+    expect(legacyHtml).toContain('data-content-link="true"')
   })
 
   it('adapts section actions when the block uses a matching colored surface', () => {
