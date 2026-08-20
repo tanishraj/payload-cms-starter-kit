@@ -3414,6 +3414,26 @@ export interface ProgramMatrixBlock {
      */
     metadata?: string | null
     description?: string | null
+    cardAction?:
+      | {
+          label: string
+          linkType?: ('page' | 'custom') | null
+          page?: (string | null) | Page
+          url?: string | null
+          openInNewTab?: boolean | null
+          mode?: ('link' | 'button') | null
+          /**
+           * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+           */
+          variant?:
+            ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null
+          /**
+           * Adds a trailing arrow when this action is displayed as a button.
+           */
+          showArrow?: boolean | null
+          id?: string | null
+        }[]
+      | null
     linkType?: ('none' | 'page' | 'custom') | null
     page?: (string | null) | Page
     url?: string | null
@@ -3435,6 +3455,11 @@ export interface ProgramMatrixBlock {
   actionVariant?:
     ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null
   itemActionLabel?: string | null
+  headerLayout: 'stacked' | 'split'
+  /**
+   * Choose which side contains the section introduction on large screens.
+   */
+  headerPosition?: ('left' | 'right') | null
   contentAlignment: 'left' | 'center'
   size: 'none' | 'compact' | 'default' | 'comfortable'
   id?: string | null
@@ -8293,6 +8318,19 @@ export interface ProgramMatrixBlockSelect<T extends boolean = true> {
         title?: T
         metadata?: T
         description?: T
+        cardAction?:
+          | T
+          | {
+              label?: T
+              linkType?: T
+              page?: T
+              url?: T
+              openInNewTab?: T
+              mode?: T
+              variant?: T
+              showArrow?: T
+              id?: T
+            }
         linkType?: T
         page?: T
         url?: T
@@ -8309,6 +8347,8 @@ export interface ProgramMatrixBlockSelect<T extends boolean = true> {
   actionMode?: T
   actionVariant?: T
   itemActionLabel?: T
+  headerLayout?: T
+  headerPosition?: T
   contentAlignment?: T
   size?: T
   id?: T

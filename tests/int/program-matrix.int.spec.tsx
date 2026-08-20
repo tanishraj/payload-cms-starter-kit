@@ -719,9 +719,12 @@ describe('Program Matrix registration', () => {
 
   it('is represented in generated Payload types', () => {
     expect(payloadTypesSource).toContain('export interface ProgramMatrixBlock')
+    expect(payloadTypesSource).toContain('cardAction?:')
     expect(payloadTypesSource).toContain(
       "cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent'",
     )
+    expect(payloadTypesSource).toContain("headerLayout: 'stacked' | 'split'")
+    expect(payloadTypesSource).toContain("headerPosition?: ('left' | 'right') | null")
     expect(payloadTypesSource).toContain("blockType: 'programMatrix'")
   })
 })
@@ -732,16 +735,20 @@ describe('Program Matrix catalogs', () => {
     expect(thumbnailDefinitionsSource).toContain("slug: 'programMatrix'")
     expect(thumbnailFixturesSource).toContain('programMatrix:')
     expect(thumbnailFixturesSource).toContain('<ProgramMatrixBlockComponent')
-    expect(thumbnailFixturesSource).toContain('actionMode="button"')
-    expect(thumbnailFixturesSource).toContain('itemActionLabel="View programme"')
+    expect(thumbnailFixturesSource).toContain('headerLayout="split"')
+    expect(thumbnailFixturesSource).toContain('headerPosition="left"')
+    expect(thumbnailFixturesSource).toContain('cardAction:')
+    expect(thumbnailFixturesSource).toContain("label: 'View programme'")
+    expect(thumbnailFixturesSource).toContain("label: 'Apply now'")
     expect(thumbnailFixturesSource).toContain("url: '/programmes/mbbs'")
   })
 
   it('is recorded in architecture and operator documentation', () => {
     expect(featureInventorySource).toContain('Normal Pages register 51 choices')
     expect(featureInventorySource).toContain('Program Matrix')
+    expect(featureInventorySource).toContain('introduction remains first in document order')
     expect(blocksGuideSource).toMatch(/\| Program Matrix\s+\|/)
-    expect(blocksGuideSource).toContain('independent semantic card backgrounds')
-    expect(blocksGuideSource).toContain('optional Button or Link Text actions')
+    expect(blocksGuideSource).toContain('Stacked or 40/60 split introduction')
+    expect(blocksGuideSource).toContain('one optional per-card Link or Button action')
   })
 })
