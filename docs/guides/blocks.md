@@ -65,7 +65,7 @@ The setting follows the selected presentation. Content Highlights applies it to 
 | Icon Grid                | Icon-led benefits and responsibilities      | Card, Contact Cards, Minimal, Icon Top, or Ruled Columns; ruled items use continuous responsive dividers and inherit the section surface                                                     |
 | Quote Block              | Quotation or pull quote                     | Quote and attribution                                                                                                                                                                        |
 | Tabs Content             | Grouped tab panels                          | Client tab interaction                                                                                                                                                                       |
-| Download List            | Files and resources                         | Uses Media documents/links; backgrounds apply to Cards                                                                                                                                       |
+| Download List            | Files and document libraries                | Four layouts, one shared 1–8 Columns setting, optional file icons, fixed layout-owned View/Download actions, manual destinations, and optional category filtering                            |
 | Numbered Steps           | Ordered process                             | Backgrounds apply to numbered Cards, not connected/alternating layouts                                                                                                                       |
 | Bento Grid               | Mixed-size feature cards                    | Grid layout and semantic background controls                                                                                                                                                 |
 | Testimonial Grid         | Curated testimonials                        | Backgrounds apply to Grid and Featured cards                                                                                                                                                 |
@@ -86,6 +86,32 @@ Number Layout offers Stacked, Inline, and Three Columns. Three Columns places ea
 number, title, and description in separate desktop columns, then moves the description beneath the
 title on smaller screens. It always uses one outer list column; choose List Focus, List Position
 Right, Introduction Alignment Top, and Ruled borders to reproduce the reference-style composition.
+
+Download List keeps existing Card, List, and Compact documents compatible. Compact now falls back to
+Inline List and is no longer selectable. Open Grid keeps top/bottom outer rules while leaving the
+left/right edges open; Framed Grid adds one complete square outline. One shared **Columns** control
+supports one to eight responsive columns in every presentation and defaults or falls back to three.
+Only Boxed Card Grid applies independent semantic item backgrounds. Boxed Card, Open Grid, and
+Framed Grid always keep the file-type badge at the top right. Their **Grid Icon Position** places the
+Small, Medium, or Large main document icon either Above Title or Left of Content without moving the
+badge. **Show File Icon** defaults on and controls the main icon in every presentation.
+
+Inline List never shows the file-type badge. Each ruled item keeps the optional file icon at the
+upper-left, title and supporting text in a flexible wrapping column, a permanent vertical divider,
+and icon-only actions at the far right at every width. Legacy Compact content uses the same Inline
+presentation and shared Columns value without a migration.
+
+Each document accepts up to two manual Link or Download actions; valid manual actions replace the
+automatic fallback. Editors choose the manual label and destination, while each presentation owns the
+visual treatment. **Grid Action Display** applies one treatment to every action in Boxed Card, Open
+Grid, and Framed Grid. Labelled is the default and compatibility fallback: View is an underlined link
+without an icon, and Download is a labelled button with a trailing animated `ArrowDown`. Icon only
+converts View and Download to compact `Eye` and animated `ArrowDown` controls. Manual labels remain the
+accessible names and tooltips for those icons. Inline always uses that icon-only treatment and ignores
+the grid-only setting. New blocks disable View and enable Download by default; editors can enable
+either action and control View new-tab behavior, but at least one automatic action must remain enabled.
+Historical appearance, label-control, and custom-icon values are ignored, so no content migration is
+required.
 
 Event Gallery uses the first valid image from every selected Gallery Album as the album cover and
 can open the complete album in its full-screen viewer. Disable **Enable Album Slideshow** to retain

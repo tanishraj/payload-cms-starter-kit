@@ -14,9 +14,19 @@ import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaAbsoluteUrl, isMediaDoc } from '@/lib/media'
 import type { Media } from '@/payload-types'
 import { cn } from '@/lib/utils'
-import { DownloadListClient, type ResolvedDownload } from './DownloadListClient'
+import { DownloadListClient } from './DownloadListClient'
+import { resolveDocumentActions, type DownloadManualActionInput } from './resolveActions'
+import type {
+  DownloadDisplayMode,
+  DownloadDocumentIconSize,
+  DownloadGridActionDisplay,
+  DownloadGridColumns,
+  DownloadGridIconPosition,
+  ResolvedDownload,
+} from './types'
 
 type DownloadItem = {
+  actions?: DownloadManualActionInput[] | null
   cardBackground?: string | null
   category?: string | null
   description?: string | null
@@ -31,13 +41,21 @@ type DownloadListBlockLike = {
   accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
+  columns?: DownloadGridColumns | null
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
-  displayMode?: 'list' | 'cards' | 'compact' | null
+  documentIconSize?: DownloadDocumentIconSize | null
+  displayMode?: DownloadDisplayMode | null
   downloads?: DownloadItem[] | null
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
+  gridActionDisplay?: DownloadGridActionDisplay | null
+  gridIconPosition?: DownloadGridIconPosition | null
+  openViewInNewTab?: boolean | null
+  showDownloadAction?: boolean | null
+  showDocumentIcon?: boolean | null
   showFilter?: boolean | null
+  showViewAction?: boolean | null
   size?: RegularBlockSize | null
   title?: string | null
 }
@@ -59,13 +77,21 @@ export function DownloadListBlockComponent({
   accentTitle,
   actions,
   appearance,
+  columns = '3',
   contentAlignment = 'left',
   description,
+  documentIconSize = 'medium',
   displayMode = 'list',
   downloads,
   eyebrow,
   footerActions,
+  gridActionDisplay = 'labelled',
+  gridIconPosition = 'above',
+  openViewInNewTab = true,
+  showDownloadAction = true,
+  showDocumentIcon = true,
   showFilter = false,
+  showViewAction = false,
   size = 'default',
   title,
 }: DownloadListBlockLike) {
@@ -79,18 +105,26 @@ export function DownloadListBlockComponent({
 
   const resolvedDownloads: ResolvedDownload[] = validDownloads.flatMap((item, index) => {
     const fileUrl = isMediaDoc(item.file) ? getMediaAbsoluteUrl(item.file) : undefined
-    const href = fileUrl ?? item.externalUrl?.trim()
-    if (!href) return []
+    const externalViewUrl = item.externalUrl?.trim() || undefined
+    const viewHref = externalViewUrl ?? fileUrl
+    const downloadHref = fileUrl
+    const documentActions = resolveDocumentActions(item.actions, {
+      downloadHref,
+      openViewInNewTab: openViewInNewTab ?? true,
+      showDownload: showDownloadAction ?? true,
+      showView: showViewAction ?? false,
+      viewHref,
+    })
+    if (documentActions.length === 0) return []
 
     return [
       {
+        actions: documentActions,
         id: item.id ?? index,
         title: item.title!.trim(),
         description: item.description?.trim() || undefined,
         category: item.category?.trim() || undefined,
         cardBackground: item.cardBackground ?? undefined,
-        href,
-        isExternal: !fileUrl,
         fileType: detectFileType(item),
       },
     ]
@@ -139,9 +173,14 @@ export function DownloadListBlockComponent({
         ) : null}
 
         <DownloadListClient
+          columns={columns ?? '3'}
+          documentIconSize={documentIconSize ?? 'medium'}
           downloads={resolvedDownloads}
           displayMode={displayMode}
+          gridActionDisplay={gridActionDisplay ?? 'labelled'}
+          gridIconPosition={gridIconPosition ?? 'above'}
           sectionBackground={appearance?.background ?? 'none'}
+          showDocumentIcon={showDocumentIcon ?? true}
           showFilter={showFilter}
         />
         <BlockFooterActions actions={footerActions} />

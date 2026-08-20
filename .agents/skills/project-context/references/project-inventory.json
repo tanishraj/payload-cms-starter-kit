@@ -180,10 +180,13 @@
         "files": [
           "src/blocks/DownloadList/Component.tsx",
           "src/blocks/DownloadList/DownloadListClient.tsx",
-          "src/blocks/DownloadList/config.ts"
+          "src/blocks/DownloadList/Presentation.tsx",
+          "src/blocks/DownloadList/config.ts",
+          "src/blocks/DownloadList/resolveActions.ts",
+          "src/blocks/DownloadList/types.ts"
         ],
         "interfaceName": "DownloadListBlock",
-        "presentationPath": null,
+        "presentationPath": "src/blocks/DownloadList/Presentation.tsx",
         "previewComponentPath": null,
         "slug": "downloadList",
         "symbol": "DownloadListBlock"
@@ -1968,7 +1971,10 @@
       "src/blocks/Cta39/config.ts",
       "src/blocks/DownloadList/Component.tsx",
       "src/blocks/DownloadList/DownloadListClient.tsx",
+      "src/blocks/DownloadList/Presentation.tsx",
       "src/blocks/DownloadList/config.ts",
+      "src/blocks/DownloadList/resolveActions.ts",
+      "src/blocks/DownloadList/types.ts",
       "src/blocks/EditorialReasons/Component.tsx",
       "src/blocks/EditorialReasons/config.ts",
       "src/blocks/EventGallery/Component.tsx",
@@ -2379,6 +2385,7 @@
       "tests/int/dark-mode-media-treatment.int.spec.tsx",
       "tests/int/dashboard-capability-filtering.int.spec.tsx",
       "tests/int/docker-standalone.int.spec.ts",
+      "tests/int/download-list.int.spec.tsx",
       "tests/int/editorial-reasons.int.spec.tsx",
       "tests/int/editorial-workflow.int.spec.ts",
       "tests/int/event-gallery-data.int.spec.ts",
@@ -2486,7 +2493,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "44abc6157c685c5884ca2116d91a9510168105ac2eb90b428f5671d90f4cb1fc"
+    "sha256": "8ff5c4ea91419d4bdc31c065a9495bcdb643664e13f3a28b0d6abf74d3e25744"
   },
   "surfaces": {
     "access": [
@@ -2654,6 +2661,7 @@
       "tests/int/dark-mode-media-treatment.int.spec.tsx",
       "tests/int/dashboard-capability-filtering.int.spec.tsx",
       "tests/int/docker-standalone.int.spec.ts",
+      "tests/int/download-list.int.spec.tsx",
       "tests/int/editorial-reasons.int.spec.tsx",
       "tests/int/editorial-workflow.int.spec.ts",
       "tests/int/event-gallery-data.int.spec.ts",

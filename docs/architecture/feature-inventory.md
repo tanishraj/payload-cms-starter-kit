@@ -77,6 +77,18 @@ Production Page blocks are wrapped in a block-level error boundary. Live Page pr
 
 Configurable visual blocks standardize their Payload editor structure as top-level `Content` and `Theme Settings` tabs. Genuine repeating card rows use the same nested tab structure and a shared semantic surface vocabulary: Default Card, Primary, Secondary, Muted, and Accent. The renderer resolves foreground, supporting text, icon, divider, link, and matching button contrast from the active theme. Variant-dependent controls only render a surface for existing card presentations; utility rows, connected timelines, lists, tables, galleries, logos, and navigation structures remain unboxed.
 
+Download List provides Boxed Card, Open Grid, Framed Grid, and Inline List presentations. Grid items
+keep file-type badges at the top right while their main icons can sit above or inline with the
+document content. One shared one-to-eight Columns setting applies to every presentation and defaults
+or falls back to three. The main file icon is optional across the block and defaults on. Inline never
+shows a file-type badge; its ruled items keep a permanent vertical divider and icon-only
+Eye/ArrowDown actions at the far right at every width. One grid-wide action-display setting switches
+boxed-family View/Download actions between the default labelled link/button treatment and accessible
+icon-only Eye/animated ArrowDown controls. Missing or invalid values fall back to Labelled, while
+Inline remains icon-only. Manual labels become icon names and tooltips in icon mode. New blocks default
+to Download-only. Up to two valid manual destinations replace the automatic fallback, while historical
+visual-action settings are ignored without a migration.
+
 News & Events Highlights retains the `newsEventsHighlights` block slug and automatically interleaves
 recent published non-event entries with current or upcoming Events. It keeps the shared presentation
 model, overlay controls, image-position precedence, bundled missing-image fallback, and synchronized

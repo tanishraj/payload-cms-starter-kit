@@ -218,6 +218,7 @@ describe('semantic card surface rendering', () => {
             title: 'Application Form',
           },
         ]}
+        showViewAction
       />,
     )
     const downloadList = renderToStaticMarkup(
@@ -230,6 +231,7 @@ describe('semantic card surface rendering', () => {
             title: 'Application Form',
           },
         ]}
+        showViewAction
       />,
     )
     const cardSteps = renderToStaticMarkup(
@@ -299,6 +301,7 @@ describe('semantic card surface rendering', () => {
           appearance={{ background: 'brand' }}
           displayMode="cards"
           downloads={[{ externalUrl: 'https://example.com/form.pdf', title: 'Application Form' }]}
+          showViewAction
         />,
       ),
       renderToStaticMarkup(

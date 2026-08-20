@@ -64,6 +64,26 @@ surface. Documents without valid outer content retain the legacy render branch.
 
 The generated inventory contains every current export under [src/blocks/shared](../../../../src/blocks/shared).
 
+Download List offers Boxed Card Grid, Open Grid, Framed Grid, and Inline List presentations. The
+shared Columns control supports one to eight configured wide-screen columns with responsive caps and
+defaults or falls back to three in every mode. Open Grid has top/bottom outer rules and internal
+dividers while its left/right edges remain open; Framed Grid adds one complete square outer border;
+only Boxed Card Grid consumes independent semantic item backgrounds. Every boxed-family item fixes
+the file-type badge at the top right while the block-level icon position places the Small, Medium, or
+Large optional main document icon Above Title or Left of Content. Show File Icon defaults on across
+all presentations. Inline List never renders a file-type badge. Its ruled items place
+the optional file icon at the upper-left, a flexible wrapping content column, a permanent vertical
+divider, and icon-only Eye/ArrowDown actions at the far right at every width. Boxed-family items render
+View and Download through one grid-wide action-display setting. Labelled is the default and runtime
+fallback: View is an underlined link without an icon, and Download is a labelled button with an
+animated trailing ArrowDown. Icon only converts them to accessible Eye and animated ArrowDown controls;
+manual labels become their names and tooltips. Inline remains icon-only regardless of the grid setting.
+View defaults Off and Download defaults On; at least one automatic action must remain enabled. Editors
+can add up to two manual Link or Download destinations per document; any valid manual action replaces
+that document's fallback. Historical visual-action properties are ignored without a migration. Every
+presentation uses sans-serif document titles. Existing `compact` values fall back to Inline List and
+the shared Columns value without a migration and are no longer selectable in Admin.
+
 Event Gallery renders selected Gallery Albums in their resolved manual or latest-event-date order.
 Each selected album contributes its first valid image as one cover tile, while the accessible card
 button opens every image in that album through the shared full-screen viewer. Enable Album Slideshow

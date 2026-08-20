@@ -4193,14 +4193,17 @@ export interface DownloadListBlock {
         id?: string | null
       }[]
     | null
+  showViewAction?: boolean | null
+  openViewInNewTab?: boolean | null
+  showDownloadAction?: boolean | null
   /**
    * Files or links available for download.
    */
   downloads?:
     | {
-        title?: string | null
+        title: string
         /**
-         * Brief note about the file (e.g. "Application form for 2025 intake").
+         * Short authority, programme, year, or explanatory detail.
          */
         description?: string | null
         /**
@@ -4212,7 +4215,7 @@ export interface DownloadListBlock {
          */
         file?: (string | null) | Media
         /**
-         * Used when file is hosted externally. Ignored if a file is uploaded above.
+         * Optional viewer or external destination. When a file is also uploaded, View uses this URL and Download uses the file.
          */
         externalUrl?: string | null
         /**
@@ -4220,7 +4223,22 @@ export interface DownloadListBlock {
          */
         fileType?: string | null
         /**
-         * Applied only to the Cards display mode. List and Compact modes remain unchanged.
+         * Add up to two actions. Valid manual actions replace the automatic View and Download fallback for this document.
+         */
+        actions?:
+          | {
+              actionType: 'link' | 'download'
+              label: string
+              linkType?: ('page' | 'custom') | null
+              page?: (string | null) | Page
+              url?: string | null
+              openInNewTab?: boolean | null
+              file?: (string | null) | Media
+              id?: string | null
+            }[]
+          | null
+        /**
+         * Applied only to Boxed Card Grid. Open Grid, Framed Grid, and Inline List inherit the section surface.
          */
         cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent'
         id?: string | null
@@ -4250,7 +4268,27 @@ export interface DownloadListBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand'
     border: 'none' | 'top' | 'bottom' | 'topAndBottom'
   }
-  displayMode?: ('list' | 'cards' | 'compact') | null
+  displayMode?: ('list' | 'cards' | 'openGrid' | 'framedGrid') | null
+  /**
+   * Sets the maximum number of responsive columns for every presentation.
+   */
+  columns: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8'
+  /**
+   * Controls the main file icon. Action icons remain compact.
+   */
+  documentIconSize: 'small' | 'medium' | 'large'
+  /**
+   * Shows the main file icon in every Download List presentation.
+   */
+  showDocumentIcon?: boolean | null
+  /**
+   * Place the main document icon above the title or inline beside the title and supporting text. The file-type badge stays at the top right.
+   */
+  gridIconPosition?: ('above' | 'inline') | null
+  /**
+   * Show every grid action with its label or as an accessible icon-only control.
+   */
+  gridActionDisplay?: ('labelled' | 'icons') | null
   /**
    * Show filter buttons when items have different categories.
    */
@@ -8761,6 +8799,9 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
         showArrow?: T
         id?: T
       }
+  showViewAction?: T
+  openViewInNewTab?: T
+  showDownloadAction?: T
   downloads?:
     | T
     | {
@@ -8770,6 +8811,18 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
         file?: T
         externalUrl?: T
         fileType?: T
+        actions?:
+          | T
+          | {
+              actionType?: T
+              label?: T
+              linkType?: T
+              page?: T
+              url?: T
+              openInNewTab?: T
+              file?: T
+              id?: T
+            }
         cardBackground?: T
         id?: T
       }
@@ -8793,6 +8846,11 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
         border?: T
       }
   displayMode?: T
+  columns?: T
+  documentIconSize?: T
+  showDocumentIcon?: T
+  gridIconPosition?: T
+  gridActionDisplay?: T
   showFilter?: T
   contentAlignment?: T
   size?: T

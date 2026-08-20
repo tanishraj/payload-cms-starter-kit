@@ -1868,43 +1868,63 @@ export const blockThumbnailFixtures = {
   downloadList: (
     <DownloadListBlockComponent
       appearance={{ background: 'subtle', border: 'topAndBottom' }}
+      columns="2"
       contentAlignment="left"
-      description="Key documents, guides, and forms available to download at any time."
-      displayMode="list"
+      description="Access official recognition, permission, and affiliation documents related to medical education."
+      displayMode="framedGrid"
+      documentIconSize="medium"
       downloads={[
         {
-          title: 'Academic Calendar 2025–26',
-          category: 'Academic',
+          title: 'NMC Letter of Intent – MBBS',
+          category: 'NMC · MBBS',
           fileType: 'PDF',
-          externalUrl: '#',
-          description: 'Term dates, exam periods, and key academic events.',
+          file: {
+            id: 'nmc-letter-of-intent',
+            url: '#nmc-letter-of-intent',
+            mimeType: 'application/pdf',
+          } as Media,
+          description: 'National Medical Commission approval document.',
         },
         {
-          title: 'Student Handbook',
-          category: 'Student Life',
+          title: 'NMC Letter of Permission – MBBS',
+          category: 'NMC · MBBS',
           fileType: 'PDF',
-          externalUrl: '#',
-          description: 'Policies, support services, and campus resources.',
+          file: {
+            id: 'nmc-permission',
+            url: '#nmc-permission',
+            mimeType: 'application/pdf',
+          } as Media,
+          description: 'Permission for the current undergraduate intake.',
         },
         {
-          title: 'Program Guide',
-          category: 'Programs',
+          title: 'MBBS Batch Permission – 2025',
+          category: 'NMC · 2025',
           fileType: 'PDF',
-          externalUrl: '#',
-          description: 'Full overview of available programs and entry requirements.',
+          file: {
+            id: 'batch-permission',
+            url: '#batch-permission',
+            mimeType: 'application/pdf',
+          } as Media,
+          description: 'Approved intake and batch permission record.',
         },
         {
-          title: 'Financial Aid Overview',
-          category: 'Finance',
+          title: 'BUHS Affiliation – UG & PG',
+          category: 'BUHS · Affiliation',
           fileType: 'PDF',
-          externalUrl: '#',
-          description: 'Scholarships, bursaries, and payment options explained.',
+          file: {
+            id: 'buhs-affiliation',
+            url: '#buhs-affiliation',
+            mimeType: 'application/pdf',
+          } as Media,
+          description: 'University affiliation for undergraduate and postgraduate programmes.',
         },
       ]}
-      eyebrow="Resources"
-      showFilter
+      eyebrow="Official Documents"
+      gridActionDisplay="labelled"
+      gridIconPosition="inline"
+      showDocumentIcon
       size="compact"
-      title="Download centre"
+      title="Approvals & Affiliation Documents"
     />
   ),
   iconGrid: (
