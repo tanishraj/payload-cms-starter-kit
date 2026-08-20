@@ -42,6 +42,12 @@ type ProgramMatrixItem = {
 }
 
 type ProgramMatrixHeaderVerticalAlignment = 'top' | 'center' | 'bottom'
+type ProgramMatrixColumnCount = '1' | '2' | '3' | '4'
+
+type GridCellPosition = {
+  isLastRow: boolean
+  isRowEnd: boolean
+}
 
 type ProgramMatrixBlockLike = {
   accentTitle?: string | null
@@ -49,6 +55,7 @@ type ProgramMatrixBlockLike = {
   actionVariant?: CmsActionVariant | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
+  columns?: ProgramMatrixColumnCount | null
   contentAlignment?: 'left' | 'center' | null
   description?: string | null
   eyebrow?: string | null
@@ -153,12 +160,33 @@ const splitHeaderVerticalAlignmentClasses: Record<ProgramMatrixHeaderVerticalAli
   bottom: 'lg:self-end',
 }
 
+const programMatrixGridClasses: Record<ProgramMatrixColumnCount, string> = {
+  '1': 'md:grid-cols-1 lg:grid-cols-1',
+  '2': 'md:grid-cols-2 lg:grid-cols-2',
+  '3': 'md:grid-cols-2 lg:grid-cols-3',
+  '4': 'md:grid-cols-2 lg:grid-cols-4',
+}
+
+const resolveGridCellPosition = (
+  index: number,
+  itemCount: number,
+  columnCount: number,
+): GridCellPosition => {
+  const lastRowStart = itemCount - (itemCount % columnCount || columnCount)
+
+  return {
+    isLastRow: index >= lastRowStart,
+    isRowEnd: (index + 1) % columnCount === 0,
+  }
+}
+
 export function ProgramMatrixBlockComponent({
   accentTitle,
   actionMode = 'link',
   actionVariant = 'default',
   actions,
   appearance,
+  columns = '2',
   contentAlignment = 'left',
   description,
   eyebrow,
@@ -219,6 +247,10 @@ export function ProgramMatrixBlockComponent({
     headerVerticalAlignment === 'center' || headerVerticalAlignment === 'bottom'
       ? headerVerticalAlignment
       : 'top'
+  const resolvedColumns: ProgramMatrixColumnCount =
+    columns === '1' || columns === '3' || columns === '4' ? columns : '2'
+  const desktopColumnCount = Number(resolvedColumns)
+  const tabletColumnCount = Math.min(desktopColumnCount, 2)
   const usesSplitHeader = resolvedHeaderLayout === 'split'
 
   return (
@@ -286,21 +318,30 @@ export function ProgramMatrixBlockComponent({
 
           <div
             className={cn(
-              'grid overflow-hidden rounded-[var(--radius)] border bg-transparent text-current md:grid-cols-2',
+              'grid overflow-hidden rounded-[var(--radius)] border bg-transparent text-current',
+              programMatrixGridClasses[resolvedColumns],
               isBrandSurface ? 'border-current/15' : 'border-current/10',
               usesSplitHeader &&
                 resolvedHeaderPosition === 'right' &&
                 'lg:col-start-1 lg:row-start-1',
             )}
             data-program-matrix="true"
+            data-program-matrix-columns={resolvedColumns}
           >
             {resolvedItems.map((item, index) => {
               const Icon = item.Icon
               const surface = resolveCardSurface(item.cardBackground, resolvedSectionBackground)
               const isLastItem = index === resolvedItems.length - 1
-              const isLeftColumn = index % 2 === 0
-              const lastDesktopRowStart = resolvedItems.length - (resolvedItems.length % 2 || 2)
-              const isLastDesktopRow = index >= lastDesktopRowStart
+              const tabletPosition = resolveGridCellPosition(
+                index,
+                resolvedItems.length,
+                tabletColumnCount,
+              )
+              const desktopPosition = resolveGridCellPosition(
+                index,
+                resolvedItems.length,
+                desktopColumnCount,
+              )
               const buttonClassName = item.action ? surface.button[item.action.variant] : undefined
 
               return (
@@ -310,13 +351,17 @@ export function ProgramMatrixBlockComponent({
                     surface.className,
                     surface.divider,
                     !isLastItem && 'border-b',
-                    isLastDesktopRow && 'md:border-b-0',
-                    isLeftColumn && 'md:border-r',
+                    tabletPosition.isLastRow ? 'md:border-b-0' : 'md:border-b',
+                    tabletPosition.isRowEnd ? 'md:border-r-0' : 'md:border-r',
+                    desktopPosition.isLastRow ? 'lg:border-b-0' : 'lg:border-b',
+                    desktopPosition.isRowEnd ? 'lg:border-r-0' : 'lg:border-r',
                   )}
                   data-card-background={surface.value}
-                  data-last-desktop-row={isLastDesktopRow ? 'true' : undefined}
-                  data-left-column={isLeftColumn ? 'true' : undefined}
+                  data-desktop-last-row={desktopPosition.isLastRow ? 'true' : undefined}
+                  data-desktop-row-end={desktopPosition.isRowEnd ? 'true' : undefined}
                   data-program-matrix-item="true"
+                  data-tablet-last-row={tabletPosition.isLastRow ? 'true' : undefined}
+                  data-tablet-row-end={tabletPosition.isRowEnd ? 'true' : undefined}
                   key={item.id}
                 >
                   {Icon ? (

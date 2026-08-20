@@ -201,6 +201,20 @@ describe('ProgramMatrixBlock schema', () => {
     expect(headerVerticalAlignment.admin?.condition?.({}, { headerLayout: 'split' })).toBe(true)
     expect(headerVerticalAlignment.admin?.condition?.({}, { headerLayout: 'stacked' })).toBe(false)
 
+    const columns = themeFields.find((field) => 'name' in field && field.name === 'columns')
+    expect(columns).toMatchObject({
+      label: 'Number of Columns',
+      type: 'select',
+      defaultValue: '2',
+      required: true,
+      options: [
+        { label: '1', value: '1' },
+        { label: '2', value: '2' },
+        { label: '3', value: '3' },
+        { label: '4', value: '4' },
+      ],
+    })
+
     expect(findNamedField(ProgramMatrixBlock.fields, 'contentAlignment')).toMatchObject({
       type: 'select',
       defaultValue: 'left',
@@ -253,7 +267,8 @@ describe('ProgramMatrixBlockComponent', () => {
     expect(html).toContain('<h2')
     expect(html).toContain('<h3')
     expect(html).toContain('data-program-matrix="true"')
-    expect(html).toContain('md:grid-cols-2')
+    expect(html).toContain('data-program-matrix-columns="2"')
+    expect(html).toContain('md:grid-cols-2 lg:grid-cols-2')
     expect(html.match(/data-program-matrix-item="true"/g)).toHaveLength(4)
     expect(html).toContain('lucide-hospital')
     expect(html).toContain('lucide-graduation-cap')
@@ -377,6 +392,37 @@ describe('ProgramMatrixBlockComponent', () => {
     expect(html).not.toContain('lg:self-start')
     expect(html).not.toContain('lg:self-center')
     expect(html).not.toContain('lg:self-end')
+  })
+
+  it.each([
+    [undefined, '2', 'md:grid-cols-2 lg:grid-cols-2'],
+    ['1', '1', 'md:grid-cols-1 lg:grid-cols-1'],
+    ['2', '2', 'md:grid-cols-2 lg:grid-cols-2'],
+    ['3', '3', 'md:grid-cols-2 lg:grid-cols-3'],
+    ['4', '4', 'md:grid-cols-2 lg:grid-cols-4'],
+  ] as const)(
+    'renders %s configured columns as a responsive %s-column matrix',
+    (columns, resolvedColumns, expectedClasses) => {
+      const html = renderToStaticMarkup(
+        <ProgramMatrixBlockComponent columns={columns} items={baseItems} title="Programmes" />,
+      )
+
+      expect(html).toContain(`data-program-matrix-columns="${resolvedColumns}"`)
+      expect(html).toContain(expectedClasses)
+    },
+  )
+
+  it('falls back to two columns for malformed saved values', () => {
+    const html = renderToStaticMarkup(
+      <ProgramMatrixBlockComponent
+        columns={'invalid' as never}
+        items={baseItems}
+        title="Programmes"
+      />,
+    )
+
+    expect(html).toContain('data-program-matrix-columns="2"')
+    expect(html).toContain('md:grid-cols-2 lg:grid-cols-2')
   })
 
   it('uses the shared eyebrow color treatment on colored section surfaces', () => {
@@ -743,14 +789,34 @@ describe('ProgramMatrixBlockComponent', () => {
     expect(html.match(/View Programme/g)).toHaveLength(1)
   })
 
-  it('marks an odd final row for correct desktop dividers', () => {
+  it('calculates tablet and desktop dividers from the filtered rendered items', () => {
     const html = renderToStaticMarkup(
-      <ProgramMatrixBlockComponent items={baseItems.slice(0, 3)} title="Programmes" />,
+      <ProgramMatrixBlockComponent
+        columns="3"
+        items={[...baseItems, { title: '   ' }]}
+        title="Programmes"
+      />,
     )
 
-    expect(html.match(/data-program-matrix-item="true"/g)).toHaveLength(3)
-    expect(html.match(/data-left-column="true"/g)).toHaveLength(2)
-    expect(html.match(/data-last-desktop-row="true"/g)).toHaveLength(1)
+    expect(html.match(/data-program-matrix-item="true"/g)).toHaveLength(4)
+    expect(html.match(/data-tablet-row-end="true"/g)).toHaveLength(2)
+    expect(html.match(/data-tablet-last-row="true"/g)).toHaveLength(2)
+    expect(html.match(/data-desktop-row-end="true"/g)).toHaveLength(1)
+    expect(html.match(/data-desktop-last-row="true"/g)).toHaveLength(1)
+  })
+
+  it('keeps right dividers on cards in an incomplete final desktop row', () => {
+    const html = renderToStaticMarkup(
+      <ProgramMatrixBlockComponent
+        columns="3"
+        items={[...baseItems, { title: 'Physiotherapy' }]}
+        title="Programmes"
+      />,
+    )
+
+    expect(html.match(/data-desktop-last-row="true"/g)).toHaveLength(2)
+    expect(html.match(/data-desktop-row-end="true"/g)).toHaveLength(1)
+    expect(html).toContain('lg:border-b-0 lg:border-r')
   })
 
   it('passes alignment to section actions and derives mode from action rows', () => {
