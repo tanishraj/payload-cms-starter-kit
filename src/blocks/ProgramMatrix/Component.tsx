@@ -13,17 +13,23 @@ import {
 import { resolveCardSurface } from '@/blocks/shared/cardSurface'
 import type { CardSurfaceValue } from '@/blocks/shared/cardThemeFields'
 import { resolveLucideIcon } from '@/blocks/shared/resolveLucideIcon'
+import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { ContentLink } from '@/components/ContentLink'
 import { Button } from '@/components/ui/button'
-import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@/lib/cmsLinks'
-import { getPageHref } from '@/lib/pagePaths'
+import {
+  resolveCmsActions,
+  type CmsActionValue,
+  type CmsActionVariant,
+  type ResolvedCmsAction,
+} from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 import type { Page } from '@/payload-types'
 
 type ProgramMatrixItem = {
   cardBackground?: CardSurfaceValue | null
+  cardAction?: CmsActionValue[] | null
   description?: string | null
   icon?: string | null
   id?: string | null
@@ -54,44 +60,35 @@ type ProgramMatrixBlockLike = {
 }
 
 type ResolvedProgramMatrixItem = {
+  action?: ResolvedCmsAction
   cardBackground: CardSurfaceValue
   description?: string
-  href?: string
   Icon?: LucideIcon
   id: string | number
   metadata?: string
-  openInNewTab: boolean
   title: string
 }
 
 type ProgrammeActionProps = {
-  actionLabel: string
-  actionMode: 'button' | 'link'
-  actionVariant: CmsActionVariant
+  action: ResolvedCmsAction
   buttonClassName?: string
-  href: string
   linkClassName?: string
-  openInNewTab: boolean
 }
 
 function ProgrammeAction({
-  actionLabel,
-  actionMode,
-  actionVariant,
+  action,
   buttonClassName,
-  href,
   linkClassName,
-  openInNewTab,
 }: ProgrammeActionProps) {
-  if (actionMode === 'button') {
+  if (action.mode === 'button' && action.variant !== 'link') {
     return (
-      <Button asChild className={buttonClassName} size="sm" variant={actionVariant}>
+      <Button asChild className={buttonClassName} size="sm" variant={action.variant}>
         <a
-          href={href}
-          rel={openInNewTab ? 'noopener noreferrer' : undefined}
-          target={openInNewTab ? '_blank' : undefined}
+          href={action.href}
+          rel={action.openInNewTab ? 'noreferrer' : undefined}
+          target={action.openInNewTab ? '_blank' : undefined}
         >
-          {actionLabel}
+          <ActionButtonContent label={action.label} showArrow={action.showArrow} />
         </a>
       </Button>
     )
@@ -100,10 +97,56 @@ function ProgrammeAction({
   return (
     <ContentLink
       className={linkClassName}
-      href={href}
-      label={actionLabel}
-      openInNewTab={openInNewTab}
+      href={action.href}
+      label={action.label}
+      openInNewTab={action.openInNewTab}
     />
+  )
+}
+
+const programmeActionVariants = new Set<CmsActionVariant>([
+  'default',
+  'outline',
+  'primary',
+  'secondary',
+  'white',
+  'whiteOutline',
+])
+
+const normalizeProgrammeAction = (
+  action?: ResolvedCmsAction,
+): ResolvedCmsAction | undefined =>
+  action
+    ? {
+        ...action,
+        mode: action.mode === 'button' ? 'button' : 'link',
+        variant: programmeActionVariants.has(action.variant) ? action.variant : 'default',
+      }
+    : undefined
+
+const resolveProgrammeAction = (
+  item: ProgramMatrixItem,
+  legacyMode: 'button' | 'link',
+  legacyVariant: CmsActionVariant,
+  legacyLabel: string,
+): ResolvedCmsAction | undefined => {
+  const authoredAction = normalizeProgrammeAction(resolveCmsActions(item.cardAction)[0])
+  if (authoredAction) return authoredAction
+
+  if (item.linkType !== 'page' && item.linkType !== 'custom') return undefined
+
+  return normalizeProgrammeAction(
+    resolveCmsActions([
+      {
+        label: legacyLabel,
+        linkType: item.linkType,
+        mode: legacyMode,
+        openInNewTab: item.openInNewTab,
+        page: item.page,
+        url: item.url,
+        variant: legacyVariant,
+      },
+    ])[0],
   )
 }
 
@@ -127,27 +170,31 @@ export function ProgramMatrixBlockComponent({
   const resolvedTitle = title?.trim()
   if (!resolvedTitle) return null
   const resolvedAccentTitle = accentTitle?.trim() || undefined
+  const resolvedLegacyActionMode = actionMode === 'button' ? 'button' : 'link'
+  const resolvedLegacyActionVariant = programmeActionVariants.has(
+    actionVariant as CmsActionVariant,
+  )
+    ? (actionVariant as CmsActionVariant)
+    : 'default'
+  const resolvedLegacyActionLabel = itemActionLabel?.trim() || 'Learn More'
 
   const resolvedItems = (items ?? []).flatMap((item, index): ResolvedProgramMatrixItem[] => {
     const itemTitle = item.title?.trim()
     if (!itemTitle) return []
 
-    let href: string | undefined
-    if (item.linkType === 'page') {
-      href = getPageHref(item.page)
-    } else if (item.linkType === 'custom') {
-      href = item.url?.trim() || undefined
-    }
-
     return [
       {
+        action: resolveProgrammeAction(
+          item,
+          resolvedLegacyActionMode,
+          resolvedLegacyActionVariant,
+          resolvedLegacyActionLabel,
+        ),
         cardBackground: resolveCardSurface(item.cardBackground).value,
         description: item.description?.trim() || undefined,
-        href,
         Icon: resolveLucideIcon(item.icon),
         id: item.id ?? index,
         metadata: item.metadata?.trim() || undefined,
-        openInNewTab: item.openInNewTab ?? false,
         title: itemTitle,
       },
     ]
@@ -157,10 +204,7 @@ export function ProgramMatrixBlockComponent({
 
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const { className: appearanceClassName } = appearanceClasses
-  const resolvedActionMode = actionMode === 'button' ? 'button' : 'link'
-  const resolvedActionVariant = actionVariant ?? 'default'
   const resolvedAlignment = contentAlignment ?? 'left'
-  const resolvedItemActionLabel = itemActionLabel?.trim() || 'Learn More'
   const resolvedSectionActions = resolveCmsActions(actions)
   const resolvedEyebrow = eyebrow?.trim()
   const resolvedDescription = description?.trim()
@@ -250,7 +294,7 @@ export function ProgramMatrixBlockComponent({
             const isLeftColumn = index % 2 === 0
             const lastDesktopRowStart = resolvedItems.length - (resolvedItems.length % 2 || 2)
             const isLastDesktopRow = index >= lastDesktopRowStart
-            const buttonClassName = surface.button[resolvedActionVariant]
+            const buttonClassName = item.action ? surface.button[item.action.variant] : undefined
 
             return (
               <article
@@ -294,16 +338,12 @@ export function ProgramMatrixBlockComponent({
                     {item.description}
                   </p>
                 ) : null}
-                {item.href ? (
-                  <div className="mt-auto pt-6">
+                {item.action ? (
+                  <div className="mt-auto pt-6" data-program-matrix-item-action="true">
                     <ProgrammeAction
-                      actionLabel={resolvedItemActionLabel}
-                      actionMode={resolvedActionMode}
-                      actionVariant={resolvedActionVariant}
+                      action={item.action}
                       buttonClassName={buttonClassName}
-                      href={item.href}
                       linkClassName={surface.link}
-                      openInNewTab={item.openInNewTab}
                     />
                   </div>
                 ) : null}

@@ -410,6 +410,158 @@ describe('ProgramMatrixBlockComponent', () => {
     expect(legacyHtml).toContain('data-content-link="true"')
   })
 
+  it('renders independent link and button actions while leaving other cards non-interactive', () => {
+    const html = renderToStaticMarkup(
+      <ProgramMatrixBlockComponent
+        items={[
+          {
+            cardAction: [
+              { label: 'View programme', linkType: 'custom', mode: 'link', url: '/mbbs' },
+            ],
+            title: 'MBBS',
+          },
+          {
+            cardAction: [
+              {
+                label: 'Apply now',
+                linkType: 'custom',
+                mode: 'button',
+                showArrow: true,
+                url: '/apply/nursing',
+                variant: 'secondary',
+              },
+            ],
+            title: 'Nursing',
+          },
+          { title: 'Allied Health' },
+        ]}
+        title="Programmes"
+      />,
+    )
+
+    expect(html.match(/data-program-matrix-item-action="true"/g)).toHaveLength(2)
+    expect(html).toContain('href="/mbbs"')
+    expect(html).toContain('data-content-link="true"')
+    expect(html).toContain('href="/apply/nursing"')
+    expect(html).toContain('data-slot="button"')
+    expect(html).toContain('data-variant="secondary"')
+    expect(html).toContain('data-action-arrow="true"')
+    expect(html).not.toContain('<a href="/mbbs"><article')
+  })
+
+  it('prefers a valid card action and falls back when the new row is incomplete', () => {
+    const preferredHtml = renderToStaticMarkup(
+      <ProgramMatrixBlockComponent
+        itemActionLabel="Legacy action"
+        items={[
+          {
+            cardAction: [
+              { label: 'New action', linkType: 'custom', mode: 'link', url: '/new-action' },
+            ],
+            linkType: 'custom',
+            title: 'MBBS',
+            url: '/legacy-action',
+          },
+        ]}
+        title="Programmes"
+      />,
+    )
+    const fallbackHtml = renderToStaticMarkup(
+      <ProgramMatrixBlockComponent
+        actionMode="button"
+        actionVariant="secondary"
+        itemActionLabel="Legacy action"
+        items={[
+          {
+            cardAction: [{ label: '   ', linkType: 'custom', url: '/incomplete-action' }],
+            linkType: 'custom',
+            title: 'Nursing',
+            url: '/legacy-action',
+          },
+        ]}
+        title="Programmes"
+      />,
+    )
+
+    expect(preferredHtml).toContain('href="/new-action"')
+    expect(preferredHtml).not.toContain('/legacy-action')
+    expect(fallbackHtml).toContain('href="/legacy-action"')
+    expect(fallbackHtml).toContain('Legacy action')
+    expect(fallbackHtml).toContain('data-slot="button"')
+    expect(fallbackHtml).toContain('data-variant="secondary"')
+    expect(fallbackHtml).not.toContain('/incomplete-action')
+  })
+
+  it('normalizes malformed card action display values', () => {
+    const html = renderToStaticMarkup(
+      <ProgramMatrixBlockComponent
+        items={[
+          {
+            cardAction: [
+              {
+                label: 'View programme',
+                linkType: 'custom',
+                mode: 'invalid' as never,
+                url: '/view',
+              },
+            ],
+            title: 'MBBS',
+          },
+          {
+            cardAction: [
+              {
+                label: 'Apply now',
+                linkType: 'custom',
+                mode: 'button',
+                url: '/apply',
+                variant: 'invalid' as never,
+              },
+            ],
+            title: 'Nursing',
+          },
+        ]}
+        title="Programmes"
+      />,
+    )
+
+    expect(html).toContain('href="/view"')
+    expect(html).toContain('data-content-link="true"')
+    expect(html).toContain('href="/apply"')
+    expect(html).toContain('data-variant="default"')
+  })
+
+  it('resolves card action page links and safe external targets', () => {
+    const parent = { id: 'academics', slug: 'academics' } as unknown as Page
+    const page = { id: 'mbbs', parent, slug: 'mbbs' } as unknown as Page
+    const html = renderToStaticMarkup(
+      <ProgramMatrixBlockComponent
+        items={[
+          {
+            cardAction: [{ label: 'View programme', linkType: 'page', page }],
+            title: 'MBBS',
+          },
+          {
+            cardAction: [
+              {
+                label: 'External prospectus',
+                linkType: 'custom',
+                openInNewTab: true,
+                url: 'https://example.com/prospectus',
+              },
+            ],
+            title: 'Prospectus',
+          },
+        ]}
+        title="Programmes"
+      />,
+    )
+
+    expect(html).toContain('href="/academics/mbbs"')
+    expect(html).toContain('href="https://example.com/prospectus"')
+    expect(html).toContain('target="_blank"')
+    expect(html).toContain('rel="noreferrer"')
+  })
+
   it('adapts section actions when the block uses a matching colored surface', () => {
     const linkHtml = renderToStaticMarkup(
       <ProgramMatrixBlockComponent
