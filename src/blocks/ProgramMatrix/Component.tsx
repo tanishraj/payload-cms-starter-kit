@@ -45,6 +45,8 @@ type ProgramMatrixBlockLike = {
   description?: string | null
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
+  headerLayout?: 'split' | 'stacked' | null
+  headerPosition?: 'left' | 'right' | null
   itemActionLabel?: string | null
   items?: ProgramMatrixItem[] | null
   size?: RegularBlockSize | null
@@ -115,6 +117,8 @@ export function ProgramMatrixBlockComponent({
   description,
   eyebrow,
   footerActions,
+  headerLayout = 'stacked',
+  headerPosition = 'left',
   itemActionLabel = 'Learn More',
   items,
   size = 'default',
@@ -163,6 +167,9 @@ export function ProgramMatrixBlockComponent({
   const resolvedSectionBackground = appearanceClasses.background
   const isBrandSurface = appearanceClasses.surface === 'brand'
   const sectionActionsUseSurfaceContrast = isBrandSurface
+  const resolvedHeaderLayout = headerLayout === 'split' ? 'split' : 'stacked'
+  const resolvedHeaderPosition = headerPosition === 'right' ? 'right' : 'left'
+  const usesSplitHeader = resolvedHeaderLayout === 'split'
 
   return (
     <section
@@ -172,50 +179,70 @@ export function ProgramMatrixBlockComponent({
       <div className={cn(regularBlockContainerClasses, 'flex flex-col gap-10 md:gap-12')}>
         <div
           className={cn(
-            'flex max-w-3xl flex-col gap-4',
-            resolvedAlignment === 'center'
-              ? 'mx-auto items-center text-center'
-              : 'items-start text-left',
+            'grid gap-10 md:gap-12',
+            usesSplitHeader &&
+              resolvedHeaderPosition === 'left' &&
+              'lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:items-start lg:gap-16',
+            usesSplitHeader &&
+              resolvedHeaderPosition === 'right' &&
+              'lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-start lg:gap-16',
           )}
-          data-content-alignment={resolvedAlignment}
+          data-program-matrix-header-position={resolvedHeaderPosition}
+          data-program-matrix-layout={resolvedHeaderLayout}
         >
-          {resolvedEyebrow ? (
-            <SectionEyebrow surface={resolvedSectionBackground}>
-              {resolvedEyebrow}
-            </SectionEyebrow>
-          ) : null}
-          <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-            {resolvedAccentTitle ? (
-              <>
-                <span className="block font-[inherit]">{resolvedTitle}</span>
-                <em className="block font-[inherit]">{resolvedAccentTitle}</em>
-              </>
-            ) : (
-              resolvedTitle
+          <div
+            className={cn(
+              'flex max-w-3xl flex-col gap-4',
+              resolvedAlignment === 'center'
+                ? 'mx-auto items-center text-center'
+                : 'items-start text-left',
+              usesSplitHeader &&
+                resolvedHeaderPosition === 'right' &&
+                'lg:col-start-2 lg:row-start-1',
             )}
-          </h2>
-          {resolvedDescription ? (
-            <p className="max-w-[70ch] text-base leading-7 text-current/70">
-              {resolvedDescription}
-            </p>
-          ) : null}
-          <ContentActions
-            actions={resolvedSectionActions}
-            alignment={resolvedAlignment}
-            /* Button and link contrast on the brand surface is handled globally
-               in custom.css, so no per-variant overrides are needed here. */
-            data-program-matrix-actions="true"
-            data-surface-contrast={sectionActionsUseSurfaceContrast ? 'true' : undefined}
-          />
-        </div>
+            data-content-alignment={resolvedAlignment}
+            data-program-matrix-intro="true"
+          >
+            {resolvedEyebrow ? (
+              <SectionEyebrow surface={resolvedSectionBackground}>
+                {resolvedEyebrow}
+              </SectionEyebrow>
+            ) : null}
+            <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
+              {resolvedAccentTitle ? (
+                <>
+                  <span className="block font-[inherit]">{resolvedTitle}</span>
+                  <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+                </>
+              ) : (
+                resolvedTitle
+              )}
+            </h2>
+            {resolvedDescription ? (
+              <p className="max-w-[70ch] text-base leading-7 text-current/70">
+                {resolvedDescription}
+              </p>
+            ) : null}
+            <ContentActions
+              actions={resolvedSectionActions}
+              alignment={resolvedAlignment}
+              /* Button and link contrast on the brand surface is handled globally
+                 in custom.css, so no per-variant overrides are needed here. */
+              data-program-matrix-actions="true"
+              data-surface-contrast={sectionActionsUseSurfaceContrast ? 'true' : undefined}
+            />
+          </div>
 
-        <div
-          className={cn(
-            'grid overflow-hidden rounded-[var(--radius)] border bg-transparent text-current md:grid-cols-2',
-            isBrandSurface ? 'border-current/15' : 'border-current/10',
-          )}
-          data-program-matrix="true"
-        >
+          <div
+            className={cn(
+              'grid overflow-hidden rounded-[var(--radius)] border bg-transparent text-current md:grid-cols-2',
+              isBrandSurface ? 'border-current/15' : 'border-current/10',
+              usesSplitHeader &&
+                resolvedHeaderPosition === 'right' &&
+                'lg:col-start-1 lg:row-start-1',
+            )}
+            data-program-matrix="true"
+          >
           {resolvedItems.map((item, index) => {
             const Icon = item.Icon
             const surface = resolveCardSurface(item.cardBackground, resolvedSectionBackground)
@@ -283,6 +310,7 @@ export function ProgramMatrixBlockComponent({
               </article>
             )
           })}
+          </div>
         </div>
         <BlockFooterActions actions={footerActions} />
       </div>

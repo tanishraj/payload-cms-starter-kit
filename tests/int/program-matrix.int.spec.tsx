@@ -256,6 +256,55 @@ describe('ProgramMatrixBlockComponent', () => {
     expect(html).toContain('mt-4 max-w-[65ch] text-sm leading-6')
   })
 
+  it('defaults invalid layout values to a stacked left introduction', () => {
+    const html = renderToStaticMarkup(
+      <ProgramMatrixBlockComponent
+        headerLayout={'invalid' as never}
+        headerPosition={'invalid' as never}
+        items={baseItems}
+        title="Programmes"
+      />,
+    )
+
+    expect(html).toContain('data-program-matrix-layout="stacked"')
+    expect(html).toContain('data-program-matrix-header-position="left"')
+    expect(html).not.toContain('lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]')
+  })
+
+  it('renders a 40/60 split with the introduction on the left', () => {
+    const html = renderToStaticMarkup(
+      <ProgramMatrixBlockComponent
+        headerLayout="split"
+        headerPosition="left"
+        items={baseItems}
+        title="Programmes"
+      />,
+    )
+
+    expect(html).toContain('data-program-matrix-layout="split"')
+    expect(html).toContain('data-program-matrix-header-position="left"')
+    expect(html).toContain('lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]')
+    expect(html).not.toContain('lg:col-start-2 lg:row-start-1')
+  })
+
+  it('places a right-side split introduction visually without changing DOM order', () => {
+    const html = renderToStaticMarkup(
+      <ProgramMatrixBlockComponent
+        headerLayout="split"
+        headerPosition="right"
+        items={baseItems}
+        title="Programmes"
+      />,
+    )
+
+    expect(html).toContain('lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]')
+    expect(html).toContain('lg:col-start-2 lg:row-start-1')
+    expect(html).toContain('lg:col-start-1 lg:row-start-1')
+    expect(html.indexOf('data-program-matrix-intro="true"')).toBeLessThan(
+      html.indexOf('data-program-matrix="true"'),
+    )
+  })
+
   it('uses the shared eyebrow color treatment on colored section surfaces', () => {
     const html = renderToStaticMarkup(
       <ProgramMatrixBlockComponent
