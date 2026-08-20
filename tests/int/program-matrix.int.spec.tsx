@@ -471,6 +471,9 @@ describe('Program Matrix catalogs', () => {
     expect(thumbnailDefinitionsSource).toContain("slug: 'programMatrix'")
     expect(thumbnailFixturesSource).toContain('programMatrix:')
     expect(thumbnailFixturesSource).toContain('<ProgramMatrixBlockComponent')
+    expect(thumbnailFixturesSource).toContain('actionMode="button"')
+    expect(thumbnailFixturesSource).toContain('itemActionLabel="View programme"')
+    expect(thumbnailFixturesSource).toContain("url: '/programmes/mbbs'")
   })
 
   it('is recorded in architecture and operator documentation', () => {

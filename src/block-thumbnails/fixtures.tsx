@@ -2160,17 +2160,21 @@ export const blockThumbnailFixtures = {
   ),
   programMatrix: (
     <ProgramMatrixBlockComponent
+      actionMode="button"
       appearance={{ background: 'subtle', border: 'topAndBottom' }}
       contentAlignment="left"
       description="Four routes into clinical practice, each with a defined intake, published curriculum, and supervised hospital rotations."
       eyebrow="Academics"
+      itemActionLabel="View programme"
       items={[
         {
           cardBackground: 'default',
           icon: 'stethoscope',
+          linkType: 'custom',
           title: 'MBBS',
           metadata: '4.5 Years + 1 Year Internship',
           description: '150 seats approved by the National Medical Commission.',
+          url: '/programmes/mbbs',
         },
         {
           cardBackground: 'muted',
