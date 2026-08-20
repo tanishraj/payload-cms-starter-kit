@@ -6,23 +6,16 @@ import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import {
   buttonVariantDescription,
   buttonVariantOptions,
-  createContentActionModeField,
   createContentActionsField,
 } from '@/blocks/shared/contentActionsFields'
 import { createIconField } from '@/blocks/shared/iconField'
 
-type ProgrammeItemSiblingData = {
-  linkType?: 'none' | 'page' | 'custom' | null
+type ProgramMatrixLayoutSiblingData = {
+  headerLayout?: 'split' | 'stacked' | null
 }
 
-const isPageLink = (_data: unknown, siblingData: ProgrammeItemSiblingData) =>
-  siblingData?.linkType === 'page'
-
-const isCustomLink = (_data: unknown, siblingData: ProgrammeItemSiblingData) =>
-  siblingData?.linkType === 'custom'
-
-const hasLink = (_data: unknown, siblingData: ProgrammeItemSiblingData) =>
-  siblingData?.linkType === 'page' || siblingData?.linkType === 'custom'
+const isSplitHeader = (_data: unknown, siblingData: ProgramMatrixLayoutSiblingData) =>
+  siblingData?.headerLayout === 'split'
 
 const itemsField: ArrayField = {
   name: 'items',
@@ -58,6 +51,11 @@ const itemsField: ArrayField = {
           name: 'description',
           type: 'textarea',
         },
+        createContentActionsField({
+          name: 'cardAction',
+          label: 'Card Action',
+          maxRows: 1,
+        }),
         {
           name: 'linkType',
           label: 'Link',
@@ -69,7 +67,7 @@ const itemsField: ArrayField = {
             { label: 'Custom URL', value: 'custom' },
           ],
           admin: {
-            layout: 'horizontal',
+            hidden: true,
           },
         } satisfies RadioField,
         {
@@ -77,7 +75,7 @@ const itemsField: ArrayField = {
           type: 'relationship',
           relationTo: 'pages',
           admin: {
-            condition: isPageLink,
+            hidden: true,
           },
         },
         {
@@ -85,7 +83,7 @@ const itemsField: ArrayField = {
           label: 'Custom URL',
           type: 'text',
           admin: {
-            condition: isCustomLink,
+            hidden: true,
           },
         },
         {
@@ -93,7 +91,7 @@ const itemsField: ArrayField = {
           type: 'checkbox',
           defaultValue: false,
           admin: {
-            condition: hasLink,
+            hidden: true,
           },
         } satisfies CheckboxField,
       ],
@@ -146,10 +144,17 @@ export const ProgramMatrixBlock: Block = {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
-            // Drives the per-programme card CTAs (not the section actions array,
-            // whose display mode now lives on each action row). `actionVariant`
-            // below is conditioned on this field.
-            createContentActionModeField({ label: 'Programme Action Style', name: 'actionMode' }),
+            {
+              name: 'actionMode',
+              label: 'Programme Action Style',
+              type: 'select',
+              defaultValue: 'link',
+              options: [
+                { label: 'Link', value: 'link' },
+                { label: 'Button', value: 'button' },
+              ],
+              admin: { hidden: true },
+            } satisfies SelectField,
             {
               name: 'actionVariant',
               label: 'Programme Button Variant',
@@ -157,8 +162,8 @@ export const ProgramMatrixBlock: Block = {
               defaultValue: 'default',
               options: buttonVariantOptions,
               admin: {
-                condition: (_data, siblingData) => siblingData?.actionMode === 'button',
                 description: buttonVariantDescription,
+                hidden: true,
               },
             } satisfies SelectField,
             {
@@ -166,6 +171,34 @@ export const ProgramMatrixBlock: Block = {
               label: 'Programme Action Label',
               type: 'text',
               defaultValue: 'Learn More',
+              admin: { hidden: true },
+            },
+            {
+              name: 'headerLayout',
+              label: 'Section Header Layout',
+              type: 'select',
+              defaultValue: 'stacked',
+              required: true,
+              options: [
+                { label: 'Stacked', value: 'stacked' },
+                { label: 'Split', value: 'split' },
+              ],
+            } satisfies SelectField,
+            {
+              name: 'headerPosition',
+              label: 'Section Header Position',
+              type: 'select',
+              defaultValue: 'left',
+              required: true,
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Right', value: 'right' },
+              ],
+              admin: {
+                condition: isSplitHeader,
+                description:
+                  'Choose which side contains the section introduction on large screens.',
+              },
             },
             {
               name: 'contentAlignment',

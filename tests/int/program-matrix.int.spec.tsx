@@ -42,6 +42,17 @@ const findNamedField = (fields: Field[], name: string): Field | undefined => {
   return undefined
 }
 
+type AdminField = {
+  admin?: {
+    condition?: (data: unknown, siblingData: Record<string, unknown>) => boolean
+    hidden?: boolean
+  }
+  name?: string
+}
+
+const getTabFields = (tabsField: TabsField, label: string): Field[] =>
+  tabsField.tabs.find((tab) => tab.label === label)?.fields ?? []
+
 describe('resolveLucideIcon', () => {
   it.each([
     ['Hospital', Hospital],
@@ -89,15 +100,14 @@ describe('ProgramMatrixBlock schema', () => {
     })
   })
 
-  it('defines the approved action, alignment, appearance, and spacing controls', () => {
-    const tabs = ProgramMatrixBlock.fields.find((field) => field.type === 'tabs')
+  it('defines the approved layout, action, appearance, and spacing controls', () => {
+    const tabs = ProgramMatrixBlock.fields.find((field) => field.type === 'tabs') as TabsField
+    const themeFields = getTabFields(tabs, 'Theme Settings')
     const itemsField = findNamedField(ProgramMatrixBlock.fields, 'items') as ArrayField
     const itemTabs = itemsField.fields[0] as TabsField
+    const itemContentFields = getTabFields(itemTabs, 'Content')
 
-    expect(tabs && tabs.type === 'tabs' ? tabs.tabs.map((tab) => tab.label) : []).toEqual([
-      'Content',
-      'Theme Settings',
-    ])
+    expect(tabs.tabs.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(itemTabs.tabs.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(findNamedField(ProgramMatrixBlock.fields, 'cardBackground')).toMatchObject({
       label: 'Background',
@@ -112,19 +122,69 @@ describe('ProgramMatrixBlock schema', () => {
         { label: 'Accent', value: 'accent' },
       ],
     })
-    expect(findNamedField(ProgramMatrixBlock.fields, 'actionMode')).toMatchObject({
+
+    const cardAction = itemContentFields.find(
+      (field) => 'name' in field && field.name === 'cardAction',
+    ) as ArrayField
+
+    expect(cardAction).toMatchObject({
+      label: 'Card Action',
+      type: 'array',
+      maxRows: 1,
+    })
+    expect(findNamedField(cardAction.fields, 'label')).toMatchObject({
+      type: 'text',
+      required: true,
+    })
+    expect(findNamedField(cardAction.fields, 'mode')).toMatchObject({
       type: 'select',
       defaultValue: 'link',
-      required: false,
     })
-    expect(findNamedField(ProgramMatrixBlock.fields, 'actionVariant')).toMatchObject({
+    expect(findNamedField(cardAction.fields, 'variant')).toMatchObject({ type: 'select' })
+    expect(findNamedField(cardAction.fields, 'showArrow')).toMatchObject({ type: 'checkbox' })
+
+    for (const legacyName of ['linkType', 'page', 'url', 'openInNewTab']) {
+      const field = itemContentFields.find(
+        (candidate) => 'name' in candidate && candidate.name === legacyName,
+      ) as AdminField
+      expect(field.admin?.hidden).toBe(true)
+    }
+
+    for (const legacyName of ['actionMode', 'actionVariant', 'itemActionLabel']) {
+      const field = themeFields.find(
+        (candidate) => 'name' in candidate && candidate.name === legacyName,
+      ) as AdminField
+      expect(field.admin?.hidden).toBe(true)
+    }
+
+    const headerLayout = themeFields.find(
+      (field) => 'name' in field && field.name === 'headerLayout',
+    )
+    expect(headerLayout).toMatchObject({
       type: 'select',
-      defaultValue: 'default',
+      defaultValue: 'stacked',
+      required: true,
+      options: [
+        { label: 'Stacked', value: 'stacked' },
+        { label: 'Split', value: 'split' },
+      ],
     })
-    expect(findNamedField(ProgramMatrixBlock.fields, 'itemActionLabel')).toMatchObject({
-      type: 'text',
-      defaultValue: 'Learn More',
+
+    const headerPosition = themeFields.find(
+      (field) => 'name' in field && field.name === 'headerPosition',
+    ) as AdminField
+    expect(headerPosition).toMatchObject({
+      type: 'select',
+      defaultValue: 'left',
+      required: true,
+      options: [
+        { label: 'Left', value: 'left' },
+        { label: 'Right', value: 'right' },
+      ],
     })
+    expect(headerPosition.admin?.condition?.({}, { headerLayout: 'split' })).toBe(true)
+    expect(headerPosition.admin?.condition?.({}, { headerLayout: 'stacked' })).toBe(false)
+
     expect(findNamedField(ProgramMatrixBlock.fields, 'contentAlignment')).toMatchObject({
       type: 'select',
       defaultValue: 'left',
