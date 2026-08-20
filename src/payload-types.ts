@@ -3460,6 +3460,10 @@ export interface ProgramMatrixBlock {
    * Choose which side contains the section introduction on large screens.
    */
   headerPosition?: ('left' | 'right') | null
+  /**
+   * Position the section introduction relative to the matrix on large screens.
+   */
+  headerVerticalAlignment?: ('top' | 'center' | 'bottom') | null
   contentAlignment: 'left' | 'center'
   size: 'none' | 'compact' | 'default' | 'comfortable'
   id?: string | null
@@ -8349,6 +8353,7 @@ export interface ProgramMatrixBlockSelect<T extends boolean = true> {
   itemActionLabel?: T
   headerLayout?: T
   headerPosition?: T
+  headerVerticalAlignment?: T
   contentAlignment?: T
   size?: T
   id?: T

@@ -2182,6 +2182,7 @@ export const blockThumbnailFixtures = {
       eyebrow="Academics"
       headerLayout="split"
       headerPosition="left"
+      headerVerticalAlignment="center"
       items={[
         {
           cardBackground: 'default',

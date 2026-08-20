@@ -65,9 +65,10 @@ surface. Documents without valid outer content retain the legacy render branch.
 The generated inventory contains every current export under [src/blocks/shared](../../../../src/blocks/shared).
 
 Program Matrix keeps its introduction before the matrix and footer actions in document order. Editors
-can use a stacked layout or a large-screen 40/60 split with the introduction on either visual side.
-Each card owns at most one optional Link or Button action; hidden legacy link and block-wide action
-fields remain registered only for saved-content compatibility.
+can use a stacked layout or a large-screen 40/60 split with the introduction on either visual side
+and aligned to the top, center, or bottom of its column. Each card owns at most one optional Link or
+Button action; hidden legacy link and block-wide action fields remain registered only for saved-content
+compatibility.
 
 Download List offers Boxed Card Grid, Open Grid, Framed Grid, and Inline List presentations. The
 shared Columns control supports one to eight configured wide-screen columns with responsive caps and

@@ -799,6 +799,9 @@ describe('Program Matrix registration', () => {
     )
     expect(payloadTypesSource).toContain("headerLayout: 'stacked' | 'split'")
     expect(payloadTypesSource).toContain("headerPosition?: ('left' | 'right') | null")
+    expect(payloadTypesSource).toContain(
+      "headerVerticalAlignment?: ('top' | 'center' | 'bottom') | null",
+    )
     expect(payloadTypesSource).toContain("blockType: 'programMatrix'")
   })
 })
@@ -811,6 +814,7 @@ describe('Program Matrix catalogs', () => {
     expect(thumbnailFixturesSource).toContain('<ProgramMatrixBlockComponent')
     expect(thumbnailFixturesSource).toContain('headerLayout="split"')
     expect(thumbnailFixturesSource).toContain('headerPosition="left"')
+    expect(thumbnailFixturesSource).toContain('headerVerticalAlignment="center"')
     expect(thumbnailFixturesSource).toContain('cardAction:')
     expect(thumbnailFixturesSource).toContain("label: 'View programme'")
     expect(thumbnailFixturesSource).toContain("label: 'Apply now'")
@@ -821,8 +825,10 @@ describe('Program Matrix catalogs', () => {
     expect(featureInventorySource).toContain('Normal Pages register 51 choices')
     expect(featureInventorySource).toContain('Program Matrix')
     expect(featureInventorySource).toContain('introduction remains first in document order')
+    expect(featureInventorySource).toContain('top, center, or bottom')
     expect(blocksGuideSource).toMatch(/\| Program Matrix\s+\|/)
     expect(blocksGuideSource).toContain('Stacked or 40/60 split introduction')
+    expect(blocksGuideSource).toContain('top, center, or bottom vertical positioning')
     expect(blocksGuideSource).toContain('one optional per-card Link or Button action')
   })
 })
