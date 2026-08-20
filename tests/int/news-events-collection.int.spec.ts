@@ -38,6 +38,27 @@ const findNamedField = (value: unknown, name: string): Record<string, unknown> |
   return undefined
 }
 
+const findLabeledField = (value: unknown, label: string): Record<string, unknown> | undefined => {
+  if (Array.isArray(value)) {
+    for (const child of value) {
+      const match = findLabeledField(child, label)
+      if (match) return match
+    }
+  }
+
+  if (value && typeof value === 'object') {
+    const record = value as Record<string, unknown>
+    if (record.label === label) return record
+
+    for (const child of Object.values(record)) {
+      const match = findLabeledField(child, label)
+      if (match) return match
+    }
+  }
+
+  return undefined
+}
+
 describe('News & Events editorial model', () => {
   it('registers the typed collection without the retired archive settings global', async () => {
     const resolvedConfig = await config
@@ -55,11 +76,43 @@ describe('News & Events editorial model', () => {
   it('organizes collection fields into clear tabs', () => {
     expect(getTabs(NewsEvents.fields).map(({ label }) => label)).toEqual([
       'Content',
-      'Classification',
       'Event Details',
-      'Presentation',
       'SEO',
       'Workflow',
+    ])
+  })
+
+  it('keeps writing, presentation, and topical metadata together in Content', () => {
+    const content = getTabs(NewsEvents.fields).find(({ label }) => label === 'Content')
+
+    for (const name of [
+      'classification',
+      'excerpt',
+      'featuredImage',
+      'featuredImagePosition',
+      'body',
+    ]) {
+      expect(findNamedField(content?.fields ?? [], name)).toBeDefined()
+    }
+
+    const topics = findLabeledField(content?.fields ?? [], 'Topics & Tags')
+
+    expect(topics).toMatchObject({
+      admin: { initCollapsed: true },
+      type: 'collapsible',
+    })
+    for (const name of ['primaryCategory', 'tags', 'categories']) {
+      expect(findNamedField(topics?.fields ?? [], name)).toBeDefined()
+    }
+  })
+
+  it('uses behavior-neutral default list columns', () => {
+    expect(NewsEvents.admin?.defaultColumns).toEqual([
+      'title',
+      'classification',
+      '_status',
+      'workflowState',
+      'updatedAt',
     ])
   })
 

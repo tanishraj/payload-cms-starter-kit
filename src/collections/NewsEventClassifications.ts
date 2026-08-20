@@ -17,11 +17,11 @@ import { NEWS_EVENT_CLASSIFICATIONS } from '@/lib/newsEventClassifications'
 export const NewsEventClassifications: CollectionConfig = {
   slug: 'news-event-classifications',
   labels: {
-    singular: 'News & Event Classification',
-    plural: 'News & Event Classifications',
+    singular: 'Classification',
+    plural: 'Classifications',
   },
   admin: {
-    group: 'Content',
+    group: 'News & Events',
     hidden: hideFromUsersWithoutCapability('manage_news_events'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'badgeLabel', 'behavior', 'active', 'updatedAt'],

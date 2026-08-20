@@ -69,8 +69,8 @@ export interface Config {
   collections: {
     pages: Page
     articles: Article
-    'news-event-classifications': NewsEventClassification
     'news-events': NewsEvent
+    'news-event-classifications': NewsEventClassification
     reviews: Review
     'reusable-sections': ReusableSection
     categories: Category
@@ -97,9 +97,9 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>
     articles: ArticlesSelect<false> | ArticlesSelect<true>
+    'news-events': NewsEventsSelect<false> | NewsEventsSelect<true>
     'news-event-classifications':
       NewsEventClassificationsSelect<false> | NewsEventClassificationsSelect<true>
-    'news-events': NewsEventsSelect<false> | NewsEventsSelect<true>
     reviews: ReviewsSelect<false> | ReviewsSelect<true>
     'reusable-sections': ReusableSectionsSelect<false> | ReusableSectionsSelect<true>
     categories: CategoriesSelect<false> | CategoriesSelect<true>
@@ -5260,6 +5260,20 @@ export interface NewsEvent {
    * Legacy field retained for existing entries. The shared detail template now controls the public author label.
    */
   authorName?: string | null
+  featuredImage: string | Media
+  featuredImagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right'
+  /**
+   * Main editorial topic for archive placement.
+   */
+  primaryCategory?: (string | null) | Category
+  /**
+   * Keyword tags for cross-linking.
+   */
+  tags?: (string | Tag)[] | null
+  /**
+   * Additional topics for cross-linking. The primary topic is included automatically.
+   */
+  categories?: (string | Category)[] | null
   /**
    * Complete story or event description.
    */
@@ -5278,18 +5292,6 @@ export interface NewsEvent {
     }
     [k: string]: unknown
   }
-  /**
-   * Main editorial topic for archive placement.
-   */
-  primaryCategory?: (string | null) | Category
-  /**
-   * Keyword tags for cross-linking.
-   */
-  tags?: (string | Tag)[] | null
-  /**
-   * Additional topics for cross-linking. The primary topic is included automatically.
-   */
-  categories?: (string | Category)[] | null
   /**
    * Required only when the selected classification uses Event behavior.
    */
@@ -5322,8 +5324,6 @@ export interface NewsEvent {
         id?: string | null
       }[]
     | null
-  featuredImage: string | Media
-  featuredImagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right'
   metaTitle?: string | null
   metaDescription?: string | null
   /**
@@ -6092,12 +6092,12 @@ export interface PayloadLockedDocument {
         value: string | Article
       } | null)
     | ({
-        relationTo: 'news-event-classifications'
-        value: string | NewsEventClassification
-      } | null)
-    | ({
         relationTo: 'news-events'
         value: string | NewsEvent
+      } | null)
+    | ({
+        relationTo: 'news-event-classifications'
+        value: string | NewsEventClassification
       } | null)
     | ({
         relationTo: 'reviews'
@@ -9222,22 +9222,6 @@ export interface ArticlesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news-event-classifications_select".
- */
-export interface NewsEventClassificationsSelect<T extends boolean = true> {
-  title?: T
-  generateSlug?: T
-  slug?: T
-  badgeLabel?: T
-  legacyValue?: T
-  behavior?: T
-  description?: T
-  active?: T
-  updatedAt?: T
-  createdAt?: T
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "news-events_select".
  */
 export interface NewsEventsSelect<T extends boolean = true> {
@@ -9248,10 +9232,12 @@ export interface NewsEventsSelect<T extends boolean = true> {
   contentType?: T
   excerpt?: T
   authorName?: T
-  body?: T
+  featuredImage?: T
+  featuredImagePosition?: T
   primaryCategory?: T
   tags?: T
   categories?: T
+  body?: T
   eventStart?: T
   eventEnd?: T
   eventLocation?: T
@@ -9268,8 +9254,6 @@ export interface NewsEventsSelect<T extends boolean = true> {
         showArrow?: T
         id?: T
       }
-  featuredImage?: T
-  featuredImagePosition?: T
   metaTitle?: T
   metaDescription?: T
   canonicalURL?: T
@@ -9289,6 +9273,22 @@ export interface NewsEventsSelect<T extends boolean = true> {
   createdAt?: T
   deletedAt?: T
   _status?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news-event-classifications_select".
+ */
+export interface NewsEventClassificationsSelect<T extends boolean = true> {
+  title?: T
+  generateSlug?: T
+  slug?: T
+  badgeLabel?: T
+  legacyValue?: T
+  behavior?: T
+  description?: T
+  active?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

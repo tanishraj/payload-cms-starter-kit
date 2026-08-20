@@ -66,8 +66,8 @@ export default buildConfig({
     // Content
     Pages,
     Articles,
-    NewsEventClassifications,
     NewsEvents,
+    NewsEventClassifications,
     Reviews,
     ReusableSections,
     // Taxonomy

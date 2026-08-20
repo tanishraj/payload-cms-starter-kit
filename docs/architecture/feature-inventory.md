@@ -14,44 +14,45 @@ This is the maintained technical map of the starter. It records what is register
 
 ## Payload Collections
 
-| Group          | Collection                             | Responsibilities                                                                                                             |
-| -------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Content        | Pages                                  | Hierarchical routes, 51-block layouts, drafts, workflow, SEO, live preview, page-owned links, path-change redirects          |
-| Content        | Articles                               | Long-form Lexical content, topics/tags, related content, SEO, workflow, live preview                                         |
-| Content        | News & Events                          | Seven single-choice classifications, event validation/registration, taxonomy, block/detail/feed data, workflow, live preview |
-| Content        | Reviews                                | Moderated ratings and testimonials, source-submission linkage, taxonomy, SEO, workflow, live preview                         |
-| Content        | Reusable Sections                      | Shared versioned block stacks with recursion and high-complexity block restrictions                                          |
-| Taxonomy       | Topics (`categories`)                  | Hierarchical editorial topics with SEO data                                                                                  |
-| Taxonomy       | Tags                                   | Flat editorial keywords with SEO data                                                                                        |
-| Navigation     | Navigation Links                       | Page/custom destinations, including records synchronized from Pages                                                          |
-| Navigation     | Redirects                              | Normalized unique incoming paths, page/custom targets, 301/302 choice, enable state                                          |
-| Site Structure | Headers                                | Versioned Header Navbar presets                                                                                              |
-| Site Structure | Footers                                | Versioned Footer 56 presets                                                                                                  |
-| Site Structure | Office Locations                       | Versioned map/contact records used by Regional Offices                                                                       |
-| Site Structure | System Pages                           | Governed 404, maintenance, and coming-soon presets with matching block validation                                            |
-| Media          | Media                                  | Uploads, classification, alt validation, usage detection, deletion guards, storage health, operational sync                  |
-| Media          | Gallery Albums                         | Versioned ordered image albums used by Event Gallery's count-aware rectangular quilt and full-screen viewer                  |
-| Forms          | Forms                                  | Versioned general, lead, and review-intent field schemas plus email configuration                                            |
-| Forms          | Form Submissions                       | Stored immutable payload/metadata, operational status/assignment/activity, optional review promotion                         |
-| Administration | Action Queue (`work-queue`)            | Deduplicated CMS-generated approval, moderation, follow-up, publishing, media, and system work                               |
-| Administration | Audit Log (`operational-audit-events`) | Immutable selected operational events and actor metadata                                                                     |
-| Administration | Users                                  | Payload authentication, roles, capability presets and overrides                                                              |
+| Group          | Collection                             | Responsibilities                                                                                                       |
+| -------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Content        | Pages                                  | Hierarchical routes, 51-block layouts, drafts, workflow, SEO, live preview, page-owned links, path-change redirects    |
+| Content        | Articles                               | Long-form Lexical content, topics/tags, related content, SEO, workflow, live preview                                   |
+| News & Events  | News & Events                          | Single-choice classifications, event validation/registration, taxonomy, block/detail/feed data, workflow, live preview |
+| News & Events  | Classifications                        | Public labels and Story/Event behavior used by entries, badges, tabs, dates, and validation                            |
+| Content        | Reviews                                | Moderated ratings and testimonials, source-submission linkage, taxonomy, SEO, workflow, live preview                   |
+| Content        | Reusable Sections                      | Shared versioned block stacks with recursion and high-complexity block restrictions                                    |
+| Taxonomy       | Topics (`categories`)                  | Hierarchical editorial topics with SEO data                                                                            |
+| Taxonomy       | Tags                                   | Flat editorial keywords with SEO data                                                                                  |
+| Navigation     | Navigation Links                       | Page/custom destinations, including records synchronized from Pages                                                    |
+| Navigation     | Redirects                              | Normalized unique incoming paths, page/custom targets, 301/302 choice, enable state                                    |
+| Site Structure | Headers                                | Versioned Header Navbar presets                                                                                        |
+| Site Structure | Footers                                | Versioned Footer 56 presets                                                                                            |
+| Site Structure | Office Locations                       | Versioned map/contact records used by Regional Offices                                                                 |
+| Site Structure | System Pages                           | Governed 404, maintenance, and coming-soon presets with matching block validation                                      |
+| Media          | Media                                  | Uploads, classification, alt validation, usage detection, deletion guards, storage health, operational sync            |
+| Media          | Gallery Albums                         | Versioned ordered image albums used by Event Gallery's count-aware rectangular quilt and full-screen viewer            |
+| Forms          | Forms                                  | Versioned general, lead, and review-intent field schemas plus email configuration                                      |
+| Forms          | Form Submissions                       | Stored immutable payload/metadata, operational status/assignment/activity, optional review promotion                   |
+| Administration | Action Queue (`work-queue`)            | Deduplicated CMS-generated approval, moderation, follow-up, publishing, media, and system work                         |
+| Administration | Audit Log (`operational-audit-events`) | Immutable selected operational events and actor metadata                                                               |
+| Administration | Users                                  | Payload authentication, roles, capability presets and overrides                                                        |
 
 All collections use timestamps and Trash. Draft/version support is enabled where the individual config declares it; operational records and users are not public content.
 
 ## Payload Globals
 
-| Group         | Global                        | Responsibilities                                                                           |
-| ------------- | ----------------------------- | ------------------------------------------------------------------------------------------ |
-| Settings      | Site Identity                 | Brand, contact, address, legal Page relationships, and social destinations                 |
-| Settings      | Appearance                    | Default/Sunset/Blue/Kodama/SNMIH theme and system/light/dark color scheme                  |
-| Settings      | SEO & Metadata                | Fallback title, template, description, image, robots, and Google verification              |
-| Settings      | Analytics & Tracking          | GTM or standalone GA4 identifiers and enablement                                           |
-| Settings      | Cookie Consent Banner         | Enablement, four presentation variants, corner position, and copy                          |
-| Configuration | Layout Defaults               | Homepage, active header/footer, page appearance, and global announcement bar               |
-| Configuration | News & Events Detail Template | Shared detail Page Header, Breadcrumb, article/sidebar appearance, image ratio, and author |
-| Configuration | Search Settings               | Up to 12 operator-managed suggested search terms shown on the search page                  |
-| Configuration | Maintenance & Modes           | Published type-safe system-page references and off/maintenance/coming-soon mode            |
+| Group         | Global                | Responsibilities                                                                           |
+| ------------- | --------------------- | ------------------------------------------------------------------------------------------ |
+| Settings      | Site Identity         | Brand, contact, address, legal Page relationships, and social destinations                 |
+| Settings      | Appearance            | Default/Sunset/Blue/Kodama/SNMIH theme and system/light/dark color scheme                  |
+| Settings      | SEO & Metadata        | Fallback title, template, description, image, robots, and Google verification              |
+| Settings      | Analytics & Tracking  | GTM or standalone GA4 identifiers and enablement                                           |
+| Settings      | Cookie Consent Banner | Enablement, four presentation variants, corner position, and copy                          |
+| Configuration | Layout Defaults       | Homepage, active header/footer, page appearance, and global announcement bar               |
+| News & Events | Detail Page Template  | Shared detail Page Header, Breadcrumb, article/sidebar appearance, image ratio, and author |
+| Configuration | Search Settings       | Up to 12 operator-managed suggested search terms shown on the search page                  |
+| Configuration | Maintenance & Modes   | Published type-safe system-page references and off/maintenance/coming-soon mode            |
 
 Globals with versions retain history. Relevant changes invalidate cached frontend data; selected higher-risk changes are written to the Audit Log.
 

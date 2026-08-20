@@ -29,7 +29,7 @@ The primary topic is automatically included in additional topics. Tags are optio
 - Create and publish a root Page with the slug `news-events` to own `/news-events`.
 - Compose that Page with normal Page blocks. Use `News & Events Highlights` for the featured carousel and `News & Events Tabs` for the classified text-only listing.
 - Listing cards remain collection-driven and link to `/news-events/[slug]` detail pages.
-- Configure the shared detail layout in `Configuration > News & Events Detail Page`. It uses the
+- Configure the shared detail layout in `News & Events > Detail Page Template`. It uses the
   same ordered blocks as Pages plus one global-only `News & Events Content` block. Add and arrange
   Page Header, Breadcrumb, and other standard blocks around that dynamic block; drafts may be
   incomplete, but publishing requires exactly one `News & Events Content` block.
@@ -73,21 +73,21 @@ The sitemap includes the published `/news-events` Page through the normal Page r
 
 ## Step-By-Step Medical College Example
 
-1. Open `News & Events` in `Content`.
+1. Open `News & Events` in the `News & Events` Admin group.
 2. Create `White Coat Ceremony 2026` and set `Entry Classification` to `Events`.
-3. Write the card excerpt and complete event description.
-4. Set the start, optional end, venue, registration action, featured image, and primary topic.
+3. In `Content`, write the card excerpt, choose the featured image and image position, add optional Topics & Tags, and complete the body.
+4. In `Event Details`, set the start, optional end, venue, and registration action.
 5. Complete the SEO fields and use live preview at all three breakpoints.
 6. Move the item through the required editorial workflow. Resolve any blocking `Action Queue` item before publishing.
 7. Verify the detail page, feed, and the Highlights or Tabs block that should feature it on the manually composed Page.
-8. When changing the shared detail presentation, open `Configuration > News & Events Detail Page`,
+8. When changing the shared detail presentation, open `News & Events > Detail Page Template`,
    arrange the standard Page blocks, and configure the single `News & Events Content` block before
    publishing the global.
 
 ## Best Practices
 
 - keep the excerpt useful as standalone archive and feed copy
-- update the shared author in the `News & Events Content` block under `News & Events Detail Page`;
+- update the shared author in the `News & Events Content` block under `Detail Page Template`;
   the legacy per-entry Byline remains stored but is hidden and is not rendered publicly
 - close event registration by editing its action instead of deleting the event history
 - set event times in the timezone expected by the deployment and verify the rendered result

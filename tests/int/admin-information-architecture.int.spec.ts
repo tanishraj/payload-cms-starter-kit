@@ -32,16 +32,16 @@ import { ThemeSettings } from '@/globals/ThemeSettings'
 
 describe('admin information architecture', () => {
   it('assigns the documented groups and operator-facing labels', () => {
-    for (const collection of [
-      Pages,
-      Articles,
-      NewsEventClassifications,
-      NewsEvents,
-      Reviews,
-      ReusableSections,
-    ]) {
+    for (const collection of [Pages, Articles, Reviews, ReusableSections]) {
       expect(collection.admin?.group).toBe('Content')
     }
+    for (const collection of [NewsEvents, NewsEventClassifications]) {
+      expect(collection.admin?.group).toBe('News & Events')
+    }
+    expect(NewsEventClassifications.labels).toEqual({
+      singular: 'Classification',
+      plural: 'Classifications',
+    })
     expect(Categories.admin?.group).toBe('Taxonomy')
     expect(Categories.labels?.plural).toBe('Topics')
     expect(Tags.admin?.group).toBe('Taxonomy')
@@ -59,9 +59,10 @@ describe('admin information architecture', () => {
     }
 
     expect(PageSettings.label).toBe('Layout Defaults')
-    expect(NewsEventsDetailTemplate.label).toBe('News & Events Detail Page')
+    expect(NewsEventsDetailTemplate.label).toBe('Detail Page Template')
+    expect(NewsEventsDetailTemplate.admin?.group).toBe('News & Events')
     expect(SystemModeSettings.label).toBe('Maintenance & Modes')
-    for (const global of [PageSettings, NewsEventsDetailTemplate, SystemModeSettings]) {
+    for (const global of [PageSettings, SystemModeSettings]) {
       expect(global.admin?.group).toBe('Configuration')
     }
 

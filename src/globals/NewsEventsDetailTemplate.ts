@@ -133,9 +133,9 @@ const detailTemplateBlocks = [
 
 export const NewsEventsDetailTemplate: GlobalConfig = {
   slug: 'news-events-detail-template',
-  label: 'News & Events Detail Page',
+  label: 'Detail Page Template',
   admin: {
-    group: 'Configuration',
+    group: 'News & Events',
     description: 'Build the shared page used by every News & Events detail entry.',
     hidden: hideFromUsersWithoutCapability([...capabilities]),
   },

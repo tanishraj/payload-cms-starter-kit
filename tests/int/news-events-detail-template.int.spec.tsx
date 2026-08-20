@@ -106,7 +106,7 @@ const findNamedField = (value: unknown, name: string): Record<string, unknown> |
 }
 
 describe('News & Events detail template', () => {
-  it('registers one versioned block-built detail page under Configuration', async () => {
+  it('registers one versioned block-built detail page with the News & Events tools', async () => {
     const resolvedConfig = await config
     const pageSlugs = collectBlocks(Pages.fields).map(({ slug }) => slug)
     const reusableSectionSlugs = collectBlocks(ReusableSections.fields).map(({ slug }) => slug)
@@ -114,8 +114,8 @@ describe('News & Events detail template', () => {
 
     expect(resolvedConfig.globals?.map(({ slug }) => slug)).toContain('news-events-detail-template')
     expect(NewsEventsDetailTemplate).toMatchObject({
-      admin: { group: 'Configuration' },
-      label: 'News & Events Detail Page',
+      admin: { group: 'News & Events' },
+      label: 'Detail Page Template',
       slug: 'news-events-detail-template',
     })
     expect(NewsEventsDetailTemplate.versions).toBeTruthy()

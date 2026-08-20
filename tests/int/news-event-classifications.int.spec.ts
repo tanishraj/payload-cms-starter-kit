@@ -87,11 +87,11 @@ describe('news and event classifications', () => {
   it('defines the central collection schema and access contract', () => {
     expect(NewsEventClassifications.slug).toBe('news-event-classifications')
     expect(NewsEventClassifications.labels).toEqual({
-      plural: 'News & Event Classifications',
-      singular: 'News & Event Classification',
+      plural: 'Classifications',
+      singular: 'Classification',
     })
     expect(NewsEventClassifications.admin).toMatchObject({
-      group: 'Content',
+      group: 'News & Events',
       useAsTitle: 'title',
     })
     expect(NewsEventClassifications.versions).toBeUndefined()
@@ -323,13 +323,13 @@ describe('news and event classifications', () => {
     ).toMatchObject({ legacyValue: null })
   })
 
-  it('registers the collection immediately before news-events', () => {
+  it('registers classifications immediately after the primary News & Events entry collection', () => {
     const source = readFileSync('src/payload.config.ts', 'utf8')
 
     expect(source).toContain(
       "import { NewsEventClassifications } from './collections/NewsEventClassifications'",
     )
-    expect(source).toMatch(/Articles,\s+NewsEventClassifications,\s+NewsEvents,/)
+    expect(source).toMatch(/Articles,\s+NewsEvents,\s+NewsEventClassifications,/)
     expect(source).toContain('exclude: [NewsEventClassifications.slug]')
   })
 

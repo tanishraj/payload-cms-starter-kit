@@ -1700,12 +1700,12 @@
         "symbol": "Articles"
       },
       {
-        "source": "src/collections/NewsEventClassifications.ts",
-        "symbol": "NewsEventClassifications"
-      },
-      {
         "source": "src/collections/NewsEvents.ts",
         "symbol": "NewsEvents"
+      },
+      {
+        "source": "src/collections/NewsEventClassifications.ts",
+        "symbol": "NewsEventClassifications"
       },
       {
         "source": "src/collections/Reviews.ts",
@@ -2486,7 +2486,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "5da26ac11bf3163c79e26e143c076a78d8eda34b855c92ea8aa3d93288f5cd60"
+    "sha256": "b4eee7fde4b15d7ad1dd4ae38e01a29b8d21e9b32583eade4dcf915e0c780e94"
   },
   "surfaces": {
     "access": [

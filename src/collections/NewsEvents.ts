@@ -34,10 +34,10 @@ export const NewsEvents: CollectionConfig = {
     plural: 'News & Events',
   },
   admin: {
-    group: 'Content',
+    group: 'News & Events',
     hidden: hideFromUsersWithoutCapability('manage_news_events'),
     useAsTitle: 'title',
-    defaultColumns: ['title', 'classification', 'workflowState', 'eventStart', 'updatedAt'],
+    defaultColumns: ['title', 'classification', '_status', 'workflowState', 'updatedAt'],
     description: 'Published news stories and scheduled events for the public website.',
     listSearchableFields: ['title', 'slug', 'eventLocation'],
     livePreview: {
@@ -160,53 +160,81 @@ export const NewsEvents: CollectionConfig = {
               },
             },
             {
+              name: 'featuredImage',
+              type: 'upload',
+              relationTo: 'media',
+              required: true,
+              filterOptions: {
+                mimeType: { contains: 'image' },
+              },
+            },
+            {
+              name: 'featuredImagePosition',
+              label: 'Image Position',
+              type: 'select',
+              defaultValue: 'center',
+              options: [
+                { label: 'Center', value: 'center' },
+                { label: 'Top', value: 'top' },
+                { label: 'Bottom', value: 'bottom' },
+                { label: 'Left', value: 'left' },
+                { label: 'Right', value: 'right' },
+              ],
+              required: true,
+            },
+            {
+              type: 'collapsible',
+              label: 'Topics & Tags',
+              admin: {
+                description: 'Optional subject metadata for grouping and cross-linking.',
+                initCollapsed: true,
+              },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'primaryCategory',
+                      label: 'Primary Topic',
+                      type: 'relationship',
+                      relationTo: 'categories',
+                      admin: {
+                        width: '50%',
+                        description: 'Main editorial topic for archive placement.',
+                      },
+                    },
+                    {
+                      name: 'tags',
+                      type: 'relationship',
+                      relationTo: 'tags',
+                      hasMany: true,
+                      admin: {
+                        width: '50%',
+                        description: 'Keyword tags for cross-linking.',
+                      },
+                    },
+                  ],
+                },
+                {
+                  name: 'categories',
+                  label: 'Additional Topics',
+                  type: 'relationship',
+                  relationTo: 'categories',
+                  hasMany: true,
+                  admin: {
+                    description:
+                      'Additional topics for cross-linking. The primary topic is included automatically.',
+                  },
+                },
+              ],
+            },
+            {
               name: 'body',
               type: 'richText',
               editor: bodyEditor,
               required: true,
               admin: {
                 description: 'Complete story or event description.',
-              },
-            },
-          ],
-        },
-        {
-          label: 'Classification',
-          fields: [
-            {
-              type: 'row',
-              fields: [
-                {
-                  name: 'primaryCategory',
-                  label: 'Primary Topic',
-                  type: 'relationship',
-                  relationTo: 'categories',
-                  admin: {
-                    width: '50%',
-                    description: 'Main editorial topic for archive placement.',
-                  },
-                },
-                {
-                  name: 'tags',
-                  type: 'relationship',
-                  relationTo: 'tags',
-                  hasMany: true,
-                  admin: {
-                    width: '50%',
-                    description: 'Keyword tags for cross-linking.',
-                  },
-                },
-              ],
-            },
-            {
-              name: 'categories',
-              label: 'Additional Topics',
-              type: 'relationship',
-              relationTo: 'categories',
-              hasMany: true,
-              admin: {
-                description:
-                  'Additional topics for cross-linking. The primary topic is included automatically.',
               },
             },
           ],
@@ -255,34 +283,6 @@ export const NewsEvents: CollectionConfig = {
               admin: {
                 initCollapsed: true,
               },
-            },
-          ],
-        },
-        {
-          label: 'Presentation',
-          fields: [
-            {
-              name: 'featuredImage',
-              type: 'upload',
-              relationTo: 'media',
-              required: true,
-              filterOptions: {
-                mimeType: { contains: 'image' },
-              },
-            },
-            {
-              name: 'featuredImagePosition',
-              label: 'Background Position',
-              type: 'select',
-              defaultValue: 'center',
-              options: [
-                { label: 'Center', value: 'center' },
-                { label: 'Top', value: 'top' },
-                { label: 'Bottom', value: 'bottom' },
-                { label: 'Left', value: 'left' },
-                { label: 'Right', value: 'right' },
-              ],
-              required: true,
             },
           ],
         },
