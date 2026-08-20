@@ -201,6 +201,23 @@ export const ProgramMatrixBlock: Block = {
               },
             },
             {
+              name: 'headerVerticalAlignment',
+              label: 'Section Header Vertical Alignment',
+              type: 'select',
+              defaultValue: 'top',
+              required: true,
+              options: [
+                { label: 'Top', value: 'top' },
+                { label: 'Center', value: 'center' },
+                { label: 'Bottom', value: 'bottom' },
+              ],
+              admin: {
+                condition: isSplitHeader,
+                description:
+                  'Position the section introduction relative to the matrix on large screens.',
+              },
+            } satisfies SelectField,
+            {
               name: 'contentAlignment',
               label: 'Section Content Alignment',
               type: 'select',

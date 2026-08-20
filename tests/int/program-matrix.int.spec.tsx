@@ -185,6 +185,22 @@ describe('ProgramMatrixBlock schema', () => {
     expect(headerPosition.admin?.condition?.({}, { headerLayout: 'split' })).toBe(true)
     expect(headerPosition.admin?.condition?.({}, { headerLayout: 'stacked' })).toBe(false)
 
+    const headerVerticalAlignment = themeFields.find(
+      (field) => 'name' in field && field.name === 'headerVerticalAlignment',
+    ) as AdminField
+    expect(headerVerticalAlignment).toMatchObject({
+      type: 'select',
+      defaultValue: 'top',
+      required: true,
+      options: [
+        { label: 'Top', value: 'top' },
+        { label: 'Center', value: 'center' },
+        { label: 'Bottom', value: 'bottom' },
+      ],
+    })
+    expect(headerVerticalAlignment.admin?.condition?.({}, { headerLayout: 'split' })).toBe(true)
+    expect(headerVerticalAlignment.admin?.condition?.({}, { headerLayout: 'stacked' })).toBe(false)
+
     expect(findNamedField(ProgramMatrixBlock.fields, 'contentAlignment')).toMatchObject({
       type: 'select',
       defaultValue: 'left',
@@ -303,6 +319,64 @@ describe('ProgramMatrixBlockComponent', () => {
     expect(html.indexOf('data-program-matrix-intro="true"')).toBeLessThan(
       html.indexOf('data-program-matrix="true"'),
     )
+  })
+
+  it('defaults missing and invalid split header vertical alignment to top', () => {
+    const defaultHtml = renderToStaticMarkup(
+      <ProgramMatrixBlockComponent headerLayout="split" items={baseItems} title="Programmes" />,
+    )
+    const invalidHtml = renderToStaticMarkup(
+      <ProgramMatrixBlockComponent
+        headerLayout="split"
+        headerVerticalAlignment={'invalid' as never}
+        items={baseItems}
+        title="Programmes"
+      />,
+    )
+
+    for (const html of [defaultHtml, invalidHtml]) {
+      expect(html).toContain('data-program-matrix-header-vertical-alignment="top"')
+      expect(html).toContain('lg:self-start')
+      expect(html).not.toContain('lg:self-center')
+      expect(html).not.toContain('lg:self-end')
+    }
+  })
+
+  it.each([
+    ['center', 'lg:self-center'],
+    ['bottom', 'lg:self-end'],
+  ] as const)('aligns a split introduction to the %s', (alignment, expectedClass) => {
+    const html = renderToStaticMarkup(
+      <ProgramMatrixBlockComponent
+        headerLayout="split"
+        headerVerticalAlignment={alignment}
+        items={baseItems}
+        title="Programmes"
+      />,
+    )
+
+    expect(html).toContain(`data-program-matrix-header-vertical-alignment="${alignment}"`)
+    expect(html).toContain(expectedClass)
+    expect(html.indexOf('data-program-matrix-intro="true"')).toBeLessThan(
+      html.indexOf('data-program-matrix="true"'),
+    )
+  })
+
+  it('ignores saved vertical alignment in Stacked layout', () => {
+    const html = renderToStaticMarkup(
+      <ProgramMatrixBlockComponent
+        headerLayout="stacked"
+        headerVerticalAlignment="bottom"
+        items={baseItems}
+        title="Programmes"
+      />,
+    )
+
+    expect(html).toContain('data-program-matrix-layout="stacked"')
+    expect(html).toContain('data-program-matrix-header-vertical-alignment="bottom"')
+    expect(html).not.toContain('lg:self-start')
+    expect(html).not.toContain('lg:self-center')
+    expect(html).not.toContain('lg:self-end')
   })
 
   it('uses the shared eyebrow color treatment on colored section surfaces', () => {

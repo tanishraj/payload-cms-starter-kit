@@ -41,6 +41,8 @@ type ProgramMatrixItem = {
   url?: string | null
 }
 
+type ProgramMatrixHeaderVerticalAlignment = 'top' | 'center' | 'bottom'
+
 type ProgramMatrixBlockLike = {
   accentTitle?: string | null
   actionMode?: 'button' | 'link' | null
@@ -53,6 +55,7 @@ type ProgramMatrixBlockLike = {
   footerActions?: CmsActionValue[] | null
   headerLayout?: 'split' | 'stacked' | null
   headerPosition?: 'left' | 'right' | null
+  headerVerticalAlignment?: ProgramMatrixHeaderVerticalAlignment | null
   itemActionLabel?: string | null
   items?: ProgramMatrixItem[] | null
   size?: RegularBlockSize | null
@@ -144,6 +147,12 @@ const resolveProgrammeAction = (
   )
 }
 
+const splitHeaderVerticalAlignmentClasses: Record<ProgramMatrixHeaderVerticalAlignment, string> = {
+  top: 'lg:self-start',
+  center: 'lg:self-center',
+  bottom: 'lg:self-end',
+}
+
 export function ProgramMatrixBlockComponent({
   accentTitle,
   actionMode = 'link',
@@ -156,6 +165,7 @@ export function ProgramMatrixBlockComponent({
   footerActions,
   headerLayout = 'stacked',
   headerPosition = 'left',
+  headerVerticalAlignment = 'top',
   itemActionLabel = 'Learn More',
   items,
   size = 'default',
@@ -205,6 +215,10 @@ export function ProgramMatrixBlockComponent({
   const sectionActionsUseSurfaceContrast = isBrandSurface
   const resolvedHeaderLayout = headerLayout === 'split' ? 'split' : 'stacked'
   const resolvedHeaderPosition = headerPosition === 'right' ? 'right' : 'left'
+  const resolvedHeaderVerticalAlignment: ProgramMatrixHeaderVerticalAlignment =
+    headerVerticalAlignment === 'center' || headerVerticalAlignment === 'bottom'
+      ? headerVerticalAlignment
+      : 'top'
   const usesSplitHeader = resolvedHeaderLayout === 'split'
 
   return (
@@ -235,8 +249,11 @@ export function ProgramMatrixBlockComponent({
               usesSplitHeader &&
                 resolvedHeaderPosition === 'right' &&
                 'lg:col-start-2 lg:row-start-1',
+              usesSplitHeader &&
+                splitHeaderVerticalAlignmentClasses[resolvedHeaderVerticalAlignment],
             )}
             data-content-alignment={resolvedAlignment}
+            data-program-matrix-header-vertical-alignment={resolvedHeaderVerticalAlignment}
             data-program-matrix-intro="true"
           >
             {resolvedEyebrow ? (
