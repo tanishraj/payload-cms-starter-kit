@@ -75,11 +75,7 @@ type ProgrammeActionProps = {
   linkClassName?: string
 }
 
-function ProgrammeAction({
-  action,
-  buttonClassName,
-  linkClassName,
-}: ProgrammeActionProps) {
+function ProgrammeAction({ action, buttonClassName, linkClassName }: ProgrammeActionProps) {
   if (action.mode === 'button' && action.variant !== 'link') {
     return (
       <Button asChild className={buttonClassName} size="sm" variant={action.variant}>
@@ -113,9 +109,7 @@ const programmeActionVariants = new Set<CmsActionVariant>([
   'whiteOutline',
 ])
 
-const normalizeProgrammeAction = (
-  action?: ResolvedCmsAction,
-): ResolvedCmsAction | undefined =>
+const normalizeProgrammeAction = (action?: ResolvedCmsAction): ResolvedCmsAction | undefined =>
   action
     ? {
         ...action,
@@ -171,9 +165,7 @@ export function ProgramMatrixBlockComponent({
   if (!resolvedTitle) return null
   const resolvedAccentTitle = accentTitle?.trim() || undefined
   const resolvedLegacyActionMode = actionMode === 'button' ? 'button' : 'link'
-  const resolvedLegacyActionVariant = programmeActionVariants.has(
-    actionVariant as CmsActionVariant,
-  )
+  const resolvedLegacyActionVariant = programmeActionVariants.has(actionVariant as CmsActionVariant)
     ? (actionVariant as CmsActionVariant)
     : 'default'
   const resolvedLegacyActionLabel = itemActionLabel?.trim() || 'Learn More'
@@ -248,9 +240,7 @@ export function ProgramMatrixBlockComponent({
             data-program-matrix-intro="true"
           >
             {resolvedEyebrow ? (
-              <SectionEyebrow surface={resolvedSectionBackground}>
-                {resolvedEyebrow}
-              </SectionEyebrow>
+              <SectionEyebrow surface={resolvedSectionBackground}>{resolvedEyebrow}</SectionEyebrow>
             ) : null}
             <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
               {resolvedAccentTitle ? (
@@ -287,69 +277,69 @@ export function ProgramMatrixBlockComponent({
             )}
             data-program-matrix="true"
           >
-          {resolvedItems.map((item, index) => {
-            const Icon = item.Icon
-            const surface = resolveCardSurface(item.cardBackground, resolvedSectionBackground)
-            const isLastItem = index === resolvedItems.length - 1
-            const isLeftColumn = index % 2 === 0
-            const lastDesktopRowStart = resolvedItems.length - (resolvedItems.length % 2 || 2)
-            const isLastDesktopRow = index >= lastDesktopRowStart
-            const buttonClassName = item.action ? surface.button[item.action.variant] : undefined
+            {resolvedItems.map((item, index) => {
+              const Icon = item.Icon
+              const surface = resolveCardSurface(item.cardBackground, resolvedSectionBackground)
+              const isLastItem = index === resolvedItems.length - 1
+              const isLeftColumn = index % 2 === 0
+              const lastDesktopRowStart = resolvedItems.length - (resolvedItems.length % 2 || 2)
+              const isLastDesktopRow = index >= lastDesktopRowStart
+              const buttonClassName = item.action ? surface.button[item.action.variant] : undefined
 
-            return (
-              <article
-                className={cn(
-                  'flex min-w-0 flex-col p-6 text-left md:p-8',
-                  surface.className,
-                  surface.divider,
-                  !isLastItem && 'border-b',
-                  isLastDesktopRow && 'md:border-b-0',
-                  isLeftColumn && 'md:border-r',
-                )}
-                data-card-background={surface.value}
-                data-last-desktop-row={isLastDesktopRow ? 'true' : undefined}
-                data-left-column={isLeftColumn ? 'true' : undefined}
-                data-program-matrix-item="true"
-                key={item.id}
-              >
-                {Icon ? (
-                  <Icon
-                    aria-hidden="true"
-                    className={cn('mb-4 size-5 shrink-0', surface.icon)}
-                    data-program-icon="true"
-                    focusable="false"
-                  />
-                ) : null}
-                <h3 className="font-sans text-lg font-semibold leading-snug text-current">
-                  {item.title}
-                </h3>
-                {item.metadata ? (
-                  <p
-                    className={cn(
-                      'mt-2 font-mono text-xs font-semibold uppercase tracking-[0.24em]',
-                      surface.secondary,
-                    )}
-                  >
-                    {item.metadata}
-                  </p>
-                ) : null}
-                {item.description ? (
-                  <p className={cn('mt-4 max-w-[65ch] text-sm leading-6', surface.secondary)}>
-                    {item.description}
-                  </p>
-                ) : null}
-                {item.action ? (
-                  <div className="mt-auto pt-6" data-program-matrix-item-action="true">
-                    <ProgrammeAction
-                      action={item.action}
-                      buttonClassName={buttonClassName}
-                      linkClassName={surface.link}
+              return (
+                <article
+                  className={cn(
+                    'flex min-w-0 flex-col p-6 text-left md:p-8',
+                    surface.className,
+                    surface.divider,
+                    !isLastItem && 'border-b',
+                    isLastDesktopRow && 'md:border-b-0',
+                    isLeftColumn && 'md:border-r',
+                  )}
+                  data-card-background={surface.value}
+                  data-last-desktop-row={isLastDesktopRow ? 'true' : undefined}
+                  data-left-column={isLeftColumn ? 'true' : undefined}
+                  data-program-matrix-item="true"
+                  key={item.id}
+                >
+                  {Icon ? (
+                    <Icon
+                      aria-hidden="true"
+                      className={cn('mb-4 size-5 shrink-0', surface.icon)}
+                      data-program-icon="true"
+                      focusable="false"
                     />
-                  </div>
-                ) : null}
-              </article>
-            )
-          })}
+                  ) : null}
+                  <h3 className="font-sans text-lg font-semibold leading-snug text-current">
+                    {item.title}
+                  </h3>
+                  {item.metadata ? (
+                    <p
+                      className={cn(
+                        'mt-2 font-mono text-xs font-semibold uppercase tracking-[0.24em]',
+                        surface.secondary,
+                      )}
+                    >
+                      {item.metadata}
+                    </p>
+                  ) : null}
+                  {item.description ? (
+                    <p className={cn('mt-4 max-w-[65ch] text-sm leading-6', surface.secondary)}>
+                      {item.description}
+                    </p>
+                  ) : null}
+                  {item.action ? (
+                    <div className="mt-auto pt-6" data-program-matrix-item-action="true">
+                      <ProgrammeAction
+                        action={item.action}
+                        buttonClassName={buttonClassName}
+                        linkClassName={surface.link}
+                      />
+                    </div>
+                  ) : null}
+                </article>
+              )
+            })}
           </div>
         </div>
         <BlockFooterActions actions={footerActions} />
