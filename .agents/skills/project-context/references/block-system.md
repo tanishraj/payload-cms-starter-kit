@@ -102,20 +102,35 @@ download. New rows validate one cell per configured column. Runtime normalizatio
 invalid categories and rows, maps empty or missing cells to an em dash, ignores extra cells, and never
 calculates totals, converts currencies, or infers missing values. The schema intentionally has no bank
 or payment-account fields. One category renders directly; multiple categories use accessible tabs.
-Tablet and desktop use a semantic horizontally scrollable table with a sticky fee-head column, while
-mobile uses one card per academic period from the same normalized data.
+Table & Mobile Cards is the saved default and runtime fallback: tablet and desktop use a semantic
+horizontally scrollable table with a sticky fee-head column, while mobile uses one card per academic
+period from the same normalized data. Programme Cost Atlas is an optional 50/50 Primary/Card
+editorial composition at large breakpoints and a single stacked flow below them. Its left summary
+shows programme/session/category facts, up to four additional authored programme details, the first
+normalized Total row as Annual totals, category notes, and a required category-owned Complete
+programme expense entered exactly as published. Its right statement renders every remaining fee head
+once with all authored period values; additional Total rows remain on the right. Atlas performs no
+calculation, parsing, grouping, currency conversion, or value inference. It uses standard sans-serif
+titles, left-aligned period labels and values, and semantic Primary/Card colors. Right-side fee-head
+chapters use the shared compact content-item and metadata rhythm while left-side Annual totals retain
+their roomier summary spacing.
+New blocks initialize Additional Programme Details with one editable `Programme Duration` / `4.5 Years`
+row; existing documents are not backfilled and runtime never invents a missing duration.
 Multiple categories reuse the shared Contained, Pill, and Underline content-tab presentation while
 preserving the Fee Structure `boxed`, `pills`, and `underline` saved values through runtime mapping.
 Light sections use semantic card surfaces; Brand and Gradient Brand sections use
 primary-foreground overlays, borders, and text for the table and mobile cards. Every fee-value cell
 is right-aligned, including em-dash placeholders, while numeric values alone receive tabular
-numerals. Category tabs support intrinsic Content Width or Equal Full Width across every breakpoint.
-The programme/session band follows the shared `max-w-3xl` introduction measure. Standard desktop
+numerals. Category tabs support intrinsic Content Width, Centered Auto Width, or Equal Full Width.
+Centered Auto Width shrink-wraps and centers the tabs when they fit, then returns them to the inline
+start inside the existing horizontal scroller when long labels or narrow viewports overflow.
+The table layout's programme/session band follows the shared `max-w-3xl` introduction measure. Standard desktop
 fee-name cells use normal weight, Total rows are bold, and every body-row cell shares the same opaque
 Card/Accent or Primary/Primary Foreground base and hover surface so the sticky fee-name column remains
 visually continuous and follows the active theme. The
 optional fee document remains the fixed download destination; editors can present it as a Link or
-semantic Button and apply the shared section backgrounds to its outlined container.
+semantic Button and apply the shared section backgrounds to its outlined container. The table layout
+places it after the categories; Atlas places it at the bottom of the active left summary.
 
 Event Gallery renders selected Gallery Albums in their resolved manual or latest-event-date order.
 Each selected album contributes its first valid image as one cover tile, while the accessible card

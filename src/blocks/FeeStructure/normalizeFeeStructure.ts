@@ -1,10 +1,26 @@
-import type { FeeStructureCategoryValue, ResolvedFeeStructureCategory } from './types'
+import type {
+  FeeStructureCategoryValue,
+  FeeStructureProgrammeDetailValue,
+  ResolvedFeeStructureCategory,
+  ResolvedFeeStructureProgrammeDetail,
+} from './types'
 
 const numericValuePattern = /\d/
 
 const normalizeText = (value?: string | null) => value?.trim() || undefined
 
 export const isNumericFeeValue = (value: string) => numericValuePattern.test(value)
+
+export function normalizeProgrammeDetails(
+  details?: FeeStructureProgrammeDetailValue[] | null,
+): ResolvedFeeStructureProgrammeDetail[] {
+  return (details ?? []).flatMap((detail, index) => {
+    const label = normalizeText(detail.label)
+    const value = normalizeText(detail.value)
+
+    return label && value ? [{ id: `${detail.id ?? 'detail'}-${index}`, label, value }] : []
+  })
+}
 
 export function normalizeFeeCategories(
   categories?: FeeStructureCategoryValue[] | null,
@@ -62,6 +78,10 @@ export function normalizeFeeCategories(
         id: `${category.id ?? 'category'}-${categoryIndex}`,
         label,
         caption: normalizeText(category.caption),
+        completeProgrammeExpense: normalizeText(category.completeProgrammeExpense),
+        completeProgrammeExpenseLabel:
+          normalizeText(category.completeProgrammeExpenseLabel) ?? 'Complete programme expense',
+        completeProgrammeExpenseNote: normalizeText(category.completeProgrammeExpenseNote),
         columns: validColumns.map(({ id, label: columnLabel }) => ({
           id,
           label: columnLabel,

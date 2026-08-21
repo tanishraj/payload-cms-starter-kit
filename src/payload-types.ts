@@ -4264,6 +4264,16 @@ export interface FeeStructureBlock {
    */
   academicSession: string;
   /**
+   * Optional factual details such as programme duration.
+   */
+  programmeDetails?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * Add categories such as General and NRI. Each category owns its table and notes.
    */
   feeCategories: {
@@ -4272,6 +4282,12 @@ export interface FeeStructureBlock {
      * Optional accessible description for this fee table.
      */
     caption?: string | null;
+    completeProgrammeExpenseLabel?: string | null;
+    /**
+     * Required for Programme Cost Atlas. Enter the official complete amount exactly as published; it is never calculated from annual values.
+     */
+    completeProgrammeExpense?: string | null;
+    completeProgrammeExpenseNote?: string | null;
     /**
      * Add ordered labels such as 1st Year through 5th Year.
      */
@@ -4335,12 +4351,13 @@ export interface FeeStructureBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  layout: 'table' | 'programmeCostAtlas';
   contentAlignment: 'left' | 'center';
   tabStyle?: ('underline' | 'pills' | 'boxed') | null;
   /**
-   * Equal Full Width divides the complete tab rail evenly across every category.
+   * Centered Auto Width keeps intrinsic tabs centered when they fit and scrollable when they overflow. Equal Full Width divides the complete tab rail evenly.
    */
-  tabWidth?: ('content' | 'equal') | null;
+  tabWidth?: ('content' | 'centered' | 'equal') | null;
   downloadActionMode?: ('link' | 'button') | null;
   downloadButtonVariant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
   downloadAppearance?: {
@@ -8931,11 +8948,21 @@ export interface FeeStructureBlockSelect<T extends boolean = true> {
       };
   programmeName?: T;
   academicSession?: T;
+  programmeDetails?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
   feeCategories?:
     | T
     | {
         label?: T;
         caption?: T;
+        completeProgrammeExpenseLabel?: T;
+        completeProgrammeExpense?: T;
+        completeProgrammeExpenseNote?: T;
         columns?:
           | T
           | {
@@ -8986,6 +9013,7 @@ export interface FeeStructureBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  layout?: T;
   contentAlignment?: T;
   tabStyle?: T;
   tabWidth?: T;

@@ -22,10 +22,14 @@ import {
 import { cn } from '@/lib/utils'
 
 import { isNumericFeeValue } from './normalizeFeeStructure'
+import { ProgrammeCostAtlasPresentation } from './ProgrammeCostAtlasPresentation'
 import type {
+  FeeStructureLayout,
   FeeStructureTabStyle,
   FeeStructureTabWidth,
   ResolvedFeeStructureCategory,
+  ResolvedFeeStructureDownload,
+  ResolvedFeeStructureProgrammeDetail,
 } from './types'
 
 export const resolveFeeStructureTabVariant = (
@@ -35,6 +39,12 @@ export const resolveFeeStructureTabVariant = (
   if (value === 'boxed') return 'contained'
   return 'underline'
 }
+
+const feeTabRailWidthClasses = {
+  centered: 'mx-auto w-max',
+  content: 'w-max min-w-full',
+  equal: 'w-full min-w-0',
+} as const satisfies Record<FeeStructureTabWidth, string>
 
 const feeRowSurfaceClasses = {
   light: {
@@ -263,20 +273,46 @@ function FeeCategoryPresentation({
 }
 
 export function FeeStructureClient({
+  academicSession,
   categories,
+  download,
+  layout,
+  programmeDetails,
+  programmeName,
   sectionBackground,
   tabStyle,
   tabWidth,
 }: {
+  academicSession: string
   categories: ResolvedFeeStructureCategory[]
+  download?: ResolvedFeeStructureDownload
+  layout?: FeeStructureLayout | null
+  programmeDetails: ResolvedFeeStructureProgrammeDetail[]
+  programmeName: string
   sectionBackground?: BlockBackground | null
   tabStyle?: FeeStructureTabStyle | null
   tabWidth?: FeeStructureTabWidth | null
 }) {
+  const resolvedLayout: FeeStructureLayout =
+    layout === 'programmeCostAtlas' ? 'programmeCostAtlas' : 'table'
   const storedStyle = tabStyle === 'boxed' || tabStyle === 'pills' ? tabStyle : 'underline'
   const variant = resolveFeeStructureTabVariant(storedStyle)
-  const resolvedTabWidth: FeeStructureTabWidth = tabWidth === 'equal' ? 'equal' : 'content'
+  const resolvedTabWidth: FeeStructureTabWidth =
+    tabWidth === 'centered' || tabWidth === 'equal' ? tabWidth : 'content'
   const [selectedCategoryID, setSelectedCategoryID] = useState(categories[0]?.id ?? '')
+
+  const renderCategory = (category: ResolvedFeeStructureCategory) =>
+    resolvedLayout === 'programmeCostAtlas' ? (
+      <ProgrammeCostAtlasPresentation
+        academicSession={academicSession}
+        category={category}
+        download={download}
+        programmeDetails={programmeDetails}
+        programmeName={programmeName}
+      />
+    ) : (
+      <FeeCategoryPresentation category={category} sectionBackground={sectionBackground} />
+    )
 
   if (categories.length === 0) return null
 
@@ -285,8 +321,10 @@ export function FeeStructureClient({
 
     return (
       <div className="flex flex-col gap-4" data-fee-categories="true">
-        <h3 className="font-sans text-xl font-semibold text-current">{category.label}</h3>
-        <FeeCategoryPresentation category={category} sectionBackground={sectionBackground} />
+        {resolvedLayout === 'table' ? (
+          <h3 className="font-sans text-xl font-semibold text-current">{category.label}</h3>
+        ) : null}
+        {renderCategory(category)}
       </div>
     )
   }
@@ -308,7 +346,7 @@ export function FeeStructureClient({
           aria-label="Fee categories"
           className={cn(
             'flex flex-nowrap',
-            resolvedTabWidth === 'equal' ? 'w-full min-w-0' : 'w-max min-w-full',
+            feeTabRailWidthClasses[resolvedTabWidth],
             getContentTabRailClasses(variant),
           )}
           data-content-tab-variant={variant}
@@ -331,7 +369,7 @@ export function FeeStructureClient({
       </div>
       {categories.map((category) => (
         <TabsPrimitive.Content className="mt-0 outline-none" key={category.id} value={category.id}>
-          <FeeCategoryPresentation category={category} sectionBackground={sectionBackground} />
+          {renderCategory(category)}
         </TabsPrimitive.Content>
       ))}
     </TabsPrimitive.Root>

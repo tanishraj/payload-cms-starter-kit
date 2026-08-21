@@ -258,6 +258,8 @@
         "files": [
           "src/blocks/FeeStructure/Component.tsx",
           "src/blocks/FeeStructure/FeeStructureClient.tsx",
+          "src/blocks/FeeStructure/FeeStructureDownload.tsx",
+          "src/blocks/FeeStructure/ProgrammeCostAtlasPresentation.tsx",
           "src/blocks/FeeStructure/config.ts",
           "src/blocks/FeeStructure/normalizeFeeStructure.ts",
           "src/blocks/FeeStructure/types.ts"
@@ -2017,6 +2019,8 @@
       "src/blocks/FeatureSpotlight/config.ts",
       "src/blocks/FeeStructure/Component.tsx",
       "src/blocks/FeeStructure/FeeStructureClient.tsx",
+      "src/blocks/FeeStructure/FeeStructureDownload.tsx",
+      "src/blocks/FeeStructure/ProgrammeCostAtlasPresentation.tsx",
       "src/blocks/FeeStructure/config.ts",
       "src/blocks/FeeStructure/normalizeFeeStructure.ts",
       "src/blocks/FeeStructure/types.ts",
@@ -2530,7 +2534,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "9a3ad7779a420d32f41387a912b1b9f15467238ebddf2f72051d1cd19bf6702e"
+    "sha256": "230029c45aeb357c20af85b2431f532b6dc0e2677c982d39359ae849e826d10d"
   },
   "surfaces": {
     "access": [

@@ -4,10 +4,11 @@ import type { CmsActionValue, CmsActionVariant } from '@/lib/cmsLinks'
 import type { Media } from '@/payload-types'
 
 export type FeeStructureRowEmphasis = 'standard' | 'total'
+export type FeeStructureLayout = 'programmeCostAtlas' | 'table'
 export type FeeStructureTabStyle = 'boxed' | 'pills' | 'underline'
 export type FeeStructureDownloadActionMode = 'button' | 'link'
 export type FeeStructureDownloadButtonVariant = Exclude<CmsActionVariant, 'link'>
-export type FeeStructureTabWidth = 'content' | 'equal'
+export type FeeStructureTabWidth = 'centered' | 'content' | 'equal'
 
 export type FeeStructureCellValue = {
   id?: string | null
@@ -33,9 +34,18 @@ export type FeeStructureNoteValue = {
   text?: string | null
 }
 
+export type FeeStructureProgrammeDetailValue = {
+  id?: string | null
+  label?: string | null
+  value?: string | null
+}
+
 export type FeeStructureCategoryValue = {
   caption?: string | null
   columns?: FeeStructureColumnValue[] | null
+  completeProgrammeExpense?: string | null
+  completeProgrammeExpenseLabel?: string | null
+  completeProgrammeExpenseNote?: string | null
   id?: string | null
   label?: string | null
   notes?: FeeStructureNoteValue[] | null
@@ -61,13 +71,31 @@ export type ResolvedFeeStructureNote = {
   text: string
 }
 
+export type ResolvedFeeStructureProgrammeDetail = {
+  id: string
+  label: string
+  value: string
+}
+
 export type ResolvedFeeStructureCategory = {
   caption?: string
   columns: ResolvedFeeStructureColumn[]
+  completeProgrammeExpense?: string
+  completeProgrammeExpenseLabel: string
+  completeProgrammeExpenseNote?: string
   id: string
   label: string
   notes: ResolvedFeeStructureNote[]
   rows: ResolvedFeeStructureRow[]
+}
+
+export type ResolvedFeeStructureDownload = {
+  appearance?: BlockAppearance | null
+  buttonVariant: FeeStructureDownloadButtonVariant
+  label: string
+  mode: FeeStructureDownloadActionMode
+  sectionBackground?: BlockAppearance['background'] | null
+  url: string
 }
 
 export type FeeStructureBlockLike = {
@@ -85,6 +113,8 @@ export type FeeStructureBlockLike = {
   feeCategories?: FeeStructureCategoryValue[] | null
   feeDocument?: Media | string | number | null
   footerActions?: CmsActionValue[] | null
+  layout?: FeeStructureLayout | null
+  programmeDetails?: FeeStructureProgrammeDetailValue[] | null
   programmeName?: string | null
   size?: RegularBlockSize | null
   tabStyle?: FeeStructureTabStyle | null

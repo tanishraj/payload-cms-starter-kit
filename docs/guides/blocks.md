@@ -66,7 +66,7 @@ The setting follows the selected presentation. Content Highlights applies it to 
 | Quote Block              | Quotation or pull quote                     | Quote and attribution                                                                                                                                                                                                                                                         |
 | Tabs Content             | Grouped tab panels                          | Client tab interaction                                                                                                                                                                                                                                                        |
 | Download List            | Files and document libraries                | Four layouts, one shared 1–8 Columns setting, optional file icons, controlled file-type labels, fixed layout-owned View/Download actions, and manual destinations                                                                                                             |
-| Fee Structure            | Programme fee schedule                      | One to four configurable category tabs, responsive tables/cards, fee-only notes, and a file-locked Link or Button download with semantic container backgrounds                                                                                                                |
+| Fee Structure            | Programme fee schedule                      | Default responsive table/cards or a 50/50 Programme Cost Atlas, one to four category tabs, fee-only notes, and a file-locked Link or Button download                                                                                                                          |
 | Numbered Steps           | Ordered process                             | Backgrounds apply to numbered Cards, not connected/alternating layouts                                                                                                                                                                                                        |
 | Bento Grid               | Mixed-size feature cards                    | Grid layout and semantic background controls                                                                                                                                                                                                                                  |
 | Testimonial Grid         | Curated testimonials                        | Backgrounds apply to Grid and Featured cards                                                                                                                                                                                                                                  |
@@ -122,14 +122,27 @@ Fee Structure models one programme and one academic session per block. Every cat
 ordered academic-period columns, fee rows, text values, and fee-only notes. Each row must contain
 exactly one value for every configured column. Values are display text, totals are entered manually,
 and missing amounts must be authored explicitly rather than calculated, converted, or inferred.
-Category notes render only with their category. The optional Media upload produces one official file
-download; its presentation can be an underlined Link or a configured Button, and its outlined
-container can use the shared section backgrounds. Multiple-category tabs can size to their labels or
-divide the complete rail equally at every breakpoint. The programme/session band stays within the
-introduction measure, standard desktop fee-name cells use normal weight, Total rows are bold, and
-every desktop body row uses one continuous, theme-aware Accent or brand surface across its sticky
-label and value cells. Bank, payment-account, and online-payment details must not be entered in this
-block.
+Category notes render only with their category. **Fee Layout** defaults to **Table & Mobile Cards**,
+which keeps the programme/session context band, semantic desktop table, and one mobile card per
+period. **Programme Cost Atlas** instead creates a 50/50 Primary/Card editorial composition on large
+screens and stacks it on smaller screens. Its left summary contains programme details, the first
+authored Total row as Annual totals, category notes, a required category-owned Complete programme
+expense, and the file download. Complete programme expense is manually authored and required for
+every Atlas category; it is never calculated from Annual totals. The right statement shows each remaining fee head once with all of
+its authored period values; later Total rows remain there. Atlas does not calculate or reorganize
+values beyond moving that first authored Total row. Atlas uses standard sans-serif titles,
+left-aligned period labels and values, matched two-half spacing, and semantic Primary/Card colors.
+New blocks start Additional Programme Details with an editable **Programme Duration** / **4.5 Years**
+row; editors can change or remove it, and existing saved blocks are not backfilled.
+The optional Media upload produces one official
+file download; its presentation can be an underlined Link or a configured Button, and its outlined
+container can use shared semantic backgrounds. Multiple-category tabs can use **Content Width**,
+**Centered Auto Width**, or **Equal Full Width**. Centered Auto Width shrink-wraps and centers the
+category tabs when they fit, then returns them to the inline start inside the existing horizontal
+scroller when long labels or narrow viewports overflow. In the table layout, standard desktop fee-name
+cells use normal weight, Total rows are bold, and every desktop body row uses one continuous,
+theme-aware Accent or brand surface across its sticky label and value cells. Bank, payment-account,
+and online-payment details must not be entered in this block.
 
 Event Gallery uses the first valid image from every selected Gallery Album as the album cover and
 can open the complete album in its full-screen viewer. Disable **Enable Album Slideshow** to retain

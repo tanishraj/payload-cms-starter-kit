@@ -1,5 +1,3 @@
-import { Download, FileText } from 'lucide-react'
-
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { resolveBlockAppearanceClasses } from '@/blocks/shared/blockAppearance'
 import {
@@ -13,30 +11,18 @@ import {
 } from '@/blocks/shared/contentStyles'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
-import { Button, buttonVariants } from '@/components/ui/button'
-import { resolveCmsActions, type CmsActionVariant } from '@/lib/cmsLinks'
+import { resolveCmsActions } from '@/lib/cmsLinks'
 import { getMediaAbsoluteUrl } from '@/lib/media'
 import { cn } from '@/lib/utils'
 
 import { FeeStructureClient } from './FeeStructureClient'
-import { normalizeFeeCategories } from './normalizeFeeStructure'
-import type { FeeStructureBlockLike, FeeStructureDownloadButtonVariant } from './types'
-
-const downloadButtonVariants = new Set<CmsActionVariant>([
-  'default',
-  'primary',
-  'secondary',
-  'outline',
-  'white',
-  'whiteOutline',
-])
-
-const resolveDownloadButtonVariant = (
-  value?: FeeStructureDownloadButtonVariant | null,
-): FeeStructureDownloadButtonVariant =>
-  downloadButtonVariants.has(value as CmsActionVariant)
-    ? (value as FeeStructureDownloadButtonVariant)
-    : 'outline'
+import { FeeStructureDownload, resolveDownloadButtonVariant } from './FeeStructureDownload'
+import { normalizeFeeCategories, normalizeProgrammeDetails } from './normalizeFeeStructure'
+import type {
+  FeeStructureBlockLike,
+  FeeStructureLayout,
+  ResolvedFeeStructureDownload,
+} from './types'
 
 export function FeeStructureBlockComponent({
   academicSession,
@@ -53,6 +39,8 @@ export function FeeStructureBlockComponent({
   feeCategories,
   feeDocument,
   footerActions,
+  layout,
+  programmeDetails,
   programmeName,
   size = 'default',
   tabStyle = 'underline',
@@ -62,6 +50,9 @@ export function FeeStructureBlockComponent({
   const resolvedProgramme = programmeName?.trim()
   const resolvedSession = academicSession?.trim()
   const categories = normalizeFeeCategories(feeCategories)
+  const resolvedProgrammeDetails = normalizeProgrammeDetails(programmeDetails)
+  const resolvedLayout: FeeStructureLayout =
+    layout === 'programmeCostAtlas' ? 'programmeCostAtlas' : 'table'
 
   if (!resolvedProgramme || !resolvedSession || categories.length === 0) return null
 
@@ -78,11 +69,16 @@ export function FeeStructureBlockComponent({
   const fileLabel = downloadLabel?.trim() || 'Download Fee Structure'
   const resolvedDownloadMode = downloadActionMode === 'link' ? 'link' : 'button'
   const resolvedDownloadVariant = resolveDownloadButtonVariant(downloadButtonVariant)
-  const downloadAppearanceClasses = resolveBlockAppearanceClasses(downloadAppearance)
-  const downloadSurface =
-    downloadAppearanceClasses.background === 'none'
-      ? appearanceClasses.surface
-      : downloadAppearanceClasses.surface
+  const resolvedDownload: ResolvedFeeStructureDownload | undefined = fileURL
+    ? {
+        appearance: downloadAppearance,
+        buttonVariant: resolvedDownloadVariant,
+        label: fileLabel,
+        mode: resolvedDownloadMode,
+        sectionBackground: appearanceClasses.background,
+        url: fileURL,
+      }
+    : undefined
   const hasHeader = Boolean(
     resolvedEyebrow || resolvedTitle || resolvedDescription || resolvedActions.length,
   )
@@ -126,79 +122,43 @@ export function FeeStructureBlockComponent({
           </div>
         ) : null}
 
-        <dl
-          className={cn(
-            'flex w-full max-w-3xl flex-wrap gap-x-8 gap-y-3 border-y border-current/15 py-4',
-            alignment === 'center' ? 'mx-auto justify-center text-center' : 'self-start',
-          )}
-          data-fee-context="true"
-        >
-          <div>
-            <dt className="font-mono text-xs uppercase tracking-[0.14em] text-current/60">
-              Programme
-            </dt>
-            <dd className="mt-1 font-semibold">{resolvedProgramme}</dd>
-          </div>
-          <div>
-            <dt className="font-mono text-xs uppercase tracking-[0.14em] text-current/60">
-              Academic Session
-            </dt>
-            <dd className="mt-1 font-semibold tabular-nums">{resolvedSession}</dd>
-          </div>
-        </dl>
+        {resolvedLayout === 'table' ? (
+          <dl
+            className={cn(
+              'flex w-full max-w-3xl flex-wrap gap-x-8 gap-y-3 border-y border-current/15 py-4',
+              alignment === 'center' ? 'mx-auto justify-center text-center' : 'self-start',
+            )}
+            data-fee-context="true"
+          >
+            <div>
+              <dt className="font-mono text-xs uppercase tracking-[0.14em] text-current/60">
+                Programme
+              </dt>
+              <dd className="mt-1 font-semibold">{resolvedProgramme}</dd>
+            </div>
+            <div>
+              <dt className="font-mono text-xs uppercase tracking-[0.14em] text-current/60">
+                Academic Session
+              </dt>
+              <dd className="mt-1 font-semibold tabular-nums">{resolvedSession}</dd>
+            </div>
+          </dl>
+        ) : null}
 
         <FeeStructureClient
+          academicSession={resolvedSession}
           categories={categories}
+          download={resolvedLayout === 'programmeCostAtlas' ? resolvedDownload : undefined}
+          layout={resolvedLayout}
+          programmeDetails={resolvedProgrammeDetails}
+          programmeName={resolvedProgramme}
           sectionBackground={appearanceClasses.background}
           tabStyle={tabStyle}
           tabWidth={tabWidth}
         />
 
-        {fileURL ? (
-          <div
-            className={cn(
-              'flex flex-col gap-4 rounded-[var(--radius)] border border-current/15 p-5 sm:flex-row sm:items-center sm:justify-between',
-              downloadAppearanceClasses.className,
-            )}
-            data-fee-document="true"
-            data-fee-download-background={downloadAppearanceClasses.background}
-          >
-            <div className="flex items-center gap-3">
-              <FileText aria-hidden="true" className="size-5" />
-              <p className="font-semibold">Official fee structure</p>
-            </div>
-            {resolvedDownloadMode === 'link' ? (
-              <a
-                className={cn(
-                  buttonVariants({ variant: 'link' }),
-                  'group/button h-auto gap-2 px-0 py-0 text-sm font-semibold text-current no-underline hover:text-current/80 hover:no-underline',
-                )}
-                data-fee-download-mode="link"
-                download
-                href={fileURL}
-              >
-                <span className="underline decoration-current decoration-2 underline-offset-4">
-                  {fileLabel}
-                </span>
-                <Download aria-hidden="true" data-icon="inline-end" />
-              </a>
-            ) : (
-              <Button
-                asChild
-                className={cn(
-                  downloadSurface === 'brand' &&
-                    resolvedDownloadVariant === 'outline' &&
-                    'border-current/70 text-current hover:border-current hover:bg-current/10',
-                )}
-                variant={resolvedDownloadVariant}
-              >
-                <a data-fee-download-mode="button" download href={fileURL}>
-                  <Download aria-hidden="true" data-icon="inline-start" />
-                  {fileLabel}
-                </a>
-              </Button>
-            )}
-          </div>
+        {resolvedLayout === 'table' && resolvedDownload ? (
+          <FeeStructureDownload download={resolvedDownload} />
         ) : null}
 
         <BlockFooterActions actions={footerActions} alignment={alignment} className="mt-0" />

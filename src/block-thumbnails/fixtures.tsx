@@ -1936,6 +1936,10 @@ export const blockThumbnailFixtures = {
         {
           label: 'General',
           caption: 'General category fee structure for MBBS, session 2026-27.',
+          completeProgrammeExpenseLabel: 'Complete programme expense',
+          completeProgrammeExpense: '₹71.75 lakh',
+          completeProgrammeExpenseNote:
+            'Official General category package for the 4.5-year programme.',
           columns: [
             { label: '1st Year' },
             { label: '2nd Year' },
@@ -2000,8 +2004,7 @@ export const blockThumbnailFixtures = {
           ],
           notes: [
             {
-              text: 'Total package for 4.5 years: Rs. 71.75 lakhs.',
-              emphasis: true,
+              text: 'Amounts are displayed exactly as published.',
             },
           ],
         },
@@ -2035,9 +2038,11 @@ export const blockThumbnailFixtures = {
           url: '#fee-structure',
         } as Media
       }
+      layout="programmeCostAtlas"
+      programmeDetails={[{ label: 'Programme Duration', value: '4.5 Years' }]}
       programmeName="MBBS"
       size="compact"
-      tabWidth="equal"
+      tabWidth="centered"
       title="Fee Structure"
     />
   ),

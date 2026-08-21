@@ -8,6 +8,7 @@ import { FeeStructureBlock, validateFeeRows } from '@/blocks/FeeStructure/config
 import {
   isNumericFeeValue,
   normalizeFeeCategories,
+  normalizeProgrammeDetails,
 } from '@/blocks/FeeStructure/normalizeFeeStructure'
 import { renderLivePreviewPageBlocks } from '@/blocks/renderLivePreviewPageBlocks'
 import { renderPageBlocks } from '@/blocks/renderPageBlocks'
@@ -34,6 +35,35 @@ const findNamedField = (fields: Field[], name: string): Field | undefined => {
 }
 
 describe('Fee Structure normalization', () => {
+  it('normalizes Atlas details and category-owned programme expense without deriving values', () => {
+    expect(
+      normalizeProgrammeDetails([
+        { id: 'duration', label: ' Programme Duration ', value: ' 4.5 Years ' },
+        { label: ' ', value: 'ignored' },
+        { label: 'Location', value: ' ' },
+      ]),
+    ).toEqual([{ id: 'duration-0', label: 'Programme Duration', value: '4.5 Years' }])
+
+    expect(
+      normalizeFeeCategories([
+        {
+          label: ' General ',
+          completeProgrammeExpenseLabel: ' Complete programme expense ',
+          completeProgrammeExpense: ' ₹71.75 lakh ',
+          completeProgrammeExpenseNote: ' Official 4.5-year package ',
+          columns: [{ label: '1st Year' }],
+          rows: [{ label: 'Total', emphasis: 'total', cells: [{ value: '17,50,000' }] }],
+        },
+      ]),
+    ).toMatchObject([
+      {
+        completeProgrammeExpenseLabel: 'Complete programme expense',
+        completeProgrammeExpense: '₹71.75 lakh',
+        completeProgrammeExpenseNote: 'Official 4.5-year package',
+      },
+    ])
+  })
+
   it('trims authored values, preserves mixed currencies, and aligns cells to valid columns', () => {
     expect(
       normalizeFeeCategories([
@@ -70,6 +100,9 @@ describe('Fee Structure normalization', () => {
         id: 'general-0',
         label: 'General',
         caption: 'Official general-category fees',
+        completeProgrammeExpense: undefined,
+        completeProgrammeExpenseLabel: 'Complete programme expense',
+        completeProgrammeExpenseNote: undefined,
         columns: [
           { id: 'column-0-0', label: '1st Year' },
           { id: 'column-0-2', label: '2nd Year' },
@@ -78,12 +111,14 @@ describe('Fee Structure normalization', () => {
           {
             id: 'tuition-0',
             label: 'Tuition Fee',
+            note: undefined,
             emphasis: 'standard',
             cells: ['Rs. 12,75,000', 'USD 35,000'],
           },
           {
             id: 'row-0-1',
             label: 'Total',
+            note: undefined,
             emphasis: 'total',
             cells: ['17,50,000', '—'],
           },
@@ -121,6 +156,36 @@ describe('FeeStructureBlock schema', () => {
     expect(findNamedField(FeeStructureBlock.fields, 'academicSession')).toMatchObject({
       required: true,
     })
+    expect(findNamedField(FeeStructureBlock.fields, 'layout')).toMatchObject({
+      defaultValue: 'table',
+      required: true,
+      options: [
+        { label: 'Table & Mobile Cards', value: 'table' },
+        { label: 'Programme Cost Atlas', value: 'programmeCostAtlas' },
+      ],
+    })
+    expect(findNamedField(FeeStructureBlock.fields, 'programmeDetails')).toMatchObject({
+      type: 'array',
+      defaultValue: [
+        {
+          label: 'Programme Duration',
+          value: '4.5 Years',
+        },
+      ],
+      maxRows: 4,
+    })
+    expect(findNamedField(FeeStructureBlock.fields, 'completeProgrammeExpenseLabel')).toMatchObject(
+      {
+        defaultValue: 'Complete programme expense',
+      },
+    )
+    expect(findNamedField(FeeStructureBlock.fields, 'completeProgrammeExpense')).toMatchObject({
+      type: 'text',
+      required: true,
+    })
+    expect(findNamedField(FeeStructureBlock.fields, 'completeProgrammeExpenseNote')).toMatchObject({
+      type: 'textarea',
+    })
     expect(findNamedField(FeeStructureBlock.fields, 'feeCategories')).toMatchObject({
       type: 'array',
       required: true,
@@ -152,6 +217,27 @@ describe('FeeStructureBlock schema', () => {
     expect(findNamedField(FeeStructureBlock.fields, 'downloadLabel')).toMatchObject({
       defaultValue: 'Download Fee Structure',
     })
+
+    for (const name of [
+      'programmeDetails',
+      'completeProgrammeExpenseLabel',
+      'completeProgrammeExpense',
+      'completeProgrammeExpenseNote',
+    ]) {
+      const field = findNamedField(FeeStructureBlock.fields, name)
+      expect(
+        field && 'admin' in field
+          ? field.admin?.condition?.({}, {}, { blockData: { layout: 'table' } } as never)
+          : undefined,
+      ).toBe(false)
+      expect(
+        field && 'admin' in field
+          ? field.admin?.condition?.({}, {}, {
+              blockData: { layout: 'programmeCostAtlas' },
+            } as never)
+          : undefined,
+      ).toBe(true)
+    }
   })
 
   it('requires row cell counts to match the category column count', async () => {
@@ -199,6 +285,7 @@ describe('FeeStructureBlock schema', () => {
       required: true,
       options: [
         { label: 'Content Width', value: 'content' },
+        { label: 'Centered Auto Width', value: 'centered' },
         { label: 'Equal Full Width', value: 'equal' },
       ],
     })
@@ -308,7 +395,348 @@ const nriCategory = {
   notes: [{ text: 'Amounts are displayed exactly as published.' }],
 }
 
+const atlasCategory = {
+  id: 'general-atlas',
+  label: 'General',
+  caption: 'Official General category fee statement for MBBS session 2026-27.',
+  completeProgrammeExpenseLabel: 'Complete programme expense',
+  completeProgrammeExpense: '₹71.75 lakh',
+  completeProgrammeExpenseNote: 'Official 4.5-year package.',
+  columns: [
+    { label: '1st Year' },
+    { label: '2nd Year' },
+    { label: '3rd Year' },
+    { label: '4th Year' },
+    { label: '5th Year' },
+  ],
+  rows: [
+    {
+      label: 'Tuition Fee',
+      cells: [
+        { value: '12,75,000' },
+        { value: '12,75,000' },
+        { value: '12,75,000' },
+        { value: '12,75,000' },
+        { value: '6,37,500' },
+      ],
+    },
+    {
+      label: 'Security Money',
+      note: 'One-time charge',
+      cells: [
+        { value: '1,00,000' },
+        { value: '—' },
+        { value: '—' },
+        { value: '—' },
+        { value: '—' },
+      ],
+    },
+    {
+      label: 'Total',
+      emphasis: 'total' as const,
+      cells: [
+        { value: '17,50,000' },
+        { value: '15,50,000' },
+        { value: '15,50,000' },
+        { value: '15,50,000' },
+        { value: '7,75,000' },
+      ],
+    },
+    {
+      label: 'Hostel Total',
+      emphasis: 'total' as const,
+      cells: [
+        { value: '2,00,000' },
+        { value: '2,00,000' },
+        { value: '2,00,000' },
+        { value: '2,00,000' },
+        { value: '1,00,000' },
+      ],
+    },
+  ],
+  notes: [{ text: 'Amounts are displayed exactly as officially published.', emphasis: true }],
+}
+
 describe('FeeStructureBlockComponent', () => {
+  it('renders the Programme Cost Atlas with the approved 50/50 editorial hierarchy', () => {
+    const { container } = render(
+      <FeeStructureBlockComponent
+        academicSession="2026-27"
+        feeCategories={[atlasCategory]}
+        feeDocument={{ id: 'fees', url: '/media/fees.pdf' } as Media}
+        layout="programmeCostAtlas"
+        programmeDetails={[
+          { label: 'Programme Duration', value: '4.5 Years' },
+          { label: 'Campus', value: 'Saharsa, Bihar' },
+        ]}
+        programmeName="MBBS"
+      />,
+    )
+
+    const atlas = container.querySelector('[data-fee-atlas="true"]')
+    const summary = container.querySelector('[data-fee-atlas-summary="true"]')
+    const summaryHTML = summary?.innerHTML ?? ''
+    const atlasTitles = Array.from(container.querySelectorAll('[data-fee-atlas-title="true"]'))
+    const periodLabels = Array.from(container.querySelectorAll('[data-fee-atlas-period="true"] dt'))
+    const periodValues = Array.from(
+      container.querySelectorAll('[data-fee-atlas-period="true"] [data-fee-value="true"]'),
+    )
+    const annualTotalsGrid = container.querySelector(
+      '[data-fee-atlas-annual-totals="true"] [data-fee-atlas-period-grid="true"]',
+    )
+    const annualTotalPeriods = Array.from(
+      container.querySelectorAll(
+        '[data-fee-atlas-annual-totals="true"] [data-fee-atlas-period="true"]',
+      ),
+    )
+    const statementChapters = Array.from(
+      container.querySelectorAll('[data-fee-atlas-fee-chapter="true"]'),
+    )
+    const statementPeriodGrids = Array.from(
+      container.querySelectorAll(
+        '[data-fee-atlas-statement="true"] [data-fee-atlas-period-grid="true"]',
+      ),
+    )
+    const statementPeriods = Array.from(
+      container.querySelectorAll(
+        '[data-fee-atlas-statement="true"] [data-fee-atlas-period="true"]',
+      ),
+    )
+    const statementChapterHeadings = Array.from(
+      container.querySelectorAll('[data-fee-atlas-fee-chapter-heading="true"]'),
+    )
+
+    expect(atlas?.className).toContain('lg:grid-cols-2')
+    expect(summary).toBeTruthy()
+    expect(summary?.className).toContain('bg-primary')
+    expect(container.querySelector('[data-fee-atlas-statement="true"]')).toBeTruthy()
+    expect(container.querySelector('[data-fee-atlas-statement="true"]')?.className).toContain(
+      'bg-card',
+    )
+    expect(container.querySelector('[data-fee-atlas-annual-totals="true"]')).toBeTruthy()
+    expect(
+      container.querySelector('[data-fee-atlas-complete-expense="true"]')?.textContent,
+    ).toContain('₹71.75 lakh')
+    expect(summary?.querySelector('[data-fee-document="true"]')).toBeTruthy()
+    expect(container.querySelectorAll('[data-fee-atlas-fee-chapter="true"]')).toHaveLength(3)
+    expect(atlasTitles.length).toBeGreaterThan(0)
+    expect(atlasTitles.every((element) => element.className.includes('font-sans'))).toBe(true)
+    expect(atlasTitles.every((element) => !element.className.includes('font-serif'))).toBe(true)
+    expect(
+      atlasTitles.every(
+        (element) =>
+          !element.className.includes('text-3xl') && !element.className.includes('text-4xl'),
+      ),
+    ).toBe(true)
+    expect(periodLabels.every((element) => element.className.includes('text-left'))).toBe(true)
+    expect(periodValues.every((element) => element.className.includes('text-left'))).toBe(true)
+    expect(periodValues.every((element) => !element.className.includes('text-right'))).toBe(true)
+    expect(container.querySelector('[data-fee-atlas-summary-inner="true"]')?.className).toContain(
+      'sm:p-8',
+    )
+    expect(
+      container.querySelector('[data-fee-atlas-statement-header="true"]')?.className,
+    ).toContain('sm:p-8')
+    const completeExpense = container.querySelector(
+      '[data-fee-atlas-complete-expense-value="true"]',
+    )
+    expect(completeExpense?.className).toContain('font-sans')
+    expect(completeExpense?.className).toContain('text-2xl')
+    expect(completeExpense?.className).toContain('text-left')
+    expect(completeExpense?.className).toContain('tabular-nums')
+    expect(annualTotalsGrid?.getAttribute('data-fee-atlas-period-density')).toBe('default')
+    expect(annualTotalPeriods.every((element) => element.className.includes('py-4'))).toBe(true)
+    expect(annualTotalPeriods.every((element) => !element.className.includes('py-3'))).toBe(true)
+    expect(annualTotalPeriods.every((element) => element.className.includes('px-3'))).toBe(true)
+    expect(annualTotalPeriods.every((element) => !element.className.includes('first:pl-0'))).toBe(
+      true,
+    )
+    expect(annualTotalPeriods.every((element) => !element.className.includes('last:pr-0'))).toBe(
+      true,
+    )
+    const finalOddPeriod = annualTotalPeriods.at(-1)
+    expect(finalOddPeriod?.getAttribute('data-fee-atlas-compact-divider')).toBe('true')
+    expect(finalOddPeriod?.className).toContain('after:left-1/2')
+    expect(finalOddPeriod?.className).toContain('after:border-l')
+    expect(finalOddPeriod?.className).toContain('lg:after:hidden')
+    expect(statementPeriodGrids).toHaveLength(3)
+    expect(
+      statementPeriodGrids.every(
+        (element) => element.getAttribute('data-fee-atlas-period-density') === 'compact',
+      ),
+    ).toBe(true)
+    expect(statementPeriods.every((element) => element.className.includes('py-3'))).toBe(true)
+    expect(statementPeriods.every((element) => !element.className.includes('py-4'))).toBe(true)
+    expect(statementChapters.every((element) => element.className.includes('px-6'))).toBe(true)
+    expect(statementChapters.every((element) => element.className.includes('py-5'))).toBe(true)
+    expect(statementChapters.every((element) => element.className.includes('sm:px-8'))).toBe(true)
+    expect(statementChapters.every((element) => element.className.includes('sm:py-5'))).toBe(true)
+    expect(statementChapters.every((element) => !element.className.includes('sm:p-8'))).toBe(true)
+    expect(
+      statementChapters.every((element) => element.className.includes('hover:bg-accent/35')),
+    ).toBe(true)
+    expect(statementChapterHeadings).toHaveLength(3)
+    expect(statementChapterHeadings.every((element) => element.className.includes('mb-3'))).toBe(
+      true,
+    )
+    expect(periodLabels.every((element) => element.className.includes('font-mono'))).toBe(true)
+    expect(periodLabels.every((element) => element.className.includes('text-xs'))).toBe(true)
+    expect(periodLabels.every((element) => element.className.includes('font-medium'))).toBe(true)
+    expect(periodLabels.every((element) => element.className.includes('tracking-[0.14em]'))).toBe(
+      true,
+    )
+    const standardFeeTitle = container.querySelector(
+      '[data-fee-atlas-fee-chapter="true"][data-fee-row-emphasis="standard"] [data-fee-row-label="true"]',
+    )
+    expect(standardFeeTitle?.className).toContain('font-sans')
+    expect(standardFeeTitle?.className).toContain('text-sm')
+    expect(standardFeeTitle?.className).toContain('sm:text-sm')
+    expect(standardFeeTitle?.className).toContain('leading-tight')
+    expect(standardFeeTitle?.className).toContain('font-medium')
+    const totalFeeTitle = container.querySelector(
+      '[data-fee-atlas-fee-chapter="true"][data-fee-row-emphasis="total"] [data-fee-row-label="true"]',
+    )
+    expect(totalFeeTitle?.className).toContain('text-sm')
+    expect(totalFeeTitle?.className).toContain('sm:text-sm')
+    expect(totalFeeTitle?.className).toContain('font-bold')
+    expect(screen.getAllByText('Tuition Fee')).toHaveLength(1)
+    expect(screen.getAllByText('1st Year').length).toBeGreaterThan(1)
+    expect(summaryHTML.indexOf('Programme details')).toBeLessThan(
+      summaryHTML.indexOf('Annual totals'),
+    )
+    expect(container.querySelector('[data-fee-atlas-notes="true"]')).toBeNull()
+    expect(summaryHTML.indexOf('Annual totals')).toBeLessThan(
+      summaryHTML.indexOf('Complete programme expense'),
+    )
+    expect(summaryHTML.indexOf('Complete programme expense')).toBeLessThan(
+      summaryHTML.indexOf('data-fee-document="true"'),
+    )
+    expect(
+      Array.from(
+        container.querySelectorAll('[data-fee-atlas-statement="true"] [data-fee-row-label="true"]'),
+      ).map((element) => element.textContent),
+    ).toEqual(['Tuition Fee', 'Security Money', 'Hostel Total'])
+    expect(container.querySelector('[data-fee-atlas-statement="true"]')?.textContent).toContain(
+      'Hostel Total',
+    )
+    expect(container.querySelector('table')).toBeNull()
+    expect(container.querySelector('[data-fee-context="true"]')).toBeNull()
+  })
+
+  it('does not draw a compact center divider for a single-period Atlas grid', () => {
+    const singlePeriodCategory = {
+      ...atlasCategory,
+      columns: atlasCategory.columns.slice(0, 1),
+      rows: atlasCategory.rows.map((row) => ({
+        ...row,
+        cells: row.cells.slice(0, 1),
+      })),
+    }
+    const { container } = render(
+      <FeeStructureBlockComponent
+        academicSession="2026-27"
+        feeCategories={[singlePeriodCategory]}
+        layout="programmeCostAtlas"
+        programmeName="MBBS"
+      />,
+    )
+
+    expect(container.querySelector('[data-fee-atlas-compact-divider="true"]')).toBeNull()
+    expect(container.querySelector('[data-fee-atlas-period="true"]')?.className).toContain(
+      'col-span-2',
+    )
+  })
+
+  it('keeps the Atlas frame and authored fee chapters when optional summary regions are absent', () => {
+    const category = {
+      ...atlasCategory,
+      completeProgrammeExpense: undefined,
+      completeProgrammeExpenseNote: undefined,
+      notes: [],
+      rows: atlasCategory.rows.filter((row) => row.emphasis !== 'total'),
+    }
+    const { container } = render(
+      <FeeStructureBlockComponent
+        academicSession="2026-27"
+        feeCategories={[category]}
+        layout="programmeCostAtlas"
+        programmeName="MBBS"
+      />,
+    )
+
+    expect(container.querySelector('[data-fee-atlas="true"]')).toBeTruthy()
+    expect(container.querySelector('[data-fee-atlas-annual-totals="true"]')).toBeNull()
+    expect(container.querySelector('[data-fee-atlas-notes="true"]')).toBeNull()
+    expect(container.querySelector('[data-fee-atlas-complete-expense="true"]')).toBeNull()
+    expect(container.querySelector('[data-fee-document="true"]')).toBeNull()
+    expect(container.querySelectorAll('[data-fee-atlas-fee-chapter="true"]')).toHaveLength(2)
+
+    const periodGrid = container.querySelector('[data-fee-atlas-period-grid="true"]')
+    expect(periodGrid?.className).toContain('grid-cols-2')
+    expect(periodGrid?.className).toContain('lg:grid-cols-5')
+  })
+
+  it.each([undefined, 'table', 'unknown'])(
+    'keeps the legacy table layout as the runtime fallback for %s',
+    (layout) => {
+      const { container } = render(
+        <FeeStructureBlockComponent
+          academicSession="2026-27"
+          feeCategories={[generalCategory]}
+          layout={layout as never}
+          programmeName="MBBS"
+        />,
+      )
+
+      expect(container.querySelector('table')).toBeTruthy()
+      expect(container.querySelector('[data-fee-structure-mobile="true"]')).toBeTruthy()
+      expect(container.querySelector('[data-fee-context="true"]')).toBeTruthy()
+      expect(container.querySelector('[data-fee-atlas="true"]')).toBeNull()
+    },
+  )
+
+  it('switches every category-owned Atlas region through the existing tabs', () => {
+    const nriAtlasCategory = {
+      ...atlasCategory,
+      id: 'nri-atlas',
+      label: 'NRI',
+      caption: 'Official NRI category fee statement.',
+      completeProgrammeExpense: 'USD 175,000',
+      completeProgrammeExpenseNote: 'Official NRI package.',
+      notes: [{ text: 'NRI values remain in the published currency.' }],
+      rows: atlasCategory.rows.map((row) => ({
+        ...row,
+        cells: row.cells.map(() => ({ value: 'USD 35,000' })),
+      })),
+    }
+    const { container } = render(
+      <FeeStructureBlockComponent
+        academicSession="2026-27"
+        feeCategories={[atlasCategory, nriAtlasCategory]}
+        layout="programmeCostAtlas"
+        programmeName="MBBS"
+        tabStyle="pills"
+        tabWidth="equal"
+      />,
+    )
+
+    expect(screen.getAllByRole('tab').map((tab) => tab.textContent)).toEqual(['General', 'NRI'])
+    expect(container.querySelector('[data-fee-tab-style="pills"]')).toBeTruthy()
+    expect(container.querySelector('[data-fee-tab-width="equal"]')).toBeTruthy()
+    expect(screen.getByText('₹71.75 lakh')).toBeTruthy()
+
+    fireEvent.mouseDown(screen.getByRole('tab', { name: 'NRI' }), {
+      button: 0,
+      ctrlKey: false,
+    })
+
+    expect(screen.getByText('USD 175,000')).toBeTruthy()
+    expect(screen.queryByText('NRI values remain in the published currency.')).toBeNull()
+    expect(screen.queryByText('₹71.75 lakh')).toBeNull()
+    expect(screen.queryByText('Amounts are displayed exactly as officially published.')).toBeNull()
+    expect(container.querySelector('[data-fee-atlas-summary="true"]')?.textContent).toContain('NRI')
+  })
+
   it('renders one category directly as a desktop table and mobile period cards', () => {
     const html = renderToStaticMarkup(
       <FeeStructureBlockComponent
@@ -369,6 +797,75 @@ describe('FeeStructureBlockComponent', () => {
 
     expect(container.querySelector('[data-fee-tab-style="boxed"]')).toBeTruthy()
     expect(container.querySelector('[data-content-tab-variant="contained"]')).toBeTruthy()
+  })
+
+  it.each([undefined, 'unknown'])(
+    'uses content-width tabs as the runtime fallback for %s',
+    (tabWidth) => {
+      const { container } = render(
+        <FeeStructureBlockComponent
+          academicSession="2026-27"
+          feeCategories={[generalCategory, nriCategory]}
+          programmeName="MBBS"
+          tabWidth={tabWidth as never}
+        />,
+      )
+
+      const rail = container.querySelector('[data-fee-tab-width="content"]')
+      const railClasses = new Set(rail?.className.split(/\s+/))
+
+      expect(railClasses.has('w-max')).toBe(true)
+      expect(railClasses.has('min-w-full')).toBe(true)
+      expect(railClasses.has('mx-auto')).toBe(false)
+    },
+  )
+
+  it('centers intrinsic category tabs and keeps overflow scrolling available', () => {
+    const longCategory = {
+      ...nriCategory,
+      id: 'international-sponsored',
+      label: 'International Sponsored Category',
+    }
+    const { container } = render(
+      <FeeStructureBlockComponent
+        academicSession="2026-27"
+        feeCategories={[generalCategory, longCategory]}
+        programmeName="MBBS"
+        tabStyle="pills"
+        tabWidth="centered"
+      />,
+    )
+
+    const rail = container.querySelector('[data-fee-tab-width="centered"]')
+    const railClasses = new Set(rail?.className.split(/\s+/))
+    const wrapperClasses = new Set(rail?.parentElement?.className.split(/\s+/))
+    const tabs = screen.getAllByRole('tab')
+
+    expect(railClasses.has('mx-auto')).toBe(true)
+    expect(railClasses.has('w-max')).toBe(true)
+    expect(railClasses.has('min-w-full')).toBe(false)
+    expect(railClasses.has('w-full')).toBe(false)
+    expect(railClasses.has('min-w-0')).toBe(false)
+    expect(wrapperClasses.has('overflow-x-auto')).toBe(true)
+    expect(wrapperClasses.has('pb-1')).toBe(true)
+    expect(tabs.map((tab) => tab.textContent)).toEqual([
+      'General',
+      'International Sponsored Category',
+    ])
+    expect(tabs.every((tab) => tab.className.includes('min-h-11'))).toBe(true)
+    expect(tabs.every((tab) => tab.className.includes('shrink-0'))).toBe(true)
+    expect(tabs.every((tab) => !tab.className.includes('flex-1'))).toBe(true)
+    expect(tabs.every((tab) => !tab.className.includes('w-0'))).toBe(true)
+    expect(tabs.every((tab) => !tab.className.includes('text-ellipsis'))).toBe(true)
+
+    fireEvent.mouseDown(screen.getByRole('tab', { name: 'International Sponsored Category' }), {
+      button: 0,
+      ctrlKey: false,
+    })
+
+    expect(
+      container.querySelector('[data-fee-category="International Sponsored Category"]'),
+    ).toBeTruthy()
   })
 
   it('supports equal full-width category tabs at every breakpoint', () => {

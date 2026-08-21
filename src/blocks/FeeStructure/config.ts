@@ -28,6 +28,13 @@ type FeeStructureSiblingData = {
   feeDocument?: unknown
 }
 
+type FeeStructureBlockData = {
+  layout?: 'programmeCostAtlas' | 'table' | null
+}
+
+const usesProgrammeCostAtlas = (data: FeeStructureBlockData) =>
+  data?.layout === 'programmeCostAtlas'
+
 const hasMultipleFeeCategories = (_data: unknown, siblingData: FeeStructureSiblingData) =>
   Array.isArray(siblingData?.feeCategories) && siblingData.feeCategories.length > 1
 
@@ -73,6 +80,37 @@ const feeCategoriesField: ArrayField = {
       type: 'textarea',
       admin: {
         description: 'Optional accessible description for this fee table.',
+      },
+    },
+    {
+      name: 'completeProgrammeExpenseLabel',
+      label: 'Complete Programme Expense Label',
+      type: 'text',
+      defaultValue: 'Complete programme expense',
+      admin: {
+        condition: (_data, _siblingData, { blockData }) =>
+          usesProgrammeCostAtlas(blockData as FeeStructureBlockData),
+      },
+    },
+    {
+      name: 'completeProgrammeExpense',
+      label: 'Complete Programme Expense',
+      type: 'text',
+      required: true,
+      admin: {
+        condition: (_data, _siblingData, { blockData }) =>
+          usesProgrammeCostAtlas(blockData as FeeStructureBlockData),
+        description:
+          'Required for Programme Cost Atlas. Enter the official complete amount exactly as published; it is never calculated from annual values.',
+      },
+    },
+    {
+      name: 'completeProgrammeExpenseNote',
+      label: 'Complete Programme Expense Note',
+      type: 'textarea',
+      admin: {
+        condition: (_data, _siblingData, { blockData }) =>
+          usesProgrammeCostAtlas(blockData as FeeStructureBlockData),
       },
     },
     {
@@ -230,6 +268,36 @@ export const FeeStructureBlock: Block = {
                 description: 'One session per block, such as 2026-27.',
               },
             },
+            {
+              name: 'programmeDetails',
+              label: 'Additional Programme Details',
+              type: 'array',
+              defaultValue: [
+                {
+                  label: 'Programme Duration',
+                  value: '4.5 Years',
+                },
+              ],
+              maxRows: 4,
+              admin: {
+                condition: (_data, _siblingData, { blockData }) =>
+                  usesProgrammeCostAtlas(blockData as FeeStructureBlockData),
+                initCollapsed: true,
+                description: 'Optional factual details such as programme duration.',
+              },
+              fields: [
+                {
+                  name: 'label',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'value',
+                  type: 'text',
+                  required: true,
+                },
+              ],
+            },
             feeCategoriesField,
             {
               name: 'feeDocument',
@@ -261,6 +329,17 @@ export const FeeStructureBlock: Block = {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
+            {
+              name: 'layout',
+              label: 'Fee Layout',
+              type: 'select',
+              defaultValue: 'table',
+              required: true,
+              options: [
+                { label: 'Table & Mobile Cards', value: 'table' },
+                { label: 'Programme Cost Atlas', value: 'programmeCostAtlas' },
+              ],
+            } satisfies SelectField,
             {
               name: 'contentAlignment',
               label: 'Section Content Alignment',
@@ -295,12 +374,13 @@ export const FeeStructureBlock: Block = {
               required: true,
               options: [
                 { label: 'Content Width', value: 'content' },
+                { label: 'Centered Auto Width', value: 'centered' },
                 { label: 'Equal Full Width', value: 'equal' },
               ],
               admin: {
                 condition: hasMultipleFeeCategories,
                 description:
-                  'Equal Full Width divides the complete tab rail evenly across every category.',
+                  'Centered Auto Width keeps intrinsic tabs centered when they fit and scrollable when they overflow. Equal Full Width divides the complete tab rail evenly.',
               },
             } satisfies SelectField,
             {
