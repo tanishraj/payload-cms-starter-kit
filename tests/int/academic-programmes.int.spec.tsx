@@ -96,6 +96,16 @@ describe('Academic Programmes block', () => {
 
     expect(html).toContain('data-academic-programmes="true"')
     expect(html).toContain('data-academic-programmes-header="split"')
+    const splitHeaderClasses =
+      html
+        .match(/<header class="([^"]+)" data-academic-programmes-header="split">/)?.[1]
+        ?.split(' ') ?? []
+    expect(splitHeaderClasses).toContain('lg:grid-cols-[minmax(0,3fr)_minmax(18rem,2fr)]')
+    expect(splitHeaderClasses).not.toContain('w-full')
+    expect(splitHeaderClasses).not.toContain('max-w-3xl')
+    expect(splitHeaderClasses).not.toContain('mr-auto')
+    expect(splitHeaderClasses).not.toContain('mx-auto')
+    expect(splitHeaderClasses).not.toContain('ml-auto')
     expect(html).toContain('Begin your journey')
     expect(html).toContain('in medicine.')
     expect(html).toContain('href="/programmes/mbbs"')
@@ -109,6 +119,42 @@ describe('Academic Programmes block', () => {
     expect(html).toContain('motion-safe:transition-transform')
     expect(html).not.toContain('text-success')
   })
+
+  it.each([
+    ['left', 'mr-auto'],
+    ['center', 'mx-auto'],
+    ['right', 'ml-auto'],
+  ] as const)(
+    'positions a %s-aligned stacked header across the full container',
+    (alignment, outerClass) => {
+      const html = renderToStaticMarkup(
+        <AcademicProgrammesBlockComponent
+          contentAlignment={alignment}
+          description="Programmes designed for clinical confidence."
+          headerLayout="stacked"
+          programmes={[
+            {
+              image: { alt: 'Anatomy teaching model', url: '/media/anatomy.jpg' },
+              title: 'MBBS',
+            },
+          ]}
+          title="Begin your journey"
+        />,
+      )
+      const headerClasses =
+        html
+          .match(/<header class="([^"]+)" data-academic-programmes-header="stacked">/)?.[1]
+          ?.split(' ') ?? []
+
+      expect(headerClasses).toEqual(
+        expect.arrayContaining(['grid', 'gap-6', 'w-full', 'max-w-3xl', outerClass]),
+      )
+      expect(html).toContain(`data-content-alignment="${alignment}"`)
+      if (alignment === 'center') {
+        expect(html).toContain('mx-auto items-center text-center')
+      }
+    },
+  )
 
   it('moves the description under the title and aligns right-column actions', () => {
     const html = renderToStaticMarkup(

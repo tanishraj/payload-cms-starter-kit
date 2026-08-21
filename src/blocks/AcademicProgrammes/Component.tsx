@@ -73,6 +73,12 @@ const contentAlignmentClasses = {
   right: 'ml-auto items-end text-right',
 } as const
 
+const stackedHeaderAlignmentClasses = {
+  left: 'mr-auto',
+  center: 'mx-auto',
+  right: 'ml-auto',
+} as const
+
 const validContentAlignments = new Set<
   NonNullable<AcademicProgrammesBlockLike['contentAlignment']>
 >(['left', 'center', 'right'])
@@ -163,7 +169,7 @@ export function AcademicProgrammesBlockComponent({
                 'grid gap-6',
                 resolvedHeaderLayout === 'split'
                   ? 'lg:grid-cols-[minmax(0,3fr)_minmax(18rem,2fr)] lg:items-end lg:gap-16'
-                  : 'max-w-3xl',
+                  : cn('w-full max-w-3xl', stackedHeaderAlignmentClasses[resolvedContentAlignment]),
               )}
               data-academic-programmes-header={resolvedHeaderLayout}
             >
