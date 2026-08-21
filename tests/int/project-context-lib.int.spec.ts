@@ -102,9 +102,9 @@ describe('project context parser', () => {
     const inventory = await buildProjectInventory(process.cwd())
 
     expect(inventory.schemaVersion).toBe(1)
-    expect(inventory.payload.collections).toHaveLength(20)
+    expect(inventory.payload.collections).toHaveLength(21)
     expect(inventory.payload.globals).toHaveLength(9)
-    expect(inventory.blocks.page).toHaveLength(53)
+    expect(inventory.blocks.page).toHaveLength(52)
     expect(inventory.blocks.reusableSection).toEqual(
       inventory.blocks.page.filter((slug: string) => slug !== 'reusableSection'),
     )

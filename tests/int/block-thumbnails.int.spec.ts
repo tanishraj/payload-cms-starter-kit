@@ -46,6 +46,7 @@ describe('block thumbnail metadata', () => {
     expect(definitionSlugs.slice().sort()).toEqual(registeredSlugs.slice().sort())
     expect(new Set(registeredSlugs).size).toBe(registeredSlugs.length)
     expect(new Set(definitionSlugs).size).toBe(definitionSlugs.length)
+    expect(definitionSlugs).not.toContain('programGrid')
   })
 
   it('offers every non-recursive page block in Reusable Sections', () => {

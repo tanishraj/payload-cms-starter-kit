@@ -41,7 +41,6 @@ import { StudyPathwaysBlockComponent } from './StudyPathways/Component'
 import { RichTextBlockComponent } from './RichTextBlock/Component'
 import { VideoEmbedBlockComponent } from './VideoEmbed/Component'
 import { MediaCarouselBlockComponent } from './MediaCarousel/Component'
-import { ProgramGridBlockComponent } from './ProgramGrid/Component'
 import { ProgramMatrixBlockComponent } from './ProgramMatrix/Component'
 import { LogoStripBlockComponent } from './LogoStrip/Component'
 import { PageHeaderBlockComponent } from './PageHeader/Component'
@@ -174,8 +173,6 @@ export function renderLivePreviewPageBlockNode(
       return <VideoEmbedBlockComponent key={key} {...block} />
     case 'mediaCarousel':
       return <MediaCarouselBlockComponent key={key} {...block} />
-    case 'programGrid':
-      return <ProgramGridBlockComponent key={key} {...block} />
     case 'programMatrix':
       return <ProgramMatrixBlockComponent key={key} {...block} />
     case 'logoStrip':

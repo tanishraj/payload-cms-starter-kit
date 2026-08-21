@@ -58,7 +58,6 @@ import { MediaCarouselBlockComponent } from '@/blocks/MediaCarousel/Component'
 import { NumberedStepsBlockComponent } from '@/blocks/NumberedSteps/Component'
 import { PageHeaderBlockComponent } from '@/blocks/PageHeader/Component'
 import { BreadcrumbBlockComponent } from '@/blocks/Breadcrumb/Component'
-import { ProgramGridBlockComponent } from '@/blocks/ProgramGrid/Component'
 import { ProgramMatrixBlockComponent } from '@/blocks/ProgramMatrix/Component'
 import { QuoteBlockBlockComponent } from '@/blocks/QuoteBlock/Component'
 import { RichTextBlockComponent } from '@/blocks/RichTextBlock/Component'
@@ -434,15 +433,18 @@ export const blockThumbnailFixtures = {
       eyebrow="Academic programmes"
       programmes={[
         {
+          badge: 'Flagship programme',
           ctaLabel: 'Explore MBBS',
           description:
             'Build a strong foundation in medical science through competency-based education, practical training and clinical exposure.',
+          duration: '4.5 Years',
           eyebrow: 'Undergraduate',
           image: {
             alt: 'Medical learning environment',
             url: '/block-thumbnail-assets/editorial-landscape.svg',
           },
           linkType: 'custom',
+          intake: '150 Seats',
           title: 'MBBS',
           url: '/programmes/mbbs',
         },
@@ -450,9 +452,11 @@ export const blockThumbnailFixtures = {
           ctaLabel: 'Explore programmes',
           description:
             'Advanced learning designed to develop specialists, educators and future healthcare leaders.',
-          eyebrow: 'Advanced study',
+          duration: '3 Years',
+          eyebrow: 'Postgraduate',
           image: { alt: 'Medical professional', url: '/block-thumbnail-assets/portrait.svg' },
           linkType: 'custom',
+          intake: 'Subject to approval',
           title: 'Postgraduate Education',
           url: '/programmes/postgraduate',
         },
@@ -460,16 +464,13 @@ export const blockThumbnailFixtures = {
           ctaLabel: 'Discover more',
           description:
             'Practical learning focused on clinical skills, collaboration and compassionate healthcare delivery.',
-          eyebrow: 'Allied health',
-          image: {
-            alt: 'Clinical study facilities',
-            url: '/block-thumbnail-assets/collaboration.svg',
-          },
+          eyebrow: 'Undergraduate',
           linkType: 'custom',
           title: 'Nursing & Allied Education',
           url: '/programmes/nursing',
         },
       ]}
+      showFilter
       size="compact"
       title="Begin your journey"
     />
@@ -2245,56 +2246,6 @@ export const blockThumbnailFixtures = {
       showCurrentPage
       showHome
       size="default"
-    />
-  ),
-  programGrid: (
-    <ProgramGridBlockComponent
-      appearance={{ background: 'subtle', border: 'topAndBottom' }}
-      columns="3"
-      contentAlignment="center"
-      ctaLabel="View program"
-      description="Practical, career-focused programs designed around the skills employers need most."
-      eyebrow="Our programs"
-      programs={[
-        {
-          cardBackground: 'muted',
-          title: 'Business & Management',
-          category: 'Business',
-          badge: 'Popular',
-          duration: '2 years',
-          intake: 'Feb, Jul',
-          description: 'Leadership, strategy, and operational skills for every industry.',
-          image: fakeMedia(editorialLandscape, 'Business program', 800, 500),
-          linkType: 'custom',
-          url: '/programs/business',
-        },
-        {
-          cardBackground: 'primary',
-          title: 'Technology & Innovation',
-          category: 'Technology',
-          badge: 'New',
-          duration: '18 months',
-          intake: 'Feb, Jul, Oct',
-          description: 'Software development, data, and emerging technology skills.',
-          image: fakeMedia(collaboration, 'Technology program', 800, 500),
-          linkType: 'custom',
-          url: '/programs/technology',
-        },
-        {
-          title: 'Health & Community Services',
-          category: 'Health',
-          duration: '2 years',
-          intake: 'Feb, Jul',
-          description: 'Practical training for health, social work, and community support roles.',
-          image: fakeMedia(portrait, 'Health program', 800, 500),
-          linkType: 'custom',
-          url: '/programs/health',
-        },
-      ]}
-      showFilter
-      size="compact"
-      title="Programs built for real outcomes."
-      viewMode="grid"
     />
   ),
   programMatrix: (

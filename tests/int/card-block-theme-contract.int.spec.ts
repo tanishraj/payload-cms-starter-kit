@@ -1,6 +1,7 @@
 import type { ArrayField, Block, Field, TabsField } from 'payload'
 import { describe, expect, it } from 'vitest'
 
+import { AcademicProgrammesBlock } from '@/blocks/AcademicProgrammes/config'
 import { AboutSectionBlock } from '@/blocks/AboutSection/config'
 import { AccreditationCardsBlock } from '@/blocks/AccreditationCards/config'
 import { AnnouncementBlock } from '@/blocks/Announcement/config'
@@ -20,7 +21,6 @@ import { MediaCarouselBlock } from '@/blocks/MediaCarousel/config'
 import { NumberedStepsBlock } from '@/blocks/NumberedSteps/config'
 import { PageHeaderBlock } from '@/blocks/PageHeader/config'
 import { ProfileCarouselBlock } from '@/blocks/ProfileCarousel/config'
-import { ProgramGridBlock } from '@/blocks/ProgramGrid/config'
 import { ProgramMatrixBlock } from '@/blocks/ProgramMatrix/config'
 import { QaAccordionBlock } from '@/blocks/QaAccordion/config'
 import { StatsStripBlock } from '@/blocks/StatsStrip/config'
@@ -51,8 +51,8 @@ const findNamedField = (fields: Field[], name: string): Field | undefined => {
 
 const cardRows = [
   [AccreditationCardsBlock, 'accreditations', 'cardBackground'],
+  [AcademicProgrammesBlock, 'programmes', 'cardBackground'],
   [ProgramMatrixBlock, 'items', 'cardBackground'],
-  [ProgramGridBlock, 'programs', 'cardBackground'],
   [IconGridBlock, 'items', 'cardBackground'],
   [BentoGridBlock, 'items', 'accentColor'],
   [FeatureMatrixBlock, 'features', 'cardBackground'],

@@ -10,7 +10,6 @@ import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
 import { HeroBannerBlock } from '@/blocks/HeroBanner/config'
 import { HeroCarouselBlock } from '@/blocks/HeroCarousel/config'
 import { IconGridBlock } from '@/blocks/IconGrid/config'
-import { ProgramGridBlock } from '@/blocks/ProgramGrid/config'
 import { ProgramMatrixBlock } from '@/blocks/ProgramMatrix/config'
 import { Services21BlockComponent } from '@/blocks/Services21/Component'
 import {
@@ -69,7 +68,6 @@ describe('shared CMS button variants', () => {
     ['Footer', Footer56Block, 'variant', 'outline'],
     ['Contact map action', Contact24Block, 'mapActionVariant', 'outline'],
     ['Icon Grid item action', IconGridBlock, 'actionVariant', 'default'],
-    ['Program Grid item action', ProgramGridBlock, 'actionVariant', 'default'],
     ['Program Matrix item action', ProgramMatrixBlock, 'actionVariant', 'default'],
   ] as const)(
     'exposes distinct Default and Primary values without changing the %s default',

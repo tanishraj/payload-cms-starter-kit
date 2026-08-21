@@ -40,8 +40,8 @@ describe('block surface semantics', () => {
   )
 
   it.each([
+    'src/blocks/AcademicProgrammes/AcademicProgrammesClient.tsx',
     'src/blocks/TestimonialGrid/Component.tsx',
-    'src/blocks/ProgramGrid/ProgramGridClient.tsx',
     'src/blocks/MediaCarousel/MediaCarouselClient.tsx',
   ])('%s uses resolveCardSurface for adaptive card theming', (file) => {
     const source = read(file)

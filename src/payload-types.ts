@@ -228,7 +228,6 @@ export interface Page {
         | RichTextBlock
         | VideoEmbedBlock
         | MediaCarouselBlock
-        | ProgramGridBlock
         | ProgramMatrixBlock
         | LogoStripBlock
         | PageHeaderBlock
@@ -1452,16 +1451,36 @@ export interface AcademicProgrammesBlock {
       }[]
     | null;
   /**
-   * Image-led programme cards shown in their displayed order.
+   * Programme cards shown in their displayed order.
    */
   programmes: {
-    image: string | Media;
+    image?: (string | null) | Media;
     eyebrow?: string | null;
+    /**
+     * Optional short marker, such as Featured or New.
+     */
+    badge?: string | null;
     title: string;
     /**
      * A concise one- or two-sentence programme summary.
      */
     description?: string | null;
+    /**
+     * Label shown above the duration value.
+     */
+    durationLabel?: string | null;
+    /**
+     * Editor-authored duration, such as 3 years.
+     */
+    duration?: string | null;
+    /**
+     * Label shown above the intake value.
+     */
+    intakeLabel?: string | null;
+    /**
+     * Editor-authored intake, such as Subject to approval.
+     */
+    intake?: string | null;
     ctaLabel?: string | null;
     linkType?: ('none' | 'page' | 'custom') | null;
     page?: (string | null) | Page;
@@ -1501,7 +1520,19 @@ export interface AcademicProgrammesBlock {
    */
   contentAlignment: 'left' | 'center' | 'right';
   headerLayout: 'split' | 'stacked';
-  columns: '2' | '3' | '4';
+  viewMode: 'grid' | 'list';
+  /**
+   * Places programme details after the description or aligns them with the action at the bottom of each card.
+   */
+  metadataPosition: 'flow' | 'bottom';
+  /**
+   * Uses Study Level / Category values as filters when at least two categories exist.
+   */
+  showFilter?: boolean | null;
+  /**
+   * Applies only to the Grid programme layout.
+   */
+  columns?: ('2' | '3' | '4') | null;
   /**
    * Moves the section description between the title column and the right column.
    */
@@ -3157,119 +3188,6 @@ export interface MediaCarouselBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaCarousel';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ProgramGridBlock".
- */
-export interface ProgramGridBlock {
-  /**
-   * Small label above the section title.
-   */
-  eyebrow?: string | null;
-  title?: string | null;
-  accentTitle?: string | null;
-  description?: string | null;
-  actions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Each card represents one academic program or course.
-   */
-  programs?:
-    | {
-        image?: (string | null) | Media;
-        /**
-         * Used for the filter tabs (e.g. Engineering, Management, Sciences).
-         */
-        category?: string | null;
-        /**
-         * Short label on the card (e.g. AICTE Approved, New Batch 2025).
-         */
-        badge?: string | null;
-        title?: string | null;
-        /**
-         * Short program overview, 1–2 sentences.
-         */
-        description?: string | null;
-        /**
-         * e.g. 4 Years
-         */
-        duration?: string | null;
-        /**
-         * e.g. 60 Seats
-         */
-        intake?: string | null;
-        linkType?: ('none' | 'page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        /**
-         * Default Card inherits the section background. Other choices use the active theme and automatically adjust card contrast.
-         */
-        cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
-        id?: string | null;
-      }[]
-    | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  actionMode?: ('link' | 'button') | null;
-  /**
-   * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-   */
-  actionVariant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-  columns?: ('2' | '3' | '4') | null;
-  viewMode: 'grid' | 'list';
-  /**
-   * Displays tabs so visitors can filter programs by department/category.
-   */
-  showFilter?: boolean | null;
-  /**
-   * Label for the link button on each program card.
-   */
-  ctaLabel?: string | null;
-  contentAlignment: 'left' | 'center';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'programGrid';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -4999,7 +4917,6 @@ export interface ReusableSection {
         | RichTextBlock
         | VideoEmbedBlock
         | MediaCarouselBlock
-        | ProgramGridBlock
         | ProgramMatrixBlock
         | LogoStripBlock
         | PageHeaderBlock
@@ -6343,7 +6260,6 @@ export interface PagesSelect<T extends boolean = true> {
         richText?: T | RichTextBlockSelect<T>;
         videoEmbed?: T | VideoEmbedBlockSelect<T>;
         mediaCarousel?: T | MediaCarouselBlockSelect<T>;
-        programGrid?: T | ProgramGridBlockSelect<T>;
         programMatrix?: T | ProgramMatrixBlockSelect<T>;
         logoStrip?: T | LogoStripBlockSelect<T>;
         pageHeader?: T | PageHeaderBlockSelect<T>;
@@ -7107,8 +7023,13 @@ export interface AcademicProgrammesBlockSelect<T extends boolean = true> {
     | {
         image?: T;
         eyebrow?: T;
+        badge?: T;
         title?: T;
         description?: T;
+        durationLabel?: T;
+        duration?: T;
+        intakeLabel?: T;
+        intake?: T;
         ctaLabel?: T;
         linkType?: T;
         page?: T;
@@ -7138,6 +7059,9 @@ export interface AcademicProgrammesBlockSelect<T extends boolean = true> {
       };
   contentAlignment?: T;
   headerLayout?: T;
+  viewMode?: T;
+  metadataPosition?: T;
+  showFilter?: T;
   columns?: T;
   descriptionPosition?: T;
   sideContentAlignment?: T;
@@ -8237,75 +8161,6 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
         border?: T;
       };
   columns?: T;
-  contentAlignment?: T;
-  size?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ProgramGridBlock_select".
- */
-export interface ProgramGridBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  title?: T;
-  accentTitle?: T;
-  description?: T;
-  actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  footerActions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  programs?:
-    | T
-    | {
-        image?: T;
-        category?: T;
-        badge?: T;
-        title?: T;
-        description?: T;
-        duration?: T;
-        intake?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        cardBackground?: T;
-        id?: T;
-      };
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  actionMode?: T;
-  actionVariant?: T;
-  columns?: T;
-  viewMode?: T;
-  showFilter?: T;
-  ctaLabel?: T;
   contentAlignment?: T;
   size?: T;
   id?: T;
@@ -9604,7 +9459,6 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         richText?: T | RichTextBlockSelect<T>;
         videoEmbed?: T | VideoEmbedBlockSelect<T>;
         mediaCarousel?: T | MediaCarouselBlockSelect<T>;
-        programGrid?: T | ProgramGridBlockSelect<T>;
         programMatrix?: T | ProgramMatrixBlockSelect<T>;
         logoStrip?: T | LogoStripBlockSelect<T>;
         pageHeader?: T | PageHeaderBlockSelect<T>;
@@ -10590,7 +10444,6 @@ export interface NewsEventsDetailTemplate {
         | RichTextBlock
         | VideoEmbedBlock
         | MediaCarouselBlock
-        | ProgramGridBlock
         | ProgramMatrixBlock
         | LogoStripBlock
         | PageHeaderBlock
@@ -10873,7 +10726,6 @@ export interface NewsEventsDetailTemplateSelect<T extends boolean = true> {
         richText?: T | RichTextBlockSelect<T>;
         videoEmbed?: T | VideoEmbedBlockSelect<T>;
         mediaCarousel?: T | MediaCarouselBlockSelect<T>;
-        programGrid?: T | ProgramGridBlockSelect<T>;
         programMatrix?: T | ProgramMatrixBlockSelect<T>;
         logoStrip?: T | LogoStripBlockSelect<T>;
         pageHeader?: T | PageHeaderBlockSelect<T>;

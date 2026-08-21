@@ -37,7 +37,6 @@ import { StudyPathwaysBlockComponent } from './StudyPathways/Component'
 import { RichTextBlockComponent } from './RichTextBlock/Component'
 import { VideoEmbedBlockComponent } from './VideoEmbed/Component'
 import { MediaCarouselBlockComponent } from './MediaCarousel/Component'
-import { ProgramGridBlockComponent } from './ProgramGrid/Component'
 import { ProgramMatrixBlockComponent } from './ProgramMatrix/Component'
 import { LogoStripBlockComponent } from './LogoStrip/Component'
 import { PageHeaderBlockComponent } from './PageHeader/Component'
@@ -158,8 +157,6 @@ export function renderPageBlockNode(
       return wrap(<VideoEmbedBlockComponent {...block} />)
     case 'mediaCarousel':
       return wrap(<MediaCarouselBlockComponent {...block} />)
-    case 'programGrid':
-      return wrap(<ProgramGridBlockComponent {...block} />)
     case 'programMatrix':
       return wrap(<ProgramMatrixBlockComponent {...block} />)
     case 'logoStrip':

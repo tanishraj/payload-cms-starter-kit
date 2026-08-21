@@ -13,8 +13,15 @@ type AcademicProgrammesLayoutSiblingData = {
   headerLayout?: 'split' | 'stacked' | null
 }
 
+type AcademicProgrammesViewSiblingData = {
+  viewMode?: 'grid' | 'list' | null
+}
+
 const isSplitHeader = (_data: unknown, siblingData: AcademicProgrammesLayoutSiblingData) =>
   siblingData?.headerLayout !== 'stacked'
+
+const usesGridView = (_data: unknown, siblingData: AcademicProgrammesViewSiblingData) =>
+  siblingData?.viewMode !== 'list'
 
 const isPageLink = (_data: unknown, siblingData: ProgrammeSiblingData) =>
   siblingData?.linkType === 'page'
@@ -31,9 +38,9 @@ const programmesField = {
   type: 'array',
   required: true,
   minRows: 1,
-  maxRows: 6,
+  maxRows: 24,
   admin: {
-    description: 'Image-led programme cards shown in their displayed order.',
+    description: 'Programme cards shown in their displayed order.',
     initCollapsed: true,
   },
   fields: [
@@ -44,12 +51,19 @@ const programmesField = {
           label: 'Programme Image',
           type: 'upload',
           relationTo: 'media',
-          required: true,
         },
         {
           name: 'eyebrow',
           label: 'Study Level / Category',
           type: 'text',
+        },
+        {
+          name: 'badge',
+          label: 'Badge',
+          type: 'text',
+          admin: {
+            description: 'Optional short marker, such as Featured or New.',
+          },
         },
         {
           name: 'title',
@@ -61,6 +75,40 @@ const programmesField = {
           type: 'textarea',
           admin: {
             description: 'A concise one- or two-sentence programme summary.',
+          },
+        },
+        {
+          name: 'durationLabel',
+          label: 'Duration Label',
+          type: 'text',
+          defaultValue: 'Duration',
+          admin: {
+            description: 'Label shown above the duration value.',
+          },
+        },
+        {
+          name: 'duration',
+          label: 'Duration Value',
+          type: 'text',
+          admin: {
+            description: 'Editor-authored duration, such as 3 years.',
+          },
+        },
+        {
+          name: 'intakeLabel',
+          label: 'Intake Label',
+          type: 'text',
+          defaultValue: 'Intake',
+          admin: {
+            description: 'Label shown above the intake value.',
+          },
+        },
+        {
+          name: 'intake',
+          label: 'Intake Value',
+          type: 'text',
+          admin: {
+            description: 'Editor-authored intake, such as Subject to approval.',
           },
         },
         {
@@ -180,6 +228,42 @@ export const AcademicProgrammesBlock: Block = {
               ],
             } satisfies SelectField,
             {
+              name: 'viewMode',
+              label: 'Programme Layout',
+              type: 'select',
+              defaultValue: 'grid',
+              required: true,
+              options: [
+                { label: 'Grid', value: 'grid' },
+                { label: 'List', value: 'list' },
+              ],
+            } satisfies SelectField,
+            {
+              name: 'metadataPosition',
+              label: 'Programme Details Position',
+              type: 'select',
+              defaultValue: 'flow',
+              required: true,
+              options: [
+                { label: 'After Description', value: 'flow' },
+                { label: 'Bottom of Card', value: 'bottom' },
+              ],
+              admin: {
+                description:
+                  'Places programme details after the description or aligns them with the action at the bottom of each card.',
+              },
+            } satisfies SelectField,
+            {
+              name: 'showFilter',
+              label: 'Show Category Filter',
+              type: 'checkbox',
+              defaultValue: false,
+              admin: {
+                description:
+                  'Uses Study Level / Category values as filters when at least two categories exist.',
+              },
+            } satisfies CheckboxField,
+            {
               name: 'columns',
               label: 'Programme Columns',
               type: 'select',
@@ -190,6 +274,10 @@ export const AcademicProgrammesBlock: Block = {
                 { label: '3 Columns', value: '3' },
                 { label: '4 Columns', value: '4' },
               ],
+              admin: {
+                condition: usesGridView,
+                description: 'Applies only to the Grid programme layout.',
+              },
             } satisfies SelectField,
             {
               name: 'descriptionPosition',

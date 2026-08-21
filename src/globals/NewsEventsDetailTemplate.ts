@@ -40,7 +40,6 @@ import { NewsGridBlock } from '@/blocks/NewsGrid/config'
 import { NumberedStepsBlock } from '@/blocks/NumberedSteps/config'
 import { PageHeaderBlock } from '@/blocks/PageHeader/config'
 import { ProfileCarouselBlock } from '@/blocks/ProfileCarousel/config'
-import { ProgramGridBlock } from '@/blocks/ProgramGrid/config'
 import { ProgramMatrixBlock } from '@/blocks/ProgramMatrix/config'
 import { QaAccordionBlock } from '@/blocks/QaAccordion/config'
 import { QuoteBlockBlock } from '@/blocks/QuoteBlock/config'
@@ -111,7 +110,6 @@ const detailTemplateBlocks = [
   RichTextBlock,
   VideoEmbedBlock,
   MediaCarouselBlock,
-  ProgramGridBlock,
   ProgramMatrixBlock,
   LogoStripBlock,
   PageHeaderBlock,

@@ -21,7 +21,8 @@ const regularSectionEyebrowFiles = [
   'src/blocks/LogoStrip/Component.tsx',
   'src/blocks/MediaCarousel/MediaCarouselClient.tsx',
   'src/blocks/NumberedSteps/Component.tsx',
-  'src/blocks/ProgramGrid/ProgramGridClient.tsx',
+  'src/blocks/AcademicProgrammes/AcademicProgrammesClient.tsx',
+  'src/blocks/AcademicProgrammes/Component.tsx',
   'src/blocks/ProgramMatrix/Component.tsx',
   'src/blocks/QuoteBlock/Component.tsx',
   'src/blocks/ReviewSubmission/Component.tsx',
@@ -145,8 +146,8 @@ describe('SNMIH section eyebrows', () => {
   })
 
   it('does not convert metadata labels into section eyebrows', () => {
-    expect(read('src/blocks/ProgramGrid/ProgramGridClient.tsx')).toContain(
-      'font-mono text-xs font-semibold uppercase tracking-[0.24em]',
+    expect(read('src/blocks/AcademicProgrammes/AcademicProgrammesClient.tsx')).toContain(
+      'contentItemMetadataClasses',
     )
     const pageHeader = read('src/blocks/PageHeader/Component.tsx')
     expect(pageHeader).toContain('SectionEyebrow')

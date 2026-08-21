@@ -1,6 +1,7 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 
+import { AcademicProgrammesBlockComponent } from '@/blocks/AcademicProgrammes/Component'
 import { AwardsListBlockComponent } from '@/blocks/AwardsList/Component'
 import { BentoGridBlockComponent } from '@/blocks/BentoGrid/Component'
 import { ContentHighlightsBlockComponent } from '@/blocks/ContentHighlights/Component'
@@ -10,7 +11,6 @@ import { IconGridBlockComponent } from '@/blocks/IconGrid/Component'
 import { MediaCarouselBlockComponent } from '@/blocks/MediaCarousel/Component'
 import { NumberedStepsBlockComponent } from '@/blocks/NumberedSteps/Component'
 import { ProfileCarouselBlockComponent } from '@/blocks/ProfileCarousel/Component'
-import { ProgramGridBlockComponent } from '@/blocks/ProgramGrid/Component'
 import { ProgramMatrixBlockComponent } from '@/blocks/ProgramMatrix/Component'
 import { TeamShowcaseBlockComponent } from '@/blocks/TeamShowcase/Component'
 import { TestimonialGridBlockComponent } from '@/blocks/TestimonialGrid/Component'
@@ -36,8 +36,8 @@ describe('semantic card surface rendering', () => {
   it('renders semantic surfaces in the always-card blocks', () => {
     const markups = [
       renderToStaticMarkup(
-        <ProgramGridBlockComponent
-          programs={[{ cardBackground: 'primary', title: 'MBBS' }]}
+        <AcademicProgrammesBlockComponent
+          programmes={[{ cardBackground: 'primary', title: 'MBBS' }]}
           title="Programmes"
         />,
       ),
@@ -309,13 +309,6 @@ describe('semantic card surface rendering', () => {
           appearance={{ background: 'brand' }}
           items={[{ media, title: 'Campus life' }]}
           title="Gallery"
-        />,
-      ),
-      renderToStaticMarkup(
-        <ProgramGridBlockComponent
-          appearance={{ background: 'brand' }}
-          programs={[{ title: 'MBBS' }]}
-          title="Programmes"
         />,
       ),
     ]

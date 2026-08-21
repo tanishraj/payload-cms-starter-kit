@@ -5,8 +5,12 @@ import { AcademicProgrammesBlockComponent } from '@/blocks/AcademicProgrammes/Co
 import { AcademicProgrammesBlock } from '@/blocks/AcademicProgrammes/config'
 
 type NamedField = {
+  admin?: {
+    condition?: (data: unknown, siblingData: Record<string, unknown>) => boolean
+  }
   defaultValue?: unknown
   fields?: NamedField[]
+  maxRows?: number
   name?: string
   options?: Array<{ value: string }>
   required?: boolean
@@ -37,9 +41,43 @@ describe('Academic Programmes block', () => {
     })
     expect(tabs.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(findNamedField(fields, 'programmes')).toMatchObject({
+      maxRows: 24,
       minRows: 1,
       required: true,
       type: 'array',
+    })
+    expect(findNamedField(fields, 'image')?.required).not.toBe(true)
+    expect(findNamedField(fields, 'badge')).toMatchObject({ type: 'text' })
+    expect(findNamedField(fields, 'durationLabel')).toMatchObject({
+      defaultValue: 'Duration',
+      type: 'text',
+    })
+    expect(findNamedField(fields, 'duration')).toMatchObject({ type: 'text' })
+    expect(findNamedField(fields, 'intakeLabel')).toMatchObject({
+      defaultValue: 'Intake',
+      type: 'text',
+    })
+    expect(findNamedField(fields, 'intake')).toMatchObject({ type: 'text' })
+    expect(findNamedField(fields, 'viewMode')).toMatchObject({
+      defaultValue: 'grid',
+      required: true,
+      type: 'select',
+    })
+    expect(findNamedField(fields, 'viewMode')?.options?.map((option) => option.value)).toEqual([
+      'grid',
+      'list',
+    ])
+    expect(findNamedField(fields, 'metadataPosition')).toMatchObject({
+      defaultValue: 'flow',
+      required: true,
+      type: 'select',
+    })
+    expect(
+      findNamedField(fields, 'metadataPosition')?.options?.map((option) => option.value),
+    ).toEqual(['flow', 'bottom'])
+    expect(findNamedField(fields, 'showFilter')).toMatchObject({
+      defaultValue: false,
+      type: 'checkbox',
     })
     expect(findNamedField(fields, 'headerLayout')).toMatchObject({
       defaultValue: 'split',
@@ -59,6 +97,15 @@ describe('Academic Programmes block', () => {
       '3',
       '4',
     ])
+    expect(findNamedField(fields, 'columns')?.admin?.condition?.({}, { viewMode: 'grid' })).toBe(
+      true,
+    )
+    expect(findNamedField(fields, 'columns')?.admin?.condition?.({}, { viewMode: 'list' })).toBe(
+      false,
+    )
+    expect(findNamedField(fields, 'ctaLabel')).toBeDefined()
+    expect(findNamedField(fields, 'actionMode')).toBeUndefined()
+    expect(findNamedField(fields, 'actionVariant')).toBeUndefined()
     expect(findNamedField(fields, 'featureFirstProgramme')).toBeUndefined()
     expect(findNamedField(fields, 'descriptionPosition')).toMatchObject({
       defaultValue: 'side',
@@ -81,10 +128,13 @@ describe('Academic Programmes block', () => {
         eyebrow="Academic programmes"
         programmes={[
           {
+            badge: 'Clinical priority',
             ctaLabel: 'Explore MBBS',
             description: 'Competency-based education and clinical exposure.',
+            duration: '4.5 years',
             eyebrow: 'Undergraduate',
             image: { alt: 'Anatomy teaching model', url: '/media/anatomy.jpg' },
+            intake: '150 seats',
             linkType: 'custom',
             title: 'MBBS',
             url: '/programmes/mbbs',
@@ -95,6 +145,7 @@ describe('Academic Programmes block', () => {
     )
 
     expect(html).toContain('data-academic-programmes="true"')
+    expect(html).toContain('data-academic-programmes-view="grid"')
     expect(html).toContain('data-academic-programmes-header="split"')
     const splitHeaderClasses =
       html
@@ -108,13 +159,18 @@ describe('Academic Programmes block', () => {
     expect(splitHeaderClasses).not.toContain('ml-auto')
     expect(html).toContain('Begin your journey')
     expect(html).toContain('in medicine.')
+    expect(html).toContain('Clinical priority')
+    expect(html).toContain('4.5 years')
+    expect(html).toContain('150 seats')
     expect(html).toContain('href="/programmes/mbbs"')
     expect(html).toContain('text-3xl')
     expect(html).toContain('h-64')
     expect(html).toContain('data-section-eyebrow="true"')
     expect(html).toContain('border-t')
     expect(html).toContain('data-academic-programme-link="true"')
-    expect(html).toContain('w-full justify-between')
+    expect(html).toContain('data-academic-programme-action="ruled"')
+    expect(html).toContain('data-academic-programme-image="true"')
+    expect(html).toContain('w-full items-center justify-between')
     expect(html.match(/<a /g)).toHaveLength(1)
     expect(html).toContain('motion-safe:transition-transform')
     expect(html).not.toContain('text-success')
@@ -215,19 +271,135 @@ describe('Academic Programmes block', () => {
     )
   })
 
-  it('does not render without a title or usable programme image', () => {
+  it('renders titled text-only programmes and omits unusable entries', () => {
     expect(
       renderToStaticMarkup(
         <AcademicProgrammesBlockComponent programmes={[]} title="Academic programmes" />,
       ),
     ).toBe('')
-    expect(
-      renderToStaticMarkup(
-        <AcademicProgrammesBlockComponent
-          programmes={[{ title: 'MBBS' }]}
-          title="Academic programmes"
-        />,
-      ),
-    ).toBe('')
+
+    const html = renderToStaticMarkup(
+      <AcademicProgrammesBlockComponent
+        programmes={[{ title: 'MBBS' }, { image: { url: '/media/blank.jpg' }, title: ' ' }]}
+        title="Academic programmes"
+      />,
+    )
+
+    expect(html).toContain('MBBS')
+    expect(html).toContain('data-academic-programme-image="false"')
+    expect(html).not.toContain('/media/blank.jpg')
+  })
+
+  it('renders the responsive list presentation without grid column classes', () => {
+    const html = renderToStaticMarkup(
+      <AcademicProgrammesBlockComponent
+        columns="4"
+        programmes={[
+          {
+            duration: '3 years',
+            image: { alt: 'Postgraduate seminar', url: '/media/postgraduate.jpg' },
+            intake: '12 seats',
+            title: 'MD General Medicine',
+          },
+        ]}
+        title="Academic programmes"
+        viewMode="list"
+      />,
+    )
+
+    expect(html).toContain('data-academic-programmes-view="list"')
+    expect(html).toContain('data-academic-programme-layout="list"')
+    expect(html).toContain('md:grid-cols-[minmax(12rem,1fr)_minmax(0,2fr)]')
+    expect(html).not.toContain('xl:grid-cols-4')
+  })
+
+  it('normalizes editable metadata labels and aligns programme details at the bottom', () => {
+    const html = renderToStaticMarkup(
+      <AcademicProgrammesBlockComponent
+        metadataPosition="bottom"
+        programmes={[
+          {
+            ctaLabel: 'Explore MBBS',
+            description: 'Programme summary',
+            duration: ' 3 years ',
+            durationLabel: ' Programme duration ',
+            intake: ' Subject to approval ',
+            intakeLabel: ' Availability ',
+            linkType: 'custom',
+            title: 'MBBS',
+            url: '/programmes/mbbs',
+          },
+        ]}
+        title="Academic programmes"
+      />,
+    )
+
+    expect(html).toContain('data-academic-programme-metadata-position="bottom"')
+    expect(html).toContain('data-academic-programme-bottom-content="true"')
+    expect(html).toContain('data-academic-programme-content="bottom-metadata"')
+    const metadataClasses =
+      html
+        .match(/<dl class="([^"]+)" data-academic-programme-metadata="bottom">/)?.[1]
+        ?.split(' ') ?? []
+    expect(metadataClasses).toEqual(expect.arrayContaining(['-mx-7', 'sm:-mx-8', 'border-t']))
+    expect(metadataClasses).not.toContain('border-y')
+    expect(metadataClasses).not.toContain('border-b')
+    expect(html).toContain('pl-7 sm:pl-8')
+    expect(html).toContain('pl-3 pr-7 sm:pr-8')
+    expect(html).toContain('Programme duration')
+    expect(html).toContain('3 years')
+    expect(html).toContain('Availability')
+    expect(html).toContain('Subject to approval')
+    expect(html).toContain('Explore MBBS')
+    expect(html).toContain('data-academic-programme-action="inline"')
+    const inlineActionClasses =
+      html
+        .match(/<div class="([^"]+)" data-academic-programme-action="inline">/)?.[1]
+        ?.split(' ') ?? []
+    expect(inlineActionClasses).not.toContain('border-t')
+    expect(html).toContain('inline-flex items-center gap-2')
+    expect(html.indexOf('Programme summary')).toBeLessThan(html.indexOf('Explore MBBS'))
+    expect(html.indexOf('Explore MBBS')).toBeLessThan(html.indexOf('Programme duration'))
+  })
+
+  it('uses fallback metadata labels and defaults unknown positions to flow', () => {
+    const html = renderToStaticMarkup(
+      <AcademicProgrammesBlockComponent
+        metadataPosition={'unsupported' as 'flow'}
+        programmes={[{ duration: '4.5 years', intake: '150 seats', title: 'MBBS' }]}
+        title="Academic programmes"
+      />,
+    )
+
+    expect(html).toContain('data-academic-programme-metadata-position="flow"')
+    expect(html).toContain('data-academic-programme-content="standard"')
+    const metadataClasses =
+      html.match(/<dl class="([^"]+)" data-academic-programme-metadata="flow">/)?.[1]?.split(' ') ??
+      []
+    expect(metadataClasses).toContain('border-y')
+    expect(html).toContain('Duration')
+    expect(html).toContain('Intake')
+    expect(html).not.toContain('data-academic-programme-bottom-content="true"')
+  })
+
+  it('keeps filters and nested card surfaces semantic on a brand section', () => {
+    const html = renderToStaticMarkup(
+      <AcademicProgrammesBlockComponent
+        appearance={{ background: 'brand', border: 'none' }}
+        programmes={[
+          { cardBackground: 'default', eyebrow: 'Undergraduate', title: 'MBBS' },
+          { cardBackground: 'primary', eyebrow: 'Postgraduate', title: 'MD Medicine' },
+        ]}
+        showFilter
+        title="Academic programmes"
+      />,
+    )
+
+    expect(html).toContain('bg-brand text-primary-foreground')
+    expect(html).toContain('rounded-full border border-border bg-background p-1')
+    expect(html).toContain('data-card-background="default"')
+    expect(html).toContain('border-border bg-card text-card-foreground')
+    expect(html).toContain('data-card-background="primary"')
+    expect(html).toContain('bg-primary text-primary-foreground')
   })
 })

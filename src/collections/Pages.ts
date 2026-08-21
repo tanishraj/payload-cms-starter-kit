@@ -36,7 +36,6 @@ import { ReusableSectionBlock } from '@/blocks/ReusableSection/config'
 import { RichTextBlock } from '@/blocks/RichTextBlock/config'
 import { VideoEmbedBlock } from '@/blocks/VideoEmbed/config'
 import { MediaCarouselBlock } from '@/blocks/MediaCarousel/config'
-import { ProgramGridBlock } from '@/blocks/ProgramGrid/config'
 import { ProgramMatrixBlock } from '@/blocks/ProgramMatrix/config'
 import { LogoStripBlock } from '@/blocks/LogoStrip/config'
 import { PageHeaderBlock } from '@/blocks/PageHeader/config'
@@ -283,7 +282,6 @@ export const Pages: CollectionConfig = {
                 RichTextBlock,
                 VideoEmbedBlock,
                 MediaCarouselBlock,
-                ProgramGridBlock,
                 ProgramMatrixBlock,
                 LogoStripBlock,
                 PageHeaderBlock,

@@ -353,13 +353,6 @@ export const blockThumbnailDefinitions = [
     slug: 'breadcrumb',
   }),
   defineThumbnail({
-    alt: 'Program Grid block preview',
-    filename: 'program-grid.jpg',
-    label: 'Program Grid',
-    slug: 'programGrid',
-    stageAlignment: 'top',
-  }),
-  defineThumbnail({
     alt: 'Program Matrix block preview',
     filename: 'program-matrix.jpg',
     label: 'Program Matrix',

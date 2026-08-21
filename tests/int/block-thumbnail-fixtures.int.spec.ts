@@ -10,6 +10,7 @@ import {
 
 describe('block thumbnail fixtures', () => {
   it('renders one production-component fixture for every definition', () => {
+    expect(Object.keys(blockThumbnailFixtures)).not.toContain('programGrid')
     expect(Object.keys(blockThumbnailFixtures).sort()).toEqual(
       blockThumbnailDefinitions.map(({ slug }) => slug).sort(),
     )
@@ -28,6 +29,16 @@ describe('block thumbnail fixtures', () => {
       expect(html.length).toBeGreaterThan(100)
       expect(html).not.toContain('Replace this file')
     }
+  })
+
+  it('uses the consolidated Academic Programmes capabilities in its fixture', () => {
+    const html = renderToStaticMarkup(getBlockThumbnailFixture('academicProgrammes'))
+
+    expect(html).toContain('data-academic-programmes-filter="true"')
+    expect(html).toContain('Flagship programme')
+    expect(html).toContain('4.5 Years')
+    expect(html).toContain('150 Seats')
+    expect(html).toContain('data-academic-programme-image="false"')
   })
 
   it('uses repository-local media assets only', () => {
