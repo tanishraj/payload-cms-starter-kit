@@ -197,6 +197,39 @@ describe('Academic Programmes client presentation', () => {
     expect(container.querySelector('dl')).toBeNull()
   })
 
+  it('keeps guaranteed space before a bottom-aligned ruled action divider', () => {
+    const { container } = render(
+      <AcademicProgrammesClient
+        background="none"
+        columns="3"
+        contentAlignment="left"
+        metadataPosition="flow"
+        programmes={[
+          {
+            ctaLabel: 'Explore MBBS',
+            description: 'Build a strong foundation in medical science and clinical practice.',
+            facts: [],
+            href: '/programmes/mbbs',
+            id: 'mbbs',
+            openInNewTab: false,
+            title: 'MBBS',
+          },
+        ]}
+        showFilter={false}
+        viewMode="grid"
+      />,
+    )
+
+    const spacer = container.querySelector('[data-academic-programme-action-spacing="ruled"]')
+    const action = container.querySelector('[data-academic-programme-action="ruled"]')
+
+    expect(spacer?.className).toContain('mt-auto')
+    expect(spacer?.className).toContain('pt-8')
+    expect(spacer?.classList.contains('border-t')).toBe(false)
+    expect(action?.classList.contains('border-t')).toBe(true)
+    expect(action?.classList.contains('pt-5')).toBe(true)
+  })
+
   it('places an inline action after the title when bottom metadata has no description', () => {
     const { container } = render(
       <AcademicProgrammesClient

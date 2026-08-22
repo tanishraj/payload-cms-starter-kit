@@ -168,35 +168,43 @@ function ProgrammeCard({
       secondaryClassName={usesDefaultSurface ? 'text-muted-foreground' : surface.secondary}
     />
   )
-  const actionElement = programme.href ? (
-    <div
+  const actionContent = (
+    <span
       className={cn(
+        'text-sm font-semibold',
         usesInlineAction
-          ? 'mt-5'
-          : [
-              'border-t pt-5',
-              programme.description || hasMetadata ? 'mt-8' : 'mt-6',
-              metadataPosition === 'flow' && 'mt-auto',
-              dividerClassName,
-            ],
+          ? 'inline-flex items-center gap-2'
+          : 'flex w-full items-center justify-between',
+        !usesDefaultSurface && surface.link,
       )}
-      data-academic-programme-action={usesInlineAction ? 'inline' : 'ruled'}
     >
-      <span
-        className={cn(
-          'text-sm font-semibold',
-          usesInlineAction
-            ? 'inline-flex items-center gap-2'
-            : 'flex w-full items-center justify-between',
-          !usesDefaultSurface && surface.link,
-        )}
-      >
-        <span className="underline decoration-current decoration-2 underline-offset-4">
-          {programme.ctaLabel}
-        </span>
-        <ActionArrow />
+      <span className="underline decoration-current decoration-2 underline-offset-4">
+        {programme.ctaLabel}
       </span>
-    </div>
+      <ActionArrow />
+    </span>
+  )
+  const actionElement = programme.href ? (
+    usesInlineAction ? (
+      <div className="mt-5" data-academic-programme-action="inline">
+        {actionContent}
+      </div>
+    ) : (
+      <div
+        className={cn(
+          programme.description || hasMetadata ? 'pt-8' : 'pt-6',
+          metadataPosition === 'flow' && 'mt-auto',
+        )}
+        data-academic-programme-action-spacing="ruled"
+      >
+        <div
+          className={cn('border-t pt-5', dividerClassName)}
+          data-academic-programme-action="ruled"
+        >
+          {actionContent}
+        </div>
+      </div>
+    )
   ) : null
   const lowerContent =
     metadataPosition === 'bottom' ? (
