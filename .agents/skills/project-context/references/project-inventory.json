@@ -2477,6 +2477,7 @@
       "tests/int/system-page-rendering.int.spec.ts",
       "tests/int/tabs-content-active-color.int.spec.ts",
       "tests/int/taxonomy.int.spec.ts",
+      "tests/int/team-showcase-hover-surface.int.spec.tsx",
       "tests/int/testimonial-spotlight-config.int.spec.ts",
       "tests/int/testimonial-spotlight-render.int.spec.tsx",
       "tests/int/theme-contracts.int.spec.ts",
@@ -2484,7 +2485,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "e14e7aa4615f2c1a0fbcd34afc1c1c7fe3dd2864b6295f7aaa3de4cf5507c8b3"
+    "sha256": "7bb727ec7ec488faadbd8b6ae7a0e0400978a0e8fd91b1666ef0db96b73436bf"
   },
   "surfaces": {
     "access": [
@@ -2754,6 +2755,7 @@
       "tests/int/system-page-rendering.int.spec.ts",
       "tests/int/tabs-content-active-color.int.spec.ts",
       "tests/int/taxonomy.int.spec.ts",
+      "tests/int/team-showcase-hover-surface.int.spec.tsx",
       "tests/int/testimonial-spotlight-config.int.spec.ts",
       "tests/int/testimonial-spotlight-render.int.spec.tsx",
       "tests/int/theme-contracts.int.spec.ts",

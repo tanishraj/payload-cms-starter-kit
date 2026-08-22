@@ -187,6 +187,12 @@ const TeamShowcase = ({
             className={getTeamGridClasses(members.length)}
           >
             {members.map((member, index) => {
+              const hoverSurface = resolveCardSurface(member.cardBackground, sectionBackground)
+              const hoverSurfaceClassName =
+                hoverSurface.value === 'default'
+                  ? 'bg-card text-card-foreground'
+                  : hoverSurface.className
+
               return (
                 <li
                   key={`team-showcase-member-${index}`}
@@ -205,7 +211,11 @@ const TeamShowcase = ({
                           bounce: 0.1,
                         },
                       }}
-                      className="pointer-events-none absolute inset-0 z-10 hidden h-max overflow-hidden rounded-2xl shadow-lg md:block"
+                      className={cn(
+                        'pointer-events-none absolute inset-0 z-10 hidden h-max overflow-hidden rounded-2xl shadow-lg md:block',
+                        hoverSurfaceClassName,
+                      )}
+                      data-team-showcase-hover-surface={hoverSurface.value}
                     >
                       <TeamShowcaseMemberCard
                         member={member}
