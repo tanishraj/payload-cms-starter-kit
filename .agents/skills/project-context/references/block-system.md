@@ -2,9 +2,9 @@
 
 ## Registries
 
-[Pages.ts](../../../../src/collections/Pages.ts) registers 52 blocks in this order:
+[Pages.ts](../../../../src/collections/Pages.ts) registers 51 blocks in this order:
 
-`announcement`, `bannerCta`, `newsGrid`, `newsEventsTabs`, `cta39`, `heroBanner`, `heroCarousel`, `galleryCoverflow`, `featureSpotlight`, `testimonialSpotlight`, `featureMatrix`, `contentHighlights`, `editorialReasons`, `academicProgrammes`, `newsEventsHighlights`, `profileCarousel`, `galleryShowcase`, `eventGallery`, `galleryAlbumTabs`, `studyPathways`, `imageMosaic`, `studentExperience`, `statsStrip`, `qaAccordion`, `ratingSpotlight`, `reviewFeed`, `reviewSubmission`, `contact33`, `contact24`, `teamShowcase`, `services21`, `richText`, `videoEmbed`, `mediaCarousel`, `programMatrix`, `logoStrip`, `pageHeader`, `breadcrumb`, `timeline`, `iconCardShowcase`, `iconGrid`, `quoteBlock`, `tabsContent`, `downloadList`, `feeStructure`, `numberedSteps`, `bentoGrid`, `testimonialGrid`, `awardsList`, `aboutSection`, `accreditationCards`, `reusableSection`.
+`announcement`, `bannerCta`, `newsGrid`, `newsEventsTabs`, `cta39`, `heroBanner`, `heroCarousel`, `galleryCoverflow`, `featureSpotlight`, `testimonialSpotlight`, `featureMatrix`, `contentHighlights`, `editorialReasons`, `academicProgrammes`, `newsEventsHighlights`, `profileCarousel`, `galleryShowcase`, `eventGallery`, `galleryAlbumTabs`, `imageMosaic`, `studentExperience`, `statsStrip`, `qaAccordion`, `ratingSpotlight`, `reviewFeed`, `reviewSubmission`, `contact33`, `contact24`, `teamShowcase`, `services21`, `richText`, `videoEmbed`, `mediaCarousel`, `programMatrix`, `logoStrip`, `pageHeader`, `breadcrumb`, `timeline`, `iconCardShowcase`, `iconGrid`, `quoteBlock`, `tabsContent`, `downloadList`, `feeStructure`, `numberedSteps`, `bentoGrid`, `testimonialGrid`, `awardsList`, `aboutSection`, `accreditationCards`, `reusableSection`.
 
 [ReusableSections.ts](../../../../src/collections/ReusableSections.ts) exposes the same order except `reusableSection`, preventing direct recursion.
 
@@ -66,16 +66,21 @@ The generated inventory contains every current export under [src/blocks/shared](
 
 Academic Programmes is the canonical programme-directory card block. It retains split/stacked
 headers, shared section actions, two-to-four-column editorial grids, semantic card surfaces, and
-per-card links while also supporting a one-row-per-programme List layout. Programme images are
-optional; text-only cards omit the media region. Optional badge, duration, and intake fields enrich
-each card, with editor-authored labels for both metadata values. A block-level Programme Details
-Position keeps metadata after the description or aligns the metadata-and-action group to the card
-bottom. Bottom-positioned details form an edge-to-edge, top-ruled footer; linked cards place an
-unruled inline action after their summary and immediately before the flexible footer space.
-Editors can enable accessible Pill filters derived from the existing Study Level / Category
-field when at least two distinct categories are present. The server component owns Payload media/link
-normalization and the shared section shell; its client component owns only filter state and the
-grid/list presentation. Program Grid has been removed without a compatibility renderer or migration.
+per-card links while supporting Grid, one-row-per-programme List, and Detailed Cards layouts.
+Programme images are optional in Grid and List; text-only cards omit the media region. Optional
+badge, duration, and intake fields enrich those layouts, with editor-authored labels for both
+metadata values. A block-level Programme Details Position keeps metadata after the description or
+aligns the metadata-and-action group to the card bottom. Bottom-positioned details form an
+edge-to-edge, top-ruled footer; linked cards place an unruled inline action after their summary and
+immediately before the flexible footer space. Detailed Cards instead use an optional dynamically
+loaded Lucide programme icon, the existing duration as a compact pill, zero to four ordered
+icon/label/value facts in a responsive auto-fit description-list grid, and the existing single
+per-card action aligned to the bottom. Grid/List-only media and metadata fields do not leak into this
+presentation. Editors can enable accessible Pill filters derived from the existing Study Level /
+Category field when at least two distinct categories are present. The server component owns Payload
+media/link/text normalization and the shared section shell; its client component owns filter state
+and layout selection. Program Grid and Study Pathways have been removed without compatibility
+renderers or migrations.
 
 Program Matrix keeps its introduction before the matrix and footer actions in document order. Editors
 can use a stacked layout or a large-screen 40/60 split with the introduction on either visual side

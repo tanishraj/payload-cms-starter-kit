@@ -1,7 +1,19 @@
 // @vitest-environment jsdom
 
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+
+vi.mock('lucide-react/dynamic', () => ({
+  DynamicIcon: ({ name }: { name: string }) => (
+    <svg aria-hidden="true" data-dynamic-icon={name} />
+  ),
+  dynamicIconImports: {
+    'book-open': () => Promise.resolve({}),
+    'graduation-cap': () => Promise.resolve({}),
+    'indian-rupee': () => Promise.resolve({}),
+    users: () => Promise.resolve({}),
+  },
+}))
 
 import { AcademicProgrammesClient } from '@/blocks/AcademicProgrammes/AcademicProgrammesClient'
 
@@ -13,6 +25,7 @@ const programmes = [
   {
     ctaLabel: 'Explore programme',
     eyebrow: 'Undergraduate',
+    facts: [],
     id: 'mbbs',
     openInNewTab: false,
     title: 'MBBS',
@@ -20,6 +33,7 @@ const programmes = [
   {
     ctaLabel: 'Explore programme',
     eyebrow: 'undergraduate',
+    facts: [],
     id: 'bsc',
     openInNewTab: false,
     title: 'BSc Medical Sciences',
@@ -27,12 +41,14 @@ const programmes = [
   {
     ctaLabel: 'Explore programme',
     eyebrow: 'Postgraduate',
+    facts: [],
     id: 'md',
     openInNewTab: false,
     title: 'MD General Medicine',
   },
   {
     ctaLabel: 'Explore programme',
+    facts: [],
     id: 'fellowship',
     openInNewTab: false,
     title: 'Clinical Fellowship',
@@ -77,6 +93,7 @@ describe('Academic Programmes client presentation', () => {
           {
             ctaLabel: 'Explore programme',
             eyebrow: 'Undergraduate',
+            facts: [],
             id: 'mbbs',
             openInNewTab: false,
             title: 'MBBS',
@@ -124,6 +141,7 @@ describe('Academic Programmes client presentation', () => {
           {
             ctaLabel: 'Explore programme',
             durationLabel: 'Programme duration',
+            facts: [],
             id: 'mbbs',
             intake: 'Subject to approval',
             intakeLabel: 'Availability',
@@ -154,6 +172,7 @@ describe('Academic Programmes client presentation', () => {
         programmes={[
           {
             ctaLabel: 'Explore MBBS',
+            facts: [],
             href: '/programmes/mbbs',
             id: 'mbbs',
             openInNewTab: false,
@@ -189,6 +208,7 @@ describe('Academic Programmes client presentation', () => {
           {
             ctaLabel: 'Explore MBBS',
             duration: '3 years',
+            facts: [],
             href: '/programmes/mbbs',
             id: 'mbbs',
             openInNewTab: false,
@@ -207,5 +227,91 @@ describe('Academic Programmes client presentation', () => {
     expect(action?.classList.contains('border-t')).toBe(false)
     expect(action?.querySelector('span')?.className).toContain('inline-flex items-center gap-2')
     expect(container.querySelectorAll('a')).toHaveLength(1)
+  })
+
+  it('filters detailed cards and preserves their responsive fact layout', () => {
+    const { container } = render(
+      <AcademicProgrammesClient
+        background="none"
+        columns="2"
+        contentAlignment="left"
+        metadataPosition="flow"
+        programmes={[
+          {
+            ctaLabel: 'Apply now',
+            duration: '4.5 years + 1 year internship',
+            eyebrow: 'Undergraduate',
+            facts: [
+              { icon: 'Users', label: 'Seats', value: '150' },
+              { icon: 'BookOpen', label: 'Eligibility', value: '10+2 with PCB' },
+              { icon: 'IndianRupee', label: 'Fee', value: 'As notified' },
+            ],
+            href: '/programmes/mbbs',
+            icon: 'GraduationCap',
+            id: 'mbbs',
+            openInNewTab: false,
+            title: 'MBBS',
+          },
+          {
+            ctaLabel: 'Apply now',
+            eyebrow: 'Postgraduate',
+            facts: [],
+            id: 'md',
+            openInNewTab: false,
+            title: 'MD General Medicine',
+          },
+        ]}
+        showFilter
+        viewMode="detailedCards"
+      />,
+    )
+
+    expect(
+      container.querySelector('[data-academic-programmes-view="detailedCards"]'),
+    ).not.toBeNull()
+    expect(container.querySelector('[data-academic-programme-facts="true"]')).not.toBeNull()
+    expect(container.innerHTML).toContain(
+      '[grid-template-columns:repeat(auto-fit,minmax(min(100%,8.5rem),1fr))]',
+    )
+    fireEvent.click(screen.getByRole('tab', { name: 'Postgraduate' }))
+    expect(screen.getByRole('heading', { name: 'MD General Medicine' })).not.toBeNull()
+    expect(screen.queryByRole('heading', { name: 'MBBS' })).toBeNull()
+  })
+
+  it('keeps detailed cards semantic on a brand section and omits invalid icons', () => {
+    const { container } = render(
+      <AcademicProgrammesClient
+        background="brand"
+        columns="2"
+        contentAlignment="left"
+        metadataPosition="bottom"
+        programmes={[
+          {
+            cardBackground: 'primary',
+            ctaLabel: 'Explore programme',
+            facts: [{ icon: 'NotReal', label: 'Seats', value: '42' }],
+            href: '/programmes/md',
+            icon: 'NotReal',
+            id: 'md',
+            openInNewTab: true,
+            title: 'MD / MS',
+          },
+        ]}
+        showFilter={false}
+        viewMode="detailedCards"
+      />,
+    )
+
+    expect(container.querySelector('dl')).not.toBeNull()
+    expect(container.querySelectorAll('dt')).toHaveLength(1)
+    expect(container.querySelectorAll('dd')).toHaveLength(1)
+    expect(container.querySelector('[data-academic-programme-icon]')).toBeNull()
+    expect(container.querySelector('[data-dynamic-icon]')).toBeNull()
+    const link = container.querySelector('a')
+    expect(link?.getAttribute('target')).toBe('_blank')
+    expect(link?.getAttribute('rel')).toBe('noopener noreferrer')
+    expect(link?.className).toContain('focus-visible:ring-3')
+    expect(container.innerHTML).toContain('bg-primary text-primary-foreground')
+    expect(container.innerHTML).toContain('mt-auto pt-7')
   })
 })

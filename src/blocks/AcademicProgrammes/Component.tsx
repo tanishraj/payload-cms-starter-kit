@@ -25,10 +25,19 @@ import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
 import type { Media } from '@/payload-types'
 
-import {
-  AcademicProgrammesClient,
-  type ResolvedAcademicProgramme,
-} from './AcademicProgrammesClient'
+import { AcademicProgrammesClient } from './AcademicProgrammesClient'
+import type {
+  AcademicProgrammesViewMode,
+  ResolvedAcademicProgramme,
+  ResolvedProgrammeFact,
+} from './types'
+
+type ProgrammeFactValue = {
+  icon?: string | null
+  id?: string | null
+  label?: string | null
+  value?: string | null
+}
 
 type ProgrammeValue = Omit<CmsLinkValue, 'linkType'> & {
   badge?: string | null
@@ -38,8 +47,10 @@ type ProgrammeValue = Omit<CmsLinkValue, 'linkType'> & {
   duration?: string | null
   durationLabel?: string | null
   eyebrow?: string | null
+  facts?: ProgrammeFactValue[] | null
   id?: string | null
   image?: unknown
+  icon?: string | null
   intake?: string | null
   intakeLabel?: string | null
   linkType?: 'custom' | 'none' | 'page' | null
@@ -63,7 +74,7 @@ type AcademicProgrammesBlockLike = {
   sideContentAlignment?: 'bottom' | 'top' | null
   size?: RegularBlockSize | null
   title?: string | null
-  viewMode?: 'grid' | 'list' | null
+  viewMode?: AcademicProgrammesViewMode | null
 }
 
 const validColumns = new Set<NonNullable<AcademicProgrammesBlockLike['columns']>>(['2', '3', '4'])
@@ -138,9 +149,19 @@ export function AcademicProgrammesBlockComponent({
           duration: programme.duration?.trim() || undefined,
           durationLabel: programme.durationLabel?.trim() || 'Duration',
           eyebrow: programme.eyebrow?.trim() || undefined,
+          facts: (programme.facts ?? [])
+            .flatMap((fact): ResolvedProgrammeFact[] => {
+              const label = fact.label?.trim()
+              const value = fact.value?.trim()
+              if (!label || !value) return []
+
+              return [{ icon: fact.icon?.trim() || undefined, label, value }]
+            })
+            .slice(0, 4),
           href: destination.href,
           id: programme.id ?? index,
           image,
+          icon: programme.icon?.trim() || undefined,
           intake: programme.intake?.trim() || undefined,
           intakeLabel: programme.intakeLabel?.trim() || 'Intake',
           openInNewTab: destination.openInNewTab ?? false,
@@ -166,7 +187,8 @@ export function AcademicProgrammesBlockComponent({
   const resolvedMetadataPosition = metadataPosition === 'bottom' ? 'bottom' : 'flow'
   const resolvedSideContentAlignment = sideContentAlignment === 'top' ? 'top' : 'bottom'
   const resolvedSize = size ?? 'default'
-  const resolvedViewMode = viewMode === 'list' ? 'list' : 'grid'
+  const resolvedViewMode: AcademicProgrammesViewMode =
+    viewMode === 'list' || viewMode === 'detailedCards' ? viewMode : 'grid'
 
   return (
     <section

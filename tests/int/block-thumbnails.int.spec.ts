@@ -47,6 +47,8 @@ describe('block thumbnail metadata', () => {
     expect(new Set(registeredSlugs).size).toBe(registeredSlugs.length)
     expect(new Set(definitionSlugs).size).toBe(definitionSlugs.length)
     expect(definitionSlugs).not.toContain('programGrid')
+    expect(definitionSlugs).not.toContain('studyPathways')
+    expect(definitionSlugs).toContain('academicProgrammes')
   })
 
   it('offers every non-recursive page block in Reusable Sections', () => {

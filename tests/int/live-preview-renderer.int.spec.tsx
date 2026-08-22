@@ -15,6 +15,9 @@ describe('live-preview page block renderer', () => {
       [...source.matchAll(/case '([^']+)'/g)].map((match) => match[1]).sort()
 
     expect(blockCases(previewSource)).toEqual(blockCases(productionSource))
+    expect(previewSource).not.toContain("case 'studyPathways'")
+    expect(previewSource).not.toContain('StudyPathwaysBlockComponent')
+    expect(previewSource).toContain("case 'academicProgrammes'")
   })
 
   it('renders every formerly missing block with production behavior', () => {

@@ -170,11 +170,11 @@ describe('page block pipeline', () => {
     const livePreviewRenderer = readFileSync('src/blocks/renderLivePreviewPageBlocks.tsx', 'utf8')
 
     expect(layoutField?.type).toBe('blocks')
-    expect(registeredSlugs).toHaveLength(52)
+    expect(registeredSlugs).toHaveLength(51)
     expect(registeredSlugs).toContain('academicProgrammes')
     expect(registeredSlugs).not.toContain('programGrid')
     expect(registeredSlugs).toContain('studentExperience')
-    expect(registeredSlugs).toContain('studyPathways')
+    expect(registeredSlugs).not.toContain('studyPathways')
     expect(new Set(registeredSlugs).size).toBe(registeredSlugs.length)
     expect(registeredSlugs).toContain('programMatrix')
     expect(registeredSlugs).toContain('feeStructure')

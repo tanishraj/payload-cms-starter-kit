@@ -19,7 +19,6 @@ import { HeroCarouselBlockComponent } from '@/blocks/HeroCarousel/Component'
 import { ImageMosaicBlockComponent } from '@/blocks/ImageMosaic/Component'
 import { StudentExperienceBlockComponent } from '@/blocks/StudentExperience/Component'
 import { NewsEventsHighlightsBlockPresentation } from '@/blocks/NewsEventsHighlights/Presentation'
-import { StudyPathwaysBlockComponent } from '@/blocks/StudyPathways/Component'
 import { ProfileCarouselBlockComponent } from '@/blocks/ProfileCarousel/Component'
 import { QaAccordionBlockComponent } from '@/blocks/QaAccordion/Component'
 import { RatingSpotlightBlockComponent } from '@/blocks/RatingSpotlight/Component'
@@ -427,52 +426,54 @@ export const blockThumbnailFixtures = {
   ),
   academicProgrammes: (
     <AcademicProgrammesBlockComponent
-      accentTitle="in medicine."
       appearance={{ background: 'subtle', border: 'none' }}
-      description="Programmes designed to build strong scientific foundations, clinical confidence and a professional approach to patient care."
-      eyebrow="Academic programmes"
+      columns="2"
+      eyebrow="Our programmes"
       programmes={[
         {
-          badge: 'Flagship programme',
-          ctaLabel: 'Explore MBBS',
+          ctaLabel: 'Apply now',
           description:
-            'Build a strong foundation in medical science through competency-based education, practical training and clinical exposure.',
-          duration: '4.5 Years',
+            'Our flagship undergraduate programme combines medical science and supervised clinical learning.',
+          duration: '4.5 Years + 1 Year Internship',
           eyebrow: 'Undergraduate',
-          image: {
-            alt: 'Medical learning environment',
-            url: '/block-thumbnail-assets/editorial-landscape.svg',
-          },
+          facts: [
+            { icon: 'Users', label: 'Seats', value: '150' },
+            {
+              icon: 'BookOpen',
+              label: 'Eligibility',
+              value: '10+2 with PCB, NEET-UG qualified',
+            },
+            { icon: 'IndianRupee', label: 'Fee', value: 'As officially notified' },
+          ],
+          icon: 'GraduationCap',
           linkType: 'custom',
-          intake: '150 Seats',
           title: 'MBBS',
           url: '/programmes/mbbs',
         },
         {
-          ctaLabel: 'Explore programmes',
-          description:
-            'Advanced learning designed to develop specialists, educators and future healthcare leaders.',
+          ctaLabel: 'Apply now',
+          description: 'Postgraduate specialisations across clinical disciplines.',
           duration: '3 Years',
           eyebrow: 'Postgraduate',
-          image: { alt: 'Medical professional', url: '/block-thumbnail-assets/portrait.svg' },
+          facts: [
+            { icon: 'Users', label: 'Seats', value: 'As approved' },
+            {
+              icon: 'BookOpen',
+              label: 'Eligibility',
+              value: 'MBBS and NEET-PG qualified',
+            },
+            { icon: 'IndianRupee', label: 'Fee', value: 'As officially notified' },
+          ],
+          icon: 'GraduationCap',
           linkType: 'custom',
-          intake: 'Subject to approval',
-          title: 'Postgraduate Education',
+          title: 'MD / MS',
           url: '/programmes/postgraduate',
-        },
-        {
-          ctaLabel: 'Discover more',
-          description:
-            'Practical learning focused on clinical skills, collaboration and compassionate healthcare delivery.',
-          eyebrow: 'Undergraduate',
-          linkType: 'custom',
-          title: 'Nursing & Allied Education',
-          url: '/programmes/nursing',
         },
       ]}
       showFilter
       size="compact"
-      title="Begin your journey"
+      title="Medical education from undergraduate study to specialist training"
+      viewMode="detailedCards"
     />
   ),
   newsGrid: (
@@ -1342,39 +1343,6 @@ export const blockThumbnailFixtures = {
       showNumbers
       size="compact"
       title="More than a"
-    />
-  ),
-  studyPathways: (
-    <StudyPathwaysBlockComponent
-      accentTitle="direction."
-      appearance={{ background: 'none', border: 'none' }}
-      cardHeight="default"
-      description="Compare pathway options, outcomes, and clinical training built for your next career step."
-      eyebrow="Study and train with"
-      pathways={[
-        {
-          description: 'Start with strong foundations, practical exposure, and guided mentorship.',
-          image: fakeMedia(editorialLandscape, 'Medical pathway', 1600, 1067),
-          imagePosition: 'center',
-          overlayDirection: 'bottomToTop',
-          linkType: 'custom',
-          title: 'MBBS Pathway',
-          url: '/pathways/mbbs',
-        },
-        {
-          description:
-            'Advance through specialist tracks with applied clinical practice and patient-focused care.',
-          image: fakeMedia(collaboration, 'Specialist pathway', 1600, 1067),
-          imagePosition: 'right',
-          overlayDirection: 'bottomToTop',
-          linkType: 'custom',
-          title: 'Specialist Pathway',
-          url: '/pathways/specialist',
-        },
-      ]}
-      headerLayout="split"
-      title="Study"
-      size="compact"
     />
   ),
   footerMinimal: (

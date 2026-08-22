@@ -165,13 +165,6 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
-    alt: 'Study Pathways block preview',
-    filename: 'study-pathways.jpg',
-    label: 'Study Pathways',
-    slug: 'studyPathways',
-    stageAlignment: 'top',
-  }),
-  defineThumbnail({
     alt: 'Stats Strip block preview',
     filename: 'stats-strip.jpg',
     label: 'Stats Strip',

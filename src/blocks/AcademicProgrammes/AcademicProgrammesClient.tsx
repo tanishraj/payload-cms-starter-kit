@@ -16,29 +16,13 @@ import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 
-type ResolvedProgrammeImage = {
-  alt: string
-  height?: number
-  src: string
-  width?: number
-}
+import { DetailedProgrammeCard } from './DetailedProgrammeCard'
+import type {
+  AcademicProgrammesViewMode,
+  ResolvedAcademicProgramme,
+} from './types'
 
-export type ResolvedAcademicProgramme = {
-  badge?: string
-  cardBackground?: string | null
-  ctaLabel: string
-  description?: string
-  duration?: string
-  durationLabel?: string
-  eyebrow?: string
-  href?: string
-  id: number | string
-  image?: ResolvedProgrammeImage
-  intake?: string
-  intakeLabel?: string
-  openInNewTab: boolean
-  title: string
-}
+export type { ResolvedAcademicProgramme } from './types'
 
 type AcademicProgrammesClientProps = {
   background: BlockBackground
@@ -47,7 +31,7 @@ type AcademicProgrammesClientProps = {
   metadataPosition: 'bottom' | 'flow'
   programmes: ResolvedAcademicProgramme[]
   showFilter: boolean
-  viewMode: 'grid' | 'list'
+  viewMode: AcademicProgrammesViewMode
 }
 
 type ProgrammeCategory = {
@@ -161,7 +145,7 @@ function ProgrammeCard({
   columns: AcademicProgrammesClientProps['columns']
   metadataPosition: AcademicProgrammesClientProps['metadataPosition']
   programme: ResolvedAcademicProgramme
-  viewMode: AcademicProgrammesClientProps['viewMode']
+  viewMode: 'grid' | 'list'
 }) {
   const surface = resolveCardSurface(programme.cardBackground, background)
   const usesDefaultSurface = surface.value === 'default'
@@ -418,25 +402,33 @@ export function AcademicProgrammesClient({
             : undefined
         }
         className={cn(
-          viewMode === 'grid'
-            ? cn('grid grid-cols-1 gap-6', gridClasses[columns])
-            : 'flex flex-col gap-5',
+          viewMode === 'list'
+            ? 'flex flex-col gap-5'
+            : cn('grid grid-cols-1 gap-6', gridClasses[columns]),
         )}
         data-academic-programmes-panel="true"
         id={hasFilters ? panelID : undefined}
         role={hasFilters ? 'tabpanel' : undefined}
         tabIndex={hasFilters ? 0 : undefined}
       >
-        {visibleProgrammes.map((programme) => (
-          <ProgrammeCard
-            background={background}
-            columns={columns}
-            key={String(programme.id)}
-            metadataPosition={metadataPosition}
-            programme={programme}
-            viewMode={viewMode}
-          />
-        ))}
+        {visibleProgrammes.map((programme) =>
+          viewMode === 'detailedCards' ? (
+            <DetailedProgrammeCard
+              background={background}
+              key={String(programme.id)}
+              programme={programme}
+            />
+          ) : (
+            <ProgrammeCard
+              background={background}
+              columns={columns}
+              key={String(programme.id)}
+              metadataPosition={metadataPosition}
+              programme={programme}
+              viewMode={viewMode}
+            />
+          ),
+        )}
       </div>
     </div>
   )

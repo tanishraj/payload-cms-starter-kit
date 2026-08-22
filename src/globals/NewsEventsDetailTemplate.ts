@@ -51,7 +51,6 @@ import { RichTextBlock } from '@/blocks/RichTextBlock/config'
 import { Services21Block } from '@/blocks/Services21/config'
 import { StatsStripBlock } from '@/blocks/StatsStrip/config'
 import { StudentExperienceBlock } from '@/blocks/StudentExperience/config'
-import { StudyPathwaysBlock } from '@/blocks/StudyPathways/config'
 import { TabsContentBlock } from '@/blocks/TabsContent/config'
 import { TeamShowcaseBlock } from '@/blocks/TeamShowcase/config'
 import { TestimonialGridBlock } from '@/blocks/TestimonialGrid/config'
@@ -95,7 +94,6 @@ const detailTemplateBlocks = [
   GalleryShowcaseBlock,
   EventGalleryBlock,
   GalleryAlbumTabsBlock,
-  StudyPathwaysBlock,
   ImageMosaicBlock,
   StudentExperienceBlock,
   StatsStripBlock,

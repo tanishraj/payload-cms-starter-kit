@@ -9,7 +9,6 @@ import { FeatureMatrixBlock } from '@/blocks/FeatureMatrix/config'
 import { BannerCtaBlock } from '@/blocks/BannerCta/config'
 import { NewsGridBlock } from '@/blocks/NewsGrid/config'
 import { NewsEventsTabsBlock } from '@/blocks/NewsEventsTabs/config'
-import { StudyPathwaysBlock } from '@/blocks/StudyPathways/config'
 import { Cta39Block } from '@/blocks/Cta39/config'
 import { GalleryShowcaseBlock } from '@/blocks/GalleryShowcase/config'
 import { EventGalleryBlock } from '@/blocks/EventGallery/config'
@@ -125,7 +124,6 @@ export const ReusableSections: CollectionConfig = {
         GalleryShowcaseBlock,
         EventGalleryBlock,
         GalleryAlbumTabsBlock,
-        StudyPathwaysBlock,
         ImageMosaicBlock,
         StudentExperienceBlock,
         StatsStripBlock,

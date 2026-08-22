@@ -37,7 +37,6 @@ import { Contact33BlockComponent } from './Contact33/Component'
 import { TeamShowcaseBlockComponent } from './TeamShowcase/Component'
 import { StatsStripBlockComponent } from './StatsStrip/Component'
 import { Services21BlockComponent } from './Services21/Component'
-import { StudyPathwaysBlockComponent } from './StudyPathways/Component'
 import { RichTextBlockComponent } from './RichTextBlock/Component'
 import { VideoEmbedBlockComponent } from './VideoEmbed/Component'
 import { MediaCarouselBlockComponent } from './MediaCarousel/Component'
@@ -133,8 +132,6 @@ export function renderLivePreviewPageBlockNode(
       return <ImageMosaicPreviewBlockComponent albums={eventGalleryAlbums} key={key} {...block} />
     case 'studentExperience':
       return <StudentExperienceBlockComponent key={key} {...block} />
-    case 'studyPathways':
-      return <StudyPathwaysBlockComponent key={key} {...block} />
     case 'reviewSubmission':
       return <ReviewSubmissionBlockComponent key={key} {...block} />
     case 'contact33':

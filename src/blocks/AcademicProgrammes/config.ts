@@ -4,6 +4,7 @@ import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { createIconField } from '@/blocks/shared/iconField'
 
 type ProgrammeSiblingData = {
   linkType?: 'custom' | 'none' | 'page' | null
@@ -14,14 +15,17 @@ type AcademicProgrammesLayoutSiblingData = {
 }
 
 type AcademicProgrammesViewSiblingData = {
-  viewMode?: 'grid' | 'list' | null
+  viewMode?: 'detailedCards' | 'grid' | 'list' | null
 }
 
 const isSplitHeader = (_data: unknown, siblingData: AcademicProgrammesLayoutSiblingData) =>
   siblingData?.headerLayout !== 'stacked'
 
-const usesGridView = (_data: unknown, siblingData: AcademicProgrammesViewSiblingData) =>
+const usesCardColumns = (_data: unknown, siblingData: AcademicProgrammesViewSiblingData) =>
   siblingData?.viewMode !== 'list'
+
+const usesStandardMetadata = (_data: unknown, siblingData: AcademicProgrammesViewSiblingData) =>
+  siblingData?.viewMode !== 'detailedCards'
 
 const isPageLink = (_data: unknown, siblingData: ProgrammeSiblingData) =>
   siblingData?.linkType === 'page'
@@ -51,7 +55,14 @@ const programmesField = {
           label: 'Programme Image',
           type: 'upload',
           relationTo: 'media',
+          admin: {
+            description: 'Optional image used by the Grid and List layouts.',
+          },
         },
+        createIconField({
+          description: 'Optional icon used by the Detailed Cards layout.',
+          required: false,
+        }),
         {
           name: 'eyebrow',
           label: 'Study Level / Category',
@@ -62,7 +73,7 @@ const programmesField = {
           label: 'Badge',
           type: 'text',
           admin: {
-            description: 'Optional short marker, such as Featured or New.',
+            description: 'Optional short marker used by Grid and List, such as Featured or New.',
           },
         },
         {
@@ -83,7 +94,7 @@ const programmesField = {
           type: 'text',
           defaultValue: 'Duration',
           admin: {
-            description: 'Label shown above the duration value.',
+            description: 'Label shown above the duration value in Grid and List.',
           },
         },
         {
@@ -91,7 +102,8 @@ const programmesField = {
           label: 'Duration Value',
           type: 'text',
           admin: {
-            description: 'Editor-authored duration, such as 3 years.',
+            description:
+              'Editor-authored duration, such as 3 years. Detailed Cards show this as a top-right pill.',
           },
         },
         {
@@ -100,7 +112,7 @@ const programmesField = {
           type: 'text',
           defaultValue: 'Intake',
           admin: {
-            description: 'Label shown above the intake value.',
+            description: 'Label shown above the intake value in Grid and List.',
           },
         },
         {
@@ -108,9 +120,28 @@ const programmesField = {
           label: 'Intake Value',
           type: 'text',
           admin: {
-            description: 'Editor-authored intake, such as Subject to approval.',
+            description: 'Editor-authored intake used by Grid and List.',
           },
         },
+        {
+          name: 'facts',
+          label: 'Detailed Card Facts',
+          type: 'array',
+          maxRows: 4,
+          admin: {
+            description:
+              'Optional facts used by Detailed Cards, such as Seats, Eligibility, or Fee. Add up to four.',
+            initCollapsed: true,
+          },
+          fields: [
+            createIconField({
+              description: 'Optional decorative Lucide icon shown beside this fact label.',
+              required: false,
+            }),
+            { name: 'label', type: 'text', required: true },
+            { name: 'value', type: 'text', required: true },
+          ],
+        } satisfies ArrayField,
         {
           name: 'ctaLabel',
           label: 'Link Label',
@@ -236,6 +267,7 @@ export const AcademicProgrammesBlock: Block = {
               options: [
                 { label: 'Grid', value: 'grid' },
                 { label: 'List', value: 'list' },
+                { label: 'Detailed Cards', value: 'detailedCards' },
               ],
             } satisfies SelectField,
             {
@@ -249,6 +281,7 @@ export const AcademicProgrammesBlock: Block = {
                 { label: 'Bottom of Card', value: 'bottom' },
               ],
               admin: {
+                condition: usesStandardMetadata,
                 description:
                   'Places programme details after the description or aligns them with the action at the bottom of each card.',
               },
@@ -275,8 +308,8 @@ export const AcademicProgrammesBlock: Block = {
                 { label: '4 Columns', value: '4' },
               ],
               admin: {
-                condition: usesGridView,
-                description: 'Applies only to the Grid programme layout.',
+                condition: usesCardColumns,
+                description: 'Applies to the Grid and Detailed Cards programme layouts.',
               },
             } satisfies SelectField,
             {

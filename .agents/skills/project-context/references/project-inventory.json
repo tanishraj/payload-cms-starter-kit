@@ -24,7 +24,9 @@
         "files": [
           "src/blocks/AcademicProgrammes/AcademicProgrammesClient.tsx",
           "src/blocks/AcademicProgrammes/Component.tsx",
-          "src/blocks/AcademicProgrammes/config.ts"
+          "src/blocks/AcademicProgrammes/DetailedProgrammeCard.tsx",
+          "src/blocks/AcademicProgrammes/config.ts",
+          "src/blocks/AcademicProgrammes/types.ts"
         ],
         "interfaceName": "AcademicProgrammesBlock",
         "presentationPath": null,
@@ -746,20 +748,6 @@
       },
       {
         "clientFiles": [],
-        "componentPath": "src/blocks/StudyPathways/Component.tsx",
-        "configPath": "src/blocks/StudyPathways/config.ts",
-        "files": [
-          "src/blocks/StudyPathways/Component.tsx",
-          "src/blocks/StudyPathways/config.ts"
-        ],
-        "interfaceName": "StudyPathwaysBlock",
-        "presentationPath": null,
-        "previewComponentPath": null,
-        "slug": "studyPathways",
-        "symbol": "StudyPathwaysBlock"
-      },
-      {
-        "clientFiles": [],
         "componentPath": "src/blocks/System404/Component.tsx",
         "configPath": "src/blocks/System404/config.ts",
         "files": [
@@ -942,7 +930,6 @@
       "Services21Block",
       "StatsStripBlock",
       "StudentExperienceBlock",
-      "StudyPathwaysBlock",
       "System404Block",
       "SystemComingSoonBlock",
       "SystemMaintenanceBlock",
@@ -973,7 +960,6 @@
       "galleryAlbumTabs",
       "imageMosaic",
       "studentExperience",
-      "studyPathways",
       "reviewSubmission",
       "contact33",
       "contact24",
@@ -1030,7 +1016,6 @@
       "galleryShowcase",
       "eventGallery",
       "galleryAlbumTabs",
-      "studyPathways",
       "imageMosaic",
       "studentExperience",
       "statsStrip",
@@ -1081,7 +1066,6 @@
       "galleryAlbumTabs",
       "imageMosaic",
       "studentExperience",
-      "studyPathways",
       "reviewSubmission",
       "contact33",
       "contact24",
@@ -1138,7 +1122,6 @@
       "galleryShowcase",
       "eventGallery",
       "galleryAlbumTabs",
-      "studyPathways",
       "imageMosaic",
       "studentExperience",
       "statsStrip",
@@ -1387,7 +1370,6 @@
         "public/block-thumbnails/services-21.jpg",
         "public/block-thumbnails/stats-strip.jpg",
         "public/block-thumbnails/student-experience.jpg",
-        "public/block-thumbnails/study-pathways.jpg",
         "public/block-thumbnails/system-404.jpg",
         "public/block-thumbnails/system-coming-soon.jpg",
         "public/block-thumbnails/system-maintenance.jpg",
@@ -1486,10 +1468,6 @@
         {
           "filename": "student-experience.jpg",
           "slug": "studentExperience"
-        },
-        {
-          "filename": "study-pathways.jpg",
-          "slug": "studyPathways"
         },
         {
           "filename": "stats-strip.jpg",
@@ -1652,7 +1630,6 @@
         "galleryAlbumTabs",
         "imageMosaic",
         "studentExperience",
-        "studyPathways",
         "footerMinimal",
         "footer56",
         "headerNavbar12",
@@ -1954,7 +1931,9 @@
       "src/blocks/AboutSection/config.ts",
       "src/blocks/AcademicProgrammes/AcademicProgrammesClient.tsx",
       "src/blocks/AcademicProgrammes/Component.tsx",
+      "src/blocks/AcademicProgrammes/DetailedProgrammeCard.tsx",
       "src/blocks/AcademicProgrammes/config.ts",
+      "src/blocks/AcademicProgrammes/types.ts",
       "src/blocks/AccreditationCards/Component.tsx",
       "src/blocks/AccreditationCards/config.ts",
       "src/blocks/Announcement/Component.tsx",
@@ -2091,8 +2070,6 @@
       "src/blocks/StatsStrip/config.ts",
       "src/blocks/StudentExperience/Component.tsx",
       "src/blocks/StudentExperience/config.ts",
-      "src/blocks/StudyPathways/Component.tsx",
-      "src/blocks/StudyPathways/config.ts",
       "src/blocks/System404/Component.tsx",
       "src/blocks/System404/config.ts",
       "src/blocks/SystemComingSoon/Component.tsx",
@@ -2496,7 +2473,6 @@
       "tests/int/starter-productization.int.spec.ts",
       "tests/int/stats-strip-render.int.spec.ts",
       "tests/int/student-experience.int.spec.tsx",
-      "tests/int/study-pathways.int.spec.tsx",
       "tests/int/system-page-blocks.int.spec.ts",
       "tests/int/system-page-rendering.int.spec.ts",
       "tests/int/tabs-content-active-color.int.spec.ts",
@@ -2508,7 +2484,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "1fd3ff2a4bfd4d2c3dfde4607fb8c75085c9ab8243e7a7b11a4efe64913d3921"
+    "sha256": "866c2316116f8fedec36087e753e93904452390f7b5c35ca5d3dd2e63d1d2ce4"
   },
   "surfaces": {
     "access": [
@@ -2774,7 +2750,6 @@
       "tests/int/starter-productization.int.spec.ts",
       "tests/int/stats-strip-render.int.spec.ts",
       "tests/int/student-experience.int.spec.tsx",
-      "tests/int/study-pathways.int.spec.tsx",
       "tests/int/system-page-blocks.int.spec.ts",
       "tests/int/system-page-rendering.int.spec.ts",
       "tests/int/tabs-content-active-color.int.spec.ts",

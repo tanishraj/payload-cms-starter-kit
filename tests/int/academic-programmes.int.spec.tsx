@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 
@@ -31,6 +33,8 @@ const findNamedField = (fields: NamedField[], name: string): NamedField | undefi
 }
 
 describe('Academic Programmes block', () => {
+  const generatedTypes = readFileSync(path.resolve(process.cwd(), 'src/payload-types.ts'), 'utf8')
+
   it('keeps content and theme controls aligned with editorial blocks', () => {
     const tabs = AcademicProgrammesBlock.fields[0] as NamedField
     const fields = tabs.tabs?.flatMap((tab) => tab.fields) ?? []
@@ -66,7 +70,23 @@ describe('Academic Programmes block', () => {
     expect(findNamedField(fields, 'viewMode')?.options?.map((option) => option.value)).toEqual([
       'grid',
       'list',
+      'detailedCards',
     ])
+    const programmeIcon = findNamedField(fields, 'icon')
+    const facts = findNamedField(fields, 'facts')
+    const factIcon = findNamedField(facts?.fields ?? [], 'icon')
+
+    expect(programmeIcon).toMatchObject({ type: 'text' })
+    expect(facts).toMatchObject({ maxRows: 4, type: 'array' })
+    expect(factIcon).toMatchObject({ type: 'text' })
+    expect(findNamedField(facts?.fields ?? [], 'label')).toMatchObject({
+      required: true,
+      type: 'text',
+    })
+    expect(findNamedField(facts?.fields ?? [], 'value')).toMatchObject({
+      required: true,
+      type: 'text',
+    })
     expect(findNamedField(fields, 'metadataPosition')).toMatchObject({
       defaultValue: 'flow',
       required: true,
@@ -100,9 +120,24 @@ describe('Academic Programmes block', () => {
     expect(findNamedField(fields, 'columns')?.admin?.condition?.({}, { viewMode: 'grid' })).toBe(
       true,
     )
+    expect(
+      findNamedField(fields, 'columns')?.admin?.condition?.({}, { viewMode: 'detailedCards' }),
+    ).toBe(true)
     expect(findNamedField(fields, 'columns')?.admin?.condition?.({}, { viewMode: 'list' })).toBe(
       false,
     )
+    expect(
+      findNamedField(fields, 'metadataPosition')?.admin?.condition?.({}, { viewMode: 'grid' }),
+    ).toBe(true)
+    expect(
+      findNamedField(fields, 'metadataPosition')?.admin?.condition?.({}, { viewMode: 'list' }),
+    ).toBe(true)
+    expect(
+      findNamedField(fields, 'metadataPosition')?.admin?.condition?.(
+        {},
+        { viewMode: 'detailedCards' },
+      ),
+    ).toBe(false)
     expect(findNamedField(fields, 'ctaLabel')).toBeDefined()
     expect(findNamedField(fields, 'actionMode')).toBeUndefined()
     expect(findNamedField(fields, 'actionVariant')).toBeUndefined()
@@ -117,6 +152,13 @@ describe('Academic Programmes block', () => {
       required: true,
       type: 'select',
     })
+  })
+
+  it('keeps generated types aligned with Detailed Cards and Study Pathways removal', () => {
+    expect(generatedTypes).toContain("viewMode: 'grid' | 'list' | 'detailedCards'")
+    expect(generatedTypes).toContain('facts?:')
+    expect(generatedTypes).not.toContain('export interface StudyPathwaysBlock')
+    expect(generatedTypes).not.toContain('studyPathways?:')
   })
 
   it('renders the editorial cards with shared typography, tall media, and ruled links', () => {
@@ -401,5 +443,89 @@ describe('Academic Programmes block', () => {
     expect(html).toContain('border-border bg-card text-card-foreground')
     expect(html).toContain('data-card-background="primary"')
     expect(html).toContain('bg-primary text-primary-foreground')
+  })
+
+  it('renders normalized detailed cards with semantic facts and one linked card target', () => {
+    const html = renderToStaticMarkup(
+      <AcademicProgrammesBlockComponent
+        columns="2"
+        programmes={[
+          {
+            cardBackground: 'muted',
+            ctaLabel: 'Apply now',
+            description: 'Competency-based education with supervised clinical exposure.',
+            duration: ' 4.5 years + 1 year internship ',
+            facts: [
+              { icon: 'Users', label: ' Seats ', value: ' 150 ' },
+              {
+                icon: 'BookOpen',
+                label: ' Eligibility ',
+                value: ' 10+2 with PCB, NEET-UG qualified ',
+              },
+              { icon: 'IndianRupee', label: ' Fee ', value: ' ₹16 Lakhs / year ' },
+              { label: ' Campus ', value: ' Main campus ' },
+              { label: 'Ignored', value: 'Fifth valid fact' },
+            ],
+            icon: ' GraduationCap ',
+            linkType: 'custom',
+            title: 'MBBS',
+            url: '/programmes/mbbs',
+          },
+        ]}
+        title="Academic programmes"
+        viewMode="detailedCards"
+      />,
+    )
+
+    expect(html).toContain('data-academic-programmes-view="detailedCards"')
+    expect(html).toContain('data-academic-programme-layout="detailedCards"')
+    expect(html).toContain('data-academic-programme-icon="graduation-cap"')
+    expect(html).toContain('data-academic-programme-duration="true"')
+    expect(html).toContain('4.5 years + 1 year internship')
+    expect(html).toContain('<dl')
+    expect(html).toContain('data-academic-programme-facts="true"')
+    expect(html).toContain('Seats')
+    expect(html).toContain('10+2 with PCB, NEET-UG qualified')
+    expect(html).toContain('₹16 Lakhs / year')
+    expect(html).toContain('Main campus')
+    expect(html).not.toContain('Fifth valid fact')
+    expect(html).toContain('data-academic-programme-action="detailed"')
+    expect(html).toContain('mt-auto pt-7')
+    expect(html.match(/<a /g)).toHaveLength(1)
+    expect(html).toContain('href="/programmes/mbbs"')
+    expect(html).toContain('font-sans')
+  })
+
+  it('closes detailed-card spacing and falls back to grid for invalid layouts', () => {
+    const detailed = renderToStaticMarkup(
+      <AcademicProgrammesBlockComponent
+        programmes={[
+          {
+            facts: [
+              { icon: 'NotARealLucideIcon', label: ' Seats ', value: '  ' },
+              { label: '  ', value: '150' },
+            ],
+            icon: 'NotARealLucideIcon',
+            title: 'MBBS',
+          },
+        ]}
+        title="Academic programmes"
+        viewMode="detailedCards"
+      />,
+    )
+    const fallback = renderToStaticMarkup(
+      <AcademicProgrammesBlockComponent
+        programmes={[{ title: 'MBBS' }]}
+        title="Academic programmes"
+        viewMode={'unsupported' as 'grid'}
+      />,
+    )
+
+    expect(detailed).toContain('data-academic-programme-layout="detailedCards"')
+    expect(detailed).not.toContain('data-academic-programme-icon=')
+    expect(detailed).not.toContain('data-academic-programme-duration=')
+    expect(detailed).not.toContain('data-academic-programme-facts=')
+    expect(detailed).not.toContain('data-academic-programme-action=')
+    expect(fallback).toContain('data-academic-programmes-view="grid"')
   })
 })
