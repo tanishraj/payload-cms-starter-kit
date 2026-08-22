@@ -16,6 +16,7 @@ import { GalleryShowcaseBlock } from '@/blocks/GalleryShowcase/config'
 import { HeaderNavbar12Block } from '@/blocks/HeaderNavbar12/config'
 import { IconGridBlock } from '@/blocks/IconGrid/config'
 import { ImageMosaicBlock } from '@/blocks/ImageMosaic/config'
+import { LeadershipProfilesBlock } from '@/blocks/LeadershipProfiles/config'
 import { LogoStripBlock } from '@/blocks/LogoStrip/config'
 import { MediaCarouselBlock } from '@/blocks/MediaCarousel/config'
 import { NumberedStepsBlock } from '@/blocks/NumberedSteps/config'
@@ -58,6 +59,7 @@ const cardRows = [
   [FeatureMatrixBlock, 'features', 'cardBackground'],
   [ContentHighlightsBlock, 'items', 'cardBackground'],
   [ProfileCarouselBlock, 'profiles', 'cardBackground'],
+  [LeadershipProfilesBlock, 'profiles', 'cardBackground'],
   [TeamShowcaseBlock, 'members', 'cardBackground'],
   [TestimonialGridBlock, 'testimonials', 'cardBackground'],
   [AwardsListBlock, 'awards', 'cardBackground'],

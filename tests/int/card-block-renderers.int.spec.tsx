@@ -8,6 +8,7 @@ import { ContentHighlightsBlockComponent } from '@/blocks/ContentHighlights/Comp
 import { DownloadListBlockComponent } from '@/blocks/DownloadList/Component'
 import { FeatureMatrixBlockComponent } from '@/blocks/FeatureMatrix/Component'
 import { IconGridBlockComponent } from '@/blocks/IconGrid/Component'
+import { LeadershipProfilesBlockComponent } from '@/blocks/LeadershipProfiles/Component'
 import { MediaCarouselBlockComponent } from '@/blocks/MediaCarousel/Component'
 import { NumberedStepsBlockComponent } from '@/blocks/NumberedSteps/Component'
 import { ProfileCarouselBlockComponent } from '@/blocks/ProfileCarousel/Component'
@@ -57,6 +58,12 @@ describe('semantic card surface rendering', () => {
         <ProfileCarouselBlockComponent
           profiles={[{ cardBackground: 'primary', image: media, name: 'Dr Example' }]}
           title="Faculty"
+        />,
+      ),
+      renderToStaticMarkup(
+        <LeadershipProfilesBlockComponent
+          profiles={[{ cardBackground: 'primary', image: media, name: 'Dr Example' }]}
+          title="Leadership"
         />,
       ),
       renderToStaticMarkup(

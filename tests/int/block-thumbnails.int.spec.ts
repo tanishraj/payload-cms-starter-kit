@@ -143,6 +143,13 @@ describe('block thumbnail metadata', () => {
       label: 'Profile Carousel',
       slug: 'profileCarousel',
     })
+    expect(getBlockThumbnailDefinition('leadershipProfiles')).toMatchObject({
+      alt: 'Leadership Profiles block preview',
+      filename: 'leadership-profiles.jpg',
+      label: 'Leadership Profiles',
+      slug: 'leadershipProfiles',
+      stageAlignment: 'top',
+    })
     expect(getBlockThumbnailDefinition('galleryShowcase')).toMatchObject({
       filename: 'gallery-showcase.jpg',
       label: 'Gallery Showcase',

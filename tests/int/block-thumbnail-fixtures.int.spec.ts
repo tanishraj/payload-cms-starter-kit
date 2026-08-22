@@ -43,6 +43,18 @@ describe('block thumbnail fixtures', () => {
     expect(html).toContain('Apply now')
   })
 
+  it('renders the approved Leadership Profiles production composition', () => {
+    const html = renderToStaticMarkup(getBlockThumbnailFixture('leadershipProfiles'))
+
+    expect(html).toContain('data-leadership-profiles="true"')
+    expect(html).toContain('Academic leadership')
+    expect(html).toContain('Principal')
+    expect(html).toContain('Medical Superintendent')
+    expect(html).toContain('Dean, Academics')
+    expect(html.match(/data-leadership-profile-card=/g)).toHaveLength(3)
+    expect(html).not.toMatch(/<(a|button)\b/)
+  })
+
   it('uses repository-local media assets only', () => {
     for (const assetPath of blockThumbnailAssetPaths) {
       expect(assetPath).toMatch(/^\/block-thumbnail-assets\//)

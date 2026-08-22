@@ -446,6 +446,21 @@
       },
       {
         "clientFiles": [],
+        "componentPath": "src/blocks/LeadershipProfiles/Component.tsx",
+        "configPath": "src/blocks/LeadershipProfiles/config.ts",
+        "files": [
+          "src/blocks/LeadershipProfiles/Component.tsx",
+          "src/blocks/LeadershipProfiles/config.ts",
+          "src/blocks/LeadershipProfiles/types.ts"
+        ],
+        "interfaceName": "LeadershipProfilesBlock",
+        "presentationPath": null,
+        "previewComponentPath": null,
+        "slug": "leadershipProfiles",
+        "symbol": "LeadershipProfilesBlock"
+      },
+      {
+        "clientFiles": [],
         "componentPath": "src/blocks/LogoStrip/Component.tsx",
         "configPath": "src/blocks/LogoStrip/config.ts",
         "files": [
@@ -910,6 +925,7 @@
       "IconCardShowcaseBlock",
       "IconGridBlock",
       "ImageMosaicBlock",
+      "LeadershipProfilesBlock",
       "LogoStripBlock",
       "MediaCarouselBlock",
       "NewsEventsContentBlock",
@@ -953,6 +969,7 @@
       "contentHighlights",
       "editorialReasons",
       "academicProgrammes",
+      "leadershipProfiles",
       "newsEventsHighlights",
       "profileCarousel",
       "galleryShowcase",
@@ -1011,6 +1028,7 @@
       "contentHighlights",
       "editorialReasons",
       "academicProgrammes",
+      "leadershipProfiles",
       "newsEventsHighlights",
       "profileCarousel",
       "galleryShowcase",
@@ -1059,6 +1077,7 @@
       "contentHighlights",
       "editorialReasons",
       "academicProgrammes",
+      "leadershipProfiles",
       "newsEventsHighlights",
       "profileCarousel",
       "galleryShowcase",
@@ -1117,6 +1136,7 @@
       "contentHighlights",
       "editorialReasons",
       "academicProgrammes",
+      "leadershipProfiles",
       "newsEventsHighlights",
       "profileCarousel",
       "galleryShowcase",
@@ -1351,6 +1371,7 @@
         "public/block-thumbnails/icon-card-showcase.jpg",
         "public/block-thumbnails/icon-grid.jpg",
         "public/block-thumbnails/image-mosaic.jpg",
+        "public/block-thumbnails/leadership-profiles.jpg",
         "public/block-thumbnails/logo-strip.jpg",
         "public/block-thumbnails/media-carousel.jpg",
         "public/block-thumbnails/news-events-highlights.jpg",
@@ -1436,6 +1457,10 @@
         {
           "filename": "academic-programmes.jpg",
           "slug": "academicProgrammes"
+        },
+        {
+          "filename": "leadership-profiles.jpg",
+          "slug": "leadershipProfiles"
         },
         {
           "filename": "news-events-highlights.jpg",
@@ -1613,6 +1638,7 @@
       "fixtures": [
         "accreditationCards",
         "academicProgrammes",
+        "leadershipProfiles",
         "newsGrid",
         "newsEventsTabs",
         "bannerCta",
@@ -2010,6 +2036,9 @@
       "src/blocks/ImageMosaic/Presentation.tsx",
       "src/blocks/ImageMosaic/PreviewComponent.tsx",
       "src/blocks/ImageMosaic/config.ts",
+      "src/blocks/LeadershipProfiles/Component.tsx",
+      "src/blocks/LeadershipProfiles/config.ts",
+      "src/blocks/LeadershipProfiles/types.ts",
       "src/blocks/LogoStrip/Component.tsx",
       "src/blocks/LogoStrip/LogoStripMarquee.tsx",
       "src/blocks/LogoStrip/config.ts",
@@ -2403,6 +2432,7 @@
       "tests/int/icon-card-showcase.int.spec.tsx",
       "tests/int/icon-grid-ruled-columns.int.spec.tsx",
       "tests/int/image-mosaic.int.spec.tsx",
+      "tests/int/leadership-profiles.int.spec.tsx",
       "tests/int/live-preview-import-boundary.int.spec.ts",
       "tests/int/live-preview-renderer.int.spec.tsx",
       "tests/int/managed-cms-page.int.spec.tsx",
@@ -2485,7 +2515,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "7bb727ec7ec488faadbd8b6ae7a0e0400978a0e8fd91b1666ef0db96b73436bf"
+    "sha256": "9c9f937c9b3681e499f0bbe647757914db70d51e4a0d1e0f5565c09b8a1a6a54"
   },
   "surfaces": {
     "access": [
@@ -2681,6 +2711,7 @@
       "tests/int/icon-card-showcase.int.spec.tsx",
       "tests/int/icon-grid-ruled-columns.int.spec.tsx",
       "tests/int/image-mosaic.int.spec.tsx",
+      "tests/int/leadership-profiles.int.spec.tsx",
       "tests/int/live-preview-import-boundary.int.spec.ts",
       "tests/int/live-preview-renderer.int.spec.tsx",
       "tests/int/managed-cms-page.int.spec.tsx",

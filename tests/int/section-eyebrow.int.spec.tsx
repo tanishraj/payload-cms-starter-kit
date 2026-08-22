@@ -19,6 +19,7 @@ const regularSectionEyebrowFiles = [
   'src/blocks/GalleryCoverflow/Component.tsx',
   'src/blocks/IconGrid/Component.tsx',
   'src/blocks/LogoStrip/Component.tsx',
+  'src/blocks/LeadershipProfiles/Component.tsx',
   'src/blocks/MediaCarousel/MediaCarouselClient.tsx',
   'src/blocks/NumberedSteps/Component.tsx',
   'src/blocks/AcademicProgrammes/AcademicProgrammesClient.tsx',

@@ -4,6 +4,7 @@ import { AnnouncementBlockComponent } from '@/blocks/Announcement/Component'
 import { ContentHighlightsBlockComponent } from '@/blocks/ContentHighlights/Component'
 import { EditorialReasonsBlockComponent } from '@/blocks/EditorialReasons/Component'
 import { AcademicProgrammesBlockComponent } from '@/blocks/AcademicProgrammes/Component'
+import { LeadershipProfilesBlockComponent } from '@/blocks/LeadershipProfiles/Component'
 import { FeatureMatrixBlockComponent } from '@/blocks/FeatureMatrix/Component'
 import { Footer56BlockComponent } from '@/blocks/Footer56/Component'
 import { FooterMinimalBlockComponent } from '@/blocks/FooterMinimal/Component'
@@ -474,6 +475,63 @@ export const blockThumbnailFixtures = {
       size="compact"
       title="Medical education from undergraduate study to specialist training"
       viewMode="detailedCards"
+    />
+  ),
+  leadershipProfiles: (
+    <LeadershipProfilesBlockComponent
+      appearance={{ background: 'none', border: 'none' }}
+      cardBackground="default"
+      cardLayout="imageOverlay"
+      columns="3"
+      description="Meet the academic and clinical leaders guiding the institution's education and patient-care mission."
+      eyebrow="Leadership"
+      overlayCoverage="full"
+      overlayDirection="bottomToTop"
+      overlayStyle="dark"
+      profiles={[
+        {
+          designation: 'Principal & Professor of Medicine',
+          expertise: [{ item: 'Academic administration' }, { item: 'Clinical education' }],
+          image: {
+            alt: 'Portrait of the Principal',
+            url: portrait,
+            width: 900,
+            height: 1200,
+          },
+          leadershipLabel: 'Principal',
+          name: 'Dr. Ananya Sharma',
+          qualification: 'MD (Medicine)',
+        },
+        {
+          designation: 'Medical Superintendent',
+          expertise: [{ item: 'Hospital operations' }, { item: 'Surgical education' }],
+          image: {
+            alt: 'Portrait of the Medical Superintendent',
+            url: portrait,
+            width: 900,
+            height: 1200,
+          },
+          leadershipLabel: 'Medical Superintendent',
+          name: 'Dr. Arvind Mehta',
+          qualification: 'MS (General Surgery)',
+        },
+        {
+          designation: 'Dean, Academic Affairs',
+          expertise: [{ item: 'Curriculum planning' }, { item: 'Medical education' }],
+          image: {
+            alt: 'Portrait of the Dean of Academics',
+            url: portrait,
+            width: 900,
+            height: 1200,
+          },
+          leadershipLabel: 'Dean, Academics',
+          name: 'Dr. Kavita Rao',
+          qualification: 'MD (Physiology)',
+        },
+      ]}
+      size="compact"
+      themeMode="dark"
+      title="Academic leadership"
     />
   ),
   newsGrid: (

@@ -261,6 +261,27 @@
   color: var(--primary-foreground);
 }
 
+/* Leadership cards use the eyebrow color family without inheriting eyebrow
+   typography. Light cards darken the deep green for AA contrast at 14px;
+   dark surfaces use the existing soft-green accent. */
+:root[data-theme-color='snmih']:not(.dark)
+  [data-leadership-profile-accent-surface]:not([data-leadership-profile-accent-surface='primary']) {
+  color: color-mix(in oklch, var(--success) 78%, var(--foreground));
+}
+
+:root[data-theme-color='snmih']:not(.dark) [data-leadership-profile-accent-surface='primary'] {
+  color: var(--ring);
+}
+
+:root[data-theme-color='snmih'].dark
+  [data-leadership-profile-accent-surface]:not([data-leadership-profile-accent-surface='primary']) {
+  color: var(--ring);
+}
+
+:root[data-theme-color='snmih'].dark [data-leadership-profile-accent-surface='primary'] {
+  color: var(--primary-foreground);
+}
+
 /* Feature Matrix internal-divider motion */
 .feature-matrix-divider-beam {
   position: absolute;

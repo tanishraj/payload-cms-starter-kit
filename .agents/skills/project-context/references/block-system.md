@@ -2,9 +2,9 @@
 
 ## Registries
 
-[Pages.ts](../../../../src/collections/Pages.ts) registers 51 blocks in this order:
+[Pages.ts](../../../../src/collections/Pages.ts) registers 52 blocks in this order:
 
-`announcement`, `bannerCta`, `newsGrid`, `newsEventsTabs`, `cta39`, `heroBanner`, `heroCarousel`, `galleryCoverflow`, `featureSpotlight`, `testimonialSpotlight`, `featureMatrix`, `contentHighlights`, `editorialReasons`, `academicProgrammes`, `newsEventsHighlights`, `profileCarousel`, `galleryShowcase`, `eventGallery`, `galleryAlbumTabs`, `imageMosaic`, `studentExperience`, `statsStrip`, `qaAccordion`, `ratingSpotlight`, `reviewFeed`, `reviewSubmission`, `contact33`, `contact24`, `teamShowcase`, `services21`, `richText`, `videoEmbed`, `mediaCarousel`, `programMatrix`, `logoStrip`, `pageHeader`, `breadcrumb`, `timeline`, `iconCardShowcase`, `iconGrid`, `quoteBlock`, `tabsContent`, `downloadList`, `feeStructure`, `numberedSteps`, `bentoGrid`, `testimonialGrid`, `awardsList`, `aboutSection`, `accreditationCards`, `reusableSection`.
+`announcement`, `bannerCta`, `newsGrid`, `newsEventsTabs`, `cta39`, `heroBanner`, `heroCarousel`, `galleryCoverflow`, `featureSpotlight`, `testimonialSpotlight`, `featureMatrix`, `contentHighlights`, `editorialReasons`, `academicProgrammes`, `leadershipProfiles`, `newsEventsHighlights`, `profileCarousel`, `galleryShowcase`, `eventGallery`, `galleryAlbumTabs`, `imageMosaic`, `studentExperience`, `statsStrip`, `qaAccordion`, `ratingSpotlight`, `reviewFeed`, `reviewSubmission`, `contact33`, `contact24`, `teamShowcase`, `services21`, `richText`, `videoEmbed`, `mediaCarousel`, `programMatrix`, `logoStrip`, `pageHeader`, `breadcrumb`, `timeline`, `iconCardShowcase`, `iconGrid`, `quoteBlock`, `tabsContent`, `downloadList`, `feeStructure`, `numberedSteps`, `bentoGrid`, `testimonialGrid`, `awardsList`, `aboutSection`, `accreditationCards`, `reusableSection`.
 
 [ReusableSections.ts](../../../../src/collections/ReusableSections.ts) exposes the same order except `reusableSection`, preventing direct recursion.
 
@@ -81,6 +81,27 @@ Category field when at least two distinct categories are present. The server com
 media/link/text normalization and the shared section shell; its client component owns filter state
 and layout selection. Program Grid and Study Pathways have been removed without compatibility
 renderers or migrations.
+
+Leadership Profiles owns the static academic, clinical, and administrative leadership directory.
+Editors provide one to twenty-four profiles with required Media and names, optional leadership labels,
+designations, one qualification, up to three ordered expertise items, and image crop positions.
+Standard and Image Overlay are block-wide card layouts. Standard renders every authored metadata field
+and applies one shared semantic surface to the complete directory. The hidden per-profile surface field
+remains only as a first-profile fallback for saved content. Image Overlay uses a fixed `4:5` portrait,
+the shared tone, strength, direction, and coverage controls, and renders only the leadership label,
+name, and designation. Qualification and expertise remain saved and reappear when Standard is selected;
+existing documents fall back to Standard without a migration.
+Runtime trims author text, omits profiles without a usable name or image, removes blank expertise
+rows, caps expertise at three, and never invents credentials. The block reuses the shared
+split/stacked header, section/footer actions, appearance, and spacing patterns. Its section title is
+optional; accent-only titles remain semantic headings, other authored header content remains
+available without a title, and an entirely empty header omits its wrapper and grid gap. Profile names
+use level-three headings when the section has a title and level-two headings when it does not. Within
+each card, the leadership label is a surface-aware content nameplate above the profile name, the
+designation uses the same accent family, and qualifications remain visually distinct from the smaller
+expertise list. Its grid renders one mobile column, at most two tablet columns, and the selected two,
+three, or four desktop columns. Cards remain opaque, equal-height, and non-clickable without profile
+links, buttons, hover navigation, or client state.
 
 Program Matrix keeps its introduction before the matrix and footer actions in document order. Editors
 can use a stacked layout or a large-screen 40/60 split with the introduction on either visual side

@@ -208,6 +208,7 @@ export interface Page {
         | ContentHighlightsBlock
         | EditorialReasonsBlock
         | AcademicProgrammesBlock
+        | LeadershipProfilesBlock
         | NewsEventsHighlightsBlock
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
@@ -1565,6 +1566,128 @@ export interface AcademicProgrammesBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'academicProgrammes';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LeadershipProfilesBlock".
+ */
+export interface LeadershipProfilesBlock {
+  /**
+   * Small label above the section title.
+   */
+  eyebrow?: string | null;
+  title?: string | null;
+  /**
+   * Optional italic second line of the heading.
+   */
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Leadership cards shown in their displayed order.
+   */
+  profiles: {
+    image: string | Media;
+    /**
+     * Optional short label, such as Principal.
+     */
+    leadershipLabel?: string | null;
+    name: string;
+    designation?: string | null;
+    qualification?: string | null;
+    /**
+     * Add up to three concise expertise areas in displayed order.
+     */
+    expertise?:
+      | {
+          item: string;
+          id?: string | null;
+        }[]
+      | null;
+    imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+    /**
+     * Legacy compatibility field. New blocks use the shared Card Background setting.
+     */
+    cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
+    id?: string | null;
+  }[];
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  cardLayout: 'standard' | 'imageOverlay';
+  /**
+   * Applies one semantic card surface to every Standard leadership profile for a consistent directory.
+   */
+  cardBackground?: ('default' | 'primary' | 'secondary' | 'muted' | 'accent') | null;
+  /**
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+   */
+  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
+  overlayStyle?: ('light' | 'dark' | 'darker') | null;
+  /**
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   */
+  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  overlayCoverage?: ('full' | 'split') | null;
+  /**
+   * Aligns the section eyebrow, heading, description, and actions together.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  headerLayout: 'split' | 'stacked';
+  /**
+   * Moves the section description between the title column and the right column.
+   */
+  descriptionPosition?: ('side' | 'underTitle') | null;
+  /**
+   * Aligns the right-column description and section actions to the top or bottom.
+   */
+  sideContentAlignment?: ('top' | 'bottom') | null;
+  columns: '2' | '3' | '4';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'leadershipProfiles';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -4821,6 +4944,7 @@ export interface ReusableSection {
         | ContentHighlightsBlock
         | EditorialReasonsBlock
         | AcademicProgrammesBlock
+        | LeadershipProfilesBlock
         | NewsEventsHighlightsBlock
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
@@ -6163,6 +6287,7 @@ export interface PagesSelect<T extends boolean = true> {
         contentHighlights?: T | ContentHighlightsBlockSelect<T>;
         editorialReasons?: T | EditorialReasonsBlockSelect<T>;
         academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
+        leadershipProfiles?: T | LeadershipProfilesBlockSelect<T>;
         newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
@@ -6996,6 +7121,80 @@ export interface AcademicProgrammesBlockSelect<T extends boolean = true> {
   columns?: T;
   descriptionPosition?: T;
   sideContentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LeadershipProfilesBlock_select".
+ */
+export interface LeadershipProfilesBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  profiles?:
+    | T
+    | {
+        image?: T;
+        leadershipLabel?: T;
+        name?: T;
+        designation?: T;
+        qualification?: T;
+        expertise?:
+          | T
+          | {
+              item?: T;
+              id?: T;
+            };
+        imagePosition?: T;
+        cardBackground?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  cardLayout?: T;
+  cardBackground?: T;
+  themeMode?: T;
+  overlayStyle?: T;
+  overlayDirection?: T;
+  overlayCoverage?: T;
+  contentAlignment?: T;
+  headerLayout?: T;
+  descriptionPosition?: T;
+  sideContentAlignment?: T;
+  columns?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -9304,6 +9503,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         contentHighlights?: T | ContentHighlightsBlockSelect<T>;
         editorialReasons?: T | EditorialReasonsBlockSelect<T>;
         academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
+        leadershipProfiles?: T | LeadershipProfilesBlockSelect<T>;
         newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
@@ -10288,6 +10488,7 @@ export interface NewsEventsDetailTemplate {
         | ContentHighlightsBlock
         | EditorialReasonsBlock
         | AcademicProgrammesBlock
+        | LeadershipProfilesBlock
         | NewsEventsHighlightsBlock
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
@@ -10569,6 +10770,7 @@ export interface NewsEventsDetailTemplateSelect<T extends boolean = true> {
         contentHighlights?: T | ContentHighlightsBlockSelect<T>;
         editorialReasons?: T | EditorialReasonsBlockSelect<T>;
         academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
+        leadershipProfiles?: T | LeadershipProfilesBlockSelect<T>;
         newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;

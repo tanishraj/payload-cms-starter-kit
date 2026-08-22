@@ -7,6 +7,7 @@ import {
 } from '@/access/adminCapabilities'
 import { AboutSectionBlock } from '@/blocks/AboutSection/config'
 import { AcademicProgrammesBlock } from '@/blocks/AcademicProgrammes/config'
+import { LeadershipProfilesBlock } from '@/blocks/LeadershipProfiles/config'
 import { AccreditationCardsBlock } from '@/blocks/AccreditationCards/config'
 import { AnnouncementBlock } from '@/blocks/Announcement/config'
 import { AwardsListBlock } from '@/blocks/AwardsList/config'
@@ -89,6 +90,7 @@ const detailTemplateBlocks = [
   ContentHighlightsBlock,
   EditorialReasonsBlock,
   AcademicProgrammesBlock,
+  LeadershipProfilesBlock,
   NewsEventsHighlightsBlock,
   ProfileCarouselBlock,
   GalleryShowcaseBlock,
