@@ -26,11 +26,13 @@
 ### Task 1: Shared Motion Policy And Toggle
 
 **Files:**
+
 - Create: `src/components/motion/useControllableMotion.ts`
 - Create: `src/components/motion/MotionToggle.tsx`
 - Create: `tests/int/controllable-motion.int.spec.tsx`
 
 **Interfaces:**
+
 - Produces: `useControllableMotion({ enabled: boolean }): ControllableMotionState`.
 - Produces: `ControllableMotionState` fields `isMotionAllowed`, `isUserPaused`, `prefersReducedMotion`, `showMotionControl`, `toggleUserPaused`, and `interactionProps`.
 - Produces: `MotionToggle({ contextLabel, isPaused, onToggle, className?, variant? })` with `variant` restricted to `ghost | secondary`.
@@ -182,10 +184,12 @@ git commit -m "feat(a11y): add controllable motion policy"
 ### Task 2: Rotating Announcement Control
 
 **Files:**
+
 - Modify: `src/components/announcement/RotatingAnnouncementContent.tsx`
 - Modify: `tests/int/rotating-announcement.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `useControllableMotion({ enabled: items.length > 1 })`.
 - Consumes: `MotionToggle` with `contextLabel="announcements"` and `variant="ghost"`.
 - Produces: timer and Framer transition behavior governed by `isMotionAllowed` and `prefersReducedMotion`.
@@ -227,15 +231,17 @@ const motionDisabled = motionState.prefersReducedMotion
 Guard the interval with `if (!motionState.isMotionAllowed) return` and depend on `items.length`, `motionState.isMotionAllowed`, and `sanitizedInterval`. Spread `motionState.interactionProps` over a flex wrapper that contains a `min-w-0 flex-1 overflow-hidden` message viewport and the toggle. Render:
 
 ```tsx
-{motionState.showMotionControl ? (
-  <MotionToggle
-    className="text-current hover:bg-current/10"
-    contextLabel="announcements"
-    isPaused={motionState.isUserPaused}
-    onToggle={motionState.toggleUserPaused}
-    variant="ghost"
-  />
-) : null}
+{
+  motionState.showMotionControl ? (
+    <MotionToggle
+      className="text-current hover:bg-current/10"
+      contextLabel="announcements"
+      isPaused={motionState.isUserPaused}
+      onToggle={motionState.toggleUserPaused}
+      variant="ghost"
+    />
+  ) : null
+}
 ```
 
 Retain `AnimatePresence mode="wait"`, sanitized intervals, horizontal/vertical offsets, current truncation behavior, and external-link handling.
@@ -260,10 +266,12 @@ git commit -m "fix(a11y): control announcement rotation"
 ### Task 3: Marquee Static Fallback And Control
 
 **Files:**
+
 - Modify: `src/components/announcement/MarqueeAnnouncementContent.tsx`
 - Modify: `tests/int/marquee-announcement.int.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `useControllableMotion({ enabled: items.length > 1 })`.
 - Consumes: `MotionToggle` with `contextLabel="marquee"` and `variant="ghost"`.
 - Produces: animated duplicate tracks only for multiple items without reduced motion; otherwise one static primary track.
@@ -335,11 +343,13 @@ git commit -m "fix(a11y): control announcement marquee"
 ### Task 4: Hero Slide And Video Motion Control
 
 **Files:**
+
 - Modify: `src/blocks/HeroCarousel/HeroCarouselClient.tsx`
 - Create: `tests/int/hero-carousel-motion.int.spec.tsx`
 - Modify: `tests/int/carousel-blocks.int.spec.tsx`
 
 **Interfaces:**
+
 - Consumes: `useControllableMotion({ enabled: slideAutoplayEnabled || hasBackgroundVideo })`.
 - Consumes: `MotionToggle` with `contextLabel="hero motion"` and `variant="secondary"`.
 - Produces: one stable Embla Autoplay plugin with `playOnInit: false` and imperative `play()`/`stop()` control.
@@ -460,11 +470,13 @@ git commit -m "fix(a11y): control hero motion"
 ### Task 5: Documentation, Project Context, And Release Verification
 
 **Files:**
+
 - Modify: `.agents/skills/project-context/references/block-system.md`
 - Modify if generated facts change: `.agents/skills/project-context/references/project-inventory.json`
 - Inspect: `.agents/skills/project-context/references/change-impact-map.md`
 
 **Interfaces:**
+
 - Consumes: the completed motion policy and all three consumer contracts.
 - Produces: maintained documentation describing the shared visitor-facing automatic-motion behavior.
 

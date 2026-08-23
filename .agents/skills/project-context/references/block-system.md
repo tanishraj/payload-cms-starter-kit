@@ -51,6 +51,20 @@ Production Page blocks are wrapped in `BlockErrorBoundary`, so one broken block 
 - `bannerCtaFields.ts` and `bannerCtaPresentation.ts`: banner layout controls and class resolution.
 - `siteSocialLinks.ts`: normalized CMS social destinations.
 
+## Automatic Motion
+
+Hero Carousel, Rotating Announcement, and Marquee Announcement share one visitor-facing automatic
+motion policy. Reduced-motion preference always disables automatic behavior and hides Pause/Play;
+otherwise, a visible component-local control persists the visitor's choice while pointer hover and
+keyboard focus pause motion temporarily and independently.
+
+Hero slide advancement follows its existing Autoplay setting, while background video remains an
+independent motion source: a single video slide still receives the shared control, only the active
+video may play, and reduced motion leaves every video paused. Multiple rotating announcements stop
+their replacement timer whenever motion is disallowed. Multiple marquee announcements use duplicated
+visual tracks only while motion is available; reduced motion and single-item marquees render one
+static wrapping track. Zero- and single-item announcements never render a motion control.
+
 Editorial Reasons supports Stacked, Inline, and Three Columns number layouts. Three Columns uses one
 outer reasons column so each row can place its generated number, title, and description in separate
 large-screen columns; compact screens place the description beneath the title. Selecting it hides

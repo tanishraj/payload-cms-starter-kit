@@ -2254,6 +2254,8 @@
       "src/components/live-preview/ArticleLivePreview.tsx",
       "src/components/live-preview/NewsEventLivePreview.tsx",
       "src/components/live-preview/PageLivePreview.tsx",
+      "src/components/motion/MotionToggle.tsx",
+      "src/components/motion/useControllableMotion.ts",
       "src/components/navbar12.tsx",
       "src/components/news-events/NewsEventClassificationBadge.tsx",
       "src/components/news-events/NewsEventDateMeta.tsx",
@@ -2452,6 +2454,7 @@
       "tests/int/content-highlights.int.spec.tsx",
       "tests/int/content-style-parity.int.spec.ts",
       "tests/int/content-taxonomy.int.spec.ts",
+      "tests/int/controllable-motion.int.spec.tsx",
       "tests/int/cta39.int.spec.tsx",
       "tests/int/dark-mode-media-treatment.int.spec.tsx",
       "tests/int/dashboard-attention.int.spec.tsx",
@@ -2483,6 +2486,7 @@
       "tests/int/header-presets.int.spec.ts",
       "tests/int/helpers/generatedPayloadInterface.ts",
       "tests/int/hero-banner-render.int.spec.ts",
+      "tests/int/hero-carousel-motion.int.spec.tsx",
       "tests/int/icon-card-showcase.int.spec.tsx",
       "tests/int/icon-grid-ruled-columns.int.spec.tsx",
       "tests/int/image-mosaic.int.spec.tsx",
@@ -2576,7 +2580,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "8030d604837223d9d41ddb06dba3202c6fb0906a36d1e9f79872763cc585f71c"
+    "sha256": "5186dc12322b17ae5aa7140e005f635cb37b79c61ee670f401744b21d2a18262"
   },
   "surfaces": {
     "access": [
@@ -2743,6 +2747,7 @@
       "tests/int/content-highlights.int.spec.tsx",
       "tests/int/content-style-parity.int.spec.ts",
       "tests/int/content-taxonomy.int.spec.ts",
+      "tests/int/controllable-motion.int.spec.tsx",
       "tests/int/cta39.int.spec.tsx",
       "tests/int/dark-mode-media-treatment.int.spec.tsx",
       "tests/int/dashboard-attention.int.spec.tsx",
@@ -2773,6 +2778,7 @@
       "tests/int/header-navbar-render.int.spec.ts",
       "tests/int/header-presets.int.spec.ts",
       "tests/int/hero-banner-render.int.spec.ts",
+      "tests/int/hero-carousel-motion.int.spec.tsx",
       "tests/int/icon-card-showcase.int.spec.tsx",
       "tests/int/icon-grid-ruled-columns.int.spec.tsx",
       "tests/int/image-mosaic.int.spec.tsx",
