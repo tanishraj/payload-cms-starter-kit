@@ -88,6 +88,7 @@ type HeroCarouselBlockLike = {
   overlayStyle?: MediaOverlayStrength | null
   showArrows?: boolean | null
   showDots?: boolean | null
+  showPauseControl?: boolean | null
   slides?: SlideData[] | null
   themeMode?: MediaOverlayTone | null
 }
@@ -103,6 +104,7 @@ export function HeroCarouselBlockComponent({
   autoplay = true,
   showArrows = true,
   showDots = true,
+  showPauseControl = false,
 }: HeroCarouselBlockLike) {
   const resolvedSlides = resolveHeroCarouselSlides(slides)
 
@@ -127,6 +129,7 @@ export function HeroCarouselBlockComponent({
         overlayStyle={overlayStyle ?? 'dark'}
         showArrows={showArrows ?? true}
         showDots={showDots ?? true}
+        showPauseControl={showPauseControl ?? false}
         slides={resolvedSlides}
         themeMode={themeMode ?? 'auto'}
       />

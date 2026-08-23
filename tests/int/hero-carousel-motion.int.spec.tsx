@@ -143,7 +143,7 @@ describe('HeroCarouselClient motion', () => {
   })
 
   it('starts Embla explicitly and persists the visitor pause choice', async () => {
-    render(<HeroCarouselClient autoplay slides={imageSlides} />)
+    render(<HeroCarouselClient autoplay showPauseControl slides={imageSlides} />)
 
     await waitFor(() => expect(carouselHarness.autoplayController.play).toHaveBeenCalled())
     expect(carouselHarness.autoplayFactory).toHaveBeenCalledWith({
@@ -160,6 +160,12 @@ describe('HeroCarouselClient motion', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Play hero motion' }))
 
     await waitFor(() => expect(carouselHarness.autoplayController.play).toHaveBeenCalledTimes(2))
+  })
+
+  it('hides the visitor control when the CMS option is absent', () => {
+    render(<HeroCarouselClient autoplay slides={imageSlides} />)
+
+    expect(screen.queryByRole('button', { name: /hero motion/i })).toBeNull()
   })
 
   it('keeps pointer and focus pauses independent', async () => {
@@ -186,7 +192,7 @@ describe('HeroCarouselClient motion', () => {
 
   it('suppresses automatic motion but retains manual navigation under reduced motion', async () => {
     prefersReducedMotion = true
-    render(<HeroCarouselClient autoplay slides={imageSlides} />)
+    render(<HeroCarouselClient autoplay showPauseControl slides={imageSlides} />)
 
     await waitFor(() => expect(carouselHarness.autoplayController.stop).toHaveBeenCalled())
 
@@ -198,7 +204,9 @@ describe('HeroCarouselClient motion', () => {
   })
 
   it('keeps the motion control available when dots are hidden', async () => {
-    render(<HeroCarouselClient autoplay showDots={false} slides={imageSlides} />)
+    render(
+      <HeroCarouselClient autoplay showDots={false} showPauseControl slides={imageSlides} />,
+    )
 
     expect(await screen.findByRole('button', { name: 'Pause hero motion' })).toBeTruthy()
     expect(screen.queryByRole('button', { name: /Go to slide/i })).toBeNull()
@@ -209,6 +217,7 @@ describe('HeroCarouselClient motion', () => {
     render(
       <HeroCarouselClient
         autoplay={false}
+        showPauseControl
         slides={[{ backgroundVideoUrl: '/single.mp4', id: 'video' }]}
       />,
     )
@@ -268,6 +277,7 @@ describe('HeroCarouselClient motion', () => {
     render(
       <HeroCarouselClient
         autoplay
+        showPauseControl
         slides={[
           { backgroundVideoUrl: '/video.mp4', id: 'video' },
           { backgroundImageAlt: 'Second image', backgroundImageSrc: '/second.jpg', id: 'second' },

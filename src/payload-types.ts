@@ -2476,6 +2476,10 @@ export interface HeroCarouselBlock {
    * Automatically advance slides every 6 seconds.
    */
   autoplay?: boolean | null;
+  /**
+   * Shows a centered Pause / Play control on hover or focus and on touch devices. Pause freezes autoplay, background video, and slide navigation.
+   */
+  showPauseControl?: boolean | null;
   showArrows?: boolean | null;
   showDots?: boolean | null;
   id?: string | null;
@@ -7776,6 +7780,7 @@ export interface HeroCarouselBlockSelect<T extends boolean = true> {
   height?: T;
   contentAlignment?: T;
   autoplay?: T;
+  showPauseControl?: T;
   showArrows?: T;
   showDots?: T;
   id?: T;

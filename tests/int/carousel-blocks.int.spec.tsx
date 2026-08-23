@@ -20,6 +20,7 @@ import { renderPageBlocks } from '@/blocks/renderPageBlocks'
 import { Pages } from '@/collections/Pages'
 
 type TestField = {
+  admin?: { description?: string }
   defaultValue?: unknown
   fields?: TestField[]
   label?: string
@@ -89,6 +90,15 @@ describe('carousel block schemas', () => {
       type: 'select',
     })
     expect(getField(layoutTab.fields, 'autoplay')?.defaultValue).toBe(true)
+    expect(getField(layoutTab.fields, 'showPauseControl')).toMatchObject({
+      admin: {
+        description:
+          'Shows a centered Pause / Play control on hover or focus and on touch devices. Pause freezes autoplay, background video, and slide navigation.',
+      },
+      defaultValue: false,
+      label: 'Show Pause / Play Control',
+      type: 'checkbox',
+    })
     expect(getField(layoutTab.fields, 'showArrows')?.defaultValue).toBe(true)
     expect(getField(layoutTab.fields, 'showDots')?.defaultValue).toBe(true)
   })
@@ -281,6 +291,14 @@ describe('carousel block schemas', () => {
     )
 
     expect(html).toContain('data-hero-carousel-alignment="left"')
+  })
+
+  it('keeps the Hero Pause / Play control hidden unless editors enable it', () => {
+    const source = readFileSync('src/blocks/HeroCarousel/Component.tsx', 'utf8')
+
+    expect(source).toContain('showPauseControl?: boolean | null')
+    expect(source).toContain('showPauseControl = false')
+    expect(source).toContain('showPauseControl={showPauseControl ?? false}')
   })
 
   it('renders Hero Carousel with shared tone, strength, and directional emphasis', () => {

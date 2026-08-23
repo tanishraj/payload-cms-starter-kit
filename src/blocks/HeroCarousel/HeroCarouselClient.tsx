@@ -50,6 +50,7 @@ type HeroCarouselClientProps = {
   overlayStyle?: MediaOverlayStrength
   showArrows?: boolean
   showDots?: boolean
+  showPauseControl?: boolean
   slides: CarouselSlide[]
   themeMode?: MediaOverlayTone
 }
@@ -87,6 +88,7 @@ export function HeroCarouselClient({
   overlayStyle = 'dark',
   showArrows = true,
   showDots = true,
+  showPauseControl = false,
   slides,
   themeMode = 'auto',
 }: HeroCarouselClientProps) {
@@ -166,7 +168,8 @@ export function HeroCarouselClient({
   if (slides.length === 0) return null
 
   const showDotControls = showDots && slides.length > 1
-  const showLowerControls = showDotControls || motionState.showMotionControl
+  const showHeroMotionControl = showPauseControl && motionState.showMotionControl
+  const showLowerControls = showDotControls || showHeroMotionControl
 
   return (
     <Carousel
@@ -355,7 +358,7 @@ export function HeroCarouselClient({
               : null}
           </div>
           <div className="justify-self-end">
-            {motionState.showMotionControl ? (
+            {showHeroMotionControl ? (
               <MotionToggle
                 contextLabel="hero motion"
                 isPaused={motionState.isUserPaused}

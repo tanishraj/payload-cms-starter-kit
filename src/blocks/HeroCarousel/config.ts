@@ -207,6 +207,16 @@ export const HeroCarouselBlock: Block = {
               admin: { description: 'Automatically advance slides every 6 seconds.' },
             } satisfies CheckboxField,
             {
+              name: 'showPauseControl',
+              label: 'Show Pause / Play Control',
+              type: 'checkbox',
+              defaultValue: false,
+              admin: {
+                description:
+                  'Shows a centered Pause / Play control on hover or focus and on touch devices. Pause freezes autoplay, background video, and slide navigation.',
+              },
+            } satisfies CheckboxField,
+            {
               name: 'showArrows',
               label: 'Show Navigation Arrows',
               type: 'checkbox',
