@@ -13,6 +13,7 @@ type CarouselOptions = UseCarouselParameters[0]
 type CarouselPlugin = UseCarouselParameters[1]
 
 type CarouselProps = {
+  keyboardNavigation?: boolean
   opts?: CarouselOptions
   plugins?: CarouselPlugin
   orientation?: 'horizontal' | 'vertical'
@@ -41,6 +42,7 @@ function useCarousel() {
 }
 
 function Carousel({
+  keyboardNavigation = true,
   orientation = 'horizontal',
   opts,
   setApi,
@@ -75,6 +77,8 @@ function Carousel({
 
   const handleKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (!keyboardNavigation) return
+
       if (event.key === 'ArrowLeft') {
         event.preventDefault()
         scrollPrev()
@@ -83,7 +87,7 @@ function Carousel({
         scrollNext()
       }
     },
-    [scrollPrev, scrollNext],
+    [keyboardNavigation, scrollPrev, scrollNext],
   )
 
   React.useEffect(() => {
