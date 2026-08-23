@@ -43,6 +43,10 @@ next-env.d.ts
 
 /media
 
+# Local database exports contain sensitive client data.
+/backups/
+*.archive
+
 # Playwright
 node_modules/
 /test-results/

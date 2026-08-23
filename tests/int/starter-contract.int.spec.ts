@@ -21,6 +21,9 @@ describe('starter contract', () => {
       media: {
         provider: 'localDisk',
       },
+      payload: {
+        secret: 'test-secret',
+      },
     })
 
     expect(contract.media).toEqual({
@@ -47,6 +50,9 @@ describe('starter contract', () => {
       },
       media: {
         provider: 'localDisk',
+      },
+      payload: {
+        secret: 'test-secret',
       },
     })
 
@@ -80,6 +86,9 @@ describe('starter contract', () => {
         forcePathStyle: true,
         region: 'ap-southeast-1',
         secretAccessKey: 'secret-key',
+      },
+      payload: {
+        secret: 'test-secret',
       },
     })
 

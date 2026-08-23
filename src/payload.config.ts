@@ -106,7 +106,11 @@ export default buildConfig({
   ],
   editor: lexicalEditor(),
   email,
-  secret: process.env.PAYLOAD_SECRET || '',
+  graphQL: {
+    disableIntrospectionInProduction: true,
+    disablePlaygroundInProduction: true,
+  },
+  secret: runtimeConfig.payload.secret,
   upload: payloadUploadConfig,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

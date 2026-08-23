@@ -13,6 +13,7 @@ describe('runtime config', () => {
     process.env = {
       ...ORIGINAL_ENV,
       MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      PAYLOAD_SECRET: 'test-secret',
       EMAIL_PROVIDER: 'none',
       MEDIA_PROVIDER: 'localDisk',
       VERCEL: '',
@@ -38,6 +39,7 @@ describe('runtime config', () => {
       ...ORIGINAL_ENV,
       MONGODB_URI: 'mongodb+srv://starter:secret@cluster.example.com/payload',
       NODE_ENV: 'production',
+      PAYLOAD_SECRET: '4f3a8db96b7240b4a6fbd84585f9bb21',
       VERCEL: '1',
     }
 
@@ -56,6 +58,7 @@ describe('runtime config', () => {
     process.env = {
       ...ORIGINAL_ENV,
       MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      PAYLOAD_SECRET: 'test-secret',
       MEDIA_PROVIDER: 's3',
       S3_BUCKET: 'payload-media',
       S3_ENDPOINT: 'https://s3.ap-southeast-1.idrivee2.com',
@@ -85,6 +88,7 @@ describe('runtime config', () => {
     process.env = {
       ...ORIGINAL_ENV,
       MONGODB_URI: '',
+      PAYLOAD_SECRET: 'test-secret',
     }
 
     expect(() => getRuntimeConfig(process.env)).toThrow(
@@ -96,6 +100,7 @@ describe('runtime config', () => {
     process.env = {
       ...ORIGINAL_ENV,
       MONGODB_URI: '',
+      PAYLOAD_SECRET: 'test-secret',
       DATABASE_URL: 'mongodb://127.0.0.1:27017/legacy-database',
       EMAIL_PROVIDER: 'none',
       MEDIA_PROVIDER: 'localDisk',
@@ -110,6 +115,7 @@ describe('runtime config', () => {
     process.env = {
       ...ORIGINAL_ENV,
       MONGODB_URI: 'postgres://starter:secret@db.example.com:5432/payload',
+      PAYLOAD_SECRET: 'test-secret',
     }
 
     expect(() => getRuntimeConfig(process.env)).toThrow(
@@ -121,6 +127,7 @@ describe('runtime config', () => {
     process.env = {
       ...ORIGINAL_ENV,
       MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      PAYLOAD_SECRET: 'test-secret',
       MEDIA_PROVIDER: 's3',
       S3_BUCKET: '',
       S3_ENDPOINT: '',
@@ -132,5 +139,43 @@ describe('runtime config', () => {
     expect(() => getRuntimeConfig(process.env)).toThrow(
       'Incomplete S3 media configuration. Set S3_BUCKET, S3_ENDPOINT, S3_REGION, S3_ACCESS_KEY_ID, and S3_SECRET_ACCESS_KEY.',
     )
+  })
+
+  it('rejects a missing Payload secret', () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      PAYLOAD_SECRET: '',
+    }
+
+    expect(() => getRuntimeConfig(process.env)).toThrow(
+      'Missing PAYLOAD_SECRET. Set a unique secret for this environment.',
+    )
+  })
+
+  it('rejects placeholder and weak Payload secrets in production', () => {
+    const baseEnv: NodeJS.ProcessEnv = {
+      ...ORIGINAL_ENV,
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      NODE_ENV: 'production',
+    }
+
+    for (const secret of ['YOUR_PAYLOAD_CMS_SECRET_HERE', 'change-me', 'too-short']) {
+      expect(() => getRuntimeConfig({ ...baseEnv, PAYLOAD_SECRET: secret })).toThrow(
+        'Invalid production PAYLOAD_SECRET. Use at least 32 non-placeholder characters.',
+      )
+    }
+  })
+
+  it('exposes a validated high-entropy Payload secret', () => {
+    const secret = '4f3a8db96b7240b4a6fbd84585f9bb21'
+    const config = getRuntimeConfig({
+      ...ORIGINAL_ENV,
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      NODE_ENV: 'production',
+      PAYLOAD_SECRET: secret,
+    })
+
+    expect(config.payload.secret).toBe(secret)
   })
 })

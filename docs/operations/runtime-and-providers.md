@@ -15,7 +15,7 @@ The application validates this contract while loading `src/payload.config.ts` an
 | Variable                   | Required           | Purpose                                                            |
 | -------------------------- | ------------------ | ------------------------------------------------------------------ |
 | `MONGODB_URI`              | yes                | MongoDB connection string                                          |
-| `PAYLOAD_SECRET`           | yes                | Payload authentication and encryption secret                       |
+| `PAYLOAD_SECRET`           | yes                | Unique authentication/encryption secret; production requires 32+ non-placeholder characters |
 | `NEXT_PUBLIC_SERVER_URL`   | production/preview | Absolute site URL used by metadata and live-preview links          |
 | `EMAIL_PROVIDER`           | no                 | `none` by default, or `resend`                                     |
 | `RESEND_API_KEY`           | with Resend        | Resend API key                                                     |
@@ -62,11 +62,14 @@ Run storage reconciliation after migrations, restores, or suspected bucket drift
 
 ## Deployment Notes
 
-- set a unique high-entropy `PAYLOAD_SECRET` per environment
+- set a unique high-entropy `PAYLOAD_SECRET` per environment; production rejects missing,
+  placeholder, and shorter-than-32-character values
 - use durable MongoDB and object storage for hosted production
 - set `NEXT_PUBLIC_SERVER_URL` to the externally reachable HTTPS origin
 - never expose reconciliation or provider secrets to client-side variables
-- the repository has no CI workflow
+- keep database archives in approved encrypted external storage, never in Git or Docker contexts
+- GitHub Actions verifies project context, generated types, TypeScript, lint, integration tests,
+  and the production build
 
 ## Verification
 

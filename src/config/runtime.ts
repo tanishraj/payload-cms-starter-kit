@@ -27,6 +27,9 @@ export type RuntimeConfig = {
         accessKeyId: string
         secretAccessKey: string
       }
+  payload: {
+    secret: string
+  }
 }
 
 const isMongoConnectionString = (value: string): boolean =>
@@ -67,6 +70,23 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
   const isProduction = env.NODE_ENV === 'production'
   const isVercel = Boolean(env.VERCEL)
   const mongodbURI = env.MONGODB_URI?.trim() || ''
+  const payloadSecret = env.PAYLOAD_SECRET?.trim() || ''
+
+  if (!payloadSecret) {
+    throw new Error('Missing PAYLOAD_SECRET. Set a unique secret for this environment.')
+  }
+
+  const placeholderSecrets = new Set([
+    'YOUR_PAYLOAD_CMS_SECRET_HERE',
+    'change-me',
+    'changeme',
+  ])
+
+  if (isProduction && (payloadSecret.length < 32 || placeholderSecrets.has(payloadSecret))) {
+    throw new Error(
+      'Invalid production PAYLOAD_SECRET. Use at least 32 non-placeholder characters.',
+    )
+  }
 
   if (!mongodbURI) {
     throw new Error('Missing MongoDB MONGODB_URI. Set MONGODB_URI to a MongoDB connection string.')
@@ -142,5 +162,8 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
       fromName: env.RESEND_FROM_NAME || 'Website',
     },
     media,
+    payload: {
+      secret: payloadSecret,
+    },
   }
 }

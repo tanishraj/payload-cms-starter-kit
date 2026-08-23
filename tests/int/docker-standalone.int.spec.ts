@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
 const nextConfigSource = readFileSync('next.config.ts', 'utf8')
@@ -6,6 +6,7 @@ const dockerfileSource = readFileSync('Dockerfile', 'utf8')
 const readmeSource = readFileSync('README.md', 'utf8')
 const runtimeDocsSource = readFileSync('docs/operations/runtime-and-providers.md', 'utf8')
 const featureInventorySource = readFileSync('docs/architecture/feature-inventory.md', 'utf8')
+const dockerIgnoreSource = existsSync('.dockerignore') ? readFileSync('.dockerignore', 'utf8') : ''
 
 describe('Docker standalone deployment contract', () => {
   it('enables Next.js standalone output', () => {
@@ -21,6 +22,23 @@ describe('Docker standalone deployment contract', () => {
 
   it('does not retain the obsolete standalone setup warning', () => {
     expect(dockerfileSource).not.toContain("you have to set `output: 'standalone'`")
+  })
+
+  it('excludes sensitive and development-only Docker context files', () => {
+    for (const entry of [
+      '.git',
+      '.env*',
+      'backups',
+      'node_modules',
+      '.next',
+      'playwright-report',
+      'test-results',
+    ]) {
+      expect(dockerIgnoreSource, entry).toContain(entry)
+    }
+
+    expect(dockerIgnoreSource).not.toMatch(/^public\/?$/m)
+    expect(dockerIgnoreSource).not.toMatch(/^src\/?$/m)
   })
 })
 

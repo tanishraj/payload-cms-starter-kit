@@ -39,6 +39,9 @@ describe('provider selection', () => {
       media: {
         provider: 'localDisk',
       },
+      payload: {
+        secret: 'test-secret',
+      },
     })
 
     expect(adapterMocks.mongooseAdapter).toHaveBeenCalledWith({
@@ -74,6 +77,9 @@ describe('provider selection', () => {
         forcePathStyle: true,
         region: 'ap-southeast-1',
         secretAccessKey: 'secret-key',
+      },
+      payload: {
+        secret: 'test-secret',
       },
     })
 

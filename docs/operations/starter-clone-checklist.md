@@ -13,7 +13,8 @@ Use this checklist when copying the starter into a new client repository. The go
 ## Confirm Runtime And Provider Choices
 
 - Confirm `MONGODB_URI` points at the correct MongoDB instance for the environment.
-- Set `PAYLOAD_SECRET` for every environment.
+- Set a unique `PAYLOAD_SECRET` for every environment. Production values must contain at least 32
+  non-placeholder characters.
 - Configure `RESEND_API_KEY` and `RESEND_FROM_EMAIL` if the site should send notifications.
 - Decide whether `RESEND_FROM_NAME` and `RESEND_OVERRIDE_TO_EMAIL` are needed for staging or QA.
 - Confirm `NEXT_PUBLIC_SERVER_URL` matches the public base URL used for previews and metadata.
