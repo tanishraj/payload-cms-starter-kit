@@ -10784,6 +10784,7 @@ export interface NewsEventsDetailTemplate {
         | EditorialReasonsBlock
         | AcademicProgrammesBlock
         | LeadershipProfilesBlock
+        | DepartmentProfilesBlock
         | NewsEventsHighlightsBlock
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
@@ -11067,6 +11068,7 @@ export interface NewsEventsDetailTemplateSelect<T extends boolean = true> {
         editorialReasons?: T | EditorialReasonsBlockSelect<T>;
         academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
         leadershipProfiles?: T | LeadershipProfilesBlockSelect<T>;
+        departmentProfiles?: T | DepartmentProfilesBlockSelect<T>;
         newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;

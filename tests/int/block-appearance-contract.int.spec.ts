@@ -43,16 +43,21 @@ describe('block appearance contract', () => {
   })
 
   it('uses semantic typography variables for rich text', () => {
-    const source = fs.readFileSync(
+    const componentSource = fs.readFileSync(
       path.resolve(process.cwd(), 'src/blocks/RichTextBlock/Component.tsx'),
       'utf8',
     )
+    const stylesSource = fs.readFileSync(
+      path.resolve(process.cwd(), 'src/components/rich-text/richTextStyles.ts'),
+      'utf8',
+    )
 
-    expect(source).not.toContain('prose-neutral')
-    expect(source).not.toContain('dark:prose-invert')
-    expect(source).toContain('[--tw-prose-body:currentColor]')
-    expect(source).toContain('[--tw-prose-links:var(--primary)]')
-    expect(source).toContain('[--tw-prose-hr:var(--border)]')
-    expect(source).toContain('[&_a]:focus-visible:ring-2')
+    expect(componentSource).not.toContain('prose-neutral')
+    expect(componentSource).not.toContain('dark:prose-invert')
+    expect(componentSource).toContain('longFormRichTextClasses')
+    expect(stylesSource).toContain('[--tw-prose-body:currentColor]')
+    expect(stylesSource).toContain('[--tw-prose-links:var(--primary)]')
+    expect(stylesSource).toContain('[--tw-prose-hr:var(--border)]')
+    expect(stylesSource).toContain('[&_a]:focus-visible:ring-2')
   })
 })

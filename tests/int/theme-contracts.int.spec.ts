@@ -47,6 +47,16 @@ const getModeTokens = (theme: (typeof themes)[number], mode: ThemeMode): Record<
   )
 }
 
+const expectOklchTokens = (
+  actual: Record<string, string>,
+  expected: Record<string, string>,
+) => {
+  for (const [token, expectedValue] of Object.entries(expected)) {
+    expect(actual[token], `Missing --${token}`).toBeDefined()
+    expect(parseOklch(actual[token]), token).toEqual(parseOklch(expectedValue))
+  }
+}
+
 describe('website theme contracts', () => {
   it.each(themes)('isolates the %s theme tokens to its root selector', (theme) => {
     const source = readTheme(theme)
@@ -94,7 +104,7 @@ describe('website theme contracts', () => {
     const light = getModeTokens('snmih', 'light')
     const dark = getModeTokens('snmih', 'dark')
 
-    expect(light).toMatchObject({
+    expectOklchTokens(light, {
       background: 'oklch(1 0 0)',
       foreground: 'oklch(0.2322 0.0575 258.39)',
       primary: 'oklch(0.2901 0.1025 259.53)',
@@ -105,7 +115,7 @@ describe('website theme contracts', () => {
       border: 'oklch(0.9242 0.0139 247.98)',
       ring: 'oklch(0.8018 0.1024 148.89)',
     })
-    expect(dark).toMatchObject({
+    expectOklchTokens(dark, {
       background: 'oklch(0.176997 0.032292 258.683)',
       foreground: 'oklch(0.974538 0.007928 253.852)',
       card: 'oklch(0.216127 0.040176 256.770)',
