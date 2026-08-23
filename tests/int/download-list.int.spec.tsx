@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import type { ArrayField, CheckboxField, Field, SelectField } from 'payload'
+import type { ArrayField, CollapsibleField, Field, RadioField, SelectField } from 'payload'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { afterEach, describe, expect, it } from 'vitest'
 
@@ -76,6 +76,37 @@ describe('DownloadListBlock schema', () => {
     expect(findNamedField(DownloadListBlock.fields, 'inlineColumns')).toBeUndefined()
   })
 
+  it('offers a stacked or split section with responsive introduction placement', () => {
+    const sectionLayout = findNamedField(DownloadListBlock.fields, 'sectionLayout') as SelectField
+    const introPosition = findNamedField(DownloadListBlock.fields, 'introPosition') as SelectField
+    const introVerticalAlignment = findNamedField(
+      DownloadListBlock.fields,
+      'introVerticalAlignment',
+    ) as SelectField
+
+    expect(sectionLayout).toMatchObject({
+      type: 'select',
+      defaultValue: 'stacked',
+      required: true,
+      options: [
+        { label: 'Stacked', value: 'stacked' },
+        { label: 'Split', value: 'split' },
+      ],
+    })
+    expect(introPosition.admin?.condition?.({}, { sectionLayout: 'split' }, {} as never)).toBe(true)
+    expect(introPosition.admin?.condition?.({}, { sectionLayout: 'stacked' }, {} as never)).toBe(
+      false,
+    )
+    expect(introVerticalAlignment).toMatchObject({
+      defaultValue: 'top',
+      options: [
+        { label: 'Top', value: 'top' },
+        { label: 'Center', value: 'center' },
+        { label: 'Bottom', value: 'bottom' },
+      ],
+    })
+  })
+
   it('offers one shared optional document-icon control', () => {
     expect(findNamedField(DownloadListBlock.fields, 'showDocumentIcon')).toMatchObject({
       type: 'checkbox',
@@ -137,21 +168,6 @@ describe('DownloadListBlock schema', () => {
     expect(field.admin?.condition?.({}, { displayMode: 'list' }, {} as never)).toBe(false)
   })
 
-  it('keeps only behavioral automatic-action controls', () => {
-    expect(findNamedField(DownloadListBlock.fields, 'showViewAction')).toMatchObject({
-      type: 'checkbox',
-      defaultValue: false,
-    })
-    expect(findNamedField(DownloadListBlock.fields, 'openViewInNewTab')).toMatchObject({
-      type: 'checkbox',
-      defaultValue: true,
-    })
-    expect(findNamedField(DownloadListBlock.fields, 'showDownloadAction')).toMatchObject({
-      type: 'checkbox',
-      defaultValue: true,
-    })
-  })
-
   it('removes visual action controls and the Inline badge control', () => {
     for (const name of [
       'showInlineFileType',
@@ -174,27 +190,6 @@ describe('DownloadListBlock schema', () => {
     expect(findNamedField(manualActions.fields, 'icon')).toBeUndefined()
   })
 
-  it('requires at least one automatic action to remain enabled', () => {
-    const showViewAction = findNamedField(
-      DownloadListBlock.fields,
-      'showViewAction',
-    ) as CheckboxField
-    const validate = showViewAction.validate
-
-    expect(typeof validate).toBe('function')
-    if (typeof validate !== 'function') return
-    expect(
-      validate(false, {
-        siblingData: { showDownloadAction: false, showViewAction: false },
-      } as never),
-    ).toBe('Enable at least one document action.')
-    expect(
-      validate(false, {
-        siblingData: { showDownloadAction: true, showViewAction: false },
-      } as never),
-    ).toBe(true)
-  })
-
   it('retains main icon sizing and conditional grid positioning', () => {
     expect(findNamedField(DownloadListBlock.fields, 'documentIconSize')).toMatchObject({
       type: 'select',
@@ -212,36 +207,126 @@ describe('DownloadListBlock schema', () => {
     expect(position.admin?.condition?.({}, { displayMode: 'list' }, {} as never)).toBe(false)
   })
 
-  it('allows at most two destination-only manual actions per document', () => {
+  it('offers at most two ordered actions per document', () => {
     const downloads = findNamedField(DownloadListBlock.fields, 'downloads') as ArrayField
-    const manualActions = findNamedField(downloads.fields, 'actions') as ArrayField
-    const linkType = findNamedField(manualActions.fields, 'linkType')
-    const page = findNamedField(manualActions.fields, 'page')
-    const url = findNamedField(manualActions.fields, 'url')
-    const file = findNamedField(manualActions.fields, 'file')
+    const actions = findNamedField(downloads.fields, 'documentActions') as ArrayField
+    const actionType = findNamedField(actions.fields, 'actionType') as RadioField
 
-    expect(manualActions).toMatchObject({ type: 'array', maxRows: 2 })
-    expect(findNamedField(manualActions.fields, 'actionType')).toMatchObject({
+    expect(actions).toMatchObject({ type: 'array', maxRows: 2 })
+    expect(actionType).toMatchObject({
       type: 'radio',
-      defaultValue: 'link',
+      defaultValue: 'download',
+      required: true,
+      options: [
+        { label: 'Download', value: 'download' },
+        { label: 'View', value: 'view' },
+        { label: 'Custom', value: 'custom' },
+      ],
     })
-    expect(findNamedField(manualActions.fields, 'label')).toMatchObject({ required: true })
-    expect(linkType?.admin?.condition?.({}, { actionType: 'link' }, {} as never)).toBe(true)
+  })
+
+  it('reveals only fields relevant to the selected action type', () => {
+    const downloads = findNamedField(DownloadListBlock.fields, 'downloads') as ArrayField
+    const actions = findNamedField(downloads.fields, 'documentActions') as ArrayField
+    const viewOpenInNewTab = findNamedField(actions.fields, 'viewOpenInNewTab')
+    const linkType = findNamedField(actions.fields, 'linkType')
+    const mode = findNamedField(actions.fields, 'mode')
+    const variant = findNamedField(actions.fields, 'variant')
+    const icon = findNamedField(actions.fields, 'icon')
+
+    expect(viewOpenInNewTab?.admin?.condition?.({}, { actionType: 'view' }, {} as never)).toBe(true)
+    expect(viewOpenInNewTab?.admin?.condition?.({}, { actionType: 'download' }, {} as never)).toBe(
+      false,
+    )
+    expect(linkType?.admin?.condition?.({}, { actionType: 'custom' }, {} as never)).toBe(true)
+    expect(mode?.admin?.condition?.({}, { actionType: 'custom' }, {} as never)).toBe(true)
     expect(
-      page?.admin?.condition?.({}, { actionType: 'link', linkType: 'page' }, {} as never),
+      variant?.admin?.condition?.({}, { actionType: 'custom', mode: 'button' }, {} as never),
     ).toBe(true)
     expect(
-      url?.admin?.condition?.({}, { actionType: 'link', linkType: 'custom' }, {} as never),
+      icon?.admin?.condition?.({}, { actionType: 'custom', mode: 'button' }, {} as never),
     ).toBe(true)
-    expect(file?.admin?.condition?.({}, { actionType: 'download' }, {} as never)).toBe(true)
+    expect(icon?.admin?.condition?.({}, { actionType: 'custom', mode: 'link' }, {} as never)).toBe(
+      false,
+    )
+  })
+
+  it('hides every compatibility action control from new authoring', () => {
+    const downloads = findNamedField(DownloadListBlock.fields, 'downloads') as ArrayField
+    const currentCustomAction = findNamedField(downloads.fields, 'customAction') as ArrayField
+    const legacyActions = findNamedField(downloads.fields, 'actions') as ArrayField
+    const automaticFallback = DownloadListBlock.fields
+      .flatMap((field) =>
+        field.type === 'tabs' ? field.tabs.flatMap((tab) => tab.fields) : [field],
+      )
+      .find(
+        (field): field is CollapsibleField =>
+          field.type === 'collapsible' && field.label === 'Automatic Action Fallback',
+      )
+
+    expect(currentCustomAction.admin?.hidden).toBe(true)
+    expect(legacyActions.admin?.hidden).toBe(true)
+    expect(automaticFallback?.admin?.hidden).toBe(true)
+    for (const name of ['showViewAction', 'openViewInNewTab', 'showDownloadAction']) {
+      const field = findNamedField(DownloadListBlock.fields, name)
+      expect(field && 'validate' in field ? field.validate : undefined).toBeUndefined()
+    }
+  })
+
+  it('validates document action destinations and duplicate choices', () => {
+    const downloads = findNamedField(DownloadListBlock.fields, 'downloads') as ArrayField
+    const actions = findNamedField(downloads.fields, 'documentActions') as ArrayField
+    const validate = actions.validate
+
+    expect(typeof validate).toBe('function')
+    if (typeof validate !== 'function') return
+
+    expect(validate([{ actionType: 'download' }], { siblingData: { file: null } } as never)).toBe(
+      'Download action 1 requires File Upload.',
+    )
+    expect(
+      validate([{ actionType: 'view' }], {
+        siblingData: { externalUrl: '', file: null },
+      } as never),
+    ).toBe('View action 1 requires View URL or File Upload.')
+    expect(
+      validate([{ actionType: 'download' }, { actionType: 'download' }], {
+        siblingData: { file: 'media-id' },
+      } as never),
+    ).toBe('Add Download only once per document.')
+    expect(
+      validate(
+        [
+          { actionType: 'custom', label: 'First', linkType: 'custom', url: '/notice' },
+          { actionType: 'custom', label: 'Second', linkType: 'custom', url: ' /notice ' },
+        ],
+        { siblingData: {} } as never,
+      ),
+    ).toBe('Custom actions must use different destinations.')
+    expect(
+      validate(
+        [
+          { actionType: 'view' },
+          {
+            actionType: 'custom',
+            icon: 'ExternalLink',
+            label: 'Admissions',
+            linkType: 'custom',
+            mode: 'button',
+            url: '/admissions',
+          },
+        ],
+        { siblingData: { externalUrl: '/viewer' } } as never,
+      ),
+    ).toBe(true)
   })
 })
 
 describe('DownloadList action resolution', () => {
   it('resolves manual Link and Download actions in editor order', () => {
     expect(
-      resolveDocumentActions(
-        [
+      resolveDocumentActions({
+        legacyActions: [
           {
             actionType: 'link',
             label: ' Read requirements ',
@@ -252,32 +337,38 @@ describe('DownloadList action resolution', () => {
           { actionType: 'download', file: sharedMedia, label: ' Download form ' },
         ],
         fallback,
-      ),
+      }),
     ).toEqual([
       {
         href: '/admissions',
-        kind: 'link',
+        kind: 'view',
         label: 'Read requirements',
+        mode: 'link',
         openInNewTab: true,
+        showArrow: false,
+        variant: 'default',
       },
       {
         href: '/api/media/file/policy.pdf',
         kind: 'download',
         label: 'Download form',
+        mode: 'button',
         openInNewTab: false,
+        showArrow: false,
+        variant: 'default',
       },
     ])
   })
 
   it('keeps only two valid manual actions and lets them replace fallback actions', () => {
-    const result = resolveDocumentActions(
-      [
+    const result = resolveDocumentActions({
+      legacyActions: [
         { actionType: 'link', label: 'First', linkType: 'custom', url: '/first' },
         { actionType: 'download', file: sharedMedia, label: 'Second' },
         { actionType: 'link', label: 'Third', linkType: 'custom', url: '/third' },
       ],
       fallback,
-    )
+    })
 
     expect(result).toHaveLength(2)
     expect(result.map((action) => action.label)).toEqual(['First', 'Second'])
@@ -286,44 +377,60 @@ describe('DownloadList action resolution', () => {
 
   it('uses fixed automatic actions when no manual row resolves validly', () => {
     expect(
-      resolveDocumentActions(
-        [
+      resolveDocumentActions({
+        legacyActions: [
           { actionType: 'link', label: 'Missing URL', linkType: 'custom' },
           { actionType: 'download', label: 'Missing file' },
         ],
         fallback,
-      ),
+      }),
     ).toEqual([
-      { href: '/fallback', kind: 'link', label: 'View Document', openInNewTab: true },
+      {
+        href: '/fallback',
+        kind: 'view',
+        label: 'View Document',
+        mode: 'link',
+        openInNewTab: true,
+        showArrow: false,
+        variant: 'default',
+      },
       {
         href: '/api/media/file/fallback.pdf',
         kind: 'download',
         label: 'Download',
+        mode: 'button',
         openInNewTab: false,
+        showArrow: false,
+        variant: 'default',
       },
     ])
   })
 
   it('defaults to Download only when behavior settings are missing', () => {
     expect(
-      resolveDocumentActions(undefined, {
-        downloadHref: '/api/media/file/fallback.pdf',
-        viewHref: '/fallback',
+      resolveDocumentActions({
+        fallback: {
+          downloadHref: '/api/media/file/fallback.pdf',
+          viewHref: '/fallback',
+        },
       }),
     ).toEqual([
       {
         href: '/api/media/file/fallback.pdf',
         kind: 'download',
         label: 'Download',
+        mode: 'button',
         openInNewTab: false,
+        showArrow: false,
+        variant: 'default',
       },
     ])
   })
 
   it('ignores historical manual visual settings', () => {
     expect(
-      resolveDocumentActions(
-        [
+      resolveDocumentActions({
+        legacyActions: [
           {
             actionAppearance: 'iconOnly',
             actionType: 'link',
@@ -335,10 +442,199 @@ describe('DownloadList action resolution', () => {
           },
         ],
         fallback,
-      ),
+      }),
     ).toEqual([
-      { href: '/historical', kind: 'link', label: 'Historical link', openInNewTab: false },
+      {
+        href: '/historical',
+        kind: 'view',
+        label: 'Historical link',
+        mode: 'link',
+        openInNewTab: false,
+        showArrow: false,
+        variant: 'default',
+      },
     ])
+  })
+
+  it('appends one custom action after available automatic actions', () => {
+    expect(
+      resolveDocumentActions({
+        customActions: [
+          {
+            label: 'Admission details',
+            linkType: 'custom',
+            mode: 'button',
+            openInNewTab: true,
+            showArrow: true,
+            url: '/admissions',
+            variant: 'outline',
+          },
+        ],
+        fallback,
+      }),
+    ).toEqual([
+      {
+        href: '/fallback',
+        kind: 'view',
+        label: 'View Document',
+        mode: 'link',
+        openInNewTab: true,
+        showArrow: false,
+        variant: 'default',
+      },
+      {
+        href: '/api/media/file/fallback.pdf',
+        kind: 'download',
+        label: 'Download',
+        mode: 'button',
+        openInNewTab: false,
+        showArrow: false,
+        variant: 'default',
+      },
+      {
+        href: '/admissions',
+        kind: 'custom',
+        label: 'Admission details',
+        mode: 'button',
+        openInNewTab: true,
+        showArrow: true,
+        variant: 'outline',
+      },
+    ])
+  })
+
+  it('skips unavailable automatic actions without suppressing a valid custom action', () => {
+    const result = resolveDocumentActions({
+      customActions: [
+        {
+          label: 'Open notice',
+          linkType: 'custom',
+          mode: 'link',
+          url: '/notice',
+        },
+      ],
+      fallback: {
+        showDownload: true,
+        showView: true,
+      },
+    })
+
+    expect(result.map((action) => action.kind)).toEqual(['custom'])
+    expect(result[0]?.href).toBe('/notice')
+  })
+
+  it('retains legacy replacement behavior when no custom action resolves', () => {
+    const result = resolveDocumentActions({
+      legacyActions: [
+        { actionType: 'link', label: 'Historical link', linkType: 'custom', url: '/historical' },
+      ],
+      fallback,
+    })
+
+    expect(result).toEqual([
+      {
+        href: '/historical',
+        kind: 'view',
+        label: 'Historical link',
+        mode: 'link',
+        openInNewTab: false,
+        showArrow: false,
+        variant: 'default',
+      },
+    ])
+  })
+
+  it('resolves new per-document actions in editor order with built-in defaults', () => {
+    expect(
+      resolveDocumentActions({
+        documentActions: [
+          { actionType: 'view', viewOpenInNewTab: false },
+          { actionType: 'download', label: 'Save PDF' },
+        ],
+        fallback,
+      }),
+    ).toEqual([
+      {
+        href: '/fallback',
+        icon: 'Eye',
+        kind: 'view',
+        label: 'View',
+        mode: 'button',
+        openInNewTab: false,
+        showArrow: false,
+        variant: 'default',
+      },
+      {
+        href: '/api/media/file/fallback.pdf',
+        icon: 'Download',
+        kind: 'download',
+        label: 'Save PDF',
+        mode: 'button',
+        openInNewTab: false,
+        showArrow: false,
+        variant: 'default',
+      },
+    ])
+  })
+
+  it('resolves Custom Link without an icon and Custom Button with its configured icon', () => {
+    expect(
+      resolveDocumentActions({
+        documentActions: [
+          {
+            actionType: 'custom',
+            label: 'Requirements',
+            linkType: 'custom',
+            mode: 'link',
+            url: '/requirements',
+          },
+          {
+            actionType: 'custom',
+            icon: 'ExternalLink',
+            label: 'Apply',
+            linkType: 'custom',
+            mode: 'button',
+            openInNewTab: true,
+            url: '/apply',
+            variant: 'outline',
+          },
+        ],
+        fallback,
+      }),
+    ).toEqual([
+      {
+        href: '/requirements',
+        kind: 'custom',
+        label: 'Requirements',
+        mode: 'link',
+        openInNewTab: false,
+        showArrow: false,
+        variant: 'default',
+      },
+      {
+        href: '/apply',
+        icon: 'ExternalLink',
+        kind: 'custom',
+        label: 'Apply',
+        mode: 'button',
+        openInNewTab: true,
+        showArrow: false,
+        variant: 'outline',
+      },
+    ])
+  })
+
+  it('does not expose hidden fallbacks when an authored new list is unusable', () => {
+    expect(
+      resolveDocumentActions({
+        customActions: [{ label: 'Legacy custom', linkType: 'custom', url: '/legacy-custom' }],
+        documentActions: [{ actionType: 'download' }],
+        fallback: { ...fallback, downloadHref: undefined },
+        legacyActions: [
+          { actionType: 'link', label: 'Legacy manual', linkType: 'custom', url: '/legacy' },
+        ],
+      }),
+    ).toEqual([])
   })
 })
 
@@ -361,6 +657,244 @@ describe('DownloadList rendering', () => {
     expect(normalizeGridColumns()).toBe('3')
     expect(normalizeGridColumns('9')).toBe('3')
     expect(normalizeGridColumns('8')).toBe('8')
+  })
+
+  it.each(['top', 'center', 'bottom'] as const)(
+    'renders a left split introduction aligned to %s',
+    (introVerticalAlignment) => {
+      const expectedClass = {
+        top: 'lg:self-start',
+        center: 'lg:self-center',
+        bottom: 'lg:self-end',
+      }[introVerticalAlignment]
+      const html = renderToStaticMarkup(
+        <DownloadListBlockComponent
+          description="Current notices"
+          downloads={documents}
+          introPosition="left"
+          introVerticalAlignment={introVerticalAlignment}
+          sectionLayout="split"
+          title="Downloads"
+        />,
+      )
+
+      expect(html).toContain('data-download-section-layout="split"')
+      expect(html).toContain('data-download-intro-position="left"')
+      expect(html).toContain(`data-download-intro-vertical-alignment="${introVerticalAlignment}"`)
+      expect(html).toContain('lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]')
+      expect(html).toContain(expectedClass)
+    },
+  )
+
+  it('keeps introduction first in markup when displayed on the right', () => {
+    const html = renderToStaticMarkup(
+      <DownloadListBlockComponent
+        downloads={documents}
+        introPosition="right"
+        sectionLayout="split"
+        title="Downloads"
+      />,
+    )
+
+    expect(html).toContain('lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]')
+    expect(html).toContain('data-download-intro-position="right"')
+    expect(html.indexOf('data-download-intro="true"')).toBeLessThan(
+      html.indexOf('data-download-collection="true"'),
+    )
+    expect(html).toContain('lg:col-start-2 lg:row-start-1')
+    expect(html).toContain('lg:col-start-1 lg:row-start-1')
+  })
+
+  it('uses full width when split is selected without introduction content', () => {
+    const html = renderToStaticMarkup(
+      <DownloadListBlockComponent downloads={documents} sectionLayout="split" />,
+    )
+
+    expect(html).toContain('data-download-section-layout="stacked"')
+    expect(html).not.toContain('lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]')
+    expect(html).not.toContain('data-download-intro="true"')
+  })
+
+  it('renders ordered per-document buttons with labels and fixed icons in labelled grids', () => {
+    render(
+      <DownloadListBlockComponent
+        displayMode="cards"
+        downloads={[
+          {
+            documentActions: [
+              { actionType: 'view', label: 'Preview' },
+              { actionType: 'download', label: 'Save PDF' },
+            ],
+            externalUrl: '/preview',
+            file: sharedMedia,
+            title: 'Policy',
+          },
+        ]}
+      />,
+    )
+
+    const actions = screen.getAllByRole('link')
+    expect(actions.map((action) => action.textContent)).toEqual(['Preview', 'Save PDF'])
+    expect(actions[0]?.querySelector('[data-document-action-icon="eye"]')).toBeTruthy()
+    expect(actions[1]?.querySelector('[data-document-action-icon="arrow-down"]')).toBeTruthy()
+  })
+
+  it('renders Custom Link as text and Custom Button with its configured icon', () => {
+    render(
+      <DownloadListBlockComponent
+        displayMode="framedGrid"
+        downloads={[
+          {
+            documentActions: [
+              {
+                actionType: 'custom',
+                label: 'Requirements',
+                linkType: 'custom',
+                mode: 'link',
+                url: '/requirements',
+              },
+              {
+                actionType: 'custom',
+                icon: 'ExternalLink',
+                label: 'Apply',
+                linkType: 'custom',
+                mode: 'button',
+                url: '/apply',
+              },
+            ],
+            title: 'Admissions',
+          },
+        ]}
+      />,
+    )
+
+    const link = screen.getByRole('link', { name: 'Requirements' })
+    const button = screen.getByRole('link', { name: 'Apply' })
+    expect(link.className).toContain('underline-offset-4')
+    expect(link.querySelector('svg')).toBeNull()
+    expect(button.querySelector('.lucide-external-link')).toBeTruthy()
+  })
+
+  it('renders labelled custom links and buttons with configured presentation', () => {
+    render(
+      <DownloadListBlockComponent
+        displayMode="cards"
+        downloads={[
+          {
+            customAction: [
+              {
+                label: 'Admissions',
+                linkType: 'custom',
+                mode: 'button',
+                showArrow: true,
+                url: '/admissions',
+                variant: 'outline',
+              },
+            ],
+            file: sharedMedia,
+            title: 'Policy',
+          },
+        ]}
+        showViewAction
+      />,
+    )
+
+    expect(screen.getByRole('link', { name: 'View Document' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Download' })).toBeTruthy()
+    const custom = screen.getByRole('link', { name: 'Admissions' })
+    expect(custom.getAttribute('data-document-action')).toBe('custom')
+    expect(custom.className).toContain('border')
+    expect(custom.querySelector('[data-document-action-icon="arrow-up-right"]')).toBeTruthy()
+  })
+
+  it('renders a labelled custom Link without button styling', () => {
+    render(
+      <DownloadListBlockComponent
+        displayMode="cards"
+        downloads={[
+          {
+            customAction: [
+              { label: 'Admissions', linkType: 'custom', mode: 'link', url: '/admissions' },
+            ],
+            title: 'Policy',
+          },
+        ]}
+      />,
+    )
+
+    const custom = screen.getByRole('link', { name: 'Admissions' })
+    expect(custom.getAttribute('data-document-action')).toBe('custom')
+    expect(custom.className).toContain('underline-offset-4')
+    expect(custom.className).not.toContain('bg-primary')
+  })
+
+  it.each([
+    ['list', 'labelled'],
+    ['openGrid', 'icons'],
+  ] as const)(
+    'keeps Custom Link textual while compacting buttons in %s',
+    (displayMode, display) => {
+      render(
+        <DownloadListBlockComponent
+          displayMode={displayMode}
+          downloads={[
+            {
+              documentActions: [
+                {
+                  actionType: 'custom',
+                  label: 'Requirements',
+                  linkType: 'custom',
+                  mode: 'link',
+                  url: '/requirements',
+                },
+                { actionType: 'view' },
+              ],
+              externalUrl: '/preview',
+              title: 'Policy',
+            },
+          ]}
+          gridActionDisplay={display}
+        />,
+      )
+
+      const textLink = screen.getByRole('link', { name: 'Requirements' })
+      const viewButton = screen.getByRole('link', { name: 'View' })
+      expect(textLink.getAttribute('title')).toBeNull()
+      expect(textLink.textContent).toBe('Requirements')
+      expect(textLink.querySelector('svg')).toBeNull()
+      expect(viewButton.getAttribute('title')).toBe('View')
+      expect(viewButton.textContent).toBe('')
+      expect(viewButton.querySelector('[data-document-action-icon="eye"]')).toBeTruthy()
+    },
+  )
+
+  it('falls back to ArrowUpRight for an unresolved Custom Button icon', () => {
+    render(
+      <DownloadListBlockComponent
+        displayMode="cards"
+        downloads={[
+          {
+            documentActions: [
+              {
+                actionType: 'custom',
+                icon: 'NotARealLucideIcon',
+                label: 'Apply',
+                linkType: 'custom',
+                mode: 'button',
+                url: '/apply',
+              },
+            ],
+            title: 'Admissions',
+          },
+        ]}
+      />,
+    )
+
+    expect(
+      screen
+        .getByRole('link', { name: 'Apply' })
+        .querySelector('[data-document-action-icon="arrow-up-right"]'),
+    ).toBeTruthy()
   })
 
   it('applies shared Columns to the legacy compact Inline fallback', () => {

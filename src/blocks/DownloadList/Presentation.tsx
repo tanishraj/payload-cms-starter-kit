@@ -1,8 +1,19 @@
-import { ArrowDown, Eye, File, FileImage, FileSpreadsheet, FileText } from 'lucide-react'
+import {
+  ArrowDown,
+  ArrowUpRight,
+  Eye,
+  File,
+  FileImage,
+  FileSpreadsheet,
+  FileText,
+} from 'lucide-react'
+import { createElement, type ComponentProps } from 'react'
 
 import type { BlockBackground } from '@/blocks/shared/blockAppearance'
 import { resolveCardSurface, type CardSurfaceClasses } from '@/blocks/shared/cardSurface'
+import { resolveLucideIcon } from '@/blocks/shared/resolveLucideIcon'
 import { buttonVariants } from '@/components/ui/button'
+import type { CmsActionVariant } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 
 import type {
@@ -27,7 +38,7 @@ type PresentationProps = {
 }
 
 type DocumentActionsProps = {
-  buttonClassName?: string
+  buttonClassNames?: Partial<Record<CmsActionVariant, string>>
   className?: string
   display: DownloadGridActionDisplay
   document: ResolvedDownload
@@ -88,17 +99,23 @@ function AnimatedDownloadIcon() {
   )
 }
 
-function InlineActionIcon({ action }: { action: ResolvedDownloadAction }) {
+function DocumentActionIcon({ action }: { action: ResolvedDownloadAction }) {
   if (action.kind === 'download') return <AnimatedDownloadIcon />
-  return (
-    <Eye
-      aria-hidden="true"
-      className="size-4"
-      data-document-action-icon="eye"
-      data-testid="download-action-eye"
-      strokeWidth={2.25}
-    />
-  )
+
+  const CustomIcon = action.kind === 'custom' ? resolveLucideIcon(action.icon) : undefined
+  const Icon = action.kind === 'view' ? Eye : (CustomIcon ?? ArrowUpRight)
+  const iconName =
+    action.kind === 'view' ? 'eye' : CustomIcon ? action.icon?.trim() : 'arrow-up-right'
+
+  const iconProps = {
+    'aria-hidden': true,
+    className: 'size-4',
+    'data-document-action-icon': iconName,
+    'data-testid': action.kind === 'view' ? 'download-action-eye' : undefined,
+    strokeWidth: 2.25,
+  } as ComponentProps<typeof Eye>
+
+  return createElement(Icon, iconProps)
 }
 
 function FileTypeIcon({ size, type }: { size: DownloadDocumentIconSize; type?: string }) {
@@ -157,7 +174,7 @@ function DocumentTitle({ children, className }: { children: string; className?: 
 }
 
 export function DocumentActions({
-  buttonClassName,
+  buttonClassNames,
   className,
   display,
   document,
@@ -173,24 +190,26 @@ export function DocumentActions({
       data-document-actions-layout={layout}
     >
       {document.actions.map((action, index) => {
-        const isIconOnly = layout === 'inline' || display === 'icons'
-        const isGridLink = !isIconOnly && action.kind === 'link'
+        const usesCompactActions = layout === 'inline' || display === 'icons'
+        const isLink = action.mode === 'link' && (action.kind === 'custom' || !usesCompactActions)
+        const isCompactButton = !isLink && usesCompactActions
+        const buttonVariant = action.mode === 'button' ? action.variant : 'default'
 
         return (
           <a
-            aria-label={isIconOnly ? action.label : undefined}
+            aria-label={isCompactButton ? action.label : undefined}
             className={cn(
-              isIconOnly
-                ? buttonVariants({ size: 'icon-sm', variant: 'default' })
-                : isGridLink
-                  ? cn(
-                      buttonVariants({ variant: 'link' }),
-                      'h-auto px-0 py-0 text-sm font-semibold underline decoration-current decoration-2 underline-offset-4',
-                      linkClassName,
-                    )
-                  : buttonVariants({ size: 'sm', variant: 'default' }),
+              isLink
+                ? cn(
+                    buttonVariants({ variant: 'link' }),
+                    'h-auto px-0 py-0 text-sm font-semibold underline decoration-current decoration-2 underline-offset-4',
+                    linkClassName,
+                  )
+                : isCompactButton
+                  ? buttonVariants({ size: 'icon-sm', variant: buttonVariant })
+                  : buttonVariants({ size: 'sm', variant: buttonVariant }),
               'group/button',
-              isGridLink ? undefined : buttonClassName,
+              isLink ? undefined : buttonClassNames?.[buttonVariant],
             )}
             data-document-action={action.kind}
             download={action.kind === 'download' ? true : undefined}
@@ -198,14 +217,16 @@ export function DocumentActions({
             key={`${action.kind}-${action.href}-${index}`}
             rel={action.openInNewTab ? 'noreferrer' : undefined}
             target={action.openInNewTab ? '_blank' : undefined}
-            title={isIconOnly ? action.label : undefined}
+            title={isCompactButton ? action.label : undefined}
           >
-            {isIconOnly ? (
-              <InlineActionIcon action={action} />
+            {isLink ? (
+              <span data-document-action-label="true">{action.label}</span>
+            ) : isCompactButton ? (
+              <DocumentActionIcon action={action} />
             ) : (
               <>
                 <span data-document-action-label="true">{action.label}</span>
-                {action.kind === 'download' ? <AnimatedDownloadIcon /> : null}
+                <DocumentActionIcon action={action} />
               </>
             )}
           </a>
@@ -311,7 +332,7 @@ function GridDocumentItem({
         </div>
       )}
       <DocumentActions
-        buttonClassName={surface.button.default}
+        buttonClassNames={surface.button}
         className="mt-auto pt-6"
         display={gridActionDisplay}
         document={document}
@@ -430,7 +451,7 @@ function InlinePresentation({
                 data-download-item-action-divider="true"
               />
               <DocumentActions
-                buttonClassName={surface.button.default}
+                buttonClassNames={surface.button}
                 className="self-center justify-end"
                 display="icons"
                 document={document}

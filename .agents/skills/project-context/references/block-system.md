@@ -145,18 +145,20 @@ Large optional main document icon Above Title or Left of Content. Show File Icon
 all presentations. File Type Label is an optional PDF/DOC/DOCX/XLS/XLSX/CSV/PPT/PPTX/ZIP preset
 override; empty values auto-detect from uploaded Media, while historical explicit values remain
 readable in uppercase. Document categories and category filtering are no longer part of this block.
-Inline List never renders a file-type badge. Its ruled items place
-the optional file icon at the upper-left, a flexible wrapping content column, a permanent vertical
-divider, and icon-only Eye/ArrowDown actions at the far right at every width. Boxed-family items render
-View and Download through one grid-wide action-display setting. Labelled is the default and runtime
-fallback: View is an underlined link without an icon, and Download is a labelled button with an
-animated trailing ArrowDown. Icon only converts them to accessible Eye and animated ArrowDown controls;
-manual labels become their names and tooltips. Inline remains icon-only regardless of the grid setting.
-View defaults Off and Download defaults On; at least one automatic action must remain enabled. Editors
-can add up to two manual Link or Download destinations per document; any valid manual action replaces
-that document's fallback. Historical visual-action properties are ignored without a migration. Every
-presentation uses sans-serif document titles. Existing `compact` values fall back to Inline List and
-the shared Columns value without a migration and are no longer selectable in Admin.
+Inline List never renders a file-type badge. Its ruled items place the optional file icon at the
+upper-left, a flexible wrapping content column, a permanent vertical divider, and compact button
+actions at the far right at every width. Each document owns an ordered `documentActions` list with at
+most two Download, View, or Custom rows. Download and View are fixed-icon buttons. Custom uses an
+internal Page or Custom URL and renders as either a visible text Link without an icon or a semantic
+Button with a required configurable Lucide icon. Duplicate Download/View rows and duplicate Custom
+destinations are invalid. Labelled boxed-family grids show button labels plus icons; Grid Icon-only
+and Inline compact button actions to accessible icon controls, while Custom Link remains textual.
+A non-empty new list is authoritative even if its rows cannot resolve. Without it, hidden compatibility
+data resolves the current Custom Action beside available automatic actions, then older valid manual
+actions as a replacement, then automatic fallback. Historical visual-action properties are ignored
+without a migration. Every presentation uses sans-serif document titles. Existing `compact` values
+fall back to Inline List and the shared Columns value without a migration and are no longer selectable
+in Admin.
 
 Fee Structure models exactly one programme and one academic session per block. Editors configure one
 to four fee categories with one to six ordered academic-period columns, one to thirty fee rows,

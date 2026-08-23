@@ -4236,7 +4236,53 @@ export interface DownloadListBlock {
          */
         fileType?: ('PDF' | 'DOC' | 'DOCX' | 'XLS' | 'XLSX' | 'CSV' | 'PPT' | 'PPTX' | 'ZIP') | null;
         /**
-         * Add up to two actions. Valid manual actions replace the automatic View and Download fallback for this document.
+         * Add up to two ordered Download, View, or Custom actions.
+         */
+        documentActions?:
+          | {
+              actionType: 'download' | 'view' | 'custom';
+              /**
+               * Download and View use their action name when left empty.
+               */
+              label?: string | null;
+              viewOpenInNewTab?: boolean | null;
+              linkType?: ('page' | 'custom') | null;
+              page?: (string | null) | Page;
+              url?: string | null;
+              openInNewTab?: boolean | null;
+              mode?: ('link' | 'button') | null;
+              /**
+               * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+               */
+              variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+              /**
+               * Required for Custom Button. Enter a Lucide icon name such as ExternalLink.
+               */
+              icon?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        customAction?:
+          | {
+              label: string;
+              linkType?: ('page' | 'custom') | null;
+              page?: (string | null) | Page;
+              url?: string | null;
+              openInNewTab?: boolean | null;
+              mode?: ('link' | 'button') | null;
+              /**
+               * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+               */
+              variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+              /**
+               * Adds a trailing arrow when this action is displayed as a button.
+               */
+              showArrow?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Legacy action data retained for existing content. Use Document Actions for new content.
          */
         actions?:
           | {
@@ -4280,6 +4326,15 @@ export interface DownloadListBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  sectionLayout: 'stacked' | 'split';
+  /**
+   * Choose which side contains the section introduction on large screens.
+   */
+  introPosition?: ('left' | 'right') | null;
+  /**
+   * Position the introduction relative to the downloads on large screens.
+   */
+  introVerticalAlignment?: ('top' | 'center' | 'bottom') | null;
   displayMode?: ('list' | 'cards' | 'openGrid' | 'framedGrid') | null;
   /**
    * Sets the maximum number of responsive columns for every presentation.
@@ -9001,6 +9056,34 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
         file?: T;
         externalUrl?: T;
         fileType?: T;
+        documentActions?:
+          | T
+          | {
+              actionType?: T;
+              label?: T;
+              viewOpenInNewTab?: T;
+              linkType?: T;
+              page?: T;
+              url?: T;
+              openInNewTab?: T;
+              mode?: T;
+              variant?: T;
+              icon?: T;
+              id?: T;
+            };
+        customAction?:
+          | T
+          | {
+              label?: T;
+              linkType?: T;
+              page?: T;
+              url?: T;
+              openInNewTab?: T;
+              mode?: T;
+              variant?: T;
+              showArrow?: T;
+              id?: T;
+            };
         actions?:
           | T
           | {
@@ -9035,6 +9118,9 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  sectionLayout?: T;
+  introPosition?: T;
+  introVerticalAlignment?: T;
   displayMode?: T;
   columns?: T;
   documentIconSize?: T;

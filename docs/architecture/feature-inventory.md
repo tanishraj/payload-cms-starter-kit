@@ -85,19 +85,26 @@ Production Page blocks are wrapped in a block-level error boundary. Live Page pr
 
 Configurable visual blocks standardize their Payload editor structure as top-level `Content` and `Theme Settings` tabs. Genuine repeating card rows use the same nested tab structure and a shared semantic surface vocabulary: Default Card, Primary, Secondary, Muted, and Accent. The renderer resolves foreground, supporting text, icon, divider, link, and matching button contrast from the active theme. Variant-dependent controls only render a surface for existing card presentations; utility rows, connected timelines, lists, tables, galleries, logos, and navigation structures remain unboxed.
 
-Download List provides Boxed Card, Open Grid, Framed Grid, and Inline List presentations. Grid items
-keep file-type badges at the top right while their main icons can sit above or inline with the
-document content. One shared one-to-eight Columns setting applies to every presentation and defaults
-or falls back to three. The main file icon is optional across the block and defaults on. Inline never
-shows a file-type badge. File Type Label provides an optional PDF/DOC/DOCX/XLS/XLSX/CSV/PPT/PPTX/ZIP
-preset override; empty values auto-detect from uploaded Media, and historical explicit values remain
-readable. Document categories and visitor filtering are removed. Inline ruled items keep a permanent vertical divider and icon-only
-Eye/ArrowDown actions at the far right at every width. One grid-wide action-display setting switches
-boxed-family View/Download actions between the default labelled link/button treatment and accessible
-icon-only Eye/animated ArrowDown controls. Missing or invalid values fall back to Labelled, while
-Inline remains icon-only. Manual labels become icon names and tooltips in icon mode. New blocks default
-to Download-only. Up to two valid manual destinations replace the automatic fallback, while historical
-visual-action settings are ignored without a migration.
+Download List provides Boxed Card, Open Grid, Framed Grid, and Inline List presentations beneath a
+Stacked introduction or beside it in a responsive 40/60 Split. Split supports Left or Right
+introduction placement plus Top, Center, or Bottom vertical alignment, always restores introduction-
+first order on smaller screens, and does not reserve an empty introduction column. Grid items keep
+file-type badges at the top right while their main icons can sit above or inline with the document
+content. One shared one-to-eight Columns setting applies to every presentation and defaults or falls
+back to three. The main file icon is optional across the block and defaults on. Inline never shows a
+file-type badge. File Type Label provides an optional PDF/DOC/DOCX/XLS/XLSX/CSV/PPT/PPTX/ZIP preset
+override; empty values auto-detect from uploaded Media, and historical explicit values remain
+readable. Document categories and visitor filtering are removed. Inline ruled items keep a permanent
+vertical divider and compact button actions at the far right at every width. One grid-wide
+action-display setting switches boxed-family buttons between labelled and accessible icon-only
+treatments. Each document owns an ordered `documentActions` list with at most two Download, View, or
+Custom rows. Download and View are fixed-icon buttons; Custom Link stays textual in every layout;
+Custom Button uses its configured Lucide icon with a safe ArrowUpRight fallback for invalid historical
+values. Duplicate Download/View rows are invalid, as are two Custom rows with the same destination.
+A non-empty `documentActions` list is authoritative even when every row is unusable. When it is empty,
+the current hidden `customAction` is appended to available automatic actions; otherwise valid older
+manual `actions` replace the automatic fallback; otherwise the hidden automatic fallback renders.
+Historical visual-action settings remain ignored without a migration.
 
 News & Events Highlights retains the `newsEventsHighlights` block slug and automatically interleaves
 recent published non-event entries with current or upcoming Events. It keeps the shared presentation

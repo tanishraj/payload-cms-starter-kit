@@ -2,6 +2,7 @@ import type {
   ArrayField,
   Block,
   CheckboxField,
+  Condition,
   RadioField,
   SelectField,
   TabsField,
@@ -10,13 +11,35 @@ import type {
 
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createCardTabs } from '@/blocks/shared/cardThemeFields'
-import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import {
+  buttonVariantDescription,
+  buttonVariantOptions,
+  createContentActionsField,
+} from '@/blocks/shared/contentActionsFields'
+import { createIconField } from '@/blocks/shared/iconField'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 type DownloadListSiblingData = {
   displayMode?: 'cards' | 'compact' | 'framedGrid' | 'list' | 'openGrid' | null
-  showDownloadAction?: boolean | null
-  showViewAction?: boolean | null
+  sectionLayout?: 'split' | 'stacked' | null
+}
+
+type DocumentActionSiblingData = {
+  actionType?: 'custom' | 'download' | 'view' | null
+  linkType?: 'custom' | 'page' | null
+  mode?: 'button' | 'link' | null
+}
+
+type DocumentActionValue = DocumentActionSiblingData & {
+  icon?: string | null
+  label?: string | null
+  page?: unknown
+  url?: string | null
+}
+
+type DownloadItemSiblingData = {
+  externalUrl?: string | null
+  file?: unknown
 }
 
 type ManualActionSiblingData = {
@@ -29,16 +52,76 @@ const isGridMode = (_data: unknown, siblingData: DownloadListSiblingData) =>
   siblingData?.displayMode === 'openGrid' ||
   siblingData?.displayMode === 'framedGrid'
 
-const showsViewAction = (_data: unknown, siblingData: DownloadListSiblingData) =>
-  siblingData?.showViewAction === true
+const isSplitSection = (_data: unknown, siblingData: DownloadListSiblingData) =>
+  siblingData?.sectionLayout === 'split'
 
-const validateActionAvailability = (
-  _value: unknown,
-  { siblingData }: { siblingData?: DownloadListSiblingData },
-) =>
-  siblingData?.showViewAction === false && siblingData?.showDownloadAction === false
-    ? 'Enable at least one document action.'
-    : true
+const isViewAction: Condition = (_data, siblingData: DocumentActionSiblingData) =>
+  siblingData?.actionType === 'view'
+
+const isCustomAction: Condition = (_data, siblingData: DocumentActionSiblingData) =>
+  siblingData?.actionType === 'custom'
+
+const isCustomPageAction: Condition = (_data, siblingData: DocumentActionSiblingData) =>
+  siblingData?.actionType === 'custom' && siblingData?.linkType === 'page'
+
+const isCustomUrlDocumentAction: Condition = (_data, siblingData: DocumentActionSiblingData) =>
+  siblingData?.actionType === 'custom' && siblingData?.linkType === 'custom'
+
+const isCustomButtonAction: Condition = (_data, siblingData: DocumentActionSiblingData) =>
+  siblingData?.actionType === 'custom' && siblingData?.mode === 'button'
+
+const getCustomDestinationKey = (action: DocumentActionValue): string | undefined => {
+  if (action.linkType === 'custom') {
+    const url = action.url?.trim()
+    return url ? `url:${url}` : undefined
+  }
+
+  if (action.linkType === 'page' && action.page) {
+    const page = action.page
+    const id = typeof page === 'object' && page && 'id' in page ? page.id : page
+    return id !== undefined && id !== null ? `page:${String(id)}` : undefined
+  }
+
+  return undefined
+}
+
+const validateDocumentActions = (
+  value: unknown,
+  { siblingData }: { siblingData?: DownloadItemSiblingData },
+) => {
+  const actions = Array.isArray(value) ? (value as DocumentActionValue[]).slice(0, 2) : []
+  const actionTypes = actions.map((action) => action.actionType)
+
+  for (const type of ['download', 'view'] as const) {
+    if (actionTypes.filter((actionType) => actionType === type).length > 1) {
+      return `Add ${type === 'download' ? 'Download' : 'View'} only once per document.`
+    }
+  }
+
+  const customDestinations: string[] = []
+  for (const [index, action] of actions.entries()) {
+    const position = index + 1
+    if (action.actionType === 'download' && !siblingData?.file) {
+      return `Download action ${position} requires File Upload.`
+    }
+    if (action.actionType === 'view' && !siblingData?.file && !siblingData?.externalUrl?.trim()) {
+      return `View action ${position} requires View URL or File Upload.`
+    }
+    if (action.actionType === 'custom') {
+      if (!action.label?.trim()) return `Custom action ${position} requires a label.`
+      const destination = getCustomDestinationKey(action)
+      if (!destination) return `Custom action ${position} requires a destination.`
+      if (action.mode === 'button' && !action.icon?.trim()) {
+        return `Custom Button action ${position} requires an icon.`
+      }
+      customDestinations.push(destination)
+    }
+  }
+
+  return new Set(customDestinations).size === customDestinations.length
+    ? true
+    : 'Custom actions must use different destinations.'
+}
 
 const isLinkAction = (_data: unknown, siblingData: ManualActionSiblingData) =>
   siblingData?.actionType === 'link'
@@ -52,15 +135,16 @@ const isPageAction = (_data: unknown, siblingData: ManualActionSiblingData) =>
 const isCustomUrlAction = (_data: unknown, siblingData: ManualActionSiblingData) =>
   siblingData?.actionType === 'link' && siblingData?.linkType === 'custom'
 
-const documentActionsField: ArrayField = {
+const legacyActionsField: ArrayField = {
   name: 'actions',
   label: 'Manual Actions',
   type: 'array',
   maxRows: 2,
   admin: {
+    hidden: true,
     initCollapsed: true,
     description:
-      'Add up to two actions. Valid manual actions replace the automatic View and Download fallback for this document.',
+      'Legacy action data retained for existing content. Use Document Actions for new content.',
   },
   fields: [
     {
@@ -126,6 +210,119 @@ const documentActionsField: ArrayField = {
           : 'Select a file for this Download action.',
     },
   ],
+}
+
+const customButtonIconBase = createIconField({
+  label: 'Button Icon',
+  description: 'Required for Custom Button. Enter a Lucide icon name such as ExternalLink.',
+})
+
+const documentActionsField: ArrayField = {
+  name: 'documentActions',
+  label: 'Document Actions',
+  type: 'array',
+  maxRows: 2,
+  validate: validateDocumentActions,
+  admin: {
+    initCollapsed: true,
+    description: 'Add up to two ordered Download, View, or Custom actions.',
+  },
+  fields: [
+    {
+      name: 'actionType',
+      label: 'Action Type',
+      type: 'radio',
+      defaultValue: 'download',
+      required: true,
+      options: [
+        { label: 'Download', value: 'download' },
+        { label: 'View', value: 'view' },
+        { label: 'Custom', value: 'custom' },
+      ],
+      admin: { layout: 'horizontal' },
+    } satisfies RadioField,
+    {
+      name: 'label',
+      type: 'text',
+      admin: { description: 'Download and View use their action name when left empty.' },
+    },
+    {
+      name: 'viewOpenInNewTab',
+      label: 'Open View in New Tab',
+      type: 'checkbox',
+      defaultValue: true,
+      admin: { condition: isViewAction },
+    } satisfies CheckboxField,
+    {
+      name: 'linkType',
+      label: 'Custom Destination',
+      type: 'radio',
+      defaultValue: 'page',
+      options: [
+        { label: 'Page', value: 'page' },
+        { label: 'Custom URL', value: 'custom' },
+      ],
+      admin: { condition: isCustomAction, layout: 'horizontal' },
+    } satisfies RadioField,
+    {
+      name: 'page',
+      type: 'relationship',
+      relationTo: 'pages',
+      admin: { condition: isCustomPageAction },
+    },
+    {
+      name: 'url',
+      label: 'Custom URL',
+      type: 'text',
+      admin: { condition: isCustomUrlDocumentAction },
+    },
+    {
+      name: 'openInNewTab',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: { condition: isCustomAction },
+    } satisfies CheckboxField,
+    {
+      name: 'mode',
+      label: 'Display As',
+      type: 'select',
+      defaultValue: 'link',
+      options: [
+        { label: 'Link', value: 'link' },
+        { label: 'Button', value: 'button' },
+      ],
+      admin: { condition: isCustomAction },
+    } satisfies SelectField,
+    {
+      name: 'variant',
+      label: 'Button Variant',
+      type: 'select',
+      defaultValue: 'default',
+      options: buttonVariantOptions,
+      admin: {
+        condition: isCustomButtonAction,
+        description: buttonVariantDescription,
+      },
+    } satisfies SelectField,
+    {
+      ...customButtonIconBase,
+      admin: {
+        ...customButtonIconBase.admin,
+        condition: isCustomButtonAction,
+      },
+    },
+  ],
+}
+
+const legacyCustomActionField = createContentActionsField({
+  name: 'customAction',
+  label: 'Custom Action',
+  maxRows: 1,
+})
+
+legacyCustomActionField.admin = {
+  ...legacyCustomActionField.admin,
+  hidden: true,
 }
 
 const columnOptions = Array.from({ length: 8 }, (_, index) => ({
@@ -202,6 +399,8 @@ const downloadsField: ArrayField = {
           },
         } satisfies SelectField,
         documentActionsField,
+        legacyCustomActionField,
+        legacyActionsField,
       ],
     }),
   ],
@@ -239,28 +438,25 @@ export const DownloadListBlock: Block = {
             {
               type: 'collapsible',
               label: 'Automatic Action Fallback',
-              admin: { initCollapsed: true },
+              admin: { hidden: true, initCollapsed: true },
               fields: [
                 {
                   name: 'showViewAction',
                   label: 'Show View Action',
                   type: 'checkbox',
                   defaultValue: false,
-                  validate: validateActionAvailability,
                 } satisfies CheckboxField,
                 {
                   name: 'openViewInNewTab',
                   label: 'Open View in New Tab',
                   type: 'checkbox',
                   defaultValue: true,
-                  admin: { condition: showsViewAction },
                 } satisfies CheckboxField,
                 {
                   name: 'showDownloadAction',
                   label: 'Show Download Action',
                   type: 'checkbox',
                   defaultValue: true,
-                  validate: validateActionAvailability,
                 } satisfies CheckboxField,
               ],
             },
@@ -276,6 +472,50 @@ export const DownloadListBlock: Block = {
           label: 'Theme Settings',
           fields: [
             createBlockAppearanceFields(),
+            {
+              name: 'sectionLayout',
+              label: 'Section Layout',
+              type: 'select',
+              defaultValue: 'stacked',
+              required: true,
+              options: [
+                { label: 'Stacked', value: 'stacked' },
+                { label: 'Split', value: 'split' },
+              ],
+            } satisfies SelectField,
+            {
+              name: 'introPosition',
+              label: 'Introduction Position',
+              type: 'select',
+              defaultValue: 'left',
+              required: true,
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Right', value: 'right' },
+              ],
+              admin: {
+                condition: isSplitSection,
+                description:
+                  'Choose which side contains the section introduction on large screens.',
+              },
+            } satisfies SelectField,
+            {
+              name: 'introVerticalAlignment',
+              label: 'Introduction Vertical Alignment',
+              type: 'select',
+              defaultValue: 'top',
+              required: true,
+              options: [
+                { label: 'Top', value: 'top' },
+                { label: 'Center', value: 'center' },
+                { label: 'Bottom', value: 'bottom' },
+              ],
+              admin: {
+                condition: isSplitSection,
+                description:
+                  'Position the introduction relative to the downloads on large screens.',
+              },
+            } satisfies SelectField,
             {
               name: 'displayMode',
               label: 'Display Mode',

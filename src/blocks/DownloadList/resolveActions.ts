@@ -1,5 +1,11 @@
 import { getMediaAbsoluteUrl, isMediaDoc } from '@/lib/media'
-import { resolveCmsLink, type CmsLinkValue } from '@/lib/cmsLinks'
+import {
+  resolveCmsActions,
+  resolveCmsLink,
+  type CmsActionVariant,
+  type CmsActionValue,
+  type CmsLinkValue,
+} from '@/lib/cmsLinks'
 import type { Media, Page } from '@/payload-types'
 
 import type { DownloadActionSettings, ResolvedDownloadAction } from './types'
@@ -14,10 +20,35 @@ export type DownloadManualActionInput = CmsLinkValue & {
   page?: string | number | Page | null
 }
 
+export type DownloadDocumentActionInput = CmsLinkValue & {
+  actionType?: 'custom' | 'download' | 'view' | null
+  icon?: string | null
+  label?: string | null
+  mode?: 'button' | 'link' | null
+  variant?: CmsActionVariant | null
+  viewOpenInNewTab?: boolean | null
+}
+
 export type AutomaticDownloadActionFallback = DownloadActionSettings & {
   downloadHref?: string
   viewHref?: string
 }
+
+type ResolveDocumentActionsInput = {
+  customActions?: CmsActionValue[] | null
+  documentActions?: DownloadDocumentActionInput[] | null
+  fallback: AutomaticDownloadActionFallback
+  legacyActions?: DownloadManualActionInput[] | null
+}
+
+const createResolvedAction = (
+  action: Omit<ResolvedDownloadAction, 'showArrow' | 'variant'> &
+    Partial<Pick<ResolvedDownloadAction, 'showArrow' | 'variant'>>,
+): ResolvedDownloadAction => ({
+  ...action,
+  showArrow: action.showArrow ?? false,
+  variant: action.variant ?? 'default',
+})
 
 const resolveManualActions = (
   actions?: DownloadManualActionInput[] | null,
@@ -30,12 +61,13 @@ const resolveManualActions = (
       const href = isMediaDoc(action.file) ? getMediaAbsoluteUrl(action.file) : undefined
       return href
         ? [
-            {
+            createResolvedAction({
               href,
               kind: 'download' as const,
               label,
+              mode: 'button',
               openInNewTab: false,
-            },
+            }),
           ]
         : []
     }
@@ -47,12 +79,13 @@ const resolveManualActions = (
       })
       return destination.href
         ? [
-            {
+            createResolvedAction({
               href: destination.href,
-              kind: 'link' as const,
+              kind: 'view' as const,
               label,
+              mode: 'link',
               openInNewTab: Boolean(destination.openInNewTab),
-            },
+            }),
           ]
         : []
     }
@@ -60,29 +93,113 @@ const resolveManualActions = (
     return []
   })
 
-export function resolveDocumentActions(
-  manualActions: DownloadManualActionInput[] | null | undefined,
-  fallback: AutomaticDownloadActionFallback,
-): ResolvedDownloadAction[] {
-  const resolvedManualActions = resolveManualActions(manualActions)
-  if (resolvedManualActions.length > 0) return resolvedManualActions
+const resolveCustomAction = (actions?: CmsActionValue[] | null): ResolvedDownloadAction[] =>
+  resolveCmsActions(actions)
+    .slice(0, 1)
+    .map((action) => ({
+      ...action,
+      kind: 'custom' as const,
+      openInNewTab: Boolean(action.openInNewTab),
+    }))
 
-  const resolvedFallback: ResolvedDownloadAction[] = []
+const resolveAutomaticActions = (
+  fallback: AutomaticDownloadActionFallback,
+): ResolvedDownloadAction[] => {
+  const resolvedActions: ResolvedDownloadAction[] = []
   if (fallback.showView === true && fallback.viewHref) {
-    resolvedFallback.push({
-      href: fallback.viewHref,
-      kind: 'link',
-      label: 'View Document',
-      openInNewTab: fallback.openViewInNewTab ?? true,
-    })
+    resolvedActions.push(
+      createResolvedAction({
+        href: fallback.viewHref,
+        kind: 'view',
+        label: 'View Document',
+        mode: 'link',
+        openInNewTab: fallback.openViewInNewTab ?? true,
+      }),
+    )
   }
   if (fallback.showDownload !== false && fallback.downloadHref) {
-    resolvedFallback.push({
-      href: fallback.downloadHref,
-      kind: 'download',
-      label: 'Download',
-      openInNewTab: false,
-    })
+    resolvedActions.push(
+      createResolvedAction({
+        href: fallback.downloadHref,
+        kind: 'download',
+        label: 'Download',
+        mode: 'button',
+        openInNewTab: false,
+      }),
+    )
   }
-  return resolvedFallback
+
+  return resolvedActions
+}
+
+const resolveNewDocumentActions = (
+  actions: DownloadDocumentActionInput[],
+  fallback: AutomaticDownloadActionFallback,
+): ResolvedDownloadAction[] =>
+  actions.slice(0, 2).flatMap((action): ResolvedDownloadAction[] => {
+    if (action.actionType === 'download') {
+      return fallback.downloadHref
+        ? [
+            createResolvedAction({
+              href: fallback.downloadHref,
+              icon: 'Download',
+              kind: 'download',
+              label: action.label?.trim() || 'Download',
+              mode: 'button',
+              openInNewTab: false,
+            }),
+          ]
+        : []
+    }
+
+    if (action.actionType === 'view') {
+      return fallback.viewHref
+        ? [
+            createResolvedAction({
+              href: fallback.viewHref,
+              icon: 'Eye',
+              kind: 'view',
+              label: action.label?.trim() || 'View',
+              mode: 'button',
+              openInNewTab: action.viewOpenInNewTab ?? true,
+            }),
+          ]
+        : []
+    }
+
+    if (action.actionType !== 'custom') return []
+
+    const [resolved] = resolveCmsActions([action])
+    if (!resolved) return []
+
+    const mode = action.mode === 'button' ? 'button' : 'link'
+    return [
+      {
+        ...resolved,
+        ...(mode === 'button' && action.icon?.trim() ? { icon: action.icon.trim() } : {}),
+        kind: 'custom',
+        mode,
+        openInNewTab: Boolean(resolved.openInNewTab),
+        showArrow: false,
+      },
+    ]
+  })
+
+export function resolveDocumentActions({
+  customActions,
+  documentActions,
+  fallback,
+  legacyActions,
+}: ResolveDocumentActionsInput): ResolvedDownloadAction[] {
+  if ((documentActions ?? []).length > 0) {
+    return resolveNewDocumentActions(documentActions ?? [], fallback)
+  }
+
+  const resolvedCustomActions = resolveCustomAction(customActions)
+  if (resolvedCustomActions.length === 0) {
+    const resolvedLegacyActions = resolveManualActions(legacyActions)
+    if (resolvedLegacyActions.length > 0) return resolvedLegacyActions
+  }
+
+  return [...resolveAutomaticActions(fallback), ...resolvedCustomActions]
 }
