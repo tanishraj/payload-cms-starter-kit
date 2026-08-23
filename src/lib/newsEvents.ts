@@ -29,7 +29,7 @@ import {
   toPublicNewsEventCard,
   toPublicNewsEventDetail,
 } from '@/lib/newsEventsShared'
-import type { NewsEvent, SeoSetting } from '@/payload-types'
+import type { NewsEvent, SeoSetting, User } from '@/payload-types'
 
 export type NewsEventsPayload = Pick<Payload, 'find' | 'findGlobal' | 'logger'>
 
@@ -653,14 +653,15 @@ export const getNewsEventBySlug = cache(async (slug: string, nowISO: string) => 
   return fetchNewsEventBySlug(payload, slug, nowISO)
 })
 
-export async function getNewsEventPreviewBySlug(slug: string): Promise<NewsEvent | null> {
+export async function getNewsEventPreviewBySlug(slug: string, user: User): Promise<NewsEvent | null> {
   const payload = await loadPayload()
   const result = await payload.find({
     collection: 'news-events',
     depth: 2,
     draft: true,
     limit: 1,
-    overrideAccess: true,
+    overrideAccess: false,
+    user,
     where: { slug: { equals: slug } },
   })
 

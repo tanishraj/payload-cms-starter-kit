@@ -13,6 +13,7 @@ import {
   getArticleStructuredData,
   getRelatedArticles,
 } from '@/lib/contentEntries'
+import type { User } from '@/payload-types'
 
 type PageProps = {
   params: Promise<{ slug: string }>
@@ -37,7 +38,7 @@ export default async function ArticleEntryPage({ params, searchParams }: PagePro
 
     if (!user) notFound()
 
-    const draftArticle = await getArticlePreviewBySlug(slug)
+    const draftArticle = await getArticlePreviewBySlug(slug, user as User)
     if (!draftArticle) notFound()
 
     return <ArticleLivePreview initialData={draftArticle} />

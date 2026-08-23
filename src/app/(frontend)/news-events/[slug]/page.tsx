@@ -22,6 +22,7 @@ import { getNewsEventDetailMetadata, getNewsEventStructuredData } from '@/lib/ne
 import { loadNewsEventsPreviewSnapshot } from '@/lib/newsEventsPreviewSnapshot'
 import { loadReviewPreviewSnapshot } from '@/lib/reviewPreviewSnapshot'
 import { getDraftSiteOfficeLocations } from '@/lib/siteOffices'
+import type { User } from '@/payload-types'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -69,7 +70,7 @@ export default async function NewsEventEntryPage({ params, searchParams }: PageP
     if (!user) notFound()
 
     const [draftEntry, template] = await Promise.all([
-      getNewsEventPreviewBySlug(slug),
+      getNewsEventPreviewBySlug(slug, user as User),
       getNewsEventDetailTemplate(),
     ])
     if (!draftEntry) notFound()

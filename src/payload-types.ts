@@ -10883,6 +10883,7 @@ export interface SearchSetting {
         id?: string | null;
       }[]
     | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -11145,6 +11146,7 @@ export interface SearchSettingsSelect<T extends boolean = true> {
         term?: T;
         id?: T;
       };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

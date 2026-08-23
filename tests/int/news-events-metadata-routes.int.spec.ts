@@ -166,7 +166,10 @@ describe('News & Events metadata routes', () => {
     })
     const markup = renderToStaticMarkup(result)
 
-    expect(mocks.getNewsEventPreviewBySlug).toHaveBeenCalledWith('draft-example')
+    expect(mocks.getNewsEventPreviewBySlug).toHaveBeenCalledWith(
+      'draft-example',
+      expect.objectContaining({ id: 'admin' }),
+    )
     expect(mocks.getNewsEventDetailTemplate).toHaveBeenCalledOnce()
     expect(mocks.loadReviewPreviewSnapshot).toHaveBeenCalledWith(pageBlocks)
     expect(mocks.loadNewsEventsPreviewSnapshot).toHaveBeenCalledWith(pageBlocks)

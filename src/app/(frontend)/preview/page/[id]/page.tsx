@@ -43,11 +43,14 @@ export default async function AdminPreviewPage({ params }: PageProps) {
       id: pageID,
       depth: 8,
       draft: true,
+      overrideAccess: false,
+      user,
     }),
     payload.findGlobal({
       slug: 'page-settings',
       depth: 0,
-      draft: true,
+      draft: false,
+      overrideAccess: false,
     }),
   ])
 

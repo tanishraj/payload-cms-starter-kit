@@ -7,7 +7,7 @@ import { getMediaAbsoluteUrl } from '@/lib/media'
 import { resolveCanonicalURL, resolveRobotsMode } from '@/lib/seo'
 import { getTaxonomyRelationshipIDs, getTaxonomyTerm } from '@/lib/taxonomy'
 import { toAbsoluteSiteUrl } from '@/lib/siteUrl'
-import type { Article, Review, SeoSetting } from '@/payload-types'
+import type { Article, Review, SeoSetting, User } from '@/payload-types'
 
 type TaxonomyArchiveTerm = {
   canonicalURL?: string | null
@@ -136,14 +136,15 @@ const toManagedEntryMetadata = async ({
   }
 }
 
-export async function getArticlePreviewBySlug(slug: string): Promise<Article | null> {
+export async function getArticlePreviewBySlug(slug: string, user: User): Promise<Article | null> {
   const payload = await getPayload({ config: configPromise })
   const result = await payload.find({
     collection: 'articles',
     depth: 2,
     draft: true,
     limit: 1,
-    overrideAccess: true,
+    overrideAccess: false,
+    user,
     where: { slug: { equals: slug } },
   })
   return result.docs[0] ?? null
