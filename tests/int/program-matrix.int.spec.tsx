@@ -7,11 +7,10 @@ import { describe, expect, it } from 'vitest'
 
 import { ProgramMatrixBlockComponent } from '@/blocks/ProgramMatrix/Component'
 import { ProgramMatrixBlock } from '@/blocks/ProgramMatrix/config'
+import { pageBuilderBlocks, reusableSectionBuilderBlocks } from '@/blocks/blockCatalog'
 import { resolveLucideIcon } from '@/blocks/shared/resolveLucideIcon'
 import type { Page } from '@/payload-types'
 
-const pagesSource = readFileSync('src/collections/Pages.ts', 'utf8')
-const reusableSectionsSource = readFileSync('src/collections/ReusableSections.ts', 'utf8')
 const pageRendererSource = readFileSync('src/blocks/renderPageBlocks.tsx', 'utf8')
 const livePreviewRendererSource = readFileSync('src/blocks/renderLivePreviewPageBlocks.tsx', 'utf8')
 const payloadTypesSource = readFileSync('src/payload-types.ts', 'utf8')
@@ -851,8 +850,8 @@ describe('ProgramMatrixBlockComponent', () => {
 
 describe('Program Matrix registration', () => {
   it('is available to pages, reusable sections, and both renderers', () => {
-    expect(pagesSource).toContain('ProgramMatrixBlock')
-    expect(reusableSectionsSource).toContain('ProgramMatrixBlock')
+    expect(pageBuilderBlocks.map(({ slug }) => slug)).toContain('programMatrix')
+    expect(reusableSectionBuilderBlocks.map(({ slug }) => slug)).toContain('programMatrix')
     expect(pageRendererSource).toContain("case 'programMatrix':")
     expect(livePreviewRendererSource).toContain("case 'programMatrix':")
   })

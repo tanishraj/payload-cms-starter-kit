@@ -5,6 +5,9 @@ import { describe, expect, it } from 'vitest'
 
 import { Cta39BlockComponent } from '@/blocks/Cta39/Component'
 import { Cta39Block } from '@/blocks/Cta39/config'
+import { pageBuilderBlocks, reusableSectionBuilderBlocks } from '@/blocks/blockCatalog'
+
+import { getGeneratedPayloadInterface } from './helpers/generatedPayloadInterface'
 
 type NamedField = {
   admin?: { condition?: unknown }
@@ -316,9 +319,10 @@ describe('Call to Action block', () => {
   })
 
   it('is registered across schemas, renderers, and generated types', () => {
+    expect(pageBuilderBlocks.map(({ slug }) => slug)).toContain('cta39')
+    expect(reusableSectionBuilderBlocks.map(({ slug }) => slug)).toContain('cta39')
+
     const sources = [
-      'src/collections/Pages.ts',
-      'src/collections/ReusableSections.ts',
       'src/blocks/renderPageBlocks.tsx',
       'src/blocks/renderLivePreviewPageBlocks.tsx',
     ].map((file) => readFileSync(file, 'utf8'))
@@ -328,10 +332,7 @@ describe('Call to Action block', () => {
     }
 
     const generatedTypes = readFileSync('src/payload-types.ts', 'utf8')
-    const ctaType = generatedTypes.slice(
-      generatedTypes.indexOf('export interface Cta39Block {'),
-      generatedTypes.indexOf('export interface HeroBannerBlock {'),
-    )
+    const ctaType = getGeneratedPayloadInterface(generatedTypes, 'Cta39Block')
     expect(ctaType).toContain('eyebrow?: string | null;')
     expect(ctaType).toContain("headerLayout: 'stacked' | 'split' | 'actionSplit';")
     expect(ctaType).toContain("splitContentAlignment?: ('top' | 'center' | 'bottom') | null;")

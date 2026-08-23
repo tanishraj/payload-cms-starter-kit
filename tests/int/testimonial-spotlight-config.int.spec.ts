@@ -165,11 +165,14 @@ describe('testimonial spotlight config', () => {
 
     expect(pageSlugs).toContain('testimonialSpotlight')
     expect(reusableSlugs).toContain('testimonialSpotlight')
-    expect(pageSlugs.indexOf('testimonialSpotlight')).toBe(
-      pageSlugs.indexOf('featureSpotlight') + 1,
+    const pageBlock = collectRegisteredBlocks(Pages.fields).find(
+      ({ slug }) => slug === 'testimonialSpotlight',
     )
-    expect(reusableSlugs.indexOf('testimonialSpotlight')).toBe(
-      reusableSlugs.indexOf('featureSpotlight') + 1,
+    const reusableBlock = collectRegisteredBlocks(ReusableSections.fields).find(
+      ({ slug }) => slug === 'testimonialSpotlight',
     )
+
+    expect(pageBlock?.admin?.group).toBe('Prove')
+    expect(reusableBlock?.admin?.group).toBe('Prove')
   })
 })

@@ -194,59 +194,59 @@ export interface Page {
    */
   layout?:
     | (
-        | AnnouncementBlock
-        | BannerCtaBlock
-        | NewsGridBlock
-        | NewsEventsTabsBlock
-        | Cta39Block
+        | PageHeaderBlock
         | HeroBannerBlock
+        | ReusableSectionBlock
+        | RichTextBlock
+        | AboutSectionBlock
+        | FeatureSpotlightBlock
+        | ContentHighlightsBlock
+        | AcademicProgrammesBlock
+        | NewsEventsTabsBlock
+        | DepartmentProfilesBlock
+        | GalleryAlbumTabsBlock
+        | QaAccordionBlock
+        | StatsStripBlock
+        | TestimonialSpotlightBlock
+        | AccreditationCardsBlock
+        | BannerCtaBlock
+        | Contact24Block
+        | DownloadListBlock
+        | AnnouncementBlock
+        | NewsGridBlock
+        | Cta39Block
         | HeroCarouselBlock
         | GalleryCoverflowBlock
-        | FeatureSpotlightBlock
-        | TestimonialSpotlightBlock
         | FeatureMatrixBlock
-        | ContentHighlightsBlock
         | EditorialReasonsBlock
-        | AcademicProgrammesBlock
         | LeadershipProfilesBlock
-        | DepartmentProfilesBlock
         | NewsEventsHighlightsBlock
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
         | EventGalleryBlock
-        | GalleryAlbumTabsBlock
         | ImageMosaicBlock
         | StudentExperienceBlock
-        | StatsStripBlock
-        | QaAccordionBlock
         | RatingSpotlightBlock
         | ReviewFeedBlock
         | ReviewSubmissionBlock
         | Contact33Block
-        | Contact24Block
         | TeamShowcaseBlock
         | Services21Block
-        | RichTextBlock
         | VideoEmbedBlock
         | MediaCarouselBlock
         | ProgramMatrixBlock
         | LogoStripBlock
-        | PageHeaderBlock
         | BreadcrumbBlock
         | TimelineBlock
         | IconCardShowcaseBlock
         | IconGridBlock
         | QuoteBlockBlock
         | TabsContentBlock
-        | DownloadListBlock
         | FeeStructureBlock
         | NumberedStepsBlock
         | BentoGridBlock
         | TestimonialGridBlock
         | AwardsListBlock
-        | AboutSectionBlock
-        | AccreditationCardsBlock
-        | ReusableSectionBlock
       )[]
     | null;
   metaTitle?: string | null;
@@ -291,49 +291,39 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AnnouncementBlock".
+ * via the `definition` "PageHeaderBlock".
  */
-export interface AnnouncementBlock {
-  label?: string | null;
-  items: {
-    title?: string | null;
-    description: string;
-    url?: string | null;
-    id?: string | null;
-  }[];
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  displayMode: 'vertical' | 'horizontal' | 'marquee';
-  intervalMs?: number | null;
+export interface PageHeaderBlock {
   /**
-   * Lower values scroll faster.
-   */
-  marqueeDurationMs?: number | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'announcement';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BannerCtaBlock".
- */
-export interface BannerCtaBlock {
-  /**
-   * Sits behind the overlay. Without one the block falls back to the Appearance background.
+   * Used as the full-bleed backdrop for the Banner variant.
    */
   backgroundImage?: (string | null) | Media;
   /**
-   * Small label above the heading.
+   * Choose the single element displayed above the page title.
+   */
+  topContent: 'breadcrumb' | 'eyebrow';
+  /**
+   * The last item is the current page and is not linked. Empty or unresolved destinations render as text.
+   */
+  breadcrumbs?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Small label above the page title.
    */
   eyebrow?: string | null;
-  title: string;
-  /**
-   * Optional emphasized second line of the heading.
-   */
+  title?: string | null;
   accentTitle?: string | null;
-  description?: string | null;
+  /**
+   * Supporting line below the title.
+   */
+  subtitle?: string | null;
   actions?:
     | {
         label: string;
@@ -372,6 +362,31 @@ export interface BannerCtaBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Legacy Page Header data retained for backwards compatibility. Not displayed.
+   */
+  keyFacts?:
+    | {
+        /**
+         * Legacy field retained for existing content. It is no longer displayed.
+         */
+        label?: string | null;
+        /**
+         * Primary statement, e.g. Medical education connected with patient care.
+         */
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  variant: 'minimal' | 'banner';
+  /**
+   * Use the page hierarchy, configure a custom trail, or hide breadcrumbs.
+   */
+  breadcrumbMode?: ('automatic' | 'custom' | 'hidden') | null;
+  /**
+   * Legacy Key Facts setting retained for backwards compatibility.
+   */
+  keyFactsNumberPosition?: ('inline' | 'above') | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
@@ -399,7 +414,7 @@ export interface BannerCtaBlock {
   size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'bannerCta';
+  blockType: 'pageHeader';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -488,320 +503,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "NewsGridBlock".
- */
-export interface NewsGridBlock {
-  /**
-   * Small label above the heading.
-   */
-  eyebrow?: string | null;
-  title: string;
-  accentTitle?: string | null;
-  description?: string | null;
-  actions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Total visible cards, including the optional feature card. When enabled, the feature uses the final slot.
-   */
-  totalCards: number;
-  /**
-   * Maximum cards in each desktop row. Additional cards continue on the next row.
-   */
-  cardsPerRow: '2' | '3' | '4';
-  /**
-   * Used by every non-event classification.
-   */
-  newsActionLabel?: string | null;
-  eventActionLabel?: string | null;
-  /**
-   * Shown when nothing is published and the feature card is off.
-   */
-  emptyStateMessage?: string | null;
-  /**
-   * An optional editor-authored card that fills the last slot in the grid, over a background image.
-   */
-  featureCard?: {
-    enabled?: boolean | null;
-    image?: (string | null) | Media;
-    eyebrow?: string | null;
-    /**
-     * Required for the card to render.
-     */
-    title?: string | null;
-    actionLabel?: string | null;
-    linkType?: ('none' | 'page' | 'custom') | null;
-    page?: (string | null) | Page;
-    url?: string | null;
-    openInNewTab?: boolean | null;
-  };
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  /**
-   * Header actions only sit beside the heading when aligned left.
-   */
-  contentAlignment?: ('left' | 'center') | null;
-  /**
-   * Aligns header actions against the content when they appear beside the heading.
-   */
-  headerActionAlignment?: ('center' | 'top' | 'bottom') | null;
-  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'newsGrid';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "NewsEventsTabsBlock".
- */
-export interface NewsEventsTabsBlock {
-  /**
-   * Small label above the optional section heading.
-   */
-  eyebrow?: string | null;
-  /**
-   * Optional. The classification tabs can render without a heading.
-   */
-  title?: string | null;
-  accentTitle?: string | null;
-  description?: string | null;
-  actions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * The mandatory first tab. Leave blank to use “All”.
-   */
-  allTabLabel?: string | null;
-  /**
-   * Select and drag classifications into visitor tab order. Leave empty to show only All.
-   */
-  classifications?: (string | NewsEventClassification)[] | null;
-  /**
-   * Number of published entries shown initially and appended by each Load More request.
-   */
-  itemsPerTab: '3' | '6' | '9' | '12';
-  /**
-   * Shown when the selected tab has more published entries.
-   */
-  loadMoreLabel?: string | null;
-  newsActionLabel?: string | null;
-  eventActionLabel?: string | null;
-  /**
-   * Shown when the selected classification has no published entries.
-   */
-  emptyStateMessage?: string | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  /**
-   * Choose a contained, pill-shaped, or minimal underline tab treatment.
-   */
-  tabVariant: 'contained' | 'pill' | 'underline';
-  /**
-   * Choose cards or a full-width editorial list for the tab results.
-   */
-  layoutStyle: 'cardGrid' | 'editorialList';
-  /**
-   * Maximum cards in each desktop row.
-   */
-  cardsPerRow?: ('2' | '3' | '4') | null;
-  /**
-   * Header actions only sit beside the heading when aligned left.
-   */
-  contentAlignment?: ('left' | 'center') | null;
-  /**
-   * Aligns header actions against the content when they appear beside the heading.
-   */
-  headerActionAlignment?: ('center' | 'top' | 'bottom') | null;
-  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'newsEventsTabs';
-}
-/**
- * Central classifications used by News & Events entries, badges, tabs, and date behavior.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news-event-classifications".
- */
-export interface NewsEventClassification {
-  id: string;
-  /**
-   * Visitor-facing tab name, such as News, Events, or Achievements.
-   */
-  title: string;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  /**
-   * Short card badge text. When empty, the title is used.
-   */
-  badgeLabel?: string | null;
-  legacyValue?: ('news' | 'event' | 'notice' | 'holiday' | 'achievement' | 'announcement' | 'other') | null;
-  /**
-   * Event enables event dates and location behavior. Story uses the publication/display date.
-   */
-  behavior: 'story' | 'event';
-  /**
-   * Optional internal guidance describing when editors should use this option.
-   */
-  description?: string | null;
-  /**
-   * Inactive classifications remain readable on existing entries but cannot be newly selected.
-   */
-  active: boolean;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "Cta39Block".
- */
-export interface Cta39Block {
-  /**
-   * Optional short label shown above the title.
-   */
-  eyebrow?: string | null;
-  title: string;
-  accentTitle?: string | null;
-  description?: string | null;
-  actions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  /**
-   * Keep all content together, split copy from the heading, or place actions on the right.
-   */
-  headerLayout: 'stacked' | 'split' | 'actionSplit';
-  contentAlignment: 'left' | 'center' | 'right';
-  /**
-   * Position the description and actions relative to the heading.
-   */
-  splitContentAlignment?: ('top' | 'center' | 'bottom') | null;
-  /**
-   * Arrange the right-column actions in a row or a vertical stack on desktop.
-   */
-  actionLayout?: ('inline' | 'stacked') | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'cta39';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "HeroBannerBlock".
  */
 export interface HeroBannerBlock {
@@ -859,83 +560,204 @@ export interface HeroBannerBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HeroCarouselBlock".
+ * via the `definition` "ReusableSectionBlock".
  */
-export interface HeroCarouselBlock {
+export interface ReusableSectionBlock {
   /**
-   * Add one slide for a static hero, or multiple for a carousel.
+   * Select a reusable section to embed on this page.
    */
-  slides?:
+  section: string | ReusableSection;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'reusableSection';
+}
+/**
+ * Shared block groups that sync across every page that references them. Edit once, update everywhere.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reusable-sections".
+ */
+export interface ReusableSection {
+  id: string;
+  /**
+   * Internal name shown in the admin and in the block picker.
+   */
+  title: string;
+  layout?:
+    | (
+        | PageHeaderBlock
+        | HeroBannerBlock
+        | RichTextBlock
+        | AboutSectionBlock
+        | FeatureSpotlightBlock
+        | ContentHighlightsBlock
+        | AcademicProgrammesBlock
+        | NewsEventsTabsBlock
+        | DepartmentProfilesBlock
+        | GalleryAlbumTabsBlock
+        | QaAccordionBlock
+        | StatsStripBlock
+        | TestimonialSpotlightBlock
+        | AccreditationCardsBlock
+        | BannerCtaBlock
+        | Contact24Block
+        | DownloadListBlock
+        | AnnouncementBlock
+        | NewsGridBlock
+        | Cta39Block
+        | HeroCarouselBlock
+        | GalleryCoverflowBlock
+        | FeatureMatrixBlock
+        | EditorialReasonsBlock
+        | LeadershipProfilesBlock
+        | NewsEventsHighlightsBlock
+        | ProfileCarouselBlock
+        | GalleryShowcaseBlock
+        | EventGalleryBlock
+        | ImageMosaicBlock
+        | StudentExperienceBlock
+        | RatingSpotlightBlock
+        | ReviewFeedBlock
+        | ReviewSubmissionBlock
+        | Contact33Block
+        | TeamShowcaseBlock
+        | Services21Block
+        | VideoEmbedBlock
+        | MediaCarouselBlock
+        | ProgramMatrixBlock
+        | LogoStripBlock
+        | BreadcrumbBlock
+        | TimelineBlock
+        | IconCardShowcaseBlock
+        | IconGridBlock
+        | QuoteBlockBlock
+        | TabsContentBlock
+        | FeeStructureBlock
+        | NumberedStepsBlock
+        | BentoGridBlock
+        | TestimonialGridBlock
+        | AwardsListBlock
+      )[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock".
+ */
+export interface RichTextBlock {
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  maxWidth: 'prose' | 'md' | 'lg' | 'full';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'richText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutSectionBlock".
+ */
+export interface AboutSectionBlock {
+  /**
+   * e.g. "About Us" or "Our Story"
+   */
+  eyebrow?: string | null;
+  title?: string | null;
+  accentTitle?: string | null;
+  /**
+   * Main about text. Paragraphs separated by blank lines are rendered as separate paragraphs.
+   */
+  body: string;
+  /**
+   * Controls the semantic and visual fallback marker for List Items.
+   */
+  listStyle: 'unordered' | 'ordered';
+  /**
+   * Optional supporting points shown below the body. Add an icon to override the default number or checkmark for that item.
+   */
+  listItems?:
     | {
+        text: string;
         /**
-         * Full-bleed background image for this slide.
+         * Optional Lucide icon. When empty, ordered lists show the item number and unordered lists show a checkmark.
          */
-        backgroundImage?: (string | null) | Media;
-        /**
-         * Optional: direct video URL (.mp4). Overrides the image when set.
-         */
-        backgroundVideoUrl?: string | null;
-        /**
-         * Small label above the title.
-         */
-        eyebrow?: string | null;
-        title?: string | null;
-        description?: string | null;
-        buttons?:
-          | {
-              label: string;
-              linkType?: ('page' | 'custom') | null;
-              page?: (string | null) | Page;
-              url?: string | null;
-              openInNewTab?: boolean | null;
-              /**
-               * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-               */
-              variant: 'default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline' | 'link';
-              /**
-               * Adds a trailing arrow to this button.
-               */
-              showArrow?: boolean | null;
-              id?: string | null;
-            }[]
-          | null;
+        icon?: string | null;
         id?: string | null;
       }[]
     | null;
   /**
-   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+   * Featured image — shown beside the text in split layouts.
    */
-  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
-  overlayStyle: 'light' | 'dark' | 'darker';
+  image?: (string | null) | Media;
   /**
-   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   * Optional milestone or key detail displayed over the lower corner of the image.
    */
-  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
+  imageDetail?: {
+    enabled?: boolean | null;
+    /**
+     * Small uppercase label, e.g. “Established”.
+     */
+    eyebrow?: string | null;
+    /**
+     * Large focal value, e.g. “2021”. Required when the panel is enabled.
+     */
+    value?: string | null;
+    /**
+     * Short supporting detail shown below the primary value.
+     */
+    description?: string | null;
+  };
   /**
-   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   * Optional inline stats shown alongside the about text.
    */
-  overlayCoverage?: ('full' | 'split') | null;
-  height: 'compact' | 'default' | 'immersive';
-  contentAlignment?: ('left' | 'center' | 'right') | null;
+  stats?:
+    | {
+        /**
+         * e.g. "25,000+" or "A+"
+         */
+        value: string;
+        /**
+         * e.g. "Students Enrolled" or "NAAC Grade"
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
   /**
-   * Automatically advance slides every 6 seconds.
+   * Optional: list core values or pillars below the body text.
    */
-  autoplay?: boolean | null;
-  showArrows?: boolean | null;
-  showDots?: boolean | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'heroCarousel';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "GalleryCoverflowBlock".
- */
-export interface GalleryCoverflowBlock {
-  eyebrow?: string | null;
-  title?: string | null;
-  accentTitle?: string | null;
-  description?: string | null;
+  values?:
+    | {
+        /**
+         * Lucide icon name — e.g. "Star", "Rocket", "GraduationCap". Browse all icons at lucide.dev/icons
+         */
+        icon?: string | null;
+        title?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   actions?:
     | {
         label: string;
@@ -974,24 +796,26 @@ export interface GalleryCoverflowBlock {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Add at least 3 images. More images create a richer coverflow carousel.
-   */
-  images?:
-    | {
-        image: string | Media;
-        id?: string | null;
-      }[]
-    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  contentAlignment: 'left' | 'center' | 'right';
+  contentAlignment?: ('left' | 'center') | null;
+  variant: 'split' | 'centered' | 'text';
+  imagePosition?: ('left' | 'right') | null;
+  /**
+   * Contained keeps the image proportional. Contained Fill matches the content height inside the container. Edge to Edge extends the split to the viewport edge.
+   */
+  mediaFillMode?: ('contained' | 'containedFill' | 'edgeToEdge') | null;
+  imageDetailPosition?: ('left' | 'right') | null;
+  /**
+   * Uses the active theme tokens and automatically adjusts panel contrast.
+   */
+  imageDetailBackground?: ('subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand') | null;
   size: 'none' | 'compact' | 'default' | 'comfortable';
   id?: string | null;
   blockName?: string | null;
-  blockType: 'galleryCoverflow';
+  blockType: 'aboutSection';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1055,153 +879,6 @@ export interface FeatureSpotlightBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'featureSpotlight';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TestimonialSpotlightBlock".
- */
-export interface TestimonialSpotlightBlock {
-  /**
-   * Small label above the section title.
-   */
-  sectionEyebrow?: string | null;
-  sectionTitle?: string | null;
-  sectionDescription?: string | null;
-  actions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  image: string | Media;
-  eyebrow?: string | null;
-  title: string;
-  testimonial?: string | null;
-  description?: string | null;
-  personName: string;
-  designation?: string | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  sectionContentAlignment: 'left' | 'center';
-  /**
-   * Match Section inherits the section surface. Other choices apply a semantic theme surface to the complete image and content container.
-   */
-  containerBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
-  containerOutline: 'none' | 'outline';
-  mediaPosition: 'left' | 'right';
-  imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
-  mediaFillMode: 'contained' | 'containedFill' | 'edgeToEdge';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  contentVerticalAlignment: 'top' | 'center' | 'bottom';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'testimonialSpotlight';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FeatureMatrixBlock".
- */
-export interface FeatureMatrixBlock {
-  eyebrow?: string | null;
-  title?: string | null;
-  accentTitle?: string | null;
-  description?: string | null;
-  actions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  features?:
-    | {
-        title?: string | null;
-        description?: string | null;
-        image: string | Media;
-        imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
-        /**
-         * Default Card inherits the section background. Other choices use the active theme and automatically adjust card contrast.
-         */
-        cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
-        id?: string | null;
-      }[]
-    | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  contentAlignment: 'left' | 'center' | 'right';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  showOuterBorder?: boolean | null;
-  borderAnimationEnabled?: boolean | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'featureMatrix';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1315,107 +992,6 @@ export interface ContentHighlightsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'contentHighlights';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "EditorialReasonsBlock".
- */
-export interface EditorialReasonsBlock {
-  /**
-   * Small label above the section title.
-   */
-  eyebrow?: string | null;
-  title: string;
-  /**
-   * Optional emphasized second line of the heading.
-   */
-  accentTitle?: string | null;
-  description?: string | null;
-  actions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Rows are numbered automatically in their displayed order.
-   */
-  reasons: {
-    title: string;
-    description?: string | null;
-    linkType?: ('none' | 'page' | 'custom') | null;
-    page?: (string | null) | Page;
-    url?: string | null;
-    openInNewTab?: boolean | null;
-    id?: string | null;
-  }[];
-  listActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  /**
-   * Aligns the section eyebrow, heading, description, and actions together.
-   */
-  contentAlignment: 'left' | 'center' | 'right';
-  /**
-   * Controls the introduction and numbered-list proportions on large screens.
-   */
-  layoutProportion: 'listFocus' | 'balanced' | 'introFocus' | 'fullWidth';
-  /**
-   * Sets the desktop list layout. Two to four columns collapse responsively on smaller screens. Three Columns number layout uses one full-width list column.
-   */
-  listColumns?: ('1' | '2' | '3' | '4') | null;
-  numberLayout: 'stacked' | 'inline' | 'columns';
-  /**
-   * Open removes the outer top and bottom rules. Ruled keeps them. Framed wraps the list on all sides.
-   */
-  listBorderStyle: 'open' | 'ruled' | 'framed';
-  listPosition?: ('right' | 'left') | null;
-  introVerticalAlignment?: ('top' | 'center' | 'bottom') | null;
-  /**
-   * Bottom drops the actions to the foot of the introduction column, level with the end of the list. It fills the column height, so it overrides Keep Introduction Visible.
-   */
-  actionsPosition?: ('inline' | 'bottom') | null;
-  /**
-   * Keeps the introduction visible beside longer lists on large screens.
-   */
-  stickyIntro?: boolean | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'editorialReasons';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1570,17 +1146,17 @@ export interface AcademicProgrammesBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "LeadershipProfilesBlock".
+ * via the `definition` "NewsEventsTabsBlock".
  */
-export interface LeadershipProfilesBlock {
+export interface NewsEventsTabsBlock {
   /**
-   * Small label above the section title.
+   * Small label above the optional section heading.
    */
   eyebrow?: string | null;
-  title?: string | null;
   /**
-   * Optional italic second line of the heading.
+   * Optional. The classification tabs can render without a heading.
    */
+  title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
   actions?:
@@ -1602,34 +1178,6 @@ export interface LeadershipProfilesBlock {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Leadership cards shown in their displayed order.
-   */
-  profiles: {
-    image: string | Media;
-    /**
-     * Optional short label, such as Principal.
-     */
-    leadershipLabel?: string | null;
-    name: string;
-    designation?: string | null;
-    qualification?: string | null;
-    /**
-     * Add up to three concise expertise areas in displayed order.
-     */
-    expertise?:
-      | {
-          item: string;
-          id?: string | null;
-        }[]
-      | null;
-    imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
-    /**
-     * Legacy compatibility field. New blocks use the shared Card Background setting.
-     */
-    cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
-    id?: string | null;
-  }[];
   footerActions?:
     | {
         label: string;
@@ -1649,46 +1197,93 @@ export interface LeadershipProfilesBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * The mandatory first tab. Leave blank to use “All”.
+   */
+  allTabLabel?: string | null;
+  /**
+   * Select and drag classifications into visitor tab order. Leave empty to show only All.
+   */
+  classifications?: (string | NewsEventClassification)[] | null;
+  /**
+   * Number of published entries shown initially and appended by each Load More request.
+   */
+  itemsPerTab: '3' | '6' | '9' | '12';
+  /**
+   * Shown when the selected tab has more published entries.
+   */
+  loadMoreLabel?: string | null;
+  newsActionLabel?: string | null;
+  eventActionLabel?: string | null;
+  /**
+   * Shown when the selected classification has no published entries.
+   */
+  emptyStateMessage?: string | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  cardLayout: 'standard' | 'imageOverlay';
   /**
-   * Applies one semantic card surface to every Standard leadership profile for a consistent directory.
+   * Choose a contained, pill-shaped, or minimal underline tab treatment.
    */
-  cardBackground?: ('default' | 'primary' | 'secondary' | 'muted' | 'accent') | null;
+  tabVariant: 'contained' | 'pill' | 'underline';
   /**
-   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+   * Choose cards or a full-width editorial list for the tab results.
    */
-  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
-  overlayStyle?: ('light' | 'dark' | 'darker') | null;
+  layoutStyle: 'cardGrid' | 'editorialList';
   /**
-   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   * Maximum cards in each desktop row.
    */
-  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
+  cardsPerRow?: ('2' | '3' | '4') | null;
   /**
-   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   * Header actions only sit beside the heading when aligned left.
    */
-  overlayCoverage?: ('full' | 'split') | null;
+  contentAlignment?: ('left' | 'center') | null;
   /**
-   * Aligns the section eyebrow, heading, description, and actions together.
+   * Aligns header actions against the content when they appear beside the heading.
    */
-  contentAlignment: 'left' | 'center' | 'right';
-  headerLayout: 'split' | 'stacked';
-  /**
-   * Moves the section description between the title column and the right column.
-   */
-  descriptionPosition?: ('side' | 'underTitle') | null;
-  /**
-   * Aligns the right-column description and section actions to the top or bottom.
-   */
-  sideContentAlignment?: ('top' | 'bottom') | null;
-  columns: '2' | '3' | '4';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  headerActionAlignment?: ('center' | 'top' | 'bottom') | null;
+  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'leadershipProfiles';
+  blockType: 'newsEventsTabs';
+}
+/**
+ * Central classifications used by News & Events entries, badges, tabs, and date behavior.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news-event-classifications".
+ */
+export interface NewsEventClassification {
+  id: string;
+  /**
+   * Visitor-facing tab name, such as News, Events, or Achievements.
+   */
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Short card badge text. When empty, the title is used.
+   */
+  badgeLabel?: string | null;
+  legacyValue?: ('news' | 'event' | 'notice' | 'holiday' | 'achievement' | 'announcement' | 'other') | null;
+  /**
+   * Event enables event dates and location behavior. Story uses the publication/display date.
+   */
+  behavior: 'story' | 'event';
+  /**
+   * Optional internal guidance describing when editors should use this option.
+   */
+  description?: string | null;
+  /**
+   * Inactive classifications remain readable on existing entries but cannot be newly selected.
+   */
+  active: boolean;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1810,6 +1405,1443 @@ export interface DepartmentProfilesBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'departmentProfiles';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryAlbumTabsBlock".
+ */
+export interface GalleryAlbumTabsBlock {
+  /**
+   * Small label above the optional section heading.
+   */
+  eyebrow?: string | null;
+  /**
+   * Optional. Album tabs can render without a section heading.
+   */
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Select albums to create visitor tabs. Album titles become tab labels; drag selections to control Manual order.
+   */
+  galleryAlbums: (string | GalleryAlbum)[];
+  displayOrder: 'latestEventDate' | 'manual';
+  /**
+   * The mandatory first tab. Leave blank to use “All”.
+   */
+  allTabLabel?: string | null;
+  /**
+   * Number of images shown initially and revealed by each Load More action.
+   */
+  imagesPerLoad: '6' | '9' | '12';
+  loadMoreLabel?: string | null;
+  /**
+   * Shown when selected published albums contain no usable images.
+   */
+  emptyStateMessage?: string | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Choose a contained, pill-shaped, or minimal underline tab treatment.
+   */
+  tabVariant: 'contained' | 'pill' | 'underline';
+  /**
+   * Header actions only sit beside the heading when aligned left.
+   */
+  contentAlignment?: ('left' | 'center') | null;
+  /**
+   * Aligns header actions against the content when they appear beside the heading.
+   */
+  headerActionAlignment?: ('center' | 'top' | 'bottom') | null;
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'galleryAlbumTabs';
+}
+/**
+ * Ordered image albums displayed by the Event Gallery block.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery-albums".
+ */
+export interface GalleryAlbum {
+  id: string;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  description?: string | null;
+  eventDate?: string | null;
+  /**
+   * The first image is used as the album cover. Drag rows to change the viewer order.
+   */
+  images: {
+    image: string | Media;
+    caption?: string | null;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "QaAccordionBlock".
+ */
+export interface QaAccordionBlock {
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  items?:
+    | {
+        question: string;
+        answer: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  sideColumn?: {
+    profile?: {
+      image?: (string | null) | Media;
+      name?: string | null;
+      title?: string | null;
+    };
+    contact?: {
+      title?: string | null;
+      description?: string | null;
+      actions?:
+        | {
+            label: string;
+            linkType?: ('page' | 'custom') | null;
+            page?: (string | null) | Page;
+            url?: string | null;
+            openInNewTab?: boolean | null;
+            mode?: ('link' | 'button') | null;
+            /**
+             * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+             */
+            variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+            /**
+             * Adds a trailing arrow when this action is displayed as a button.
+             */
+            showArrow?: boolean | null;
+            id?: string | null;
+          }[]
+        | null;
+    };
+  };
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  contentAlignment: 'left' | 'center' | 'right';
+  layoutMode: 'fiftyFifty' | 'oneThird' | 'fullWidth';
+  accordionPlacement?: ('left' | 'right') | null;
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  defaultOpenFirst?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'qaAccordion';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsStripBlock".
+ */
+export interface StatsStripBlock {
+  items?:
+    | {
+        prefix?: string | null;
+        value: number;
+        suffix?: string | null;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  animationEnabled?: boolean | null;
+  animationDuration: number;
+  triggerOnce?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'statsStrip';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialSpotlightBlock".
+ */
+export interface TestimonialSpotlightBlock {
+  /**
+   * Small label above the section title.
+   */
+  sectionEyebrow?: string | null;
+  sectionTitle?: string | null;
+  sectionDescription?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  image: string | Media;
+  eyebrow?: string | null;
+  title: string;
+  testimonial?: string | null;
+  description?: string | null;
+  personName: string;
+  designation?: string | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  sectionContentAlignment: 'left' | 'center';
+  /**
+   * Match Section inherits the section surface. Other choices apply a semantic theme surface to the complete image and content container.
+   */
+  containerBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
+  containerOutline: 'none' | 'outline';
+  mediaPosition: 'left' | 'right';
+  imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+  mediaFillMode: 'contained' | 'containedFill' | 'edgeToEdge';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  contentVerticalAlignment: 'top' | 'center' | 'bottom';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonialSpotlight';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccreditationCardsBlock".
+ */
+export interface AccreditationCardsBlock {
+  /**
+   * Small label shown above the section title.
+   */
+  eyebrow?: string | null;
+  title?: string | null;
+  accentTitle?: string | null;
+  /**
+   * Optional supporting paragraph below the title.
+   */
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Accreditation, certification, or recognition cards shown in display order.
+   */
+  accreditations: {
+    /**
+     * Lucide icon name — e.g. "Star", "Rocket", "GraduationCap". Browse all icons at lucide.dev/icons
+     */
+    icon: string;
+    /**
+     * Short accreditation name, e.g. “NMC”, “NABH”, “NAAC”, or “ISO”.
+     */
+    title: string;
+    /**
+     * Approval, grading, certification, or accreditation detail.
+     */
+    description?: string | null;
+    /**
+     * Match Section creates a lightly elevated card on the current section surface. Other options use the active theme tokens.
+     */
+    cardBackground: 'default' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    id?: string | null;
+  }[];
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section eyebrow, heading, description, and actions together.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  columns: '2' | '3' | '4';
+  /**
+   * Stepped Rules alternates connected rules. Grouped uses one outer frame with item dividers. Boxed frames every card. Open uses dividers without an outer frame.
+   */
+  cardFrame: 'stepped' | 'grouped' | 'boxed' | 'open';
+  /**
+   * Controls the card padding. Height follows the card content.
+   */
+  cardSize: 'compact' | 'default' | 'comfortable';
+  /**
+   * Applies one consistent icon treatment across the cards.
+   */
+  iconStyle: 'plain' | 'square' | 'circle' | 'outline';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'accreditationCards';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerCtaBlock".
+ */
+export interface BannerCtaBlock {
+  /**
+   * Sits behind the overlay. Without one the block falls back to the Appearance background.
+   */
+  backgroundImage?: (string | null) | Media;
+  /**
+   * Small label above the heading.
+   */
+  eyebrow?: string | null;
+  title: string;
+  /**
+   * Optional emphasized second line of the heading.
+   */
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * The side column stacks back under the copy on small screens.
+   */
+  actionPlacement?: ('side' | 'below') | null;
+  contentAlignment?: ('left' | 'center' | 'right') | null;
+  contentWidth?: ('narrow' | 'default' | 'wide') | null;
+  /**
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+   */
+  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
+  overlayStyle?: ('light' | 'dark' | 'darker') | null;
+  /**
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   */
+  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  overlayCoverage?: ('full' | 'split') | null;
+  height?: ('compact' | 'default' | 'immersive') | null;
+  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bannerCta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Contact24Block".
+ */
+export interface Contact24Block {
+  eyebrow?: string | null;
+  title?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Leave empty to show all published offices. Select specific offices to show only those, in the order chosen.
+   */
+  offices?: (string | OfficeLocation)[] | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  contentAlignment: 'left' | 'center' | 'right';
+  detailsAlignment: 'left' | 'center' | 'right';
+  showAddressDetails?: boolean | null;
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Label for the map link shown on each office card.
+   */
+  mapActionLabel?: string | null;
+  mapActionMode?: ('link' | 'button') | null;
+  /**
+   * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+   */
+  mapActionVariant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contact24';
+}
+/**
+ * Office locations used by Regional Offices (Contact24) blocks. Each entry can be placed on any page independently.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "office-locations".
+ */
+export interface OfficeLocation {
+  id: string;
+  city: string;
+  /**
+   * e.g. "North America", "Middle East", "India"
+   */
+  region?: string | null;
+  /**
+   * When unchecked only the interactive map is shown — address, phone and email are hidden.
+   */
+  showAddressDetails?: boolean | null;
+  address?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  /**
+   * Paste the HTTPS embed URL from Google Maps / other map provider.
+   */
+  mapEmbedUrl: string;
+  /**
+   * Full HTTPS URL opened when the visitor clicks "View on Map".
+   */
+  mapUrl: string;
+  /**
+   * Screen-reader title for the map iframe, e.g. "Interactive map for the Dubai office".
+   */
+  mapTitle?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DownloadListBlock".
+ */
+export interface DownloadListBlock {
+  eyebrow?: string | null;
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  showViewAction?: boolean | null;
+  openViewInNewTab?: boolean | null;
+  showDownloadAction?: boolean | null;
+  /**
+   * Files or links available for download.
+   */
+  downloads?:
+    | {
+        title: string;
+        /**
+         * Short authority, programme, year, or explanatory detail.
+         */
+        description?: string | null;
+        /**
+         * Upload a file to Payload media. Takes priority over external URL.
+         */
+        file?: (string | null) | Media;
+        /**
+         * Optional viewer or external destination. When a file is also uploaded, View uses this URL and Download uses the file.
+         */
+        externalUrl?: string | null;
+        /**
+         * Optional override. Leave empty to detect the type from the uploaded file.
+         */
+        fileType?: ('PDF' | 'DOC' | 'DOCX' | 'XLS' | 'XLSX' | 'CSV' | 'PPT' | 'PPTX' | 'ZIP') | null;
+        /**
+         * Add up to two ordered Download, View, or Custom actions.
+         */
+        documentActions?:
+          | {
+              actionType: 'download' | 'view' | 'custom';
+              /**
+               * Download and View use their action name when left empty.
+               */
+              label?: string | null;
+              viewOpenInNewTab?: boolean | null;
+              linkType?: ('page' | 'custom') | null;
+              page?: (string | null) | Page;
+              url?: string | null;
+              openInNewTab?: boolean | null;
+              mode?: ('link' | 'button') | null;
+              /**
+               * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+               */
+              variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+              /**
+               * Adds a trailing arrow when this action is displayed as a button.
+               */
+              showArrow?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        customAction?:
+          | {
+              label: string;
+              linkType?: ('page' | 'custom') | null;
+              page?: (string | null) | Page;
+              url?: string | null;
+              openInNewTab?: boolean | null;
+              mode?: ('link' | 'button') | null;
+              /**
+               * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+               */
+              variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+              /**
+               * Adds a trailing arrow when this action is displayed as a button.
+               */
+              showArrow?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Legacy action data retained for existing content. Use Document Actions for new content.
+         */
+        actions?:
+          | {
+              actionType: 'link' | 'download';
+              label: string;
+              linkType?: ('page' | 'custom') | null;
+              page?: (string | null) | Page;
+              url?: string | null;
+              openInNewTab?: boolean | null;
+              file?: (string | null) | Media;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Applied only to Boxed Card Grid. Open Grid, Framed Grid, and Inline List inherit the section surface.
+         */
+        cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
+        id?: string | null;
+      }[]
+    | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  sectionLayout: 'stacked' | 'split';
+  /**
+   * Choose which side contains the section introduction on large screens.
+   */
+  introPosition?: ('left' | 'right') | null;
+  /**
+   * Position the introduction relative to the downloads on large screens.
+   */
+  introVerticalAlignment?: ('top' | 'center' | 'bottom') | null;
+  displayMode?: ('list' | 'cards' | 'openGrid' | 'framedGrid') | null;
+  /**
+   * Sets the maximum number of responsive columns for every presentation.
+   */
+  columns: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8';
+  /**
+   * Controls the main file icon. Action icons remain compact.
+   */
+  documentIconSize: 'small' | 'medium' | 'large';
+  /**
+   * Shows the main file icon in every Download List presentation.
+   */
+  showDocumentIcon?: boolean | null;
+  /**
+   * Place the main document icon above the title or inline beside the title and supporting text. The file-type badge stays at the top right.
+   */
+  gridIconPosition?: ('above' | 'inline') | null;
+  /**
+   * Show every grid action with its label or as an accessible icon-only control.
+   */
+  gridActionDisplay?: ('labelled' | 'icons') | null;
+  contentAlignment?: ('left' | 'center') | null;
+  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'downloadList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AnnouncementBlock".
+ */
+export interface AnnouncementBlock {
+  label?: string | null;
+  items: {
+    title?: string | null;
+    description: string;
+    url?: string | null;
+    id?: string | null;
+  }[];
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  displayMode: 'vertical' | 'horizontal' | 'marquee';
+  intervalMs?: number | null;
+  /**
+   * Lower values scroll faster.
+   */
+  marqueeDurationMs?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'announcement';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsGridBlock".
+ */
+export interface NewsGridBlock {
+  /**
+   * Small label above the heading.
+   */
+  eyebrow?: string | null;
+  title: string;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Total visible cards, including the optional feature card. When enabled, the feature uses the final slot.
+   */
+  totalCards: number;
+  /**
+   * Maximum cards in each desktop row. Additional cards continue on the next row.
+   */
+  cardsPerRow: '2' | '3' | '4';
+  /**
+   * Used by every non-event classification.
+   */
+  newsActionLabel?: string | null;
+  eventActionLabel?: string | null;
+  /**
+   * Shown when nothing is published and the feature card is off.
+   */
+  emptyStateMessage?: string | null;
+  /**
+   * An optional editor-authored card that fills the last slot in the grid, over a background image.
+   */
+  featureCard?: {
+    enabled?: boolean | null;
+    image?: (string | null) | Media;
+    eyebrow?: string | null;
+    /**
+     * Required for the card to render.
+     */
+    title?: string | null;
+    actionLabel?: string | null;
+    linkType?: ('none' | 'page' | 'custom') | null;
+    page?: (string | null) | Page;
+    url?: string | null;
+    openInNewTab?: boolean | null;
+  };
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Header actions only sit beside the heading when aligned left.
+   */
+  contentAlignment?: ('left' | 'center') | null;
+  /**
+   * Aligns header actions against the content when they appear beside the heading.
+   */
+  headerActionAlignment?: ('center' | 'top' | 'bottom') | null;
+  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'newsGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Cta39Block".
+ */
+export interface Cta39Block {
+  /**
+   * Optional short label shown above the title.
+   */
+  eyebrow?: string | null;
+  title: string;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Keep all content together, split copy from the heading, or place actions on the right.
+   */
+  headerLayout: 'stacked' | 'split' | 'actionSplit';
+  contentAlignment: 'left' | 'center' | 'right';
+  /**
+   * Position the description and actions relative to the heading.
+   */
+  splitContentAlignment?: ('top' | 'center' | 'bottom') | null;
+  /**
+   * Arrange the right-column actions in a row or a vertical stack on desktop.
+   */
+  actionLayout?: ('inline' | 'stacked') | null;
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta39';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroCarouselBlock".
+ */
+export interface HeroCarouselBlock {
+  /**
+   * Add one slide for a static hero, or multiple for a carousel.
+   */
+  slides?:
+    | {
+        /**
+         * Full-bleed background image for this slide.
+         */
+        backgroundImage?: (string | null) | Media;
+        /**
+         * Optional: direct video URL (.mp4). Overrides the image when set.
+         */
+        backgroundVideoUrl?: string | null;
+        /**
+         * Small label above the title.
+         */
+        eyebrow?: string | null;
+        title?: string | null;
+        description?: string | null;
+        buttons?:
+          | {
+              label: string;
+              linkType?: ('page' | 'custom') | null;
+              page?: (string | null) | Page;
+              url?: string | null;
+              openInNewTab?: boolean | null;
+              /**
+               * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+               */
+              variant: 'default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline' | 'link';
+              /**
+               * Adds a trailing arrow to this button.
+               */
+              showArrow?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+   */
+  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
+  overlayStyle: 'light' | 'dark' | 'darker';
+  /**
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   */
+  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  overlayCoverage?: ('full' | 'split') | null;
+  height: 'compact' | 'default' | 'immersive';
+  contentAlignment?: ('left' | 'center' | 'right') | null;
+  /**
+   * Automatically advance slides every 6 seconds.
+   */
+  autoplay?: boolean | null;
+  showArrows?: boolean | null;
+  showDots?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroCarousel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryCoverflowBlock".
+ */
+export interface GalleryCoverflowBlock {
+  eyebrow?: string | null;
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Add at least 3 images. More images create a richer coverflow carousel.
+   */
+  images?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'galleryCoverflow';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureMatrixBlock".
+ */
+export interface FeatureMatrixBlock {
+  eyebrow?: string | null;
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  features?:
+    | {
+        title?: string | null;
+        description?: string | null;
+        image: string | Media;
+        imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+        /**
+         * Default Card inherits the section background. Other choices use the active theme and automatically adjust card contrast.
+         */
+        cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  showOuterBorder?: boolean | null;
+  borderAnimationEnabled?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureMatrix';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EditorialReasonsBlock".
+ */
+export interface EditorialReasonsBlock {
+  /**
+   * Small label above the section title.
+   */
+  eyebrow?: string | null;
+  title: string;
+  /**
+   * Optional emphasized second line of the heading.
+   */
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Rows are numbered automatically in their displayed order.
+   */
+  reasons: {
+    title: string;
+    description?: string | null;
+    linkType?: ('none' | 'page' | 'custom') | null;
+    page?: (string | null) | Page;
+    url?: string | null;
+    openInNewTab?: boolean | null;
+    id?: string | null;
+  }[];
+  listActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section eyebrow, heading, description, and actions together.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  /**
+   * Controls the introduction and numbered-list proportions on large screens.
+   */
+  layoutProportion: 'listFocus' | 'balanced' | 'introFocus' | 'fullWidth';
+  /**
+   * Sets the desktop list layout. Two to four columns collapse responsively on smaller screens. Three Columns number layout uses one full-width list column.
+   */
+  listColumns?: ('1' | '2' | '3' | '4') | null;
+  numberLayout: 'stacked' | 'inline' | 'columns';
+  /**
+   * Open removes the outer top and bottom rules. Ruled keeps them. Framed wraps the list on all sides.
+   */
+  listBorderStyle: 'open' | 'ruled' | 'framed';
+  listPosition?: ('right' | 'left') | null;
+  introVerticalAlignment?: ('top' | 'center' | 'bottom') | null;
+  /**
+   * Bottom drops the actions to the foot of the introduction column, level with the end of the list. It fills the column height, so it overrides Keep Introduction Visible.
+   */
+  actionsPosition?: ('inline' | 'bottom') | null;
+  /**
+   * Keeps the introduction visible beside longer lists on large screens.
+   */
+  stickyIntro?: boolean | null;
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'editorialReasons';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LeadershipProfilesBlock".
+ */
+export interface LeadershipProfilesBlock {
+  /**
+   * Small label above the section title.
+   */
+  eyebrow?: string | null;
+  title?: string | null;
+  /**
+   * Optional italic second line of the heading.
+   */
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Leadership cards shown in their displayed order.
+   */
+  profiles: {
+    image: string | Media;
+    /**
+     * Optional short label, such as Principal.
+     */
+    leadershipLabel?: string | null;
+    name: string;
+    designation?: string | null;
+    qualification?: string | null;
+    /**
+     * Add up to three concise expertise areas in displayed order.
+     */
+    expertise?:
+      | {
+          item: string;
+          id?: string | null;
+        }[]
+      | null;
+    imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+    /**
+     * Legacy compatibility field. New blocks use the shared Card Background setting.
+     */
+    cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
+    id?: string | null;
+  }[];
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  cardLayout: 'standard' | 'imageOverlay';
+  /**
+   * Applies one semantic card surface to every Standard leadership profile for a consistent directory.
+   */
+  cardBackground?: ('default' | 'primary' | 'secondary' | 'muted' | 'accent') | null;
+  /**
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+   */
+  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
+  overlayStyle?: ('light' | 'dark' | 'darker') | null;
+  /**
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   */
+  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  overlayCoverage?: ('full' | 'split') | null;
+  /**
+   * Aligns the section eyebrow, heading, description, and actions together.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  headerLayout: 'split' | 'stacked';
+  /**
+   * Moves the section description between the title column and the right column.
+   */
+  descriptionPosition?: ('side' | 'underTitle') | null;
+  /**
+   * Aligns the right-column description and section actions to the top or bottom.
+   */
+  sideContentAlignment?: ('top' | 'bottom') | null;
+  columns: '2' | '3' | '4';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'leadershipProfiles';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2130,127 +3162,6 @@ export interface EventGalleryBlock {
   blockType: 'eventGallery';
 }
 /**
- * Ordered image albums displayed by the Event Gallery block.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "gallery-albums".
- */
-export interface GalleryAlbum {
-  id: string;
-  title: string;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  description?: string | null;
-  eventDate?: string | null;
-  /**
-   * The first image is used as the album cover. Drag rows to change the viewer order.
-   */
-  images: {
-    image: string | Media;
-    caption?: string | null;
-    id?: string | null;
-  }[];
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "GalleryAlbumTabsBlock".
- */
-export interface GalleryAlbumTabsBlock {
-  /**
-   * Small label above the optional section heading.
-   */
-  eyebrow?: string | null;
-  /**
-   * Optional. Album tabs can render without a section heading.
-   */
-  title?: string | null;
-  accentTitle?: string | null;
-  description?: string | null;
-  actions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Select albums to create visitor tabs. Album titles become tab labels; drag selections to control Manual order.
-   */
-  galleryAlbums: (string | GalleryAlbum)[];
-  displayOrder: 'latestEventDate' | 'manual';
-  /**
-   * The mandatory first tab. Leave blank to use “All”.
-   */
-  allTabLabel?: string | null;
-  /**
-   * Number of images shown initially and revealed by each Load More action.
-   */
-  imagesPerLoad: '6' | '9' | '12';
-  loadMoreLabel?: string | null;
-  /**
-   * Shown when selected published albums contain no usable images.
-   */
-  emptyStateMessage?: string | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  /**
-   * Choose a contained, pill-shaped, or minimal underline tab treatment.
-   */
-  tabVariant: 'contained' | 'pill' | 'underline';
-  /**
-   * Header actions only sit beside the heading when aligned left.
-   */
-  contentAlignment?: ('left' | 'center') | null;
-  /**
-   * Aligns header actions against the content when they appear beside the heading.
-   */
-  headerActionAlignment?: ('center' | 'top' | 'bottom') | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'galleryAlbumTabs';
-}
-/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ImageMosaicBlock".
  */
@@ -2459,142 +3370,6 @@ export interface StudentExperienceBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'studentExperience';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "StatsStripBlock".
- */
-export interface StatsStripBlock {
-  items?:
-    | {
-        prefix?: string | null;
-        value: number;
-        suffix?: string | null;
-        label: string;
-        id?: string | null;
-      }[]
-    | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  animationEnabled?: boolean | null;
-  animationDuration: number;
-  triggerOnce?: boolean | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'statsStrip';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "QaAccordionBlock".
- */
-export interface QaAccordionBlock {
-  title?: string | null;
-  accentTitle?: string | null;
-  description?: string | null;
-  actions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  items?:
-    | {
-        question: string;
-        answer: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  sideColumn?: {
-    profile?: {
-      image?: (string | null) | Media;
-      name?: string | null;
-      title?: string | null;
-    };
-    contact?: {
-      title?: string | null;
-      description?: string | null;
-      actions?:
-        | {
-            label: string;
-            linkType?: ('page' | 'custom') | null;
-            page?: (string | null) | Page;
-            url?: string | null;
-            openInNewTab?: boolean | null;
-            mode?: ('link' | 'button') | null;
-            /**
-             * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-             */
-            variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-            /**
-             * Adds a trailing arrow when this action is displayed as a button.
-             */
-            showArrow?: boolean | null;
-            id?: string | null;
-          }[]
-        | null;
-    };
-  };
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  contentAlignment: 'left' | 'center' | 'right';
-  layoutMode: 'fiftyFifty' | 'oneThird' | 'fullWidth';
-  accordionPlacement?: ('left' | 'right') | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  defaultOpenFirst?: boolean | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'qaAccordion';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2909,114 +3684,6 @@ export interface Contact33Block {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "Contact24Block".
- */
-export interface Contact24Block {
-  eyebrow?: string | null;
-  title?: string | null;
-  description?: string | null;
-  actions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Leave empty to show all published offices. Select specific offices to show only those, in the order chosen.
-   */
-  offices?: (string | OfficeLocation)[] | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  contentAlignment: 'left' | 'center' | 'right';
-  detailsAlignment: 'left' | 'center' | 'right';
-  showAddressDetails?: boolean | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  /**
-   * Label for the map link shown on each office card.
-   */
-  mapActionLabel?: string | null;
-  mapActionMode?: ('link' | 'button') | null;
-  /**
-   * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-   */
-  mapActionVariant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'contact24';
-}
-/**
- * Office locations used by Regional Offices (Contact24) blocks. Each entry can be placed on any page independently.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "office-locations".
- */
-export interface OfficeLocation {
-  id: string;
-  city: string;
-  /**
-   * e.g. "North America", "Middle East", "India"
-   */
-  region?: string | null;
-  /**
-   * When unchecked only the interactive map is shown — address, phone and email are hidden.
-   */
-  showAddressDetails?: boolean | null;
-  address?: string | null;
-  phone?: string | null;
-  email?: string | null;
-  /**
-   * Paste the HTTPS embed URL from Google Maps / other map provider.
-   */
-  mapEmbedUrl: string;
-  /**
-   * Full HTTPS URL opened when the visitor clicks "View on Map".
-   */
-  mapUrl: string;
-  /**
-   * Screen-reader title for the map iframe, e.g. "Interactive map for the Dubai office".
-   */
-  mapTitle?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TeamShowcaseBlock".
  */
 export interface TeamShowcaseBlock {
@@ -3150,36 +3817,6 @@ export interface Services21Block {
   id?: string | null;
   blockName?: string | null;
   blockType: 'services21';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "RichTextBlock".
- */
-export interface RichTextBlock {
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  maxWidth: 'prose' | 'md' | 'lg' | 'full';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'richText';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3553,133 +4190,6 @@ export interface LogoStripBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'logoStrip';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PageHeaderBlock".
- */
-export interface PageHeaderBlock {
-  /**
-   * Used as the full-bleed backdrop for the Banner variant.
-   */
-  backgroundImage?: (string | null) | Media;
-  /**
-   * Choose the single element displayed above the page title.
-   */
-  topContent: 'breadcrumb' | 'eyebrow';
-  /**
-   * The last item is the current page and is not linked. Empty or unresolved destinations render as text.
-   */
-  breadcrumbs?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Small label above the page title.
-   */
-  eyebrow?: string | null;
-  title?: string | null;
-  accentTitle?: string | null;
-  /**
-   * Supporting line below the title.
-   */
-  subtitle?: string | null;
-  actions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Legacy Page Header data retained for backwards compatibility. Not displayed.
-   */
-  keyFacts?:
-    | {
-        /**
-         * Legacy field retained for existing content. It is no longer displayed.
-         */
-        label?: string | null;
-        /**
-         * Primary statement, e.g. Medical education connected with patient care.
-         */
-        value: string;
-        id?: string | null;
-      }[]
-    | null;
-  variant: 'minimal' | 'banner';
-  /**
-   * Use the page hierarchy, configure a custom trail, or hide breadcrumbs.
-   */
-  breadcrumbMode?: ('automatic' | 'custom' | 'hidden') | null;
-  /**
-   * Legacy Key Facts setting retained for backwards compatibility.
-   */
-  keyFactsNumberPosition?: ('inline' | 'above') | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  /**
-   * The side column stacks back under the copy on small screens.
-   */
-  actionPlacement?: ('side' | 'below') | null;
-  contentAlignment?: ('left' | 'center' | 'right') | null;
-  contentWidth?: ('narrow' | 'default' | 'wide') | null;
-  /**
-   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
-   */
-  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
-  overlayStyle?: ('light' | 'dark' | 'darker') | null;
-  /**
-   * The named edge receives the strongest tint; Even keeps coverage balanced.
-   */
-  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
-  /**
-   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
-   */
-  overlayCoverage?: ('full' | 'split') | null;
-  height?: ('compact' | 'default' | 'immersive') | null;
-  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'pageHeader';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -4188,186 +4698,6 @@ export interface TabsContentBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "DownloadListBlock".
- */
-export interface DownloadListBlock {
-  eyebrow?: string | null;
-  title?: string | null;
-  accentTitle?: string | null;
-  description?: string | null;
-  actions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  showViewAction?: boolean | null;
-  openViewInNewTab?: boolean | null;
-  showDownloadAction?: boolean | null;
-  /**
-   * Files or links available for download.
-   */
-  downloads?:
-    | {
-        title: string;
-        /**
-         * Short authority, programme, year, or explanatory detail.
-         */
-        description?: string | null;
-        /**
-         * Upload a file to Payload media. Takes priority over external URL.
-         */
-        file?: (string | null) | Media;
-        /**
-         * Optional viewer or external destination. When a file is also uploaded, View uses this URL and Download uses the file.
-         */
-        externalUrl?: string | null;
-        /**
-         * Optional override. Leave empty to detect the type from the uploaded file.
-         */
-        fileType?: ('PDF' | 'DOC' | 'DOCX' | 'XLS' | 'XLSX' | 'CSV' | 'PPT' | 'PPTX' | 'ZIP') | null;
-        /**
-         * Add up to two ordered Download, View, or Custom actions.
-         */
-        documentActions?:
-          | {
-              actionType: 'download' | 'view' | 'custom';
-              /**
-               * Download and View use their action name when left empty.
-               */
-              label?: string | null;
-              viewOpenInNewTab?: boolean | null;
-              linkType?: ('page' | 'custom') | null;
-              page?: (string | null) | Page;
-              url?: string | null;
-              openInNewTab?: boolean | null;
-              mode?: ('link' | 'button') | null;
-              /**
-               * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-               */
-              variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-              /**
-               * Adds a trailing arrow when this action is displayed as a button.
-               */
-              showArrow?: boolean | null;
-              id?: string | null;
-            }[]
-          | null;
-        customAction?:
-          | {
-              label: string;
-              linkType?: ('page' | 'custom') | null;
-              page?: (string | null) | Page;
-              url?: string | null;
-              openInNewTab?: boolean | null;
-              mode?: ('link' | 'button') | null;
-              /**
-               * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-               */
-              variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-              /**
-               * Adds a trailing arrow when this action is displayed as a button.
-               */
-              showArrow?: boolean | null;
-              id?: string | null;
-            }[]
-          | null;
-        /**
-         * Legacy action data retained for existing content. Use Document Actions for new content.
-         */
-        actions?:
-          | {
-              actionType: 'link' | 'download';
-              label: string;
-              linkType?: ('page' | 'custom') | null;
-              page?: (string | null) | Page;
-              url?: string | null;
-              openInNewTab?: boolean | null;
-              file?: (string | null) | Media;
-              id?: string | null;
-            }[]
-          | null;
-        /**
-         * Applied only to Boxed Card Grid. Open Grid, Framed Grid, and Inline List inherit the section surface.
-         */
-        cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  sectionLayout: 'stacked' | 'split';
-  /**
-   * Choose which side contains the section introduction on large screens.
-   */
-  introPosition?: ('left' | 'right') | null;
-  /**
-   * Position the introduction relative to the downloads on large screens.
-   */
-  introVerticalAlignment?: ('top' | 'center' | 'bottom') | null;
-  displayMode?: ('list' | 'cards' | 'openGrid' | 'framedGrid') | null;
-  /**
-   * Sets the maximum number of responsive columns for every presentation.
-   */
-  columns: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8';
-  /**
-   * Controls the main file icon. Action icons remain compact.
-   */
-  documentIconSize: 'small' | 'medium' | 'large';
-  /**
-   * Shows the main file icon in every Download List presentation.
-   */
-  showDocumentIcon?: boolean | null;
-  /**
-   * Place the main document icon above the title or inline beside the title and supporting text. The file-type badge stays at the top right.
-   */
-  gridIconPosition?: ('above' | 'inline') | null;
-  /**
-   * Show every grid action with its label or as an accessible icon-only control.
-   */
-  gridActionDisplay?: ('labelled' | 'icons') | null;
-  contentAlignment?: ('left' | 'center') | null;
-  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'downloadList';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FeeStructureBlock".
  */
 export interface FeeStructureBlock {
@@ -4835,336 +5165,6 @@ export interface AwardsListBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'awardsList';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AboutSectionBlock".
- */
-export interface AboutSectionBlock {
-  /**
-   * e.g. "About Us" or "Our Story"
-   */
-  eyebrow?: string | null;
-  title?: string | null;
-  accentTitle?: string | null;
-  /**
-   * Main about text. Paragraphs separated by blank lines are rendered as separate paragraphs.
-   */
-  body: string;
-  /**
-   * Controls the semantic and visual fallback marker for List Items.
-   */
-  listStyle: 'unordered' | 'ordered';
-  /**
-   * Optional supporting points shown below the body. Add an icon to override the default number or checkmark for that item.
-   */
-  listItems?:
-    | {
-        text: string;
-        /**
-         * Optional Lucide icon. When empty, ordered lists show the item number and unordered lists show a checkmark.
-         */
-        icon?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Featured image — shown beside the text in split layouts.
-   */
-  image?: (string | null) | Media;
-  /**
-   * Optional milestone or key detail displayed over the lower corner of the image.
-   */
-  imageDetail?: {
-    enabled?: boolean | null;
-    /**
-     * Small uppercase label, e.g. “Established”.
-     */
-    eyebrow?: string | null;
-    /**
-     * Large focal value, e.g. “2021”. Required when the panel is enabled.
-     */
-    value?: string | null;
-    /**
-     * Short supporting detail shown below the primary value.
-     */
-    description?: string | null;
-  };
-  /**
-   * Optional inline stats shown alongside the about text.
-   */
-  stats?:
-    | {
-        /**
-         * e.g. "25,000+" or "A+"
-         */
-        value: string;
-        /**
-         * e.g. "Students Enrolled" or "NAAC Grade"
-         */
-        label: string;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Optional: list core values or pillars below the body text.
-   */
-  values?:
-    | {
-        /**
-         * Lucide icon name — e.g. "Star", "Rocket", "GraduationCap". Browse all icons at lucide.dev/icons
-         */
-        icon?: string | null;
-        title?: string | null;
-        description?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  actions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  contentAlignment?: ('left' | 'center') | null;
-  variant: 'split' | 'centered' | 'text';
-  imagePosition?: ('left' | 'right') | null;
-  /**
-   * Contained keeps the image proportional. Contained Fill matches the content height inside the container. Edge to Edge extends the split to the viewport edge.
-   */
-  mediaFillMode?: ('contained' | 'containedFill' | 'edgeToEdge') | null;
-  imageDetailPosition?: ('left' | 'right') | null;
-  /**
-   * Uses the active theme tokens and automatically adjusts panel contrast.
-   */
-  imageDetailBackground?: ('subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand') | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'aboutSection';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AccreditationCardsBlock".
- */
-export interface AccreditationCardsBlock {
-  /**
-   * Small label shown above the section title.
-   */
-  eyebrow?: string | null;
-  title?: string | null;
-  accentTitle?: string | null;
-  /**
-   * Optional supporting paragraph below the title.
-   */
-  description?: string | null;
-  actions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Accreditation, certification, or recognition cards shown in display order.
-   */
-  accreditations: {
-    /**
-     * Lucide icon name — e.g. "Star", "Rocket", "GraduationCap". Browse all icons at lucide.dev/icons
-     */
-    icon: string;
-    /**
-     * Short accreditation name, e.g. “NMC”, “NABH”, “NAAC”, or “ISO”.
-     */
-    title: string;
-    /**
-     * Approval, grading, certification, or accreditation detail.
-     */
-    description?: string | null;
-    /**
-     * Match Section creates a lightly elevated card on the current section surface. Other options use the active theme tokens.
-     */
-    cardBackground: 'default' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    id?: string | null;
-  }[];
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  /**
-   * Aligns the section eyebrow, heading, description, and actions together.
-   */
-  contentAlignment: 'left' | 'center' | 'right';
-  columns: '2' | '3' | '4';
-  /**
-   * Stepped Rules alternates connected rules. Grouped uses one outer frame with item dividers. Boxed frames every card. Open uses dividers without an outer frame.
-   */
-  cardFrame: 'stepped' | 'grouped' | 'boxed' | 'open';
-  /**
-   * Controls the card padding. Height follows the card content.
-   */
-  cardSize: 'compact' | 'default' | 'comfortable';
-  /**
-   * Applies one consistent icon treatment across the cards.
-   */
-  iconStyle: 'plain' | 'square' | 'circle' | 'outline';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'accreditationCards';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ReusableSectionBlock".
- */
-export interface ReusableSectionBlock {
-  /**
-   * Select a reusable section to embed on this page.
-   */
-  section: string | ReusableSection;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'reusableSection';
-}
-/**
- * Shared block groups that sync across every page that references them. Edit once, update everywhere.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "reusable-sections".
- */
-export interface ReusableSection {
-  id: string;
-  /**
-   * Internal name shown in the admin and in the block picker.
-   */
-  title: string;
-  layout?:
-    | (
-        | AnnouncementBlock
-        | BannerCtaBlock
-        | NewsGridBlock
-        | NewsEventsTabsBlock
-        | Cta39Block
-        | HeroBannerBlock
-        | HeroCarouselBlock
-        | GalleryCoverflowBlock
-        | FeatureSpotlightBlock
-        | TestimonialSpotlightBlock
-        | FeatureMatrixBlock
-        | ContentHighlightsBlock
-        | EditorialReasonsBlock
-        | AcademicProgrammesBlock
-        | LeadershipProfilesBlock
-        | DepartmentProfilesBlock
-        | NewsEventsHighlightsBlock
-        | ProfileCarouselBlock
-        | GalleryShowcaseBlock
-        | EventGalleryBlock
-        | GalleryAlbumTabsBlock
-        | ImageMosaicBlock
-        | StudentExperienceBlock
-        | StatsStripBlock
-        | QaAccordionBlock
-        | RatingSpotlightBlock
-        | ReviewFeedBlock
-        | ReviewSubmissionBlock
-        | Contact33Block
-        | Contact24Block
-        | TeamShowcaseBlock
-        | Services21Block
-        | RichTextBlock
-        | VideoEmbedBlock
-        | MediaCarouselBlock
-        | ProgramMatrixBlock
-        | LogoStripBlock
-        | PageHeaderBlock
-        | BreadcrumbBlock
-        | TimelineBlock
-        | IconCardShowcaseBlock
-        | IconGridBlock
-        | QuoteBlockBlock
-        | TabsContentBlock
-        | DownloadListBlock
-        | FeeStructureBlock
-        | NumberedStepsBlock
-        | BentoGridBlock
-        | TestimonialGridBlock
-        | AwardsListBlock
-        | AboutSectionBlock
-        | AccreditationCardsBlock
-      )[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -6451,59 +6451,59 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        announcement?: T | AnnouncementBlockSelect<T>;
-        bannerCta?: T | BannerCtaBlockSelect<T>;
-        newsGrid?: T | NewsGridBlockSelect<T>;
-        newsEventsTabs?: T | NewsEventsTabsBlockSelect<T>;
-        cta39?: T | Cta39BlockSelect<T>;
+        pageHeader?: T | PageHeaderBlockSelect<T>;
         heroBanner?: T | HeroBannerBlockSelect<T>;
+        reusableSection?: T | ReusableSectionBlockSelect<T>;
+        richText?: T | RichTextBlockSelect<T>;
+        aboutSection?: T | AboutSectionBlockSelect<T>;
+        featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
+        contentHighlights?: T | ContentHighlightsBlockSelect<T>;
+        academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
+        newsEventsTabs?: T | NewsEventsTabsBlockSelect<T>;
+        departmentProfiles?: T | DepartmentProfilesBlockSelect<T>;
+        galleryAlbumTabs?: T | GalleryAlbumTabsBlockSelect<T>;
+        qaAccordion?: T | QaAccordionBlockSelect<T>;
+        statsStrip?: T | StatsStripBlockSelect<T>;
+        testimonialSpotlight?: T | TestimonialSpotlightBlockSelect<T>;
+        accreditationCards?: T | AccreditationCardsBlockSelect<T>;
+        bannerCta?: T | BannerCtaBlockSelect<T>;
+        contact24?: T | Contact24BlockSelect<T>;
+        downloadList?: T | DownloadListBlockSelect<T>;
+        announcement?: T | AnnouncementBlockSelect<T>;
+        newsGrid?: T | NewsGridBlockSelect<T>;
+        cta39?: T | Cta39BlockSelect<T>;
         heroCarousel?: T | HeroCarouselBlockSelect<T>;
         galleryCoverflow?: T | GalleryCoverflowBlockSelect<T>;
-        featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
-        testimonialSpotlight?: T | TestimonialSpotlightBlockSelect<T>;
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
-        contentHighlights?: T | ContentHighlightsBlockSelect<T>;
         editorialReasons?: T | EditorialReasonsBlockSelect<T>;
-        academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
         leadershipProfiles?: T | LeadershipProfilesBlockSelect<T>;
-        departmentProfiles?: T | DepartmentProfilesBlockSelect<T>;
         newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
         eventGallery?: T | EventGalleryBlockSelect<T>;
-        galleryAlbumTabs?: T | GalleryAlbumTabsBlockSelect<T>;
         imageMosaic?: T | ImageMosaicBlockSelect<T>;
         studentExperience?: T | StudentExperienceBlockSelect<T>;
-        statsStrip?: T | StatsStripBlockSelect<T>;
-        qaAccordion?: T | QaAccordionBlockSelect<T>;
         ratingSpotlight?: T | RatingSpotlightBlockSelect<T>;
         reviewFeed?: T | ReviewFeedBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
         contact33?: T | Contact33BlockSelect<T>;
-        contact24?: T | Contact24BlockSelect<T>;
         teamShowcase?: T | TeamShowcaseBlockSelect<T>;
         services21?: T | Services21BlockSelect<T>;
-        richText?: T | RichTextBlockSelect<T>;
         videoEmbed?: T | VideoEmbedBlockSelect<T>;
         mediaCarousel?: T | MediaCarouselBlockSelect<T>;
         programMatrix?: T | ProgramMatrixBlockSelect<T>;
         logoStrip?: T | LogoStripBlockSelect<T>;
-        pageHeader?: T | PageHeaderBlockSelect<T>;
         breadcrumb?: T | BreadcrumbBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;
         iconCardShowcase?: T | IconCardShowcaseBlockSelect<T>;
         iconGrid?: T | IconGridBlockSelect<T>;
         quoteBlock?: T | QuoteBlockBlockSelect<T>;
         tabsContent?: T | TabsContentBlockSelect<T>;
-        downloadList?: T | DownloadListBlockSelect<T>;
         feeStructure?: T | FeeStructureBlockSelect<T>;
         numberedSteps?: T | NumberedStepsBlockSelect<T>;
         bentoGrid?: T | BentoGridBlockSelect<T>;
         testimonialGrid?: T | TestimonialGridBlockSelect<T>;
         awardsList?: T | AwardsListBlockSelect<T>;
-        aboutSection?: T | AboutSectionBlockSelect<T>;
-        accreditationCards?: T | AccreditationCardsBlockSelect<T>;
-        reusableSection?: T | ReusableSectionBlockSelect<T>;
       };
   metaTitle?: T;
   metaDescription?: T;
@@ -6529,16 +6529,209 @@ export interface PagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AnnouncementBlock_select".
+ * via the `definition` "PageHeaderBlock_select".
  */
-export interface AnnouncementBlockSelect<T extends boolean = true> {
-  label?: T;
-  items?:
+export interface PageHeaderBlockSelect<T extends boolean = true> {
+  backgroundImage?: T;
+  topContent?: T;
+  breadcrumbs?:
     | T
     | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        id?: T;
+      };
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  subtitle?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  keyFacts?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  variant?: T;
+  breadcrumbMode?: T;
+  keyFactsNumberPosition?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  actionPlacement?: T;
+  contentAlignment?: T;
+  contentWidth?: T;
+  themeMode?: T;
+  overlayStyle?: T;
+  overlayDirection?: T;
+  overlayCoverage?: T;
+  height?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBannerBlock_select".
+ */
+export interface HeroBannerBlockSelect<T extends boolean = true> {
+  backgroundImage?: T;
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  buttons?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  themeMode?: T;
+  overlayStyle?: T;
+  overlayDirection?: T;
+  overlayCoverage?: T;
+  enableTextShadow?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  horizontalAlignment?: T;
+  verticalAlignment?: T;
+  contentWidth?: T;
+  height?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReusableSectionBlock_select".
+ */
+export interface ReusableSectionBlockSelect<T extends boolean = true> {
+  section?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock_select".
+ */
+export interface RichTextBlockSelect<T extends boolean = true> {
+  content?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  size?: T;
+  maxWidth?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutSectionBlock_select".
+ */
+export interface AboutSectionBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  body?: T;
+  listStyle?: T;
+  listItems?:
+    | T
+    | {
+        text?: T;
+        icon?: T;
+        id?: T;
+      };
+  image?: T;
+  imageDetail?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        value?: T;
+        description?: T;
+      };
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  values?:
+    | T
+    | {
+        icon?: T;
         title?: T;
         description?: T;
+        id?: T;
+      };
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
         url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
         id?: T;
       };
   appearance?:
@@ -6547,9 +6740,651 @@ export interface AnnouncementBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
-  displayMode?: T;
-  intervalMs?: T;
-  marqueeDurationMs?: T;
+  contentAlignment?: T;
+  variant?: T;
+  imagePosition?: T;
+  mediaFillMode?: T;
+  imageDetailPosition?: T;
+  imageDetailBackground?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureSpotlightBlock_select".
+ */
+export interface FeatureSpotlightBlockSelect<T extends boolean = true> {
+  image?: T;
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  layoutMode?: T;
+  mediaPosition?: T;
+  imagePosition?: T;
+  mediaFillMode?: T;
+  size?: T;
+  contentAlignment?: T;
+  contentVerticalAlignment?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentHighlightsBlock_select".
+ */
+export interface ContentHighlightsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  items?:
+    | T
+    | {
+        markerMode?: T;
+        markerLabel?: T;
+        metadata?: T;
+        title?: T;
+        description?: T;
+        cardAction?:
+          | T
+          | {
+              label?: T;
+              linkType?: T;
+              page?: T;
+              url?: T;
+              openInNewTab?: T;
+              mode?: T;
+              variant?: T;
+              showArrow?: T;
+              id?: T;
+            };
+        cardBackground?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  itemsLayout?: T;
+  cardStyle?: T;
+  eyebrowPlacement?: T;
+  cardLayout?: T;
+  gridColumns?: T;
+  layout?: T;
+  itemTreatment?: T;
+  ruledDividers?: T;
+  headerLayout?: T;
+  contentAlignment?: T;
+  splitContentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AcademicProgrammesBlock_select".
+ */
+export interface AcademicProgrammesBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  programmes?:
+    | T
+    | {
+        image?: T;
+        icon?: T;
+        eyebrow?: T;
+        badge?: T;
+        title?: T;
+        description?: T;
+        durationLabel?: T;
+        duration?: T;
+        intakeLabel?: T;
+        intake?: T;
+        facts?:
+          | T
+          | {
+              icon?: T;
+              label?: T;
+              value?: T;
+              id?: T;
+            };
+        ctaLabel?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        cardBackground?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  headerLayout?: T;
+  viewMode?: T;
+  metadataPosition?: T;
+  showFilter?: T;
+  columns?: T;
+  descriptionPosition?: T;
+  sideContentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsEventsTabsBlock_select".
+ */
+export interface NewsEventsTabsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  allTabLabel?: T;
+  classifications?: T;
+  itemsPerTab?: T;
+  loadMoreLabel?: T;
+  newsActionLabel?: T;
+  eventActionLabel?: T;
+  emptyStateMessage?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  tabVariant?: T;
+  layoutStyle?: T;
+  cardsPerRow?: T;
+  contentAlignment?: T;
+  headerActionAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DepartmentProfilesBlock_select".
+ */
+export interface DepartmentProfilesBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  departments?:
+    | T
+    | {
+        name?: T;
+        id?: T;
+      };
+  profiles?:
+    | T
+    | {
+        image?: T;
+        name?: T;
+        designation?: T;
+        departmentId?: T;
+        imagePosition?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  showSearch?: T;
+  searchPlaceholder?: T;
+  showDepartmentTabs?: T;
+  allTabLabel?: T;
+  tabVariant?: T;
+  tabWidth?: T;
+  profilesPerLoad?: T;
+  loadMoreLabel?: T;
+  noResultsMessage?: T;
+  cardLayout?: T;
+  cardSize?: T;
+  themeMode?: T;
+  overlayStyle?: T;
+  overlayDirection?: T;
+  overlayCoverage?: T;
+  contentAlignment?: T;
+  headerLayout?: T;
+  descriptionPosition?: T;
+  sideContentAlignment?: T;
+  columns?: T;
+  mediumColumns?: T;
+  smallColumns?: T;
+  cardFrame?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryAlbumTabsBlock_select".
+ */
+export interface GalleryAlbumTabsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  galleryAlbums?: T;
+  displayOrder?: T;
+  allTabLabel?: T;
+  imagesPerLoad?: T;
+  loadMoreLabel?: T;
+  emptyStateMessage?: T;
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  tabVariant?: T;
+  contentAlignment?: T;
+  headerActionAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "QaAccordionBlock_select".
+ */
+export interface QaAccordionBlockSelect<T extends boolean = true> {
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  items?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  sideColumn?:
+    | T
+    | {
+        profile?:
+          | T
+          | {
+              image?: T;
+              name?: T;
+              title?: T;
+            };
+        contact?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              actions?:
+                | T
+                | {
+                    label?: T;
+                    linkType?: T;
+                    page?: T;
+                    url?: T;
+                    openInNewTab?: T;
+                    mode?: T;
+                    variant?: T;
+                    showArrow?: T;
+                    id?: T;
+                  };
+            };
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  layoutMode?: T;
+  accordionPlacement?: T;
+  size?: T;
+  defaultOpenFirst?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsStripBlock_select".
+ */
+export interface StatsStripBlockSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        prefix?: T;
+        value?: T;
+        suffix?: T;
+        label?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  size?: T;
+  animationEnabled?: T;
+  animationDuration?: T;
+  triggerOnce?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialSpotlightBlock_select".
+ */
+export interface TestimonialSpotlightBlockSelect<T extends boolean = true> {
+  sectionEyebrow?: T;
+  sectionTitle?: T;
+  sectionDescription?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  image?: T;
+  eyebrow?: T;
+  title?: T;
+  testimonial?: T;
+  description?: T;
+  personName?: T;
+  designation?: T;
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  sectionContentAlignment?: T;
+  containerBackground?: T;
+  containerOutline?: T;
+  mediaPosition?: T;
+  imagePosition?: T;
+  mediaFillMode?: T;
+  size?: T;
+  contentVerticalAlignment?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccreditationCardsBlock_select".
+ */
+export interface AccreditationCardsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  accreditations?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        cardBackground?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  columns?: T;
+  cardFrame?: T;
+  cardSize?: T;
+  iconStyle?: T;
+  size?: T;
   id?: T;
   blockName?: T;
 }
@@ -6604,6 +7439,192 @@ export interface BannerCtaBlockSelect<T extends boolean = true> {
   overlayCoverage?: T;
   height?: T;
   size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Contact24Block_select".
+ */
+export interface Contact24BlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  offices?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  detailsAlignment?: T;
+  showAddressDetails?: T;
+  size?: T;
+  mapActionLabel?: T;
+  mapActionMode?: T;
+  mapActionVariant?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DownloadListBlock_select".
+ */
+export interface DownloadListBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  showViewAction?: T;
+  openViewInNewTab?: T;
+  showDownloadAction?: T;
+  downloads?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        file?: T;
+        externalUrl?: T;
+        fileType?: T;
+        documentActions?:
+          | T
+          | {
+              actionType?: T;
+              label?: T;
+              viewOpenInNewTab?: T;
+              linkType?: T;
+              page?: T;
+              url?: T;
+              openInNewTab?: T;
+              mode?: T;
+              variant?: T;
+              showArrow?: T;
+              id?: T;
+            };
+        customAction?:
+          | T
+          | {
+              label?: T;
+              linkType?: T;
+              page?: T;
+              url?: T;
+              openInNewTab?: T;
+              mode?: T;
+              variant?: T;
+              showArrow?: T;
+              id?: T;
+            };
+        actions?:
+          | T
+          | {
+              actionType?: T;
+              label?: T;
+              linkType?: T;
+              page?: T;
+              url?: T;
+              openInNewTab?: T;
+              file?: T;
+              id?: T;
+            };
+        cardBackground?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  sectionLayout?: T;
+  introPosition?: T;
+  introVerticalAlignment?: T;
+  displayMode?: T;
+  columns?: T;
+  documentIconSize?: T;
+  showDocumentIcon?: T;
+  gridIconPosition?: T;
+  gridActionDisplay?: T;
+  contentAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AnnouncementBlock_select".
+ */
+export interface AnnouncementBlockSelect<T extends boolean = true> {
+  label?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        url?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  displayMode?: T;
+  intervalMs?: T;
+  marqueeDurationMs?: T;
   id?: T;
   blockName?: T;
 }
@@ -6674,63 +7695,6 @@ export interface NewsGridBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "NewsEventsTabsBlock_select".
- */
-export interface NewsEventsTabsBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  title?: T;
-  accentTitle?: T;
-  description?: T;
-  actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  footerActions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  allTabLabel?: T;
-  classifications?: T;
-  itemsPerTab?: T;
-  loadMoreLabel?: T;
-  newsActionLabel?: T;
-  eventActionLabel?: T;
-  emptyStateMessage?: T;
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  tabVariant?: T;
-  layoutStyle?: T;
-  cardsPerRow?: T;
-  contentAlignment?: T;
-  headerActionAlignment?: T;
-  size?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "Cta39Block_select".
  */
 export interface Cta39BlockSelect<T extends boolean = true> {
@@ -6775,46 +7739,6 @@ export interface Cta39BlockSelect<T extends boolean = true> {
   splitContentAlignment?: T;
   actionLayout?: T;
   size?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HeroBannerBlock_select".
- */
-export interface HeroBannerBlockSelect<T extends boolean = true> {
-  backgroundImage?: T;
-  eyebrow?: T;
-  title?: T;
-  accentTitle?: T;
-  description?: T;
-  buttons?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  themeMode?: T;
-  overlayStyle?: T;
-  overlayDirection?: T;
-  overlayCoverage?: T;
-  enableTextShadow?: T;
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  horizontalAlignment?: T;
-  verticalAlignment?: T;
-  contentWidth?: T;
-  height?: T;
   id?: T;
   blockName?: T;
 }
@@ -6911,116 +7835,6 @@ export interface GalleryCoverflowBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FeatureSpotlightBlock_select".
- */
-export interface FeatureSpotlightBlockSelect<T extends boolean = true> {
-  image?: T;
-  eyebrow?: T;
-  title?: T;
-  accentTitle?: T;
-  description?: T;
-  actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  footerActions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  layoutMode?: T;
-  mediaPosition?: T;
-  imagePosition?: T;
-  mediaFillMode?: T;
-  size?: T;
-  contentAlignment?: T;
-  contentVerticalAlignment?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TestimonialSpotlightBlock_select".
- */
-export interface TestimonialSpotlightBlockSelect<T extends boolean = true> {
-  sectionEyebrow?: T;
-  sectionTitle?: T;
-  sectionDescription?: T;
-  actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  image?: T;
-  eyebrow?: T;
-  title?: T;
-  testimonial?: T;
-  description?: T;
-  personName?: T;
-  designation?: T;
-  footerActions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  sectionContentAlignment?: T;
-  containerBackground?: T;
-  containerOutline?: T;
-  mediaPosition?: T;
-  imagePosition?: T;
-  mediaFillMode?: T;
-  size?: T;
-  contentVerticalAlignment?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FeatureMatrixBlock_select".
  */
 export interface FeatureMatrixBlockSelect<T extends boolean = true> {
@@ -7074,86 +7888,6 @@ export interface FeatureMatrixBlockSelect<T extends boolean = true> {
   size?: T;
   showOuterBorder?: T;
   borderAnimationEnabled?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ContentHighlightsBlock_select".
- */
-export interface ContentHighlightsBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  title?: T;
-  accentTitle?: T;
-  description?: T;
-  actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  footerActions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  items?:
-    | T
-    | {
-        markerMode?: T;
-        markerLabel?: T;
-        metadata?: T;
-        title?: T;
-        description?: T;
-        cardAction?:
-          | T
-          | {
-              label?: T;
-              linkType?: T;
-              page?: T;
-              url?: T;
-              openInNewTab?: T;
-              mode?: T;
-              variant?: T;
-              showArrow?: T;
-              id?: T;
-            };
-        cardBackground?: T;
-        id?: T;
-      };
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  itemsLayout?: T;
-  cardStyle?: T;
-  eyebrowPlacement?: T;
-  cardLayout?: T;
-  gridColumns?: T;
-  layout?: T;
-  itemTreatment?: T;
-  ruledDividers?: T;
-  headerLayout?: T;
-  contentAlignment?: T;
-  splitContentAlignment?: T;
-  size?: T;
   id?: T;
   blockName?: T;
 }
@@ -7218,88 +7952,6 @@ export interface EditorialReasonsBlockSelect<T extends boolean = true> {
   introVerticalAlignment?: T;
   actionsPosition?: T;
   stickyIntro?: T;
-  size?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AcademicProgrammesBlock_select".
- */
-export interface AcademicProgrammesBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  title?: T;
-  accentTitle?: T;
-  description?: T;
-  actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  programmes?:
-    | T
-    | {
-        image?: T;
-        icon?: T;
-        eyebrow?: T;
-        badge?: T;
-        title?: T;
-        description?: T;
-        durationLabel?: T;
-        duration?: T;
-        intakeLabel?: T;
-        intake?: T;
-        facts?:
-          | T
-          | {
-              icon?: T;
-              label?: T;
-              value?: T;
-              id?: T;
-            };
-        ctaLabel?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        cardBackground?: T;
-        id?: T;
-      };
-  footerActions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  contentAlignment?: T;
-  headerLayout?: T;
-  viewMode?: T;
-  metadataPosition?: T;
-  showFilter?: T;
-  columns?: T;
-  descriptionPosition?: T;
-  sideContentAlignment?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -7374,90 +8026,6 @@ export interface LeadershipProfilesBlockSelect<T extends boolean = true> {
   descriptionPosition?: T;
   sideContentAlignment?: T;
   columns?: T;
-  size?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "DepartmentProfilesBlock_select".
- */
-export interface DepartmentProfilesBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  title?: T;
-  accentTitle?: T;
-  description?: T;
-  actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  departments?:
-    | T
-    | {
-        name?: T;
-        id?: T;
-      };
-  profiles?:
-    | T
-    | {
-        image?: T;
-        name?: T;
-        designation?: T;
-        departmentId?: T;
-        imagePosition?: T;
-        id?: T;
-      };
-  footerActions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  showSearch?: T;
-  searchPlaceholder?: T;
-  showDepartmentTabs?: T;
-  allTabLabel?: T;
-  tabVariant?: T;
-  tabWidth?: T;
-  profilesPerLoad?: T;
-  loadMoreLabel?: T;
-  noResultsMessage?: T;
-  cardLayout?: T;
-  cardSize?: T;
-  themeMode?: T;
-  overlayStyle?: T;
-  overlayDirection?: T;
-  overlayCoverage?: T;
-  contentAlignment?: T;
-  headerLayout?: T;
-  descriptionPosition?: T;
-  sideContentAlignment?: T;
-  columns?: T;
-  mediumColumns?: T;
-  smallColumns?: T;
-  cardFrame?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -7690,60 +8258,6 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "GalleryAlbumTabsBlock_select".
- */
-export interface GalleryAlbumTabsBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  title?: T;
-  accentTitle?: T;
-  description?: T;
-  actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  galleryAlbums?: T;
-  displayOrder?: T;
-  allTabLabel?: T;
-  imagesPerLoad?: T;
-  loadMoreLabel?: T;
-  emptyStateMessage?: T;
-  footerActions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  tabVariant?: T;
-  contentAlignment?: T;
-  headerActionAlignment?: T;
-  size?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ImageMosaicBlock_select".
  */
 export interface ImageMosaicBlockSelect<T extends boolean = true> {
@@ -7884,118 +8398,6 @@ export interface StudentExperienceBlockSelect<T extends boolean = true> {
   cardHeight?: T;
   showNumbers?: T;
   size?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "StatsStripBlock_select".
- */
-export interface StatsStripBlockSelect<T extends boolean = true> {
-  items?:
-    | T
-    | {
-        prefix?: T;
-        value?: T;
-        suffix?: T;
-        label?: T;
-        id?: T;
-      };
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  size?: T;
-  animationEnabled?: T;
-  animationDuration?: T;
-  triggerOnce?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "QaAccordionBlock_select".
- */
-export interface QaAccordionBlockSelect<T extends boolean = true> {
-  title?: T;
-  accentTitle?: T;
-  description?: T;
-  actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  footerActions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  items?:
-    | T
-    | {
-        question?: T;
-        answer?: T;
-        id?: T;
-      };
-  sideColumn?:
-    | T
-    | {
-        profile?:
-          | T
-          | {
-              image?: T;
-              name?: T;
-              title?: T;
-            };
-        contact?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              actions?:
-                | T
-                | {
-                    label?: T;
-                    linkType?: T;
-                    page?: T;
-                    url?: T;
-                    openInNewTab?: T;
-                    mode?: T;
-                    variant?: T;
-                    showArrow?: T;
-                    id?: T;
-                  };
-            };
-      };
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  contentAlignment?: T;
-  layoutMode?: T;
-  accordionPlacement?: T;
-  size?: T;
-  defaultOpenFirst?: T;
   id?: T;
   blockName?: T;
 }
@@ -8197,57 +8599,6 @@ export interface Contact33BlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "Contact24Block_select".
- */
-export interface Contact24BlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  title?: T;
-  description?: T;
-  actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  footerActions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  offices?: T;
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  contentAlignment?: T;
-  detailsAlignment?: T;
-  showAddressDetails?: T;
-  size?: T;
-  mapActionLabel?: T;
-  mapActionMode?: T;
-  mapActionVariant?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TeamShowcaseBlock_select".
  */
 export interface TeamShowcaseBlockSelect<T extends boolean = true> {
@@ -8354,23 +8705,6 @@ export interface Services21BlockSelect<T extends boolean = true> {
       };
   contentAlignment?: T;
   size?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "RichTextBlock_select".
- */
-export interface RichTextBlockSelect<T extends boolean = true> {
-  content?: T;
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  size?: T;
-  maxWidth?: T;
   id?: T;
   blockName?: T;
 }
@@ -8614,80 +8948,6 @@ export interface LogoStripBlockSelect<T extends boolean = true> {
   showLabels?: T;
   grayscale?: T;
   logoHeight?: T;
-  size?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PageHeaderBlock_select".
- */
-export interface PageHeaderBlockSelect<T extends boolean = true> {
-  backgroundImage?: T;
-  topContent?: T;
-  breadcrumbs?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        id?: T;
-      };
-  eyebrow?: T;
-  title?: T;
-  accentTitle?: T;
-  subtitle?: T;
-  actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  footerActions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  keyFacts?:
-    | T
-    | {
-        label?: T;
-        value?: T;
-        id?: T;
-      };
-  variant?: T;
-  breadcrumbMode?: T;
-  keyFactsNumberPosition?: T;
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  actionPlacement?: T;
-  contentAlignment?: T;
-  contentWidth?: T;
-  themeMode?: T;
-  overlayStyle?: T;
-  overlayDirection?: T;
-  overlayCoverage?: T;
-  height?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -9024,115 +9284,6 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
   curriculumColumns?: T;
   contentAlignment?: T;
   tabContentAlignment?: T;
-  size?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "DownloadListBlock_select".
- */
-export interface DownloadListBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  title?: T;
-  accentTitle?: T;
-  description?: T;
-  actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  showViewAction?: T;
-  openViewInNewTab?: T;
-  showDownloadAction?: T;
-  downloads?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        file?: T;
-        externalUrl?: T;
-        fileType?: T;
-        documentActions?:
-          | T
-          | {
-              actionType?: T;
-              label?: T;
-              viewOpenInNewTab?: T;
-              linkType?: T;
-              page?: T;
-              url?: T;
-              openInNewTab?: T;
-              mode?: T;
-              variant?: T;
-              showArrow?: T;
-              id?: T;
-            };
-        customAction?:
-          | T
-          | {
-              label?: T;
-              linkType?: T;
-              page?: T;
-              url?: T;
-              openInNewTab?: T;
-              mode?: T;
-              variant?: T;
-              showArrow?: T;
-              id?: T;
-            };
-        actions?:
-          | T
-          | {
-              actionType?: T;
-              label?: T;
-              linkType?: T;
-              page?: T;
-              url?: T;
-              openInNewTab?: T;
-              file?: T;
-              id?: T;
-            };
-        cardBackground?: T;
-        id?: T;
-      };
-  footerActions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  sectionLayout?: T;
-  introPosition?: T;
-  introVerticalAlignment?: T;
-  displayMode?: T;
-  columns?: T;
-  documentIconSize?: T;
-  showDocumentIcon?: T;
-  gridIconPosition?: T;
-  gridActionDisplay?: T;
-  contentAlignment?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -9477,157 +9628,6 @@ export interface AwardsListBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AboutSectionBlock_select".
- */
-export interface AboutSectionBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  title?: T;
-  accentTitle?: T;
-  body?: T;
-  listStyle?: T;
-  listItems?:
-    | T
-    | {
-        text?: T;
-        icon?: T;
-        id?: T;
-      };
-  image?: T;
-  imageDetail?:
-    | T
-    | {
-        enabled?: T;
-        eyebrow?: T;
-        value?: T;
-        description?: T;
-      };
-  stats?:
-    | T
-    | {
-        value?: T;
-        label?: T;
-        id?: T;
-      };
-  values?:
-    | T
-    | {
-        icon?: T;
-        title?: T;
-        description?: T;
-        id?: T;
-      };
-  actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  footerActions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  contentAlignment?: T;
-  variant?: T;
-  imagePosition?: T;
-  mediaFillMode?: T;
-  imageDetailPosition?: T;
-  imageDetailBackground?: T;
-  size?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AccreditationCardsBlock_select".
- */
-export interface AccreditationCardsBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  title?: T;
-  accentTitle?: T;
-  description?: T;
-  actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  accreditations?:
-    | T
-    | {
-        icon?: T;
-        title?: T;
-        description?: T;
-        cardBackground?: T;
-        id?: T;
-      };
-  footerActions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        id?: T;
-      };
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  contentAlignment?: T;
-  columns?: T;
-  cardFrame?: T;
-  cardSize?: T;
-  iconStyle?: T;
-  size?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ReusableSectionBlock_select".
- */
-export interface ReusableSectionBlockSelect<T extends boolean = true> {
-  section?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "articles_select".
  */
 export interface ArticlesSelect<T extends boolean = true> {
@@ -9783,58 +9783,58 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        announcement?: T | AnnouncementBlockSelect<T>;
-        bannerCta?: T | BannerCtaBlockSelect<T>;
-        newsGrid?: T | NewsGridBlockSelect<T>;
-        newsEventsTabs?: T | NewsEventsTabsBlockSelect<T>;
-        cta39?: T | Cta39BlockSelect<T>;
+        pageHeader?: T | PageHeaderBlockSelect<T>;
         heroBanner?: T | HeroBannerBlockSelect<T>;
+        richText?: T | RichTextBlockSelect<T>;
+        aboutSection?: T | AboutSectionBlockSelect<T>;
+        featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
+        contentHighlights?: T | ContentHighlightsBlockSelect<T>;
+        academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
+        newsEventsTabs?: T | NewsEventsTabsBlockSelect<T>;
+        departmentProfiles?: T | DepartmentProfilesBlockSelect<T>;
+        galleryAlbumTabs?: T | GalleryAlbumTabsBlockSelect<T>;
+        qaAccordion?: T | QaAccordionBlockSelect<T>;
+        statsStrip?: T | StatsStripBlockSelect<T>;
+        testimonialSpotlight?: T | TestimonialSpotlightBlockSelect<T>;
+        accreditationCards?: T | AccreditationCardsBlockSelect<T>;
+        bannerCta?: T | BannerCtaBlockSelect<T>;
+        contact24?: T | Contact24BlockSelect<T>;
+        downloadList?: T | DownloadListBlockSelect<T>;
+        announcement?: T | AnnouncementBlockSelect<T>;
+        newsGrid?: T | NewsGridBlockSelect<T>;
+        cta39?: T | Cta39BlockSelect<T>;
         heroCarousel?: T | HeroCarouselBlockSelect<T>;
         galleryCoverflow?: T | GalleryCoverflowBlockSelect<T>;
-        featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
-        testimonialSpotlight?: T | TestimonialSpotlightBlockSelect<T>;
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
-        contentHighlights?: T | ContentHighlightsBlockSelect<T>;
         editorialReasons?: T | EditorialReasonsBlockSelect<T>;
-        academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
         leadershipProfiles?: T | LeadershipProfilesBlockSelect<T>;
-        departmentProfiles?: T | DepartmentProfilesBlockSelect<T>;
         newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
         eventGallery?: T | EventGalleryBlockSelect<T>;
-        galleryAlbumTabs?: T | GalleryAlbumTabsBlockSelect<T>;
         imageMosaic?: T | ImageMosaicBlockSelect<T>;
         studentExperience?: T | StudentExperienceBlockSelect<T>;
-        statsStrip?: T | StatsStripBlockSelect<T>;
-        qaAccordion?: T | QaAccordionBlockSelect<T>;
         ratingSpotlight?: T | RatingSpotlightBlockSelect<T>;
         reviewFeed?: T | ReviewFeedBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
         contact33?: T | Contact33BlockSelect<T>;
-        contact24?: T | Contact24BlockSelect<T>;
         teamShowcase?: T | TeamShowcaseBlockSelect<T>;
         services21?: T | Services21BlockSelect<T>;
-        richText?: T | RichTextBlockSelect<T>;
         videoEmbed?: T | VideoEmbedBlockSelect<T>;
         mediaCarousel?: T | MediaCarouselBlockSelect<T>;
         programMatrix?: T | ProgramMatrixBlockSelect<T>;
         logoStrip?: T | LogoStripBlockSelect<T>;
-        pageHeader?: T | PageHeaderBlockSelect<T>;
         breadcrumb?: T | BreadcrumbBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;
         iconCardShowcase?: T | IconCardShowcaseBlockSelect<T>;
         iconGrid?: T | IconGridBlockSelect<T>;
         quoteBlock?: T | QuoteBlockBlockSelect<T>;
         tabsContent?: T | TabsContentBlockSelect<T>;
-        downloadList?: T | DownloadListBlockSelect<T>;
         feeStructure?: T | FeeStructureBlockSelect<T>;
         numberedSteps?: T | NumberedStepsBlockSelect<T>;
         bentoGrid?: T | BentoGridBlockSelect<T>;
         testimonialGrid?: T | TestimonialGridBlockSelect<T>;
         awardsList?: T | AwardsListBlockSelect<T>;
-        aboutSection?: T | AboutSectionBlockSelect<T>;
-        accreditationCards?: T | AccreditationCardsBlockSelect<T>;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -10769,60 +10769,60 @@ export interface NewsEventsDetailTemplate {
    */
   layout?:
     | (
-        | AnnouncementBlock
-        | BannerCtaBlock
-        | NewsGridBlock
-        | NewsEventsTabsBlock
-        | Cta39Block
+        | NewsEventsContentBlock
+        | PageHeaderBlock
         | HeroBannerBlock
+        | ReusableSectionBlock
+        | RichTextBlock
+        | AboutSectionBlock
+        | FeatureSpotlightBlock
+        | ContentHighlightsBlock
+        | AcademicProgrammesBlock
+        | NewsEventsTabsBlock
+        | DepartmentProfilesBlock
+        | GalleryAlbumTabsBlock
+        | QaAccordionBlock
+        | StatsStripBlock
+        | TestimonialSpotlightBlock
+        | AccreditationCardsBlock
+        | BannerCtaBlock
+        | Contact24Block
+        | DownloadListBlock
+        | AnnouncementBlock
+        | NewsGridBlock
+        | Cta39Block
         | HeroCarouselBlock
         | GalleryCoverflowBlock
-        | FeatureSpotlightBlock
-        | TestimonialSpotlightBlock
         | FeatureMatrixBlock
-        | ContentHighlightsBlock
         | EditorialReasonsBlock
-        | AcademicProgrammesBlock
         | LeadershipProfilesBlock
-        | DepartmentProfilesBlock
         | NewsEventsHighlightsBlock
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
         | EventGalleryBlock
-        | GalleryAlbumTabsBlock
         | ImageMosaicBlock
         | StudentExperienceBlock
-        | StatsStripBlock
-        | QaAccordionBlock
         | RatingSpotlightBlock
         | ReviewFeedBlock
         | ReviewSubmissionBlock
         | Contact33Block
-        | Contact24Block
         | TeamShowcaseBlock
         | Services21Block
-        | RichTextBlock
         | VideoEmbedBlock
         | MediaCarouselBlock
         | ProgramMatrixBlock
         | LogoStripBlock
-        | PageHeaderBlock
         | BreadcrumbBlock
         | TimelineBlock
         | IconCardShowcaseBlock
         | IconGridBlock
         | QuoteBlockBlock
         | TabsContentBlock
-        | DownloadListBlock
         | FeeStructureBlock
         | NumberedStepsBlock
         | BentoGridBlock
         | TestimonialGridBlock
         | AwardsListBlock
-        | AboutSectionBlock
-        | AccreditationCardsBlock
-        | ReusableSectionBlock
-        | NewsEventsContentBlock
       )[]
     | null;
   _status?: ('draft' | 'published') | null;
@@ -11053,60 +11053,60 @@ export interface NewsEventsDetailTemplateSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        announcement?: T | AnnouncementBlockSelect<T>;
-        bannerCta?: T | BannerCtaBlockSelect<T>;
-        newsGrid?: T | NewsGridBlockSelect<T>;
-        newsEventsTabs?: T | NewsEventsTabsBlockSelect<T>;
-        cta39?: T | Cta39BlockSelect<T>;
+        newsEventsContent?: T | NewsEventsContentBlockSelect<T>;
+        pageHeader?: T | PageHeaderBlockSelect<T>;
         heroBanner?: T | HeroBannerBlockSelect<T>;
+        reusableSection?: T | ReusableSectionBlockSelect<T>;
+        richText?: T | RichTextBlockSelect<T>;
+        aboutSection?: T | AboutSectionBlockSelect<T>;
+        featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
+        contentHighlights?: T | ContentHighlightsBlockSelect<T>;
+        academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
+        newsEventsTabs?: T | NewsEventsTabsBlockSelect<T>;
+        departmentProfiles?: T | DepartmentProfilesBlockSelect<T>;
+        galleryAlbumTabs?: T | GalleryAlbumTabsBlockSelect<T>;
+        qaAccordion?: T | QaAccordionBlockSelect<T>;
+        statsStrip?: T | StatsStripBlockSelect<T>;
+        testimonialSpotlight?: T | TestimonialSpotlightBlockSelect<T>;
+        accreditationCards?: T | AccreditationCardsBlockSelect<T>;
+        bannerCta?: T | BannerCtaBlockSelect<T>;
+        contact24?: T | Contact24BlockSelect<T>;
+        downloadList?: T | DownloadListBlockSelect<T>;
+        announcement?: T | AnnouncementBlockSelect<T>;
+        newsGrid?: T | NewsGridBlockSelect<T>;
+        cta39?: T | Cta39BlockSelect<T>;
         heroCarousel?: T | HeroCarouselBlockSelect<T>;
         galleryCoverflow?: T | GalleryCoverflowBlockSelect<T>;
-        featureSpotlight?: T | FeatureSpotlightBlockSelect<T>;
-        testimonialSpotlight?: T | TestimonialSpotlightBlockSelect<T>;
         featureMatrix?: T | FeatureMatrixBlockSelect<T>;
-        contentHighlights?: T | ContentHighlightsBlockSelect<T>;
         editorialReasons?: T | EditorialReasonsBlockSelect<T>;
-        academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
         leadershipProfiles?: T | LeadershipProfilesBlockSelect<T>;
-        departmentProfiles?: T | DepartmentProfilesBlockSelect<T>;
         newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
         eventGallery?: T | EventGalleryBlockSelect<T>;
-        galleryAlbumTabs?: T | GalleryAlbumTabsBlockSelect<T>;
         imageMosaic?: T | ImageMosaicBlockSelect<T>;
         studentExperience?: T | StudentExperienceBlockSelect<T>;
-        statsStrip?: T | StatsStripBlockSelect<T>;
-        qaAccordion?: T | QaAccordionBlockSelect<T>;
         ratingSpotlight?: T | RatingSpotlightBlockSelect<T>;
         reviewFeed?: T | ReviewFeedBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
         contact33?: T | Contact33BlockSelect<T>;
-        contact24?: T | Contact24BlockSelect<T>;
         teamShowcase?: T | TeamShowcaseBlockSelect<T>;
         services21?: T | Services21BlockSelect<T>;
-        richText?: T | RichTextBlockSelect<T>;
         videoEmbed?: T | VideoEmbedBlockSelect<T>;
         mediaCarousel?: T | MediaCarouselBlockSelect<T>;
         programMatrix?: T | ProgramMatrixBlockSelect<T>;
         logoStrip?: T | LogoStripBlockSelect<T>;
-        pageHeader?: T | PageHeaderBlockSelect<T>;
         breadcrumb?: T | BreadcrumbBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;
         iconCardShowcase?: T | IconCardShowcaseBlockSelect<T>;
         iconGrid?: T | IconGridBlockSelect<T>;
         quoteBlock?: T | QuoteBlockBlockSelect<T>;
         tabsContent?: T | TabsContentBlockSelect<T>;
-        downloadList?: T | DownloadListBlockSelect<T>;
         feeStructure?: T | FeeStructureBlockSelect<T>;
         numberedSteps?: T | NumberedStepsBlockSelect<T>;
         bentoGrid?: T | BentoGridBlockSelect<T>;
         testimonialGrid?: T | TestimonialGridBlockSelect<T>;
         awardsList?: T | AwardsListBlockSelect<T>;
-        aboutSection?: T | AboutSectionBlockSelect<T>;
-        accreditationCards?: T | AccreditationCardsBlockSelect<T>;
-        reusableSection?: T | ReusableSectionBlockSelect<T>;
-        newsEventsContent?: T | NewsEventsContentBlockSelect<T>;
       };
   _status?: T;
   updatedAt?: T;

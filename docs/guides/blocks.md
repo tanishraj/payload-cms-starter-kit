@@ -4,7 +4,22 @@
 
 Pages use an ordered block layout. Editors can collapse, reorder, duplicate, and remove blocks; most visual sections share appearance and responsive spacing controls. A block error boundary isolates a failing block so the remainder of the Page can still render. Live preview uses the production renderer for every Page block, including blocks reached through Reusable Sections; inspect desktop, tablet, and mobile sizes before publishing.
 
-`Reusable Section` references a shared block stack. Reusable Sections intentionally cannot contain another Reusable Section, Hero Carousel, Gallery Coverflow, Testimonial Grid, Awards List, or About Section.
+`Reusable Section` references a shared block stack. Reusable Sections intentionally cannot contain another Reusable Section; runtime rendering also stops nesting after depth 10.
+
+## Choosing A Block
+
+The Add Block drawer is searchable and organized by editorial intent:
+
+- **Start** establishes the page opening or inserts an approved shared section.
+- **Explain** presents the main institutional story, structured content, or programme information.
+- **Explore** helps visitors browse collections, departments, galleries, or answers.
+- **Prove** adds evidence such as metrics, testimonials, and accreditations.
+- **Convert** gives visitors a clear next action, contact route, or document.
+- **Advanced Library** contains specialized alternatives that remain fully supported and searchable.
+
+The first five groups form the client-approved 18-block vocabulary. Advanced blocks are not hidden or permission-restricted, so existing pages always remain editable.
+
+For a new one-client deployment, developers customize the groups in `src/blocks/blockCatalog.ts`. Keep every Page-compatible block classified exactly once, retain Reusable Section and News/Event template exclusions, and run the catalog and registry contracts before handoff. Editors do not manage this vocabulary through Site Settings.
 
 ## Content And Theme Settings
 

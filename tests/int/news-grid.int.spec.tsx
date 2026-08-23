@@ -23,6 +23,8 @@ import {
 } from '@/lib/newsEventsPreviewShared'
 import type { PublicNewsEventCard } from '@/lib/newsEventsShared'
 
+import { getGeneratedPayloadInterface } from './helpers/generatedPayloadInterface'
+
 const classification = (
   id: string,
   badgeLabel: string,
@@ -536,10 +538,7 @@ describe('News Grid', () => {
 
   it('keeps generated Payload types aligned with the schema', () => {
     const generatedTypes = readFileSync('src/payload-types.ts', 'utf8')
-    const newsGridInterface = generatedTypes.slice(
-      generatedTypes.indexOf('export interface NewsGridBlock {'),
-      generatedTypes.indexOf('export interface Cta39Block {'),
-    )
+    const newsGridInterface = getGeneratedPayloadInterface(generatedTypes, 'NewsGridBlock')
 
     expect(newsGridInterface).toContain('totalCards: number')
     expect(newsGridInterface).toContain("cardsPerRow: '2' | '3' | '4'")

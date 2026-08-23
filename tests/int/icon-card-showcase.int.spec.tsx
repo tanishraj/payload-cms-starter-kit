@@ -6,6 +6,8 @@ import { describe, expect, it } from 'vitest'
 import { IconCardShowcaseBlockComponent } from '@/blocks/IconCardShowcase/Component'
 import { IconCardShowcaseBlock } from '@/blocks/IconCardShowcase/config'
 
+import { getGeneratedPayloadInterface } from './helpers/generatedPayloadInterface'
+
 const findField = (fields: unknown[], name: string): Record<string, unknown> | undefined => {
   for (const field of fields) {
     if (!field || typeof field !== 'object') continue
@@ -492,10 +494,7 @@ describe('Icon Card Showcase', () => {
 
   it('uses the generated Payload contract', () => {
     const source = readFileSync('src/payload-types.ts', 'utf8')
-    const contract = source.slice(
-      source.indexOf('export interface IconCardShowcaseBlock {'),
-      source.indexOf('export interface IconGridBlock {'),
-    )
+    const contract = getGeneratedPayloadInterface(source, 'IconCardShowcaseBlock')
 
     expect(contract).toContain("cardWidth: 'wide' | 'standard' | 'compact'")
     expect(contract).toContain("cardHeight: 'compact' | 'standard' | 'tall'")

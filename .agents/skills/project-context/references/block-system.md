@@ -2,11 +2,11 @@
 
 ## Registries
 
-[Pages.ts](../../../../src/collections/Pages.ts) registers 53 blocks in this order:
+[blockCatalog.ts](../../../../src/blocks/blockCatalog.ts) is the server-only canonical Payload schema catalog for Page-compatible blocks. It assigns native Admin groups in this order: Start, Explain, Explore, Prove, Convert, and Advanced Library. The first five groups contain the client-approved 18-block vocabulary; all remaining Page-compatible blocks stay registered under Advanced Library.
 
-`announcement`, `bannerCta`, `newsGrid`, `newsEventsTabs`, `cta39`, `heroBanner`, `heroCarousel`, `galleryCoverflow`, `featureSpotlight`, `testimonialSpotlight`, `featureMatrix`, `contentHighlights`, `editorialReasons`, `academicProgrammes`, `leadershipProfiles`, `departmentProfiles`, `newsEventsHighlights`, `profileCarousel`, `galleryShowcase`, `eventGallery`, `galleryAlbumTabs`, `imageMosaic`, `studentExperience`, `statsStrip`, `qaAccordion`, `ratingSpotlight`, `reviewFeed`, `reviewSubmission`, `contact33`, `contact24`, `teamShowcase`, `services21`, `richText`, `videoEmbed`, `mediaCarousel`, `programMatrix`, `logoStrip`, `pageHeader`, `breadcrumb`, `timeline`, `iconCardShowcase`, `iconGrid`, `quoteBlock`, `tabsContent`, `downloadList`, `feeStructure`, `numberedSteps`, `bentoGrid`, `testimonialGrid`, `awardsList`, `aboutSection`, `accreditationCards`, `reusableSection`.
+[Pages.ts](../../../../src/collections/Pages.ts) consumes the complete 53-block Page registry. [ReusableSections.ts](../../../../src/collections/ReusableSections.ts) consumes the same registry without `reusableSection`, preventing direct recursion. [NewsEventsDetailTemplate.ts](../../../../src/globals/NewsEventsDetailTemplate.ts) consumes the Page registry plus `newsEventsContent`, which appears first under Template Core. The [block operator guide](../../../../docs/guides/blocks.md) owns the editor-facing group membership and per-deployment customization instructions.
 
-[ReusableSections.ts](../../../../src/collections/ReusableSections.ts) exposes the same order except `reusableSection`, preventing direct recursion.
+The catalog imports schema config only. Production and live-preview renderer switches remain explicit and separate so server/client boundaries are not mixed.
 
 Restricted shell/system registries are separate:
 

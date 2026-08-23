@@ -164,12 +164,22 @@ describe('page block pipeline', () => {
   })
 
   it('registers a general layout blocks field on Pages', () => {
-    const layoutField = getLayoutField()
+    const layoutField = getLayoutField() as
+      | {
+          blocks?: Array<{ admin?: { group?: string }; slug: string }>
+          type?: string
+        }
+      | undefined
     const registeredSlugs = layoutField?.blocks?.map((block) => block.slug) ?? []
     const publicRenderer = readFileSync('src/blocks/renderPageBlocks.tsx', 'utf8')
     const livePreviewRenderer = readFileSync('src/blocks/renderLivePreviewPageBlocks.tsx', 'utf8')
 
     expect(layoutField?.type).toBe('blocks')
+    expect(layoutField?.blocks?.[0]).toMatchObject({
+      admin: { group: 'Start' },
+      slug: 'pageHeader',
+    })
+    expect(layoutField?.blocks?.at(-1)?.admin?.group).toBe('Advanced Library')
     expect(registeredSlugs).toHaveLength(53)
     expect(registeredSlugs).toContain('academicProgrammes')
     expect(registeredSlugs).toContain('leadershipProfiles')

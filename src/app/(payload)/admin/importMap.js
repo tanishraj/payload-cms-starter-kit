@@ -1,5 +1,4 @@
 import { SlugField as SlugField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
-import { DepartmentSelectField as DepartmentSelectField_17c4a18a7ec18e88140afd59e88e9e57 } from '../../../blocks/DepartmentProfiles/DepartmentSelectField'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -20,6 +19,7 @@ import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f
 import { BlockquoteFeatureClient as BlockquoteFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { HeadingFeatureClient as HeadingFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ParagraphFeatureClient as ParagraphFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { DepartmentSelectField as DepartmentSelectField_17c4a18a7ec18e88140afd59e88e9e57 } from '../../../blocks/DepartmentProfiles/DepartmentSelectField'
 import { FixedToolbarFeatureClient as FixedToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { LogoHeightField as LogoHeightField_afbb23a221f2bb10f37063672149b807 } from '../../../blocks/HeaderNavbar12/LogoHeightField'
 import { DashboardOverview as DashboardOverview_05d601da1b7f3b105394f9997b7afdb8 } from '@/components/admin/DashboardOverview'
@@ -29,7 +29,6 @@ import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } f
 /** @type import('payload').ImportMap */
 export const importMap = {
   "@payloadcms/next/client#SlugField": SlugField_2b8867833a34864a02ddf429b0728a40,
-  "/blocks/DepartmentProfiles/DepartmentSelectField#DepartmentSelectField": DepartmentSelectField_17c4a18a7ec18e88140afd59e88e9e57,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -50,6 +49,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#BlockquoteFeatureClient": BlockquoteFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#HeadingFeatureClient": HeadingFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ParagraphFeatureClient": ParagraphFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "/blocks/DepartmentProfiles/DepartmentSelectField#DepartmentSelectField": DepartmentSelectField_17c4a18a7ec18e88140afd59e88e9e57,
   "@payloadcms/richtext-lexical/client#FixedToolbarFeatureClient": FixedToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "/blocks/HeaderNavbar12/LogoHeightField#LogoHeightField": LogoHeightField_afbb23a221f2bb10f37063672149b807,
   "@/components/admin/DashboardOverview#DashboardOverview": DashboardOverview_05d601da1b7f3b105394f9997b7afdb8,

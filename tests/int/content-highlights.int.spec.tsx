@@ -7,6 +7,8 @@ import { ContentHighlightsBlockComponent } from '@/blocks/ContentHighlights/Comp
 import { ContentHighlightsBlock } from '@/blocks/ContentHighlights/config'
 import { ContentHighlights } from '@/components/content-highlights'
 
+import { getGeneratedPayloadInterface } from './helpers/generatedPayloadInterface'
+
 type TestField = {
   admin?: {
     condition?: (data: unknown, siblingData: Record<string, unknown>) => boolean
@@ -760,9 +762,9 @@ describe('Content Highlights', () => {
 
   it('uses the current generated Payload contract', () => {
     const generatedTypes = readFileSync('src/payload-types.ts', 'utf8')
-    const contentHighlightsType = generatedTypes.slice(
-      generatedTypes.indexOf('export interface ContentHighlightsBlock {'),
-      generatedTypes.indexOf('export interface EditorialReasonsBlock {'),
+    const contentHighlightsType = getGeneratedPayloadInterface(
+      generatedTypes,
+      'ContentHighlightsBlock',
     )
 
     expect(contentHighlightsType).toContain("markerMode: 'numbered' | 'custom' | 'hidden'")

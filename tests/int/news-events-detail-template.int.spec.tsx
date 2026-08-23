@@ -110,7 +110,8 @@ describe('News & Events detail template', () => {
     const resolvedConfig = await config
     const pageSlugs = collectBlocks(Pages.fields).map(({ slug }) => slug)
     const reusableSectionSlugs = collectBlocks(ReusableSections.fields).map(({ slug }) => slug)
-    const templateSlugs = collectBlocks(NewsEventsDetailTemplate.fields).map(({ slug }) => slug)
+    const templateBlocks = collectBlocks(NewsEventsDetailTemplate.fields)
+    const templateSlugs = templateBlocks.map(({ slug }) => slug)
 
     expect(resolvedConfig.globals?.map(({ slug }) => slug)).toContain('news-events-detail-template')
     expect(NewsEventsDetailTemplate).toMatchObject({
@@ -120,6 +121,10 @@ describe('News & Events detail template', () => {
     })
     expect(NewsEventsDetailTemplate.versions).toBeTruthy()
     expect(templateSlugs.filter((slug) => slug !== 'newsEventsContent')).toEqual(pageSlugs)
+    expect(templateBlocks[0]).toMatchObject({
+      admin: { group: 'Template Core' },
+      slug: 'newsEventsContent',
+    })
     expect(templateSlugs.filter((slug) => slug === 'newsEventsContent')).toHaveLength(1)
     expect(pageSlugs).not.toContain('newsEventsContent')
     expect(reusableSectionSlugs).not.toContain('newsEventsContent')

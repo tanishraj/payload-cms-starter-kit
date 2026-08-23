@@ -6,9 +6,8 @@ import { describe, expect, it } from 'vitest'
 
 import { StudentExperienceBlockComponent } from '@/blocks/StudentExperience/Component'
 import { StudentExperienceBlock } from '@/blocks/StudentExperience/config'
+import { pageBuilderBlocks, reusableSectionBuilderBlocks } from '@/blocks/blockCatalog'
 
-const pagesSource = readFileSync('src/collections/Pages.ts', 'utf8')
-const reusableSectionsSource = readFileSync('src/collections/ReusableSections.ts', 'utf8')
 const pageRendererSource = readFileSync('src/blocks/renderPageBlocks.tsx', 'utf8')
 const livePreviewRendererSource = readFileSync('src/blocks/renderLivePreviewPageBlocks.tsx', 'utf8')
 const payloadTypesSource = readFileSync('src/payload-types.ts', 'utf8')
@@ -253,8 +252,8 @@ describe('StudentExperienceBlockComponent', () => {
 
 describe('StudentExperienceBlock registration', () => {
   it('registers the block everywhere a page can render or preview it', () => {
-    expect(pagesSource).toContain('StudentExperienceBlock')
-    expect(reusableSectionsSource).toContain('StudentExperienceBlock')
+    expect(pageBuilderBlocks.map(({ slug }) => slug)).toContain('studentExperience')
+    expect(reusableSectionBuilderBlocks.map(({ slug }) => slug)).toContain('studentExperience')
     expect(pageRendererSource).toContain("case 'studentExperience'")
     expect(livePreviewRendererSource).toContain("case 'studentExperience'")
     expect(payloadTypesSource).toContain('export interface StudentExperienceBlock')

@@ -7,6 +7,7 @@ import { describe, expect, it } from 'vitest'
 import {
   extractArrayPropertyIdentifiers,
   extractBlockDefinition,
+  extractBlockGroupIdentifiers,
   extractExportedObjectKeys,
   extractImports,
   extractSwitchCases,
@@ -34,6 +35,13 @@ const blockFixture = `
     interfaceName: 'ExampleBlock',
     fields: [],
   }
+`
+
+const groupedBlockCatalogFixture = `
+  export const pageBlockGroupDefinitions = [
+    { group: 'Start', blocks: [PageHeaderBlock, HeroBannerBlock] },
+    { group: 'Advanced Library', blocks: [AnnouncementBlock] },
+  ] as const
 `
 
 const systemFactoryFixture = `
@@ -80,6 +88,16 @@ describe('project context parser', () => {
       slug: 'system404',
       symbol: 'System404Block',
     })
+  })
+
+  it('extracts canonical grouped block registries in drawer order', () => {
+    expect(
+      extractBlockGroupIdentifiers(
+        groupedBlockCatalogFixture,
+        'src/blocks/blockCatalog.ts',
+        'pageBlockGroupDefinitions',
+      ),
+    ).toEqual(['PageHeaderBlock', 'HeroBannerBlock', 'AnnouncementBlock'])
   })
 
   it('extracts renderer, thumbnail, and fixture coverage', () => {

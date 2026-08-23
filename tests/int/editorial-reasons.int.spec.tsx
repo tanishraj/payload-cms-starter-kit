@@ -6,10 +6,9 @@ import { describe, expect, it } from 'vitest'
 
 import { EditorialReasonsBlockComponent } from '@/blocks/EditorialReasons/Component'
 import { EditorialReasonsBlock } from '@/blocks/EditorialReasons/config'
+import { pageBuilderBlocks, reusableSectionBuilderBlocks } from '@/blocks/blockCatalog'
 import type { Page } from '@/payload-types'
 
-const pagesSource = readFileSync('src/collections/Pages.ts', 'utf8')
-const reusableSectionsSource = readFileSync('src/collections/ReusableSections.ts', 'utf8')
 const pageRendererSource = readFileSync('src/blocks/renderPageBlocks.tsx', 'utf8')
 const livePreviewRendererSource = readFileSync('src/blocks/renderLivePreviewPageBlocks.tsx', 'utf8')
 const payloadTypesSource = readFileSync('src/payload-types.ts', 'utf8')
@@ -755,8 +754,8 @@ describe('EditorialReasonsBlockComponent', () => {
 
 describe('Editorial Reasons registration', () => {
   it('is available to Pages, Reusable Sections, and both renderers', () => {
-    expect(pagesSource).toContain('EditorialReasonsBlock')
-    expect(reusableSectionsSource).toContain('EditorialReasonsBlock')
+    expect(pageBuilderBlocks.map(({ slug }) => slug)).toContain('editorialReasons')
+    expect(reusableSectionBuilderBlocks.map(({ slug }) => slug)).toContain('editorialReasons')
     expect(pageRendererSource).toContain("case 'editorialReasons':")
     expect(livePreviewRendererSource).toContain("case 'editorialReasons':")
   })

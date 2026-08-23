@@ -100,6 +100,62 @@ export function extractArrayPropertyIdentifiers(source, filePath, targetProperty
   return identifiers
 }
 
+export function extractBlockGroupIdentifiers(source, filePath, exportName) {
+  const ast = parseSource(source, filePath)
+
+  for (const statement of ast.statements) {
+    if (!ts.isVariableStatement(statement)) continue
+
+    for (const declaration of statement.declarationList.declarations) {
+      if (!ts.isIdentifier(declaration.name) || declaration.name.text !== exportName) continue
+      if (!declaration.initializer) {
+        throw new Error(`${exportName} has no initializer in ${filePath}`)
+      }
+
+      const initializer = unwrapExpression(declaration.initializer)
+      if (!ts.isArrayLiteralExpression(initializer)) {
+        throw new Error(`${exportName} is not an array literal in ${filePath}`)
+      }
+
+      const identifiers = []
+
+      for (const groupElement of initializer.elements) {
+        const group = unwrapExpression(groupElement)
+        if (!ts.isObjectLiteralExpression(group)) {
+          throw new Error(`Invalid block group in ${exportName} from ${filePath}`)
+        }
+
+        const blocksProperty = group.properties.find(
+          (property) =>
+            ts.isPropertyAssignment(property) && getPropertyName(property.name) === 'blocks',
+        )
+
+        if (!blocksProperty || !ts.isPropertyAssignment(blocksProperty)) {
+          throw new Error(`Block group is missing blocks in ${exportName} from ${filePath}`)
+        }
+
+        const blocks = unwrapExpression(blocksProperty.initializer)
+        if (!ts.isArrayLiteralExpression(blocks)) {
+          throw new Error(`Block group blocks must be an array in ${exportName} from ${filePath}`)
+        }
+
+        for (const block of blocks.elements) {
+          if (!ts.isIdentifier(block)) {
+            throw new Error(
+              `Block group contains a non-identifier in ${exportName} from ${filePath}`,
+            )
+          }
+          identifiers.push(block.text)
+        }
+      }
+
+      return identifiers
+    }
+  }
+
+  throw new Error(`Missing ${exportName} in ${filePath}`)
+}
+
 export function extractBlockDefinition(source, filePath) {
   const ast = parseSource(source, filePath)
 
@@ -368,6 +424,26 @@ async function getRegistrySlugs(projectRoot, collectionPath, definitionsBySymbol
   })
 }
 
+async function getPageCatalogSlugs(projectRoot, definitionsBySymbol) {
+  const catalogPath = 'src/blocks/blockCatalog.ts'
+  const source = await readText(projectRoot, catalogPath)
+  const symbols = extractBlockGroupIdentifiers(
+    source,
+    catalogPath,
+    'pageBlockGroupDefinitions',
+  )
+
+  return symbols.map((symbol) => {
+    const definition = definitionsBySymbol.get(symbol)
+
+    if (!definition) {
+      throw new Error(`Unknown block symbol ${symbol} in ${catalogPath}`)
+    }
+
+    return definition.slug
+  })
+}
+
 async function getRegisteredConfigs(projectRoot, propertyName) {
   const configPath = 'src/payload.config.ts'
   const source = await readText(projectRoot, configPath)
@@ -421,6 +497,7 @@ export async function buildProjectInventory(projectRoot) {
   const definitionsBySymbol = new Map(
     definitions.map((definition) => [definition.symbol, definition]),
   )
+  const pageBlockSlugs = await getPageCatalogSlugs(root, definitionsBySymbol)
   const thumbnailDefinitions = extractThumbnailDefinitions(
     await readText(root, 'src/block-thumbnails/definitions.ts'),
     'src/block-thumbnails/definitions.ts',
@@ -468,15 +545,11 @@ export async function buildProjectInventory(projectRoot) {
       livePreviewRenderer: extractSwitchCases(
         await readText(root, 'src/blocks/renderLivePreviewPageBlocks.tsx'),
       ),
-      page: await getRegistrySlugs(root, 'src/collections/Pages.ts', definitionsBySymbol),
+      page: pageBlockSlugs,
       productionRenderer: extractSwitchCases(
         await readText(root, 'src/blocks/renderPageBlocks.tsx'),
       ),
-      reusableSection: await getRegistrySlugs(
-        root,
-        'src/collections/ReusableSections.ts',
-        definitionsBySymbol,
-      ),
+      reusableSection: pageBlockSlugs.filter((slug) => slug !== 'reusableSection'),
       shared: await Promise.all(
         sharedPaths.map(async (filePath) => ({
           exports: extractExportNames(await readText(root, filePath), filePath),

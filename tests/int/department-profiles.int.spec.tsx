@@ -14,6 +14,9 @@ import {
 } from '@/blocks/DepartmentProfiles/config'
 import { getDepartmentOptionsFromFormFields } from '@/blocks/DepartmentProfiles/departmentOptions'
 import type { ResolvedDepartmentProfile } from '@/blocks/DepartmentProfiles/types'
+import { pageBuilderBlocks, reusableSectionBuilderBlocks } from '@/blocks/blockCatalog'
+
+import { getGeneratedPayloadInterface } from './helpers/generatedPayloadInterface'
 
 type InspectableField = {
   admin?: {
@@ -695,18 +698,16 @@ describe('Department Profiles block', () => {
   })
 
   it('registers production, preview, thumbnail, and generated type contracts', () => {
-    const pages = readFileSync('src/collections/Pages.ts', 'utf8')
-    const reusable = readFileSync('src/collections/ReusableSections.ts', 'utf8')
     const production = readFileSync('src/blocks/renderPageBlocks.tsx', 'utf8')
     const preview = readFileSync('src/blocks/renderLivePreviewPageBlocks.tsx', 'utf8')
     const generated = readFileSync('src/payload-types.ts', 'utf8')
-    const generatedDepartmentProfiles = generated.slice(
-      generated.indexOf('export interface DepartmentProfilesBlock {'),
-      generated.indexOf('export interface NewsEventsHighlightsBlock {'),
+    const generatedDepartmentProfiles = getGeneratedPayloadInterface(
+      generated,
+      'DepartmentProfilesBlock',
     )
 
-    expect(pages).toContain('DepartmentProfilesBlock')
-    expect(reusable).toContain('DepartmentProfilesBlock')
+    expect(pageBuilderBlocks.map(({ slug }) => slug)).toContain('departmentProfiles')
+    expect(reusableSectionBuilderBlocks.map(({ slug }) => slug)).toContain('departmentProfiles')
     expect(production).toContain("case 'departmentProfiles'")
     expect(preview).toContain("case 'departmentProfiles'")
     expect(generatedDepartmentProfiles).toContain('export interface DepartmentProfilesBlock')
