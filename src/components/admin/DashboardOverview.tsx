@@ -3,6 +3,13 @@ import { headers as getHeaders } from 'next/headers'
 import { getPayload } from 'payload'
 
 import { hasAdminCapability } from '@/access/adminCapabilities'
+import { DashboardWorkflowCard } from '@/components/admin/DashboardWorkflowCard'
+import {
+  buildInReviewAdminURL,
+  buildScheduledAdminURL,
+  settleDashboardCount,
+  type DashboardAttentionItem,
+} from '@/components/admin/dashboardAttention'
 import type { User } from '@/payload-types'
 
 // ── Shared style helpers ───────────────────────────────────────────────────────
@@ -246,6 +253,7 @@ export async function DashboardOverview() {
   const secureQuery = { overrideAccess: false as const, user }
   const zeroCount = () => Promise.resolve({ totalDocs: 0 })
   const emptyDocs = () => Promise.resolve({ docs: [] })
+  const emptyWorkflowCount = Promise.resolve({ status: 'available' as const, value: 0 })
   const now = new Date().toISOString()
 
   const [
@@ -282,45 +290,45 @@ export async function DashboardOverview() {
       : zeroCount(),
     // In review
     visibility.pages
-      ? payload
-          .count({
+      ? settleDashboardCount(
+          payload.count({
             collection: 'pages',
             ...secureQuery,
             where: { workflowState: { equals: 'in_review' } },
-          })
-          .catch(zeroCount)
-      : zeroCount(),
+          }),
+        )
+      : emptyWorkflowCount,
     visibility.articles
-      ? payload
-          .count({
+      ? settleDashboardCount(
+          payload.count({
             collection: 'articles',
             ...secureQuery,
             where: { workflowState: { equals: 'in_review' } },
-          })
-          .catch(zeroCount)
-      : zeroCount(),
+          }),
+        )
+      : emptyWorkflowCount,
     visibility.newsEvents
-      ? payload
-          .count({
+      ? settleDashboardCount(
+          payload.count({
             collection: 'news-events',
             ...secureQuery,
             where: { workflowState: { equals: 'in_review' } },
-          })
-          .catch(zeroCount)
-      : zeroCount(),
+          }),
+        )
+      : emptyWorkflowCount,
     visibility.reviews
-      ? payload
-          .count({
+      ? settleDashboardCount(
+          payload.count({
             collection: 'reviews',
             ...secureQuery,
             where: { workflowState: { equals: 'in_review' } },
-          })
-          .catch(zeroCount)
-      : zeroCount(),
+          }),
+        )
+      : emptyWorkflowCount,
     // Scheduled
     visibility.pages
-      ? payload
-          .count({
+      ? settleDashboardCount(
+          payload.count({
             collection: 'pages',
             ...secureQuery,
             where: {
@@ -329,12 +337,12 @@ export async function DashboardOverview() {
                 { scheduledPublishAt: { greater_than: now } },
               ],
             },
-          })
-          .catch(zeroCount)
-      : zeroCount(),
+          }),
+        )
+      : emptyWorkflowCount,
     visibility.articles
-      ? payload
-          .count({
+      ? settleDashboardCount(
+          payload.count({
             collection: 'articles',
             ...secureQuery,
             where: {
@@ -343,12 +351,12 @@ export async function DashboardOverview() {
                 { scheduledPublishAt: { greater_than: now } },
               ],
             },
-          })
-          .catch(zeroCount)
-      : zeroCount(),
+          }),
+        )
+      : emptyWorkflowCount,
     visibility.newsEvents
-      ? payload
-          .count({
+      ? settleDashboardCount(
+          payload.count({
             collection: 'news-events',
             ...secureQuery,
             where: {
@@ -357,9 +365,9 @@ export async function DashboardOverview() {
                 { scheduledPublishAt: { greater_than: now } },
               ],
             },
-          })
-          .catch(zeroCount)
-      : zeroCount(),
+          }),
+        )
+      : emptyWorkflowCount,
     // Lead / ops
     visibility.formSubmissions
       ? payload
@@ -415,14 +423,44 @@ export async function DashboardOverview() {
       : emptyDocs(),
   ])
 
-  const totalInReview =
-    inReviewPages.totalDocs +
-    inReviewArticles.totalDocs +
-    inReviewNews.totalDocs +
-    inReviewReviews.totalDocs
+  const inReviewItems: DashboardAttentionItem[] = [
+    visibility.pages
+      ? { href: buildInReviewAdminURL('pages'), label: 'Pages', result: inReviewPages }
+      : null,
+    visibility.articles
+      ? { href: buildInReviewAdminURL('articles'), label: 'Articles', result: inReviewArticles }
+      : null,
+    visibility.newsEvents
+      ? {
+          href: buildInReviewAdminURL('news-events'),
+          label: 'News & Events',
+          result: inReviewNews,
+        }
+      : null,
+    visibility.reviews
+      ? { href: buildInReviewAdminURL('reviews'), label: 'Reviews', result: inReviewReviews }
+      : null,
+  ].filter((item): item is DashboardAttentionItem => item !== null)
 
-  const totalScheduled =
-    scheduledPages.totalDocs + scheduledArticles.totalDocs + scheduledNews.totalDocs
+  const scheduledItems: DashboardAttentionItem[] = [
+    visibility.pages
+      ? { href: buildScheduledAdminURL('pages', now), label: 'Pages', result: scheduledPages }
+      : null,
+    visibility.articles
+      ? {
+          href: buildScheduledAdminURL('articles', now),
+          label: 'Articles',
+          result: scheduledArticles,
+        }
+      : null,
+    visibility.newsEvents
+      ? {
+          href: buildScheduledAdminURL('news-events', now),
+          label: 'News & Events',
+          result: scheduledNews,
+        }
+      : null,
+  ].filter((item): item is DashboardAttentionItem => item !== null)
 
   const recentEdits: RecentItem[] = [
     ...recentPages.docs.map((d) => ({
@@ -458,18 +496,6 @@ export async function DashboardOverview() {
     visibility.pages || visibility.articles || visibility.newsEvents || visibility.reviews
   const hasScheduledContent = visibility.pages || visibility.articles || visibility.newsEvents
   const hasAttention = hasWorkflowContent || visibility.formSubmissions || visibility.workQueue
-  const workflowCollection = visibility.pages
-    ? 'pages'
-    : visibility.articles
-      ? 'articles'
-      : visibility.newsEvents
-        ? 'news-events'
-        : 'reviews'
-  const scheduledCollection = visibility.pages
-    ? 'pages'
-    : visibility.articles
-      ? 'articles'
-      : 'news-events'
   const quickActions = [
     { enabled: visibility.pages, href: '/admin/collections/pages/create', label: '+ New Page' },
     {
@@ -503,27 +529,16 @@ export async function DashboardOverview() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
               gap: '12px',
               marginBottom: '32px',
             }}
           >
             {hasWorkflowContent ? (
-              <AttentionCard
-                label="In Review"
-                value={totalInReview}
-                href={`/admin/collections/${workflowCollection}?where[workflowState][equals]=in_review`}
-                accent="#f59e0b"
-                alert
-              />
+              <DashboardWorkflowCard items={inReviewItems} label="In Review" />
             ) : null}
             {hasScheduledContent ? (
-              <AttentionCard
-                label="Scheduled"
-                value={totalScheduled}
-                href={`/admin/collections/${scheduledCollection}?where[scheduledPublishAt][exists]=true`}
-                accent="#10b981"
-              />
+              <DashboardWorkflowCard items={scheduledItems} label="Scheduled" />
             ) : null}
             {visibility.formSubmissions ? (
               <AttentionCard

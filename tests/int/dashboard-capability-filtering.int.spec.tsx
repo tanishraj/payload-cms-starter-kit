@@ -21,6 +21,17 @@ const articleManager = {
   role: 'contentManager',
 }
 
+const workflowManager = {
+  capabilities: {
+    manage_articles: true,
+    manage_news_events: true,
+    manage_pages: true,
+    manage_reviews: true,
+  },
+  id: 'workflow-manager',
+  role: 'contentManager',
+}
+
 describe('dashboard capability filtering', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -119,6 +130,74 @@ describe('dashboard capability filtering', () => {
     ]) {
       expect(html).toContain(label)
     }
+  })
+
+  it('links every non-zero workflow count to its exact collection', async () => {
+    mocks.auth.mockResolvedValue({ user: workflowManager })
+    mocks.count.mockImplementation(async ({ collection, where }) => {
+      if (!where) return { totalDocs: 10 }
+      if ('workflowState' in where) {
+        const inReviewCounts: Record<string, number> = {
+          articles: 3,
+          'news-events': 0,
+          pages: 2,
+          reviews: 1,
+        }
+        return {
+          totalDocs: inReviewCounts[String(collection)] ?? 0,
+        }
+      }
+      const scheduledCounts: Record<string, number> = {
+        articles: 0,
+        'news-events': 2,
+        pages: 1,
+      }
+      return { totalDocs: scheduledCounts[String(collection)] ?? 0 }
+    })
+
+    const html = renderToStaticMarkup(await DashboardOverview())
+
+    expect(html).toContain('>6<')
+    expect(html).toContain(
+      'href="/admin/collections/pages?where[workflowState][equals]=in_review"',
+    )
+    expect(html).toContain(
+      'href="/admin/collections/articles?where[workflowState][equals]=in_review"',
+    )
+    expect(html).toContain(
+      'href="/admin/collections/reviews?where[workflowState][equals]=in_review"',
+    )
+    expect(html).not.toContain(
+      'href="/admin/collections/news-events?where[workflowState][equals]=in_review"',
+    )
+    expect(html.indexOf('Pages')).toBeLessThan(html.indexOf('Articles'))
+    expect(html.indexOf('Articles')).toBeLessThan(html.indexOf('Reviews'))
+    expect(html).toMatch(/where\[and\]\[0\]\[scheduledPublishAt\]\[exists\]=true/)
+    expect(html).toMatch(/where\[and\]\[1\]\[scheduledPublishAt\]\[greater_than\]=/)
+  })
+
+  it('shows an unavailable row without hiding successful sibling counts', async () => {
+    mocks.auth.mockResolvedValue({ user: workflowManager })
+    mocks.count.mockImplementation(async ({ collection, where }) => {
+      if (!where) return { totalDocs: 10 }
+      if ('workflowState' in where && collection === 'articles') {
+        throw new Error('article count unavailable')
+      }
+      if ('workflowState' in where) return { totalDocs: collection === 'pages' ? 2 : 0 }
+      return { totalDocs: 0 }
+    })
+
+    const html = renderToStaticMarkup(await DashboardOverview())
+
+    expect(html).toContain('2+')
+    expect(html).toContain('Partial count')
+    expect(html).toContain('Count unavailable')
+    expect(html).toContain(
+      'href="/admin/collections/pages?where[workflowState][equals]=in_review"',
+    )
+    expect(html).not.toContain(
+      'href="/admin/collections/articles?where[workflowState][equals]=in_review"',
+    )
   })
 
   it('isolates an authorized query failure', async () => {
