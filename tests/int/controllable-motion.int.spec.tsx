@@ -22,7 +22,10 @@ function installMotionPreference(initialReducedMotion = false): MotionPreference
     removeEventListener: (_event: string, listener: () => void) => listeners.delete(listener),
   }
 
-  vi.stubGlobal('matchMedia', vi.fn(() => mediaQuery))
+  vi.stubGlobal(
+    'matchMedia',
+    vi.fn(() => mediaQuery),
+  )
 
   return {
     listenerCount: () => listeners.size,
@@ -49,8 +52,8 @@ function MotionHarness({ enabled = true }: { enabled?: boolean }) {
           onToggle={motion.toggleUserPaused}
         />
       ) : null}
-      <a href="/inside">Inside link</a>
-      <a href="/second">Second link</a>
+      <button type="button">Inside control</button>
+      <button type="button">Second control</button>
     </div>
   )
 }
@@ -70,18 +73,18 @@ describe('controllable motion', () => {
     render(<MotionHarness />)
 
     const region = screen.getByTestId('motion-region')
-    const firstLink = screen.getByRole('link', { name: 'Inside link' })
+    const firstControl = screen.getByRole('button', { name: 'Inside control' })
 
     expect(screen.getByTestId('motion-allowed').textContent).toBe('true')
 
     fireEvent.pointerEnter(region)
     expect(screen.getByTestId('motion-allowed').textContent).toBe('false')
 
-    fireEvent.focus(firstLink)
+    fireEvent.focus(firstControl)
     fireEvent.pointerLeave(region)
     expect(screen.getByTestId('motion-allowed').textContent).toBe('false')
 
-    fireEvent.blur(firstLink, { relatedTarget: null })
+    fireEvent.blur(firstControl, { relatedTarget: null })
     expect(screen.getByTestId('motion-allowed').textContent).toBe('true')
   })
 
@@ -89,16 +92,16 @@ describe('controllable motion', () => {
     installMotionPreference()
     render(<MotionHarness />)
 
-    const firstLink = screen.getByRole('link', { name: 'Inside link' })
-    const secondLink = screen.getByRole('link', { name: 'Second link' })
+    const firstControl = screen.getByRole('button', { name: 'Inside control' })
+    const secondControl = screen.getByRole('button', { name: 'Second control' })
 
-    fireEvent.focus(firstLink)
-    fireEvent.blur(firstLink, { relatedTarget: secondLink })
-    fireEvent.focus(secondLink)
+    fireEvent.focus(firstControl)
+    fireEvent.blur(firstControl, { relatedTarget: secondControl })
+    fireEvent.focus(secondControl)
 
     expect(screen.getByTestId('motion-allowed').textContent).toBe('false')
 
-    fireEvent.blur(secondLink, { relatedTarget: null })
+    fireEvent.blur(secondControl, { relatedTarget: null })
     expect(screen.getByTestId('motion-allowed').textContent).toBe('true')
   })
 

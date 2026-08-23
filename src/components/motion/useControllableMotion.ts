@@ -59,11 +59,7 @@ export function useControllableMotion({ enabled }: { enabled: boolean }): Contro
       onPointerLeave: handlePointerLeave,
     },
     isMotionAllowed:
-      enabled &&
-      !prefersReducedMotion &&
-      !isUserPaused &&
-      !isPointerPaused &&
-      !isFocusPaused,
+      enabled && !prefersReducedMotion && !isUserPaused && !isPointerPaused && !isFocusPaused,
     isUserPaused,
     prefersReducedMotion,
     showMotionControl: enabled && !prefersReducedMotion,
