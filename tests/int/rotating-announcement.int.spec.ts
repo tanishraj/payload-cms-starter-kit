@@ -4,7 +4,8 @@ import type { HTMLAttributes, ReactNode } from 'react'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-const motionPreferences = vi.hoisted(() => ({ reduced: false }))
+let prefersReducedMotion = false
+const motionPreferenceListeners = new Set<() => void>()
 
 vi.mock('framer-motion', async () => {
   const React = await import('react')
@@ -32,7 +33,6 @@ vi.mock('framer-motion', async () => {
         })
       }),
     },
-    useReducedMotion: () => motionPreferences.reduced,
   }
 })
 
@@ -41,13 +41,28 @@ import { RotatingAnnouncementContent } from '@/components/announcement/RotatingA
 describe('rotating announcement content', () => {
   beforeEach(() => {
     ;(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
-    motionPreferences.reduced = false
+    prefersReducedMotion = false
+    motionPreferenceListeners.clear()
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn(() => ({
+        addEventListener: (_event: string, listener: () => void) =>
+          motionPreferenceListeners.add(listener),
+        get matches() {
+          return prefersReducedMotion
+        },
+        media: '(prefers-reduced-motion: reduce)',
+        removeEventListener: (_event: string, listener: () => void) =>
+          motionPreferenceListeners.delete(listener),
+      })),
+    )
     vi.useFakeTimers()
   })
 
   afterEach(() => {
     vi.clearAllTimers()
     vi.useRealTimers()
+    vi.unstubAllGlobals()
     cleanup()
   })
 
@@ -61,6 +76,7 @@ describe('rotating announcement content', () => {
 
     expect(screen.getByText('One description')).toBeTruthy()
     expect(screen.getByRole('link', { name: 'One description' }).getAttribute('href')).toBe('/one')
+    expect(screen.queryByRole('button', { name: /announcements/i })).toBeNull()
 
     act(() => {
       vi.advanceTimersByTime(8000)
@@ -128,7 +144,7 @@ describe('rotating announcement content', () => {
     const rotator = screen.getByTestId('announcement-rotator')
 
     act(() => {
-      fireEvent.mouseEnter(rotator)
+      fireEvent.pointerEnter(rotator)
     })
 
     act(() => {
@@ -139,7 +155,7 @@ describe('rotating announcement content', () => {
     expect(screen.queryByText('Second description')).toBeNull()
 
     act(() => {
-      fireEvent.mouseLeave(rotator)
+      fireEvent.pointerLeave(rotator)
     })
 
     act(() => {
@@ -173,18 +189,104 @@ describe('rotating announcement content', () => {
     expect(screen.queryByText('First horizontal title')).toBeNull()
   })
 
-  it('disables transition duration when reduced motion is preferred', () => {
-    motionPreferences.reduced = true
-
+  it('persists the visitor pause choice until Play is selected', () => {
     render(
       createElement(RotatingAnnouncementContent, {
+        intervalMs: 2000,
+        items: [{ description: 'First description' }, { description: 'Second description' }],
+      }),
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Pause announcements' }))
+
+    act(() => {
+      vi.advanceTimersByTime(8000)
+    })
+
+    expect(screen.getByText('First description')).toBeTruthy()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Play announcements' }))
+
+    act(() => {
+      vi.advanceTimersByTime(2325)
+    })
+
+    expect(screen.getByText('Second description')).toBeTruthy()
+  })
+
+  it('keeps pointer and focus pauses independent', () => {
+    render(
+      createElement(RotatingAnnouncementContent, {
+        intervalMs: 2000,
         items: [
-          { description: 'First description' },
-          { description: 'Second description' },
+          { description: 'First description', url: '/first' },
+          { description: 'Second description', url: '/second' },
         ],
       }),
     )
 
+    const rotator = screen.getByTestId('announcement-rotator')
+    const currentLink = screen.getByRole('link', { name: 'First description' })
+
+    fireEvent.pointerEnter(rotator)
+    fireEvent.focus(currentLink)
+    fireEvent.pointerLeave(rotator)
+
+    act(() => {
+      vi.advanceTimersByTime(4000)
+    })
+
+    expect(screen.getByText('First description')).toBeTruthy()
+
+    fireEvent.blur(currentLink, { relatedTarget: null })
+
+    act(() => {
+      vi.advanceTimersByTime(2325)
+    })
+
+    expect(screen.getByText('Second description')).toBeTruthy()
+  })
+
+  it('stops replacement and transitions when reduced motion is preferred', () => {
+    prefersReducedMotion = true
+
+    render(
+      createElement(RotatingAnnouncementContent, {
+        items: [{ description: 'First description' }, { description: 'Second description' }],
+      }),
+    )
+
     expect(screen.getByTestId('announcement-item').getAttribute('data-duration')).toBe('0')
+    expect(screen.queryByRole('button', { name: /announcements/i })).toBeNull()
+
+    act(() => {
+      vi.advanceTimersByTime(8000)
+    })
+
+    expect(screen.getByText('First description')).toBeTruthy()
+    expect(screen.queryByText('Second description')).toBeNull()
+  })
+
+  it('cleans up rotation when content shrinks to one item', () => {
+    const view = render(
+      createElement(RotatingAnnouncementContent, {
+        intervalMs: 2000,
+        items: [{ description: 'First description' }, { description: 'Second description' }],
+      }),
+    )
+
+    view.rerender(
+      createElement(RotatingAnnouncementContent, {
+        intervalMs: 2000,
+        items: [{ description: 'Only description' }],
+      }),
+    )
+
+    act(() => {
+      vi.advanceTimersByTime(8000)
+    })
+
+    expect(screen.getByText('Only description')).toBeTruthy()
+    expect(screen.queryByRole('button', { name: /announcements/i })).toBeNull()
   })
 })

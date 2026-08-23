@@ -1,7 +1,10 @@
 'use client'
 
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useMemo, useState } from 'react'
+
+import { MotionToggle } from '@/components/motion/MotionToggle'
+import { useControllableMotion } from '@/components/motion/useControllableMotion'
 
 const DEFAULT_INTERVAL_MS = 4000
 const MIN_INTERVAL_MS = 2000
@@ -29,49 +32,58 @@ export function RotatingAnnouncementContent({
     [intervalMs],
   )
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isPaused, setIsPaused] = useState(false)
-  const prefersReducedMotion = useReducedMotion()
+  const motionState = useControllableMotion({ enabled: items.length > 1 })
 
   useEffect(() => {
-    if (isPaused || items.length <= 1) {
-      return
-    }
+    if (!motionState.isMotionAllowed) return
 
     const intervalId = window.setInterval(() => {
       setCurrentIndex((index) => (index + 1) % items.length)
     }, sanitizedInterval)
 
     return () => window.clearInterval(intervalId)
-  }, [isPaused, items.length, sanitizedInterval])
+  }, [items.length, motionState.isMotionAllowed, sanitizedInterval])
 
-  const safeCurrentIndex = currentIndex % items.length
+  const safeCurrentIndex = items.length ? currentIndex % items.length : 0
   const currentItem = items[safeCurrentIndex]
   const initialOffset = mode === 'horizontal' ? { x: 8, y: 0 } : { x: 0, y: 8 }
   const exitOffset = mode === 'horizontal' ? { x: -8, y: 0 } : { x: 0, y: -8 }
-  const motionDisabled = prefersReducedMotion === true
+  const motionDisabled = motionState.prefersReducedMotion
+
+  if (!currentItem) return null
 
   return (
     <div
-      className="relative min-w-0 flex-1 overflow-hidden py-0.5"
+      className="flex min-w-0 flex-1 items-center gap-2"
       data-testid="announcement-rotator"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      {...motionState.interactionProps}
     >
-      <AnimatePresence initial={false} mode="wait">
-        <motion.div
-          key={safeCurrentIndex}
-          animate={{ opacity: 1, x: 0, y: 0 }}
-          data-testid="announcement-item"
-          exit={motionDisabled ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, ...exitOffset }}
-          initial={motionDisabled ? false : { opacity: 0, ...initialOffset }}
-          transition={{
-            duration: motionDisabled ? 0 : TRANSITION_DURATION_SECONDS,
-            ease: 'easeOut',
-          }}
-        >
-          <AnnouncementItem item={currentItem} />
-        </motion.div>
-      </AnimatePresence>
+      <div className="relative min-w-0 flex-1 overflow-hidden py-0.5">
+        <AnimatePresence initial={false} mode="wait">
+          <motion.div
+            key={safeCurrentIndex}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            data-testid="announcement-item"
+            exit={motionDisabled ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, ...exitOffset }}
+            initial={motionDisabled ? false : { opacity: 0, ...initialOffset }}
+            transition={{
+              duration: motionDisabled ? 0 : TRANSITION_DURATION_SECONDS,
+              ease: 'easeOut',
+            }}
+          >
+            <AnnouncementItem item={currentItem} />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+      {motionState.showMotionControl ? (
+        <MotionToggle
+          className="rounded-lg text-current hover:bg-current/10 hover:text-current"
+          contextLabel="announcements"
+          isPaused={motionState.isUserPaused}
+          onToggle={motionState.toggleUserPaused}
+          variant="ghost"
+        />
+      ) : null}
     </div>
   )
 }
