@@ -15,8 +15,16 @@ import {
 } from '@/blocks/shared/contentStyles'
 import type { ContentTabVariant } from '@/blocks/shared/contentTabRail'
 import type {
+  MediaOverlayCoverage,
+  MediaOverlayDirection,
   MediaOverlayStrength,
   MediaOverlayTone,
+} from '@/blocks/shared/mediaOverlayPresentation'
+import {
+  normalizeMediaOverlayCoverage,
+  normalizeMediaOverlayDirection,
+  normalizeMediaOverlayStrength,
+  normalizeMediaOverlayTone,
 } from '@/blocks/shared/mediaOverlayPresentation'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
@@ -71,6 +79,8 @@ type DepartmentProfilesBlockLike = {
   loadMoreLabel?: string | null
   mediumColumns?: DepartmentProfilesColumns | null
   noResultsMessage?: string | null
+  overlayCoverage?: MediaOverlayCoverage | null
+  overlayDirection?: MediaOverlayDirection | null
   overlayStyle?: MediaOverlayStrength | null
   profiles?: DepartmentProfileValue[] | null
   profilesPerLoad?: number | string | null
@@ -143,6 +153,8 @@ export function DepartmentProfilesBlockComponent({
   loadMoreLabel,
   mediumColumns = '6',
   noResultsMessage,
+  overlayCoverage = 'full',
+  overlayDirection = 'bottomToTop',
   overlayStyle = 'dark',
   profiles,
   profilesPerLoad = 20,
@@ -241,7 +253,12 @@ export function DepartmentProfilesBlockComponent({
   const resolvedHeaderLayout = headerLayout === 'stacked' ? 'stacked' : 'split'
   const resolvedLoadMoreLabel = loadMoreLabel?.trim() || 'Load More'
   const resolvedNoResultsMessage = noResultsMessage?.trim() || 'No matching profiles found.'
-  const resolvedOverlayStyle = overlayStyle === 'darker' ? 'darker' : 'dark'
+  const resolvedOverlayDirection = normalizeMediaOverlayDirection(overlayDirection, 'bottomToTop')
+  const resolvedOverlayCoverage = normalizeMediaOverlayCoverage(
+    overlayCoverage,
+    resolvedOverlayDirection,
+  )
+  const resolvedOverlayStyle = normalizeMediaOverlayStrength(overlayStyle, 'dark')
   const parsedProfilesPerLoad = Number(profilesPerLoad)
   const resolvedProfilesPerLoad = validProfilesPerLoad.has(
     parsedProfilesPerLoad as DepartmentProfilesPerLoad,
@@ -254,8 +271,7 @@ export function DepartmentProfilesBlockComponent({
   const resolvedTabVariant = validTabVariants.has(tabVariant ?? 'pill')
     ? (tabVariant ?? 'pill')
     : 'pill'
-  const resolvedThemeMode =
-    themeMode === 'auto' || themeMode === 'brand' ? themeMode : ('dark' as const)
+  const resolvedThemeMode = normalizeMediaOverlayTone(themeMode, 'dark')
   const resolvedTitle = title?.trim()
   const hasHeading = Boolean(resolvedTitle || resolvedAccentTitle)
   const hasHeader = Boolean(
@@ -341,6 +357,8 @@ export function DepartmentProfilesBlockComponent({
             hasSectionHeading={hasHeading}
             loadMoreLabel={resolvedLoadMoreLabel}
             noResultsMessage={resolvedNoResultsMessage}
+            overlayCoverage={resolvedOverlayCoverage}
+            overlayDirection={resolvedOverlayDirection}
             overlayStyle={resolvedOverlayStyle}
             profiles={resolvedProfiles}
             profilesPerLoad={resolvedProfilesPerLoad}

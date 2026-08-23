@@ -30,7 +30,7 @@ Responsive rendering remains content-safe: phones use one column, small screens 
 
 Every Image Overlay card uses `aspect-4/5 sm:aspect-3/4`, regardless of Card Size. On mobile, the single-column Overlay grid is centered and capped at 320px for Large, 288px for Medium, and 256px for Small; from `sm` upward it returns to full grid width. Size also changes the configured column range, content padding, typography, metadata spacing, and responsive image `sizes` hint. Large therefore produces the roomiest cards, Medium a denser directory, and Small the highest-density directory.
 
-Image crop positions, Bottom-to-Top/Full overlay behavior, theme tone and strength, optional images, and the `UserRound` fallback remain supported. Text must wrap without clipping at the eight-column wide-screen layout. Small metadata uses compact but readable text and spacing.
+Image crop positions, shared overlay tone/strength/direction/coverage controls, optional images, and the `UserRound` fallback remain supported. Existing content keeps Dark tone, Dark strength, Bottom-to-Top direction, and Full coverage. Text must wrap without clipping at the eight-column wide-screen layout. Small metadata uses compact but readable text and spacing.
 
 Inline cards retain their 96px, 80px, and 64px media scales for Large, Medium, and Small. Every Inline size retains the original two-to-four-column control so labels and metadata have sufficient measure.
 

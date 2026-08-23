@@ -10,6 +10,8 @@ import {
   type ContentTabVariant,
 } from '@/blocks/shared/contentTabRail'
 import type {
+  MediaOverlayCoverage,
+  MediaOverlayDirection,
   MediaOverlayStrength,
   MediaOverlayTone,
 } from '@/blocks/shared/mediaOverlayPresentation'
@@ -39,14 +41,16 @@ type DepartmentProfilesClientProps = {
   hasSectionHeading: boolean
   loadMoreLabel: string
   noResultsMessage: string
-  overlayStyle: Extract<MediaOverlayStrength, 'dark' | 'darker'>
+  overlayCoverage: MediaOverlayCoverage
+  overlayDirection: MediaOverlayDirection
+  overlayStyle: MediaOverlayStrength
   profiles: ResolvedDepartmentProfile[]
   profilesPerLoad: DepartmentProfilesPerLoad
   searchPlaceholder: string
   showDepartmentTabs: boolean
   showSearch: boolean
   tabVariant: ContentTabVariant
-  themeMode: Extract<MediaOverlayTone, 'auto' | 'brand' | 'dark'>
+  themeMode: MediaOverlayTone
 }
 
 const gridClasses = {
@@ -85,6 +89,8 @@ type DepartmentProfilesGridProps = Pick<
   | 'cardSize'
   | 'columns'
   | 'hasSectionHeading'
+  | 'overlayCoverage'
+  | 'overlayDirection'
   | 'overlayStyle'
   | 'themeMode'
 > & {
@@ -98,6 +104,8 @@ function DepartmentProfilesGrid({
   cardSize,
   columns,
   hasSectionHeading,
+  overlayCoverage,
+  overlayDirection,
   overlayStyle,
   profiles,
   themeMode,
@@ -120,6 +128,8 @@ function DepartmentProfilesGrid({
             imageSizes={imageSizes[columns]}
             key={profile.id}
             layout={cardLayout}
+            overlayCoverage={overlayCoverage}
+            overlayDirection={overlayDirection}
             overlayStyle={overlayStyle}
             profile={profile}
             size={cardSize}
@@ -151,6 +161,8 @@ function DepartmentProfilesGrid({
               hasSectionHeading={hasSectionHeading}
               imageSizes={imageSizes[columns]}
               layout={cardLayout}
+              overlayCoverage={overlayCoverage}
+              overlayDirection={overlayDirection}
               overlayStyle={overlayStyle}
               profile={profile}
               size={cardSize}
@@ -174,6 +186,8 @@ export function DepartmentProfilesClient({
   hasSectionHeading,
   loadMoreLabel,
   noResultsMessage,
+  overlayCoverage,
+  overlayDirection,
   overlayStyle,
   profiles,
   profilesPerLoad,
@@ -340,6 +354,8 @@ export function DepartmentProfilesClient({
             cardSize={cardSize}
             columns={columns}
             hasSectionHeading={hasSectionHeading}
+            overlayCoverage={overlayCoverage}
+            overlayDirection={overlayDirection}
             overlayStyle={overlayStyle}
             profiles={visibleProfiles}
             themeMode={themeMode}

@@ -76,6 +76,8 @@ const baseClientProps = {
   hasSectionHeading: true,
   loadMoreLabel: 'Load More',
   noResultsMessage: 'No matching profiles found.',
+  overlayCoverage: 'full' as const,
+  overlayDirection: 'bottomToTop' as const,
   overlayStyle: 'dark' as const,
   profiles: [
     createProfile(1),
@@ -255,18 +257,55 @@ describe('Department Profiles block', () => {
     ])
     expect(findField(themeFields, 'themeMode')?.options?.map(({ value }) => value)).toEqual([
       'auto',
+      'light',
       'dark',
       'brand',
     ])
     expect(findField(themeFields, 'overlayStyle')?.options?.map(({ value }) => value)).toEqual([
+      'light',
       'dark',
       'darker',
+    ])
+    expect(findField(themeFields, 'overlayDirection')).toMatchObject({
+      defaultValue: 'bottomToTop',
+      required: true,
+    })
+    expect(findField(themeFields, 'overlayDirection')?.options?.map(({ value }) => value)).toEqual([
+      'vertical',
+      'leftToRight',
+      'rightToLeft',
+      'bottomToTop',
+      'topToBottom',
+    ])
+    expect(findField(themeFields, 'overlayCoverage')).toMatchObject({
+      defaultValue: 'full',
+      required: true,
+    })
+    expect(findField(themeFields, 'overlayCoverage')?.options).toContainEqual({
+      label: 'Split (50%)',
+      value: 'split',
+    })
+    expect(
+      ['themeMode', 'overlayStyle', 'overlayDirection', 'overlayCoverage'].map((name) =>
+        themeFields.findIndex((field) => field.name === name),
+      ),
+    ).toEqual([
+      themeFields.findIndex((field) => field.name === 'themeMode'),
+      themeFields.findIndex((field) => field.name === 'themeMode') + 1,
+      themeFields.findIndex((field) => field.name === 'themeMode') + 2,
+      themeFields.findIndex((field) => field.name === 'themeMode') + 3,
     ])
     expect(
       findField(themeFields, 'themeMode')?.admin?.condition?.({}, { cardLayout: 'inline' }),
     ).toBe(false)
     expect(
       findField(themeFields, 'overlayStyle')?.admin?.condition?.({}, { cardLayout: 'overlay' }),
+    ).toBe(true)
+    expect(
+      findField(themeFields, 'overlayDirection')?.admin?.condition?.({}, { cardLayout: 'inline' }),
+    ).toBe(false)
+    expect(
+      findField(themeFields, 'overlayCoverage')?.admin?.condition?.({}, { cardLayout: 'overlay' }),
     ).toBe(true)
   })
 
@@ -336,6 +375,8 @@ describe('Department Profiles block', () => {
     expect(html).toContain('data-department-profiles-card-frame="boxed"')
     expect(html).toContain('data-department-profiles-columns="4"')
     expect(html).toContain('data-department-profile-card="true"')
+    expect(html).toContain('data-department-profile-overlay-coverage="full"')
+    expect(html).toContain('data-department-profile-overlay-direction="bottomToTop"')
     expect(html).toContain('aspect-3/4')
     expect(html).toContain('grid-cols-1')
     expect(html).toContain('sm:grid-cols-2')
@@ -393,6 +434,38 @@ describe('Department Profiles block', () => {
         smallColumns: '7',
       }),
     ).toContain('data-department-profiles-columns="3"')
+
+    const splitOverlay = renderBlock({
+      overlayCoverage: 'split',
+      overlayDirection: 'bottomToTop',
+      overlayStyle: 'light',
+      themeMode: 'light',
+    })
+    expect(splitOverlay).toContain('data-department-profile-overlay-coverage="split"')
+    expect(splitOverlay).toContain('data-department-profile-overlay-direction="bottomToTop"')
+    expect(splitOverlay).toContain('data-department-profile-overlay="light"')
+    expect(splitOverlay).toContain('data-department-profile-overlay-tone="light"')
+    expect(splitOverlay).toContain('h-1/2')
+    expect(splitOverlay).toContain('bg-linear-to-t')
+    expect(splitOverlay).toContain('text-black')
+
+    const evenSplitOverlay = renderBlock({
+      overlayCoverage: 'split',
+      overlayDirection: 'vertical',
+    })
+    expect(evenSplitOverlay).toContain('data-department-profile-overlay-coverage="full"')
+    expect(evenSplitOverlay).toContain('data-department-profile-overlay-direction="vertical"')
+
+    const invalidOverlay = renderBlock({
+      overlayCoverage: 'invalid',
+      overlayDirection: 'invalid',
+      overlayStyle: 'invalid',
+      themeMode: 'invalid',
+    })
+    expect(invalidOverlay).toContain('data-department-profile-overlay-coverage="full"')
+    expect(invalidOverlay).toContain('data-department-profile-overlay-direction="bottomToTop"')
+    expect(invalidOverlay).toContain('data-department-profile-overlay="dark"')
+    expect(invalidOverlay).toContain('data-department-profile-overlay-tone="dark"')
   })
 
   it('renders every overlay and inline card size with a missing-image fallback', () => {
@@ -450,6 +523,25 @@ describe('Department Profiles block', () => {
     ])
     expect(withoutImage).toContain('data-department-profile-placeholder="true"')
     expect(withoutImage).toContain('lucide-user-round')
+    const placeholderIndex = withoutImage.indexOf('data-department-profile-placeholder="true"')
+    const inlinePlaceholderElement = withoutImage.slice(
+      Math.max(0, placeholderIndex - 180),
+      placeholderIndex + 80,
+    )
+    expect(inlinePlaceholderElement).toContain('bg-current/10')
+    expect(inlinePlaceholderElement).toContain('ring-1')
+    expect(inlinePlaceholderElement).toContain('ring-inset')
+    expect(inlinePlaceholderElement).toContain('ring-current/10')
+    expect(inlinePlaceholderElement).toContain('text-muted-foreground')
+    expect(inlinePlaceholderElement).not.toContain('bg-muted')
+    expect(withoutImage).not.toContain('bg-background/60')
+
+    const overlayWithoutImage = renderDirectory('overlay', 'md', [
+      createProfile(51, { image: undefined, name: 'Overlay Without Portrait' }),
+    ])
+    expect(overlayWithoutImage).toContain(
+      'items-center justify-center bg-muted text-muted-foreground',
+    )
   })
 
   it('renders responsive density and frame geometry for both card layouts', () => {
@@ -558,17 +650,33 @@ describe('Department Profiles block', () => {
     const production = readFileSync('src/blocks/renderPageBlocks.tsx', 'utf8')
     const preview = readFileSync('src/blocks/renderLivePreviewPageBlocks.tsx', 'utf8')
     const generated = readFileSync('src/payload-types.ts', 'utf8')
+    const generatedDepartmentProfiles = generated.slice(
+      generated.indexOf('export interface DepartmentProfilesBlock {'),
+      generated.indexOf('export interface NewsEventsHighlightsBlock {'),
+    )
 
     expect(pages).toContain('DepartmentProfilesBlock')
     expect(reusable).toContain('DepartmentProfilesBlock')
     expect(production).toContain("case 'departmentProfiles'")
     expect(preview).toContain("case 'departmentProfiles'")
-    expect(generated).toContain('export interface DepartmentProfilesBlock')
-    expect(generated).toContain("cardLayout: 'overlay' | 'inline'")
-    expect(generated).toContain("cardSize: 'sm' | 'md' | 'lg'")
-    expect(generated).toContain("mediumColumns?: ('3' | '4' | '5' | '6') | null")
-    expect(generated).toContain("smallColumns?: ('4' | '5' | '6' | '7' | '8') | null")
-    expect(generated).toContain("cardFrame: 'boxed' | 'framed' | 'open'")
-    expect(generated).toContain("blockType: 'departmentProfiles'")
+    expect(generatedDepartmentProfiles).toContain('export interface DepartmentProfilesBlock')
+    expect(generatedDepartmentProfiles).toContain("cardLayout: 'overlay' | 'inline'")
+    expect(generatedDepartmentProfiles).toContain("cardSize: 'sm' | 'md' | 'lg'")
+    expect(generatedDepartmentProfiles).toContain("mediumColumns?: ('3' | '4' | '5' | '6') | null")
+    expect(generatedDepartmentProfiles).toContain(
+      "smallColumns?: ('4' | '5' | '6' | '7' | '8') | null",
+    )
+    expect(generatedDepartmentProfiles).toContain("cardFrame: 'boxed' | 'framed' | 'open'")
+    expect(generatedDepartmentProfiles).toContain(
+      "themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null",
+    )
+    expect(generatedDepartmentProfiles).toContain(
+      "overlayStyle?: ('light' | 'dark' | 'darker') | null",
+    )
+    expect(generatedDepartmentProfiles).toContain(
+      "overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null",
+    )
+    expect(generatedDepartmentProfiles).toContain("overlayCoverage?: ('full' | 'split') | null")
+    expect(generatedDepartmentProfiles).toContain("blockType: 'departmentProfiles'")
   })
 })

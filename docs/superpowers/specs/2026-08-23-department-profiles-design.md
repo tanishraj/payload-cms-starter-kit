@@ -99,7 +99,7 @@ Every profile uses a fixed `4:5` portrait image with a full-card overlay. The id
 
 Cards use the project's rounded border treatment and remain non-interactive. Missing designation closes naturally without an empty row.
 
-The block exposes shared Overlay Tone and Overlay Strength settings. Overlay direction remains Bottom-to-Top and coverage remains Full because those values protect the fixed bottom-left content and prevent configurations that place text outside its contrast layer. The implementation must choose surface-aware label colors that pass WCAG AA for the small department label in every exposed tone and strength combination.
+The block exposes the shared Overlay Tone, Strength, Direction, and Coverage settings used by other image-overlay blocks. Tone supports Auto, Light, Dark, and Brand; Strength supports Light, Dark, and Darker; Direction supports Even/Vertical and all four directional gradients; Coverage supports Full and Split (50%). Even/Vertical normalizes to Full coverage. Missing settings preserve Dark tone, Dark strength, Bottom-to-Top direction, and Full coverage. The implementation must choose surface-aware label colors for every exposed tone and strength combination.
 
 ## Toolbar and Responsive Behavior
 

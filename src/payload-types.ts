@@ -1782,10 +1782,18 @@ export interface DepartmentProfilesBlock {
    */
   cardSize: 'sm' | 'md' | 'lg';
   /**
-   * Auto uses Brand on brand sections and Dark elsewhere. Light tone is excluded to protect small-text contrast.
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
    */
-  themeMode?: ('auto' | 'dark' | 'brand') | null;
-  overlayStyle?: ('dark' | 'darker') | null;
+  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
+  overlayStyle?: ('light' | 'dark' | 'darker') | null;
+  /**
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   */
+  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  overlayCoverage?: ('full' | 'split') | null;
   contentAlignment: 'left' | 'center' | 'right';
   headerLayout: 'split' | 'stacked';
   descriptionPosition?: ('side' | 'underTitle') | null;
@@ -7380,6 +7388,8 @@ export interface DepartmentProfilesBlockSelect<T extends boolean = true> {
   cardSize?: T;
   themeMode?: T;
   overlayStyle?: T;
+  overlayDirection?: T;
+  overlayCoverage?: T;
   contentAlignment?: T;
   headerLayout?: T;
   descriptionPosition?: T;

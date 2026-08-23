@@ -3,6 +3,12 @@ import type { ArrayField, Block, CheckboxField, SelectField, TabsField, TextFiel
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import {
+  createMediaOverlayCoverageField,
+  createMediaOverlayDirectionField,
+  createMediaOverlayStrengthField,
+  createMediaOverlayToneField,
+} from '@/blocks/shared/mediaOverlayFields'
 
 type HeaderLayoutSiblingData = {
   headerLayout?: 'split' | 'stacked' | null
@@ -288,35 +294,22 @@ export const DepartmentProfilesBlock: Block = {
                 description: 'Controls card proportion, media size, spacing, and typography.',
               },
             } satisfies SelectField,
-            {
-              name: 'themeMode',
-              label: 'Overlay Tone',
-              type: 'select',
+            createMediaOverlayToneField({
+              condition: usesOverlayCards,
               defaultValue: 'dark',
-              required: true,
-              options: [
-                { label: 'Auto', value: 'auto' },
-                { label: 'Dark', value: 'dark' },
-                { label: 'Brand', value: 'brand' },
-              ],
-              admin: {
-                condition: usesOverlayCards,
-                description:
-                  'Auto uses Brand on brand sections and Dark elsewhere. Light tone is excluded to protect small-text contrast.',
-              },
-            } satisfies SelectField,
-            {
-              name: 'overlayStyle',
-              label: 'Overlay Strength',
-              type: 'select',
+            }),
+            createMediaOverlayStrengthField({
+              condition: usesOverlayCards,
               defaultValue: 'dark',
-              required: true,
-              options: [
-                { label: 'Dark', value: 'dark' },
-                { label: 'Darker', value: 'darker' },
-              ],
-              admin: { condition: usesOverlayCards },
-            } satisfies SelectField,
+            }),
+            createMediaOverlayDirectionField({
+              condition: usesOverlayCards,
+              defaultValue: 'bottomToTop',
+            }),
+            createMediaOverlayCoverageField({
+              condition: usesOverlayCards,
+              defaultValue: 'full',
+            }),
             {
               name: 'contentAlignment',
               label: 'Section Content Alignment',

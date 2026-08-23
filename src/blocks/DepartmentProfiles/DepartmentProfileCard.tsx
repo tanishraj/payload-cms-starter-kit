@@ -5,6 +5,8 @@ import type { BlockBackground } from '@/blocks/shared/blockAppearance'
 import { resolveCardSurface } from '@/blocks/shared/cardSurface'
 import {
   resolveMediaOverlay,
+  type MediaOverlayCoverage,
+  type MediaOverlayDirection,
   type MediaOverlayStrength,
   type MediaOverlayTone,
 } from '@/blocks/shared/mediaOverlayPresentation'
@@ -23,10 +25,12 @@ type DepartmentProfileCardProps = {
   hasSectionHeading: boolean
   imageSizes: string
   layout: DepartmentProfilesCardLayout
-  overlayStyle: Extract<MediaOverlayStrength, 'dark' | 'darker'>
+  overlayCoverage: MediaOverlayCoverage
+  overlayDirection: MediaOverlayDirection
+  overlayStyle: MediaOverlayStrength
   profile: ResolvedDepartmentProfile
   size: DepartmentProfilesCardSize
-  themeMode: Extract<MediaOverlayTone, 'auto' | 'brand' | 'dark'>
+  themeMode: MediaOverlayTone
 }
 
 const imagePositionClasses = {
@@ -91,10 +95,11 @@ const inlineSizeClasses = {
 type ProfileMediaProps = {
   className?: string
   imageSizes: string
+  placeholderClassName?: string
   profile: ResolvedDepartmentProfile
 }
 
-function ProfileMedia({ className, imageSizes, profile }: ProfileMediaProps) {
+function ProfileMedia({ className, imageSizes, placeholderClassName, profile }: ProfileMediaProps) {
   return (
     <div className={cn('relative overflow-hidden', className)}>
       {profile.image ? (
@@ -107,7 +112,10 @@ function ProfileMedia({ className, imageSizes, profile }: ProfileMediaProps) {
         />
       ) : (
         <div
-          className="flex size-full items-center justify-center bg-muted text-muted-foreground"
+          className={cn(
+            'flex size-full items-center justify-center',
+            placeholderClassName ?? 'bg-muted text-muted-foreground',
+          )}
           data-department-profile-placeholder="true"
         >
           <UserRound aria-hidden="true" className="size-1/3" strokeWidth={1.5} />
@@ -123,6 +131,8 @@ export function DepartmentProfileCard({
   hasSectionHeading,
   imageSizes,
   layout,
+  overlayCoverage,
+  overlayDirection,
   overlayStyle,
   profile,
   size,
@@ -151,8 +161,12 @@ export function DepartmentProfileCard({
         data-testid="department-profile-card"
       >
         <ProfileMedia
-          className={cn('shrink-0 rounded-lg bg-background/60', inlineSize.image)}
+          className={cn('shrink-0 rounded-lg', inlineSize.image)}
           imageSizes={inlineSize.imageSizes}
+          placeholderClassName={cn(
+            'bg-current/10 ring-1 ring-current/10 ring-inset',
+            surface.secondary,
+          )}
           profile={profile}
         />
         <div className="flex min-w-0 flex-1 flex-col gap-1">
@@ -184,8 +198,8 @@ export function DepartmentProfileCard({
 
   const overlaySize = overlaySizeClasses[size]
   const resolvedOverlay = resolveMediaOverlay({
-    coverage: 'full',
-    direction: 'bottomToTop',
+    coverage: overlayCoverage,
+    direction: overlayDirection,
     sectionBackground: background,
     strength: overlayStyle,
     tone: themeMode,
@@ -215,6 +229,8 @@ export function DepartmentProfileCard({
           resolvedOverlay.className,
         )}
         data-department-profile-overlay={resolvedOverlay.strength}
+        data-department-profile-overlay-coverage={resolvedOverlay.coverage}
+        data-department-profile-overlay-direction={resolvedOverlay.direction}
         data-department-profile-overlay-tone={resolvedOverlay.tone}
       />
       <div
