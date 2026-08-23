@@ -1,5 +1,7 @@
+import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 
+import { DashboardWorkflowCard } from '@/components/admin/DashboardWorkflowCard'
 import {
   buildInReviewAdminURL,
   buildScheduledAdminURL,
@@ -85,5 +87,57 @@ describe('dashboard attention model', () => {
         item('Articles', { status: 'available', value: 0 }),
       ]),
     ).toEqual({ displayValue: '0', rows: [], stateLabel: 'Nothing waiting' })
+  })
+})
+
+describe('DashboardWorkflowCard', () => {
+  it('renders exact non-zero links without making the aggregate a link', () => {
+    const html = renderToStaticMarkup(
+      <DashboardWorkflowCard
+        items={[
+          item('Pages', { status: 'available', value: 2 }, '/admin/pages?review=true'),
+          item('Articles', { status: 'available', value: 0 }, '/admin/articles?review=true'),
+          item('Reviews', { status: 'available', value: 1 }, '/admin/reviews?review=true'),
+        ]}
+        label="In Review"
+      />,
+    )
+
+    expect(html).toContain('<section')
+    expect(html).toContain('>3<')
+    expect(html).toContain('href="/admin/pages?review=true"')
+    expect(html).toContain('href="/admin/reviews?review=true"')
+    expect(html).not.toContain('href="/admin/articles?review=true"')
+    expect(html.match(/<a /g)).toHaveLength(2)
+  })
+
+  it('renders a successful zero state without links', () => {
+    const html = renderToStaticMarkup(
+      <DashboardWorkflowCard
+        items={[item('Pages', { status: 'available', value: 0 })]}
+        label="Scheduled"
+      />,
+    )
+
+    expect(html).toContain('Nothing waiting')
+    expect(html).not.toContain('<a ')
+  })
+
+  it('renders unavailable rows as non-interactive status', () => {
+    const html = renderToStaticMarkup(
+      <DashboardWorkflowCard
+        items={[
+          item('Pages', { status: 'available', value: 2 }, '/admin/pages'),
+          item('Articles', { status: 'unavailable' }, '/admin/articles'),
+        ]}
+        label="In Review"
+      />,
+    )
+
+    expect(html).toContain('2+')
+    expect(html).toContain('Partial count')
+    expect(html).toContain('Articles')
+    expect(html).toContain('Count unavailable')
+    expect(html).not.toContain('href="/admin/articles"')
   })
 })
