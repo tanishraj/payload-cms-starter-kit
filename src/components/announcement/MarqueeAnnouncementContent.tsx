@@ -1,6 +1,10 @@
 'use client'
 
-import { Fragment, useMemo, useState } from 'react'
+import { Fragment, useMemo } from 'react'
+
+import { MotionToggle } from '@/components/motion/MotionToggle'
+import { useControllableMotion } from '@/components/motion/useControllableMotion'
+import { cn } from '@/lib/utils'
 
 const DEFAULT_MARQUEE_DURATION_MS = 18000
 const MIN_MARQUEE_DURATION_MS = 8000
@@ -18,42 +22,71 @@ export function MarqueeAnnouncementContent({
   durationMs?: number | null
   items: MarqueeAnnouncementItem[]
 }) {
-  const [isPaused, setIsPaused] = useState(false)
   const sanitizedDuration = useMemo(
     () => Math.max(durationMs ?? DEFAULT_MARQUEE_DURATION_MS, MIN_MARQUEE_DURATION_MS),
     [durationMs],
   )
+  const motionState = useControllableMotion({ enabled: items.length > 1 })
 
   if (items.length === 0) {
     return null
   }
 
+  const rendersStaticTrack = items.length === 1 || motionState.prefersReducedMotion
+
   return (
     <div
-      className="min-w-0 flex-1 overflow-hidden py-0.5"
+      className="flex min-w-0 flex-1 items-center gap-2"
       data-testid="announcement-marquee"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      {...motionState.interactionProps}
     >
-      <div className="flex w-max min-w-full items-center">
-        <MarqueeTrack animationDuration={sanitizedDuration} isPaused={isPaused} items={items} />
-        <MarqueeTrack
-          animationDuration={sanitizedDuration}
-          duplicate
-          isPaused={isPaused}
-          items={items}
-        />
+      <div className="min-w-0 flex-1 overflow-hidden py-0.5">
+        {rendersStaticTrack ? (
+          <MarqueeTrack
+            animated={false}
+            animationDuration={sanitizedDuration}
+            isPaused
+            items={items}
+          />
+        ) : (
+          <div className="flex w-max min-w-full items-center">
+            <MarqueeTrack
+              animated
+              animationDuration={sanitizedDuration}
+              isPaused={!motionState.isMotionAllowed}
+              items={items}
+            />
+            <MarqueeTrack
+              animated
+              animationDuration={sanitizedDuration}
+              duplicate
+              isPaused={!motionState.isMotionAllowed}
+              items={items}
+            />
+          </div>
+        )}
       </div>
+      {motionState.showMotionControl ? (
+        <MotionToggle
+          className="rounded-lg text-current hover:bg-current/10 hover:text-current"
+          contextLabel="marquee"
+          isPaused={motionState.isUserPaused}
+          onToggle={motionState.toggleUserPaused}
+          variant="ghost"
+        />
+      ) : null}
     </div>
   )
 }
 
 function MarqueeTrack({
+  animated,
   animationDuration,
   duplicate = false,
   isPaused,
   items,
 }: {
+  animated: boolean
   animationDuration: number
   duplicate?: boolean
   isPaused: boolean
@@ -62,18 +95,27 @@ function MarqueeTrack({
   return (
     <div
       aria-hidden={duplicate || undefined}
-      className="flex shrink-0 animate-marquee items-center gap-4 whitespace-nowrap pr-4"
+      className={cn(
+        'items-center gap-4',
+        animated
+          ? 'flex shrink-0 animate-marquee whitespace-nowrap pr-4'
+          : 'flex min-w-0 flex-wrap whitespace-normal',
+      )}
       data-testid="announcement-marquee-track"
-      style={{
-        animationDuration: `${animationDuration}ms`,
-        animationPlayState: isPaused ? 'paused' : 'running',
-      }}
+      style={
+        animated
+          ? {
+              animationDuration: `${animationDuration}ms`,
+              animationPlayState: isPaused ? 'paused' : 'running',
+            }
+          : undefined
+      }
     >
       {items.map((item, index) => (
         <Fragment
           key={`${duplicate ? 'duplicate' : 'primary'}-${item.url ?? item.description}-${index}`}
         >
-          <MarqueeItem duplicate={duplicate} item={item} />
+          <MarqueeItem animated={animated} duplicate={duplicate} item={item} />
           <span aria-hidden="true" className="size-1.5 shrink-0 rounded-lg bg-current/70" />
         </Fragment>
       ))}
@@ -82,9 +124,11 @@ function MarqueeTrack({
 }
 
 function MarqueeItem({
+  animated,
   duplicate = false,
   item,
 }: {
+  animated: boolean
   duplicate?: boolean
   item: MarqueeAnnouncementItem
 }) {
@@ -93,7 +137,10 @@ function MarqueeItem({
   if (item.url) {
     return (
       <a
-        className="inline-flex items-center gap-x-2 transition-opacity hover:opacity-80"
+        className={cn(
+          'inline-flex items-center gap-x-2 transition-opacity hover:opacity-80',
+          !animated && 'min-w-0 flex-wrap whitespace-normal break-words',
+        )}
         href={item.url}
         rel={isExternalUrl ? 'noreferrer' : undefined}
         tabIndex={duplicate ? -1 : undefined}
@@ -111,7 +158,12 @@ function MarqueeItem({
   }
 
   return (
-    <div className="inline-flex items-center gap-x-2">
+    <div
+      className={cn(
+        'inline-flex items-center gap-x-2',
+        !animated && 'min-w-0 flex-wrap whitespace-normal break-words',
+      )}
+    >
       {item.title ? <span className="font-medium">{item.title}</span> : null}
       {item.title ? (
         <span aria-hidden="true" className="text-current/70">
