@@ -244,6 +244,23 @@ export const DepartmentProfilesBlock: Block = {
               admin: { condition: showsDepartmentTabs },
             } satisfies SelectField,
             {
+              name: 'tabWidth',
+              label: 'Department Tab Width',
+              type: 'select',
+              defaultValue: 'content',
+              required: true,
+              options: [
+                { label: 'Content Width', value: 'content' },
+                { label: 'Centered Auto Width', value: 'centered' },
+                { label: 'Equal Full Width', value: 'equal' },
+              ],
+              admin: {
+                condition: showsDepartmentTabs,
+                description:
+                  'Centered Auto Width keeps intrinsic tabs centered when they fit and scrollable when they overflow. Equal Full Width divides the complete available tab rail evenly.',
+              },
+            } satisfies SelectField,
+            {
               name: 'profilesPerLoad',
               label: 'Profiles Per Load',
               type: 'select',

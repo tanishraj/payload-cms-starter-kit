@@ -232,7 +232,7 @@ describe('DownloadListBlock schema', () => {
     const linkType = findNamedField(actions.fields, 'linkType')
     const mode = findNamedField(actions.fields, 'mode')
     const variant = findNamedField(actions.fields, 'variant')
-    const icon = findNamedField(actions.fields, 'icon')
+    const showArrow = findNamedField(actions.fields, 'showArrow')
 
     expect(viewOpenInNewTab?.admin?.condition?.({}, { actionType: 'view' }, {} as never)).toBe(true)
     expect(viewOpenInNewTab?.admin?.condition?.({}, { actionType: 'download' }, {} as never)).toBe(
@@ -243,12 +243,38 @@ describe('DownloadListBlock schema', () => {
     expect(
       variant?.admin?.condition?.({}, { actionType: 'custom', mode: 'button' }, {} as never),
     ).toBe(true)
+    expect(findNamedField(actions.fields, 'icon')).toBeUndefined()
+    expect(showArrow).toMatchObject({
+      defaultValue: false,
+      label: 'Show Arrow',
+      type: 'checkbox',
+    })
     expect(
-      icon?.admin?.condition?.({}, { actionType: 'custom', mode: 'button' }, {} as never),
+      showArrow?.admin?.condition?.({}, { actionType: 'custom', mode: 'button' }, {} as never),
     ).toBe(true)
-    expect(icon?.admin?.condition?.({}, { actionType: 'custom', mode: 'link' }, {} as never)).toBe(
-      false,
+    expect(
+      showArrow?.admin?.condition?.({}, { actionType: 'custom', mode: 'link' }, {} as never),
+    ).toBe(false)
+    expect(showArrow?.admin?.condition?.({}, { actionType: 'view' }, {} as never)).toBe(false)
+  })
+
+  it('generates Show Arrow without an icon field for current document actions', () => {
+    const generatedTypes = readFileSync(join(process.cwd(), 'src/payload-types.ts'), 'utf8')
+    const downloadListStart = generatedTypes.indexOf('export interface DownloadListBlock')
+    const downloadListEnd = generatedTypes.indexOf(
+      'export interface DownloadListBlockSelect',
+      downloadListStart,
     )
+    const generatedDownloadList = generatedTypes.slice(downloadListStart, downloadListEnd)
+    const documentActionsStart = generatedDownloadList.indexOf('documentActions?:')
+    const documentActionsEnd = generatedDownloadList.indexOf('customAction?:', documentActionsStart)
+    const generatedDocumentActions = generatedDownloadList.slice(
+      documentActionsStart,
+      documentActionsEnd,
+    )
+
+    expect(generatedDocumentActions).toContain('showArrow?: boolean | null')
+    expect(generatedDocumentActions).not.toContain('icon?: string | null')
   })
 
   it('hides every compatibility action control from new authoring', () => {
@@ -309,7 +335,6 @@ describe('DownloadListBlock schema', () => {
           { actionType: 'view' },
           {
             actionType: 'custom',
-            icon: 'ExternalLink',
             label: 'Admissions',
             linkType: 'custom',
             mode: 'button',
@@ -556,7 +581,6 @@ describe('DownloadList action resolution', () => {
     ).toEqual([
       {
         href: '/fallback',
-        icon: 'Eye',
         kind: 'view',
         label: 'View',
         mode: 'button',
@@ -566,7 +590,6 @@ describe('DownloadList action resolution', () => {
       },
       {
         href: '/api/media/file/fallback.pdf',
-        icon: 'Download',
         kind: 'download',
         label: 'Save PDF',
         mode: 'button',
@@ -577,7 +600,7 @@ describe('DownloadList action resolution', () => {
     ])
   })
 
-  it('resolves Custom Link without an icon and Custom Button with its configured icon', () => {
+  it('resolves Show Arrow only for a Custom Button', () => {
     expect(
       resolveDocumentActions({
         documentActions: [
@@ -586,15 +609,16 @@ describe('DownloadList action resolution', () => {
             label: 'Requirements',
             linkType: 'custom',
             mode: 'link',
+            showArrow: true,
             url: '/requirements',
           },
           {
             actionType: 'custom',
-            icon: 'ExternalLink',
             label: 'Apply',
             linkType: 'custom',
             mode: 'button',
             openInNewTab: true,
+            showArrow: true,
             url: '/apply',
             variant: 'outline',
           },
@@ -613,15 +637,31 @@ describe('DownloadList action resolution', () => {
       },
       {
         href: '/apply',
-        icon: 'ExternalLink',
         kind: 'custom',
         label: 'Apply',
         mode: 'button',
         openInNewTab: true,
-        showArrow: false,
+        showArrow: true,
         variant: 'outline',
       },
     ])
+
+    const [historicalIconAction] = resolveDocumentActions({
+      documentActions: [
+        {
+          actionType: 'custom',
+          icon: 'ExternalLink',
+          label: 'Apply',
+          linkType: 'custom',
+          mode: 'button',
+          url: '/apply',
+        },
+      ] as never,
+      fallback,
+    })
+
+    expect(historicalIconAction).not.toHaveProperty('icon')
+    expect(historicalIconAction?.showArrow).toBe(false)
   })
 
   it('does not expose hidden fallbacks when an authored new list is unusable', () => {
@@ -739,7 +779,7 @@ describe('DownloadList rendering', () => {
     expect(actions[1]?.querySelector('[data-document-action-icon="arrow-down"]')).toBeTruthy()
   })
 
-  it('renders Custom Link as text and Custom Button with its configured icon', () => {
+  it('renders Custom Link as text and Custom Button with an optional shared arrow', () => {
     render(
       <DownloadListBlockComponent
         displayMode="framedGrid"
@@ -755,10 +795,10 @@ describe('DownloadList rendering', () => {
               },
               {
                 actionType: 'custom',
-                icon: 'ExternalLink',
                 label: 'Apply',
                 linkType: 'custom',
                 mode: 'button',
+                showArrow: true,
                 url: '/apply',
               },
             ],
@@ -771,8 +811,9 @@ describe('DownloadList rendering', () => {
     const link = screen.getByRole('link', { name: 'Requirements' })
     const button = screen.getByRole('link', { name: 'Apply' })
     expect(link.className).toContain('underline-offset-4')
-    expect(link.querySelector('svg')).toBeNull()
-    expect(button.querySelector('.lucide-external-link')).toBeTruthy()
+    expect(link.querySelector('[data-action-arrow="true"]')).toBeNull()
+    expect(button.textContent).toBe('Apply')
+    expect(button.querySelector('[data-action-arrow="true"]')).toBeTruthy()
   })
 
   it('renders labelled custom links and buttons with configured presentation', () => {
@@ -804,7 +845,7 @@ describe('DownloadList rendering', () => {
     const custom = screen.getByRole('link', { name: 'Admissions' })
     expect(custom.getAttribute('data-document-action')).toBe('custom')
     expect(custom.className).toContain('border')
-    expect(custom.querySelector('[data-document-action-icon="arrow-up-right"]')).toBeTruthy()
+    expect(custom.querySelector('[data-action-arrow="true"]')).toBeTruthy()
   })
 
   it('renders a labelled custom Link without button styling', () => {
@@ -868,16 +909,18 @@ describe('DownloadList rendering', () => {
     },
   )
 
-  it('falls back to ArrowUpRight for an unresolved Custom Button icon', () => {
+  it.each([
+    ['cards', 'icons'],
+    ['list', 'labelled'],
+  ] as const)('keeps Custom Button labels visible in %s', (displayMode, gridActionDisplay) => {
     render(
       <DownloadListBlockComponent
-        displayMode="cards"
+        displayMode={displayMode}
         downloads={[
           {
             documentActions: [
               {
                 actionType: 'custom',
-                icon: 'NotARealLucideIcon',
                 label: 'Apply',
                 linkType: 'custom',
                 mode: 'button',
@@ -887,14 +930,15 @@ describe('DownloadList rendering', () => {
             title: 'Admissions',
           },
         ]}
+        gridActionDisplay={gridActionDisplay}
       />,
     )
 
-    expect(
-      screen
-        .getByRole('link', { name: 'Apply' })
-        .querySelector('[data-document-action-icon="arrow-up-right"]'),
-    ).toBeTruthy()
+    const button = screen.getByRole('link', { name: 'Apply' })
+    expect(button.textContent).toBe('Apply')
+    expect(button.getAttribute('title')).toBeNull()
+    expect(button.querySelector('[data-document-action-label="true"]')).toBeTruthy()
+    expect(button.querySelector('[data-action-arrow="true"]')).toBeNull()
   })
 
   it('applies shared Columns to the legacy compact Inline fallback', () => {

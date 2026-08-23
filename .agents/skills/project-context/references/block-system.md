@@ -126,6 +126,10 @@ columns activate at `2xl`. Inline retains the original two-to-four-column contro
 or unresolved images use a semantic decorative `UserRound` placeholder in either layout. Existing
 documents resolve to Image Overlay Large, four columns, and Boxed without a migration.
 The block reuses shared optional headers, appearance, actions, alignment, padding, and tab patterns.
+The department tab rail supports Content Width, Centered Auto Width, and Equal Full Width. Missing or
+invalid values use Content Width. Centered Auto Width keeps intrinsic tabs centered when they fit and
+scrollable from the inline start when they overflow; Equal Full Width divides the available
+Search-adjacent rail evenly, or the full toolbar width when Search is hidden.
 
 Program Matrix keeps its introduction before the matrix and footer actions in document order. Editors
 can use a stacked layout or a large-screen 40/60 split with the introduction on either visual side
@@ -150,9 +154,11 @@ upper-left, a flexible wrapping content column, a permanent vertical divider, an
 actions at the far right at every width. Each document owns an ordered `documentActions` list with at
 most two Download, View, or Custom rows. Download and View are fixed-icon buttons. Custom uses an
 internal Page or Custom URL and renders as either a visible text Link without an icon or a semantic
-Button with a required configurable Lucide icon. Duplicate Download/View rows and duplicate Custom
-destinations are invalid. Labelled boxed-family grids show button labels plus icons; Grid Icon-only
-and Inline compact button actions to accessible icon controls, while Custom Link remains textual.
+Button with an optional shared animated trailing arrow. Show Arrow is authored only for Custom
+Buttons and defaults to off. Duplicate Download/View rows and duplicate Custom destinations are
+invalid. Labelled boxed-family grids show Download/View labels plus their fixed icons; Grid Icon-only
+and Inline compact only Download/View to accessible icon controls. Custom Button remains visibly
+labelled in every layout, while Custom Link remains textual without an icon or arrow.
 A non-empty new list is authoritative even if its rows cannot resolve. Without it, hidden compatibility
 data resolves the current Custom Action beside available automatic actions, then older valid manual
 actions as a replacement, then automatic fallback. Historical visual-action properties are ignored

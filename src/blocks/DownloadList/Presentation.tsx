@@ -1,17 +1,8 @@
-import {
-  ArrowDown,
-  ArrowUpRight,
-  Eye,
-  File,
-  FileImage,
-  FileSpreadsheet,
-  FileText,
-} from 'lucide-react'
-import { createElement, type ComponentProps } from 'react'
+import { ArrowDown, Eye, File, FileImage, FileSpreadsheet, FileText } from 'lucide-react'
 
 import type { BlockBackground } from '@/blocks/shared/blockAppearance'
 import { resolveCardSurface, type CardSurfaceClasses } from '@/blocks/shared/cardSurface'
-import { resolveLucideIcon } from '@/blocks/shared/resolveLucideIcon'
+import { ActionArrow } from '@/components/ActionArrow'
 import { buttonVariants } from '@/components/ui/button'
 import type { CmsActionVariant } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
@@ -102,20 +93,19 @@ function AnimatedDownloadIcon() {
 function DocumentActionIcon({ action }: { action: ResolvedDownloadAction }) {
   if (action.kind === 'download') return <AnimatedDownloadIcon />
 
-  const CustomIcon = action.kind === 'custom' ? resolveLucideIcon(action.icon) : undefined
-  const Icon = action.kind === 'view' ? Eye : (CustomIcon ?? ArrowUpRight)
-  const iconName =
-    action.kind === 'view' ? 'eye' : CustomIcon ? action.icon?.trim() : 'arrow-up-right'
+  if (action.kind === 'view') {
+    return (
+      <Eye
+        aria-hidden="true"
+        className="size-4"
+        data-document-action-icon="eye"
+        data-testid="download-action-eye"
+        strokeWidth={2.25}
+      />
+    )
+  }
 
-  const iconProps = {
-    'aria-hidden': true,
-    className: 'size-4',
-    'data-document-action-icon': iconName,
-    'data-testid': action.kind === 'view' ? 'download-action-eye' : undefined,
-    strokeWidth: 2.25,
-  } as ComponentProps<typeof Eye>
-
-  return createElement(Icon, iconProps)
+  return null
 }
 
 function FileTypeIcon({ size, type }: { size: DownloadDocumentIconSize; type?: string }) {
@@ -192,7 +182,8 @@ export function DocumentActions({
       {document.actions.map((action, index) => {
         const usesCompactActions = layout === 'inline' || display === 'icons'
         const isLink = action.mode === 'link' && (action.kind === 'custom' || !usesCompactActions)
-        const isCompactButton = !isLink && usesCompactActions
+        const isCustomButton = action.kind === 'custom' && action.mode === 'button'
+        const isCompactButton = !isLink && !isCustomButton && usesCompactActions
         const buttonVariant = action.mode === 'button' ? action.variant : 'default'
 
         return (
@@ -223,6 +214,13 @@ export function DocumentActions({
               <span data-document-action-label="true">{action.label}</span>
             ) : isCompactButton ? (
               <DocumentActionIcon action={action} />
+            ) : isCustomButton ? (
+              <>
+                <span data-document-action-label="true">{action.label}</span>
+                {action.showArrow ? (
+                  <ActionArrow data-action-arrow="true" data-icon="inline-end" />
+                ) : null}
+              </>
             ) : (
               <>
                 <span data-document-action-label="true">{action.label}</span>

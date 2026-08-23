@@ -16,7 +16,6 @@ import {
   buttonVariantOptions,
   createContentActionsField,
 } from '@/blocks/shared/contentActionsFields'
-import { createIconField } from '@/blocks/shared/iconField'
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 
 type DownloadListSiblingData = {
@@ -31,7 +30,6 @@ type DocumentActionSiblingData = {
 }
 
 type DocumentActionValue = DocumentActionSiblingData & {
-  icon?: string | null
   label?: string | null
   page?: unknown
   url?: string | null
@@ -111,9 +109,6 @@ const validateDocumentActions = (
       if (!action.label?.trim()) return `Custom action ${position} requires a label.`
       const destination = getCustomDestinationKey(action)
       if (!destination) return `Custom action ${position} requires a destination.`
-      if (action.mode === 'button' && !action.icon?.trim()) {
-        return `Custom Button action ${position} requires an icon.`
-      }
       customDestinations.push(destination)
     }
   }
@@ -212,11 +207,6 @@ const legacyActionsField: ArrayField = {
   ],
 }
 
-const customButtonIconBase = createIconField({
-  label: 'Button Icon',
-  description: 'Required for Custom Button. Enter a Lucide icon name such as ExternalLink.',
-})
-
 const documentActionsField: ArrayField = {
   name: 'documentActions',
   label: 'Document Actions',
@@ -305,12 +295,15 @@ const documentActionsField: ArrayField = {
       },
     } satisfies SelectField,
     {
-      ...customButtonIconBase,
+      name: 'showArrow',
+      label: 'Show Arrow',
+      type: 'checkbox',
+      defaultValue: false,
       admin: {
-        ...customButtonIconBase.admin,
         condition: isCustomButtonAction,
+        description: 'Adds a trailing arrow when this action is displayed as a button.',
       },
-    },
+    } satisfies CheckboxField,
   ],
 }
 

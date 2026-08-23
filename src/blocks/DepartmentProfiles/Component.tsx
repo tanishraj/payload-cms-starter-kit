@@ -42,6 +42,7 @@ import type {
   DepartmentProfilesCardSize,
   DepartmentProfilesColumns,
   DepartmentProfilesPerLoad,
+  DepartmentProfilesTabWidth,
   ResolvedDepartmentProfile,
   ResolvedProfileDepartment,
 } from './types'
@@ -91,6 +92,7 @@ type DepartmentProfilesBlockLike = {
   size?: RegularBlockSize | null
   smallColumns?: DepartmentProfilesColumns | null
   tabVariant?: ContentTabVariant | null
+  tabWidth?: DepartmentProfilesTabWidth | null
   themeMode?: MediaOverlayTone | null
   title?: string | null
 }
@@ -112,6 +114,7 @@ const validImagePositions = new Set<DepartmentProfileImagePosition>([
 const validProfilesPerLoad = new Set<DepartmentProfilesPerLoad>([12, 16, 20, 24])
 const validSizes = new Set<RegularBlockSize>(['none', 'compact', 'default', 'comfortable'])
 const validTabVariants = new Set<ContentTabVariant>(['contained', 'pill', 'underline'])
+const validTabWidths = new Set<DepartmentProfilesTabWidth>(['content', 'centered', 'equal'])
 
 const alignmentClasses = {
   left: 'items-start text-left',
@@ -165,6 +168,7 @@ export function DepartmentProfilesBlockComponent({
   size = 'default',
   smallColumns = '8',
   tabVariant = 'pill',
+  tabWidth = 'content',
   themeMode = 'dark',
   title,
 }: DepartmentProfilesBlockLike) {
@@ -271,6 +275,9 @@ export function DepartmentProfilesBlockComponent({
   const resolvedTabVariant = validTabVariants.has(tabVariant ?? 'pill')
     ? (tabVariant ?? 'pill')
     : 'pill'
+  const resolvedTabWidth = validTabWidths.has(tabWidth ?? 'content')
+    ? (tabWidth ?? 'content')
+    : 'content'
   const resolvedThemeMode = normalizeMediaOverlayTone(themeMode, 'dark')
   const resolvedTitle = title?.trim()
   const hasHeading = Boolean(resolvedTitle || resolvedAccentTitle)
@@ -366,6 +373,7 @@ export function DepartmentProfilesBlockComponent({
             showDepartmentTabs={showDepartmentTabs !== false}
             showSearch={showSearch !== false}
             tabVariant={resolvedTabVariant}
+            tabWidth={resolvedTabWidth}
             themeMode={resolvedThemeMode}
           />
         </div>

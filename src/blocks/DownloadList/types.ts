@@ -26,7 +26,6 @@ export type DownloadActionSettings = {
 
 export type ResolvedDownloadAction = {
   href: string
-  icon?: string
   kind: DownloadActionKind
   label: string
   mode: CmsActionMode

@@ -26,6 +26,7 @@ import type {
   DepartmentProfilesCardSize,
   DepartmentProfilesColumns,
   DepartmentProfilesPerLoad,
+  DepartmentProfilesTabWidth,
   ResolvedDepartmentProfile,
   ResolvedProfileDepartment,
 } from './types'
@@ -50,6 +51,7 @@ type DepartmentProfilesClientProps = {
   showDepartmentTabs: boolean
   showSearch: boolean
   tabVariant: ContentTabVariant
+  tabWidth: DepartmentProfilesTabWidth
   themeMode: MediaOverlayTone
 }
 
@@ -78,6 +80,12 @@ const overlayMobileWidthClasses = {
   md: 'mx-auto w-full max-w-72 sm:max-w-none',
   sm: 'mx-auto w-full max-w-64 sm:max-w-none',
 } as const
+
+const tabRailWidthClasses = {
+  centered: 'mx-auto w-max',
+  content: 'w-max min-w-full',
+  equal: 'w-full min-w-0',
+} as const satisfies Record<DepartmentProfilesTabWidth, string>
 
 const normalizeSearchValue = (value: string) => value.trim().toLocaleLowerCase()
 
@@ -195,6 +203,7 @@ export function DepartmentProfilesClient({
   showDepartmentTabs,
   showSearch,
   tabVariant,
+  tabWidth,
   themeMode,
 }: DepartmentProfilesClientProps) {
   const componentID = useId().replaceAll(':', '')
@@ -297,9 +306,11 @@ export function DepartmentProfilesClient({
               <div
                 aria-label="Profile departments"
                 className={cn(
-                  'flex w-max min-w-full flex-nowrap',
+                  'flex flex-nowrap',
+                  tabRailWidthClasses[tabWidth],
                   getContentTabRailClasses(tabVariant),
                 )}
+                data-department-profiles-tab-width={tabWidth}
                 role="tablist"
               >
                 {tabs.map((tab, index) => {
@@ -310,7 +321,11 @@ export function DepartmentProfilesClient({
                     <button
                       aria-controls={panelID}
                       aria-selected={active}
-                      className={getContentTabClasses(tabVariant, active)}
+                      className={cn(
+                        getContentTabClasses(tabVariant, active),
+                        tabWidth === 'equal' &&
+                          'w-0 min-w-0 flex-1 shrink overflow-hidden px-2 text-ellipsis',
+                      )}
                       id={tabID}
                       key={tab.id}
                       onClick={() => selectDepartment(tab.id)}

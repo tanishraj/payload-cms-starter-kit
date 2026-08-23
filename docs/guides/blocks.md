@@ -88,6 +88,11 @@ number, title, and description in separate desktop columns, then moves the descr
 title on smaller screens. It always uses one outer list column; choose List Focus, List Position
 Right, Introduction Alignment Top, and Ruled borders to reproduce the reference-style composition.
 
+Department tabs support **Content Width**, **Centered Auto Width**, and **Equal Full Width**.
+Centered Auto Width shrink-wraps and centers the rail when it fits, then remains horizontally
+scrollable from the inline start when it overflows. Equal Full Width divides the available tab rail
+evenly; when Search is visible, that means the remaining toolbar space beside Search.
+
 Download List keeps existing Card, List, and Compact documents compatible. Compact now falls back to
 Inline List and is no longer selectable. Open Grid keeps top/bottom outer rules while leaving the
 left/right edges open; Framed Grid adds one complete square outline. One shared **Columns** control
@@ -116,18 +121,20 @@ Each document owns an ordered **Document Actions** list with at most two entries
 uploaded file and the fixed animated Download icon; View uses View URL first, falls back to File
 Upload, and uses the fixed Eye icon. Both are buttons with editable labels and sensible label
 fallbacks. Custom actions use an internal Page or Custom URL and can be a visible text Link or a
-Button with a shared semantic variant and required Lucide icon. Duplicate Download or View actions
+Button with a shared semantic variant and optional **Show Arrow** control. Show Arrow appears only
+for Custom Buttons and uses the shared animated trailing arrow. Duplicate Download or View actions
 are rejected, and two Custom actions must use different destinations.
 
-**Grid Action Display** applies to Boxed Card, Open Grid, and Framed Grid. Labelled grids show button
-labels with their icons. Icon only and Inline List compact button actions to accessible icon controls
-with their labels retained as names and tooltips. Custom Link always remains an underlined text link
-without an icon. A non-empty Document Actions list is authoritative, so invalid rows are omitted
-without exposing hidden legacy fallbacks. Documents without the new list preserve compatibility in
-this order: the current Custom Action is appended to available automatic actions; otherwise valid
-older manual actions replace the automatic fallback; otherwise the saved automatic View/Download
-settings render unchanged. These compatibility controls remain stored but hidden from new editing,
-so no content migration is required.
+**Grid Action Display** applies to Boxed Card, Open Grid, and Framed Grid. Labelled grids show the
+Download and View labels with their fixed icons. Icon only and Inline List compact only those fixed
+actions to accessible icon controls with their labels retained as names and tooltips. Custom Buttons
+stay visibly labelled in every layout and add the trailing arrow only when Show Arrow is enabled.
+Custom Link always remains an underlined text link without an icon or arrow. A non-empty Document
+Actions list is authoritative, so invalid rows are omitted without exposing hidden legacy fallbacks.
+Documents without the new list preserve compatibility in this order: the current Custom Action is
+appended to available automatic actions; otherwise valid older manual actions replace the automatic
+fallback; otherwise the saved automatic View/Download settings render unchanged. These compatibility
+controls remain stored but hidden from new editing, so no content migration is required.
 
 Fee Structure models one programme and one academic session per block. Every category owns its
 ordered academic-period columns, fee rows, text values, and fee-only notes. Each row must contain

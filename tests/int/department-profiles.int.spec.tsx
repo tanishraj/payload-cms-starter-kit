@@ -93,6 +93,7 @@ const baseClientProps = {
   showDepartmentTabs: true,
   showSearch: true,
   tabVariant: 'pill' as const,
+  tabWidth: 'content' as const,
   themeMode: 'dark' as const,
 }
 
@@ -255,6 +256,19 @@ describe('Department Profiles block', () => {
       'underline',
       'contained',
     ])
+    const tabWidth = findField(themeFields, 'tabWidth')
+    expect(tabWidth).toMatchObject({
+      defaultValue: 'content',
+      required: true,
+      type: 'select',
+      options: [
+        { label: 'Content Width', value: 'content' },
+        { label: 'Centered Auto Width', value: 'centered' },
+        { label: 'Equal Full Width', value: 'equal' },
+      ],
+    })
+    expect(tabWidth?.admin?.condition?.({}, { showDepartmentTabs: true })).toBe(true)
+    expect(tabWidth?.admin?.condition?.({}, { showDepartmentTabs: false })).toBe(false)
     expect(findField(themeFields, 'themeMode')?.options?.map(({ value }) => value)).toEqual([
       'auto',
       'light',
@@ -590,6 +604,44 @@ describe('Department Profiles block', () => {
     expect(openOverlay).not.toContain('rounded-xl border border-current/20')
   })
 
+  it.each([
+    ['content', ['w-max', 'min-w-full']],
+    ['centered', ['mx-auto', 'w-max']],
+    ['equal', ['w-full', 'min-w-0']],
+  ] as const)('applies the %s department-tab width', (tabWidth, expectedClasses) => {
+    render(<DepartmentProfilesClient {...baseClientProps} tabWidth={tabWidth} />)
+
+    const tablist = screen.getByRole('tablist', { name: 'Profile departments' })
+    expect(tablist.getAttribute('data-department-profiles-tab-width')).toBe(tabWidth)
+    for (const className of expectedClasses) expect(tablist.className).toContain(className)
+
+    for (const tab of screen.getAllByRole('tab')) {
+      if (tabWidth === 'equal') {
+        expect(tab.className).toContain('w-0')
+        expect(tab.className).toContain('flex-1')
+        expect(tab.className).toContain('text-ellipsis')
+      } else {
+        expect(tab.className).not.toContain('w-0')
+      }
+    }
+  })
+
+  it('normalizes missing and invalid tab widths to Content Width', () => {
+    const renderBlock = (tabWidth?: string | null) =>
+      renderToStaticMarkup(
+        <DepartmentProfilesBlockComponent
+          departments={departments}
+          profiles={[{ departmentId: 'medicine', name: 'Doctor One' }]}
+          tabWidth={tabWidth as never}
+        />,
+      )
+
+    for (const html of [renderBlock(), renderBlock('invalid')]) {
+      expect(html).toContain('data-department-profiles-tab-width="content"')
+      expect(html).toContain('w-max min-w-full')
+    }
+  })
+
   it('filters by department and combines tabs with full-list search', () => {
     const profiles = Array.from({ length: 13 }, (_, index) => createProfile(index + 1))
     profiles[12] = createProfile(13, {
@@ -665,6 +717,9 @@ describe('Department Profiles block', () => {
       "smallColumns?: ('4' | '5' | '6' | '7' | '8') | null",
     )
     expect(generatedDepartmentProfiles).toContain("cardFrame: 'boxed' | 'framed' | 'open'")
+    expect(generatedDepartmentProfiles).toContain(
+      "tabWidth?: ('content' | 'centered' | 'equal') | null",
+    )
     expect(generatedDepartmentProfiles).toContain(
       "themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null",
     )

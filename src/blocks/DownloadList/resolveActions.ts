@@ -22,9 +22,9 @@ export type DownloadManualActionInput = CmsLinkValue & {
 
 export type DownloadDocumentActionInput = CmsLinkValue & {
   actionType?: 'custom' | 'download' | 'view' | null
-  icon?: string | null
   label?: string | null
   mode?: 'button' | 'link' | null
+  showArrow?: boolean | null
   variant?: CmsActionVariant | null
   viewOpenInNewTab?: boolean | null
 }
@@ -142,7 +142,6 @@ const resolveNewDocumentActions = (
         ? [
             createResolvedAction({
               href: fallback.downloadHref,
-              icon: 'Download',
               kind: 'download',
               label: action.label?.trim() || 'Download',
               mode: 'button',
@@ -157,7 +156,6 @@ const resolveNewDocumentActions = (
         ? [
             createResolvedAction({
               href: fallback.viewHref,
-              icon: 'Eye',
               kind: 'view',
               label: action.label?.trim() || 'View',
               mode: 'button',
@@ -176,11 +174,10 @@ const resolveNewDocumentActions = (
     return [
       {
         ...resolved,
-        ...(mode === 'button' && action.icon?.trim() ? { icon: action.icon.trim() } : {}),
         kind: 'custom',
         mode,
         openInNewTab: Boolean(resolved.openInNewTab),
-        showArrow: false,
+        showArrow: mode === 'button' && action.showArrow === true,
       },
     ]
   })

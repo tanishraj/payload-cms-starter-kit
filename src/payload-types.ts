@@ -1773,6 +1773,10 @@ export interface DepartmentProfilesBlock {
   showDepartmentTabs?: boolean | null;
   allTabLabel?: string | null;
   tabVariant?: ('pill' | 'underline' | 'contained') | null;
+  /**
+   * Centered Auto Width keeps intrinsic tabs centered when they fit and scrollable when they overflow. Equal Full Width divides the complete available tab rail evenly.
+   */
+  tabWidth?: ('content' | 'centered' | 'equal') | null;
   profilesPerLoad: '12' | '16' | '20' | '24';
   loadMoreLabel?: string | null;
   noResultsMessage?: string | null;
@@ -4256,9 +4260,9 @@ export interface DownloadListBlock {
                */
               variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
               /**
-               * Required for Custom Button. Enter a Lucide icon name such as ExternalLink.
+               * Adds a trailing arrow when this action is displayed as a button.
                */
-              icon?: string | null;
+              showArrow?: boolean | null;
               id?: string | null;
             }[]
           | null;
@@ -7436,6 +7440,7 @@ export interface DepartmentProfilesBlockSelect<T extends boolean = true> {
   showDepartmentTabs?: T;
   allTabLabel?: T;
   tabVariant?: T;
+  tabWidth?: T;
   profilesPerLoad?: T;
   loadMoreLabel?: T;
   noResultsMessage?: T;
@@ -9068,7 +9073,7 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
               openInNewTab?: T;
               mode?: T;
               variant?: T;
-              icon?: T;
+              showArrow?: T;
               id?: T;
             };
         customAction?:
