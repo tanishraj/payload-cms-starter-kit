@@ -7,6 +7,7 @@ import { ContentHighlightsBlockComponent } from './ContentHighlights/Component'
 import { EditorialReasonsBlockComponent } from './EditorialReasons/Component'
 import { AcademicProgrammesBlockComponent } from './AcademicProgrammes/Component'
 import { LeadershipProfilesBlockComponent } from './LeadershipProfiles/Component'
+import { DepartmentProfilesBlockComponent } from './DepartmentProfiles/Component'
 import { QaAccordionBlockComponent } from './QaAccordion/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
@@ -109,6 +110,8 @@ export function renderPageBlockNode(
       return wrap(<AcademicProgrammesBlockComponent {...block} />)
     case 'leadershipProfiles':
       return wrap(<LeadershipProfilesBlockComponent {...block} />)
+    case 'departmentProfiles':
+      return wrap(<DepartmentProfilesBlockComponent {...block} />)
     case 'newsEventsHighlights':
       return wrap(<NewsEventsHighlightsBlockComponent {...block} />)
     case 'profileCarousel':

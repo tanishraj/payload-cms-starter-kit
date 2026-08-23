@@ -178,6 +178,27 @@
       },
       {
         "clientFiles": [
+          "src/blocks/DepartmentProfiles/DepartmentProfilesClient.tsx"
+        ],
+        "componentPath": "src/blocks/DepartmentProfiles/Component.tsx",
+        "configPath": "src/blocks/DepartmentProfiles/config.ts",
+        "files": [
+          "src/blocks/DepartmentProfiles/Component.tsx",
+          "src/blocks/DepartmentProfiles/DepartmentProfileCard.tsx",
+          "src/blocks/DepartmentProfiles/DepartmentProfilesClient.tsx",
+          "src/blocks/DepartmentProfiles/DepartmentSelectField.tsx",
+          "src/blocks/DepartmentProfiles/config.ts",
+          "src/blocks/DepartmentProfiles/departmentOptions.ts",
+          "src/blocks/DepartmentProfiles/types.ts"
+        ],
+        "interfaceName": "DepartmentProfilesBlock",
+        "presentationPath": null,
+        "previewComponentPath": null,
+        "slug": "departmentProfiles",
+        "symbol": "DepartmentProfilesBlock"
+      },
+      {
+        "clientFiles": [
           "src/blocks/DownloadList/DownloadListClient.tsx"
         ],
         "componentPath": "src/blocks/DownloadList/Component.tsx",
@@ -908,6 +929,7 @@
       "Contact33Block",
       "ContentHighlightsBlock",
       "Cta39Block",
+      "DepartmentProfilesBlock",
       "DownloadListBlock",
       "EditorialReasonsBlock",
       "EventGalleryBlock",
@@ -970,6 +992,7 @@
       "editorialReasons",
       "academicProgrammes",
       "leadershipProfiles",
+      "departmentProfiles",
       "newsEventsHighlights",
       "profileCarousel",
       "galleryShowcase",
@@ -1029,6 +1052,7 @@
       "editorialReasons",
       "academicProgrammes",
       "leadershipProfiles",
+      "departmentProfiles",
       "newsEventsHighlights",
       "profileCarousel",
       "galleryShowcase",
@@ -1078,6 +1102,7 @@
       "editorialReasons",
       "academicProgrammes",
       "leadershipProfiles",
+      "departmentProfiles",
       "newsEventsHighlights",
       "profileCarousel",
       "galleryShowcase",
@@ -1137,6 +1162,7 @@
       "editorialReasons",
       "academicProgrammes",
       "leadershipProfiles",
+      "departmentProfiles",
       "newsEventsHighlights",
       "profileCarousel",
       "galleryShowcase",
@@ -1354,6 +1380,7 @@
         "public/block-thumbnails/contact-33.jpg",
         "public/block-thumbnails/content-highlights.jpg",
         "public/block-thumbnails/cta-39.jpg",
+        "public/block-thumbnails/department-profiles.jpg",
         "public/block-thumbnails/download-list.jpg",
         "public/block-thumbnails/editorial-reasons.jpg",
         "public/block-thumbnails/event-gallery.jpg",
@@ -1461,6 +1488,10 @@
         {
           "filename": "leadership-profiles.jpg",
           "slug": "leadershipProfiles"
+        },
+        {
+          "filename": "department-profiles.jpg",
+          "slug": "departmentProfiles"
         },
         {
           "filename": "news-events-highlights.jpg",
@@ -1639,6 +1670,7 @@
         "accreditationCards",
         "academicProgrammes",
         "leadershipProfiles",
+        "departmentProfiles",
         "newsGrid",
         "newsEventsTabs",
         "bannerCta",
@@ -1982,6 +2014,13 @@
       "src/blocks/ContentHighlights/config.ts",
       "src/blocks/Cta39/Component.tsx",
       "src/blocks/Cta39/config.ts",
+      "src/blocks/DepartmentProfiles/Component.tsx",
+      "src/blocks/DepartmentProfiles/DepartmentProfileCard.tsx",
+      "src/blocks/DepartmentProfiles/DepartmentProfilesClient.tsx",
+      "src/blocks/DepartmentProfiles/DepartmentSelectField.tsx",
+      "src/blocks/DepartmentProfiles/config.ts",
+      "src/blocks/DepartmentProfiles/departmentOptions.ts",
+      "src/blocks/DepartmentProfiles/types.ts",
       "src/blocks/DownloadList/Component.tsx",
       "src/blocks/DownloadList/DownloadListClient.tsx",
       "src/blocks/DownloadList/Presentation.tsx",
@@ -2404,6 +2443,7 @@
       "tests/int/cta39.int.spec.tsx",
       "tests/int/dark-mode-media-treatment.int.spec.tsx",
       "tests/int/dashboard-capability-filtering.int.spec.tsx",
+      "tests/int/department-profiles.int.spec.tsx",
       "tests/int/docker-standalone.int.spec.ts",
       "tests/int/download-list.int.spec.tsx",
       "tests/int/editorial-reasons.int.spec.tsx",
@@ -2515,7 +2555,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "9c9f937c9b3681e499f0bbe647757914db70d51e4a0d1e0f5565c09b8a1a6a54"
+    "sha256": "01f351cdb69f65ca0ab4b882bd024c150f4e14e9f19a49f511745c14595de5f9"
   },
   "surfaces": {
     "access": [
@@ -2683,6 +2723,7 @@
       "tests/int/cta39.int.spec.tsx",
       "tests/int/dark-mode-media-treatment.int.spec.tsx",
       "tests/int/dashboard-capability-filtering.int.spec.tsx",
+      "tests/int/department-profiles.int.spec.tsx",
       "tests/int/docker-standalone.int.spec.ts",
       "tests/int/download-list.int.spec.tsx",
       "tests/int/editorial-reasons.int.spec.tsx",

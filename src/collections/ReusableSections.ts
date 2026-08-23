@@ -5,6 +5,7 @@ import { ContentHighlightsBlock } from '@/blocks/ContentHighlights/config'
 import { EditorialReasonsBlock } from '@/blocks/EditorialReasons/config'
 import { AcademicProgrammesBlock } from '@/blocks/AcademicProgrammes/config'
 import { LeadershipProfilesBlock } from '@/blocks/LeadershipProfiles/config'
+import { DepartmentProfilesBlock } from '@/blocks/DepartmentProfiles/config'
 import { QaAccordionBlock } from '@/blocks/QaAccordion/config'
 import { FeatureMatrixBlock } from '@/blocks/FeatureMatrix/config'
 import { BannerCtaBlock } from '@/blocks/BannerCta/config'
@@ -121,6 +122,7 @@ export const ReusableSections: CollectionConfig = {
         EditorialReasonsBlock,
         AcademicProgrammesBlock,
         LeadershipProfilesBlock,
+        DepartmentProfilesBlock,
         NewsEventsHighlightsBlock,
         ProfileCarouselBlock,
         GalleryShowcaseBlock,

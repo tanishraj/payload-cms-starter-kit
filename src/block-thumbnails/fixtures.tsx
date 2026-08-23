@@ -5,6 +5,7 @@ import { ContentHighlightsBlockComponent } from '@/blocks/ContentHighlights/Comp
 import { EditorialReasonsBlockComponent } from '@/blocks/EditorialReasons/Component'
 import { AcademicProgrammesBlockComponent } from '@/blocks/AcademicProgrammes/Component'
 import { LeadershipProfilesBlockComponent } from '@/blocks/LeadershipProfiles/Component'
+import { DepartmentProfilesBlockComponent } from '@/blocks/DepartmentProfiles/Component'
 import { FeatureMatrixBlockComponent } from '@/blocks/FeatureMatrix/Component'
 import { Footer56BlockComponent } from '@/blocks/Footer56/Component'
 import { FooterMinimalBlockComponent } from '@/blocks/FooterMinimal/Component'
@@ -532,6 +533,82 @@ export const blockThumbnailFixtures = {
       size="compact"
       themeMode="dark"
       title="Academic leadership"
+    />
+  ),
+  departmentProfiles: (
+    <DepartmentProfilesBlockComponent
+      appearance={{ background: 'none', border: 'none' }}
+      cardFrame="framed"
+      cardLayout="overlay"
+      cardSize="sm"
+      columns="4"
+      departments={[
+        { id: 'general-medicine', name: 'General Medicine' },
+        { id: 'anatomy', name: 'Anatomy' },
+        { id: 'general-surgery', name: 'General Surgery' },
+        { id: 'obg', name: 'Obstetrics & Gynaecology' },
+        { id: 'radiology', name: 'Radiology' },
+        { id: 'paediatrics', name: 'Paediatrics' },
+        { id: 'orthopaedics', name: 'Orthopaedics' },
+        { id: 'pathology', name: 'Pathology' },
+      ]}
+      eyebrow="Faculty Directory"
+      profiles={[
+        {
+          departmentId: 'general-medicine',
+          designation: 'Dean, Professor of Medicine',
+          image: { alt: 'Dr. Rakesh Kumar Jha', height: 1200, url: portrait, width: 900 },
+          name: 'Dr. Rakesh Kumar Jha',
+        },
+        {
+          departmentId: 'anatomy',
+          designation: 'HOD, Anatomy',
+          image: { alt: 'Dr. Anjali Verma', height: 1200, url: portrait, width: 900 },
+          name: 'Dr. Anjali Verma',
+        },
+        {
+          departmentId: 'general-surgery',
+          designation: 'Professor & HOD',
+          image: { alt: 'Dr. Suresh Prasad', height: 1200, url: portrait, width: 900 },
+          name: 'Dr. Suresh Prasad',
+        },
+        {
+          departmentId: 'obg',
+          designation: 'HOD, OBG',
+          name: 'Dr. Meera Iyer',
+        },
+        {
+          departmentId: 'radiology',
+          designation: 'Associate Professor',
+          image: { alt: 'Dr. Arvind Mehta', height: 1200, url: portrait, width: 900 },
+          name: 'Dr. Arvind Mehta',
+        },
+        {
+          departmentId: 'paediatrics',
+          designation: 'Professor',
+          image: { alt: 'Dr. Kavita Rao', height: 1200, url: portrait, width: 900 },
+          name: 'Dr. Kavita Rao',
+        },
+        {
+          departmentId: 'orthopaedics',
+          designation: 'Associate Professor',
+          image: { alt: 'Dr. Nikhil Singh', height: 1200, url: portrait, width: 900 },
+          name: 'Dr. Nikhil Singh',
+        },
+        {
+          departmentId: 'pathology',
+          designation: 'Professor & HOD',
+          image: { alt: 'Dr. Priya Nair', height: 1200, url: portrait, width: 900 },
+          name: 'Dr. Priya Nair',
+        },
+      ]}
+      profilesPerLoad="20"
+      showDepartmentTabs
+      showSearch
+      size="compact"
+      smallColumns="8"
+      tabVariant="pill"
+      title="Department-wise faculty profiles"
     />
   ),
   newsGrid: (

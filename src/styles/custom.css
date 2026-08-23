@@ -282,6 +282,28 @@
   color: var(--primary-foreground);
 }
 
+/* Department portrait labels inherit the guaranteed overlay foreground by
+   default. SNMIH can safely use its soft-green accent on dark overlays and on
+   the light-mode navy brand overlay; dark-mode brand surfaces stay inverted. */
+:root[data-theme-color='snmih']:not(.dark) [data-department-profile-accent-surface='darkOverlay'],
+:root[data-theme-color='snmih']:not(.dark) [data-department-profile-accent-surface='brand'],
+:root[data-theme-color='snmih'].dark [data-department-profile-accent-surface='darkOverlay'] {
+  color: var(--ring);
+}
+
+:root[data-theme-color='snmih'].dark [data-department-profile-accent-surface='brand'] {
+  color: var(--primary-foreground);
+}
+
+/* Inline department labels sit on the semantic muted card surface. */
+:root[data-theme-color='snmih']:not(.dark) [data-department-profile-accent-surface='inline'] {
+  color: color-mix(in oklch, var(--success) 78%, var(--foreground));
+}
+
+:root[data-theme-color='snmih'].dark [data-department-profile-accent-surface='inline'] {
+  color: var(--ring);
+}
+
 /* Feature Matrix internal-divider motion */
 .feature-matrix-divider-beam {
   position: absolute;

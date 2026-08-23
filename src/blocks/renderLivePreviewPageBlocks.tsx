@@ -11,6 +11,7 @@ import { ContentHighlightsBlockComponent } from './ContentHighlights/Component'
 import { EditorialReasonsBlockComponent } from './EditorialReasons/Component'
 import { AcademicProgrammesBlockComponent } from './AcademicProgrammes/Component'
 import { LeadershipProfilesBlockComponent } from './LeadershipProfiles/Component'
+import { DepartmentProfilesBlockComponent } from './DepartmentProfiles/Component'
 import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
 import { TestimonialSpotlightBlockComponent } from './TestimonialSpotlight/Component'
@@ -113,6 +114,8 @@ export function renderLivePreviewPageBlockNode(
       return <AcademicProgrammesBlockComponent key={key} {...block} />
     case 'leadershipProfiles':
       return <LeadershipProfilesBlockComponent key={key} {...block} />
+    case 'departmentProfiles':
+      return <DepartmentProfilesBlockComponent key={key} {...block} />
     case 'newsEventsHighlights':
       return (
         <NewsEventsHighlightsPreviewBlockComponent

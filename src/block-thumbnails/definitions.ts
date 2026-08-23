@@ -116,6 +116,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Department Profiles block preview',
+    filename: 'department-profiles.jpg',
+    label: 'Department Profiles',
+    slug: 'departmentProfiles',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'News & Events Highlights block preview',
     filename: 'news-events-highlights.jpg',
     label: 'News & Events Highlights',

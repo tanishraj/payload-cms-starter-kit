@@ -2,9 +2,9 @@
 
 ## Registries
 
-[Pages.ts](../../../../src/collections/Pages.ts) registers 52 blocks in this order:
+[Pages.ts](../../../../src/collections/Pages.ts) registers 53 blocks in this order:
 
-`announcement`, `bannerCta`, `newsGrid`, `newsEventsTabs`, `cta39`, `heroBanner`, `heroCarousel`, `galleryCoverflow`, `featureSpotlight`, `testimonialSpotlight`, `featureMatrix`, `contentHighlights`, `editorialReasons`, `academicProgrammes`, `leadershipProfiles`, `newsEventsHighlights`, `profileCarousel`, `galleryShowcase`, `eventGallery`, `galleryAlbumTabs`, `imageMosaic`, `studentExperience`, `statsStrip`, `qaAccordion`, `ratingSpotlight`, `reviewFeed`, `reviewSubmission`, `contact33`, `contact24`, `teamShowcase`, `services21`, `richText`, `videoEmbed`, `mediaCarousel`, `programMatrix`, `logoStrip`, `pageHeader`, `breadcrumb`, `timeline`, `iconCardShowcase`, `iconGrid`, `quoteBlock`, `tabsContent`, `downloadList`, `feeStructure`, `numberedSteps`, `bentoGrid`, `testimonialGrid`, `awardsList`, `aboutSection`, `accreditationCards`, `reusableSection`.
+`announcement`, `bannerCta`, `newsGrid`, `newsEventsTabs`, `cta39`, `heroBanner`, `heroCarousel`, `galleryCoverflow`, `featureSpotlight`, `testimonialSpotlight`, `featureMatrix`, `contentHighlights`, `editorialReasons`, `academicProgrammes`, `leadershipProfiles`, `departmentProfiles`, `newsEventsHighlights`, `profileCarousel`, `galleryShowcase`, `eventGallery`, `galleryAlbumTabs`, `imageMosaic`, `studentExperience`, `statsStrip`, `qaAccordion`, `ratingSpotlight`, `reviewFeed`, `reviewSubmission`, `contact33`, `contact24`, `teamShowcase`, `services21`, `richText`, `videoEmbed`, `mediaCarousel`, `programMatrix`, `logoStrip`, `pageHeader`, `breadcrumb`, `timeline`, `iconCardShowcase`, `iconGrid`, `quoteBlock`, `tabsContent`, `downloadList`, `feeStructure`, `numberedSteps`, `bentoGrid`, `testimonialGrid`, `awardsList`, `aboutSection`, `accreditationCards`, `reusableSection`.
 
 [ReusableSections.ts](../../../../src/collections/ReusableSections.ts) exposes the same order except `reusableSection`, preventing direct recursion.
 
@@ -102,6 +102,30 @@ designation uses the same accent family, and qualifications remain visually dist
 expertise list. Its grid renders one mobile column, at most two tablet columns, and the selected two,
 three, or four desktop columns. Cards remain opaque, equal-height, and non-clickable without profile
 links, buttons, hover navigation, or client state.
+
+Department Profiles owns a searchable, department-filtered faculty directory. Editors configure one
+ordered block-local department list and assign exactly one department to each profile through a custom
+Admin picker backed by stable department row IDs. Renaming preserves assignments; removing an assigned
+department fails validation until profiles are reassigned. Profiles require a name, may include Media
+and a designation, and retain image crop positioning. Search and department tabs are independently optional;
+All remains first, empty departments are omitted, and Pill, Underline, and Contained tabs reuse the
+shared content-tab rail. Search covers name, designation, and department across the complete normalized
+list before the selected 12/16/20/24 batch is sliced, so hidden records remain searchable. Load More
+increments by the configured batch and disappears at completion. Static non-clickable cards support
+Image Overlay and Inline layouts at Large, Medium, and Small sizes. Image Overlay uses a compact
+portrait `4:5` ratio on mobile and a taller `3:4` width-to-height ratio from `sm` upward, preserves
+Bottom-to-Top/Full geometry, and exposes only Auto/Dark/Brand tones and Dark/Darker strengths to
+protect small-text contrast. Its centered mobile grid caps Large at 320px, Medium at 288px, and Small
+at 256px. Inline places a square image beside a stack of
+name, optional designation, and department. Boxed separates rounded cards, Framed Grid joins square
+cells within a complete outer border, and Ruled Grid uses the same internal dividers with only top and
+bottom outer rules. Image Overlay Large remembers two-to-four profiles per row and defaults to four,
+Medium remembers three-to-six and defaults to six, and Small remembers four-to-eight and defaults to
+eight. Mobile uses one column, small screens cap at two, standard desktop caps at four, and five-to-eight
+columns activate at `2xl`. Inline retains the original two-to-four-column control at every size. Missing
+or unresolved images use a semantic decorative `UserRound` placeholder in either layout. Existing
+documents resolve to Image Overlay Large, four columns, and Boxed without a migration.
+The block reuses shared optional headers, appearance, actions, alignment, padding, and tab patterns.
 
 Program Matrix keeps its introduction before the matrix and footer actions in document order. Editors
 can use a stacked layout or a large-screen 40/60 split with the introduction on either visual side

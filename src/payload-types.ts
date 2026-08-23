@@ -209,6 +209,7 @@ export interface Page {
         | EditorialReasonsBlock
         | AcademicProgrammesBlock
         | LeadershipProfilesBlock
+        | DepartmentProfilesBlock
         | NewsEventsHighlightsBlock
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
@@ -1688,6 +1689,115 @@ export interface LeadershipProfilesBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'leadershipProfiles';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DepartmentProfilesBlock".
+ */
+export interface DepartmentProfilesBlock {
+  /**
+   * Small label above the section title.
+   */
+  eyebrow?: string | null;
+  title?: string | null;
+  /**
+   * Optional italic second line of the heading.
+   */
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Add departments once in the order they should appear in the public filter tabs.
+   */
+  departments: {
+    name: string;
+    id?: string | null;
+  }[];
+  /**
+   * Profiles shown in their displayed order.
+   */
+  profiles: {
+    image?: (string | null) | Media;
+    name: string;
+    designation?: string | null;
+    /**
+     * Choose one department from the list configured above.
+     */
+    departmentId: string;
+    imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+    id?: string | null;
+  }[];
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  showSearch?: boolean | null;
+  searchPlaceholder?: string | null;
+  showDepartmentTabs?: boolean | null;
+  allTabLabel?: string | null;
+  tabVariant?: ('pill' | 'underline' | 'contained') | null;
+  profilesPerLoad: '12' | '16' | '20' | '24';
+  loadMoreLabel?: string | null;
+  noResultsMessage?: string | null;
+  cardLayout: 'overlay' | 'inline';
+  /**
+   * Controls card proportion, media size, spacing, and typography.
+   */
+  cardSize: 'sm' | 'md' | 'lg';
+  /**
+   * Auto uses Brand on brand sections and Dark elsewhere. Light tone is excluded to protect small-text contrast.
+   */
+  themeMode?: ('auto' | 'dark' | 'brand') | null;
+  overlayStyle?: ('dark' | 'darker') | null;
+  contentAlignment: 'left' | 'center' | 'right';
+  headerLayout: 'split' | 'stacked';
+  descriptionPosition?: ('side' | 'underTitle') | null;
+  sideContentAlignment?: ('top' | 'bottom') | null;
+  columns?: ('2' | '3' | '4') | null;
+  mediumColumns?: ('3' | '4' | '5' | '6') | null;
+  smallColumns?: ('4' | '5' | '6' | '7' | '8') | null;
+  cardFrame: 'boxed' | 'framed' | 'open';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'departmentProfiles';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -4945,6 +5055,7 @@ export interface ReusableSection {
         | EditorialReasonsBlock
         | AcademicProgrammesBlock
         | LeadershipProfilesBlock
+        | DepartmentProfilesBlock
         | NewsEventsHighlightsBlock
         | ProfileCarouselBlock
         | GalleryShowcaseBlock
@@ -6288,6 +6399,7 @@ export interface PagesSelect<T extends boolean = true> {
         editorialReasons?: T | EditorialReasonsBlockSelect<T>;
         academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
         leadershipProfiles?: T | LeadershipProfilesBlockSelect<T>;
+        departmentProfiles?: T | DepartmentProfilesBlockSelect<T>;
         newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
@@ -7195,6 +7307,87 @@ export interface LeadershipProfilesBlockSelect<T extends boolean = true> {
   descriptionPosition?: T;
   sideContentAlignment?: T;
   columns?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DepartmentProfilesBlock_select".
+ */
+export interface DepartmentProfilesBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  departments?:
+    | T
+    | {
+        name?: T;
+        id?: T;
+      };
+  profiles?:
+    | T
+    | {
+        image?: T;
+        name?: T;
+        designation?: T;
+        departmentId?: T;
+        imagePosition?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  showSearch?: T;
+  searchPlaceholder?: T;
+  showDepartmentTabs?: T;
+  allTabLabel?: T;
+  tabVariant?: T;
+  profilesPerLoad?: T;
+  loadMoreLabel?: T;
+  noResultsMessage?: T;
+  cardLayout?: T;
+  cardSize?: T;
+  themeMode?: T;
+  overlayStyle?: T;
+  contentAlignment?: T;
+  headerLayout?: T;
+  descriptionPosition?: T;
+  sideContentAlignment?: T;
+  columns?: T;
+  mediumColumns?: T;
+  smallColumns?: T;
+  cardFrame?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -9504,6 +9697,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         editorialReasons?: T | EditorialReasonsBlockSelect<T>;
         academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
         leadershipProfiles?: T | LeadershipProfilesBlockSelect<T>;
+        departmentProfiles?: T | DepartmentProfilesBlockSelect<T>;
         newsEventsHighlights?: T | NewsEventsHighlightsBlockSelect<T>;
         profileCarousel?: T | ProfileCarouselBlockSelect<T>;
         galleryShowcase?: T | GalleryShowcaseBlockSelect<T>;
