@@ -8,7 +8,7 @@ Make the missing-image placeholder in Inline Department Profile cards use a visi
 
 `ProfileMedia` will accept an optional placeholder class. When omitted, it retains the existing neutral `bg-muted text-muted-foreground` fallback used by Image Overlay cards.
 
-Inline cards will pass `bg-current/10`, an inset `ring-current/10` outline, and the secondary foreground class from their already-resolved card surface. The media wrapper will not add `bg-background/60`. Consequently:
+Inline cards will pass `bg-current/10` and the secondary foreground class from their already-resolved card surface. The media wrapper will not add `bg-background/60`, a border, or an inset ring. Consequently:
 
 - Boxed Inline cards receive a subtle tint derived from their resolved card surface.
 - Framed Grid and Ruled Grid Inline cards receive a subtle tint derived from the current section or page surface.
@@ -21,4 +21,4 @@ This is a presentation-only change in `DepartmentProfileCard.tsx`. It does not a
 
 ## Verification
 
-The Department Profiles integration test will assert that an Inline missing-image placeholder uses the surface-aware `bg-current/10` tint and inset outline without the old `bg-muted` or `bg-background/60` treatment. The same test will verify that an Image Overlay missing-image placeholder still uses the neutral fallback. TypeScript, ESLint, focused rendering tests, diff hygiene, and the permitted project-context check will complete the change.
+The Department Profiles integration test will assert that an Inline missing-image placeholder uses the surface-aware `bg-current/10` tint without a ring or the old `bg-muted` and `bg-background/60` treatment. The same test will verify that an Image Overlay missing-image placeholder still uses the neutral fallback. TypeScript, ESLint, focused rendering tests, diff hygiene, and the permitted project-context check will complete the change.

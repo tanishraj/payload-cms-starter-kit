@@ -163,10 +163,7 @@ export function DepartmentProfileCard({
         <ProfileMedia
           className={cn('shrink-0 rounded-lg', inlineSize.image)}
           imageSizes={inlineSize.imageSizes}
-          placeholderClassName={cn(
-            'bg-current/10 ring-1 ring-current/10 ring-inset',
-            surface.secondary,
-          )}
+          placeholderClassName={cn('bg-current/10', surface.secondary)}
           profile={profile}
         />
         <div className="flex min-w-0 flex-1 flex-col gap-1">

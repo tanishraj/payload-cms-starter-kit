@@ -529,9 +529,7 @@ describe('Department Profiles block', () => {
       placeholderIndex + 80,
     )
     expect(inlinePlaceholderElement).toContain('bg-current/10')
-    expect(inlinePlaceholderElement).toContain('ring-1')
-    expect(inlinePlaceholderElement).toContain('ring-inset')
-    expect(inlinePlaceholderElement).toContain('ring-current/10')
+    expect(inlinePlaceholderElement).not.toContain('ring-')
     expect(inlinePlaceholderElement).toContain('text-muted-foreground')
     expect(inlinePlaceholderElement).not.toContain('bg-muted')
     expect(withoutImage).not.toContain('bg-background/60')
