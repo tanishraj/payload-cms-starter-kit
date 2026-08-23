@@ -9,6 +9,7 @@ import {
   requireCapability,
 } from '@/access/adminCapabilities'
 import { buildSEOFields } from '@/fields/buildSEOFields'
+import { createPageFromRecipeEndpoint } from '@/endpoints/createPageFromRecipe'
 import { projectSlugField } from '@/fields/projectSlugField'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
@@ -109,6 +110,15 @@ export const Pages: CollectionConfig = {
     plural: 'Pages',
   },
   admin: {
+    components: {
+      views: {
+        edit: {
+          default: {
+            Component: '@/components/admin/PageCreateView#PageCreateView',
+          },
+        },
+      },
+    },
     group: 'Content',
     hidden: hideFromUsersWithoutCapability('manage_pages'),
     useAsTitle: 'title',
@@ -136,6 +146,7 @@ export const Pages: CollectionConfig = {
     readVersions: requireCapability('manage_pages'),
     update: requireCapability('manage_pages'),
   },
+  endpoints: [createPageFromRecipeEndpoint],
   hooks: {
     afterRead: [populatePageUrlPreview],
     afterChange: [

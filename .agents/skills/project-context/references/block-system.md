@@ -8,6 +8,12 @@
 
 The catalog imports schema config only. Production and live-preview renderer switches remain explicit and separate so server/client boundaries are not mixed.
 
+## Page Creation Recipes
+
+[pageRecipes.ts](../../../../src/page-recipes/pageRecipes.ts) defines the two code-owned full-page creation recipes. Blank produces an empty layout. Landing produces `pageHeader` followed by `breadcrumb`; it copies the Page title into Page Header, selects an empty eyebrow as its top content to suppress the header's built-in breadcrumb, and configures the standalone Breadcrumb for automatic hierarchy resolution.
+
+Recipes create editable drafts and never restrict the canonical 53-block registry. After creation, editors can remove or reorder recipe blocks and add any Page block. The guided setup replaces only full-page Page creation; relationship-drawer creation delegates to Payload's native form so the parent relationship workflow remains intact.
+
 Restricted shell/system registries are separate:
 
 - Headers: `headerNavbar12`.

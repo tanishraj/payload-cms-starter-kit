@@ -21,6 +21,12 @@ The first five groups form the client-approved 18-block vocabulary. Advanced blo
 
 For a new one-client deployment, developers customize the groups in `src/blocks/blockCatalog.ts`. Keep every Page-compatible block classified exactly once, retain Reusable Section and News/Event template exclusions, and run the catalog and registry contracts before handoff. Editors do not manage this vocabulary through Site Settings.
 
+## Page Recipes
+
+Full-page creation starts with **Blank Page** or **Landing Page**. Blank Page has no layout blocks. Landing Page starts with Page Header followed by an automatic Breadcrumb. Recipes are editable starting points: after the draft opens, editors can remove or reorder those blocks and add any block from the complete catalog.
+
+Page creation inside a relationship drawer retains Payload's native blank form so the newly created Page can return to and populate the parent field safely.
+
 ## Content And Theme Settings
 
 Every configurable visual block uses the same two top-level tabs:

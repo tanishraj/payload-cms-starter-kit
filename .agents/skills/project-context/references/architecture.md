@@ -33,6 +33,11 @@ React Server Components load public CMS data. Focused client components own inte
   serializable snapshot to client-safe preview adapters. Gallery clients never query Payload.
 - Form submission, review-feed, News & Events Tabs pagination, redirects, and media reconciliation
   have focused route handlers.
+- Full-page Page creation uses a guided Admin setup with code-owned Blank and Landing recipes. The
+  authenticated `POST /api/pages/create-from-recipe` collection endpoint accepts only a Page title
+  and approved recipe ID, creates through Payload with `draft: true` and access enforcement, and
+  returns the native edit destination. Existing Page editing and relationship-drawer creation keep
+  Payload's native document view.
 - `/admin`, Payload REST, GraphQL, and GraphQL Playground live under the Payload route group.
 - Development-only block thumbnail previews live under their own route group.
 
