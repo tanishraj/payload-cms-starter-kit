@@ -224,6 +224,9 @@ describe('carousel block schemas', () => {
     expect(source).toContain('aria-label="Previous slide"')
     expect(source).toContain('aria-label="Next slide"')
     expect(source).toContain("aria-current={selectedIndex === index ? 'true' : undefined}")
+    expect(source).toContain('contextLabel="hero motion"')
+    expect(source).toContain('useControllableMotion')
+    expect(source).not.toContain('<video\n                      autoPlay')
     expect(source).not.toContain('index % 2')
   })
 

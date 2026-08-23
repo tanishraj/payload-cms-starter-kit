@@ -3,10 +3,12 @@
 import Autoplay from 'embla-carousel-autoplay'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { ContentLink } from '@/components/ContentLink'
+import { MotionToggle } from '@/components/motion/MotionToggle'
+import { useControllableMotion } from '@/components/motion/useControllableMotion'
 import { Button } from '@/components/ui/button'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel'
@@ -91,9 +93,19 @@ export function HeroCarouselClient({
   const [api, setApi] = useState<CarouselApi>()
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([])
+  const videoRefs = useRef<Array<HTMLVideoElement | null>>([])
+  const slideAutoplayEnabled = autoplay && slides.length > 1
+  const hasBackgroundVideo = slides.some((slide) => Boolean(slide.backgroundVideoUrl))
+  const motionState = useControllableMotion({
+    enabled: slideAutoplayEnabled || hasBackgroundVideo,
+  })
+  const autoplayPlugin = useMemo(
+    () => Autoplay({ delay: 6000, playOnInit: false, stopOnInteraction: false }),
+    [],
+  )
   const plugins = useMemo(
-    () => (autoplay && slides.length > 1 ? [Autoplay({ delay: 6000 })] : undefined),
-    [autoplay, slides.length],
+    () => (slideAutoplayEnabled ? [autoplayPlugin] : undefined),
+    [autoplayPlugin, slideAutoplayEnabled],
   )
   const overlay = resolveMediaOverlay({
     autoTone: 'dark',
@@ -119,14 +131,51 @@ export function HeroCarouselClient({
     }
   }, [api])
 
+  useEffect(() => {
+    const autoplayController = api?.plugins().autoplay
+    if (!autoplayController) return
+
+    if (slideAutoplayEnabled && motionState.isMotionAllowed) {
+      autoplayController.play()
+    } else {
+      autoplayController.stop()
+    }
+
+    return () => autoplayController.stop()
+  }, [api, motionState.isMotionAllowed, slideAutoplayEnabled])
+
+  useEffect(() => {
+    const videos = [...videoRefs.current]
+
+    videos.forEach((video, index) => {
+      if (!video) return
+
+      if (index === selectedIndex && motionState.isMotionAllowed) {
+        const playResult = video.play()
+        if (playResult) void playResult.catch(() => undefined)
+      } else {
+        video.pause()
+      }
+    })
+
+    return () => {
+      videos.forEach((video) => video?.pause())
+    }
+  }, [motionState.isMotionAllowed, selectedIndex, slides])
+
   if (slides.length === 0) return null
+
+  const showDotControls = showDots && slides.length > 1
+  const showLowerControls = showDotControls || motionState.showMotionControl
 
   return (
     <Carousel
       className={cn('overflow-hidden', overlay.text.title)}
+      data-testid="hero-carousel"
       opts={{ loop: slides.length > 1 }}
       plugins={plugins}
       setApi={setApi}
+      {...motionState.interactionProps}
     >
       <CarouselContent className="ml-0">
         {slides.map((slide, index) => {
@@ -148,11 +197,13 @@ export function HeroCarouselClient({
                 <div className="absolute inset-0">
                   {slide.backgroundVideoUrl ? (
                     <video
-                      autoPlay
                       className="size-full object-cover object-center"
                       loop
                       muted
                       playsInline
+                      ref={(video) => {
+                        videoRefs.current[index] = video
+                      }}
                       src={slide.backgroundVideoUrl}
                     />
                   ) : slide.backgroundImageSrc ? (
@@ -278,26 +329,41 @@ export function HeroCarouselClient({
         </div>
       ) : null}
 
-      {showDots && slides.length > 1 ? (
+      {showLowerControls ? (
         <div
           className={cn(
-            'absolute inset-x-0 bottom-8 flex items-center justify-center gap-3',
+            'absolute inset-x-0 bottom-8 grid grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 md:px-8 lg:px-12',
             overlay.text.title,
           )}
         >
-          {scrollSnaps.map((_, index) => (
-            <button
-              aria-current={selectedIndex === index ? 'true' : undefined}
-              aria-label={`Go to slide ${index + 1}`}
-              className={cn(
-                'size-2.5 rounded-md border border-current transition-colors',
-                selectedIndex === index ? 'bg-current' : 'bg-transparent',
-              )}
-              key={index}
-              onClick={() => api?.scrollTo(index)}
-              type="button"
-            />
-          ))}
+          <span aria-hidden="true" />
+          <div className="flex items-center justify-center gap-3">
+            {showDotControls
+              ? scrollSnaps.map((_, index) => (
+                  <button
+                    aria-current={selectedIndex === index ? 'true' : undefined}
+                    aria-label={`Go to slide ${index + 1}`}
+                    className={cn(
+                      'size-2.5 rounded-md border border-current transition-colors',
+                      selectedIndex === index ? 'bg-current' : 'bg-transparent',
+                    )}
+                    key={index}
+                    onClick={() => api?.scrollTo(index)}
+                    type="button"
+                  />
+                ))
+              : null}
+          </div>
+          <div className="justify-self-end">
+            {motionState.showMotionControl ? (
+              <MotionToggle
+                contextLabel="hero motion"
+                isPaused={motionState.isUserPaused}
+                onToggle={motionState.toggleUserPaused}
+                variant="secondary"
+              />
+            ) : null}
+          </div>
         </div>
       ) : null}
     </Carousel>
