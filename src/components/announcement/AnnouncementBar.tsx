@@ -146,9 +146,9 @@ export function AnnouncementBar({
         {dismissible ? (
           <Button
             aria-label="Dismiss announcement"
-            className="rounded-lg text-current/90 hover:bg-current/10 hover:text-current"
+            className="size-11 rounded-lg text-current/90 hover:bg-current/10 hover:text-current"
             onClick={handleDismiss}
-            size="icon-sm"
+            size="icon-lg"
             type="button"
             variant="ghost"
           >
