@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useSyncExternalStore } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ShieldCheck, X } from 'lucide-react'
+import { Dialog as DialogPrimitive } from 'radix-ui'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -142,40 +143,76 @@ function FloatingCard({ config, onAccept, onReject }: VariantProps) {
 
 function Modal({ config, onAccept, onReject }: VariantProps) {
   const { heading, message, acceptLabel, rejectLabel, learnMoreLabel, privacyPolicyUrl } = config
+  const rejectButtonRef = useRef<HTMLButtonElement>(null)
+  const restoreFocusRef = useRef<HTMLElement | null>(
+    typeof document !== 'undefined' && document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null,
+  )
+
+  useEffect(() => {
+    const previousFocus = restoreFocusRef.current
+
+    return () => {
+      queueMicrotask(() => {
+        if (previousFocus?.isConnected) previousFocus.focus()
+      })
+    }
+  }, [])
+
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Cookie consent"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+    <DialogPrimitive.Root
+      modal
+      open
+      onOpenChange={(open) => {
+        if (!open) onReject()
+      }}
     >
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" aria-hidden="true" />
-      <div className="relative w-full max-w-md rounded-2xl border border-border bg-background p-6 shadow-2xl">
-        <ShieldCheck className="mb-3 size-8 text-primary" aria-hidden="true" />
-        <h2 className="mb-2 text-base font-semibold text-foreground">
-          {heading?.trim() || 'We value your privacy'}
-        </h2>
-        <p id="cc-description" className="text-sm leading-6 text-muted-foreground">
-          {message || 'We use cookies to analyse site performance and improve your experience.'}{' '}
-          {privacyPolicyUrl ? (
-            <Link
-              href={privacyPolicyUrl}
-              className="font-medium text-foreground underline underline-offset-2 hover:opacity-70"
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Overlay
+          className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm"
+          data-cookie-consent-overlay="true"
+        />
+        <DialogPrimitive.Content
+          aria-modal="true"
+          className="fixed top-1/2 left-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-border bg-background p-6 shadow-2xl"
+          onOpenAutoFocus={(event) => {
+            event.preventDefault()
+            rejectButtonRef.current?.focus()
+          }}
+          onPointerDownOutside={(event) => event.preventDefault()}
+        >
+          <ShieldCheck className="mb-3 size-8 text-primary" aria-hidden="true" />
+          <DialogPrimitive.Title className="mb-2 text-base font-semibold text-foreground">
+            {heading?.trim() || 'We value your privacy'}
+          </DialogPrimitive.Title>
+          <DialogPrimitive.Description className="text-sm leading-6 text-muted-foreground">
+            {message || 'We use cookies to analyse site performance and improve your experience.'}{' '}
+            {privacyPolicyUrl ? (
+              <Link
+                href={privacyPolicyUrl}
+                className="font-medium text-foreground underline underline-offset-2 hover:opacity-70"
+              >
+                {learnMoreLabel || 'Privacy Policy'}
+              </Link>
+            ) : null}
+          </DialogPrimitive.Description>
+          <div className="mt-6 flex flex-col gap-2 sm:flex-row-reverse">
+            <Button className="flex-1" onClick={onAccept}>
+              {acceptLabel || 'Accept all'}
+            </Button>
+            <Button
+              ref={rejectButtonRef}
+              variant="outline"
+              className="flex-1"
+              onClick={onReject}
             >
-              {learnMoreLabel || 'Privacy Policy'}
-            </Link>
-          ) : null}
-        </p>
-        <div className="mt-6 flex flex-col gap-2 sm:flex-row-reverse">
-          <Button className="flex-1" onClick={onAccept}>
-            {acceptLabel || 'Accept all'}
-          </Button>
-          <Button variant="outline" className="flex-1" onClick={onReject}>
-            {rejectLabel || 'Reject non-essential'}
-          </Button>
-        </div>
-      </div>
-    </div>
+              {rejectLabel || 'Reject non-essential'}
+            </Button>
+          </div>
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
   )
 }
 
