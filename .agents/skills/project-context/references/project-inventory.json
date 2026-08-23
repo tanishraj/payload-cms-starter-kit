@@ -2215,9 +2215,12 @@
       "src/components/admin/AdminSessionBar.tsx",
       "src/components/admin/AdminUserMenu.tsx",
       "src/components/admin/DashboardOverview.tsx",
+      "src/components/admin/DashboardWorkflowCard.scss",
+      "src/components/admin/DashboardWorkflowCard.tsx",
       "src/components/admin/PageCreateView.tsx",
       "src/components/admin/PageRecipeSetup.scss",
       "src/components/admin/PageRecipeSetup.tsx",
+      "src/components/admin/dashboardAttention.ts",
       "src/components/announcement/AnnouncementBar.tsx",
       "src/components/announcement/MarqueeAnnouncementContent.tsx",
       "src/components/announcement/RotatingAnnouncementContent.tsx",
@@ -2451,6 +2454,7 @@
       "tests/int/content-taxonomy.int.spec.ts",
       "tests/int/cta39.int.spec.tsx",
       "tests/int/dark-mode-media-treatment.int.spec.tsx",
+      "tests/int/dashboard-attention.int.spec.tsx",
       "tests/int/dashboard-capability-filtering.int.spec.tsx",
       "tests/int/department-profiles.int.spec.tsx",
       "tests/int/docker-standalone.int.spec.ts",
@@ -2572,7 +2576,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "de228fd0e18eb69e300b8a166d80762824f9897f0ddabda7fcc231ece4339003"
+    "sha256": "8030d604837223d9d41ddb06dba3202c6fb0906a36d1e9f79872763cc585f71c"
   },
   "surfaces": {
     "access": [
@@ -2741,6 +2745,7 @@
       "tests/int/content-taxonomy.int.spec.ts",
       "tests/int/cta39.int.spec.tsx",
       "tests/int/dark-mode-media-treatment.int.spec.tsx",
+      "tests/int/dashboard-attention.int.spec.tsx",
       "tests/int/dashboard-capability-filtering.int.spec.tsx",
       "tests/int/department-profiles.int.spec.tsx",
       "tests/int/docker-standalone.int.spec.ts",

@@ -10,10 +10,14 @@ The public frontend also shows an authenticated CMS session bar with the current
 
 ## How To Use It
 
-1. Start with attention counts and open the relevant `Action Queue` or submission list.
-2. Use recent edits to resume work on active content.
-3. Use quick actions only for collections you are responsible for.
-4. Treat dashboard totals as orientation, not as a replacement for filtered collection views or the Audit Log.
+1. Start with `In Review` and `Scheduled`. Their headline values summarize every collection you
+   can manage; use the collection rows beneath them to open the exact filtered records. A partial
+   or unavailable count is shown explicitly instead of being treated as zero.
+2. Open `Action Queue` for assigned operational issues and `Open Submissions` for visitor follow-up.
+3. Use recent edits to resume work on active content.
+4. Use quick actions only for collections you are responsible for.
+5. Treat Content Overview totals as orientation, not as a replacement for filtered collection
+   views or the Audit Log.
 
 ## Related Guides
 

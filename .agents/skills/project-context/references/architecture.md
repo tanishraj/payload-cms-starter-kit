@@ -38,6 +38,11 @@ React Server Components load public CMS data. Focused client components own inte
   and approved recipe ID, creates through Payload with `draft: true` and access enforcement, and
   returns the native edit destination. Existing Page editing and relationship-drawer creation keep
   Payload's native document view.
+- Dashboard workflow attention remains source-collection driven. `In Review` and future
+  `Scheduled` counts aggregate only capability-authorized Local API queries using the authenticated
+  user with `overrideAccess: false`. The aggregate containers are non-interactive; non-zero
+  collection rows link to exact matching Payload list filters, and failed counts remain visibly
+  unavailable instead of becoming zero.
 - `/admin`, Payload REST, GraphQL, and GraphQL Playground live under the Payload route group.
 - Development-only block thumbnail previews live under their own route group.
 
