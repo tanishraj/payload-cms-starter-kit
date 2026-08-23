@@ -53,7 +53,7 @@ import { AwardsListBlock } from '@/blocks/AwardsList/config'
 import { AboutSectionBlock } from '@/blocks/AboutSection/config'
 import { AccreditationCardsBlock } from '@/blocks/AccreditationCards/config'
 import {
-  allowPublicReadOrCapability,
+  allowDraftPublishedReadOrCapability,
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
@@ -77,7 +77,7 @@ export const ReusableSections: CollectionConfig = {
   access: {
     create: requireCapability('manage_pages'),
     delete: requireCapability('manage_pages'),
-    read: allowPublicReadOrCapability('manage_pages'),
+    read: allowDraftPublishedReadOrCapability('manage_pages'),
     readVersions: requireCapability('manage_pages'),
     update: requireCapability('manage_pages'),
   },

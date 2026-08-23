@@ -1,7 +1,7 @@
 import { type CollectionConfig } from 'payload'
 
 import {
-  allowPublicReadOrCapability,
+  allowPublishedReadOrCapability,
   canShowEditorialWorkflow,
   hideFromUsersWithoutCapability,
   requireCapability,
@@ -73,7 +73,7 @@ export const SystemPages: CollectionConfig = {
   access: {
     create: requireCapability('manage_system_pages'),
     delete: requireCapability('manage_system_pages'),
-    read: allowPublicReadOrCapability('manage_system_pages'),
+    read: allowPublishedReadOrCapability('manage_system_pages'),
     readVersions: requireCapability('manage_system_pages'),
     update: requireCapability('manage_system_pages'),
   },

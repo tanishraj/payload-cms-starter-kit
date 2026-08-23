@@ -56,7 +56,7 @@ import { AboutSectionBlock } from '@/blocks/AboutSection/config'
 import { AccreditationCardsBlock } from '@/blocks/AccreditationCards/config'
 import type { Page } from '@/payload-types'
 import {
-  allowPublicReadOrCapability,
+  allowPublishedReadOrCapability,
   canShowEditorialWorkflow,
   hideFromUsersWithoutCapability,
   requireCapability,
@@ -181,7 +181,7 @@ export const Pages: CollectionConfig = {
   access: {
     create: requireCapability('manage_pages'),
     delete: requireCapability('manage_pages'),
-    read: allowPublicReadOrCapability('manage_pages'),
+    read: allowPublishedReadOrCapability('manage_pages'),
     readVersions: requireCapability('manage_pages'),
     update: requireCapability('manage_pages'),
   },

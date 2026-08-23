@@ -1,7 +1,7 @@
 import { type CollectionConfig } from 'payload'
 
 import {
-  allowPublicReadOrCapability,
+  allowDraftPublishedReadOrCapability,
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
@@ -23,7 +23,7 @@ export const GalleryAlbums: CollectionConfig = {
   access: {
     create: requireCapability('manage_media'),
     delete: requireCapability('manage_media'),
-    read: allowPublicReadOrCapability('manage_media'),
+    read: allowDraftPublishedReadOrCapability('manage_media'),
     readVersions: requireCapability('manage_media'),
     update: requireCapability('manage_media'),
   },

@@ -6,7 +6,8 @@ import type {
 } from 'payload'
 
 import {
-  allowPublicReadOrCapability,
+  allowDraftPublishedReadOrCapability,
+  authenticatedFieldReadAccess,
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
@@ -124,7 +125,7 @@ export const Media: CollectionConfig = {
   access: {
     create: requireCapability('manage_media'),
     delete: requireCapability('manage_media'),
-    read: allowPublicReadOrCapability('manage_media'),
+    read: allowDraftPublishedReadOrCapability('manage_media'),
     readVersions: requireCapability('manage_media'),
     update: requireCapability('manage_media'),
   },
@@ -143,6 +144,9 @@ export const Media: CollectionConfig = {
       name: 'storageStatus',
       label: 'Storage Status',
       type: 'select',
+      access: {
+        read: authenticatedFieldReadAccess,
+      },
       defaultValue: 'unchecked',
       options: [
         {
@@ -177,6 +181,9 @@ export const Media: CollectionConfig = {
       name: 'storageCheckedAt',
       label: 'Storage Checked At',
       type: 'date',
+      access: {
+        read: authenticatedFieldReadAccess,
+      },
       admin: {
         description: 'Most recent storage verification time.',
         position: 'sidebar',
@@ -187,6 +194,9 @@ export const Media: CollectionConfig = {
       name: 'storageMissingSince',
       label: 'Missing Since',
       type: 'date',
+      access: {
+        read: authenticatedFieldReadAccess,
+      },
       admin: {
         description: 'When this asset was first detected missing from object storage.',
         position: 'sidebar',
@@ -197,6 +207,9 @@ export const Media: CollectionConfig = {
       name: 'storageIssue',
       label: 'Storage Issue',
       type: 'textarea',
+      access: {
+        read: authenticatedFieldReadAccess,
+      },
       admin: {
         description: 'Read-only diagnostic detail from the last storage verification.',
         position: 'sidebar',
@@ -206,6 +219,9 @@ export const Media: CollectionConfig = {
     {
       name: 'title',
       type: 'text',
+      access: {
+        read: authenticatedFieldReadAccess,
+      },
       admin: {
         description: 'Internal asset name used in the admin panel.',
       },
@@ -214,6 +230,9 @@ export const Media: CollectionConfig = {
       name: 'assetType',
       label: 'Asset Type',
       type: 'select',
+      access: {
+        read: authenticatedFieldReadAccess,
+      },
       defaultValue: 'general',
       options: [...mediaAssetTypeOptions],
       admin: {
@@ -232,6 +251,9 @@ export const Media: CollectionConfig = {
     {
       name: 'tags',
       type: 'array',
+      access: {
+        read: authenticatedFieldReadAccess,
+      },
       labels: {
         singular: 'Tag',
         plural: 'Tags',
@@ -252,6 +274,9 @@ export const Media: CollectionConfig = {
     {
       name: 'notes',
       type: 'textarea',
+      access: {
+        read: authenticatedFieldReadAccess,
+      },
       admin: {
         description:
           'Optional internal notes about where or how this asset should be used, plus any preferred sizing or placement guidance for editors.',
@@ -260,6 +285,9 @@ export const Media: CollectionConfig = {
     {
       name: 'isCriticalAsset',
       type: 'checkbox',
+      access: {
+        read: authenticatedFieldReadAccess,
+      },
       defaultValue: false,
       admin: {
         description:
@@ -269,6 +297,9 @@ export const Media: CollectionConfig = {
     {
       name: 'replacementNotes',
       type: 'textarea',
+      access: {
+        read: authenticatedFieldReadAccess,
+      },
       admin: {
         description:
           'Optional internal guidance for replacement, retirement, or migration of this asset.',

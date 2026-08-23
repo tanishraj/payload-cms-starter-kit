@@ -1,7 +1,7 @@
 import { type CollectionConfig } from 'payload'
 
 import {
-  allowPublicReadOrCapability,
+  allowPublishedReadOrCapability,
   canShowEditorialWorkflow,
   hideFromUsersWithoutCapability,
   requireCapability,
@@ -67,7 +67,7 @@ export const Reviews: CollectionConfig = {
   access: {
     create: requireCapability('manage_reviews'),
     delete: requireCapability('manage_reviews'),
-    read: allowPublicReadOrCapability('manage_reviews'),
+    read: allowPublishedReadOrCapability('manage_reviews'),
     readVersions: requireCapability('manage_reviews'),
     update: requireCapability('manage_reviews'),
   },

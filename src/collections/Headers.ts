@@ -1,7 +1,7 @@
 import { type CollectionConfig } from 'payload'
 
 import {
-  allowPublicReadOrCapability,
+  allowDraftPublishedReadOrCapability,
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
@@ -27,7 +27,7 @@ export const Headers: CollectionConfig = {
   access: {
     create: requireCapability('manage_headers'),
     delete: requireCapability('manage_headers'),
-    read: allowPublicReadOrCapability('manage_headers'),
+    read: allowDraftPublishedReadOrCapability('manage_headers'),
     readVersions: requireCapability('manage_headers'),
     update: requireCapability('manage_headers'),
   },

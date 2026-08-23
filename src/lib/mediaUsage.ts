@@ -1,5 +1,7 @@
 import type { Field } from 'payload'
 
+import { authenticatedFieldReadAccess } from '@/access/adminCapabilities'
+
 type RelationshipValue = number | string | { id?: number | string | null } | null | undefined
 
 type PayloadLike = {
@@ -600,6 +602,9 @@ export const mediaUsageAdminFieldConfig: Field[] = [
     name: 'usageSummary',
     type: 'text',
     virtual: true,
+    access: {
+      read: authenticatedFieldReadAccess,
+    },
     admin: {
       description: 'Read-only usage overview derived from supported media relationship fields.',
       readOnly: true,
@@ -609,6 +614,9 @@ export const mediaUsageAdminFieldConfig: Field[] = [
     name: 'usageDetails',
     type: 'json',
     virtual: true,
+    access: {
+      read: authenticatedFieldReadAccess,
+    },
     admin: {
       description: 'Read-only structured list of supported collection and global usage locations.',
       readOnly: true,

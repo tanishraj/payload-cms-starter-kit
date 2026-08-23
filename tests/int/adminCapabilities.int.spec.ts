@@ -3,7 +3,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   adminOrFirstUserAccess,
   adminCapabilityFieldOptions,
+  allowDraftPublishedReadOrCapability,
   allowPublicReadOrCapability,
+  authenticatedFieldReadAccess,
   canReadTaxonomy,
   canManageSystemModes,
   canPublishArticles,
@@ -205,6 +207,28 @@ describe('existing access helpers', () => {
   it('still allows anonymous reads for public content-backed areas', () => {
     const access = allowPublicReadOrCapability('manage_pages')
     expect(access(toAccessReq(createReq(null)))).toBe(true)
+  })
+
+  it('limits anonymous draft-enabled reads to published documents', () => {
+    const access = allowDraftPublishedReadOrCapability('manage_media')
+
+    expect(access(toAccessReq(createReq(null)))).toEqual({
+      _status: { equals: 'published' },
+    })
+    expect(
+      access(
+        toAccessReq(
+          createReq({ capabilities: { manage_media: true }, role: 'contentManager' }),
+        ),
+      ),
+    ).toBe(true)
+  })
+
+  it('keeps internal fields authenticated-only', () => {
+    expect(authenticatedFieldReadAccess({ req: createReq(null) } as never)).toBe(false)
+    expect(
+      authenticatedFieldReadAccess({ req: createReq({ role: 'contentManager' }) } as never),
+    ).toBe(true)
   })
 
   it('still denies protected writes without the matching capability', () => {

@@ -1,7 +1,7 @@
 import type { CollectionBeforeValidateHook, CollectionConfig, Field } from 'payload'
 
 import {
-  allowPublicReadOrCapability,
+  allowDraftPublishedReadOrCapability,
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
@@ -158,7 +158,7 @@ export const Redirects: CollectionConfig = {
   access: {
     create: requireCapability('manage_redirects'),
     delete: requireCapability('manage_redirects'),
-    read: allowPublicReadOrCapability('manage_redirects'),
+    read: allowDraftPublishedReadOrCapability('manage_redirects'),
     readVersions: requireCapability('manage_redirects'),
     update: requireCapability('manage_redirects'),
   },

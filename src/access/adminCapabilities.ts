@@ -1,4 +1,4 @@
-import type { Access, Where } from 'payload'
+import type { Access, FieldAccess, Where } from 'payload'
 
 import {
   editorialRoleOptions,
@@ -366,6 +366,26 @@ export const allowPublicReadOrCapability =
       hasAdminCapability(user, currentCapability),
     )
   }
+
+export const allowDraftPublishedReadOrCapability =
+  (capability: AdminCapability | AdminCapability[]): Access =>
+  ({ req }) => {
+    const user = req.user as AdminUserLike | null | undefined
+
+    if (
+      toCapabilitiesArray(capability).some((currentCapability) =>
+        hasAdminCapability(user, currentCapability),
+      )
+    ) {
+      return true
+    }
+
+    return {
+      _status: { equals: 'published' },
+    }
+  }
+
+export const authenticatedFieldReadAccess: FieldAccess = ({ req }) => Boolean(req.user)
 
 export const allowPublishedReadOrCapability =
   (capability: AdminCapability | AdminCapability[]): Access =>

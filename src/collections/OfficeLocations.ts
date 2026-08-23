@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import {
-  allowPublicReadOrCapability,
+  allowDraftPublishedReadOrCapability,
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
@@ -25,7 +25,7 @@ export const OfficeLocations: CollectionConfig = {
   access: {
     create: requireCapability('manage_site_settings'),
     delete: requireCapability('manage_site_settings'),
-    read: allowPublicReadOrCapability('manage_site_settings'),
+    read: allowDraftPublishedReadOrCapability('manage_site_settings'),
     readVersions: requireCapability('manage_site_settings'),
     update: requireCapability('manage_site_settings'),
   },

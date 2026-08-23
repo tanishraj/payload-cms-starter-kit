@@ -1,7 +1,7 @@
 import { type CollectionConfig } from 'payload'
 
 import {
-  allowPublicReadOrCapability,
+  allowDraftPublishedReadOrCapability,
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
@@ -28,7 +28,7 @@ export const Footers: CollectionConfig = {
   access: {
     create: requireCapability('manage_footers'),
     delete: requireCapability('manage_footers'),
-    read: allowPublicReadOrCapability('manage_footers'),
+    read: allowDraftPublishedReadOrCapability('manage_footers'),
     readVersions: requireCapability('manage_footers'),
     update: requireCapability('manage_footers'),
   },

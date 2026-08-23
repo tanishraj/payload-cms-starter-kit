@@ -1,7 +1,8 @@
 import { type CollectionConfig } from 'payload'
 
 import {
-  allowPublicReadOrCapability,
+  allowDraftPublishedReadOrCapability,
+  authenticatedFieldReadAccess,
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
@@ -31,7 +32,7 @@ export const Forms: CollectionConfig = {
   access: {
     create: requireCapability('manage_forms'),
     delete: requireCapability('manage_forms'),
-    read: allowPublicReadOrCapability('manage_forms'),
+    read: allowDraftPublishedReadOrCapability('manage_forms'),
     readVersions: requireCapability('manage_forms'),
     update: requireCapability('manage_forms'),
   },
@@ -52,6 +53,9 @@ export const Forms: CollectionConfig = {
       name: 'internalNotes',
       label: 'Internal Notes',
       type: 'textarea',
+      access: {
+        read: authenticatedFieldReadAccess,
+      },
       admin: {
         description: 'Optional notes for editors. This is not shown on the website.',
       },
@@ -94,6 +98,9 @@ export const Forms: CollectionConfig = {
       name: 'notificationRecipients',
       label: 'Notification Recipients',
       type: 'array',
+      access: {
+        read: authenticatedFieldReadAccess,
+      },
       labels: {
         singular: 'Recipient',
         plural: 'Recipients',

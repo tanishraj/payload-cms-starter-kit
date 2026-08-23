@@ -1,7 +1,7 @@
 import type { CollectionConfig, Field } from 'payload'
 
 import {
-  allowPublicReadOrCapability,
+  allowDraftPublishedReadOrCapability,
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
@@ -123,7 +123,7 @@ export const NavigationLinks: CollectionConfig = {
   access: {
     create: requireCapability('manage_navigation'),
     delete: requireCapability('manage_navigation'),
-    read: allowPublicReadOrCapability('manage_navigation'),
+    read: allowDraftPublishedReadOrCapability('manage_navigation'),
     readVersions: requireCapability('manage_navigation'),
     update: requireCapability('manage_navigation'),
   },
