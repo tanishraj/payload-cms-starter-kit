@@ -69,13 +69,15 @@ vi.mock('@/components/ui/carousel', async () => {
   return {
     Carousel: ({
       children,
-      opts: _opts,
+      keyboardNavigation,
+      opts,
       plugins: _plugins,
       setApi,
       ...props
     }: HTMLAttributes<HTMLDivElement> & {
       children: ReactNode
-      opts?: unknown
+      keyboardNavigation?: boolean
+      opts?: { loop?: boolean; watchDrag?: boolean }
       plugins?: unknown
       setApi?: (api: typeof carouselHarness.api) => void
     }) => {
@@ -83,7 +85,15 @@ vi.mock('@/components/ui/carousel', async () => {
         setApi?.(carouselHarness.api)
       }, [setApi])
 
-      return React.createElement('div', props, children)
+      return React.createElement(
+        'div',
+        {
+          ...props,
+          'data-keyboard-navigation': String(keyboardNavigation),
+          'data-watch-drag': String(opts?.watchDrag),
+        },
+        children,
+      )
     },
     CarouselContent: ({ children, ...props }: HTMLAttributes<HTMLDivElement>) =>
       React.createElement('div', props, children),
@@ -210,6 +220,61 @@ describe('HeroCarouselClient motion', () => {
 
     expect(await screen.findByRole('button', { name: 'Pause hero motion' })).toBeTruthy()
     expect(screen.queryByRole('button', { name: /Go to slide/i })).toBeNull()
+  })
+
+  it('centers the configured control and exposes hover, focus, and touch disclosure classes', () => {
+    render(<HeroCarouselClient autoplay showPauseControl slides={imageSlides} />)
+
+    const overlay = screen.getByTestId('hero-motion-control-overlay')
+    const button = screen.getByRole('button', { name: 'Pause hero motion' })
+
+    expect(overlay.className).toContain('absolute inset-0')
+    expect(overlay.className).toContain('items-center justify-center')
+    expect(overlay.className).toContain('pointer-events-none')
+    expect(button.className).toContain('pointer-events-auto')
+    expect(button.className).toContain('opacity-0')
+    expect(button.className).toContain('group-hover/hero:opacity-100')
+    expect(button.className).toContain('group-focus-within/hero:opacity-100')
+    expect(button.className).toContain('[@media(hover:none)]:opacity-100')
+  })
+
+  it('locks every slide-selection input only after explicit Pause', () => {
+    render(<HeroCarouselClient autoplay showPauseControl slides={imageSlides} />)
+
+    const hero = screen.getByTestId('hero-carousel')
+    const previous = screen.getByRole('button', { name: 'Previous slide' })
+    const next = screen.getByRole('button', { name: 'Next slide' })
+    const firstDot = screen.getByRole('button', { name: 'Go to slide 1' })
+
+    expect(hero.getAttribute('data-keyboard-navigation')).toBe('true')
+    expect(hero.getAttribute('data-watch-drag')).toBe('true')
+    expect((previous as HTMLButtonElement).disabled).toBe(false)
+    expect((next as HTMLButtonElement).disabled).toBe(false)
+    expect((firstDot as HTMLButtonElement).disabled).toBe(false)
+
+    fireEvent.pointerEnter(hero)
+    fireEvent.click(next)
+    expect(carouselHarness.api.scrollNext).toHaveBeenCalledTimes(1)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Pause hero motion' }))
+
+    expect(hero.getAttribute('data-keyboard-navigation')).toBe('false')
+    expect(hero.getAttribute('data-watch-drag')).toBe('false')
+    expect((previous as HTMLButtonElement).disabled).toBe(true)
+    expect((next as HTMLButtonElement).disabled).toBe(true)
+    expect((firstDot as HTMLButtonElement).disabled).toBe(true)
+
+    fireEvent.click(next)
+    fireEvent.click(firstDot)
+    expect(carouselHarness.api.scrollNext).toHaveBeenCalledTimes(1)
+    expect(carouselHarness.api.scrollTo).not.toHaveBeenCalled()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Play hero motion' }))
+
+    expect(hero.getAttribute('data-keyboard-navigation')).toBe('true')
+    expect(hero.getAttribute('data-watch-drag')).toBe('true')
+    expect((next as HTMLButtonElement).disabled).toBe(false)
+    expect((firstDot as HTMLButtonElement).disabled).toBe(false)
   })
 
   it('controls a single background video independently of slide autoplay', async () => {

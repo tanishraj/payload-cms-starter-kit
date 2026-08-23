@@ -169,13 +169,14 @@ export function HeroCarouselClient({
 
   const showDotControls = showDots && slides.length > 1
   const showHeroMotionControl = showPauseControl && motionState.showMotionControl
-  const showLowerControls = showDotControls || showHeroMotionControl
+  const isNavigationLocked = motionState.isUserPaused
 
   return (
     <Carousel
-      className={cn('overflow-hidden', overlay.text.title)}
+      className={cn('group/hero overflow-hidden', overlay.text.title)}
       data-testid="hero-carousel"
-      opts={{ loop: slides.length > 1 }}
+      keyboardNavigation={!isNavigationLocked}
+      opts={{ loop: slides.length > 1, watchDrag: !isNavigationLocked }}
       plugins={plugins}
       setApi={setApi}
       {...motionState.interactionProps}
@@ -312,6 +313,7 @@ export function HeroCarouselClient({
           <Button
             aria-label="Previous slide"
             className="pointer-events-auto"
+            disabled={isNavigationLocked}
             onClick={() => api?.scrollPrev()}
             size="icon-lg"
             variant="secondary"
@@ -322,6 +324,7 @@ export function HeroCarouselClient({
           <Button
             aria-label="Next slide"
             className="pointer-events-auto"
+            disabled={isNavigationLocked}
             onClick={() => api?.scrollNext()}
             size="icon-lg"
             variant="secondary"
@@ -332,41 +335,42 @@ export function HeroCarouselClient({
         </div>
       ) : null}
 
-      {showLowerControls ? (
+      {showDotControls ? (
         <div
           className={cn(
-            'absolute inset-x-0 bottom-8 grid grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 md:px-8 lg:px-12',
+            'absolute inset-x-0 bottom-8 flex items-center justify-center gap-3 px-4 md:px-8 lg:px-12',
             overlay.text.title,
           )}
         >
-          <span aria-hidden="true" />
-          <div className="flex items-center justify-center gap-3">
-            {showDotControls
-              ? scrollSnaps.map((_, index) => (
-                  <button
-                    aria-current={selectedIndex === index ? 'true' : undefined}
-                    aria-label={`Go to slide ${index + 1}`}
-                    className={cn(
-                      'size-2.5 rounded-md border border-current transition-colors',
-                      selectedIndex === index ? 'bg-current' : 'bg-transparent',
-                    )}
-                    key={index}
-                    onClick={() => api?.scrollTo(index)}
-                    type="button"
-                  />
-                ))
-              : null}
-          </div>
-          <div className="justify-self-end">
-            {showHeroMotionControl ? (
-              <MotionToggle
-                contextLabel="hero motion"
-                isPaused={motionState.isUserPaused}
-                onToggle={motionState.toggleUserPaused}
-                variant="secondary"
-              />
-            ) : null}
-          </div>
+          {scrollSnaps.map((_, index) => (
+            <button
+              aria-current={selectedIndex === index ? 'true' : undefined}
+              aria-label={`Go to slide ${index + 1}`}
+              className={cn(
+                'size-2.5 rounded-md border border-current transition-colors',
+                selectedIndex === index ? 'bg-current' : 'bg-transparent',
+              )}
+              disabled={isNavigationLocked}
+              key={index}
+              onClick={() => api?.scrollTo(index)}
+              type="button"
+            />
+          ))}
+        </div>
+      ) : null}
+
+      {showHeroMotionControl ? (
+        <div
+          className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center"
+          data-testid="hero-motion-control-overlay"
+        >
+          <MotionToggle
+            className="pointer-events-auto opacity-0 transition-opacity duration-200 group-hover/hero:opacity-100 group-focus-within/hero:opacity-100 motion-reduce:transition-none [@media(hover:none)]:opacity-100"
+            contextLabel="hero motion"
+            isPaused={motionState.isUserPaused}
+            onToggle={motionState.toggleUserPaused}
+            variant="secondary"
+          />
         </div>
       ) : null}
     </Carousel>
