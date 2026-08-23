@@ -19,7 +19,10 @@ import { createWorkflowQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 import { NEWS_EVENT_CLASSIFICATIONS } from '@/lib/newsEventClassifications'
-import { revalidateNewsEventsCache } from '@/hooks/revalidateCmsContent'
+import {
+  revalidateDeletedNewsEventCache,
+  revalidateNewsEventsCache,
+} from '@/hooks/revalidateCmsContent'
 
 const previewBreakpoints = [
   { name: 'desktop', label: 'Desktop', width: 1440, height: 900 },
@@ -90,6 +93,7 @@ export const NewsEvents: CollectionConfig = {
         titleField: 'title',
       }),
     ],
+    afterDelete: [revalidateDeletedNewsEventCache],
     beforeChange: [
       normalizeNewsEventFields,
       syncPrimaryCategoryMembership,

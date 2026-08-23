@@ -14,7 +14,10 @@ import { createWorkflowQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { syncPrimaryCategoryMembership } from '@/hooks/syncPrimaryCategoryMembership'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
-import { revalidateArticlesCache } from '@/hooks/revalidateCmsContent'
+import {
+  revalidateArticlesCache,
+  revalidateDeletedArticleCache,
+} from '@/hooks/revalidateCmsContent'
 import { bodyEditor } from '@/fields/bodyEditorConfig'
 
 const previewBreakpoints = [
@@ -101,6 +104,7 @@ export const Articles: CollectionConfig = {
         titleField: 'title',
       }),
     ],
+    afterDelete: [revalidateDeletedArticleCache],
     beforeChange: [
       syncPrimaryCategoryMembership,
       validateSEOContract(),

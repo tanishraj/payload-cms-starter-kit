@@ -75,7 +75,10 @@ import {
   syncNavigationLinkAfterChange,
   syncNavigationLinkAfterDelete,
 } from '../hooks/syncNavigationLinkForPage'
-import { revalidatePagesCache } from '../hooks/revalidateCmsContent'
+import {
+  revalidateDeletedPageCache,
+  revalidatePagesCache,
+} from '../hooks/revalidateCmsContent'
 
 const extractPageID = (
   value: string | number | Page | null | undefined,
@@ -218,7 +221,7 @@ export const Pages: CollectionConfig = {
         titleField: 'title',
       }),
     ],
-    afterDelete: [syncNavigationLinkAfterDelete],
+    afterDelete: [syncNavigationLinkAfterDelete, revalidateDeletedPageCache],
     beforeChange: [
       validateSEOContract(),
       enforceEditorialWorkflow('publish_pages', 'pages'),

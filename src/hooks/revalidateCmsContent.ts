@@ -23,17 +23,28 @@ export const CMS_CACHE_TAGS = {
 // Passing 'max' instructs Next.js to revalidate cache entries of any lifetime.
 const REVALIDATE_PROFILE = 'max'
 
+type PublishableDocument = {
+  _status?: string | null
+}
+
+const isOrWasPublished = (
+  doc: PublishableDocument,
+  previousDoc?: PublishableDocument | null,
+): boolean => doc._status === 'published' || previousDoc?._status === 'published'
+
+const revalidateTags = (...tags: Array<(typeof CMS_CACHE_TAGS)[keyof typeof CMS_CACHE_TAGS]>) => {
+  for (const tag of tags) {
+    revalidateTag(tag, REVALIDATE_PROFILE)
+  }
+}
+
 /**
  * Revalidates the pages cache when a page is created, updated, or deleted.
  * Also busts the sitemap so the next request regenerates it.
  */
-export const revalidatePagesCache: CollectionAfterChangeHook = ({ doc }) => {
-  const isPublished = doc._status === 'published'
-  const wasPublished = doc._status !== 'draft'
-
-  if (isPublished || wasPublished) {
-    revalidateTag(CMS_CACHE_TAGS.pages, REVALIDATE_PROFILE)
-    revalidateTag(CMS_CACHE_TAGS.sitemap, REVALIDATE_PROFILE)
+export const revalidatePagesCache: CollectionAfterChangeHook = ({ doc, previousDoc }) => {
+  if (isOrWasPublished(doc, previousDoc)) {
+    revalidateTags(CMS_CACHE_TAGS.pages, CMS_CACHE_TAGS.sitemap)
   }
 
   return doc
@@ -42,10 +53,9 @@ export const revalidatePagesCache: CollectionAfterChangeHook = ({ doc }) => {
 /**
  * Revalidates the articles cache when an article changes.
  */
-export const revalidateArticlesCache: CollectionAfterChangeHook = ({ doc }) => {
-  if (doc._status === 'published') {
-    revalidateTag(CMS_CACHE_TAGS.articles, REVALIDATE_PROFILE)
-    revalidateTag(CMS_CACHE_TAGS.sitemap, REVALIDATE_PROFILE)
+export const revalidateArticlesCache: CollectionAfterChangeHook = ({ doc, previousDoc }) => {
+  if (isOrWasPublished(doc, previousDoc)) {
+    revalidateTags(CMS_CACHE_TAGS.articles, CMS_CACHE_TAGS.sitemap)
   }
 
   return doc
@@ -54,10 +64,9 @@ export const revalidateArticlesCache: CollectionAfterChangeHook = ({ doc }) => {
 /**
  * Revalidates the reviews cache when a review changes.
  */
-export const revalidateReviewsCache: CollectionAfterChangeHook = ({ doc }) => {
-  if (doc._status === 'published') {
-    revalidateTag(CMS_CACHE_TAGS.reviews, REVALIDATE_PROFILE)
-    revalidateTag(CMS_CACHE_TAGS.sitemap, REVALIDATE_PROFILE)
+export const revalidateReviewsCache: CollectionAfterChangeHook = ({ doc, previousDoc }) => {
+  if (isOrWasPublished(doc, previousDoc)) {
+    revalidateTags(CMS_CACHE_TAGS.reviews, CMS_CACHE_TAGS.sitemap)
   }
 
   return doc
@@ -71,16 +80,14 @@ export const revalidateNewsEventsCache: CollectionAfterChangeHook = ({ doc, prev
   const wasPublished = previousDoc?._status === 'published'
 
   if (isPublished || wasPublished) {
-    revalidateTag(CMS_CACHE_TAGS.newsEvents, REVALIDATE_PROFILE)
-    revalidateTag(CMS_CACHE_TAGS.sitemap, REVALIDATE_PROFILE)
+    revalidateTags(CMS_CACHE_TAGS.newsEvents, CMS_CACHE_TAGS.sitemap)
   }
 
   return doc
 }
 
 const revalidateNewsEventClassificationTags = () => {
-  revalidateTag(CMS_CACHE_TAGS.newsEvents, REVALIDATE_PROFILE)
-  revalidateTag(CMS_CACHE_TAGS.pages, REVALIDATE_PROFILE)
+  revalidateTags(CMS_CACHE_TAGS.newsEvents, CMS_CACHE_TAGS.pages)
 }
 
 /**
@@ -107,8 +114,7 @@ export const revalidateDeletedNewsEventClassificationCache: CollectionAfterDelet
  * Used by both collections (Headers, Footers, ReusableSections) and globals.
  */
 export const revalidateGlobalsCache: CollectionAfterChangeHook = ({ doc }) => {
-  revalidateTag(CMS_CACHE_TAGS.globals, REVALIDATE_PROFILE)
-  revalidateTag(CMS_CACHE_TAGS.pages, REVALIDATE_PROFILE)
+  revalidateTags(CMS_CACHE_TAGS.globals, CMS_CACHE_TAGS.pages)
   return doc
 }
 
@@ -116,19 +122,51 @@ export const revalidateGlobalsCache: CollectionAfterChangeHook = ({ doc }) => {
  * Same as revalidateGlobalsCache but typed for Payload global afterChange hooks.
  */
 export const revalidateGlobalsCacheForGlobal: GlobalAfterChangeHook = ({ doc }) => {
-  revalidateTag(CMS_CACHE_TAGS.globals, REVALIDATE_PROFILE)
-  revalidateTag(CMS_CACHE_TAGS.pages, REVALIDATE_PROFILE)
+  revalidateTags(CMS_CACHE_TAGS.globals, CMS_CACHE_TAGS.pages)
   return doc
 }
 
 /**
  * Revalidates the redirects API cache when a redirect is created, updated, or deleted.
  */
-export const revalidateRedirectsCache: CollectionAfterChangeHook = ({ doc }) => {
-  const isPublished = doc._status === 'published'
-  const wasPublished = doc._status !== 'draft'
-  if (isPublished || wasPublished) {
-    revalidateTag(CMS_CACHE_TAGS.redirects, REVALIDATE_PROFILE)
+export const revalidateRedirectsCache: CollectionAfterChangeHook = ({ doc, previousDoc }) => {
+  if (isOrWasPublished(doc, previousDoc)) {
+    revalidateTags(CMS_CACHE_TAGS.redirects)
+  }
+  return doc
+}
+
+export const revalidateDeletedPageCache: CollectionAfterDeleteHook = ({ doc }) => {
+  if (doc._status === 'published') {
+    revalidateTags(CMS_CACHE_TAGS.pages, CMS_CACHE_TAGS.sitemap)
+  }
+  return doc
+}
+
+export const revalidateDeletedArticleCache: CollectionAfterDeleteHook = ({ doc }) => {
+  if (doc._status === 'published') {
+    revalidateTags(CMS_CACHE_TAGS.articles, CMS_CACHE_TAGS.sitemap)
+  }
+  return doc
+}
+
+export const revalidateDeletedReviewCache: CollectionAfterDeleteHook = ({ doc }) => {
+  if (doc._status === 'published') {
+    revalidateTags(CMS_CACHE_TAGS.reviews, CMS_CACHE_TAGS.sitemap)
+  }
+  return doc
+}
+
+export const revalidateDeletedNewsEventCache: CollectionAfterDeleteHook = ({ doc }) => {
+  if (doc._status === 'published') {
+    revalidateTags(CMS_CACHE_TAGS.newsEvents, CMS_CACHE_TAGS.sitemap)
+  }
+  return doc
+}
+
+export const revalidateDeletedRedirectCache: CollectionAfterDeleteHook = ({ doc }) => {
+  if (doc._status === 'published') {
+    revalidateTags(CMS_CACHE_TAGS.redirects)
   }
   return doc
 }

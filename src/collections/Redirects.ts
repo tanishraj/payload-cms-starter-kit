@@ -6,7 +6,10 @@ import {
   requireCapability,
 } from '@/access/adminCapabilities'
 import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
-import { revalidateRedirectsCache } from '@/hooks/revalidateCmsContent'
+import {
+  revalidateDeletedRedirectCache,
+  revalidateRedirectsCache,
+} from '@/hooks/revalidateCmsContent'
 
 const validateRequiredDestinationField =
   (destinationType: 'page' | 'custom', message: string) =>
@@ -172,6 +175,7 @@ export const Redirects: CollectionConfig = {
       }),
       revalidateRedirectsCache,
     ],
+    afterDelete: [revalidateDeletedRedirectCache],
     beforeValidate: [beforeValidate],
   },
   versions: {

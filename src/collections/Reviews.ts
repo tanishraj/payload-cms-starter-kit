@@ -15,7 +15,10 @@ import { syncPrimaryCategoryMembership } from '@/hooks/syncPrimaryCategoryMember
 import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 import { reviewRatingOptions } from '@/lib/reviews'
-import { revalidateReviewsCache } from '@/hooks/revalidateCmsContent'
+import {
+  revalidateDeletedReviewCache,
+  revalidateReviewsCache,
+} from '@/hooks/revalidateCmsContent'
 
 const previewBreakpoints = [
   {
@@ -82,6 +85,7 @@ export const Reviews: CollectionConfig = {
         titleField: 'title',
       }),
     ],
+    afterDelete: [revalidateDeletedReviewCache],
     beforeChange: [
       syncPrimaryCategoryMembership,
       validateSEOContract(),
