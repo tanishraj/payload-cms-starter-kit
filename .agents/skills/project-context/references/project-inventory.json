@@ -2428,6 +2428,7 @@
       "tests/int/admin-session-bar.int.spec.ts",
       "tests/int/adminCapabilities.int.spec.ts",
       "tests/int/announcement-admin-conditions.int.spec.ts",
+      "tests/int/announcement-controls.int.spec.tsx",
       "tests/int/api.int.spec.ts",
       "tests/int/articles-feed-route.int.spec.ts",
       "tests/int/articles.int.spec.ts",
@@ -2446,6 +2447,7 @@
       "tests/int/card-block-theme-contract.int.spec.ts",
       "tests/int/card-theme-contract.int.spec.ts",
       "tests/int/carousel-blocks.int.spec.tsx",
+      "tests/int/carousel-keyboard-navigation.int.spec.tsx",
       "tests/int/contact24-data.int.spec.ts",
       "tests/int/contact24-render.int.spec.tsx",
       "tests/int/contact33-config.int.spec.ts",
@@ -2580,7 +2582,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "5186dc12322b17ae5aa7140e005f635cb37b79c61ee670f401744b21d2a18262"
+    "sha256": "a8dd2e201d09c7e529c0b237de0229e94ff7655de114d3cdaf8772b85adf60ef"
   },
   "surfaces": {
     "access": [
@@ -2721,6 +2723,7 @@
       "tests/int/admin-session-bar.int.spec.ts",
       "tests/int/adminCapabilities.int.spec.ts",
       "tests/int/announcement-admin-conditions.int.spec.ts",
+      "tests/int/announcement-controls.int.spec.tsx",
       "tests/int/api.int.spec.ts",
       "tests/int/articles-feed-route.int.spec.ts",
       "tests/int/articles.int.spec.ts",
@@ -2739,6 +2742,7 @@
       "tests/int/card-block-theme-contract.int.spec.ts",
       "tests/int/card-theme-contract.int.spec.ts",
       "tests/int/carousel-blocks.int.spec.tsx",
+      "tests/int/carousel-keyboard-navigation.int.spec.tsx",
       "tests/int/contact24-data.int.spec.ts",
       "tests/int/contact24-render.int.spec.tsx",
       "tests/int/contact33-config.int.spec.ts",

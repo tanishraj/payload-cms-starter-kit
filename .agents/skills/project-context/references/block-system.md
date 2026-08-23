@@ -58,12 +58,20 @@ motion policy. Reduced-motion preference always disables automatic behavior and 
 otherwise, a visible component-local control persists the visitor's choice while pointer hover and
 keyboard focus pause motion temporarily and independently.
 
-Hero slide advancement follows its existing Autoplay setting, while background video remains an
-independent motion source: a single video slide still receives the shared control, only the active
-video may play, and reduced motion leaves every video paused. Multiple rotating announcements stop
-their replacement timer whenever motion is disallowed. Multiple marquee announcements use duplicated
-visual tracks only while motion is available; reduced motion and single-item marquees render one
-static wrapping track. Zero- and single-item announcements never render a motion control.
+Hero slide advancement follows its Autoplay setting, while background video remains an independent
+motion source. Editors may enable a centered Pause/Play control; the option defaults off and missing
+legacy values remain off. When meaningful motion exists, the control appears on Hero hover or
+focus-within and remains available on no-hover touch devices. Reduced motion hides the redundant
+control and leaves automatic motion stopped. Explicit Pause stops autoplay and video and locks drag,
+Arrow-key, arrow-button, and dot-button slide selection without disabling Hero links or actions;
+temporary hover/focus pauses automatic motion without locking manual navigation. Only the active
+video may play.
+
+Announcement Pause/Play remains visible whenever multiple items can move, and its 44×44 target now
+matches the adjacent Dismiss control. Multiple rotating announcements stop their replacement timer
+whenever motion is disallowed. Multiple marquee announcements use duplicated visual tracks only
+while motion is available; reduced motion and single-item marquees render one static wrapping track.
+Zero- and single-item announcements never render a motion control.
 
 Editorial Reasons supports Stacked, Inline, and Three Columns number layouts. Three Columns uses one
 outer reasons column so each row can place its generated number, title, and description in separate
