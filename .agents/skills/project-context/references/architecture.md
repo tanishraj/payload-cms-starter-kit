@@ -24,7 +24,9 @@ React Server Components load public CMS data. Focused client components own inte
 - Article and Review detail and taxonomy routes load published domain records. News/Event retains its detail route while its Topics and Tags are non-interactive metadata. The News/Event route loads its record and cached shared detail-page global in parallel, renders the saved Page-compatible block order, and injects the entry only into the global-only `newsEventsContent` block. Production uses the server renderer; authenticated preview uses the matching client-safe renderer with server-provided data snapshots so its client graph never imports Payload or `server-only` modules.
 - `/news-events` explicitly resolves the published CMS Page at that path so editors can compose its collection-backed listings from Page blocks. Article and Review archive landing pages are also ordinary CMS Pages.
 - `/search`, `/api/search`, feeds, sitemap, robots, and Open Graph image routes implement discovery.
-- `/preview/page/[id]` and live-preview components render authenticated draft data.
+- `/preview/page/[id]` and live-preview components render authenticated draft data. Draft Page,
+  Article, and News/Event Local API reads pass the authenticated user with access enforcement;
+  published shared settings continue through their public access branch.
 - Gallery Album-backed blocks discover explicitly selected album dependencies across Event Gallery,
   Image Mosaic, and populated Reusable Sections. Production block adapters load only selected
   published albums; authenticated routes load selected draft albums on the server and pass the same
@@ -40,11 +42,11 @@ Exact current route paths live in [project-inventory.json](project-inventory.jso
 
 [runtime.ts](../../../../src/config/runtime.ts) reads environment behavior, [starterContract.ts](../../../../src/config/starterContract.ts) rejects unsupported deployment combinations, and [providers.ts](../../../../src/config/providers.ts) constructs MongoDB, optional Resend email, and local/S3 storage.
 
-MongoDB is the supported database. Local development may use local-disk media. Vercel production must use durable S3-compatible storage. Email is either disabled or delivered through Resend. Upload limits live in [uploadLimits.ts](../../../../src/config/uploadLimits.ts).
+MongoDB is the supported database. Local development may use local-disk media. Vercel production must use durable S3-compatible storage. Email is either disabled or delivered through Resend. Production requires a non-placeholder Payload secret of at least 32 characters and disables GraphQL introspection and Playground. Upload limits live in [uploadLimits.ts](../../../../src/config/uploadLimits.ts).
 
 ## Caching and Delivery Safety
 
-Layout globals, the News & Events detail template, Pages, and redirects use tagged caching and focused invalidation hooks. Feeds, robots, and sitemap use explicit time revalidation. Article and Review helpers also use request-level deduplication. Preserve draft/public filtering and cache invalidation together when changing queries or hooks.
+Layout globals, the News & Events detail template, Pages, and redirects use tagged caching and focused invalidation hooks. Page, Article, Review, News/Event, and Redirect hooks invalidate both publication and takedown transitions, including published deletion. Feeds, robots, and sitemap use explicit time revalidation. Article and Review helpers also use request-level deduplication. Preserve draft/public filtering and cache invalidation together when changing queries or hooks.
 
 Maintenance and coming-soon overrides currently wrap the homepage, catch-all Page routes, and the explicit Page-backed `/news-events` route; other dedicated domain, search, feed, Admin, and API routes remain reachable.
 
@@ -62,5 +64,8 @@ Google Tag Manager takes precedence over standalone GA4. Analytics and Vercel Sp
 - Run `pnpm generate:importmap` after custom Admin component changes.
 - Run `pnpm lint`, `pnpm exec tsc --noEmit`, and `pnpm build` in proportion to risk.
 - Finish every implementation with `pnpm project-context:update` and `pnpm project-context:check`.
+- GitHub Actions runs project-context consistency, generated types, TypeScript, lint, integration
+  tests, and the production build on pull requests and protected branch pushes. Mongo-backed tests
+  use a single-node in-memory replica set so transaction behavior matches the supported adapter.
 
 Use the maintained [feature inventory](../../../../docs/architecture/feature-inventory.md), [content model map](../../../../docs/architecture/content-model-map.md), [runtime/provider runbook](../../../../docs/operations/runtime-and-providers.md), and [developer workflows](../../../../docs/operations/developer-workflows.md) for deeper operational context.

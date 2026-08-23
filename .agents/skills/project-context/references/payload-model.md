@@ -24,7 +24,8 @@ Nine globals are registered:
 5. CookieConsentSettings — banner enablement, variants, placement, copy.
 6. PageSettings — homepage, header/footer presets, announcement, Page defaults.
 7. NewsEventsDetailTemplate — ordered Page-compatible News/Event detail layout plus one global-only dynamic content block, presented with the News & Events Admin group.
-8. SearchSettings — up to 12 operator-managed suggested search terms.
+8. SearchSettings — up to 12 operator-managed suggested search terms, governed by the Site Settings
+   capability with draft/version recovery.
 9. SystemModeSettings — off, maintenance, or coming-soon behavior and referenced presets.
 
 ## Ownership and Relationships
@@ -53,4 +54,10 @@ Read [adminCapabilities.ts](../../../../src/access/adminCapabilities.ts), [edito
 - [cmsLinkFields.ts](../../../../src/fields/cmsLinkFields.ts) defines reusable Navigation Link relationships.
 - [projectSlugField.ts](../../../../src/fields/projectSlugField.ts) wraps Payload's generated slug field for all slug-based collections. It collapses separators and assigns the first available `-copy`, `-copy-2`, and later suffix while preserving existing stored slugs.
 
-Payload Local API calls bypass access by default. Use `overrideAccess: false` when acting for a user. Pass `req` into nested operations so they share transactions. Use request context flags when a hook writes data that could trigger itself. Run `pnpm generate:types` after schema changes and keep [payload-types.ts](../../../../src/payload-types.ts) synchronized.
+Anonymous reads of draft-enabled public collections are constrained to published documents at the
+Payload access layer. Governed editorial collections additionally require the published workflow
+state, and internal Form/Media fields require authentication. Payload Local API calls bypass access
+by default. Use `overrideAccess: false` when acting for a user. Pass `req` into nested operations so
+they share transactions. Use request context flags when a hook writes data that could trigger itself.
+Run `pnpm generate:types` after schema changes and keep
+[payload-types.ts](../../../../src/payload-types.ts) synchronized.
