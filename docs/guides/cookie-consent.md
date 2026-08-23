@@ -17,6 +17,11 @@ The privacy-policy destination comes from `Site Identity > Legal`. If no Privacy
 
 The choice is stored in the `analytics_consent` cookie for one year with `SameSite=Lax` and `Secure` on HTTPS. Accepting stores `granted`; rejecting stores `denied`. A router refresh applies accepted GTM or GA4 configuration immediately. The Modal variant uses a dialog; all variants expose explicit accept and reject actions.
 
+The Modal variant moves initial focus to `Reject non-essential` and keeps keyboard focus inside the
+dialog. Escape records rejection and closes the dialog; clicking the backdrop does not dismiss it.
+After either explicit choice, focus returns to the previously active control when it still exists.
+The other banner variants remain non-modal and do not take over keyboard focus.
+
 ## Step-By-Step Medical College Example
 
 1. Publish the privacy policy Page and select it under `Site Identity > Legal`.

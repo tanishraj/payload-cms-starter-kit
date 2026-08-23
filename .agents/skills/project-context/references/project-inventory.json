@@ -2457,6 +2457,7 @@
       "tests/int/content-style-parity.int.spec.ts",
       "tests/int/content-taxonomy.int.spec.ts",
       "tests/int/controllable-motion.int.spec.tsx",
+      "tests/int/cookie-consent-modal.int.spec.tsx",
       "tests/int/cta39.int.spec.tsx",
       "tests/int/dark-mode-media-treatment.int.spec.tsx",
       "tests/int/dashboard-attention.int.spec.tsx",
@@ -2582,7 +2583,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "a8dd2e201d09c7e529c0b237de0229e94ff7655de114d3cdaf8772b85adf60ef"
+    "sha256": "1325f7f5f3e8506c6e41e3fa742cf7b5d89c9253e04a0b79d50748c973dc179a"
   },
   "surfaces": {
     "access": [
@@ -2752,6 +2753,7 @@
       "tests/int/content-style-parity.int.spec.ts",
       "tests/int/content-taxonomy.int.spec.ts",
       "tests/int/controllable-motion.int.spec.tsx",
+      "tests/int/cookie-consent-modal.int.spec.tsx",
       "tests/int/cta39.int.spec.tsx",
       "tests/int/dark-mode-media-treatment.int.spec.tsx",
       "tests/int/dashboard-attention.int.spec.tsx",

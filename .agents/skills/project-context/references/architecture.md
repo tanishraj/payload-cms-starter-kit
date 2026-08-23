@@ -66,6 +66,10 @@ Five theme presets are registered: Default, Sunset, Blue, Kodama, and SNMIH. The
 
 Google Tag Manager takes precedence over standalone GA4. Analytics and Vercel Speed Insights load only after the consent cookie is granted. Admin routes are excluded from public analytics.
 
+The Cookie Consent Modal uses a focus-trapped dialog. It initially focuses rejection, treats Escape
+as rejection, ignores backdrop dismissal, and restores the visitor's previous focus after a decision.
+The Bottom Bar, Floating Card, and Corner Badge remain non-modal.
+
 ## Verification
 
 - Run focused Vitest files while iterating, then `pnpm test:int`.
