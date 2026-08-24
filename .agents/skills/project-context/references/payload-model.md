@@ -24,8 +24,9 @@ Nine globals are registered:
 5. CookieConsentSettings — banner enablement, variants, placement, copy.
 6. PageSettings — homepage, header/footer presets, announcement, Page defaults.
 7. NewsEventsDetailTemplate — ordered Page-compatible News/Event detail layout plus one global-only dynamic content block, presented with the News & Events Admin group.
-8. SearchSettings — up to 12 operator-managed suggested search terms, governed by the Site Settings
-   capability with draft/version recovery.
+8. SearchSettings — up to six unique operator-managed suggested search terms, governed by the Site
+   Settings capability with draft/version recovery; public rendering trims, de-duplicates, and caps
+   legacy rows defensively.
 9. SystemModeSettings — off, maintenance, or coming-soon behavior and referenced presets.
 
 ## Ownership and Relationships

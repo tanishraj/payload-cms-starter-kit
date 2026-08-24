@@ -2,7 +2,7 @@
 
 ## What This Section Is
 
-The website has a built-in full-text search that lets visitors find pages, articles, and news and events quickly. There is no configuration required in the CMS to enable search — it is always active.
+The website has a built-in full-text search that lets visitors find pages, articles, reviews, and news and events quickly. There is no configuration required in the CMS to enable search — it is always active.
 
 ## How Search Works For Visitors
 
@@ -15,6 +15,7 @@ Visitors can reach search in two ways:
 Both surfaces search across:
 - public pages
 - published articles
+- published reviews
 - published news and events
 
 ## What Search Finds
@@ -25,11 +26,18 @@ Search matches against:
 |---|---|
 | Pages | Title |
 | Articles | Title, excerpt, author name |
+| Reviews | Title, review title, reviewer name |
 | News and Events | Title, excerpt |
 
 Search requires at least two characters before returning results.
 
 The dialog returns at most six matches per content type and is protected by an in-memory limit of 20 requests per IP per ten seconds. The full Page returns at most eight matches per content type, so `View all results` means the broader results surface rather than an unbounded export.
+
+## Suggested Searches And Result Labels
+
+`Search Settings` accepts up to six ordered suggested terms. The full Search page presents them as keyboard-focusable chips. Use each term only once; matching ignores capitalization and surrounding spaces. Older settings with additional or duplicate rows display only their first six unique, non-empty terms until an editor trims and republishes the global.
+
+Full-page result labels use the active website theme with a content-type icon and visible text. News/Event results keep their configured classification label. Result types never depend on color alone, and changing the deployment theme automatically updates their presentation.
 
 ## How It Connects To The Website
 

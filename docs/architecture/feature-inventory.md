@@ -51,7 +51,7 @@ All collections use timestamps and Trash. Draft/version support is enabled where
 | Settings      | Cookie Consent Banner | Enablement, four presentation variants, corner position, and copy                          |
 | Configuration | Layout Defaults       | Homepage, active header/footer, page appearance, and global announcement bar               |
 | News & Events | Detail Page Template  | Shared detail Page Header, Breadcrumb, article/sidebar appearance, image ratio, and author |
-| Configuration | Search Settings       | Up to 12 operator-managed suggested search terms shown on the search page                  |
+| Configuration | Search Settings       | Up to 6 unique operator-managed suggested terms shown on the full Search page              |
 | Configuration | Maintenance & Modes   | Published type-safe system-page references and off/maintenance/coming-soon mode            |
 
 Globals with versions retain history. Relevant changes invalidate cached frontend data; selected higher-risk changes are written to the Audit Log.
