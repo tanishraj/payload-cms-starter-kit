@@ -10881,7 +10881,7 @@ export interface NewsEventsContentBlock {
 export interface SearchSetting {
   id: string;
   /**
-   * Up to 12 terms shown as clickable chips on the search page. Operators can update these without touching code.
+   * Up to 6 ordered terms shown as clickable chips on the full Search page. Use each term only once.
    */
   suggestedSearches?:
     | {

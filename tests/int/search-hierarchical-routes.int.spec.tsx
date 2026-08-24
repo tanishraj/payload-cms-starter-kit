@@ -20,7 +20,19 @@ import { GET } from '@/app/api/search/route'
 describe('hierarchical Page search URLs', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mocks.findGlobal.mockResolvedValue({ id: 'search-settings', suggestedSearches: [] })
+    mocks.findGlobal.mockResolvedValue({
+      id: 'search-settings',
+      suggestedSearches: [
+        { term: ' Admissions ' },
+        { term: 'Research' },
+        { term: 'admissions' },
+        { term: 'Campus Life' },
+        { term: 'Scholarships' },
+        { term: 'Faculty' },
+        { term: 'Contact' },
+        { term: 'Hidden legacy term' },
+      ],
+    })
     mocks.getPayload.mockResolvedValue({
       find: mocks.find,
       findByID: mocks.findByID,
@@ -89,6 +101,14 @@ describe('hierarchical Page search URLs', () => {
     expect(html).toContain('href="/articles/article"')
     expect(html).toContain('href="/news-events/news"')
     expect(html).toContain('Campus')
+    expect(html.match(/data-search-suggestion="true"/g)).toHaveLength(6)
+    expect(html).toContain('Admissions')
+    expect(html).not.toContain('Hidden legacy term')
+    expect(html).toContain('lucide-file-text')
+    expect(html).toContain('lucide-newspaper')
+    expect(html).toContain('lucide-calendar-days')
+    expect(html).toContain('lucide-star')
+    expect(html).toContain('border-primary/20 bg-primary/10')
   })
 
   it('returns full hierarchical Page URLs from the search API', async () => {

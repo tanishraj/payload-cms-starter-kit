@@ -2,10 +2,12 @@ import type { Metadata } from 'next'
 import configPromise from '@payload-config'
 import { getPayload, type Where } from 'payload'
 import Link from 'next/link'
+import { CalendarDays, FileText, Newspaper, Star, type LucideIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { resolveNewsEventClassificationRecord } from '@/lib/newsEventClassifications'
 import { resolveSearchPageHrefs } from '@/lib/searchPagePaths'
+import { normalizeSuggestedSearchTerms } from '@/lib/searchSuggestions'
 import { SearchInput } from './SearchInput'
 import type { SearchSetting } from '@/payload-types'
 
@@ -23,7 +25,6 @@ type SearchItem = {
   excerpt: string
   href: string
   label: string
-  accent: string
 }
 
 type SearchGroup = {
@@ -31,6 +32,15 @@ type SearchGroup = {
   label: string
   items: SearchItem[]
 }
+
+const SEARCH_RESULT_ICONS: Record<string, LucideIcon> = {
+  page: FileText,
+  article: Newspaper,
+  'news-event': CalendarDays,
+  review: Star,
+}
+
+const getSearchResultIcon = (type: string): LucideIcon => SEARCH_RESULT_ICONS[type] ?? FileText
 
 type PageProps = {
   searchParams: Promise<{ q?: string }>
@@ -119,7 +129,6 @@ async function runSearch(query: string): Promise<SearchGroup[]> {
         excerpt: page.metaDescription ?? '',
         href,
         label: 'Page',
-        accent: 'bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300',
       })
     }
     if (items.length) groups.push({ type: 'page', label: 'Pages', items })
@@ -135,7 +144,6 @@ async function runSearch(query: string): Promise<SearchGroup[]> {
         excerpt: article.excerpt ?? '',
         href: `/articles/${article.slug}`,
         label: 'Article',
-        accent: 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
       })),
     })
   }
@@ -152,7 +160,6 @@ async function runSearch(query: string): Promise<SearchGroup[]> {
         label:
           resolveNewsEventClassificationRecord(entry.classification, entry.contentType)
             ?.badgeLabel ?? 'News & Events',
-        accent: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
       })),
     })
   }
@@ -167,7 +174,6 @@ async function runSearch(query: string): Promise<SearchGroup[]> {
         excerpt: review.reviewTitle ?? '',
         href: `/reviews/${review.slug}`,
         label: 'Review',
-        accent: 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300',
       })),
     })
   }
@@ -185,9 +191,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
     getSearchSettings(),
   ])
 
-  const suggestedTerms = (settings.suggestedSearches ?? [])
-    .map((s) => s.term?.trim())
-    .filter(Boolean) as string[]
+  const suggestedTerms = normalizeSuggestedSearchTerms(settings.suggestedSearches)
 
   const totalResults = groups.reduce((sum, g) => sum + g.items.length, 0)
 
@@ -224,7 +228,8 @@ export default async function SearchPage({ searchParams }: PageProps) {
                 <Link
                   key={term}
                   href={`/search?q=${encodeURIComponent(term)}`}
-                  className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium transition-colors hover:border-foreground/30 hover:text-foreground ${
+                  data-search-suggestion="true"
+                  className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium transition-colors hover:border-foreground/30 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none ${
                     query === term
                       ? 'border-foreground/30 bg-background text-foreground'
                       : 'border-border bg-background/60 text-muted-foreground'
@@ -293,60 +298,63 @@ export default async function SearchPage({ searchParams }: PageProps) {
             </p>
 
             <div className="flex flex-col gap-10" aria-live="polite">
-              {groups.map((group) => (
-                <section key={group.type} aria-label={group.label}>
-                  {/* Section header */}
-                  <div className="mb-3 flex items-center gap-3">
-                    <h2 className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                      {group.label}
-                    </h2>
-                    <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
-                      {group.items.length}
-                    </span>
-                    <div className="h-px flex-1 bg-border" />
-                  </div>
+              {groups.map((group) => {
+                const ResultIcon = getSearchResultIcon(group.type)
 
-                  {/* Result cards */}
-                  <ul className="flex flex-col gap-2" role="list">
-                    {group.items.map((item) => (
-                      <li key={item.id}>
-                        <Link
-                          href={item.href}
-                          className="group flex items-start justify-between gap-6 rounded-xl border border-border bg-background p-4 transition-colors hover:bg-muted"
-                        >
-                          <div className="min-w-0">
-                            <p className="font-medium text-foreground group-hover:underline group-hover:underline-offset-2">
-                              {item.title}
-                            </p>
-                            {item.excerpt && item.excerpt !== item.title ? (
-                              <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
-                                {item.excerpt}
+                return (
+                  <section key={group.type} aria-label={group.label}>
+                    {/* Section header */}
+                    <div className="mb-3 flex items-center gap-3">
+                      <h2 className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+                        {group.label}
+                      </h2>
+                      <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+                        {group.items.length}
+                      </span>
+                      <div className="h-px flex-1 bg-border" />
+                    </div>
+
+                    {/* Result cards */}
+                    <ul className="flex flex-col gap-2" role="list">
+                      {group.items.map((item) => (
+                        <li key={item.id}>
+                          <Link
+                            href={item.href}
+                            className="group flex flex-col items-start gap-3 rounded-xl border border-border bg-background p-4 transition-colors hover:bg-muted sm:flex-row sm:justify-between sm:gap-6"
+                          >
+                            <div className="min-w-0">
+                              <p className="font-medium text-foreground group-hover:underline group-hover:underline-offset-2">
+                                {item.title}
                               </p>
-                            ) : null}
-                          </div>
-                          <div className="flex shrink-0 items-center gap-2 pt-0.5">
-                            <span
-                              className={`rounded px-2 py-0.5 text-xs font-semibold ${item.accent}`}
-                            >
-                              {item.label}
-                            </span>
-                            <svg
-                              aria-hidden="true"
-                              className="size-4 text-muted-foreground/40 transition-transform group-hover:translate-x-0.5 group-hover:text-muted-foreground"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              strokeWidth={2}
-                            >
-                              <path d="m9 18 6-6-6-6" />
-                            </svg>
-                          </div>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              ))}
+                              {item.excerpt && item.excerpt !== item.title ? (
+                                <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                                  {item.excerpt}
+                                </p>
+                              ) : null}
+                            </div>
+                            <div className="flex shrink-0 items-center gap-2 self-end sm:self-start sm:pt-0.5">
+                              <span className="inline-flex max-w-48 items-center gap-1.5 rounded border border-primary/20 bg-primary/10 px-2 py-0.5 text-right text-xs leading-4 font-semibold whitespace-normal text-primary">
+                                <ResultIcon aria-hidden="true" className="size-3.5 shrink-0" />
+                                {item.label}
+                              </span>
+                              <svg
+                                aria-hidden="true"
+                                className="size-4 text-muted-foreground/40 transition-transform group-hover:translate-x-0.5 group-hover:text-muted-foreground"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                              >
+                                <path d="m9 18 6-6-6-6" />
+                              </svg>
+                            </div>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )
+              })}
             </div>
           </div>
         )}
