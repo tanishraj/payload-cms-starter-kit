@@ -1,8 +1,10 @@
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
+import type { Field, SelectField, Tab } from 'payload'
 import { describe, expect, it } from 'vitest'
 
 import { QaAccordionBlockComponent } from '@/blocks/QaAccordion/Component'
+import { QaAccordionBlock } from '@/blocks/QaAccordion/config'
 import { regularBlockContainerClasses } from '@/blocks/shared/blockSpacing'
 
 const createRichText = (text: string) => ({
@@ -37,7 +39,64 @@ const createRichText = (text: string) => ({
   },
 })
 
+const getTabs = () => {
+  const tabsField = QaAccordionBlock.fields[0]
+
+  if (tabsField?.type !== 'tabs' || typeof tabsField.tabs === 'function') {
+    throw new Error('Expected Q&A Accordion to use static tabs')
+  }
+
+  return tabsField.tabs as Tab[]
+}
+
+const getNamedField = (fields: Field[], name: string) => {
+  const field = fields.find((candidate) => 'name' in candidate && candidate.name === name)
+
+  if (!field || !('name' in field)) {
+    throw new Error(`Expected Q&A Accordion field: ${name}`)
+  }
+
+  return field
+}
+
 describe('Q&A Accordion block', () => {
+  it('describes section-content split controls without changing their stored values', () => {
+    const tabs = getTabs()
+    const contentTab = tabs.find((tab) => tab.label === 'Content')
+    const themeTab = tabs.find((tab) => tab.label === 'Theme Settings')
+
+    if (!contentTab || !themeTab) {
+      throw new Error('Expected Q&A Accordion Content and Theme Settings tabs')
+    }
+
+    const layoutMode = getNamedField(themeTab.fields, 'layoutMode') as SelectField
+    const placement = getNamedField(themeTab.fields, 'accordionPlacement') as SelectField
+    const sideColumn = getNamedField(contentTab.fields, 'sideColumn')
+
+    expect(layoutMode.defaultValue).toBe('fiftyFifty')
+    expect(layoutMode.options).toEqual([
+      { label: '50 / 50', value: 'fiftyFifty' },
+      { label: 'One-Third Content / Two-Thirds Q&A', value: 'oneThird' },
+      { label: 'Full Width', value: 'fullWidth' },
+    ])
+    expect(placement.label).toBe('Q&A Placement')
+    expect(placement.defaultValue).toBe('right')
+    expect(placement.options).toEqual([
+      { label: 'Left', value: 'left' },
+      { label: 'Right', value: 'right' },
+    ])
+
+    const placementCondition = placement.admin?.condition
+    const sideColumnCondition = 'admin' in sideColumn ? sideColumn.admin?.condition : undefined
+
+    expect(placementCondition?.({}, { layoutMode: 'fiftyFifty' }, {} as never)).toBe(true)
+    expect(placementCondition?.({}, { layoutMode: 'oneThird' }, {} as never)).toBe(true)
+    expect(placementCondition?.({}, { layoutMode: 'fullWidth' }, {} as never)).toBe(false)
+    expect(sideColumnCondition?.({}, { layoutMode: 'fiftyFifty' }, {} as never)).toBe(true)
+    expect(sideColumnCondition?.({}, { layoutMode: 'oneThird' }, {} as never)).toBe(true)
+    expect(sideColumnCondition?.({}, { layoutMode: 'fullWidth' }, {} as never)).toBe(false)
+  })
+
   it('renders a one-third layout with the Q&A accordion on the right', () => {
     const html = renderToStaticMarkup(
       createElement(QaAccordionBlockComponent, {
@@ -105,10 +164,15 @@ describe('Q&A Accordion block', () => {
     expect(html).not.toContain('prose-h2:text-3xl')
     expect(html).toContain('Reach the admissions team for personalized guidance.')
     expect(html).toContain('grid-cols-1 gap-8 lg:grid-cols-3')
+    expect(html).toContain('data-qa-accordion-section-content="true"')
+    expect(html).toContain('order-1 lg:order-1')
     expect(html).toContain('data-qa-accordion-main="true"')
-    expect(html).toContain('order-1 lg:order-2 lg:col-span-2')
+    expect(html).toContain('order-2 lg:order-2 lg:col-span-2')
     expect(html).toContain('data-qa-accordion-side-column="true"')
-    expect(html).toContain('order-2 lg:order-1')
+    expect(html.indexOf('data-qa-accordion-section-content="true"')).toBeLessThan(
+      html.indexOf('<aside'),
+    )
+    expect(html.indexOf('<aside')).toBeLessThan(html.indexOf('data-qa-accordion-main="true"'))
   })
 
   it('renders full-width centered content with independent header button actions', () => {
@@ -171,6 +235,10 @@ describe('Q&A Accordion block', () => {
     expect(html).toContain('What does the curriculum include?')
     expect(html).toContain('aria-expanded="false"')
     expect(html).toContain('text-left text-base font-semibold')
+    expect(html).toContain('data-qa-accordion-section-content="true"')
+    expect(html.indexOf('data-qa-accordion-section-content="true"')).toBeLessThan(
+      html.indexOf('data-qa-accordion-main="true"'),
+    )
     expect(html).not.toContain('data-qa-accordion-side-column="true"')
     expect(html).not.toContain('Sarah Johnson')
     expect(html).not.toContain('Still have questions?')
@@ -203,11 +271,38 @@ describe('Q&A Accordion block', () => {
     expect(html).toContain('data-qa-accordion-placement="left"')
     expect(html).toContain('data-qa-accordion-content-alignment="right"')
     expect(html).toContain('grid-cols-1 gap-8 lg:grid-cols-2')
+    expect(html).toContain('data-qa-accordion-section-content="true"')
+    expect(html).toContain('order-1 lg:order-2')
     expect(html).toContain('data-qa-accordion-main="true"')
-    expect(html).toContain('order-1 lg:order-1')
+    expect(html).toContain('order-2 lg:order-1')
     expect(html).toContain('data-qa-accordion-side-column="true"')
-    expect(html).toContain('order-2 lg:order-2')
     expect(html).toContain('items-end text-right')
     expect(html).toContain('text-left text-base font-semibold')
+  })
+
+  it('keeps an authored 50/50 split when Profile and Contact Prompt are empty', () => {
+    const html = renderToStaticMarkup(
+      createElement(QaAccordionBlockComponent, {
+        accordionPlacement: 'right',
+        description: 'Core information remains in the content column.',
+        items: [
+          {
+            answer: createRichText('The Q&A remains in its own column.'),
+            question: 'Does the split depend on supporting content?',
+          },
+        ],
+        layoutMode: 'fiftyFifty',
+        title: 'Independent split layout',
+      }),
+    )
+
+    expect(html).toContain('data-qa-accordion-layout="fiftyFifty"')
+    expect(html).toContain('data-qa-accordion-has-side-column="false"')
+    expect(html).toContain('grid grid-cols-1 gap-8 lg:grid-cols-2')
+    expect(html).toContain('data-qa-accordion-section-content="true"')
+    expect(html).toContain('data-qa-accordion-main="true"')
+    expect(html.indexOf('data-qa-accordion-section-content="true"')).toBeLessThan(
+      html.indexOf('data-qa-accordion-main="true"'),
+    )
   })
 })

@@ -203,85 +203,23 @@ export function QaAccordionBlockComponent({
   const resolvedHeaderActions = resolveCmsActions(actions)
   const contactActions = resolveCmsActions(contact?.actions)
 
-  const hasProfile = Boolean(profileImage || profile?.name?.trim() || profile?.title?.trim())
-  const hasContact = Boolean(
-    contact?.title?.trim() || contact?.description?.trim() || contactActions.length > 0,
-  )
-  const hasSideColumn = configuredLayoutMode !== 'fullWidth' && (hasProfile || hasContact)
-  const resolvedSplitLayoutMode = configuredLayoutMode === 'oneThird' ? 'oneThird' : 'fiftyFifty'
-  const resolvedLayoutMode = hasSideColumn ? configuredLayoutMode : 'fullWidth'
+  const resolvedLayoutMode =
+    configuredLayoutMode === 'fullWidth' || configuredLayoutMode === 'oneThird'
+      ? configuredLayoutMode
+      : 'fiftyFifty'
+  const resolvedSplitLayoutMode = resolvedLayoutMode === 'oneThird' ? 'oneThird' : 'fiftyFifty'
+  const isSplitLayout = resolvedLayoutMode !== 'fullWidth'
+  const hasProfile =
+    isSplitLayout && Boolean(profileImage || profile?.name?.trim() || profile?.title?.trim())
+  const hasContact =
+    isSplitLayout &&
+    Boolean(contact?.title?.trim() || contact?.description?.trim() || contactActions.length > 0)
+  const hasSideColumn = hasProfile || hasContact
 
-  const accordionContent = (
-    <div
-      className={cn(
-        'order-1',
-        hasSideColumn ? accordionPlacementClasses[resolvedAccordionPlacement] : 'w-full',
-        hasSideColumn && resolvedLayoutMode === 'oneThird' ? 'lg:col-span-2' : undefined,
-      )}
-      data-qa-accordion-main="true"
-    >
-      <div
-        className={cn(
-          'mb-8 flex flex-col gap-4 lg:mb-16',
-          contentAlignmentClasses[resolvedContentAlignment],
-        )}
-      >
-        <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-          {resolvedAccentTitle ? (
-            <>
-              <span className="block font-[inherit]">{title}</span>
-              <em className="block font-[inherit]">{resolvedAccentTitle}</em>
-            </>
-          ) : (
-            title
-          )}
-        </h2>
-        {description?.trim() ? (
-          <p className="text-balance text-base leading-7 text-current/70">{description.trim()}</p>
-        ) : null}
-        <ContentActions
-          actions={resolvedHeaderActions}
-          alignment={resolvedContentAlignment}
-          data-qa-accordion-header-actions="true"
-        />
-      </div>
-
-      <QaAccordion
-        className="max-w-none"
-        collapsible
-        defaultValue={defaultOpenFirst ? 'item-0' : undefined}
-        type="single"
-      >
-        {validItems.map((item, index) => (
-          <QaAccordionItem
-            className={cn(
-              'border-0',
-              index !== validItems.length - 1 && 'border-b border-current/15',
-            )}
-            key={`${item.question}-${index}`}
-            value={`item-${index}`}
-          >
-            <QaAccordionTrigger className="justify-between py-6 text-left text-base font-semibold hover:no-underline sm:text-lg lg:py-8 lg:text-xl">
-              <span className="pr-4">{item.question}</span>
-            </QaAccordionTrigger>
-            <QaAccordionContent className="pb-6 pr-8 text-left text-sm leading-relaxed text-current/70 sm:text-base">
-              <div className={cn(compactRichTextClasses, 'text-left')}>
-                <RichText data={item.answer as RichTextData} />
-              </div>
-            </QaAccordionContent>
-          </QaAccordionItem>
-        ))}
-      </QaAccordion>
-    </div>
-  )
-
-  const sideContent = hasSideColumn ? (
+  const supportingContent = hasSideColumn ? (
     <aside
-      className={cn(
-        'order-2',
-        sidePlacementClasses[resolvedAccordionPlacement],
-        'flex flex-col justify-between text-left',
-      )}
+      className="flex flex-1 flex-col justify-between text-left"
+      data-qa-accordion-side-column="true"
     >
       <div>
         {hasProfile ? (
@@ -335,6 +273,84 @@ export function QaAccordionBlockComponent({
     </aside>
   ) : null
 
+  const sectionContent = (
+    <div
+      className={cn(
+        'flex h-full flex-col order-1',
+        isSplitLayout ? sidePlacementClasses[resolvedAccordionPlacement] : 'w-full',
+      )}
+      data-qa-accordion-section-content="true"
+    >
+      <div
+        className={cn(
+          'flex flex-col gap-4',
+          !isSplitLayout ? 'mb-8 lg:mb-16' : undefined,
+          isSplitLayout && hasSideColumn ? 'mb-8 lg:mb-12' : undefined,
+          contentAlignmentClasses[resolvedContentAlignment],
+        )}
+      >
+        <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
+          {resolvedAccentTitle ? (
+            <>
+              <span className="block font-[inherit]">{title}</span>
+              <em className="block font-[inherit]">{resolvedAccentTitle}</em>
+            </>
+          ) : (
+            title
+          )}
+        </h2>
+        {description?.trim() ? (
+          <p className="text-balance text-base leading-7 text-current/70">{description.trim()}</p>
+        ) : null}
+        <ContentActions
+          actions={resolvedHeaderActions}
+          alignment={resolvedContentAlignment}
+          data-qa-accordion-header-actions="true"
+        />
+      </div>
+
+      {supportingContent}
+    </div>
+  )
+
+  const accordionContent = (
+    <div
+      className={cn(
+        'order-2',
+        isSplitLayout ? accordionPlacementClasses[resolvedAccordionPlacement] : 'w-full',
+        isSplitLayout && resolvedLayoutMode === 'oneThird' ? 'lg:col-span-2' : undefined,
+      )}
+      data-qa-accordion-main="true"
+    >
+      <QaAccordion
+        className="max-w-none"
+        collapsible
+        defaultValue={defaultOpenFirst ? 'item-0' : undefined}
+        type="single"
+      >
+        {validItems.map((item, index) => (
+          <QaAccordionItem
+            className={cn(
+              'border-0',
+              index !== validItems.length - 1 && 'border-b border-current/15',
+            )}
+            key={`${item.question}-${index}`}
+            value={`item-${index}`}
+          >
+            <QaAccordionTrigger className="justify-between py-6 text-left text-base font-semibold hover:no-underline sm:text-lg lg:py-8 lg:text-xl">
+              <span className="pr-4">{item.question}</span>
+            </QaAccordionTrigger>
+            <QaAccordionContent className="pb-6 pr-8 text-left text-sm leading-relaxed text-current/70 sm:text-base">
+              <div className={cn(compactRichTextClasses, 'text-left')}>
+                <RichText data={item.answer as RichTextData} />
+              </div>
+            </QaAccordionContent>
+          </QaAccordionItem>
+        ))}
+      </QaAccordion>
+    </div>
+  )
+
   return (
     <section
       className={cn(regularBlockMobilePaddingClasses[resolvedSize], appearanceClasses.className)}
@@ -347,16 +363,23 @@ export function QaAccordionBlockComponent({
       data-qa-accordion-size={resolvedSize}
     >
       <div className={regularBlockContainerClasses}>
-        <div
-          className={cn(
-            'w-full',
-            hasSideColumn
-              ? cn('grid grid-cols-1 gap-8', gridLayoutClasses[resolvedSplitLayoutMode])
-              : undefined,
+        <div className="w-full">
+          {isSplitLayout ? (
+            <div
+              className={cn(
+                'grid grid-cols-1 gap-8',
+                gridLayoutClasses[resolvedSplitLayoutMode],
+              )}
+            >
+              {sectionContent}
+              {accordionContent}
+            </div>
+          ) : (
+            <>
+              {sectionContent}
+              {accordionContent}
+            </>
           )}
-        >
-          {accordionContent}
-          {sideContent}
         </div>
         <BlockFooterActions actions={footerActions} />
       </div>

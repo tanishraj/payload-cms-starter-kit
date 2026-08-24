@@ -95,6 +95,12 @@ footer actions, and Left/Center header alignment without renaming the existing i
 The outer eyebrow follows the section appearance; the existing inner eyebrow follows the container
 surface. Documents without valid outer content retain the legacy render branch.
 
+Q&A Accordion split modes separate the section introduction and optional Profile/Contact Prompt from
+the Q&A list. `fiftyFifty` uses equal desktop columns; `oneThird` gives section content one track and
+Q&A two tracks. Q&A Placement swaps desktop sides while DOM/mobile order remains section content
+first. Full Width stacks the introduction above Q&A and hides optional supporting content. An
+authored split never depends on Profile or Contact Prompt being populated.
+
 The generated inventory contains every current export under [src/blocks/shared](../../../../src/blocks/shared).
 
 Academic Programmes is the canonical programme-directory card block. It retains split/stacked

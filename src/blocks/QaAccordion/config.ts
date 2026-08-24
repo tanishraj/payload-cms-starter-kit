@@ -140,14 +140,14 @@ export const QaAccordionBlock: Block = {
               defaultValue: 'fiftyFifty',
               options: [
                 { label: '50 / 50', value: 'fiftyFifty' },
-                { label: 'One-Third Side Column', value: 'oneThird' },
+                { label: 'One-Third Content / Two-Thirds Q&A', value: 'oneThird' },
                 { label: 'Full Width', value: 'fullWidth' },
               ],
               required: true,
             } satisfies SelectField,
             {
               name: 'accordionPlacement',
-              label: 'Accordion Placement',
+              label: 'Q&A Placement',
               type: 'select',
               defaultValue: 'right',
               options: [
