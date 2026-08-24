@@ -1629,8 +1629,10 @@ export interface QaAccordionBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   contentAlignment: 'left' | 'center' | 'right';
-  layoutMode: 'fiftyFifty' | 'oneThird' | 'fullWidth';
+  layoutMode: 'stacked' | 'split';
+  splitProportion?: ('balanced' | 'sectionFocus' | 'qaFocus') | null;
   accordionPlacement?: ('left' | 'right') | null;
+  sectionVerticalAlignment?: ('top' | 'center' | 'bottom') | null;
   size: 'none' | 'compact' | 'default' | 'comfortable';
   defaultOpenFirst?: boolean | null;
   id?: string | null;
@@ -7242,7 +7244,9 @@ export interface QaAccordionBlockSelect<T extends boolean = true> {
       };
   contentAlignment?: T;
   layoutMode?: T;
+  splitProportion?: T;
   accordionPlacement?: T;
+  sectionVerticalAlignment?: T;
   size?: T;
   defaultOpenFirst?: T;
   id?: T;

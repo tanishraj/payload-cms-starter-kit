@@ -95,11 +95,12 @@ footer actions, and Left/Center header alignment without renaming the existing i
 The outer eyebrow follows the section appearance; the existing inner eyebrow follows the container
 surface. Documents without valid outer content retain the legacy render branch.
 
-Q&A Accordion split modes separate the section introduction and optional Profile/Contact Prompt from
-the Q&A list. `fiftyFifty` uses equal desktop columns; `oneThird` gives section content one track and
-Q&A two tracks. Q&A Placement swaps desktop sides while DOM/mobile order remains section content
-first. Full Width stacks the introduction above Q&A and hides optional supporting content. An
-authored split never depends on Profile or Contact Prompt being populated.
+Q&A Accordion separates composition from proportion. `stacked` places the section introduction above
+Q&A and ignores optional supporting content. `split` offers Balanced 50/50, Section Content Focus
+60/40, and Q&A Focus 40/60 proportions; Q&A Position swaps desktop sides while DOM/mobile order
+remains section content first. Top, Center, and Bottom align the natural-height section-content group
+against Q&A on large screens. Profile and Contact Prompt remain part of that group and are available
+only in Split mode. The renderer normalizes legacy layout values without rewriting stored content.
 
 The generated inventory contains every current export under [src/blocks/shared](../../../../src/blocks/shared).
 

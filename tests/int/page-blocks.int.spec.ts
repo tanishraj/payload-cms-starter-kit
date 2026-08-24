@@ -1199,12 +1199,24 @@ describe('page block pipeline', () => {
       options?: Array<{ value: string }>
       type?: string
     }>(layoutTab?.fields ?? [], 'layoutMode')
+    const splitProportionField = getNamedField<{
+      admin?: { condition?: unknown }
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'splitProportion')
     const accordionPlacementField = getNamedField<{
       admin?: { condition?: unknown }
       defaultValue?: string
       options?: Array<{ value: string }>
       type?: string
     }>(layoutTab?.fields ?? [], 'accordionPlacement')
+    const sectionVerticalAlignmentField = getNamedField<{
+      admin?: { condition?: unknown }
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(layoutTab?.fields ?? [], 'sectionVerticalAlignment')
     const contactActionsField = getNamedField<{
       fields?: unknown[]
       maxRows?: number
@@ -1300,12 +1312,16 @@ describe('page block pipeline', () => {
       'right',
     ])
     expect(layoutModeField?.type).toBe('select')
-    expect(layoutModeField?.defaultValue).toBe('fiftyFifty')
-    expect(layoutModeField?.options?.map((option) => option.value)).toEqual([
-      'fiftyFifty',
-      'oneThird',
-      'fullWidth',
+    expect(layoutModeField?.defaultValue).toBe('split')
+    expect(layoutModeField?.options?.map((option) => option.value)).toEqual(['stacked', 'split'])
+    expect(splitProportionField?.type).toBe('select')
+    expect(splitProportionField?.defaultValue).toBe('balanced')
+    expect(splitProportionField?.options?.map((option) => option.value)).toEqual([
+      'balanced',
+      'sectionFocus',
+      'qaFocus',
     ])
+    expect(splitProportionField?.admin?.condition).toBeTypeOf('function')
     expect(accordionPlacementField?.type).toBe('select')
     expect(accordionPlacementField?.defaultValue).toBe('right')
     expect(accordionPlacementField?.options?.map((option) => option.value)).toEqual([
@@ -1313,6 +1329,14 @@ describe('page block pipeline', () => {
       'right',
     ])
     expect(accordionPlacementField?.admin?.condition).toBeTypeOf('function')
+    expect(sectionVerticalAlignmentField?.type).toBe('select')
+    expect(sectionVerticalAlignmentField?.defaultValue).toBe('top')
+    expect(sectionVerticalAlignmentField?.options?.map((option) => option.value)).toEqual([
+      'top',
+      'center',
+      'bottom',
+    ])
+    expect(sectionVerticalAlignmentField?.admin?.condition).toBeTypeOf('function')
     expect(sizeField?.type).toBe('select')
     expect(sizeField?.defaultValue).toBe('default')
     expect(sizeField?.options?.map((option) => option.value)).toEqual([

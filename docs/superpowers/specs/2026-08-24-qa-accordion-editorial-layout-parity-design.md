@@ -116,7 +116,7 @@ The section introduction retains the established vertical separation before Q&A.
 
 Split mode becomes a single column below the large breakpoint. Mobile and tablet always show section content first and Q&A second, regardless of Q&A Position. Vertical alignment has no effect below the large breakpoint.
 
-## Data Migration and Compatibility
+## Stored Data and Compatibility
 
 The schema becomes explicit:
 
@@ -125,36 +125,17 @@ The schema becomes explicit:
 - `sectionVerticalAlignment`: `top | center | bottom`
 - `accordionPlacement`: unchanged `left | right`
 
-Provide a reversible Payload migration for Q&A blocks stored in:
-
-- Pages `layout`;
-- Reusable Sections `layout`;
-- News & Events Detail Template `layout`;
-- draft/version records for those owners.
-
-Map legacy values:
-
-| Legacy `layoutMode` | New `layoutMode` | New `splitProportion` |
-| --- | --- | --- |
-| `fullWidth` | `stacked` | `balanced` |
-| `fiftyFifty` | `split` | `balanced` |
-| `oneThird` | `split` | `qaFocus` |
-
-Set missing Section Content Vertical Alignment to `top`. Preserve Q&A Position and every content field.
-
-The renderer also normalizes legacy values during the compatibility window so unmigrated drafts, restored versions, and serialized fixtures remain safe:
+Do not add or run a database/content migration. Existing documents are not rewritten as part of this
+change. The renderer normalizes legacy values without mutating stored content so older drafts,
+restored versions, and serialized fixtures remain safe:
 
 - `fullWidth` resolves to Stacked;
 - `fiftyFifty` resolves to Split + Balanced;
 - `oneThird` resolves to Split + Q&A Focus;
-- invalid new values resolve to Split + Balanced + Top.
+- invalid or missing new values resolve to Split + Balanced + Top.
 
-The down migration restores the closest legacy representation:
-
-- Stacked → `fullWidth`;
-- Split + Balanced → `fiftyFifty`;
-- Split + Q&A Focus → `oneThird`;
-- Split + Section Content Focus → `fiftyFifty`, because the legacy schema has no section-focused value.
+The Admin field conditions recognize legacy split/full-width values during the compatibility window.
+Newly authored and re-saved blocks use only the new schema values.
 
 ## Diagnostics
 
@@ -167,12 +148,12 @@ Preserve the current Q&A diagnostic attributes where their meaning remains valid
 
 ## Verification
 
-### Schema and migration
+### Schema and compatibility
 
 - Layout Mode exposes only Stacked and Split.
 - Split Proportion, Q&A Position, vertical alignment, and Supporting Content appear only for Split.
 - Defaults are Split, Balanced, Q&A Right, and Top.
-- Migration tests cover all three legacy mappings, all supported content owners, and down-migration behavior.
+- Compatibility tests cover all three legacy renderer mappings without writing stored content.
 - Generated Payload types expose the new schema.
 
 ### Rendering
@@ -188,7 +169,7 @@ Preserve the current Q&A diagnostic attributes where their meaning remains valid
 
 ### Repository checks
 
-- focused Q&A schema/rendering/migration tests;
+- focused Q&A schema/rendering/compatibility tests;
 - Page and News/Event detail block registry parity;
 - production and live-preview renderer parity;
 - theme and block-layout contracts;
