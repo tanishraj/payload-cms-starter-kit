@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest'
 
 import { QaAccordionBlockComponent } from '@/blocks/QaAccordion/Component'
 import { QaAccordionBlock } from '@/blocks/QaAccordion/config'
+import { resolveQaAccordionLayout } from '@/blocks/QaAccordion/layoutContract'
 import { regularBlockContainerClasses } from '@/blocks/shared/blockSpacing'
 
 const createRichText = (text: string) => ({
@@ -58,6 +59,31 @@ const getNamedField = (fields: Field[], name: string) => {
 
   return field
 }
+
+describe('Q&A Accordion layout compatibility', () => {
+  it.each([
+    ['fullWidth', 'stacked', 'balanced'],
+    ['fiftyFifty', 'split', 'balanced'],
+    ['oneThird', 'split', 'qaFocus'],
+  ] as const)('normalizes legacy %s without rewriting content', (legacy, mode, proportion) => {
+    const input = { layoutMode: legacy }
+
+    expect(resolveQaAccordionLayout(input)).toEqual({
+      layoutMode: mode,
+      sectionVerticalAlignment: 'top',
+      splitProportion: proportion,
+    })
+    expect(input).toEqual({ layoutMode: legacy })
+  })
+
+  it('defaults invalid values to Split, Balanced, and Top', () => {
+    expect(resolveQaAccordionLayout({ layoutMode: 'invalid' })).toEqual({
+      layoutMode: 'split',
+      sectionVerticalAlignment: 'top',
+      splitProportion: 'balanced',
+    })
+  })
+})
 
 describe('Q&A Accordion block', () => {
   it('describes section-content split controls without changing their stored values', () => {
