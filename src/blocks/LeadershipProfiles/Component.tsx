@@ -152,7 +152,6 @@ function LeadershipProfileCard({
     .split(' ')
     .filter((token) => !token.startsWith('hover:'))
     .join(' ')
-  const overlayLabelClass = overlay.tone === 'light' ? 'text-success' : 'text-ring'
 
   if (cardLayout === 'imageOverlay') {
     return (
@@ -189,7 +188,7 @@ function LeadershipProfileCard({
             <p
               className={cn(
                 'wrap-break-word font-mono text-xs leading-5 font-semibold uppercase tracking-[0.16em]',
-                overlayLabelClass,
+                overlay.text.eyebrow,
               )}
               data-leadership-profile-label="true"
             >

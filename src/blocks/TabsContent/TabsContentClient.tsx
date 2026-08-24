@@ -10,6 +10,12 @@ import {
   contentItemDescriptionClasses,
   contentSectionDescriptionClasses,
 } from '@/blocks/shared/contentStyles'
+import {
+  getContentTabClasses,
+  getContentTabRailClasses,
+  type ContentTabSurface,
+  type ContentTabVariant,
+} from '@/blocks/shared/contentTabRail'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { type ResolvedCmsAction } from '@/lib/cmsLinks'
@@ -71,6 +77,13 @@ export function TabsContentClient({
   const resolvedTabStyle = tabStyle ?? 'underline'
   const resolvedLayout = contentLayout ?? 'imageRight'
   const isBrandSurface = resolveBlockSurface(sectionBackground) === 'brand'
+  const tabSurface: ContentTabSurface = isBrandSurface ? 'brand' : 'light'
+  const tabVariant: ContentTabVariant =
+    resolvedTabStyle === 'underline'
+      ? 'underline'
+      : resolvedTabStyle === 'boxed'
+        ? 'contained'
+        : 'pill'
 
   const handleTabKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
     let nextIndex: number | undefined
@@ -103,22 +116,7 @@ export function TabsContentClient({
           resolvedTabAlignment === 'left' && 'self-start',
           resolvedTabAlignment === 'center' && 'self-center',
           resolvedTabAlignment === 'right' && 'self-end',
-          resolvedTabStyle === 'underline' &&
-            (isBrandSurface
-              ? 'gap-0 border-b border-primary-foreground/25'
-              : 'gap-0 border-b border-border'),
-          resolvedTabStyle === 'pills' &&
-            (isBrandSurface
-              ? 'gap-1 rounded-full border border-primary-foreground/25 p-1.5'
-              : 'gap-1 rounded-full border border-border p-1.5'),
-          resolvedTabStyle === 'boxed' &&
-            (isBrandSurface
-              ? 'gap-1 border border-primary-foreground/25 p-1.5'
-              : 'gap-1 border border-border p-1.5'),
-          resolvedTabStyle === 'segmented' &&
-            (isBrandSurface
-              ? 'gap-1 rounded-full border border-primary-foreground/25 p-1.5'
-              : 'gap-1 rounded-full border border-border p-1.5'),
+          getContentTabRailClasses(tabVariant, tabSurface),
         )}
       >
         {tabs.map((tab, index) => {
@@ -134,39 +132,9 @@ export function TabsContentClient({
               onKeyDown={(event) => handleTabKeyDown(event, index)}
               tabIndex={isActive ? 0 : -1}
               className={cn(
-                'min-h-11 min-w-28 shrink-0 cursor-pointer px-4 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-                resolvedTabStyle === 'underline' && [
-                  '-mb-px border-b-2 py-3',
-                  isActive
-                    ? isBrandSurface
-                      ? 'border-primary-foreground text-primary-foreground'
-                      : 'border-primary text-primary'
-                    : 'border-transparent text-current/60 hover:border-current/40 hover:text-current',
-                ],
-                resolvedTabStyle === 'pills' && [
-                  'rounded-full py-2',
-                  isActive
-                    ? isBrandSurface
-                      ? 'bg-primary-foreground text-primary'
-                      : 'bg-primary text-primary-foreground'
-                    : 'text-current/65 hover:bg-current/[0.06] hover:text-current',
-                ],
-                resolvedTabStyle === 'boxed' && [
-                  'py-2',
-                  isActive
-                    ? isBrandSurface
-                      ? 'bg-primary-foreground text-primary'
-                      : 'bg-primary text-primary-foreground'
-                    : 'text-current/65 hover:bg-current/[0.04] hover:text-current',
-                ],
-                resolvedTabStyle === 'segmented' && [
-                  'min-w-32 rounded-full py-2',
-                  isActive
-                    ? isBrandSurface
-                      ? 'bg-primary-foreground text-primary'
-                      : 'bg-primary text-primary-foreground'
-                    : 'text-current/65 hover:bg-current/[0.05] hover:text-current',
-                ],
+                'min-w-28 cursor-pointer',
+                getContentTabClasses(tabVariant, isActive, tabSurface),
+                resolvedTabStyle === 'segmented' && 'min-w-32',
               )}
             >
               {tab.label}

@@ -89,7 +89,7 @@ function FeeCategoryPresentation({
           <Table>
             {category.caption ? (
               <TableCaption
-                className={isBrandSurface ? 'text-primary-foreground/70' : 'text-muted-foreground'}
+                className={isBrandSurface ? 'text-primary-foreground' : 'text-muted-foreground'}
               >
                 {category.caption}
               </TableCaption>
@@ -152,7 +152,7 @@ function FeeCategoryPresentation({
                       <span
                         className={cn(
                           'mt-1 block text-xs font-normal',
-                          isBrandSurface ? 'text-primary-foreground/65' : 'text-current/60',
+                          isBrandSurface ? 'text-primary-foreground' : 'text-muted-foreground',
                         )}
                       >
                         {row.note}
@@ -232,7 +232,7 @@ function FeeCategoryPresentation({
                         <p
                           className={cn(
                             'mt-1 text-xs font-normal',
-                            isBrandSurface ? 'text-primary-foreground/65' : 'text-muted-foreground',
+                            isBrandSurface ? 'text-primary-foreground' : 'text-muted-foreground',
                           )}
                         >
                           {row.note}
@@ -257,7 +257,7 @@ function FeeCategoryPresentation({
         <ul
           className={cn(
             'flex flex-col gap-2 text-sm leading-6',
-            isBrandSurface ? 'text-primary-foreground/75' : 'text-current/70',
+            isBrandSurface ? 'text-primary-foreground' : 'text-muted-foreground',
           )}
           data-fee-category-notes="true"
         >
@@ -297,6 +297,7 @@ export function FeeStructureClient({
     layout === 'programmeCostAtlas' ? 'programmeCostAtlas' : 'table'
   const storedStyle = tabStyle === 'boxed' || tabStyle === 'pills' ? tabStyle : 'underline'
   const variant = resolveFeeStructureTabVariant(storedStyle)
+  const tabSurface = resolveBlockSurface(sectionBackground)
   const resolvedTabWidth: FeeStructureTabWidth =
     tabWidth === 'centered' || tabWidth === 'equal' ? tabWidth : 'content'
   const [selectedCategoryID, setSelectedCategoryID] = useState(categories[0]?.id ?? '')
@@ -347,7 +348,7 @@ export function FeeStructureClient({
           className={cn(
             'flex flex-nowrap',
             feeTabRailWidthClasses[resolvedTabWidth],
-            getContentTabRailClasses(variant),
+            getContentTabRailClasses(variant, tabSurface),
           )}
           data-content-tab-variant={variant}
           data-fee-tab-width={resolvedTabWidth}
@@ -355,7 +356,7 @@ export function FeeStructureClient({
           {categories.map((category) => (
             <TabsPrimitive.Trigger
               className={cn(
-                getContentTabClasses(variant, category.id === activeCategoryID),
+                getContentTabClasses(variant, category.id === activeCategoryID, tabSurface),
                 resolvedTabWidth === 'equal' &&
                   'w-0 min-w-0 flex-1 shrink overflow-hidden px-2 text-ellipsis',
               )}

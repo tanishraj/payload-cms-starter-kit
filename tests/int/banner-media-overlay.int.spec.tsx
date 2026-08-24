@@ -75,4 +75,18 @@ describe('full-width banner media overlays', () => {
     expect(html).toContain('text-primary-foreground')
     expect(html).toContain('data-block-surface="brand"')
   })
+
+  it('renders Banner CTA Light overlay copy with the selected theme foreground', () => {
+    const html = renderToStaticMarkup(
+      <BannerCtaBlockComponent
+        backgroundImage={{ alt: 'Campus', url: '/campus.jpg' }}
+        themeMode="light"
+        title="Join our community"
+      />,
+    )
+
+    expect(html).toContain('data-banner-cta-theme="light"')
+    expect(html).toContain('text-light-overlay-foreground')
+    expect(html).not.toContain('text-black')
+  })
 })

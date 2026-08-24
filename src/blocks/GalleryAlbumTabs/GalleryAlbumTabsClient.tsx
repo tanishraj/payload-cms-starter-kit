@@ -10,6 +10,7 @@ import {
   type GalleryAlbumTabsResolvedTab,
   type GalleryAlbumTabsVariant,
 } from '@/blocks/GalleryAlbumTabs/galleryAlbumTabsShared'
+import type { ContentTabSurface } from '@/blocks/shared/contentTabRail'
 import {
   getEventGalleryQuiltGridClassName,
   getEventGalleryQuiltRowSpanClassName,
@@ -24,6 +25,7 @@ type GalleryAlbumTabsClientProps = {
   imagesPerLoad: GalleryAlbumTabsImagesPerLoad
   loadMoreLabel: string
   tabs: GalleryAlbumTabsResolvedTab[]
+  tabSurface?: ContentTabSurface
   variant: GalleryAlbumTabsVariant
 }
 
@@ -50,6 +52,7 @@ export function GalleryAlbumTabsClient({
   imagesPerLoad,
   loadMoreLabel,
   tabs,
+  tabSurface = 'light',
   variant,
 }: GalleryAlbumTabsClientProps) {
   const componentID = useId().replaceAll(':', '')
@@ -110,7 +113,7 @@ export function GalleryAlbumTabsClient({
           aria-label="Gallery albums"
           className={cn(
             'flex w-max min-w-full flex-nowrap',
-            getGalleryAlbumTabsTabListClasses(variant),
+            getGalleryAlbumTabsTabListClasses(variant, tabSurface),
           )}
           data-content-tab-variant={variant}
           role="tablist"
@@ -124,7 +127,7 @@ export function GalleryAlbumTabsClient({
               <button
                 aria-controls={panelID}
                 aria-selected={active}
-                className={getGalleryAlbumTabsTabClasses(variant, active)}
+                className={getGalleryAlbumTabsTabClasses(variant, active, tabSurface)}
                 id={tabID}
                 key={tab.id}
                 onClick={() => activateTab(index)}

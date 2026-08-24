@@ -121,7 +121,7 @@ export function ProgrammeCostAtlasPresentation({
             <dl className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
               {details.map((detail) => (
                 <div className="min-w-0" key={detail.id}>
-                  <dt className="text-xs uppercase tracking-[0.08em] text-primary-foreground/60">
+                  <dt className="text-xs uppercase tracking-[0.08em] text-primary-foreground">
                     {detail.label}
                   </dt>
                   <dd
@@ -146,7 +146,7 @@ export function ProgrammeCostAtlasPresentation({
                 Annual totals
               </h3>
               {annualTotals.note ? (
-                <p className="mt-1 text-sm leading-6 text-primary-foreground/70">
+                <p className="mt-1 text-sm leading-6 text-primary-foreground">
                   {annualTotals.note}
                 </p>
               ) : null}
@@ -160,7 +160,7 @@ export function ProgrammeCostAtlasPresentation({
             <div className="flex flex-col gap-5 flex-1">
               {category.completeProgrammeExpense ? (
                 <section data-fee-atlas-complete-expense="true">
-                  <h3 className="text-sm font-sans font-medium text-primary-foreground/70">
+                  <h3 className="text-sm font-sans font-medium text-primary-foreground">
                     {category.completeProgrammeExpenseLabel}
                   </h3>
                   <p
@@ -174,7 +174,7 @@ export function ProgrammeCostAtlasPresentation({
                     {category.completeProgrammeExpense}
                   </p>
                   {category.completeProgrammeExpenseNote ? (
-                    <p className="mt-1 text-xs leading-6 text-primary-foreground/70">
+                    <p className="mt-1 text-xs leading-6 text-primary-foreground">
                       {category.completeProgrammeExpenseNote}
                     </p>
                   ) : null}

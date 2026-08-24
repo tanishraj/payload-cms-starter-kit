@@ -10,7 +10,9 @@ const contrastPairs = [
   ['card', 'card-foreground'],
   ['primary', 'primary-foreground'],
   ['secondary', 'secondary-foreground'],
+  ['muted', 'muted-foreground'],
   ['accent', 'accent-foreground'],
+  ['success', 'success-foreground'],
   ['primary', 'background'],
 ] as const
 
@@ -100,6 +102,27 @@ describe('website theme contracts', () => {
     }
   })
 
+  it.each(themes)('keeps Light media overlays readable in both %s modes', (theme) => {
+    const white = parseOklch('oklch(1 0 0)')
+
+    for (const mode of ['light', 'dark'] as const) {
+      const tokens = getModeTokens(theme, mode)
+      const overlayForeground = tokens['light-overlay-foreground']
+
+      expect(
+        overlayForeground,
+        `${theme} ${mode} is missing --light-overlay-foreground`,
+      ).toBeDefined()
+
+      const ratio = contrastRatio(parseOklch(overlayForeground), white)
+
+      expect(
+        ratio,
+        `${theme} ${mode} Light overlay foreground contrast is ${ratio.toFixed(2)}:1`,
+      ).toBeGreaterThanOrEqual(4.5)
+    }
+  })
+
   it('uses the approved SNMIH brand palette in both modes', () => {
     const light = getModeTokens('snmih', 'light')
     const dark = getModeTokens('snmih', 'dark')
@@ -136,6 +159,12 @@ describe('website theme contracts', () => {
     )
 
     expect(globalsSource).not.toContain('--color-link:')
+    expect(globalsSource).toContain(
+      '--color-success-foreground: var(--success-foreground);',
+    )
+    expect(globalsSource).toContain(
+      '--color-light-overlay-foreground: var(--light-overlay-foreground);',
+    )
     expect(globalsSource).toContain('--radius-xs: calc(var(--radius) * 0.25);')
     expect(globalsSource).toContain('--radius-sm: calc(var(--radius) * 0.5);')
     expect(globalsSource).toContain('--radius-md: calc(var(--radius) * 0.75);')
@@ -156,7 +185,7 @@ describe('website theme contracts', () => {
       'utf8',
     )
     const tabsSource = fs.readFileSync(
-      path.resolve(process.cwd(), 'src/blocks/TabsContent/TabsContentClient.tsx'),
+      path.resolve(process.cwd(), 'src/blocks/shared/contentTabRail.ts'),
       'utf8',
     )
 

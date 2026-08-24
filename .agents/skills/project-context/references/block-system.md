@@ -45,8 +45,13 @@ Production Page blocks are wrapped in `BlockErrorBoundary`, so one broken block 
 - `cardThemeFields.ts` and `cardSurface.ts`: Default/Primary/Secondary/Muted/Accent card semantics.
 - `contentActionsFields.ts` and `BlockFooterActions.tsx`: per-action links/buttons, variants, arrows, and footer actions.
 - `contentStyles.ts`: shared section/card typography and link classes.
+- `contentTabRail.ts`: Contained, Pill, and Underline tab geometry with light/brand surface-aware
+  foreground, active, hover, and focus states. Underline uses a two-pixel active border that overlaps
+  the rail divider so selection remains visible. Tabs Content maps its legacy Boxed, Pills, Segmented,
+  and Underline values into this contract without changing saved content.
 - `iconField.ts` and `resolveLucideIcon.ts`: icon authoring and safe runtime resolution.
-- `mediaOverlayFields.ts` and `mediaOverlayPresentation.ts`: tone, strength, direction, coverage, and text contrast.
+- `mediaOverlayFields.ts` and `mediaOverlayPresentation.ts`: tone, strength, direction, coverage, and
+  text contrast, including the theme-specific foreground for white Light overlays in both website modes.
 - `breadcrumbFields.ts`: manual/automatic breadcrumb authoring.
 - `bannerCtaFields.ts` and `bannerCtaPresentation.ts`: banner layout controls and class resolution.
 - `siteSocialLinks.ts`: normalized CMS social destinations.

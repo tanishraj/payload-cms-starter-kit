@@ -546,7 +546,7 @@ describe('Image Mosaic', () => {
     expect(html).toContain(
       'text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl',
     )
-    expect(html).toContain('text-base leading-7 text-balance text-current/70')
+    expect(html).toContain('text-base leading-7 text-balance text-current')
     expect(html).toContain('ml-auto items-end text-right')
     expect(html).toContain('Explore the collection')
   })

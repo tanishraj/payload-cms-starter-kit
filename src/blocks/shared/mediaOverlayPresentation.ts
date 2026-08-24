@@ -94,10 +94,10 @@ const splitFrameClasses = {
 
 export const mediaOverlayTextClasses = {
   light: {
-    title: 'text-black',
-    secondary: 'text-black/80',
-    eyebrow: 'text-black/72',
-    link: 'text-black',
+    title: 'text-light-overlay-foreground',
+    secondary: 'text-light-overlay-foreground',
+    eyebrow: 'text-light-overlay-foreground',
+    link: 'text-light-overlay-foreground',
   },
   dark: {
     title: 'text-white',
@@ -107,8 +107,8 @@ export const mediaOverlayTextClasses = {
   },
   brand: {
     title: 'text-primary-foreground',
-    secondary: 'text-primary-foreground/82',
-    eyebrow: 'text-primary-foreground/76',
+    secondary: 'text-primary-foreground',
+    eyebrow: 'text-primary-foreground',
     link: 'text-primary-foreground',
   },
 } as const satisfies Record<

@@ -171,7 +171,7 @@ describe('News & Events individual story', () => {
     expect(markup).toContain('data-overlay-strength="light"')
     expect(markup).toContain('data-overlay-direction="rightToLeft"')
     expect(markup).toContain('data-overlay-coverage="split"')
-    expect(markup).toContain('text-black')
+    expect(markup).toContain('text-light-overlay-foreground')
   })
 
   it('uses the website container, reading column, and right-sticky semantic sidebar', () => {

@@ -161,6 +161,7 @@ export function GalleryAlbumTabsBlockPresentation({
             imagesPerLoad={normalizeGalleryAlbumTabsImagesPerLoad(imagesPerLoad)}
             loadMoreLabel={loadMoreLabel?.trim() || 'Load More'}
             tabs={resolvedTabs}
+            tabSurface={appearanceClasses.surface}
             variant={normalizeGalleryAlbumTabsVariant(tabVariant)}
           />
         ) : (

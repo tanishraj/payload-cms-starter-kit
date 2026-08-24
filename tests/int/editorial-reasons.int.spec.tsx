@@ -261,7 +261,7 @@ describe('EditorialReasonsBlockComponent', () => {
     expect(html).toContain('data-editorial-reasons-columns="2"')
     expect(html).not.toContain('grid-cols-[2rem_minmax(0,1fr)]')
     expect(html).toContain('font-sans text-md leading-tight font-semibold text-current')
-    expect(html).toContain('text-sm leading-5 text-current/70')
+    expect(html).toContain('text-sm leading-5 text-current')
   })
 
   it.each([
@@ -629,7 +629,7 @@ describe('EditorialReasonsBlockComponent', () => {
     expect(split).toContain('data-editorial-reasons-columns="2"')
     expect(split.match(/data-section-eyebrow-surface="brand"/g)).toHaveLength(4)
     expect(split.match(/aria-hidden="true"/g)).toHaveLength(4)
-    expect(split).toContain('text-current/65')
+    expect(split).toContain('font-mono text-xs font-medium tracking-[0.14em] text-current')
     expect(split).toContain('flex flex-col')
     expect(split).toContain('border-b border-current/15')
     expect(split).toContain('md:[&amp;&gt;*:nth-child(2n)]:border-l')

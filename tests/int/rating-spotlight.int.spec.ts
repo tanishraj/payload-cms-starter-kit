@@ -159,7 +159,7 @@ describe('Rating Spotlight', () => {
     expect(html).toContain(
       'text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl',
     )
-    expect(html).toContain('text-base leading-7 text-balance text-current/70')
+    expect(html).toContain('text-base leading-7 text-balance text-current')
     expect(html).toContain('data-action-mode="button"')
     expect(html).toContain('href="/reviews/new"')
   })

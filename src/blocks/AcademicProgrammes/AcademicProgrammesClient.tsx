@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { useId, useRef, useState, type KeyboardEvent } from 'react'
 
-import type { BlockBackground } from '@/blocks/shared/blockAppearance'
+import { resolveBlockSurface, type BlockBackground } from '@/blocks/shared/blockAppearance'
 import { resolveCardSurface } from '@/blocks/shared/cardSurface'
 import {
   contentItemDescriptionClasses,
@@ -338,6 +338,7 @@ export function AcademicProgrammesClient({
       ? programmes.filter(({ eyebrow }) => getCategoryKey(eyebrow) === activeCategory)
       : programmes
   const panelID = `${componentID}-panel`
+  const tabSurface = resolveBlockSurface(background)
 
   const activateTab = (index: number) => {
     const nextTab = tabs[index]
@@ -372,7 +373,10 @@ export function AcademicProgrammesClient({
         >
           <div
             aria-label="Programme categories"
-            className={cn('flex w-max flex-nowrap', getContentTabRailClasses('pill'))}
+            className={cn(
+              'flex w-max flex-nowrap',
+              getContentTabRailClasses('pill', tabSurface),
+            )}
             role="tablist"
           >
             {tabs.map((tab, index) => {
@@ -383,7 +387,7 @@ export function AcademicProgrammesClient({
                 <button
                   aria-controls={panelID}
                   aria-selected={active}
-                  className={getContentTabClasses('pill', active)}
+                  className={getContentTabClasses('pill', active, tabSurface)}
                   id={tabID}
                   key={tab.key}
                   onClick={() => setSelectedCategory(tab.key)}

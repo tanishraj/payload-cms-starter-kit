@@ -438,7 +438,10 @@ describe('Academic Programmes block', () => {
     )
 
     expect(html).toContain('bg-brand text-primary-foreground')
-    expect(html).toContain('rounded-full border border-border bg-background p-1')
+    expect(html).toContain(
+      'rounded-full border border-primary-foreground/25 bg-primary-foreground/[0.06] p-1',
+    )
+    expect(html).toContain('bg-primary-foreground text-primary')
     expect(html).toContain('data-card-background="default"')
     expect(html).toContain('border-border bg-card text-card-foreground')
     expect(html).toContain('data-card-background="primary"')

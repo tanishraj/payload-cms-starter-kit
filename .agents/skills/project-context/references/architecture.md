@@ -63,6 +63,11 @@ Maintenance and coming-soon overrides currently wrap the homepage, catch-all Pag
 ## Themes and Analytics
 
 Five theme presets are registered: Default, Sunset, Blue, Kodama, and SNMIH. Theme files live under [src/styles/themes](../../../../src/styles/themes). Block sections use semantic page/subtle/brand surfaces; card surfaces use Default, Primary, Secondary, Muted, and Accent. Renderers resolve foreground, supporting text, icon, divider, link, and button contrast from those semantics.
+Muted and completed-status treatments own explicit contrast-tested foreground pairs in both modes.
+Supporting copy on semantic card and brand surfaces uses the complete paired foreground rather than
+reducing opacity below the accessible contrast contract.
+Light media overlays keep a dedicated contrast-tested foreground from each theme's light palette in
+both website modes, because the overlay surface remains white even when the surrounding page is dark.
 
 Google Tag Manager takes precedence over standalone GA4. Analytics and Vercel Speed Insights load only after the consent cookie is granted. Admin routes are excluded from public analytics.
 

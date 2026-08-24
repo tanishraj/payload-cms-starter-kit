@@ -14,6 +14,7 @@ import {
 import {
   getContentTabClasses,
   getContentTabRailClasses,
+  type ContentTabSurface,
   type ContentTabVariant,
 } from '@/blocks/shared/contentTabRail'
 import { Button } from '@/components/ui/button'
@@ -60,6 +61,7 @@ type NewsEventsTabsClientProps = {
   loadMoreLabel: string
   newsActionLabel: string
   tabs: readonly NewsEventsTabsResolvedTab[]
+  tabSurface?: ContentTabSurface
   variant: ContentTabVariant
 }
 
@@ -73,6 +75,7 @@ export function NewsEventsTabsClient({
   loadMoreLabel,
   newsActionLabel,
   tabs,
+  tabSurface = 'light',
   variant,
 }: NewsEventsTabsClientProps) {
   const instanceID = useId()
@@ -181,7 +184,10 @@ export function NewsEventsTabsClient({
       <div className="overflow-x-auto pb-1" data-news-events-tabs-list-wrap="true">
         <div
           aria-label="News and events classifications"
-          className={cn('flex w-max min-w-full flex-nowrap', getContentTabRailClasses(variant))}
+          className={cn(
+            'flex w-max min-w-full flex-nowrap',
+            getContentTabRailClasses(variant, tabSurface),
+          )}
           data-content-tab-variant={variant}
           role="tablist"
         >
@@ -194,7 +200,7 @@ export function NewsEventsTabsClient({
               <button
                 aria-controls={panelID}
                 aria-selected={isActive}
-                className={getContentTabClasses(variant, isActive)}
+                className={getContentTabClasses(variant, isActive, tabSurface)}
                 id={tabID}
                 key={tab.value}
                 onClick={() => selectTab(index)}

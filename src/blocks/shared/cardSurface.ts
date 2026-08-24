@@ -29,7 +29,7 @@ const explicitCardSurfaceClasses: Record<
   primary: {
     value: 'primary',
     className: 'bg-primary text-primary-foreground',
-    secondary: 'text-primary-foreground/75',
+    secondary: 'text-primary-foreground',
     icon: 'text-primary-foreground',
     divider: 'border-primary-foreground/15',
     link: 'text-primary-foreground hover:text-primary-foreground/80',
@@ -42,7 +42,7 @@ const explicitCardSurfaceClasses: Record<
   secondary: {
     value: 'secondary',
     className: 'bg-secondary text-secondary-foreground',
-    secondary: 'text-secondary-foreground/70',
+    secondary: 'text-secondary-foreground',
     icon: 'text-secondary-foreground',
     divider: 'border-secondary-foreground/15',
     link: 'text-secondary-foreground hover:text-secondary-foreground/80',
@@ -65,7 +65,7 @@ const explicitCardSurfaceClasses: Record<
   accent: {
     value: 'accent',
     className: 'bg-accent text-accent-foreground',
-    secondary: 'text-accent-foreground/70',
+    secondary: 'text-accent-foreground',
     icon: 'text-primary',
     divider: 'border-accent-foreground/15',
     link: 'text-primary hover:text-primary/80',
@@ -142,7 +142,7 @@ const resolveDefaultCardSurface = (
   return {
     value: 'default',
     className: 'bg-transparent text-current',
-    secondary: 'text-current/70',
+    secondary: 'text-current',
     icon: usesPrimaryAccent ? 'text-primary' : 'text-current',
     divider: defaultDividerClasses[sectionBackground],
     link: usesPrimaryAccent

@@ -190,6 +190,7 @@ export function NewsEventsTabsBlockPresentation({
           loadMoreLabel={resolveNewsEventsTabsLoadMoreLabel(loadMoreLabel)}
           newsActionLabel={newsActionLabel?.trim() || 'Read update'}
           tabs={resolvedTabs}
+          tabSurface={appearanceClasses.surface}
           variant={normalizeContentTabVariant(tabVariant)}
         />
 

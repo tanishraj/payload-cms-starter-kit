@@ -4,26 +4,31 @@ import { describe, expect, it } from 'vitest'
 
 describe('Tabs Content active color', () => {
   it('uses semantic action colors for every active tab treatment', () => {
-    const source = fs.readFileSync(
+    const component = fs.readFileSync(
       path.resolve(process.cwd(), 'src/blocks/TabsContent/TabsContentClient.tsx'),
       'utf8',
     )
+    const shared = fs.readFileSync(
+      path.resolve(process.cwd(), 'src/blocks/shared/contentTabRail.ts'),
+      'utf8',
+    )
 
-    expect(source).toContain("'border-primary text-primary'")
-    expect(source).toContain("'gap-0 border-b border-border'")
-    expect(source).not.toContain("'gap-1 border border-border px-1 pt-1'")
-    expect(source).toContain("'border-primary-foreground text-primary-foreground'")
-    expect(source).toContain(
-      "'border-transparent text-current/60 hover:border-current/40 hover:text-current'",
+    expect(component).toContain('getContentTabRailClasses(tabVariant, tabSurface)')
+    expect(component).toContain('getContentTabClasses(tabVariant, isActive, tabSurface)')
+    expect(component).not.toContain("'border-primary text-primary'")
+    expect(component).not.toContain('shadow-[0_1px_2px_rgba(15,35,65,0.08)]')
+    expect(shared).toContain("underline: 'border-b border-border'")
+    expect(shared).toContain("underline: 'border-b border-primary-foreground/25'")
+    expect(shared).toContain(
+      "variant === 'underline' && '-mb-px border-b-2 border-transparent'",
     )
-    expect(source).not.toContain('bg-primary/10')
-    expect(source).not.toContain(
-      "'border-transparent text-current/60 hover:bg-current/[0.05] hover:text-current'",
-    )
-    expect(source).toContain("'bg-primary text-primary-foreground'")
-    expect(source).toContain("? 'bg-primary-foreground text-primary'")
-    expect(source).not.toContain("? 'bg-background text-foreground shadow-sm'")
-    expect(source).not.toContain('shadow-[0_1px_2px_rgba(15,35,65,0.08)]')
+    expect(shared).toContain("'border-primary text-primary'")
+    expect(shared).toContain("'border-primary-foreground text-primary-foreground'")
+    expect(shared).not.toContain('after:scale-x')
+    expect(shared).not.toContain('after:bg')
+    expect(shared).toContain("'bg-primary text-primary-foreground'")
+    expect(shared).toContain("'bg-primary-foreground text-primary'")
+    expect(shared).toContain("'text-primary-foreground hover:bg-primary-foreground/10'")
   })
 
   it('supports segmented curriculum tabs and keyboard navigation', () => {
@@ -49,7 +54,8 @@ describe('Tabs Content active color', () => {
     expect(component).toContain('data-tab-alignment={resolvedTabAlignment}')
     expect(component).toContain("resolvedTabAlignment === 'right' && 'self-end'")
     expect(component).toContain("resolvedTabAlignment === 'stretch' ? 'w-full' : 'w-fit'")
-    expect(component).not.toContain("resolvedTabAlignment === 'stretch' && 'flex-1'")
+    expect(component).toContain("resolvedTabStyle === 'boxed'")
+    expect(component).toContain("resolvedTabStyle === 'segmented' && 'min-w-32'")
     expect(component).toContain("resolvedLayout === 'curriculum'")
   })
 

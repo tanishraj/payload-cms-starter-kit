@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
 
 import {
   resolveBlockAppearanceClasses,
@@ -63,6 +63,7 @@ export function Services21({
 }: Services21Props) {
   const resolvedAccentTitle = accentTitle?.trim() || undefined
   const [activeServiceIndex, setActiveServiceIndex] = useState<number>(0)
+  const activeServiceDetailsID = useId()
   const previousServiceIndex = usePrevious(activeServiceIndex)
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
 
@@ -109,8 +110,12 @@ export function Services21({
           {actions}
         </div>
         <div className={cn('flex w-full flex-col justify-between gap-10 lg:flex-row lg:gap-20')}>
-          <div className="top-10 h-fit w-full space-y-7 py-8 lg:sticky lg:max-w-xs">
-            <div className="relative h-90 overflow-hidden">
+          <div
+            aria-live="polite"
+            className="top-10 h-fit w-full space-y-7 py-8 lg:sticky lg:max-w-xs"
+            id={activeServiceDetailsID}
+          >
+            <div className="relative h-90 overflow-hidden rounded-xl">
               {previousService ? (
                 <div className="absolute inset-0">
                   <Image
@@ -140,10 +145,10 @@ export function Services21({
             </div>
             {activeService ? (
               <>
-                <p className="font-semibold tracking-tight text-current/20 uppercase">
+                <p className="font-semibold tracking-tight text-current uppercase">
                   {activeService.title}
                 </p>
-                <p className="text-base text-current/50">{activeService.description}</p>
+                <p className="text-base leading-7 text-current">{activeService.description}</p>
               </>
             ) : null}
           </div>
@@ -152,14 +157,35 @@ export function Services21({
               {items.map((service, index) => (
                 <li
                   key={`${service.id}-${index}`}
-                  onMouseEnter={() => setActiveServiceIndex(index)}
-                  className={cn(
-                    'cursor-pointer border-b border-foreground/20 py-8 text-3xl font-semibold tracking-tight md:text-5xl lg:text-7xl',
-                    index === activeServiceIndex ? 'opacity-100' : 'opacity-20',
-                  )}
+                  className="border-b border-current/20"
                 >
-                  <span>{service.title}</span>
-                  <sup className="align-super text-sm text-primary lg:text-3xl">{service.id}</sup>
+                  <button
+                    aria-controls={activeServiceDetailsID}
+                    aria-pressed={index === activeServiceIndex}
+                    className={cn(
+                      'w-full cursor-pointer py-8 text-3xl font-semibold tracking-tight transition-colors outline-none motion-reduce:transition-none md:text-5xl lg:text-7xl',
+                      'focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:ring-inset',
+                      index === activeServiceIndex
+                        ? 'text-current'
+                        : 'text-current/75 hover:text-current focus-visible:text-current',
+                    )}
+                    onClick={() => setActiveServiceIndex(index)}
+                    onFocus={() => setActiveServiceIndex(index)}
+                    onMouseEnter={() => setActiveServiceIndex(index)}
+                    type="button"
+                  >
+                    <span>{service.title}</span>
+                    <sup
+                      className={cn(
+                        'align-super text-sm lg:text-3xl',
+                        appearanceClasses.surface === 'brand'
+                          ? 'text-primary-foreground'
+                          : 'text-primary',
+                      )}
+                    >
+                      {service.id}
+                    </sup>
+                  </button>
                 </li>
               ))}
             </ul>

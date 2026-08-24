@@ -280,9 +280,9 @@ describe('Leadership Profiles block', () => {
   })
 
   it.each([
-    ['light', 'text-success'],
-    ['dark', 'text-ring'],
-    ['brand', 'text-ring'],
+    ['light', 'text-light-overlay-foreground'],
+    ['dark', 'text-white/82'],
+    ['brand', 'text-primary-foreground'],
   ] as const)('highlights the Image Overlay label for the %s tone', (themeMode, expectedClass) => {
     const html = renderToStaticMarkup(
       <LeadershipProfilesBlockComponent

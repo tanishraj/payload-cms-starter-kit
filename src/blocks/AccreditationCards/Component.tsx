@@ -93,7 +93,7 @@ function resolveCardClasses(background: CardBackground, sectionBackground: Block
   if (background === 'subtle') {
     return {
       className: 'border-border bg-subtle text-foreground',
-      description: 'text-foreground/70',
+      description: 'text-foreground',
       icon: 'text-primary',
       iconFill: 'border-transparent bg-primary/10',
       iconOutline: 'border-primary/30 bg-transparent',
@@ -103,7 +103,7 @@ function resolveCardClasses(background: CardBackground, sectionBackground: Block
   if (background === 'brand') {
     return {
       className: 'border-primary-foreground/15 bg-brand text-primary-foreground',
-      description: 'text-primary-foreground/70',
+      description: 'text-primary-foreground',
       icon: 'text-primary-foreground',
       iconFill: 'border-transparent bg-primary-foreground/10',
       iconOutline: 'border-primary-foreground/30 bg-transparent',
@@ -113,7 +113,7 @@ function resolveCardClasses(background: CardBackground, sectionBackground: Block
   if (background === 'gradient-subtle') {
     return {
       className: 'border-border bg-gradient-subtle text-foreground',
-      description: 'text-foreground/70',
+      description: 'text-foreground',
       icon: 'text-primary',
       iconFill: 'border-transparent bg-primary/10',
       iconOutline: 'border-primary/30 bg-transparent',
@@ -123,7 +123,7 @@ function resolveCardClasses(background: CardBackground, sectionBackground: Block
   if (background === 'gradient-brand') {
     return {
       className: 'border-primary-foreground/15 bg-gradient-brand text-primary-foreground',
-      description: 'text-primary-foreground/70',
+      description: 'text-primary-foreground',
       icon: 'text-primary-foreground',
       iconFill: 'border-transparent bg-primary-foreground/10',
       iconOutline: 'border-primary-foreground/30 bg-transparent',
@@ -136,7 +136,7 @@ function resolveCardClasses(background: CardBackground, sectionBackground: Block
     ? {
         className:
           'border-primary-foreground/15 bg-primary-foreground/[0.045] text-primary-foreground',
-        description: 'text-primary-foreground/70',
+        description: 'text-primary-foreground',
         icon: 'text-primary-foreground',
         iconFill: 'border-transparent bg-primary-foreground/10',
         iconOutline: 'border-primary-foreground/30 bg-transparent',

@@ -233,7 +233,7 @@ describe('StudentExperienceBlockComponent', () => {
     expect(html).toContain('data-student-experience-overlay-coverage="split"')
     expect(html).toContain('absolute inset-y-0 right-0 w-1/2 bg-linear-to-l')
     expect(html).toContain('bg-linear-to-l from-white via-white/84 to-transparent')
-    expect(html).toContain('text-black')
+    expect(html).toContain('text-light-overlay-foreground')
     expect(html).toContain('bg-linear-to-t from-black/94 via-black/74 to-transparent')
   })
 

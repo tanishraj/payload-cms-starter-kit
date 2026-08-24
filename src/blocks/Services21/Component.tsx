@@ -1,4 +1,5 @@
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
+import { resolveCardSurface } from '@/blocks/shared/cardSurface'
 import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { BorderButton } from '@/components/shadcnblocks/border-button'
 import { Services21, type Services21Item, type Services21Alignment } from '@/components/services21'
@@ -7,6 +8,7 @@ import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@
 import { getMediaImageProps } from '@/lib/media'
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
 import type { Media } from '@/payload-types'
+import { cn } from '@/lib/utils'
 
 type Services21BlockService = {
   code?: string | null
@@ -28,26 +30,11 @@ type Services21BlockLike = {
   title?: string | null
 }
 
-type ActionButtonMode = Exclude<CmsActionVariant, 'link'>
-
 const resolveServiceCode = (code: string | null | undefined, index: number) => {
   const trimmed = code?.trim()
   const paddedIndex = String(index + 1).padStart(2, '0')
 
   return trimmed && trimmed.length > 0 ? trimmed : `{${paddedIndex}}`
-}
-
-const buttonClassNameByVariant: Record<ActionButtonMode, string> = {
-  default:
-    'border-primary/40 bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground',
-  outline: 'border-current/20 text-current hover:bg-muted hover:text-current/80',
-  primary:
-    'border-primary bg-primary text-primary-foreground hover:bg-[color-mix(in_oklch,var(--primary),var(--foreground)_8%)]',
-  secondary: 'border-secondary/40 bg-secondary/10 text-secondary hover:bg-secondary/20',
-  white:
-    'border-white bg-white text-primary hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/30 dark:text-primary-foreground',
-  whiteOutline:
-    'border-white bg-transparent text-white hover:bg-white/10 focus-visible:border-white focus-visible:ring-white/30',
 }
 
 export function Services21BlockComponent({
@@ -90,14 +77,15 @@ export function Services21BlockComponent({
   const resolvedEyebrow = eyebrow?.trim()
   const resolvedContentAlignment = contentAlignment ?? 'left'
   const action = resolvedActions[0]
-  const actionVariant: ActionButtonMode =
+  const actionVariant: Exclude<CmsActionVariant, 'link'> =
     action?.variant === 'link' ? 'default' : (action?.variant ?? 'default')
+  const actionSurface = resolveCardSurface('default', appearance?.background ?? 'none')
   const hasServices = resolvedServices.length > 0
   const actionNode = action ? (
     action.mode === 'button' ? (
       <BorderButton
         asChild
-        className={`group mt-10 ${buttonClassNameByVariant[actionVariant]}`}
+        className={cn('group mt-10', actionSurface.button[actionVariant])}
         variant={actionVariant}
       >
         <a
@@ -110,7 +98,7 @@ export function Services21BlockComponent({
       </BorderButton>
     ) : (
       <ContentLink
-        className="mt-10"
+        className={cn('mt-10', actionSurface.link)}
         href={action.href}
         label={action.label}
         openInNewTab={action.openInNewTab}

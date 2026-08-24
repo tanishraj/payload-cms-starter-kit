@@ -67,10 +67,10 @@ describe('card theme contract', () => {
   })
 
   it.each([
-    ['primary', 'bg-primary text-primary-foreground', 'text-primary-foreground/75'],
-    ['secondary', 'bg-secondary text-secondary-foreground', 'text-secondary-foreground/70'],
+    ['primary', 'bg-primary text-primary-foreground', 'text-primary-foreground'],
+    ['secondary', 'bg-secondary text-secondary-foreground', 'text-secondary-foreground'],
     ['muted', 'bg-muted text-foreground', 'text-muted-foreground'],
-    ['accent', 'bg-accent text-accent-foreground', 'text-accent-foreground/70'],
+    ['accent', 'bg-accent text-accent-foreground', 'text-accent-foreground'],
   ] as const)('resolves the %s card surface', (value, className, secondary) => {
     expect(resolveCardSurface(value)).toMatchObject({ className, secondary })
   })
@@ -85,7 +85,7 @@ describe('card theme contract', () => {
     expect(resolveCardSurface('default', background)).toMatchObject({
       className: 'bg-transparent text-current',
       divider,
-      secondary: 'text-current/70',
+      secondary: 'text-current',
       value: 'default',
     })
   })

@@ -990,7 +990,7 @@ describe('FeeStructureBlockComponent', () => {
         'text-primary-foreground',
       )
       expect(container.querySelector('[data-fee-category-notes="true"]')?.className).toContain(
-        'text-primary-foreground/75',
+        'text-primary-foreground',
       )
     },
   )

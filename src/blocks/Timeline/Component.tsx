@@ -46,7 +46,7 @@ const stepCircleClasses = {
   none: 'border-2 border-border bg-background text-foreground/70',
   upcoming: 'border-2 border-border bg-background text-foreground/70',
   active: 'border-2 border-primary bg-primary text-primary-foreground',
-  done: 'border-2 border-success bg-success text-white',
+  done: 'border-2 border-success bg-success text-success-foreground',
 } as const
 
 const stepConnectorClasses = {

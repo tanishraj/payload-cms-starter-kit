@@ -35,13 +35,16 @@ const quoteSizeClasses = {
 
 function StarRating({ rating }: { rating: number }) {
   return (
-    <div className="flex gap-0.5">
+    <div aria-label={`${rating} out of 5 stars`} className="flex gap-0.5" role="img">
       {Array.from({ length: 5 }, (_, i) => (
         <Star
+          aria-hidden="true"
           key={i}
           className={cn(
             'size-4',
-            i < rating ? 'fill-amber-400 text-amber-400 dark:fill-amber-300 dark:text-amber-300' : 'fill-muted text-muted-foreground',
+            i < rating
+              ? 'fill-rating-excellent text-rating-excellent'
+              : 'fill-transparent text-muted-foreground',
           )}
         />
       ))}
@@ -200,7 +203,7 @@ export function QuoteBlockBlockComponent({
         )}
 
         {resolvedVariant === 'card' && (
-          <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-card p-8 text-card-foreground shadow-sm md:p-12">
+          <div className="mx-auto max-w-3xl rounded-xl border border-border bg-card p-8 text-card-foreground shadow-sm md:p-12">
             <div className="flex flex-col gap-6">
               <div className="flex items-start justify-between gap-4">
                 {eyebrow?.trim() ? (
@@ -232,7 +235,7 @@ export function QuoteBlockBlockComponent({
         )}
 
         {resolvedVariant === 'highlight' && (
-          <div className="mx-auto max-w-3xl border-l-4 border-primary pl-6 md:pl-8">
+          <div className="mx-auto max-w-3xl border-s border-primary ps-6 md:ps-8">
             <div className="flex flex-col gap-4">
               {eyebrow?.trim() ? (
                 <SectionEyebrow surface={appearance?.background ?? 'none'}>

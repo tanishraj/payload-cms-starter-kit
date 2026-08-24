@@ -3,7 +3,7 @@
 import { Search } from 'lucide-react'
 import { useId, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 
-import type { BlockBackground } from '@/blocks/shared/blockAppearance'
+import { resolveBlockSurface, type BlockBackground } from '@/blocks/shared/blockAppearance'
 import {
   getContentTabClasses,
   getContentTabRailClasses,
@@ -237,6 +237,7 @@ export function DepartmentProfilesClient({
   )
   const visibleProfiles = filteredProfiles.slice(0, visibleCount)
   const panelID = `${componentID}-panel`
+  const tabSurface = resolveBlockSurface(background)
   const selectDepartment = (id: string) => {
     setActiveDepartmentId(id)
     setVisibleCount(profilesPerLoad)
@@ -308,7 +309,7 @@ export function DepartmentProfilesClient({
                 className={cn(
                   'flex flex-nowrap',
                   tabRailWidthClasses[tabWidth],
-                  getContentTabRailClasses(tabVariant),
+                  getContentTabRailClasses(tabVariant, tabSurface),
                 )}
                 data-department-profiles-tab-width={tabWidth}
                 role="tablist"
@@ -322,7 +323,7 @@ export function DepartmentProfilesClient({
                       aria-controls={panelID}
                       aria-selected={active}
                       className={cn(
-                        getContentTabClasses(tabVariant, active),
+                        getContentTabClasses(tabVariant, active, tabSurface),
                         tabWidth === 'equal' &&
                           'w-0 min-w-0 flex-1 shrink overflow-hidden px-2 text-ellipsis',
                       )}

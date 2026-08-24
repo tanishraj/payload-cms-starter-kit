@@ -213,13 +213,13 @@ describe('Profile Carousel', () => {
     expect(html).toContain(
       'text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl',
     )
-    expect(html).toContain('text-base leading-7 text-balance text-current/70')
+    expect(html).toContain('text-base leading-7 text-balance text-current')
     expect(html).not.toContain('aria-label="Previous profile"')
     expect(html).not.toContain('aria-label="Next profile"')
     expect(html).toContain('Meet our team')
     expect(html).toContain('Our people')
     expect(html).toContain(
-      'font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70',
+      'font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current',
     )
     expect(html).not.toMatch(/<h3[^>]*>Alex Morgan<\/h3>/)
     expect(html.match(/flex flex-col gap-0\.5/g)).toHaveLength(3)
@@ -272,7 +272,9 @@ describe('Profile Carousel', () => {
       html.match(/absolute inset-y-0 right-0 w-1\/2 bg-linear-to-l[^\"]*from-white/g),
     ).toHaveLength(4)
     expect(html.match(/absolute inset-0 flex flex-col justify-end/g)).toHaveLength(4)
-    expect(html.match(/pt-16 text-black items-center text-center/g)).toHaveLength(4)
+    expect(
+      html.match(/pt-16 text-light-overlay-foreground items-center text-center/g),
+    ).toHaveLength(4)
     expect(html.match(/items-center text-center/g)).toHaveLength(4)
     expect(html.match(/h-80 sm:h-96 md:h-\[28rem\]/g)).toHaveLength(4)
   })

@@ -38,15 +38,15 @@ describe('shared block content styles', () => {
       'font-[family-name:var(--font-display)] text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl',
     )
     expect(contentSectionDescriptionClasses).toBe(
-      'text-base leading-7 text-balance text-current/70',
+      'text-base leading-7 text-balance text-current',
     )
     expect(contentItemTitleClasses).toBe(
       'rounded-sm font-sans text-md leading-tight font-semibold text-current underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current sm:text-lg',
     )
     expect(contentItemLinkClasses).toBe('transition-opacity hover:opacity-70 hover:underline')
-    expect(contentItemDescriptionClasses).toBe('text-sm leading-5 text-current/70')
+    expect(contentItemDescriptionClasses).toBe('text-sm leading-5 text-current')
     expect(contentItemMetadataClasses).toBe(
-      'font-mono text-xs font-medium tracking-[0.14em] text-current/65',
+      'font-mono text-xs font-medium tracking-[0.14em] text-current',
     )
   })
 })

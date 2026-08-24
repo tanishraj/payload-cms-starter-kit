@@ -49,12 +49,12 @@ describe('Hero Banner block', () => {
     expect(html).toContain('flex w-full flex-col gap-8 max-w-5xl')
     expect(html).toContain('flex flex-col gap-6')
     expect(html).toContain('text-balance')
-    expect(html).toContain('text-primary-foreground/82')
+    expect(html).toContain('text-primary-foreground')
     expect(html).toContain('lg:text-xl')
     expect(html).toContain('h-12 w-full sm:w-auto')
   })
 
-  it('preserves the develop branch light and dark overlay colors', () => {
+  it('uses stable dark copy and theme-aligned Light overlay copy', () => {
     const darkHtml = renderToStaticMarkup(
       createElement(HeroBannerBlockComponent, {
         backgroundImage: { alt: 'Lecture hall', url: '/media/lecture.jpg' } as never,
@@ -99,8 +99,8 @@ describe('Hero Banner block', () => {
     expect(lightHtml).toContain('data-hero-banner-overlay="light"')
     expect(lightHtml).toContain('data-section-eyebrow-surface="lightOverlay"')
     expect(lightHtml).toContain('bg-white/80')
-    expect(lightHtml).toContain('text-black')
-    expect(lightHtml).toContain('text-black/80')
+    expect(lightHtml).toContain('text-light-overlay-foreground')
+    expect(lightHtml).not.toContain('text-black')
     expect(lightHtml).toContain(
       'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklch,var(--primary),var(--foreground)_8%)]',
     )

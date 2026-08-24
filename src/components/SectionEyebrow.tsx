@@ -12,7 +12,7 @@ export type SectionEyebrowSurface = BlockBackground | 'darkOverlay' | 'lightOver
  * per-surface accent colour too.
  */
 export const sectionEyebrowClasses =
-  'font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70'
+  'font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current'
 
 type SectionEyebrowProps = ComponentPropsWithoutRef<'p'> & {
   surface?: SectionEyebrowSurface

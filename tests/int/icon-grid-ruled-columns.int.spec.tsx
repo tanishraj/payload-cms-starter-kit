@@ -146,7 +146,7 @@ describe('Icon Grid Ruled Columns', () => {
     expect(html).not.toContain('text-2xl')
     expect(html).not.toContain('text-base leading-7')
     expect(html).toContain('border-current/15')
-    expect(html).toContain('text-current/70')
+    expect(html).toContain('text-sm leading-5 whitespace-pre-line text-current')
     expect(html).toContain('rounded-lg border')
     expect(html).not.toContain('data-card-background')
     expect(html).not.toContain('bg-card-gradient-brand')

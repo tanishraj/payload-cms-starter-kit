@@ -7,6 +7,7 @@ import {
   createMediaOverlayToneField,
 } from '@/blocks/shared/mediaOverlayFields'
 import {
+  mediaOverlayTextClasses,
   normalizeMediaOverlayCoverage,
   normalizeMediaOverlayDirection,
   normalizeMediaOverlayStrength,
@@ -68,6 +69,15 @@ describe('shared media overlay fields', () => {
 })
 
 describe('shared media overlay presentation', () => {
+  it('uses the theme foreground contract for every Light overlay text role', () => {
+    expect(mediaOverlayTextClasses.light).toEqual({
+      title: 'text-light-overlay-foreground',
+      secondary: 'text-light-overlay-foreground',
+      eyebrow: 'text-light-overlay-foreground',
+      link: 'text-light-overlay-foreground',
+    })
+  })
+
   it('uses Brand automatically on brand surfaces and Dark elsewhere', () => {
     expect(resolveMediaOverlayTone('auto', 'brand')).toBe('brand')
     expect(resolveMediaOverlayTone('auto', 'gradient-brand')).toBe('brand')
@@ -153,7 +163,7 @@ describe('shared media overlay presentation', () => {
     expect(resolveMediaOverlay({ tone: 'light' })).toMatchObject({
       blockSurface: 'lightOverlay',
       eyebrowSurface: 'lightOverlay',
-      text: { title: 'text-black' },
+      text: { title: 'text-light-overlay-foreground' },
     })
     expect(resolveMediaOverlay({ tone: 'dark' })).toMatchObject({
       blockSurface: 'darkOverlay',

@@ -435,7 +435,7 @@ describe('ProgramMatrixBlockComponent', () => {
     )
 
     expect(html).toContain(
-      'font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70',
+      'font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current',
     )
   })
 

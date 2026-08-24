@@ -2581,12 +2581,13 @@
       "tests/int/team-showcase-hover-surface.int.spec.tsx",
       "tests/int/testimonial-spotlight-config.int.spec.ts",
       "tests/int/testimonial-spotlight-render.int.spec.tsx",
+      "tests/int/theme-block-outliers.int.spec.tsx",
       "tests/int/theme-contracts.int.spec.ts",
       "tests/int/theme-settings.int.spec.ts",
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "13dd147c0b84242ad2ffad1b5410f42ce3683384eddc1d9463506e179113c018"
+    "sha256": "b858af6a92631a76b6ab1da9164444cfd79cbe13456b09d4fe559d6f8ce49be4"
   },
   "surfaces": {
     "access": [
@@ -2879,6 +2880,7 @@
       "tests/int/team-showcase-hover-surface.int.spec.tsx",
       "tests/int/testimonial-spotlight-config.int.spec.ts",
       "tests/int/testimonial-spotlight-render.int.spec.tsx",
+      "tests/int/theme-block-outliers.int.spec.tsx",
       "tests/int/theme-contracts.int.spec.ts",
       "tests/int/theme-settings.int.spec.ts",
       "tests/int/work-queue.int.spec.ts"

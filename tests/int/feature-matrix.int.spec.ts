@@ -101,7 +101,7 @@ describe('Feature Matrix presentation', () => {
     expect(
       html.match(/<p class="text-base leading-tight font-semibold text-current">/g),
     ).toHaveLength(4)
-    expect(html.match(/<p class="text-sm leading-6 text-current\/70">/g)).toHaveLength(4)
+    expect(html.match(/<p class="text-sm leading-6 text-current">/g)).toHaveLength(4)
 
     for (const feature of features) {
       expect(html).toContain(feature.title)

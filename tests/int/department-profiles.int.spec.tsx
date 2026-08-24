@@ -464,7 +464,7 @@ describe('Department Profiles block', () => {
     expect(splitOverlay).toContain('data-department-profile-overlay-tone="light"')
     expect(splitOverlay).toContain('h-1/2')
     expect(splitOverlay).toContain('bg-linear-to-t')
-    expect(splitOverlay).toContain('text-black')
+    expect(splitOverlay).toContain('text-light-overlay-foreground')
 
     const evenSplitOverlay = renderBlock({
       overlayCoverage: 'split',

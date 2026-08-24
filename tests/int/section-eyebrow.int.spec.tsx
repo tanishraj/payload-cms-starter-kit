@@ -66,7 +66,7 @@ describe('SNMIH section eyebrows', () => {
     expect(html).toContain('data-section-eyebrow="true"')
     expect(html).toContain(`data-section-eyebrow-surface="${surface}"`)
     expect(html).toContain(
-      'font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current/70 mb-2',
+      'font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current mb-2',
     )
     expect(html).toContain('>Academics</p>')
   })

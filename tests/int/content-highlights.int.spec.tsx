@@ -626,7 +626,7 @@ describe('Content Highlights', () => {
     expect(html).toContain('data-section-eyebrow-surface="subtle"')
     expect(markerTags).toHaveLength(2)
     expect(markerTags[0]).toContain(
-      'font-mono text-xs font-medium tracking-[0.14em] text-current/65',
+      'font-mono text-xs font-medium tracking-[0.14em] text-current',
     )
     expect(markerTags[0]).not.toContain('font-semibold')
     expect(markerTags[0]).not.toContain('uppercase')
@@ -634,7 +634,7 @@ describe('Content Highlights', () => {
     expect(markerTags[0]).not.toContain('text-current/70')
     expect(markerTags[0]).toContain('data-section-eyebrow-surface="subtle"')
     expect(markerTags[1]).toContain(
-      'font-mono text-xs font-medium tracking-[0.14em] text-current/65',
+      'font-mono text-xs font-medium tracking-[0.14em] text-current',
     )
     expect(markerTags[1]).toContain('data-section-eyebrow-surface="primary"')
   })

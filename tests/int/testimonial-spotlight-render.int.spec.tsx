@@ -35,21 +35,21 @@ const semanticSurfaces = [
     background: 'default' as const,
     divider: 'border-current/10',
     eyebrow: 'subtle',
-    secondary: 'text-current/70',
+    secondary: 'text-current',
     surface: 'bg-transparent text-current',
   },
   {
     background: 'primary' as const,
     divider: 'border-primary-foreground/15',
     eyebrow: 'brand',
-    secondary: 'text-primary-foreground/75',
+    secondary: 'text-primary-foreground',
     surface: 'bg-primary text-primary-foreground',
   },
   {
     background: 'secondary' as const,
     divider: 'border-secondary-foreground/15',
     eyebrow: 'subtle',
-    secondary: 'text-secondary-foreground/70',
+    secondary: 'text-secondary-foreground',
     surface: 'bg-secondary text-secondary-foreground',
   },
   {
@@ -63,7 +63,7 @@ const semanticSurfaces = [
     background: 'accent' as const,
     divider: 'border-accent-foreground/15',
     eyebrow: 'subtle',
-    secondary: 'text-accent-foreground/70',
+    secondary: 'text-accent-foreground',
     surface: 'bg-accent text-accent-foreground',
   },
 ]
@@ -452,7 +452,7 @@ describe('testimonial spotlight rendering', () => {
     expect(html).toContain(
       '<span class="text-base font-semibold text-current">Shri Ravindra Kumar Singh</span>',
     )
-    expect(html).toContain('<span class="text-xs leading-4 text-current/70">Founder</span>')
+    expect(html).toContain('<span class="text-xs leading-4 text-current">Founder</span>')
   })
 
   it.each([

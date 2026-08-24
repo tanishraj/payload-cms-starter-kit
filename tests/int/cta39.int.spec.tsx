@@ -130,7 +130,7 @@ describe('Call to Action block', () => {
     expect(html).toContain('data-section-eyebrow="true"')
     expect(html).toContain('Plan your visit')
     expect(html).toContain('max-w-2xl')
-    expect(html).toContain('text-base leading-7 text-balance text-current/70')
+    expect(html).toContain('text-base leading-7 text-balance text-current')
     expect(html).toContain('href="/visit"')
     expect(html).toContain('href="/admissions"')
     expect(html).not.toContain('rounded-xl')
