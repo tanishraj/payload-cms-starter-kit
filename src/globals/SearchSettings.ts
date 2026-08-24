@@ -5,6 +5,10 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
+import {
+  MAX_SEARCH_SUGGESTIONS,
+  validateSuggestedSearchTerms,
+} from '@/lib/searchSuggestions'
 
 export const SearchSettings: GlobalConfig = {
   slug: 'search-settings',
@@ -27,10 +31,11 @@ export const SearchSettings: GlobalConfig = {
       name: 'suggestedSearches',
       label: 'Suggested Searches',
       type: 'array',
-      maxRows: 12,
+      maxRows: MAX_SEARCH_SUGGESTIONS,
+      validate: validateSuggestedSearchTerms,
       admin: {
         description:
-          'Up to 12 terms shown as clickable chips on the search page. Operators can update these without touching code.',
+          'Up to 6 ordered terms shown as clickable chips on the full Search page. Use each term only once.',
         initCollapsed: true,
       },
       fields: [
