@@ -14,11 +14,23 @@ import {
   regularBlockMobilePaddingClasses,
 } from '@/blocks/shared/blockSpacing'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
+import {
+  contentIntroClasses,
+  contentSectionDescriptionClasses,
+  contentSectionHeadingClasses,
+} from '@/blocks/shared/contentStyles'
 import { ContentActions } from '@/components/ContentActions'
 import { compactRichTextClasses } from '@/components/rich-text/richTextStyles'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
+
+import {
+  resolveQaAccordionLayout,
+  type QaAccordionLayoutInput,
+  type QaAccordionSectionVerticalAlignment,
+  type QaAccordionSplitProportion,
+} from './layoutContract'
 
 type RichTextData = React.ComponentProps<typeof RichText>['data']
 
@@ -45,7 +57,7 @@ type QaAccordionProfile = {
   title?: string | null
 }
 
-type QaAccordionBlockLike = {
+type QaAccordionBlockLike = QaAccordionLayoutInput & {
   accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
@@ -56,7 +68,6 @@ type QaAccordionBlockLike = {
   accordionPlacement?: 'left' | 'right' | null
   title?: string | null
   items?: QaAccordionItemValue[] | null
-  layoutMode?: 'fiftyFifty' | 'fullWidth' | 'oneThird' | null
   sideColumn?: {
     contact?: QaAccordionContact | null
     profile?: QaAccordionProfile | null
@@ -70,10 +81,26 @@ const contentAlignmentClasses = {
   right: 'items-end text-right',
 } as const
 
-const gridLayoutClasses = {
-  fiftyFifty: 'lg:grid-cols-2 lg:gap-12 xl:gap-16',
-  oneThird: 'lg:grid-cols-3 lg:gap-12 xl:gap-16',
-} as const
+const rightQaProportionClasses: Record<QaAccordionSplitProportion, string> = {
+  balanced: 'lg:grid-cols-2',
+  qaFocus: 'lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]',
+  sectionFocus: 'lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]',
+}
+
+const leftQaProportionClasses: Record<QaAccordionSplitProportion, string> = {
+  balanced: 'lg:grid-cols-2',
+  qaFocus: 'lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]',
+  sectionFocus: 'lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]',
+}
+
+const sectionVerticalAlignmentClasses: Record<
+  QaAccordionSectionVerticalAlignment,
+  string
+> = {
+  bottom: 'lg:self-end',
+  center: 'lg:self-center',
+  top: 'lg:self-start',
+}
 
 const accordionPlacementClasses = {
   left: 'lg:order-1',
@@ -164,14 +191,15 @@ export function QaAccordionBlockComponent({
   accordionPlacement = 'right',
   title,
   items,
-  layoutMode = 'fiftyFifty',
+  layoutMode,
+  sectionVerticalAlignment,
   sideColumn,
   size = 'default',
+  splitProportion,
 }: QaAccordionBlockLike) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const resolvedContentAlignment = contentAlignment ?? 'left'
   const resolvedAccordionPlacement = accordionPlacement ?? 'right'
-  const configuredLayoutMode = layoutMode ?? 'fiftyFifty'
   const resolvedSize = size ?? 'default'
   const validItems = (items ?? []).flatMap((item) => {
     const question = item?.question?.trim()
@@ -203,12 +231,16 @@ export function QaAccordionBlockComponent({
   const resolvedHeaderActions = resolveCmsActions(actions)
   const contactActions = resolveCmsActions(contact?.actions)
 
-  const resolvedLayoutMode =
-    configuredLayoutMode === 'fullWidth' || configuredLayoutMode === 'oneThird'
-      ? configuredLayoutMode
-      : 'fiftyFifty'
-  const resolvedSplitLayoutMode = resolvedLayoutMode === 'oneThird' ? 'oneThird' : 'fiftyFifty'
-  const isSplitLayout = resolvedLayoutMode !== 'fullWidth'
+  const resolvedLayout = resolveQaAccordionLayout({
+    layoutMode,
+    sectionVerticalAlignment,
+    splitProportion,
+  })
+  const isSplitLayout = resolvedLayout.layoutMode === 'split'
+  const proportionClasses =
+    resolvedAccordionPlacement === 'left'
+      ? leftQaProportionClasses
+      : rightQaProportionClasses
   const hasProfile =
     isSplitLayout && Boolean(profileImage || profile?.name?.trim() || profile?.title?.trim())
   const hasContact =
@@ -218,12 +250,12 @@ export function QaAccordionBlockComponent({
 
   const supportingContent = hasSideColumn ? (
     <aside
-      className="flex flex-1 flex-col justify-between text-left"
+      className="space-y-8 text-left lg:space-y-12"
       data-qa-accordion-side-column="true"
     >
-      <div>
+      <div className="space-y-8 lg:space-y-12">
         {hasProfile ? (
-          <div className="mb-8 flex items-start gap-3 sm:gap-4 lg:mb-12">
+          <div className="flex items-start gap-3 sm:gap-4">
             {profileImage ? (
               <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg sm:h-16 sm:w-16">
                 <Image
@@ -267,7 +299,6 @@ export function QaAccordionBlockComponent({
       <ContentActions
         actions={contactActions}
         alignment="left"
-        className="py-4"
         data-qa-accordion-contact-actions="true"
       />
     </aside>
@@ -276,20 +307,24 @@ export function QaAccordionBlockComponent({
   const sectionContent = (
     <div
       className={cn(
-        'flex h-full flex-col order-1',
-        isSplitLayout ? sidePlacementClasses[resolvedAccordionPlacement] : 'w-full',
+        'order-1',
+        isSplitLayout
+          ? [
+              sidePlacementClasses[resolvedAccordionPlacement],
+              sectionVerticalAlignmentClasses[resolvedLayout.sectionVerticalAlignment],
+            ]
+          : 'mb-10 w-full lg:mb-16',
+        'flex flex-col gap-8 lg:gap-12',
       )}
       data-qa-accordion-section-content="true"
     >
       <div
         className={cn(
-          'flex flex-col gap-4',
-          !isSplitLayout ? 'mb-8 lg:mb-16' : undefined,
-          isSplitLayout && hasSideColumn ? 'mb-8 lg:mb-12' : undefined,
+          contentIntroClasses,
           contentAlignmentClasses[resolvedContentAlignment],
         )}
       >
-        <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
+        <h2 className={contentSectionHeadingClasses}>
           {resolvedAccentTitle ? (
             <>
               <span className="block font-[inherit]">{title}</span>
@@ -300,7 +335,7 @@ export function QaAccordionBlockComponent({
           )}
         </h2>
         {description?.trim() ? (
-          <p className="text-balance text-base leading-7 text-current/70">{description.trim()}</p>
+          <p className={contentSectionDescriptionClasses}>{description.trim()}</p>
         ) : null}
         <ContentActions
           actions={resolvedHeaderActions}
@@ -318,7 +353,6 @@ export function QaAccordionBlockComponent({
       className={cn(
         'order-2',
         isSplitLayout ? accordionPlacementClasses[resolvedAccordionPlacement] : 'w-full',
-        isSplitLayout && resolvedLayoutMode === 'oneThird' ? 'lg:col-span-2' : undefined,
       )}
       data-qa-accordion-main="true"
     >
@@ -357,18 +391,22 @@ export function QaAccordionBlockComponent({
       data-qa-accordion-background={appearance?.background ?? 'none'}
       data-qa-accordion-content-alignment={resolvedContentAlignment}
       data-qa-accordion-has-side-column={hasSideColumn ? 'true' : 'false'}
-      data-qa-accordion-layout={resolvedLayoutMode}
+      data-qa-accordion-layout={resolvedLayout.layoutMode}
       data-qa-accordion-placement={resolvedAccordionPlacement}
+      data-qa-accordion-section-vertical-alignment={
+        resolvedLayout.sectionVerticalAlignment
+      }
       data-qa-accordion-side-column={hasSideColumn ? 'true' : 'false'}
       data-qa-accordion-size={resolvedSize}
+      data-qa-accordion-split-proportion={resolvedLayout.splitProportion}
     >
       <div className={regularBlockContainerClasses}>
         <div className="w-full">
           {isSplitLayout ? (
             <div
               className={cn(
-                'grid grid-cols-1 gap-8',
-                gridLayoutClasses[resolvedSplitLayoutMode],
+                'grid gap-10 lg:gap-16',
+                proportionClasses[resolvedLayout.splitProportion],
               )}
             >
               {sectionContent}
