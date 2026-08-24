@@ -4,12 +4,15 @@ import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import { embeddedContentEditor } from '@/fields/bodyEditorConfig'
+
+import type { QaAccordionLayoutMode } from './layoutContract'
+
 type QaAccordionBlockSiblingData = {
-  layoutMode?: 'fiftyFifty' | 'fullWidth' | 'oneThird' | null
+  layoutMode?: QaAccordionLayoutMode | 'fiftyFifty' | 'fullWidth' | 'oneThird' | null
 }
 
 const hasSplitLayout = (_data: unknown, siblingData: QaAccordionBlockSiblingData) =>
-  siblingData?.layoutMode !== 'fullWidth'
+  siblingData?.layoutMode !== 'stacked' && siblingData?.layoutMode !== 'fullWidth'
 
 const qaAccordionItemsField = {
   name: 'items',
@@ -75,7 +78,7 @@ const contactGroupField = {
 
 const sideColumnField = {
   name: 'sideColumn',
-  label: 'Side Column',
+  label: 'Supporting Content',
   type: 'group',
   admin: {
     condition: hasSplitLayout,
@@ -137,22 +140,51 @@ export const QaAccordionBlock: Block = {
               name: 'layoutMode',
               label: 'Layout Mode',
               type: 'select',
-              defaultValue: 'fiftyFifty',
+              defaultValue: 'split',
               options: [
-                { label: '50 / 50', value: 'fiftyFifty' },
-                { label: 'One-Third Content / Two-Thirds Q&A', value: 'oneThird' },
-                { label: 'Full Width', value: 'fullWidth' },
+                { label: 'Stacked', value: 'stacked' },
+                { label: 'Split', value: 'split' },
               ],
               required: true,
             } satisfies SelectField,
             {
+              name: 'splitProportion',
+              label: 'Split Proportion',
+              type: 'select',
+              defaultValue: 'balanced',
+              options: [
+                { label: 'Balanced (50 / 50)', value: 'balanced' },
+                { label: 'Section Content Focus (60 / 40)', value: 'sectionFocus' },
+                { label: 'Q&A Focus (40 / 60)', value: 'qaFocus' },
+              ],
+              admin: {
+                condition: hasSplitLayout,
+              },
+              required: true,
+            } satisfies SelectField,
+            {
               name: 'accordionPlacement',
-              label: 'Q&A Placement',
+              label: 'Q&A Position',
               type: 'select',
               defaultValue: 'right',
               options: [
                 { label: 'Left', value: 'left' },
                 { label: 'Right', value: 'right' },
+              ],
+              admin: {
+                condition: hasSplitLayout,
+              },
+              required: true,
+            } satisfies SelectField,
+            {
+              name: 'sectionVerticalAlignment',
+              label: 'Section Content Vertical Alignment',
+              type: 'select',
+              defaultValue: 'top',
+              options: [
+                { label: 'Top', value: 'top' },
+                { label: 'Center', value: 'center' },
+                { label: 'Bottom', value: 'bottom' },
               ],
               admin: {
                 condition: hasSplitLayout,

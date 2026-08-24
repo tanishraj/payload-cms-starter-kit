@@ -86,7 +86,7 @@ describe('Q&A Accordion layout compatibility', () => {
 })
 
 describe('Q&A Accordion block', () => {
-  it('describes section-content split controls without changing their stored values', () => {
+  it('exposes explicit stacked and split composition controls', () => {
     const tabs = getTabs()
     const contentTab = tabs.find((tab) => tab.label === 'Content')
     const themeTab = tabs.find((tab) => tab.label === 'Theme Settings')
@@ -96,31 +96,50 @@ describe('Q&A Accordion block', () => {
     }
 
     const layoutMode = getNamedField(themeTab.fields, 'layoutMode') as SelectField
+    const splitProportion = getNamedField(themeTab.fields, 'splitProportion') as SelectField
     const placement = getNamedField(themeTab.fields, 'accordionPlacement') as SelectField
-    const sideColumn = getNamedField(contentTab.fields, 'sideColumn')
+    const verticalAlignment = getNamedField(
+      themeTab.fields,
+      'sectionVerticalAlignment',
+    ) as SelectField
+    const supportingContent = getNamedField(contentTab.fields, 'sideColumn')
 
-    expect(layoutMode.defaultValue).toBe('fiftyFifty')
+    expect(layoutMode.defaultValue).toBe('split')
     expect(layoutMode.options).toEqual([
-      { label: '50 / 50', value: 'fiftyFifty' },
-      { label: 'One-Third Content / Two-Thirds Q&A', value: 'oneThird' },
-      { label: 'Full Width', value: 'fullWidth' },
+      { label: 'Stacked', value: 'stacked' },
+      { label: 'Split', value: 'split' },
     ])
-    expect(placement.label).toBe('Q&A Placement')
+    expect(splitProportion.defaultValue).toBe('balanced')
+    expect(splitProportion.options).toEqual([
+      { label: 'Balanced (50 / 50)', value: 'balanced' },
+      { label: 'Section Content Focus (60 / 40)', value: 'sectionFocus' },
+      { label: 'Q&A Focus (40 / 60)', value: 'qaFocus' },
+    ])
+    expect(placement.label).toBe('Q&A Position')
     expect(placement.defaultValue).toBe('right')
     expect(placement.options).toEqual([
       { label: 'Left', value: 'left' },
       { label: 'Right', value: 'right' },
     ])
+    expect(verticalAlignment.defaultValue).toBe('top')
+    expect(verticalAlignment.options).toEqual([
+      { label: 'Top', value: 'top' },
+      { label: 'Center', value: 'center' },
+      { label: 'Bottom', value: 'bottom' },
+    ])
+    expect('label' in supportingContent ? supportingContent.label : undefined).toBe(
+      'Supporting Content',
+    )
 
-    const placementCondition = placement.admin?.condition
-    const sideColumnCondition = 'admin' in sideColumn ? sideColumn.admin?.condition : undefined
+    for (const field of [splitProportion, placement, verticalAlignment, supportingContent]) {
+      const condition = 'admin' in field ? field.admin?.condition : undefined
 
-    expect(placementCondition?.({}, { layoutMode: 'fiftyFifty' }, {} as never)).toBe(true)
-    expect(placementCondition?.({}, { layoutMode: 'oneThird' }, {} as never)).toBe(true)
-    expect(placementCondition?.({}, { layoutMode: 'fullWidth' }, {} as never)).toBe(false)
-    expect(sideColumnCondition?.({}, { layoutMode: 'fiftyFifty' }, {} as never)).toBe(true)
-    expect(sideColumnCondition?.({}, { layoutMode: 'oneThird' }, {} as never)).toBe(true)
-    expect(sideColumnCondition?.({}, { layoutMode: 'fullWidth' }, {} as never)).toBe(false)
+      expect(condition?.({}, { layoutMode: 'split' }, {} as never)).toBe(true)
+      expect(condition?.({}, { layoutMode: 'stacked' }, {} as never)).toBe(false)
+      expect(condition?.({}, { layoutMode: 'fiftyFifty' }, {} as never)).toBe(true)
+      expect(condition?.({}, { layoutMode: 'oneThird' }, {} as never)).toBe(true)
+      expect(condition?.({}, { layoutMode: 'fullWidth' }, {} as never)).toBe(false)
+    }
   })
 
   it('renders a one-third layout with the Q&A accordion on the right', () => {
