@@ -428,7 +428,11 @@ describe('Content Highlights', () => {
             articleTags.every((tag) => tag.includes('rounded-[var(--radius)] border p-6 md:p-7')),
           ).toBe(true)
         } else {
-          expect(articleTags.every((tag) => tag.includes('border-b py-8 md:py-10'))).toBe(true)
+          expect(
+            articleTags.every((tag) =>
+              tag.includes('border-b px-6 py-8 md:px-7 md:py-10'),
+            ),
+          ).toBe(true)
           expect(html).toContain('[&amp;&gt;*:first-child]:border-t')
 
           if (itemsLayout === '1') {
@@ -450,7 +454,7 @@ describe('Content Highlights', () => {
     )
   })
 
-  it('uses editorial Rule spacing without horizontal inset on the inherited surface', () => {
+  it('insets Rule cards on the inherited surface', () => {
     const html = renderToStaticMarkup(
       <ContentHighlights
         cardStyle="divided"
@@ -462,8 +466,11 @@ describe('Content Highlights', () => {
     const articleTags = html.match(/<article class="[^"]*"[^>]*>/g) ?? []
 
     expect(articleTags).toHaveLength(2)
-    expect(articleTags.every((tag) => tag.includes('border-b py-8 md:py-10'))).toBe(true)
-    expect(articleTags.every((tag) => !tag.includes('px-6'))).toBe(true)
+    expect(
+      articleTags.every((tag) =>
+        tag.includes('border-b px-6 py-8 md:px-7 md:py-10'),
+      ),
+    ).toBe(true)
   })
 
   it('keeps Rule cards padded when they use an explicit surface', () => {
@@ -477,7 +484,7 @@ describe('Content Highlights', () => {
     )
     const articleTag = html.match(/<article class="[^"]*"[^>]*>/)?.[0]
 
-    expect(articleTag).toContain('border-b py-8 md:py-10 px-6 md:px-7')
+    expect(articleTag).toContain('border-b px-6 py-8 md:px-7 md:py-10')
   })
 
   it('uses a wider inline eyebrow rail for the one-column Rule layout', () => {
@@ -537,6 +544,32 @@ describe('Content Highlights', () => {
     expect(html).not.toContain('[&amp;&gt;*:first-child]:border-t')
     expect(html).not.toContain('nth-child(2n)]:border-l')
     expect(html).not.toContain('class="overflow-hidden" data-content-highlights-items="true"')
+  })
+
+  it('insets every Rule card in a Split two-column grid', () => {
+    const html = renderToStaticMarkup(
+      <ContentHighlights
+        headerLayout="split"
+        items={[item('One'), item('Two'), item('Three'), item('Four')]}
+        itemsLayout="2"
+        itemTreatment="ruled"
+        ruledDividers="grid"
+        title="Highlights"
+      />,
+    )
+    const articleClasses = [
+      ...html.matchAll(/<article class="([^"]*)"[^>]*data-content-highlight-item="true"/g),
+    ].map((match) => match[1] ?? '')
+
+    expect(html).toContain('data-content-highlights-header-layout="split"')
+    expect(html).toContain('data-content-highlights-items-layout="2"')
+    expect(html).toContain('data-content-highlights-ruled-dividers="grid"')
+    expect(html).toContain('md:[&amp;&gt;*:nth-child(2n)]:border-l')
+    expect(articleClasses).toHaveLength(4)
+
+    for (const className of articleClasses) {
+      expect(className).toContain('border-b px-6 py-8 md:px-7 md:py-10')
+    }
   })
 
   it('keeps explicit card backgrounds padded without forcing a border in Open mode', () => {

@@ -338,7 +338,6 @@ function ContentHighlightItemComponent({
   const surface = resolveCardSurface(item.cardBackground, sectionBackground)
   const marker = resolveMarker(item, index)
   const markerSurface = surface.value === 'default' ? sectionBackground : surface.value
-  const hasExplicitSurface = surface.value !== 'default'
   const hasAction = Boolean(item.cardAction)
   const inlineRailClassName =
     cardStyle === 'divided' && itemsLayout === '1'
@@ -376,13 +375,8 @@ function ContentHighlightItemComponent({
       : cardStyle === 'leftRule'
         ? cn('border-l-2 p-6 md:p-7', surface.className, surface.divider)
         : cardStyle === 'divided'
-          ? cn(
-              'border-b py-8 md:py-10',
-              hasExplicitSurface && 'px-6 md:px-7',
-              surface.className,
-              surface.divider,
-            )
-          : cn(hasExplicitSurface && 'p-6 md:p-7', surface.className)
+          ? cn('border-b px-6 py-8 md:px-7 md:py-10', surface.className, surface.divider)
+          : cn(surface.value !== 'default' && 'p-6 md:p-7', surface.className)
   const articleClasses = cn('flex min-w-0 flex-col', treatmentClasses)
 
   return (
