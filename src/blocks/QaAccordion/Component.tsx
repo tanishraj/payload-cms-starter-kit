@@ -371,7 +371,12 @@ export function QaAccordionBlockComponent({
             key={`${item.question}-${index}`}
             value={`item-${index}`}
           >
-            <QaAccordionTrigger className="justify-between py-6 text-left text-base font-semibold hover:no-underline sm:text-lg lg:py-8 lg:text-xl">
+            <QaAccordionTrigger
+              className={cn(
+                'justify-between py-6 text-left text-base font-semibold hover:no-underline sm:text-lg lg:text-xl',
+                isSplitLayout && index === 0 ? 'lg:pt-0 lg:pb-8' : 'lg:py-8',
+              )}
+            >
               <span className="pr-4">{item.question}</span>
             </QaAccordionTrigger>
             <QaAccordionContent className="pb-6 pr-8 text-left text-sm leading-relaxed text-current/70 sm:text-base">

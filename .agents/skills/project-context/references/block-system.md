@@ -100,7 +100,9 @@ Q&A and ignores optional supporting content. `split` offers Balanced 50/50, Sect
 60/40, and Q&A Focus 40/60 proportions; Q&A Position swaps desktop sides while DOM/mobile order
 remains section content first. Top, Center, and Bottom align the natural-height section-content group
 against Q&A on large screens. Profile and Contact Prompt remain part of that group and are available
-only in Split mode. The renderer normalizes legacy layout values without rewriting stored content.
+only in Split mode. The first Split question removes its large-screen top padding so its label aligns
+with the section heading; compact layouts and Stacked retain regular row padding. The renderer
+normalizes legacy layout values without rewriting stored content.
 
 The generated inventory contains every current export under [src/blocks/shared](../../../../src/blocks/shared).
 

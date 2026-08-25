@@ -60,6 +60,9 @@ const getNamedField = (fields: Field[], name: string) => {
   return field
 }
 
+const getAccordionTriggerClasses = (html: string) =>
+  Array.from(html.matchAll(/<button[^>]*class="([^"]*)"/g), (match) => match[1])
+
 describe('Q&A Accordion layout compatibility', () => {
   it.each([
     ['fullWidth', 'stacked', 'balanced'],
@@ -140,6 +143,44 @@ describe('Q&A Accordion block', () => {
       expect(condition?.({}, { layoutMode: 'oneThird' }, {} as never)).toBe(true)
       expect(condition?.({}, { layoutMode: 'fullWidth' }, {} as never)).toBe(false)
     }
+  })
+
+  it('removes desktop top padding only from the first Split trigger', () => {
+    const html = renderToStaticMarkup(
+      createElement(QaAccordionBlockComponent, {
+        items: [
+          { answer: createRichText('First answer'), question: 'First question' },
+          { answer: createRichText('Second answer'), question: 'Second question' },
+        ],
+        layoutMode: 'split',
+        title: 'Frequently asked questions',
+      }),
+    )
+    const [firstTrigger, secondTrigger] = getAccordionTriggerClasses(html)
+
+    expect(firstTrigger).toContain('py-6')
+    expect(firstTrigger).toContain('lg:pt-0')
+    expect(firstTrigger).toContain('lg:pb-8')
+    expect(firstTrigger).not.toContain('lg:py-8')
+    expect(secondTrigger).toContain('py-6')
+    expect(secondTrigger).toContain('lg:py-8')
+    expect(secondTrigger).not.toContain('lg:pt-0')
+  })
+
+  it('retains symmetric first-trigger padding in Stacked mode', () => {
+    const html = renderToStaticMarkup(
+      createElement(QaAccordionBlockComponent, {
+        items: [{ answer: createRichText('Answer'), question: 'Question' }],
+        layoutMode: 'stacked',
+        title: 'Frequently asked questions',
+      }),
+    )
+    const [firstTrigger] = getAccordionTriggerClasses(html)
+
+    expect(firstTrigger).toContain('py-6')
+    expect(firstTrigger).toContain('lg:py-8')
+    expect(firstTrigger).not.toContain('lg:pt-0')
+    expect(firstTrigger).not.toContain('lg:pb-8')
   })
 
   it.each([
