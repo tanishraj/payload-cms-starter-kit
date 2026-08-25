@@ -63,6 +63,8 @@ const getNamedField = (fields: Field[], name: string) => {
 const getAccordionTriggerClasses = (html: string) =>
   Array.from(html.matchAll(/<button[^>]*class="([^"]*)"/g), (match) => match[1])
 
+const countOccurrences = (value: string, search: string) => value.split(search).length - 1
+
 describe('Q&A Accordion layout compatibility', () => {
   it.each([
     ['fullWidth', 'stacked', 'balanced'],
@@ -183,6 +185,48 @@ describe('Q&A Accordion block', () => {
     expect(firstTrigger).not.toContain('lg:pb-8')
   })
 
+  it('anchors section actions to the bottom of the Split content column', () => {
+    const html = renderToStaticMarkup(
+      createElement(QaAccordionBlockComponent, {
+        actions: [{ label: 'See All', linkType: 'custom', url: '/questions' }],
+        description: 'Plan your visit.',
+        items: [{ answer: createRichText('Answer'), question: 'Question' }],
+        layoutMode: 'split',
+        sectionVerticalAlignment: 'center',
+        title: 'Library questions',
+      }),
+    )
+
+    expect(html).toContain('data-qa-accordion-section-content="true"')
+    expect(html).toContain('lg:h-full')
+    expect(html).toContain('data-qa-accordion-content-group="true"')
+    expect(html).toContain('lg:justify-center')
+    expect(html).toContain('data-qa-accordion-section-actions="true"')
+    expect(html).toContain('mt-4 lg:mt-auto')
+    expect(countOccurrences(html, 'href="/questions"')).toBe(1)
+    expect(html.indexOf('data-qa-accordion-content-group="true"')).toBeLessThan(
+      html.indexOf('data-qa-accordion-section-actions="true"'),
+    )
+  })
+
+  it('keeps section actions in the natural Stacked introduction flow', () => {
+    const html = renderToStaticMarkup(
+      createElement(QaAccordionBlockComponent, {
+        actions: [{ label: 'See All', linkType: 'custom', url: '/questions' }],
+        items: [{ answer: createRichText('Answer'), question: 'Question' }],
+        layoutMode: 'stacked',
+        title: 'Library questions',
+      }),
+    )
+    const sectionTag = html.match(
+      /<div class="([^"]*)" data-qa-accordion-section-content="true">/,
+    )
+
+    expect(sectionTag?.[1]).not.toContain('lg:h-full')
+    expect(html).not.toContain('data-qa-accordion-section-actions="true"')
+    expect(countOccurrences(html, 'href="/questions"')).toBe(1)
+  })
+
   it.each([
     ['right', 'balanced', 'lg:grid-cols-2', 'lg:order-1', 'lg:order-2'],
     [
@@ -237,10 +281,10 @@ describe('Q&A Accordion block', () => {
   )
 
   it.each([
-    ['top', 'lg:self-start'],
-    ['center', 'lg:self-center'],
-    ['bottom', 'lg:self-end'],
-  ] as const)('aligns the natural-height section group to %s', (alignment, className) => {
+    ['top', 'lg:justify-start'],
+    ['center', 'lg:justify-center'],
+    ['bottom', 'lg:justify-end'],
+  ] as const)('aligns the flexible section-content group to %s', (alignment, className) => {
     const html = renderToStaticMarkup(
       createElement(QaAccordionBlockComponent, {
         items: [{ answer: createRichText('Answer'), question: 'Question' }],
@@ -256,12 +300,16 @@ describe('Q&A Accordion block', () => {
     const sectionTag = html.match(
       /<div class="([^"]*)" data-qa-accordion-section-content="true">/,
     )
+    const contentGroupTag = html.match(
+      /<div class="([^"]*)" data-qa-accordion-content-group="true">/,
+    )
     const supportTag = html.match(
       /<aside class="([^"]*)" data-qa-accordion-side-column="true">/,
     )
 
-    expect(sectionTag?.[1]).toContain(className)
-    expect(sectionTag?.[1]).not.toContain('h-full')
+    expect(sectionTag?.[1]).toContain('lg:h-full')
+    expect(contentGroupTag?.[1]).toContain('lg:flex-1')
+    expect(contentGroupTag?.[1]).toContain(className)
     expect(supportTag?.[1]).not.toContain('flex-1')
     expect(supportTag?.[1]).not.toContain('justify-between')
   })

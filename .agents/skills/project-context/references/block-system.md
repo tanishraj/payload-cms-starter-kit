@@ -98,9 +98,11 @@ surface. Documents without valid outer content retain the legacy render branch.
 Q&A Accordion separates composition from proportion. `stacked` places the section introduction above
 Q&A and ignores optional supporting content. `split` offers Balanced 50/50, Section Content Focus
 60/40, and Q&A Focus 40/60 proportions; Q&A Position swaps desktop sides while DOM/mobile order
-remains section content first. Top, Center, and Bottom align the natural-height section-content group
-against Q&A on large screens. Profile and Contact Prompt remain part of that group and are available
-only in Split mode. The first Split question removes its large-screen top padding so its label aligns
+remains section content first. Top, Center, and Bottom align the section-content group within its
+flexible large-screen column. Profile and Contact Prompt remain part of that group and are available
+only in Split mode. Section-level actions stay in normal flow and anchor to the bottom of the Split
+column independently from the content-group alignment; compact layouts and Stacked retain their
+natural action flow. The first Split question removes its large-screen top padding so its label aligns
 with the section heading; compact layouts and Stacked retain regular row padding. The renderer
 normalizes legacy layout values without rewriting stored content.
 

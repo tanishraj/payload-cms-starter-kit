@@ -97,9 +97,9 @@ const sectionVerticalAlignmentClasses: Record<
   QaAccordionSectionVerticalAlignment,
   string
 > = {
-  bottom: 'lg:self-end',
-  center: 'lg:self-center',
-  top: 'lg:self-start',
+  bottom: 'lg:justify-end',
+  center: 'lg:justify-center',
+  top: 'lg:justify-start',
 }
 
 const accordionPlacementClasses = {
@@ -304,19 +304,16 @@ export function QaAccordionBlockComponent({
     </aside>
   ) : null
 
-  const sectionContent = (
+  const sectionContentGroup = (
     <div
       className={cn(
-        'order-1',
-        isSplitLayout
-          ? [
-              sidePlacementClasses[resolvedAccordionPlacement],
-              sectionVerticalAlignmentClasses[resolvedLayout.sectionVerticalAlignment],
-            ]
-          : 'mb-10 w-full lg:mb-16',
         'flex flex-col gap-8 lg:gap-12',
+        isSplitLayout && [
+          'lg:flex-1',
+          sectionVerticalAlignmentClasses[resolvedLayout.sectionVerticalAlignment],
+        ],
       )}
-      data-qa-accordion-section-content="true"
+      data-qa-accordion-content-group="true"
     >
       <div
         className={cn(
@@ -337,14 +334,40 @@ export function QaAccordionBlockComponent({
         {description?.trim() ? (
           <p className={contentSectionDescriptionClasses}>{description.trim()}</p>
         ) : null}
-        <ContentActions
-          actions={resolvedHeaderActions}
-          alignment={resolvedContentAlignment}
-          data-qa-accordion-header-actions="true"
-        />
+        {!isSplitLayout ? (
+          <ContentActions
+            actions={resolvedHeaderActions}
+            alignment={resolvedContentAlignment}
+            data-qa-accordion-header-actions="true"
+          />
+        ) : null}
       </div>
 
       {supportingContent}
+    </div>
+  )
+
+  const sectionContent = (
+    <div
+      className={cn(
+        'order-1',
+        isSplitLayout
+          ? [sidePlacementClasses[resolvedAccordionPlacement], 'lg:h-full']
+          : 'mb-10 w-full lg:mb-16',
+        'flex flex-col',
+      )}
+      data-qa-accordion-section-content="true"
+    >
+      {sectionContentGroup}
+      {isSplitLayout ? (
+        <ContentActions
+          actions={resolvedHeaderActions}
+          alignment={resolvedContentAlignment}
+          className="mt-4 lg:mt-auto"
+          data-qa-accordion-header-actions="true"
+          data-qa-accordion-section-actions="true"
+        />
+      ) : null}
     </div>
   )
 
