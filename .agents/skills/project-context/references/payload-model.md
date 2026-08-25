@@ -50,7 +50,9 @@ Read [adminCapabilities.ts](../../../../src/access/adminCapabilities.ts), [edito
 
 ## Shared Fields and Hook Safety
 
-- [bodyEditorConfig.ts](../../../../src/fields/bodyEditorConfig.ts) defines the writing-focused Lexical editor for Article and News/Event bodies.
+- [bodyEditorConfig.ts](../../../../src/fields/bodyEditorConfig.ts) defines one complete fixed-toolbar
+  Lexical editor used explicitly by Article bodies, News/Event bodies, Rich Text blocks, Q&A answers,
+  and the Payload fallback. H1 remains reserved for the surrounding document title.
 - [buildSEOFields.ts](../../../../src/fields/buildSEOFields.ts) defines reusable route SEO controls.
 - [cmsLinkFields.ts](../../../../src/fields/cmsLinkFields.ts) defines reusable Navigation Link relationships.
 - [projectSlugField.ts](../../../../src/fields/projectSlugField.ts) wraps Payload's generated slug field for all slug-based collections. It collapses separators and assigns the first available `-copy`, `-copy-2`, and later suffix while preserving existing stored slugs.

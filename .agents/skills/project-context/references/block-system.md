@@ -361,9 +361,11 @@ Dark/Darker/Bottom-to-Top/Full; missing entry media uses the centered bundled SN
 Breadcrumb blocks receive Home, News & Events, and the current entry in production and in the
 dedicated client-safe live-preview renderer.
 
-Project-owned Lexical editors reserve H1 for the surrounding page or entry title and expose H2–H6.
-`richTextStyles.ts` owns the client-safe shared presentation: Article, News/Event, and Rich Text
-content use the long-form preset, while Q&A answers use the compact preset. Both presets style
+Every project-owned Lexical field uses the same complete, always-visible fixed toolbar and reserves
+H1 for the surrounding page or entry title while exposing H2–H6. `richTextStyles.ts` owns the
+client-safe shared presentation: Article, News/Event, and Rich Text content use the long-form
+preset, while Q&A answers retain the compact preset; toolbar consistency does not change stored
+content or public typography. Both presets style
 Payload's semantic paragraph, list, checklist, blockquote, emphasis, link, code, image, and
 horizontal-rule output using theme tokens; rich-text headings use the text-family token rather than
 the display family. Long-form H2–H6 use a compact descending text-family scale, with H2 capped by the
