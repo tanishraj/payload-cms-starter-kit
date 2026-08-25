@@ -126,6 +126,7 @@ const validateEventFields = (data: NewsEventEntryData, originalDoc: NewsEventEnt
 export const clearNewsEventEventFields = (data: NewsEventEntryData): NewsEventEntryData => {
   data.eventStart = null
   data.eventEnd = null
+  data.eventAllDay = null
   data.eventLocation = null
   data.eventRegistrationAction = []
 

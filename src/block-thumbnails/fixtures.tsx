@@ -14,6 +14,12 @@ import { GalleryCoverflowBlockComponent } from '@/blocks/GalleryCoverflow/Compon
 import { BannerCtaBlockComponent } from '@/blocks/BannerCta/Component'
 import { NewsGridBlockPresentation } from '@/blocks/NewsGrid/Presentation'
 import { NewsEventsTabsBlockPresentation } from '@/blocks/NewsEventsTabs/Presentation'
+import { CalendarBlockPresentation } from '@/blocks/Calendar/Presentation'
+import type {
+  CalendarClassification,
+  CalendarEvent,
+  CalendarInitialSnapshot,
+} from '@/blocks/Calendar/calendarShared'
 import { Cta39BlockComponent } from '@/blocks/Cta39/Component'
 import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
 import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
@@ -41,6 +47,7 @@ import { GalleryAlbumTabsBlockPresentation } from '@/blocks/GalleryAlbumTabs/Pre
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
 import type {
   NewsEventClassificationBehavior,
+  CalendarTone,
   ResolvedNewsEventClassification,
 } from '@/lib/newsEventClassifications'
 import type { PublicNewsEventCard, PublicNewsEventPage } from '@/lib/newsEventsShared'
@@ -309,10 +316,12 @@ const thumbnailNewsEventClassification = (
   slug: string,
   badgeLabel: string,
   behavior: NewsEventClassificationBehavior = 'story',
+  calendarColor: CalendarTone = 'blue',
 ): ResolvedNewsEventClassification => ({
   active: true,
   badgeLabel,
   behavior,
+  calendarColor,
   id: `thumbnail-classification-${slug}`,
   legacyValue: null,
   slug,
@@ -327,6 +336,118 @@ const thumbnailAchievementClassification = thumbnailNewsEventClassification(
   'Achievement',
 )
 const thumbnailHolidayClassification = thumbnailNewsEventClassification('holiday', 'Holiday')
+
+const calendarClassifications: CalendarClassification[] = [
+  {
+    badgeLabel: 'Academic',
+    calendarColor: 'green',
+    id: 'academic',
+    slug: 'academic',
+    title: 'Academic',
+  },
+  { badgeLabel: 'Exam', calendarColor: 'blue', id: 'exam', slug: 'exam', title: 'Examination' },
+  {
+    badgeLabel: 'Clinical',
+    calendarColor: 'cyan',
+    id: 'clinical',
+    slug: 'clinical',
+    title: 'Clinical',
+  },
+  {
+    badgeLabel: 'Holiday',
+    calendarColor: 'amber',
+    id: 'holiday',
+    slug: 'holiday',
+    title: 'Holiday',
+  },
+  {
+    badgeLabel: 'Research',
+    calendarColor: 'violet',
+    id: 'research',
+    slug: 'research',
+    title: 'Research',
+  },
+]
+
+const calendarEvent = (
+  id: string,
+  title: string,
+  classification: CalendarClassification,
+  startDateKey: string,
+  options: { allDay?: boolean; endDateKey?: string; location?: string; timeLabel?: string } = {},
+): CalendarEvent => ({
+  allDay: options.allDay ?? false,
+  classification,
+  endDateKey: options.endDateKey ?? startDateKey,
+  eventStart: `${startDateKey}T04:30:00.000Z`,
+  href: `/news-events/${id}`,
+  id,
+  location: options.location,
+  rangeLabel:
+    startDateKey === options.endDateKey
+      ? startDateKey
+      : `${startDateKey} – ${options.endDateKey ?? startDateKey}`,
+  startDateKey,
+  timeLabel: options.allDay ? undefined : (options.timeLabel ?? '10:00 AM IST'),
+  title,
+})
+
+const calendarEvents: CalendarEvent[] = [
+  calendarEvent('semester-begins', 'Semester I begins', calendarClassifications[0], '2026-08-02', {
+    allDay: true,
+  }),
+  calendarEvent(
+    'clinical-orientation',
+    'Clinical rotation orientation',
+    calendarClassifications[2],
+    '2026-08-05',
+    { location: 'Teaching hospital' },
+  ),
+  calendarEvent(
+    'research-workshop',
+    'Research methods workshop',
+    calendarClassifications[4],
+    '2026-08-07',
+  ),
+  calendarEvent(
+    'anatomy-assessment',
+    'Internal assessment — Anatomy',
+    calendarClassifications[1],
+    '2026-08-14',
+    { location: 'Examination hall' },
+  ),
+  calendarEvent('ward-posting', 'Ward posting rotation', calendarClassifications[2], '2026-08-19'),
+  calendarEvent(
+    'guest-lecture',
+    'Guest lecture — Cardiology',
+    calendarClassifications[0],
+    '2026-08-21',
+  ),
+  calendarEvent('mentoring', 'Academic mentoring day', calendarClassifications[0], '2026-08-23'),
+  calendarEvent('holiday', 'Institutional holiday', calendarClassifications[3], '2026-08-26', {
+    allDay: true,
+  }),
+  calendarEvent(
+    'research-presentation',
+    'Student research presentation',
+    calendarClassifications[4],
+    '2026-08-28',
+  ),
+  calendarEvent('assessment', 'Formative assessment', calendarClassifications[1], '2026-08-31'),
+]
+
+const calendarInitialSnapshot: CalendarInitialSnapshot = {
+  classifications: calendarClassifications,
+  month: {
+    events: calendarEvents,
+    monthKey: '2026-08',
+    monthLabel: 'August 2026',
+    version: 1,
+  },
+  timeZone: 'Asia/Kolkata',
+  todayKey: '2026-08-23',
+  upcoming: calendarEvents.slice(6, 10),
+}
 
 const thumbnailNewsEventsTabsItems: PublicNewsEventCard[] = [
   {
@@ -678,6 +799,13 @@ export const blockThumbnailFixtures = {
       layoutStyle="editorialList"
       size="compact"
       title="News &"
+    />
+  ),
+  calendar: (
+    <CalendarBlockPresentation
+      initial={calendarInitialSnapshot}
+      size="compact"
+      title="Academic calendar"
     />
   ),
   bannerCta: (

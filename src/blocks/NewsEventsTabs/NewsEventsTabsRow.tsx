@@ -3,17 +3,14 @@ import Link from 'next/link'
 import { ActionArrow } from '@/components/ActionArrow'
 import { NewsEventClassificationBadge } from '@/components/news-events/NewsEventClassificationBadge'
 import { NewsEventDateMeta } from '@/components/news-events/NewsEventDateMeta'
-import { formatNewsEventDateRange, type PublicNewsEventCard } from '@/lib/newsEventsShared'
+import type { PublicNewsEventCard } from '@/lib/newsEventsShared'
 
 type NewsEventsTabsRowProps = {
   item: PublicNewsEventCard
 }
 
 export function NewsEventsTabsRow({ item }: NewsEventsTabsRowProps) {
-  const isEvent = item.behavior === 'event'
-  const dateLabel = isEvent
-    ? formatNewsEventDateRange(item.eventStart ?? item.dateISO, item.eventEnd)
-    : item.dateLabel
+  const dateLabel = item.dateLabel
   const excerpt = item.excerpt?.trim()
 
   return (

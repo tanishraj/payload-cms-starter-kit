@@ -132,6 +132,11 @@ describe('news and event classifications', () => {
       required: true,
       type: 'select',
     })
+    expect(findNamedField(NewsEventClassifications.fields, 'calendarColor')).toMatchObject({
+      defaultValue: 'blue',
+      required: true,
+      type: 'select',
+    })
     expect(findNamedField(NewsEventClassifications.fields, 'description')).toMatchObject({
       type: 'textarea',
     })
@@ -164,8 +169,12 @@ describe('news and event classifications', () => {
 
     expect(revalidateTagMock.mock.calls).toEqual([
       [CMS_CACHE_TAGS.newsEvents, 'max'],
+      [CMS_CACHE_TAGS.newsEventClassifications, 'max'],
+      [CMS_CACHE_TAGS.calendar, 'max'],
       [CMS_CACHE_TAGS.pages, 'max'],
       [CMS_CACHE_TAGS.newsEvents, 'max'],
+      [CMS_CACHE_TAGS.newsEventClassifications, 'max'],
+      [CMS_CACHE_TAGS.calendar, 'max'],
       [CMS_CACHE_TAGS.pages, 'max'],
     ])
   })
@@ -274,6 +283,7 @@ describe('news and event classifications', () => {
       active: true,
       badgeLabel: 'Event',
       behavior: 'event',
+      calendarColor: 'blue',
       id: 'classification-1',
       legacyValue: 'event',
       slug: 'events',
@@ -293,6 +303,7 @@ describe('news and event classifications', () => {
       active: true,
       badgeLabel: 'Notice',
       behavior: 'story',
+      calendarColor: 'blue',
       id: '42',
       legacyValue: null,
       slug: 'notice',
@@ -347,15 +358,25 @@ describe('news and event classifications', () => {
   it.each([
     [
       'current News & Events relationship',
-      { 'news-events': [{ classification: 'classification-1', id: 'entry-1' }] },
+      {
+        'news-events': [
+          {
+            classification: 'classification-1',
+            id: 'entry-1',
+            title: 'Incremental adoption of shadcn/ui',
+          },
+        ],
+      },
       [],
       'news-events',
+      'News & Events entry “Incremental adoption of shadcn/ui” (ID: entry-1)',
     ],
     [
       'legacy News & Events value',
       { 'news-events': [{ contentType: 'news', id: 'entry-1' }] },
       [],
       'news-events',
+      'News & Events entry (ID: entry-1)',
     ],
     [
       'current nested Page block relationship',
@@ -374,16 +395,58 @@ describe('news and event classifications', () => {
       },
       [],
       'pages',
+      'Page (ID: page-1)',
+    ],
+    [
+      'current nested Calendar relationship',
+      {
+        pages: [
+          {
+            id: 'calendar-page',
+            layout: [
+              {
+                blockType: 'calendar',
+                classifications: ['classification-1'],
+              },
+            ],
+            title: 'Academic Calendar',
+          },
+        ],
+      },
+      [],
+      'pages',
+      'Page “Academic Calendar” (ID: calendar-page)',
+    ],
+    [
+      'current News & Events Highlights relationship',
+      {
+        pages: [
+          {
+            id: 'highlights-page',
+            layout: [
+              {
+                blockType: 'newsEventsHighlights',
+                classifications: ['classification-1'],
+              },
+            ],
+            title: 'Home',
+          },
+        ],
+      },
+      [],
+      'pages',
+      'Page “Home” (ID: highlights-page)',
     ],
     [
       'current detail-template global relationship',
       {},
       [{ blockType: 'newsEventsTabs', classifications: [{ id: 'classification-1' }] }],
       'news-events-detail-template',
+      'News & Events Detail Page (ID: news-events-detail-template)',
     ],
   ] as const)(
     'detects a %s reference',
-    async (_label, collections, detailLayout, expectedCollection) => {
+    async (_label, collections, detailLayout, expectedCollection, expectedReferenceLabel) => {
       const request = createRequest({
         collections: collections as Partial<
           Record<'news-events' | 'pages' | 'reusable-sections', unknown[]>
@@ -393,7 +456,7 @@ describe('news and event classifications', () => {
       const { args } = createDeleteHookArgs(request)
 
       await expect(preventReferencedNewsEventClassificationDelete(args)).rejects.toMatchObject({
-        message: 'Archive this classification before removing its references.',
+        message: `Cannot delete this classification because it is still used by ${expectedReferenceLabel}. Remove or replace that reference, then try again. To keep the classification without allowing new selections, archive it instead.`,
         status: 409,
       })
 
@@ -430,6 +493,29 @@ describe('news and event classifications', () => {
         req: request.req,
       }),
     ).resolves.toBeNull()
+  })
+
+  it('ignores a stale legacy value when an entry has a current classification relationship', async () => {
+    const request = createRequest({
+      collections: {
+        'news-events': [
+          {
+            classification: 'replacement-classification',
+            contentType: 'news',
+            id: 'migrated-entry',
+          },
+        ],
+      },
+    })
+    const { args } = createDeleteHookArgs(request)
+
+    await expect(
+      findNewsEventClassificationReference({
+        classificationID: 'classification-1',
+        req: request.req,
+      }),
+    ).resolves.toBeNull()
+    await expect(preventReferencedNewsEventClassificationDelete(args)).resolves.toBeUndefined()
   })
 
   it('paginates reference scans and excludes trashed records', async () => {
@@ -566,7 +652,7 @@ describe('news and event classifications', () => {
       } as unknown as Parameters<typeof protectNewsEventClassificationSystemFields>[0]),
     ).rejects.toMatchObject({
       message:
-        'Remove this classification from News & Events entries and tabs before changing its behavior.',
+        'Remove this classification from News & Events entries, Calendar blocks, Highlights blocks, and Tabs blocks before changing its behavior.',
       status: 409,
     })
     expect(find).toHaveBeenCalledTimes(2)

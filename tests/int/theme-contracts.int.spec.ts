@@ -49,10 +49,7 @@ const getModeTokens = (theme: (typeof themes)[number], mode: ThemeMode): Record<
   )
 }
 
-const expectOklchTokens = (
-  actual: Record<string, string>,
-  expected: Record<string, string>,
-) => {
+const expectOklchTokens = (actual: Record<string, string>, expected: Record<string, string>) => {
   for (const [token, expectedValue] of Object.entries(expected)) {
     expect(actual[token], `Missing --${token}`).toBeDefined()
     expect(parseOklch(actual[token]), token).toEqual(parseOklch(expectedValue))
@@ -60,6 +57,32 @@ const expectOklchTokens = (
 }
 
 describe('website theme contracts', () => {
+  it.each(themes)('keeps Calendar accents distinguishable on %s Card surfaces', (theme) => {
+    const calendarTokens = {
+      light: [
+        'oklch(0.48 0.15 145)',
+        'oklch(0.46 0.16 260)',
+        'oklch(0.47 0.11 220)',
+        'oklch(0.5 0.12 75)',
+        'oklch(0.46 0.16 300)',
+      ],
+      dark: [
+        'oklch(0.74 0.16 145)',
+        'oklch(0.72 0.16 260)',
+        'oklch(0.74 0.12 220)',
+        'oklch(0.78 0.14 75)',
+        'oklch(0.74 0.15 300)',
+      ],
+    } as const
+
+    for (const mode of ['light', 'dark'] as const) {
+      const card = parseOklch(getModeTokens(theme, mode).card)
+      for (const token of calendarTokens[mode]) {
+        expect(contrastRatio(card, parseOklch(token))).toBeGreaterThanOrEqual(3)
+      }
+    }
+  })
+
   it.each(themes)('isolates the %s theme tokens to its root selector', (theme) => {
     const source = readTheme(theme)
     const tokenBlocks = readTokenBlocks(source).filter(({ declarations }) =>
@@ -159,12 +182,14 @@ describe('website theme contracts', () => {
     )
 
     expect(globalsSource).not.toContain('--color-link:')
-    expect(globalsSource).toContain(
-      '--color-success-foreground: var(--success-foreground);',
-    )
+    expect(globalsSource).toContain('--color-success-foreground: var(--success-foreground);')
     expect(globalsSource).toContain(
       '--color-light-overlay-foreground: var(--light-overlay-foreground);',
     )
+    for (const tone of ['green', 'blue', 'cyan', 'amber', 'violet']) {
+      expect(globalsSource).toContain(`--calendar-${tone}: oklch(`)
+      expect(globalsSource).toContain(`--color-calendar-${tone}: var(--calendar-${tone});`)
+    }
     expect(globalsSource).toContain('--radius-xs: calc(var(--radius) * 0.25);')
     expect(globalsSource).toContain('--radius-sm: calc(var(--radius) * 0.5);')
     expect(globalsSource).toContain('--radius-md: calc(var(--radius) * 0.75);')

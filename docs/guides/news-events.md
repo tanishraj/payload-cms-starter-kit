@@ -7,6 +7,17 @@ to exactly one `Entry Classification`: News, Events, Notice, Holiday, Achievemen
 Others. Editors compose the public index as a normal Page, while the collection continues to own
 individual detail pages and event-only fields appear only when the classification is `Events`.
 
+Event classifications also own a semantic `Calendar Color`. The color is shared by every Calendar
+block and remains readable across the active website theme; editors do not choose a separate color
+on each Page.
+
+Manage classification records under `News & Events > Classifications`. Every entry selects one
+active classification through `Entry Classification` in its Content tab. Archive a classification
+to stop new selections while preserving existing entries. Deleting remains available only when the
+classification is unused; if a reference exists, the deletion message identifies the first News &
+Events entry, Page, Reusable Section, Calendar/Tabs block container, or Detail Page Template that
+must be updated before retrying.
+
 ## When To Use It
 
 Choose the classification that matches the entry's single public tab. Use `Events` only for a
@@ -20,6 +31,7 @@ Every entry requires a title, slug, excerpt, rich-text body, featured image, ima
 - `Event Start`
 - `Event Location`
 - an optional `Event End` that cannot be earlier than the start
+- an optional `All-day Event` setting that omits time and treats the end date as inclusive
 - an optional registration action
 
 The primary topic is automatically included in additional topics. Tags are optional. Only entries whose Payload status and editorial workflow are both published are exposed publicly.
@@ -53,8 +65,11 @@ The primary topic is automatically included in additional topics. Tags are optio
 - `/news-events/feed.xml` publishes the feed.
 - `News & Events Highlights` is an automatic Featured Carousel. It interleaves recent published
   non-event entries with current or upcoming Events up to the configured one-to-six item limit.
-  Number of Items, Autoplay, and Empty State Message live under Theme Settings. Entries without a
-  usable featured image display the bundled SNMIH default image.
+  Editors can limit it to selected active classifications under Content; leaving the selection empty
+  includes all active classifications. Selected scopes are strict, and slide order remains
+  chronological rather than following relationship order. Number of Items, Autoplay, and Empty State
+  Message live under Theme Settings. Entries without a usable featured image display the bundled
+  SNMIH default image.
 - `News Grid` retains its established mixed grid. Editors choose a total of 1–6 cards and 2, 3, or 4
   desktop columns; mobile stays one column and tablet stays two. An optional editor-authored feature
   card occupies the final configured slot rather than adding another card beyond the selected total.
@@ -64,6 +79,15 @@ The primary topic is automatically included in additional topics. Tags are optio
   Announcement, and Others tabs, with each classification used at most once. The block loads 3, 6,
   9, or 12 entries per tab, supports 2–4 desktop columns, and retains the shared section appearance,
   optional header, header actions, footer actions, spacing, action labels, and empty-state controls.
+- `Calendar` reads one to five selected active classifications whose behavior is Event. Desktop
+  visitors start with a Sunday-first six-week month grid and can switch to Timeline; phones receive
+  the Timeline-first presentation without a view toggle. A day shows at most two event tiles before
+  an accessible `+N more` control moves focus into the Timeline. Multi-day and all-day ranges are
+  inclusive, filtering changes only the main view, and the next four Upcoming events remain stable
+  across month, filter, and view changes. Every row or tile links to the existing detail page.
+- Site Identity → Regional owns the deployment timezone. It defaults and safely falls back to
+  `Asia/Kolkata`; News & Events labels, Calendar grouping, month boundaries, and “today” all use it
+  instead of the visitor's browser timezone.
 - The root Page owns index copy, layout, appearance, actions, and SEO through the standard Page fields and selected blocks.
 - Live preview is available at desktop, tablet, and mobile breakpoints.
 
@@ -76,7 +100,7 @@ The sitemap includes the published `/news-events` Page through the normal Page r
 1. Open `News & Events` in the `News & Events` Admin group.
 2. Create `White Coat Ceremony 2026` and set `Entry Classification` to `Events`.
 3. In `Content`, write the card excerpt, choose the featured image and image position, add optional Topics & Tags, and complete the body.
-4. In `Event Details`, set the start, optional end, venue, and registration action.
+4. In `Event Details`, set the start, optional inclusive end, all-day state, venue, and registration action.
 5. Complete the SEO fields and use live preview at all three breakpoints.
 6. Move the item through the required editorial workflow. Resolve any blocking `Action Queue` item before publishing.
 7. Verify the detail page, feed, and the Highlights or Tabs block that should feature it on the manually composed Page.
@@ -90,7 +114,12 @@ The sitemap includes the published `/news-events` Page through the normal Page r
 - update the shared author in the `News & Events Content` block under `Detail Page Template`;
   the legacy per-entry Byline remains stored but is hidden and is not rendered publicly
 - close event registration by editing its action instead of deleting the event history
-- set event times in the timezone expected by the deployment and verify the rendered result
+- configure the deployment timezone once under Site Identity → Regional and verify all-day and timed labels
+- expect visitor-facing times such as `1:30 AM`; timezone conversion still uses Site Identity but
+  technical `GMT`/`UTC` suffixes are intentionally omitted
+- archive classifications that should no longer be selected; remove or replace every reported News &
+  Events entry, Calendar, Highlights, or Tabs reference before permanently deleting an unused
+  classification
 - leave Robots at `Default` to inherit the global SEO & Metadata crawler policy; choose `Index` or `No index` only for an intentional entry-level override
 - do not expect the `scheduled` workflow state to publish automatically; it records and queues the intended schedule for operator oversight
 

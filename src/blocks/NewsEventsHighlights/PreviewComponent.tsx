@@ -2,6 +2,10 @@ import {
   NewsEventsHighlightsBlockPresentation,
   type NewsEventsHighlightsBlockLike,
 } from '@/blocks/NewsEventsHighlights/Presentation'
+import {
+  getNewsEventsHighlightsClassificationIDs,
+  getNewsEventsHighlightsPreviewKey,
+} from '@/blocks/NewsEventsHighlights/newsEventsHighlightsShared'
 import { toAutomaticFeaturedHighlightItems } from '@/blocks/NewsEventsHighlights/resolveItems'
 import type { NewsEventsPreviewSnapshot } from '@/lib/newsEventsPreviewShared'
 import { normalizeHighlightsItemCount } from '@/lib/newsEventsShared'
@@ -15,9 +19,9 @@ export function NewsEventsHighlightsPreviewBlockComponent({
   ...props
 }: NewsEventsHighlightsPreviewBlockProps) {
   const itemCount = normalizeHighlightsItemCount(props.itemCount)
-  const items = toAutomaticFeaturedHighlightItems(
-    snapshot.highlightsByCount[String(itemCount)] ?? [],
-  )
+  const classificationIDs = getNewsEventsHighlightsClassificationIDs(props.classifications)
+  const previewKey = getNewsEventsHighlightsPreviewKey(classificationIDs, itemCount)
+  const items = toAutomaticFeaturedHighlightItems(snapshot.highlightsByScope[previewKey] ?? [])
 
   return <NewsEventsHighlightsBlockPresentation {...props} items={items} />
 }

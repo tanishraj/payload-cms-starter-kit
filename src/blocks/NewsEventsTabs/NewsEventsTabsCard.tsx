@@ -2,7 +2,7 @@ import { ContentLink } from '@/components/ContentLink'
 import { NewsEventClassificationBadge } from '@/components/news-events/NewsEventClassificationBadge'
 import { NewsEventDateMeta } from '@/components/news-events/NewsEventDateMeta'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { formatNewsEventDateRange, type PublicNewsEventCard } from '@/lib/newsEventsShared'
+import type { PublicNewsEventCard } from '@/lib/newsEventsShared'
 
 type NewsEventsTabsCardProps = {
   eventActionLabel: string
@@ -16,9 +16,7 @@ export function NewsEventsTabsCard({
   newsActionLabel,
 }: NewsEventsTabsCardProps) {
   const isEvent = item.behavior === 'event'
-  const dateLabel = isEvent
-    ? formatNewsEventDateRange(item.eventStart ?? item.dateISO, item.eventEnd)
-    : item.dateLabel
+  const dateLabel = item.dateLabel
 
   return (
     <Card

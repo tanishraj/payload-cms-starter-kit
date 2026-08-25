@@ -2,7 +2,9 @@
 
 ## Registries
 
-[blockCatalog.ts](../../../../src/blocks/blockCatalog.ts) is the server-only canonical Payload schema catalog for Page-compatible blocks. It assigns native Admin groups in this order: Start, Explain, Explore, Prove, Convert, and Advanced Library. The first five groups contain the client-approved 18-block vocabulary; all remaining Page-compatible blocks stay registered under Advanced Library.
+[blockCatalog.ts](../../../../src/blocks/blockCatalog.ts) is the server-only canonical Payload schema catalog for Page-compatible blocks. It assigns native Admin groups in this order: Start, Explain, Explore, Prove, Convert, and Advanced Library. The first five groups contain the client-approved 19-block vocabulary; all remaining Page-compatible blocks stay registered under Advanced Library. Pages expose 54 blocks and Reusable Sections expose the 53 non-recursive choices.
+
+Calendar is an Explore block backed only by selected active Event-behavior News & Events classifications. Editors choose one to five ordered classifications, while each classification centrally owns its semantic Calendar color. The complete toolbar, month/timeline panel, and Upcoming panel inherit the selected section surface; framed Tabs and Select controls share a true 44px height, and adjacent-month dates can be muted or hidden. The server renders the configured `Asia/Kolkata`-first current month and stable next-four Upcoming snapshot; visitor times remain timezone-correct but omit technical GMT/UTC suffixes. Desktop starts with a Sunday-first six-week grid, phones receive Timeline-first output, and `/api/calendar-events` supplies validated public or authenticated-draft month projections. Multi-day/all-day ranges are inclusive, day cells cap at two links before `+N more`, filtering never changes Upcoming, and production/live preview share the same serializable presentation contract.
 
 [Pages.ts](../../../../src/collections/Pages.ts) consumes the complete 53-block Page registry. [ReusableSections.ts](../../../../src/collections/ReusableSections.ts) consumes the same registry without `reusableSection`, preventing direct recursion. [NewsEventsDetailTemplate.ts](../../../../src/globals/NewsEventsDetailTemplate.ts) consumes the Page registry plus `newsEventsContent`, which appears first under Template Core. The [block operator guide](../../../../docs/guides/blocks.md) owns the editor-facing group membership and per-deployment customization instructions.
 
@@ -296,8 +298,11 @@ the client-safe Image Mosaic preview adapter without importing the Payload-backe
 
 News & Events Highlights retains the `newsEventsHighlights` slug and renders one synchronized carousel
 from automatically loaded News & Events collection records. It interleaves recent published non-event
-entries with current or upcoming Events up to the configured one-to-six item limit. Autoplay, Empty
-State Message, semantic section settings, block-wide image-position override, and shared media overlay
+entries with current or upcoming Events up to the configured one-to-six item limit. Editors can select
+active classifications in the block Content tab; an empty selection includes every active
+classification, while a non-empty selection is strict and does not alter chronological slide order.
+Production and live preview use the same count-plus-classification scope key. Autoplay, Empty State
+Message, semantic section settings, block-wide image-position override, and shared media overlay
 controls remain configurable. Missing overlay values preserve Dark/Darker/Bottom-to-Top/Full; missing
 or failed images use the centered bundled SNMIH fallback. News Grid retains its legacy grid and optional
 feature card. It loads all published classifications in published-date order, retains the

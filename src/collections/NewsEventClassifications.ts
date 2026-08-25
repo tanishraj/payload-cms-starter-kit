@@ -12,7 +12,10 @@ import {
   revalidateDeletedNewsEventClassificationCache,
   revalidateNewsEventClassificationsCache,
 } from '@/hooks/revalidateCmsContent'
-import { NEWS_EVENT_CLASSIFICATIONS } from '@/lib/newsEventClassifications'
+import { CALENDAR_TONES, NEWS_EVENT_CLASSIFICATIONS } from '@/lib/newsEventClassifications'
+
+export const calendarColorCondition = (_data: unknown, siblingData: Record<string, unknown>) =>
+  siblingData?.behavior === 'event'
 
 export const NewsEventClassifications: CollectionConfig = {
   slug: 'news-event-classifications',
@@ -99,6 +102,21 @@ export const NewsEventClassifications: CollectionConfig = {
       type: 'textarea',
       admin: {
         description: 'Optional internal guidance describing when editors should use this option.',
+      },
+    },
+    {
+      name: 'calendarColor',
+      label: 'Calendar Color',
+      type: 'select',
+      defaultValue: 'blue',
+      required: true,
+      options: CALENDAR_TONES.map((value) => ({
+        label: value.charAt(0).toUpperCase() + value.slice(1),
+        value,
+      })),
+      admin: {
+        condition: calendarColorCondition,
+        description: 'Semantic accent used for this classification in Calendar blocks.',
       },
     },
     {

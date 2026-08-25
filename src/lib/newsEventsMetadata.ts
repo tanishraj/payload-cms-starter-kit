@@ -50,11 +50,11 @@ export function getNewsEventStructuredData(
       '@context': 'https://schema.org',
       '@type': 'Event',
       description: entry.excerpt,
-      endDate: entry.eventEnd,
+      endDate: entry.eventAllDay ? entry.eventEndDateKey : entry.eventEnd,
       image: entry.image?.src,
       location: entry.eventLocation ? { '@type': 'Place', name: entry.eventLocation } : undefined,
       name: entry.title,
-      startDate: entry.eventStart,
+      startDate: entry.eventAllDay ? entry.eventStartDateKey : entry.eventStart,
       url,
     }
   }

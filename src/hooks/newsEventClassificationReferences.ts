@@ -1,14 +1,15 @@
-import type { CollectionSlug, PayloadRequest } from 'payload'
+import type { PayloadRequest } from 'payload'
 
 import type { LegacyNewsEventClassification } from '@/lib/newsEventClassifications'
 
 const REFERENCE_SCAN_PAGE_SIZE = 100
 
-type ReferenceSource = CollectionSlug | 'news-events-detail-template'
+type ReferenceSource = 'news-events' | 'news-events-detail-template' | 'pages' | 'reusable-sections'
 
 export type NewsEventClassificationReference = {
   collection: ReferenceSource
   id: number | string
+  title?: string
 }
 
 type UnknownRecord = Record<string, unknown>
@@ -30,6 +31,15 @@ const getRelationshipID = (value: unknown): string | null => {
   if (!isRecord(value)) return null
 
   return normalizeID(value.id) ?? normalizeID(value.value)
+}
+
+const getReferenceTitle = (value: unknown): string | undefined => {
+  if (!isRecord(value) || typeof value.title !== 'string') return undefined
+
+  const title = value.title.replace(/\s+/g, ' ').trim()
+  if (!title) return undefined
+
+  return title.length > 120 ? `${title.slice(0, 117)}…` : title
 }
 
 const relationshipSelectionIncludes = (value: unknown, classificationID: string): boolean => {
@@ -56,7 +66,9 @@ const layoutReferencesClassification = ({
   if (!isRecord(value)) return false
 
   if (
-    value.blockType === 'newsEventsTabs' &&
+    (value.blockType === 'calendar' ||
+      value.blockType === 'newsEventsHighlights' ||
+      value.blockType === 'newsEventsTabs') &&
     relationshipSelectionIncludes(value.classifications, classificationID)
   ) {
     return true
@@ -78,9 +90,13 @@ const newsEventReferencesClassification = ({
 }): boolean => {
   if (!isRecord(doc)) return false
 
+  const relationshipID = getRelationshipID(doc.classification)
+
   return (
-    relationshipSelectionIncludes(doc.classification, classificationID) ||
-    (legacyValue !== null && normalizeID(doc.contentType) === legacyValue)
+    relationshipID === classificationID ||
+    (relationshipID === null &&
+      legacyValue !== null &&
+      normalizeID(doc.contentType) === legacyValue)
   )
 }
 
@@ -111,7 +127,11 @@ const findCollectionReference = async ({
     const referencedDoc = result.docs.find(matches)
 
     if (referencedDoc?.id != null) {
-      return { collection, id: referencedDoc.id }
+      return {
+        collection,
+        id: referencedDoc.id,
+        title: getReferenceTitle(referencedDoc),
+      }
     }
 
     if (!result.hasNextPage) return null
@@ -207,6 +227,7 @@ export const findNewsEventClassificationReference = async ({
     return {
       collection: 'news-events-detail-template',
       id: 'news-events-detail-template',
+      title: 'News & Events Detail Page',
     }
   }
 

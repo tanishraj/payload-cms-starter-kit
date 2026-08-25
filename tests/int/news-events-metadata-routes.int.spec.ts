@@ -84,9 +84,10 @@ describe('News & Events metadata routes', () => {
     })
     mocks.getNewsEventStructuredData.mockReturnValue({ '@type': 'NewsArticle' })
     mocks.loadNewsEventsPreviewSnapshot.mockResolvedValue({
+      calendarByScope: {},
       classificationsByScope: {},
       groupsByScope: {},
-      highlightsByCount: {},
+      highlightsByScope: {},
       newsGridByCount: {},
     })
     mocks.loadReviewPreviewSnapshot.mockResolvedValue({
@@ -142,9 +143,10 @@ describe('News & Events metadata routes', () => {
     }
     const reviewSnapshot = { feedPagesBySize: { 6: { docs: [] } }, ratingDistribution: null }
     const newsEventsSnapshot = {
+      calendarByScope: {},
       classificationsByScope: {},
       groupsByScope: {},
-      highlightsByCount: {},
+      highlightsByScope: {},
       newsGridByCount: { 3: [] },
     }
     const officeLocations = [{ id: 'office-1', name: 'Main Office' }]
@@ -172,7 +174,7 @@ describe('News & Events metadata routes', () => {
     )
     expect(mocks.getNewsEventDetailTemplate).toHaveBeenCalledOnce()
     expect(mocks.loadReviewPreviewSnapshot).toHaveBeenCalledWith(pageBlocks)
-    expect(mocks.loadNewsEventsPreviewSnapshot).toHaveBeenCalledWith(pageBlocks)
+    expect(mocks.loadNewsEventsPreviewSnapshot).toHaveBeenCalledWith(pageBlocks, { id: 'admin' })
     expect(mocks.getDraftSiteOfficeLocations).toHaveBeenCalledOnce()
     expect(mocks.getDraftEventGalleryAlbums).toHaveBeenCalledWith(['album-1', 'album-2'])
     expect(mocks.newsEventLivePreview.mock.calls.at(-1)?.[0]).toMatchObject({

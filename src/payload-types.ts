@@ -203,6 +203,7 @@ export interface Page {
         | ContentHighlightsBlock
         | AcademicProgrammesBlock
         | NewsEventsTabsBlock
+        | CalendarBlock
         | DepartmentProfilesBlock
         | GalleryAlbumTabsBlock
         | QaAccordionBlock
@@ -593,6 +594,7 @@ export interface ReusableSection {
         | ContentHighlightsBlock
         | AcademicProgrammesBlock
         | NewsEventsTabsBlock
+        | CalendarBlock
         | DepartmentProfilesBlock
         | GalleryAlbumTabsBlock
         | QaAccordionBlock
@@ -1279,11 +1281,89 @@ export interface NewsEventClassification {
    */
   description?: string | null;
   /**
+   * Semantic accent used for this classification in Calendar blocks.
+   */
+  calendarColor?: ('green' | 'blue' | 'cyan' | 'amber' | 'violet') | null;
+  /**
    * Inactive classifications remain readable on existing entries but cannot be newly selected.
    */
   active: boolean;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CalendarBlock".
+ */
+export interface CalendarBlock {
+  /**
+   * Small label above the optional section heading.
+   */
+  eyebrow?: string | null;
+  /**
+   * Optional Calendar section heading.
+   */
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Choose one to five active Event classifications and drag them into visitor legend order.
+   */
+  classifications: (string | NewsEventClassification)[];
+  upcomingEyebrow?: string | null;
+  upcomingTitle?: string | null;
+  emptyStateMessage?: string | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  contentAlignment: 'left' | 'center';
+  /**
+   * Choose whether dates outside the selected month remain faintly visible or are hidden.
+   */
+  adjacentMonthDates: 'muted' | 'hidden';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'calendar';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2857,6 +2937,10 @@ export interface NewsEventsHighlightsBlock {
   eyebrow?: string | null;
   title?: string | null;
   description?: string | null;
+  /**
+   * Limit the carousel to selected active classifications. Leave empty to include all active classifications. Selection order does not change chronological slide order.
+   */
+  classifications?: (string | NewsEventClassification)[] | null;
   actions?:
     | {
         label: string;
@@ -5544,6 +5628,10 @@ export interface NewsEvent {
    */
   eventEnd?: string | null;
   /**
+   * Omits the time and treats the event end date as inclusive.
+   */
+  eventAllDay?: boolean | null;
+  /**
    * Required only when the selected classification uses Event behavior.
    */
   eventLocation?: string | null;
@@ -6466,6 +6554,7 @@ export interface PagesSelect<T extends boolean = true> {
         contentHighlights?: T | ContentHighlightsBlockSelect<T>;
         academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
         newsEventsTabs?: T | NewsEventsTabsBlockSelect<T>;
+        calendar?: T | CalendarBlockSelect<T>;
         departmentProfiles?: T | DepartmentProfilesBlockSelect<T>;
         galleryAlbumTabs?: T | GalleryAlbumTabsBlockSelect<T>;
         qaAccordion?: T | QaAccordionBlockSelect<T>;
@@ -7023,6 +7112,57 @@ export interface NewsEventsTabsBlockSelect<T extends boolean = true> {
   cardsPerRow?: T;
   contentAlignment?: T;
   headerActionAlignment?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CalendarBlock_select".
+ */
+export interface CalendarBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        id?: T;
+      };
+  classifications?: T;
+  upcomingEyebrow?: T;
+  upcomingTitle?: T;
+  emptyStateMessage?: T;
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  adjacentMonthDates?: T;
   size?: T;
   id?: T;
   blockName?: T;
@@ -8047,6 +8187,7 @@ export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
+  classifications?: T;
   actions?:
     | T
     | {
@@ -9691,6 +9832,7 @@ export interface NewsEventsSelect<T extends boolean = true> {
   body?: T;
   eventStart?: T;
   eventEnd?: T;
+  eventAllDay?: T;
   eventLocation?: T;
   eventRegistrationAction?:
     | T
@@ -9737,6 +9879,7 @@ export interface NewsEventClassificationsSelect<T extends boolean = true> {
   legacyValue?: T;
   behavior?: T;
   description?: T;
+  calendarColor?: T;
   active?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -9800,6 +9943,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         contentHighlights?: T | ContentHighlightsBlockSelect<T>;
         academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
         newsEventsTabs?: T | NewsEventsTabsBlockSelect<T>;
+        calendar?: T | CalendarBlockSelect<T>;
         departmentProfiles?: T | DepartmentProfilesBlockSelect<T>;
         galleryAlbumTabs?: T | GalleryAlbumTabsBlockSelect<T>;
         qaAccordion?: T | QaAccordionBlockSelect<T>;
@@ -10563,6 +10707,17 @@ export interface SiteSetting {
   siteDescription?: string | null;
   logo?: (string | null) | Media;
   favicon?: (string | null) | Media;
+  /**
+   * Used for event dates, event times, calendar month boundaries, and the current day.
+   */
+  timeZone:
+    | 'Asia/Kolkata'
+    | 'UTC'
+    | 'Asia/Dubai'
+    | 'Europe/London'
+    | 'America/New_York'
+    | 'America/Los_Angeles'
+    | 'Australia/Sydney';
   contactEmail?: string | null;
   contactPhone?: string | null;
   address?: string | null;
@@ -10788,6 +10943,7 @@ export interface NewsEventsDetailTemplate {
         | ContentHighlightsBlock
         | AcademicProgrammesBlock
         | NewsEventsTabsBlock
+        | CalendarBlock
         | DepartmentProfilesBlock
         | GalleryAlbumTabsBlock
         | QaAccordionBlock
@@ -10936,6 +11092,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   siteDescription?: T;
   logo?: T;
   favicon?: T;
+  timeZone?: T;
   contactEmail?: T;
   contactPhone?: T;
   address?: T;
@@ -11072,6 +11229,7 @@ export interface NewsEventsDetailTemplateSelect<T extends boolean = true> {
         contentHighlights?: T | ContentHighlightsBlockSelect<T>;
         academicProgrammes?: T | AcademicProgrammesBlockSelect<T>;
         newsEventsTabs?: T | NewsEventsTabsBlockSelect<T>;
+        calendar?: T | CalendarBlockSelect<T>;
         departmentProfiles?: T | DepartmentProfilesBlockSelect<T>;
         galleryAlbumTabs?: T | GalleryAlbumTabsBlockSelect<T>;
         qaAccordion?: T | QaAccordionBlockSelect<T>;

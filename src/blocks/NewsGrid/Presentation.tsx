@@ -25,7 +25,7 @@ import {
   type CmsLinkValue,
 } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
-import { formatNewsEventDateRange, type PublicNewsEventCard } from '@/lib/newsEventsShared'
+import type { PublicNewsEventCard } from '@/lib/newsEventsShared'
 import { cn } from '@/lib/utils'
 import {
   getNewsGridClasses,
@@ -209,11 +209,7 @@ export function NewsGridBlockPresentation({
                 <NewsEventClassificationBadge classification={item.classification} />
 
                 {item.dateLabel ? (
-                  <p className="font-sans text-xs leading-4 text-current/70">
-                    {item.behavior === 'event'
-                      ? formatNewsEventDateRange(item.eventStart ?? item.dateISO, item.eventEnd)
-                      : item.dateLabel}
-                  </p>
+                  <p className="font-sans text-xs leading-4 text-current/70">{item.dateLabel}</p>
                 ) : null}
 
                 <h3 className="line-clamp-3 font-sans text-lg font-semibold leading-snug tracking-tight text-current sm:text-xl">

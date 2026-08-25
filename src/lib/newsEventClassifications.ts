@@ -77,14 +77,50 @@ export const NEWS_EVENT_CLASSIFICATION_DEFAULTS = [
 
 export type NewsEventClassificationBehavior = 'event' | 'story'
 
+export const CALENDAR_TONES = ['green', 'blue', 'cyan', 'amber', 'violet'] as const
+export type CalendarTone = (typeof CALENDAR_TONES)[number]
+
+export const normalizeCalendarTone = (value: unknown): CalendarTone =>
+  CALENDAR_TONES.includes(value as CalendarTone) ? (value as CalendarTone) : 'blue'
+
 export type ResolvedNewsEventClassification = {
   active: boolean
   badgeLabel: string
   behavior: NewsEventClassificationBehavior
+  calendarColor: CalendarTone
   id: string
   legacyValue: LegacyNewsEventClassification | null
   slug: string
   title: string
+}
+
+const getRelationshipID = (value: unknown): string | null => {
+  if (typeof value === 'string' || typeof value === 'number') {
+    return String(value).trim() || null
+  }
+
+  if (!value || typeof value !== 'object' || Array.isArray(value) || !('id' in value)) {
+    return null
+  }
+
+  const id = value.id
+
+  return typeof id === 'string' || typeof id === 'number' ? String(id).trim() || null : null
+}
+
+export function getNewsEventClassificationRelationshipIDs(value: unknown): string[] {
+  if (!Array.isArray(value)) return []
+
+  const seen = new Set<string>()
+
+  return value.flatMap((entry): string[] => {
+    const id = getRelationshipID(entry)
+
+    if (!id || seen.has(id)) return []
+
+    seen.add(id)
+    return [id]
+  })
 }
 
 const normalizeRequiredString = (value: unknown): string | null => {
@@ -116,6 +152,7 @@ export const normalizeNewsEventClassificationRecord = (
     active: record.active !== false,
     badgeLabel,
     behavior: record.behavior === 'event' ? 'event' : 'story',
+    calendarColor: normalizeCalendarTone(record.calendarColor),
     id,
     legacyValue,
     slug,
@@ -149,6 +186,7 @@ export const getLegacyNewsEventClassificationRecord = (
     active: true,
     badgeLabel: record.badgeLabel,
     behavior: record.behavior,
+    calendarColor: 'blue',
     id: `legacy:${record.legacyValue}`,
     legacyValue: record.legacyValue,
     slug: record.slug,

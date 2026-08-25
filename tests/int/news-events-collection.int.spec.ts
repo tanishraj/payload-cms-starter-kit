@@ -151,7 +151,13 @@ describe('News & Events editorial model', () => {
 
     expect(eventDetails).not.toHaveProperty('admin.condition')
 
-    for (const name of ['eventStart', 'eventEnd', 'eventLocation', 'eventRegistrationAction']) {
+    for (const name of [
+      'eventStart',
+      'eventEnd',
+      'eventAllDay',
+      'eventLocation',
+      'eventRegistrationAction',
+    ]) {
       const field = findNamedField(eventDetails?.fields ?? [], name)
 
       expect(field).toBeDefined()
@@ -167,6 +173,7 @@ describe('News & Events editorial model', () => {
   it('clears event-only values for Story behavior', async () => {
     const result = await normalizeNewsEventFields({
       data: {
+        eventAllDay: true,
         eventEnd: '2026-08-02T00:00:00.000Z',
         eventLocation: 'Campus',
         eventRegistrationAction: [{ label: 'Register' }],
@@ -178,6 +185,7 @@ describe('News & Events editorial model', () => {
     } as never)
 
     expect(result).toMatchObject({
+      eventAllDay: null,
       eventEnd: null,
       eventLocation: null,
       eventRegistrationAction: [],
@@ -187,6 +195,7 @@ describe('News & Events editorial model', () => {
 
   it('retains event-only values for Event behavior', async () => {
     const data = {
+      eventAllDay: true,
       eventEnd: '2026-08-02T00:00:00.000Z',
       eventLocation: 'Campus',
       eventRegistrationAction: [{ label: 'Register' }],

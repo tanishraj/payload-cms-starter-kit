@@ -65,7 +65,7 @@ export default async function AdminPreviewPage({ params }: PageProps) {
   const [reviewSnapshot, newsEventsSnapshot, officeLocations, eventGalleryAlbums] =
     await Promise.all([
       loadReviewPreviewSnapshot(page.layout),
-      loadNewsEventsPreviewSnapshot(page.layout),
+      loadNewsEventsPreviewSnapshot(page.layout, user),
       hasContact24 ? getDraftSiteOfficeLocations() : Promise.resolve([]),
       selectedGalleryAlbumIDs.length
         ? getDraftEventGalleryAlbums(selectedGalleryAlbumIDs)

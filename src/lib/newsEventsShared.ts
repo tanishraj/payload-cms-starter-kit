@@ -8,6 +8,15 @@ import {
   type ResolvedNewsEventClassification,
 } from '@/lib/newsEventClassifications'
 import type { NewsEvent } from '@/payload-types'
+import {
+  DEFAULT_SITE_TIME_ZONE,
+  formatZonedDate,
+  formatZonedDateRange,
+  formatZonedTime,
+  getZonedDayBounds,
+  getZonedDateKey,
+  type SiteTimeZone,
+} from '@/lib/siteTimeZone'
 
 export const NEWS_EVENTS_DEFAULT_HIGHLIGHT_COUNT = 3
 export const NEWS_EVENTS_MAX_HIGHLIGHT_COUNT = 6
@@ -32,8 +41,11 @@ export type PublicNewsEventCard = {
   contentType: string
   dateISO: string
   dateLabel: string
+  eventAllDay?: boolean
   eventEnd?: string
+  eventEndDateKey?: string
   eventStart?: string
+  eventStartDateKey?: string
   excerpt: string
   href: string
   id: string
@@ -79,32 +91,11 @@ export const newsEventObjectPositionClasses = {
   top: 'object-top',
 } as const satisfies Record<NewsEventImagePosition, string>
 
-const cardDateFormatter = new Intl.DateTimeFormat('en-US', {
-  day: 'numeric',
-  month: 'short',
-  timeZone: 'UTC',
-  year: 'numeric',
-})
-const eventDateFormatter = new Intl.DateTimeFormat('en-US', {
-  day: 'numeric',
-  hour: 'numeric',
-  minute: '2-digit',
-  month: 'short',
-  timeZone: 'UTC',
-  timeZoneName: 'short',
-  year: 'numeric',
-})
-const rangeMonthFormatter = new Intl.DateTimeFormat('en-US', {
-  month: 'short',
-  timeZone: 'UTC',
-})
-const rangeMonthDayFormatter = new Intl.DateTimeFormat('en-US', {
-  day: 'numeric',
-  month: 'short',
-  timeZone: 'UTC',
-})
-
-const formatDate = (value: string | null | undefined, includeTime = false): string => {
+const formatDate = (
+  value: string | null | undefined,
+  includeTime = false,
+  timeZone: SiteTimeZone = DEFAULT_SITE_TIME_ZONE,
+): string => {
   if (!value) {
     return ''
   }
@@ -115,37 +106,49 @@ const formatDate = (value: string | null | undefined, includeTime = false): stri
     return ''
   }
 
-  return includeTime ? eventDateFormatter.format(date) : cardDateFormatter.format(date)
+  return includeTime
+    ? `${formatZonedDate(date, timeZone)}, ${formatZonedTime(date, timeZone)}`
+    : formatZonedDate(date, timeZone)
 }
 
-export const formatNewsEventDate = (value: string | null | undefined): string => formatDate(value)
+export const formatNewsEventDate = (
+  value: string | null | undefined,
+  timeZone: SiteTimeZone = DEFAULT_SITE_TIME_ZONE,
+): string => formatDate(value, false, timeZone)
 
-export const formatNewsEventDateTime = (value: string | null | undefined): string =>
-  formatDate(value, true)
+export const formatNewsEventDateTime = (
+  value: string | null | undefined,
+  timeZone: SiteTimeZone = DEFAULT_SITE_TIME_ZONE,
+): string => formatDate(value, true, timeZone)
 
 export function formatNewsEventDateRange(
   startValue: string | null | undefined,
   endValue?: string | null,
+  timeZone: SiteTimeZone = DEFAULT_SITE_TIME_ZONE,
+  allDay = true,
 ): string {
   if (!startValue) return ''
 
-  const start = new Date(startValue)
-  const end = endValue ? new Date(endValue) : undefined
+  if (allDay) {
+    const startKey = getZonedDateKey(startValue, timeZone)
+    const endKey = endValue ? getZonedDateKey(endValue, timeZone) : startKey
+    if (!startKey || !endKey) return ''
+    if (startKey === endKey) return formatNewsEventDate(startValue, timeZone)
 
-  if (Number.isNaN(start.getTime())) return ''
-  if (!end || Number.isNaN(end.getTime())) return formatNewsEventDate(startValue)
+    const [startYear, startMonth, startDay] = startKey.split('-').map(Number)
+    const [endYear, endMonth, endDay] = endKey.split('-').map(Number)
+    const monthName = (month: number) =>
+      new Intl.DateTimeFormat('en-US', { month: 'short', timeZone: 'UTC' }).format(
+        new Date(Date.UTC(2000, month - 1, 1)),
+      )
 
-  const sameYear = start.getUTCFullYear() === end.getUTCFullYear()
-  const sameMonth = sameYear && start.getUTCMonth() === end.getUTCMonth()
-  const sameDay = sameMonth && start.getUTCDate() === end.getUTCDate()
-
-  if (sameDay) return formatNewsEventDate(startValue)
-
-  if (sameMonth) {
-    return `${rangeMonthFormatter.format(start)} ${start.getUTCDate()}–${end.getUTCDate()}, ${end.getUTCFullYear()}`
+    if (startYear === endYear && startMonth === endMonth) {
+      return `${monthName(startMonth)} ${startDay}–${endDay}, ${endYear}`
+    }
+    return `${monthName(startMonth)} ${startDay}, ${startYear} – ${monthName(endMonth)} ${endDay}, ${endYear}`
   }
 
-  return `${rangeMonthDayFormatter.format(start)}, ${start.getUTCFullYear()} – ${rangeMonthDayFormatter.format(end)}, ${end.getUTCFullYear()}`
+  return formatZonedDateRange(startValue, endValue, timeZone, allDay)
 }
 
 export const normalizeHighlightsItemCount = (value: number | null | undefined): number =>
@@ -205,24 +208,28 @@ const getEffectiveEventEnd = (
   entry: Pick<NewsEvent, 'eventEnd' | 'eventStart'>,
 ): string | undefined => entry.eventEnd || entry.eventStart || undefined
 
+export type NewsEventCardSource = Pick<
+  NewsEvent,
+  | 'classification'
+  | 'contentType'
+  | 'eventAllDay'
+  | 'eventEnd'
+  | 'eventStart'
+  | 'excerpt'
+  | 'featuredImage'
+  | 'featuredImagePosition'
+  | 'id'
+  | 'primaryCategory'
+  | 'publishedAt'
+  | 'slug'
+  | 'title'
+  | 'updatedAt'
+>
+
 export function toPublicNewsEventCard(
-  entry: Pick<
-    NewsEvent,
-    | 'classification'
-    | 'contentType'
-    | 'eventEnd'
-    | 'eventStart'
-    | 'excerpt'
-    | 'featuredImage'
-    | 'featuredImagePosition'
-    | 'id'
-    | 'primaryCategory'
-    | 'publishedAt'
-    | 'slug'
-    | 'title'
-    | 'updatedAt'
-  >,
+  entry: NewsEventCardSource,
   nowISO: string,
+  timeZone: SiteTimeZone = DEFAULT_SITE_TIME_ZONE,
 ): PublicNewsEventCard {
   const classification = resolveNewsEventClassificationRecord(
     entry.classification,
@@ -238,6 +245,15 @@ export function toPublicNewsEventCard(
   const slug = entry.slug?.trim() || 'untitled-entry'
   const dateISO = (isEvent ? entry.eventStart : entry.publishedAt) || entry.updatedAt
   const effectiveEnd = getEffectiveEventEnd(entry)
+  const eventAllDay = isEvent && entry.eventAllDay === true
+  const eventStartDateKey =
+    isEvent && entry.eventStart ? getZonedDateKey(entry.eventStart, timeZone) : undefined
+  const eventEndDateKey =
+    isEvent && effectiveEnd ? getZonedDateKey(effectiveEnd, timeZone) : undefined
+  const effectiveEndForStatus =
+    eventAllDay && eventEndDateKey
+      ? getZonedDayBounds(eventEndDateKey, timeZone).endISO
+      : effectiveEnd
   const image = getMediaImageProps({
     fallbackAlt: title,
     media: entry.featuredImage,
@@ -251,9 +267,15 @@ export function toPublicNewsEventCard(
     classification,
     contentType: classification.slug,
     dateISO,
-    dateLabel: formatNewsEventDate(dateISO),
+    dateLabel:
+      isEvent && entry.eventStart
+        ? formatNewsEventDateRange(entry.eventStart, entry.eventEnd, timeZone, eventAllDay)
+        : formatNewsEventDate(dateISO, timeZone),
+    eventAllDay: isEvent ? eventAllDay : undefined,
     eventEnd: isEvent ? entry.eventEnd || undefined : undefined,
+    eventEndDateKey,
     eventStart: isEvent ? entry.eventStart || undefined : undefined,
+    eventStartDateKey,
     excerpt: entry.excerpt?.trim() || '',
     href: `/news-events/${slug}`,
     id: String(entry.id),
@@ -264,16 +286,20 @@ export function toPublicNewsEventCard(
         }
       : undefined,
     isPastEvent:
-      isEvent && effectiveEnd
-        ? new Date(effectiveEnd).getTime() < new Date(nowISO).getTime()
+      isEvent && effectiveEndForStatus
+        ? new Date(effectiveEndForStatus).getTime() < new Date(nowISO).getTime()
         : false,
     slug,
     title,
   }
 }
 
-export function toPublicNewsEventDetail(entry: NewsEvent, nowISO: string): PublicNewsEventDetail {
-  const card = toPublicNewsEventCard(entry, nowISO)
+export function toPublicNewsEventDetail(
+  entry: NewsEvent,
+  nowISO: string,
+  timeZone: SiteTimeZone = DEFAULT_SITE_TIME_ZONE,
+): PublicNewsEventDetail {
+  const card = toPublicNewsEventCard(entry, nowISO, timeZone)
   const registration = entry.eventRegistrationAction?.[0]
   const resolvedRegistration = resolveCmsActions(registration ? [registration] : [])[0]
   const ogImage = getMediaImageProps({

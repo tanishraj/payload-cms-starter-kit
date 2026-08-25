@@ -23,6 +23,7 @@ export type NewsEventsHighlightsBlockLike = {
   appearance?: BlockAppearance | null
   autoplay?: boolean | null
   carouselControlsPosition?: FeaturedHighlightsControlsPosition | null
+  classifications?: unknown
   contentAlignment?: NewsEventsHighlightsAlignment | null
   description?: string | null
   emptyStateMessage?: string | null

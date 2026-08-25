@@ -46,6 +46,7 @@ import { ProgramMatrixBlockComponent } from './ProgramMatrix/Component'
 import { LogoStripBlockComponent } from './LogoStrip/Component'
 import { PageHeaderBlockComponent } from './PageHeader/Component'
 import { BreadcrumbBlockComponent } from './Breadcrumb/Component'
+import { CalendarPreviewBlockComponent } from './Calendar/PreviewComponent'
 import { TimelineBlockComponent } from './Timeline/Component'
 import { IconCardShowcaseBlockComponent } from './IconCardShowcase/Component'
 import { IconGridBlockComponent } from './IconGrid/Component'
@@ -166,6 +167,8 @@ export function renderLivePreviewPageBlockNode(
       return (
         <NewsEventsTabsPreviewBlockComponent key={key} snapshot={newsEventsSnapshot} {...block} />
       )
+    case 'calendar':
+      return <CalendarPreviewBlockComponent key={key} snapshot={newsEventsSnapshot} {...block} />
     case 'bannerCta':
       return <BannerCtaBlockComponent key={key} {...block} />
     case 'cta39':

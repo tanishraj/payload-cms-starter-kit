@@ -57,6 +57,7 @@ describe('News & Events metadata', () => {
           active: true,
           badgeLabel: 'CME',
           behavior: 'event',
+          calendarColor: 'blue',
           id: 'cme-id',
           legacyValue: null,
           slug: 'continuing-medical-education',

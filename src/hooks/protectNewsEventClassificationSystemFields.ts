@@ -53,7 +53,7 @@ export const protectNewsEventClassificationSystemFields: CollectionBeforeChangeH
 
   if (reference) {
     throw new APIError(
-      'Remove this classification from News & Events entries and tabs before changing its behavior.',
+      'Remove this classification from News & Events entries, Calendar blocks, Highlights blocks, and Tabs blocks before changing its behavior.',
       409,
     )
   }

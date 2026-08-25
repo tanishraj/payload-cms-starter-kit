@@ -81,7 +81,7 @@ export default async function NewsEventEntryPage({ params, searchParams }: PageP
     const [reviewSnapshot, newsEventsSnapshot, officeLocations, eventGalleryAlbums] =
       await Promise.all([
         loadReviewPreviewSnapshot(pageBlocks),
-        loadNewsEventsPreviewSnapshot(pageBlocks),
+        loadNewsEventsPreviewSnapshot(pageBlocks, user as User),
         hasContact24 ? getDraftSiteOfficeLocations() : Promise.resolve([]),
         selectedGalleryAlbumIDs.length
           ? getDraftEventGalleryAlbums(selectedGalleryAlbumIDs)

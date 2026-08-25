@@ -271,6 +271,15 @@ export const NewsEvents: CollectionConfig = {
               ],
             },
             {
+              name: 'eventAllDay',
+              label: 'All-day Event',
+              type: 'checkbox',
+              defaultValue: false,
+              admin: {
+                description: 'Omits the time and treats the event end date as inclusive.',
+              },
+            },
+            {
               name: 'eventLocation',
               type: 'text',
               admin: {

@@ -15,6 +15,9 @@ export const CMS_CACHE_TAGS = {
   articles: 'cms-articles',
   reviews: 'cms-reviews',
   newsEvents: 'cms-news-events',
+  newsEventClassifications: 'cms-news-event-classifications',
+  calendar: 'cms-calendar',
+  siteSettings: 'cms-site-settings',
   sitemap: 'cms-sitemap',
   redirects: 'cms-redirects',
 } as const
@@ -80,14 +83,19 @@ export const revalidateNewsEventsCache: CollectionAfterChangeHook = ({ doc, prev
   const wasPublished = previousDoc?._status === 'published'
 
   if (isPublished || wasPublished) {
-    revalidateTags(CMS_CACHE_TAGS.newsEvents, CMS_CACHE_TAGS.sitemap)
+    revalidateTags(CMS_CACHE_TAGS.newsEvents, CMS_CACHE_TAGS.calendar, CMS_CACHE_TAGS.sitemap)
   }
 
   return doc
 }
 
 const revalidateNewsEventClassificationTags = () => {
-  revalidateTags(CMS_CACHE_TAGS.newsEvents, CMS_CACHE_TAGS.pages)
+  revalidateTags(
+    CMS_CACHE_TAGS.newsEvents,
+    CMS_CACHE_TAGS.newsEventClassifications,
+    CMS_CACHE_TAGS.calendar,
+    CMS_CACHE_TAGS.pages,
+  )
 }
 
 /**
@@ -126,6 +134,16 @@ export const revalidateGlobalsCacheForGlobal: GlobalAfterChangeHook = ({ doc }) 
   return doc
 }
 
+export const revalidateSiteSettingsCache: GlobalAfterChangeHook = ({ doc }) => {
+  revalidateTags(
+    CMS_CACHE_TAGS.globals,
+    CMS_CACHE_TAGS.pages,
+    CMS_CACHE_TAGS.siteSettings,
+    CMS_CACHE_TAGS.calendar,
+  )
+  return doc
+}
+
 /**
  * Revalidates the redirects API cache when a redirect is created, updated, or deleted.
  */
@@ -159,7 +177,7 @@ export const revalidateDeletedReviewCache: CollectionAfterDeleteHook = ({ doc })
 
 export const revalidateDeletedNewsEventCache: CollectionAfterDeleteHook = ({ doc }) => {
   if (doc._status === 'published') {
-    revalidateTags(CMS_CACHE_TAGS.newsEvents, CMS_CACHE_TAGS.sitemap)
+    revalidateTags(CMS_CACHE_TAGS.newsEvents, CMS_CACHE_TAGS.calendar, CMS_CACHE_TAGS.sitemap)
   }
   return doc
 }

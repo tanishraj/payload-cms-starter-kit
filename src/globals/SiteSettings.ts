@@ -5,7 +5,8 @@ import {
   hideFromUsersWithoutCapability,
   requireCapability,
 } from '@/access/adminCapabilities'
-import { revalidateGlobalsCacheForGlobal } from '@/hooks/revalidateCmsContent'
+import { revalidateSiteSettingsCache } from '@/hooks/revalidateCmsContent'
+import { DEFAULT_SITE_TIME_ZONE, SUPPORTED_SITE_TIME_ZONES } from '@/lib/siteTimeZone'
 
 const validateExternalSocialUrl = (value: unknown) => {
   if (typeof value !== 'string' || !value.trim()) {
@@ -41,7 +42,7 @@ export const SiteSettings: GlobalConfig = {
     drafts: true,
   },
   hooks: {
-    afterChange: [revalidateGlobalsCacheForGlobal],
+    afterChange: [revalidateSiteSettingsCache],
   },
   fields: [
     {
@@ -79,6 +80,23 @@ export const SiteSettings: GlobalConfig = {
                   },
                 },
               ],
+            },
+          ],
+        },
+        {
+          label: 'Regional',
+          fields: [
+            {
+              name: 'timeZone',
+              label: 'Site Timezone',
+              type: 'select',
+              defaultValue: DEFAULT_SITE_TIME_ZONE,
+              required: true,
+              options: SUPPORTED_SITE_TIME_ZONES.map((value) => ({ label: value, value })),
+              admin: {
+                description:
+                  'Used for event dates, event times, calendar month boundaries, and the current day.',
+              },
             },
           ],
         },
@@ -139,7 +157,8 @@ export const SiteSettings: GlobalConfig = {
                   label: 'Facebook External URL',
                   type: 'text',
                   admin: {
-                    description: 'Must be a full external URL, for example https://facebook.com/your-page.',
+                    description:
+                      'Must be a full external URL, for example https://facebook.com/your-page.',
                   },
                   validate: validateExternalSocialUrl,
                 },
@@ -148,7 +167,8 @@ export const SiteSettings: GlobalConfig = {
                   label: 'Instagram External URL',
                   type: 'text',
                   admin: {
-                    description: 'Must be a full external URL, for example https://instagram.com/your-handle.',
+                    description:
+                      'Must be a full external URL, for example https://instagram.com/your-handle.',
                   },
                   validate: validateExternalSocialUrl,
                 },
@@ -157,7 +177,8 @@ export const SiteSettings: GlobalConfig = {
                   label: 'X External URL',
                   type: 'text',
                   admin: {
-                    description: 'Must be a full external URL, for example https://x.com/your-handle.',
+                    description:
+                      'Must be a full external URL, for example https://x.com/your-handle.',
                   },
                   validate: validateExternalSocialUrl,
                 },
@@ -166,7 +187,8 @@ export const SiteSettings: GlobalConfig = {
                   label: 'LinkedIn External URL',
                   type: 'text',
                   admin: {
-                    description: 'Must be a full external URL, for example https://linkedin.com/company/your-org.',
+                    description:
+                      'Must be a full external URL, for example https://linkedin.com/company/your-org.',
                   },
                   validate: validateExternalSocialUrl,
                 },
@@ -175,7 +197,8 @@ export const SiteSettings: GlobalConfig = {
                   label: 'YouTube External URL',
                   type: 'text',
                   admin: {
-                    description: 'Must be a full external URL, for example https://youtube.com/@your-channel.',
+                    description:
+                      'Must be a full external URL, for example https://youtube.com/@your-channel.',
                   },
                   validate: validateExternalSocialUrl,
                 },

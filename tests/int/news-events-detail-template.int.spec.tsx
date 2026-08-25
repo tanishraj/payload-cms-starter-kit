@@ -54,6 +54,7 @@ const entry: PublicNewsEventDetail = {
     active: true,
     badgeLabel: 'Campus',
     behavior: 'story',
+    calendarColor: 'blue',
     id: 'campus-classification',
     legacyValue: null,
     slug: 'campus-update',

@@ -42,6 +42,7 @@ import { ProgramMatrixBlockComponent } from './ProgramMatrix/Component'
 import { LogoStripBlockComponent } from './LogoStrip/Component'
 import { PageHeaderBlockComponent } from './PageHeader/Component'
 import { BreadcrumbBlockComponent } from './Breadcrumb/Component'
+import { CalendarBlockComponent } from './Calendar/Component'
 import { TimelineBlockComponent } from './Timeline/Component'
 import { IconCardShowcaseBlockComponent } from './IconCardShowcase/Component'
 import { IconGridBlockComponent } from './IconGrid/Component'
@@ -150,6 +151,8 @@ export function renderPageBlockNode(
       return wrap(<NewsGridBlockComponent {...block} />)
     case 'newsEventsTabs':
       return wrap(<NewsEventsTabsBlockComponent {...block} />)
+    case 'calendar':
+      return wrap(<CalendarBlockComponent {...block} />)
     case 'bannerCta':
       return wrap(<BannerCtaBlockComponent {...block} />)
     case 'cta39':

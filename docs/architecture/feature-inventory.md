@@ -16,10 +16,10 @@ This is the maintained technical map of the starter. It records what is register
 
 | Group          | Collection                             | Responsibilities                                                                                                       |
 | -------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Content        | Pages                                  | Hierarchical routes, 53-block layouts, drafts, workflow, SEO, live preview, page-owned links, path-change redirects    |
+| Content        | Pages                                  | Hierarchical routes, 54-block layouts, drafts, workflow, SEO, live preview, page-owned links, path-change redirects    |
 | Content        | Articles                               | Long-form Lexical content, topics/tags, related content, SEO, workflow, live preview                                   |
 | News & Events  | News & Events                          | Single-choice classifications, event validation/registration, taxonomy, block/detail/feed data, workflow, live preview |
-| News & Events  | Classifications                        | Public labels and Story/Event behavior used by entries, badges, tabs, dates, and validation                            |
+| News & Events  | Classifications                        | Public labels, Story/Event behavior, and Calendar colors used by entries, badges, tabs, dates, and validation          |
 | Content        | Reviews                                | Moderated ratings and testimonials, source-submission linkage, taxonomy, SEO, workflow, live preview                   |
 | Content        | Reusable Sections                      | Shared versioned block stacks with recursion and high-complexity block restrictions                                    |
 | Taxonomy       | Topics (`categories`)                  | Hierarchical editorial topics with SEO data                                                                            |
@@ -42,17 +42,17 @@ All collections use timestamps and Trash. Draft/version support is enabled where
 
 ## Payload Globals
 
-| Group         | Global                | Responsibilities                                                                           |
-| ------------- | --------------------- | ------------------------------------------------------------------------------------------ |
-| Settings      | Site Identity         | Brand, contact, address, legal Page relationships, and social destinations                 |
-| Settings      | Appearance            | Default/Sunset/Blue/Kodama/SNMIH theme and system/light/dark color scheme                  |
-| Settings      | SEO & Metadata        | Fallback title, template, description, image, robots, and Google verification              |
-| Settings      | Analytics & Tracking  | GTM or standalone GA4 identifiers and enablement                                           |
-| Settings      | Cookie Consent Banner | Enablement, four presentation variants, corner position, and copy                          |
-| Configuration | Layout Defaults       | Homepage, active header/footer, page appearance, and global announcement bar               |
-| News & Events | Detail Page Template  | Shared detail Page Header, Breadcrumb, article/sidebar appearance, image ratio, and author |
-| Configuration | Search Settings       | Up to 6 unique operator-managed suggested terms shown on the full Search page              |
-| Configuration | Maintenance & Modes   | Published type-safe system-page references and off/maintenance/coming-soon mode            |
+| Group         | Global                | Responsibilities                                                                              |
+| ------------- | --------------------- | --------------------------------------------------------------------------------------------- |
+| Settings      | Site Identity         | Brand, regional timezone, contact, address, legal Page relationships, and social destinations |
+| Settings      | Appearance            | Default/Sunset/Blue/Kodama/SNMIH theme and system/light/dark color scheme                     |
+| Settings      | SEO & Metadata        | Fallback title, template, description, image, robots, and Google verification                 |
+| Settings      | Analytics & Tracking  | GTM or standalone GA4 identifiers and enablement                                              |
+| Settings      | Cookie Consent Banner | Enablement, four presentation variants, corner position, and copy                             |
+| Configuration | Layout Defaults       | Homepage, active header/footer, page appearance, and global announcement bar                  |
+| News & Events | Detail Page Template  | Shared detail Page Header, Breadcrumb, article/sidebar appearance, image ratio, and author    |
+| Configuration | Search Settings       | Up to 6 unique operator-managed suggested terms shown on the full Search page                 |
+| Configuration | Maintenance & Modes   | Published type-safe system-page references and off/maintenance/coming-soon mode               |
 
 Globals with versions retain history. Relevant changes invalidate cached frontend data; selected higher-risk changes are written to the Audit Log.
 
@@ -69,7 +69,7 @@ Globals with versions retain history. Relevant changes invalidate cached fronten
 
 ## Page And Shell Block Systems
 
-Normal Pages register 53 choices: Announcement, Banner CTA, News Grid, News & Events Tabs, Call to Action, Hero Banner, Hero Carousel, Gallery Coverflow, Feature Spotlight, Testimonial Spotlight, Feature Matrix, Content Highlights, Editorial Reasons, Academic Programmes, Leadership Profiles, Department Profiles, News & Events Highlights, Profile Carousel, Gallery Showcase, Event Gallery, Gallery Album Tabs, Image Mosaic, Student Experience, Stats Strip, Q&A Accordion, Rating Spotlight, Review Feed, Review Submission, Contact Form, Regional Offices, Team Showcase, Services, Rich Text, Video Embed, Media Carousel, Program Matrix, Logo Strip, Page Header, Breadcrumb, Timeline, Icon Card Showcase, Icon Grid, Quote Block, Tabs Content, Download List, Fee Structure, Numbered Steps, Bento Grid, Testimonial Grid, Awards List, About Section, Accreditation Cards, and Reusable Section.
+The canonical catalog contains 54 Page blocks. Normal Pages register all 54 choices: Announcement, Banner CTA, News Grid, News & Events Tabs, Calendar, Call to Action, Hero Banner, Hero Carousel, Gallery Coverflow, Feature Spotlight, Testimonial Spotlight, Feature Matrix, Content Highlights, Editorial Reasons, Academic Programmes, Leadership Profiles, Department Profiles, News & Events Highlights, Profile Carousel, Gallery Showcase, Event Gallery, Gallery Album Tabs, Image Mosaic, Student Experience, Stats Strip, Q&A Accordion, Rating Spotlight, Review Feed, Review Submission, Contact Form, Regional Offices, Team Showcase, Services, Rich Text, Video Embed, Media Carousel, Program Matrix, Logo Strip, Page Header, Breadcrumb, Timeline, Icon Card Showcase, Icon Grid, Quote Block, Tabs Content, Download List, Fee Structure, Numbered Steps, Bento Grid, Testimonial Grid, Awards List, About Section, Accreditation Cards, and Reusable Section. Reusable Sections expose the 53 non-recursive Page-compatible blocks.
 
 Leadership Profiles provides a static, non-clickable leadership directory with an optional section title, required profile media and names, optional content nameplates, accented designations, qualifications, and up to three smaller expertise items. It omits an entirely empty header, adapts profile heading levels to the presence of a section title, and uses the shared split/stacked header when content exists. Its block-wide Standard layout preserves all profile metadata and one shared semantic card surface; a hidden per-profile field remains only as a first-profile fallback for saved content. The optional Image Overlay layout uses fixed `4:5` portraits plus shared tone, strength, direction, and coverage controls, and displays only the leadership label, name, and designation. Qualification and expertise values remain saved and return when Standard is selected. Existing documents use Standard without migration. The responsive grid retains one mobile column, at most two tablet columns, and two-to-four configured desktop columns.
 
@@ -110,8 +110,9 @@ Historical visual-action settings remain ignored without a migration.
 News & Events Highlights retains the `newsEventsHighlights` block slug and automatically interleaves
 recent published non-event entries with current or upcoming Events. It keeps the shared presentation
 model, overlay controls, image-position precedence, bundled missing-image fallback, and synchronized
-carousel. Editors can place the status and previous/next controls above or below the carousel; Bottom
-remains the default and legacy fallback.
+carousel. Its optional active-classification relationship strictly scopes results; an empty selection
+continues to include all active classifications. Editors can place the status and previous/next
+controls above or below the carousel; Bottom remains the default and legacy fallback.
 News Grid retains its legacy mixed grid and optional editor-authored feature card. The separate News
 & Events Tabs block provides Card Grid and Editorial List presentations under an editor-configurable
 subset of News/Events/Notice/Holiday/Achievements/Announcement/Others classifications, with All fixed
@@ -160,6 +161,7 @@ Maintenance and coming-soon overrides are currently applied by the homepage and 
 | `POST /api/forms/[slug]/submit`                | Published-form validation, honeypot, best-effort in-memory throttling, storage, email, events, and optional review promotion |
 | `GET /api/search`                              | Debounced dialog search; six results/type; 20 requests/IP/10 seconds in memory                                               |
 | `GET /api/review-feed`                         | Validated paginated published Review data for load-more behavior                                                             |
+| `GET /api/calendar-events`                     | Validated published or authenticated-draft Calendar month projection for one to five Event classifications                   |
 | `GET /api/redirects`                           | Cached enabled redirect map consumed by middleware                                                                           |
 | `POST /api/operations/media/reconcile-storage` | Token-protected local/S3 media health reconciliation                                                                         |
 | `/my-route`                                    | Public example custom route returning a static JSON message; replace or remove before client handoff                         |
@@ -183,7 +185,7 @@ Redirect middleware excludes Next.js internals, APIs, Admin, and common static/m
 - Layout emits Organization and WebSite/SearchAction structured data. SearchAction describes onsite search; Google retired its Sitelinks Search Box result in November 2024.
 - Sitemap fetches all result pages in batches of 500 and includes published Pages, Articles, Reviews, News & Events, the News & Events index, used article/review topic routes, used article tag routes, and eligible topic/tag routes used by indexable published News & Events entries. It does not generate filter-combination or pagination URLs.
 - `robots.txt` disallows Admin, API, and preview paths, or disallows the whole site when global robots is noindex.
-- Layout globals and Page data use persistent Next cache tags; article/review helper `cache()` calls mainly deduplicate within a render. Sitemap/robots/feeds also use explicit time revalidation.
+- Layout globals, Page data, and fixed Calendar month projections use persistent Next cache tags; Calendar Upcoming revalidates every five minutes. Article/review helper `cache()` calls mainly deduplicate within a render. Sitemap/robots/feeds also use explicit time revalidation.
 
 ## Media Governance
 

@@ -31,7 +31,7 @@ React Server Components load public CMS data. Focused client components own inte
   Image Mosaic, and populated Reusable Sections. Production block adapters load only selected
   published albums; authenticated routes load selected draft albums on the server and pass the same
   serializable snapshot to client-safe preview adapters. Gallery clients never query Payload.
-- Form submission, review-feed, News & Events Tabs pagination, redirects, and media reconciliation
+- Form submission, review-feed, News & Events Tabs pagination, Calendar month loading, redirects, and media reconciliation
   have focused route handlers.
 - Full-page Page creation uses a guided Admin setup with code-owned Blank and Landing recipes. The
   authenticated `POST /api/pages/create-from-recipe` collection endpoint accepts only a Page title
@@ -56,7 +56,7 @@ MongoDB is the supported database. Local development may use local-disk media. V
 
 ## Caching and Delivery Safety
 
-Layout globals, the News & Events detail template, Pages, and redirects use tagged caching and focused invalidation hooks. Page, Article, Review, News/Event, and Redirect hooks invalidate both publication and takedown transitions, including published deletion. Feeds, robots, and sitemap use explicit time revalidation. Article and Review helpers also use request-level deduplication. Preserve draft/public filtering and cache invalidation together when changing queries or hooks.
+Layout globals, the News & Events detail template, Pages, fixed Calendar month projections, and redirects use tagged caching and focused invalidation hooks. Calendar Upcoming data uses five-minute freshness and stays independent of month, view, and classification filtering inside the selected scope. Site timezone, News/Event classification, and News/Event publication changes invalidate Calendar projections. Page, Article, Review, News/Event, and Redirect hooks invalidate both publication and takedown transitions, including published deletion. Feeds, robots, and sitemap use explicit time revalidation. Article and Review helpers also use request-level deduplication. Preserve draft/public filtering and cache invalidation together when changing queries or hooks.
 
 Maintenance and coming-soon overrides currently wrap the homepage, catch-all Page routes, and the explicit Page-backed `/news-events` route; other dedicated domain, search, feed, Admin, and API routes remain reachable.
 

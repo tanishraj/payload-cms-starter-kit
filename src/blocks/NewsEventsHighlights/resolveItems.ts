@@ -1,5 +1,5 @@
 import type { FeaturedHighlightItem } from '@/components/news-events/featuredHighlightsShared'
-import { formatNewsEventDateRange, type PublicNewsEventCard } from '@/lib/newsEventsShared'
+import type { PublicNewsEventCard } from '@/lib/newsEventsShared'
 
 export function toAutomaticFeaturedHighlightItems(
   entries: PublicNewsEventCard[],
@@ -11,10 +11,7 @@ export function toAutomaticFeaturedHighlightItems(
     },
     classification: entry.classification,
     dateISO: entry.dateISO,
-    dateLabel:
-      entry.behavior === 'event'
-        ? formatNewsEventDateRange(entry.eventStart ?? entry.dateISO, entry.eventEnd)
-        : entry.dateLabel,
+    dateLabel: entry.dateLabel,
     description: entry.excerpt?.trim() || undefined,
     id: entry.id,
     image: entry.image,

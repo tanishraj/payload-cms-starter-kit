@@ -45,7 +45,7 @@ const findBlocksFieldValue = (fields: Field[]): Block[] | undefined => {
 }
 
 describe('curated block catalog', () => {
-  it('offers the approved 18-block vocabulary before the advanced library', () => {
+  it('offers the approved 19-block vocabulary before the advanced library', () => {
     expect(slugsForGroup(pageBuilderBlocks, blockPickerGroups.start)).toEqual([
       'pageHeader',
       'heroBanner',
@@ -60,6 +60,7 @@ describe('curated block catalog', () => {
     ])
     expect(slugsForGroup(pageBuilderBlocks, blockPickerGroups.explore)).toEqual([
       'newsEventsTabs',
+      'calendar',
       'departmentProfiles',
       'galleryAlbumTabs',
       'qaAccordion',
@@ -80,18 +81,15 @@ describe('curated block catalog', () => {
     )
     const groupsInDrawerOrder = [...new Set(pageBuilderBlocks.map((block) => block.admin?.group))]
 
-    expect(recommended).toHaveLength(18)
-    expect(groupsInDrawerOrder).toEqual([
-      ...recommendedGroups,
-      blockPickerGroups.advanced,
-    ])
+    expect(recommended).toHaveLength(19)
+    expect(groupsInDrawerOrder).toEqual([...recommendedGroups, blockPickerGroups.advanced])
   })
 
   it('registers every Page block exactly once and classifies the remainder as advanced', () => {
     const pageSlugs = pageBuilderBlocks.map((block) => block.slug)
     const advancedSlugs = slugsForGroup(pageBuilderBlocks, blockPickerGroups.advanced)
 
-    expect(pageSlugs).toHaveLength(53)
+    expect(pageSlugs).toHaveLength(54)
     expect(new Set(pageSlugs).size).toBe(pageSlugs.length)
     expect(advancedSlugs).toHaveLength(35)
     expect(pageBuilderBlocks.every((block) => typeof block.admin?.group === 'string')).toBe(true)

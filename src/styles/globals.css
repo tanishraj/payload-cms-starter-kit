@@ -51,6 +51,13 @@ Uncomment to import Google fonts if you want to use them in your project.
   --rating-very-good: oklch(0.532 0.157 131.589);
   --rating-excellent: oklch(0.448 0.119 151.328);
 
+  /* Calendar classification accents — markers only; text stays on semantic foreground tokens. */
+  --calendar-green: oklch(0.48 0.15 145);
+  --calendar-blue: oklch(0.46 0.16 260);
+  --calendar-cyan: oklch(0.47 0.11 220);
+  --calendar-amber: oklch(0.5 0.12 75);
+  --calendar-violet: oklch(0.46 0.16 300);
+
   /* Fonts */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
@@ -77,6 +84,11 @@ Uncomment to import Google fonts if you want to use them in your project.
   --rating-good: oklch(0.828 0.189 90);
   --rating-very-good: oklch(0.768 0.233 130.85);
   --rating-excellent: oklch(0.723 0.219 149.579);
+  --calendar-green: oklch(0.74 0.16 145);
+  --calendar-blue: oklch(0.72 0.16 260);
+  --calendar-cyan: oklch(0.74 0.12 220);
+  --calendar-amber: oklch(0.78 0.14 75);
+  --calendar-violet: oklch(0.74 0.15 300);
 }
 
 @theme inline {
@@ -133,6 +145,13 @@ Uncomment to import Google fonts if you want to use them in your project.
   --color-rating-good: var(--rating-good);
   --color-rating-very-good: var(--rating-very-good);
   --color-rating-excellent: var(--rating-excellent);
+
+  /* Calendar classification accents */
+  --color-calendar-green: var(--calendar-green);
+  --color-calendar-blue: var(--calendar-blue);
+  --color-calendar-cyan: var(--calendar-cyan);
+  --color-calendar-amber: var(--calendar-amber);
+  --color-calendar-violet: var(--calendar-violet);
 
   /* Magicui Colors */
   --color-color-5: var(--color-5);

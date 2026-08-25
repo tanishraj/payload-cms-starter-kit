@@ -30,6 +30,8 @@ import {
   toPublicNewsEventDetail,
 } from '@/lib/newsEventsShared'
 import type { NewsEvent, SeoSetting, User } from '@/payload-types'
+import { getSiteTimeZone } from '@/lib/siteTimeZone.server'
+import { DEFAULT_SITE_TIME_ZONE, type SiteTimeZone } from '@/lib/siteTimeZone'
 
 export type NewsEventsPayload = Pick<Payload, 'find' | 'findGlobal' | 'logger'>
 
@@ -38,6 +40,7 @@ type NewsEventCardRecord = Pick<
   | 'classification'
   | 'contentType'
   | 'createdAt'
+  | 'eventAllDay'
   | 'eventEnd'
   | 'eventStart'
   | 'excerpt'
@@ -55,6 +58,7 @@ const cardSelect = {
   classification: true,
   contentType: true,
   createdAt: true,
+  eventAllDay: true,
   eventEnd: true,
   eventStart: true,
   excerpt: true,
@@ -281,10 +285,12 @@ async function fetchMixedNewsEventSources(
     classifications,
     limit,
     nowISO,
+    timeZone = DEFAULT_SITE_TIME_ZONE,
   }: {
     classifications: ResolvedNewsEventClassification[]
     limit: number
     nowISO: string
+    timeZone?: SiteTimeZone
   },
 ): Promise<{ events: PublicNewsEventCard[]; news: PublicNewsEventCard[] }> {
   const storyWhere = classificationScopeWhere(
@@ -323,10 +329,10 @@ async function fetchMixedNewsEventSources(
   ])
 
   const news = (newsResult.docs as NewsEventCardRecord[]).map((entry) =>
-    toPublicNewsEventCard(entry, nowISO),
+    toPublicNewsEventCard(entry, nowISO, timeZone),
   )
   const events = (eventsResult.docs as NewsEventCardRecord[]).map((entry) =>
-    toPublicNewsEventCard(entry, nowISO),
+    toPublicNewsEventCard(entry, nowISO, timeZone),
   )
 
   return { events, news }
@@ -339,11 +345,13 @@ async function fetchMixedNewsEventsPage(
     limit,
     nowISO,
     page,
+    timeZone = DEFAULT_SITE_TIME_ZONE,
   }: {
     classifications: ResolvedNewsEventClassification[]
     limit: number
     nowISO: string
     page: number
+    timeZone?: SiteTimeZone
   },
 ): Promise<PublicNewsEventPage> {
   const offset = (page - 1) * limit
@@ -353,6 +361,7 @@ async function fetchMixedNewsEventsPage(
     classifications,
     limit: prefixLimit,
     nowISO,
+    timeZone,
   })
   const mixed = interleaveNewsEvents(news, events, prefixLimit)
 
@@ -365,16 +374,33 @@ async function fetchMixedNewsEventsPage(
 
 export async function fetchNewsEventsHighlights(
   payload: Pick<NewsEventsPayload, 'find'>,
-  { limit, nowISO }: { limit: number; nowISO: string },
+  {
+    classificationIDs = [],
+    limit,
+    nowISO,
+    timeZone = DEFAULT_SITE_TIME_ZONE,
+  }: {
+    classificationIDs?: readonly string[]
+    limit: number
+    nowISO: string
+    timeZone?: SiteTimeZone
+  },
 ): Promise<PublicNewsEventCard[]> {
   const resolvedLimit = normalizeHighlightsItemCount(limit)
-  const classifications = await resolveAllActiveNewsEventClassifications(payload)
+  const requestedIDs = [...new Set(classificationIDs.map((id) => id.trim()).filter(Boolean))]
+  const classifications =
+    requestedIDs.length > 0
+      ? await resolveActiveNewsEventClassifications(payload, requestedIDs)
+      : await resolveAllActiveNewsEventClassifications(payload)
+
+  if (requestedIDs.length > 0 && classifications.length !== requestedIDs.length) return []
   if (classifications.length === 0) return []
 
   const { events, news } = await fetchMixedNewsEventSources(payload, {
     classifications,
     limit: resolvedLimit,
     nowISO,
+    timeZone,
   })
 
   return interleaveNewsEvents(news, events, resolvedLimit)
@@ -386,10 +412,12 @@ export async function fetchNewsEventGroups(
     classifications,
     limit,
     nowISO,
+    timeZone = DEFAULT_SITE_TIME_ZONE,
   }: {
     classifications: ResolvedNewsEventClassification[]
     limit: number
     nowISO: string
+    timeZone?: SiteTimeZone
   },
 ): Promise<PublicNewsEventGroups> {
   const resolvedLimit = normalizeGroupLimit(limit)
@@ -399,6 +427,7 @@ export async function fetchNewsEventGroups(
     limit: resolvedLimit,
     nowISO,
     page: 1,
+    timeZone,
   })
   const classificationPromises = classifications.map(async (classification) => {
     const page = await fetchNewsEventPage(payload, {
@@ -407,6 +436,7 @@ export async function fetchNewsEventGroups(
       limit: resolvedLimit,
       nowISO,
       page: 1,
+      timeZone,
     })
 
     return [classification, page] as const
@@ -433,12 +463,14 @@ export async function fetchNewsEventPage(
     limit,
     nowISO,
     page,
+    timeZone = DEFAULT_SITE_TIME_ZONE,
   }: {
     classification: 'all' | ResolvedNewsEventClassification
     classifications: ResolvedNewsEventClassification[]
     limit: number
     nowISO: string
     page: number
+    timeZone?: SiteTimeZone
   },
 ): Promise<PublicNewsEventPage> {
   const resolvedLimit = normalizeGroupLimit(limit)
@@ -450,6 +482,7 @@ export async function fetchNewsEventPage(
       limit: resolvedLimit,
       nowISO,
       page: resolvedPage,
+      timeZone,
     })
   }
 
@@ -476,7 +509,7 @@ export async function fetchNewsEventPage(
 
   return {
     docs: (result.docs as NewsEventCardRecord[]).map((entry) =>
-      toPublicNewsEventCard(entry, nowISO),
+      toPublicNewsEventCard(entry, nowISO, timeZone),
     ),
     hasNextPage: result.hasNextPage,
     page: result.page ?? resolvedPage,
@@ -491,12 +524,14 @@ export async function fetchNewsEventPageForScope(
     limit,
     nowISO,
     page,
+    timeZone = DEFAULT_SITE_TIME_ZONE,
   }: {
     classification: 'all' | string
     classificationIDs: readonly string[]
     limit: number
     nowISO: string
     page: number
+    timeZone?: SiteTimeZone
   },
 ): Promise<PublicNewsEventPage> {
   const requestedIDs = [...new Set(classificationIDs.map((id) => id.trim()).filter(Boolean))]
@@ -524,12 +559,21 @@ export async function fetchNewsEventPageForScope(
     limit,
     nowISO,
     page,
+    timeZone,
   })
 }
 
 export async function fetchNewsGridItems(
   payload: Pick<NewsEventsPayload, 'find'>,
-  { limit, nowISO }: { limit: number; nowISO: string },
+  {
+    limit,
+    nowISO,
+    timeZone = DEFAULT_SITE_TIME_ZONE,
+  }: {
+    limit: number
+    nowISO: string
+    timeZone?: SiteTimeZone
+  },
 ): Promise<PublicNewsEventCard[]> {
   const resolvedLimit = normalizeHighlightsItemCount(limit)
   const classifications = await resolveAllActiveNewsEventClassifications(payload)
@@ -562,13 +606,16 @@ export async function fetchNewsGridItems(
     },
   })
 
-  return (result.docs as NewsEventCardRecord[]).map((entry) => toPublicNewsEventCard(entry, nowISO))
+  return (result.docs as NewsEventCardRecord[]).map((entry) =>
+    toPublicNewsEventCard(entry, nowISO, timeZone),
+  )
 }
 
 export async function fetchNewsEventBySlug(
   payload: Pick<NewsEventsPayload, 'find'>,
   slug: string,
   nowISO: string,
+  timeZone: SiteTimeZone = DEFAULT_SITE_TIME_ZONE,
 ): Promise<PublicNewsEventDetail | null> {
   const result = await payload.find({
     collection: 'news-events',
@@ -582,21 +629,29 @@ export async function fetchNewsEventBySlug(
 
   const entry = result.docs[0] as NewsEvent | undefined
 
-  return entry ? toPublicNewsEventDetail(entry, nowISO) : null
+  return entry ? toPublicNewsEventDetail(entry, nowISO, timeZone) : null
 }
 
 const loadPayload = cache(async () => getPayload({ config: configPromise }))
 
-export const getNewsEventsHighlights = cache(async (limit: number, nowISO: string) => {
-  const payload = await loadPayload()
+export const getNewsEventsHighlights = cache(
+  async (classificationIDs: readonly string[], limit: number, nowISO: string) => {
+    const payload = await loadPayload()
+    const timeZone = await getSiteTimeZone()
 
-  try {
-    return await fetchNewsEventsHighlights(payload, { limit, nowISO })
-  } catch (error) {
-    payload.logger.error({ err: error, msg: 'Failed to load News & Events highlights.' })
-    throw error
-  }
-})
+    try {
+      return await fetchNewsEventsHighlights(payload, {
+        classificationIDs,
+        limit,
+        nowISO,
+        timeZone,
+      })
+    } catch (error) {
+      payload.logger.error({ err: error, msg: 'Failed to load News & Events highlights.' })
+      throw error
+    }
+  },
+)
 
 export async function getNewsEventGroups(
   classificationIDs: readonly string[],
@@ -604,6 +659,7 @@ export async function getNewsEventGroups(
   nowISO: string,
 ): Promise<PublicNewsEventGroups> {
   const payload = await loadPayload()
+  const timeZone = await getSiteTimeZone()
 
   try {
     const classifications =
@@ -611,7 +667,7 @@ export async function getNewsEventGroups(
         ? await resolveActiveNewsEventClassifications(payload, classificationIDs)
         : await resolveAllActiveNewsEventClassifications(payload)
 
-    return await fetchNewsEventGroups(payload, { classifications, limit, nowISO })
+    return await fetchNewsEventGroups(payload, { classifications, limit, nowISO, timeZone })
   } catch (error) {
     payload.logger.error({ err: error, msg: 'Failed to load grouped News & Events.' })
     return { all: createEmptyNewsEventGroups().all }
@@ -627,21 +683,24 @@ export const getNewsEventPage = cache(
     nowISO: string,
   ) => {
     const payload = await loadPayload()
+    const timeZone = await getSiteTimeZone()
     return fetchNewsEventPageForScope(payload, {
       classification,
       classificationIDs,
       limit,
       nowISO,
       page,
+      timeZone,
     })
   },
 )
 
 export const getNewsGridItems = cache(async (limit: number, nowISO: string) => {
   const payload = await loadPayload()
+  const timeZone = await getSiteTimeZone()
 
   try {
-    return await fetchNewsGridItems(payload, { limit, nowISO })
+    return await fetchNewsGridItems(payload, { limit, nowISO, timeZone })
   } catch (error) {
     payload.logger.error({ err: error, msg: 'Failed to load News Grid items.' })
     throw error
@@ -650,10 +709,14 @@ export const getNewsGridItems = cache(async (limit: number, nowISO: string) => {
 
 export const getNewsEventBySlug = cache(async (slug: string, nowISO: string) => {
   const payload = await loadPayload()
-  return fetchNewsEventBySlug(payload, slug, nowISO)
+  const timeZone = await getSiteTimeZone()
+  return fetchNewsEventBySlug(payload, slug, nowISO, timeZone)
 })
 
-export async function getNewsEventPreviewBySlug(slug: string, user: User): Promise<NewsEvent | null> {
+export async function getNewsEventPreviewBySlug(
+  slug: string,
+  user: User,
+): Promise<NewsEvent | null> {
   const payload = await loadPayload()
   const result = await payload.find({
     collection: 'news-events',

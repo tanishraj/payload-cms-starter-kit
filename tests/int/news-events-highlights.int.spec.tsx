@@ -7,6 +7,10 @@ import { NewsEventsHighlightsPreviewBlockComponent } from '@/blocks/NewsEventsHi
 import { NewsEventsHighlightsBlockPresentation } from '@/blocks/NewsEventsHighlights/Presentation'
 import { toAutomaticFeaturedHighlightItems } from '@/blocks/NewsEventsHighlights/resolveItems'
 import {
+  getNewsEventsHighlightsClassificationIDs,
+  getNewsEventsHighlightsPreviewKey,
+} from '@/blocks/NewsEventsHighlights/newsEventsHighlightsShared'
+import {
   resolveFeaturedHighlightImagePosition,
   resolveFeaturedHighlightsOverlay,
 } from '@/components/news-events/featuredHighlightsShared'
@@ -14,7 +18,7 @@ import { getNewsEventsHighlights } from '@/lib/newsEvents'
 import { getLegacyNewsEventClassificationRecord } from '@/lib/newsEventClassifications'
 import {
   EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT,
-  getNewsEventsPreviewItemCounts,
+  getNewsEventsHighlightsPreviewScopes,
 } from '@/lib/newsEventsPreviewShared'
 
 vi.mock('@/lib/newsEvents', () => ({
@@ -64,6 +68,17 @@ describe('News & Events Highlights block', () => {
 
     expect(findNamedField(contentFields, 'contentSource')).toBeUndefined()
     expect(findNamedField(contentFields, 'manualSlides')).toBeUndefined()
+
+    expect(findNamedField(contentFields, 'classifications')).toMatchObject({
+      admin: {
+        allowCreate: true,
+      },
+      filterOptions: { active: { equals: true } },
+      hasMany: true,
+      maxRows: 50,
+      relationTo: 'news-event-classifications',
+      type: 'relationship',
+    })
 
     const contentAlignment = findNamedField(themeFields, 'contentAlignment')
     expect(contentAlignment).toMatchObject({
@@ -117,18 +132,48 @@ describe('News & Events Highlights block', () => {
     expect(findNamedField(NewsEventsHighlightsBlock.fields, 'featuredEntries')).toBeUndefined()
   })
 
-  it('requests automatic preview entries for the carousel count', () => {
+  it('requests automatic preview entries for each count and classification scope', () => {
     expect(
-      getNewsEventsPreviewItemCounts([
-        { blockType: 'newsEventsHighlights', itemCount: 5 },
-      ] as never),
-    ).toEqual([5])
-    expect(
-      getNewsEventsPreviewItemCounts([
-        { blockType: 'newsEventsHighlights', contentSource: 'manual', itemCount: 5 },
+      getNewsEventsHighlightsPreviewScopes([
+        {
+          blockType: 'newsEventsHighlights',
+          classifications: ['classification-news'],
+          itemCount: 5,
+        },
+        {
+          blockType: 'newsEventsHighlights',
+          classifications: ['classification-event'],
+          itemCount: 5,
+        },
         { blockType: 'newsEventsHighlights', itemCount: 2 },
       ] as never),
-    ).toEqual([2, 5])
+    ).toEqual([
+      {
+        classificationIDs: ['classification-news'],
+        key: '[5,"classification-news"]',
+        limit: 5,
+      },
+      {
+        classificationIDs: ['classification-event'],
+        key: '[5,"classification-event"]',
+        limit: 5,
+      },
+      { classificationIDs: [], key: '[2]', limit: 2 },
+    ])
+  })
+
+  it('normalizes relationship IDs and creates stable preview keys', () => {
+    const classificationIDs = getNewsEventsHighlightsClassificationIDs([
+      'classification-news',
+      { id: 'classification-event' },
+      'classification-news',
+      null,
+    ])
+
+    expect(classificationIDs).toEqual(['classification-news', 'classification-event'])
+    expect(getNewsEventsHighlightsPreviewKey(classificationIDs, 5)).toBe(
+      '[5,"classification-news","classification-event"]',
+    )
   })
 
   it('ignores stale manual fields and always loads the News & Events collection', async () => {
@@ -150,6 +195,7 @@ describe('News & Events Highlights block', () => {
     ])
 
     const element = await NewsEventsHighlightsBlockComponent({
+      classifications: ['classification-news'],
       contentSource: 'manual',
       itemCount: 5,
       manualSlides: [
@@ -162,7 +208,11 @@ describe('News & Events Highlights block', () => {
 
     const markup = renderToStaticMarkup(element)
 
-    expect(getNewsEventsHighlights).toHaveBeenCalledWith(5, expect.any(String))
+    expect(getNewsEventsHighlights).toHaveBeenCalledWith(
+      ['classification-news'],
+      5,
+      expect.any(String),
+    )
     expect(markup).toContain('Collection highlight')
     expect(markup).not.toContain('Stale manual highlight')
   })
@@ -177,8 +227,8 @@ describe('News & Events Highlights block', () => {
         manualSlides: [{ badgeLabel: 'Campus', title: 'Stale manual highlight' }],
         snapshot: {
           ...EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT,
-          highlightsByCount: {
-            '3': [
+          highlightsByScope: {
+            '[3]': [
               {
                 behavior: classification.behavior,
                 classification,
@@ -223,7 +273,7 @@ describe('News & Events Highlights block', () => {
 
     const element = await NewsEventsHighlightsBlockComponent({ itemCount: 4 })
 
-    expect(getNewsEventsHighlights).toHaveBeenCalledWith(4, expect.any(String))
+    expect(getNewsEventsHighlights).toHaveBeenCalledWith([], 4, expect.any(String))
     expect(renderToStaticMarkup(element)).toContain('Campus notice')
   })
 

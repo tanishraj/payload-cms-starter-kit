@@ -1,4 +1,5 @@
 import {
+  getNewsEventClassificationRelationshipIDs,
   normalizeNewsEventClassificationRecord,
   type ResolvedNewsEventClassification,
 } from '@/lib/newsEventClassifications'
@@ -10,33 +11,8 @@ export type NewsEventsTabsResolvedTab = {
   value: 'all' | string
 }
 
-const getRelationshipID = (value: unknown): string | null => {
-  if (typeof value === 'string' || typeof value === 'number') {
-    return String(value).trim() || null
-  }
-
-  if (!value || typeof value !== 'object' || Array.isArray(value) || !('id' in value)) {
-    return null
-  }
-
-  const id = value.id
-
-  return typeof id === 'string' || typeof id === 'number' ? String(id).trim() || null : null
-}
-
 export function getNewsEventsTabsClassificationRelationshipIDs(value: unknown): string[] {
-  if (!Array.isArray(value)) return []
-
-  const seen = new Set<string>()
-
-  return value.flatMap((entry): string[] => {
-    const id = getRelationshipID(entry)
-
-    if (!id || seen.has(id)) return []
-
-    seen.add(id)
-    return [id]
-  })
+  return getNewsEventClassificationRelationshipIDs(value)
 }
 
 export function resolveNewsEventsTabs(

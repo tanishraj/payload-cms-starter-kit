@@ -15,11 +15,7 @@ import { NewsEventShareActions } from '@/components/news-events/NewsEventShareAc
 import { longFormRichTextClasses } from '@/components/rich-text/richTextStyles'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import type { ResolvedNewsEventsContentSettings } from '@/lib/newsEventDetailTemplateShared'
-import {
-  formatNewsEventDateRange,
-  newsEventObjectPositionClasses,
-  type PublicNewsEventDetail,
-} from '@/lib/newsEventsShared'
+import { newsEventObjectPositionClasses, type PublicNewsEventDetail } from '@/lib/newsEventsShared'
 import { toAbsoluteSiteUrl } from '@/lib/siteUrl'
 import { cn } from '@/lib/utils'
 
@@ -112,9 +108,7 @@ function StoryDetailsCard({
   surface: CardSurfaceClasses
 }) {
   const isEvent = entry.behavior === 'event'
-  const dateLabel = isEvent
-    ? formatNewsEventDateRange(entry.eventStart, entry.eventEnd)
-    : entry.dateLabel
+  const dateLabel = entry.dateLabel
   const categoryLabel = entry.classification.title
 
   return (

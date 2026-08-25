@@ -56,6 +56,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Calendar block preview',
+    filename: 'calendar.jpg',
+    label: 'Calendar',
+    slug: 'calendar',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Banner CTA block preview',
     filename: 'banner-cta.jpg',
     label: 'Banner CTA',

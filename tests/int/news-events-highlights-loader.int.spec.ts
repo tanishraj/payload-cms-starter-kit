@@ -7,6 +7,7 @@ const campusClassification: ResolvedNewsEventClassification = {
   active: true,
   badgeLabel: 'Campus',
   behavior: 'story',
+  calendarColor: 'blue',
   id: 'classification-campus',
   legacyValue: null,
   slug: 'campus-updates',
@@ -17,6 +18,7 @@ const cmeClassification: ResolvedNewsEventClassification = {
   active: true,
   badgeLabel: 'CME',
   behavior: 'event',
+  calendarColor: 'blue',
   id: 'classification-cme',
   legacyValue: null,
   slug: 'continuing-medical-education',
@@ -27,6 +29,7 @@ const newsClassification: ResolvedNewsEventClassification = {
   active: true,
   badgeLabel: 'News',
   behavior: 'story',
+  calendarColor: 'blue',
   id: 'classification-news',
   legacyValue: 'news',
   slug: 'news',
@@ -37,6 +40,7 @@ const eventClassification: ResolvedNewsEventClassification = {
   active: true,
   badgeLabel: 'Event',
   behavior: 'event',
+  calendarColor: 'blue',
   id: 'classification-event',
   legacyValue: 'event',
   slug: 'event',
@@ -91,6 +95,7 @@ describe('News & Events Highlights loader', () => {
 
     await expect(
       fetchNewsEventsHighlights({ find } as never, {
+        classificationIDs: [],
         limit: 6,
         nowISO: '2026-08-17T00:00:00.000Z',
       }),
@@ -164,5 +169,64 @@ describe('News & Events Highlights loader', () => {
         },
       }),
     )
+  })
+
+  it('strictly scopes entries to selected active classifications', async () => {
+    const find = vi.fn(async (query: { collection: string; where?: unknown }) => {
+      if (query.collection === 'news-event-classifications') {
+        return { docs: [cmeClassification] }
+      }
+
+      return { docs: [record(cmeClassification)] }
+    })
+
+    await fetchNewsEventsHighlights({ find } as never, {
+      classificationIDs: [cmeClassification.id],
+      limit: 3,
+      nowISO: '2026-08-17T00:00:00.000Z',
+    })
+
+    expect(find).toHaveBeenCalledWith(
+      expect.objectContaining({
+        collection: 'news-event-classifications',
+        where: {
+          and: [{ active: { equals: true } }, { or: [{ id: { in: [cmeClassification.id] } }] }],
+        },
+      }),
+    )
+    expect(find).toHaveBeenCalledWith(
+      expect.objectContaining({
+        collection: 'news-events',
+        where: {
+          and: expect.arrayContaining([
+            {
+              classification: {
+                in: [cmeClassification.id],
+              },
+            },
+          ]),
+        },
+      }),
+    )
+  })
+
+  it('returns no entries when any selected classification is missing or inactive', async () => {
+    const find = vi.fn(async (query: { collection: string }) => {
+      if (query.collection === 'news-event-classifications') {
+        return { docs: [campusClassification] }
+      }
+
+      return { docs: [record(campusClassification)] }
+    })
+
+    await expect(
+      fetchNewsEventsHighlights({ find } as never, {
+        classificationIDs: [campusClassification.id, 'classification-inactive'],
+        limit: 3,
+        nowISO: '2026-08-17T00:00:00.000Z',
+      }),
+    ).resolves.toEqual([])
+
+    expect(find).toHaveBeenCalledTimes(1)
   })
 })

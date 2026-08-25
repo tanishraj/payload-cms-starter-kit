@@ -1,5 +1,14 @@
 import { getNewsGridCollectionItemCount } from '@/blocks/NewsGrid/newsGridShared'
 import {
+  getCalendarClassificationIDs,
+  getCalendarScopeKey,
+  type CalendarInitialSnapshot,
+} from '@/blocks/Calendar/calendarShared'
+import {
+  getNewsEventsHighlightsClassificationIDs,
+  getNewsEventsHighlightsPreviewKey,
+} from '@/blocks/NewsEventsHighlights/newsEventsHighlightsShared'
+import {
   getNewsEventsTabsClassificationRelationshipIDs,
   normalizeNewsEventsTabsItemsPerTab,
 } from '@/blocks/NewsEventsTabs/newsEventsTabsShared'
@@ -12,29 +21,25 @@ import {
 import type { Page } from '@/payload-types'
 
 export type NewsEventsPreviewSnapshot = {
+  calendarByScope: Record<string, CalendarInitialSnapshot>
   classificationsByScope: Record<string, ResolvedNewsEventClassification[]>
   groupsByScope: Record<string, PublicNewsEventGroups>
-  highlightsByCount: Record<string, PublicNewsEventCard[]>
+  highlightsByScope: Record<string, PublicNewsEventCard[]>
   newsGridByCount: Record<string, PublicNewsEventCard[]>
 }
 
 export const EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT: NewsEventsPreviewSnapshot = {
+  calendarByScope: {},
   classificationsByScope: {},
   groupsByScope: {},
-  highlightsByCount: {},
+  highlightsByScope: {},
   newsGridByCount: {},
 }
 
-export function getNewsEventsPreviewItemCounts(layout?: Page['layout'] | null): number[] {
-  const counts = new Set<number>()
-
-  for (const block of layout ?? []) {
-    if (block.blockType === 'newsEventsHighlights') {
-      counts.add(normalizeHighlightsItemCount(block.itemCount))
-    }
-  }
-
-  return [...counts].sort((left, right) => left - right)
+export type NewsEventsHighlightsPreviewScope = {
+  classificationIDs: string[]
+  key: string
+  limit: number
 }
 
 export function getNewsGridPreviewItemCounts(layout?: Page['layout'] | null): number[] {
@@ -57,7 +62,98 @@ export type NewsEventsTabsPreviewScope = {
   limit: number
 }
 
+export type CalendarPreviewScope = {
+  classificationIDs: string[]
+  key: string
+}
+
 const MAX_NEWS_EVENTS_PREVIEW_DEPTH = 10
+
+export function getNewsEventsHighlightsPreviewScopes(
+  layout?: Page['layout'] | null,
+): NewsEventsHighlightsPreviewScope[] {
+  const scopes = new Map<string, NewsEventsHighlightsPreviewScope>()
+  const visitedLayouts = new WeakSet<object>()
+
+  const visitLayout = (value: unknown, depth: number): void => {
+    if (
+      !Array.isArray(value) ||
+      depth > MAX_NEWS_EVENTS_PREVIEW_DEPTH ||
+      visitedLayouts.has(value)
+    ) {
+      return
+    }
+
+    visitedLayouts.add(value)
+
+    for (const block of value) {
+      if (!block || typeof block !== 'object') continue
+
+      const record = block as Record<string, unknown>
+
+      if (record.blockType === 'newsEventsHighlights') {
+        const classificationIDs = getNewsEventsHighlightsClassificationIDs(record.classifications)
+        const limit = normalizeHighlightsItemCount(record.itemCount as number | null | undefined)
+        const key = getNewsEventsHighlightsPreviewKey(classificationIDs, limit)
+
+        scopes.set(key, { classificationIDs, key, limit })
+      }
+
+      if (
+        record.blockType === 'reusableSection' &&
+        record.section &&
+        typeof record.section === 'object' &&
+        'layout' in record.section
+      ) {
+        visitLayout((record.section as { layout?: unknown }).layout, depth + 1)
+      }
+    }
+  }
+
+  visitLayout(layout, 0)
+  return [...scopes.values()]
+}
+
+/** @deprecated Use classification-aware getNewsEventsHighlightsPreviewScopes. */
+export function getNewsEventsPreviewItemCounts(layout?: Page['layout'] | null): number[] {
+  return [...new Set(getNewsEventsHighlightsPreviewScopes(layout).map(({ limit }) => limit))].sort(
+    (left, right) => left - right,
+  )
+}
+
+export function getCalendarPreviewScopes(layout?: Page['layout'] | null): CalendarPreviewScope[] {
+  const scopes = new Map<string, CalendarPreviewScope>()
+  const visitedLayouts = new WeakSet<object>()
+
+  const visitLayout = (value: unknown, depth: number): void => {
+    if (!Array.isArray(value) || depth > MAX_NEWS_EVENTS_PREVIEW_DEPTH || visitedLayouts.has(value))
+      return
+    visitedLayouts.add(value)
+
+    for (const block of value) {
+      if (!block || typeof block !== 'object') continue
+      const record = block as Record<string, unknown>
+      if (record.blockType === 'calendar') {
+        const classificationIDs = getCalendarClassificationIDs(record.classifications)
+        if (classificationIDs.length > 0) {
+          const key = getCalendarScopeKey(classificationIDs)
+          scopes.set(key, { classificationIDs, key })
+        }
+      }
+      if (
+        record.blockType === 'reusableSection' &&
+        record.section &&
+        typeof record.section === 'object' &&
+        'layout' in record.section
+      ) {
+        visitLayout((record.section as { layout?: unknown }).layout, depth + 1)
+      }
+    }
+  }
+
+  visitLayout(layout, 0)
+  return [...scopes.values()]
+}
 
 export const getNewsEventsTabsPreviewGroupKey = (
   classificationIDs: readonly string[],

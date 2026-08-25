@@ -1,6 +1,14 @@
-import type { Block, CheckboxField, NumberField, SelectField, TabsField } from 'payload'
+import type {
+  Block,
+  CheckboxField,
+  NumberField,
+  RelationshipField,
+  SelectField,
+  TabsField,
+} from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
+import { NEWS_EVENTS_HIGHLIGHTS_MAX_CLASSIFICATIONS } from '@/blocks/NewsEventsHighlights/newsEventsHighlightsShared'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import {
@@ -36,6 +44,20 @@ export const NewsEventsHighlightsBlock: Block = {
             { name: 'eyebrow', type: 'text' },
             { name: 'title', type: 'text' },
             { name: 'description', type: 'textarea' },
+            {
+              name: 'classifications',
+              label: 'Classifications',
+              type: 'relationship',
+              relationTo: 'news-event-classifications',
+              hasMany: true,
+              maxRows: NEWS_EVENTS_HIGHLIGHTS_MAX_CLASSIFICATIONS,
+              filterOptions: { active: { equals: true } },
+              admin: {
+                allowCreate: true,
+                description:
+                  'Limit the carousel to selected active classifications. Leave empty to include all active classifications. Selection order does not change chronological slide order.',
+              },
+            } satisfies RelationshipField,
             createContentActionsField({ maxRows: 1 }),
             createContentActionsField({
               name: 'footerActions',

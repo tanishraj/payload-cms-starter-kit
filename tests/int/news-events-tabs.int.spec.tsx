@@ -38,6 +38,7 @@ const newsClassification = {
   active: true,
   badgeLabel: 'News',
   behavior: 'story' as const,
+  calendarColor: 'blue' as const,
   id: 'classification-news',
   legacyValue: 'news' as const,
   slug: 'news',
@@ -48,6 +49,7 @@ const eventClassification = {
   active: true,
   badgeLabel: 'Event',
   behavior: 'event' as const,
+  calendarColor: 'blue' as const,
   id: 'classification-event',
   legacyValue: 'event' as const,
   slug: 'events',
@@ -58,6 +60,7 @@ const noticeClassification = {
   active: true,
   badgeLabel: 'Notice',
   behavior: 'story' as const,
+  calendarColor: 'blue' as const,
   id: 'classification-notice',
   legacyValue: 'notice' as const,
   slug: 'notice',
@@ -68,6 +71,7 @@ const holidayClassification = {
   active: true,
   badgeLabel: 'Holiday',
   behavior: 'story' as const,
+  calendarColor: 'blue' as const,
   id: 'classification-holiday',
   legacyValue: 'holiday' as const,
   slug: 'holiday',
@@ -401,11 +405,12 @@ describe('News & Events Tabs', () => {
         classifications={classificationIDs}
         itemsPerTab={limit}
         snapshot={{
+          calendarByScope: {},
           classificationsByScope: {
             [key]: [noticeClassification, holidayClassification],
           },
           groupsByScope: { [key]: previewGroups },
-          highlightsByCount: {},
+          highlightsByScope: {},
           newsGridByCount: {},
         }}
       />,
@@ -435,9 +440,10 @@ describe('News & Events Tabs', () => {
         classifications={[]}
         itemsPerTab={limit}
         snapshot={{
+          calendarByScope: {},
           classificationsByScope: { [key]: [] },
           groupsByScope: { [key]: previewGroups },
-          highlightsByCount: {},
+          highlightsByScope: {},
           newsGridByCount: {},
         }}
       />,
@@ -646,7 +652,7 @@ describe('News & Events Tabs', () => {
       classification: eventClassification,
       contentType: 'event',
       dateISO: '2026-08-13T00:00:00.000Z',
-      dateLabel: 'Aug 13, 2026',
+      dateLabel: 'Aug 13–20, 2026',
       eventEnd: '2026-08-20T00:00:00.000Z',
       eventStart: '2026-08-13T00:00:00.000Z',
       id: 'event-range',
