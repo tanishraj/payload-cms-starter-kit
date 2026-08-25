@@ -84,6 +84,7 @@ describe('News & Events metadata routes', () => {
     })
     mocks.getNewsEventStructuredData.mockReturnValue({ '@type': 'NewsArticle' })
     mocks.loadNewsEventsPreviewSnapshot.mockResolvedValue({
+      annualCalendarByScope: {},
       calendarByScope: {},
       classificationsByScope: {},
       groupsByScope: {},
@@ -143,6 +144,7 @@ describe('News & Events metadata routes', () => {
     }
     const reviewSnapshot = { feedPagesBySize: { 6: { docs: [] } }, ratingDistribution: null }
     const newsEventsSnapshot = {
+      annualCalendarByScope: {},
       calendarByScope: {},
       classificationsByScope: {},
       groupsByScope: {},

@@ -15,6 +15,8 @@ import {
 } from '@/blocks/Calendar/calendarShared'
 import { resolveCalendarSurfaceClasses } from '@/blocks/Calendar/calendarStyles'
 import type { BlockSurface } from '@/blocks/shared/blockAppearance'
+import { CalendarSidebar } from '@/blocks/shared/CalendarSidebar'
+import type { ResolvedCalendarPdf } from '@/blocks/shared/calendarPdf'
 import { Alert, AlertAction, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
@@ -36,6 +38,7 @@ type CalendarClientProps = {
   draft?: boolean
   emptyMessage: string
   initial: CalendarInitialSnapshot
+  pdfDownload?: ResolvedCalendarPdf
   surface?: BlockSurface
   upcomingEyebrow: string
   upcomingTitle: string
@@ -57,6 +60,7 @@ export function CalendarClient({
   draft = false,
   emptyMessage,
   initial,
+  pdfDownload,
   surface = 'light',
   upcomingEyebrow,
   upcomingTitle,
@@ -250,7 +254,11 @@ export function CalendarClient({
           </Alert>
         ) : null}
 
-        <div aria-busy={Boolean(pending)} className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <div
+          aria-busy={Boolean(pending)}
+          className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-stretch"
+          data-calendar-layout="true"
+        >
           <main className="min-w-0">
             <TabsContent className="mt-0" value="calendar">
               <div className="hidden md:block">
@@ -280,14 +288,17 @@ export function CalendarClient({
               />
             </TabsContent>
           </main>
-          <CalendarUpcoming
-            classifications={initial.classifications}
-            emptyMessage={emptyMessage}
-            eyebrow={upcomingEyebrow}
-            events={initial.upcoming}
-            surface={surface}
-            title={upcomingTitle}
-          />
+          <CalendarSidebar download={pdfDownload} label={upcomingTitle} surface={surface}>
+            <CalendarUpcoming
+              classifications={initial.classifications}
+              embedded
+              emptyMessage={emptyMessage}
+              eyebrow={upcomingEyebrow}
+              events={initial.upcoming}
+              surface={surface}
+              title={upcomingTitle}
+            />
+          </CalendarSidebar>
         </div>
       </Tabs>
       <p aria-live="polite" className="sr-only" role="status">

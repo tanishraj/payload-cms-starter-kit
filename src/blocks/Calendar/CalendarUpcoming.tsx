@@ -9,25 +9,34 @@ import { cn } from '@/lib/utils'
 
 type CalendarUpcomingProps = {
   classifications: CalendarClassification[]
+  embedded?: boolean
   emptyMessage: string
   eyebrow: string
   events: CalendarEvent[]
+  showLegend?: boolean
   surface?: BlockSurface
   title: string
 }
 
 export function CalendarUpcoming({
   classifications,
+  embedded = false,
   emptyMessage,
   eyebrow,
   events,
+  showLegend = true,
   surface = 'light',
   title,
 }: CalendarUpcomingProps) {
   const styles = resolveCalendarSurfaceClasses(surface)
+  const Root = embedded ? 'div' : 'aside'
 
   return (
-    <aside className={styles.panel} data-calendar-upcoming="true">
+    <Root
+      className={cn('min-w-0', !embedded && styles.panel)}
+      data-calendar-upcoming="true"
+      data-calendar-upcoming-embedded={embedded ? 'true' : undefined}
+    >
       <header className={cn('border-b p-4 md:p-5', styles.border)}>
         <p
           className={cn(
@@ -90,25 +99,27 @@ export function CalendarUpcoming({
           </EmptyHeader>
         </Empty>
       )}
-      <div
-        className={cn('flex flex-wrap gap-x-3 gap-y-2 border-t p-4 md:p-5', styles.border)}
-        aria-label="Event classification legend"
-      >
-        {classifications.map((classification) => (
-          <Badge
-            className="gap-1.5 rounded-[var(--radius)] border-0 bg-transparent px-0 text-current"
-            key={classification.id}
-            variant="outline"
-          >
-            <span
-              aria-hidden="true"
-              className="size-2 rounded-full bg-[var(--calendar-tone)]"
-              style={getCalendarToneStyle(classification.calendarColor)}
-            />
-            {classification.badgeLabel}
-          </Badge>
-        ))}
-      </div>
-    </aside>
+      {showLegend ? (
+        <div
+          className={cn('flex flex-wrap gap-x-3 gap-y-2 border-t p-4 md:p-5', styles.border)}
+          aria-label="Event classification legend"
+        >
+          {classifications.map((classification) => (
+            <Badge
+              className="gap-1.5 rounded-[var(--radius)] border-0 bg-transparent px-0 text-current"
+              key={classification.id}
+              variant="outline"
+            >
+              <span
+                aria-hidden="true"
+                className="size-2 rounded-full bg-[var(--calendar-tone)]"
+                style={getCalendarToneStyle(classification.calendarColor)}
+              />
+              {classification.badgeLabel}
+            </Badge>
+          ))}
+        </div>
+      ) : null}
+    </Root>
   )
 }

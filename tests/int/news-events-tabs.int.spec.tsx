@@ -405,6 +405,7 @@ describe('News & Events Tabs', () => {
         classifications={classificationIDs}
         itemsPerTab={limit}
         snapshot={{
+          annualCalendarByScope: {},
           calendarByScope: {},
           classificationsByScope: {
             [key]: [noticeClassification, holidayClassification],
@@ -440,6 +441,7 @@ describe('News & Events Tabs', () => {
         classifications={[]}
         itemsPerTab={limit}
         snapshot={{
+          annualCalendarByScope: {},
           calendarByScope: {},
           classificationsByScope: { [key]: [] },
           groupsByScope: { [key]: previewGroups },

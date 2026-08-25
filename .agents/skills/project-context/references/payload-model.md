@@ -11,7 +11,7 @@ Registration order in [payload.config.ts](../../../../src/payload.config.ts) is 
 5. Intake: Forms, FormSubmissions.
 6. Administration: WorkQueue (Action Queue), OperationalAuditEvents (Audit Log), Users.
 
-Exact symbols and files are generated in [project-inventory.json](project-inventory.json). Collections receive Trash through [withTrash.ts](../../../../src/plugins/withTrash.ts), except NewsEventClassifications: classification deletion remains a guarded hard delete. An in-use delete identifies the first referencing News & Events entry, Page, Reusable Section, Calendar/Tabs container, or Detail Page Template so the editor can remove or replace that relationship; classifications that must remain connected are archived instead. Content and structural presets opt into drafts/versions in their own configs; operational records and users are not public content.
+Exact symbols and files are generated in [project-inventory.json](project-inventory.json). Collections receive Trash through [withTrash.ts](../../../../src/plugins/withTrash.ts), except NewsEventClassifications: classification deletion remains a guarded hard delete. An in-use delete identifies the first referencing News & Events entry, Page, Reusable Section, Calendar/Annual Calendar/Tabs container, or Detail Page Template so the editor can remove or replace that relationship; classifications that must remain connected are archived instead. Content and structural presets opt into drafts/versions in their own configs; operational records and users are not public content.
 
 ## Registered Globals
 

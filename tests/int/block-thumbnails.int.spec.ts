@@ -120,6 +120,14 @@ describe('block thumbnail metadata', () => {
       slug: 'newsEventsTabs',
       stageAlignment: 'top',
     })
+    expect(getBlockThumbnailDefinition('annualCalendar')).toMatchObject({
+      alt: 'Annual Calendar block preview',
+      filename: 'annual-calendar.jpg',
+      label: 'Annual Calendar',
+      slug: 'annualCalendar',
+      stageAlignment: 'top',
+      url: '/block-thumbnails/annual-calendar.jpg',
+    })
     expect(getBlockThumbnailDefinition('featureSpotlight')).toMatchObject({
       filename: 'feature-spotlight.jpg',
       label: 'Feature Spotlight',

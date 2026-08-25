@@ -1,5 +1,11 @@
 import { getNewsGridCollectionItemCount } from '@/blocks/NewsGrid/newsGridShared'
 import {
+  getAnnualCalendarClassificationIDs,
+  getAnnualCalendarScopeKey,
+  type AnnualCalendarInitialSnapshot,
+  type AnnualCalendarPeriodInput,
+} from '@/blocks/AnnualCalendar/annualCalendarShared'
+import {
   getCalendarClassificationIDs,
   getCalendarScopeKey,
   type CalendarInitialSnapshot,
@@ -21,6 +27,7 @@ import {
 import type { Page } from '@/payload-types'
 
 export type NewsEventsPreviewSnapshot = {
+  annualCalendarByScope: Record<string, AnnualCalendarInitialSnapshot>
   calendarByScope: Record<string, CalendarInitialSnapshot>
   classificationsByScope: Record<string, ResolvedNewsEventClassification[]>
   groupsByScope: Record<string, PublicNewsEventGroups>
@@ -29,6 +36,7 @@ export type NewsEventsPreviewSnapshot = {
 }
 
 export const EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT: NewsEventsPreviewSnapshot = {
+  annualCalendarByScope: {},
   calendarByScope: {},
   classificationsByScope: {},
   groupsByScope: {},
@@ -65,6 +73,10 @@ export type NewsEventsTabsPreviewScope = {
 export type CalendarPreviewScope = {
   classificationIDs: string[]
   key: string
+}
+
+export type AnnualCalendarPreviewScope = CalendarPreviewScope & {
+  periodInput: AnnualCalendarPeriodInput
 }
 
 const MAX_NEWS_EVENTS_PREVIEW_DEPTH = 10
@@ -140,6 +152,52 @@ export function getCalendarPreviewScopes(layout?: Page['layout'] | null): Calend
           scopes.set(key, { classificationIDs, key })
         }
       }
+      if (
+        record.blockType === 'reusableSection' &&
+        record.section &&
+        typeof record.section === 'object' &&
+        'layout' in record.section
+      ) {
+        visitLayout((record.section as { layout?: unknown }).layout, depth + 1)
+      }
+    }
+  }
+
+  visitLayout(layout, 0)
+  return [...scopes.values()]
+}
+
+export function getAnnualCalendarPreviewScopes(
+  layout?: Page['layout'] | null,
+): AnnualCalendarPreviewScope[] {
+  const scopes = new Map<string, AnnualCalendarPreviewScope>()
+  const visitedLayouts = new WeakSet<object>()
+
+  const visitLayout = (value: unknown, depth: number): void => {
+    if (!Array.isArray(value) || depth > MAX_NEWS_EVENTS_PREVIEW_DEPTH || visitedLayouts.has(value))
+      return
+    visitedLayouts.add(value)
+
+    for (const block of value) {
+      if (!block || typeof block !== 'object') continue
+      const record = block as Record<string, unknown>
+
+      if (record.blockType === 'annualCalendar') {
+        const classificationIDs = getAnnualCalendarClassificationIDs(record.classifications)
+        if (classificationIDs.length > 0) {
+          const periodInput: AnnualCalendarPeriodInput = {
+            periodEndDate:
+              typeof record.periodEndDate === 'string' ? record.periodEndDate : null,
+            periodMode:
+              record.periodMode === 'customAcademicYear' ? 'customAcademicYear' : 'currentYear',
+            periodStartDate:
+              typeof record.periodStartDate === 'string' ? record.periodStartDate : null,
+          }
+          const key = getAnnualCalendarScopeKey(classificationIDs, periodInput)
+          scopes.set(key, { classificationIDs, key, periodInput })
+        }
+      }
+
       if (
         record.blockType === 'reusableSection' &&
         record.section &&

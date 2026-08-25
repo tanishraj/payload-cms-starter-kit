@@ -2,6 +2,7 @@ import type { Block, RelationshipField, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
+import { createCalendarPdfFields } from '@/blocks/shared/calendarPdfFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import {
   CALENDAR_MAX_CLASSIFICATIONS,
@@ -79,6 +80,7 @@ export const CalendarBlock: Block = {
               type: 'text',
               defaultValue: 'Upcoming',
             },
+            ...createCalendarPdfFields(),
             {
               name: 'emptyStateMessage',
               label: 'Empty State Message',

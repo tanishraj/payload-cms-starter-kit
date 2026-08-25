@@ -67,6 +67,7 @@ const layoutReferencesClassification = ({
 
   if (
     (value.blockType === 'calendar' ||
+      value.blockType === 'annualCalendar' ||
       value.blockType === 'newsEventsHighlights' ||
       value.blockType === 'newsEventsTabs') &&
     relationshipSelectionIncludes(value.classifications, classificationID)

@@ -180,8 +180,9 @@ describe('page block pipeline', () => {
       slug: 'pageHeader',
     })
     expect(layoutField?.blocks?.at(-1)?.admin?.group).toBe('Advanced Library')
-    expect(registeredSlugs).toHaveLength(54)
+    expect(registeredSlugs).toHaveLength(55)
     expect(registeredSlugs).toContain('calendar')
+    expect(registeredSlugs).toContain('annualCalendar')
     expect(registeredSlugs).toContain('academicProgrammes')
     expect(registeredSlugs).toContain('leadershipProfiles')
     expect(registeredSlugs).toContain('departmentProfiles')

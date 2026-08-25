@@ -8,14 +8,14 @@ Others. Editors compose the public index as a normal Page, while the collection 
 individual detail pages and event-only fields appear only when the classification is `Events`.
 
 Event classifications also own a semantic `Calendar Color`. The color is shared by every Calendar
-block and remains readable across the active website theme; editors do not choose a separate color
+and Annual Calendar block and remains readable across the active website theme; editors do not choose a separate color
 on each Page.
 
 Manage classification records under `News & Events > Classifications`. Every entry selects one
 active classification through `Entry Classification` in its Content tab. Archive a classification
 to stop new selections while preserving existing entries. Deleting remains available only when the
 classification is unused; if a reference exists, the deletion message identifies the first News &
-Events entry, Page, Reusable Section, Calendar/Tabs block container, or Detail Page Template that
+Events entry, Page, Reusable Section, Calendar/Annual Calendar/Tabs block container, or Detail Page Template that
 must be updated before retrying.
 
 ## When To Use It
@@ -85,6 +85,17 @@ The primary topic is automatically included in additional topics. Tags are optio
   an accessible `+N more` control moves focus into the Timeline. Multi-day and all-day ranges are
   inclusive, filtering changes only the main view, and the next four Upcoming events remain stable
   across month, filter, and view changes. Every row or tile links to the existing detail page.
+- `Annual Calendar` is the collection-backed twelve-month overview. It defaults to January through
+  December for the current configured site-timezone year. Editors may instead select a start month
+  and year plus an end month and year; the inclusive range must contain exactly 12 consecutive
+  months, such as July 2026 through June 2027. The ledger derives a `Calendar year 2026` or
+  `Academic year 2026–2027` summary and shows the total number of events. It keeps empty months
+  visible with vertically centered copy and places the same next four Coming Next semantics in a
+  sticky panel beside the ledger on desktop and below it on mobile. Coming Next is independent of
+  the selected ledger period. The block has no visitor year, month, view, filter, or pagination
+  controls. It supports the shared section appearance, actions, alignment, spacing, light mode, and
+  dark mode, and requires one to five active
+  Event classifications. No content migration is required.
 - Site Identity → Regional owns the deployment timezone. It defaults and safely falls back to
   `Asia/Kolkata`; News & Events labels, Calendar grouping, month boundaries, and “today” all use it
   instead of the visitor's browser timezone.
@@ -118,7 +129,7 @@ The sitemap includes the published `/news-events` Page through the normal Page r
 - expect visitor-facing times such as `1:30 AM`; timezone conversion still uses Site Identity but
   technical `GMT`/`UTC` suffixes are intentionally omitted
 - archive classifications that should no longer be selected; remove or replace every reported News &
-  Events entry, Calendar, Highlights, or Tabs reference before permanently deleting an unused
+  Events entry, Calendar, Annual Calendar, Highlights, or Tabs reference before permanently deleting an unused
   classification
 - leave Robots at `Default` to inherit the global SEO & Metadata crawler policy; choose `Index` or `No index` only for an intentional entry-level override
 - do not expect the `scheduled` workflow state to publish automatically; it records and queues the intended schedule for operator oversight

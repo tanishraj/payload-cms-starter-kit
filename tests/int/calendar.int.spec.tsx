@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { CalendarClient } from '@/blocks/Calendar/CalendarClient'
 import { CalendarMonthView } from '@/blocks/Calendar/CalendarMonthView'
+import { CalendarBlockPresentation } from '@/blocks/Calendar/Presentation'
 import { CalendarTimelineView } from '@/blocks/Calendar/CalendarTimelineView'
 import {
   buildCalendarGrid,
@@ -15,6 +16,7 @@ import {
 } from '@/blocks/Calendar/calendarShared'
 import { CalendarBlock } from '@/blocks/Calendar/config'
 import { getCalendarPreviewScopes } from '@/lib/newsEventsPreviewShared'
+import type { Media } from '@/payload-types'
 
 const classification = {
   badgeLabel: 'Academic',
@@ -47,6 +49,12 @@ const initial: CalendarInitialSnapshot = {
   todayKey: '2026-08-23',
   upcoming: [event('one')],
 }
+const calendarPdf = {
+  filename: 'academic-calendar-2026-27.pdf',
+  id: 'calendar-pdf',
+  mimeType: 'application/pdf',
+  url: '/media/academic-calendar-2026-27.pdf',
+} as Media
 const crossingEvent: CalendarEvent = {
   ...event('crossing', '2026-07-31'),
   endDateKey: '2026-08-02',
@@ -238,6 +246,41 @@ describe('Calendar block', () => {
     fireEvent.click(screen.getByRole('tab', { name: 'Timeline' }))
     expect(screen.getByRole('tab', { name: 'Timeline' }).getAttribute('aria-selected')).toBe('true')
     expect(select.getAttribute('data-slot')).toBe('select-trigger')
+  })
+
+  it('renders the configured PDF below Upcoming and hides unresolved Media', () => {
+    const { container, rerender } = render(
+      <CalendarBlockPresentation
+        calendarPdf={calendarPdf}
+        calendarPdfLabel="Get PDF"
+        calendarPdfTitle="Academic year 2026–27"
+        initial={initial}
+      />,
+    )
+
+    const layout = container.querySelector('[data-calendar-layout="true"]')
+    const sidebar = container.querySelector('[data-calendar-sidebar="true"]')
+    const upcoming = container.querySelector('[data-calendar-upcoming="true"]')
+    const download = container.querySelector('[data-calendar-pdf-download="true"]')
+    expect(layout?.className).toContain('lg:items-stretch')
+    expect(sidebar?.className).toContain('lg:h-full')
+    expect(sidebar?.getAttribute('aria-label')).toBe('Upcoming calendar sidebar')
+    expect(upcoming).toBeTruthy()
+    expect(upcoming?.tagName).toBe('DIV')
+    expect(download).toBeTruthy()
+    expect(download?.className).toContain('lg:mt-auto')
+    expect(download?.getAttribute('data-calendar-pdf-embedded')).toBe('true')
+    expect(
+      upcoming && download
+        ? upcoming.compareDocumentPosition(download) & Node.DOCUMENT_POSITION_FOLLOWING
+        : 0,
+    ).not.toBe(0)
+    expect(download?.querySelector('a')?.getAttribute('href')).toBe(
+      '/media/academic-calendar-2026-27.pdf',
+    )
+
+    rerender(<CalendarBlockPresentation calendarPdf="calendar-pdf" initial={initial} />)
+    expect(container.querySelector('[data-calendar-pdf-download="true"]')).toBeNull()
   })
 
   it('renders the month-loading failure through a recoverable Alert', async () => {

@@ -5,6 +5,15 @@ import { unstable_cache } from 'next/cache'
 import { getPayload, type Payload, type Where } from 'payload'
 
 import {
+  ANNUAL_CALENDAR_RESPONSE_VERSION,
+  getAnnualCalendarClassificationIDs,
+  materializeAnnualCalendarMonths,
+  type AnnualCalendarInitialSnapshot,
+  type AnnualCalendarPeriodInput,
+  type AnnualCalendarPeriodSnapshot,
+  normalizeAnnualCalendarPeriod,
+} from '@/blocks/AnnualCalendar/annualCalendarShared'
+import {
   CALENDAR_RESPONSE_VERSION,
   formatCalendarMonthLabel,
   getCalendarClassificationIDs,
@@ -83,6 +92,27 @@ export const buildCalendarMonthWhere = ({
         },
       ],
     },
+  ],
+})
+
+export const buildCalendarPeriodWhere = ({
+  classificationIDs,
+  endISO,
+  published = true,
+  startISO,
+}: {
+  classificationIDs: string[]
+  endISO: string
+  published?: boolean
+  startISO: string
+}): Where => ({
+  and: [
+    ...(published
+      ? [{ _status: { equals: 'published' } }, { workflowState: { equals: 'published' } }]
+      : []),
+    { classification: { in: classificationIDs } },
+    { eventStart: { greater_than_equal: startISO } },
+    { eventStart: { less_than_equal: endISO } },
   ],
 })
 
@@ -235,6 +265,47 @@ export async function fetchCalendarMonth(
   }
 }
 
+export async function fetchAnnualCalendarPeriod(
+  payload: CalendarPayload,
+  classificationIDs: readonly string[],
+  periodInput: AnnualCalendarPeriodInput,
+  todayKey: string,
+  timeZone: SiteTimeZone,
+  mode: CalendarReadMode,
+): Promise<AnnualCalendarPeriodSnapshot> {
+  const period = normalizeAnnualCalendarPeriod(periodInput, todayKey)
+  if (!period) throw new CalendarScopeError('Annual Calendar period is invalid.')
+
+  const classifications = await resolveCalendarClassifications(payload, classificationIDs, mode)
+  const { startISO } = getZonedMonthBounds(period.startMonthKey, timeZone)
+  const { endISO } = getZonedMonthBounds(period.endMonthKey, timeZone)
+  const result = await payload.find({
+    collection: 'news-events',
+    depth: 0,
+    pagination: false,
+    select: calendarEventSelect,
+    sort: ['eventStart', 'id'],
+    where: buildCalendarPeriodWhere({
+      classificationIDs: classifications.map(({ id }) => id),
+      endISO,
+      published: mode.overrideAccess,
+      startISO,
+    }),
+    ...mode,
+  })
+  const events = normalizeEvents(result.docs, classifications, timeZone)
+
+  return {
+    classifications,
+    endMonthKey: period.endMonthKey,
+    eventCount: events.length,
+    months: materializeAnnualCalendarMonths(period.monthKeys, events),
+    periodLabel: period.periodLabel,
+    startMonthKey: period.startMonthKey,
+    version: ANNUAL_CALENDAR_RESPONSE_VERSION,
+  }
+}
+
 export async function fetchCalendarUpcoming(
   payload: CalendarPayload,
   classifications: CalendarClassification[],
@@ -367,4 +438,89 @@ export async function getDraftCalendarInitialSnapshot(
     fetchCalendarUpcoming(payload, classifications, now, timeZone, mode),
   ])
   return { classifications, month, timeZone, todayKey: getZonedToday(now, timeZone), upcoming }
+}
+
+export async function getPublicAnnualCalendarInitialSnapshot(
+  classificationIDs: readonly string[],
+  periodInput: AnnualCalendarPeriodInput = {},
+  now: Date = new Date(),
+): Promise<AnnualCalendarInitialSnapshot> {
+  const payload = await getPayloadClient()
+  const timeZone = await getSiteTimeZone()
+  const ids = getAnnualCalendarClassificationIDs([...classificationIDs])
+  const todayKey = getZonedToday(now, timeZone)
+  const period = normalizeAnnualCalendarPeriod(periodInput, todayKey)
+  if (!period) throw new CalendarScopeError('Annual Calendar period is invalid.')
+  const periodSnapshot = await unstable_cache(
+    async () =>
+      fetchAnnualCalendarPeriod(payload, ids, periodInput, todayKey, timeZone, {
+        overrideAccess: true,
+      }),
+    [
+      'annual-calendar-period',
+      String(ANNUAL_CALENDAR_RESPONSE_VERSION),
+      period.periodMode,
+      period.startMonthKey,
+      period.endMonthKey,
+      timeZone,
+      ...ids,
+    ],
+    {
+      revalidate: false,
+      tags: [
+        CMS_CACHE_TAGS.calendar,
+        CMS_CACHE_TAGS.newsEvents,
+        CMS_CACHE_TAGS.newsEventClassifications,
+        CMS_CACHE_TAGS.siteSettings,
+      ],
+    },
+  )()
+  const upcomingBucket = Math.floor(now.getTime() / 300_000)
+  const upcoming = await unstable_cache(
+    async () =>
+      fetchCalendarUpcoming(payload, periodSnapshot.classifications, now, timeZone, {
+        overrideAccess: true,
+      }),
+    ['annual-calendar-upcoming', JSON.stringify(ids), timeZone, String(upcomingBucket)],
+    {
+      revalidate: 300,
+      tags: [
+        CMS_CACHE_TAGS.calendar,
+        CMS_CACHE_TAGS.newsEvents,
+        CMS_CACHE_TAGS.newsEventClassifications,
+        CMS_CACHE_TAGS.siteSettings,
+      ],
+    },
+  )()
+
+  return { ...periodSnapshot, timeZone, todayKey, upcoming }
+}
+
+export async function getDraftAnnualCalendarInitialSnapshot(
+  classificationIDs: readonly string[],
+  periodInput: AnnualCalendarPeriodInput,
+  user: User,
+  now: Date = new Date(),
+): Promise<AnnualCalendarInitialSnapshot> {
+  const payload = await getPayloadClient()
+  const timeZone = await getSiteTimeZone()
+  const todayKey = getZonedToday(now, timeZone)
+  const mode = { draft: true, overrideAccess: false, user } as const
+  const periodSnapshot = await fetchAnnualCalendarPeriod(
+    payload,
+    classificationIDs,
+    periodInput,
+    todayKey,
+    timeZone,
+    mode,
+  )
+  const upcoming = await fetchCalendarUpcoming(
+    payload,
+    periodSnapshot.classifications,
+    now,
+    timeZone,
+    mode,
+  )
+
+  return { ...periodSnapshot, timeZone, todayKey, upcoming }
 }

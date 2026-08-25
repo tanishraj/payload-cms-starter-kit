@@ -9,6 +9,7 @@ import { BannerCtaBlock } from '@/blocks/BannerCta/config'
 import { BentoGridBlock } from '@/blocks/BentoGrid/config'
 import { BreadcrumbBlock } from '@/blocks/Breadcrumb/config'
 import { CalendarBlock } from '@/blocks/Calendar/config'
+import { AnnualCalendarBlock } from '@/blocks/AnnualCalendar/config'
 import { Contact24Block } from '@/blocks/Contact24/config'
 import { Contact33Block } from '@/blocks/Contact33/config'
 import { ContentHighlightsBlock } from '@/blocks/ContentHighlights/config'
@@ -116,6 +117,7 @@ export const pageBlockGroupDefinitions = [
     blocks: [
       NewsEventsTabsBlock,
       CalendarBlock,
+      AnnualCalendarBlock,
       DepartmentProfilesBlock,
       GalleryAlbumTabsBlock,
       QaAccordionBlock,

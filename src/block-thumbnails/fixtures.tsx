@@ -15,6 +15,12 @@ import { BannerCtaBlockComponent } from '@/blocks/BannerCta/Component'
 import { NewsGridBlockPresentation } from '@/blocks/NewsGrid/Presentation'
 import { NewsEventsTabsBlockPresentation } from '@/blocks/NewsEventsTabs/Presentation'
 import { CalendarBlockPresentation } from '@/blocks/Calendar/Presentation'
+import { AnnualCalendarBlockPresentation } from '@/blocks/AnnualCalendar/Presentation'
+import {
+  getAnnualCalendarMonthKeys,
+  materializeAnnualCalendarMonths,
+  type AnnualCalendarInitialSnapshot,
+} from '@/blocks/AnnualCalendar/annualCalendarShared'
 import type {
   CalendarClassification,
   CalendarEvent,
@@ -449,6 +455,19 @@ const calendarInitialSnapshot: CalendarInitialSnapshot = {
   upcoming: calendarEvents.slice(6, 10),
 }
 
+const annualCalendarInitialSnapshot: AnnualCalendarInitialSnapshot = {
+  classifications: calendarClassifications,
+  endMonthKey: '2026-12',
+  eventCount: calendarEvents.length,
+  months: materializeAnnualCalendarMonths(getAnnualCalendarMonthKeys(2026), calendarEvents),
+  periodLabel: 'Calendar year 2026',
+  startMonthKey: '2026-01',
+  timeZone: 'Asia/Kolkata',
+  todayKey: '2026-08-23',
+  upcoming: calendarEvents.slice(6, 10),
+  version: 3,
+}
+
 const thumbnailNewsEventsTabsItems: PublicNewsEventCard[] = [
   {
     behavior: 'story',
@@ -803,7 +822,34 @@ export const blockThumbnailFixtures = {
   ),
   calendar: (
     <CalendarBlockPresentation
+      calendarPdf={
+        {
+          filename: 'academic-calendar-2026-27.pdf',
+          id: 'calendar-pdf',
+          mimeType: 'application/pdf',
+          url: '/academic-calendar-2026-27.pdf',
+        } as Media
+      }
+      calendarPdfLabel="Download"
+      calendarPdfTitle="Academic calendar PDF"
       initial={calendarInitialSnapshot}
+      size="compact"
+      title="Academic calendar"
+    />
+  ),
+  annualCalendar: (
+    <AnnualCalendarBlockPresentation
+      calendarPdf={
+        {
+          filename: 'academic-calendar-2026-27.pdf',
+          id: 'annual-calendar-pdf',
+          mimeType: 'application/pdf',
+          url: '/academic-calendar-2026-27.pdf',
+        } as Media
+      }
+      calendarPdfLabel="Download"
+      calendarPdfTitle="Academic calendar PDF"
+      initial={annualCalendarInitialSnapshot}
       size="compact"
       title="Academic calendar"
     />

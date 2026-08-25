@@ -64,6 +64,25 @@
       },
       {
         "clientFiles": [],
+        "componentPath": "src/blocks/AnnualCalendar/Component.tsx",
+        "configPath": "src/blocks/AnnualCalendar/config.ts",
+        "files": [
+          "src/blocks/AnnualCalendar/AnnualCalendarUpcoming.tsx",
+          "src/blocks/AnnualCalendar/AnnualCalendarYearStream.tsx",
+          "src/blocks/AnnualCalendar/Component.tsx",
+          "src/blocks/AnnualCalendar/Presentation.tsx",
+          "src/blocks/AnnualCalendar/PreviewComponent.tsx",
+          "src/blocks/AnnualCalendar/annualCalendarShared.ts",
+          "src/blocks/AnnualCalendar/config.ts"
+        ],
+        "interfaceName": "AnnualCalendarBlock",
+        "presentationPath": "src/blocks/AnnualCalendar/Presentation.tsx",
+        "previewComponentPath": "src/blocks/AnnualCalendar/PreviewComponent.tsx",
+        "slug": "annualCalendar",
+        "symbol": "AnnualCalendarBlock"
+      },
+      {
+        "clientFiles": [],
         "componentPath": "src/blocks/AwardsList/Component.tsx",
         "configPath": "src/blocks/AwardsList/config.ts",
         "files": [
@@ -948,6 +967,7 @@
       "AcademicProgrammesBlock",
       "AccreditationCardsBlock",
       "AnnouncementBlock",
+      "AnnualCalendarBlock",
       "AwardsListBlock",
       "BannerCtaBlock",
       "BentoGridBlock",
@@ -1041,6 +1061,7 @@
       "newsGrid",
       "newsEventsTabs",
       "calendar",
+      "annualCalendar",
       "bannerCta",
       "cta39",
       "richText",
@@ -1076,6 +1097,7 @@
       "academicProgrammes",
       "newsEventsTabs",
       "calendar",
+      "annualCalendar",
       "departmentProfiles",
       "galleryAlbumTabs",
       "qaAccordion",
@@ -1153,6 +1175,7 @@
       "newsGrid",
       "newsEventsTabs",
       "calendar",
+      "annualCalendar",
       "bannerCta",
       "cta39",
       "richText",
@@ -1187,6 +1210,7 @@
       "academicProgrammes",
       "newsEventsTabs",
       "calendar",
+      "annualCalendar",
       "departmentProfiles",
       "galleryAlbumTabs",
       "qaAccordion",
@@ -1245,6 +1269,18 @@
       },
       {
         "exports": [
+          "CalendarPdfDownload"
+        ],
+        "file": "src/blocks/shared/CalendarPdfDownload.tsx"
+      },
+      {
+        "exports": [
+          "CalendarSidebar"
+        ],
+        "file": "src/blocks/shared/CalendarSidebar.tsx"
+      },
+      {
+        "exports": [
           "createBannerActionPlacementField",
           "createBannerContentAlignmentField",
           "createBannerContentWidthField",
@@ -1294,6 +1330,20 @@
           "createBreadcrumbsField"
         ],
         "file": "src/blocks/shared/breadcrumbFields.ts"
+      },
+      {
+        "exports": [
+          "resolveCalendarPdf"
+        ],
+        "file": "src/blocks/shared/calendarPdf.ts"
+      },
+      {
+        "exports": [
+          "DEFAULT_CALENDAR_PDF_LABEL",
+          "DEFAULT_CALENDAR_PDF_TITLE",
+          "createCalendarPdfFields"
+        ],
+        "file": "src/blocks/shared/calendarPdfFields.ts"
       },
       {
         "exports": [
@@ -1404,6 +1454,7 @@
         "public/block-thumbnails/academic-programmes.jpg",
         "public/block-thumbnails/accreditation-cards.jpg",
         "public/block-thumbnails/announcement.jpg",
+        "public/block-thumbnails/annual-calendar.jpg",
         "public/block-thumbnails/awards-list.jpg",
         "public/block-thumbnails/banner-cta.jpg",
         "public/block-thumbnails/bento-grid.jpg",
@@ -1489,6 +1540,10 @@
         {
           "filename": "calendar.jpg",
           "slug": "calendar"
+        },
+        {
+          "filename": "annual-calendar.jpg",
+          "slug": "annualCalendar"
         },
         {
           "filename": "banner-cta.jpg",
@@ -1711,6 +1766,7 @@
         "newsGrid",
         "newsEventsTabs",
         "calendar",
+        "annualCalendar",
         "bannerCta",
         "announcement",
         "qaAccordion",
@@ -2035,6 +2091,13 @@
       "src/blocks/AccreditationCards/config.ts",
       "src/blocks/Announcement/Component.tsx",
       "src/blocks/Announcement/config.ts",
+      "src/blocks/AnnualCalendar/AnnualCalendarUpcoming.tsx",
+      "src/blocks/AnnualCalendar/AnnualCalendarYearStream.tsx",
+      "src/blocks/AnnualCalendar/Component.tsx",
+      "src/blocks/AnnualCalendar/Presentation.tsx",
+      "src/blocks/AnnualCalendar/PreviewComponent.tsx",
+      "src/blocks/AnnualCalendar/annualCalendarShared.ts",
+      "src/blocks/AnnualCalendar/config.ts",
       "src/blocks/AwardsList/Component.tsx",
       "src/blocks/AwardsList/config.ts",
       "src/blocks/BannerCta/Component.tsx",
@@ -2218,12 +2281,16 @@
       "src/blocks/renderPageBlocks.tsx",
       "src/blocks/shared/BlockErrorBoundary.tsx",
       "src/blocks/shared/BlockFooterActions.tsx",
+      "src/blocks/shared/CalendarPdfDownload.tsx",
+      "src/blocks/shared/CalendarSidebar.tsx",
       "src/blocks/shared/bannerCtaFields.ts",
       "src/blocks/shared/bannerCtaPresentation.ts",
       "src/blocks/shared/blockAppearance.ts",
       "src/blocks/shared/blockAppearanceFields.ts",
       "src/blocks/shared/blockSpacing.ts",
       "src/blocks/shared/breadcrumbFields.ts",
+      "src/blocks/shared/calendarPdf.ts",
+      "src/blocks/shared/calendarPdfFields.ts",
       "src/blocks/shared/cardSurface.ts",
       "src/blocks/shared/cardThemeFields.ts",
       "src/blocks/shared/contentActionsFields.ts",
@@ -2488,6 +2555,8 @@
       "tests/int/adminCapabilities.int.spec.ts",
       "tests/int/announcement-admin-conditions.int.spec.ts",
       "tests/int/announcement-controls.int.spec.tsx",
+      "tests/int/annual-calendar-data.int.spec.ts",
+      "tests/int/annual-calendar.int.spec.tsx",
       "tests/int/api.int.spec.ts",
       "tests/int/articles-feed-route.int.spec.ts",
       "tests/int/articles.int.spec.ts",
@@ -2503,6 +2572,7 @@
       "tests/int/button-primary-variant.int.spec.tsx",
       "tests/int/cache-revalidation.int.spec.ts",
       "tests/int/calendar-data.int.spec.ts",
+      "tests/int/calendar-pdf-download.int.spec.tsx",
       "tests/int/calendar-route.int.spec.ts",
       "tests/int/calendar-ui-contracts.int.spec.tsx",
       "tests/int/calendar.int.spec.tsx",
@@ -2650,7 +2720,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "f6756b70a21afa20b5eb7031ddecc583b5af4d7a80304741f1cdb82c9fcdf929"
+    "sha256": "cb4435042c1fa8498e6eeae63d874b740cc60fdf3da168a969c204f1ad07c407"
   },
   "surfaces": {
     "access": [
@@ -2798,6 +2868,8 @@
       "tests/int/adminCapabilities.int.spec.ts",
       "tests/int/announcement-admin-conditions.int.spec.ts",
       "tests/int/announcement-controls.int.spec.tsx",
+      "tests/int/annual-calendar-data.int.spec.ts",
+      "tests/int/annual-calendar.int.spec.tsx",
       "tests/int/api.int.spec.ts",
       "tests/int/articles-feed-route.int.spec.ts",
       "tests/int/articles.int.spec.ts",
@@ -2813,6 +2885,7 @@
       "tests/int/button-primary-variant.int.spec.tsx",
       "tests/int/cache-revalidation.int.spec.ts",
       "tests/int/calendar-data.int.spec.ts",
+      "tests/int/calendar-pdf-download.int.spec.tsx",
       "tests/int/calendar-route.int.spec.ts",
       "tests/int/calendar-ui-contracts.int.spec.tsx",
       "tests/int/calendar.int.spec.tsx",

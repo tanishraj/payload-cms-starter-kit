@@ -9,6 +9,7 @@ import {
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
+import { resolveCalendarPdf } from '@/blocks/shared/calendarPdf'
 import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
@@ -23,12 +24,16 @@ import { SectionEyebrow, type SectionEyebrowSurface } from '@/components/Section
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
+import type { Media } from '@/payload-types'
 
 export type CalendarBlockLike = {
   accentTitle?: string | null
   adjacentMonthDates?: CalendarAdjacentMonthDates | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
+  calendarPdf?: string | number | Media | null
+  calendarPdfLabel?: string | null
+  calendarPdfTitle?: string | null
   classifications?: unknown
   contentAlignment?: 'center' | 'left' | null
   description?: string | null
@@ -56,6 +61,9 @@ export function CalendarBlockPresentation({
   adjacentMonthDates,
   actions,
   appearance,
+  calendarPdf,
+  calendarPdfLabel,
+  calendarPdfTitle,
   contentAlignment = 'left',
   description,
   draft = false,
@@ -85,6 +93,7 @@ export function CalendarBlockPresentation({
   )
   const resolvedEmptyMessage =
     emptyStateMessage?.trim() || 'No events are scheduled for this month.'
+  const resolvedCalendarPdf = resolveCalendarPdf(calendarPdf, calendarPdfTitle, calendarPdfLabel)
 
   return (
     <section
@@ -137,6 +146,7 @@ export function CalendarBlockPresentation({
             draft={draft}
             emptyMessage={resolvedEmptyMessage}
             initial={initial}
+            pdfDownload={resolvedCalendarPdf}
             surface={appearanceClasses.surface}
             upcomingEyebrow={upcomingEyebrow?.trim() || 'Up next'}
             upcomingTitle={upcomingTitle?.trim() || 'Upcoming'}

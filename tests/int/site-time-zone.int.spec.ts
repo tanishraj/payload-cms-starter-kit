@@ -9,6 +9,7 @@ import {
   getZonedDateKey,
   getZonedMonthBounds,
   getZonedMonthKey,
+  getZonedYearBounds,
   normalizeSiteTimeZone,
 } from '@/lib/siteTimeZone'
 
@@ -41,6 +42,17 @@ describe('site timezone contract', () => {
     expect(getZonedMonthBounds('2026-08', 'Asia/Kolkata')).toEqual({
       endISO: '2026-08-31T18:29:59.999Z',
       startISO: '2026-07-31T18:30:00.000Z',
+    })
+  })
+
+  it('derives inclusive year boundaries in the configured zone', () => {
+    expect(getZonedYearBounds(2026, 'Asia/Kolkata')).toEqual({
+      endISO: '2026-12-31T18:29:59.999Z',
+      startISO: '2025-12-31T18:30:00.000Z',
+    })
+    expect(getZonedYearBounds(2026, 'Asia/Dubai')).toEqual({
+      endISO: '2026-12-31T19:59:59.999Z',
+      startISO: '2025-12-31T20:00:00.000Z',
     })
   })
 

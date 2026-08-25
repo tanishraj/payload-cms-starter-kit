@@ -418,6 +418,26 @@ describe('news and event classifications', () => {
       'Page “Academic Calendar” (ID: calendar-page)',
     ],
     [
+      'current Annual Calendar relationship',
+      {
+        pages: [
+          {
+            id: 'annual-calendar-page',
+            layout: [
+              {
+                blockType: 'annualCalendar',
+                classifications: ['classification-1'],
+              },
+            ],
+            title: 'Annual Academic Calendar',
+          },
+        ],
+      },
+      [],
+      'pages',
+      'Page “Annual Academic Calendar” (ID: annual-calendar-page)',
+    ],
+    [
       'current News & Events Highlights relationship',
       {
         pages: [
@@ -652,7 +672,7 @@ describe('news and event classifications', () => {
       } as unknown as Parameters<typeof protectNewsEventClassificationSystemFields>[0]),
     ).rejects.toMatchObject({
       message:
-        'Remove this classification from News & Events entries, Calendar blocks, Highlights blocks, and Tabs blocks before changing its behavior.',
+        'Remove this classification from News & Events entries, Calendar blocks, Annual Calendar blocks, Highlights blocks, and Tabs blocks before changing its behavior.',
       status: 409,
     })
     expect(find).toHaveBeenCalledTimes(2)

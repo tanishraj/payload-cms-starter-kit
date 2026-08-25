@@ -11,12 +11,16 @@ import {
 } from '@/lib/newsEvents'
 import {
   getCalendarPreviewScopes,
+  getAnnualCalendarPreviewScopes,
   getNewsEventsHighlightsPreviewScopes,
   getNewsEventsTabsPreviewGroupScopes,
   getNewsGridPreviewItemCounts,
   type NewsEventsPreviewSnapshot,
 } from '@/lib/newsEventsPreviewShared'
-import { getDraftCalendarInitialSnapshot } from '@/lib/calendarEvents'
+import {
+  getDraftAnnualCalendarInitialSnapshot,
+  getDraftCalendarInitialSnapshot,
+} from '@/lib/calendarEvents'
 import type { Page, User } from '@/payload-types'
 
 export async function loadNewsEventsPreviewSnapshot(
@@ -57,8 +61,23 @@ export async function loadNewsEventsPreviewSnapshot(
         }),
       )
     : []
+  const annualCalendarEntries = user
+    ? await Promise.all(
+        getAnnualCalendarPreviewScopes(layout).map(
+          async ({ classificationIDs, key, periodInput }) => {
+            const initial = await getDraftAnnualCalendarInitialSnapshot(
+              classificationIDs,
+              periodInput,
+              user,
+            )
+            return [key, initial] as const
+          },
+        ),
+      )
+    : []
 
   return {
+    annualCalendarByScope: Object.fromEntries(annualCalendarEntries),
     calendarByScope: Object.fromEntries(calendarEntries),
     classificationsByScope: Object.fromEntries(
       groupEntries.map(([key, { classifications }]) => [key, classifications]),

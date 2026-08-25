@@ -55,6 +55,23 @@ describe('block thumbnail fixtures', () => {
     expect(html).not.toMatch(/<(a|button)\b/)
   })
 
+  it('renders the Annual Calendar production composition', () => {
+    const html = renderToStaticMarkup(getBlockThumbnailFixture('annualCalendar'))
+
+    expect(html).toContain('data-annual-calendar-block="true"')
+    expect(html.match(/data-annual-calendar-month="true"/g)).toHaveLength(12)
+    expect(html).toContain('Academic calendar')
+  })
+
+  it('renders the Calendar PDF panel in its production fixture', () => {
+    const html = renderToStaticMarkup(getBlockThumbnailFixture('calendar'))
+
+    expect(html).toContain('data-calendar-block="true"')
+    expect(html).toContain('data-calendar-pdf-download="true"')
+    expect(html).toContain('Academic calendar PDF')
+    expect(html).toContain('Download')
+  })
+
   it('uses repository-local media assets only', () => {
     for (const assetPath of blockThumbnailAssetPaths) {
       expect(assetPath).toMatch(/^\/block-thumbnail-assets\//)

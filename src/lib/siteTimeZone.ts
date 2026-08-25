@@ -184,6 +184,20 @@ export const getZonedMonthBounds = (
   return { endISO: new Date(end.getTime() - 1).toISOString(), startISO: start.toISOString() }
 }
 
+export const getZonedYearBounds = (
+  year: number,
+  timeZone: SiteTimeZone = DEFAULT_SITE_TIME_ZONE,
+): ZonedMonthBounds => {
+  if (!Number.isInteger(year) || year < 1000 || year > 9999) {
+    throw new Error(`Invalid year: ${year}`)
+  }
+
+  const january = getZonedMonthBounds(`${year}-01`, timeZone)
+  const december = getZonedMonthBounds(`${year}-12`, timeZone)
+
+  return { endISO: december.endISO, startISO: january.startISO }
+}
+
 export const expandInclusiveDateKeys = (startKey: string, endKey: string): string[] => {
   const start = parseDateKey(startKey)
   const end = parseDateKey(endKey)
