@@ -1,14 +1,46 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
+import type { Field } from 'payload'
 import { describe, expect, it } from 'vitest'
 
+import { QaAccordionBlock } from '@/blocks/QaAccordion/config'
+import { RichTextBlock } from '@/blocks/RichTextBlock/config'
+import { Articles } from '@/collections/Articles'
+import { NewsEvents } from '@/collections/NewsEvents'
 import {
   compactRichTextClasses,
   longFormRichTextClasses,
 } from '@/components/rich-text/richTextStyles'
+import { projectEditor } from '@/fields/bodyEditorConfig'
 
 const source = (path: string) => readFileSync(resolve(process.cwd(), path), 'utf8')
+
+type RichTextFieldUse = {
+  editor: unknown
+  path: string
+}
+
+const collectRichTextFields = (fields: Field[], prefix: string): RichTextFieldUse[] =>
+  fields.flatMap((field) => {
+    const fieldName = 'name' in field && typeof field.name === 'string' ? field.name : ''
+    const segment = field.type === 'array' && fieldName ? `${fieldName}[]` : fieldName
+    const path = segment ? `${prefix}.${segment}` : prefix
+
+    if (field.type === 'richText') {
+      return [{ editor: field.editor, path }]
+    }
+
+    if (field.type === 'tabs') {
+      return field.tabs.flatMap((tab) => collectRichTextFields(tab.fields, path))
+    }
+
+    if ('fields' in field && Array.isArray(field.fields)) {
+      return collectRichTextFields(field.fields, path)
+    }
+
+    return []
+  })
 
 describe('shared Lexical presentation', () => {
   it('defines the complete long-form semantic and responsive contract', () => {
@@ -165,25 +197,43 @@ describe('shared Lexical presentation', () => {
 })
 
 describe('shared Lexical editor configuration', () => {
-  it('offers H2 through H6 while reserving H1 for page titles', () => {
+  it('uses one complete fixed-toolbar editor and reserves H1 for document titles', () => {
     const editorConfig = source('src/fields/bodyEditorConfig.ts')
 
     expect(editorConfig).toContain(
       "HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4', 'h5', 'h6'] })",
     )
-    expect(editorConfig).toContain("export const bodyEditor = createProjectEditor('fixed')")
-    expect(editorConfig).toContain(
-      "export const embeddedContentEditor = createProjectEditor('inline')",
-    )
+    expect(editorConfig).toContain('FixedToolbarFeature()')
+    expect(editorConfig).toContain('export const projectEditor = lexicalEditor({')
+    expect(editorConfig).not.toContain('InlineToolbarFeature')
+    expect(editorConfig).not.toContain('embeddedContentEditor')
   })
 
-  it('uses the explicit embedded editor for block-owned rich text fields', () => {
-    for (const path of ['src/blocks/RichTextBlock/config.ts', 'src/blocks/QaAccordion/config.ts']) {
-      const config = source(path)
+  it('assigns the canonical editor to every production rich-text field', () => {
+    const uses = [
+      ...collectRichTextFields(Articles.fields, 'articles'),
+      ...collectRichTextFields(NewsEvents.fields, 'newsEvents'),
+      ...collectRichTextFields(RichTextBlock.fields, 'richText'),
+      ...collectRichTextFields(QaAccordionBlock.fields, 'qaAccordion'),
+    ].sort((left, right) => left.path.localeCompare(right.path))
 
-      expect(config).toContain("import { embeddedContentEditor } from '@/fields/bodyEditorConfig'")
-      expect(config).toContain('editor: embeddedContentEditor')
-      expect(config).not.toContain('lexicalEditor(')
+    expect(uses.map(({ path }) => path)).toEqual([
+      'articles.body',
+      'newsEvents.body',
+      'qaAccordion.items[].answer',
+      'richText.content',
+    ])
+
+    for (const use of uses) {
+      expect(use.editor, use.path).toBe(projectEditor)
     }
+  })
+
+  it('uses the canonical editor as Payload fallback', () => {
+    const payloadConfig = source('src/payload.config.ts')
+
+    expect(payloadConfig).toContain("import { projectEditor } from './fields/bodyEditorConfig'")
+    expect(payloadConfig).toContain('editor: projectEditor')
+    expect(payloadConfig).not.toContain('editor: lexicalEditor()')
   })
 })

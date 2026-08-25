@@ -3,7 +3,7 @@ import type { ArrayField, Block, CheckboxField, GroupField, SelectField, TabsFie
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
-import { embeddedContentEditor } from '@/fields/bodyEditorConfig'
+import { projectEditor } from '@/fields/bodyEditorConfig'
 
 import type { QaAccordionLayoutMode } from './layoutContract'
 
@@ -31,7 +31,7 @@ const qaAccordionItemsField = {
     {
       name: 'answer',
       type: 'richText',
-      editor: embeddedContentEditor,
+      editor: projectEditor,
       required: true,
     },
   ],

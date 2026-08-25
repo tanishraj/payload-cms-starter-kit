@@ -7,7 +7,7 @@ import {
   requireCapability,
 } from '@/access/adminCapabilities'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
-import { bodyEditor } from '@/fields/bodyEditorConfig'
+import { projectEditor } from '@/fields/bodyEditorConfig'
 import { buildSEOFields } from '@/fields/buildSEOFields'
 import { projectSlugField } from '@/fields/projectSlugField'
 import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
@@ -235,7 +235,7 @@ export const NewsEvents: CollectionConfig = {
             {
               name: 'body',
               type: 'richText',
-              editor: bodyEditor,
+              editor: projectEditor,
               required: true,
               admin: {
                 description: 'Complete story or event description.',

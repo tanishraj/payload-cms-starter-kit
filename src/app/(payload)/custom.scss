@@ -44,17 +44,9 @@
   }
 }
 
-// ─── Compact scroller (no toolbar — small inline editors) ────────────────────
+// ─── Shared fixed-toolbar editor scroller ────────────────────────────────────
 
-.editor-container:not(:has(.fixed-toolbar)) .editor-scroller {
-  padding: 10px 14px;
-  min-height: 250px;
-  border-radius: 0;
-}
-
-// ─── Body editor scroller ────────────────────────────────────────────────────
-
-.editor-container:has(.fixed-toolbar) .editor-scroller {
+.editor-container .editor-scroller {
   padding: 16px;
   min-height: 250px;
   border-radius: 0;

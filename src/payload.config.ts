@@ -1,4 +1,3 @@
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -28,6 +27,7 @@ import { createDatabaseAdapter, createEmailAdapter, createStoragePlugins } from 
 import { assertSupportedStarterContract, getStarterContract } from './config/starterContract'
 import { getRuntimeConfig } from './config/runtime'
 import { payloadUploadConfig } from './config/uploadLimits'
+import { projectEditor } from './fields/bodyEditorConfig'
 import { PageSettings } from './globals/PageSettings'
 import { NewsEventsDetailTemplate } from './globals/NewsEventsDetailTemplate'
 import { SEOSettings } from './globals/SEOSettings'
@@ -104,7 +104,7 @@ export default buildConfig({
     SearchSettings,
     SystemModeSettings,
   ],
-  editor: lexicalEditor(),
+  editor: projectEditor,
   email,
   graphQL: {
     disableIntrospectionInProduction: true,

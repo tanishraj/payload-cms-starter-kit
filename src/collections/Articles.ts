@@ -18,7 +18,7 @@ import {
   revalidateArticlesCache,
   revalidateDeletedArticleCache,
 } from '@/hooks/revalidateCmsContent'
-import { bodyEditor } from '@/fields/bodyEditorConfig'
+import { projectEditor } from '@/fields/bodyEditorConfig'
 
 const previewBreakpoints = [
   {
@@ -208,7 +208,7 @@ export const Articles: CollectionConfig = {
             {
               name: 'body',
               type: 'richText',
-              editor: bodyEditor,
+              editor: projectEditor,
               required: true,
               admin: {
                 description: 'Primary long-form article body.',
