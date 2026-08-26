@@ -19,6 +19,7 @@ import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { ContentLink } from '@/components/ContentLink'
 import { Button } from '@/components/ui/button'
 import {
+  getCmsActionAnchorProps,
   resolveCmsActions,
   type CmsActionValue,
   type CmsActionVariant,
@@ -89,12 +90,13 @@ function ProgrammeAction({ action, buttonClassName, linkClassName }: ProgrammeAc
   if (action.mode === 'button' && action.variant !== 'link') {
     return (
       <Button asChild className={buttonClassName} size="sm" variant={action.variant}>
-        <a
-          href={action.href}
-          rel={action.openInNewTab ? 'noreferrer' : undefined}
-          target={action.openInNewTab ? '_blank' : undefined}
-        >
-          <ActionButtonContent label={action.label} showArrow={action.showArrow} />
+        <a {...getCmsActionAnchorProps(action)}>
+          <ActionButtonContent
+            indicator={action.indicator}
+            indicatorPosition={action.indicatorPosition}
+            label={action.label}
+            showArrow={action.showArrow}
+          />
         </a>
       </Button>
     )
@@ -103,7 +105,10 @@ function ProgrammeAction({ action, buttonClassName, linkClassName }: ProgrammeAc
   return (
     <ContentLink
       className={linkClassName}
+      download={action.download}
       href={action.href}
+      indicator={action.indicator}
+      indicatorPosition={action.indicatorPosition}
       label={action.label}
       openInNewTab={action.openInNewTab}
     />

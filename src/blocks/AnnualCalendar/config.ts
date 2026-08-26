@@ -1,10 +1,4 @@
-import type {
-  Block,
-  DateField,
-  RelationshipField,
-  SelectField,
-  TabsField,
-} from 'payload'
+import type { Block, DateField, RelationshipField, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import {
@@ -14,7 +8,7 @@ import {
 } from '@/blocks/AnnualCalendar/annualCalendarShared'
 import { CALENDAR_MAX_CLASSIFICATIONS } from '@/blocks/Calendar/calendarShared'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
-import { createCalendarPdfFields } from '@/blocks/shared/calendarPdfFields'
+import { createCalendarDownloadPanelFields } from '@/blocks/shared/calendarPdfFields'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 
 const customPeriodCondition = (_data: unknown, siblingData?: AnnualCalendarPeriodInput) =>
@@ -144,7 +138,7 @@ export const AnnualCalendarBlock: Block = {
               type: 'text',
               defaultValue: 'Coming next',
             },
-            ...createCalendarPdfFields(),
+            ...createCalendarDownloadPanelFields(),
             {
               name: 'emptyStateMessage',
               label: 'Empty State Message',

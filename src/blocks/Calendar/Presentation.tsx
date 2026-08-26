@@ -9,7 +9,7 @@ import {
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
-import { resolveCalendarPdf } from '@/blocks/shared/calendarPdf'
+import { resolveCalendarDownloadPanel } from '@/blocks/shared/calendarPdf'
 import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
@@ -32,6 +32,7 @@ export type CalendarBlockLike = {
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   calendarPdf?: string | number | Media | null
+  calendarPdfAction?: CmsActionValue[] | null
   calendarPdfLabel?: string | null
   calendarPdfTitle?: string | null
   classifications?: unknown
@@ -62,6 +63,7 @@ export function CalendarBlockPresentation({
   actions,
   appearance,
   calendarPdf,
+  calendarPdfAction,
   calendarPdfLabel,
   calendarPdfTitle,
   contentAlignment = 'left',
@@ -93,7 +95,12 @@ export function CalendarBlockPresentation({
   )
   const resolvedEmptyMessage =
     emptyStateMessage?.trim() || 'No events are scheduled for this month.'
-  const resolvedCalendarPdf = resolveCalendarPdf(calendarPdf, calendarPdfTitle, calendarPdfLabel)
+  const resolvedCalendarPdf = resolveCalendarDownloadPanel({
+    actions: calendarPdfAction,
+    legacyLabel: calendarPdfLabel,
+    legacyMedia: calendarPdf,
+    title: calendarPdfTitle,
+  })
 
   return (
     <section
@@ -101,6 +108,7 @@ export function CalendarBlockPresentation({
         regularBlockMobilePaddingClasses[size ?? 'default'],
         appearanceClasses.className,
       )}
+      data-block-surface={appearanceClasses.surface}
       data-calendar-block="true"
     >
       <div className={cn(regularBlockContainerClasses, 'flex flex-col gap-10')}>

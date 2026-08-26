@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button'
 import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { ContentLink } from '@/components/ContentLink'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
-import type { ResolvedCmsAction } from '@/lib/cmsLinks'
+import { getCmsActionAnchorProps, type ResolvedCmsAction } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 import {
   regularBlockMobilePaddingClasses,
@@ -116,12 +116,10 @@ function MediaCard({
                 variant={item.action.variant}
                 className={surface.button[item.action.variant]}
               >
-                <a
-                  href={item.action.href}
-                  rel={item.action.openInNewTab ? 'noreferrer' : undefined}
-                  target={item.action.openInNewTab ? '_blank' : undefined}
-                >
+                <a {...getCmsActionAnchorProps(item.action)}>
                   <ActionButtonContent
+                    indicator={item.action.indicator}
+                    indicatorPosition={item.action.indicatorPosition}
                     label={item.action.label}
                     showArrow={item.action.showArrow}
                   />
@@ -130,7 +128,10 @@ function MediaCard({
             ) : (
               <ContentLink
                 className={surface.link}
+                download={item.action.download}
                 href={item.action.href}
+                indicator={item.action.indicator}
+                indicatorPosition={item.action.indicatorPosition}
                 label={item.action.label}
                 openInNewTab={item.action.openInNewTab}
               />
@@ -184,9 +185,7 @@ export function MediaCarouselClient({
               : 'items-start text-left',
           )}
         >
-          {eyebrow ? (
-            <SectionEyebrow surface={sectionBackground}>{eyebrow}</SectionEyebrow>
-          ) : null}
+          {eyebrow ? <SectionEyebrow surface={sectionBackground}>{eyebrow}</SectionEyebrow> : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
             {title}
           </h2>

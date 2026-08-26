@@ -12,7 +12,12 @@ import { useControllableMotion } from '@/components/motion/useControllableMotion
 import { Button } from '@/components/ui/button'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel'
-import type { CmsActionVariant } from '@/lib/cmsLinks'
+import {
+  getCmsActionAnchorProps,
+  type CmsActionIndicator,
+  type CmsActionIndicatorPosition,
+  type CmsActionVariant,
+} from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 import {
   resolveMediaOverlay,
@@ -27,7 +32,10 @@ export type CarouselSlide = {
   backgroundImageSrc?: string
   backgroundVideoUrl?: string
   buttons?: Array<{
+    download?: string | true
     href: string
+    indicator?: CmsActionIndicator
+    indicatorPosition?: CmsActionIndicatorPosition
     label: string
     openInNewTab?: boolean
     showArrow: boolean
@@ -273,7 +281,10 @@ export function HeroCarouselClient({
                           button.variant === 'link' ? (
                             <ContentLink
                               className={overlay.text.link}
+                              download={button.download}
                               href={button.href}
+                              indicator={button.indicator}
+                              indicatorPosition={button.indicatorPosition}
                               key={`${button.label}-${button.href}`}
                               label={button.label}
                               openInNewTab={button.openInNewTab}
@@ -285,12 +296,10 @@ export function HeroCarouselClient({
                               size="lg"
                               variant={button.variant ?? 'secondary'}
                             >
-                              <a
-                                href={button.href}
-                                rel={button.openInNewTab ? 'noreferrer' : undefined}
-                                target={button.openInNewTab ? '_blank' : undefined}
-                              >
+                              <a {...getCmsActionAnchorProps(button)}>
                                 <ActionButtonContent
+                                  indicator={button.indicator}
+                                  indicatorPosition={button.indicatorPosition}
                                   label={button.label}
                                   showArrow={button.showArrow}
                                 />

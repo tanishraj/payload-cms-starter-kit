@@ -1,13 +1,13 @@
-import { Download, FileText } from 'lucide-react'
+import { FileText } from 'lucide-react'
 
 import { resolveCalendarSurfaceClasses } from '@/blocks/Calendar/calendarStyles'
 import type { BlockSurface } from '@/blocks/shared/blockAppearance'
-import type { ResolvedCalendarPdf } from '@/blocks/shared/calendarPdf'
-import { Button } from '@/components/ui/button'
+import type { ResolvedCalendarDownloadPanel } from '@/blocks/shared/calendarPdf'
+import { ContentActions } from '@/components/ContentActions'
 import { cn } from '@/lib/utils'
 
 type CalendarPdfDownloadProps = {
-  download: ResolvedCalendarPdf
+  download: ResolvedCalendarDownloadPanel
   embedded?: boolean
   surface?: BlockSurface
 }
@@ -38,16 +38,11 @@ export function CalendarPdfDownload({
           {download.title}
         </p>
       </div>
-      <Button
-        asChild
+      <ContentActions
+        actions={[download.action]}
+        buttonClassNames={{ [download.action.variant]: 'w-full' }}
         className="w-full"
-        variant={surface === 'brand' ? 'whiteOutline' : 'outline'}
-      >
-        <a download={download.filename || true} href={download.href}>
-          <Download aria-hidden="true" data-icon="inline-start" />
-          {download.label}
-        </a>
-      </Button>
+      />
     </div>
   )
 }

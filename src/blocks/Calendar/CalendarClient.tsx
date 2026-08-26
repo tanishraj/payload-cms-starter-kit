@@ -16,7 +16,7 @@ import {
 import { resolveCalendarSurfaceClasses } from '@/blocks/Calendar/calendarStyles'
 import type { BlockSurface } from '@/blocks/shared/blockAppearance'
 import { CalendarSidebar } from '@/blocks/shared/CalendarSidebar'
-import type { ResolvedCalendarPdf } from '@/blocks/shared/calendarPdf'
+import type { ResolvedCalendarDownloadPanel } from '@/blocks/shared/calendarPdf'
 import { Alert, AlertAction, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
@@ -38,7 +38,7 @@ type CalendarClientProps = {
   draft?: boolean
   emptyMessage: string
   initial: CalendarInitialSnapshot
-  pdfDownload?: ResolvedCalendarPdf
+  pdfDownload?: ResolvedCalendarDownloadPanel
   surface?: BlockSurface
   upcomingEyebrow: string
   upcomingTitle: string

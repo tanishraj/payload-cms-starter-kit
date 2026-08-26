@@ -1,6 +1,10 @@
 import { getMediaImageProps } from '@/lib/media'
-import { resolveCmsLink, type CmsActionVariant } from '@/lib/cmsLinks'
-import type { Page } from '@/payload-types'
+import {
+  resolveCmsLink,
+  type CmsActionIndicatorPosition,
+  type CmsActionVariant,
+} from '@/lib/cmsLinks'
+import type { Media, Page } from '@/payload-types'
 import type {
   MediaOverlayCoverage,
   MediaOverlayDirection,
@@ -15,11 +19,16 @@ import {
 } from './HeroCarouselClient'
 
 type HeroButton = {
+  file?: Media | number | string | null
+  fileBehavior?: 'download' | 'view' | null
+  fileIconPosition?: CmsActionIndicatorPosition | null
   label?: string | null
-  linkType?: 'page' | 'custom' | null
+  linkType?: 'page' | 'custom' | 'file' | null
+  openFileInNewTab?: boolean | null
   openInNewTab?: boolean | null
   page?: Page | number | string | null
   showArrow?: boolean | null
+  showFileIcon?: boolean | null
   url?: string | null
   variant?: CmsActionVariant | null
 }
@@ -54,7 +63,10 @@ export function resolveHeroCarouselSlides(slides?: SlideData[] | null): Carousel
       return label && link.href
         ? [
             {
+              download: link.download,
               href: link.href,
+              indicator: link.indicator,
+              indicatorPosition: link.indicatorPosition,
               label,
               openInNewTab: link.openInNewTab,
               showArrow: Boolean(button.showArrow),

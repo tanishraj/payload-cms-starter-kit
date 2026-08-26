@@ -329,10 +329,16 @@ export interface PageHeaderBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -342,16 +348,27 @@ export interface PageHeaderBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -361,6 +378,11 @@ export interface PageHeaderBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -765,10 +787,16 @@ export interface AboutSectionBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -778,16 +806,27 @@ export interface AboutSectionBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -797,6 +836,11 @@ export interface AboutSectionBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -834,10 +878,16 @@ export interface FeatureSpotlightBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -847,16 +897,27 @@ export interface FeatureSpotlightBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -866,6 +927,11 @@ export interface FeatureSpotlightBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -896,10 +962,16 @@ export interface ContentHighlightsBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -909,16 +981,27 @@ export interface ContentHighlightsBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -928,6 +1011,11 @@ export interface ContentHighlightsBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -949,10 +1037,16 @@ export interface ContentHighlightsBlock {
     cardAction?:
       | {
           label: string;
-          linkType?: ('page' | 'custom') | null;
+          linkType?: ('page' | 'custom' | 'file') | null;
           page?: (string | null) | Page;
           url?: string | null;
           openInNewTab?: boolean | null;
+          /**
+           * Choose the Media asset this action should view or download.
+           */
+          file?: (string | null) | Media;
+          fileBehavior?: ('view' | 'download') | null;
+          openFileInNewTab?: boolean | null;
           mode?: ('link' | 'button') | null;
           /**
            * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -962,6 +1056,11 @@ export interface ContentHighlightsBlock {
            * Adds a trailing arrow when this action is displayed as a button.
            */
           showArrow?: boolean | null;
+          /**
+           * Shows an animated down arrow for this file download.
+           */
+          showFileIcon?: boolean | null;
+          fileIconPosition?: ('left' | 'right') | null;
           id?: string | null;
         }[]
       | null;
@@ -1015,10 +1114,16 @@ export interface AcademicProgrammesBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1028,6 +1133,11 @@ export interface AcademicProgrammesBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -1097,10 +1207,16 @@ export interface AcademicProgrammesBlock {
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1110,6 +1226,11 @@ export interface AcademicProgrammesBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -1166,10 +1287,16 @@ export interface NewsEventsTabsBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1179,16 +1306,27 @@ export interface NewsEventsTabsBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1198,6 +1336,11 @@ export interface NewsEventsTabsBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -1311,10 +1454,16 @@ export interface CalendarBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1324,16 +1473,27 @@ export interface CalendarBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1343,6 +1503,11 @@ export interface CalendarBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -1352,11 +1517,38 @@ export interface CalendarBlock {
   classifications: (string | NewsEventClassification)[];
   upcomingEyebrow?: string | null;
   upcomingTitle?: string | null;
-  /**
-   * Optional PDF shown as a download below Upcoming.
-   */
-  calendarPdf?: (string | null) | Media;
   calendarPdfTitle?: string | null;
+  calendarPdfAction?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
+  calendarPdf?: (string | null) | Media;
   calendarPdfLabel?: string | null;
   emptyStateMessage?: string | null;
   appearance: {
@@ -1391,10 +1583,16 @@ export interface AnnualCalendarBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1404,16 +1602,27 @@ export interface AnnualCalendarBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1423,6 +1632,11 @@ export interface AnnualCalendarBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -1444,11 +1658,38 @@ export interface AnnualCalendarBlock {
   classifications: (string | NewsEventClassification)[];
   upcomingEyebrow?: string | null;
   upcomingTitle?: string | null;
-  /**
-   * Optional PDF shown as a download below Upcoming.
-   */
-  calendarPdf?: (string | null) | Media;
   calendarPdfTitle?: string | null;
+  calendarPdfAction?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
+  calendarPdf?: (string | null) | Media;
   calendarPdfLabel?: string | null;
   emptyStateMessage?: string | null;
   appearance: {
@@ -1479,10 +1720,16 @@ export interface DepartmentProfilesBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1492,6 +1739,11 @@ export interface DepartmentProfilesBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -1519,10 +1771,16 @@ export interface DepartmentProfilesBlock {
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1532,6 +1790,11 @@ export interface DepartmentProfilesBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -1600,10 +1863,16 @@ export interface GalleryAlbumTabsBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1613,6 +1882,11 @@ export interface GalleryAlbumTabsBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -1637,10 +1911,16 @@ export interface GalleryAlbumTabsBlock {
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1650,6 +1930,11 @@ export interface GalleryAlbumTabsBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -1714,10 +1999,16 @@ export interface QaAccordionBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1727,16 +2018,27 @@ export interface QaAccordionBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1746,6 +2048,11 @@ export interface QaAccordionBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -1782,10 +2089,16 @@ export interface QaAccordionBlock {
       actions?:
         | {
             label: string;
-            linkType?: ('page' | 'custom') | null;
+            linkType?: ('page' | 'custom' | 'file') | null;
             page?: (string | null) | Page;
             url?: string | null;
             openInNewTab?: boolean | null;
+            /**
+             * Choose the Media asset this action should view or download.
+             */
+            file?: (string | null) | Media;
+            fileBehavior?: ('view' | 'download') | null;
+            openFileInNewTab?: boolean | null;
             mode?: ('link' | 'button') | null;
             /**
              * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1795,6 +2108,11 @@ export interface QaAccordionBlock {
              * Adds a trailing arrow when this action is displayed as a button.
              */
             showArrow?: boolean | null;
+            /**
+             * Shows an animated down arrow for this file download.
+             */
+            showFileIcon?: boolean | null;
+            fileIconPosition?: ('left' | 'right') | null;
             id?: string | null;
           }[]
         | null;
@@ -1855,10 +2173,16 @@ export interface TestimonialSpotlightBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1868,6 +2192,11 @@ export interface TestimonialSpotlightBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -1881,10 +2210,16 @@ export interface TestimonialSpotlightBlock {
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1894,6 +2229,11 @@ export interface TestimonialSpotlightBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -1934,10 +2274,16 @@ export interface AccreditationCardsBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1947,6 +2293,11 @@ export interface AccreditationCardsBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -1975,10 +2326,16 @@ export interface AccreditationCardsBlock {
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -1988,6 +2345,11 @@ export interface AccreditationCardsBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -2039,10 +2401,16 @@ export interface BannerCtaBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2052,16 +2420,27 @@ export interface BannerCtaBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2071,6 +2450,11 @@ export interface BannerCtaBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -2114,10 +2498,16 @@ export interface Contact24Block {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2127,16 +2517,27 @@ export interface Contact24Block {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2146,6 +2547,11 @@ export interface Contact24Block {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -2223,10 +2629,16 @@ export interface DownloadListBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2236,6 +2648,11 @@ export interface DownloadListBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -2294,10 +2711,16 @@ export interface DownloadListBlock {
         customAction?:
           | {
               label: string;
-              linkType?: ('page' | 'custom') | null;
+              linkType?: ('page' | 'custom' | 'file') | null;
               page?: (string | null) | Page;
               url?: string | null;
               openInNewTab?: boolean | null;
+              /**
+               * Choose the Media asset this action should view or download.
+               */
+              file?: (string | null) | Media;
+              fileBehavior?: ('view' | 'download') | null;
+              openFileInNewTab?: boolean | null;
               mode?: ('link' | 'button') | null;
               /**
                * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2307,6 +2730,11 @@ export interface DownloadListBlock {
                * Adds a trailing arrow when this action is displayed as a button.
                */
               showArrow?: boolean | null;
+              /**
+               * Shows an animated down arrow for this file download.
+               */
+              showFileIcon?: boolean | null;
+              fileIconPosition?: ('left' | 'right') | null;
               id?: string | null;
             }[]
           | null;
@@ -2335,10 +2763,16 @@ export interface DownloadListBlock {
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2348,6 +2782,11 @@ export interface DownloadListBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -2432,10 +2871,16 @@ export interface NewsGridBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2445,16 +2890,27 @@ export interface NewsGridBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2464,6 +2920,11 @@ export interface NewsGridBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -2533,10 +2994,16 @@ export interface Cta39Block {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2546,16 +3013,27 @@ export interface Cta39Block {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2565,6 +3043,11 @@ export interface Cta39Block {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -2676,10 +3159,16 @@ export interface GalleryCoverflowBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2689,16 +3178,27 @@ export interface GalleryCoverflowBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2708,6 +3208,11 @@ export interface GalleryCoverflowBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -2742,10 +3247,16 @@ export interface FeatureMatrixBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2755,16 +3266,27 @@ export interface FeatureMatrixBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2774,6 +3296,11 @@ export interface FeatureMatrixBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -2820,10 +3347,16 @@ export interface EditorialReasonsBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2833,6 +3366,11 @@ export interface EditorialReasonsBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -2851,10 +3389,16 @@ export interface EditorialReasonsBlock {
   listActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2864,6 +3408,11 @@ export interface EditorialReasonsBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -2921,10 +3470,16 @@ export interface LeadershipProfilesBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2934,6 +3489,11 @@ export interface LeadershipProfilesBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -2968,10 +3528,16 @@ export interface LeadershipProfilesBlock {
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -2981,6 +3547,11 @@ export interface LeadershipProfilesBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -3040,10 +3611,16 @@ export interface NewsEventsHighlightsBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3053,16 +3630,27 @@ export interface NewsEventsHighlightsBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3072,6 +3660,11 @@ export interface NewsEventsHighlightsBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -3118,10 +3711,16 @@ export interface ProfileCarouselBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3131,16 +3730,27 @@ export interface ProfileCarouselBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3150,6 +3760,11 @@ export interface ProfileCarouselBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -3203,10 +3818,16 @@ export interface GalleryShowcaseBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3216,16 +3837,27 @@ export interface GalleryShowcaseBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3235,6 +3867,11 @@ export interface GalleryShowcaseBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -3266,10 +3903,16 @@ export interface EventGalleryBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3279,6 +3922,11 @@ export interface EventGalleryBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -3294,10 +3942,16 @@ export interface EventGalleryBlock {
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3307,6 +3961,11 @@ export interface EventGalleryBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -3359,10 +4018,16 @@ export interface ImageMosaicBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3372,16 +4037,27 @@ export interface ImageMosaicBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3391,6 +4067,11 @@ export interface ImageMosaicBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -3403,10 +4084,16 @@ export interface ImageMosaicBlock {
         action?:
           | {
               label: string;
-              linkType?: ('page' | 'custom') | null;
+              linkType?: ('page' | 'custom' | 'file') | null;
               page?: (string | null) | Page;
               url?: string | null;
               openInNewTab?: boolean | null;
+              /**
+               * Choose the Media asset this action should view or download.
+               */
+              file?: (string | null) | Media;
+              fileBehavior?: ('view' | 'download') | null;
+              openFileInNewTab?: boolean | null;
               mode?: ('link' | 'button') | null;
               /**
                * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3416,6 +4103,11 @@ export interface ImageMosaicBlock {
                * Adds a trailing arrow when this action is displayed as a button.
                */
               showArrow?: boolean | null;
+              /**
+               * Shows an animated down arrow for this file download.
+               */
+              showFileIcon?: boolean | null;
+              fileIconPosition?: ('left' | 'right') | null;
               id?: string | null;
             }[]
           | null;
@@ -3483,10 +4175,16 @@ export interface StudentExperienceBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3496,6 +4194,11 @@ export interface StudentExperienceBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -3528,10 +4231,16 @@ export interface StudentExperienceBlock {
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3541,6 +4250,11 @@ export interface StudentExperienceBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -3568,10 +4282,16 @@ export interface RatingSpotlightBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3581,16 +4301,27 @@ export interface RatingSpotlightBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3600,6 +4331,11 @@ export interface RatingSpotlightBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -3630,10 +4366,16 @@ export interface ReviewFeedBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3643,6 +4385,11 @@ export interface ReviewFeedBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -3652,10 +4399,16 @@ export interface ReviewFeedBlock {
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3665,6 +4418,11 @@ export interface ReviewFeedBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -3689,10 +4447,16 @@ export interface ReviewSubmissionBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3702,16 +4466,27 @@ export interface ReviewSubmissionBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3721,6 +4496,11 @@ export interface ReviewSubmissionBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -3816,10 +4596,16 @@ export interface Contact33Block {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3829,16 +4615,27 @@ export interface Contact33Block {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3848,6 +4645,11 @@ export interface Contact33Block {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -3879,10 +4681,16 @@ export interface TeamShowcaseBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3892,16 +4700,27 @@ export interface TeamShowcaseBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3911,6 +4730,11 @@ export interface TeamShowcaseBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -3950,10 +4774,16 @@ export interface Services21Block {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3963,16 +4793,27 @@ export interface Services21Block {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -3982,6 +4823,11 @@ export interface Services21Block {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -4018,10 +4864,16 @@ export interface VideoEmbedBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4031,16 +4883,27 @@ export interface VideoEmbedBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4050,6 +4913,11 @@ export interface VideoEmbedBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -4091,10 +4959,16 @@ export interface MediaCarouselBlock {
   sectionActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4104,16 +4978,27 @@ export interface MediaCarouselBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4123,6 +5008,11 @@ export interface MediaCarouselBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -4147,10 +5037,16 @@ export interface MediaCarouselBlock {
         actions?:
           | {
               label: string;
-              linkType?: ('page' | 'custom') | null;
+              linkType?: ('page' | 'custom' | 'file') | null;
               page?: (string | null) | Page;
               url?: string | null;
               openInNewTab?: boolean | null;
+              /**
+               * Choose the Media asset this action should view or download.
+               */
+              file?: (string | null) | Media;
+              fileBehavior?: ('view' | 'download') | null;
+              openFileInNewTab?: boolean | null;
               mode?: ('link' | 'button') | null;
               /**
                * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4160,6 +5056,11 @@ export interface MediaCarouselBlock {
                * Adds a trailing arrow when this action is displayed as a button.
                */
               showArrow?: boolean | null;
+              /**
+               * Shows an animated down arrow for this file download.
+               */
+              showFileIcon?: boolean | null;
+              fileIconPosition?: ('left' | 'right') | null;
               id?: string | null;
             }[]
           | null;
@@ -4196,10 +5097,16 @@ export interface ProgramMatrixBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4209,16 +5116,27 @@ export interface ProgramMatrixBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4228,6 +5146,11 @@ export interface ProgramMatrixBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -4248,10 +5171,16 @@ export interface ProgramMatrixBlock {
     cardAction?:
       | {
           label: string;
-          linkType?: ('page' | 'custom') | null;
+          linkType?: ('page' | 'custom' | 'file') | null;
           page?: (string | null) | Page;
           url?: string | null;
           openInNewTab?: boolean | null;
+          /**
+           * Choose the Media asset this action should view or download.
+           */
+          file?: (string | null) | Media;
+          fileBehavior?: ('view' | 'download') | null;
+          openFileInNewTab?: boolean | null;
           mode?: ('link' | 'button') | null;
           /**
            * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4261,6 +5190,11 @@ export interface ProgramMatrixBlock {
            * Adds a trailing arrow when this action is displayed as a button.
            */
           showArrow?: boolean | null;
+          /**
+           * Shows an animated down arrow for this file download.
+           */
+          showFileIcon?: boolean | null;
+          fileIconPosition?: ('left' | 'right') | null;
           id?: string | null;
         }[]
       | null;
@@ -4323,10 +5257,16 @@ export interface LogoStripBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4336,6 +5276,11 @@ export interface LogoStripBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -4427,10 +5372,16 @@ export interface TimelineBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4440,6 +5391,11 @@ export interface TimelineBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -4465,10 +5421,16 @@ export interface TimelineBlock {
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4478,6 +5440,11 @@ export interface TimelineBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -4512,10 +5479,16 @@ export interface IconCardShowcaseBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4525,6 +5498,11 @@ export interface IconCardShowcaseBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -4571,10 +5549,16 @@ export interface IconCardShowcaseBlock {
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4584,6 +5568,11 @@ export interface IconCardShowcaseBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -4641,10 +5630,16 @@ export interface IconGridBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4654,6 +5649,11 @@ export interface IconGridBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -4685,10 +5685,16 @@ export interface IconGridBlock {
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4698,6 +5704,11 @@ export interface IconGridBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -4776,10 +5787,16 @@ export interface TabsContentBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4789,6 +5806,11 @@ export interface TabsContentBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -4822,10 +5844,16 @@ export interface TabsContentBlock {
         actions?:
           | {
               label: string;
-              linkType?: ('page' | 'custom') | null;
+              linkType?: ('page' | 'custom' | 'file') | null;
               page?: (string | null) | Page;
               url?: string | null;
               openInNewTab?: boolean | null;
+              /**
+               * Choose the Media asset this action should view or download.
+               */
+              file?: (string | null) | Media;
+              fileBehavior?: ('view' | 'download') | null;
+              openFileInNewTab?: boolean | null;
               mode?: ('link' | 'button') | null;
               /**
                * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4835,6 +5863,11 @@ export interface TabsContentBlock {
                * Adds a trailing arrow when this action is displayed as a button.
                */
               showArrow?: boolean | null;
+              /**
+               * Shows an animated down arrow for this file download.
+               */
+              showFileIcon?: boolean | null;
+              fileIconPosition?: ('left' | 'right') | null;
               id?: string | null;
             }[]
           | null;
@@ -4844,10 +5877,16 @@ export interface TabsContentBlock {
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4857,6 +5896,11 @@ export interface TabsContentBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -4897,10 +5941,16 @@ export interface FeeStructureBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -4910,6 +5960,11 @@ export interface FeeStructureBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -4989,10 +6044,16 @@ export interface FeeStructureBlock {
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -5002,6 +6063,11 @@ export interface FeeStructureBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -5037,10 +6103,16 @@ export interface NumberedStepsBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -5050,16 +6122,27 @@ export interface NumberedStepsBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -5069,6 +6152,11 @@ export interface NumberedStepsBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -5119,10 +6207,16 @@ export interface BentoGridBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -5132,16 +6226,27 @@ export interface BentoGridBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -5151,6 +6256,11 @@ export interface BentoGridBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -5201,10 +6311,16 @@ export interface TestimonialGridBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -5214,6 +6330,11 @@ export interface TestimonialGridBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -5237,10 +6358,16 @@ export interface TestimonialGridBlock {
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -5250,6 +6377,11 @@ export interface TestimonialGridBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -5280,10 +6412,16 @@ export interface AwardsListBlock {
   actions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -5293,16 +6431,27 @@ export interface AwardsListBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
   footerActions?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -5312,6 +6461,11 @@ export interface AwardsListBlock {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -5734,10 +6888,16 @@ export interface NewsEvent {
   eventRegistrationAction?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
         mode?: ('link' | 'button') | null;
         /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -5747,6 +6907,11 @@ export interface NewsEvent {
          * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -6747,9 +7912,14 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -6760,9 +7930,14 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   keyFacts?:
@@ -6908,9 +8083,14 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -6921,9 +8101,14 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -6960,9 +8145,14 @@ export interface FeatureSpotlightBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -6973,9 +8163,14 @@ export interface FeatureSpotlightBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -7011,9 +8206,14 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -7024,9 +8224,14 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   items?:
@@ -7045,9 +8250,14 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
               page?: T;
               url?: T;
               openInNewTab?: T;
+              file?: T;
+              fileBehavior?: T;
+              openFileInNewTab?: T;
               mode?: T;
               variant?: T;
               showArrow?: T;
+              showFileIcon?: T;
+              fileIconPosition?: T;
               id?: T;
             };
         cardBackground?: T;
@@ -7091,9 +8301,14 @@ export interface AcademicProgrammesBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   programmes?:
@@ -7133,9 +8348,14 @@ export interface AcademicProgrammesBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -7173,9 +8393,14 @@ export interface NewsEventsTabsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -7186,9 +8411,14 @@ export interface NewsEventsTabsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   allTabLabel?: T;
@@ -7230,9 +8460,14 @@ export interface CalendarBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -7243,16 +8478,39 @@ export interface CalendarBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   classifications?: T;
   upcomingEyebrow?: T;
   upcomingTitle?: T;
-  calendarPdf?: T;
   calendarPdfTitle?: T;
+  calendarPdfAction?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
+  calendarPdf?: T;
   calendarPdfLabel?: T;
   emptyStateMessage?: T;
   appearance?:
@@ -7284,9 +8542,14 @@ export interface AnnualCalendarBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -7297,9 +8560,14 @@ export interface AnnualCalendarBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   periodMode?: T;
@@ -7308,8 +8576,26 @@ export interface AnnualCalendarBlockSelect<T extends boolean = true> {
   classifications?: T;
   upcomingEyebrow?: T;
   upcomingTitle?: T;
-  calendarPdf?: T;
   calendarPdfTitle?: T;
+  calendarPdfAction?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
+  calendarPdf?: T;
   calendarPdfLabel?: T;
   emptyStateMessage?: T;
   appearance?:
@@ -7340,9 +8626,14 @@ export interface DepartmentProfilesBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   departments?:
@@ -7369,9 +8660,14 @@ export interface DepartmentProfilesBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -7424,9 +8720,14 @@ export interface GalleryAlbumTabsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   galleryAlbums?: T;
@@ -7443,9 +8744,14 @@ export interface GalleryAlbumTabsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -7477,9 +8783,14 @@ export interface QaAccordionBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -7490,9 +8801,14 @@ export interface QaAccordionBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   items?:
@@ -7525,9 +8841,14 @@ export interface QaAccordionBlockSelect<T extends boolean = true> {
                     page?: T;
                     url?: T;
                     openInNewTab?: T;
+                    file?: T;
+                    fileBehavior?: T;
+                    openFileInNewTab?: T;
                     mode?: T;
                     variant?: T;
                     showArrow?: T;
+                    showFileIcon?: T;
+                    fileIconPosition?: T;
                     id?: T;
                   };
             };
@@ -7591,9 +8912,14 @@ export interface TestimonialSpotlightBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   image?: T;
@@ -7611,9 +8937,14 @@ export interface TestimonialSpotlightBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -7650,9 +8981,14 @@ export interface AccreditationCardsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   accreditations?:
@@ -7672,9 +9008,14 @@ export interface AccreditationCardsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -7710,9 +9051,14 @@ export interface BannerCtaBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -7723,9 +9069,14 @@ export interface BannerCtaBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -7762,9 +9113,14 @@ export interface Contact24BlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -7775,9 +9131,14 @@ export interface Contact24BlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   offices?: T;
@@ -7814,9 +9175,14 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   showViewAction?: T;
@@ -7853,9 +9219,14 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
               page?: T;
               url?: T;
               openInNewTab?: T;
+              file?: T;
+              fileBehavior?: T;
+              openFileInNewTab?: T;
               mode?: T;
               variant?: T;
               showArrow?: T;
+              showFileIcon?: T;
+              fileIconPosition?: T;
               id?: T;
             };
         actions?:
@@ -7881,9 +9252,14 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -7949,9 +9325,14 @@ export interface NewsGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -7962,9 +9343,14 @@ export interface NewsGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   totalCards?: T;
@@ -8014,9 +9400,14 @@ export interface Cta39BlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -8027,9 +9418,14 @@ export interface Cta39BlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -8103,9 +9499,14 @@ export interface GalleryCoverflowBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -8116,9 +9517,14 @@ export interface GalleryCoverflowBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   images?:
@@ -8155,9 +9561,14 @@ export interface FeatureMatrixBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -8168,9 +9579,14 @@ export interface FeatureMatrixBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   features?:
@@ -8213,9 +9629,14 @@ export interface EditorialReasonsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   reasons?:
@@ -8237,9 +9658,14 @@ export interface EditorialReasonsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -8278,9 +9704,14 @@ export interface LeadershipProfilesBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   profiles?:
@@ -8309,9 +9740,14 @@ export interface LeadershipProfilesBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -8352,9 +9788,14 @@ export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -8365,9 +9806,14 @@ export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   itemCount?: T;
@@ -8407,9 +9853,14 @@ export interface ProfileCarouselBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -8420,9 +9871,14 @@ export interface ProfileCarouselBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   profiles?:
@@ -8469,9 +9925,14 @@ export interface GalleryShowcaseBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -8482,9 +9943,14 @@ export interface GalleryShowcaseBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   images?:
@@ -8521,9 +9987,14 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   galleryAlbums?: T;
@@ -8537,9 +10008,14 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -8579,9 +10055,14 @@ export interface ImageMosaicBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -8592,9 +10073,14 @@ export interface ImageMosaicBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   contentSource?: T;
@@ -8612,9 +10098,14 @@ export interface ImageMosaicBlockSelect<T extends boolean = true> {
               page?: T;
               url?: T;
               openInNewTab?: T;
+              file?: T;
+              fileBehavior?: T;
+              openFileInNewTab?: T;
               mode?: T;
               variant?: T;
               showArrow?: T;
+              showFileIcon?: T;
+              fileIconPosition?: T;
               id?: T;
             };
         id?: T;
@@ -8659,9 +10150,14 @@ export interface StudentExperienceBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   experiences?:
@@ -8688,9 +10184,14 @@ export interface StudentExperienceBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -8723,9 +10224,14 @@ export interface RatingSpotlightBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -8736,9 +10242,14 @@ export interface RatingSpotlightBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   ratingData?:
@@ -8776,9 +10287,14 @@ export interface ReviewFeedBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   pageSize?: T;
@@ -8792,9 +10308,14 @@ export interface ReviewFeedBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -8824,9 +10345,14 @@ export interface ReviewSubmissionBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -8837,9 +10363,14 @@ export interface ReviewSubmissionBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   form?: T;
@@ -8870,9 +10401,14 @@ export interface Contact33BlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -8883,9 +10419,14 @@ export interface Contact33BlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   image?: T;
@@ -8919,9 +10460,14 @@ export interface TeamShowcaseBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -8932,9 +10478,14 @@ export interface TeamShowcaseBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   members?:
@@ -8976,9 +10527,14 @@ export interface Services21BlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -8989,9 +10545,14 @@ export interface Services21BlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   services?:
@@ -9030,9 +10591,14 @@ export interface VideoEmbedBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -9043,9 +10609,14 @@ export interface VideoEmbedBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   url?: T;
@@ -9080,9 +10651,14 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -9093,9 +10669,14 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   items?:
@@ -9113,9 +10694,14 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
               page?: T;
               url?: T;
               openInNewTab?: T;
+              file?: T;
+              fileBehavior?: T;
+              openFileInNewTab?: T;
               mode?: T;
               variant?: T;
               showArrow?: T;
+              showFileIcon?: T;
+              fileIconPosition?: T;
               id?: T;
             };
         cardBackground?: T;
@@ -9150,9 +10736,14 @@ export interface ProgramMatrixBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -9163,9 +10754,14 @@ export interface ProgramMatrixBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   items?:
@@ -9183,9 +10779,14 @@ export interface ProgramMatrixBlockSelect<T extends boolean = true> {
               page?: T;
               url?: T;
               openInNewTab?: T;
+              file?: T;
+              fileBehavior?: T;
+              openFileInNewTab?: T;
               mode?: T;
               variant?: T;
               showArrow?: T;
+              showFileIcon?: T;
+              fileIconPosition?: T;
               id?: T;
             };
         linkType?: T;
@@ -9229,9 +10830,14 @@ export interface LogoStripBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   logos?:
@@ -9305,9 +10911,14 @@ export interface TimelineBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   items?:
@@ -9328,9 +10939,14 @@ export interface TimelineBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -9364,9 +10980,14 @@ export interface IconCardShowcaseBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   cards?:
@@ -9395,9 +11016,14 @@ export interface IconCardShowcaseBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -9439,9 +11065,14 @@ export interface IconGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   items?:
@@ -9465,9 +11096,14 @@ export interface IconGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -9528,9 +11164,14 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   tabs?:
@@ -9557,9 +11198,14 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
               page?: T;
               url?: T;
               openInNewTab?: T;
+              file?: T;
+              fileBehavior?: T;
+              openFileInNewTab?: T;
               mode?: T;
               variant?: T;
               showArrow?: T;
+              showFileIcon?: T;
+              fileIconPosition?: T;
               id?: T;
             };
         id?: T;
@@ -9572,9 +11218,14 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -9611,9 +11262,14 @@ export interface FeeStructureBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   programmeName?: T;
@@ -9672,9 +11328,14 @@ export interface FeeStructureBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -9714,9 +11375,14 @@ export interface NumberedStepsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -9727,9 +11393,14 @@ export interface NumberedStepsBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   steps?:
@@ -9773,9 +11444,14 @@ export interface BentoGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -9786,9 +11462,14 @@ export interface BentoGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   items?:
@@ -9832,9 +11513,14 @@ export interface TestimonialGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   testimonials?:
@@ -9856,9 +11542,14 @@ export interface TestimonialGridBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   appearance?:
@@ -9891,9 +11582,14 @@ export interface AwardsListBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   footerActions?:
@@ -9904,9 +11600,14 @@ export interface AwardsListBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   awards?:
@@ -9998,9 +11699,14 @@ export interface NewsEventsSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
         mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   metaTitle?: T;

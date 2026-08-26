@@ -278,9 +278,26 @@ describe('Image Mosaic', () => {
       )
     }
 
-    expect(getLayoutNames(defaultField)).toEqual(['mode', 'variant', 'showArrow'])
-    expect(getLayoutNames(imageActionField)).toEqual(['mode', 'variant', 'showArrow'])
-    expect(getLayoutNames(noModeField)).toEqual(['variant', 'showArrow'])
+    expect(getLayoutNames(defaultField)).toEqual([
+      'mode',
+      'variant',
+      'showArrow',
+      'showFileIcon',
+      'fileIconPosition',
+    ])
+    expect(getLayoutNames(imageActionField)).toEqual([
+      'mode',
+      'variant',
+      'showArrow',
+      'showFileIcon',
+      'fileIconPosition',
+    ])
+    expect(getLayoutNames(noModeField)).toEqual([
+      'variant',
+      'showArrow',
+      'showFileIcon',
+      'fileIconPosition',
+    ])
 
     const tabsField = imageActionField.fields[0]
 

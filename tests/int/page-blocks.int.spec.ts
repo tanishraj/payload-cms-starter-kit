@@ -94,7 +94,16 @@ const expectContentActionsFieldSet = (
     actionContentTab?.fields.map((field) =>
       typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,
     ),
-  ).toEqual(['label', 'linkType', 'page', 'url', 'openInNewTab'])
+  ).toEqual([
+    'label',
+    'linkType',
+    'page',
+    'url',
+    'openInNewTab',
+    'file',
+    'fileBehavior',
+    'openFileInNewTab',
+  ])
   expect(variantField?.type).toBe('select')
   expect(variantField?.defaultValue).toBe('default')
   expect(variantField?.options?.map((option) => option.value)).toEqual([
@@ -1295,7 +1304,16 @@ describe('page block pipeline', () => {
       contactActionContentTab?.fields.map((field) =>
         typeof field === 'object' && field !== null && 'name' in field ? field.name : undefined,
       ),
-    ).toEqual(['label', 'linkType', 'page', 'url', 'openInNewTab'])
+    ).toEqual([
+      'label',
+      'linkType',
+      'page',
+      'url',
+      'openInNewTab',
+      'file',
+      'fileBehavior',
+      'openFileInNewTab',
+    ])
     expect(contactVariantField?.defaultValue).toBe('default')
     expect(contactVariantField?.options?.map((option) => option.value)).toEqual([
       'default',

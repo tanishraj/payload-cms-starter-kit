@@ -16,17 +16,27 @@ import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { ContentLink } from '@/components/ContentLink'
 import { Button } from '@/components/ui/button'
 import { SectionEyebrow, type SectionEyebrowSurface } from '@/components/SectionEyebrow'
-import { resolveCmsLink, type CmsActionVariant } from '@/lib/cmsLinks'
+import {
+  getCmsActionAnchorProps,
+  resolveCmsLink,
+  type CmsActionIndicatorPosition,
+  type CmsActionVariant,
+} from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
-import type { Page } from '@/payload-types'
+import type { Media, Page } from '@/payload-types'
 
 type HeroButton = {
+  file?: Media | number | string | null
+  fileBehavior?: 'download' | 'view' | null
+  fileIconPosition?: CmsActionIndicatorPosition | null
   label?: string | null
-  linkType?: 'page' | 'custom' | null
+  linkType?: 'page' | 'custom' | 'file' | null
+  openFileInNewTab?: boolean | null
   openInNewTab?: boolean | null
   page?: Page | number | string | null
   showArrow?: boolean | null
+  showFileIcon?: boolean | null
   url?: string | null
   variant?: CmsActionVariant | null
 }
@@ -198,7 +208,10 @@ export function HeroBannerBlockComponent({
     return label && link.href
       ? [
           {
+            download: link.download,
             href: link.href,
+            indicator: link.indicator,
+            indicatorPosition: link.indicatorPosition,
             label,
             openInNewTab: link.openInNewTab,
             showArrow: Boolean(button.showArrow),
@@ -306,7 +319,10 @@ export function HeroBannerBlockComponent({
                     <ContentLink
                       arrowStyle={usesTextShadow ? heroLinkArrowShadowStyle : undefined}
                       className={cn('w-full sm:w-auto', mediaOverlay.text.link)}
+                      download={action.download}
                       href={action.href}
+                      indicator={action.indicator}
+                      indicatorPosition={action.indicatorPosition}
                       key={`${action.label}-${action.href}`}
                       label={action.label}
                       openInNewTab={action.openInNewTab}
@@ -320,12 +336,13 @@ export function HeroBannerBlockComponent({
                       size="lg"
                       variant={action.variant}
                     >
-                      <a
-                        href={action.href}
-                        rel={action.openInNewTab ? 'noreferrer' : undefined}
-                        target={action.openInNewTab ? '_blank' : undefined}
-                      >
-                        <ActionButtonContent label={action.label} showArrow={action.showArrow} />
+                      <a {...getCmsActionAnchorProps(action)}>
+                        <ActionButtonContent
+                          indicator={action.indicator}
+                          indicatorPosition={action.indicatorPosition}
+                          label={action.label}
+                          showArrow={action.showArrow}
+                        />
                       </a>
                     </Button>
                   ),

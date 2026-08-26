@@ -4,7 +4,12 @@ import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { BorderButton } from '@/components/shadcnblocks/border-button'
 import { Services21, type Services21Item, type Services21Alignment } from '@/components/services21'
 import { ContentLink } from '@/components/ContentLink'
-import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@/lib/cmsLinks'
+import {
+  getCmsActionAnchorProps,
+  resolveCmsActions,
+  type CmsActionValue,
+  type CmsActionVariant,
+} from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
 import type { Media } from '@/payload-types'
@@ -88,18 +93,22 @@ export function Services21BlockComponent({
         className={cn('group mt-10', actionSurface.button[actionVariant])}
         variant={actionVariant}
       >
-        <a
-          href={action.href}
-          rel={action.openInNewTab ? 'noreferrer' : undefined}
-          target={action.openInNewTab ? '_blank' : undefined}
-        >
-          <ActionButtonContent label={action.label} showArrow={action.showArrow} />
+        <a {...getCmsActionAnchorProps(action)}>
+          <ActionButtonContent
+            indicator={action.indicator}
+            indicatorPosition={action.indicatorPosition}
+            label={action.label}
+            showArrow={action.showArrow}
+          />
         </a>
       </BorderButton>
     ) : (
       <ContentLink
         className={cn('mt-10', actionSurface.link)}
+        download={action.download}
         href={action.href}
+        indicator={action.indicator}
+        indicatorPosition={action.indicatorPosition}
         label={action.label}
         openInNewTab={action.openInNewTab}
       />

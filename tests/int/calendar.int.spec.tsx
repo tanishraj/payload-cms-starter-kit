@@ -251,8 +251,15 @@ describe('Calendar block', () => {
   it('renders the configured PDF below Upcoming and hides unresolved Media', () => {
     const { container, rerender } = render(
       <CalendarBlockPresentation
-        calendarPdf={calendarPdf}
-        calendarPdfLabel="Get PDF"
+        calendarPdfAction={[
+          {
+            file: calendarPdf,
+            fileBehavior: 'download',
+            label: 'Get PDF',
+            linkType: 'file',
+            variant: 'outline',
+          },
+        ]}
         calendarPdfTitle="Academic year 2026–27"
         initial={initial}
       />,
@@ -270,6 +277,7 @@ describe('Calendar block', () => {
     expect(download).toBeTruthy()
     expect(download?.className).toContain('lg:mt-auto')
     expect(download?.getAttribute('data-calendar-pdf-embedded')).toBe('true')
+    expect(download?.querySelector('[data-action-indicator="download"]')).toBeTruthy()
     expect(
       upcoming && download
         ? upcoming.compareDocumentPosition(download) & Node.DOCUMENT_POSITION_FOLLOWING
@@ -279,7 +287,33 @@ describe('Calendar block', () => {
       '/media/academic-calendar-2026-27.pdf',
     )
 
-    rerender(<CalendarBlockPresentation calendarPdf="calendar-pdf" initial={initial} />)
+    rerender(
+      <CalendarBlockPresentation
+        calendarPdfAction={[
+          {
+            label: 'View admissions',
+            linkType: 'custom',
+            mode: 'link',
+            url: '/admissions',
+          },
+        ]}
+        calendarPdfTitle="Academic year 2026–27"
+        initial={initial}
+      />,
+    )
+
+    const editorialLink = container.querySelector('[data-calendar-pdf-download="true"] a')
+    expect(editorialLink?.getAttribute('data-content-link')).toBe('true')
+    expect(editorialLink?.getAttribute('href')).toBe('/admissions')
+    expect(editorialLink?.getAttribute('download')).toBeNull()
+
+    rerender(
+      <CalendarBlockPresentation
+        calendarPdfAction={[]}
+        calendarPdf="calendar-pdf"
+        initial={initial}
+      />,
+    )
     expect(container.querySelector('[data-calendar-pdf-download="true"]')).toBeNull()
   })
 

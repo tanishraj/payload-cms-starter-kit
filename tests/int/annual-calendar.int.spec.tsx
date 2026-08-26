@@ -11,7 +11,7 @@ import {
 import { AnnualCalendarBlock } from '@/blocks/AnnualCalendar/config'
 import type { CalendarEvent } from '@/blocks/Calendar/calendarShared'
 import { getAnnualCalendarPreviewScopes } from '@/lib/newsEventsPreviewShared'
-import type { Media } from '@/payload-types'
+import type { Media, Page } from '@/payload-types'
 
 const classification = {
   badgeLabel: 'Academic',
@@ -134,30 +134,21 @@ describe('Annual Calendar block', () => {
     ).toBe('Choose dates whose months define exactly 12 consecutive months.')
 
     const calendarPdf = findNamedField(AnnualCalendarBlock.fields, 'calendarPdf')
-    const calendarPdfTitle = findNamedField(AnnualCalendarBlock.fields, 'calendarPdfTitle') as
-      | (Field & {
-          admin?: {
-            condition?: (_data: unknown, siblingData?: Record<string, unknown>) => boolean
-          }
-        })
-      | undefined
-    const calendarPdfLabel = findNamedField(AnnualCalendarBlock.fields, 'calendarPdfLabel') as
-      | (Field & {
-          admin?: {
-            condition?: (_data: unknown, siblingData?: Record<string, unknown>) => boolean
-          }
-        })
-      | undefined
+    const calendarPdfTitle = findNamedField(AnnualCalendarBlock.fields, 'calendarPdfTitle')
+    const calendarPdfLabel = findNamedField(AnnualCalendarBlock.fields, 'calendarPdfLabel')
+    const calendarPdfAction = findNamedField(AnnualCalendarBlock.fields, 'calendarPdfAction')
 
     expect(calendarPdf).toMatchObject({
       filterOptions: { mimeType: { equals: 'application/pdf' } },
-      label: 'Calendar PDF',
+      admin: { hidden: true },
+      label: 'Legacy Calendar PDF',
       relationTo: 'media',
       type: 'upload',
     })
     expect(calendarPdfLabel).toMatchObject({
       defaultValue: 'Download',
-      label: 'PDF Button Label',
+      admin: { hidden: true },
+      label: 'Legacy PDF Button Label',
       type: 'text',
     })
     expect(calendarPdfTitle).toMatchObject({
@@ -165,10 +156,11 @@ describe('Annual Calendar block', () => {
       label: 'PDF Document Label',
       type: 'text',
     })
-    expect(calendarPdfTitle?.admin?.condition?.({}, {})).toBe(false)
-    expect(calendarPdfTitle?.admin?.condition?.({}, { calendarPdf: 'media-id' })).toBe(true)
-    expect(calendarPdfLabel?.admin?.condition?.({}, {})).toBe(false)
-    expect(calendarPdfLabel?.admin?.condition?.({}, { calendarPdf: 'media-id' })).toBe(true)
+    expect(calendarPdfAction).toMatchObject({
+      label: 'Action',
+      maxRows: 1,
+      type: 'array',
+    })
     expect(findNamedField(AnnualCalendarBlock.fields, 'adjacentMonthDates')).toBeUndefined()
   })
 
@@ -284,8 +276,15 @@ describe('Annual Calendar block', () => {
   it('renders a configured PDF after Coming Next and hides unresolved Media', () => {
     const { container, rerender } = render(
       <AnnualCalendarBlockPresentation
-        calendarPdf={calendarPdf}
-        calendarPdfLabel="Get PDF"
+        calendarPdfAction={[
+          {
+            file: calendarPdf,
+            fileBehavior: 'download',
+            label: 'Get PDF',
+            linkType: 'file',
+            variant: 'outline',
+          },
+        ]}
         calendarPdfTitle="Academic year 2026–27"
         initial={initial}
       />,
@@ -310,6 +309,7 @@ describe('Annual Calendar block', () => {
     ).not.toBe(0)
     expect(link?.getAttribute('href')).toBe('/media/academic-calendar-2026-27.pdf')
     expect(link?.getAttribute('download')).toBe('academic-calendar-2026-27.pdf')
+    expect(download?.querySelector('[data-action-indicator="download"]')).toBeTruthy()
     expect(download?.querySelector('[data-calendar-pdf-title="true"]')?.textContent).toBe(
       'Academic year 2026–27',
     )
@@ -318,12 +318,42 @@ describe('Annual Calendar block', () => {
     expect(link?.textContent).not.toContain('Academic year 2026–27')
     expect(download?.className).toContain('flex-col')
     expect(download?.className).not.toContain('sm:flex-row')
-    expect(
-      download?.querySelector('[data-calendar-pdf-title="true"]')?.className,
-    ).toContain('break-words')
+    expect(download?.querySelector('[data-calendar-pdf-title="true"]')?.className).toContain(
+      'break-words',
+    )
     expect(link?.className).toContain('w-full')
 
-    rerender(<AnnualCalendarBlockPresentation calendarPdf="calendar-pdf" initial={initial} />)
+    rerender(
+      <AnnualCalendarBlockPresentation
+        calendarPdfAction={[
+          {
+            label: 'View schedule',
+            linkType: 'page',
+            mode: 'button',
+            page: { id: 'schedule-page', parent: null, slug: 'schedule' } as Page,
+            showArrow: true,
+            variant: 'secondary',
+          },
+        ]}
+        calendarPdfTitle="Academic year 2026–27"
+        initial={initial}
+      />,
+    )
+
+    const pageButton = container.querySelector('[data-calendar-pdf-download="true"] a')
+    expect(pageButton?.getAttribute('href')).toBe('/schedule')
+    expect(pageButton?.getAttribute('data-slot')).toBe('button')
+    expect(pageButton?.getAttribute('data-variant')).toBe('secondary')
+    expect(pageButton?.className).toContain('w-full')
+    expect(pageButton?.querySelector('[data-action-arrow="true"]')).toBeTruthy()
+
+    rerender(
+      <AnnualCalendarBlockPresentation
+        calendarPdfAction={[]}
+        calendarPdf="calendar-pdf"
+        initial={initial}
+      />,
+    )
     expect(container.querySelector('[data-calendar-pdf-download="true"]')).toBeNull()
   })
 
@@ -355,8 +385,8 @@ describe('Annual Calendar block', () => {
     expect(light).toContain('border-border')
     expect(brand).toContain('bg-brand')
     expect(brand).toContain('text-primary-foreground')
-    expect(brandWithPdf).toContain('border-white')
-    expect(brandWithPdf).toContain('text-white')
+    expect(brandWithPdf).toContain('data-block-surface="brand"')
+    expect(brandWithPdf).toContain('data-variant="outline"')
     expect(`${light}${brand}${brandWithPdf}`).not.toMatch(/#[0-9a-f]{3,8}/i)
   })
 })

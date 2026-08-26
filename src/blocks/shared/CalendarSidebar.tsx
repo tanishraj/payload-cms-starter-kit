@@ -3,12 +3,12 @@ import type { ReactNode } from 'react'
 import { resolveCalendarSurfaceClasses } from '@/blocks/Calendar/calendarStyles'
 import type { BlockSurface } from '@/blocks/shared/blockAppearance'
 import { CalendarPdfDownload } from '@/blocks/shared/CalendarPdfDownload'
-import type { ResolvedCalendarPdf } from '@/blocks/shared/calendarPdf'
+import type { ResolvedCalendarDownloadPanel } from '@/blocks/shared/calendarPdf'
 import { cn } from '@/lib/utils'
 
 type CalendarSidebarProps = {
   children: ReactNode
-  download?: ResolvedCalendarPdf
+  download?: ResolvedCalendarDownloadPanel
   label: string
   surface?: BlockSurface
 }

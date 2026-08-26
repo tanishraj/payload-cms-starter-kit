@@ -6,21 +6,35 @@ import type {
   RadioField,
   SelectField,
   TabsField,
+  UploadField,
 } from 'payload'
 
 type LinkSiblingData = {
-  linkType?: 'custom' | 'page' | null
+  fileBehavior?: 'download' | 'view' | null
+  linkType?: 'custom' | 'file' | 'page' | null
 }
 
+export type ContentActionLinkType = 'custom' | 'file' | 'page'
+export type ContentActionFileBehavior = 'download' | 'view'
+export type ContentActionButtonVariant =
+  'default' | 'outline' | 'primary' | 'secondary' | 'white' | 'whiteOutline'
+
 type CreateContentActionsFieldOptions = {
+  actionLabel?: string
+  allowedLinkTypes?: readonly ContentActionLinkType[]
+  defaultVariant?: ContentActionButtonVariant
+  fileFilterOptions?: UploadField['filterOptions']
+  fixedFileBehavior?: ContentActionFileBehavior
   includeDisplayMode?: boolean
+  includeNavigationArrow?: boolean
   label?: string
   maxRows?: number
   name?: string
 }
 
-type ActionLayoutSiblingData = {
+type ActionLayoutSiblingData = LinkSiblingData & {
   mode?: 'button' | 'link' | null
+  showFileIcon?: boolean | null
 }
 
 type CreateContentActionModeFieldOptions = {
@@ -52,51 +66,160 @@ const isPageLink = (_data: unknown, siblingData: LinkSiblingData) =>
 const isCustomLink = (_data: unknown, siblingData: LinkSiblingData) =>
   siblingData?.linkType === 'custom'
 
+const isFileLink = (_data: unknown, siblingData: LinkSiblingData) =>
+  siblingData?.linkType === 'file'
+
+const isNavigationalLink = (_data: unknown, siblingData: LinkSiblingData) =>
+  siblingData?.linkType === 'page' || siblingData?.linkType === 'custom'
+
+const isFileView = (_data: unknown, siblingData: LinkSiblingData) =>
+  siblingData?.linkType === 'file' && siblingData?.fileBehavior !== 'download'
+
+const isFileDownload = (_data: unknown, siblingData: LinkSiblingData) =>
+  siblingData?.linkType === 'file' && siblingData?.fileBehavior === 'download'
+
+const isNotFileDownload = (_data: unknown, siblingData: LinkSiblingData) =>
+  !isFileDownload(_data, siblingData)
+
 const isButtonMode = (_data: unknown, siblingData: ActionLayoutSiblingData) =>
   siblingData?.mode === 'button'
 
-const actionContentFields: Field[] = [
-  {
-    name: 'label',
-    type: 'text',
-    required: true,
-  },
-  {
-    name: 'linkType',
-    type: 'radio',
-    defaultValue: 'page',
-    options: [
-      { label: 'Page', value: 'page' },
-      { label: 'Custom URL', value: 'custom' },
-    ],
-    admin: {
-      layout: 'horizontal',
-    },
-  } satisfies RadioField,
-  {
-    name: 'page',
-    type: 'relationship',
-    relationTo: 'pages',
-    admin: {
-      condition: isPageLink,
-    },
-  },
-  {
-    name: 'url',
-    label: 'Custom URL',
-    type: 'text',
-    admin: {
-      condition: isCustomLink,
-    },
-  },
-  {
-    name: 'openInNewTab',
-    type: 'checkbox',
-    defaultValue: false,
-  } satisfies CheckboxField,
-]
+const isButtonWithoutDownloadIndicator = (_data: unknown, siblingData: ActionLayoutSiblingData) =>
+  siblingData?.mode === 'button' && !isFileDownload(_data, siblingData)
 
-const createActionLayoutFields = (includeDisplayMode: boolean): Field[] => [
+const showsFileIcon = (_data: unknown, siblingData: ActionLayoutSiblingData) =>
+  isFileDownload(_data, siblingData) && siblingData?.showFileIcon !== false
+
+const allLinkTypes: readonly ContentActionLinkType[] = ['page', 'custom', 'file']
+
+const linkTypeLabels: Record<ContentActionLinkType, string> = {
+  page: 'Page',
+  custom: 'Custom URL',
+  file: 'File',
+}
+
+const createActionContentFields = ({
+  actionLabel,
+  allowedLinkTypes = allLinkTypes,
+  fileFilterOptions,
+  fixedFileBehavior,
+}: Pick<
+  CreateContentActionsFieldOptions,
+  'actionLabel' | 'allowedLinkTypes' | 'fileFilterOptions' | 'fixedFileBehavior'
+>): Field[] => {
+  const resolvedLinkTypes = allowedLinkTypes.length ? [...allowedLinkTypes] : [...allLinkTypes]
+  const includes = (value: ContentActionLinkType) => resolvedLinkTypes.includes(value)
+
+  return [
+    {
+      name: 'label',
+      label: actionLabel,
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'linkType',
+      type: 'radio',
+      defaultValue: resolvedLinkTypes[0],
+      options: resolvedLinkTypes.map((value) => ({ label: linkTypeLabels[value], value })),
+      admin: {
+        hidden: resolvedLinkTypes.length === 1,
+        layout: 'horizontal',
+      },
+    } satisfies RadioField,
+    ...(includes('page')
+      ? [
+          {
+            name: 'page',
+            type: 'relationship',
+            relationTo: 'pages',
+            admin: { condition: isPageLink },
+          } satisfies Field,
+        ]
+      : []),
+    ...(includes('custom')
+      ? [
+          {
+            name: 'url',
+            label: 'Custom URL',
+            type: 'text',
+            admin: { condition: isCustomLink },
+          } satisfies Field,
+          {
+            name: 'openInNewTab',
+            type: 'checkbox',
+            defaultValue: false,
+            admin: { condition: isNavigationalLink },
+          } satisfies CheckboxField,
+        ]
+      : includes('page')
+        ? [
+            {
+              name: 'openInNewTab',
+              type: 'checkbox',
+              defaultValue: false,
+              admin: { condition: isNavigationalLink },
+            } satisfies CheckboxField,
+          ]
+        : []),
+    ...(includes('file')
+      ? [
+          {
+            name: 'file',
+            label: 'File',
+            type: 'upload',
+            relationTo: 'media',
+            filterOptions: fileFilterOptions,
+            admin: {
+              condition: isFileLink,
+              description: 'Choose the Media asset this action should view or download.',
+            },
+          } satisfies UploadField,
+          {
+            name: 'fileBehavior',
+            label: 'File Behavior',
+            type: 'select',
+            defaultValue: fixedFileBehavior ?? 'view',
+            options: fixedFileBehavior
+              ? [
+                  {
+                    label: fixedFileBehavior === 'download' ? 'Download' : 'View',
+                    value: fixedFileBehavior,
+                  },
+                ]
+              : [
+                  { label: 'View', value: 'view' },
+                  { label: 'Download', value: 'download' },
+                ],
+            admin: {
+              condition: isFileLink,
+              hidden: Boolean(fixedFileBehavior),
+            },
+          } satisfies SelectField,
+          ...(fixedFileBehavior === 'download'
+            ? []
+            : [
+                {
+                  name: 'openFileInNewTab',
+                  label: 'Open View in New Tab',
+                  type: 'checkbox',
+                  defaultValue: true,
+                  admin: { condition: isFileView },
+                } satisfies CheckboxField,
+              ]),
+        ]
+      : []),
+  ]
+}
+
+const createActionLayoutFields = ({
+  defaultVariant = 'default',
+  includeDisplayMode,
+  includeNavigationArrow,
+}: Pick<
+  CreateContentActionsFieldOptions,
+  'defaultVariant' | 'includeDisplayMode' | 'includeNavigationArrow'
+>): Field[] => [
   ...(includeDisplayMode
     ? [
         {
@@ -116,7 +239,7 @@ const createActionLayoutFields = (includeDisplayMode: boolean): Field[] => [
     name: 'variant',
     label: 'Button Variant',
     type: 'select',
-    defaultValue: 'default',
+    defaultValue: defaultVariant,
     options: buttonVariantOptions,
     required: true,
     admin: {
@@ -124,16 +247,43 @@ const createActionLayoutFields = (includeDisplayMode: boolean): Field[] => [
       ...(includeDisplayMode ? { condition: isButtonMode } : {}),
     },
   } satisfies SelectField,
+  ...(includeNavigationArrow
+    ? [
+        {
+          name: 'showArrow',
+          label: 'Show arrow',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: {
+            description: 'Adds a trailing arrow when this action is displayed as a button.',
+            condition: includeDisplayMode ? isButtonWithoutDownloadIndicator : isNotFileDownload,
+          },
+        } satisfies CheckboxField,
+      ]
+    : []),
   {
-    name: 'showArrow',
-    label: 'Show arrow',
+    name: 'showFileIcon',
+    label: 'Show Download Icon',
     type: 'checkbox',
-    defaultValue: false,
+    defaultValue: true,
     admin: {
-      description: 'Adds a trailing arrow when this action is displayed as a button.',
-      ...(includeDisplayMode ? { condition: isButtonMode } : {}),
+      condition: isFileDownload,
+      description: 'Shows an animated down arrow for this file download.',
     },
   } satisfies CheckboxField,
+  {
+    name: 'fileIconPosition',
+    label: 'Download Icon Position',
+    type: 'select',
+    defaultValue: 'left',
+    options: [
+      { label: 'Left', value: 'left' },
+      { label: 'Right', value: 'right' },
+    ],
+    admin: {
+      condition: showsFileIcon,
+    },
+  } satisfies SelectField,
 ]
 
 export const createContentActionModeField = ({
@@ -162,9 +312,15 @@ export const createContentActionModeField = ({
 })
 
 export const createContentActionsField = ({
+  actionLabel,
+  allowedLinkTypes,
+  defaultVariant,
+  fileFilterOptions,
+  fixedFileBehavior,
   // Display mode lives on each action, inside its own Theme Settings tab, so a
   // row can be a button while its neighbour stays a link.
   includeDisplayMode = true,
+  includeNavigationArrow = true,
   label = 'Actions',
   maxRows = 2,
   name = 'actions',
@@ -182,11 +338,20 @@ export const createContentActionsField = ({
       tabs: [
         {
           label: 'Content',
-          fields: actionContentFields,
+          fields: createActionContentFields({
+            actionLabel,
+            allowedLinkTypes,
+            fileFilterOptions,
+            fixedFileBehavior,
+          }),
         },
         {
           label: 'Theme Settings',
-          fields: createActionLayoutFields(includeDisplayMode),
+          fields: createActionLayoutFields({
+            defaultVariant,
+            includeDisplayMode,
+            includeNavigationArrow,
+          }),
         },
       ],
     } satisfies TabsField,

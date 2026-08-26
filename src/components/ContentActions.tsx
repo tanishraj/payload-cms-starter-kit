@@ -3,7 +3,11 @@ import type { ComponentProps } from 'react'
 import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { ContentLink } from '@/components/ContentLink'
 import { Button } from '@/components/ui/button'
-import type { CmsActionVariant, ResolvedCmsAction } from '@/lib/cmsLinks'
+import {
+  getCmsActionAnchorProps,
+  type CmsActionVariant,
+  type ResolvedCmsAction,
+} from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 
 type ContentActionAlignment = 'center' | 'left' | 'right'
@@ -68,18 +72,22 @@ export function ContentActions({
             size="lg"
             variant={action.variant}
           >
-            <a
-              href={action.href}
-              rel={action.openInNewTab ? 'noreferrer' : undefined}
-              target={action.openInNewTab ? '_blank' : undefined}
-            >
-              <ActionButtonContent label={action.label} showArrow={action.showArrow} />
+            <a {...getCmsActionAnchorProps(action)}>
+              <ActionButtonContent
+                indicator={action.indicator}
+                indicatorPosition={action.indicatorPosition}
+                label={action.label}
+                showArrow={action.showArrow}
+              />
             </a>
           </Button>
         ) : (
           <ContentLink
             className={linkClassName}
+            download={action.download}
             href={action.href}
+            indicator={action.indicator}
+            indicatorPosition={action.indicatorPosition}
             key={`${action.label}-${action.href}-${index}`}
             label={action.label}
             openInNewTab={action.openInNewTab}
