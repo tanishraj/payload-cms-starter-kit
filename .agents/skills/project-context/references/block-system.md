@@ -130,6 +130,15 @@ media/link/text normalization and the shared section shell; its client component
 and layout selection. Program Grid and Study Pathways have been removed without compatibility
 renderers or migrations.
 
+Profile Carousel owns an embedded one-to-twelve-person card set with Text Below Image and Image
+Overlay variants. Each profile requires Media and a name and may include Role / Designation and an
+editor-authored Department. Runtime trims the optional Department and omits blank values without a
+migration. Both card variants render Department as compact secondary metadata beneath Role /
+Designation, including when Department is present without a Role, while inheriting the resolved card
+or overlay foreground. One to four profiles use the existing responsive static grid; five or more use
+the looping manual carousel. Department does not change navigation, filtering, image positioning,
+surfaces, overlays, actions, or section settings.
+
 Leadership Profiles owns the static academic, clinical, and administrative leadership directory.
 Editors provide one to twenty-four profiles with required Media and names, optional leadership labels,
 designations, one qualification, up to three ordered expertise items, and image crop positions.

@@ -49,6 +49,11 @@ const profilesField = {
           label: 'Role / Designation',
           type: 'text',
         },
+        {
+          name: 'department',
+          label: 'Department',
+          type: 'text',
+        },
       ],
       themeFields: [
         {

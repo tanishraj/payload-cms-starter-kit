@@ -34,6 +34,7 @@ type ProfileCarouselBlockLike = {
   profiles?:
     | {
         cardBackground?: string | null
+        department?: string | null
         image?: unknown
         imagePosition?: ProfileCarouselImagePosition | null
         name?: string | null
@@ -77,6 +78,7 @@ export function ProfileCarouselBlockComponent({
       ? [
           {
             cardBackground: profile.cardBackground,
+            department: profile.department?.trim() || undefined,
             image,
             imagePosition: profile.imagePosition,
             name,

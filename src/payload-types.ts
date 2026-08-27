@@ -3773,6 +3773,7 @@ export interface ProfileCarouselBlock {
         image: string | Media;
         name: string;
         role?: string | null;
+        department?: string | null;
         imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
         /**
          * Default Card inherits the section background. Other choices use the active theme and automatically adjust card contrast.
@@ -9887,6 +9888,7 @@ export interface ProfileCarouselBlockSelect<T extends boolean = true> {
         image?: T;
         name?: T;
         role?: T;
+        department?: T;
         imagePosition?: T;
         cardBackground?: T;
         id?: T;

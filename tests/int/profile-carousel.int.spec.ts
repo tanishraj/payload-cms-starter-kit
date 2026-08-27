@@ -31,6 +31,7 @@ const getField = (fields: TestField[], name: string) => fields.find((field) => f
 
 const profiles: ProfileCarouselProfile[] = [
   {
+    department: 'Academic Affairs',
     image: { alt: 'Alex Morgan portrait', src: '/media/alex.jpg' },
     name: 'Alex Morgan',
     role: 'Program Director',
@@ -85,6 +86,7 @@ describe('Profile Carousel', () => {
     const imageField = getField(profileContentTab?.fields ?? [], 'image')
     const nameField = getField(profileContentTab?.fields ?? [], 'name')
     const roleField = getField(profileContentTab?.fields ?? [], 'role')
+    const departmentField = getField(profileContentTab?.fields ?? [], 'department')
     const imagePositionField = getField(profileThemeTab?.fields ?? [], 'imagePosition')
     const appearanceField = getField(layoutTab?.fields ?? [], 'appearance')
     const actionsTabsField = actionsField?.fields?.[0] as unknown as
@@ -110,6 +112,13 @@ describe('Profile Carousel', () => {
     expect(imageField).toMatchObject({ relationTo: 'media', required: true, type: 'upload' })
     expect(nameField).toMatchObject({ required: true, type: 'text' })
     expect(roleField?.type).toBe('text')
+    expect(departmentField).toMatchObject({ label: 'Department', type: 'text' })
+    expect(departmentField?.required).not.toBe(true)
+
+    const profileContentNames = (profileContentTab?.fields ?? []).flatMap(({ name }) =>
+      name ? [name] : [],
+    )
+    expect(profileContentNames.indexOf('department')).toBe(profileContentNames.indexOf('role') + 1)
     expect(imagePositionField).toMatchObject({
       defaultValue: 'center',
       required: true,
@@ -218,6 +227,9 @@ describe('Profile Carousel', () => {
     expect(html).not.toContain('aria-label="Next profile"')
     expect(html).toContain('Meet our team')
     expect(html).toContain('Our people')
+    expect(html).toContain('Academic Affairs')
+    expect(html.indexOf('Alex Morgan')).toBeLessThan(html.indexOf('Program Director'))
+    expect(html.indexOf('Program Director')).toBeLessThan(html.indexOf('Academic Affairs'))
     expect(html).toContain(
       'font-mono text-xs font-semibold uppercase tracking-[0.24em] text-current',
     )
@@ -277,6 +289,7 @@ describe('Profile Carousel', () => {
     ).toHaveLength(4)
     expect(html.match(/items-center text-center/g)).toHaveLength(4)
     expect(html.match(/h-80 sm:h-96 md:h-\[28rem\]/g)).toHaveLength(4)
+    expect(html).toContain('Academic Affairs')
   })
 
   it('preserves each card surface overlay in Auto mode while applying its direction', () => {
@@ -364,6 +377,7 @@ describe('Profile Carousel', () => {
         eyebrow: 'Leadership',
         overlayAlignment: 'right',
         profiles: profiles.map((profile, index) => ({
+          department: index === 0 ? '  Academic Affairs  ' : undefined,
           image: { alt: profile.image.alt, id: index + 1, url: profile.image.src },
           imagePosition: profile.imagePosition,
           name: profile.name,
@@ -384,6 +398,32 @@ describe('Profile Carousel', () => {
     expect(html).toContain('href="/team"')
     expect(html).toContain('%2Fmedia%2Falex.jpg')
     expect(html).toContain('object-[right_center]')
+    expect(html).toContain('Academic Affairs')
+    expect(html).not.toContain('  Academic Affairs  ')
+  })
+
+  it('renders optional department independently and omits blank metadata', () => {
+    const html = renderToStaticMarkup(
+      ProfileCarouselBlockComponent({
+        profiles: [
+          {
+            department: '  Clinical Sciences  ',
+            image: { alt: 'Dr Mira Shah', id: 1, url: '/mira.jpg' },
+            name: 'Dr Mira Shah',
+          },
+          {
+            department: '   ',
+            image: { alt: 'Dr Arun Rao', id: 2, url: '/arun.jpg' },
+            name: 'Dr Arun Rao',
+          },
+        ],
+        title: 'Faculty',
+      }),
+    )
+
+    expect(html).toContain('Clinical Sciences')
+    expect(html).not.toContain('  Clinical Sciences  ')
+    expect(html.match(/text-xs leading-5/g)).toHaveLength(1)
   })
 
   it('omits malformed profiles and renders nothing without valid profiles', () => {

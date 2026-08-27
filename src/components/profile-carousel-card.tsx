@@ -18,6 +18,7 @@ export type ProfileCarouselSize = 'none' | 'comfortable' | 'compact' | 'default'
 
 export type ProfileCarouselProfile = {
   cardBackground?: string | null
+  department?: string | null
   image: {
     alt: string
     height?: number
@@ -138,6 +139,11 @@ export function ProfileCarouselCard({
             {profile.role ? (
               <p className={cn('text-sm leading-6', overlaySecondaryClassName)}>{profile.role}</p>
             ) : null}
+            {profile.department ? (
+              <p className={cn('text-xs leading-5', overlaySecondaryClassName)}>
+                {profile.department}
+              </p>
+            ) : null}
           </div>
         </>
       ) : null}
@@ -177,6 +183,9 @@ export function ProfileCarouselCard({
         <p className="text-base leading-tight font-semibold text-current">{profile.name}</p>
         {profile.role ? (
           <p className={cn('text-sm leading-6', surface.secondary)}>{profile.role}</p>
+        ) : null}
+        {profile.department ? (
+          <p className={cn('text-xs leading-5', surface.secondary)}>{profile.department}</p>
         ) : null}
       </div>
     </article>
