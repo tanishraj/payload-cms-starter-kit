@@ -228,7 +228,7 @@ export function TabsContentClient({
           {resolvedLayout === 'curriculum' && active.items.length > 0 ? (
             <ul
               className={cn(
-                'relative mt-4 grid gap-x-8 gap-y-3 sm:mt-5',
+                'relative mt-4 grid gap-x-8 gap-y-3 sm:mt-12',
                 curriculumColumnClasses[curriculumColumns ?? '2'],
               )}
               data-curriculum-columns={curriculumColumns ?? '2'}
