@@ -188,12 +188,12 @@ or unresolved images use a semantic decorative `UserRound` placeholder in either
 documents resolve to Image Overlay Large, four columns, and Boxed without a migration.
 The block reuses shared optional headers, appearance, actions, alignment, padding, and tab patterns.
 The department tab rail supports Content Width, Centered Auto Width, and Equal Full Width. Missing or
-invalid values use Content Width. Centered Auto Width keeps intrinsic tabs centered when they fit and
-scrollable from the inline start when they overflow. The themed tab frame remains stationary and
-fully visible while only its tab contents scroll horizontally without visible scrollbar chrome. Equal
-Full Width divides the available Search-adjacent rail evenly, or the full toolbar width when Search is
-hidden. Selecting either Tabs or Dropdown resets the visible batch and filters Featured Profiles and
-the directory without changing Search behavior.
+invalid values use Content Width. Centered Auto Width shrink-wraps and centers the complete themed
+frame when intrinsic tabs fit, then constrains it to the available width when they overflow. The frame
+remains stationary and fully visible while only its tab contents scroll horizontally from the inline
+start without visible scrollbar chrome. Equal Full Width divides the available Search-adjacent rail
+evenly, or the full toolbar width when Search is hidden. Selecting either Tabs or Dropdown resets the
+visible batch and filters Featured Profiles and the directory without changing Search behavior.
 Its optional featured area is derived from the same ordered profile rows: editors mark up to twelve
 image-backed profiles as Featured, and the shared Profile Carousel collection appears after the shared
 search/department toolbar. All shows every featured profile; department tabs filter both featured and
