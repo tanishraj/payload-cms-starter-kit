@@ -797,6 +797,32 @@ describe('Department Profiles block', () => {
     }
   })
 
+  it('shrink-wraps the centered tab frame without changing the hidden scroll viewport', () => {
+    const { container } = render(
+      <DepartmentProfilesClient {...baseClientProps} tabWidth="centered" />,
+    )
+
+    const frame = container.querySelector('[data-department-profiles-tab-frame="true"]')
+    const viewport = container.querySelector('[data-department-profiles-tab-scroll="true"]')
+
+    expect(frame?.className).toContain('mx-auto')
+    expect(frame?.className).toContain('w-fit')
+    expect(frame?.className).toContain('max-w-full')
+    expect(frame?.className).not.toContain('flex-1')
+    expect(viewport?.className).toContain('no-scrollbar')
+    expect(viewport?.className).toContain('overflow-x-auto')
+  })
+
+  it.each(['content', 'equal'] as const)('keeps the %s tab frame growing', (tabWidth) => {
+    const { container } = render(
+      <DepartmentProfilesClient {...baseClientProps} tabWidth={tabWidth} />,
+    )
+
+    expect(
+      container.querySelector('[data-department-profiles-tab-frame="true"]')?.className,
+    ).toContain('flex-1')
+  })
+
   it('keeps the tab frame fixed while its tabs scroll inside it', () => {
     const { container } = render(
       <DepartmentProfilesClient {...baseClientProps} tabVariant="pill" tabWidth="content" />,

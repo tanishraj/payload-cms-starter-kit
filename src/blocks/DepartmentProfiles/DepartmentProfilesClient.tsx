@@ -114,6 +114,12 @@ const tabRailWidthClasses = {
   equal: 'w-full min-w-0',
 } as const satisfies Record<DepartmentProfilesTabWidth, string>
 
+const tabFrameWidthClasses = {
+  centered: 'mx-auto w-fit max-w-full',
+  content: 'flex-1',
+  equal: 'flex-1',
+} as const satisfies Record<DepartmentProfilesTabWidth, string>
+
 const normalizeSearchValue = (value: string) => value.trim().toLocaleLowerCase()
 
 type DepartmentProfilesGridProps = Pick<
@@ -388,7 +394,8 @@ export function DepartmentProfilesClient({
           {tabsVisible ? (
             <div
               className={cn(
-                'min-w-0 flex-1 overflow-hidden',
+                'min-w-0 overflow-hidden',
+                tabFrameWidthClasses[tabWidth],
                 getContentTabRailClasses(tabVariant, tabSurface),
               )}
               data-department-profiles-filter-presentation="tabs"
