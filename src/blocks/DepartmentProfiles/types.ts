@@ -16,6 +16,7 @@ export type ResolvedDepartmentProfile = {
   departmentId: string
   departmentName: string
   designation?: string
+  featured: boolean
   id: number | string
   image?: {
     alt: string

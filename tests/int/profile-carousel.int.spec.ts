@@ -7,6 +7,7 @@ import { renderPageBlocks } from '@/blocks/renderPageBlocks'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import { Pages } from '@/collections/Pages'
 import { ProfileCarousel, type ProfileCarouselProfile } from '@/components/profile-carousel'
+import { ProfileCarouselCollection } from '@/components/profile-carousel-collection'
 
 type TestField = {
   admin?: { condition?: (data: unknown, siblingData?: Record<string, unknown>) => boolean }
@@ -257,6 +258,44 @@ describe('Profile Carousel', () => {
     expect(html).toContain('aria-label="Next profile"')
     expect(html).toContain('data-carousel-loop="true"')
     expect(html).toContain('h-72 sm:h-80 md:h-96')
+    expect(html).toContain('relative w-full pt-14')
+    expect(html).not.toContain('data-profile-carousel-header="inline"')
+  })
+
+  it('shares the card collection without creating a nested section', () => {
+    const staticHtml = renderToStaticMarkup(
+      ProfileCarouselCollection({
+        cardVariant: 'stacked',
+        overlayAlignment: 'left',
+        overlayCoverage: 'full',
+        overlayDirection: 'bottomToTop',
+        overlayStyle: 'dark',
+        profiles: profiles.slice(0, 4),
+        sectionBackground: 'subtle',
+        size: 'default',
+        themeMode: 'auto',
+      }),
+    )
+    const carouselHtml = renderToStaticMarkup(
+      ProfileCarouselCollection({
+        cardVariant: 'stacked',
+        overlayAlignment: 'left',
+        overlayCoverage: 'full',
+        overlayDirection: 'bottomToTop',
+        overlayStyle: 'dark',
+        profiles,
+        sectionBackground: 'subtle',
+        size: 'default',
+        themeMode: 'auto',
+      }),
+    )
+
+    expect(staticHtml).toContain('grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4')
+    expect(staticHtml).not.toContain('<section')
+    expect(staticHtml).not.toContain('Previous profile')
+    expect(carouselHtml).toContain('aria-label="Previous profile"')
+    expect(carouselHtml).toContain('data-carousel-loop="true"')
+    expect(carouselHtml).not.toContain('<section')
   })
 
   it('renders a configurable image overlay with one alignment for every profile', () => {
@@ -280,6 +319,7 @@ describe('Profile Carousel', () => {
     expect(html.match(/data-profile-carousel-overlay-strength="darker"/g)).toHaveLength(4)
     expect(html.match(/data-profile-carousel-overlay-direction="rightToLeft"/g)).toHaveLength(4)
     expect(html.match(/data-profile-carousel-overlay-coverage="split"/g)).toHaveLength(4)
+    expect(html.match(/data-section-eyebrow-surface="lightOverlay"/g)).toHaveLength(1)
     expect(
       html.match(/absolute inset-y-0 right-0 w-1\/2 bg-linear-to-l[^\"]*from-white/g),
     ).toHaveLength(4)
@@ -290,6 +330,14 @@ describe('Profile Carousel', () => {
     expect(html.match(/items-center text-center/g)).toHaveLength(4)
     expect(html.match(/h-80 sm:h-96 md:h-\[28rem\]/g)).toHaveLength(4)
     expect(html).toContain('Academic Affairs')
+    const departmentIndex = html.indexOf('data-profile-carousel-department="true"')
+    const nameIndex = html.indexOf('Alex Morgan', departmentIndex)
+    const roleIndex = html.indexOf('Program Director', nameIndex)
+
+    expect(departmentIndex).toBeGreaterThan(-1)
+    expect(departmentIndex).toBeLessThan(nameIndex)
+    expect(nameIndex).toBeLessThan(roleIndex)
+    expect(html).toContain('font-mono text-xs leading-5 font-semibold uppercase tracking-[0.16em]')
   })
 
   it('preserves each card surface overlay in Auto mode while applying its direction', () => {
@@ -306,6 +354,7 @@ describe('Profile Carousel', () => {
 
     expect(html).toContain('data-profile-carousel-overlay-tone="auto"')
     expect(html).toContain('data-profile-carousel-overlay-direction="leftToRight"')
+    expect(html).toContain('data-section-eyebrow-surface="darkOverlay"')
     expect(html).toContain('data-profile-carousel-overlay-coverage="split"')
     expect(html).toContain(
       'absolute inset-y-0 left-0 w-1/2 bg-linear-to-r from-secondary via-secondary/75 to-transparent text-secondary-foreground',

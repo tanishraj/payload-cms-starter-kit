@@ -10,6 +10,7 @@ import { DepartmentProfilesClient } from '@/blocks/DepartmentProfiles/Department
 import {
   DepartmentProfilesBlock,
   validateDepartmentRows,
+  validateFeaturedProfiles,
   validateProfileDepartment,
 } from '@/blocks/DepartmentProfiles/config'
 import { getDepartmentOptionsFromFormFields } from '@/blocks/DepartmentProfiles/departmentOptions'
@@ -61,6 +62,7 @@ const createProfile = (
   departmentId: 'medicine',
   departmentName: 'General Medicine',
   designation: `Professor ${id}`,
+  featured: false,
   id,
   image: { alt: `Profile ${id}`, height: 1200, src: '/media/profile.jpg', width: 900 },
   imagePosition: 'center',
@@ -140,6 +142,34 @@ describe('Department Profiles block', () => {
     expect(findField(contentFields, 'departmentId')?.admin?.components?.Field).toContain(
       'DepartmentSelectField',
     )
+    expect(findField(contentFields, 'showFeaturedCarousel')).toMatchObject({
+      defaultValue: false,
+      type: 'checkbox',
+    })
+    expect(findField(contentFields, 'featuredCarouselTitle')).toMatchObject({
+      defaultValue: 'Featured Profiles',
+      type: 'text',
+    })
+    expect(findField(contentFields, 'directoryTitle')).toMatchObject({
+      defaultValue: 'Profile Directory',
+      type: 'text',
+    })
+    expect(findField(contentFields, 'featured')).toMatchObject({
+      defaultValue: false,
+      type: 'checkbox',
+    })
+    expect(
+      findField(contentFields, 'featuredCarouselTitle')?.admin?.condition?.(
+        {},
+        { showFeaturedCarousel: true },
+      ),
+    ).toBe(true)
+    expect(
+      findField(contentFields, 'directoryTitle')?.admin?.condition?.(
+        {},
+        { showFeaturedCarousel: false },
+      ),
+    ).toBe(false)
     expect(findField(themeFields, 'showSearch')).toMatchObject({ defaultValue: true })
     expect(findField(themeFields, 'showDepartmentTabs')).toMatchObject({ defaultValue: true })
     expect(findField(themeFields, 'cardLayout')).toMatchObject({
@@ -324,6 +354,35 @@ describe('Department Profiles block', () => {
     expect(
       findField(themeFields, 'overlayCoverage')?.admin?.condition?.({}, { cardLayout: 'overlay' }),
     ).toBe(true)
+    expect(
+      findField(themeFields, 'featuredCarouselCardVariant')?.options?.map(({ value }) => value),
+    ).toEqual(['stacked', 'overlay'])
+    expect(
+      findField(themeFields, 'featuredCarouselSize')?.options?.map(({ value }) => value),
+    ).toEqual(['compact', 'default', 'comfortable'])
+    expect(
+      findField(themeFields, 'featuredCarouselOverlayAlignment')?.options?.map(
+        ({ value }) => value,
+      ),
+    ).toEqual(['left', 'center', 'right'])
+    expect(
+      findField(themeFields, 'featuredCarouselThemeMode')?.options?.map(({ value }) => value),
+    ).toEqual(['auto', 'light', 'dark', 'brand'])
+    expect(
+      findField(themeFields, 'featuredCarouselOverlayStyle')?.options?.map(({ value }) => value),
+    ).toEqual(['light', 'dark', 'darker'])
+    expect(
+      findField(themeFields, 'featuredCarouselOverlayDirection')?.admin?.condition?.(
+        {},
+        { featuredCarouselCardVariant: 'overlay', showFeaturedCarousel: true },
+      ),
+    ).toBe(true)
+    expect(
+      findField(themeFields, 'featuredCarouselOverlayCoverage')?.admin?.condition?.(
+        {},
+        { featuredCarouselCardVariant: 'stacked', showFeaturedCarousel: true },
+      ),
+    ).toBe(false)
   })
 
   it('validates unique departments and assigned department IDs', () => {
@@ -341,6 +400,27 @@ describe('Department Profiles block', () => {
         blockData: { departments: [{ id: 'anatomy', name: 'Anatomy' }] },
       }),
     ).toContain('no longer available')
+  })
+
+  it('limits featured profiles and requires featured profile images', () => {
+    const featured = (count: number) =>
+      Array.from({ length: count }, (_, index) => ({
+        featured: true,
+        image: index + 1,
+        name: `Doctor ${index + 1}`,
+      }))
+
+    expect(validateFeaturedProfiles(featured(12))).toBe(true)
+    expect(validateFeaturedProfiles(featured(13))).toContain('12')
+    expect(
+      validateFeaturedProfiles([
+        { featured: true, image: null, name: 'Missing Portrait' },
+        { featured: false, image: null, name: 'Directory Only' },
+      ]),
+    ).toContain('Missing Portrait')
+    expect(
+      validateFeaturedProfiles([{ featured: false, image: null, name: 'Directory Only' }]),
+    ).toBe(true)
   })
 
   it('derives ordered Admin options and preserves invalid saved values', () => {
@@ -483,6 +563,46 @@ describe('Department Profiles block', () => {
     expect(invalidOverlay).toContain('data-department-profile-overlay-direction="bottomToTop"')
     expect(invalidOverlay).toContain('data-department-profile-overlay="dark"')
     expect(invalidOverlay).toContain('data-department-profile-overlay-tone="dark"')
+  })
+
+  it('normalizes featured profiles into the shared carousel presentation', () => {
+    const html = renderToStaticMarkup(
+      <DepartmentProfilesBlockComponent
+        departments={departments}
+        directoryTitle="Faculty Directory"
+        featuredCarouselCardVariant="overlay"
+        featuredCarouselOverlayAlignment="center"
+        featuredCarouselOverlayCoverage="split"
+        featuredCarouselOverlayDirection="rightToLeft"
+        featuredCarouselOverlayStyle="darker"
+        featuredCarouselThemeMode="light"
+        featuredCarouselTitle="Featured Faculty"
+        profiles={[
+          {
+            departmentId: 'medicine',
+            designation: 'Professor',
+            featured: true,
+            image: { alt: 'Dr A', id: 1, url: '/a.jpg' },
+            name: 'Dr A',
+          },
+          { departmentId: 'anatomy', featured: true, name: 'Legacy Missing Image' },
+        ]}
+        showFeaturedCarousel
+        title="Department Profiles"
+      />,
+    )
+
+    expect(html).toContain('data-department-profiles-featured="true"')
+    expect(html).toContain('Featured Faculty')
+    expect(html).toContain('Faculty Directory')
+    expect(html).toMatch(/<h3[^>]*>Featured Faculty<\/h3>/)
+    expect(html).toContain('data-profile-carousel-card-variant="overlay"')
+    expect(html).toContain('data-profile-carousel-overlay-alignment="center"')
+    expect(html).toContain('data-profile-carousel-overlay-direction="rightToLeft"')
+    expect(html).toContain('data-profile-carousel-overlay-coverage="split"')
+    expect(html).toContain('Dr A')
+    expect(html).toContain('Legacy Missing Image')
+    expect(html.match(/data-profile-carousel-media-frame="true"/g)).toHaveLength(1)
   })
 
   it('renders every overlay and inline card size with a missing-image fallback', () => {
@@ -669,6 +789,100 @@ describe('Department Profiles block', () => {
     expect(screen.getByRole('status').textContent).toContain('0 profiles found')
   })
 
+  it('filters featured profiles by department and hides them while searching', () => {
+    const profiles = [
+      createProfile(1, { featured: true, name: 'Medicine Featured' }),
+      createProfile(2, {
+        departmentId: 'anatomy',
+        departmentName: 'Anatomy',
+        featured: true,
+        name: 'Anatomy Featured',
+      }),
+      createProfile(3, { name: 'Directory Only' }),
+    ]
+    const { container } = render(
+      <DepartmentProfilesClient
+        {...baseClientProps}
+        directoryTitle="Profile Directory"
+        featuredCarouselTitle="Featured Profiles"
+        profiles={profiles}
+        showFeaturedCarousel
+      />,
+    )
+
+    const featuredRegion = () =>
+      container.querySelector('[data-department-profiles-featured="true"]')
+
+    expect(featuredRegion()?.textContent).toContain('Medicine Featured')
+    expect(featuredRegion()?.textContent).toContain('Anatomy Featured')
+    expect(screen.getAllByText('Medicine Featured')).toHaveLength(2)
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Anatomy' }))
+    expect(featuredRegion()?.textContent).not.toContain('Medicine Featured')
+    expect(featuredRegion()?.textContent).toContain('Anatomy Featured')
+
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Search profiles' }), {
+      target: { value: 'anatomy' },
+    })
+    expect(featuredRegion()).toBeNull()
+    expect(screen.getByRole('heading', { name: 'Profile Directory' })).toBeTruthy()
+
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Search profiles' }), {
+      target: { value: '' },
+    })
+    expect(featuredRegion()?.textContent).toContain('Anatomy Featured')
+  })
+
+  it('places featured carousel controls in the subsection heading row', () => {
+    const profiles = Array.from({ length: 5 }, (_, index) =>
+      createProfile(index + 1, { featured: true }),
+    )
+    const html = renderToStaticMarkup(
+      <DepartmentProfilesClient
+        {...baseClientProps}
+        featuredCarouselTitle="Featured Profiles"
+        profiles={profiles}
+        showFeaturedCarousel
+      />,
+    )
+    const headerStart = html.indexOf('data-profile-carousel-header="inline"')
+    const contentStart = html.indexOf('data-slot="carousel-content"', headerStart)
+    const inlineHeader = html.slice(headerStart, contentStart)
+
+    expect(headerStart).toBeGreaterThan(-1)
+    expect(contentStart).toBeGreaterThan(headerStart)
+    expect(inlineHeader).toContain('Featured Profiles')
+    expect(inlineHeader).toContain('aria-label="Previous profile"')
+    expect(inlineHeader).toContain('aria-label="Next profile"')
+    expect(html).not.toContain('relative w-full pt-14')
+  })
+
+  it('preserves disabled output and uses h2 subsection titles without a parent heading', () => {
+    const disabledHtml = renderClient()
+
+    expect(disabledHtml).not.toContain('Featured Profiles')
+    expect(disabledHtml).not.toContain('Profile Directory')
+    expect(disabledHtml).not.toContain('data-department-profiles-featured="true"')
+
+    const noHeadingHtml = renderToStaticMarkup(
+      <DepartmentProfilesBlockComponent
+        departments={departments}
+        featuredCarouselTitle="Featured Profiles"
+        profiles={[
+          {
+            departmentId: 'medicine',
+            featured: true,
+            image: { alt: 'Dr A', id: 1, url: '/a.jpg' },
+            name: 'Dr A',
+          },
+        ]}
+        showFeaturedCarousel
+      />,
+    )
+
+    expect(noHeadingHtml).toMatch(/<h2[^>]*>Featured Profiles<\/h2>/)
+  })
+
   it('supports accessible tabs, empty-department omission, and Load More', () => {
     const profiles = Array.from({ length: 21 }, (_, index) => createProfile(index + 1))
     render(<DepartmentProfilesClient {...baseClientProps} profiles={profiles} />)
@@ -723,6 +937,31 @@ describe('Department Profiles block', () => {
     )
     expect(generatedDepartmentProfiles).toContain(
       "themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null",
+    )
+    expect(generatedDepartmentProfiles).toContain('showFeaturedCarousel?: boolean | null')
+    expect(generatedDepartmentProfiles).toContain('featuredCarouselTitle?: string | null')
+    expect(generatedDepartmentProfiles).toContain('directoryTitle?: string | null')
+    expect(generatedDepartmentProfiles).toContain('featured?: boolean | null')
+    expect(generatedDepartmentProfiles).toContain(
+      "featuredCarouselCardVariant?: ('stacked' | 'overlay') | null",
+    )
+    expect(generatedDepartmentProfiles).toContain(
+      "featuredCarouselSize?: ('compact' | 'default' | 'comfortable') | null",
+    )
+    expect(generatedDepartmentProfiles).toContain(
+      "featuredCarouselOverlayAlignment?: ('left' | 'center' | 'right') | null",
+    )
+    expect(generatedDepartmentProfiles).toContain(
+      "featuredCarouselThemeMode?: ('auto' | 'light' | 'dark' | 'brand') | null",
+    )
+    expect(generatedDepartmentProfiles).toContain(
+      "featuredCarouselOverlayStyle?: ('light' | 'dark' | 'darker') | null",
+    )
+    expect(generatedDepartmentProfiles).toMatch(
+      /featuredCarouselOverlayDirection\?:\s*\('vertical' \| 'leftToRight' \| 'rightToLeft' \| 'bottomToTop' \| 'topToBottom'\) \| null/,
+    )
+    expect(generatedDepartmentProfiles).toContain(
+      "featuredCarouselOverlayCoverage?: ('full' | 'split') | null",
     )
     expect(generatedDepartmentProfiles).toContain(
       "overlayStyle?: ('light' | 'dark' | 'darker') | null",

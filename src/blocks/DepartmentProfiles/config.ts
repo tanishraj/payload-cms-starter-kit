@@ -28,6 +28,11 @@ type CardSizeSiblingData = {
   cardSize?: 'lg' | 'md' | 'sm' | null
 }
 
+type FeaturedCarouselSiblingData = {
+  featuredCarouselCardVariant?: 'overlay' | 'stacked' | null
+  showFeaturedCarousel?: boolean | null
+}
+
 type DepartmentValue = {
   id?: string | null
   name?: string | null
@@ -35,6 +40,12 @@ type DepartmentValue = {
 
 type DepartmentProfilesBlockData = {
   departments?: DepartmentValue[] | null
+}
+
+type DepartmentProfileValue = {
+  featured?: boolean | null
+  image?: unknown
+  name?: string | null
 }
 
 const isSplitHeader = (_data: unknown, siblingData: HeaderLayoutSiblingData) =>
@@ -58,6 +69,13 @@ const usesMediumCards = (_data: unknown, siblingData: CardSizeSiblingData) =>
 
 const usesSmallCards = (_data: unknown, siblingData: CardSizeSiblingData) =>
   siblingData?.cardLayout !== 'inline' && siblingData?.cardSize === 'sm'
+
+const showsFeaturedCarousel = (_data: unknown, siblingData: FeaturedCarouselSiblingData) =>
+  siblingData?.showFeaturedCarousel === true
+
+const usesFeaturedCarouselOverlay = (_data: unknown, siblingData: FeaturedCarouselSiblingData) =>
+  siblingData?.showFeaturedCarousel === true &&
+  siblingData?.featuredCarouselCardVariant === 'overlay'
 
 const normalizeDepartmentName = (value?: string | null) => value?.trim().toLocaleLowerCase() ?? ''
 
@@ -90,6 +108,27 @@ export const validateProfileDepartment = (
     : 'This department is no longer available. Select a configured department.'
 }
 
+export const validateFeaturedProfiles = (value: unknown): string | true => {
+  if (!Array.isArray(value)) return true
+
+  const featuredProfiles = (value as DepartmentProfileValue[]).filter(
+    (profile) => profile?.featured === true,
+  )
+  if (featuredProfiles.length > 12) {
+    return 'Select no more than 12 featured profiles.'
+  }
+
+  const missingImage = featuredProfiles.find((profile) => !profile?.image)
+  if (missingImage) {
+    const name = missingImage.name?.trim()
+    return name
+      ? `Featured profile “${name}” requires a Profile Image.`
+      : 'Every featured profile requires a Profile Image.'
+  }
+
+  return true
+}
+
 const departmentsField = {
   name: 'departments',
   label: 'Departments',
@@ -119,6 +158,7 @@ const profilesField = {
   required: true,
   minRows: 1,
   maxRows: 200,
+  validate: validateFeaturedProfiles,
   admin: {
     description: 'Profiles shown in their displayed order.',
     initCollapsed: true,
@@ -132,6 +172,15 @@ const profilesField = {
     },
     { name: 'name', type: 'text', required: true },
     { name: 'designation', type: 'text' },
+    {
+      name: 'featured',
+      label: 'Featured in Carousel',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description: 'Show this profile in the optional featured carousel.',
+      },
+    } satisfies CheckboxField,
     {
       name: 'departmentId',
       label: 'Department',
@@ -191,6 +240,26 @@ export const DepartmentProfilesBlock: Block = {
             },
             { name: 'description', type: 'textarea' },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
+            {
+              name: 'showFeaturedCarousel',
+              label: 'Enable Featured Profile Carousel',
+              type: 'checkbox',
+              defaultValue: false,
+            } satisfies CheckboxField,
+            {
+              name: 'featuredCarouselTitle',
+              label: 'Featured Carousel Title',
+              type: 'text',
+              defaultValue: 'Featured Profiles',
+              admin: { condition: showsFeaturedCarousel },
+            },
+            {
+              name: 'directoryTitle',
+              label: 'Directory Title',
+              type: 'text',
+              defaultValue: 'Profile Directory',
+              admin: { condition: showsFeaturedCarousel },
+            },
             departmentsField,
             profilesField,
             createContentActionsField({
@@ -326,6 +395,65 @@ export const DepartmentProfilesBlock: Block = {
             createMediaOverlayCoverageField({
               condition: usesOverlayCards,
               defaultValue: 'full',
+            }),
+            {
+              name: 'featuredCarouselCardVariant',
+              label: 'Featured Carousel Card Variant',
+              type: 'select',
+              defaultValue: 'stacked',
+              options: [
+                { label: 'Text Below Image', value: 'stacked' },
+                { label: 'Image Overlay', value: 'overlay' },
+              ],
+              admin: { condition: showsFeaturedCarousel },
+            } satisfies SelectField,
+            {
+              name: 'featuredCarouselSize',
+              label: 'Featured Carousel Card Size',
+              type: 'select',
+              defaultValue: 'default',
+              options: [
+                { label: 'Compact', value: 'compact' },
+                { label: 'Default', value: 'default' },
+                { label: 'Comfortable', value: 'comfortable' },
+              ],
+              admin: {
+                condition: showsFeaturedCarousel,
+                description: 'Controls featured portrait height without changing section padding.',
+              },
+            } satisfies SelectField,
+            {
+              name: 'featuredCarouselOverlayAlignment',
+              label: 'Featured Carousel Overlay Alignment',
+              type: 'select',
+              defaultValue: 'left',
+              options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+                { label: 'Right', value: 'right' },
+              ],
+              admin: { condition: usesFeaturedCarouselOverlay },
+            } satisfies SelectField,
+            createMediaOverlayToneField({
+              condition: usesFeaturedCarouselOverlay,
+              name: 'featuredCarouselThemeMode',
+              required: false,
+            }),
+            createMediaOverlayStrengthField({
+              condition: usesFeaturedCarouselOverlay,
+              name: 'featuredCarouselOverlayStyle',
+              required: false,
+            }),
+            createMediaOverlayDirectionField({
+              condition: usesFeaturedCarouselOverlay,
+              defaultValue: 'bottomToTop',
+              name: 'featuredCarouselOverlayDirection',
+              required: false,
+            }),
+            createMediaOverlayCoverageField({
+              condition: usesFeaturedCarouselOverlay,
+              name: 'featuredCarouselOverlayCoverage',
+              required: false,
             }),
             {
               name: 'contentAlignment',

@@ -135,14 +135,18 @@ export function ProfileCarouselCard({
             )}
             data-block-surface={usesCardSurfaceOverlay ? undefined : overlay.blockSurface}
           >
+            {profile.department ? (
+              <p
+                className="font-mono text-xs leading-5 font-semibold uppercase tracking-[0.16em]"
+                data-profile-carousel-department="true"
+                data-section-eyebrow-surface={overlay.eyebrowSurface}
+              >
+                {profile.department}
+              </p>
+            ) : null}
             <p className="text-base leading-tight font-semibold">{profile.name}</p>
             {profile.role ? (
               <p className={cn('text-sm leading-6', overlaySecondaryClassName)}>{profile.role}</p>
-            ) : null}
-            {profile.department ? (
-              <p className={cn('text-xs leading-5', overlaySecondaryClassName)}>
-                {profile.department}
-              </p>
             ) : null}
           </div>
         </>

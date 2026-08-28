@@ -27,6 +27,11 @@ import {
   normalizeMediaOverlayTone,
 } from '@/blocks/shared/mediaOverlayPresentation'
 import { ContentActions } from '@/components/ContentActions'
+import type {
+  ProfileCarouselCardVariant,
+  ProfileCarouselOverlayAlignment,
+  ProfileCarouselSize,
+} from '@/components/profile-carousel-card'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
@@ -55,6 +60,7 @@ type DepartmentValue = {
 type DepartmentProfileValue = {
   departmentId?: string | null
   designation?: string | null
+  featured?: boolean | null
   id?: string | null
   image?: unknown
   imagePosition?: string | null
@@ -74,7 +80,16 @@ type DepartmentProfilesBlockLike = {
   departments?: DepartmentValue[] | null
   description?: string | null
   descriptionPosition?: 'side' | 'underTitle' | null
+  directoryTitle?: string | null
   eyebrow?: string | null
+  featuredCarouselCardVariant?: ProfileCarouselCardVariant | null
+  featuredCarouselOverlayAlignment?: ProfileCarouselOverlayAlignment | null
+  featuredCarouselOverlayCoverage?: MediaOverlayCoverage | null
+  featuredCarouselOverlayDirection?: MediaOverlayDirection | null
+  featuredCarouselOverlayStyle?: MediaOverlayStrength | null
+  featuredCarouselSize?: Exclude<ProfileCarouselSize, 'none'> | null
+  featuredCarouselThemeMode?: MediaOverlayTone | null
+  featuredCarouselTitle?: string | null
   footerActions?: CmsActionValue[] | null
   headerLayout?: 'split' | 'stacked' | null
   loadMoreLabel?: string | null
@@ -87,6 +102,7 @@ type DepartmentProfilesBlockLike = {
   profilesPerLoad?: number | string | null
   searchPlaceholder?: string | null
   showDepartmentTabs?: boolean | null
+  showFeaturedCarousel?: boolean | null
   showSearch?: boolean | null
   sideContentAlignment?: 'bottom' | 'top' | null
   size?: RegularBlockSize | null
@@ -110,6 +126,20 @@ const validImagePositions = new Set<DepartmentProfileImagePosition>([
   'bottom',
   'left',
   'right',
+])
+const validFeaturedCarouselCardVariants = new Set<ProfileCarouselCardVariant>([
+  'overlay',
+  'stacked',
+])
+const validFeaturedCarouselOverlayAlignments = new Set<ProfileCarouselOverlayAlignment>([
+  'center',
+  'left',
+  'right',
+])
+const validFeaturedCarouselSizes = new Set<Exclude<ProfileCarouselSize, 'none'>>([
+  'comfortable',
+  'compact',
+  'default',
 ])
 const validProfilesPerLoad = new Set<DepartmentProfilesPerLoad>([12, 16, 20, 24])
 const validSizes = new Set<RegularBlockSize>(['none', 'compact', 'default', 'comfortable'])
@@ -150,7 +180,16 @@ export function DepartmentProfilesBlockComponent({
   departments,
   description,
   descriptionPosition = 'side',
+  directoryTitle,
   eyebrow,
+  featuredCarouselCardVariant = 'stacked',
+  featuredCarouselOverlayAlignment = 'left',
+  featuredCarouselOverlayCoverage = 'full',
+  featuredCarouselOverlayDirection = 'bottomToTop',
+  featuredCarouselOverlayStyle = 'dark',
+  featuredCarouselSize = 'default',
+  featuredCarouselThemeMode = 'auto',
+  featuredCarouselTitle,
   footerActions,
   headerLayout = 'split',
   loadMoreLabel,
@@ -163,6 +202,7 @@ export function DepartmentProfilesBlockComponent({
   profilesPerLoad = 20,
   searchPlaceholder,
   showDepartmentTabs = true,
+  showFeaturedCarousel = false,
   showSearch = true,
   sideContentAlignment = 'bottom',
   size = 'default',
@@ -211,6 +251,7 @@ export function DepartmentProfilesBlockComponent({
           departmentId: department.id,
           departmentName: department.name,
           designation: profile.designation?.trim() || undefined,
+          featured: profile.featured === true,
           id: profile.id ?? index,
           image: image ?? undefined,
           imagePosition,
@@ -253,7 +294,40 @@ export function DepartmentProfilesBlockComponent({
             : '4'
   const resolvedDescription = description?.trim()
   const resolvedDescriptionPosition = descriptionPosition === 'underTitle' ? 'underTitle' : 'side'
+  const resolvedDirectoryTitle = directoryTitle?.trim()
   const resolvedEyebrow = eyebrow?.trim()
+  const resolvedFeaturedCarouselCardVariant = validFeaturedCarouselCardVariants.has(
+    featuredCarouselCardVariant ?? 'stacked',
+  )
+    ? (featuredCarouselCardVariant ?? 'stacked')
+    : 'stacked'
+  const resolvedFeaturedCarouselOverlayAlignment = validFeaturedCarouselOverlayAlignments.has(
+    featuredCarouselOverlayAlignment ?? 'left',
+  )
+    ? (featuredCarouselOverlayAlignment ?? 'left')
+    : 'left'
+  const resolvedFeaturedCarouselOverlayDirection = normalizeMediaOverlayDirection(
+    featuredCarouselOverlayDirection,
+    'bottomToTop',
+  )
+  const resolvedFeaturedCarouselOverlayCoverage = normalizeMediaOverlayCoverage(
+    featuredCarouselOverlayCoverage,
+    resolvedFeaturedCarouselOverlayDirection,
+  )
+  const resolvedFeaturedCarouselOverlayStyle = normalizeMediaOverlayStrength(
+    featuredCarouselOverlayStyle,
+    'dark',
+  )
+  const resolvedFeaturedCarouselSize = validFeaturedCarouselSizes.has(
+    featuredCarouselSize ?? 'default',
+  )
+    ? (featuredCarouselSize ?? 'default')
+    : 'default'
+  const resolvedFeaturedCarouselThemeMode = normalizeMediaOverlayTone(
+    featuredCarouselThemeMode,
+    'auto',
+  )
+  const resolvedFeaturedCarouselTitle = featuredCarouselTitle?.trim()
   const resolvedHeaderLayout = headerLayout === 'stacked' ? 'stacked' : 'split'
   const resolvedLoadMoreLabel = loadMoreLabel?.trim() || 'Load More'
   const resolvedNoResultsMessage = noResultsMessage?.trim() || 'No matching profiles found.'
@@ -361,6 +435,15 @@ export function DepartmentProfilesBlockComponent({
             cardSize={resolvedCardSize}
             columns={resolvedColumns}
             departments={resolvedDepartments}
+            directoryTitle={resolvedDirectoryTitle}
+            featuredCarouselCardVariant={resolvedFeaturedCarouselCardVariant}
+            featuredCarouselOverlayAlignment={resolvedFeaturedCarouselOverlayAlignment}
+            featuredCarouselOverlayCoverage={resolvedFeaturedCarouselOverlayCoverage}
+            featuredCarouselOverlayDirection={resolvedFeaturedCarouselOverlayDirection}
+            featuredCarouselOverlayStyle={resolvedFeaturedCarouselOverlayStyle}
+            featuredCarouselSize={resolvedFeaturedCarouselSize}
+            featuredCarouselThemeMode={resolvedFeaturedCarouselThemeMode}
+            featuredCarouselTitle={resolvedFeaturedCarouselTitle}
             hasSectionHeading={hasHeading}
             loadMoreLabel={resolvedLoadMoreLabel}
             noResultsMessage={resolvedNoResultsMessage}
@@ -371,6 +454,7 @@ export function DepartmentProfilesBlockComponent({
             profilesPerLoad={resolvedProfilesPerLoad}
             searchPlaceholder={resolvedSearchPlaceholder}
             showDepartmentTabs={showDepartmentTabs !== false}
+            showFeaturedCarousel={showFeaturedCarousel === true}
             showSearch={showSearch !== false}
             tabVariant={resolvedTabVariant}
             tabWidth={resolvedTabWidth}

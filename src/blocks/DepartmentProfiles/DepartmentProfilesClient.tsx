@@ -15,6 +15,13 @@ import type {
   MediaOverlayStrength,
   MediaOverlayTone,
 } from '@/blocks/shared/mediaOverlayPresentation'
+import { ProfileCarouselCollection } from '@/components/profile-carousel-collection'
+import type {
+  ProfileCarouselCardVariant,
+  ProfileCarouselOverlayAlignment,
+  ProfileCarouselProfile,
+  ProfileCarouselSize,
+} from '@/components/profile-carousel-card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
@@ -39,6 +46,15 @@ type DepartmentProfilesClientProps = {
   cardSize: DepartmentProfilesCardSize
   columns: DepartmentProfilesColumns
   departments: ResolvedProfileDepartment[]
+  directoryTitle?: string
+  featuredCarouselCardVariant?: ProfileCarouselCardVariant
+  featuredCarouselOverlayAlignment?: ProfileCarouselOverlayAlignment
+  featuredCarouselOverlayCoverage?: MediaOverlayCoverage
+  featuredCarouselOverlayDirection?: MediaOverlayDirection
+  featuredCarouselOverlayStyle?: MediaOverlayStrength
+  featuredCarouselSize?: Exclude<ProfileCarouselSize, 'none'>
+  featuredCarouselThemeMode?: MediaOverlayTone
+  featuredCarouselTitle?: string
   hasSectionHeading: boolean
   loadMoreLabel: string
   noResultsMessage: string
@@ -49,6 +65,7 @@ type DepartmentProfilesClientProps = {
   profilesPerLoad: DepartmentProfilesPerLoad
   searchPlaceholder: string
   showDepartmentTabs: boolean
+  showFeaturedCarousel?: boolean
   showSearch: boolean
   tabVariant: ContentTabVariant
   tabWidth: DepartmentProfilesTabWidth
@@ -191,6 +208,15 @@ export function DepartmentProfilesClient({
   cardSize,
   columns,
   departments,
+  directoryTitle,
+  featuredCarouselCardVariant = 'stacked',
+  featuredCarouselOverlayAlignment = 'left',
+  featuredCarouselOverlayCoverage = 'full',
+  featuredCarouselOverlayDirection = 'bottomToTop',
+  featuredCarouselOverlayStyle = 'dark',
+  featuredCarouselSize = 'default',
+  featuredCarouselThemeMode = 'auto',
+  featuredCarouselTitle,
   hasSectionHeading,
   loadMoreLabel,
   noResultsMessage,
@@ -201,6 +227,7 @@ export function DepartmentProfilesClient({
   profilesPerLoad,
   searchPlaceholder,
   showDepartmentTabs,
+  showFeaturedCarousel = false,
   showSearch,
   tabVariant,
   tabWidth,
@@ -235,7 +262,27 @@ export function DepartmentProfilesClient({
       }),
     [activeId, normalizedQuery, profiles],
   )
+  const featuredProfiles = useMemo(
+    () =>
+      profiles.flatMap((profile): ProfileCarouselProfile[] => {
+        if (!showFeaturedCarousel || !profile.featured || !profile.image) return []
+        if (activeId !== 'all' && profile.departmentId !== activeId) return []
+
+        return [
+          {
+            department: profile.departmentName,
+            image: profile.image,
+            imagePosition: profile.imagePosition,
+            name: profile.name,
+            role: profile.designation,
+          },
+        ]
+      }),
+    [activeId, profiles, showFeaturedCarousel],
+  )
   const visibleProfiles = filteredProfiles.slice(0, visibleCount)
+  const showFeaturedRegion = showFeaturedCarousel && !normalizedQuery && featuredProfiles.length > 0
+  const SubsectionHeading = hasSectionHeading ? 'h3' : 'h2'
   const panelID = `${componentID}-panel`
   const tabSurface = resolveBlockSurface(background)
   const selectDepartment = (id: string) => {
@@ -346,6 +393,40 @@ export function DepartmentProfilesClient({
             </div>
           ) : null}
         </div>
+      ) : null}
+
+      {showFeaturedRegion ? (
+        <div data-department-profiles-featured="true">
+          <ProfileCarouselCollection
+            key={activeId}
+            cardVariant={featuredCarouselCardVariant}
+            controlsLayout="inline"
+            header={
+              featuredCarouselTitle ? (
+                <SubsectionHeading className="font-sans text-xl leading-tight font-semibold tracking-tight text-current sm:text-2xl">
+                  {featuredCarouselTitle}
+                </SubsectionHeading>
+              ) : undefined
+            }
+            overlayAlignment={featuredCarouselOverlayAlignment}
+            overlayCoverage={featuredCarouselOverlayCoverage}
+            overlayDirection={featuredCarouselOverlayDirection}
+            overlayStyle={featuredCarouselOverlayStyle}
+            profiles={featuredProfiles}
+            sectionBackground={background}
+            size={featuredCarouselSize}
+            themeMode={featuredCarouselThemeMode}
+          />
+        </div>
+      ) : null}
+
+      {showFeaturedCarousel && directoryTitle ? (
+        <SubsectionHeading
+          className="font-sans text-xl leading-tight font-semibold tracking-tight text-current sm:text-2xl"
+          data-department-profiles-directory-title="true"
+        >
+          {directoryTitle}
+        </SubsectionHeading>
       ) : null}
 
       <p aria-live="polite" className="sr-only" role="status">

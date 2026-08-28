@@ -1747,6 +1747,9 @@ export interface DepartmentProfilesBlock {
         id?: string | null;
       }[]
     | null;
+  showFeaturedCarousel?: boolean | null;
+  featuredCarouselTitle?: string | null;
+  directoryTitle?: string | null;
   /**
    * Add departments once in the order they should appear in the public filter tabs.
    */
@@ -1761,6 +1764,10 @@ export interface DepartmentProfilesBlock {
     image?: (string | null) | Media;
     name: string;
     designation?: string | null;
+    /**
+     * Show this profile in the optional featured carousel.
+     */
+    featured?: boolean | null;
     /**
      * Choose one department from the list configured above.
      */
@@ -1832,6 +1839,26 @@ export interface DepartmentProfilesBlock {
    * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
    */
   overlayCoverage?: ('full' | 'split') | null;
+  featuredCarouselCardVariant?: ('stacked' | 'overlay') | null;
+  /**
+   * Controls featured portrait height without changing section padding.
+   */
+  featuredCarouselSize?: ('compact' | 'default' | 'comfortable') | null;
+  featuredCarouselOverlayAlignment?: ('left' | 'center' | 'right') | null;
+  /**
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+   */
+  featuredCarouselThemeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
+  featuredCarouselOverlayStyle?: ('light' | 'dark' | 'darker') | null;
+  /**
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   */
+  featuredCarouselOverlayDirection?:
+    ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  featuredCarouselOverlayCoverage?: ('full' | 'split') | null;
   contentAlignment: 'left' | 'center' | 'right';
   headerLayout: 'split' | 'stacked';
   descriptionPosition?: ('side' | 'underTitle') | null;
@@ -8637,6 +8664,9 @@ export interface DepartmentProfilesBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  showFeaturedCarousel?: T;
+  featuredCarouselTitle?: T;
+  directoryTitle?: T;
   departments?:
     | T
     | {
@@ -8649,6 +8679,7 @@ export interface DepartmentProfilesBlockSelect<T extends boolean = true> {
         image?: T;
         name?: T;
         designation?: T;
+        featured?: T;
         departmentId?: T;
         imagePosition?: T;
         id?: T;
@@ -8692,6 +8723,13 @@ export interface DepartmentProfilesBlockSelect<T extends boolean = true> {
   overlayStyle?: T;
   overlayDirection?: T;
   overlayCoverage?: T;
+  featuredCarouselCardVariant?: T;
+  featuredCarouselSize?: T;
+  featuredCarouselOverlayAlignment?: T;
+  featuredCarouselThemeMode?: T;
+  featuredCarouselOverlayStyle?: T;
+  featuredCarouselOverlayDirection?: T;
+  featuredCarouselOverlayCoverage?: T;
   contentAlignment?: T;
   headerLayout?: T;
   descriptionPosition?: T;

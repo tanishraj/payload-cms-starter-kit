@@ -16,14 +16,13 @@ import type {
   MediaOverlayTone,
 } from '@/blocks/shared/mediaOverlayPresentation'
 import {
-  ProfileCarouselCard,
   type ProfileCarouselCardVariant,
   type ProfileCarouselImagePosition,
   type ProfileCarouselOverlayAlignment,
   type ProfileCarouselProfile,
   type ProfileCarouselSize,
 } from '@/components/profile-carousel-card'
-import { ProfileCarouselClient } from '@/components/profile-carousel-client'
+import { ProfileCarouselCollection } from '@/components/profile-carousel-collection'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { cn } from '@/lib/utils'
 
@@ -132,36 +131,17 @@ export function ProfileCarousel({
         </div>
 
         <div className={profileMarginClasses[resolvedSize]}>
-          {usesCarousel ? (
-            <ProfileCarouselClient
-              cardVariant={cardVariant}
-              overlayAlignment={overlayAlignment}
-              overlayCoverage={overlayCoverage}
-              overlayDirection={overlayDirection}
-              overlayStyle={overlayStyle}
-              profiles={visibleProfiles}
-              sectionBackground={sectionBackground}
-              size={resolvedSize}
-              themeMode={themeMode}
-            />
-          ) : (
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
-              {visibleProfiles.map((profile, index) => (
-                <ProfileCarouselCard
-                  key={`${profile.name}-${index}`}
-                  overlayAlignment={overlayAlignment}
-                  overlayCoverage={overlayCoverage}
-                  overlayDirection={overlayDirection}
-                  overlayStyle={overlayStyle}
-                  profile={profile}
-                  sectionBackground={sectionBackground}
-                  size={resolvedSize}
-                  themeMode={themeMode}
-                  variant={cardVariant}
-                />
-              ))}
-            </div>
-          )}
+          <ProfileCarouselCollection
+            cardVariant={cardVariant}
+            overlayAlignment={overlayAlignment}
+            overlayCoverage={overlayCoverage}
+            overlayDirection={overlayDirection}
+            overlayStyle={overlayStyle}
+            profiles={visibleProfiles}
+            sectionBackground={sectionBackground}
+            size={resolvedSize}
+            themeMode={themeMode}
+          />
         </div>
       </div>
     </section>

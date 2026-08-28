@@ -2387,6 +2387,7 @@
       "src/components/news-events/featuredHighlightsShared.ts",
       "src/components/profile-carousel-card.tsx",
       "src/components/profile-carousel-client.tsx",
+      "src/components/profile-carousel-collection.tsx",
       "src/components/profile-carousel.tsx",
       "src/components/rating-spotlight.tsx",
       "src/components/review-feed-list.tsx",
@@ -2721,7 +2722,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "0d739ce7dad4050158a863d8c834384476ae228443f75d3a3cc8e8155f99996c"
+    "sha256": "104ea259d8a392a0a7be33a21f44294ed62e47231406444bb22284940633541a"
   },
   "surfaces": {
     "access": [

@@ -133,11 +133,12 @@ renderers or migrations.
 Profile Carousel owns an embedded one-to-twelve-person card set with Text Below Image and Image
 Overlay variants. Each profile requires Media and a name and may include Role / Designation and an
 editor-authored Department. Runtime trims the optional Department and omits blank values without a
-migration. Both card variants render Department as compact secondary metadata beneath Role /
-Designation, including when Department is present without a Role, while inheriting the resolved card
-or overlay foreground. One to four profiles use the existing responsive static grid; five or more use
-the looping manual carousel. Department does not change navigation, filtering, image positioning,
-surfaces, overlays, actions, or section settings.
+migration. Image Overlay renders Department as compact uppercase mono label metadata above Name and
+Role / Designation using the resolved overlay's semantic eyebrow accent. Text Below Image retains
+Name, Role / Designation, then Department as secondary copy using the resolved card foreground. One
+to four profiles use the existing responsive static grid; five or more use the looping manual
+carousel. Department does not change navigation, filtering, image positioning, surfaces, overlays,
+actions, or section settings.
 
 Leadership Profiles owns the static academic, clinical, and administrative leadership directory.
 Editors provide one to twenty-four profiles with required Media and names, optional leadership labels,
@@ -187,6 +188,15 @@ The department tab rail supports Content Width, Centered Auto Width, and Equal F
 invalid values use Content Width. Centered Auto Width keeps intrinsic tabs centered when they fit and
 scrollable from the inline start when they overflow; Equal Full Width divides the available
 Search-adjacent rail evenly, or the full toolbar width when Search is hidden.
+Its optional featured area is derived from the same ordered profile rows: editors mark up to twelve
+image-backed profiles as Featured, and the shared Profile Carousel collection appears after the shared
+search/department toolbar. All shows every featured profile; department tabs filter both featured and
+directory profiles; any active search hides the featured area while leaving the full directory search
+active. One through four featured profiles use the static responsive row and five through twelve use
+the manual looping carousel. When the featured set uses the manual carousel, its semantic subsection
+title and Previous/Next controls share one normal-flow header row; static featured sets retain the
+title without controls. Featured profiles remain in the directory, and the parent Department Profiles
+section continues to own appearance, spacing, actions, and subsection heading hierarchy.
 
 Program Matrix keeps its introduction before the matrix and footer actions in document order. Editors
 can use a stacked layout or a large-screen 40/60 split with the introduction on either visual side

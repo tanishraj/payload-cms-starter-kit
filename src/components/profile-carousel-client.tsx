@@ -1,5 +1,7 @@
 'use client'
 
+import type { ReactNode } from 'react'
+
 import {
   Carousel,
   CarouselContent,
@@ -21,9 +23,14 @@ import type {
   MediaOverlayStrength,
   MediaOverlayTone,
 } from '@/blocks/shared/mediaOverlayPresentation'
+import { cn } from '@/lib/utils'
+
+export type ProfileCarouselControlsLayout = 'floating' | 'inline'
 
 type ProfileCarouselClientProps = {
   cardVariant: ProfileCarouselCardVariant
+  controlsLayout?: ProfileCarouselControlsLayout
+  header?: ReactNode
   overlayAlignment: ProfileCarouselOverlayAlignment
   overlayCoverage: MediaOverlayCoverage
   overlayDirection: MediaOverlayDirection
@@ -34,8 +41,27 @@ type ProfileCarouselClientProps = {
   themeMode: MediaOverlayTone
 }
 
+function ProfileCarouselControls({ className }: { className: string }) {
+  return (
+    <div className={className}>
+      <CarouselPrevious
+        aria-label="Previous profile"
+        className="static inset-auto translate-y-0"
+        variant="default"
+      />
+      <CarouselNext
+        aria-label="Next profile"
+        className="static inset-auto translate-y-0"
+        variant="default"
+      />
+    </div>
+  )
+}
+
 export function ProfileCarouselClient({
   cardVariant,
+  controlsLayout = 'floating',
+  header,
   overlayAlignment,
   overlayCoverage,
   overlayDirection,
@@ -47,22 +73,21 @@ export function ProfileCarouselClient({
 }: ProfileCarouselClientProps) {
   return (
     <Carousel
-      className="relative w-full pt-14"
+      className={cn('relative w-full', controlsLayout === 'floating' && 'pt-14')}
       data-carousel-loop="true"
       opts={{ align: 'start', loop: true }}
     >
-      <div className="absolute top-0 right-0 flex h-10 items-center justify-end gap-2">
-        <CarouselPrevious
-          aria-label="Previous profile"
-          className="static inset-auto translate-y-0"
-          variant="default"
-        />
-        <CarouselNext
-          aria-label="Next profile"
-          className="static inset-auto translate-y-0"
-          variant="default"
-        />
-      </div>
+      {controlsLayout === 'inline' ? (
+        <div
+          className="mb-5 flex min-h-11 min-w-0 items-center gap-4 md:mb-6"
+          data-profile-carousel-header="inline"
+        >
+          {header ? <div className="min-w-0 flex-1">{header}</div> : null}
+          <ProfileCarouselControls className="ml-auto flex shrink-0 items-center justify-end gap-2" />
+        </div>
+      ) : (
+        <ProfileCarouselControls className="absolute top-0 right-0 flex h-10 items-center justify-end gap-2" />
+      )}
       <CarouselContent className="-ml-5">
         {profiles.map((profile, index) => (
           <CarouselItem className="pl-5 md:basis-1/2 lg:basis-1/4" key={`${profile.name}-${index}`}>
