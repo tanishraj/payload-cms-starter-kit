@@ -1096,6 +1096,7 @@ describe('DownloadList rendering', () => {
 
     expect(html).toContain('data-download-inline-item-container="true"')
     expect(html).toContain('data-download-item-action-divider="true"')
+    expect(html).toContain('grid h-full min-w-0 items-start gap-4 p-5')
     expect(html).toContain('grid-cols-[auto_minmax(0,1fr)_auto_auto]')
     expect(html).toContain('self-stretch border-l border-current/15')
     expect(html).toContain('self-center')

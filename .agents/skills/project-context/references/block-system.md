@@ -224,10 +224,11 @@ override; empty values auto-detect from uploaded Media, while historical explici
 readable in uppercase. Document categories and category filtering are no longer part of this block.
 Inline List never renders a file-type badge. Its ruled items place the optional file icon at the
 upper-left, a flexible wrapping content column, a permanent vertical divider, and compact button
-actions at the far right at every width. Each document owns an ordered `documentActions` list with at
-most two Download, View, or Custom rows. Download and View are fixed-icon buttons. Custom uses an
-internal Page or Custom URL and renders as either a visible text Link without an icon or a semantic
-Button with an optional shared animated trailing arrow. Show Arrow is authored only for Custom
+actions at the far right at every width. The inner item grid fills each equalized row height so the
+divider spans the complete card. Each document owns an ordered `documentActions` list with at most
+two Download, View, or Custom rows. Download and View are fixed-icon buttons. Custom uses an internal
+Page or Custom URL and renders as either a visible text Link without an icon or a semantic Button with
+an optional shared animated trailing arrow. Show Arrow is authored only for Custom
 Buttons and defaults to off. Duplicate Download/View rows and duplicate Custom destinations are
 invalid. Labelled boxed-family grids show Download/View labels plus their fixed icons; Grid Icon-only
 and Inline compact only Download/View to accessible icon controls. Custom Button remains visibly

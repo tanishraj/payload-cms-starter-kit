@@ -423,7 +423,7 @@ function InlinePresentation({
           <li className="min-w-0 border-r border-b border-current/15" key={document.id}>
             <div
               className={cn(
-                'grid min-w-0 items-start gap-4 p-5',
+                'grid h-full min-w-0 items-start gap-4 p-5',
                 showDocumentIcon
                   ? 'grid-cols-[auto_minmax(0,1fr)_auto_auto]'
                   : 'grid-cols-[minmax(0,1fr)_auto_auto]',
