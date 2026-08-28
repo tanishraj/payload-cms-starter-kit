@@ -814,6 +814,7 @@ describe('Department Profiles block', () => {
     expect(frame?.className).toContain('bg-background')
     expect(frame?.className).not.toContain('overflow-x-auto')
     expect(viewport?.className).toContain('overflow-x-auto')
+    expect(viewport?.className).toContain('no-scrollbar')
     expect(frame?.contains(viewport)).toBe(true)
     expect(viewport?.contains(tablist)).toBe(true)
     expect(tablist.getAttribute('data-department-profiles-tab-width')).toBe('content')

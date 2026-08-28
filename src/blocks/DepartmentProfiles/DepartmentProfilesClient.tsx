@@ -395,7 +395,7 @@ export function DepartmentProfilesClient({
               data-department-profiles-tab-frame="true"
             >
               <div
-                className="min-w-0 overflow-x-auto overscroll-x-contain"
+                className="no-scrollbar min-w-0 overflow-x-auto overscroll-x-contain"
                 data-department-profiles-tab-scroll="true"
               >
                 <div
