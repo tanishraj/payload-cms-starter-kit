@@ -244,10 +244,7 @@ export function QaAccordionBlockComponent({
   const hasSideColumn = hasProfile || hasContact
 
   const supportingContent = hasSideColumn ? (
-    <aside
-      className="space-y-6 text-left lg:space-y-8 bg-red-100"
-      data-qa-accordion-side-column="true"
-    >
+    <aside className="space-y-8 text-left lg:space-y-12" data-qa-accordion-side-column="true">
       <div className="space-y-8 lg:space-y-12">
         {hasProfile ? (
           <div className="flex items-start gap-3 sm:gap-4">
@@ -276,7 +273,7 @@ export function QaAccordionBlockComponent({
         ) : null}
 
         {hasContact ? (
-          <div className="space-y-4 lg:space-y-4">
+          <div className="space-y-4 lg:space-y-6">
             {contact?.title?.trim() ? (
               <p className="text-lg leading-tight font-semibold text-current sm:text-xl">
                 {contact.title.trim()}
