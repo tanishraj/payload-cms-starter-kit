@@ -46,6 +46,7 @@ import type {
   DepartmentProfilesCardLayout,
   DepartmentProfilesCardSize,
   DepartmentProfilesColumns,
+  DepartmentProfilesFilterPresentation,
   DepartmentProfilesPerLoad,
   DepartmentProfilesTabWidth,
   ResolvedDepartmentProfile,
@@ -78,6 +79,7 @@ type DepartmentProfilesBlockLike = {
   columns?: DepartmentProfilesColumns | null
   contentAlignment?: DepartmentProfilesAlignment | null
   departments?: DepartmentValue[] | null
+  departmentFilterPresentation?: DepartmentProfilesFilterPresentation | null
   description?: string | null
   descriptionPosition?: 'side' | 'underTitle' | null
   directoryTitle?: string | null
@@ -117,6 +119,10 @@ const validAlignments = new Set<DepartmentProfilesAlignment>(['left', 'center', 
 const validCardLayouts = new Set<DepartmentProfilesCardLayout>(['inline', 'overlay'])
 const validCardFrames = new Set<DepartmentProfilesCardFrame>(['boxed', 'framed', 'open'])
 const validCardSizes = new Set<DepartmentProfilesCardSize>(['lg', 'md', 'sm'])
+const validDepartmentFilterPresentations = new Set<DepartmentProfilesFilterPresentation>([
+  'dropdown',
+  'tabs',
+])
 const validLargeColumns = new Set<DepartmentProfilesColumns>(['2', '3', '4'])
 const validMediumColumns = new Set<DepartmentProfilesColumns>(['3', '4', '5', '6'])
 const validSmallColumns = new Set<DepartmentProfilesColumns>(['4', '5', '6', '7', '8'])
@@ -177,6 +183,7 @@ export function DepartmentProfilesBlockComponent({
   cardSize = 'lg',
   columns = '4',
   contentAlignment = 'left',
+  departmentFilterPresentation = 'tabs',
   departments,
   description,
   descriptionPosition = 'side',
@@ -293,6 +300,11 @@ export function DepartmentProfilesBlockComponent({
             ? (columns ?? '4')
             : '4'
   const resolvedDescription = description?.trim()
+  const resolvedDepartmentFilterPresentation = validDepartmentFilterPresentations.has(
+    departmentFilterPresentation ?? 'tabs',
+  )
+    ? (departmentFilterPresentation ?? 'tabs')
+    : 'tabs'
   const resolvedDescriptionPosition = descriptionPosition === 'underTitle' ? 'underTitle' : 'side'
   const resolvedDirectoryTitle = directoryTitle?.trim()
   const resolvedEyebrow = eyebrow?.trim()
@@ -434,6 +446,7 @@ export function DepartmentProfilesBlockComponent({
             cardLayout={resolvedCardLayout}
             cardSize={resolvedCardSize}
             columns={resolvedColumns}
+            departmentFilterPresentation={resolvedDepartmentFilterPresentation}
             departments={resolvedDepartments}
             directoryTitle={resolvedDirectoryTitle}
             featuredCarouselCardVariant={resolvedFeaturedCarouselCardVariant}

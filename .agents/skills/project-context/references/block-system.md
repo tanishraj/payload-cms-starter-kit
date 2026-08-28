@@ -135,10 +135,10 @@ Overlay variants. Each profile requires Media and a name and may include Role / 
 editor-authored Department. Runtime trims the optional Department and omits blank values without a
 migration. Image Overlay renders Department as compact uppercase mono label metadata above Name and
 Role / Designation using the resolved overlay's semantic eyebrow accent. Text Below Image retains
-Name, Role / Designation, then Department as secondary copy using the resolved card foreground. One
-to four profiles use the existing responsive static grid; five or more use the looping manual
-carousel. Department does not change navigation, filtering, image positioning, surfaces, overlays,
-actions, or section settings.
+Name, Role / Designation, then Department as compact uppercase mono metadata using the resolved card
+or section's semantic eyebrow accent. One to four profiles use the existing responsive static grid;
+five or more use the looping manual carousel. Department does not change navigation, filtering, image
+positioning, surfaces, overlays, actions, or section settings.
 
 Leadership Profiles owns the static academic, clinical, and administrative leadership directory.
 Editors provide one to twenty-four profiles with required Media and names, optional leadership labels,
@@ -165,11 +165,14 @@ Department Profiles owns a searchable, department-filtered faculty directory. Ed
 ordered block-local department list and assign exactly one department to each profile through a custom
 Admin picker backed by stable department row IDs. Renaming preserves assignments; removing an assigned
 department fails validation until profiles are reassigned. Profiles require a name, may include Media
-and a designation, and retain image crop positioning. Search and department tabs are independently optional;
-All remains first, empty departments are omitted, and Pill, Underline, and Contained tabs reuse the
-shared content-tab rail. Search covers name, designation, and department across the complete normalized
-list before the selected 12/16/20/24 batch is sliced, so hidden records remain searchable. Load More
-increments by the configured batch and disappears at completion. Static non-clickable cards support
+and a designation, and retain image crop positioning. Search and the department filter are
+independently optional. Editors present the filter as Tabs or Dropdown; missing or invalid legacy
+values use Tabs. Both presentations derive All followed by populated departments in configured order.
+Pill, Underline, and Contained tabs reuse the shared content-tab rail, while Dropdown reuses the
+shared shadcn Select and the same department selection state. Search covers name, designation, and
+department across the complete normalized list before the selected 12/16/20/24 batch is sliced, so
+hidden records remain searchable. Load More increments by the configured batch and disappears at
+completion. Static non-clickable cards support
 Image Overlay and Inline layouts at Large, Medium, and Small sizes. Image Overlay uses a compact
 portrait `4:5` ratio on mobile and a taller `3:4` width-to-height ratio from `sm` upward, preserves
 Bottom-to-Top/Full geometry, and exposes only Auto/Dark/Brand tones and Dark/Darker strengths to
@@ -186,8 +189,11 @@ documents resolve to Image Overlay Large, four columns, and Boxed without a migr
 The block reuses shared optional headers, appearance, actions, alignment, padding, and tab patterns.
 The department tab rail supports Content Width, Centered Auto Width, and Equal Full Width. Missing or
 invalid values use Content Width. Centered Auto Width keeps intrinsic tabs centered when they fit and
-scrollable from the inline start when they overflow; Equal Full Width divides the available
-Search-adjacent rail evenly, or the full toolbar width when Search is hidden.
+scrollable from the inline start when they overflow. The themed tab frame remains stationary and
+fully visible while only its tab contents scroll horizontally. Equal Full Width divides the available
+Search-adjacent rail evenly, or the full toolbar width when Search is hidden. Selecting either Tabs or
+Dropdown resets the visible batch and filters Featured Profiles and the directory without changing
+Search behavior.
 Its optional featured area is derived from the same ordered profile rows: editors mark up to twelve
 image-backed profiles as Featured, and the shared Profile Carousel collection appears after the shared
 search/department toolbar. All shows every featured profile; department tabs filter both featured and

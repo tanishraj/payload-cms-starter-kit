@@ -15,6 +15,7 @@ type HeaderLayoutSiblingData = {
 }
 
 type DirectoryControlSiblingData = {
+  departmentFilterPresentation?: 'dropdown' | 'tabs' | null
   showDepartmentTabs?: boolean | null
   showSearch?: boolean | null
 }
@@ -54,8 +55,12 @@ const isSplitHeader = (_data: unknown, siblingData: HeaderLayoutSiblingData) =>
 const showsSearch = (_data: unknown, siblingData: DirectoryControlSiblingData) =>
   siblingData?.showSearch !== false
 
-const showsDepartmentTabs = (_data: unknown, siblingData: DirectoryControlSiblingData) =>
+const showsDepartmentFilter = (_data: unknown, siblingData: DirectoryControlSiblingData) =>
   siblingData?.showDepartmentTabs !== false
+
+const usesDepartmentTabs = (_data: unknown, siblingData: DirectoryControlSiblingData) =>
+  siblingData?.showDepartmentTabs !== false &&
+  siblingData?.departmentFilterPresentation !== 'dropdown'
 
 const usesOverlayCards = (_data: unknown, siblingData: CardLayoutSiblingData) =>
   siblingData?.cardLayout !== 'inline'
@@ -288,16 +293,28 @@ export const DepartmentProfilesBlock: Block = {
             },
             {
               name: 'showDepartmentTabs',
-              label: 'Show Department Tabs',
+              label: 'Show Department Filter',
               type: 'checkbox',
               defaultValue: true,
             } satisfies CheckboxField,
             {
+              name: 'departmentFilterPresentation',
+              label: 'Department Filter Presentation',
+              type: 'select',
+              defaultValue: 'tabs',
+              required: true,
+              options: [
+                { label: 'Tabs', value: 'tabs' },
+                { label: 'Dropdown', value: 'dropdown' },
+              ],
+              admin: { condition: showsDepartmentFilter },
+            } satisfies SelectField,
+            {
               name: 'allTabLabel',
-              label: 'All Tab Label',
+              label: 'All Departments Label',
               type: 'text',
               defaultValue: 'All',
-              admin: { condition: showsDepartmentTabs },
+              admin: { condition: showsDepartmentFilter },
             },
             {
               name: 'tabVariant',
@@ -310,7 +327,7 @@ export const DepartmentProfilesBlock: Block = {
                 { label: 'Underline', value: 'underline' },
                 { label: 'Contained', value: 'contained' },
               ],
-              admin: { condition: showsDepartmentTabs },
+              admin: { condition: usesDepartmentTabs },
             } satisfies SelectField,
             {
               name: 'tabWidth',
@@ -324,7 +341,7 @@ export const DepartmentProfilesBlock: Block = {
                 { label: 'Equal Full Width', value: 'equal' },
               ],
               admin: {
-                condition: showsDepartmentTabs,
+                condition: usesDepartmentTabs,
                 description:
                   'Centered Auto Width keeps intrinsic tabs centered when they fit and scrollable when they overflow. Equal Full Width divides the complete available tab rail evenly.',
               },

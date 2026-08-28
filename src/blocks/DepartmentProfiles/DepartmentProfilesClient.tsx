@@ -24,6 +24,14 @@ import type {
 } from '@/components/profile-carousel-card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 
 import { DepartmentProfileCard } from './DepartmentProfileCard'
@@ -32,6 +40,7 @@ import type {
   DepartmentProfilesCardLayout,
   DepartmentProfilesCardSize,
   DepartmentProfilesColumns,
+  DepartmentProfilesFilterPresentation,
   DepartmentProfilesPerLoad,
   DepartmentProfilesTabWidth,
   ResolvedDepartmentProfile,
@@ -45,6 +54,7 @@ type DepartmentProfilesClientProps = {
   cardLayout: DepartmentProfilesCardLayout
   cardSize: DepartmentProfilesCardSize
   columns: DepartmentProfilesColumns
+  departmentFilterPresentation: DepartmentProfilesFilterPresentation
   departments: ResolvedProfileDepartment[]
   directoryTitle?: string
   featuredCarouselCardVariant?: ProfileCarouselCardVariant
@@ -207,6 +217,7 @@ export function DepartmentProfilesClient({
   cardLayout,
   cardSize,
   columns,
+  departmentFilterPresentation,
   departments,
   directoryTitle,
   featuredCarouselCardVariant = 'stacked',
@@ -242,13 +253,16 @@ export function DepartmentProfilesClient({
     () => departments.filter(({ id }) => profiles.some((profile) => profile.departmentId === id)),
     [departments, profiles],
   )
-  const tabs = useMemo(
+  const departmentOptions = useMemo(
     () => [{ id: 'all', name: allTabLabel }, ...populatedDepartments],
     [allTabLabel, populatedDepartments],
   )
-  const tabsVisible = showDepartmentTabs && populatedDepartments.length > 0
+  const filterVisible = showDepartmentTabs && populatedDepartments.length > 0
+  const tabsVisible = filterVisible && departmentFilterPresentation === 'tabs'
   const activeId =
-    tabsVisible && tabs.some(({ id }) => id === activeDepartmentId) ? activeDepartmentId : 'all'
+    filterVisible && departmentOptions.some(({ id }) => id === activeDepartmentId)
+      ? activeDepartmentId
+      : 'all'
   const normalizedQuery = normalizeSearchValue(query)
   const filteredProfiles = useMemo(
     () =>
@@ -291,7 +305,7 @@ export function DepartmentProfilesClient({
   }
 
   const activateTab = (index: number) => {
-    const nextTab = tabs[index]
+    const nextTab = departmentOptions[index]
     if (!nextTab) return
     selectDepartment(nextTab.id)
     tabRefs.current[index]?.focus()
@@ -305,10 +319,11 @@ export function DepartmentProfilesClient({
   const handleTabKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
     let nextIndex: number | undefined
 
-    if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length
-    if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length
+    if (event.key === 'ArrowRight') nextIndex = (index + 1) % departmentOptions.length
+    if (event.key === 'ArrowLeft')
+      nextIndex = (index - 1 + departmentOptions.length) % departmentOptions.length
     if (event.key === 'Home') nextIndex = 0
-    if (event.key === 'End') nextIndex = tabs.length - 1
+    if (event.key === 'End') nextIndex = departmentOptions.length - 1
     if (nextIndex === undefined) return
 
     event.preventDefault()
@@ -324,7 +339,7 @@ export function DepartmentProfilesClient({
       data-department-profiles-columns={columns}
       data-department-profiles-directory="true"
     >
-      {showSearch || tabsVisible ? (
+      {showSearch || filterVisible ? (
         <div
           className="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-center"
           data-department-profiles-toolbar="true"
@@ -349,46 +364,75 @@ export function DepartmentProfilesClient({
             </label>
           ) : null}
 
-          {tabsVisible ? (
-            <div className="min-w-0 flex-1 overflow-x-auto pb-1">
-              <div
-                aria-label="Profile departments"
-                className={cn(
-                  'flex flex-nowrap',
-                  tabRailWidthClasses[tabWidth],
-                  getContentTabRailClasses(tabVariant, tabSurface),
-                )}
-                data-department-profiles-tab-width={tabWidth}
-                role="tablist"
+          {filterVisible && departmentFilterPresentation === 'dropdown' ? (
+            <Select onValueChange={selectDepartment} value={activeId}>
+              <SelectTrigger
+                aria-label="Filter profiles by department"
+                className="data-[size=default]:h-11 w-full lg:w-72"
+                data-department-profiles-filter-presentation="dropdown"
               >
-                {tabs.map((tab, index) => {
-                  const active = tab.id === activeId
-                  const tabID = `${componentID}-tab-${index}`
+                <SelectValue placeholder={allTabLabel} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {departmentOptions.map((option) => (
+                    <SelectItem key={option.id} value={option.id}>
+                      {option.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          ) : null}
 
-                  return (
-                    <button
-                      aria-controls={panelID}
-                      aria-selected={active}
-                      className={cn(
-                        getContentTabClasses(tabVariant, active, tabSurface),
-                        tabWidth === 'equal' &&
-                          'w-0 min-w-0 flex-1 shrink overflow-hidden px-2 text-ellipsis',
-                      )}
-                      id={tabID}
-                      key={tab.id}
-                      onClick={() => selectDepartment(tab.id)}
-                      onKeyDown={(event) => handleTabKeyDown(event, index)}
-                      ref={(node) => {
-                        tabRefs.current[index] = node
-                      }}
-                      role="tab"
-                      tabIndex={active ? 0 : -1}
-                      type="button"
-                    >
-                      {tab.name}
-                    </button>
-                  )
-                })}
+          {tabsVisible ? (
+            <div
+              className={cn(
+                'min-w-0 flex-1 overflow-hidden',
+                getContentTabRailClasses(tabVariant, tabSurface),
+              )}
+              data-department-profiles-filter-presentation="tabs"
+              data-department-profiles-tab-frame="true"
+            >
+              <div
+                className="min-w-0 overflow-x-auto overscroll-x-contain"
+                data-department-profiles-tab-scroll="true"
+              >
+                <div
+                  aria-label="Profile departments"
+                  className={cn('flex flex-nowrap', tabRailWidthClasses[tabWidth])}
+                  data-department-profiles-tab-width={tabWidth}
+                  role="tablist"
+                >
+                  {departmentOptions.map((tab, index) => {
+                    const active = tab.id === activeId
+                    const tabID = `${componentID}-tab-${index}`
+
+                    return (
+                      <button
+                        aria-controls={panelID}
+                        aria-selected={active}
+                        className={cn(
+                          getContentTabClasses(tabVariant, active, tabSurface),
+                          tabWidth === 'equal' &&
+                            'w-0 min-w-0 flex-1 shrink overflow-hidden px-2 text-ellipsis',
+                        )}
+                        id={tabID}
+                        key={tab.id}
+                        onClick={() => selectDepartment(tab.id)}
+                        onKeyDown={(event) => handleTabKeyDown(event, index)}
+                        ref={(node) => {
+                          tabRefs.current[index] = node
+                        }}
+                        role="tab"
+                        tabIndex={active ? 0 : -1}
+                        type="button"
+                      >
+                        {tab.name}
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
             </div>
           ) : null}
@@ -436,7 +480,7 @@ export function DepartmentProfilesClient({
       <div
         aria-labelledby={
           tabsVisible
-            ? `${componentID}-tab-${tabs.findIndex(({ id }) => id === activeId)}`
+            ? `${componentID}-tab-${departmentOptions.findIndex(({ id }) => id === activeId)}`
             : undefined
         }
         id={tabsVisible ? panelID : undefined}

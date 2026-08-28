@@ -1812,6 +1812,7 @@ export interface DepartmentProfilesBlock {
   showSearch?: boolean | null;
   searchPlaceholder?: string | null;
   showDepartmentTabs?: boolean | null;
+  departmentFilterPresentation?: ('tabs' | 'dropdown') | null;
   allTabLabel?: string | null;
   tabVariant?: ('pill' | 'underline' | 'contained') | null;
   /**
@@ -8711,6 +8712,7 @@ export interface DepartmentProfilesBlockSelect<T extends boolean = true> {
   showSearch?: T;
   searchPlaceholder?: T;
   showDepartmentTabs?: T;
+  departmentFilterPresentation?: T;
   allTabLabel?: T;
   tabVariant?: T;
   tabWidth?: T;

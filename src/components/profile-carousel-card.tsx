@@ -84,6 +84,7 @@ export function ProfileCarouselCard({
 }: ProfileCarouselCardProps) {
   const imagePosition = profile.imagePosition ?? 'center'
   const surface = resolveCardSurface(profile.cardBackground, sectionBackground)
+  const stackedDepartmentSurface = surface.value === 'default' ? sectionBackground : surface.value
   const surfaceOverlay = resolveCardSurfaceOverlay(
     profile.cardBackground,
     sectionBackground,
@@ -189,7 +190,13 @@ export function ProfileCarouselCard({
           <p className={cn('text-sm leading-6', surface.secondary)}>{profile.role}</p>
         ) : null}
         {profile.department ? (
-          <p className={cn('text-xs leading-5', surface.secondary)}>{profile.department}</p>
+          <p
+            className="font-mono text-xs leading-5 font-semibold uppercase tracking-[0.16em]"
+            data-profile-carousel-stacked-department="true"
+            data-section-eyebrow-surface={stackedDepartmentSurface}
+          >
+            {profile.department}
+          </p>
         ) : null}
       </div>
     </article>

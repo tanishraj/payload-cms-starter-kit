@@ -459,6 +459,7 @@ describe('Profile Carousel', () => {
             department: '  Clinical Sciences  ',
             image: { alt: 'Dr Mira Shah', id: 1, url: '/mira.jpg' },
             name: 'Dr Mira Shah',
+            role: 'Head of Department',
           },
           {
             department: '   ',
@@ -469,10 +470,35 @@ describe('Profile Carousel', () => {
         title: 'Faculty',
       }),
     )
+    const primaryHtml = renderToStaticMarkup(
+      ProfileCarouselBlockComponent({
+        profiles: [
+          {
+            cardBackground: 'primary',
+            department: 'Anatomy',
+            image: { alt: 'Dr Primary', id: 3, url: '/primary.jpg' },
+            name: 'Dr Primary',
+          },
+        ],
+        title: 'Faculty',
+      }),
+    )
+    const nameIndex = html.indexOf('Dr Mira Shah')
+    const roleIndex = html.indexOf('Head of Department', nameIndex)
+    const departmentIndex = html.indexOf(
+      'data-profile-carousel-stacked-department="true"',
+      roleIndex,
+    )
 
     expect(html).toContain('Clinical Sciences')
     expect(html).not.toContain('  Clinical Sciences  ')
+    expect(nameIndex).toBeGreaterThan(-1)
+    expect(roleIndex).toBeGreaterThan(nameIndex)
+    expect(departmentIndex).toBeGreaterThan(roleIndex)
+    expect(html).toContain('data-section-eyebrow-surface="none"')
+    expect(html).toContain('font-mono text-xs leading-5 font-semibold uppercase tracking-[0.16em]')
     expect(html.match(/text-xs leading-5/g)).toHaveLength(1)
+    expect(primaryHtml).toContain('data-section-eyebrow-surface="primary"')
   })
 
   it('omits malformed profiles and renders nothing without valid profiles', () => {

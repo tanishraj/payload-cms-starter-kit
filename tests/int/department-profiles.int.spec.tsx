@@ -26,6 +26,7 @@ type InspectableField = {
   }
   defaultValue?: unknown
   fields?: InspectableField[]
+  label?: string
   maxRows?: number
   minRows?: number
   name?: string
@@ -77,6 +78,7 @@ const baseClientProps = {
   cardLayout: 'overlay' as const,
   cardSize: 'lg' as const,
   columns: '4' as const,
+  departmentFilterPresentation: 'tabs' as const,
   departments,
   hasSectionHeading: true,
   loadMoreLabel: 'Load More',
@@ -171,7 +173,30 @@ describe('Department Profiles block', () => {
       ),
     ).toBe(false)
     expect(findField(themeFields, 'showSearch')).toMatchObject({ defaultValue: true })
-    expect(findField(themeFields, 'showDepartmentTabs')).toMatchObject({ defaultValue: true })
+    expect(findField(themeFields, 'showDepartmentTabs')).toMatchObject({
+      defaultValue: true,
+      label: 'Show Department Filter',
+    })
+    expect(findField(themeFields, 'allTabLabel')?.label).toBe('All Departments Label')
+    const departmentFilterPresentation = findField(themeFields, 'departmentFilterPresentation')
+    expect(departmentFilterPresentation).toMatchObject({
+      defaultValue: 'tabs',
+      required: true,
+      type: 'select',
+    })
+    expect(departmentFilterPresentation?.options?.map(({ value }) => value)).toEqual([
+      'tabs',
+      'dropdown',
+    ])
+    expect(departmentFilterPresentation?.admin?.condition?.({}, { showDepartmentTabs: true })).toBe(
+      true,
+    )
+    expect(
+      departmentFilterPresentation?.admin?.condition?.({}, { showDepartmentTabs: false }),
+    ).toBe(false)
+    expect(
+      findField(themeFields, 'allTabLabel')?.admin?.condition?.({}, { showDepartmentTabs: true }),
+    ).toBe(true)
     expect(findField(themeFields, 'cardLayout')).toMatchObject({
       defaultValue: 'overlay',
       required: true,
@@ -289,6 +314,18 @@ describe('Department Profiles block', () => {
       'underline',
       'contained',
     ])
+    expect(
+      findField(themeFields, 'tabVariant')?.admin?.condition?.(
+        {},
+        { departmentFilterPresentation: 'tabs', showDepartmentTabs: true },
+      ),
+    ).toBe(true)
+    expect(
+      findField(themeFields, 'tabVariant')?.admin?.condition?.(
+        {},
+        { departmentFilterPresentation: 'dropdown', showDepartmentTabs: true },
+      ),
+    ).toBe(false)
     const tabWidth = findField(themeFields, 'tabWidth')
     expect(tabWidth).toMatchObject({
       defaultValue: 'content',
@@ -300,7 +337,18 @@ describe('Department Profiles block', () => {
         { label: 'Equal Full Width', value: 'equal' },
       ],
     })
-    expect(tabWidth?.admin?.condition?.({}, { showDepartmentTabs: true })).toBe(true)
+    expect(
+      tabWidth?.admin?.condition?.(
+        {},
+        { departmentFilterPresentation: 'tabs', showDepartmentTabs: true },
+      ),
+    ).toBe(true)
+    expect(
+      tabWidth?.admin?.condition?.(
+        {},
+        { departmentFilterPresentation: 'dropdown', showDepartmentTabs: true },
+      ),
+    ).toBe(false)
     expect(tabWidth?.admin?.condition?.({}, { showDepartmentTabs: false })).toBe(false)
     expect(findField(themeFields, 'themeMode')?.options?.map(({ value }) => value)).toEqual([
       'auto',
@@ -749,6 +797,28 @@ describe('Department Profiles block', () => {
     }
   })
 
+  it('keeps the tab frame fixed while its tabs scroll inside it', () => {
+    const { container } = render(
+      <DepartmentProfilesClient {...baseClientProps} tabVariant="pill" tabWidth="content" />,
+    )
+
+    const frame = container.querySelector('[data-department-profiles-tab-frame="true"]')
+    const viewport = container.querySelector('[data-department-profiles-tab-scroll="true"]')
+    const tablist = screen.getByRole('tablist', { name: 'Profile departments' })
+
+    expect(frame).not.toBeNull()
+    expect(viewport).not.toBeNull()
+    expect(frame?.className).toContain('overflow-hidden')
+    expect(frame?.className).toContain('rounded-full')
+    expect(frame?.className).toContain('border')
+    expect(frame?.className).toContain('bg-background')
+    expect(frame?.className).not.toContain('overflow-x-auto')
+    expect(viewport?.className).toContain('overflow-x-auto')
+    expect(frame?.contains(viewport)).toBe(true)
+    expect(viewport?.contains(tablist)).toBe(true)
+    expect(tablist.getAttribute('data-department-profiles-tab-width')).toBe('content')
+  })
+
   it('normalizes missing and invalid tab widths to Content Width', () => {
     const renderBlock = (tabWidth?: string | null) =>
       renderToStaticMarkup(
@@ -763,6 +833,114 @@ describe('Department Profiles block', () => {
       expect(html).toContain('data-department-profiles-tab-width="content"')
       expect(html).toContain('w-max min-w-full')
     }
+  })
+
+  it('normalizes missing and invalid department filter presentations to Tabs', () => {
+    const renderBlock = (departmentFilterPresentation?: string | null) =>
+      renderToStaticMarkup(
+        <DepartmentProfilesBlockComponent
+          departmentFilterPresentation={departmentFilterPresentation as never}
+          departments={departments}
+          profiles={[{ departmentId: 'medicine', name: 'Doctor One' }]}
+        />,
+      )
+
+    for (const html of [renderBlock(), renderBlock('invalid')]) {
+      expect(html).toContain('data-department-profiles-filter-presentation="tabs"')
+      expect(html).toContain('role="tablist"')
+    }
+
+    const dropdownHtml = renderBlock('dropdown')
+    expect(dropdownHtml).toContain('data-department-profiles-filter-presentation="dropdown"')
+    expect(dropdownHtml).toContain('aria-label="Filter profiles by department"')
+    expect(dropdownHtml).not.toContain('role="tablist"')
+  })
+
+  it('renders the department dropdown instead of tabs', () => {
+    render(
+      <DepartmentProfilesClient {...baseClientProps} departmentFilterPresentation="dropdown" />,
+    )
+
+    expect(screen.getByRole('combobox', { name: 'Filter profiles by department' })).toBeTruthy()
+    expect(screen.queryByRole('tablist')).toBeNull()
+  })
+
+  it('filters the directory and featured profiles through the department dropdown', () => {
+    const profiles = [
+      createProfile(1, { featured: true, name: 'Medicine Featured' }),
+      createProfile(2, {
+        departmentId: 'anatomy',
+        departmentName: 'Anatomy',
+        featured: true,
+        name: 'Anatomy Featured',
+      }),
+      createProfile(3, { name: 'Directory Only' }),
+    ]
+    const { container } = render(
+      <DepartmentProfilesClient
+        {...baseClientProps}
+        departmentFilterPresentation="dropdown"
+        featuredCarouselTitle="Featured Profiles"
+        profiles={profiles}
+        showFeaturedCarousel
+      />,
+    )
+    const combobox = screen.getByRole('combobox', {
+      name: 'Filter profiles by department',
+    })
+
+    fireEvent.keyDown(combobox, { key: 'ArrowDown' })
+    const options = screen.getAllByRole('option')
+    expect(options.map((option) => option.textContent)).toEqual([
+      'All',
+      'General Medicine',
+      'Anatomy',
+    ])
+    expect(screen.queryByRole('option', { name: 'Radiology' })).toBeNull()
+    fireEvent.click(screen.getByRole('option', { name: 'Anatomy' }))
+
+    const featuredRegion = container.querySelector('[data-department-profiles-featured="true"]')
+    expect(featuredRegion?.textContent).not.toContain('Medicine Featured')
+    expect(featuredRegion?.textContent).toContain('Anatomy Featured')
+    expect(screen.queryByText('Directory Only')).toBeNull()
+
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Search profiles' }), {
+      target: { value: 'medicine' },
+    })
+    expect(screen.getByRole('status').textContent).toContain('0 profiles found')
+  })
+
+  it('resets the visible batch after a dropdown department change', () => {
+    const profiles = [
+      ...Array.from({ length: 13 }, (_, index) => createProfile(index + 1)),
+      ...Array.from({ length: 13 }, (_, index) =>
+        createProfile(index + 101, {
+          departmentId: 'anatomy',
+          departmentName: 'Anatomy',
+        }),
+      ),
+    ]
+    render(
+      <DepartmentProfilesClient
+        {...baseClientProps}
+        departmentFilterPresentation="dropdown"
+        profiles={profiles}
+        profilesPerLoad={12}
+      />,
+    )
+
+    expect(screen.getAllByTestId('department-profile-card')).toHaveLength(12)
+    fireEvent.click(screen.getByRole('button', { name: 'Load More' }))
+    expect(screen.getAllByTestId('department-profile-card')).toHaveLength(24)
+
+    const combobox = screen.getByRole('combobox', {
+      name: 'Filter profiles by department',
+    })
+    fireEvent.keyDown(combobox, { key: 'ArrowDown' })
+    fireEvent.click(screen.getByRole('option', { name: 'Anatomy' }))
+
+    expect(screen.getAllByTestId('department-profile-card')).toHaveLength(12)
+    expect(screen.getByRole('button', { name: 'Load More' })).toBeTruthy()
   })
 
   it('filters by department and combines tabs with full-list search', () => {
@@ -934,6 +1112,9 @@ describe('Department Profiles block', () => {
     expect(generatedDepartmentProfiles).toContain("cardFrame: 'boxed' | 'framed' | 'open'")
     expect(generatedDepartmentProfiles).toContain(
       "tabWidth?: ('content' | 'centered' | 'equal') | null",
+    )
+    expect(generatedDepartmentProfiles).toContain(
+      "departmentFilterPresentation?: ('tabs' | 'dropdown') | null",
     )
     expect(generatedDepartmentProfiles).toContain(
       "themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null",
