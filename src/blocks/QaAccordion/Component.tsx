@@ -93,10 +93,7 @@ const leftQaProportionClasses: Record<QaAccordionSplitProportion, string> = {
   sectionFocus: 'lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]',
 }
 
-const sectionVerticalAlignmentClasses: Record<
-  QaAccordionSectionVerticalAlignment,
-  string
-> = {
+const sectionVerticalAlignmentClasses: Record<QaAccordionSectionVerticalAlignment, string> = {
   bottom: 'lg:justify-end',
   center: 'lg:justify-center',
   top: 'lg:justify-start',
@@ -238,9 +235,7 @@ export function QaAccordionBlockComponent({
   })
   const isSplitLayout = resolvedLayout.layoutMode === 'split'
   const proportionClasses =
-    resolvedAccordionPlacement === 'left'
-      ? leftQaProportionClasses
-      : rightQaProportionClasses
+    resolvedAccordionPlacement === 'left' ? leftQaProportionClasses : rightQaProportionClasses
   const hasProfile =
     isSplitLayout && Boolean(profileImage || profile?.name?.trim() || profile?.title?.trim())
   const hasContact =
@@ -250,7 +245,7 @@ export function QaAccordionBlockComponent({
 
   const supportingContent = hasSideColumn ? (
     <aside
-      className="space-y-8 text-left lg:space-y-12"
+      className="space-y-6 text-left lg:space-y-8 bg-red-100"
       data-qa-accordion-side-column="true"
     >
       <div className="space-y-8 lg:space-y-12">
@@ -281,7 +276,7 @@ export function QaAccordionBlockComponent({
         ) : null}
 
         {hasContact ? (
-          <div className="space-y-4 lg:space-y-6">
+          <div className="space-y-4 lg:space-y-4">
             {contact?.title?.trim() ? (
               <p className="text-lg leading-tight font-semibold text-current sm:text-xl">
                 {contact.title.trim()}
@@ -315,12 +310,7 @@ export function QaAccordionBlockComponent({
       )}
       data-qa-accordion-content-group="true"
     >
-      <div
-        className={cn(
-          contentIntroClasses,
-          contentAlignmentClasses[resolvedContentAlignment],
-        )}
-      >
+      <div className={cn(contentIntroClasses, contentAlignmentClasses[resolvedContentAlignment])}>
         <h2 className={contentSectionHeadingClasses}>
           {resolvedAccentTitle ? (
             <>
@@ -421,9 +411,7 @@ export function QaAccordionBlockComponent({
       data-qa-accordion-has-side-column={hasSideColumn ? 'true' : 'false'}
       data-qa-accordion-layout={resolvedLayout.layoutMode}
       data-qa-accordion-placement={resolvedAccordionPlacement}
-      data-qa-accordion-section-vertical-alignment={
-        resolvedLayout.sectionVerticalAlignment
-      }
+      data-qa-accordion-section-vertical-alignment={resolvedLayout.sectionVerticalAlignment}
       data-qa-accordion-side-column={hasSideColumn ? 'true' : 'false'}
       data-qa-accordion-size={resolvedSize}
       data-qa-accordion-split-proportion={resolvedLayout.splitProportion}
