@@ -9,12 +9,13 @@ export const normalizeContentTabVariant = (value?: unknown): ContentTabVariant =
 
 const railClasses = {
   light: {
-    contained: 'border border-border bg-background p-1',
+    contained: 'rounded-control border border-border bg-background p-1',
     pill: 'rounded-full border border-border bg-background p-1',
     underline: 'border-b border-border',
   },
   brand: {
-    contained: 'border border-primary-foreground/25 bg-primary-foreground/[0.06] p-1',
+    contained:
+      'rounded-control border border-primary-foreground/25 bg-primary-foreground/[0.06] p-1',
     pill:
       'rounded-full border border-primary-foreground/25 bg-primary-foreground/[0.06] p-1',
     underline: 'border-b border-primary-foreground/25',
@@ -36,6 +37,7 @@ export const getContentTabClasses = (
     surface === 'brand'
       ? 'focus-visible:ring-primary-foreground/40'
       : 'focus-visible:ring-ring/40',
+    variant === 'contained' && 'rounded-control',
     variant === 'pill' && 'rounded-full',
     variant === 'underline' && '-mb-px border-b-2 border-transparent',
     active

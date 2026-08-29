@@ -795,8 +795,15 @@ describe('FeeStructureBlockComponent', () => {
       />,
     )
 
+    const rail = container.querySelector('[data-content-tab-variant="contained"]')
+
     expect(container.querySelector('[data-fee-tab-style="boxed"]')).toBeTruthy()
-    expect(container.querySelector('[data-content-tab-variant="contained"]')).toBeTruthy()
+    expect(rail).toBeTruthy()
+    expect(rail?.className).toContain('rounded-control')
+
+    for (const tab of screen.getAllByRole('tab')) {
+      expect(tab.className).toContain('rounded-control')
+    }
   })
 
   it.each([undefined, 'unknown'])(

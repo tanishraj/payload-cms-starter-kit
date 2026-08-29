@@ -55,9 +55,11 @@ Production Page blocks are wrapped in `BlockErrorBoundary`, so one broken block 
   the active theme radius, cap card/control corners at 12px and compact corners at 4px, and do not
   apply to Payload Admin.
 - `contentTabRail.ts`: Contained, Pill, and Underline tab geometry with light/brand surface-aware
-  foreground, active, hover, and focus states. Underline uses a two-pixel active border that overlaps
-  the rail divider so selection remains visible. Tabs Content maps its legacy Boxed, Pills, Segmented,
-  and Underline values into this contract without changing saved content.
+  foreground, active, hover, and focus states. Contained applies the semantic `rounded-control` role
+  to both its framed rail and triggers, Pill remains intentionally `rounded-full`, and Underline stays
+  square. Underline uses a two-pixel active border that overlaps the rail divider so selection remains
+  visible. Tabs Content maps its legacy Boxed, Pills, Segmented, and Underline values into this contract
+  without changing saved content.
 - `components/ui/tabs.tsx`: shared framed Tabs use the active website theme's Primary surface and
   paired foreground; line Tabs keep a transparent selected surface and use Primary text plus rule.
 - `iconField.ts` and `resolveLucideIcon.ts`: icon authoring and safe runtime resolution.

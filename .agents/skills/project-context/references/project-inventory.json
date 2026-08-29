@@ -2589,6 +2589,7 @@
       "tests/int/content-action-presentation.int.spec.tsx",
       "tests/int/content-highlights.int.spec.tsx",
       "tests/int/content-style-parity.int.spec.ts",
+      "tests/int/content-tab-rail.int.spec.ts",
       "tests/int/content-taxonomy.int.spec.ts",
       "tests/int/controllable-motion.int.spec.tsx",
       "tests/int/cookie-consent-modal.int.spec.tsx",
@@ -2723,7 +2724,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "ebc02b5597c7ae8a50ee0cba7c4e92271b05b4f5f012cdad66dafd1bb5e0b5d6"
+    "sha256": "0d06227771072d7999b1990b6a19bbeb524f25dedb7055e492e3765415867c0f"
   },
   "surfaces": {
     "access": [
@@ -2904,6 +2905,7 @@
       "tests/int/content-action-presentation.int.spec.tsx",
       "tests/int/content-highlights.int.spec.tsx",
       "tests/int/content-style-parity.int.spec.ts",
+      "tests/int/content-tab-rail.int.spec.ts",
       "tests/int/content-taxonomy.int.spec.ts",
       "tests/int/controllable-motion.int.spec.tsx",
       "tests/int/cookie-consent-modal.int.spec.tsx",
