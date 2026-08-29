@@ -92,7 +92,7 @@ export function CalendarUpcoming({
           ))}
         </div>
       ) : (
-        <Empty className="min-h-44 rounded-[var(--radius)] border-0 p-6">
+        <Empty className="min-h-44 rounded-card border-0 p-6">
           <EmptyHeader>
             <EmptyTitle>No upcoming events</EmptyTitle>
             <EmptyDescription className={styles.supportingText}>{emptyMessage}</EmptyDescription>
@@ -106,7 +106,7 @@ export function CalendarUpcoming({
         >
           {classifications.map((classification) => (
             <Badge
-              className="gap-1.5 rounded-[var(--radius)] border-0 bg-transparent px-0 text-current"
+              className="gap-1.5 rounded-full border-0 bg-transparent px-0 text-current"
               key={classification.id}
               variant="outline"
             >

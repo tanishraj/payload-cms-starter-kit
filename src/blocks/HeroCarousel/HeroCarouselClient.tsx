@@ -356,7 +356,7 @@ export function HeroCarouselClient({
               aria-current={selectedIndex === index ? 'true' : undefined}
               aria-label={`Go to slide ${index + 1}`}
               className={cn(
-                'size-2.5 rounded-md border border-current transition-colors',
+                'size-2.5 rounded-full border border-current transition-colors',
                 selectedIndex === index ? 'bg-current' : 'bg-transparent',
               )}
               disabled={isNavigationLocked}

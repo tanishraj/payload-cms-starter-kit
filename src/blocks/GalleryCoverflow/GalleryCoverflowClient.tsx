@@ -141,7 +141,7 @@ export function GalleryCoverflowClient({ images, surface = 'none' }: GalleryCove
         >
           {loopImages.map((image) => (
             <SwiperSlide key={image.renderKey}>
-              <div className="relative size-full overflow-hidden rounded-3xl shadow-lg">
+              <div className="relative size-full overflow-hidden rounded-card shadow-lg">
                 <Image
                   fill
                   alt={image.alt}

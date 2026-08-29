@@ -162,9 +162,9 @@ describe('contact33 block', () => {
       } as never),
     )
 
-    expect(html.match(/h-11 rounded-md/g)).toHaveLength(2)
-    expect(html).toContain('data-[size=default]:h-11 w-full rounded-md')
-    expect(html).toContain('min-h-32 rounded-md')
+    expect(html.match(/h-11 rounded-control/g)).toHaveLength(2)
+    expect(html).toContain('data-[size=default]:h-11 w-full rounded-control')
+    expect(html).toContain('min-h-32 rounded-control')
   })
 
   it('submits values and attribution metadata through the existing endpoint', async () => {

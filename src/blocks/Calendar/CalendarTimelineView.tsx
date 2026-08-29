@@ -34,7 +34,7 @@ export function CalendarTimelineView({
     return (
       <Empty
         className={cn(
-          'min-h-64 rounded-[var(--radius)] border bg-transparent text-current',
+          'min-h-64 rounded-card border bg-transparent text-current',
           styles.border,
         )}
       >
@@ -81,7 +81,7 @@ export function CalendarTimelineView({
                 >
                   <div className="flex flex-wrap gap-2">
                     <Badge
-                      className="rounded-[var(--radius)] border-[var(--calendar-tone)] bg-[color-mix(in_oklch,var(--calendar-tone)_10%,transparent)] text-current"
+                      className="rounded-full border-[var(--calendar-tone)] bg-[color-mix(in_oklch,var(--calendar-tone)_10%,transparent)] text-current"
                       style={getCalendarToneStyle(event.classification.calendarColor)}
                       variant="outline"
                     >

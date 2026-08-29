@@ -201,7 +201,7 @@ export function NewsGridBlockPresentation({
           >
             {visibleItems.map((item) => (
               <article
-                className="flex h-full min-h-[18rem] flex-col gap-4 rounded-[var(--radius)] border border-current/15 p-6 sm:p-7"
+                className="flex h-full min-h-[18rem] flex-col gap-4 rounded-card border border-current/15 p-6 sm:p-7"
                 data-news-grid-card="true"
                 data-news-grid-card-type={item.classification.slug}
                 key={item.id}
@@ -231,7 +231,8 @@ export function NewsGridBlockPresentation({
             {showsFeature ? (
               <article
                 className={cn(
-                  'relative isolate flex h-full min-h-[18rem] flex-col justify-end overflow-hidden rounded-[var(--radius)] border border-current/15 p-6 sm:p-7',
+                  'relative isolate flex h-full min-h-[18rem] flex-col justify-end overflow-hidden border border-current/15 p-6 sm:p-7',
+                  'rounded-card',
                   featureImage ? 'text-white' : 'bg-card text-card-foreground',
                 )}
                 data-block-surface={featureImage ? 'brand' : 'light'}

@@ -269,7 +269,7 @@ export function NewsEventsTabsClient({
             ) : null}
           </>
         ) : (
-          <Empty className="min-h-56 rounded-[var(--radius)] border border-border bg-card text-card-foreground">
+          <Empty className="min-h-56 rounded-card border border-border bg-card text-card-foreground">
             <EmptyHeader>
               <EmptyDescription>{emptyStateMessage}</EmptyDescription>
             </EmptyHeader>

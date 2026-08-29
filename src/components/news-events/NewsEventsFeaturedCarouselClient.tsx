@@ -57,7 +57,7 @@ function RailCard({ active, item }: { active: boolean; item: FeaturedHighlightIt
   return (
     <Card
       className={cn(
-        'h-full w-full justify-center gap-0 overflow-hidden rounded-[var(--radius)] bg-card py-0 text-left text-card-foreground shadow-none ring-1 ring-inset transition-colors motion-reduce:transition-none',
+        'h-full w-full justify-center gap-0 overflow-hidden rounded-card bg-card py-0 text-left text-card-foreground shadow-none ring-1 ring-inset transition-colors motion-reduce:transition-none',
         active ? 'ring-primary' : 'ring-border hover:bg-muted/50',
       )}
       data-news-events-carousel-rail-card="true"
@@ -257,7 +257,7 @@ export function NewsEventsFeaturedCarouselClient({
       >
         <Card
           aria-live={autoplay ? 'off' : 'polite'}
-          className="relative isolate min-h-[30rem] gap-0 overflow-hidden rounded-[var(--radius)] bg-card py-0 text-card-foreground shadow-none ring-1 ring-border sm:min-h-[34rem] md:h-full md:min-h-0"
+          className="relative isolate min-h-[30rem] gap-0 overflow-hidden rounded-card bg-card py-0 text-card-foreground shadow-none ring-1 ring-inset ring-border sm:min-h-[34rem] md:h-full md:min-h-0"
           data-news-events-carousel-feature="true"
         >
           <Image

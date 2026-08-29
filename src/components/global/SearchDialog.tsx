@@ -184,7 +184,7 @@ export function SearchDialog() {
           initial={{ opacity: 0, scale: 0.97, y: -6 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.15, ease: 'easeOut' }}
-          className="pointer-events-auto w-full max-w-2xl overflow-hidden rounded-2xl border border-border bg-background shadow-2xl"
+          className="pointer-events-auto w-full max-w-2xl overflow-hidden rounded-card border border-border bg-background shadow-2xl"
         >
           {/* Search input row */}
           <div className="flex items-center gap-4 border-b border-border px-5 py-4 sm:px-6">
@@ -214,14 +214,14 @@ export function SearchDialog() {
               autoComplete="off"
               className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground sm:text-lg"
             />
-            <kbd className="hidden rounded-md border border-border px-2 py-1 text-sm text-muted-foreground sm:block">
+            <kbd className="hidden rounded-compact border border-border px-2 py-1 text-sm text-muted-foreground sm:block">
               Esc
             </kbd>
             <button
               type="button"
               onClick={closeDialog}
               aria-label="Close search"
-              className="flex size-9 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="flex size-9 shrink-0 items-center justify-center rounded-control text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <svg
                 aria-hidden="true"
@@ -290,7 +290,7 @@ export function SearchDialog() {
                             <Link
                               href={item.href}
                               onClick={closeDialog}
-                              className={`mx-2 flex items-center gap-3 rounded-lg px-4 py-3 transition-colors ${
+                              className={`mx-2 flex items-center gap-3 rounded-control px-4 py-3 transition-colors ${
                                 idx === activeIndex ? 'bg-accent' : 'hover:bg-accent'
                               }`}
                             >
@@ -328,11 +328,11 @@ export function SearchDialog() {
                 <span>Type to search the site</span>
                 <span className="hidden items-center gap-4 sm:flex">
                   <span className="inline-flex items-center gap-2">
-                    <kbd className="rounded-md border border-border px-2 py-1">↑↓</kbd>
+                    <kbd className="rounded-compact border border-border px-2 py-1">↑↓</kbd>
                     <span>navigate</span>
                   </span>
                   <span className="inline-flex items-center gap-2">
-                    <kbd className="rounded-md border border-border px-2 py-1">↵</kbd>
+                    <kbd className="rounded-compact border border-border px-2 py-1">↵</kbd>
                     <span>open</span>
                   </span>
                 </span>

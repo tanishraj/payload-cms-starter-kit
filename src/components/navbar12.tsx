@@ -453,12 +453,12 @@ const renderDesktopMenuItem = (item: MenuItem, index: number) => {
 const MobileSubMenuLink = ({ item }: { item: MenuItem }) => {
   return (
     <a
-      className="flex w-full min-w-fit flex-row items-center gap-2.5 rounded-md px-2 py-[5px] no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
+      className="flex w-full min-w-fit flex-row items-center gap-2.5 rounded-control px-2 py-[5px] no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
       href={item.url}
     >
       {item.icon && (
         <div className="basis-8.5">
-          <div className="flex size-8.5 shrink-0 rounded-md border bg-background">
+          <div className="flex size-8.5 shrink-0 rounded-compact border bg-background">
             <item.icon className="m-auto size-5" />
           </div>
         </div>
@@ -473,12 +473,12 @@ const MobileSubMenuLink = ({ item }: { item: MenuItem }) => {
 const DesktopSubMenuLink = ({ item }: { item: MenuItem }) => {
   return (
     <a
-      className={`${item.icon && "pr-8"} flex w-full min-w-fit flex-row items-center gap-2.5 rounded-md px-2 py-[5px] transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground`}
+      className={`${item.icon && "pr-8"} flex w-full min-w-fit flex-row items-center gap-2.5 rounded-control px-2 py-[5px] transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground`}
       href={item.url}
     >
       {item.icon && (
         <div className="basis-8.5">
-          <div className="flex size-8.5 shrink-0 rounded-md border bg-background">
+          <div className="flex size-8.5 shrink-0 rounded-compact border bg-background">
             <item.icon className="m-auto size-5" />
           </div>
         </div>

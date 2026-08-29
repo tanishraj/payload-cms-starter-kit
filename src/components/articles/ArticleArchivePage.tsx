@@ -27,7 +27,7 @@ export function ArticleArchivePage({
             <Link
               key={article.id}
               href={`/articles/${article.slug}`}
-              className="flex flex-col gap-3 rounded-3xl border bg-background p-6 transition-colors hover:border-foreground/30"
+              className="flex flex-col gap-3 rounded-card border bg-background p-6 transition-colors hover:border-foreground/30"
             >
               <h2 className="text-xl font-semibold text-foreground">{article.title}</h2>
               <p className="line-clamp-3 text-sm leading-7 text-muted-foreground">
@@ -38,7 +38,7 @@ export function ArticleArchivePage({
           ))}
         </div>
       ) : (
-        <div className="rounded-3xl border border-dashed bg-background/70 p-8 text-sm text-muted-foreground">
+        <div className="rounded-card border border-dashed bg-background/70 p-8 text-sm text-muted-foreground">
           No published articles are assigned to this {archiveType} yet.
         </div>
       )}

@@ -100,7 +100,7 @@ const listColumnClasses = {
 const listBorderStyleClasses = {
   open: 'overflow-hidden',
   ruled: 'overflow-hidden border-y border-current/15',
-  framed: 'overflow-hidden rounded-[var(--radius)] border border-current/15',
+  framed: 'overflow-hidden rounded-card border border-current/15',
 } as const
 
 const layoutProportionClasses = {

@@ -461,12 +461,20 @@ describe('News Grid', () => {
         title="News &"
       />,
     )
+    const withoutImageTag = withoutImage.match(
+      /<article[^>]*data-news-grid-feature="true"[^>]*>/,
+    )?.[0]
+    const withImageTag = withImage.match(/<article[^>]*data-news-grid-feature="true"[^>]*>/)?.[0]
 
     expect(withoutImage).toContain('bg-card')
     expect(withoutImage).toContain('text-card-foreground')
     expect(withoutImage).not.toContain('bg-linear-to-b')
+    expect(withoutImageTag).toContain('rounded-card')
+    expect(withoutImageTag).not.toContain('rounded-[var(--radius)]')
     expect(withImage).toContain('bg-linear-to-b')
     expect(withImage).toContain('alt=""')
+    expect(withImageTag).toContain('rounded-card')
+    expect(withImageTag).not.toContain('rounded-[var(--radius)]')
   })
 
   it('falls back to the empty state, but still renders a feature-only grid', () => {

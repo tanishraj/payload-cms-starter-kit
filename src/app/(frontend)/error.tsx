@@ -25,13 +25,13 @@ export default function Error({
         <button
           type="button"
           onClick={reset}
-          className="inline-flex items-center rounded-lg bg-foreground px-5 py-2.5 text-sm font-medium text-background transition hover:opacity-90"
+          className="inline-flex items-center rounded-control bg-foreground px-5 py-2.5 text-sm font-medium text-background transition hover:opacity-90"
         >
           Try again
         </button>
         <Link
           href="/"
-          className="inline-flex items-center rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground transition hover:bg-muted"
+          className="inline-flex items-center rounded-control border border-border px-5 py-2.5 text-sm font-medium text-foreground transition hover:bg-muted"
         >
           Go to homepage
         </Link>

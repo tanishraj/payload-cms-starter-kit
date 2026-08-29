@@ -136,7 +136,7 @@ export function VideoEmbedBlockComponent({
         ) : null}
 
         <figure className={cn('mx-auto w-full', maxWidthClasses[resolvedMaxWidth])}>
-          <div className={cn('w-full overflow-hidden rounded-xl', aspectRatioClasses[resolvedAspectRatio])}>
+          <div className={cn('w-full overflow-hidden rounded-card', aspectRatioClasses[resolvedAspectRatio])}>
             {type === 'direct' ? (
               <video
                 className="h-full w-full object-cover"

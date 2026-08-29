@@ -167,7 +167,7 @@ const Footer56 = (props: Props) => {
             className={cn(
               'inline-flex items-center justify-center transition-colors',
               socialIconStyle === 'tile'
-                ? 'size-10 rounded-(--radius) bg-current/10 text-current hover:bg-current/20'
+                ? 'size-10 rounded-control bg-current/10 text-current hover:bg-current/20'
                 : footerLinkClasses,
             )}
             data-footer56-social-link={platform ?? label}

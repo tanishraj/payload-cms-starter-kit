@@ -107,7 +107,7 @@ export function CalendarMonthView({
                     {!hideAdjacent ? (
                       <time
                         className={cn(
-                          'inline-flex min-h-6 min-w-6 items-center justify-center rounded-[var(--radius)] font-mono text-xs font-semibold tabular-nums',
+                          'inline-flex min-h-6 min-w-6 items-center justify-center rounded-compact font-mono text-xs font-semibold tabular-nums',
                           isAdjacent &&
                             (surface === 'brand'
                               ? 'text-primary-foreground/35'
@@ -135,8 +135,8 @@ export function CalendarMonthView({
                                   ? 'focus-visible:ring-primary-foreground'
                                   : 'focus-visible:ring-ring',
                                 !isStart && 'border-l-0 pl-2',
-                                isStart && 'rounded-l-[var(--radius)]',
-                                isEnd && 'rounded-r-[var(--radius)]',
+                                isStart && 'rounded-l-compact',
+                                isEnd && 'rounded-r-compact',
                               )}
                               data-calendar-event={event.id}
                               href={event.href}

@@ -16,13 +16,13 @@
  * validation both read from this file, so the two stay in sync automatically.
  */
 export const websiteThemes = [
-  { label: 'SNMIH-Green', value: 'default' },
-  { label: 'SNMIH-Blue', value: 'snmih' },
+  { label: 'SNMIH-Green', value: 'snmih-green' },
+  { label: 'SNMIH-Blue', value: 'snmih-blue' },
 ] as const
 
 export type WebsiteThemeValue = (typeof websiteThemes)[number]['value']
 
-export const defaultWebsiteTheme: WebsiteThemeValue = 'default'
+export const defaultWebsiteTheme: WebsiteThemeValue = 'snmih-blue'
 
 export const websiteThemeValues = websiteThemes.map(
   ({ value }) => value,
@@ -35,4 +35,19 @@ export const websiteThemeOptions = websiteThemes.map(({ label, value }) => ({
 
 export function isWebsiteTheme(value: string): value is WebsiteThemeValue {
   return websiteThemeValues.includes(value as WebsiteThemeValue)
+}
+
+const legacyWebsiteThemeAliases = {
+  default: 'snmih-green',
+  snmih: 'snmih-blue',
+} as const satisfies Record<string, WebsiteThemeValue>
+
+export function normalizeWebsiteTheme(value: unknown): WebsiteThemeValue {
+  if (typeof value !== 'string') return defaultWebsiteTheme
+  if (isWebsiteTheme(value)) return value
+
+  return (
+    legacyWebsiteThemeAliases[value as keyof typeof legacyWebsiteThemeAliases] ??
+    defaultWebsiteTheme
+  )
 }

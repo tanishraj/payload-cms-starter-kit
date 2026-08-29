@@ -77,7 +77,7 @@ export function RotatingAnnouncementContent({
       </div>
       {motionState.showMotionControl ? (
         <MotionToggle
-          className="rounded-lg text-current hover:bg-current/10 hover:text-current"
+          className="rounded-control text-current hover:bg-current/10 hover:text-current"
           contextLabel="announcements"
           isPaused={motionState.isUserPaused}
           onToggle={motionState.toggleUserPaused}

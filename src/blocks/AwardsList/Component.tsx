@@ -147,7 +147,7 @@ export function AwardsListBlockComponent({
                 <div
                   key={i}
                   className={cn(
-                    'flex flex-col gap-3 rounded-xl border p-5',
+                    'flex flex-col gap-3 rounded-card border p-5',
                     surface.className,
                     surface.divider,
                   )}
@@ -156,7 +156,7 @@ export function AwardsListBlockComponent({
                   <div className="flex items-start justify-between gap-3">
                     <div
                       className={cn(
-                        'flex size-10 shrink-0 items-center justify-center rounded-lg',
+                        'flex size-10 shrink-0 items-center justify-center rounded-compact',
                         surface.value === 'primary'
                           ? 'bg-primary-foreground/15 text-primary-foreground'
                           : color,
@@ -192,7 +192,7 @@ export function AwardsListBlockComponent({
 
         {/* Table variant */}
         {variant === 'table' ? (
-          <div className="overflow-x-auto rounded-xl border border-border">
+          <div className="overflow-x-auto rounded-card border border-border">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border bg-muted/50 text-foreground">

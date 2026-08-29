@@ -153,9 +153,7 @@ describe('testimonial spotlight rendering', () => {
     const headerTag = getTagWithAttribute(html, 'data-testimonial-spotlight-section-header')
     const actionsTag = getTagWithAttribute(html, 'data-testimonial-spotlight-section-actions')
 
-    expect(headerTag).toContain(
-      `data-testimonial-spotlight-section-alignment="${alignment}"`,
-    )
+    expect(headerTag).toContain(`data-testimonial-spotlight-section-alignment="${alignment}"`)
     expect(headerTag).toContain(headerClass)
     expect(actionsTag).toContain(actionClass)
   })
@@ -219,9 +217,7 @@ describe('testimonial spotlight rendering', () => {
     expect(html).not.toContain('Broken')
     expect(html).not.toContain('<h3')
     expect(html).toContain('py-12')
-    expect(html).toContain(
-      `<h2 class="${contentSectionHeadingClasses}">${baseProps.title}</h2>`,
-    )
+    expect(html).toContain(`<h2 class="${contentSectionHeadingClasses}">${baseProps.title}</h2>`)
   })
 
   it.each(['contained', 'containedFill', 'edgeToEdge'] as const)(
@@ -375,7 +371,9 @@ describe('testimonial spotlight rendering', () => {
       expect(containerTag).toContain(surface)
       expect(containerTag).toMatch(/class="[^"]*\bborder\b/)
       expect(containerTag).toContain(divider)
-      expect(containerTag).toContain('overflow-hidden rounded-[var(--radius)]')
+      expect(containerTag).toContain('overflow-hidden')
+      expect(containerTag).toContain('rounded-card')
+      expect(containerTag).not.toContain('rounded-[var(--radius)]')
       expect(html).toContain(secondary)
       expect(html).toContain(`data-section-eyebrow-surface="${eyebrow}"`)
       expect(sectionTag).not.toContain(surface)
@@ -419,6 +417,9 @@ describe('testimonial spotlight rendering', () => {
 
     expect(containerTag).toContain('bg-primary text-primary-foreground')
     expect(containerTag).toContain('data-testimonial-spotlight-container-outline="none"')
+    expect(containerTag).toContain('overflow-hidden')
+    expect(containerTag).toContain('rounded-card')
+    expect(containerTag).not.toContain('rounded-[var(--radius)]')
     expect(containerTag).not.toContain('border-primary-foreground/15')
   })
 

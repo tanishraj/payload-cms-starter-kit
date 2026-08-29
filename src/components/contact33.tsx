@@ -314,7 +314,7 @@ export function Contact33({
                           <Input
                             {...field}
                             aria-invalid={fieldState.invalid || undefined}
-                            className="h-11 rounded-md"
+                            className="h-11 rounded-control"
                             id="contact33-name"
                             placeholder={fieldDefinitions.name.placeholder}
                             required={fieldDefinitions.name.required}
@@ -345,7 +345,7 @@ export function Contact33({
                           <Input
                             {...field}
                             aria-invalid={fieldState.invalid || undefined}
-                            className="h-11 rounded-md"
+                            className="h-11 rounded-control"
                             id="contact33-email"
                             placeholder={fieldDefinitions.email.placeholder}
                             required={fieldDefinitions.email.required}
@@ -384,7 +384,7 @@ export function Contact33({
                         >
                           <SelectTrigger
                             aria-invalid={fieldState.invalid || undefined}
-                            className="data-[size=default]:h-11 w-full rounded-md"
+                            className="data-[size=default]:h-11 w-full rounded-control"
                             id="contact33-subject"
                           >
                             <SelectValue
@@ -424,7 +424,7 @@ export function Contact33({
                         <Textarea
                           {...field}
                           aria-invalid={fieldState.invalid || undefined}
-                          className="min-h-32 rounded-md"
+                          className="min-h-32 rounded-control"
                           id="contact33-message"
                           placeholder={fieldDefinitions.message.placeholder}
                           required={fieldDefinitions.message.required}
@@ -456,7 +456,7 @@ export function Contact33({
                 {message ? (
                   <p
                     className={cn(
-                      'rounded-md border border-current/20 bg-current/5 p-4 text-sm leading-6',
+                      'rounded-card border border-current/20 bg-current/5 p-4 text-sm leading-6',
                       messageTone === 'destructive' && 'text-destructive',
                     )}
                     role={messageTone === 'destructive' ? 'alert' : 'status'}
@@ -494,7 +494,7 @@ export function Contact33({
 
           <div
             className={cn(
-              'relative min-h-72 overflow-hidden rounded-[calc(var(--radius)*2)] lg:min-h-168',
+              'relative min-h-72 overflow-hidden rounded-card lg:min-h-168',
               imagePosition === 'left' && 'lg:order-first',
             )}
           >

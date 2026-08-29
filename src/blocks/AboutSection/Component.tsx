@@ -218,7 +218,7 @@ function ValuesGrid({ values, centered }: { values: ValueItem[]; centered?: bool
       {values.map((v, i) => (
         <div key={i} className={cn('flex flex-col gap-3', centered && 'items-center text-center')}>
           {v.icon?.trim() ? (
-            <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
+            <div className="flex size-10 items-center justify-center rounded-compact bg-primary/10">
               <DynamicIcon name={v.icon.trim()} className="size-5 text-primary" />
             </div>
           ) : (
@@ -336,7 +336,7 @@ export function AboutSectionBlockComponent({
   const containedImageContent = imageProps ? (
     <div
       className={cn(
-        'relative aspect-4/3 w-full overflow-hidden rounded-2xl',
+        'relative aspect-4/3 w-full overflow-hidden rounded-card',
         renderAsSplit && resolvedMediaFillMode === 'contained' && 'md:h-full md:aspect-auto',
       )}
     >

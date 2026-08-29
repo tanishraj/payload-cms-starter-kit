@@ -137,10 +137,13 @@ describe('News & Events individual story', () => {
     const title = markup.indexOf('data-news-event-overlay-title="true"')
     const excerpt = markup.indexOf('data-news-event-excerpt="true"')
     const body = markup.indexOf('data-news-event-rich-text="true"')
+    const imageFrame = markup.match(/<div[^>]*data-news-event-featured-image="true"[^>]*>/)?.[0]
 
     expect(markup).toContain('data-news-event-image-overlay="true"')
     expect(markup).toContain('min-h-80')
     expect(markup).toContain('md:min-h-0')
+    expect(imageFrame).toContain('rounded-card')
+    expect(imageFrame).not.toContain('rounded-[var(--radius)]')
     expect(markup).toContain('>Campus<')
     expect(markup).toContain('Campus story')
     expect(markup).toContain(

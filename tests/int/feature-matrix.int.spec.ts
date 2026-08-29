@@ -89,7 +89,7 @@ describe('Feature Matrix presentation', () => {
     expect(html).toContain('lg:col-span-3')
     expect(html).toContain('lg:col-span-2')
     expect(html).toContain('border-border')
-    expect(html).toContain('overflow-hidden rounded-md border border-current/10')
+    expect(html).toContain('overflow-hidden rounded-card border border-current/10')
     expect(html).not.toContain('rounded-[var(--radius)]')
     expect(html.match(/flex flex-col gap-1/g)).toHaveLength(4)
     expect(html).toContain('border-b border-current/10 lg:border-r lg:border-b-0')
@@ -196,8 +196,8 @@ describe('Feature Matrix presentation', () => {
     )
 
     expect(html).toContain('data-feature-matrix-outer-border="hidden"')
-    expect(html).toContain('grid overflow-hidden rounded-md lg:grid-cols-5')
-    expect(html).not.toContain('grid overflow-hidden rounded-md border border-border')
+    expect(html).toContain('grid overflow-hidden rounded-card lg:grid-cols-5')
+    expect(html).not.toContain('grid overflow-hidden rounded-card border border-border')
     expect(html).toContain('border-b border-current/10 lg:border-r')
   })
 

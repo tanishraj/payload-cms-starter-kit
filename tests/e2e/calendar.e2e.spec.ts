@@ -9,7 +9,7 @@ test.describe('Calendar block', () => {
 
     const root = page.locator('html')
     await root.evaluate((element) => {
-      element.setAttribute('data-theme-color', 'snmih')
+      element.setAttribute('data-theme-color', 'snmih-blue')
       element.setAttribute('data-color-scheme', 'light')
       element.classList.remove('dark')
     })

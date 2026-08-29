@@ -748,7 +748,7 @@ describe('Department Profiles block', () => {
     const boxedInline = renderClient({ cardFrame: 'boxed', cardLayout: 'inline' })
     expect(boxedInline).toContain('data-department-profiles-card-frame="boxed"')
     expect(boxedInline).toContain('grid gap-5 sm:gap-6')
-    expect(boxedInline).toContain('rounded-xl border')
+    expect(boxedInline).toContain('rounded-card border')
 
     const framedInline = renderClient({
       cardFrame: 'framed',
@@ -772,7 +772,7 @@ describe('Department Profiles block', () => {
     expect(openOverlay).toContain('border-y')
     expect(openOverlay).toContain('mx-auto w-full max-w-64 sm:max-w-none')
     expect(openOverlay).toContain('-mb-px -mr-px grid')
-    expect(openOverlay).not.toContain('rounded-xl border border-current/20')
+    expect(openOverlay).not.toContain('rounded-card border border-current/20')
   })
 
   it.each([

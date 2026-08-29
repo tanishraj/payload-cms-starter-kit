@@ -42,7 +42,7 @@ export function DetailedProgrammeCard({
   const content = (
     <article
       className={cn(
-        'group/programme flex h-full min-w-0 flex-col overflow-hidden rounded-[var(--radius)] border',
+        'group/programme flex h-full min-w-0 flex-col overflow-hidden rounded-card border',
         usesDefaultSurface
           ? 'border-border bg-card text-card-foreground'
           : [surface.className, surface.divider],
@@ -59,7 +59,7 @@ export function DetailedProgrammeCard({
             {programmeIcon ? (
               <span
                 className={cn(
-                  'flex size-11 shrink-0 items-center justify-center rounded-[var(--radius)] border border-current/10 bg-current/5',
+                  'flex size-11 shrink-0 items-center justify-center rounded-compact border border-current/10 bg-current/5',
                   surface.icon,
                 )}
                 data-academic-programme-icon={programmeIcon}
@@ -158,7 +158,7 @@ export function DetailedProgrammeCard({
 
   return programme.href ? (
     <a
-      className="group/button block h-full rounded-[var(--radius)] outline-none focus-visible:ring-3 focus-visible:ring-ring/40"
+      className="group/button block h-full rounded-card outline-none focus-visible:ring-3 focus-visible:ring-ring/40"
       data-academic-programme-link="true"
       href={programme.href}
       rel={programme.openInNewTab ? 'noopener noreferrer' : undefined}

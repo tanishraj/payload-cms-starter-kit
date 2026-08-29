@@ -87,7 +87,7 @@ export function ReviewFeedList({
 
   if (!reviews.length) {
     return (
-      <div className="rounded-md border border-dashed border-current/20 p-6 text-sm text-current/70">
+      <div className="rounded-card border border-dashed border-current/20 p-6 text-sm text-current/70">
         {emptyStateMessage}
       </div>
     )

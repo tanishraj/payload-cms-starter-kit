@@ -113,6 +113,9 @@ describe('NewsEventsFeaturedCarouselClient', () => {
     expect(layout?.className).toContain('md:grid-cols-[minmax(0,1.5fr)_minmax(18rem,0.9fr)]')
     expect(feature?.className).toContain('md:h-full')
     expect(feature?.className).toContain('md:min-h-0')
+    expect(feature?.className).toContain('rounded-card')
+    expect(feature?.className).not.toContain('rounded-[var(--radius)]')
+    expect(feature?.className).toContain('ring-inset')
     expect(verticalRail?.className).toContain('hidden h-[36rem] md:block')
     expect(verticalContent?.className).toContain('mt-0')
     expect(verticalContent?.className).toContain('h-[36rem]')
@@ -126,6 +129,14 @@ describe('NewsEventsFeaturedCarouselClient', () => {
       ),
     ).toBe(true)
     expect(verticalCards).toHaveLength(3)
+    expect(Array.from(verticalCards).every((card) => card.className.includes('rounded-card'))).toBe(
+      true,
+    )
+    expect(
+      Array.from(verticalCards).every(
+        (card) => !card.className.includes('rounded-[var(--radius)]'),
+      ),
+    ).toBe(true)
     expect(Array.from(verticalCards).every((card) => card.className.includes('h-full'))).toBe(true)
     expect(
       Array.from(verticalCards).every((card) => card.className.includes('justify-center')),

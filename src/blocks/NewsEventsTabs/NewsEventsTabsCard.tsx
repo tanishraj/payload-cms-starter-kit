@@ -20,7 +20,7 @@ export function NewsEventsTabsCard({
 
   return (
     <Card
-      className="h-full min-h-[18rem] gap-0 rounded-[var(--radius)] bg-card py-0 text-card-foreground shadow-none ring-1 ring-border dark:ring-border"
+      className="h-full min-h-[18rem] gap-0 rounded-card bg-card py-0 text-card-foreground shadow-none ring-1 ring-border dark:ring-border"
       data-news-events-tabs-card="true"
       data-news-events-tabs-card-type={item.classification.slug}
     >

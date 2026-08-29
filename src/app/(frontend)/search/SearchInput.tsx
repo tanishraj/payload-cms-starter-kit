@@ -31,7 +31,7 @@ export function SearchInput({ defaultValue }: { defaultValue: string }) {
         aria-label="Search query"
         autoFocus
         autoComplete="off"
-        className="h-10 rounded-md pl-9 pr-8"
+        className="h-10 rounded-control pl-9 pr-8"
       />
 
       {value && (
@@ -39,7 +39,7 @@ export function SearchInput({ defaultValue }: { defaultValue: string }) {
           type="button"
           aria-label="Clear search"
           onClick={() => setValue('')}
-          className="absolute right-3 top-1/2 -translate-y-1/2 rounded text-muted-foreground transition-colors hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="absolute right-3 top-1/2 -translate-y-1/2 rounded-compact text-muted-foreground transition-colors hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <svg
             aria-hidden="true"

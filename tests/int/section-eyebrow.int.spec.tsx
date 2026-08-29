@@ -76,7 +76,7 @@ describe('SNMIH section eyebrows', () => {
 
     expect(css).toContain(
       [
-        ":root[data-theme-color='snmih']:not(.dark)",
+        ":root[data-theme-color='snmih-blue']:not(.dark)",
         "  [data-section-eyebrow-surface]:not([data-section-eyebrow-surface='brand']):not(",
         "    [data-section-eyebrow-surface='gradient-brand']",
         "  ):not([data-section-eyebrow-surface='primary']):not(",
@@ -94,7 +94,7 @@ describe('SNMIH section eyebrows', () => {
     const css = read('src/styles/custom.css')
     const ringRule = css.slice(
       css.indexOf(
-        ":root[data-theme-color='snmih']:not(.dark) [data-section-eyebrow-surface='brand']",
+        ":root[data-theme-color='snmih-blue']:not(.dark) [data-section-eyebrow-surface='brand']",
       ),
     )
     const ringBlock = ringRule.slice(0, ringRule.indexOf('}') + 1)
@@ -102,18 +102,18 @@ describe('SNMIH section eyebrows', () => {
     expect(ringBlock).toContain('color: var(--ring);')
     // Dark in light mode: the navy brand surface.
     expect(ringBlock).toContain(
-      ":root[data-theme-color='snmih']:not(.dark) [data-section-eyebrow-surface='brand']",
+      ":root[data-theme-color='snmih-blue']:not(.dark) [data-section-eyebrow-surface='brand']",
     )
     expect(ringBlock).toContain(
-      ":root[data-theme-color='snmih']:not(.dark) [data-section-eyebrow-surface='gradient-brand']",
+      ":root[data-theme-color='snmih-blue']:not(.dark) [data-section-eyebrow-surface='gradient-brand']",
     )
     // Dark in either mode: image overlays.
     expect(ringBlock).toContain(
-      ":root[data-theme-color='snmih'] [data-section-eyebrow-surface='darkOverlay']",
+      ":root[data-theme-color='snmih-blue'] [data-section-eyebrow-surface='darkOverlay']",
     )
     // Dark in dark mode: the page background, but NOT the brand surface, which
     // inverts to a light tint there.
-    expect(ringBlock).toContain(":root[data-theme-color='snmih'].dark")
+    expect(ringBlock).toContain(":root[data-theme-color='snmih-blue'].dark")
     expect(ringBlock).toContain(":not([data-section-eyebrow-surface='brand'])")
   })
 
@@ -124,9 +124,9 @@ describe('SNMIH section eyebrows', () => {
     // pale to read against it. Neither may be used there.
     expect(css).toContain(
       [
-        ":root[data-theme-color='snmih'].dark [data-section-eyebrow-surface='brand'],",
-        ":root[data-theme-color='snmih'].dark [data-section-eyebrow-surface='gradient-brand'],",
-        ":root[data-theme-color='snmih'].dark [data-section-eyebrow-surface='primary'] {",
+        ":root[data-theme-color='snmih-blue'].dark [data-section-eyebrow-surface='brand'],",
+        ":root[data-theme-color='snmih-blue'].dark [data-section-eyebrow-surface='gradient-brand'],",
+        ":root[data-theme-color='snmih-blue'].dark [data-section-eyebrow-surface='primary'] {",
         '  color: var(--primary-foreground);',
         '}',
       ].join('\n'),
@@ -137,7 +137,7 @@ describe('SNMIH section eyebrows', () => {
     const css = read('src/styles/custom.css')
 
     expect(css).toContain(
-      ":root[data-theme-color='snmih'] [data-section-eyebrow-surface='lightOverlay']",
+      ":root[data-theme-color='snmih-blue'] [data-section-eyebrow-surface='lightOverlay']",
     )
     expect(css).toContain("[data-section-eyebrow-surface='lightOverlay']\n  )")
   })

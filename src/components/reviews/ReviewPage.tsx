@@ -47,7 +47,7 @@ export function ReviewPage({
           </p>
         </div>
         {featuredImage ? (
-          <div className="relative aspect-video w-full overflow-hidden rounded-3xl border">
+          <div className="relative aspect-video w-full overflow-hidden rounded-card border">
             <Image fill alt={featuredImage.alt} className="object-cover" src={featuredImage.src} sizes="(max-width: 768px) 100vw, 80vw" />
           </div>
         ) : null}
@@ -64,18 +64,18 @@ export function ReviewPage({
           </div>
         ) : null}
       </header>
-      <div className="rounded-3xl border bg-background p-6">
+      <div className="rounded-card border bg-background p-6">
         <p className="text-base leading-8 text-foreground">{review.reviewBody}</p>
       </div>
       {relatedReviews.length ? (
-        <section className="space-y-4 rounded-3xl border bg-background p-6">
+        <section className="space-y-4 rounded-card border bg-background p-6">
           <h2 className="text-2xl font-semibold text-foreground">Related reviews</h2>
           <div className="grid gap-4 md:grid-cols-2">
             {relatedReviews.map((relatedReview) => (
               <Link
                 key={relatedReview.id}
                 href={`/reviews/${relatedReview.slug}`}
-                className="rounded-2xl border p-4 transition-colors hover:border-foreground/30"
+                className="rounded-card border p-4 transition-colors hover:border-foreground/30"
               >
                 <div className="flex items-center justify-between gap-4 text-sm text-muted-foreground">
                   <span>{getReviewDisplayName(relatedReview)}</span>

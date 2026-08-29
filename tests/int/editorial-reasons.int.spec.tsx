@@ -571,7 +571,7 @@ describe('EditorialReasonsBlockComponent', () => {
     ],
     [
       'framed',
-      'overflow-hidden rounded-[var(--radius)] border border-current/15',
+      'overflow-hidden rounded-card border border-current/15',
       'data-editorial-reasons-border-style="framed"',
     ],
   ] as const)('maps the %s list border style', (listBorderStyle, expectedClass, dataHook) => {

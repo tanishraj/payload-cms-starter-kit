@@ -275,7 +275,7 @@ function AlternatingTimeline({ items, sectionBackground }: { items: TimelineItem
             )}
           >
             {/* Media or styled fallback */}
-            <div className="relative aspect-video w-full overflow-hidden rounded-xl md:flex-1">
+            <div className="relative aspect-video w-full overflow-hidden rounded-card md:flex-1">
               {image ? (
                 <Image
                   src={image.src}

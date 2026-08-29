@@ -64,7 +64,7 @@ function AnnualCalendarEventCard({
       </time>
       <span
         aria-hidden="true"
-        className="h-full min-h-12 w-1 rounded-[var(--radius)] bg-[var(--calendar-tone)]"
+        className="h-full min-h-12 w-1 rounded-compact bg-[var(--calendar-tone)]"
         style={getCalendarToneStyle(event.classification.calendarColor)}
       />
       <span className="min-w-0">
@@ -137,7 +137,7 @@ export function AnnualCalendarYearStream({
                 <header className="flex min-w-0 flex-col items-start gap-1">
                   {isCurrentMonth ? (
                     <Badge
-                      className="rounded-[var(--radius)] border-current/25 bg-transparent font-mono text-[0.625rem] tracking-[0.12em] uppercase"
+                      className="rounded-full border-current/25 bg-transparent font-mono text-[0.625rem] tracking-[0.12em] uppercase"
                       variant="outline"
                     >
                       Current

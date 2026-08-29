@@ -49,10 +49,17 @@ Production Page blocks are wrapped in `BlockErrorBoundary`, so one broken block 
 - `cardThemeFields.ts` and `cardSurface.ts`: Default/Primary/Secondary/Muted/Accent card semantics.
 - `contentActionsFields.ts` and `BlockFooterActions.tsx`: per-action links/buttons, variants, arrows, and footer actions. Shared actions support Page, Custom URL, and Media File destinations. File actions choose View or Download independently from Button/Link presentation; View has a file-specific new-tab preference, while Download forwards the Media filename through the anchor `download` attribute. Download defaults to an animated Lucide down arrow on the left, which editors can move right or hide without changing File View or navigation-arrow behavior. Keep schema changes in `contentActionsFields.ts`, destination resolution in `src/lib/cmsLinks.ts`, and rendering semantics in `src/components/ContentActions.tsx` plus guarded specialized consumers.
 - `contentStyles.ts`: shared section/card typography and link classes.
+- `src/styles/globals.css`: the public semantic radius contract. Block cards and media frames use
+  `rounded-card`, standard interactive controls use `rounded-control`, and small square details use
+  `rounded-compact`; only intentional pills and circles use `rounded-full`. These roles derive from
+  the active theme radius, cap card/control corners at 12px and compact corners at 4px, and do not
+  apply to Payload Admin.
 - `contentTabRail.ts`: Contained, Pill, and Underline tab geometry with light/brand surface-aware
   foreground, active, hover, and focus states. Underline uses a two-pixel active border that overlaps
   the rail divider so selection remains visible. Tabs Content maps its legacy Boxed, Pills, Segmented,
   and Underline values into this contract without changing saved content.
+- `components/ui/tabs.tsx`: shared framed Tabs use the active website theme's Primary surface and
+  paired foreground; line Tabs keep a transparent selected surface and use Primary text plus rule.
 - `iconField.ts` and `resolveLucideIcon.ts`: icon authoring and safe runtime resolution.
 - `mediaOverlayFields.ts` and `mediaOverlayPresentation.ts`: tone, strength, direction, coverage, and
   text contrast, including the theme-specific foreground for white Light overlays in both website modes.

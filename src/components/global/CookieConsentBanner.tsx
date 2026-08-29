@@ -111,7 +111,7 @@ function FloatingCard({ config, onAccept, onReject }: VariantProps) {
         isLeft ? 'left-4' : 'right-4',
       )}
     >
-      <div className="rounded-2xl border border-border/80 bg-background/95 p-5 shadow-xl backdrop-blur-sm">
+      <div className="rounded-card border border-border/80 bg-background/95 p-5 shadow-xl backdrop-blur-sm">
         {heading?.trim() ? (
           <p className="mb-2 text-sm font-semibold text-foreground">{heading.trim()}</p>
         ) : null}
@@ -175,7 +175,7 @@ function Modal({ config, onAccept, onReject }: VariantProps) {
         />
         <DialogPrimitive.Content
           aria-modal="true"
-          className="fixed top-1/2 left-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-border bg-background p-6 shadow-2xl"
+          className="fixed top-1/2 left-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-card border border-border bg-background p-6 shadow-2xl"
           onOpenAutoFocus={(event) => {
             event.preventDefault()
             rejectButtonRef.current?.focus()
@@ -231,7 +231,7 @@ function CornerBadge({ config, onAccept, onReject }: VariantProps) {
       aria-label="Cookie consent"
     >
       {expanded ? (
-        <div className="relative w-72 rounded-2xl border border-border/80 bg-background/95 p-4 shadow-xl backdrop-blur-sm">
+        <div className="relative w-72 rounded-card border border-border/80 bg-background/95 p-4 shadow-xl backdrop-blur-sm">
           <Button
             variant="ghost"
             size="icon-xs"

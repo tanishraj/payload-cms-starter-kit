@@ -54,10 +54,12 @@ describe('Calendar shadcn primitives', () => {
       'utf8',
     )
 
-    expect(styles).toContain('rounded-[var(--radius)]')
+    expect(styles).toContain('rounded-control')
+    expect(styles).toContain('rounded-card')
     expect(styles).toContain('border-border')
     expect(styles).not.toMatch(/dark:/)
-    expect(select).toContain('rounded-3xl')
+    expect(select).toContain('rounded-control')
+    expect(select).toContain('rounded-card')
   })
 
   it('uses transparent inherited panels for light and brand Calendar surfaces', () => {

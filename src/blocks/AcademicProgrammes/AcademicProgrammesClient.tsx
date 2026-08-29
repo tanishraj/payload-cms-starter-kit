@@ -17,10 +17,7 @@ import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 
 import { DetailedProgrammeCard } from './DetailedProgrammeCard'
-import type {
-  AcademicProgrammesViewMode,
-  ResolvedAcademicProgramme,
-} from './types'
+import type { AcademicProgrammesViewMode, ResolvedAcademicProgramme } from './types'
 
 export type { ResolvedAcademicProgramme } from './types'
 
@@ -226,7 +223,8 @@ function ProgrammeCard({
   const content = (
     <article
       className={cn(
-        'group/programme h-full min-w-0 overflow-hidden rounded-[var(--radius)] border',
+        'group/programme h-full min-w-0 overflow-hidden border',
+        'rounded-card',
         isList && programme.image
           ? 'grid md:grid-cols-[minmax(12rem,1fr)_minmax(0,2fr)]'
           : 'flex flex-col',
@@ -304,7 +302,10 @@ function ProgrammeCard({
 
   return programme.href ? (
     <a
-      className="group/button block h-full rounded-[var(--radius)] outline-none focus-visible:ring-3 focus-visible:ring-ring/40"
+      className={cn(
+        'group/button block h-full outline-none focus-visible:ring-3 focus-visible:ring-ring/40',
+        'rounded-card',
+      )}
       data-academic-programme-link="true"
       href={programme.href}
       rel={programme.openInNewTab ? 'noopener noreferrer' : undefined}
@@ -373,10 +374,7 @@ export function AcademicProgrammesClient({
         >
           <div
             aria-label="Programme categories"
-            className={cn(
-              'flex w-max flex-nowrap',
-              getContentTabRailClasses('pill', tabSurface),
-            )}
+            className={cn('flex w-max flex-nowrap', getContentTabRailClasses('pill', tabSurface))}
             role="tablist"
           >
             {tabs.map((tab, index) => {

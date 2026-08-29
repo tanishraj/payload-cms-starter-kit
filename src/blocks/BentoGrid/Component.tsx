@@ -84,7 +84,7 @@ function BentoCell({
     <div
       data-card-background={surface.value}
       className={cn(
-        'group relative flex h-full min-h-45 flex-col justify-end overflow-hidden rounded-2xl border p-6 transition-all',
+        'group relative flex h-full min-h-45 flex-col justify-end overflow-hidden rounded-card border p-6 transition-all',
         surface.className,
         surface.divider,
         image ? 'min-h-60' : '',
@@ -110,7 +110,7 @@ function BentoCell({
       {Icon && !image ? (
         <div
           className={cn(
-            'absolute top-5 left-5 flex size-10 items-center justify-center rounded-lg',
+            'absolute top-5 left-5 flex size-10 items-center justify-center rounded-compact',
             surface.value === 'primary' ? 'bg-primary-foreground/15' : 'bg-primary/10',
             surface.icon,
           )}
@@ -150,7 +150,7 @@ function BentoCell({
     return (
       <a
         href={item.linkUrl.trim()}
-        className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-2xl"
+        className="block h-full rounded-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         {Inner}
       </a>

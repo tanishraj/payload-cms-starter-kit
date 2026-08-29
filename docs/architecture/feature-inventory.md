@@ -124,7 +124,7 @@ wider trailing track, and one equal horizontal gutter separates the desktop colu
 arrow center vertically while the badge/title and excerpt remain top-aligned before stacking without
 horizontal scrolling on smaller screens.
 
-The SNMIH preset uses `#031d44` as its light-mode Primary brand color. Its dark palette uses a deep navy canvas with a lighter accessible Primary surface so the same semantic block and card settings remain readable across color schemes.
+SNMIH-Blue is the default and runtime fallback; it uses `#031d44` as its light-mode Primary brand color and a deep navy dark canvas with a lighter accessible Primary surface. SNMIH-Green uses the established institutional green accent as its Primary action color and adds restrained radii. Buttons, links, selected framed Tabs, active underline Tabs, and focus states inherit semantic Primary tokens in both modes.
 
 ## Public Routes
 

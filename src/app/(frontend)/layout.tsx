@@ -22,7 +22,7 @@ import { getCurrentCMSUser } from '@/lib/cmsSession'
 import { getMediaAbsoluteUrl } from '@/lib/media'
 import { getRobotsMetadata } from '@/lib/seo'
 import { getSiteURL } from '@/lib/siteUrl'
-import { defaultWebsiteTheme, isWebsiteTheme } from '@/lib/themes/websiteThemes'
+import { normalizeWebsiteTheme } from '@/lib/themes/websiteThemes'
 import type { Footer, Header, Page } from '@/payload-types'
 import { CMS_CACHE_TAGS } from '@/hooks/revalidateCmsContent'
 import { stripInternalMediaFields } from '@/lib/stripInternalMediaFields'
@@ -192,10 +192,8 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const { activeFooter, activeHeader, analyticsSettings, cookieConsentSettings, pageSettings, siteSettings, themeSettings } =
     frontendGlobals
 
-
   const colorScheme = themeSettings.colorScheme ?? 'system'
-  const rawThemeColor = String(themeSettings.themeColor ?? defaultWebsiteTheme)
-  const themeColor = isWebsiteTheme(rawThemeColor) ? rawThemeColor : defaultWebsiteTheme
+  const themeColor = normalizeWebsiteTheme(themeSettings.themeColor)
   const announcementSettings = pageSettings?.announcementEnabled ? pageSettings : null
   const announcementDisplayMode = announcementSettings?.announcementDisplayMode
   const announcementAppearance = announcementSettings?.announcementAppearance
@@ -322,7 +320,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         {/* Skip navigation — visually hidden until focused */}
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-9999 focus:rounded-lg focus:bg-background focus:px-4 focus:py-2.5 focus:text-sm focus:font-medium focus:shadow-lg focus:ring-2 focus:ring-ring focus:outline-none"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-9999 focus:rounded-control focus:bg-background focus:px-4 focus:py-2.5 focus:text-sm focus:font-medium focus:shadow-lg focus:ring-2 focus:ring-ring focus:outline-none"
         >
           Skip to main content
         </a>

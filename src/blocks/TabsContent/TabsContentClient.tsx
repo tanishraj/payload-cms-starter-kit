@@ -152,7 +152,7 @@ export function TabsContentClient({
           className={cn(
             resolvedLayout === 'curriculum'
               ? [
-                  'rounded-[var(--radius)] border p-5 sm:p-6',
+                  'rounded-card border p-5 sm:p-6',
                   isBrandSurface
                     ? 'border-primary-foreground/20 bg-transparent text-primary-foreground'
                     : 'border-border bg-card text-card-foreground',
@@ -168,7 +168,7 @@ export function TabsContentClient({
           {active.imageSrc && resolvedLayout !== 'textOnly' && resolvedLayout !== 'curriculum' ? (
             <div
               className={cn(
-                'relative overflow-hidden rounded-[var(--radius)] bg-muted',
+                'relative overflow-hidden rounded-card bg-muted',
                 resolvedLayout === 'imageTop' ? 'aspect-video w-full' : 'aspect-[4/3] w-full',
                 resolvedLayout === 'imageRight' && 'md:col-start-2 md:row-start-1',
               )}

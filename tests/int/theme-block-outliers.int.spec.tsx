@@ -23,7 +23,7 @@ describe('theme block outliers', () => {
 
     expect(quote).toContain('fill-rating-excellent text-rating-excellent')
     expect(quote).toContain('border-s border-primary ps-6 md:ps-8')
-    expect(quote).toContain('rounded-xl border border-border bg-card')
+    expect(quote).toContain('rounded-card border border-border bg-card')
     expect(quote).not.toContain('amber-')
     expect(quote).not.toContain('border-l-4')
   })

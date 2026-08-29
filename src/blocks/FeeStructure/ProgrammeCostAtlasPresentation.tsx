@@ -108,7 +108,7 @@ export function ProgrammeCostAtlasPresentation({
 
   return (
     <div
-      className="grid min-w-0 overflow-clip rounded-(--radius) border border-border lg:grid-cols-2"
+      className="grid min-w-0 overflow-clip rounded-card border border-border lg:grid-cols-2"
       data-fee-atlas="true"
       data-fee-category={category.label}
     >

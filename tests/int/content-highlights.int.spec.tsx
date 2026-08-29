@@ -425,7 +425,7 @@ describe('Content Highlights', () => {
           expect(articleTags.every((tag) => tag.includes('border-l-2'))).toBe(true)
         } else if (cardStyle === 'boxed') {
           expect(
-            articleTags.every((tag) => tag.includes('rounded-[var(--radius)] border p-6 md:p-7')),
+            articleTags.every((tag) => tag.includes('rounded-card border p-6 md:p-7')),
           ).toBe(true)
         } else {
           expect(

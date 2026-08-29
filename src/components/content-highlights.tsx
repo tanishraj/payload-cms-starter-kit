@@ -371,7 +371,7 @@ function ContentHighlightItemComponent({
   )
   const treatmentClasses =
     cardStyle === 'boxed'
-      ? cn('rounded-[var(--radius)] border p-6 md:p-7', surface.className, surface.divider)
+      ? cn('rounded-card border p-6 md:p-7', surface.className, surface.divider)
       : cardStyle === 'leftRule'
         ? cn('border-l-2 p-6 md:p-7', surface.className, surface.divider)
         : cardStyle === 'divided'

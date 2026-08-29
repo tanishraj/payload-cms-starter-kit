@@ -115,7 +115,7 @@ export function Services21({
             className="top-10 h-fit w-full space-y-7 py-8 lg:sticky lg:max-w-xs"
             id={activeServiceDetailsID}
           >
-            <div className="relative h-90 overflow-hidden rounded-xl">
+            <div className="relative h-90 overflow-hidden rounded-card">
               {previousService ? (
                 <div className="absolute inset-0">
                   <Image

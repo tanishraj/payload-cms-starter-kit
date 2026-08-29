@@ -72,9 +72,9 @@ const cardSizeClasses = {
 
 const iconStyleClasses = {
   plain: 'size-6',
-  square: 'size-11 rounded-lg border border-transparent',
+  square: 'size-11 rounded-compact border border-transparent',
   circle: 'size-11 rounded-full border border-transparent',
-  outline: 'size-11 rounded-lg border',
+  outline: 'size-11 rounded-compact border',
 } as const
 
 const steppedGridClasses = {
@@ -244,7 +244,7 @@ export function AccreditationCardsBlockComponent({
             className={cn(
               (resolvedCardFrame === 'open' || resolvedCardFrame === 'grouped') &&
                 'overflow-hidden',
-              resolvedCardFrame === 'grouped' && 'rounded-[var(--radius)] border border-current/15',
+              resolvedCardFrame === 'grouped' && 'rounded-card border border-current/15',
             )}
             data-card-frame={resolvedCardFrame}
           >
@@ -273,7 +273,7 @@ export function AccreditationCardsBlockComponent({
                       'flex flex-col',
                       cardSizeClasses[resolvedCardSize],
                       card.className,
-                      resolvedCardFrame === 'boxed' && 'rounded-[var(--radius)] border',
+                      resolvedCardFrame === 'boxed' && 'rounded-card border',
                       resolvedCardFrame === 'stepped' && 'border-current/15',
                       usesDividedFrame && 'border-b border-current/15',
                       usesDividedFrame && item.background === 'default' && 'bg-transparent',

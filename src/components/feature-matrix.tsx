@@ -186,7 +186,7 @@ export function FeatureMatrix({
 
         <div
           className={cn(
-            'grid overflow-hidden rounded-md',
+            'grid overflow-hidden rounded-card',
             resolvedShowOuterBorder ? cn('border', sectionSurface.divider) : '',
             'lg:grid-cols-5',
           )}
@@ -229,7 +229,7 @@ export function FeatureMatrix({
                 </div>
                 <div
                   className={cn(
-                    'relative mt-2 w-full overflow-hidden rounded-md',
+                    'relative mt-2 w-full overflow-hidden rounded-card',
                     imageHeightClasses[resolvedSize],
                   )}
                   data-feature-matrix-image-position={resolvedImagePosition}

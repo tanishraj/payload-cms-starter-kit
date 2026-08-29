@@ -149,7 +149,7 @@ export function DepartmentProfileCard({
       <article
         className={cn(
           'flex min-w-0 items-center',
-          isBoxed ? 'rounded-xl border' : 'h-full',
+          isBoxed ? 'rounded-card border' : 'h-full',
           inlineSize.card,
           surface.className,
           isBoxed && surface.divider,
@@ -161,7 +161,7 @@ export function DepartmentProfileCard({
         data-testid="department-profile-card"
       >
         <ProfileMedia
-          className={cn('shrink-0 rounded-lg', inlineSize.image)}
+          className={cn('shrink-0 rounded-compact', inlineSize.image)}
           imageSizes={inlineSize.imageSizes}
           placeholderClassName={cn('bg-current/10', surface.secondary)}
           profile={profile}
@@ -206,7 +206,7 @@ export function DepartmentProfileCard({
     <article
       className={cn(
         'relative isolate min-w-0 overflow-hidden',
-        frame === 'boxed' && 'rounded-xl border border-current/20',
+        frame === 'boxed' && 'rounded-card border border-current/20',
         overlaySize.card,
         resolvedOverlay.text.title,
       )}

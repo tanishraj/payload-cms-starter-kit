@@ -131,7 +131,7 @@ export function EventGalleryClient({
                   aria-label={`Open ${album.title} gallery with ${album.imageCount} ${
                     album.imageCount === 1 ? 'image' : 'images'
                   }`}
-                  className="block h-full w-full cursor-pointer overflow-hidden rounded-md border border-border text-left focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:ring-offset-2"
+                  className="block h-full w-full cursor-pointer overflow-hidden rounded-card border border-border text-left focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:ring-offset-2"
                   data-block-surface={overlay.blockSurface}
                   data-event-gallery-interaction="slideshow"
                   onClick={(event) => {
@@ -144,7 +144,7 @@ export function EventGalleryClient({
                 </button>
               ) : (
                 <div
-                  className="block h-full w-full overflow-hidden rounded-md border border-border text-left"
+                  className="block h-full w-full overflow-hidden rounded-card border border-border text-left"
                   data-block-surface={overlay.blockSurface}
                   data-event-gallery-interaction="static"
                 >

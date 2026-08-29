@@ -203,7 +203,7 @@ export function QuoteBlockBlockComponent({
         )}
 
         {resolvedVariant === 'card' && (
-          <div className="mx-auto max-w-3xl rounded-xl border border-border bg-card p-8 text-card-foreground shadow-sm md:p-12">
+          <div className="mx-auto max-w-3xl rounded-card border border-border bg-card p-8 text-card-foreground shadow-sm md:p-12">
             <div className="flex flex-col gap-6">
               <div className="flex items-start justify-between gap-4">
                 {eyebrow?.trim() ? (

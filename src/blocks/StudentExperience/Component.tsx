@@ -308,7 +308,7 @@ export function StudentExperienceBlockComponent({
             )
 
             const cardClasses = cn(
-              'group/student-experience relative h-full min-h-0 overflow-hidden rounded-[var(--radius)] bg-muted',
+              'group/student-experience relative h-full min-h-0 overflow-hidden rounded-card bg-muted',
               usesEditorialMosaic && index === 0 && 'sm:col-span-2 xl:col-span-1 xl:row-span-2',
               experience.href &&
                 'block cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring',

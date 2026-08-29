@@ -32,7 +32,7 @@ export class BlockErrorBoundary extends React.Component<Props, State> {
       if (process.env.NODE_ENV === 'development') {
         return (
           <div className="mx-auto w-full max-w-screen-2xl px-4 py-8">
-            <div className="rounded border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
+            <div className="rounded-card border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
               <strong>Block error:</strong> &ldquo;{this.props.blockType}&rdquo; failed to render.
               {this.state.error ? (
                 <pre className="mt-2 overflow-auto text-xs opacity-75">{this.state.error.message}</pre>

@@ -280,7 +280,7 @@ export function FeatureSpotlightBlockComponent({
           {renderAsSplit ? (
             <div className={cn('grid items-stretch gap-8 md:grid-cols-2 md:gap-12 lg:gap-16')}>
               <div className={cn(order.media)} data-feature-spotlight-media-frame="contained">
-                <div className="relative aspect-4/3 overflow-hidden rounded-xl border border-border bg-muted/20">
+                <div className="relative aspect-4/3 overflow-hidden rounded-card border border-border bg-muted/20">
                   <Image
                     fill
                     alt={media?.alt ?? ''}

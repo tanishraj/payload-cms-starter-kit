@@ -27,11 +27,11 @@ describe('global Search Dialog design contract', () => {
   it('provides proportionate icons and an accessible close target', () => {
     expect(source).toContain('size-5 shrink-0 text-muted-foreground')
     expect(source).toContain(
-      'flex size-9 shrink-0 items-center justify-center rounded-md text-muted-foreground',
+      'flex size-9 shrink-0 items-center justify-center rounded-control text-muted-foreground',
     )
     expect(source).toContain('className="size-5"')
     expect(source).toContain('hidden items-center gap-4 sm:flex')
     expect(source.match(/inline-flex items-center gap-2/g)).toHaveLength(2)
-    expect(source).not.toContain('ml-1 rounded-md border border-border')
+    expect(source).not.toContain('ml-1 rounded-control border border-border')
   })
 })

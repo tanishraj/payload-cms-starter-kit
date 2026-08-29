@@ -108,7 +108,7 @@ export function ProfileCarouselCard({
     : overlay.text.secondary
   const mediaFrame = (
     <div
-      className={cn('relative w-full overflow-hidden rounded-md', imageHeightClasses[size])}
+      className={cn('relative w-full overflow-hidden rounded-card', imageHeightClasses[size])}
       data-profile-carousel-media-frame="true"
     >
       <Image
@@ -158,7 +158,7 @@ export function ProfileCarouselCard({
   if (variant === 'overlay') {
     return (
       <article
-        className={cn('group min-w-0 overflow-hidden rounded-md', surface.className)}
+        className={cn('group min-w-0 overflow-hidden rounded-card', surface.className)}
         data-card-background={surface.value}
         data-profile-carousel-card-variant="overlay"
         data-profile-carousel-overlay-alignment={overlayAlignment}
@@ -177,7 +177,7 @@ export function ProfileCarouselCard({
   return (
     <article
       className={cn(
-        'group flex min-w-0 flex-col gap-3 overflow-hidden rounded-md',
+        'group flex min-w-0 flex-col gap-3 overflow-hidden rounded-card',
         surface.className,
       )}
       data-card-background={surface.value}

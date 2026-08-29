@@ -2527,14 +2527,16 @@
       "src/lib/utils.ts",
       "src/lib/workQueue.ts",
       "src/middleware.ts",
+      "src/migrations/20260829_000000_rename_snmih_theme_values.ts",
+      "src/migrations/index.ts",
       "src/page-recipes/pageRecipes.ts",
       "src/payload-types.ts",
       "src/payload.config.ts",
       "src/plugins/withTrash.ts",
       "src/styles/custom.css",
       "src/styles/globals.css",
-      "src/styles/themes/theme-default.css",
-      "src/styles/themes/theme-snmih.css",
+      "src/styles/themes/theme-snmih-blue.css",
+      "src/styles/themes/theme-snmih-green.css",
       "tests/e2e/admin.e2e.spec.ts",
       "tests/e2e/calendar.e2e.spec.ts",
       "tests/e2e/frontend.e2e.spec.ts",
@@ -2697,6 +2699,7 @@
       "tests/int/search-settings-access.int.spec.ts",
       "tests/int/search-suggestions.int.spec.ts",
       "tests/int/section-eyebrow.int.spec.tsx",
+      "tests/int/semantic-radius-contract.int.spec.ts",
       "tests/int/seo-contract.int.spec.ts",
       "tests/int/site-offices.int.spec.ts",
       "tests/int/site-time-zone.int.spec.ts",
@@ -2716,10 +2719,11 @@
       "tests/int/theme-block-outliers.int.spec.tsx",
       "tests/int/theme-contracts.int.spec.ts",
       "tests/int/theme-settings.int.spec.ts",
+      "tests/int/theme-value-migration.int.spec.ts",
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "d1735f558ce3e391f361c1271277c0b1746e51024276cf0dd9d81c239b006ba5"
+    "sha256": "ebc02b5597c7ae8a50ee0cba7c4e92271b05b4f5f012cdad66dafd1bb5e0b5d6"
   },
   "surfaces": {
     "access": [
@@ -3009,6 +3013,7 @@
       "tests/int/search-settings-access.int.spec.ts",
       "tests/int/search-suggestions.int.spec.ts",
       "tests/int/section-eyebrow.int.spec.tsx",
+      "tests/int/semantic-radius-contract.int.spec.ts",
       "tests/int/seo-contract.int.spec.ts",
       "tests/int/site-offices.int.spec.ts",
       "tests/int/site-time-zone.int.spec.ts",
@@ -3028,11 +3033,12 @@
       "tests/int/theme-block-outliers.int.spec.tsx",
       "tests/int/theme-contracts.int.spec.ts",
       "tests/int/theme-settings.int.spec.ts",
+      "tests/int/theme-value-migration.int.spec.ts",
       "tests/int/work-queue.int.spec.ts"
     ],
     "themes": [
-      "src/styles/themes/theme-default.css",
-      "src/styles/themes/theme-snmih.css"
+      "src/styles/themes/theme-snmih-blue.css",
+      "src/styles/themes/theme-snmih-green.css"
     ]
   }
 }

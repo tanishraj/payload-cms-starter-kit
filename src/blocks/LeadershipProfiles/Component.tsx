@@ -157,7 +157,7 @@ function LeadershipProfileCard({
     return (
       <article
         className={cn(
-          'relative isolate aspect-4/5 min-w-0 overflow-hidden rounded-xl border border-current/20',
+          'relative isolate aspect-4/5 min-w-0 overflow-hidden rounded-card border border-current/20',
           overlay.text.title,
         )}
         data-block-surface={overlay.blockSurface}
@@ -219,7 +219,7 @@ function LeadershipProfileCard({
   return (
     <article
       className={cn(
-        'flex h-full min-w-0 flex-col overflow-hidden rounded-xl border',
+        'flex h-full min-w-0 flex-col overflow-hidden rounded-card border',
         isDefault
           ? 'border-border bg-card text-card-foreground'
           : [surface.divider, surface.className],

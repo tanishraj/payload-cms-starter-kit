@@ -174,7 +174,7 @@ export function AnnualCalendarBlockPresentation({
             </CalendarSidebar>
           </div>
         ) : (
-          <Empty className="min-h-64 rounded-[var(--radius)] border border-current/15 bg-transparent text-current">
+          <Empty className="min-h-64 rounded-card border border-current/15 bg-transparent text-current">
             <EmptyHeader>
               <EmptyTitle>Annual Calendar is not configured</EmptyTitle>
               <EmptyDescription>

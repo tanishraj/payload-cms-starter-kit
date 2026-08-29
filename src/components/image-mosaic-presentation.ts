@@ -70,7 +70,7 @@ export const getImageMosaicTileClassName = ({
   size: ImageMosaicSize
 }): string =>
   cn(
-    'relative overflow-hidden rounded-md border border-border',
+    'relative overflow-hidden rounded-card border border-border',
     mobileTileHeightClasses[size],
     getImageMosaicSpanClassName(count, index),
   )

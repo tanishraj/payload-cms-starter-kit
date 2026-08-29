@@ -79,7 +79,7 @@ function FeeCategoryPresentation({
       >
         <div
           className={cn(
-            'min-w-max overflow-hidden rounded-[var(--radius)] border',
+            'min-w-max overflow-hidden rounded-card border',
             isBrandSurface
               ? 'border-primary-foreground/20 bg-primary-foreground/[0.06] text-primary-foreground'
               : 'border-border bg-card text-card-foreground',
@@ -179,7 +179,7 @@ function FeeCategoryPresentation({
         {category.columns.map((column, columnIndex) => (
           <Card
             className={cn(
-              'gap-0 rounded-[var(--radius)] border py-0 shadow-none ring-0',
+              'gap-0 rounded-card border py-0 shadow-none ring-0',
               isBrandSurface
                 ? 'border-primary-foreground/20 bg-primary-foreground/[0.06] text-primary-foreground'
                 : 'border-border bg-card text-card-foreground',

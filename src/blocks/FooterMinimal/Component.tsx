@@ -205,7 +205,7 @@ export function FooterMinimalBlockComponent({
               className={cn(
                 'inline-flex items-center justify-center transition-colors',
                 socialIconStyle === 'tile'
-                  ? 'size-10 rounded-[var(--radius)] bg-current/10 text-current hover:bg-current/20'
+                  ? 'size-10 rounded-control bg-current/10 text-current hover:bg-current/20'
                   : 'text-current/70 hover:text-current',
               )}
               data-footer-minimal-social-link={platform}

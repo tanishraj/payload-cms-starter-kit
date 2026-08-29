@@ -76,11 +76,11 @@ const ruledColumnClasses: Record<NonNullable<IconGridBlockLike['columns']>, stri
 }
 
 const iconContainerClasses = {
-  square: 'flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary',
+  square: 'flex size-11 shrink-0 items-center justify-center rounded-compact bg-primary/10 text-primary',
   circle:
     'flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary',
   outline:
-    'flex size-11 shrink-0 items-center justify-center rounded-lg border border-border text-primary',
+    'flex size-11 shrink-0 items-center justify-center rounded-compact border border-border text-primary',
   plain: 'flex size-11 shrink-0 items-center justify-center text-primary',
 } as const
 
@@ -229,7 +229,7 @@ function CardItem({
     <div
       data-card-background={surface.value}
       className={cn(
-        'group flex h-full flex-col gap-4 rounded-xl border p-6 transition-shadow',
+        'group flex h-full flex-col gap-4 rounded-card border p-6 transition-shadow',
         surface.className,
         surface.divider,
         link && 'hover:shadow-md hover:border-primary/30',
@@ -266,7 +266,7 @@ function CardItem({
         href={link.href}
         target={link.openInNewTab ? '_blank' : undefined}
         rel={link.openInNewTab ? 'noopener noreferrer' : undefined}
-        className="block h-full rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        className="block h-full rounded-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         {inner}
       </a>
@@ -317,7 +317,7 @@ function ContactCardItem({
   return (
     <article
       className={cn(
-        'flex min-h-64 flex-col gap-6 rounded-[var(--radius)] border p-8 sm:min-h-72',
+        'flex min-h-64 flex-col gap-6 rounded-card border p-8 sm:min-h-72',
         surface.className,
         surface.divider,
       )}
@@ -325,7 +325,7 @@ function ContactCardItem({
       data-icon-grid-presentation="contactCards"
     >
       {item.icon ? (
-        <div className="[&>div]:size-14 [&>div]:rounded-xl [&_svg]:size-6">
+        <div className="[&>div]:size-14 [&>div]:rounded-compact [&_svg]:size-6">
           <IconContainer icon={item.icon} iconStyle={iconStyle} surface={surface} />
         </div>
       ) : null}
@@ -342,7 +342,7 @@ function ContactCardItem({
             {contactLines.map(({ href, label }, index) =>
               href ? (
                 <a
-                  className="w-fit rounded-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
+                  className="w-fit rounded-compact underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
                   href={href}
                   key={`${label}-${index}`}
                 >

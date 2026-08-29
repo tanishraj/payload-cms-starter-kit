@@ -180,7 +180,7 @@ describe('Gallery Showcase', () => {
       expect(html).toContain(`object-[${position}]`)
     }
 
-    expect(html.match(/rounded-md/g)?.length).toBeGreaterThanOrEqual(5)
+    expect(html.match(/rounded-card/g)?.length).toBeGreaterThanOrEqual(5)
     expect(html.match(/object-cover/g)).toHaveLength(5)
   })
 

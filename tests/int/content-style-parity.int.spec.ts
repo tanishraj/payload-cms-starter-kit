@@ -41,7 +41,7 @@ describe('shared block content styles', () => {
       'text-base leading-7 text-balance text-current',
     )
     expect(contentItemTitleClasses).toBe(
-      'rounded-sm font-sans text-md leading-tight font-semibold text-current underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current sm:text-lg',
+      'rounded-compact font-sans text-md leading-tight font-semibold text-current underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current sm:text-lg',
     )
     expect(contentItemLinkClasses).toBe('transition-opacity hover:opacity-70 hover:underline')
     expect(contentItemDescriptionClasses).toBe('text-sm leading-5 text-current')

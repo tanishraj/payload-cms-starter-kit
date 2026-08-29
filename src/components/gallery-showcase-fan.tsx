@@ -97,7 +97,7 @@ export function GalleryShowcaseFan({ images, size = 'default' }: GalleryShowcase
             <motion.div
               animate={transform}
               className={cn(
-                'absolute cursor-grab overflow-hidden rounded-md shadow-xl active:cursor-grabbing',
+                'absolute cursor-grab overflow-hidden rounded-card shadow-xl active:cursor-grabbing',
                 cardSizeClasses[size],
                 visibilityClass,
               )}

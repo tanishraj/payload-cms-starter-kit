@@ -86,7 +86,7 @@ describe('contact24 presentation', () => {
     expect(html).toContain('data-contact24-map')
     expect(html).toContain('data-contact24-details')
     expect(html).toContain('border border-border')
-    expect(html).toContain('rounded-xl')
+    expect(html).toContain('rounded-card')
     expect(html).toContain('gap-4')
     expect(html).toContain('sm:aspect-5/2')
     expect(html).not.toContain('bg-muted/40')

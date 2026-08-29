@@ -140,13 +140,12 @@ export function TestimonialSpotlightBlockComponent({
   const resolvedSectionDescription = sectionDescription?.trim()
   const resolvedSectionActions = resolveCmsActions(actions)
   const hasFooterActions = resolveCmsActions(footerActions).length > 0
-  const resolvedSectionContentAlignment =
-    sectionContentAlignment === 'left' ? 'left' : 'center'
+  const resolvedSectionContentAlignment = sectionContentAlignment === 'left' ? 'left' : 'center'
   const hasSectionHeader = Boolean(
     resolvedSectionEyebrow ||
-      resolvedSectionTitle ||
-      resolvedSectionDescription ||
-      resolvedSectionActions.length,
+    resolvedSectionTitle ||
+    resolvedSectionDescription ||
+    resolvedSectionActions.length,
   )
   const resolvedImagePosition = imagePosition ?? 'center'
   const resolvedMediaFillMode = mediaFillMode ?? 'contained'
@@ -273,7 +272,8 @@ export function TestimonialSpotlightBlockComponent({
         gridTemplateClasses[resolvedMediaPosition],
         usesJoinedColumns ? 'md:gap-0' : 'md:gap-12 lg:gap-16',
         containerSurface.className,
-        hasContainerTreatment && 'overflow-hidden rounded-[var(--radius)]',
+        hasContainerTreatment && 'overflow-hidden',
+        hasContainerTreatment && 'rounded-card',
         resolvedContainerOutline === 'outline' && ['border', containerSurface.divider],
       )}
       data-testimonial-spotlight-container-background={containerSurface.value}
@@ -330,10 +330,7 @@ export function TestimonialSpotlightBlockComponent({
 
   return (
     <section
-      className={cn(
-        regularBlockMobilePaddingClasses[resolvedSize],
-        appearanceClasses.className,
-      )}
+      className={cn(regularBlockMobilePaddingClasses[resolvedSize], appearanceClasses.className)}
       data-testimonial-spotlight="true"
       data-testimonial-spotlight-background={appearanceClasses.background}
       data-testimonial-spotlight-content-vertical-alignment={resolvedVerticalAlignment}

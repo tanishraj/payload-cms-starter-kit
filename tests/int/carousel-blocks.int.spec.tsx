@@ -240,11 +240,10 @@ describe('carousel block schemas', () => {
     expect(source).not.toContain('index % 2')
   })
 
-  it('uses the theme radius and strengthened Hero Carousel title', () => {
+  it('uses circular slide indicators and the strengthened Hero Carousel title', () => {
     const source = readFileSync('src/blocks/HeroCarousel/HeroCarouselClient.tsx', 'utf8')
 
-    expect(source).not.toContain('rounded-full')
-    expect(source).toContain("'size-2.5 rounded-md border border-current transition-colors'")
+    expect(source).toContain("'size-2.5 rounded-full border border-current transition-colors'")
     expect(source).toContain(
       'font-serif font-semibold text-5xl leading-none tracking-tight text-balance',
     )

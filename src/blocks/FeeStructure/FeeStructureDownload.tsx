@@ -30,7 +30,7 @@ export function FeeStructureDownload({ download }: { download: ResolvedFeeStruct
   return (
     <div
       className={cn(
-        'flex flex-col gap-4 rounded-[var(--radius)] border border-current/15 p-5 sm:flex-row sm:items-center sm:justify-between',
+        'flex flex-col gap-4 rounded-card border border-current/15 p-5 sm:flex-row sm:items-center sm:justify-between',
         appearance.className,
       )}
       data-fee-document="true"

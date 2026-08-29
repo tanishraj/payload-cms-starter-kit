@@ -15,8 +15,8 @@ Use `Appearance` when you need to:
 
 The available institutional palettes are:
 
-- `SNMIH-Green` is the default and fallback institutional palette.
-- `SNMIH-Blue` uses the alternate blue institutional palette.
+- `SNMIH-Blue` is the default and fallback institutional palette. It keeps the established navy action color and square presentation.
+- `SNMIH-Green` uses an institutional green action color for buttons, links, active tabs, and focus states, with restrained rounded controls and surfaces.
 
 Do not use this section for editing page content, navigation, or branding assets. This is global presentation control.
 
@@ -28,6 +28,11 @@ This global is loaded by the frontend layout on every page. It controls:
 - whether the site follows `System`, `Light`, or `Dark` color scheme behavior
 
 Because the setting affects the entire public site shell, a theme change can alter how every page feels at once.
+
+Older deployments may still contain the former `default` or `snmih` values. The frontend preserves
+their existing appearance until the checked-in reversible migration renames them to `snmih-green`
+and `snmih-blue`. Run that migration through the normal deployment workflow rather than editing the
+stored value directly.
 
 ## Step-By-Step Medical College Example
 

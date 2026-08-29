@@ -248,7 +248,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
         {!hasQuery ? (
           /* Empty / idle state */
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <div className="mb-4 flex size-14 items-center justify-center rounded-2xl border border-border bg-muted">
+            <div className="mb-4 flex size-14 items-center justify-center rounded-compact border border-border bg-muted">
               <svg
                 aria-hidden="true"
                 className="size-6 text-muted-foreground"
@@ -270,7 +270,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
         ) : groups.length === 0 ? (
           /* No results state */
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <div className="mb-4 flex size-14 items-center justify-center rounded-2xl border border-border bg-muted">
+            <div className="mb-4 flex size-14 items-center justify-center rounded-compact border border-border bg-muted">
               <svg
                 aria-hidden="true"
                 className="size-6 text-muted-foreground"
@@ -320,7 +320,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
                         <li key={item.id}>
                           <Link
                             href={item.href}
-                            className="group flex flex-col items-start gap-3 rounded-xl border border-border bg-background p-4 transition-colors hover:bg-muted sm:flex-row sm:justify-between sm:gap-6"
+                            className="group flex flex-col items-start gap-3 rounded-card border border-border bg-background p-4 transition-colors hover:bg-muted sm:flex-row sm:justify-between sm:gap-6"
                           >
                             <div className="min-w-0">
                               <p className="font-medium text-foreground group-hover:underline group-hover:underline-offset-2">
@@ -333,7 +333,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
                               ) : null}
                             </div>
                             <div className="flex shrink-0 items-center gap-2 self-end sm:self-start sm:pt-0.5">
-                              <span className="inline-flex max-w-48 items-center gap-1.5 rounded border border-primary/20 bg-primary/10 px-2 py-0.5 text-right text-xs leading-4 font-semibold whitespace-normal text-primary">
+                              <span className="inline-flex max-w-48 items-center gap-1.5 rounded-compact border border-primary/20 bg-primary/10 px-2 py-0.5 text-right text-xs leading-4 font-semibold whitespace-normal text-primary">
                                 <ResultIcon aria-hidden="true" className="size-3.5 shrink-0" />
                                 {item.label}
                               </span>

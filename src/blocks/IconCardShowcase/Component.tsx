@@ -418,7 +418,7 @@ function ShowcaseCard({ alignment, card, height, iconSize, sectionBackground }: 
   const surface = resolveShowcaseCardSurface(card.background, sectionBackground)
   const Icon = card.icon
   const className = cn(
-    'flex h-full min-w-0 flex-col justify-center gap-5 rounded-[var(--radius)] border px-6 py-8 sm:px-8',
+    'flex h-full min-w-0 flex-col justify-center gap-5 rounded-card border px-6 py-8 sm:px-8',
     cardAlignmentClasses[alignment],
     heightClasses[height],
     surface.className,

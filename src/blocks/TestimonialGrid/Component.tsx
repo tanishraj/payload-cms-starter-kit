@@ -91,7 +91,7 @@ function TestimonialCard({
   return (
     <div
       className={cn(
-        'flex h-full flex-col gap-4 rounded-xl border p-6 shadow-sm',
+        'flex h-full flex-col gap-4 rounded-card border p-6 shadow-sm',
         surface.className,
         surface.divider,
       )}
@@ -132,7 +132,7 @@ function FeaturedTestimonial({
 
   return (
     <div
-      className={cn('rounded-xl border p-8 shadow-sm md:p-12', surface.className, surface.divider)}
+      className={cn('rounded-card border p-8 shadow-sm md:p-12', surface.className, surface.divider)}
       data-card-background={surface.value}
     >
       <Quote className={cn('mb-4 size-9 opacity-30', surface.icon)} aria-hidden="true" />

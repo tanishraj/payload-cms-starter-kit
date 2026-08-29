@@ -86,7 +86,7 @@ function SidebarCard({
   return (
     <section
       className={cn(
-        'flex flex-col gap-5 rounded-[var(--radius)] p-5 sm:p-6',
+        'flex flex-col gap-5 rounded-card p-5 sm:p-6',
         surface.className,
         article.sidebarCardOutline && 'border',
         article.sidebarCardOutline && surface.divider,
@@ -196,7 +196,7 @@ export function NewsEventStory({
         <div className="flex min-w-0 flex-col gap-8" data-news-event-main-content="true">
           <div
             className={cn(
-              'relative isolate min-h-80 overflow-hidden rounded-[var(--radius)] border border-border bg-muted md:min-h-0',
+              'relative isolate min-h-80 overflow-hidden rounded-card border border-border bg-muted md:min-h-0',
               featuredImageRatioClasses[article.featuredImageRatio],
             )}
             data-news-event-featured-image="true"

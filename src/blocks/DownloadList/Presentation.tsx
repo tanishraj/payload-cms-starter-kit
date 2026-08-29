@@ -125,7 +125,7 @@ function DocumentIcon({
   return (
     <span
       className={cn(
-        'flex shrink-0 items-center justify-center rounded-md bg-current/10',
+        'flex shrink-0 items-center justify-center rounded-compact bg-current/10',
         documentIconClasses[size].container,
         className,
       )}
@@ -142,7 +142,7 @@ function FileTypeBadge({ surface, type }: { surface?: CardSurfaceClasses; type?:
   return (
     <span
       className={cn(
-        'inline-flex w-fit rounded px-2 py-1 text-[0.6875rem] font-semibold uppercase tracking-[0.12em]',
+        'inline-flex w-fit rounded-compact px-2 py-1 text-[0.6875rem] font-semibold uppercase tracking-[0.12em]',
         surface ? cn('bg-current/10', surface.secondary) : 'bg-muted text-muted-foreground',
       )}
       data-document-file-type="true"
@@ -262,7 +262,7 @@ function GridDocumentItem({
         'flex min-w-0 flex-col p-5 sm:p-6',
         variant === 'card'
           ? cn(
-              'rounded-[var(--radius)] border transition-colors',
+              'rounded-card border transition-colors',
               surface.className,
               surface.divider,
             )

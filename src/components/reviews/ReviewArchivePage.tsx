@@ -26,7 +26,7 @@ export function ReviewArchivePage({
             <Link
               key={review.id}
               href={`/reviews/${review.slug}`}
-              className="flex flex-col gap-3 rounded-3xl border bg-background p-6 transition-colors hover:border-foreground/30"
+              className="flex flex-col gap-3 rounded-card border bg-background p-6 transition-colors hover:border-foreground/30"
             >
               <div className="flex items-center justify-between gap-4 text-sm text-muted-foreground">
                 <span>{getReviewDisplayName(review)}</span>
@@ -41,7 +41,7 @@ export function ReviewArchivePage({
           ))}
         </div>
       ) : (
-        <div className="rounded-3xl border border-dashed bg-background/70 p-8 text-sm text-muted-foreground">
+        <div className="rounded-card border border-dashed bg-background/70 p-8 text-sm text-muted-foreground">
           No published reviews are assigned to this category yet.
         </div>
       )}

@@ -384,7 +384,7 @@ export function ReviewSubmissionBlockComponent({
 
         <div
           className={cn(
-            '@container/form-panel w-full rounded-[calc(var(--radius))] border border-border bg-transparent shadow-none',
+            '@container/form-panel w-full rounded-card border border-border bg-transparent shadow-none',
             formPanelPaddingClasses[resolvedSize],
           )}
         >
@@ -472,7 +472,7 @@ export function ReviewSubmissionBlockComponent({
                         >
                           {subjectField.options.map((option) => (
                             <ToggleGroupItem
-                              className="rounded-md px-4 data-[state=on]:border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                              className="rounded-control px-4 data-[state=on]:border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
                               key={option.value}
                               value={option.value}
                             >
@@ -496,7 +496,7 @@ export function ReviewSubmissionBlockComponent({
                     </FieldLabel>
                     <Input
                       aria-invalid={Boolean(errors.reviewerName) || undefined}
-                      className="h-11 rounded-md"
+                      className="h-11 rounded-control"
                       id="reviewer-name"
                       placeholder={nameField.placeholder}
                       required={nameField.required}
@@ -520,7 +520,7 @@ export function ReviewSubmissionBlockComponent({
                     </FieldLabel>
                     <Input
                       aria-invalid={Boolean(errors.reviewerEmail) || undefined}
-                      className="h-11 rounded-md"
+                      className="h-11 rounded-control"
                       id="reviewer-email"
                       placeholder={emailField.placeholder}
                       required={emailField.required}
@@ -539,7 +539,7 @@ export function ReviewSubmissionBlockComponent({
                   </FieldLabel>
                   <Textarea
                     aria-invalid={Boolean(errors.reviewBody) || undefined}
-                    className="min-h-32 rounded-md"
+                    className="min-h-32 rounded-control"
                     id="review-body"
                     maxLength={1000}
                     placeholder={bodyField.placeholder}

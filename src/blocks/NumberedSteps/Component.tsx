@@ -144,7 +144,7 @@ function CardSteps({
           <div
             key={index}
             className={cn(
-              'relative flex flex-col gap-4 rounded-xl border p-6',
+              'relative flex flex-col gap-4 rounded-card border p-6',
               surface.className,
               surface.divider,
             )}
@@ -208,7 +208,7 @@ function AlternatingSteps({
             )}
           >
             {/* Media or styled fallback */}
-            <div className="relative aspect-video w-full overflow-hidden rounded-xl md:flex-1">
+            <div className="relative aspect-video w-full overflow-hidden rounded-card md:flex-1">
               {image ? (
                 <Image
                   src={image.src}

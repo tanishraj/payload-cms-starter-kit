@@ -1,8 +1,9 @@
-/* SNMIH — palette mirrors the homepage prototype.
+/* SNMIH-Blue — palette mirrors the homepage prototype.
    navy #06285d -> --primary        ink  #0b1d38 -> --foreground
    ice  #f2f7fb -> --muted          line #dfe7ef -> --border
    green #2f8f45 -> --success       soft green #8fd19a -> --ring */
-:root[data-theme-color='snmih'] {
+:root:not([data-theme-color]),
+:root[data-theme-color='snmih-blue'] {
   --background: oklch(1 0 0);
   --foreground: oklch(0.2322 0.0575 258.39);
   --light-overlay-foreground: oklch(0.2322 0.0575 258.39);
@@ -40,7 +41,8 @@
   --sidebar-ring: oklch(0.8018 0.1024 148.89);
 }
 
-:root[data-theme-color='snmih'].dark {
+:root:not([data-theme-color]).dark,
+:root[data-theme-color='snmih-blue'].dark {
   --background: oklch(0.176997 0.032292 258.683);
   --foreground: oklch(0.974538 0.007928 253.852);
   --light-overlay-foreground: oklch(0.2322 0.0575 258.39);

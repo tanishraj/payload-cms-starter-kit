@@ -10,8 +10,8 @@ Uncomment to import Google fonts if you want to use them in your project.
 @plugin "@tailwindcss/typography";
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
-@import './themes/theme-default.css';
-@import './themes/theme-snmih.css';
+@import './themes/theme-snmih-green.css';
+@import './themes/theme-snmih-blue.css';
 @import './custom.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -157,11 +157,10 @@ Uncomment to import Google fonts if you want to use them in your project.
   --color-color-2: var(--color-2);
   --color-color-1: var(--color-1);
 
-  --radius-xs: calc(var(--radius) * 0.25);
-  --radius-sm: calc(var(--radius) * 0.5);
-  --radius-md: calc(var(--radius) * 0.75);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.5);
+  /* Public surface roles: cards/controls cap at 12px; compact details cap at 4px. */
+  --radius-card: min(var(--radius, 0.625rem), 0.75rem);
+  --radius-control: min(var(--radius, 0.625rem), 0.75rem);
+  --radius-compact: min(calc(var(--radius, 0.625rem) * 0.5), 0.25rem);
 
   --shadow-2xs: var(--shadow-2xs);
   --shadow-xs: var(--shadow-xs);
@@ -714,9 +713,6 @@ Uncomment to import Google fonts if you want to use them in your project.
       background-position: 200%;
     }
   }
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
 @utility container {

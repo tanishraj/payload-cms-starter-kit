@@ -47,7 +47,7 @@ export function ArticlePage({
           <p className="max-w-3xl text-lg leading-8 text-muted-foreground">{article.excerpt}</p>
         </div>
         {featuredImage ? (
-          <div className="relative aspect-video w-full overflow-hidden rounded-3xl border">
+          <div className="relative aspect-video w-full overflow-hidden rounded-card border">
             <Image
               fill
               alt={featuredImage.alt}
@@ -75,14 +75,14 @@ export function ArticlePage({
         <RichText data={article.body} />
       </div>
       {relatedArticles.length ? (
-        <section className="space-y-4 rounded-3xl border bg-background p-6">
+        <section className="space-y-4 rounded-card border bg-background p-6">
           <h2 className="text-2xl font-semibold text-foreground">Related articles</h2>
           <div className="grid gap-4 md:grid-cols-2">
             {relatedArticles.map((relatedArticle) => (
               <Link
                 key={relatedArticle.id}
                 href={`/articles/${relatedArticle.slug}`}
-                className="rounded-2xl border p-4 transition-colors hover:border-foreground/30"
+                className="rounded-card border p-4 transition-colors hover:border-foreground/30"
               >
                 <h3 className="font-semibold text-foreground">{relatedArticle.title}</h3>
                 <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted-foreground">

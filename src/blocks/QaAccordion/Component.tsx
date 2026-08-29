@@ -249,7 +249,7 @@ export function QaAccordionBlockComponent({
         {hasProfile ? (
           <div className="flex items-start gap-3 sm:gap-4">
             {profileImage ? (
-              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg sm:h-16 sm:w-16">
+              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-card sm:h-16 sm:w-16">
                 <Image
                   fill
                   alt={profileImage.alt}

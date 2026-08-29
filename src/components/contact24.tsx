@@ -150,7 +150,7 @@ export function Contact24({
           >
             {offices.map((office) => (
               <article
-                className="flex min-w-0 flex-col overflow-hidden rounded-xl border border-border"
+                className="flex min-w-0 flex-col overflow-hidden rounded-card border border-border"
                 data-contact24-office
                 data-contact24-location-details={showLocationDetails ? 'visible' : 'hidden'}
                 key={office.id}

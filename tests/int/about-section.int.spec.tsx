@@ -152,7 +152,7 @@ describe('About Section lists', () => {
     expect(html).toContain('py-20 md:py-0')
     expect(html).toContain('min-h-[30rem] md:min-h-[40rem]')
     expect(html).toContain('relative aspect-4/3 overflow-hidden md:aspect-auto md:h-full')
-    expect(html).not.toContain('rounded-2xl')
+    expect(html).not.toContain('rounded-card')
   })
 
   it('stretches contained media to the actual content height on desktop', () => {
@@ -175,7 +175,7 @@ describe('About Section lists', () => {
     expect(html).toContain('grid items-stretch gap-10 md:grid-cols-2')
     expect(html).toContain('data-about-media-frame="contained"')
     expect(html).toContain('md:h-full md:aspect-auto')
-    expect(html).toContain('rounded-2xl')
+    expect(html).toContain('rounded-card')
   })
 
   it('extends split media to the viewport edge while retaining contained content alignment', () => {
@@ -196,7 +196,7 @@ describe('About Section lists', () => {
     expect(html).toContain('grid items-stretch gap-8 md:grid-cols-2 md:gap-0')
     expect(html).toContain('ml-auto h-full w-full max-w-[calc(var(--breakpoint-2xl)/2)] pl-4')
     expect(html).toContain('relative aspect-4/3 overflow-hidden md:aspect-auto md:min-h-full')
-    expect(html).not.toContain('rounded-2xl')
+    expect(html).not.toContain('rounded-card')
   })
 
   it('renders the image detail panel over the selected lower image corner', () => {

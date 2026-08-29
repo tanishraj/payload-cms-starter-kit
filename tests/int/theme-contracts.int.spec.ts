@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 
 import { contrastRatio, parseOklch } from '../helpers/oklchContrast'
 
-const themes = ['default', 'snmih'] as const
+const themes = ['snmih-green', 'snmih-blue'] as const
 const contrastPairs = [
   ['background', 'foreground'],
   ['card', 'card-foreground'],
@@ -57,6 +57,19 @@ const expectOklchTokens = (actual: Record<string, string>, expected: Record<stri
 }
 
 describe('website theme contracts', () => {
+  it('lets the Card shell own theme-aligned corner clipping', () => {
+    const cardSource = fs.readFileSync(
+      path.resolve(process.cwd(), 'src/components/ui/card.tsx'),
+      'utf8',
+    )
+
+    expect(cardSource).toContain('overflow-hidden rounded-card')
+    expect(cardSource).not.toContain('rounded-[var(--radius)]')
+    expect(cardSource).not.toContain('rounded-4xl')
+    expect(cardSource).not.toContain('*:[img:first-child]:rounded-t-4xl')
+    expect(cardSource).not.toContain('*:[img:last-child]:rounded-b-4xl')
+  })
+
   it.each(themes)('keeps Calendar accents distinguishable on %s Card surfaces', (theme) => {
     const calendarTokens = {
       light: [
@@ -94,14 +107,14 @@ describe('website theme contracts', () => {
     for (const { selector } of tokenBlocks) {
       const selectors = selector.split(',').map((item) => item.trim())
 
-      if (theme === 'default') {
+      if (theme === 'snmih-blue') {
         for (const item of selectors) {
-          expect(item).toMatch(/data-theme-color='default'|:root:not\(\[data-theme-color\]\)/)
+          expect(item).toMatch(/data-theme-color='snmih-blue'|:root:not\(\[data-theme-color\]\)/)
         }
       } else {
         for (const item of selectors) {
           expect(item).toContain(`data-theme-color='${theme}'`)
-          expect(item).not.toMatch(/^:root\s*(?:\.dark)?$/)
+          expect(item).not.toContain(':root:not([data-theme-color])')
         }
       }
     }
@@ -147,8 +160,8 @@ describe('website theme contracts', () => {
   })
 
   it('uses the approved SNMIH-Blue brand palette in both modes', () => {
-    const light = getModeTokens('snmih', 'light')
-    const dark = getModeTokens('snmih', 'dark')
+    const light = getModeTokens('snmih-blue', 'light')
+    const dark = getModeTokens('snmih-blue', 'dark')
 
     expectOklchTokens(light, {
       background: 'oklch(1 0 0)',
@@ -175,7 +188,32 @@ describe('website theme contracts', () => {
     })
   })
 
-  it('uses primary as the only brand action token and a zero-safe radius scale', () => {
+  it('uses the institutional green action palette and restrained radius', () => {
+    const light = getModeTokens('snmih-green', 'light')
+    const dark = getModeTokens('snmih-green', 'dark')
+
+    expectOklchTokens(light, {
+      primary: 'oklch(0.53 0.1415 147.76)',
+      'primary-foreground': 'oklch(1 0 0)',
+      secondary: 'oklch(0.96 0.025 148)',
+      'secondary-foreground': 'oklch(0.245 0.055 150)',
+      accent: 'oklch(0.925 0.05 148)',
+      'accent-foreground': 'oklch(0.245 0.055 150)',
+      ring: 'oklch(0.53 0.1415 147.76)',
+    })
+    expect(light.radius).toBe('0.75rem')
+
+    expectOklchTokens(dark, {
+      primary: 'oklch(0.6608 0.1598 139.63)',
+      'primary-foreground': 'oklch(0.16 0.03 150)',
+      secondary: 'oklch(0.274 0.025 150)',
+      accent: 'oklch(0.31 0.045 148)',
+      ring: 'oklch(0.8018 0.1024 148.89)',
+    })
+    expect(dark.radius).toBe('0.75rem')
+  })
+
+  it('uses primary as the only brand action token and a capped semantic radius scale', () => {
     const globalsSource = fs.readFileSync(
       path.resolve(process.cwd(), 'src/styles/globals.css'),
       'utf8',
@@ -190,14 +228,12 @@ describe('website theme contracts', () => {
       expect(globalsSource).toContain(`--calendar-${tone}: oklch(`)
       expect(globalsSource).toContain(`--color-calendar-${tone}: var(--calendar-${tone});`)
     }
-    expect(globalsSource).toContain('--radius-xs: calc(var(--radius) * 0.25);')
-    expect(globalsSource).toContain('--radius-sm: calc(var(--radius) * 0.5);')
-    expect(globalsSource).toContain('--radius-md: calc(var(--radius) * 0.75);')
-    expect(globalsSource).toContain('--radius-xl: calc(var(--radius) * 1.5);')
-    expect(globalsSource).toContain('--radius-2xl: calc(var(--radius) * 1.8);')
-    expect(globalsSource).toContain('--radius-3xl: calc(var(--radius) * 2.2);')
-    expect(globalsSource).toContain('--radius-4xl: calc(var(--radius) * 2.6);')
-    expect(globalsSource).not.toMatch(/--radius-(?:xs|sm|md|xl):\s*calc\(var\(--radius\)\s*[+-]/)
+    expect(globalsSource).toContain('--radius-card: min(var(--radius, 0.625rem), 0.75rem);')
+    expect(globalsSource).toContain('--radius-control: min(var(--radius, 0.625rem), 0.75rem);')
+    expect(globalsSource).toContain(
+      '--radius-compact: min(calc(var(--radius, 0.625rem) * 0.5), 0.25rem);',
+    )
+    expect(globalsSource).not.toMatch(/--radius-(?:xs|sm|md|lg|xl|2xl|3xl|4xl):/)
   })
 
   it('uses the semantic link, radius, and filled-action hover contracts', () => {
@@ -213,14 +249,32 @@ describe('website theme contracts', () => {
       path.resolve(process.cwd(), 'src/blocks/shared/contentTabRail.ts'),
       'utf8',
     )
+    const uiTabsSource = fs.readFileSync(
+      path.resolve(process.cwd(), 'src/components/ui/tabs.tsx'),
+      'utf8',
+    )
+    const richTextSource = fs.readFileSync(
+      path.resolve(process.cwd(), 'src/components/rich-text/richTextStyles.ts'),
+      'utf8',
+    )
 
     expect(buttonSource).toContain(
       'hover:bg-[color-mix(in_oklch,var(--primary),var(--foreground)_8%)]',
     )
     expect(buttonSource).toContain("link: 'text-primary underline-offset-4 hover:underline'")
-    expect(checkboxSource).toContain('rounded-sm')
+    expect(checkboxSource).toContain('rounded-compact')
     expect(checkboxSource).not.toContain('rounded-[5px]')
     expect(tabsSource).toContain("'border-primary text-primary'")
     expect(tabsSource).toContain("'border-primary-foreground text-primary-foreground'")
+    expect(uiTabsSource).toContain(
+      'data-[state=active]:bg-primary data-[state=active]:text-primary-foreground',
+    )
+    expect(uiTabsSource).toContain(
+      'group-data-[variant=line]/tabs-list:data-[state=active]:text-primary',
+    )
+    expect(uiTabsSource).toContain(
+      'group-data-[variant=line]/tabs-list:data-[state=active]:bg-transparent',
+    )
+    expect(richTextSource).toContain('prose-a:text-primary')
   })
 })

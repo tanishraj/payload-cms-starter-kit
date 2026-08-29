@@ -323,7 +323,7 @@ export function ProgramMatrixBlockComponent({
 
           <div
             className={cn(
-              'grid overflow-hidden rounded-[var(--radius)] border bg-transparent text-current',
+              'grid overflow-hidden rounded-card border bg-transparent text-current',
               programMatrixGridClasses[resolvedColumns],
               isBrandSurface ? 'border-current/15' : 'border-current/10',
               usesSplitHeader &&

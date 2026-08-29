@@ -69,7 +69,7 @@ describe('Tabs Content active color', () => {
       'utf8',
     )
 
-    expect(component).toContain("'rounded-[var(--radius)] border p-5 sm:p-6'")
+    expect(component).toContain("'rounded-card border p-5 sm:p-6'")
     expect(component).toContain('font-[family-name:var(--font-display)]')
     expect(component).toContain("'font-sans text-lg tracking-tight capitalize sm:text-xl'")
     expect(component).toContain('<span className={contentItemDescriptionClasses}>')

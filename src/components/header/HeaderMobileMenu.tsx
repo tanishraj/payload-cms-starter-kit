@@ -30,7 +30,7 @@ const topLevelLinkClasses =
   'flex h-[3.75rem] items-center border-b p-0 text-left text-base leading-[3.75] font-bold no-underline ring-ring/10 outline-ring/50 transition-all focus-visible:ring-4 focus-visible:outline-1 nth-last-1:border-0'
 
 const childLinkClasses =
-  'flex w-full min-w-fit flex-row items-center gap-2.5 rounded-md px-2 py-[5px] no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground'
+  'flex w-full min-w-fit flex-row items-center gap-2.5 rounded-control px-2 py-[5px] no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground'
 
 export function HeaderMobileMenu({ ctas, menuItems }: HeaderMobileMenuProps) {
   const [open, setOpen] = useState(false)

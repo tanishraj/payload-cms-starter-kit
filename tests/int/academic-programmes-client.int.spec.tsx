@@ -4,9 +4,7 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('lucide-react/dynamic', () => ({
-  DynamicIcon: ({ name }: { name: string }) => (
-    <svg aria-hidden="true" data-dynamic-icon={name} />
-  ),
+  DynamicIcon: ({ name }: { name: string }) => <svg aria-hidden="true" data-dynamic-icon={name} />,
   dynamicIconImports: {
     'book-open': () => Promise.resolve({}),
     'graduation-cap': () => Promise.resolve({}),
@@ -106,6 +104,57 @@ describe('Academic Programmes client presentation', () => {
 
     expect(screen.queryByRole('tablist')).toBeNull()
     expect(screen.getByRole('heading', { name: 'MBBS' })).not.toBeNull()
+  })
+
+  it('uses the semantic card radius for every programme surface and link shell', () => {
+    const { container } = render(
+      <AcademicProgrammesClient
+        background="none"
+        columns="2"
+        contentAlignment="left"
+        metadataPosition="flow"
+        programmes={[
+          {
+            ctaLabel: 'Explore MBBS',
+            facts: [],
+            href: '/programmes/mbbs',
+            id: 'mbbs',
+            image: { alt: 'Medical students', src: '/media/mbbs.jpg' },
+            openInNewTab: false,
+            title: 'MBBS',
+          },
+          {
+            ctaLabel: 'Explore MD',
+            facts: [],
+            href: '/programmes/md',
+            id: 'md',
+            openInNewTab: false,
+            title: 'MD General Medicine',
+          },
+        ]}
+        showFilter={false}
+        viewMode="grid"
+      />,
+    )
+
+    const cards = Array.from(container.querySelectorAll('[data-academic-programme="true"]'))
+    const mediaCard = cards.find(
+      (card) => card.getAttribute('data-academic-programme-image') === 'true',
+    )
+    const textCard = cards.find(
+      (card) => card.getAttribute('data-academic-programme-image') === 'false',
+    )
+    const mediaLink = mediaCard?.closest('[data-academic-programme-link="true"]')
+    const textLink = textCard?.closest('[data-academic-programme-link="true"]')
+
+    expect(mediaCard?.className).toContain('rounded-card')
+    expect(mediaCard?.className).not.toContain('rounded-[var(--radius)]')
+    expect(textCard?.className).toContain('rounded-card')
+    expect(textCard?.className).not.toContain('rounded-[var(--radius)]')
+    expect(mediaLink?.className).toContain('rounded-card')
+    expect(mediaLink?.className).not.toContain('rounded-[var(--radius)]')
+    expect(textLink?.className).toContain('rounded-card')
+    expect(textLink?.className).not.toContain('rounded-[var(--radius)]')
   })
 
   it('supports keyboard navigation across filter tabs', () => {

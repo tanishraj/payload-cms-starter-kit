@@ -52,7 +52,7 @@ const TeamShowcaseMemberCard = memo(
             surface.divider,
           )}
         >
-          <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded border md:size-12 md:aspect-auto">
+          <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-compact border md:size-12 md:aspect-auto">
             <Image
               fill
               src={member.image}
@@ -212,7 +212,7 @@ const TeamShowcase = ({
                         },
                       }}
                       className={cn(
-                        'pointer-events-none absolute inset-0 z-10 hidden h-max overflow-hidden rounded-2xl shadow-lg md:block',
+                        'pointer-events-none absolute inset-0 z-10 hidden h-max overflow-hidden rounded-card shadow-lg md:block',
                         hoverSurfaceClassName,
                       )}
                       data-team-showcase-hover-surface={hoverSurface.value}

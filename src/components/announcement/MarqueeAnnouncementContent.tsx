@@ -68,7 +68,7 @@ export function MarqueeAnnouncementContent({
       </div>
       {motionState.showMotionControl ? (
         <MotionToggle
-          className="rounded-lg text-current hover:bg-current/10 hover:text-current"
+          className="rounded-control text-current hover:bg-current/10 hover:text-current"
           contextLabel="marquee"
           isPaused={motionState.isUserPaused}
           onToggle={motionState.toggleUserPaused}
@@ -116,7 +116,7 @@ function MarqueeTrack({
           key={`${duplicate ? 'duplicate' : 'primary'}-${item.url ?? item.description}-${index}`}
         >
           <MarqueeItem animated={animated} duplicate={duplicate} item={item} />
-          <span aria-hidden="true" className="size-1.5 shrink-0 rounded-lg bg-current/70" />
+          <span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-current/70" />
         </Fragment>
       ))}
     </div>

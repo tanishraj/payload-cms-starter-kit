@@ -68,7 +68,7 @@ function MediaCard({
   const cardInner = (
     <div
       className={cn(
-        'flex h-full flex-col overflow-hidden rounded-xl border',
+        'flex h-full flex-col overflow-hidden rounded-card border',
         surface.className,
         surface.divider,
       )}
@@ -95,7 +95,7 @@ function MediaCard({
           />
         )}
         {Icon ? (
-          <div className="absolute left-3 top-3 flex size-8 items-center justify-center rounded-lg bg-primary">
+          <div className="absolute left-3 top-3 flex size-8 items-center justify-center rounded-compact bg-primary">
             <Icon className="size-4 text-primary-foreground" />
           </div>
         ) : null}
