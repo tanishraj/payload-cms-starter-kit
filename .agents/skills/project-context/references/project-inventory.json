@@ -2533,11 +2533,8 @@
       "src/plugins/withTrash.ts",
       "src/styles/custom.css",
       "src/styles/globals.css",
-      "src/styles/themes/theme-blue.css",
       "src/styles/themes/theme-default.css",
-      "src/styles/themes/theme-kodama.css",
       "src/styles/themes/theme-snmih.css",
-      "src/styles/themes/theme-sunset.css",
       "tests/e2e/admin.e2e.spec.ts",
       "tests/e2e/calendar.e2e.spec.ts",
       "tests/e2e/frontend.e2e.spec.ts",
@@ -2722,7 +2719,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "4c72629e220cc9cc917fabd44037a5fd75dbab62e0d00d02407e30765e59831d"
+    "sha256": "d1735f558ce3e391f361c1271277c0b1746e51024276cf0dd9d81c239b006ba5"
   },
   "surfaces": {
     "access": [
@@ -3034,11 +3031,8 @@
       "tests/int/work-queue.int.spec.ts"
     ],
     "themes": [
-      "src/styles/themes/theme-blue.css",
       "src/styles/themes/theme-default.css",
-      "src/styles/themes/theme-kodama.css",
-      "src/styles/themes/theme-snmih.css",
-      "src/styles/themes/theme-sunset.css"
+      "src/styles/themes/theme-snmih.css"
     ]
   }
 }

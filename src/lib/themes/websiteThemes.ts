@@ -16,11 +16,8 @@
  * validation both read from this file, so the two stay in sync automatically.
  */
 export const websiteThemes = [
-  { label: 'Default', value: 'default' },
-  { label: 'Sunset', value: 'sunset' },
-  { label: 'Blue', value: 'blue' },
-  { label: 'Kodama', value: 'kodama' },
-  { label: 'SNMIH', value: 'snmih' },
+  { label: 'SNMIH-Green', value: 'default' },
+  { label: 'SNMIH-Blue', value: 'snmih' },
 ] as const
 
 export type WebsiteThemeValue = (typeof websiteThemes)[number]['value']

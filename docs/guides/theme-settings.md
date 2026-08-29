@@ -2,7 +2,7 @@
 
 ## What This Section Is
 
-`Appearance` controls the Default, Sunset, Blue, or Kodama theme preset and whether the public site follows the visitor's system preference or forces light or dark mode.
+`Appearance` controls the SNMIH-Green or SNMIH-Blue theme preset and whether the public site follows the visitor's system preference or forces light or dark mode.
 
 In North Valley Medical College, this is the section you would use when switching the overall website visual theme or deciding whether the site should follow the visitor’s system preference or force a specific light or dark experience.
 
@@ -12,6 +12,11 @@ Use `Appearance` when you need to:
 
 - switch the site to a different approved theme preset
 - choose whether the site follows system, light, or dark color mode
+
+The available institutional palettes are:
+
+- `SNMIH-Green` is the default and fallback institutional palette.
+- `SNMIH-Blue` uses the alternate blue institutional palette.
 
 Do not use this section for editing page content, navigation, or branding assets. This is global presentation control.
 

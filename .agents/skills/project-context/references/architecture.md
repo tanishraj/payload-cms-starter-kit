@@ -62,7 +62,7 @@ Maintenance and coming-soon overrides currently wrap the homepage, catch-all Pag
 
 ## Themes and Analytics
 
-Five theme presets are registered: Default, Sunset, Blue, Kodama, and SNMIH. Theme files live under [src/styles/themes](../../../../src/styles/themes). Block sections use semantic page/subtle/brand surfaces; card surfaces use Default, Primary, Secondary, Muted, and Accent. Renderers resolve foreground, supporting text, icon, divider, link, and button contrast from those semantics.
+Two theme presets are registered: SNMIH-Green (`default`) and SNMIH-Blue (`snmih`). Theme files live under [src/styles/themes](../../../../src/styles/themes). Block sections use semantic page/subtle/brand surfaces; card surfaces use Default, Primary, Secondary, Muted, and Accent. Renderers resolve foreground, supporting text, icon, divider, link, and button contrast from those semantics.
 Muted and completed-status treatments own explicit contrast-tested foreground pairs in both modes.
 Supporting copy on semantic card and brand surfaces uses the complete paired foreground rather than
 reducing opacity below the accessible contrast contract.

@@ -195,8 +195,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
   const colorScheme = themeSettings.colorScheme ?? 'system'
   const rawThemeColor = String(themeSettings.themeColor ?? defaultWebsiteTheme)
-  const savedThemeColor = rawThemeColor === 'amber' ? 'sera' : rawThemeColor
-  const themeColor = isWebsiteTheme(savedThemeColor) ? savedThemeColor : defaultWebsiteTheme
+  const themeColor = isWebsiteTheme(rawThemeColor) ? rawThemeColor : defaultWebsiteTheme
   const announcementSettings = pageSettings?.announcementEnabled ? pageSettings : null
   const announcementDisplayMode = announcementSettings?.announcementDisplayMode
   const announcementAppearance = announcementSettings?.announcementAppearance

@@ -45,7 +45,7 @@ All collections use timestamps and Trash. Draft/version support is enabled where
 | Group         | Global                | Responsibilities                                                                              |
 | ------------- | --------------------- | --------------------------------------------------------------------------------------------- |
 | Settings      | Site Identity         | Brand, regional timezone, contact, address, legal Page relationships, and social destinations |
-| Settings      | Appearance            | Default/Sunset/Blue/Kodama/SNMIH theme and system/light/dark color scheme                     |
+| Settings      | Appearance            | SNMIH-Green/SNMIH-Blue theme and system/light/dark color scheme                               |
 | Settings      | SEO & Metadata        | Fallback title, template, description, image, robots, and Google verification                 |
 | Settings      | Analytics & Tracking  | GTM or standalone GA4 identifiers and enablement                                              |
 | Settings      | Cookie Consent Banner | Enablement, four presentation variants, corner position, and copy                             |

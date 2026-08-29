@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 
 import { contrastRatio, parseOklch } from '../helpers/oklchContrast'
 
-const themes = ['default', 'sunset', 'blue', 'kodama', 'snmih'] as const
+const themes = ['default', 'snmih'] as const
 const contrastPairs = [
   ['background', 'foreground'],
   ['card', 'card-foreground'],
@@ -146,7 +146,7 @@ describe('website theme contracts', () => {
     }
   })
 
-  it('uses the approved SNMIH brand palette in both modes', () => {
+  it('uses the approved SNMIH-Blue brand palette in both modes', () => {
     const light = getModeTokens('snmih', 'light')
     const dark = getModeTokens('snmih', 'dark')
 

@@ -11,9 +11,6 @@ Uncomment to import Google fonts if you want to use them in your project.
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 @import './themes/theme-default.css';
-@import './themes/theme-sunset.css';
-@import './themes/theme-blue.css';
-@import './themes/theme-kodama.css';
 @import './themes/theme-snmih.css';
 @import './custom.css';
 

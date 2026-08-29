@@ -33,22 +33,18 @@ const getThemeField = () => {
 }
 
 describe('website theme registry', () => {
-  it('exports the supported website themes and helpers', () => {
+  it('exports only the two approved SNMIH themes and helpers', () => {
     expect(defaultWebsiteTheme).toBe('default')
-    expect(websiteThemeValues).toEqual(['default', 'sunset', 'blue', 'kodama', 'snmih'])
+    expect(websiteThemeValues).toEqual(['default', 'snmih'])
     expect(websiteThemeOptions).toEqual([
-      { label: 'Default', value: 'default' },
-      { label: 'Sunset', value: 'sunset' },
-      { label: 'Blue', value: 'blue' },
-      { label: 'Kodama', value: 'kodama' },
-      { label: 'SNMIH', value: 'snmih' },
+      { label: 'SNMIH-Green', value: 'default' },
+      { label: 'SNMIH-Blue', value: 'snmih' },
     ])
     expect(isWebsiteTheme('default')).toBe(true)
-    expect(isWebsiteTheme('sunset')).toBe(true)
-    expect(isWebsiteTheme('blue')).toBe(true)
-    expect(isWebsiteTheme('kodama')).toBe(true)
     expect(isWebsiteTheme('snmih')).toBe(true)
-    expect(isWebsiteTheme('sera')).toBe(false)
+    expect(isWebsiteTheme('sunset')).toBe(false)
+    expect(isWebsiteTheme('blue')).toBe(false)
+    expect(isWebsiteTheme('kodama')).toBe(false)
     expect(isWebsiteTheme('amber')).toBe(false)
   })
 
@@ -62,7 +58,14 @@ describe('website theme registry', () => {
       'utf8',
     )
 
+    expect(globalsSource).toContain("@import './themes/theme-default.css';")
     expect(globalsSource).toContain("@import './themes/theme-snmih.css';")
+    for (const retiredTheme of ['sunset', 'blue', 'kodama']) {
+      expect(globalsSource).not.toContain(`@import './themes/theme-${retiredTheme}.css';`)
+      expect(
+        fs.existsSync(path.resolve(process.cwd(), `src/styles/themes/theme-${retiredTheme}.css`)),
+      ).toBe(false)
+    }
     expect(themeSource).toContain(":root[data-theme-color='snmih'] {")
     expect(themeSource).toContain(":root[data-theme-color='snmih'].dark {")
     expect(themeSource).not.toMatch(/^:root\s*\{/m)
@@ -89,8 +92,10 @@ describe('website theme registry', () => {
     expect(layoutSource).toContain('defaultWebsiteTheme')
     expect(layoutSource).toContain('isWebsiteTheme')
     expect(layoutSource).toContain(
-      'const themeColor = isWebsiteTheme(savedThemeColor) ? savedThemeColor : defaultWebsiteTheme',
+      'const themeColor = isWebsiteTheme(rawThemeColor) ? rawThemeColor : defaultWebsiteTheme',
     )
+    expect(layoutSource).not.toContain("rawThemeColor === 'amber'")
+    expect(layoutSource).not.toContain("'sera'")
     expect(layoutSource).not.toContain(
       "const validThemeColors = new Set(['default', 'blue', 'sera'])",
     )

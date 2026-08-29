@@ -12665,7 +12665,7 @@ export interface ThemeSetting {
   /**
    * Select which frontend theme preset is loaded for the site.
    */
-  themeColor: 'default' | 'sunset' | 'blue' | 'kodama' | 'snmih';
+  themeColor: 'default' | 'snmih';
   /**
    * Choose whether the site follows the system preference or forces light/dark mode.
    */
