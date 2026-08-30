@@ -184,15 +184,28 @@ export function PGFeeStructureAtlasPresentation({
                   ) : null}
                 </div>
                 <dl
-                  className="grid gap-x-5 gap-y-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,9rem),1fr))]"
+                  className="grid grid-cols-2 lg:gap-x-5 lg:gap-y-4 lg:[grid-template-columns:repeat(auto-fit,minmax(min(100%,9rem),1fr))]"
                   data-pg-fee-grid="true"
                 >
                   {category.columns.map((column, index) => {
                     const value = department.cells[index] ?? '—'
+                    const isLastOddItem =
+                      category.columns.length % 2 === 1 && index === category.columns.length - 1
+                    const showsCompactCenterDivider = isLastOddItem && category.columns.length > 1
 
                     return (
                       <div
-                        className="min-w-0 border-l border-border pl-4 first:border-l-0 first:pl-0"
+                        className={cn(
+                          'relative min-w-0 px-3 py-3 lg:px-0 lg:py-0',
+                          index % 2 === 1 && 'border-l border-border',
+                          index >= 2 && 'border-t border-border',
+                          index > 0 && 'lg:border-l lg:border-border lg:pl-4',
+                          'lg:border-t-0',
+                          isLastOddItem && 'col-span-2 lg:col-span-1',
+                          showsCompactCenterDivider &&
+                            "after:absolute after:inset-y-0 after:left-1/2 after:border-l after:border-border after:content-[''] lg:after:hidden",
+                        )}
+                        data-pg-fee-compact-divider={showsCompactCenterDivider ? 'true' : undefined}
                         key={column.id}
                       >
                         <dt className="wrap-break-word font-mono text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">

@@ -292,6 +292,33 @@ describe('PGFeeStructureBlock schema', () => {
 })
 
 describe('PGFeeStructureBlockComponent', () => {
+  it('uses the Fee Structure ruled grid on compact layouts and preserves the adaptive desktop grid', () => {
+    const { container } = render(
+      <PGFeeStructureBlockComponent
+        academicSession="2026-27"
+        feeCategories={[generalCategory]}
+        programmeName="Postgraduate Medical Courses"
+      />,
+    )
+
+    const grid = container.querySelector<HTMLElement>('[data-pg-fee-grid="true"]')
+    const items = Array.from(grid?.children ?? []) as HTMLElement[]
+
+    expect(grid?.className).toContain('grid-cols-2')
+    expect(grid?.className).toContain(
+      'lg:[grid-template-columns:repeat(auto-fit,minmax(min(100%,9rem),1fr))]',
+    )
+    expect(items).toHaveLength(3)
+    expect(items[0]?.className).not.toContain('border-l')
+    expect(items[1]?.className).toContain('border-l')
+    expect(items[2]?.className).toContain('border-t')
+    expect(items[2]?.className).toContain('col-span-2')
+    expect(items[2]?.className).toContain('lg:col-span-1')
+    expect(items[2]?.className).toContain('lg:border-t-0')
+    expect(items[2]?.dataset.pgFeeCompactDivider).toBe('true')
+    expect(items[2]?.className).toContain('lg:after:hidden')
+  })
+
   it('bounds exactly five or more departments on desktop and preserves compact natural flow', () => {
     const fourDepartments = makeDepartmentCategory(4, 'Four')
     const fiveDepartments = makeDepartmentCategory(5, 'Five')
@@ -459,6 +486,13 @@ describe('PGFeeStructureBlockComponent', () => {
     expect(container.querySelector('[data-fee-document]')).toBeNull()
     expect(screen.getByText('1 Department')).toBeTruthy()
     expect(screen.getByText('—')).toBeTruthy()
+
+    const singleGrid = container.querySelector<HTMLElement>('[data-pg-fee-grid="true"]')
+    const singleItem = singleGrid?.firstElementChild as HTMLElement | null
+
+    expect(singleItem?.className).toContain('col-span-2')
+    expect(singleItem?.className).toContain('lg:col-span-1')
+    expect(singleItem?.dataset.pgFeeCompactDivider).toBeUndefined()
   })
 
   it('uses semantic chapters and description lists with container-aware fee grids', () => {

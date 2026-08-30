@@ -203,10 +203,12 @@ With up to four departments, the atlas keeps its natural height. From the fifth 
 large screens use a 676px frame: the Primary summary and statement header remain visible while the
 department chapter list scrolls. Compact layouts always keep every chapter in normal page flow.
 Compact layouts stack summary then statement, and fee grids reflow without page-level horizontal
-scrolling. One category renders directly; multiple categories use the shared Underline, Pills, or
-Boxed tabs with Content Width, Centered Auto Width, or Equal Full Width and switch the complete
-atlas. The block exposes no alternate layout selector, calculated-total fields, or payment-account
-fields.
+scrolling. Within each compact department chapter, fee values follow the Fee Structure Atlas ruled
+pattern: two values per row, paired vertical rules, horizontal row rules, and a full-width final value
+when the column count is odd. Large layouts retain the adaptive fee grid. One category renders
+directly; multiple categories use the shared Underline, Pills, or Boxed tabs with Content Width,
+Centered Auto Width, or Equal Full Width and switch the complete atlas. The block exposes no
+alternate layout selector, calculated-total fields, or payment-account fields.
 
 Event Gallery uses the first valid image from every selected Gallery Album as the album cover and
 can open the complete album in its full-screen viewer. Disable **Enable Album Slideshow** to retain

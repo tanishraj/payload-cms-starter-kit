@@ -301,12 +301,14 @@ charges, notes, and the optional shared fee-document Link or Button panel; the C
 one complete chapter per department and repeats shared values for self-contained reading. An active
 category with up to four departments renders at natural height. At five or more, `lg` layouts use a
 676px atlas whose summary and statement header remain independent while only the department chapter
-list scrolls; below `lg`, every region returns to normal document flow. Compact layouts stack summary
-then statement, and container-aware fee grids reflow without page-level
-horizontal scrolling. Multiple categories reuse Contained, Pill, and Underline tabs with the same
-width behavior as Fee Structure and switch the complete frame. PG Fee Structure intentionally has no
-alternate layout selector, calculated totals, department relationship, public filtering,
-payment-account fields, or migration.
+list scrolls; below `lg`, every region returns to normal document flow. Below `lg`, every department
+chapter presents fee values in the Fee Structure Atlas two-column ruled pattern, including full-width
+odd final items. At `lg`, compact row rules are removed and the existing adaptive value grid remains
+in effect. Compact layouts stack summary then statement, and container-aware fee grids reflow without
+page-level horizontal scrolling. Multiple categories reuse Contained, Pill, and Underline tabs with
+the same width behavior as Fee Structure and switch the complete frame. PG Fee Structure
+intentionally has no alternate layout selector, calculated totals, department relationship, public
+filtering, payment-account fields, or migration.
 
 Event Gallery renders selected Gallery Albums in their resolved manual or latest-event-date order.
 Each selected album contributes its first valid image as one cover tile, while the accessible card
