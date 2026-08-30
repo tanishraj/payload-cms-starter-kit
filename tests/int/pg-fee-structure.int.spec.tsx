@@ -100,6 +100,18 @@ const nriCategory = {
   notes: [{ text: 'NRI tuition remains in the published currency.' }],
 }
 
+const makeDepartmentCategory = (departmentCount: number, label: string) => ({
+  ...generalCategory,
+  id: label.toLowerCase().replaceAll(' ', '-'),
+  label,
+  departments: Array.from({ length: departmentCount }, (_, index) => ({
+    id: `${label.toLowerCase()}-${index + 1}`,
+    name: `${label} Department ${index + 1}`,
+    note: index === departmentCount - 1 ? 'Final department note remains visible.' : undefined,
+    variableValues: [{ value: `₹${index + 1},00,000` }],
+  })),
+})
+
 describe('PG Fee Structure normalization', () => {
   it('expands department and shared columns without reformatting authored amounts', () => {
     const normalized = normalizePGFeeCategories([
@@ -280,6 +292,49 @@ describe('PGFeeStructureBlock schema', () => {
 })
 
 describe('PGFeeStructureBlockComponent', () => {
+  it('bounds exactly five or more departments on desktop and preserves compact natural flow', () => {
+    const fourDepartments = makeDepartmentCategory(4, 'Four')
+    const fiveDepartments = makeDepartmentCategory(5, 'Five')
+    const { container } = render(
+      <PGFeeStructureBlockComponent
+        academicSession="2026-27"
+        feeCategories={[fourDepartments, fiveDepartments]}
+        programmeName="Postgraduate Medical Courses"
+      />,
+    )
+
+    const naturalAtlas = container.querySelector('[data-pg-fee-atlas="true"]')
+    expect(naturalAtlas?.className).not.toContain('lg:h-[676px]')
+    expect(container.querySelector('[data-pg-fee-department-scroll="true"]')).toBeNull()
+    expect(container.querySelectorAll('[data-pg-fee-department-chapter="true"]')).toHaveLength(4)
+
+    fireEvent.mouseDown(screen.getByRole('tab', { name: 'Five' }), {
+      button: 0,
+      ctrlKey: false,
+    })
+
+    const boundedAtlas = container.querySelector('[data-pg-fee-atlas="true"]')
+    const summary = container.querySelector('[data-pg-fee-atlas-summary="true"]')
+    const statement = container.querySelector('[data-pg-fee-atlas-statement="true"]')
+    const scroller = container.querySelector('[data-pg-fee-department-scroll="true"]')
+
+    expect(boundedAtlas?.className).toContain('lg:h-[676px]')
+    expect(summary?.className).toContain('lg:overflow-y-auto')
+    expect(statement?.className).toContain('lg:flex-col')
+    expect(statement?.firstElementChild?.tagName).toBe('HEADER')
+    expect(statement?.children[1]).toBe(scroller)
+    expect(scroller?.className).toContain('lg:flex-1')
+    expect(scroller?.className).toContain('lg:overflow-y-auto')
+    expect(scroller?.className).toContain('lg:overscroll-contain')
+    expect(scroller?.className.split(' ')).not.toContain('h-[676px]')
+    expect(scroller?.className.split(' ')).not.toContain('overflow-y-auto')
+    expect(scroller?.getAttribute('role')).toBe('region')
+    expect(scroller?.getAttribute('aria-label')).toBe('Five department fee statements')
+    expect(scroller?.getAttribute('tabindex')).toBe('0')
+    expect(container.querySelectorAll('[data-pg-fee-department-chapter="true"]')).toHaveLength(5)
+    expect(screen.getByText('Final department note remains visible.')).toBeTruthy()
+  })
+
   it('renders a complete department-chapters atlas without a visitor table', () => {
     const { container } = render(
       <PGFeeStructureBlockComponent

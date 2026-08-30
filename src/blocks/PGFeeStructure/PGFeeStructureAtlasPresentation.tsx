@@ -24,6 +24,7 @@ export function PGFeeStructureAtlasPresentation({
 }: PGFeeStructureAtlasPresentationProps) {
   const chapterIDPrefix = useId()
   const departmentCount = category.departments.length
+  const hasBoundedDepartmentList = departmentCount > 4
   const sharedCharges = category.columns.filter(({ valueMode }) => valueMode === 'shared')
   const summaryFacts = [
     { id: 'programme', label: 'Programme', value: programmeName },
@@ -38,22 +39,30 @@ export function PGFeeStructureAtlasPresentation({
 
   return (
     <div
-      className="grid min-w-0 overflow-clip rounded-card border border-border lg:grid-cols-2"
+      className={cn(
+        'grid min-w-0 overflow-clip rounded-card border border-border lg:grid-cols-2',
+        hasBoundedDepartmentList && 'lg:h-[676px]',
+      )}
       data-pg-fee-atlas="true"
       data-pg-fee-category={category.label}
     >
       <aside
-        className="min-w-0 bg-primary text-primary-foreground"
+        className={cn(
+          'min-w-0 bg-primary text-primary-foreground',
+          hasBoundedDepartmentList && 'lg:h-full lg:min-h-0 lg:overflow-y-auto',
+        )}
         data-pg-fee-atlas-summary="true"
       >
         <div
-          className="flex min-h-full flex-col gap-8 p-6 sm:p-8 lg:sticky lg:top-24 lg:min-h-[min(42rem,calc(100vh-8rem))]"
+          className={cn(
+            'flex min-h-full flex-col gap-8 p-6 sm:p-8',
+            hasBoundedDepartmentList
+              ? 'lg:h-full lg:min-h-0'
+              : 'lg:sticky lg:top-24 lg:min-h-[min(42rem,calc(100vh-8rem))]',
+          )}
           data-pg-fee-atlas-summary-inner="true"
         >
-          <dl
-            className="grid gap-x-8 gap-y-5 sm:grid-cols-2"
-            data-pg-fee-summary-facts="true"
-          >
+          <dl className="grid gap-x-8 gap-y-5 sm:grid-cols-2" data-pg-fee-summary-facts="true">
             {summaryFacts.map((fact) => (
               <div className="min-w-0" key={fact.id}>
                 <dt className="font-mono text-xs uppercase tracking-[0.14em] text-primary-foreground">
@@ -118,10 +127,13 @@ export function PGFeeStructureAtlasPresentation({
       </aside>
 
       <section
-        className="min-w-0 bg-card text-card-foreground"
+        className={cn(
+          'min-w-0 bg-card text-card-foreground',
+          hasBoundedDepartmentList && 'lg:flex lg:h-full lg:min-h-0 lg:flex-col',
+        )}
         data-pg-fee-atlas-statement="true"
       >
-        <header className="border-b border-border p-6 sm:p-8">
+        <header className="shrink-0 border-b border-border p-6 sm:p-8">
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
             Statement breakdown
           </p>
@@ -135,7 +147,19 @@ export function PGFeeStructureAtlasPresentation({
           ) : null}
         </header>
 
-        <div className="divide-y divide-border">
+        <div
+          aria-label={
+            hasBoundedDepartmentList ? `${category.label} department fee statements` : undefined
+          }
+          className={cn(
+            'divide-y divide-border',
+            hasBoundedDepartmentList &&
+              'focus-visible:ring-ring/40 focus-visible:ring-3 focus-visible:ring-inset focus-visible:outline-none lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:[scrollbar-gutter:stable]',
+          )}
+          data-pg-fee-department-scroll={hasBoundedDepartmentList ? 'true' : undefined}
+          role={hasBoundedDepartmentList ? 'region' : undefined}
+          tabIndex={hasBoundedDepartmentList ? 0 : undefined}
+        >
           {category.departments.map((department) => {
             const headingID = `${chapterIDPrefix}-${department.id}`
 
@@ -148,7 +172,7 @@ export function PGFeeStructureAtlasPresentation({
               >
                 <div className="mb-4">
                   <h4
-                    className="font-sans text-base font-semibold tracking-tight"
+                    className="font-sans text-sm leading-tight tracking-tight text-card-foreground sm:text-sm font-medium"
                     id={headingID}
                   >
                     {department.name}
