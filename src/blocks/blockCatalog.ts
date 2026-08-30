@@ -21,6 +21,7 @@ import { EventGalleryBlock } from '@/blocks/EventGallery/config'
 import { FeatureMatrixBlock } from '@/blocks/FeatureMatrix/config'
 import { FeatureSpotlightBlock } from '@/blocks/FeatureSpotlight/config'
 import { FeeStructureBlock } from '@/blocks/FeeStructure/config'
+import { PGFeeStructureBlock } from '@/blocks/PGFeeStructure/config'
 import { GalleryAlbumTabsBlock } from '@/blocks/GalleryAlbumTabs/config'
 import { GalleryCoverflowBlock } from '@/blocks/GalleryCoverflow/config'
 import { GalleryShowcaseBlock } from '@/blocks/GalleryShowcase/config'
@@ -165,6 +166,7 @@ export const pageBlockGroupDefinitions = [
       QuoteBlockBlock,
       TabsContentBlock,
       FeeStructureBlock,
+      PGFeeStructureBlock,
       NumberedStepsBlock,
       BentoGridBlock,
       TestimonialGridBlock,

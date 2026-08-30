@@ -65,6 +65,7 @@ import { AwardsListBlockComponent } from '@/blocks/AwardsList/Component'
 import { BentoGridBlockComponent } from '@/blocks/BentoGrid/Component'
 import { DownloadListBlockComponent } from '@/blocks/DownloadList/Component'
 import { FeeStructureBlockComponent } from '@/blocks/FeeStructure/Component'
+import { PGFeeStructureBlockComponent } from '@/blocks/PGFeeStructure/Component'
 import { IconCardShowcaseBlockComponent } from '@/blocks/IconCardShowcase/Component'
 import { IconGridBlockComponent } from '@/blocks/IconGrid/Component'
 import { LogoStripBlockComponent } from '@/blocks/LogoStrip/Component'
@@ -2322,6 +2323,65 @@ export const blockThumbnailFixtures = {
       size="compact"
       tabWidth="centered"
       title="Fee Structure"
+    />
+  ),
+  pgFeeStructure: (
+    <PGFeeStructureBlockComponent
+      academicSession="2026-27"
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
+      description="Official postgraduate fees arranged by category and clinical department."
+      eyebrow="Postgraduate Admissions"
+      feeCategories={[
+        {
+          label: 'General',
+          caption: 'Resident Indian postgraduate fee structure for session 2026-27.',
+          columns: [
+            { label: 'Tuition (Per Annum)', valueMode: 'department' },
+            {
+              label: 'Hostel (Per Annum)',
+              valueMode: 'shared',
+              sharedValue: '₹3,15,000',
+            },
+            {
+              label: 'Security (One Time)',
+              valueMode: 'shared',
+              sharedValue: '₹2,00,000',
+            },
+          ],
+          departments: [
+            { name: 'General Medicine', variableValues: [{ value: '₹28,00,000' }] },
+            { name: 'General Surgery', variableValues: [{ value: '₹25,00,000' }] },
+            { name: 'Orthopedics', variableValues: [{ value: '₹37,00,000' }] },
+            { name: 'Ophthalmology', variableValues: [{ value: '₹21,00,000' }] },
+          ],
+          notes: [{ text: 'Amounts are displayed exactly as officially published.' }],
+        },
+        {
+          label: 'NRI',
+          columns: [
+            { label: 'Tuition (Per Annum)', valueMode: 'department' },
+            {
+              label: 'Hostel (Per Annum)',
+              valueMode: 'shared',
+              sharedValue: '₹3,15,000',
+            },
+            {
+              label: 'Security (One Time)',
+              valueMode: 'shared',
+              sharedValue: '₹2,00,000',
+            },
+          ],
+          departments: [
+            { name: 'General Medicine', variableValues: [{ value: 'USD 64,000' }] },
+            { name: 'OBG', variableValues: [{ value: 'USD 82,500' }] },
+            { name: 'Radiology', variableValues: [{ value: 'USD 1,07,500' }] },
+          ],
+        },
+      ]}
+      programmeName="Postgraduate Medical Courses"
+      size="compact"
+      tabWidth="centered"
+      title="PG Fee Structure"
     />
   ),
   iconGrid: (

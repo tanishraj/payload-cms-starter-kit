@@ -90,6 +90,7 @@ The setting follows the selected presentation. Content Highlights applies it to 
 | Tabs Content             | Grouped tab panels                           | Client tab interaction                                                                                                                                                                                                                                                                                                                               |
 | Download List            | Files and document libraries                 | Stacked or responsive 40/60 split introduction, four document layouts, one shared 1–8 Columns setting, optional file icons, controlled file-type labels, and up to two ordered per-document Download, View, or Custom actions                                                                                                                        |
 | Fee Structure            | Programme fee schedule                       | Default responsive table/cards or a 50/50 Programme Cost Atlas, one to four category tabs, fee-only notes, and a file-locked Link or Button download                                                                                                                                                                                                 |
+| PG Fee Structure         | Department-based postgraduate fees           | A responsive 50/50 Primary/Card department atlas with category-owned departments, shared or department-varying fee columns, category notes, and an official file Link or Button download                                                                                                                                                          |
 | Numbered Steps           | Ordered process                              | Backgrounds apply to numbered Cards, not connected/alternating layouts                                                                                                                                                                                                                                                                               |
 | Bento Grid               | Mixed-size feature cards                     | Grid layout and semantic background controls                                                                                                                                                                                                                                                                                                         |
 | Testimonial Grid         | Curated testimonials                         | Backgrounds apply to Grid and Featured cards                                                                                                                                                                                                                                                                                                         |
@@ -184,6 +185,25 @@ scroller when long labels or narrow viewports overflow. In the table layout, sta
 cells use normal weight, Total rows are bold, and every desktop body row uses one continuous,
 theme-aware Accent or brand surface across its sticky label and value cells. Bank, payment-account,
 and online-payment details must not be entered in this block.
+
+PG Fee Structure is the department-based companion to Fee Structure. It models one programme and
+one academic session per block, with one to four independent fee categories such as General and
+NRI. Each category owns its fee columns, departments, notes, and currencies. Configure each column
+as **Changes by Department** or **Shared Across Departments**. Enter a shared value once; for every
+department, enter values only for the changing columns and preserve their displayed column order.
+The block validates duplicate category, column, and department labels, requires every shared value,
+and requires the exact number of department-specific values.
+
+Amounts remain authored display text. The visitor presentation does not parse, add, format, infer,
+or convert currencies. Large screens use a 50/50 Primary/Card department atlas. Its Primary summary
+contains programme, academic session, active admission category, department count, shared charges,
+category notes, and the optional official Media Link or Button panel. The Card statement renders one
+complete chapter per department and repeats shared values so every chapter remains self-contained.
+Compact layouts stack summary then statement, and fee grids reflow without page-level horizontal
+scrolling. One category renders directly; multiple categories use the shared Underline, Pills, or
+Boxed tabs with Content Width, Centered Auto Width, or Equal Full Width and switch the complete
+atlas. The block exposes no alternate layout selector, calculated-total fields, or payment-account
+fields.
 
 Event Gallery uses the first valid image from every selected Gallery Album as the album cover and
 can open the complete album in its full-screen viewer. Disable **Enable Album Slideshow** to retain

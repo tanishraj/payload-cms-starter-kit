@@ -656,6 +656,26 @@
         "symbol": "PageHeaderBlock"
       },
       {
+        "clientFiles": [
+          "src/blocks/PGFeeStructure/PGFeeStructureClient.tsx"
+        ],
+        "componentPath": "src/blocks/PGFeeStructure/Component.tsx",
+        "configPath": "src/blocks/PGFeeStructure/config.ts",
+        "files": [
+          "src/blocks/PGFeeStructure/Component.tsx",
+          "src/blocks/PGFeeStructure/PGFeeStructureAtlasPresentation.tsx",
+          "src/blocks/PGFeeStructure/PGFeeStructureClient.tsx",
+          "src/blocks/PGFeeStructure/config.ts",
+          "src/blocks/PGFeeStructure/normalizePGFeeStructure.ts",
+          "src/blocks/PGFeeStructure/types.ts"
+        ],
+        "interfaceName": "PGFeeStructureBlock",
+        "presentationPath": null,
+        "previewComponentPath": null,
+        "slug": "pgFeeStructure",
+        "symbol": "PGFeeStructureBlock"
+      },
+      {
         "clientFiles": [],
         "componentPath": "src/blocks/ProfileCarousel/Component.tsx",
         "configPath": "src/blocks/ProfileCarousel/config.ts",
@@ -1003,6 +1023,7 @@
       "NewsEventsTabsBlock",
       "NewsGridBlock",
       "NumberedStepsBlock",
+      "PGFeeStructureBlock",
       "PageHeaderBlock",
       "ProfileCarouselBlock",
       "ProgramMatrixBlock",
@@ -1078,6 +1099,7 @@
       "tabsContent",
       "downloadList",
       "feeStructure",
+      "pgFeeStructure",
       "numberedSteps",
       "bentoGrid",
       "testimonialGrid",
@@ -1138,6 +1160,7 @@
       "quoteBlock",
       "tabsContent",
       "feeStructure",
+      "pgFeeStructure",
       "numberedSteps",
       "bentoGrid",
       "testimonialGrid",
@@ -1192,6 +1215,7 @@
       "tabsContent",
       "downloadList",
       "feeStructure",
+      "pgFeeStructure",
       "numberedSteps",
       "bentoGrid",
       "testimonialGrid",
@@ -1251,6 +1275,7 @@
       "quoteBlock",
       "tabsContent",
       "feeStructure",
+      "pgFeeStructure",
       "numberedSteps",
       "bentoGrid",
       "testimonialGrid",
@@ -1278,6 +1303,13 @@
           "CalendarSidebar"
         ],
         "file": "src/blocks/shared/CalendarSidebar.tsx"
+      },
+      {
+        "exports": [
+          "FeeDocumentDownload",
+          "resolveFeeDocumentButtonVariant"
+        ],
+        "file": "src/blocks/shared/FeeDocumentDownload.tsx"
       },
       {
         "exports": [
@@ -1491,6 +1523,7 @@
         "public/block-thumbnails/news-grid.jpg",
         "public/block-thumbnails/numbered-steps.jpg",
         "public/block-thumbnails/page-header.jpg",
+        "public/block-thumbnails/pg-fee-structure.jpg",
         "public/block-thumbnails/profile-carousel.jpg",
         "public/block-thumbnails/program-matrix.jpg",
         "public/block-thumbnails/qa-accordion.jpg",
@@ -1699,6 +1732,10 @@
           "slug": "feeStructure"
         },
         {
+          "filename": "pg-fee-structure.jpg",
+          "slug": "pgFeeStructure"
+        },
+        {
           "filename": "icon-grid.jpg",
           "slug": "iconGrid"
         },
@@ -1806,6 +1843,7 @@
         "bentoGrid",
         "downloadList",
         "feeStructure",
+        "pgFeeStructure",
         "iconGrid",
         "iconCardShowcase",
         "logoStrip",
@@ -2221,6 +2259,12 @@
       "src/blocks/NewsGrid/newsGridShared.ts",
       "src/blocks/NumberedSteps/Component.tsx",
       "src/blocks/NumberedSteps/config.ts",
+      "src/blocks/PGFeeStructure/Component.tsx",
+      "src/blocks/PGFeeStructure/PGFeeStructureAtlasPresentation.tsx",
+      "src/blocks/PGFeeStructure/PGFeeStructureClient.tsx",
+      "src/blocks/PGFeeStructure/config.ts",
+      "src/blocks/PGFeeStructure/normalizePGFeeStructure.ts",
+      "src/blocks/PGFeeStructure/types.ts",
       "src/blocks/PageBlockStack.tsx",
       "src/blocks/PageHeader/Component.tsx",
       "src/blocks/PageHeader/config.ts",
@@ -2284,6 +2328,7 @@
       "src/blocks/shared/BlockFooterActions.tsx",
       "src/blocks/shared/CalendarPdfDownload.tsx",
       "src/blocks/shared/CalendarSidebar.tsx",
+      "src/blocks/shared/FeeDocumentDownload.tsx",
       "src/blocks/shared/bannerCtaFields.ts",
       "src/blocks/shared/bannerCtaPresentation.ts",
       "src/blocks/shared/blockAppearance.ts",
@@ -2668,6 +2713,7 @@
       "tests/int/page-recipes.int.spec.ts",
       "tests/int/page-routing.int.spec.ts",
       "tests/int/page-settings-system-mode.int.spec.ts",
+      "tests/int/pg-fee-structure.int.spec.tsx",
       "tests/int/preview-access.int.spec.ts",
       "tests/int/profile-carousel.int.spec.ts",
       "tests/int/program-matrix.int.spec.tsx",
@@ -2724,7 +2770,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "0d06227771072d7999b1990b6a19bbeb524f25dedb7055e492e3765415867c0f"
+    "sha256": "1bd2c6f718a1d8c857cb87f49d11ace5071acc1f537bb2a8216f56abd55ad5ca"
   },
   "surfaces": {
     "access": [
@@ -2983,6 +3029,7 @@
       "tests/int/page-recipes.int.spec.ts",
       "tests/int/page-routing.int.spec.ts",
       "tests/int/page-settings-system-mode.int.spec.ts",
+      "tests/int/pg-fee-structure.int.spec.tsx",
       "tests/int/preview-access.int.spec.ts",
       "tests/int/profile-carousel.int.spec.ts",
       "tests/int/program-matrix.int.spec.tsx",

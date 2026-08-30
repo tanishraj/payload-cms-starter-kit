@@ -55,6 +55,7 @@ import { QuoteBlockBlockComponent } from './QuoteBlock/Component'
 import { TabsContentBlockComponent } from './TabsContent/Component'
 import { DownloadListBlockComponent } from './DownloadList/Component'
 import { FeeStructureBlockComponent } from './FeeStructure/Component'
+import { PGFeeStructureBlockComponent } from './PGFeeStructure/Component'
 import { NumberedStepsBlockComponent } from './NumberedSteps/Component'
 import { BentoGridBlockComponent } from './BentoGrid/Component'
 import { TestimonialGridBlockComponent } from './TestimonialGrid/Component'
@@ -218,6 +219,8 @@ export function renderLivePreviewPageBlockNode(
       return <DownloadListBlockComponent key={key} {...block} />
     case 'feeStructure':
       return <FeeStructureBlockComponent key={key} {...block} />
+    case 'pgFeeStructure':
+      return <PGFeeStructureBlockComponent key={key} {...block} />
     case 'numberedSteps':
       return <NumberedStepsBlockComponent key={key} {...block} />
     case 'bentoGrid':

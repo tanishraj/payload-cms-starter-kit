@@ -245,6 +245,7 @@ export interface Page {
         | QuoteBlockBlock
         | TabsContentBlock
         | FeeStructureBlock
+        | PGFeeStructureBlock
         | NumberedStepsBlock
         | BentoGridBlock
         | TestimonialGridBlock
@@ -659,6 +660,7 @@ export interface ReusableSection {
         | QuoteBlockBlock
         | TabsContentBlock
         | FeeStructureBlock
+        | PGFeeStructureBlock
         | NumberedStepsBlock
         | BentoGridBlock
         | TestimonialGridBlock
@@ -6123,6 +6125,161 @@ export interface FeeStructureBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PGFeeStructureBlock".
+ */
+export interface PGFeeStructureBlock {
+  /**
+   * Small label above the optional section heading.
+   */
+  eyebrow?: string | null;
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * One programme per block, such as Postgraduate Medical Courses.
+   */
+  programmeName: string;
+  /**
+   * One session per block, such as 2026-27.
+   */
+  academicSession: string;
+  /**
+   * Add categories such as General and NRI. Every category owns its columns, departments, values, and notes.
+   */
+  feeCategories: {
+    label: string;
+    /**
+     * Optional accessible description for this category fee table.
+     */
+    caption?: string | null;
+    /**
+     * Choose whether each fee changes by department or is shared across this category.
+     */
+    columns: {
+      label: string;
+      valueMode: 'department' | 'shared';
+      /**
+       * Displayed for every department in this fee category.
+       */
+      sharedValue?: string | null;
+      id?: string | null;
+    }[];
+    /**
+     * For each department, enter one value for every “Changes by Department” column, in column order.
+     */
+    departments: {
+      name: string;
+      note?: string | null;
+      /**
+       * Enter values only for columns configured as “Changes by Department”, preserving their order.
+       */
+      variableValues?:
+        | {
+            value: string;
+            id?: string | null;
+          }[]
+        | null;
+      id?: string | null;
+    }[];
+    /**
+     * Fee-only notes for this category. Do not enter bank or payment-account details.
+     */
+    notes?:
+      | {
+          text: string;
+          emphasis?: boolean | null;
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
+  /**
+   * Optional official file visitors can download.
+   */
+  feeDocument?: (string | null) | Media;
+  downloadLabel?: string | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  contentAlignment: 'left' | 'center';
+  tabStyle?: ('underline' | 'pills' | 'boxed') | null;
+  /**
+   * Centered Auto Width keeps intrinsic tabs centered when they fit and scrollable when they overflow. Equal Full Width divides the complete tab rail evenly.
+   */
+  tabWidth?: ('content' | 'centered' | 'equal') | null;
+  downloadActionMode?: ('link' | 'button') | null;
+  downloadButtonVariant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+  downloadAppearance?: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+  };
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pgFeeStructure';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "NumberedStepsBlock".
  */
 export interface NumberedStepsBlock {
@@ -7886,6 +8043,7 @@ export interface PagesSelect<T extends boolean = true> {
         quoteBlock?: T | QuoteBlockBlockSelect<T>;
         tabsContent?: T | TabsContentBlockSelect<T>;
         feeStructure?: T | FeeStructureBlockSelect<T>;
+        pgFeeStructure?: T | PGFeeStructureBlockSelect<T>;
         numberedSteps?: T | NumberedStepsBlockSelect<T>;
         bentoGrid?: T | BentoGridBlockSelect<T>;
         testimonialGrid?: T | TestimonialGridBlockSelect<T>;
@@ -11403,6 +11561,110 @@ export interface FeeStructureBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PGFeeStructureBlock_select".
+ */
+export interface PGFeeStructureBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
+  programmeName?: T;
+  academicSession?: T;
+  feeCategories?:
+    | T
+    | {
+        label?: T;
+        caption?: T;
+        columns?:
+          | T
+          | {
+              label?: T;
+              valueMode?: T;
+              sharedValue?: T;
+              id?: T;
+            };
+        departments?:
+          | T
+          | {
+              name?: T;
+              note?: T;
+              variableValues?:
+                | T
+                | {
+                    value?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+        notes?:
+          | T
+          | {
+              text?: T;
+              emphasis?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  feeDocument?: T;
+  downloadLabel?: T;
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  tabStyle?: T;
+  tabWidth?: T;
+  downloadActionMode?: T;
+  downloadButtonVariant?: T;
+  downloadAppearance?:
+    | T
+    | {
+        background?: T;
+      };
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "NumberedStepsBlock_select".
  */
 export interface NumberedStepsBlockSelect<T extends boolean = true> {
@@ -11889,6 +12151,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         quoteBlock?: T | QuoteBlockBlockSelect<T>;
         tabsContent?: T | TabsContentBlockSelect<T>;
         feeStructure?: T | FeeStructureBlockSelect<T>;
+        pgFeeStructure?: T | PGFeeStructureBlockSelect<T>;
         numberedSteps?: T | NumberedStepsBlockSelect<T>;
         bentoGrid?: T | BentoGridBlockSelect<T>;
         testimonialGrid?: T | TestimonialGridBlockSelect<T>;
@@ -12890,6 +13153,7 @@ export interface NewsEventsDetailTemplate {
         | QuoteBlockBlock
         | TabsContentBlock
         | FeeStructureBlock
+        | PGFeeStructureBlock
         | NumberedStepsBlock
         | BentoGridBlock
         | TestimonialGridBlock
@@ -13177,6 +13441,7 @@ export interface NewsEventsDetailTemplateSelect<T extends boolean = true> {
         quoteBlock?: T | QuoteBlockBlockSelect<T>;
         tabsContent?: T | TabsContentBlockSelect<T>;
         feeStructure?: T | FeeStructureBlockSelect<T>;
+        pgFeeStructure?: T | PGFeeStructureBlockSelect<T>;
         numberedSteps?: T | NumberedStepsBlockSelect<T>;
         bentoGrid?: T | BentoGridBlockSelect<T>;
         testimonialGrid?: T | TestimonialGridBlockSelect<T>;

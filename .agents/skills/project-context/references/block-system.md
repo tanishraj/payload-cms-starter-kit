@@ -2,13 +2,13 @@
 
 ## Registries
 
-[blockCatalog.ts](../../../../src/blocks/blockCatalog.ts) is the server-only canonical Payload schema catalog for Page-compatible blocks. It assigns native Admin groups in this order: Start, Explain, Explore, Prove, Convert, and Advanced Library. The first five groups contain the client-approved 20-block vocabulary; all remaining Page-compatible blocks stay registered under Advanced Library. Pages expose 55 blocks and Reusable Sections expose the 54 non-recursive choices.
+[blockCatalog.ts](../../../../src/blocks/blockCatalog.ts) is the server-only canonical Payload schema catalog for Page-compatible blocks. It assigns native Admin groups in this order: Start, Explain, Explore, Prove, Convert, and Advanced Library. The first five groups contain the client-approved 20-block vocabulary; all remaining Page-compatible blocks stay registered under Advanced Library. Pages expose 56 blocks and Reusable Sections expose the 55 non-recursive choices.
 
 Calendar is an Explore block backed only by selected active Event-behavior News & Events classifications. Editors choose one to five ordered classifications, while each classification centrally owns its semantic Calendar color. The complete toolbar, month/timeline panel, and Upcoming panel inherit the selected section surface; framed Tabs and Select controls share a true 44px height, and adjacent-month dates can be muted or hidden. The server renders the configured `Asia/Kolkata`-first current month and stable next-four Upcoming snapshot; visitor times remain timezone-correct but omit technical GMT/UTC suffixes. Desktop starts with a Sunday-first six-week grid, phones receive Timeline-first output, and `/api/calendar-events` supplies validated public or authenticated-draft month projections. Multi-day/all-day ranges are inclusive, day cells cap at two links before `+N more`, filtering never changes Upcoming, and production/live preview share the same serializable presentation contract. Editors may configure one sidebar action targeting a Page, Custom URL, or File and choose Button or Link presentation, while the existing document label remains the panel heading. Upcoming, its legend, and the action share one semantic sidebar; the rail matches the desktop calendar height and pins the action region to its bottom, while compact layouts keep natural source order and height. The sidebar action remains outside the month snapshot and cache identity.
 
 Annual Calendar is the twelve-month Explore companion to Calendar. It uses the same strict one-to-five active Event-classification scope, site timezone, semantic calendar tones, section appearance/actions/alignment/spacing, and next-four Upcoming semantics. Editors use either the current calendar year or two day-only date pickers whose selected months define exactly twelve consecutive inclusive months; selected days are ignored. One shared normalizer owns production query bounds, persistent cache keys, authenticated preview scopes, the derived period label, and twelve month keys, while invalid custom periods fail closed before querying News & Events. Visitors receive a chronological Year Stream with a semantic spine, 10px square month markers, inset semantic month dividers, compact Current and event-count metadata, linked event cards, and lightweight empty-month copy. Coming Next remains independent of the selected period and stays beside the stream on desktop and below it on smaller screens. Calendar and Annual Calendar share one sidebar Download Panel field composer and resolver. The visible PDF Document Label remains `calendarPdfTitle`, while one canonical shared action supports Page, Custom URL, File View, or File Download destinations and Button or editorial Link presentation. Explicit variants, new-tab behavior, navigation arrows, and download-icon settings pass through unchanged. A non-empty new action is authoritative; rows saved by the preceding restricted schema use Button only as their missing-mode compatibility fallback. Hidden legacy PDF Media/label fields remain a no-migration fallback only when the new action is empty. The semantic panel stays at the bottom of the full-height desktop sidebar and renders through the canonical shared Content Actions system. Embedded Upcoming/action regions avoid nested landmarks and borders, and Annual Calendar intentionally gives up its former sticky sidebar to satisfy this full-height contract. Compact layouts retain natural flow, long labels wrap within the 20rem rail, and unresolved destinations produce no public link. Event queries, response snapshots, and cache identity remain unchanged. The block intentionally exposes no visitor navigation, view, filter, or pagination controls, and the uncommitted Month/Year controls require no migration.
 
-[Pages.ts](../../../../src/collections/Pages.ts) consumes the complete 55-block Page registry. [ReusableSections.ts](../../../../src/collections/ReusableSections.ts) consumes the same registry without `reusableSection`, preventing direct recursion. [NewsEventsDetailTemplate.ts](../../../../src/globals/NewsEventsDetailTemplate.ts) consumes the Page registry plus `newsEventsContent`, which appears first under Template Core. The [block operator guide](../../../../docs/guides/blocks.md) owns the editor-facing group membership and per-deployment customization instructions.
+[Pages.ts](../../../../src/collections/Pages.ts) consumes the complete 56-block Page registry. [ReusableSections.ts](../../../../src/collections/ReusableSections.ts) consumes the same registry without `reusableSection`, preventing direct recursion. [NewsEventsDetailTemplate.ts](../../../../src/globals/NewsEventsDetailTemplate.ts) consumes the Page registry plus `newsEventsContent`, which appears first under Template Core. The [block operator guide](../../../../docs/guides/blocks.md) owns the editor-facing group membership and per-deployment customization instructions.
 
 The catalog imports schema config only. Production and live-preview renderer switches remain explicit and separate so server/client boundaries are not mixed.
 
@@ -16,7 +16,7 @@ The catalog imports schema config only. Production and live-preview renderer swi
 
 [pageRecipes.ts](../../../../src/page-recipes/pageRecipes.ts) defines the two code-owned full-page creation recipes. Blank produces an empty layout. Landing produces `pageHeader` followed by `breadcrumb`; it copies the Page title into Page Header, selects an empty eyebrow as its top content to suppress the header's built-in breadcrumb, and configures the standalone Breadcrumb for automatic hierarchy resolution.
 
-Recipes create editable drafts and never restrict the canonical 55-block registry. After creation, editors can remove or reorder recipe blocks and add any Page block. The guided setup replaces only full-page Page creation; relationship-drawer creation delegates to Payload's native form so the parent relationship workflow remains intact.
+Recipes create editable drafts and never restrict the canonical 56-block registry. After creation, editors can remove or reorder recipe blocks and add any Page block. The guided setup replaces only full-page Page creation; relationship-drawer creation delegates to Payload's native form so the parent relationship workflow remains intact.
 
 Restricted shell/system registries are separate:
 
@@ -48,6 +48,7 @@ Production Page blocks are wrapped in `BlockErrorBoundary`, so one broken block 
 - `blockSpacing.ts`: regular container and responsive vertical spacing contracts.
 - `cardThemeFields.ts` and `cardSurface.ts`: Default/Primary/Secondary/Muted/Accent card semantics.
 - `contentActionsFields.ts` and `BlockFooterActions.tsx`: per-action links/buttons, variants, arrows, and footer actions. Shared actions support Page, Custom URL, and Media File destinations. File actions choose View or Download independently from Button/Link presentation; View has a file-specific new-tab preference, while Download forwards the Media filename through the anchor `download` attribute. Download defaults to an animated Lucide down arrow on the left, which editors can move right or hide without changing File View or navigation-arrow behavior. Keep schema changes in `contentActionsFields.ts`, destination resolution in `src/lib/cmsLinks.ts`, and rendering semantics in `src/components/ContentActions.tsx` plus guarded specialized consumers.
+- `FeeDocumentDownload.tsx`: canonical official fee-document panel, Link/Button presentation, download semantics, and brand-surface contrast shared by Fee Structure and PG Fee Structure.
 - `contentStyles.ts`: shared section/card typography and link classes.
 - `src/styles/globals.css`: the public semantic radius contract. Block cards and media frames use
   `rounded-card`, standard interactive controls use `rounded-control`, and small square details use
@@ -285,6 +286,24 @@ visually continuous and follows the active theme. The
 optional fee document remains the fixed download destination; editors can present it as a Link or
 semantic Button and apply the shared section backgrounds to its outlined container. The table layout
 places it after the categories; Atlas places it at the bottom of the active left summary.
+
+PG Fee Structure independently models department-based postgraduate fees without changing Fee
+Structure or its saved content. Each block owns one programme and academic session plus one to four
+categories. Every category owns one to six ordered fee columns, one to thirty departments, and
+category notes. A column either changes by department or provides one shared category value. Each
+department supplies values only for changing columns, in their displayed order; validation rejects
+duplicate labels, missing shared values, and mismatched variable-value counts. Runtime normalization
+trims authored text and expands shared/department values into one ordered row, using an em dash only
+for a missing draft value. It never parses, totals, formats, converts, or otherwise reinterprets
+currency strings. Visitors receive one responsive 50/50 Primary/Card department atlas. The Primary
+summary contains programme/session context, active category, department count, category-shared
+charges, notes, and the optional shared fee-document Link or Button panel; the Card statement renders
+one complete chapter per department and repeats shared values for self-contained reading. Compact
+layouts stack summary then statement, and container-aware fee grids reflow without page-level
+horizontal scrolling. Multiple categories reuse Contained, Pill, and Underline tabs with the same
+width behavior as Fee Structure and switch the complete frame. PG Fee Structure intentionally has no
+alternate layout selector, calculated totals, department relationship, public filtering,
+payment-account fields, or migration.
 
 Event Gallery renders selected Gallery Albums in their resolved manual or latest-event-date order.
 Each selected album contributes its first valid image as one cover tile, while the accessible card

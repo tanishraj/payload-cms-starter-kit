@@ -122,7 +122,8 @@ describe('project context parser', () => {
     expect(inventory.schemaVersion).toBe(1)
     expect(inventory.payload.collections).toHaveLength(21)
     expect(inventory.payload.globals).toHaveLength(9)
-    expect(inventory.blocks.page).toHaveLength(55)
+    expect(inventory.blocks.page).toHaveLength(56)
+    expect(inventory.blocks.page).toContain('pgFeeStructure')
     expect(inventory.blocks.reusableSection).toEqual(
       inventory.blocks.page.filter((slug: string) => slug !== 'reusableSection'),
     )

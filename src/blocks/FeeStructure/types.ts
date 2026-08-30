@@ -1,13 +1,18 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
 import type { RegularBlockSize } from '@/blocks/shared/blockSpacing'
-import type { CmsActionValue, CmsActionVariant } from '@/lib/cmsLinks'
+import type {
+  FeeDocumentDownloadActionMode,
+  FeeDocumentDownloadButtonVariant,
+  ResolvedFeeDocumentDownload,
+} from '@/blocks/shared/FeeDocumentDownload'
+import type { CmsActionValue } from '@/lib/cmsLinks'
 import type { Media } from '@/payload-types'
 
 export type FeeStructureRowEmphasis = 'standard' | 'total'
 export type FeeStructureLayout = 'programmeCostAtlas' | 'table'
 export type FeeStructureTabStyle = 'boxed' | 'pills' | 'underline'
-export type FeeStructureDownloadActionMode = 'button' | 'link'
-export type FeeStructureDownloadButtonVariant = Exclude<CmsActionVariant, 'link'>
+export type FeeStructureDownloadActionMode = FeeDocumentDownloadActionMode
+export type FeeStructureDownloadButtonVariant = FeeDocumentDownloadButtonVariant
 export type FeeStructureTabWidth = 'centered' | 'content' | 'equal'
 
 export type FeeStructureCellValue = {
@@ -89,14 +94,7 @@ export type ResolvedFeeStructureCategory = {
   rows: ResolvedFeeStructureRow[]
 }
 
-export type ResolvedFeeStructureDownload = {
-  appearance?: BlockAppearance | null
-  buttonVariant: FeeStructureDownloadButtonVariant
-  label: string
-  mode: FeeStructureDownloadActionMode
-  sectionBackground?: BlockAppearance['background'] | null
-  url: string
-}
+export type ResolvedFeeStructureDownload = ResolvedFeeDocumentDownload
 
 export type FeeStructureBlockLike = {
   academicSession?: string | null

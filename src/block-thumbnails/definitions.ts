@@ -327,6 +327,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'PG Fee Structure block preview',
+    filename: 'pg-fee-structure.jpg',
+    label: 'PG Fee Structure',
+    slug: 'pgFeeStructure',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Icon Grid block preview',
     filename: 'icon-grid.jpg',
     label: 'Icon Grid',
