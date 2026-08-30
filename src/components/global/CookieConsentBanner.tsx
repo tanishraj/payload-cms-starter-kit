@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
 const CONSENT_COOKIE = 'analytics_consent'
+const BACK_TO_TOP_SELECTOR = '[data-back-to-top="true"]'
+const BACK_TO_TOP_OFFSET_PROPERTY = '--cookie-consent-back-to-top-offset'
 
 export type CookieConsentVariant = 'bottom-bar' | 'floating-card' | 'modal' | 'corner-badge'
 export type CookieConsentPosition = 'bottom-left' | 'bottom-right'
@@ -58,16 +60,70 @@ function useConsent() {
   return { visible, setConsent }
 }
 
+function useBackToTopOffsetSource(measurementKey?: unknown) {
+  const surfaceRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const surface = surfaceRef.current
+    const root = document.documentElement
+    if (!surface) return
+
+    const updateOffset = () => {
+      const button = document.querySelector<HTMLElement>(BACK_TO_TOP_SELECTOR)
+      if (!button) {
+        root.style.removeProperty(BACK_TO_TOP_OFFSET_PROPERTY)
+        return
+      }
+
+      const surfaceRect = surface.getBoundingClientRect()
+      const buttonRect = button.getBoundingClientRect()
+      const overlapsButtonColumn =
+        surfaceRect.left < buttonRect.right && surfaceRect.right > buttonRect.left
+
+      if (!overlapsButtonColumn) {
+        root.style.removeProperty(BACK_TO_TOP_OFFSET_PROPERTY)
+        return
+      }
+
+      const obstruction = Math.max(0, Math.ceil(window.innerHeight - surfaceRect.top))
+      if (obstruction === 0) {
+        root.style.removeProperty(BACK_TO_TOP_OFFSET_PROPERTY)
+        return
+      }
+
+      root.style.setProperty(BACK_TO_TOP_OFFSET_PROPERTY, `${obstruction}px`)
+    }
+
+    updateOffset()
+    const resizeObserver =
+      typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(updateOffset)
+    resizeObserver?.observe(surface)
+    window.addEventListener('resize', updateOffset)
+
+    return () => {
+      resizeObserver?.disconnect()
+      window.removeEventListener('resize', updateOffset)
+      root.style.removeProperty(BACK_TO_TOP_OFFSET_PROPERTY)
+    }
+  }, [measurementKey])
+
+  return surfaceRef
+}
+
 // ── Bottom Bar ────────────────────────────────────────────────────────────────
 
 function BottomBar({ config, onAccept, onReject }: VariantProps) {
   const { message, acceptLabel, rejectLabel, learnMoreLabel, privacyPolicyUrl } = config
+  const surfaceRef = useBackToTopOffsetSource()
+
   return (
     <div
+      ref={surfaceRef}
       role="dialog"
       aria-modal="false"
       aria-label="Cookie consent"
       aria-describedby="cc-description"
+      data-cookie-consent-surface="bottom-bar"
       className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 shadow-lg backdrop-blur-sm"
     >
       <div className="mx-auto flex max-w-screen-2xl flex-col gap-3 px-4 py-3 md:flex-row md:items-center md:gap-8 md:px-6 md:py-4">
@@ -101,11 +157,15 @@ function FloatingCard({ config, onAccept, onReject }: VariantProps) {
   const { heading, message, acceptLabel, rejectLabel, learnMoreLabel, privacyPolicyUrl, position } =
     config
   const isLeft = position === 'bottom-left'
+  const surfaceRef = useBackToTopOffsetSource()
+
   return (
     <div
+      ref={surfaceRef}
       role="dialog"
       aria-modal="false"
       aria-label="Cookie consent"
+      data-cookie-consent-surface="floating-card"
       className={cn(
         'fixed bottom-4 z-50 w-[calc(100vw-2rem)] max-w-sm',
         isLeft ? 'left-4' : 'right-4',
@@ -222,9 +282,12 @@ function CornerBadge({ config, onAccept, onReject }: VariantProps) {
   const [expanded, setExpanded] = useState(false)
   const { message, acceptLabel, rejectLabel, learnMoreLabel, privacyPolicyUrl, position } = config
   const isLeft = position === 'bottom-left'
+  const surfaceRef = useBackToTopOffsetSource(expanded)
 
   return (
     <div
+      ref={surfaceRef}
+      data-cookie-consent-surface="corner-badge"
       className={cn('fixed bottom-4 z-50', isLeft ? 'left-4' : 'right-4')}
       role="dialog"
       aria-modal="false"

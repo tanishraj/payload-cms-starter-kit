@@ -14,19 +14,34 @@ Add a globally available Back to Top control to the public website. The control 
 ## Interaction
 
 - Keep the control hidden while the visitor is near the top of the page.
-- Reveal it after the visitor has scrolled at least one viewport height.
+- Reveal it after the visitor has scrolled more than `64px`, avoiding first-pixel flicker from
+  mobile bounce and accidental movement while still feeling immediate.
+- Hide it again when the visitor returns within `64px` of the top.
 - Clicking it scrolls the document to the top.
 - Use smooth scrolling when motion is allowed.
 - Use immediate scrolling when `prefers-reduced-motion: reduce` is active.
-- Recalculate visibility on resize so the viewport-based threshold stays accurate.
+- Recheck visibility on resize so the derived state remains current through viewport changes.
 
 ## Presentation
 
 - Use a compact icon-only button with the Lucide `ArrowUp` icon.
 - Position it at the bottom-right of the viewport with responsive spacing and mobile safe-area support.
+- When a visible consent surface would occupy that corner, move the control directly above the
+  consent surface using its measured rendered height rather than a fixed estimate.
 - Use the shared primary Button treatment, including the theme-defined control radius, light/dark colors, hover state, and focus ring.
 - Reveal and hide it with opacity and vertical translation without moving page content.
 - Keep it below cookie consent, dialogs, galleries, and other modal layers.
+
+## Consent Surface Coordination
+
+- The full-width Bottom Bar always contributes its actual bottom obstruction height.
+- A Floating Card or Corner Badge contributes its actual bottom obstruction height only when its
+  rendered horizontal bounds intersect the button's bottom-right column. This keeps desktop
+  left-positioned surfaces independent while correctly handling their nearly full-width mobile layout.
+- The modal does not move the control; its overlay remains above and isolates background controls.
+- Observe consent-surface resizing so wrapped copy, custom labels, zoom, responsive reflow, and an
+  expanded Corner Badge update the offset without hard-coded dimensions.
+- Clear the offset immediately when the consent surface unmounts after acceptance or rejection.
 
 ## Accessibility
 
@@ -42,13 +57,21 @@ Add a globally available Back to Top control to the public website. The control 
 - Add a focused client component under `src/components/global`.
 - Track only the derived visible/hidden state, not the raw scroll position.
 - Register the scroll listener as passive and coalesce measurements with `requestAnimationFrame` to avoid excessive React updates.
+- Let overlapping non-modal consent variants publish a temporary CSS custom-property offset from
+  their fixed surface's measured top edge. Determine eligibility from rendered horizontal bounds,
+  not only the configured side, and keep the Back to Top component independent of consent state by
+  consuming only that presentation variable.
+- Use `ResizeObserver` plus viewport resize handling for consent measurements, with safe cleanup of
+  the observer, listener, and custom property.
 - Clean up scroll and resize listeners and any scheduled animation frame on unmount.
 - Mount the component alongside the other global public controls in `src/app/(frontend)/layout.tsx`.
 - Keep the component independent of Payload data and avoid adding a schema, migration, or generated-type change.
 
 ## Verification
 
-- Add a focused integration contract covering global layout placement, visibility threshold behavior, accessible labeling, reduced-motion scrolling, safe-area positioning, and shared Button usage.
+- Add focused integration contracts covering global layout placement, the `64px` visibility
+  threshold, accessible labeling, reduced-motion scrolling, safe-area positioning, shared Button
+  usage, consent variant eligibility, measured resizing, and cleanup.
 - Run the focused test, TypeScript validation, and lint for the affected files.
 - Complete the project-context update/check loop.
 

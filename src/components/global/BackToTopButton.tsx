@@ -6,6 +6,8 @@ import { ArrowUp } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
+const BACK_TO_TOP_VISIBILITY_THRESHOLD = 64
+
 export function BackToTopButton() {
   const [isVisible, setIsVisible] = useState(false)
 
@@ -13,7 +15,7 @@ export function BackToTopButton() {
     let animationFrame: number | null = null
 
     const updateVisibility = () => {
-      setIsVisible(window.scrollY >= window.innerHeight)
+      setIsVisible(window.scrollY > BACK_TO_TOP_VISIBILITY_THRESHOLD)
     }
 
     const scheduleUpdate = () => {
@@ -58,7 +60,7 @@ export function BackToTopButton() {
       data-back-to-top="true"
       onClick={scrollToTop}
       className={cn(
-        'fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 size-11 shadow-lg transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none sm:right-6 sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom))]',
+        'fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom)+var(--cookie-consent-back-to-top-offset,0px))] z-40 size-11 shadow-lg transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none sm:right-6 sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom)+var(--cookie-consent-back-to-top-offset,0px))]',
         isVisible
           ? 'translate-y-0 opacity-100'
           : 'pointer-events-none translate-y-2 opacity-0',

@@ -46,9 +46,11 @@ React Server Components load public CMS data. Focused client components own inte
 - `/admin`, Payload REST, GraphQL, and GraphQL Playground live under the Payload route group.
 - Development-only block thumbnail previews live under their own route group.
 - The public frontend layout mounts one theme-aware Back to Top control outside the content shell.
-  It appears after one viewport of scrolling, stays below consent and modal layers, and switches
-  from smooth to immediate scrolling when the visitor prefers reduced motion. Admin and block
-  thumbnail route groups do not inherit it.
+  It appears after `64px` of scrolling, stays below consent and modal layers, and switches from
+  smooth to immediate scrolling when the visitor prefers reduced motion. Visible non-modal consent
+  surfaces publish their measured bottom obstruction only when their rendered bounds overlap the
+  button column, keeping the control clear through responsive reflow. Admin and block thumbnail
+  route groups do not inherit it.
 
 Exact current route paths live in [project-inventory.json](project-inventory.json).
 
