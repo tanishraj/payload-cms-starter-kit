@@ -64,9 +64,11 @@ describe('runtime config', () => {
       S3_ENDPOINT: 'https://s3.ap-southeast-1.idrivee2.com',
       S3_REGION: 'ap-southeast-1',
       S3_ACCESS_KEY_ID: 'access-key',
+      S3_ACL: 'public-read',
       S3_SECRET_ACCESS_KEY: 'secret-key',
       S3_CLIENT_UPLOADS: 'true',
       S3_FORCE_PATH_STYLE: 'true',
+      S3_PUBLIC_URL: '',
     }
 
     const config = getRuntimeConfig(process.env)
@@ -79,9 +81,102 @@ describe('runtime config', () => {
       clientUploads: true,
       endpoint: 'https://s3.ap-southeast-1.idrivee2.com',
       forcePathStyle: true,
+      publicURL: null,
       region: 'ap-southeast-1',
       secretAccessKey: 'secret-key',
     })
+  })
+
+  it('reads R2 public delivery configuration without sending an ACL', () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      PAYLOAD_SECRET: 'test-secret',
+      MEDIA_PROVIDER: 's3',
+      S3_BUCKET: 'snmih-media',
+      S3_ENDPOINT: 'https://account-id.r2.cloudflarestorage.com',
+      S3_REGION: 'auto',
+      S3_ACCESS_KEY_ID: 'access-key',
+      S3_SECRET_ACCESS_KEY: 'secret-key',
+      S3_ACL: 'none',
+      S3_CLIENT_UPLOADS: 'false',
+      S3_FORCE_PATH_STYLE: 'true',
+      S3_PUBLIC_URL: 'https://assets.snmih.tanish.im/',
+    }
+
+    const config = getRuntimeConfig(process.env)
+
+    expect(config.media).toEqual({
+      provider: 's3',
+      acl: null,
+      accessKeyId: 'access-key',
+      bucket: 'snmih-media',
+      clientUploads: false,
+      endpoint: 'https://account-id.r2.cloudflarestorage.com',
+      forcePathStyle: true,
+      publicURL: 'https://assets.snmih.tanish.im',
+      region: 'auto',
+      secretAccessKey: 'secret-key',
+    })
+  })
+
+  it('defaults a blank S3 ACL to omission', () => {
+    const config = getRuntimeConfig({
+      ...ORIGINAL_ENV,
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      PAYLOAD_SECRET: 'test-secret',
+      MEDIA_PROVIDER: 's3',
+      S3_BUCKET: 'snmih-media',
+      S3_ENDPOINT: 'https://account-id.r2.cloudflarestorage.com',
+      S3_REGION: 'auto',
+      S3_ACCESS_KEY_ID: 'access-key',
+      S3_SECRET_ACCESS_KEY: 'secret-key',
+      S3_ACL: '',
+      S3_PUBLIC_URL: '',
+    })
+
+    expect(config.media.provider).toBe('s3')
+    if (config.media.provider === 's3') {
+      expect(config.media.acl).toBeNull()
+      expect(config.media.publicURL).toBeNull()
+    }
+  })
+
+  it('rejects unsupported S3 ACL values', () => {
+    expect(() =>
+      getRuntimeConfig({
+        ...ORIGINAL_ENV,
+        MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+        PAYLOAD_SECRET: 'test-secret',
+        MEDIA_PROVIDER: 's3',
+        S3_BUCKET: 'snmih-media',
+        S3_ENDPOINT: 'https://account-id.r2.cloudflarestorage.com',
+        S3_REGION: 'auto',
+        S3_ACCESS_KEY_ID: 'access-key',
+        S3_SECRET_ACCESS_KEY: 'secret-key',
+        S3_ACL: 'authenticated-read',
+      }),
+    ).toThrow('Unsupported S3_ACL. Use "none", "public-read", or "private".')
+  })
+
+  it('rejects an invalid S3 public origin', () => {
+    expect(() =>
+      getRuntimeConfig({
+        ...ORIGINAL_ENV,
+        MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+        PAYLOAD_SECRET: 'test-secret',
+        MEDIA_PROVIDER: 's3',
+        S3_BUCKET: 'snmih-media',
+        S3_ENDPOINT: 'https://account-id.r2.cloudflarestorage.com',
+        S3_REGION: 'auto',
+        S3_ACCESS_KEY_ID: 'access-key',
+        S3_SECRET_ACCESS_KEY: 'secret-key',
+        S3_ACL: 'none',
+        S3_PUBLIC_URL: 'http://assets.snmih.tanish.im/private',
+      }),
+    ).toThrow(
+      'Invalid S3_PUBLIC_URL. Use an HTTPS origin without credentials, path, query, or fragment.',
+    )
   })
 
   it('rejects a missing mongodb connection string', () => {

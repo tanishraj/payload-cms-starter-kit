@@ -84,6 +84,7 @@ describe('starter contract', () => {
         clientUploads: true,
         endpoint: 'https://s3.ap-southeast-1.idrivee2.com',
         forcePathStyle: true,
+        publicURL: null,
         region: 'ap-southeast-1',
         secretAccessKey: 'secret-key',
       },

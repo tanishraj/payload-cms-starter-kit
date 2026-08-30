@@ -2478,6 +2478,7 @@
       "src/components/ui/textarea.tsx",
       "src/components/ui/toggle-group.tsx",
       "src/components/ui/toggle.tsx",
+      "src/config/mediaPublicURL.ts",
       "src/config/providers.ts",
       "src/config/runtime.ts",
       "src/config/starterContract.ts",
@@ -2683,6 +2684,7 @@
       "tests/int/marquee-announcement.int.spec.ts",
       "tests/int/media-governance.int.spec.ts",
       "tests/int/media-overlay.int.spec.ts",
+      "tests/int/media-public-url.int.spec.ts",
       "tests/int/media-storage.int.spec.ts",
       "tests/int/media-upload-limits.int.spec.ts",
       "tests/int/media-url.int.spec.ts",
@@ -2772,7 +2774,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "3df41f3e8884e837586fc94166af285913e32b393347679ec1abebddf9538536"
+    "sha256": "b46ea880f7e1fc7d64b98584fab54a569c8a46ea5376292b5b755b66cb5f33ad"
   },
   "surfaces": {
     "access": [
@@ -2780,6 +2782,7 @@
       "src/access/editorialRoles.ts"
     ],
     "config": [
+      "src/config/mediaPublicURL.ts",
       "src/config/providers.ts",
       "src/config/runtime.ts",
       "src/config/starterContract.ts",
@@ -3000,6 +3003,7 @@
       "tests/int/marquee-announcement.int.spec.ts",
       "tests/int/media-governance.int.spec.ts",
       "tests/int/media-overlay.int.spec.ts",
+      "tests/int/media-public-url.int.spec.ts",
       "tests/int/media-storage.int.spec.ts",
       "tests/int/media-upload-limits.int.spec.ts",
       "tests/int/media-url.int.spec.ts",

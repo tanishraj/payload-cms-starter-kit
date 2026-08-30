@@ -179,7 +179,8 @@ S3-compatible media storage for hosted uploads:
 - `S3_REGION`
 - `S3_ACCESS_KEY_ID`
 - `S3_SECRET_ACCESS_KEY`
-- `S3_ACL=public-read | private`
+- `S3_PUBLIC_URL` for direct public/CDN delivery
+- `S3_ACL=none | public-read | private`
 - `S3_FORCE_PATH_STYLE=true | false`
 - `S3_CLIENT_UPLOADS=true | false`
 - `MEDIA_RECONCILE_TOKEN` for the protected media health endpoint

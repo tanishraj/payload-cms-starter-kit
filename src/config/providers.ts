@@ -3,6 +3,7 @@ import { resendAdapter } from '@payloadcms/email-resend'
 import { s3Storage } from '@payloadcms/storage-s3'
 import type { Plugin } from 'payload'
 
+import { buildMediaPublicURL } from './mediaPublicURL'
 import type { RuntimeConfig } from './runtime'
 
 export const createDatabaseAdapter = (config: RuntimeConfig) => {
@@ -29,23 +30,37 @@ export const createStoragePlugins = (config: RuntimeConfig): Plugin[] => {
     return []
   }
 
-  return [
-    s3Storage({
-      acl: config.media.acl,
-      bucket: config.media.bucket,
-      clientUploads: config.media.clientUploads,
-      collections: {
-        media: true,
+  const publicURL = config.media.publicURL
+  const storageOptions: Parameters<typeof s3Storage>[0] = {
+    bucket: config.media.bucket,
+    clientUploads: config.media.clientUploads,
+    collections: {
+      media: publicURL
+        ? {
+            disablePayloadAccessControl: true,
+            generateFileURL: ({ filename, prefix }) =>
+              buildMediaPublicURL({
+                filename,
+                prefix,
+                publicURL,
+              }),
+          }
+        : true,
+    },
+    config: {
+      credentials: {
+        accessKeyId: config.media.accessKeyId,
+        secretAccessKey: config.media.secretAccessKey,
       },
-      config: {
-        credentials: {
-          accessKeyId: config.media.accessKeyId,
-          secretAccessKey: config.media.secretAccessKey,
-        },
-        endpoint: config.media.endpoint,
-        forcePathStyle: config.media.forcePathStyle,
-        region: config.media.region,
-      },
-    }),
-  ]
+      endpoint: config.media.endpoint,
+      forcePathStyle: config.media.forcePathStyle,
+      region: config.media.region,
+    },
+  }
+
+  if (config.media.acl) {
+    storageOptions.acl = config.media.acl
+  }
+
+  return [s3Storage(storageOptions)]
 }

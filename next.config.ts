@@ -3,10 +3,12 @@ import type { NextConfig } from 'next'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+import { getMediaRemotePattern } from './src/config/mediaPublicURL'
 import { SERVER_ACTION_BODY_SIZE_LIMIT } from './src/config/uploadLimits'
 
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
+const mediaRemotePattern = getMediaRemotePattern(process.env.S3_PUBLIC_URL)
 
 const securityHeaders = [
   { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
@@ -38,6 +40,7 @@ export const nextConfig: NextConfig = {
         pathname: '/api/media/file/**',
       },
     ],
+    remotePatterns: mediaRemotePattern ? [mediaRemotePattern] : [],
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {

@@ -1,3 +1,5 @@
+import { normalizeMediaPublicURL } from './mediaPublicURL'
+
 export type RuntimeConfig = {
   database: {
     url: string
@@ -18,11 +20,12 @@ export type RuntimeConfig = {
       }
     | {
         provider: 's3'
-        acl: 'private' | 'public-read'
+        acl: 'private' | 'public-read' | null
         bucket: string
         clientUploads: boolean
         endpoint: string
         forcePathStyle: boolean
+        publicURL: string | null
         region: string
         accessKeyId: string
         secretAccessKey: string
@@ -119,7 +122,7 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
           const region = env.S3_REGION?.trim() || ''
           const accessKeyId = env.S3_ACCESS_KEY_ID?.trim() || ''
           const secretAccessKey = env.S3_SECRET_ACCESS_KEY?.trim() || ''
-          const rawACL = env.S3_ACL?.trim() || 'public-read'
+          const rawACL = env.S3_ACL?.trim() || 'none'
 
           if (!bucket || !endpoint || !region || !accessKeyId || !secretAccessKey) {
             throw new Error(
@@ -127,18 +130,25 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
             )
           }
 
-          if (rawACL !== 'public-read' && rawACL !== 'private') {
-            throw new Error('Unsupported S3_ACL. Use "public-read" or "private".')
+          let acl: 'private' | 'public-read' | null
+
+          if (rawACL === 'none') {
+            acl = null
+          } else if (rawACL === 'public-read' || rawACL === 'private') {
+            acl = rawACL
+          } else {
+            throw new Error('Unsupported S3_ACL. Use "none", "public-read", or "private".')
           }
 
           return {
             provider: 's3' as const,
-            acl: rawACL as 'private' | 'public-read',
+            acl,
             accessKeyId,
             bucket,
             clientUploads: parseBooleanEnv(env.S3_CLIENT_UPLOADS, false),
             endpoint,
             forcePathStyle: parseBooleanEnv(env.S3_FORCE_PATH_STYLE, true),
+            publicURL: normalizeMediaPublicURL(env.S3_PUBLIC_URL),
             region,
             secretAccessKey,
           }
