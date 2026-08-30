@@ -52,7 +52,8 @@ Exact current route paths live in [project-inventory.json](project-inventory.jso
 
 [runtime.ts](../../../../src/config/runtime.ts) reads environment behavior, [starterContract.ts](../../../../src/config/starterContract.ts) rejects unsupported deployment combinations, and [providers.ts](../../../../src/config/providers.ts) constructs MongoDB, optional Resend email, and local/S3 storage.
 
-MongoDB is the supported database. Local development may use local-disk media. Vercel production must use durable S3-compatible storage. Email is either disabled or delivered through Resend. Production requires a non-placeholder Payload secret of at least 32 characters and disables GraphQL introspection and Playground. Upload limits live in [uploadLimits.ts](../../../../src/config/uploadLimits.ts).
+MongoDB is the supported database. Local Docker Compose pins MongoDB 8.0.29 and isolates its files in the version-specific
+`mongo_data_8_0` volume so Atlas dump and restore workflows do not cross MongoDB server versions. Local development may use local-disk media. Vercel production must use durable S3-compatible storage. Email is either disabled or delivered through Resend. Production requires a non-placeholder Payload secret of at least 32 characters and disables GraphQL introspection and Playground. Upload limits live in [uploadLimits.ts](../../../../src/config/uploadLimits.ts).
 
 ## Caching and Delivery Safety
 

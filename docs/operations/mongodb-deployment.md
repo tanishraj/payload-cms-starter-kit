@@ -34,6 +34,11 @@ For the complete environment matrix, email/media providers, and deployment bound
 3. Keep `MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit` when running the app from your host machine.
 4. If you run the app inside Docker, switch the hostname to `mongo` so the container can resolve it.
 
+Docker Compose pins local MongoDB 8.0.29 and uses the version-specific
+`mongo_data_8_0` volume. Keep the local server on the same MongoDB release as the hosted source
+during dump and restore workflows. Atlas snapshots from the `test` database must be restored into
+`payload-cms-starter-kit` so the existing local `MONGODB_URI` remains valid.
+
 ## Hosted Deployment Notes
 
 - Use a durable hosted MongoDB cluster for preview and production.

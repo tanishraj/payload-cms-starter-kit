@@ -19,13 +19,13 @@ services:
 
   # Use MONGODB_URI=mongodb://mongo:27017/payload-cms-starter-kit when the app runs in Docker.
   mongo:
-    image: mongo:latest
+    image: mongo:8.0.29
     ports:
       - '27017:27017'
     command:
       - --storageEngine=wiredTiger
     volumes:
-      - data:/data/db
+      - mongo_data_8_0:/data/db
     logging:
       driver: none
 
@@ -39,5 +39,5 @@ services:
   #     - "5432:5432"
 
 volumes:
-  data:
+  mongo_data_8_0:
   node_modules:
