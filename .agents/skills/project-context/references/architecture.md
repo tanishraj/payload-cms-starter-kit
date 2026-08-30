@@ -45,6 +45,10 @@ React Server Components load public CMS data. Focused client components own inte
   unavailable instead of becoming zero.
 - `/admin`, Payload REST, GraphQL, and GraphQL Playground live under the Payload route group.
 - Development-only block thumbnail previews live under their own route group.
+- The public frontend layout mounts one theme-aware Back to Top control outside the content shell.
+  It appears after one viewport of scrolling, stays below consent and modal layers, and switches
+  from smooth to immediate scrolling when the visitor prefers reduced motion. Admin and block
+  thumbnail route groups do not inherit it.
 
 Exact current route paths live in [project-inventory.json](project-inventory.json).
 

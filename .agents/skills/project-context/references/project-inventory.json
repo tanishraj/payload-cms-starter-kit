@@ -2404,6 +2404,7 @@
       "src/components/gallery-showcase-fan.tsx",
       "src/components/gallery-showcase.tsx",
       "src/components/gallery-slideshow-viewer.tsx",
+      "src/components/global/BackToTopButton.tsx",
       "src/components/global/CookieConsentBanner.tsx",
       "src/components/global/GlobalAnnouncement.tsx",
       "src/components/global/GlobalFooter.tsx",
@@ -2606,6 +2607,7 @@
       "tests/int/api.int.spec.ts",
       "tests/int/articles-feed-route.int.spec.ts",
       "tests/int/articles.int.spec.ts",
+      "tests/int/back-to-top-button.int.spec.tsx",
       "tests/int/banner-media-overlay.int.spec.tsx",
       "tests/int/block-appearance-contract.int.spec.ts",
       "tests/int/block-catalog.int.spec.ts",
@@ -2770,7 +2772,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "b1d44061034c28494b946e727c8ebe29f327f3f7f81045f85a6fbe5142aa9f8a"
+    "sha256": "07b8e88c932e96761a4b35a273fbb83a6031e192a25f6566653f654bff39b5c6"
   },
   "surfaces": {
     "access": [
@@ -2923,6 +2925,7 @@
       "tests/int/api.int.spec.ts",
       "tests/int/articles-feed-route.int.spec.ts",
       "tests/int/articles.int.spec.ts",
+      "tests/int/back-to-top-button.int.spec.tsx",
       "tests/int/banner-media-overlay.int.spec.tsx",
       "tests/int/block-appearance-contract.int.spec.ts",
       "tests/int/block-catalog.int.spec.ts",

@@ -9,6 +9,7 @@ import '../../styles/globals.css'
 
 import type { Metadata } from 'next'
 import { AdminSessionBar } from '@/components/admin/AdminSessionBar'
+import { BackToTopButton } from '@/components/global/BackToTopButton'
 import { CookieConsentBanner } from '@/components/global/CookieConsentBanner'
 import { SearchDialog } from '@/components/global/SearchDialog'
 import { GlobalAnnouncement } from '@/components/global/GlobalAnnouncement'
@@ -356,6 +357,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
             siteSocialLinks={siteSettings.socialLinks}
           />
         </div>
+        <BackToTopButton />
         <CookieConsentBanner
           enabled={cookieConsentSettings.enabled ?? true}
           variant={cookieConsentSettings.variant as import('@/components/global/CookieConsentBanner').CookieConsentVariant | null | undefined}
