@@ -15,9 +15,7 @@ import { sectionEyebrowClasses, type SectionEyebrowSurface } from '@/components/
 import { type LogoMediaLike } from '@/components/site/SiteLogo'
 import { resolveHeaderLink } from '@/lib/headerNavigation'
 import { getMediaImageProps } from '@/lib/media'
-import { getPageHref } from '@/lib/pagePaths'
 import { cn } from '@/lib/utils'
-import type { Page } from '@/payload-types'
 
 type FooterMinimalLink = {
   label?: string | null
@@ -43,7 +41,7 @@ type FooterMinimalBlockLike = {
   linkGroups?: FooterMinimalLinkGroup[] | null
   logoHeight?: number | null
   logoMode?: 'customLogo' | 'nameOnly' | 'none' | 'siteDefault' | null
-  privacyPolicyPage?: Page | null
+  privacyPolicyUrl?: string | null
   showSiteName?: boolean | null
   showSocialLinks?: boolean | null
   siteAddress?: string | null
@@ -55,7 +53,7 @@ type FooterMinimalBlockLike = {
   size?: RegularBlockSize | null
   socialIconStyle?: 'plain' | 'tile' | null
   socialPlacement?: 'bottomBar' | 'brand' | null
-  termsAndConditionsPage?: Page | null
+  termsAndConditionsUrl?: string | null
 }
 
 // tel: only tolerates digits and a leading +, so strip the display formatting.
@@ -107,7 +105,7 @@ export function FooterMinimalBlockComponent({
   linkGroups,
   logoHeight,
   logoMode = 'siteDefault',
-  privacyPolicyPage,
+  privacyPolicyUrl,
   showSiteName = true,
   showSocialLinks = true,
   siteAddress,
@@ -119,7 +117,7 @@ export function FooterMinimalBlockComponent({
   size = 'default',
   socialIconStyle = 'tile',
   socialPlacement = 'brand',
-  termsAndConditionsPage,
+  termsAndConditionsUrl,
 }: FooterMinimalBlockLike) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   // Column headings borrow the eyebrow accent, which is picked per surface.
@@ -173,12 +171,10 @@ export function FooterMinimalBlockComponent({
 
   const legalPageLinks = (
     [
-      [termsAndConditionsPage, 'Terms & Conditions'],
-      [privacyPolicyPage, 'Privacy Policy'],
+      [termsAndConditionsUrl, 'Terms & Conditions'],
+      [privacyPolicyUrl, 'Privacy Policy'],
     ] as const
-  ).flatMap(([page, label]) => {
-    const href = getPageHref(page)
-
+  ).flatMap(([href, label]) => {
     if (!href || linkedHrefs.has(href)) {
       return []
     }

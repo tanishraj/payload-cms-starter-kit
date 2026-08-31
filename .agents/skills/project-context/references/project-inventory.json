@@ -2532,6 +2532,7 @@
       "src/lib/formSubmissionEvents.ts",
       "src/lib/forms.ts",
       "src/lib/headerNavigation.ts",
+      "src/lib/legalPagePaths.ts",
       "src/lib/media.ts",
       "src/lib/mediaStorage.ts",
       "src/lib/mediaUsage.ts",
@@ -2679,6 +2680,7 @@
       "tests/int/icon-grid-ruled-columns.int.spec.tsx",
       "tests/int/image-mosaic.int.spec.tsx",
       "tests/int/leadership-profiles.int.spec.tsx",
+      "tests/int/legal-page-paths.int.spec.ts",
       "tests/int/legal-pages-migration.int.spec.ts",
       "tests/int/live-preview-import-boundary.int.spec.ts",
       "tests/int/live-preview-renderer.int.spec.tsx",
@@ -2778,7 +2780,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "7c8476b4f4da069201f5bf9701612105c8e9c77c761d4be16bbf2f721fc71adc"
+    "sha256": "70a327d734ad30fb6275c98497b6b3ff85cb3858df77944ea9b96193f18ab82d"
   },
   "surfaces": {
     "access": [
@@ -2838,6 +2840,7 @@
       "src/lib/formSubmissionEvents.ts",
       "src/lib/forms.ts",
       "src/lib/headerNavigation.ts",
+      "src/lib/legalPagePaths.ts",
       "src/lib/media.ts",
       "src/lib/mediaStorage.ts",
       "src/lib/mediaUsage.ts",
@@ -3002,6 +3005,7 @@
       "tests/int/icon-grid-ruled-columns.int.spec.tsx",
       "tests/int/image-mosaic.int.spec.tsx",
       "tests/int/leadership-profiles.int.spec.tsx",
+      "tests/int/legal-page-paths.int.spec.ts",
       "tests/int/legal-pages-migration.int.spec.ts",
       "tests/int/live-preview-import-boundary.int.spec.ts",
       "tests/int/live-preview-renderer.int.spec.tsx",

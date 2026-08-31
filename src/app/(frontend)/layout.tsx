@@ -21,8 +21,8 @@ import {
   resolveBlockAppearanceClasses,
 } from '@/blocks/shared/blockAppearance'
 import { getCurrentCMSUser } from '@/lib/cmsSession'
+import { resolveLegalPageHrefs } from '@/lib/legalPagePaths'
 import { getMediaAbsoluteUrl } from '@/lib/media'
-import { getPageHref } from '@/lib/pagePaths'
 import { getRobotsMetadata } from '@/lib/seo'
 import { getSiteURL } from '@/lib/siteUrl'
 import { normalizeWebsiteTheme } from '@/lib/themes/websiteThemes'
@@ -117,6 +117,10 @@ const _getFrontendGlobals = async () => {
         })
 
   const activeFooter = (activeFooterResult?.docs[0] ?? null) as Footer | null
+  const { privacyPolicyUrl, termsAndConditionsUrl } = await resolveLegalPageHrefs(
+    siteSettings,
+    payload,
+  )
 
   return stripInternalMediaFields({
     activeFooter,
@@ -124,8 +128,10 @@ const _getFrontendGlobals = async () => {
     analyticsSettings,
     cookieConsentSettings,
     pageSettings,
+    privacyPolicyUrl,
     seoSettings,
     siteSettings,
+    termsAndConditionsUrl,
     themeSettings,
   })
 }
@@ -204,7 +210,9 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     analyticsSettings,
     cookieConsentSettings,
     pageSettings,
+    privacyPolicyUrl,
     siteSettings,
+    termsAndConditionsUrl,
     themeSettings,
   } = frontendGlobals
 
@@ -220,16 +228,6 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const announcementDismissible = announcementSettings?.announcementDismissible
   const announcementHideOnScroll = announcementSettings?.announcementHideOnScroll
   const pageAppearance = pageSettings?.pageAppearance as BlockAppearance | null | undefined
-  const privacyPolicyPage =
-    typeof siteSettings.privacyPolicyPage === 'object' && siteSettings.privacyPolicyPage !== null
-      ? siteSettings.privacyPolicyPage
-      : null
-  const privacyPolicyUrl = getPageHref(privacyPolicyPage) ?? null
-  const termsAndConditionsPage =
-    typeof siteSettings.termsAndConditionsPage === 'object' &&
-    siteSettings.termsAndConditionsPage !== null
-      ? siteSettings.termsAndConditionsPage
-      : null
   const htmlClassName = colorScheme === 'dark' ? 'dark' : undefined
   const htmlStyle =
     colorScheme === 'system'
@@ -359,8 +357,8 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
           </main>
           <GlobalFooter
             footer={activeFooter}
-            privacyPolicyPage={privacyPolicyPage}
-            termsAndConditionsPage={termsAndConditionsPage}
+            privacyPolicyUrl={privacyPolicyUrl}
+            termsAndConditionsUrl={termsAndConditionsUrl}
             siteAddress={siteSettings.address}
             siteEmail={siteSettings.contactEmail}
             siteLogo={siteSettings.logo}

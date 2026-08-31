@@ -2,6 +2,7 @@ import type { MigrateDownArgs, MigrateUpArgs } from '@payloadcms/db-mongodb'
 import type { RequiredDataFromCollectionSlug } from 'payload'
 
 import { LEGAL_PAGES_MIGRATION_CONTEXT } from '@/hooks/enforceEditorialWorkflow'
+import { SKIP_CACHE_REVALIDATION_CONTEXT } from '@/hooks/revalidateCmsContent'
 import type { RichTextBlock } from '@/payload-types'
 
 type LegalRelationshipField = 'privacyPolicyPage' | 'termsAndConditionsPage'
@@ -323,6 +324,7 @@ export async function up({ payload, req, session }: MigrateUpArgs): Promise<void
           await payload.create({
             collection: 'pages',
             context: {
+              [SKIP_CACHE_REVALIDATION_CONTEXT]: true,
               systemProvisioning: LEGAL_PAGES_MIGRATION_CONTEXT,
             },
             data: buildLegalPageData(seed, publishedAt),

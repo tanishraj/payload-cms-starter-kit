@@ -1,6 +1,7 @@
 import type { MigrateDownArgs, MigrateUpArgs } from '@payloadcms/db-mongodb'
 import { describe, expect, it, vi } from 'vitest'
 
+import { SKIP_CACHE_REVALIDATION_CONTEXT } from '@/hooks/revalidateCmsContent'
 import { migrations } from '@/migrations'
 import { down, up } from '@/migrations/20260831_000000_provision_legal_pages'
 
@@ -103,7 +104,10 @@ describe('SNMIH legal Pages migration', () => {
         callIndex,
         expect.objectContaining({
           collection: 'pages',
-          context: { systemProvisioning: 'legal-pages-migration' },
+          context: {
+            [SKIP_CACHE_REVALIDATION_CONTEXT]: true,
+            systemProvisioning: 'legal-pages-migration',
+          },
           data: expect.objectContaining({
             _status: 'published',
             layout: [

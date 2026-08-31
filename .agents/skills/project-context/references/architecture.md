@@ -66,6 +66,10 @@ MongoDB is the supported database. Local Docker Compose pins MongoDB 8.0.29 and 
 
 Layout globals, the News & Events detail template, Pages, fixed Calendar month projections, and redirects use tagged caching and focused invalidation hooks. Calendar Upcoming data uses five-minute freshness and stays independent of month, view, and classification filtering inside the selected scope. Site timezone, News/Event classification, and News/Event publication changes invalidate Calendar projections. Page, Article, Review, News/Event, and Redirect hooks invalidate both publication and takedown transitions, including published deletion. Feeds, robots, and sitemap use explicit time revalidation. Article and Review helpers also use request-level deduplication. Preserve draft/public filtering and cache invalidation together when changing queries or hooks.
 
+Trusted CLI migrations that create Pages mark their writes to skip Next.js cache revalidation,
+because the standalone Payload process has no live Next.js cache store; ordinary runtime writes
+retain the complete invalidation behavior above.
+
 Maintenance and coming-soon overrides currently wrap the homepage, catch-all Page routes, and the explicit Page-backed `/news-events` route; other dedicated domain, search, feed, Admin, and API routes remain reachable.
 
 ## Themes and Analytics

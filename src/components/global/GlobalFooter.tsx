@@ -1,12 +1,12 @@
 import { renderFooterBlocks } from '@/blocks/renderFooterBlocks'
 import type { LogoMediaLike } from '@/components/site/SiteLogo'
-import type { Footer, Page } from '@/payload-types'
+import type { Footer } from '@/payload-types'
 import type { SiteSocialLinks } from '@/blocks/shared/siteSocialLinks'
 
 type GlobalFooterProps = {
   footer?: Pick<Footer, 'layout'> | null
-  privacyPolicyPage?: Page | null
-  termsAndConditionsPage?: Page | null
+  privacyPolicyUrl?: string | null
+  termsAndConditionsUrl?: string | null
   siteAddress?: string | null
   siteEmail?: string | null
   siteLogo?: LogoMediaLike
@@ -17,8 +17,8 @@ type GlobalFooterProps = {
 
 export function GlobalFooter({
   footer,
-  privacyPolicyPage,
-  termsAndConditionsPage,
+  privacyPolicyUrl,
+  termsAndConditionsUrl,
   siteAddress,
   siteEmail,
   siteLogo,
@@ -33,8 +33,8 @@ export function GlobalFooter({
   return (
     <div data-global-footer="true">
       {renderFooterBlocks(footer.layout, {
-        privacyPolicyPage,
-        termsAndConditionsPage,
+        privacyPolicyUrl,
+        termsAndConditionsUrl,
         siteAddress,
         siteEmail,
         siteLogo,

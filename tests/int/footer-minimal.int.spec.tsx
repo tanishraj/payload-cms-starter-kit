@@ -162,24 +162,24 @@ describe('FooterMinimal', () => {
   it('takes both legal links from site identity under fixed labels', () => {
     const html = renderToStaticMarkup(
       <FooterMinimalBlockComponent
-        privacyPolicyPage={{ id: 1, slug: 'privacy', title: 'Privacy' } as never}
+        privacyPolicyUrl="/legal/privacy"
         siteName="SNMIH"
-        termsAndConditionsPage={{ id: 2, slug: 'terms', title: 'Terms' } as never}
+        termsAndConditionsUrl="/legal/terms"
       />,
     )
 
     // Wording is fixed, so a differently titled page still reads correctly.
     expect(html).toContain('Terms &amp; Conditions')
     expect(html).toContain('Privacy Policy')
-    expect(html).toContain('href="/terms"')
-    expect(html).toContain('href="/privacy"')
+    expect(html).toContain('href="/legal/terms"')
+    expect(html).toContain('href="/legal/privacy"')
   })
 
   it('does not repeat a legal page an editor already linked by hand', () => {
     const html = renderToStaticMarkup(
       <FooterMinimalBlockComponent
         bottomLinks={[{ label: 'Privacy Policy', linkType: 'custom', url: '/privacy' }]}
-        privacyPolicyPage={{ id: 1, slug: 'privacy', title: 'Privacy' } as never}
+        privacyPolicyUrl="/privacy"
         siteName="SNMIH"
       />,
     )
@@ -288,22 +288,20 @@ describe('FooterMinimal', () => {
 
   it('arranges the bottom bar by how many of the three slots are present', () => {
     const social = { facebook: 'https://facebook.com/x' }
-    const terms = { id: 1, slug: 'terms', title: 'Terms' } as never
-
     const three = renderToStaticMarkup(
       <FooterMinimalBlockComponent
         copyrightText="© 2026 SNMIH"
         siteName="SNMIH"
         siteSocialLinks={social}
         socialPlacement="bottomBar"
-        termsAndConditionsPage={terms}
+        termsAndConditionsUrl="/legal/terms"
       />,
     )
     const two = renderToStaticMarkup(
       <FooterMinimalBlockComponent
         copyrightText="© 2026 SNMIH"
         siteName="SNMIH"
-        termsAndConditionsPage={terms}
+        termsAndConditionsUrl="/legal/terms"
       />,
     )
     const one = renderToStaticMarkup(

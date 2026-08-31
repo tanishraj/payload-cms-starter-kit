@@ -6,27 +6,8 @@ import { describe, expect, it } from 'vitest'
 
 import { renderFooterBlocks } from '@/blocks/renderFooterBlocks'
 import { GlobalFooter } from '@/components/global/GlobalFooter'
-import { getPageHref } from '@/lib/pagePaths'
 
 describe('global footer wiring', () => {
-  it('resolves legal page links from the full page hierarchy', () => {
-    expect(
-      getPageHref({ id: 'privacy-page', slug: 'privacy-policy', title: 'Privacy Policy' } as never),
-    ).toBe('/privacy-policy')
-    expect(
-      getPageHref({
-        id: 'privacy-page',
-        parent: {
-          id: 'legal-page',
-          slug: 'legal',
-          title: 'Legal',
-        },
-        slug: 'privacy-policy',
-        title: 'Privacy Policy',
-      } as never),
-    ).toBe('/legal/privacy-policy')
-  })
-
   it('renders nothing without a configured footer layout', () => {
     expect(renderToStaticMarkup(createElement(GlobalFooter, { footer: null }))).toBe('')
     expect(
@@ -76,21 +57,13 @@ describe('global footer wiring', () => {
             },
           ] as never,
           {
-            privacyPolicyPage: {
-              id: 'privacy-page',
-              slug: 'privacy-policy',
-              title: 'Privacy Policy',
-            } as never,
+            privacyPolicyUrl: '/legal/privacy-policy',
             siteAddress: '123 Market Street, Suite 400',
             siteEmail: 'hello@acme.edu',
             siteLogo: { alt: 'Acme Institute logo', url: '/media/acme-logo.svg' },
             siteName: 'Acme Institute',
             sitePhone: '+1 (555) 000-0000',
-            termsAndConditionsPage: {
-              id: 'terms-page',
-              slug: 'terms-and-conditions',
-              title: 'Terms and Conditions',
-            } as never,
+            termsAndConditionsUrl: '/legal/terms-and-conditions',
             siteSocialLinks: {
               linkedin: 'https://example.com/linkedin',
               youtube: 'https://example.com/youtube',
@@ -205,22 +178,24 @@ describe('global footer wiring', () => {
     expect(layoutSource).toContain(
       "import { GlobalFooter } from '@/components/global/GlobalFooter'",
     )
-    expect(layoutSource).toContain("import { getPageHref } from '@/lib/pagePaths'")
+    expect(layoutSource).toContain(
+      "import { resolveLegalPageHrefs } from '@/lib/legalPagePaths'",
+    )
     expect(layoutSource).toContain('const activeFooterID =')
     expect(layoutSource).toContain('const activeFooter =')
     expect(layoutSource).toContain("collection: 'footers'")
     expect(layoutSource).toContain("payload.findGlobal({ slug: 'site-settings', depth: 1 })")
+    expect(layoutSource).toContain(
+      'const { privacyPolicyUrl, termsAndConditionsUrl } = await resolveLegalPageHrefs(',
+    )
     expect(layoutSource).toContain('<GlobalFooter')
-    expect(layoutSource).toContain('privacyPolicyPage={privacyPolicyPage}')
-    expect(layoutSource).toContain('termsAndConditionsPage={termsAndConditionsPage}')
+    expect(layoutSource).toContain('privacyPolicyUrl={privacyPolicyUrl}')
+    expect(layoutSource).toContain('termsAndConditionsUrl={termsAndConditionsUrl}')
     expect(layoutSource).toContain('siteAddress={siteSettings.address}')
     expect(layoutSource).toContain('sitePhone={siteSettings.contactPhone}')
     expect(layoutSource).toContain('siteEmail={siteSettings.contactEmail}')
     expect(layoutSource).toContain('siteSocialLinks={siteSettings.socialLinks}')
-    expect(layoutSource).toContain(
-      'const privacyPolicyUrl = getPageHref(privacyPolicyPage) ?? null',
-    )
-    expect(layoutSource).not.toContain('`/${(privacyPolicyPage as Page).slug}`')
+    expect(layoutSource).not.toContain('getPageHref(privacyPolicyPage)')
 
     const mainIndex = layoutSource.indexOf('<main')
     expect(layoutSource.slice(mainIndex, mainIndex + 120)).toContain('data-site-main="true"')

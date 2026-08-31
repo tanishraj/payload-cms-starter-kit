@@ -26,6 +26,8 @@ export const CMS_CACHE_TAGS = {
 // Passing 'max' instructs Next.js to revalidate cache entries of any lifetime.
 const REVALIDATE_PROFILE = 'max'
 
+export const SKIP_CACHE_REVALIDATION_CONTEXT = 'skipCacheRevalidation' as const
+
 type PublishableDocument = {
   _status?: string | null
 }
@@ -45,7 +47,9 @@ const revalidateTags = (...tags: Array<(typeof CMS_CACHE_TAGS)[keyof typeof CMS_
  * Revalidates the pages cache when a page is created, updated, or deleted.
  * Also busts the sitemap so the next request regenerates it.
  */
-export const revalidatePagesCache: CollectionAfterChangeHook = ({ doc, previousDoc }) => {
+export const revalidatePagesCache: CollectionAfterChangeHook = ({ context, doc, previousDoc }) => {
+  if (context?.[SKIP_CACHE_REVALIDATION_CONTEXT] === true) return doc
+
   if (isOrWasPublished(doc, previousDoc)) {
     revalidateTags(CMS_CACHE_TAGS.pages, CMS_CACHE_TAGS.sitemap)
   }
