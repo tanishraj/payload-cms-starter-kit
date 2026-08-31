@@ -90,7 +90,7 @@ describe('website theme registry', () => {
     expect(blueSource).toContain(':root:not([data-theme-color])')
     expect(blueSource).toContain('--primary: oklch(0.2901 0.1025 259.53);')
     expect(blueSource).toContain('--primary: oklch(0.769267 0.085353 254.774);')
-    expect(blueSource).toContain('--radius: 0;')
+    expect(blueSource).toContain('--radius: 0.5rem;')
   })
 
   it('drives the Theme Settings select field from the shared registry', () => {

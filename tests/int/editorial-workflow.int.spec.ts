@@ -322,4 +322,70 @@ describe('editorial workflow guardrails', () => {
 
     expect(find).toHaveBeenCalledTimes(1)
   })
+
+  it('allows an already-normalized published Page only for the exact legal migration context', async () => {
+    const find = vi.fn(async () => ({ docs: [] }))
+    const hook = enforceEditorialWorkflow('publish_pages', 'pages')
+
+    await expect(
+      hook({
+        context: {
+          systemProvisioning: 'legal-pages-migration',
+        },
+        data: {
+          _status: 'published',
+          changeSummary: 'Provisioned the website Privacy Policy.',
+          publishedAt: '2026-08-31T00:00:00.000Z',
+          workflowState: 'published',
+        },
+        operation: 'create',
+        req: createReq(undefined, { find }),
+      } as never),
+    ).resolves.toEqual({
+      _status: 'published',
+      changeSummary: 'Provisioned the website Privacy Policy.',
+      publishedAt: '2026-08-31T00:00:00.000Z',
+      workflowState: 'published',
+    })
+
+    expect(find).not.toHaveBeenCalled()
+  })
+
+  it.each([
+    ['missing context', undefined],
+    ['boolean context', { systemProvisioning: true }],
+    ['different context', { systemProvisioning: 'another-migration' }],
+  ])('keeps ordinary publish enforcement for %s', async (_label, context) => {
+    const hook = enforceEditorialWorkflow('publish_pages', 'pages')
+
+    await expect(
+      hook({
+        context,
+        data: {
+          _status: 'published',
+          workflowState: 'published',
+        },
+        operation: 'create',
+        req: createReq(),
+      } as never),
+    ).rejects.toThrow('Only publishers and admins can move content to published.')
+  })
+
+  it('does not bypass workflow for a mismatched legal migration payload', async () => {
+    const hook = enforceEditorialWorkflow('publish_pages', 'pages')
+
+    await expect(
+      hook({
+        context: {
+          systemProvisioning: 'legal-pages-migration',
+        },
+        data: {
+          _status: 'published',
+          workflowState: 'draft',
+        },
+        operation: 'create',
+        req: createReq(),
+      } as never),
+    ).rejects.toThrow('Only publishers and admins can move content to published.')
+  })
 })

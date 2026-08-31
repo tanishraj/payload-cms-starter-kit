@@ -6,8 +6,27 @@ import { describe, expect, it } from 'vitest'
 
 import { renderFooterBlocks } from '@/blocks/renderFooterBlocks'
 import { GlobalFooter } from '@/components/global/GlobalFooter'
+import { getPageHref } from '@/lib/pagePaths'
 
 describe('global footer wiring', () => {
+  it('resolves legal page links from the full page hierarchy', () => {
+    expect(
+      getPageHref({ id: 'privacy-page', slug: 'privacy-policy', title: 'Privacy Policy' } as never),
+    ).toBe('/privacy-policy')
+    expect(
+      getPageHref({
+        id: 'privacy-page',
+        parent: {
+          id: 'legal-page',
+          slug: 'legal',
+          title: 'Legal',
+        },
+        slug: 'privacy-policy',
+        title: 'Privacy Policy',
+      } as never),
+    ).toBe('/legal/privacy-policy')
+  })
+
   it('renders nothing without a configured footer layout', () => {
     expect(renderToStaticMarkup(createElement(GlobalFooter, { footer: null }))).toBe('')
     expect(
@@ -36,7 +55,15 @@ describe('global footer wiring', () => {
               blockType: 'footer56',
               bottomLinks: [{ label: 'Terms and Conditions', linkType: 'custom', url: '/terms' }],
               copyrightText: '© 2026 Acme Institute. All rights reserved.',
-              ctaButtons: [{ label: 'Apply now', linkType: 'custom', showArrow: true, url: '/apply', variant: 'outline' }],
+              ctaButtons: [
+                {
+                  label: 'Apply now',
+                  linkType: 'custom',
+                  showArrow: true,
+                  url: '/apply',
+                  variant: 'outline',
+                },
+              ],
               description: 'Preparing students for decisive practice and public service.',
               linkGroups: [
                 {
@@ -49,7 +76,11 @@ describe('global footer wiring', () => {
             },
           ] as never,
           {
-            privacyPolicyPage: { id: 'privacy-page', slug: 'privacy-policy', title: 'Privacy Policy' } as never,
+            privacyPolicyPage: {
+              id: 'privacy-page',
+              slug: 'privacy-policy',
+              title: 'Privacy Policy',
+            } as never,
             siteAddress: '123 Market Street, Suite 400',
             siteEmail: 'hello@acme.edu',
             siteLogo: { alt: 'Acme Institute logo', url: '/media/acme-logo.svg' },
@@ -92,12 +123,17 @@ describe('global footer wiring', () => {
     expect(html).toContain('height:44px')
     expect(html).not.toContain('github')
 
-    const descriptionIndex = html.indexOf('Preparing students for decisive practice and public service.')
+    const descriptionIndex = html.indexOf(
+      'Preparing students for decisive practice and public service.',
+    )
     const addressIndex = html.indexOf('123 Market Street, Suite 400')
     const phoneIndex = html.indexOf('+1 (555) 000-0000')
     const emailIndex = html.indexOf('hello@acme.edu')
     const linkedInIndex = html.indexOf('linkedin')
-    const customBottomLinkIndex = html.indexOf('Terms and Conditions', html.indexOf('href="/terms"'))
+    const customBottomLinkIndex = html.indexOf(
+      'Terms and Conditions',
+      html.indexOf('href="/terms"'),
+    )
     // The appended legal link is labelled from Site Settings, so it reads
     // "Terms & Conditions" and is distinct from the editor's own bottom link.
     const legalTermsIndex = html.indexOf('Terms &amp; Conditions')
@@ -122,7 +158,9 @@ describe('global footer wiring', () => {
                 border: 'top',
               },
               blockType: 'footer56',
-              ctaButtons: [{ label: 'Contact', linkType: 'custom', url: '/contact', variant: 'outline' }],
+              ctaButtons: [
+                { label: 'Contact', linkType: 'custom', url: '/contact', variant: 'outline' },
+              ],
               description: 'A quieter institutional footer for public-facing pages.',
               linkGroups: [
                 {
@@ -159,9 +197,15 @@ describe('global footer wiring', () => {
   })
 
   it('fetches and renders the active footer preset in the frontend shell', () => {
-    const layoutSource = fs.readFileSync(path.resolve(process.cwd(), 'src/app/(frontend)/layout.tsx'), 'utf8')
+    const layoutSource = fs.readFileSync(
+      path.resolve(process.cwd(), 'src/app/(frontend)/layout.tsx'),
+      'utf8',
+    )
 
-    expect(layoutSource).toContain("import { GlobalFooter } from '@/components/global/GlobalFooter'")
+    expect(layoutSource).toContain(
+      "import { GlobalFooter } from '@/components/global/GlobalFooter'",
+    )
+    expect(layoutSource).toContain("import { getPageHref } from '@/lib/pagePaths'")
     expect(layoutSource).toContain('const activeFooterID =')
     expect(layoutSource).toContain('const activeFooter =')
     expect(layoutSource).toContain("collection: 'footers'")
@@ -173,8 +217,13 @@ describe('global footer wiring', () => {
     expect(layoutSource).toContain('sitePhone={siteSettings.contactPhone}')
     expect(layoutSource).toContain('siteEmail={siteSettings.contactEmail}')
     expect(layoutSource).toContain('siteSocialLinks={siteSettings.socialLinks}')
+    expect(layoutSource).toContain(
+      'const privacyPolicyUrl = getPageHref(privacyPolicyPage) ?? null',
+    )
+    expect(layoutSource).not.toContain('`/${(privacyPolicyPage as Page).slug}`')
 
-    const mainIndex = layoutSource.indexOf('<main id="main-content" data-site-main="true">{children}</main>')
+    const mainIndex = layoutSource.indexOf('<main')
+    expect(layoutSource.slice(mainIndex, mainIndex + 120)).toContain('data-site-main="true"')
     const footerIndex = layoutSource.indexOf('<GlobalFooter')
 
     expect(mainIndex).toBeGreaterThanOrEqual(0)

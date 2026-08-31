@@ -66,7 +66,7 @@ export async function GET() {
     {
       headers: {
         // Downstream caches (e.g. CDN) may cache for up to 60s.
-        // The middleware layer has its own in-process TTL cache.
+        // The proxy layer has its own in-process TTL cache.
         'Cache-Control': 'public, max-age=60, stale-while-revalidate=300',
       },
     },

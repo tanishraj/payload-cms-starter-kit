@@ -7,13 +7,7 @@ import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 
 import { DepartmentProfilesBlockComponent } from '@/blocks/DepartmentProfiles/Component'
 import { DepartmentProfilesClient } from '@/blocks/DepartmentProfiles/DepartmentProfilesClient'
-import {
-  DepartmentProfilesBlock,
-  validateDepartmentRows,
-  validateFeaturedProfiles,
-  validateProfileDepartment,
-} from '@/blocks/DepartmentProfiles/config'
-import { getDepartmentOptionsFromFormFields } from '@/blocks/DepartmentProfiles/departmentOptions'
+import { DepartmentProfilesBlock, validateDepartmentRows } from '@/blocks/DepartmentProfiles/config'
 import type { ResolvedDepartmentProfile } from '@/blocks/DepartmentProfiles/types'
 import { pageBuilderBlocks, reusableSectionBuilderBlocks } from '@/blocks/blockCatalog'
 
@@ -21,7 +15,7 @@ import { getGeneratedPayloadInterface } from './helpers/generatedPayloadInterfac
 
 type InspectableField = {
   admin?: {
-    components?: { Field?: string }
+    components?: { Field?: string; RowLabel?: string }
     condition?: (data: unknown, siblingData: Record<string, unknown>) => boolean
   }
   defaultValue?: unknown
@@ -35,6 +29,7 @@ type InspectableField = {
   required?: boolean
   tabs?: Array<{ fields: InspectableField[]; label: string }>
   type?: string
+  validate?: (value: unknown) => string | true
 }
 
 const tabs = (DepartmentProfilesBlock.fields[0] as unknown as InspectableField).tabs ?? []
@@ -120,30 +115,32 @@ describe('Department Profiles block', () => {
       slug: 'departmentProfiles',
     })
     expect(tabs.map(({ label }) => label)).toEqual(['Content', 'Theme Settings'])
-    expect(findField(contentFields, 'departments')).toMatchObject({
+    const departmentsField = contentFields.find(({ name }) => name === 'departments')
+    const nestedProfilesField = departmentsField?.fields?.find(({ name }) => name === 'profiles')
+
+    expect(departmentsField).toMatchObject({
       maxRows: 50,
       minRows: 1,
       required: true,
       type: 'array',
     })
-    expect(findField(contentFields, 'profiles')).toMatchObject({
-      maxRows: 200,
-      minRows: 1,
-      required: true,
+    expect(departmentsField?.admin?.components?.RowLabel).toContain('RowLabels#DepartmentRowLabel')
+    expect(nestedProfilesField).toMatchObject({
+      maxRows: 400,
       type: 'array',
     })
-    expect(findField(contentFields, 'image')).toMatchObject({
+    expect(nestedProfilesField?.required).not.toBe(true)
+    expect(nestedProfilesField?.minRows).toBeUndefined()
+    expect(nestedProfilesField?.admin?.components?.RowLabel).toContain(
+      'RowLabels#DepartmentProfileRowLabel',
+    )
+    expect(contentFields.some(({ name }) => name === 'profiles')).toBe(false)
+    expect(findField(departmentsField?.fields ?? [], 'image')).toMatchObject({
       relationTo: 'media',
       type: 'upload',
     })
-    expect(findField(contentFields, 'image')?.required).not.toBe(true)
-    expect(findField(contentFields, 'departmentId')).toMatchObject({
-      required: true,
-      type: 'text',
-    })
-    expect(findField(contentFields, 'departmentId')?.admin?.components?.Field).toContain(
-      'DepartmentSelectField',
-    )
+    expect(findField(departmentsField?.fields ?? [], 'image')?.required).not.toBe(true)
+    expect(findField(departmentsField?.fields ?? [], 'departmentId')).toBeUndefined()
     expect(findField(contentFields, 'showFeaturedCarousel')).toMatchObject({
       defaultValue: false,
       type: 'checkbox',
@@ -433,62 +430,69 @@ describe('Department Profiles block', () => {
     ).toBe(false)
   })
 
-  it('validates unique departments and assigned department IDs', () => {
-    expect(validateDepartmentRows([{ name: 'Anatomy' }, { name: ' anatomy ' }])).toBe(
-      'Department names must be unique.',
+  it('validates departments and block-wide nested profile limits', () => {
+    const createDepartmentRows = (count: number) => [
+      {
+        id: 'medicine',
+        name: 'General Medicine',
+        profiles: Array.from({ length: count }, (_, index) => ({
+          featured: false,
+          name: `Doctor ${index + 1}`,
+        })),
+      },
+    ]
+
+    expect(
+      validateDepartmentRows([
+        { name: 'Anatomy', profiles: [{ name: 'Doctor One' }] },
+        { name: ' anatomy ', profiles: [] },
+      ]),
+    ).toBe('Department names must be unique.')
+    expect(validateDepartmentRows(createDepartmentRows(1))).toBe(true)
+    expect(validateDepartmentRows(createDepartmentRows(400))).toBe(true)
+    expect(validateDepartmentRows(createDepartmentRows(401))).toContain('400')
+    expect(validateDepartmentRows([{ id: 'empty', name: 'Medicine', profiles: [] }])).toContain(
+      'at least one profile',
     )
-    expect(validateDepartmentRows([{ name: 'Anatomy' }, { name: 'Medicine' }])).toBe(true)
     expect(
-      validateProfileDepartment('anatomy', {
-        blockData: { departments: [{ id: 'anatomy', name: 'Anatomy' }] },
-      }),
-    ).toBe(true)
+      validateDepartmentRows([
+        {
+          id: 'one',
+          name: 'Medicine',
+          profiles: Array.from({ length: 250 }, (_, index) => ({ name: `M${index}` })),
+        },
+        {
+          id: 'two',
+          name: 'Anatomy',
+          profiles: Array.from({ length: 151 }, (_, index) => ({ name: `A${index}` })),
+        },
+      ]),
+    ).toContain('400')
     expect(
-      validateProfileDepartment('deleted', {
-        blockData: { departments: [{ id: 'anatomy', name: 'Anatomy' }] },
-      }),
-    ).toContain('no longer available')
-  })
-
-  it('limits featured profiles and requires featured profile images', () => {
-    const featured = (count: number) =>
-      Array.from({ length: count }, (_, index) => ({
-        featured: true,
-        image: index + 1,
-        name: `Doctor ${index + 1}`,
-      }))
-
-    expect(validateFeaturedProfiles(featured(12))).toBe(true)
-    expect(validateFeaturedProfiles(featured(13))).toContain('12')
+      validateDepartmentRows([
+        {
+          id: 'one',
+          name: 'Medicine',
+          profiles: Array.from({ length: 13 }, (_, index) => ({
+            featured: true,
+            image: index + 1,
+            name: `Featured ${index + 1}`,
+          })),
+        },
+      ]),
+    ).toContain('12')
     expect(
-      validateFeaturedProfiles([
-        { featured: true, image: null, name: 'Missing Portrait' },
-        { featured: false, image: null, name: 'Directory Only' },
+      validateDepartmentRows([
+        {
+          id: 'one',
+          name: 'Medicine',
+          profiles: [{ featured: true, name: 'Missing Portrait' }],
+        },
       ]),
     ).toContain('Missing Portrait')
-    expect(
-      validateFeaturedProfiles([{ featured: false, image: null, name: 'Directory Only' }]),
-    ).toBe(true)
   })
 
-  it('derives ordered Admin options and preserves invalid saved values', () => {
-    const fields = {
-      'layout.2.departments.0.id': { value: 'medicine' },
-      'layout.2.departments.0.name': { value: ' General Medicine ' },
-      'layout.2.departments.1.id': { value: 'anatomy' },
-      'layout.2.departments.1.name': { value: 'Anatomy' },
-    }
-
-    expect(getDepartmentOptionsFromFormFields(fields, 'layout.2.profiles.0.departmentId')).toEqual([
-      { label: 'General Medicine', value: 'medicine' },
-      { label: 'Anatomy', value: 'anatomy' },
-    ])
-    expect(
-      getDepartmentOptionsFromFormFields(fields, 'layout.2.profiles.0.departmentId', 'deleted'),
-    ).toContainEqual({ label: 'Unavailable department', value: 'deleted' })
-  })
-
-  it('normalizes departments and profiles into static portrait cards', () => {
+  it('keeps legacy flat assignments readable during rollout', () => {
     const html = renderToStaticMarkup(
       <DepartmentProfilesBlockComponent
         departments={departments}
@@ -611,6 +615,64 @@ describe('Department Profiles block', () => {
     expect(invalidOverlay).toContain('data-department-profile-overlay-direction="bottomToTop"')
     expect(invalidOverlay).toContain('data-department-profile-overlay="dark"')
     expect(invalidOverlay).toContain('data-department-profile-overlay-tone="dark"')
+  })
+
+  it('renders nested profiles in department order and profile order', () => {
+    const html = renderToStaticMarkup(
+      <DepartmentProfilesBlockComponent
+        departments={[
+          {
+            id: 'anatomy',
+            name: 'Anatomy',
+            profiles: [
+              {
+                designation: 'Professor',
+                id: 'a-1',
+                imagePosition: 'top',
+                name: 'Doctor Anatomy One',
+              },
+              { id: 'a-2', imagePosition: 'center', name: 'Doctor Anatomy Two' },
+            ],
+          },
+          {
+            id: 'medicine',
+            name: 'General Medicine',
+            profiles: [
+              {
+                designation: 'Dean',
+                id: 'm-1',
+                imagePosition: 'center',
+                name: 'Doctor Medicine',
+              },
+            ],
+          },
+        ]}
+        title="Faculty Directory"
+      />,
+    )
+
+    expect(html.indexOf('Doctor Anatomy One')).toBeLessThan(html.indexOf('Doctor Anatomy Two'))
+    expect(html.indexOf('Doctor Anatomy Two')).toBeLessThan(html.indexOf('Doctor Medicine'))
+    expect(html).toContain('Anatomy')
+    expect(html).toContain('General Medicine')
+  })
+
+  it('treats nested profiles as authoritative over legacy flat data', () => {
+    const html = renderToStaticMarkup(
+      <DepartmentProfilesBlockComponent
+        departments={[
+          {
+            id: 'medicine',
+            name: 'General Medicine',
+            profiles: [{ id: 'nested', name: 'Nested Doctor' }],
+          },
+        ]}
+        profiles={[{ departmentId: 'medicine', id: 'legacy', name: 'Legacy Doctor' }]}
+      />,
+    )
+
+    expect(html).toContain('Nested Doctor')
+    expect(html).not.toContain('Legacy Doctor')
   })
 
   it('normalizes featured profiles into the shared carousel presentation', () => {
@@ -1120,6 +1182,7 @@ describe('Department Profiles block', () => {
     const production = readFileSync('src/blocks/renderPageBlocks.tsx', 'utf8')
     const preview = readFileSync('src/blocks/renderLivePreviewPageBlocks.tsx', 'utf8')
     const generated = readFileSync('src/payload-types.ts', 'utf8')
+    const importMap = readFileSync('src/app/(payload)/admin/importMap.js', 'utf8')
     const generatedDepartmentProfiles = getGeneratedPayloadInterface(
       generated,
       'DepartmentProfilesBlock',
@@ -1130,6 +1193,14 @@ describe('Department Profiles block', () => {
     expect(production).toContain("case 'departmentProfiles'")
     expect(preview).toContain("case 'departmentProfiles'")
     expect(generatedDepartmentProfiles).toContain('export interface DepartmentProfilesBlock')
+    expect(generatedDepartmentProfiles).toMatch(
+      /departments: \{[\s\S]*?profiles\?:[\s\S]*?name: string;[\s\S]*?imagePosition: 'center' \| 'top' \| 'bottom' \| 'left' \| 'right';[\s\S]*?\[\][\s\S]*?id\?: string \| null;[\s\S]*?\}\[];/,
+    )
+    expect(generatedDepartmentProfiles).not.toMatch(/^  profiles:/m)
+    expect(generatedDepartmentProfiles).not.toContain('departmentId: string;')
+    expect(importMap).toContain('RowLabels#DepartmentRowLabel')
+    expect(importMap).toContain('RowLabels#DepartmentProfileRowLabel')
+    expect(importMap).not.toContain('DepartmentSelectField')
     expect(generatedDepartmentProfiles).toContain("cardLayout: 'overlay' | 'inline'")
     expect(generatedDepartmentProfiles).toContain("cardSize: 'sm' | 'md' | 'lg'")
     expect(generatedDepartmentProfiles).toContain("mediumColumns?: ('3' | '4' | '5' | '6') | null")
