@@ -1753,28 +1753,26 @@ export interface DepartmentProfilesBlock {
   featuredCarouselTitle?: string | null;
   directoryTitle?: string | null;
   /**
-   * Add departments once in the order they should appear in the public filter tabs.
+   * Add departments in public filter order, then expand each department to manage its profiles. Maximum 400 profiles total.
    */
   departments: {
     name: string;
-    id?: string | null;
-  }[];
-  /**
-   * Profiles shown in their displayed order.
-   */
-  profiles: {
-    image?: (string | null) | Media;
-    name: string;
-    designation?: string | null;
     /**
-     * Show this profile in the optional featured carousel.
+     * Profiles shown for this department in their displayed order.
      */
-    featured?: boolean | null;
-    /**
-     * Choose one department from the list configured above.
-     */
-    departmentId: string;
-    imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+    profiles?:
+      | {
+          image?: (string | null) | Media;
+          name: string;
+          designation?: string | null;
+          /**
+           * Show this profile in the optional featured carousel.
+           */
+          featured?: boolean | null;
+          imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
+          id?: string | null;
+        }[]
+      | null;
     id?: string | null;
   }[];
   footerActions?:
@@ -8830,17 +8828,16 @@ export interface DepartmentProfilesBlockSelect<T extends boolean = true> {
     | T
     | {
         name?: T;
-        id?: T;
-      };
-  profiles?:
-    | T
-    | {
-        image?: T;
-        name?: T;
-        designation?: T;
-        featured?: T;
-        departmentId?: T;
-        imagePosition?: T;
+        profiles?:
+          | T
+          | {
+              image?: T;
+              name?: T;
+              designation?: T;
+              featured?: T;
+              imagePosition?: T;
+              id?: T;
+            };
         id?: T;
       };
   footerActions?:

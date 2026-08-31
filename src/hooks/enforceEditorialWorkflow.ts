@@ -21,6 +21,8 @@ type PublishCapability =
 type DocStatus = 'draft' | 'published'
 type QueueAwareCollection = 'pages' | 'articles' | 'news-events' | 'reviews' | 'system-pages'
 
+export const LEGAL_PAGES_MIGRATION_CONTEXT = 'legal-pages-migration' as const
+
 type WorkflowDoc = {
   id?: number | string | null
   _status?: DocStatus | null
@@ -112,10 +114,19 @@ export const enforceEditorialWorkflow =
     publishCapability: PublishCapability,
     sourceCollection?: QueueAwareCollection,
   ): CollectionBeforeChangeHook =>
-  async ({ data, originalDoc, req }) => {
+  async ({ context, data, originalDoc, req }) => {
     const nextData: WorkflowDoc = {
       ...((data ?? {}) as Partial<WorkflowDoc>),
     }
+    const isLegalPagesMigrationPublication =
+      context?.systemProvisioning === LEGAL_PAGES_MIGRATION_CONTEXT &&
+      nextData._status === 'published' &&
+      nextData.workflowState === 'published'
+
+    if (isLegalPagesMigrationPublication) {
+      return nextData
+    }
+
     const now = new Date().toISOString()
     const userID = normalizeUserID(req.user?.id)
     const workflowRequired = requiresEditorialWorkflow(req.user as never)

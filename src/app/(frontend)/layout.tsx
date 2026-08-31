@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
 import { cookies } from 'next/headers'
 import React from 'react'
+import { GoogleTagManager } from '@next/third-parties/google'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
 import '../../styles/globals.css'
@@ -20,11 +21,12 @@ import {
   resolveBlockAppearanceClasses,
 } from '@/blocks/shared/blockAppearance'
 import { getCurrentCMSUser } from '@/lib/cmsSession'
+import { resolveLegalPageHrefs } from '@/lib/legalPagePaths'
 import { getMediaAbsoluteUrl } from '@/lib/media'
 import { getRobotsMetadata } from '@/lib/seo'
 import { getSiteURL } from '@/lib/siteUrl'
 import { normalizeWebsiteTheme } from '@/lib/themes/websiteThemes'
-import type { Footer, Header, Page } from '@/payload-types'
+import type { Footer, Header } from '@/payload-types'
 import { CMS_CACHE_TAGS } from '@/hooks/revalidateCmsContent'
 import { stripInternalMediaFields } from '@/lib/stripInternalMediaFields'
 
@@ -37,15 +39,21 @@ const _getFrontendGlobals = async () => {
     config: configPromise,
   })
 
-  const [themeSettings, seoSettings, siteSettings, pageSettings, analyticsSettings, cookieConsentSettings] =
-    await Promise.all([
-      payload.findGlobal({ slug: 'theme-settings', depth: 0 }),
-      payload.findGlobal({ slug: 'seo-settings', depth: 1 }),
-      payload.findGlobal({ slug: 'site-settings', depth: 1 }),
-      payload.findGlobal({ slug: 'page-settings', depth: 0 }),
-      payload.findGlobal({ slug: 'analytics-settings', depth: 0 }),
-      payload.findGlobal({ slug: 'cookie-consent-settings', depth: 0 }),
-    ])
+  const [
+    themeSettings,
+    seoSettings,
+    siteSettings,
+    pageSettings,
+    analyticsSettings,
+    cookieConsentSettings,
+  ] = await Promise.all([
+    payload.findGlobal({ slug: 'theme-settings', depth: 0 }),
+    payload.findGlobal({ slug: 'seo-settings', depth: 1 }),
+    payload.findGlobal({ slug: 'site-settings', depth: 1 }),
+    payload.findGlobal({ slug: 'page-settings', depth: 0 }),
+    payload.findGlobal({ slug: 'analytics-settings', depth: 0 }),
+    payload.findGlobal({ slug: 'cookie-consent-settings', depth: 0 }),
+  ])
 
   const activeHeaderID =
     typeof pageSettings?.activeHeader === 'string' || typeof pageSettings?.activeHeader === 'number'
@@ -109,6 +117,10 @@ const _getFrontendGlobals = async () => {
         })
 
   const activeFooter = (activeFooterResult?.docs[0] ?? null) as Footer | null
+  const { privacyPolicyUrl, termsAndConditionsUrl } = await resolveLegalPageHrefs(
+    siteSettings,
+    payload,
+  )
 
   return stripInternalMediaFields({
     activeFooter,
@@ -116,8 +128,10 @@ const _getFrontendGlobals = async () => {
     analyticsSettings,
     cookieConsentSettings,
     pageSettings,
+    privacyPolicyUrl,
     seoSettings,
     siteSettings,
+    termsAndConditionsUrl,
     themeSettings,
   })
 }
@@ -190,8 +204,17 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     getFrontendGlobals(),
     getCurrentCMSUser(),
   ])
-  const { activeFooter, activeHeader, analyticsSettings, cookieConsentSettings, pageSettings, siteSettings, themeSettings } =
-    frontendGlobals
+  const {
+    activeFooter,
+    activeHeader,
+    analyticsSettings,
+    cookieConsentSettings,
+    pageSettings,
+    privacyPolicyUrl,
+    siteSettings,
+    termsAndConditionsUrl,
+    themeSettings,
+  } = frontendGlobals
 
   const colorScheme = themeSettings.colorScheme ?? 'system'
   const themeColor = normalizeWebsiteTheme(themeSettings.themeColor)
@@ -205,19 +228,6 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const announcementDismissible = announcementSettings?.announcementDismissible
   const announcementHideOnScroll = announcementSettings?.announcementHideOnScroll
   const pageAppearance = pageSettings?.pageAppearance as BlockAppearance | null | undefined
-  const privacyPolicyPage =
-    typeof siteSettings.privacyPolicyPage === 'object' && siteSettings.privacyPolicyPage !== null
-      ? siteSettings.privacyPolicyPage
-      : null
-  const privacyPolicyUrl =
-    privacyPolicyPage && typeof privacyPolicyPage === 'object' && 'slug' in privacyPolicyPage
-      ? `/${(privacyPolicyPage as Page).slug}`
-      : null
-  const termsAndConditionsPage =
-    typeof siteSettings.termsAndConditionsPage === 'object' &&
-    siteSettings.termsAndConditionsPage !== null
-      ? siteSettings.termsAndConditionsPage
-      : null
   const htmlClassName = colorScheme === 'dark' ? 'dark' : undefined
   const htmlStyle =
     colorScheme === 'system'
@@ -241,17 +251,15 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       style={htmlStyle}
       suppressHydrationWarning
     >
+      {hasAnalyticsConsent && analyticsSettings?.gtmEnabled && analyticsSettings.gtmContainerId ? (
+        <GoogleTagManager gtmId={analyticsSettings.gtmContainerId} />
+      ) : null}
       <head>
-        {/* Google Tag Manager — only injected after analytics consent */}
-        {hasAnalyticsConsent && analyticsSettings?.gtmEnabled && analyticsSettings.gtmContainerId ? (
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${analyticsSettings.gtmContainerId}');`,
-            }}
-          />
-        ) : null}
         {/* GA4 standalone — only when GTM is off and consent is granted */}
-        {hasAnalyticsConsent && !analyticsSettings?.gtmEnabled && analyticsSettings?.ga4Enabled && analyticsSettings.ga4MeasurementId ? (
+        {hasAnalyticsConsent &&
+        !analyticsSettings?.gtmEnabled &&
+        analyticsSettings?.ga4Enabled &&
+        analyticsSettings.ga4MeasurementId ? (
           <>
             <script
               async
@@ -344,11 +352,13 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
             siteName={siteSettings.siteName}
             stickyTopOffset={headerTopOffset}
           />
-          <main id="main-content" data-site-main="true">{children}</main>
+          <main id="main-content" data-site-main="true">
+            {children}
+          </main>
           <GlobalFooter
             footer={activeFooter}
-            privacyPolicyPage={privacyPolicyPage}
-            termsAndConditionsPage={termsAndConditionsPage}
+            privacyPolicyUrl={privacyPolicyUrl}
+            termsAndConditionsUrl={termsAndConditionsUrl}
             siteAddress={siteSettings.address}
             siteEmail={siteSettings.contactEmail}
             siteLogo={siteSettings.logo}
@@ -360,8 +370,18 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         <BackToTopButton />
         <CookieConsentBanner
           enabled={cookieConsentSettings.enabled ?? true}
-          variant={cookieConsentSettings.variant as import('@/components/global/CookieConsentBanner').CookieConsentVariant | null | undefined}
-          position={cookieConsentSettings.position as import('@/components/global/CookieConsentBanner').CookieConsentPosition | null | undefined}
+          variant={
+            cookieConsentSettings.variant as
+              | import('@/components/global/CookieConsentBanner').CookieConsentVariant
+              | null
+              | undefined
+          }
+          position={
+            cookieConsentSettings.position as
+              | import('@/components/global/CookieConsentBanner').CookieConsentPosition
+              | null
+              | undefined
+          }
           heading={cookieConsentSettings.heading}
           message={cookieConsentSettings.message}
           acceptLabel={cookieConsentSettings.acceptLabel}

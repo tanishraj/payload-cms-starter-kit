@@ -24,7 +24,7 @@ Use this ownership map before adding schema so client-specific changes land in t
 
 `navigation-links` owns reusable Page or custom destinations. Pages create and update their own synchronized records; manual records remain independently managed. Current Header/Footer presets use their own inline Page/custom link fields, while System Page actions can use Navigation Links.
 
-`redirects` owns enabled normalized incoming paths, 301/302 status, and Page/custom destinations. Redirect middleware refreshes its in-process map every 60 seconds.
+`redirects` owns enabled normalized incoming paths, 301/302 status, and Page/custom destinations. The redirect proxy refreshes its in-process map every 60 seconds.
 
 `headers` and `footers` own versioned shell presets. The current schema registers Header Navbar 12 and Footer 56 respectively. Site identity, contact, legal, and social defaults are injected from `site-settings` rather than duplicated in each preset.
 

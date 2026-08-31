@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server'
+
 import type { RedirectEntry, RedirectsResponse } from './app/api/redirects/route'
 
 // In-process cache: keyed by base URL so a multi-origin deployment is safe.
@@ -12,7 +13,7 @@ async function loadRedirects(baseUrl: string): Promise<Map<string, RedirectEntry
 
   try {
     const res = await fetch(`${baseUrl}/api/redirects`, {
-      // Bypass Next.js fetch cache so the middleware always sees fresh data
+      // Bypass Next.js fetch cache so the proxy always sees fresh data
       // (the API route itself is cached with unstable_cache + tag revalidation).
       cache: 'no-store',
     })
@@ -28,7 +29,7 @@ async function loadRedirects(baseUrl: string): Promise<Map<string, RedirectEntry
   }
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   const baseUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}`
 

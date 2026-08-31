@@ -19,7 +19,8 @@ vi.mock('@/lib/calendarEvents', async (importOriginal) => {
   }
 })
 
-import { GET, parseCalendarRequest } from '@/app/api/calendar-events/route'
+import { GET } from '@/app/api/calendar-events/route'
+import { parseCalendarRequest } from '@/lib/calendarRequest'
 
 const snapshot = { events: [], monthKey: '2026-08', monthLabel: 'August 2026', version: 1 }
 

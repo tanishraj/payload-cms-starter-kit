@@ -56,6 +56,7 @@ import type {
 type DepartmentValue = {
   id?: string | null
   name?: string | null
+  profiles?: DepartmentProfileValue[] | null
 }
 
 type DepartmentProfileValue = {
@@ -219,7 +220,14 @@ export function DepartmentProfilesBlockComponent({
   themeMode = 'dark',
   title,
 }: DepartmentProfilesBlockLike) {
+  const hasNestedProfileArrays = (departments ?? []).some((department) =>
+    Array.isArray(department?.profiles),
+  )
   const seenDepartmentNames = new Set<string>()
+  const nestedProfileRows: Array<{
+    departmentId: string
+    profile: DepartmentProfileValue
+  }> = []
   const resolvedDepartments = (departments ?? []).flatMap(
     (department): ResolvedProfileDepartment[] => {
       const id = department.id?.trim()
@@ -229,16 +237,28 @@ export function DepartmentProfilesBlockComponent({
       const normalizedName = normalizeDepartmentName(name)
       if (seenDepartmentNames.has(normalizedName)) return []
       seenDepartmentNames.add(normalizedName)
+
+      if (hasNestedProfileArrays && Array.isArray(department.profiles)) {
+        for (const profile of department.profiles) {
+          nestedProfileRows.push({ departmentId: id, profile })
+        }
+      }
+
       return [{ id, name }]
     },
   )
   const departmentById = new Map(
     resolvedDepartments.map((department) => [department.id, department] as const),
   )
-  const resolvedProfiles = (profiles ?? []).flatMap(
-    (profile, index): ResolvedDepartmentProfile[] => {
+  const profileRows = hasNestedProfileArrays
+    ? nestedProfileRows
+    : (profiles ?? []).map((profile) => ({
+        departmentId: profile.departmentId?.trim() ?? '',
+        profile,
+      }))
+  const resolvedProfiles = profileRows.flatMap(
+    ({ departmentId, profile }, index): ResolvedDepartmentProfile[] => {
       const name = profile.name?.trim()
-      const departmentId = profile.departmentId?.trim()
       const department = departmentId ? departmentById.get(departmentId) : undefined
       if (!name || !department) return []
 

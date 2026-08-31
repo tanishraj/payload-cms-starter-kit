@@ -96,7 +96,7 @@ describe('Footer56 presentation', () => {
       <Footer56BlockComponent
         {...baseProps}
         bottomLinks={[{ label: 'Privacy Policy', linkType: 'custom', url: '/privacy' }]}
-        privacyPolicyPage={{ id: 1, slug: 'privacy', title: 'Privacy' } as never}
+        privacyPolicyUrl="/privacy"
       />,
     )
 

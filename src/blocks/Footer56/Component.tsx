@@ -1,8 +1,7 @@
-import type { Footer56Block as Footer56BlockType, Page } from '@/payload-types'
+import type { Footer56Block as Footer56BlockType } from '@/payload-types'
 
 import { getMediaImageProps } from '@/lib/media'
 import { resolveCmsActions } from '@/lib/cmsLinks'
-import { getPageHref } from '@/lib/pagePaths'
 import { resolveHeaderLink } from '@/lib/headerNavigation'
 import { Footer56 } from '@/components/footer56'
 import { type LogoMediaLike } from '@/components/site/SiteLogo'
@@ -25,8 +24,8 @@ type Footer56BlockComponentProps = Footer56BlockType & {
   siteLogo?: LogoMediaLike
   siteName?: string | null
   sitePhone?: string | null
-  privacyPolicyPage?: Page | null
-  termsAndConditionsPage?: Page | null
+  privacyPolicyUrl?: string | null
+  termsAndConditionsUrl?: string | null
   siteSocialLinks?: SiteSocialLinks
   socialIconStyle?: 'plain' | 'tile' | null
   socialPlacement?: 'bottomBar' | 'brand' | null
@@ -56,8 +55,8 @@ const resolveSections = (
 
 const resolveLegalLinks = (
   bottomLinks?: Footer56BlockType['bottomLinks'],
-  privacyPolicyPage?: Page | null,
-  termsAndConditionsPage?: Page | null,
+  privacyPolicyUrl?: string | null,
+  termsAndConditionsUrl?: string | null,
 ) => {
   const resolvedBottomLinks = (bottomLinks ?? [])
     .map((link) => resolveHeaderLink(link))
@@ -68,12 +67,10 @@ const resolveLegalLinks = (
 
   const legalPageLinks = (
     [
-      [termsAndConditionsPage, 'Terms & Conditions'],
-      [privacyPolicyPage, 'Privacy Policy'],
+      [termsAndConditionsUrl, 'Terms & Conditions'],
+      [privacyPolicyUrl, 'Privacy Policy'],
     ] as const
-  ).flatMap(([page, name]) => {
-    const href = getPageHref(page)
-
+  ).flatMap(([href, name]) => {
     if (!href || linkedHrefs.has(href)) {
       return []
     }
@@ -97,14 +94,14 @@ export function Footer56BlockComponent({
   appearance,
   logoHeight,
   logoMode = 'siteDefault',
-  privacyPolicyPage,
+  privacyPolicyUrl,
   siteAddress,
   siteEmail,
   siteLogo,
   siteName,
   sitePhone,
   size,
-  termsAndConditionsPage,
+  termsAndConditionsUrl,
   siteSocialLinks,
   socialIconStyle,
   socialPlacement,
@@ -146,8 +143,8 @@ export function Footer56BlockComponent({
       description={description ?? undefined}
       legalLinks={resolveLegalLinks(
         bottomLinks,
-        privacyPolicyPage,
-        termsAndConditionsPage,
+        privacyPolicyUrl,
+        termsAndConditionsUrl,
       )}
       appearance={appearance}
       phone={sitePhone ?? undefined}

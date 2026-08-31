@@ -1,4 +1,4 @@
-import type { ArrayField, Block, CheckboxField, SelectField, TabsField, TextField } from 'payload'
+import type { ArrayField, Block, CheckboxField, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
@@ -37,10 +37,7 @@ type FeaturedCarouselSiblingData = {
 type DepartmentValue = {
   id?: string | null
   name?: string | null
-}
-
-type DepartmentProfilesBlockData = {
-  departments?: DepartmentValue[] | null
+  profiles?: DepartmentProfileValue[] | null
 }
 
 type DepartmentProfileValue = {
@@ -88,37 +85,20 @@ export const validateDepartmentRows = (value: unknown): string | true => {
   if (!Array.isArray(value)) return true
 
   const seen = new Set<string>()
+  const profiles: DepartmentProfileValue[] = []
+
   for (const row of value as DepartmentValue[]) {
     const normalizedName = normalizeDepartmentName(row?.name)
     if (!normalizedName) return 'Every department must have a name.'
     if (seen.has(normalizedName)) return 'Department names must be unique.'
     seen.add(normalizedName)
+    if (Array.isArray(row?.profiles)) profiles.push(...row.profiles)
   }
 
-  return true
-}
+  if (profiles.length === 0) return 'Add at least one profile across all departments.'
+  if (profiles.length > 400) return 'Add no more than 400 profiles across all departments.'
 
-export const validateProfileDepartment = (
-  value: unknown,
-  { blockData }: { blockData?: Partial<DepartmentProfilesBlockData> },
-): string | true => {
-  if (typeof value !== 'string' || !value.trim()) return 'Select a department.'
-
-  const departmentExists = (blockData?.departments ?? []).some(
-    (department) => department?.id === value,
-  )
-
-  return departmentExists
-    ? true
-    : 'This department is no longer available. Select a configured department.'
-}
-
-export const validateFeaturedProfiles = (value: unknown): string | true => {
-  if (!Array.isArray(value)) return true
-
-  const featuredProfiles = (value as DepartmentProfileValue[]).filter(
-    (profile) => profile?.featured === true,
-  )
+  const featuredProfiles = profiles.filter((profile) => profile?.featured === true)
   if (featuredProfiles.length > 12) {
     return 'Select no more than 12 featured profiles.'
   }
@@ -134,6 +114,40 @@ export const validateFeaturedProfiles = (value: unknown): string | true => {
   return true
 }
 
+const profileFields = [
+  {
+    name: 'image',
+    label: 'Profile Image',
+    type: 'upload',
+    relationTo: 'media',
+  },
+  { name: 'name', type: 'text', required: true },
+  { name: 'designation', type: 'text' },
+  {
+    name: 'featured',
+    label: 'Featured in Carousel',
+    type: 'checkbox',
+    defaultValue: false,
+    admin: {
+      description: 'Show this profile in the optional featured carousel.',
+    },
+  } satisfies CheckboxField,
+  {
+    name: 'imagePosition',
+    label: 'Image Position',
+    type: 'select',
+    defaultValue: 'center',
+    required: true,
+    options: [
+      { label: 'Center', value: 'center' },
+      { label: 'Top', value: 'top' },
+      { label: 'Bottom', value: 'bottom' },
+      { label: 'Left', value: 'left' },
+      { label: 'Right', value: 'right' },
+    ],
+  } satisfies SelectField,
+] satisfies ArrayField['fields']
+
 const departmentsField = {
   name: 'departments',
   label: 'Departments',
@@ -143,7 +157,11 @@ const departmentsField = {
   maxRows: 50,
   validate: validateDepartmentRows,
   admin: {
-    description: 'Add departments once in the order they should appear in the public filter tabs.',
+    components: {
+      RowLabel: '/blocks/DepartmentProfiles/RowLabels#DepartmentRowLabel',
+    },
+    description:
+      'Add departments in public filter order, then expand each department to manage its profiles. Maximum 400 profiles total.',
     initCollapsed: true,
   },
   fields: [
@@ -153,66 +171,20 @@ const departmentsField = {
       type: 'text',
       required: true,
     },
-  ],
-} satisfies ArrayField
-
-const profilesField = {
-  name: 'profiles',
-  label: 'Department Profiles',
-  type: 'array',
-  required: true,
-  minRows: 1,
-  maxRows: 200,
-  validate: validateFeaturedProfiles,
-  admin: {
-    description: 'Profiles shown in their displayed order.',
-    initCollapsed: true,
-  },
-  fields: [
     {
-      name: 'image',
-      label: 'Profile Image',
-      type: 'upload',
-      relationTo: 'media',
-    },
-    { name: 'name', type: 'text', required: true },
-    { name: 'designation', type: 'text' },
-    {
-      name: 'featured',
-      label: 'Featured in Carousel',
-      type: 'checkbox',
-      defaultValue: false,
-      admin: {
-        description: 'Show this profile in the optional featured carousel.',
-      },
-    } satisfies CheckboxField,
-    {
-      name: 'departmentId',
-      label: 'Department',
-      type: 'text',
-      required: true,
-      validate: validateProfileDepartment,
+      name: 'profiles',
+      label: 'Profiles',
+      type: 'array',
+      maxRows: 400,
       admin: {
         components: {
-          Field: '/blocks/DepartmentProfiles/DepartmentSelectField#DepartmentSelectField',
+          RowLabel: '/blocks/DepartmentProfiles/RowLabels#DepartmentProfileRowLabel',
         },
-        description: 'Choose one department from the list configured above.',
+        description: 'Profiles shown for this department in their displayed order.',
+        initCollapsed: true,
       },
-    } satisfies TextField,
-    {
-      name: 'imagePosition',
-      label: 'Image Position',
-      type: 'select',
-      defaultValue: 'center',
-      required: true,
-      options: [
-        { label: 'Center', value: 'center' },
-        { label: 'Top', value: 'top' },
-        { label: 'Bottom', value: 'bottom' },
-        { label: 'Left', value: 'left' },
-        { label: 'Right', value: 'right' },
-      ],
-    } satisfies SelectField,
+      fields: profileFields,
+    } satisfies ArrayField,
   ],
 } satisfies ArrayField
 
@@ -266,7 +238,6 @@ export const DepartmentProfilesBlock: Block = {
               admin: { condition: showsFeaturedCarousel },
             },
             departmentsField,
-            profilesField,
             createContentActionsField({
               name: 'footerActions',
               label: 'Footer Actions',

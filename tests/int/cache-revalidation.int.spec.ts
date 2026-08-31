@@ -10,6 +10,7 @@ vi.mock('next/cache', () => ({
 
 import {
   CMS_CACHE_TAGS,
+  SKIP_CACHE_REVALIDATION_CONTEXT,
   revalidateArticlesCache,
   revalidateDeletedArticleCache,
   revalidateDeletedNewsEventCache,
@@ -22,8 +23,14 @@ import {
   revalidateReviewsCache,
 } from '@/hooks/revalidateCmsContent'
 
-const afterChange = (hook: (...args: never[]) => unknown, current: string, previous: string) =>
+const afterChange = (
+  hook: (...args: never[]) => unknown,
+  current: string,
+  previous: string,
+  context: Record<string, unknown> = {},
+) =>
   hook({
+    context,
     doc: { _status: current },
     previousDoc: { _status: previous },
   } as never)
@@ -46,6 +53,14 @@ describe('CMS cache revalidation', () => {
       expect(mocks.revalidateTag).toHaveBeenCalledWith(CMS_CACHE_TAGS.pages, 'max')
       expect(mocks.revalidateTag).toHaveBeenCalledWith(CMS_CACHE_TAGS.sitemap, 'max')
     }
+  })
+
+  it('skips Page cache invalidation for explicitly marked maintenance writes', () => {
+    afterChange(revalidatePagesCache as never, 'published', 'draft', {
+      [SKIP_CACHE_REVALIDATION_CONTEXT]: true,
+    })
+
+    expect(mocks.revalidateTag).not.toHaveBeenCalled()
   })
 
   it.each([

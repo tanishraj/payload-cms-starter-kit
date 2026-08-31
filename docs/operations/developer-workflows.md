@@ -45,6 +45,27 @@ tracked, inspect its contents, rotate any affected credentials, notify collabora
 coordinated history rewrite separately. Do not rewrite shared history as part of an ordinary export or
 release task.
 
+## Legal Pages
+
+The checked-in Payload migration `20260831_000000_provision_legal_pages` provisions published
+`/privacy-policy` and `/terms-and-conditions` Pages only when those exact slugs do not already exist.
+It connects only empty relationships under **Site Identity → Legal**. Existing Pages—including
+drafts—and existing published or pending relationship choices remain unchanged.
+
+After deployment:
+
+1. review both Pages with qualified Indian legal counsel against the institution's actual website
+   and data practices
+2. edit copy through **Content → Pages** and use the normal editorial publishing workflow
+3. select the public Pages under **Site Identity → Legal** if a different relationship is required
+4. update the displayed last-updated date whenever legal copy changes
+5. verify the configured footer and Cookie Consent Banner link to the intended Pages
+
+The draft copy covers website activity only. It is not a clinical patient-record privacy notice,
+medical consent form, or admissions contract. Migration rollback is intentionally non-destructive:
+`payload migrate:down` does not unlink or delete provisioned legal content. Export the database and
+confirm `MONGODB_URI` targets the intended environment before running deployment migrations.
+
 ## Office Migration
 
 `pnpm migrate:offices` moves legacy site-office data into the `office-locations` collection. Before running it:

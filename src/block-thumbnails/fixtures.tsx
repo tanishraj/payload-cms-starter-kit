@@ -684,65 +684,90 @@ export const blockThumbnailFixtures = {
       cardSize="sm"
       columns="4"
       departments={[
-        { id: 'general-medicine', name: 'General Medicine' },
-        { id: 'anatomy', name: 'Anatomy' },
-        { id: 'general-surgery', name: 'General Surgery' },
-        { id: 'obg', name: 'Obstetrics & Gynaecology' },
-        { id: 'radiology', name: 'Radiology' },
-        { id: 'paediatrics', name: 'Paediatrics' },
-        { id: 'orthopaedics', name: 'Orthopaedics' },
-        { id: 'pathology', name: 'Pathology' },
+        {
+          id: 'general-medicine',
+          name: 'General Medicine',
+          profiles: [
+            {
+              designation: 'Dean, Professor of Medicine',
+              image: { alt: 'Dr. Rakesh Kumar Jha', height: 1200, url: portrait, width: 900 },
+              name: 'Dr. Rakesh Kumar Jha',
+            },
+          ],
+        },
+        {
+          id: 'anatomy',
+          name: 'Anatomy',
+          profiles: [
+            {
+              designation: 'HOD, Anatomy',
+              image: { alt: 'Dr. Anjali Verma', height: 1200, url: portrait, width: 900 },
+              name: 'Dr. Anjali Verma',
+            },
+          ],
+        },
+        {
+          id: 'general-surgery',
+          name: 'General Surgery',
+          profiles: [
+            {
+              designation: 'Professor & HOD',
+              image: { alt: 'Dr. Suresh Prasad', height: 1200, url: portrait, width: 900 },
+              name: 'Dr. Suresh Prasad',
+            },
+          ],
+        },
+        {
+          id: 'obg',
+          name: 'Obstetrics & Gynaecology',
+          profiles: [{ designation: 'HOD, OBG', name: 'Dr. Meera Iyer' }],
+        },
+        {
+          id: 'radiology',
+          name: 'Radiology',
+          profiles: [
+            {
+              designation: 'Associate Professor',
+              image: { alt: 'Dr. Arvind Mehta', height: 1200, url: portrait, width: 900 },
+              name: 'Dr. Arvind Mehta',
+            },
+          ],
+        },
+        {
+          id: 'paediatrics',
+          name: 'Paediatrics',
+          profiles: [
+            {
+              designation: 'Professor',
+              image: { alt: 'Dr. Kavita Rao', height: 1200, url: portrait, width: 900 },
+              name: 'Dr. Kavita Rao',
+            },
+          ],
+        },
+        {
+          id: 'orthopaedics',
+          name: 'Orthopaedics',
+          profiles: [
+            {
+              designation: 'Associate Professor',
+              image: { alt: 'Dr. Nikhil Singh', height: 1200, url: portrait, width: 900 },
+              name: 'Dr. Nikhil Singh',
+            },
+          ],
+        },
+        {
+          id: 'pathology',
+          name: 'Pathology',
+          profiles: [
+            {
+              designation: 'Professor & HOD',
+              image: { alt: 'Dr. Priya Nair', height: 1200, url: portrait, width: 900 },
+              name: 'Dr. Priya Nair',
+            },
+          ],
+        },
       ]}
       eyebrow="Faculty Directory"
-      profiles={[
-        {
-          departmentId: 'general-medicine',
-          designation: 'Dean, Professor of Medicine',
-          image: { alt: 'Dr. Rakesh Kumar Jha', height: 1200, url: portrait, width: 900 },
-          name: 'Dr. Rakesh Kumar Jha',
-        },
-        {
-          departmentId: 'anatomy',
-          designation: 'HOD, Anatomy',
-          image: { alt: 'Dr. Anjali Verma', height: 1200, url: portrait, width: 900 },
-          name: 'Dr. Anjali Verma',
-        },
-        {
-          departmentId: 'general-surgery',
-          designation: 'Professor & HOD',
-          image: { alt: 'Dr. Suresh Prasad', height: 1200, url: portrait, width: 900 },
-          name: 'Dr. Suresh Prasad',
-        },
-        {
-          departmentId: 'obg',
-          designation: 'HOD, OBG',
-          name: 'Dr. Meera Iyer',
-        },
-        {
-          departmentId: 'radiology',
-          designation: 'Associate Professor',
-          image: { alt: 'Dr. Arvind Mehta', height: 1200, url: portrait, width: 900 },
-          name: 'Dr. Arvind Mehta',
-        },
-        {
-          departmentId: 'paediatrics',
-          designation: 'Professor',
-          image: { alt: 'Dr. Kavita Rao', height: 1200, url: portrait, width: 900 },
-          name: 'Dr. Kavita Rao',
-        },
-        {
-          departmentId: 'orthopaedics',
-          designation: 'Associate Professor',
-          image: { alt: 'Dr. Nikhil Singh', height: 1200, url: portrait, width: 900 },
-          name: 'Dr. Nikhil Singh',
-        },
-        {
-          departmentId: 'pathology',
-          designation: 'Professor & HOD',
-          image: { alt: 'Dr. Priya Nair', height: 1200, url: portrait, width: 900 },
-          name: 'Dr. Priya Nair',
-        },
-      ]}
       profilesPerLoad="20"
       showDepartmentTabs
       showSearch

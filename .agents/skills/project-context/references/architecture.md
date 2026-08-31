@@ -6,7 +6,7 @@ This is one editorial marketing application: Payload CMS 3.85.2 and Next.js 16 s
 
 The repository has eight practical layers:
 
-1. Application routes and delivery under `src/app` and middleware.
+1. Application routes and delivery under `src/app` and the request proxy.
 2. Payload content model and governance under collections, globals, fields, access, hooks, and plugins.
 3. CMS block schemas, renderers, previews, and thumbnails.
 4. Frontend UI and the semantic design system under components and styles.
@@ -21,6 +21,7 @@ React Server Components load public CMS data. Focused client components own inte
 
 - `/` loads the published homepage selected in Layout Defaults.
 - `/[...slug]` resolves hierarchical Pages, breadcrumbs, metadata, and WebPage JSON-LD.
+- `/privacy-policy` and `/terms-and-conditions` are migration-provisioned editable Pages selected through Site Identity legal relationships; existing exact-slug Pages and existing published or pending relationship choices are preserved.
 - Article and Review detail and taxonomy routes load published domain records. News/Event retains its detail route while its Topics and Tags are non-interactive metadata. The News/Event route loads its record and cached shared detail-page global in parallel, renders the saved Page-compatible block order, and injects the entry only into the global-only `newsEventsContent` block. Production uses the server renderer; authenticated preview uses the matching client-safe renderer with server-provided data snapshots so its client graph never imports Payload or `server-only` modules.
 - `/news-events` explicitly resolves the published CMS Page at that path so editors can compose its collection-backed listings from Page blocks. Article and Review archive landing pages are also ordinary CMS Pages.
 - `/search`, `/api/search`, feeds, sitemap, robots, and Open Graph image routes implement discovery.
@@ -65,12 +66,16 @@ MongoDB is the supported database. Local Docker Compose pins MongoDB 8.0.29 and 
 
 Layout globals, the News & Events detail template, Pages, fixed Calendar month projections, and redirects use tagged caching and focused invalidation hooks. Calendar Upcoming data uses five-minute freshness and stays independent of month, view, and classification filtering inside the selected scope. Site timezone, News/Event classification, and News/Event publication changes invalidate Calendar projections. Page, Article, Review, News/Event, and Redirect hooks invalidate both publication and takedown transitions, including published deletion. Feeds, robots, and sitemap use explicit time revalidation. Article and Review helpers also use request-level deduplication. Preserve draft/public filtering and cache invalidation together when changing queries or hooks.
 
+Trusted CLI migrations that create Pages mark their writes to skip Next.js cache revalidation,
+because the standalone Payload process has no live Next.js cache store; ordinary runtime writes
+retain the complete invalidation behavior above.
+
 Maintenance and coming-soon overrides currently wrap the homepage, catch-all Page routes, and the explicit Page-backed `/news-events` route; other dedicated domain, search, feed, Admin, and API routes remain reachable.
 
 ## Themes and Analytics
 
 Two theme presets are registered: SNMIH-Green (`snmih-green`) and SNMIH-Blue (`snmih-blue`). SNMIH-Blue is the default and runtime fallback. Legacy `default` and `snmih` values retain their former appearance through runtime normalization until the reversible Payload migration updates current settings and version history. Theme files live under [src/styles/themes](../../../../src/styles/themes). Block sections use semantic page/subtle/brand surfaces; card surfaces use Default, Primary, Secondary, Muted, and Accent. Renderers resolve foreground, supporting text, icon, divider, link, and button contrast from those semantics. Shared framed Tabs use Primary for the selected item, while Underline Tabs use Primary for their active text and rule, so both presets retain a consistent interaction hierarchy without hard-coded brand colors.
-Public frontend corner geometry also follows semantic theme roles rather than fixed Tailwind sizes. `rounded-card` and `rounded-control` derive from `--radius` and cap at `0.75rem`; `rounded-compact` derives from half the theme radius and caps at `0.25rem`. Cards, media frames, controls, and compact details therefore remain square in SNMIH-Blue and consistently rounded in SNMIH-Green, while explicit pills and circular controls continue to use `rounded-full`. Payload Admin is outside this public presentation contract.
+Public frontend corner geometry also follows semantic theme roles rather than fixed Tailwind sizes. `rounded-card` and `rounded-control` derive from `--radius` and cap at `0.75rem`; `rounded-compact` derives from half the theme radius and caps at `0.25rem`. Cards, media frames, controls, and compact details therefore remain subtly rounded in SNMIH-Blue and more generously rounded in SNMIH-Green, while explicit pills and circular controls continue to use `rounded-full`. Payload Admin is outside this public presentation contract.
 Muted and completed-status treatments own explicit contrast-tested foreground pairs in both modes.
 Supporting copy on semantic card and brand surfaces uses the complete paired foreground rather than
 reducing opacity below the accessible contrast contract.
@@ -82,6 +87,8 @@ Google Tag Manager takes precedence over standalone GA4. Analytics and Vercel Sp
 The Cookie Consent Modal uses a focus-trapped dialog. It initially focuses rejection, treats Escape
 as rejection, ignores backdrop dismissal, and restores the visitor's previous focus after a decision.
 The Bottom Bar, Floating Card, and Corner Badge remain non-modal.
+The banner's configured Privacy Policy destination resolves the complete selected Page hierarchy,
+so moving that Page beneath a parent does not leave consent UI pointing at its leaf slug.
 
 ## Verification
 

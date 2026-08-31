@@ -171,11 +171,12 @@ expertise list. Its grid renders one mobile column, at most two tablet columns, 
 three, or four desktop columns. Cards remain opaque, equal-height, and non-clickable without profile
 links, buttons, hover navigation, or client state.
 
-Department Profiles owns a searchable, department-filtered faculty directory. Editors configure one
-ordered block-local department list and assign exactly one department to each profile through a custom
-Admin picker backed by stable department row IDs. Renaming preserves assignments; removing an assigned
-department fails validation until profiles are reassigned. Profiles require a name, may include Media
-and a designation, and retain image crop positioning. Search and the department filter are
+Department Profiles owns a searchable, department-filtered faculty directory. It stores profiles
+inside its ordered block-local department rows. Editors expand a department to manage its ordered
+profile list; department and profile row labels expose their names while collapsed. Empty departments
+remain valid, at least one profile is required, and the combined block limit is 400 profiles. Profiles
+require a name, may include Media and a designation, and retain image crop positioning. The public All
+view follows department order and then nested profile order. Search and the department filter are
 independently optional. Editors present the filter as Tabs or Dropdown; missing or invalid legacy
 values use Tabs. Both presentations derive All followed by populated departments in configured order.
 Pill, Underline, and Contained tabs reuse the shared content-tab rail, while Dropdown reuses the
@@ -195,7 +196,9 @@ Medium remembers three-to-six and defaults to six, and Small remembers four-to-e
 eight. Mobile uses one column, small screens cap at two, standard desktop caps at four, and five-to-eight
 columns activate at `2xl`. Inline retains the original two-to-four-column control at every size. Missing
 or unresolved images use a semantic decorative `UserRound` placeholder in either layout. Existing
-documents resolve to Image Overlay Large, four columns, and Boxed without a migration.
+documents resolve to Image Overlay Large, four columns, and Boxed. A reversible content migration
+covers current and versioned Pages, Reusable Sections, and the News & Events Detail Template, while
+runtime temporarily accepts legacy flat department assignments during rollout.
 The block reuses shared optional headers, appearance, actions, alignment, padding, and tab patterns.
 The department tab rail supports Content Width, Centered Auto Width, and Equal Full Width. Missing or
 invalid values use Content Width. Centered Auto Width shrink-wraps and centers the complete themed
