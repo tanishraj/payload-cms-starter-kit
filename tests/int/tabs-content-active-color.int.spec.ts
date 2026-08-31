@@ -13,7 +13,8 @@ describe('Tabs Content active color', () => {
       'utf8',
     )
 
-    expect(component).toContain('getContentTabRailClasses(tabVariant, tabSurface)')
+    expect(component).toContain('<ScrollableContentTabRail')
+    expect(component).not.toContain('getContentTabRailClasses(tabVariant, tabSurface)')
     expect(component).toContain('getContentTabClasses(tabVariant, isActive, tabSurface)')
     expect(component).not.toContain("'border-primary text-primary'")
     expect(component).not.toContain('shadow-[0_1px_2px_rgba(15,35,65,0.08)]')

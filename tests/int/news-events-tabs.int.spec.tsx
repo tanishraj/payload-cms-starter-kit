@@ -548,8 +548,13 @@ describe('News & Events Tabs', () => {
     const tabList = screen.getByRole('tablist', {
       name: 'News and events classifications',
     })
+    const frame = wrapper?.querySelector('[data-scrollable-content-tab-frame="true"]')
+    const viewport = wrapper?.querySelector('[data-scrollable-content-tab-viewport="true"]')
 
-    expect(wrapper?.className).toContain('overflow-x-auto')
+    expect(frame?.className).toContain('overflow-hidden')
+    expect(viewport?.className).toContain('overflow-x-auto')
+    expect(frame?.contains(viewport ?? null)).toBe(true)
+    expect(viewport?.contains(tabList)).toBe(true)
     expect(tabList.className).toContain('min-w-full')
     expect(tabList.className).toContain('w-max')
     expect(tabList.className).toContain('flex-nowrap')

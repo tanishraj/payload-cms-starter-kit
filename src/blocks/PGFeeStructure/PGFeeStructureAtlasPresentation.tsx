@@ -40,7 +40,7 @@ export function PGFeeStructureAtlasPresentation({
   return (
     <div
       className={cn(
-        'grid min-w-0 overflow-clip rounded-card border border-border lg:grid-cols-2',
+        'grid h-auto max-h-none min-w-0 overflow-clip rounded-card border border-border lg:grid-cols-2',
         hasBoundedDepartmentList && 'lg:h-[676px]',
       )}
       data-pg-fee-atlas="true"
@@ -48,7 +48,7 @@ export function PGFeeStructureAtlasPresentation({
     >
       <aside
         className={cn(
-          'min-w-0 bg-primary text-primary-foreground',
+          'h-auto max-h-none min-w-0 bg-primary text-primary-foreground',
           hasBoundedDepartmentList && 'lg:h-full lg:min-h-0 lg:overflow-y-auto',
         )}
         data-pg-fee-atlas-summary="true"
@@ -128,7 +128,7 @@ export function PGFeeStructureAtlasPresentation({
 
       <section
         className={cn(
-          'min-w-0 bg-card text-card-foreground',
+          'h-auto max-h-none min-w-0 bg-card text-card-foreground',
           hasBoundedDepartmentList && 'lg:flex lg:h-full lg:min-h-0 lg:flex-col',
         )}
         data-pg-fee-atlas-statement="true"
@@ -152,7 +152,7 @@ export function PGFeeStructureAtlasPresentation({
             hasBoundedDepartmentList ? `${category.label} department fee statements` : undefined
           }
           className={cn(
-            'divide-y divide-border',
+            'h-auto max-h-none divide-y divide-border',
             hasBoundedDepartmentList &&
               'focus-visible:ring-ring/40 focus-visible:ring-3 focus-visible:ring-inset focus-visible:outline-none lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:[scrollbar-gutter:stable]',
           )}

@@ -158,7 +158,7 @@ describe('Academic Programmes client presentation', () => {
   })
 
   it('supports keyboard navigation across filter tabs', () => {
-    render(
+    const { container } = render(
       <AcademicProgrammesClient
         background="none"
         columns="3"
@@ -171,6 +171,14 @@ describe('Academic Programmes client presentation', () => {
     )
 
     const allTab = screen.getByRole('tab', { name: 'All' })
+    const frame = container.querySelector('[data-scrollable-content-tab-frame="true"]')
+    const viewport = container.querySelector('[data-scrollable-content-tab-viewport="true"]')
+    const tablist = screen.getByRole('tablist', { name: 'Programme categories' })
+
+    expect(frame?.className).toContain('overflow-hidden')
+    expect(viewport?.className).toContain('overflow-x-auto')
+    expect(viewport?.contains(tablist)).toBe(true)
+
     allTab.focus()
     fireEvent.keyDown(allTab, { key: 'End' })
 

@@ -10,7 +10,8 @@ import {
   contentItemMetadataClasses,
   contentItemTitleClasses,
 } from '@/blocks/shared/contentStyles'
-import { getContentTabClasses, getContentTabRailClasses } from '@/blocks/shared/contentTabRail'
+import { getContentTabClasses } from '@/blocks/shared/contentTabRail'
+import { ScrollableContentTabRail } from '@/blocks/shared/ScrollableContentTabRail'
 import { ActionArrow } from '@/components/ActionArrow'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { Badge } from '@/components/ui/badge'
@@ -366,42 +367,45 @@ export function AcademicProgrammesClient({
     <div className="flex min-w-0 flex-col gap-8 md:gap-10" data-academic-programmes-view={viewMode}>
       {hasFilters ? (
         <div
-          className={cn(
-            'max-w-full overflow-x-auto pb-1',
-            filterAlignmentClasses[contentAlignment],
-          )}
-          data-academic-programmes-filter="true"
+          className={cn('max-w-full pb-1', filterAlignmentClasses[contentAlignment])}
         >
-          <div
-            aria-label="Programme categories"
-            className={cn('flex w-max flex-nowrap', getContentTabRailClasses('pill', tabSurface))}
-            role="tablist"
+          <ScrollableContentTabRail
+            className="w-fit max-w-full"
+            data-academic-programmes-filter="true"
+            surface={tabSurface}
+            variant="pill"
           >
-            {tabs.map((tab, index) => {
-              const active = tab.key === activeCategory
-              const tabID = `${componentID}-tab-${index}`
+            <div
+              aria-label="Programme categories"
+              className="flex w-max flex-nowrap"
+              role="tablist"
+            >
+              {tabs.map((tab, index) => {
+                const active = tab.key === activeCategory
+                const tabID = `${componentID}-tab-${index}`
 
-              return (
-                <button
-                  aria-controls={panelID}
-                  aria-selected={active}
-                  className={getContentTabClasses('pill', active, tabSurface)}
-                  id={tabID}
-                  key={tab.key}
-                  onClick={() => setSelectedCategory(tab.key)}
-                  onKeyDown={(event) => handleTabKeyDown(event, index)}
-                  ref={(node) => {
-                    tabRefs.current[index] = node
-                  }}
-                  role="tab"
-                  tabIndex={active ? 0 : -1}
-                  type="button"
-                >
-                  {tab.label}
-                </button>
-              )
-            })}
-          </div>
+                return (
+                  <button
+                    aria-controls={panelID}
+                    aria-selected={active}
+                    className={getContentTabClasses('pill', active, tabSurface)}
+                    id={tabID}
+                    key={tab.key}
+                    onClick={() => setSelectedCategory(tab.key)}
+                    onKeyDown={(event) => handleTabKeyDown(event, index)}
+                    ref={(node) => {
+                      tabRefs.current[index] = node
+                    }}
+                    role="tab"
+                    tabIndex={active ? 0 : -1}
+                    type="button"
+                  >
+                    {tab.label}
+                  </button>
+                )
+              })}
+            </div>
+          </ScrollableContentTabRail>
         </div>
       ) : null}
 

@@ -6,9 +6,9 @@ import { Tabs as TabsPrimitive } from 'radix-ui'
 import { resolveBlockSurface, type BlockBackground } from '@/blocks/shared/blockAppearance'
 import {
   getContentTabClasses,
-  getContentTabRailClasses,
   type ContentTabVariant,
 } from '@/blocks/shared/contentTabRail'
+import { ScrollableContentTabRail } from '@/blocks/shared/ScrollableContentTabRail'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
@@ -44,6 +44,12 @@ const feeTabRailWidthClasses = {
   centered: 'mx-auto w-max',
   content: 'w-max min-w-full',
   equal: 'w-full min-w-0',
+} as const satisfies Record<FeeStructureTabWidth, string>
+
+const feeTabFrameWidthClasses = {
+  centered: 'mx-auto w-fit max-w-full',
+  content: 'w-full',
+  equal: 'w-full',
 } as const satisfies Record<FeeStructureTabWidth, string>
 
 const feeRowSurfaceClasses = {
@@ -342,31 +348,33 @@ export function FeeStructureClient({
       onValueChange={setSelectedCategoryID}
       value={activeCategoryID}
     >
-      <div className="overflow-x-auto pb-1">
-        <TabsPrimitive.List
-          aria-label="Fee categories"
-          className={cn(
-            'flex flex-nowrap',
-            feeTabRailWidthClasses[resolvedTabWidth],
-            getContentTabRailClasses(variant, tabSurface),
-          )}
-          data-content-tab-variant={variant}
-          data-fee-tab-width={resolvedTabWidth}
+      <div className="pb-1">
+        <ScrollableContentTabRail
+          className={feeTabFrameWidthClasses[resolvedTabWidth]}
+          surface={tabSurface}
+          variant={variant}
         >
-          {categories.map((category) => (
-            <TabsPrimitive.Trigger
-              className={cn(
-                getContentTabClasses(variant, category.id === activeCategoryID, tabSurface),
-                resolvedTabWidth === 'equal' &&
-                  'w-0 min-w-0 flex-1 shrink overflow-hidden px-2 text-ellipsis',
-              )}
-              key={category.id}
-              value={category.id}
-            >
-              {category.label}
-            </TabsPrimitive.Trigger>
-          ))}
-        </TabsPrimitive.List>
+          <TabsPrimitive.List
+            aria-label="Fee categories"
+            className={cn('flex flex-nowrap', feeTabRailWidthClasses[resolvedTabWidth])}
+            data-content-tab-variant={variant}
+            data-fee-tab-width={resolvedTabWidth}
+          >
+            {categories.map((category) => (
+              <TabsPrimitive.Trigger
+                className={cn(
+                  getContentTabClasses(variant, category.id === activeCategoryID, tabSurface),
+                  resolvedTabWidth === 'equal' &&
+                    'w-0 min-w-0 flex-1 shrink overflow-hidden px-2 text-ellipsis',
+                )}
+                key={category.id}
+                value={category.id}
+              >
+                {category.label}
+              </TabsPrimitive.Trigger>
+            ))}
+          </TabsPrimitive.List>
+        </ScrollableContentTabRail>
       </div>
       {categories.map((category) => (
         <TabsPrimitive.Content className="mt-0 outline-none" key={category.id} value={category.id}>

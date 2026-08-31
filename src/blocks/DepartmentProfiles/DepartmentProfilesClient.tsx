@@ -4,17 +4,14 @@ import { Search } from 'lucide-react'
 import { useId, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 
 import { resolveBlockSurface, type BlockBackground } from '@/blocks/shared/blockAppearance'
-import {
-  getContentTabClasses,
-  getContentTabRailClasses,
-  type ContentTabVariant,
-} from '@/blocks/shared/contentTabRail'
+import { getContentTabClasses, type ContentTabVariant } from '@/blocks/shared/contentTabRail'
 import type {
   MediaOverlayCoverage,
   MediaOverlayDirection,
   MediaOverlayStrength,
   MediaOverlayTone,
 } from '@/blocks/shared/mediaOverlayPresentation'
+import { ScrollableContentTabRail } from '@/blocks/shared/ScrollableContentTabRail'
 import { ProfileCarouselCollection } from '@/components/profile-carousel-collection'
 import type {
   ProfileCarouselCardVariant,
@@ -392,56 +389,50 @@ export function DepartmentProfilesClient({
           ) : null}
 
           {tabsVisible ? (
-            <div
-              className={cn(
-                'min-w-0 overflow-hidden',
-                tabFrameWidthClasses[tabWidth],
-                getContentTabRailClasses(tabVariant, tabSurface),
-              )}
+            <ScrollableContentTabRail
+              className={tabFrameWidthClasses[tabWidth]}
               data-department-profiles-filter-presentation="tabs"
               data-department-profiles-tab-frame="true"
+              surface={tabSurface}
+              variant={tabVariant}
+              viewportProps={{ 'data-department-profiles-tab-scroll': 'true' }}
             >
               <div
-                className="no-scrollbar min-w-0 overflow-x-auto overscroll-x-contain"
-                data-department-profiles-tab-scroll="true"
+                aria-label="Profile departments"
+                className={cn('flex flex-nowrap', tabRailWidthClasses[tabWidth])}
+                data-department-profiles-tab-width={tabWidth}
+                role="tablist"
               >
-                <div
-                  aria-label="Profile departments"
-                  className={cn('flex flex-nowrap', tabRailWidthClasses[tabWidth])}
-                  data-department-profiles-tab-width={tabWidth}
-                  role="tablist"
-                >
-                  {departmentOptions.map((tab, index) => {
-                    const active = tab.id === activeId
-                    const tabID = `${componentID}-tab-${index}`
+                {departmentOptions.map((tab, index) => {
+                  const active = tab.id === activeId
+                  const tabID = `${componentID}-tab-${index}`
 
-                    return (
-                      <button
-                        aria-controls={panelID}
-                        aria-selected={active}
-                        className={cn(
-                          getContentTabClasses(tabVariant, active, tabSurface),
-                          tabWidth === 'equal' &&
-                            'w-0 min-w-0 flex-1 shrink overflow-hidden px-2 text-ellipsis',
-                        )}
-                        id={tabID}
-                        key={tab.id}
-                        onClick={() => selectDepartment(tab.id)}
-                        onKeyDown={(event) => handleTabKeyDown(event, index)}
-                        ref={(node) => {
-                          tabRefs.current[index] = node
-                        }}
-                        role="tab"
-                        tabIndex={active ? 0 : -1}
-                        type="button"
-                      >
-                        {tab.name}
-                      </button>
-                    )
-                  })}
-                </div>
+                  return (
+                    <button
+                      aria-controls={panelID}
+                      aria-selected={active}
+                      className={cn(
+                        getContentTabClasses(tabVariant, active, tabSurface),
+                        tabWidth === 'equal' &&
+                          'w-0 min-w-0 flex-1 shrink overflow-hidden px-2 text-ellipsis',
+                      )}
+                      id={tabID}
+                      key={tab.id}
+                      onClick={() => selectDepartment(tab.id)}
+                      onKeyDown={(event) => handleTabKeyDown(event, index)}
+                      ref={(node) => {
+                        tabRefs.current[index] = node
+                      }}
+                      role="tab"
+                      tabIndex={active ? 0 : -1}
+                      type="button"
+                    >
+                      {tab.name}
+                    </button>
+                  )
+                })}
               </div>
-            </div>
+            </ScrollableContentTabRail>
           ) : null}
         </div>
       ) : null}

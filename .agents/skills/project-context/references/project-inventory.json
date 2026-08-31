@@ -1312,6 +1312,12 @@
       },
       {
         "exports": [
+          "ScrollableContentTabRail"
+        ],
+        "file": "src/blocks/shared/ScrollableContentTabRail.tsx"
+      },
+      {
+        "exports": [
           "createBannerActionPlacementField",
           "createBannerContentAlignmentField",
           "createBannerContentWidthField",
@@ -2327,6 +2333,7 @@
       "src/blocks/shared/CalendarPdfDownload.tsx",
       "src/blocks/shared/CalendarSidebar.tsx",
       "src/blocks/shared/FeeDocumentDownload.tsx",
+      "src/blocks/shared/ScrollableContentTabRail.tsx",
       "src/blocks/shared/bannerCtaFields.ts",
       "src/blocks/shared/bannerCtaPresentation.ts",
       "src/blocks/shared/blockAppearance.ts",
@@ -2749,6 +2756,7 @@
       "tests/int/rich-text-presentation.int.spec.tsx",
       "tests/int/rotating-announcement.int.spec.ts",
       "tests/int/runtime-config.int.spec.ts",
+      "tests/int/scrollable-content-tab-rail.int.spec.tsx",
       "tests/int/search-dialog-design.int.spec.ts",
       "tests/int/search-hierarchical-routes.int.spec.tsx",
       "tests/int/search-page-design.int.spec.ts",
@@ -2780,7 +2788,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "70a327d734ad30fb6275c98497b6b3ff85cb3858df77944ea9b96193f18ab82d"
+    "sha256": "c0ace74de9e2daca7dd753f699f4ca2ee7d618e51dbcef00482a7e024a946c82"
   },
   "surfaces": {
     "access": [
@@ -3074,6 +3082,7 @@
       "tests/int/rich-text-presentation.int.spec.tsx",
       "tests/int/rotating-announcement.int.spec.ts",
       "tests/int/runtime-config.int.spec.ts",
+      "tests/int/scrollable-content-tab-rail.int.spec.tsx",
       "tests/int/search-dialog-design.int.spec.ts",
       "tests/int/search-hierarchical-routes.int.spec.tsx",
       "tests/int/search-page-design.int.spec.ts",

@@ -783,6 +783,13 @@ describe('FeeStructureBlockComponent', () => {
     expect(container.querySelector('[data-content-tab-variant="pill"]')).toBeTruthy()
     expect(screen.getByRole('tab', { name: 'NRI' }).className).toContain('min-h-11')
     expect(screen.getByRole('tab', { name: 'NRI' }).className).toContain('rounded-full')
+
+    const frame = container.querySelector('[data-scrollable-content-tab-frame="true"]')
+    const viewport = container.querySelector('[data-scrollable-content-tab-viewport="true"]')
+
+    expect(frame).not.toBeNull()
+    expect(viewport?.className).toContain('overflow-x-auto')
+    expect(viewport?.querySelector('[role="tablist"]')).not.toBeNull()
   })
 
   it('maps legacy Fee Structure tab values onto the shared content-tab variants', () => {
@@ -796,10 +803,11 @@ describe('FeeStructureBlockComponent', () => {
     )
 
     const rail = container.querySelector('[data-content-tab-variant="contained"]')
+    const frame = rail?.closest('[data-scrollable-content-tab-frame="true"]')
 
     expect(container.querySelector('[data-fee-tab-style="boxed"]')).toBeTruthy()
     expect(rail).toBeTruthy()
-    expect(rail?.className).toContain('rounded-control')
+    expect(frame?.className).toContain('rounded-control')
 
     for (const tab of screen.getAllByRole('tab')) {
       expect(tab.className).toContain('rounded-control')
@@ -845,7 +853,11 @@ describe('FeeStructureBlockComponent', () => {
 
     const rail = container.querySelector('[data-fee-tab-width="centered"]')
     const railClasses = new Set(rail?.className.split(/\s+/))
-    const wrapperClasses = new Set(rail?.parentElement?.className.split(/\s+/))
+    const viewport = rail?.parentElement
+    const frame = viewport?.parentElement
+    const layoutWrapper = frame?.parentElement
+    const viewportClasses = new Set(viewport?.className.split(/\s+/))
+    const layoutWrapperClasses = new Set(layoutWrapper?.className.split(/\s+/))
     const tabs = screen.getAllByRole('tab')
 
     expect(railClasses.has('mx-auto')).toBe(true)
@@ -853,8 +865,11 @@ describe('FeeStructureBlockComponent', () => {
     expect(railClasses.has('min-w-full')).toBe(false)
     expect(railClasses.has('w-full')).toBe(false)
     expect(railClasses.has('min-w-0')).toBe(false)
-    expect(wrapperClasses.has('overflow-x-auto')).toBe(true)
-    expect(wrapperClasses.has('pb-1')).toBe(true)
+    expect(frame?.className).toContain('mx-auto')
+    expect(frame?.className).toContain('w-fit')
+    expect(frame?.className).toContain('max-w-full')
+    expect(viewportClasses.has('overflow-x-auto')).toBe(true)
+    expect(layoutWrapperClasses.has('pb-1')).toBe(true)
     expect(tabs.map((tab) => tab.textContent)).toEqual([
       'General',
       'International Sponsored Category',

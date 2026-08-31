@@ -867,6 +867,8 @@ describe('Department Profiles block', () => {
     const frame = container.querySelector('[data-department-profiles-tab-frame="true"]')
     const viewport = container.querySelector('[data-department-profiles-tab-scroll="true"]')
 
+    expect(frame?.getAttribute('data-scrollable-content-tab-frame')).toBe('true')
+    expect(viewport?.getAttribute('data-scrollable-content-tab-viewport')).toBe('true')
     expect(frame?.className).toContain('mx-auto')
     expect(frame?.className).toContain('w-fit')
     expect(frame?.className).toContain('max-w-full')
@@ -896,6 +898,8 @@ describe('Department Profiles block', () => {
 
     expect(frame).not.toBeNull()
     expect(viewport).not.toBeNull()
+    expect(frame?.getAttribute('data-scrollable-content-tab-frame')).toBe('true')
+    expect(viewport?.getAttribute('data-scrollable-content-tab-viewport')).toBe('true')
     expect(frame?.className).toContain('overflow-hidden')
     expect(frame?.className).toContain('rounded-full')
     expect(frame?.className).toContain('border')

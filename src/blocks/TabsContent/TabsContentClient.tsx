@@ -12,10 +12,10 @@ import {
 } from '@/blocks/shared/contentStyles'
 import {
   getContentTabClasses,
-  getContentTabRailClasses,
   type ContentTabSurface,
   type ContentTabVariant,
 } from '@/blocks/shared/contentTabRail'
+import { ScrollableContentTabRail } from '@/blocks/shared/ScrollableContentTabRail'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { type ResolvedCmsAction } from '@/lib/cmsLinks'
@@ -106,42 +106,50 @@ export function TabsContentClient({
       data-tabs-content-body="true"
       data-tabs-content-gap={compactGap ? 'compact' : 'default'}
     >
-      <div
-        role="tablist"
-        aria-label="Content sections"
-        data-tab-alignment={resolvedTabAlignment}
+      <ScrollableContentTabRail
         className={cn(
-          'flex max-w-full overflow-x-auto',
+          'max-w-full',
           resolvedTabAlignment === 'stretch' ? 'w-full' : 'w-fit',
           resolvedTabAlignment === 'left' && 'self-start',
           resolvedTabAlignment === 'center' && 'self-center',
           resolvedTabAlignment === 'right' && 'self-end',
-          getContentTabRailClasses(tabVariant, tabSurface),
         )}
+        surface={tabSurface}
+        variant={tabVariant}
       >
-        {tabs.map((tab, index) => {
-          const isActive = index === activeIndex
-          return (
-            <button
-              key={tab.id}
-              role="tab"
-              id={`${tabsId}-tab-${index}`}
-              aria-controls={`${tabsId}-panel`}
-              aria-selected={isActive}
-              onClick={() => setActiveIndex(index)}
-              onKeyDown={(event) => handleTabKeyDown(event, index)}
-              tabIndex={isActive ? 0 : -1}
-              className={cn(
-                'min-w-28 cursor-pointer',
-                getContentTabClasses(tabVariant, isActive, tabSurface),
-                resolvedTabStyle === 'segmented' && 'min-w-32',
-              )}
-            >
-              {tab.label}
-            </button>
-          )
-        })}
-      </div>
+        <div
+          aria-label="Content sections"
+          className={cn(
+            'flex',
+            resolvedTabAlignment === 'stretch' ? 'w-full' : 'w-max',
+          )}
+          data-tab-alignment={resolvedTabAlignment}
+          role="tablist"
+        >
+          {tabs.map((tab, index) => {
+            const isActive = index === activeIndex
+            return (
+              <button
+                key={tab.id}
+                role="tab"
+                id={`${tabsId}-tab-${index}`}
+                aria-controls={`${tabsId}-panel`}
+                aria-selected={isActive}
+                onClick={() => setActiveIndex(index)}
+                onKeyDown={(event) => handleTabKeyDown(event, index)}
+                tabIndex={isActive ? 0 : -1}
+                className={cn(
+                  'min-w-28 cursor-pointer',
+                  getContentTabClasses(tabVariant, isActive, tabSurface),
+                  resolvedTabStyle === 'segmented' && 'min-w-32',
+                )}
+              >
+                {tab.label}
+              </button>
+            )
+          })}
+        </div>
+      </ScrollableContentTabRail>
 
       {active ? (
         <div

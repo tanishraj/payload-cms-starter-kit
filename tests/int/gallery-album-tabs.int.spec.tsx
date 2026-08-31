@@ -275,6 +275,9 @@ describe('Gallery Album Tabs block', () => {
       )
 
       const tabList = screen.getByRole('tablist', { name: 'Gallery albums' })
+      const wrapper = container.querySelector('[data-gallery-album-tabs-tablist="true"]')
+      const frame = wrapper?.querySelector('[data-scrollable-content-tab-frame="true"]')
+      const viewport = wrapper?.querySelector('[data-scrollable-content-tab-viewport="true"]')
 
       expect(container.querySelector('[data-gallery-album-tabs-header="true"]')).toBeNull()
       expect(
@@ -286,6 +289,9 @@ describe('Gallery Album Tabs block', () => {
       expect(tabList.className).toContain('min-w-full')
       expect(tabList.className).toContain('w-max')
       expect(tabList.className).toContain('flex-nowrap')
+      expect(frame?.className).toContain('overflow-hidden')
+      expect(viewport?.className).toContain('overflow-x-auto')
+      expect(viewport?.contains(tabList)).toBe(true)
 
       for (const tab of screen.getAllByRole('tab')) {
         expect(tab.className).toContain('w-auto')

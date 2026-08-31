@@ -6,10 +6,10 @@ import { Tabs as TabsPrimitive } from 'radix-ui'
 import { resolveBlockSurface, type BlockBackground } from '@/blocks/shared/blockAppearance'
 import {
   getContentTabClasses,
-  getContentTabRailClasses,
   type ContentTabVariant,
 } from '@/blocks/shared/contentTabRail'
 import type { ResolvedFeeDocumentDownload } from '@/blocks/shared/FeeDocumentDownload'
+import { ScrollableContentTabRail } from '@/blocks/shared/ScrollableContentTabRail'
 import { cn } from '@/lib/utils'
 
 import { PGFeeStructureAtlasPresentation } from './PGFeeStructureAtlasPresentation'
@@ -31,6 +31,12 @@ const pgFeeTabRailWidthClasses = {
   centered: 'mx-auto w-max',
   content: 'w-max min-w-full',
   equal: 'w-full min-w-0',
+} as const satisfies Record<PGFeeTabWidth, string>
+
+const pgFeeTabFrameWidthClasses = {
+  centered: 'mx-auto w-fit max-w-full',
+  content: 'w-full',
+  equal: 'w-full',
 } as const satisfies Record<PGFeeTabWidth, string>
 
 type PGFeeStructureClientProps = {
@@ -86,31 +92,33 @@ export function PGFeeStructureClient({
       onValueChange={setSelectedCategoryID}
       value={activeCategoryID}
     >
-      <div className="no-scrollbar min-w-0 overflow-x-auto overscroll-x-contain pb-1">
-        <TabsPrimitive.List
-          aria-label="PG fee categories"
-          className={cn(
-            'flex flex-nowrap',
-            pgFeeTabRailWidthClasses[resolvedTabWidth],
-            getContentTabRailClasses(variant, tabSurface),
-          )}
-          data-content-tab-variant={variant}
-          data-pg-fee-tab-width={resolvedTabWidth}
+      <div className="pb-1">
+        <ScrollableContentTabRail
+          className={pgFeeTabFrameWidthClasses[resolvedTabWidth]}
+          surface={tabSurface}
+          variant={variant}
         >
-          {categories.map((category) => (
-            <TabsPrimitive.Trigger
-              className={cn(
-                getContentTabClasses(variant, category.id === activeCategoryID, tabSurface),
-                resolvedTabWidth === 'equal' &&
-                  'w-0 min-w-0 flex-1 shrink overflow-hidden px-2 text-ellipsis',
-              )}
-              key={category.id}
-              value={category.id}
-            >
-              {category.label}
-            </TabsPrimitive.Trigger>
-          ))}
-        </TabsPrimitive.List>
+          <TabsPrimitive.List
+            aria-label="PG fee categories"
+            className={cn('flex flex-nowrap', pgFeeTabRailWidthClasses[resolvedTabWidth])}
+            data-content-tab-variant={variant}
+            data-pg-fee-tab-width={resolvedTabWidth}
+          >
+            {categories.map((category) => (
+              <TabsPrimitive.Trigger
+                className={cn(
+                  getContentTabClasses(variant, category.id === activeCategoryID, tabSurface),
+                  resolvedTabWidth === 'equal' &&
+                    'w-0 min-w-0 flex-1 shrink overflow-hidden px-2 text-ellipsis',
+                )}
+                key={category.id}
+                value={category.id}
+              >
+                {category.label}
+              </TabsPrimitive.Trigger>
+            ))}
+          </TabsPrimitive.List>
+        </ScrollableContentTabRail>
       </div>
       {categories.map((category) => (
         <TabsPrimitive.Content className="mt-0 outline-none" key={category.id} value={category.id}>

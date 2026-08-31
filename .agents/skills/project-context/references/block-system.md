@@ -59,7 +59,9 @@ Production Page blocks are wrapped in `BlockErrorBoundary`, so one broken block 
   foreground, active, hover, and focus states. Contained applies the semantic `rounded-control` role
   to both its framed rail and triggers, Pill remains intentionally `rounded-full`, and Underline stays
   square. Underline uses a two-pixel active border that overlaps the rail divider so selection remains
-  visible. Tabs Content maps its legacy Boxed, Pills, Segmented, and Underline values into this contract
+  visible. Horizontally overflowing content-tab rails use one shared client viewport that measures
+  native scroll position and shows radius-clipped inline-start/inline-end fades only while more tabs
+  remain. Tabs Content maps its legacy Boxed, Pills, Segmented, and Underline values into this contract
   without changing saved content.
 - `components/ui/tabs.tsx`: shared framed Tabs use the active website theme's Primary surface and
   paired foreground; line Tabs keep a transparent selected surface and use Primary text plus rule.
@@ -205,8 +207,10 @@ invalid values use Content Width. Centered Auto Width shrink-wraps and centers t
 frame when intrinsic tabs fit, then constrains it to the available width when they overflow. The frame
 remains stationary and fully visible while only its tab contents scroll horizontally from the inline
 start without visible scrollbar chrome. Equal Full Width divides the available Search-adjacent rail
-evenly, or the full toolbar width when Search is hidden. Selecting either Tabs or Dropdown resets the
-visible batch and filters Featured Profiles and the directory without changing Search behavior.
+evenly, or the full toolbar width when Search is hidden. Its shared overflow affordance shows an end
+fade on initial overflow, both fades between edges, and only the start fade at the final scroll
+position; fitting rails render no fade. Selecting either Tabs or Dropdown resets the visible batch and
+filters Featured Profiles and the directory without changing Search behavior.
 Its optional featured area is derived from the same ordered profile rows: editors mark up to twelve
 image-backed profiles as Featured, and the shared Profile Carousel collection appears after the shared
 search/department toolbar. All shows every featured profile; department tabs filter both featured and
@@ -304,7 +308,8 @@ charges, notes, and the optional shared fee-document Link or Button panel; the C
 one complete chapter per department and repeats shared values for self-contained reading. An active
 category with up to four departments renders at natural height. At five or more, `lg` layouts use a
 676px atlas whose summary and statement header remain independent while only the department chapter
-list scrolls; below `lg`, every region returns to normal document flow. Below `lg`, every department
+list scrolls; below `lg`, every region returns to normal document flow and the page itself carries all
+department scrolling. Below `lg`, every department
 chapter presents fee values in the Fee Structure Atlas two-column ruled pattern, including full-width
 odd final items. At `lg`, compact row rules are removed and the existing adaptive value grid remains
 in effect. Compact layouts stack summary then statement, and container-aware fee grids reflow without

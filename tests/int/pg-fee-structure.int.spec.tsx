@@ -345,16 +345,25 @@ describe('PGFeeStructureBlockComponent', () => {
     const statement = container.querySelector('[data-pg-fee-atlas-statement="true"]')
     const scroller = container.querySelector('[data-pg-fee-department-scroll="true"]')
 
+    expect(boundedAtlas?.className).toContain('h-auto')
+    expect(boundedAtlas?.className).toContain('max-h-none')
     expect(boundedAtlas?.className).toContain('lg:h-[676px]')
+    expect(summary?.className).toContain('h-auto')
+    expect(summary?.className).toContain('max-h-none')
     expect(summary?.className).toContain('lg:overflow-y-auto')
+    expect(statement?.className).toContain('h-auto')
+    expect(statement?.className).toContain('max-h-none')
     expect(statement?.className).toContain('lg:flex-col')
     expect(statement?.firstElementChild?.tagName).toBe('HEADER')
     expect(statement?.children[1]).toBe(scroller)
+    expect(scroller?.className).toContain('h-auto')
+    expect(scroller?.className).toContain('max-h-none')
     expect(scroller?.className).toContain('lg:flex-1')
     expect(scroller?.className).toContain('lg:overflow-y-auto')
     expect(scroller?.className).toContain('lg:overscroll-contain')
     expect(scroller?.className.split(' ')).not.toContain('h-[676px]')
     expect(scroller?.className.split(' ')).not.toContain('overflow-y-auto')
+    expect(scroller?.className.split(' ')).not.toContain('overscroll-contain')
     expect(scroller?.getAttribute('role')).toBe('region')
     expect(scroller?.getAttribute('aria-label')).toBe('Five department fee statements')
     expect(scroller?.getAttribute('tabindex')).toBe('0')
@@ -414,6 +423,13 @@ describe('PGFeeStructureBlockComponent', () => {
     expect(screen.getByText('Amounts are displayed exactly as officially published.')).toBeTruthy()
     expect(container.querySelector('[data-content-tab-variant="contained"]')).toBeTruthy()
     expect(container.querySelector('[data-pg-fee-tab-width="centered"]')).toBeTruthy()
+
+    const frame = container.querySelector('[data-scrollable-content-tab-frame="true"]')
+    const viewport = container.querySelector('[data-scrollable-content-tab-viewport="true"]')
+
+    expect(frame).not.toBeNull()
+    expect(viewport?.className).toContain('overflow-x-auto')
+    expect(viewport?.querySelector('[role="tablist"]')).not.toBeNull()
 
     fireEvent.mouseDown(screen.getByRole('tab', { name: 'NRI' }), {
       button: 0,

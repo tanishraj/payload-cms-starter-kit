@@ -13,10 +13,10 @@ import {
 } from '@/blocks/NewsEventsTabs/newsEventsTabsShared'
 import {
   getContentTabClasses,
-  getContentTabRailClasses,
   type ContentTabSurface,
   type ContentTabVariant,
 } from '@/blocks/shared/contentTabRail'
+import { ScrollableContentTabRail } from '@/blocks/shared/ScrollableContentTabRail'
 import { Button } from '@/components/ui/button'
 import { Empty, EmptyDescription, EmptyHeader } from '@/components/ui/empty'
 import {
@@ -181,42 +181,41 @@ export function NewsEventsTabsClient({
 
   return (
     <div className="flex flex-col gap-8" data-news-events-tabs-content="true">
-      <div className="overflow-x-auto pb-1" data-news-events-tabs-list-wrap="true">
-        <div
-          aria-label="News and events classifications"
-          className={cn(
-            'flex w-max min-w-full flex-nowrap',
-            getContentTabRailClasses(variant, tabSurface),
-          )}
-          data-content-tab-variant={variant}
-          role="tablist"
-        >
-          {tabs.map((tab, index) => {
-            const isActive = resolvedActiveTab === tab.value
-            const tabID = `${instanceID}-tab-${tab.value}`
-            const panelID = `${instanceID}-panel-${tab.value}`
+      <div className="pb-1" data-news-events-tabs-list-wrap="true">
+        <ScrollableContentTabRail className="w-full" surface={tabSurface} variant={variant}>
+          <div
+            aria-label="News and events classifications"
+            className="flex w-max min-w-full flex-nowrap"
+            data-content-tab-variant={variant}
+            role="tablist"
+          >
+            {tabs.map((tab, index) => {
+              const isActive = resolvedActiveTab === tab.value
+              const tabID = `${instanceID}-tab-${tab.value}`
+              const panelID = `${instanceID}-panel-${tab.value}`
 
-            return (
-              <button
-                aria-controls={panelID}
-                aria-selected={isActive}
-                className={getContentTabClasses(variant, isActive, tabSurface)}
-                id={tabID}
-                key={tab.value}
-                onClick={() => selectTab(index)}
-                onKeyDown={(event) => handleTabKeyDown(event, index)}
-                ref={(node) => {
-                  tabRefs.current[index] = node
-                }}
-                role="tab"
-                tabIndex={isActive ? 0 : -1}
-                type="button"
-              >
-                {tab.label}
-              </button>
-            )
-          })}
-        </div>
+              return (
+                <button
+                  aria-controls={panelID}
+                  aria-selected={isActive}
+                  className={getContentTabClasses(variant, isActive, tabSurface)}
+                  id={tabID}
+                  key={tab.value}
+                  onClick={() => selectTab(index)}
+                  onKeyDown={(event) => handleTabKeyDown(event, index)}
+                  ref={(node) => {
+                    tabRefs.current[index] = node
+                  }}
+                  role="tab"
+                  tabIndex={isActive ? 0 : -1}
+                  type="button"
+                >
+                  {tab.label}
+                </button>
+              )
+            })}
+          </div>
+        </ScrollableContentTabRail>
       </div>
 
       <div

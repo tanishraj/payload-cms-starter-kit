@@ -5,12 +5,12 @@ import { useId, useMemo, useRef, useState } from 'react'
 
 import {
   getGalleryAlbumTabsTabClasses,
-  getGalleryAlbumTabsTabListClasses,
   type GalleryAlbumTabsImagesPerLoad,
   type GalleryAlbumTabsResolvedTab,
   type GalleryAlbumTabsVariant,
 } from '@/blocks/GalleryAlbumTabs/galleryAlbumTabsShared'
 import type { ContentTabSurface } from '@/blocks/shared/contentTabRail'
+import { ScrollableContentTabRail } from '@/blocks/shared/ScrollableContentTabRail'
 import {
   getEventGalleryQuiltGridClassName,
   getEventGalleryQuiltRowSpanClassName,
@@ -108,42 +108,41 @@ export function GalleryAlbumTabsClient({
       data-gallery-album-tabs-content="true"
       data-gallery-album-tabs-variant={variant}
     >
-      <div className="overflow-x-auto pb-1" data-gallery-album-tabs-tablist="true">
-        <div
-          aria-label="Gallery albums"
-          className={cn(
-            'flex w-max min-w-full flex-nowrap',
-            getGalleryAlbumTabsTabListClasses(variant, tabSurface),
-          )}
-          data-content-tab-variant={variant}
-          role="tablist"
-        >
-          {tabs.map((tab, index) => {
-            const active = tab.id === activeTab.id
-            const tabID = `gallery-album-tabs-${componentID}-tab-${index}`
-            const panelID = `gallery-album-tabs-${componentID}-panel`
+      <div className="pb-1" data-gallery-album-tabs-tablist="true">
+        <ScrollableContentTabRail className="w-full" surface={tabSurface} variant={variant}>
+          <div
+            aria-label="Gallery albums"
+            className="flex w-max min-w-full flex-nowrap"
+            data-content-tab-variant={variant}
+            role="tablist"
+          >
+            {tabs.map((tab, index) => {
+              const active = tab.id === activeTab.id
+              const tabID = `gallery-album-tabs-${componentID}-tab-${index}`
+              const panelID = `gallery-album-tabs-${componentID}-panel`
 
-            return (
-              <button
-                aria-controls={panelID}
-                aria-selected={active}
-                className={getGalleryAlbumTabsTabClasses(variant, active, tabSurface)}
-                id={tabID}
-                key={tab.id}
-                onClick={() => activateTab(index)}
-                onKeyDown={(event) => handleTabKeyDown(event, index)}
-                ref={(node) => {
-                  tabRefs.current[index] = node
-                }}
-                role="tab"
-                tabIndex={active ? 0 : -1}
-                type="button"
-              >
-                {tab.label}
-              </button>
-            )
-          })}
-        </div>
+              return (
+                <button
+                  aria-controls={panelID}
+                  aria-selected={active}
+                  className={getGalleryAlbumTabsTabClasses(variant, active, tabSurface)}
+                  id={tabID}
+                  key={tab.id}
+                  onClick={() => activateTab(index)}
+                  onKeyDown={(event) => handleTabKeyDown(event, index)}
+                  ref={(node) => {
+                    tabRefs.current[index] = node
+                  }}
+                  role="tab"
+                  tabIndex={active ? 0 : -1}
+                  type="button"
+                >
+                  {tab.label}
+                </button>
+              )
+            })}
+          </div>
+        </ScrollableContentTabRail>
       </div>
 
       <div
