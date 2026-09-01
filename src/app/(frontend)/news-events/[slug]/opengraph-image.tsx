@@ -2,8 +2,12 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { ImageResponse } from 'next/og'
 
-import { getOpenGraphMediaUrl } from '@/lib/media'
+import { getOpenGraphMediaImage } from '@/lib/media'
 import { resolveNewsEventClassificationRecord } from '@/lib/newsEventClassifications'
+import {
+  createOpenGraphFallbackResponse,
+  loadOpenGraphRemoteImage,
+} from '@/lib/openGraphImages'
 
 export const alt = 'News & Events preview'
 export const contentType = 'image/png'
@@ -38,15 +42,24 @@ export default async function NewsEventOgImage({ params }: Props) {
   ])
 
   const entry = result.docs[0]
-  const title = entry?.title ?? 'News & Events'
-  const excerpt = entry?.excerpt ?? ''
+
+  if (!entry) {
+    return createOpenGraphFallbackResponse()
+  }
+
+  const title = entry.title
+  const excerpt = entry.excerpt ?? ''
   const classification = resolveNewsEventClassificationRecord(
-    entry?.classification,
-    entry?.contentType,
+    entry.classification,
+    entry.contentType,
   )
   const classificationLabel = classification?.badgeLabel ?? 'News & Events'
   const siteName = siteSettings.siteName
-  const logoUrl = getOpenGraphMediaUrl(siteSettings.logo)
+  const logoImage = await loadOpenGraphRemoteImage(getOpenGraphMediaImage(siteSettings.logo))
+
+  if (!logoImage) {
+    return createOpenGraphFallbackResponse()
+  }
 
   const accentColor = classification?.behavior === 'event' ? '#7c3aed' : '#2563eb'
 
@@ -65,17 +78,13 @@ export default async function NewsEventOgImage({ params }: Props) {
     >
       {/* Top */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        {logoUrl ? (
-          <img
-            src={logoUrl}
-            alt={siteName}
-            style={{ height: 32, maxWidth: 160, objectFit: 'contain' }}
-          />
-        ) : (
-          <span style={{ color: '#6b7280', fontSize: 16, letterSpacing: '0.05em' }}>
-            {siteName}
-          </span>
-        )}
+        <img
+          src={logoImage.src}
+          alt={siteName}
+          width={logoImage.width}
+          height={logoImage.height}
+          style={{ height: 32, maxWidth: 160, objectFit: 'contain', width: 'auto' }}
+        />
         <span style={{ color: '#374151', fontSize: 16 }}>·</span>
         <span
           style={{

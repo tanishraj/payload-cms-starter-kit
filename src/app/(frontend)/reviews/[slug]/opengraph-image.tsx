@@ -2,7 +2,11 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { ImageResponse } from 'next/og'
 
-import { getOpenGraphMediaUrl } from '@/lib/media'
+import { getOpenGraphMediaImage } from '@/lib/media'
+import {
+  createOpenGraphFallbackResponse,
+  loadOpenGraphRemoteImage,
+} from '@/lib/openGraphImages'
 
 export const alt = 'Review preview'
 export const contentType = 'image/png'
@@ -25,12 +29,21 @@ export default async function ReviewOgImage({ params }: Props) {
   ])
 
   const review = result.docs[0]
-  const title = review?.reviewTitle ?? 'Review'
-  const rating = review?.rating ? parseInt(review.rating, 10) : null
-  const reviewer = review?.displayName?.trim() || review?.reviewerName?.trim() || ''
-  const subjectLabel = review?.subjectLabel?.trim() ?? ''
+
+  if (!review) {
+    return createOpenGraphFallbackResponse()
+  }
+
+  const title = review.reviewTitle
+  const rating = review.rating ? parseInt(review.rating, 10) : null
+  const reviewer = review.displayName?.trim() || review.reviewerName?.trim() || ''
+  const subjectLabel = review.subjectLabel?.trim() ?? ''
   const siteName = siteSettings.siteName
-  const logoUrl = getOpenGraphMediaUrl(siteSettings.logo)
+  const logoImage = await loadOpenGraphRemoteImage(getOpenGraphMediaImage(siteSettings.logo))
+
+  if (!logoImage) {
+    return createOpenGraphFallbackResponse()
+  }
 
   const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : ''
 
@@ -49,11 +62,13 @@ export default async function ReviewOgImage({ params }: Props) {
     >
       {/* Top — logo + label */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        {logoUrl ? (
-          <img src={logoUrl} alt={siteName} style={{ height: 32, maxWidth: 160, objectFit: 'contain' }} />
-        ) : (
-          <span style={{ color: '#6b7280', fontSize: 16, letterSpacing: '0.05em' }}>{siteName}</span>
-        )}
+        <img
+          src={logoImage.src}
+          alt={siteName}
+          width={logoImage.width}
+          height={logoImage.height}
+          style={{ height: 32, maxWidth: 160, objectFit: 'contain', width: 'auto' }}
+        />
         <span style={{ color: '#374151', fontSize: 16 }}>·</span>
         <span
           style={{

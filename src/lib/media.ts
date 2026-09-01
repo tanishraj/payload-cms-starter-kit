@@ -36,16 +36,37 @@ export const getMediaAbsoluteUrl = (
   return new URL(url, defaultSiteURL).toString()
 }
 
-export const getOpenGraphMediaUrl = (
+export type OpenGraphMediaImage = {
+  src: string
+  width: number
+  height: number
+}
+
+export const getOpenGraphMediaImage = (
   media: string | number | Media | null | undefined,
-): string | undefined => {
-  if (!isMediaDoc(media) || !media.url) {
+): OpenGraphMediaImage | undefined => {
+  if (
+    !isMediaDoc(media) ||
+    !media.url ||
+    typeof media.width !== 'number' ||
+    media.width <= 0 ||
+    typeof media.height !== 'number' ||
+    media.height <= 0
+  ) {
     return undefined
   }
 
-  const url = media.url.trim()
+  const src = media.url.trim()
 
-  return /^https?:\/\//i.test(url) ? url : undefined
+  if (!/^https?:\/\//i.test(src)) {
+    return undefined
+  }
+
+  return {
+    height: media.height,
+    src,
+    width: media.width,
+  }
 }
 
 const getMediaAltFallback = (preset: MediaPreset): string => {

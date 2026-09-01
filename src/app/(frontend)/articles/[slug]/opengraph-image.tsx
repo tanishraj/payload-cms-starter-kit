@@ -2,7 +2,11 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { ImageResponse } from 'next/og'
 
-import { getOpenGraphMediaUrl } from '@/lib/media'
+import { getOpenGraphMediaImage } from '@/lib/media'
+import {
+  createOpenGraphFallbackResponse,
+  loadOpenGraphRemoteImage,
+} from '@/lib/openGraphImages'
 
 export const alt = 'Article preview'
 export const contentType = 'image/png'
@@ -25,11 +29,20 @@ export default async function ArticleOgImage({ params }: Props) {
   ])
 
   const article = result.docs[0]
-  const title = article?.title ?? 'Article'
-  const excerpt = article?.excerpt ?? ''
-  const author = article?.authorName ?? ''
+
+  if (!article) {
+    return createOpenGraphFallbackResponse()
+  }
+
+  const title = article.title
+  const excerpt = article.excerpt ?? ''
+  const author = article.authorName ?? ''
   const siteName = siteSettings.siteName
-  const logoUrl = getOpenGraphMediaUrl(siteSettings.logo)
+  const logoImage = await loadOpenGraphRemoteImage(getOpenGraphMediaImage(siteSettings.logo))
+
+  if (!logoImage) {
+    return createOpenGraphFallbackResponse()
+  }
 
   return new ImageResponse(
     <div
@@ -46,11 +59,13 @@ export default async function ArticleOgImage({ params }: Props) {
     >
       {/* Top */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        {logoUrl ? (
-          <img src={logoUrl} alt={siteName} style={{ height: 32, maxWidth: 160, objectFit: 'contain' }} />
-        ) : (
-          <span style={{ color: '#6b7280', fontSize: 16, letterSpacing: '0.05em' }}>{siteName}</span>
-        )}
+        <img
+          src={logoImage.src}
+          alt={siteName}
+          width={logoImage.width}
+          height={logoImage.height}
+          style={{ height: 32, maxWidth: 160, objectFit: 'contain', width: 'auto' }}
+        />
         <span style={{ color: '#374151', fontSize: 16 }}>·</span>
         <span style={{ color: '#6b7280', fontSize: 16 }}>Article</span>
       </div>

@@ -2558,6 +2558,7 @@
       "src/lib/newsEventsPreviewShared.ts",
       "src/lib/newsEventsPreviewSnapshot.ts",
       "src/lib/newsEventsShared.ts",
+      "src/lib/openGraphImages.tsx",
       "src/lib/operationalAudit.ts",
       "src/lib/pageBreadcrumbs.ts",
       "src/lib/pagePaths.ts",
@@ -2729,6 +2730,8 @@
       "tests/int/news-events-tabs-route.int.spec.ts",
       "tests/int/news-events-tabs.int.spec.tsx",
       "tests/int/news-grid.int.spec.tsx",
+      "tests/int/open-graph-images.int.spec.tsx",
+      "tests/int/opengraph-fallback-routes.int.spec.tsx",
       "tests/int/operational-audit.int.spec.ts",
       "tests/int/page-blocks.int.spec.ts",
       "tests/int/page-breadcrumbs.int.spec.tsx",
@@ -2798,7 +2801,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "0ac1e9c11e3ec3f8481cc176e4a6587968ced0b502c353b87e7ad165ecdf731f"
+    "sha256": "dfd7e098c7136933d3633d8dd920d1c9f370e5378b075cdc49940dd84da5c6c0"
   },
   "surfaces": {
     "access": [
@@ -2874,6 +2877,7 @@
       "src/lib/newsEventsPreviewShared.ts",
       "src/lib/newsEventsPreviewSnapshot.ts",
       "src/lib/newsEventsShared.ts",
+      "src/lib/openGraphImages.tsx",
       "src/lib/operationalAudit.ts",
       "src/lib/pageBreadcrumbs.ts",
       "src/lib/pagePaths.ts",
@@ -3063,6 +3067,8 @@
       "tests/int/news-events-tabs-route.int.spec.ts",
       "tests/int/news-events-tabs.int.spec.tsx",
       "tests/int/news-grid.int.spec.tsx",
+      "tests/int/open-graph-images.int.spec.tsx",
+      "tests/int/opengraph-fallback-routes.int.spec.tsx",
       "tests/int/operational-audit.int.spec.ts",
       "tests/int/page-blocks.int.spec.ts",
       "tests/int/page-breadcrumbs.int.spec.tsx",

@@ -2,7 +2,11 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { ImageResponse } from 'next/og'
 
-import { getOpenGraphMediaUrl } from '@/lib/media'
+import { getOpenGraphMediaImage } from '@/lib/media'
+import {
+  createOpenGraphFallbackResponse,
+  loadOpenGraphRemoteImage,
+} from '@/lib/openGraphImages'
 
 export const alt = 'Site preview'
 export const contentType = 'image/png'
@@ -17,7 +21,11 @@ export default async function DefaultOgImage() {
 
   const siteName = siteSettings.siteName
   const description = seoSettings.defaultDescription ?? siteSettings.siteDescription ?? ''
-  const logoUrl = getOpenGraphMediaUrl(siteSettings.logo)
+  const logoImage = await loadOpenGraphRemoteImage(getOpenGraphMediaImage(siteSettings.logo))
+
+  if (!logoImage) {
+    return createOpenGraphFallbackResponse()
+  }
 
   return new ImageResponse(
     <div
@@ -34,11 +42,13 @@ export default async function DefaultOgImage() {
     >
       {/* Top — logo or site name */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        {logoUrl ? (
-          <img src={logoUrl} alt={siteName} style={{ height: 36, maxWidth: 180, objectFit: 'contain' }} />
-        ) : (
-          <span style={{ color: '#888', fontSize: 18, letterSpacing: '0.05em' }}>{siteName}</span>
-        )}
+        <img
+          src={logoImage.src}
+          alt={siteName}
+          width={logoImage.width}
+          height={logoImage.height}
+          style={{ height: 36, maxWidth: 180, objectFit: 'contain', width: 'auto' }}
+        />
       </div>
 
       {/* Bottom — title + description */}
