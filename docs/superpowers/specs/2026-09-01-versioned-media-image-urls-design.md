@@ -15,9 +15,10 @@ record has a valid timestamp, preserving existing URLs for incomplete records an
 root-relative local media paths. Existing query strings are joined with `&`; URLs
 without one use `?`.
 
-All `next/image` consumers already use this shared resolver for CMS media. Next's
-format negotiation and resizing remain enabled, while the changed source URL causes a
-new optimizer cache key after an upload replacement or media edit.
+CMS `next/image` consumers use this shared resolver directly or are migrated to it at
+their server adapter boundary. Media Carousel keeps video URLs canonical. Next's format
+negotiation and resizing remain enabled, while the changed image source URL causes a new
+optimizer cache key after an upload replacement or media edit.
 
 ## Validation
 

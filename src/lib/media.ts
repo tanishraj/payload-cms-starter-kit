@@ -36,6 +36,19 @@ export const getMediaAbsoluteUrl = (
   return new URL(url, defaultSiteURL).toString()
 }
 
+const getVersionedMediaImageUrl = ({ media, src }: { media: Media; src: string }): string => {
+  const updatedAt = typeof media.updatedAt === 'string' ? media.updatedAt.trim() : ''
+
+  if (!/^https?:\/\//i.test(src) || !updatedAt || Number.isNaN(Date.parse(updatedAt))) {
+    return src
+  }
+
+  const versionedURL = new URL(src)
+  versionedURL.searchParams.set('v', updatedAt)
+
+  return versionedURL.toString()
+}
+
 export type OpenGraphMediaImage = {
   src: string
   width: number
@@ -95,11 +108,15 @@ export const getMediaImageProps = ({
   media: string | number | Media | null | undefined
   preset?: MediaPreset
 }): ResolvedMediaImage | undefined => {
-  const src = getMediaAbsoluteUrl(media)
+  const absoluteUrl = getMediaAbsoluteUrl(media)
 
-  if (!src) {
+  if (!absoluteUrl) {
     return undefined
   }
+
+  const src = isMediaDoc(media)
+    ? getVersionedMediaImageUrl({ media, src: absoluteUrl })
+    : absoluteUrl
 
   const alt =
     (isMediaDoc(media) ? media.alt?.trim() : '') || fallbackAlt?.trim() || getMediaAltFallback(preset)
