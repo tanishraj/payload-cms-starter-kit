@@ -5,7 +5,7 @@ import {
 import type { RegularBlockSize } from '@/blocks/shared/blockSpacing'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import { ContentActions } from '@/components/ContentActions'
-import { getMediaAbsoluteUrl, isMediaDoc } from '@/lib/media'
+import { getMediaAbsoluteUrl, getMediaImageProps, isMediaDoc } from '@/lib/media'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import type { Media } from '@/payload-types'
 
@@ -55,11 +55,14 @@ export function MediaCarouselBlockComponent({
     const media = item.media as Media | null | undefined
     if (!isMediaDoc(media)) return []
 
-    const src = getMediaAbsoluteUrl(media)
-    if (!src) return []
-
     const mediaType =
       typeof media.mimeType === 'string' && media.mimeType.startsWith('video/') ? 'video' : 'image'
+    const image =
+      mediaType === 'image'
+        ? getMediaImageProps({ fallbackAlt: itemTitle, media, preset: 'generic' })
+        : undefined
+    const src = image?.src ?? getMediaAbsoluteUrl(media)
+    if (!src) return []
 
     const resolvedActions = resolveCmsActions(item.actions)
 
@@ -68,9 +71,9 @@ export function MediaCarouselBlockComponent({
         id: media.id,
         mediaType,
         src,
-        alt: media.alt?.trim() || itemTitle,
-        width: typeof media.width === 'number' ? media.width : undefined,
-        height: typeof media.height === 'number' ? media.height : undefined,
+        alt: image?.alt ?? (media.alt?.trim() || itemTitle),
+        width: image?.width ?? (typeof media.width === 'number' ? media.width : undefined),
+        height: image?.height ?? (typeof media.height === 'number' ? media.height : undefined),
         icon: item.icon ?? undefined,
         title: itemTitle,
         summary: item.summary?.trim() || undefined,

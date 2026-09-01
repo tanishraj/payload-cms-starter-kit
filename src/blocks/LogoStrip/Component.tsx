@@ -8,7 +8,7 @@ import {
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
-import { getMediaAbsoluteUrl, isMediaDoc } from '@/lib/media'
+import { getMediaImageProps, isMediaDoc } from '@/lib/media'
 import type { Media } from '@/payload-types'
 import { cn } from '@/lib/utils'
 
@@ -61,14 +61,14 @@ export function LogoStripBlockComponent({
     const media = item.image as Media | null | undefined
     if (!isMediaDoc(media)) return []
 
-    const src = getMediaAbsoluteUrl(media)
-    if (!src) return []
+    const image = getMediaImageProps({ fallbackAlt: item.label, media, preset: 'logo' })
+    if (!image) return []
 
     return [
       {
         id: item.id ?? index,
-        src,
-        alt: media.alt?.trim() || item.label?.trim() || 'Logo',
+        src: image.src,
+        alt: image.alt,
         label: item.label?.trim() || undefined,
         url: item.url?.trim() || undefined,
         openInNewTab: item.openInNewTab ?? true,

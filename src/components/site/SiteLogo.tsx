@@ -1,10 +1,13 @@
 import Image from 'next/image'
+
+import { getMediaImageProps } from '@/lib/media'
 import type { Media } from '@/payload-types'
 
 export type LogoMediaLike =
   | {
       alt?: string | null
       height?: number | null
+      updatedAt?: string | null
       url?: string | null
       width?: number | null
     }
@@ -31,16 +34,18 @@ const getLogoImageProps = (
     return undefined
   }
 
-  const src = typeof media.url === 'string' && media.url.trim() ? media.url : undefined
+  const image = getMediaImageProps({
+    fallbackAlt: fallbackText,
+    media: media as Media,
+    preset: 'logo',
+  })
 
-  if (!src) {
+  if (!image) {
     return undefined
   }
 
-  const alt =
-    (typeof media.alt === 'string' && media.alt.trim() ? media.alt.trim() : undefined) || fallbackText
-  const sourceWidth = typeof media.width === 'number' && media.width > 0 ? media.width : null
-  const sourceHeight = typeof media.height === 'number' && media.height > 0 ? media.height : null
+  const sourceWidth = typeof image.width === 'number' && image.width > 0 ? image.width : null
+  const sourceHeight = typeof image.height === 'number' && image.height > 0 ? image.height : null
   const fallbackSize = Math.max(1, Math.round(displayHeight))
   const width = sourceWidth ?? fallbackSize
   const height = sourceHeight ?? fallbackSize
@@ -50,10 +55,10 @@ const getLogoImageProps = (
       : fallbackSize
 
   return {
-    alt,
+    alt: image.alt,
     height,
     sizes: `${renderedWidth}px`,
-    src,
+    src: image.src,
     width,
   }
 }

@@ -73,6 +73,11 @@ MongoDB is the supported database. Local Docker Compose pins MongoDB 8.0.29 and 
 
 Layout globals, the News & Events detail template, Pages, fixed Calendar month projections, and redirects use tagged caching and focused invalidation hooks. The anonymous shell stays cacheable because editor-session and analytics-consent cookies are evaluated only by post-hydration client boundaries. Calendar Upcoming data uses five-minute freshness and stays independent of month, view, and classification filtering inside the selected scope. Site timezone, News/Event classification, and News/Event publication changes invalidate Calendar projections. Page, Article, Review, News/Event, and Redirect hooks invalidate both publication and takedown transitions, including published deletion. Feeds, robots, and sitemap use explicit time revalidation. Article and Review helpers also use request-level deduplication. Preserve draft/public filtering and cache invalidation together when changing queries or hooks.
 
+CMS-backed remote images resolved through the shared media image-props helper append a validated
+Payload `updatedAt` version query. Replacing an object under the same public filename therefore gives
+the Next.js image optimizer a new cache key without disabling resizing or AVIF/WebP negotiation.
+Root-relative media paths and canonical URLs used outside that image-props boundary remain unchanged.
+
 Trusted CLI migrations that create Pages mark their writes to skip Next.js cache revalidation,
 because the standalone Payload process has no live Next.js cache store; ordinary runtime writes
 retain the complete invalidation behavior above.
