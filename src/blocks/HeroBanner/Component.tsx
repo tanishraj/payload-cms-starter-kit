@@ -243,6 +243,7 @@ export function HeroBannerBlockComponent({
           fill
           alt={image.alt}
           className="object-cover"
+          fetchPriority={preload ? 'high' : undefined}
           preload={preload}
           sizes="100vw"
           src={image.src}

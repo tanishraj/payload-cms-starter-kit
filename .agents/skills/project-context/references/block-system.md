@@ -40,7 +40,7 @@ A Page block normally touches all of these surfaces:
 8. Focused schema/rendering tests plus registration, preview, thumbnail, theme, and documentation contracts.
 9. The maintained [block operator guide](../../../../docs/guides/blocks.md) and [feature inventory](../../../../docs/architecture/feature-inventory.md).
 
-Production Page blocks are wrapped in `BlockErrorBoundary`, so one broken block does not crash the remaining layout. The production renderer assigns `preload` only to the first renderable Hero Banner image in document order, sharing one assignment state through Reusable Section recursion and skipping heroes without usable media. Live preview does not assign that production preload. Reusable Section rendering stops after depth 10. Keep production/live-preview case coverage equal.
+Production Page blocks are wrapped in `BlockErrorBoundary`, so one broken block does not crash the remaining layout. The production renderer assigns `preload` with high fetch priority only to the first renderable Hero Banner image in document order, sharing one assignment state through Reusable Section recursion and skipping heroes without usable media. Live preview does not assign that production preload or high priority. Reusable Section rendering stops after depth 10. Keep production/live-preview case coverage equal.
 
 ## Shared Configuration and Presentation
 

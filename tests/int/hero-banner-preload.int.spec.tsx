@@ -34,7 +34,9 @@ describe('Hero Banner preload selection', () => {
     )
 
     expect(html.match(/<link rel="preload" as="image"/g)).toHaveLength(1)
+    expect(html.match(/fetchPriority="high"/g)).toHaveLength(2)
     expect(html).toMatch(/<link rel="preload" as="image"[^>]+%2Fmedia%2Fnested\.jpg/)
+    expect(html).toMatch(/<img[^>]+fetchPriority="high"[^>]+nested\.jpg/)
     expect(html).toContain('Nested valid hero')
     expect(html).toContain('Later hero')
   })

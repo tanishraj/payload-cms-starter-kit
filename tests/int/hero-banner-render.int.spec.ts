@@ -21,7 +21,9 @@ describe('Hero Banner block', () => {
     )
 
     expect(eager).toContain('<link rel="preload" as="image"')
+    expect(eager.match(/fetchPriority="high"/g)).toHaveLength(2)
     expect(lazy).not.toContain('<link rel="preload" as="image"')
+    expect(lazy).not.toContain('fetchPriority="high"')
   })
 
   it('renders image, eyebrow, title, description, and two CTA buttons', () => {
