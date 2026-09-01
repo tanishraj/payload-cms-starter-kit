@@ -2730,6 +2730,7 @@
       "tests/int/news-events-tabs-route.int.spec.ts",
       "tests/int/news-events-tabs.int.spec.tsx",
       "tests/int/news-grid.int.spec.tsx",
+      "tests/int/open-graph-image-renderer.int.spec.tsx",
       "tests/int/open-graph-images.int.spec.tsx",
       "tests/int/opengraph-fallback-routes.int.spec.tsx",
       "tests/int/operational-audit.int.spec.ts",
@@ -2801,7 +2802,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "ac1b1eaaac15008bbf24b3f1acd6637495c6574a3424c089fd4ddafc2f033199"
+    "sha256": "29090d21e876a5693883b777ea3d0a85179d35f01bafc62a02b0022a4ecd1b77"
   },
   "surfaces": {
     "access": [
@@ -3067,6 +3068,7 @@
       "tests/int/news-events-tabs-route.int.spec.ts",
       "tests/int/news-events-tabs.int.spec.tsx",
       "tests/int/news-grid.int.spec.tsx",
+      "tests/int/open-graph-image-renderer.int.spec.tsx",
       "tests/int/open-graph-images.int.spec.tsx",
       "tests/int/opengraph-fallback-routes.int.spec.tsx",
       "tests/int/operational-audit.int.spec.ts",
