@@ -27,7 +27,8 @@ React Server Components load public CMS data. Focused client components own inte
 - `/search`, `/api/search`, feeds, sitemap, robots, and Open Graph image routes implement discovery.
   Generated Open Graph routes keep their page-specific cards when their published record and public
   media logo are available, and return the code-owned SNMIH preview when a required record or the
-  bounded remote-logo request is unavailable.
+  bounded remote-logo request is unavailable. Fetched AVIF logos are normalized to PNG before they
+  reach Next.js `ImageResponse`, while renderer-supported image formats pass through unchanged.
 - `/preview/page/[id]` and live-preview components render authenticated draft data. Draft Page,
   Article, and News/Event Local API reads pass the authenticated user with access enforcement;
   published shared settings continue through their public access branch.

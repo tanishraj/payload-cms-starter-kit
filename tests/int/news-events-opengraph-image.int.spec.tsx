@@ -1,6 +1,7 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import type { ReactNode } from 'react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import sharp from 'sharp'
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mocks = vi.hoisted(() => ({
   fetch: vi.fn(),
@@ -25,6 +26,8 @@ vi.mock('next/og', () => ({
 
 import NewsEventOgImage from '@/app/(frontend)/news-events/[slug]/opengraph-image'
 
+let avifLogo: Buffer
+
 const renderImage = async () => {
   const response = await NewsEventOgImage({
     params: Promise.resolve({ slug: 'clinical-learning-symposium' }),
@@ -34,11 +37,24 @@ const renderImage = async () => {
 }
 
 describe('News & Events detail OpenGraph image', () => {
+  beforeAll(async () => {
+    avifLogo = await sharp({
+      create: {
+        background: { alpha: 1, b: 86, g: 52, r: 24 },
+        channels: 4,
+        height: 8,
+        width: 8,
+      },
+    })
+      .avif()
+      .toBuffer()
+  })
+
   beforeEach(() => {
     vi.clearAllMocks()
     vi.stubGlobal('fetch', mocks.fetch)
     mocks.fetch.mockResolvedValue(
-      new Response('logo', { headers: { 'content-type': 'image/avif' } }),
+      new Response(avifLogo, { headers: { 'content-type': 'image/avif' } }),
     )
     mocks.getPayload.mockResolvedValue({
       find: mocks.find,
@@ -89,10 +105,10 @@ describe('News & Events detail OpenGraph image', () => {
     expect(markup).toContain('Clinical learning symposium')
   })
 
-  it('renders fetched AVIF data with intrinsic dimensions', async () => {
+  it('renders fetched AVIF data as PNG with intrinsic dimensions', async () => {
     const markup = await renderImage()
 
-    expect(markup).toContain('src="data:image/avif;base64,bG9nbw=="')
+    expect(markup).toContain('src="data:image/png;base64,')
     expect(markup).toContain('width="512"')
     expect(markup).toContain('height="512"')
   })

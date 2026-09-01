@@ -3,6 +3,7 @@ import 'server-only'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { ImageResponse } from 'next/og'
+import sharp from 'sharp'
 
 import type { OpenGraphMediaImage } from '@/lib/media'
 
@@ -26,6 +27,23 @@ type LoadOpenGraphRemoteImageOptions = {
 }
 
 let fallbackImageDataURLPromise: Promise<string> | undefined
+
+const normalizeOpenGraphImage = async ({
+  contentType,
+  data,
+}: {
+  contentType: string
+  data: Buffer
+}): Promise<{ contentType: string; data: Buffer }> => {
+  if (contentType !== 'image/avif') {
+    return { contentType, data }
+  }
+
+  return {
+    contentType: 'image/png',
+    data: await sharp(data).png().toBuffer(),
+  }
+}
 
 const getFallbackImageDataURL = (): Promise<string> => {
   fallbackImageDataURLPromise ??= readFile(fallbackImagePath, 'base64').then(
@@ -61,11 +79,14 @@ export const loadOpenGraphRemoteImage = async (
       return undefined
     }
 
-    const data = Buffer.from(await response.arrayBuffer()).toString('base64')
+    const normalizedImage = await normalizeOpenGraphImage({
+      contentType,
+      data: Buffer.from(await response.arrayBuffer()),
+    })
 
     return {
       ...image,
-      src: `data:${contentType};base64,${data}`,
+      src: `data:${normalizedImage.contentType};base64,${normalizedImage.data.toString('base64')}`,
     }
   } catch {
     return undefined

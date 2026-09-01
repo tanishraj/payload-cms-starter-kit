@@ -1,5 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import type { ReactNode } from 'react'
+import sharp from 'sharp'
 import { describe, expect, it, vi } from 'vitest'
 
 vi.mock('next/og', () => ({
@@ -27,22 +28,63 @@ const remoteImage: OpenGraphMediaImage = {
 }
 
 describe('Open Graph image loading', () => {
-  it('loads a successful remote image into a renderer-safe data URL', async () => {
+  it('preserves a successful renderer-supported image data URL', async () => {
     const fetcher = vi.fn().mockResolvedValue(
       new Response('logo', {
-        headers: { 'content-type': 'image/avif; charset=binary' },
+        headers: { 'content-type': 'image/webp; charset=binary' },
       }),
     )
 
     await expect(loadOpenGraphRemoteImage(remoteImage, { fetcher })).resolves.toEqual({
       height: 512,
-      src: 'data:image/avif;base64,bG9nbw==',
+      src: 'data:image/webp;base64,bG9nbw==',
       width: 512,
     })
     expect(fetcher).toHaveBeenCalledWith(
       remoteImage.src,
       expect.objectContaining({ cache: 'force-cache', signal: expect.any(Object) }),
     )
+  })
+
+  it('normalizes a successful AVIF response to a PNG data URL', async () => {
+    const avif = await sharp({
+      create: {
+        background: { alpha: 1, b: 86, g: 52, r: 24 },
+        channels: 4,
+        height: 8,
+        width: 8,
+      },
+    })
+      .avif()
+      .toBuffer()
+    const fetcher = vi.fn().mockResolvedValue(
+      new Response(avif, {
+        headers: { 'content-type': 'image/avif' },
+      }),
+    )
+
+    const result = await loadOpenGraphRemoteImage(remoteImage, { fetcher })
+
+    expect(result).toMatchObject({ height: 512, width: 512 })
+    expect(result?.src).toMatch(/^data:image\/png;base64,/)
+
+    const png = Buffer.from(result?.src.split(',', 2)[1] ?? '', 'base64')
+
+    await expect(sharp(png).metadata()).resolves.toMatchObject({
+      format: 'png',
+      height: 8,
+      width: 8,
+    })
+  })
+
+  it('omits an AVIF response that cannot be normalized', async () => {
+    const fetcher = vi.fn().mockResolvedValue(
+      new Response('not-an-avif', {
+        headers: { 'content-type': 'image/avif' },
+      }),
+    )
+
+    await expect(loadOpenGraphRemoteImage(remoteImage, { fetcher })).resolves.toBeUndefined()
   })
 
   it('omits a missing image without fetching', async () => {
