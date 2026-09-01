@@ -3,7 +3,6 @@ import { getPayload, type Where } from 'payload'
 import { unstable_cache } from 'next/cache'
 
 import type { Metadata } from 'next'
-import { isCurrentCMSAdmin } from '@/lib/cmsSession'
 import { getMediaAbsoluteUrl } from '@/lib/media'
 import { resolveCanonicalURL, resolveRobotsMode } from '@/lib/seo'
 import { toAbsoluteSiteUrl } from '@/lib/siteUrl'
@@ -57,16 +56,6 @@ const getSeoSettings = unstable_cache(_getSeoSettings, ['seo-settings'], {
   tags: [CMS_CACHE_TAGS.globals],
   revalidate: false,
 })
-
-const canCurrentRequestBypassSystemModes = async (): Promise<boolean> => {
-  const systemModeSettings = await getSystemModeSettings()
-
-  if (!systemModeSettings.bypassForLoggedInAdmins) {
-    return false
-  }
-
-  return isCurrentCMSAdmin()
-}
 
 const _getPublishedPageByID = async ({
   depth = 2,
@@ -349,7 +338,6 @@ const getSystemBehaviorPages = async () => {
   ])
 
   return {
-    bypassForLoggedInAdmins: Boolean(systemModeSettings.bypassForLoggedInAdmins),
     comingSoonPage,
     maintenancePage,
     notFoundPage,
@@ -357,26 +345,11 @@ const getSystemBehaviorPages = async () => {
   }
 }
 
-const getResolvedSystemPageRenderState = async ({
-  ignoreBypass = false,
-}: {
-  ignoreBypass?: boolean
-} = {}): Promise<{
+const getResolvedSystemPageRenderState = async (): Promise<{
   mode: 'comingSoon' | 'maintenance' | null
   page: SystemPage | null
 }> => {
   const systemBehavior = await getSystemBehaviorPages()
-
-  if (
-    !ignoreBypass &&
-    systemBehavior.bypassForLoggedInAdmins &&
-    (await canCurrentRequestBypassSystemModes())
-  ) {
-    return {
-      mode: null,
-      page: null,
-    }
-  }
 
   if (systemBehavior.siteMode === 'maintenance') {
     return {
@@ -409,22 +382,7 @@ export async function getHomepageRenderState(): Promise<{
   mode: 'comingSoon' | 'maintenance' | null
   page: SystemPage | null
 }> {
-  const renderState = await getResolvedSystemPageRenderState()
-
-  if (renderState.page || renderState.mode) {
-    return renderState
-  }
-
-  if (await getHomepagePage()) {
-    return {
-      mode: null,
-      page: null,
-    }
-  }
-
-  return getResolvedSystemPageRenderState({
-    ignoreBypass: true,
-  })
+  return getResolvedSystemPageRenderState()
 }
 
 export async function getManagedNotFoundPage(): Promise<SystemPage | null> {

@@ -1,13 +1,7 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
 import { CookieConsentBanner } from '@/components/global/CookieConsentBanner'
-
-const { refresh } = vi.hoisted(() => ({ refresh: vi.fn() }))
-
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({ refresh }),
-}))
 
 const modalConfig = {
   enabled: true,
@@ -23,7 +17,6 @@ const modalConfig = {
 describe('Cookie Consent Modal', () => {
   beforeEach(() => {
     document.cookie = 'analytics_consent=; Max-Age=0; Path=/'
-    refresh.mockReset()
   })
 
   afterEach(() => {
@@ -101,17 +94,14 @@ describe('Cookie Consent Modal', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Accept all' }))
 
     await waitFor(() => expect(document.cookie).toContain('analytics_consent=granted'))
-    expect(refresh).toHaveBeenCalledTimes(1)
 
     acceptView.unmount()
     document.cookie = 'analytics_consent=; Max-Age=0; Path=/'
-    refresh.mockReset()
 
     render(<CookieConsentBanner {...modalConfig} />)
     fireEvent.click(await screen.findByRole('button', { name: 'Reject non-essential' }))
 
     await waitFor(() => expect(document.cookie).toContain('analytics_consent=denied'))
-    expect(refresh).not.toHaveBeenCalled()
   })
 
   it('does not move focus for the non-modal Bottom Bar variant', async () => {

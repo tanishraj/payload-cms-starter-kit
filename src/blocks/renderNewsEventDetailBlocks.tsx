@@ -36,6 +36,7 @@ export function renderNewsEventDetailBlocks(
 ) {
   const args: PageBlockRenderArgs = {
     automaticBreadcrumbs: context.automaticBreadcrumbs,
+    heroPreloadState: { assigned: false },
   }
 
   return (

@@ -28,6 +28,10 @@ React Server Components load public CMS data. Focused client components own inte
 - `/preview/page/[id]` and live-preview components render authenticated draft data. Draft Page,
   Article, and News/Event Local API reads pass the authenticated user with access enforcement;
   published shared settings continue through their public access branch.
+- The shared public frontend layout depends only on tagged CMS data. It does not read request
+  cookies or authenticate a Payload user. A post-hydration request to the private, no-store
+  `/api/frontend-session` endpoint returns only email and role and mounts the editor toolbar when a
+  valid session exists.
 - Gallery Album-backed blocks discover explicitly selected album dependencies across Event Gallery,
   Image Mosaic, and populated Reusable Sections. Production block adapters load only selected
   published albums; authenticated routes load selected draft albums on the server and pass the same
@@ -64,13 +68,13 @@ MongoDB is the supported database. Local Docker Compose pins MongoDB 8.0.29 and 
 
 ## Caching and Delivery Safety
 
-Layout globals, the News & Events detail template, Pages, fixed Calendar month projections, and redirects use tagged caching and focused invalidation hooks. Calendar Upcoming data uses five-minute freshness and stays independent of month, view, and classification filtering inside the selected scope. Site timezone, News/Event classification, and News/Event publication changes invalidate Calendar projections. Page, Article, Review, News/Event, and Redirect hooks invalidate both publication and takedown transitions, including published deletion. Feeds, robots, and sitemap use explicit time revalidation. Article and Review helpers also use request-level deduplication. Preserve draft/public filtering and cache invalidation together when changing queries or hooks.
+Layout globals, the News & Events detail template, Pages, fixed Calendar month projections, and redirects use tagged caching and focused invalidation hooks. The anonymous shell stays cacheable because editor-session and analytics-consent cookies are evaluated only by post-hydration client boundaries. Calendar Upcoming data uses five-minute freshness and stays independent of month, view, and classification filtering inside the selected scope. Site timezone, News/Event classification, and News/Event publication changes invalidate Calendar projections. Page, Article, Review, News/Event, and Redirect hooks invalidate both publication and takedown transitions, including published deletion. Feeds, robots, and sitemap use explicit time revalidation. Article and Review helpers also use request-level deduplication. Preserve draft/public filtering and cache invalidation together when changing queries or hooks.
 
 Trusted CLI migrations that create Pages mark their writes to skip Next.js cache revalidation,
 because the standalone Payload process has no live Next.js cache store; ordinary runtime writes
 retain the complete invalidation behavior above.
 
-Maintenance and coming-soon overrides currently wrap the homepage, catch-all Page routes, and the explicit Page-backed `/news-events` route; other dedicated domain, search, feed, Admin, and API routes remain reachable.
+Maintenance and coming-soon overrides wrap the homepage, catch-all Page routes, and the explicit Page-backed `/news-events` route regardless of CMS authentication. Editors inspect normal or draft Page content through authenticated `/preview/page/[id]`; other dedicated domain, search, feed, Admin, and API routes remain reachable.
 
 ## Themes and Analytics
 
@@ -82,7 +86,7 @@ reducing opacity below the accessible contrast contract.
 Light media overlays keep a dedicated contrast-tested foreground from each theme's light palette in
 both website modes, because the overlay surface remains white even when the surrounding page is dark.
 
-Google Tag Manager takes precedence over standalone GA4. Analytics and Vercel Speed Insights load only after the consent cookie is granted. Admin routes are excluded from public analytics.
+Google Tag Manager takes precedence over standalone GA4. The cached server layout passes primitive analytics settings to a client controller; GTM or standalone GA4 plus Vercel Speed Insights load only after the consent cookie is granted. Acceptance dispatches a same-page event and mounts the integrations without navigation. Admin routes are excluded from public analytics.
 
 The Cookie Consent Modal uses a focus-trapped dialog. It initially focuses rejection, treats Escape
 as rejection, ignores backdrop dismissal, and restores the visitor's previous focus after a decision.

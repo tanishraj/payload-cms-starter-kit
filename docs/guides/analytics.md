@@ -17,11 +17,11 @@ Do not paste tracking scripts into page content or HTML embeds. All analytics be
 
 ## How It Connects To The Website
 
-The website layout reads this global on every page load. If a visitor has accepted the cookie consent notice, the configured GTM container or GA4 script is injected into the page. If the visitor has not yet decided or has rejected cookies, no analytics scripts load at all.
+The cached public layout reads this global with the other frontend settings and passes only the enablement flags and IDs to a client consent controller. The controller checks consent after hydration. If a visitor has accepted the cookie consent notice, it mounts the configured GTM container or standalone GA4 plus Vercel Speed Insights. If the visitor has not yet decided or has rejected cookies, none of those integrations load.
 
-When `Cookie Consent Banner` is enabled, it appears if the visitor has no decision cookie. **Accept all** refreshes the route and allows analytics to load; **Reject non-essential** stores denial without loading analytics.
+When `Cookie Consent Banner` is enabled, it appears if the visitor has no decision cookie. **Accept all** mounts the allowed integrations immediately on the same page without navigation; **Reject non-essential** stores denial without loading analytics. GTM takes precedence when both GTM and standalone GA4 are configured.
 
-Changing settings here takes effect on the next page load for visitors who have already consented.
+Changing settings invalidates the cached frontend settings and takes effect on the next page load for visitors who have already consented.
 
 ## Vercel Speed Insights
 

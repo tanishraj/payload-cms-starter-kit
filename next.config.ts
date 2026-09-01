@@ -35,6 +35,7 @@ export const nextConfig: NextConfig = {
     ]
   },
   images: {
+    minimumCacheTTL: 86400,
     localPatterns: [
       {
         pathname: '/api/media/file/**',

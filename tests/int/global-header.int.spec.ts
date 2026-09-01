@@ -104,7 +104,7 @@ describe('global header wiring', () => {
     expect(layoutSource).toContain('<GlobalHeader')
     expect(layoutSource).toContain('stickyTopOffset={headerTopOffset}')
 
-    const adminIndex = layoutSource.indexOf('<AdminSessionBar')
+    const adminIndex = layoutSource.indexOf('<DeferredAdminSessionBar')
     const announcementIndex = layoutSource.indexOf('<GlobalAnnouncement')
     const headerIndex = layoutSource.indexOf('<GlobalHeader')
     const mainIndex = layoutSource.indexOf('<main id="main-content" data-site-main="true">')

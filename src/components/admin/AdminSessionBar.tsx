@@ -4,13 +4,12 @@ import Link from 'next/link'
 
 import { AdminUserMenu } from '@/components/admin/AdminUserMenu'
 import { Button } from '@/components/ui/button'
-import { formatCMSRoleLabel } from '@/lib/cmsSession'
-import type { User } from '@/payload-types'
+import { formatCMSRoleLabel, type FrontendSessionUser } from '@/lib/frontendSession'
 
 export function AdminSessionBar({
   user,
 }: {
-  user: User | null
+  user: FrontendSessionUser | null
 }) {
   if (!user) {
     return null

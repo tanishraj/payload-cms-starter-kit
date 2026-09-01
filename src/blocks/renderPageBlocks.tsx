@@ -13,7 +13,7 @@ import { FeatureMatrixBlockComponent } from './FeatureMatrix/Component'
 import { GalleryShowcaseBlockComponent } from './GalleryShowcase/Component'
 import { EventGalleryBlockComponent } from './EventGallery/Component'
 import { GalleryAlbumTabsBlockComponent } from './GalleryAlbumTabs/Component'
-import { HeroBannerBlockComponent } from './HeroBanner/Component'
+import { HeroBannerBlockComponent, resolveHeroBannerImage } from './HeroBanner/Component'
 import { HeroCarouselBlockComponent } from './HeroCarousel/Component'
 import { GalleryCoverflowBlockComponent } from './GalleryCoverflow/Component'
 import { ImageMosaicBlockComponent } from './ImageMosaic/Component'
@@ -75,6 +75,7 @@ export type PageRenderContext = {
 
 export type PageBlockRenderArgs = {
   automaticBreadcrumbs: ResolvedPageBreadcrumb[]
+  heroPreloadState: { assigned: boolean }
 }
 
 export function renderPageBlockNode(
@@ -95,8 +96,12 @@ export function renderPageBlockNode(
   switch (block.blockType) {
     case 'announcement':
       return wrap(<AnnouncementBlockComponent {...block} />)
-    case 'heroBanner':
-      return wrap(<HeroBannerBlockComponent {...block} />)
+    case 'heroBanner': {
+      const preload =
+        !args.heroPreloadState.assigned && Boolean(resolveHeroBannerImage(block))
+      if (preload) args.heroPreloadState.assigned = true
+      return wrap(<HeroBannerBlockComponent {...block} preload={preload} />)
+    }
     case 'heroCarousel':
       return wrap(<HeroCarouselBlockComponent {...block} />)
     case 'galleryCoverflow':
@@ -232,6 +237,7 @@ export function renderPageBlocks(blocks?: PageBlock[] | null, context: PageRende
     automaticBreadcrumbs: context.page
       ? resolveAutomaticPageBreadcrumbs(context.page, { isHomepage: context.isHomepage })
       : [],
+    heroPreloadState: { assigned: false },
   }
 
   return (

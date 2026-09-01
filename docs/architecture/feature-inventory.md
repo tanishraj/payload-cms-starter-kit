@@ -6,8 +6,11 @@ This is the maintained technical map of the starter. It records what is register
 
 - Payload CMS 3.85.2 and Next.js 16 share one App Router application.
 - React Server Components load public CMS data; focused client components provide carousels, dialogs, tabs, consent, forms, and gallery interaction.
+- The public shell uses tagged CMS caches and does not read request cookies or authenticate a Payload user. A private no-store `/api/frontend-session` lookup mounts the editor toolbar after hydration when a CMS session exists.
+- Analytics settings cross the cached shell as primitive props; a client consent boundary mounts GTM or standalone GA4 plus Speed Insights only after consent.
 - MongoDB is the only supported database adapter.
 - Uploads use local disk or an S3-compatible provider. Production on Vercel rejects local-disk media at startup.
+- Public fonts use `next/font`-hosted Inter, Playfair Display, and IBM Plex Mono assets rather than runtime Google stylesheet imports.
 - Email is disabled or delivered through Resend.
 - Payload REST, GraphQL, admin, generated types, and generated import-map support are enabled.
 - The local plugin `withTrash()` enables Payload Trash on every collection.
@@ -83,7 +86,7 @@ PG Fee Structure is an independent department-first model for postgraduate fees.
 
 Headers register only Header Navbar 12; Footers register only Footer 56; System Pages register one matching System 404, System Maintenance, or System Coming Soon block. The admin picker uses generated JPEG thumbnails. `/block-thumbnail-previews/[slug]` is development-only. See [Page Blocks](../guides/blocks.md) for the operator catalog.
 
-Production Page blocks are wrapped in a block-level error boundary. Live Page preview covers the same block types and production components, including blocks reached through Reusable Sections. Reusable Section rendering has a maximum nesting depth of 10, while the schema prevents direct recursive selection.
+Production Page blocks are wrapped in a block-level error boundary. The production renderer preloads only the first renderable Hero Banner image in document order, including heroes reached through Reusable Section recursion; missing hero media does not consume the preload. Live Page preview covers the same block types and production components, including blocks reached through Reusable Sections, without assigning that production preload. Reusable Section rendering has a maximum nesting depth of 10, while the schema prevents direct recursive selection.
 
 Configurable visual blocks standardize their Payload editor structure as top-level `Content` and `Theme Settings` tabs. Genuine repeating card rows use the same nested tab structure and a shared semantic surface vocabulary: Default Card, Primary, Secondary, Muted, and Accent. The renderer resolves foreground, supporting text, icon, divider, link, and matching button contrast from the active theme. Variant-dependent controls only render a surface for existing card presentations; utility rows, connected timelines, lists, tables, galleries, logos, and navigation structures remain unboxed.
 
@@ -153,13 +156,14 @@ SNMIH-Blue is the default and runtime fallback; it uses `#031d44` as its light-m
 
 There is no built-in `/articles` or `/reviews` index route; create CMS Pages at those paths when the site needs archive landing pages. `/news-events` keeps an explicit route that resolves the published Page at that path so it can coexist with News & Events detail and feed routes. Generic Pages inherit configured metadata/default media rather than having their own dynamic Open Graph image route.
 
-Maintenance and coming-soon overrides are currently applied by the homepage and catch-all CMS Page routes. Dedicated article, review, news-event, search, feed, and API routes remain reachable.
+Maintenance and coming-soon overrides are applied to the homepage and catch-all CMS Page routes regardless of CMS authentication. Editors use `/preview/page/[id]` to inspect normal or draft Page content while a mode is active. Dedicated article, review, news-event, search, feed, and API routes remain reachable.
 
 ## APIs And Middleware
 
 | Surface                                        | Contract                                                                                                                     |
 | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `/admin`                                       | Payload admin UI with dashboard and session bar integration                                                                  |
+| `GET /api/frontend-session`                    | Private no-store email/role projection used by the deferred public editor toolbar                                            |
 | `/api/[...slug]`                               | Payload REST API                                                                                                             |
 | `/api/graphql` and `/api/graphql-playground`   | Payload GraphQL API and playground                                                                                           |
 | `POST /api/forms/[slug]/submit`                | Published-form validation, honeypot, best-effort in-memory throttling, storage, email, events, and optional review promotion |
@@ -190,6 +194,7 @@ The redirect proxy excludes Next.js internals, APIs, Admin, and common static/me
 - Sitemap fetches all result pages in batches of 500 and includes published Pages, Articles, Reviews, News & Events, the News & Events index, used article/review topic routes, used article tag routes, and eligible topic/tag routes used by indexable published News & Events entries. It does not generate filter-combination or pagination URLs.
 - `robots.txt` disallows Admin, API, and preview paths, or disallows the whole site when global robots is noindex.
 - Layout globals, Page data, and fixed Calendar month projections use persistent Next cache tags; Calendar Upcoming revalidates every five minutes. Article/review helper `cache()` calls mainly deduplicate within a render. Sitemap/robots/feeds also use explicit time revalidation.
+- The anonymous public shell remains cacheable because editor-session and analytics-consent cookies are evaluated only by post-hydration client boundaries.
 
 ## Media Governance
 
@@ -198,6 +203,8 @@ The redirect proxy excludes Next.js internals, APIs, Admin, and common static/me
 - Storage status is `unchecked`, `healthy`, `missing`, `check_failed`, or `local_only`.
 - Reconciliation scans at most 1,000 Media records per call, verifies S3 objects with `HeadObject`, updates health fields, creates/clears queue conditions, and audits missing/restored transitions.
 - Internal storage and usage fields are stripped before frontend data is passed to client components.
+- With `S3_PUBLIC_URL=https://assets.snmih.tanish.im`, rendered media uses the encoded direct R2 origin; `/api/media/file/**` remains the deliberate fallback when no public origin is configured. Next image variants use a one-day minimum optimizer TTL.
+- Site logos use positive intrinsic dimensions, display-width `sizes` hints for optimized raster variants, and one image when light and dark sources resolve to the same URL.
 
 ## Analytics And Consent
 
@@ -205,6 +212,7 @@ The redirect proxy excludes Next.js internals, APIs, Admin, and common static/me
 - GTM, standalone GA4, and Vercel Speed Insights are not loaded until `analytics_consent=granted`.
 - Vercel Speed Insights collects public-route Web Vitals only after analytics consent. Payload Admin is excluded.
 - The configurable banner writes `granted` or `denied` for one year using `SameSite=Lax` and `Secure` on HTTPS.
+- Consent changes are dispatched in the current page, so acceptance mounts integrations immediately without a route refresh and rejection keeps them absent.
 - This implements analytics consent gating, not a complete legal-compliance or consent-management platform. Obtain jurisdiction-specific legal review.
 
 ## Developer And Operational Tooling

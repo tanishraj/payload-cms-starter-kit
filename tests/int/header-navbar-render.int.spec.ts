@@ -113,6 +113,39 @@ describe('header logo resolution', () => {
     expect(html).toContain('/light-logo.svg')
     expect(html).toContain('/dark-logo.svg')
   })
+
+  it('uses intrinsic dimensions and a rendered pixel width hint', () => {
+    const html = renderToStaticMarkup(
+      createElement(SiteLogo, {
+        fallbackText: 'Acme Studio',
+        height: 40,
+        mode: 'siteDefault',
+        siteLogo: { alt: 'Acme', height: 200, url: '/logo.png', width: 400 },
+      }),
+    )
+
+    expect(html).toContain('width="400"')
+    expect(html).toContain('height="200"')
+    expect(html).toContain('sizes="80px"')
+    expect(html).not.toContain('sizes="100vw"')
+  })
+
+  it('uses a bounded square fallback and deduplicates identical theme URLs', () => {
+    const html = renderToStaticMarkup(
+      createElement(SiteLogo, {
+        customDark: { alt: 'Acme', url: '/same-logo.png' },
+        customLight: { alt: 'Acme', url: '/same-logo.png' },
+        fallbackText: 'Acme Studio',
+        height: 40,
+        mode: 'customLogo',
+      }),
+    )
+
+    expect(html.match(/<img/g)).toHaveLength(1)
+    expect(html).toContain('width="40"')
+    expect(html).toContain('height="40"')
+    expect(html).toContain('sizes="40px"')
+  })
 })
 
 describe('header navbar rendering', () => {

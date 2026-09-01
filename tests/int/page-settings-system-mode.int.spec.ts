@@ -80,9 +80,15 @@ describe('system mode settings', () => {
     ])
   })
 
-  it('moves site mode controls into System Mode Settings', () => {
+  it('keeps site mode controls in System Mode Settings without an authenticated bypass', () => {
     const siteModeField = getNamedField(SystemModeSettings.fields, 'siteMode')
-    const bypassField = getNamedField(SystemModeSettings.fields, 'bypassForLoggedInAdmins')
+    const bypassField = SystemModeSettings.fields.find(
+      (field) =>
+        typeof field === 'object' &&
+        field !== null &&
+        'name' in field &&
+        field.name === 'bypassForLoggedInAdmins',
+    )
 
     expect(siteModeField.defaultValue).toBe('off')
     expect(siteModeField.options?.map(({ value }) => value)).toEqual([
@@ -90,32 +96,21 @@ describe('system mode settings', () => {
       'maintenance',
       'comingSoon',
     ])
-    expect(bypassField.admin?.description).toBe(
-      'Allow logged-in admin users to continue seeing the normal site when a mode is active.',
-    )
+    expect(bypassField).toBeUndefined()
   })
 
-  it('keeps maintenance mode active for authenticated non-admin users', async () => {
+  it('keeps maintenance mode active without authenticating the public request', async () => {
     payloadMocks.findGlobal.mockImplementation(async ({ slug }) => {
       if (slug === 'page-settings') {
         return { homepage: null }
       }
 
       return {
-        bypassForLoggedInAdmins: true,
         comingSoonPage: null,
         maintenancePage: null,
         notFoundPage: null,
         siteMode: 'maintenance',
       }
-    })
-    payloadMocks.auth.mockResolvedValue({
-      user: {
-        role: 'editor',
-        capabilities: {
-          manage_pages: true,
-        },
-      },
     })
 
     const { getSystemPageRenderState } = await loadPageData()
@@ -124,5 +119,6 @@ describe('system mode settings', () => {
       mode: 'maintenance',
       page: null,
     })
+    expect(payloadMocks.auth).not.toHaveBeenCalled()
   })
 })

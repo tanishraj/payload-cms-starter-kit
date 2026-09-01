@@ -133,15 +133,6 @@ export const SystemModeSettings: GlobalConfig = {
       },
     },
     {
-      name: 'bypassForLoggedInAdmins',
-      type: 'checkbox',
-      defaultValue: true,
-      admin: {
-        description:
-          'Allow logged-in admin users to continue seeing the normal site when a mode is active.',
-      },
-    },
-    {
       name: 'siteMode',
       label: 'Site Mode',
       type: 'radio',

@@ -1,15 +1,14 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
-import { cookies } from 'next/headers'
+import { IBM_Plex_Mono, Inter, Playfair_Display } from 'next/font/google'
 import React from 'react'
-import { GoogleTagManager } from '@next/third-parties/google'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 
 import '../../styles/globals.css'
 
 import type { Metadata } from 'next'
-import { AdminSessionBar } from '@/components/admin/AdminSessionBar'
+import { DeferredAdminSessionBar } from '@/components/admin/DeferredAdminSessionBar'
+import { ConsentAwareAnalytics } from '@/components/analytics/ConsentAwareAnalytics'
 import { BackToTopButton } from '@/components/global/BackToTopButton'
 import { CookieConsentBanner } from '@/components/global/CookieConsentBanner'
 import { SearchDialog } from '@/components/global/SearchDialog'
@@ -20,7 +19,6 @@ import {
   type BlockAppearance,
   resolveBlockAppearanceClasses,
 } from '@/blocks/shared/blockAppearance'
-import { getCurrentCMSUser } from '@/lib/cmsSession'
 import { resolveLegalPageHrefs } from '@/lib/legalPagePaths'
 import { getMediaAbsoluteUrl } from '@/lib/media'
 import { getRobotsMetadata } from '@/lib/seo'
@@ -30,7 +28,26 @@ import type { Footer, Header } from '@/payload-types'
 import { CMS_CACHE_TAGS } from '@/hooks/revalidateCmsContent'
 import { stripInternalMediaFields } from '@/lib/stripInternalMediaFields'
 
-export const dynamic = 'force-dynamic'
+const inter = Inter({
+  display: 'swap',
+  subsets: ['latin'],
+  style: ['normal', 'italic'],
+  variable: '--font-inter',
+})
+
+const playfairDisplay = Playfair_Display({
+  display: 'swap',
+  subsets: ['latin'],
+  style: ['normal', 'italic'],
+  variable: '--font-playfair-display',
+})
+
+const ibmPlexMono = IBM_Plex_Mono({
+  display: 'swap',
+  subsets: ['latin'],
+  weight: ['400', '600'],
+  variable: '--font-ibm-plex-mono',
+})
 
 const defaultSiteURL = getSiteURL()
 
@@ -196,14 +213,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
-  const cookieStore = await cookies()
-  const analyticsConsent = cookieStore.get('analytics_consent')?.value
-  const hasAnalyticsConsent = analyticsConsent === 'granted'
-
-  const [frontendGlobals, currentUser] = await Promise.all([
-    getFrontendGlobals(),
-    getCurrentCMSUser(),
-  ])
+  const frontendGlobals = await getFrontendGlobals()
   const {
     activeFooter,
     activeHeader,
@@ -228,13 +238,20 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const announcementDismissible = announcementSettings?.announcementDismissible
   const announcementHideOnScroll = announcementSettings?.announcementHideOnScroll
   const pageAppearance = pageSettings?.pageAppearance as BlockAppearance | null | undefined
-  const htmlClassName = colorScheme === 'dark' ? 'dark' : undefined
-  const htmlStyle =
-    colorScheme === 'system'
-      ? ({ colorScheme: 'light dark' } as React.CSSProperties)
-      : ({ colorScheme } as React.CSSProperties)
+  const htmlClassName = [
+    inter.variable,
+    playfairDisplay.variable,
+    ibmPlexMono.variable,
+    colorScheme === 'dark' ? 'dark' : null,
+  ]
+    .filter(Boolean)
+    .join(' ')
+  const htmlStyle = {
+    ...(colorScheme === 'system' ? { colorScheme: 'light dark' } : { colorScheme }),
+    '--cms-toolbar-offset': '0px',
+  } as React.CSSProperties & { '--cms-toolbar-offset': string }
   const { className: pageBodyClassName } = resolveBlockAppearanceClasses(pageAppearance)
-  const cmsToolbarOffset = currentUser ? '3rem' : '0px'
+  const cmsToolbarOffset = 'var(--cms-toolbar-offset, 0px)'
   // Only a persistent (non-hide-on-scroll) announcement reserves space below it;
   // the bar collapses --global-announcement-height to 0 when dismissed. The
   // fallback keeps the correct offset during SSR and before hydration.
@@ -251,27 +268,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       style={htmlStyle}
       suppressHydrationWarning
     >
-      {hasAnalyticsConsent && analyticsSettings?.gtmEnabled && analyticsSettings.gtmContainerId ? (
-        <GoogleTagManager gtmId={analyticsSettings.gtmContainerId} />
-      ) : null}
       <head>
-        {/* GA4 standalone — only when GTM is off and consent is granted */}
-        {hasAnalyticsConsent &&
-        !analyticsSettings?.gtmEnabled &&
-        analyticsSettings?.ga4Enabled &&
-        analyticsSettings.ga4MeasurementId ? (
-          <>
-            <script
-              async
-              src={`https://www.googletagmanager.com/gtag/js?id=${analyticsSettings.ga4MeasurementId}`}
-            />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${analyticsSettings.ga4MeasurementId}');`,
-              }}
-            />
-          </>
-        ) : null}
         {/* RSS feed autodiscovery */}
         <link
           rel="alternate"
@@ -333,7 +330,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         >
           Skip to main content
         </a>
-        <AdminSessionBar user={currentUser} />
+        <DeferredAdminSessionBar />
         <div style={contentShellStyle}>
           <GlobalAnnouncement
             displayMode={announcementDisplayMode}
@@ -389,8 +386,13 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
           learnMoreLabel={cookieConsentSettings.learnMoreLabel}
           privacyPolicyUrl={privacyPolicyUrl}
         />
+        <ConsentAwareAnalytics
+          ga4Enabled={analyticsSettings.ga4Enabled}
+          ga4MeasurementId={analyticsSettings.ga4MeasurementId}
+          gtmEnabled={analyticsSettings.gtmEnabled}
+          gtmContainerId={analyticsSettings.gtmContainerId}
+        />
         <SearchDialog />
-        {hasAnalyticsConsent ? <SpeedInsights /> : null}
       </body>
     </html>
   )

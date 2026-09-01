@@ -2,6 +2,10 @@ import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
 
+const analyticsSource = readFileSync(
+  'src/components/analytics/ConsentAwareAnalytics.tsx',
+  'utf8',
+)
 const layoutSource = readFileSync('src/app/(frontend)/layout.tsx', 'utf8')
 const packageJSON = JSON.parse(readFileSync('package.json', 'utf8')) as {
   dependencies?: Record<string, string>
@@ -13,22 +17,35 @@ describe('Vercel Speed Insights integration', () => {
   it('installs and imports the framework-specific package', () => {
     expect(packageJSON.dependencies?.['@vercel/speed-insights']).toBeTruthy()
     expect(packageJSON.dependencies?.['@next/third-parties']).toBe('16.2.10')
-    expect(layoutSource).toContain("import { SpeedInsights } from '@vercel/speed-insights/next'")
-    expect(layoutSource).toContain("import { GoogleTagManager } from '@next/third-parties/google'")
-  })
-
-  it('mounts Speed Insights only through the existing analytics consent boundary', () => {
-    expect(layoutSource).toContain("const hasAnalyticsConsent = analyticsConsent === 'granted'")
-    expect(layoutSource).toMatch(/\{hasAnalyticsConsent\s*\?\s*<SpeedInsights\s*\/>\s*:\s*null\}/)
-    expect(layoutSource).not.toMatch(/^\s*<SpeedInsights\s*\/>\s*$/m)
-  })
-
-  it('mounts Google Tag Manager only through the analytics consent boundary', () => {
-    expect(layoutSource).toMatch(
-      /hasAnalyticsConsent\s*&&\s*analyticsSettings\?\.gtmEnabled\s*&&\s*analyticsSettings\.gtmContainerId\s*\?\s*\(\s*<GoogleTagManager/,
+    expect(analyticsSource).toContain(
+      "import { SpeedInsights } from '@vercel/speed-insights/next'",
     )
-    expect(layoutSource).toContain('<GoogleTagManager gtmId={analyticsSettings.gtmContainerId} />')
-    expect(layoutSource).not.toContain('googletagmanager.com/gtm.js?id=')
+    expect(analyticsSource).toContain(
+      "import { GoogleTagManager } from '@next/third-parties/google'",
+    )
+  })
+
+  it('mounts Speed Insights only after the client consent boundary grants access', () => {
+    expect(analyticsSource).toContain(
+      "const [granted, setGranted] = useState(false)",
+    )
+    expect(analyticsSource).toContain("if (!granted) return null")
+    expect(analyticsSource).toContain('<SpeedInsights />')
+  })
+
+  it('retains GTM precedence over standalone GA4 inside the granted branch', () => {
+    expect(analyticsSource).toMatch(
+      /gtmEnabled\s*&&\s*gtmId\s*\?\s*\(\s*<GoogleTagManager/,
+    )
+    expect(analyticsSource).toContain(': ga4Enabled && ga4Id ? (')
+    expect(analyticsSource).not.toContain('googletagmanager.com/gtm.js?id=')
+  })
+
+  it('keeps request cookies and analytics integrations out of the public server layout', () => {
+    expect(layoutSource).not.toContain("from 'next/headers'")
+    expect(layoutSource).not.toContain("@vercel/speed-insights/next")
+    expect(layoutSource).not.toContain("@next/third-parties/google")
+    expect(layoutSource).toContain('<ConsentAwareAnalytics')
   })
 
   it('documents deployment setup and consent-gated collection', () => {

@@ -15,7 +15,7 @@ The privacy-policy destination comes from `Site Identity > Legal`. If no Privacy
 
 ## Visitor Behavior
 
-The choice is stored in the `analytics_consent` cookie for one year with `SameSite=Lax` and `Secure` on HTTPS. Accepting stores `granted`; rejecting stores `denied`. A router refresh applies accepted GTM or GA4 configuration immediately. The Modal variant uses a dialog; all variants expose explicit accept and reject actions.
+The choice is stored in the `analytics_consent` cookie for one year with `SameSite=Lax` and `Secure` on HTTPS. Accepting stores `granted` and dispatches a same-page consent event, so configured GTM or standalone GA4 plus Vercel Speed Insights can mount immediately without navigation. Rejecting stores `denied`, emits the same state-change event, and keeps analytics absent. The Modal variant uses a dialog; all variants expose explicit accept and reject actions.
 
 The Modal variant moves initial focus to `Reject non-essential` and keeps keyboard focus inside the
 dialog. Escape records rejection and closes the dialog; clicking the backdrop does not dismiss it.

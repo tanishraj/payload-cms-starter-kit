@@ -98,6 +98,15 @@ browser TTL for eligible successful static responses. Prefer a new filename when
 asset. If an existing object key is overwritten, purge that exact custom-domain URL after the
 upload so Cloudflare does not serve the stale object.
 
+Before a production deployment, verify that the deployment environment contains exactly
+`S3_PUBLIC_URL=https://assets.snmih.tanish.im`. Changing this value requires a new deployment
+because `next.config.ts` reads the public media origin at build time. Next.js image variants use a
+one-day minimum optimizer TTL (`86400` seconds).
+
+Accept the rollout only after testing a direct object URL containing encoded spaces, its optimized
+`/_next/image` URL, and a repeated request that demonstrates cache reuse. Reject the rollout if any
+rendered media URL still resolves through `/api/media/file/**`.
+
 ### R2 Migration And Rollback
 
 1. Build the required object manifest from Payload media records, including originals, generated

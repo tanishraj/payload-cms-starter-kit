@@ -1,14 +1,13 @@
 'use client'
 
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ShieldCheck, X } from 'lucide-react'
 import { Dialog as DialogPrimitive } from 'radix-ui'
 import { Button } from '@/components/ui/button'
+import { readAnalyticsConsent, writeAnalyticsConsent } from '@/lib/analyticsConsent'
 import { cn } from '@/lib/utils'
 
-const CONSENT_COOKIE = 'analytics_consent'
 const BACK_TO_TOP_SELECTOR = '[data-back-to-top="true"]'
 const BACK_TO_TOP_OFFSET_PROPERTY = '--cookie-consent-back-to-top-offset'
 
@@ -28,8 +27,7 @@ export type CookieConsentConfig = {
 }
 
 function hasConsentDecision(): boolean {
-  if (typeof document === 'undefined') return true
-  return document.cookie.split(';').some((c) => c.trim().startsWith(`${CONSENT_COOKIE}=`))
+  return readAnalyticsConsent() !== null
 }
 
 // no-op subscribe — cookies have no push notifications; we only need the
@@ -45,16 +43,12 @@ function useConsent() {
     () => false,                 // server: always hide during SSR
   )
   const [dismissed, setDismissed] = useState(false)
-  const router = useRouter()
 
   const visible = needsConsent && !dismissed
 
   function setConsent(granted: boolean) {
-    const value = granted ? 'granted' : 'denied'
-    const secure = location.protocol === 'https:' ? '; Secure' : ''
-    document.cookie = `${CONSENT_COOKIE}=${value}; Max-Age=31536000; Path=/; SameSite=Lax${secure}`
+    writeAnalyticsConsent(granted ? 'granted' : 'denied')
     setDismissed(true)
-    if (granted) router.refresh()
   }
 
   return { visible, setConsent }

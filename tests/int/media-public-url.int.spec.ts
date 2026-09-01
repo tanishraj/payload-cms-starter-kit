@@ -68,6 +68,7 @@ describe('public media URL configuration', () => {
 
     const { nextConfig } = await import('../../next.config')
 
+    expect(nextConfig.images?.minimumCacheTTL).toBe(86400)
     expect(nextConfig.images?.remotePatterns).toContainEqual({
       hostname: 'assets.snmih.tanish.im',
       pathname: '/**',

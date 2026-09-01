@@ -5,6 +5,25 @@ import { describe, expect, it } from 'vitest'
 import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
 
 describe('Hero Banner block', () => {
+  it('emits a preload only when the renderer requests it', () => {
+    const eager = renderToStaticMarkup(
+      createElement(HeroBannerBlockComponent, {
+        backgroundImage: { alt: 'Campus', url: '/media/campus.jpg' } as never,
+        preload: true,
+        title: 'Campus',
+      }),
+    )
+    const lazy = renderToStaticMarkup(
+      createElement(HeroBannerBlockComponent, {
+        backgroundImage: { alt: 'Campus', url: '/media/campus.jpg' } as never,
+        title: 'Campus',
+      }),
+    )
+
+    expect(eager).toContain('<link rel="preload" as="image"')
+    expect(lazy).not.toContain('<link rel="preload" as="image"')
+  })
+
   it('renders image, eyebrow, title, description, and two CTA buttons', () => {
     const html = renderToStaticMarkup(
       createElement(HeroBannerBlockComponent, {

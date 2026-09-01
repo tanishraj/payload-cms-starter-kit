@@ -13239,10 +13239,6 @@ export interface SystemModeSetting {
    */
   comingSoonPage?: (string | null) | SystemPage;
   /**
-   * Allow logged-in admin users to continue seeing the normal site when a mode is active.
-   */
-  bypassForLoggedInAdmins?: boolean | null;
-  /**
    * Choose which system page should override the public site. This affects all public routes, not only the homepage.
    */
   siteMode?: ('off' | 'maintenance' | 'comingSoon') | null;
@@ -13497,7 +13493,6 @@ export interface SystemModeSettingsSelect<T extends boolean = true> {
   notFoundPage?: T;
   maintenancePage?: T;
   comingSoonPage?: T;
-  bypassForLoggedInAdmins?: T;
   siteMode?: T;
   _status?: T;
   updatedAt?: T;

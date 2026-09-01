@@ -27,7 +27,9 @@ Nine globals are registered:
 8. SearchSettings — up to six unique operator-managed suggested search terms, governed by the Site
    Settings capability with draft/version recovery; public rendering trims, de-duplicates, and caps
    legacy rows defensively.
-9. SystemModeSettings — off, maintenance, or coming-soon behavior and referenced presets.
+9. SystemModeSettings — off, maintenance, or coming-soon behavior and referenced presets. The active
+   schema has no authenticated public-route bypass; any historical stored
+   `bypassForLoggedInAdmins` value is ignored and deliberately left untouched.
 
 ## Ownership and Relationships
 

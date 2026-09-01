@@ -41,7 +41,7 @@ type HeroButton = {
   variant?: CmsActionVariant | null
 }
 
-type HeroBannerBlockLike = {
+export type HeroBannerBlockLike = {
   accentTitle?: string | null
   appearance?: BlockAppearance | null
   backgroundImage?: unknown
@@ -55,6 +55,7 @@ type HeroBannerBlockLike = {
   overlayCoverage?: MediaOverlayCoverage | null
   overlayDirection?: MediaOverlayDirection | null
   overlayStyle?: MediaOverlayStrength | 'brand' | 'darkest' | 'ink' | 'soft' | null
+  preload?: boolean
   themeMode?: MediaOverlayTone | null
   title?: string | null
   verticalAlignment?: 'bottom' | 'center' | 'top' | null
@@ -133,6 +134,17 @@ const heroLinkArrowShadowStyle = {
 
 const legacyDarkLightVerticalOverlay = 'bg-linear-to-b from-black/56 via-black/42 to-black/62'
 
+export function resolveHeroBannerImage({
+  backgroundImage,
+  title,
+}: Pick<HeroBannerBlockLike, 'backgroundImage' | 'title'>) {
+  return getMediaImageProps({
+    media: backgroundImage as never,
+    preset: 'hero',
+    fallbackAlt: title,
+  })
+}
+
 export function HeroBannerBlockComponent({
   accentTitle,
   appearance,
@@ -147,6 +159,7 @@ export function HeroBannerBlockComponent({
   overlayCoverage = 'full',
   overlayDirection = 'vertical',
   overlayStyle = 'dark',
+  preload = false,
   themeMode = 'auto',
   title,
   verticalAlignment = 'center',
@@ -190,11 +203,7 @@ export function HeroBannerBlockComponent({
 
   const resolvedAccentTitle = accentTitle?.trim() || undefined
 
-  const image = getMediaImageProps({
-    media: backgroundImage as never,
-    preset: 'hero',
-    fallbackAlt: title,
-  })
+  const image = resolveHeroBannerImage({ backgroundImage, title })
 
   if (!image) {
     return null
@@ -230,7 +239,14 @@ export function HeroBannerBlockComponent({
       data-hero-banner-theme={selectedThemeMode}
     >
       <div className="absolute inset-0">
-        <Image fill alt={image.alt} className="object-cover" src={image.src} sizes="100vw" />
+        <Image
+          fill
+          alt={image.alt}
+          className="object-cover"
+          preload={preload}
+          sizes="100vw"
+          src={image.src}
+        />
       </div>
       <div
         className={cn('absolute', mediaOverlay.frameClassName, heroOverlayClassName)}
