@@ -388,7 +388,10 @@ describe('PGFeeStructureBlockComponent', () => {
     expect(container.querySelector('[data-pg-fee-shared-charges="true"]')).toBeTruthy()
     expect(screen.getByText('Postgraduate Medical Courses')).toBeTruthy()
     expect(screen.getByText('2026-27')).toBeTruthy()
-    expect(screen.getByText('General')).toBeTruthy()
+    expect(container.querySelector('[data-pg-fee-atlas-summary="true"]')?.textContent).toContain(
+      'General',
+    )
+    expect(screen.getByRole('heading', { level: 3, name: 'General' })).toBeTruthy()
     expect(screen.getByText('2 Departments')).toBeTruthy()
     expect(screen.getByText('Resident Indian postgraduate fee structure.')).toBeTruthy()
     expect(screen.getByText('Amounts are displayed exactly as officially published.')).toBeTruthy()
@@ -436,7 +439,8 @@ describe('PGFeeStructureBlockComponent', () => {
       ctrlKey: false,
     })
 
-    expect(screen.getByText('NRI category department fees')).toBeTruthy()
+    expect(screen.getByRole('heading', { level: 3, name: 'NRI' })).toBeTruthy()
+    expect(screen.queryByText('NRI category department fees')).toBeNull()
     expect(screen.getByText('USD 64,000')).toBeTruthy()
     expect(screen.getByText('Radiology')).toBeTruthy()
     expect(screen.getByText('NRI tuition remains in the published currency.')).toBeTruthy()

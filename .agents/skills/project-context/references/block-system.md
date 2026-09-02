@@ -305,8 +305,9 @@ for a missing draft value. It never parses, totals, formats, converts, or otherw
 currency strings. Visitors receive one responsive 50/50 Primary/Card department atlas. The Primary
 summary contains programme/session context, active category, department count, category-shared
 charges, notes, and the optional shared fee-document Link or Button panel; the Card statement renders
-one complete chapter per department and repeats shared values for self-contained reading. An active
-category with up to four departments renders at natural height. At five or more, `lg` layouts use a
+one complete chapter per department and repeats shared values for self-contained reading. Its
+statement heading repeats the active category label unchanged. An active category with up to four
+departments renders at natural height. At five or more, `lg` layouts use a
 676px atlas whose summary and statement header remain independent while only the department chapter
 list scrolls; below `lg`, every region returns to normal document flow and the page itself carries all
 department scrolling. Below `lg`, every department
