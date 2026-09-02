@@ -139,7 +139,7 @@ describe('system page block schemas', () => {
     const pageSlugs = collectBlockSlugs(Pages.fields)
     const reusableSectionSlugs = collectBlockSlugs(ReusableSections.fields)
 
-    expect(pageSlugs).toHaveLength(56)
+    expect(pageSlugs).toHaveLength(57)
     expect(pageSlugs).toContain('academicProgrammes')
     expect(pageSlugs).not.toContain('programGrid')
     expect(new Set(pageSlugs).size).toBe(pageSlugs.length)
@@ -152,9 +152,11 @@ describe('system page block schemas', () => {
     expect(reusableSectionSlugs.slice().sort()).toEqual(
       pageSlugs.filter((slug) => slug !== 'reusableSection').sort(),
     )
-    expect(reusableSectionSlugs).toHaveLength(55)
+    expect(reusableSectionSlugs).toHaveLength(56)
     expect(pageSlugs).toContain('pgFeeStructure')
     expect(reusableSectionSlugs).toContain('pgFeeStructure')
+    expect(pageSlugs).toContain('bankDetails')
+    expect(reusableSectionSlugs).toContain('bankDetails')
     expect(reusableSectionSlugs).not.toContain('programGrid')
     expect(collectBlockSlugs(Reviews.fields)).toEqual([])
     expect(collectBlockSlugs(Headers.fields)).toEqual(['headerNavbar12'])

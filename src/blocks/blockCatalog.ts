@@ -5,6 +5,7 @@ import { AcademicProgrammesBlock } from '@/blocks/AcademicProgrammes/config'
 import { AccreditationCardsBlock } from '@/blocks/AccreditationCards/config'
 import { AnnouncementBlock } from '@/blocks/Announcement/config'
 import { AwardsListBlock } from '@/blocks/AwardsList/config'
+import { BankDetailsBlock } from '@/blocks/BankDetails/config'
 import { BannerCtaBlock } from '@/blocks/BannerCta/config'
 import { BentoGridBlock } from '@/blocks/BentoGrid/config'
 import { BreadcrumbBlock } from '@/blocks/Breadcrumb/config'
@@ -167,6 +168,7 @@ export const pageBlockGroupDefinitions = [
       TabsContentBlock,
       FeeStructureBlock,
       PGFeeStructureBlock,
+      BankDetailsBlock,
       NumberedStepsBlock,
       BentoGridBlock,
       TestimonialGridBlock,

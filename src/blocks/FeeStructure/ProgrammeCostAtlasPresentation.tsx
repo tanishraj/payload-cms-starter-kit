@@ -121,7 +121,7 @@ export function ProgrammeCostAtlasPresentation({
             <dl className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
               {details.map((detail) => (
                 <div className="min-w-0" key={detail.id}>
-                  <dt className="text-xs uppercase tracking-[0.08em] text-primary-foreground">
+                  <dt className="font-mono text-xs uppercase tracking-[0.08em] text-primary-foreground">
                     {detail.label}
                   </dt>
                   <dd

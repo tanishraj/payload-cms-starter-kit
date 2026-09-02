@@ -96,6 +96,27 @@
         "symbol": "AwardsListBlock"
       },
       {
+        "clientFiles": [
+          "src/blocks/BankDetails/BankDetailsClient.tsx"
+        ],
+        "componentPath": "src/blocks/BankDetails/Component.tsx",
+        "configPath": "src/blocks/BankDetails/config.ts",
+        "files": [
+          "src/blocks/BankDetails/BankDetailsClient.tsx",
+          "src/blocks/BankDetails/BankDetailsQRCode.tsx",
+          "src/blocks/BankDetails/Component.tsx",
+          "src/blocks/BankDetails/RowLabel.tsx",
+          "src/blocks/BankDetails/config.ts",
+          "src/blocks/BankDetails/normalizeBankDetails.ts",
+          "src/blocks/BankDetails/types.ts"
+        ],
+        "interfaceName": "BankDetailsBlock",
+        "presentationPath": null,
+        "previewComponentPath": null,
+        "slug": "bankDetails",
+        "symbol": "BankDetailsBlock"
+      },
+      {
         "clientFiles": [],
         "componentPath": "src/blocks/BannerCta/Component.tsx",
         "configPath": "src/blocks/BannerCta/config.ts",
@@ -988,6 +1009,7 @@
       "AnnouncementBlock",
       "AnnualCalendarBlock",
       "AwardsListBlock",
+      "BankDetailsBlock",
       "BannerCtaBlock",
       "BentoGridBlock",
       "BreadcrumbBlock",
@@ -1099,6 +1121,7 @@
       "downloadList",
       "feeStructure",
       "pgFeeStructure",
+      "bankDetails",
       "numberedSteps",
       "bentoGrid",
       "testimonialGrid",
@@ -1160,6 +1183,7 @@
       "tabsContent",
       "feeStructure",
       "pgFeeStructure",
+      "bankDetails",
       "numberedSteps",
       "bentoGrid",
       "testimonialGrid",
@@ -1215,6 +1239,7 @@
       "downloadList",
       "feeStructure",
       "pgFeeStructure",
+      "bankDetails",
       "numberedSteps",
       "bentoGrid",
       "testimonialGrid",
@@ -1275,6 +1300,7 @@
       "tabsContent",
       "feeStructure",
       "pgFeeStructure",
+      "bankDetails",
       "numberedSteps",
       "bentoGrid",
       "testimonialGrid",
@@ -1494,6 +1520,7 @@
         "public/block-thumbnails/announcement.jpg",
         "public/block-thumbnails/annual-calendar.jpg",
         "public/block-thumbnails/awards-list.jpg",
+        "public/block-thumbnails/bank-details.jpg",
         "public/block-thumbnails/banner-cta.jpg",
         "public/block-thumbnails/bento-grid.jpg",
         "public/block-thumbnails/breadcrumb.jpg",
@@ -1741,6 +1768,10 @@
           "slug": "pgFeeStructure"
         },
         {
+          "filename": "bank-details.jpg",
+          "slug": "bankDetails"
+        },
+        {
           "filename": "icon-grid.jpg",
           "slug": "iconGrid"
         },
@@ -1849,6 +1880,7 @@
         "downloadList",
         "feeStructure",
         "pgFeeStructure",
+        "bankDetails",
         "iconGrid",
         "iconCardShowcase",
         "logoStrip",
@@ -2145,6 +2177,13 @@
       "src/blocks/AnnualCalendar/config.ts",
       "src/blocks/AwardsList/Component.tsx",
       "src/blocks/AwardsList/config.ts",
+      "src/blocks/BankDetails/BankDetailsClient.tsx",
+      "src/blocks/BankDetails/BankDetailsQRCode.tsx",
+      "src/blocks/BankDetails/Component.tsx",
+      "src/blocks/BankDetails/RowLabel.tsx",
+      "src/blocks/BankDetails/config.ts",
+      "src/blocks/BankDetails/normalizeBankDetails.ts",
+      "src/blocks/BankDetails/types.ts",
       "src/blocks/BannerCta/Component.tsx",
       "src/blocks/BannerCta/config.ts",
       "src/blocks/BentoGrid/Component.tsx",
@@ -2625,6 +2664,7 @@
       "tests/int/articles-feed-route.int.spec.ts",
       "tests/int/articles.int.spec.ts",
       "tests/int/back-to-top-button.int.spec.tsx",
+      "tests/int/bank-details.int.spec.tsx",
       "tests/int/banner-media-overlay.int.spec.tsx",
       "tests/int/block-appearance-contract.int.spec.ts",
       "tests/int/block-catalog.int.spec.ts",
@@ -2802,7 +2842,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "29090d21e876a5693883b777ea3d0a85179d35f01bafc62a02b0022a4ecd1b77"
+    "sha256": "9c279f3007d9ef9547e367c98dfee7baecf9e8142eb17701cb03e30546571dec"
   },
   "surfaces": {
     "access": [
@@ -2964,6 +3004,7 @@
       "tests/int/articles-feed-route.int.spec.ts",
       "tests/int/articles.int.spec.ts",
       "tests/int/back-to-top-button.int.spec.tsx",
+      "tests/int/bank-details.int.spec.tsx",
       "tests/int/banner-media-overlay.int.spec.tsx",
       "tests/int/block-appearance-contract.int.spec.ts",
       "tests/int/block-catalog.int.spec.ts",

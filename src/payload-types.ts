@@ -246,6 +246,7 @@ export interface Page {
         | TabsContentBlock
         | FeeStructureBlock
         | PGFeeStructureBlock
+        | BankDetailsBlock
         | NumberedStepsBlock
         | BentoGridBlock
         | TestimonialGridBlock
@@ -661,6 +662,7 @@ export interface ReusableSection {
         | TabsContentBlock
         | FeeStructureBlock
         | PGFeeStructureBlock
+        | BankDetailsBlock
         | NumberedStepsBlock
         | BentoGridBlock
         | TestimonialGridBlock
@@ -6278,6 +6280,145 @@ export interface PGFeeStructureBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BankDetailsBlock".
+ */
+export interface BankDetailsBlock {
+  /**
+   * Small label above the optional section heading.
+   */
+  eyebrow?: string | null;
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Leave blank to hide the official-account badge.
+   */
+  officialAccountLabel?: string | null;
+  panelTitle?: string | null;
+  panelDescription?: string | null;
+  /**
+   * Customize persistent labels on the white account-information panel.
+   */
+  ledgerText?: {
+    purposeSuffix?: string | null;
+    ledgerTitle?: string | null;
+    verifiedLabel?: string | null;
+    accountHolderLabel?: string | null;
+    accountNumberLabel?: string | null;
+    bankNameLabel?: string | null;
+    ifscCodeLabel?: string | null;
+    branchLabel?: string | null;
+    upiIdLabel?: string | null;
+    copyAllLabel?: string | null;
+  };
+  /**
+   * Add accounts in visitor tab order. Each payment purpose must be unique.
+   */
+  accounts: {
+    /**
+     * Short visitor-facing label, such as Admissions or Hostel.
+     */
+    purpose: string;
+    accountHolder: string;
+    /**
+     * Stored and displayed as text so leading zeroes remain intact.
+     */
+    accountNumber: string;
+    ifscCode: string;
+    bankName?: string | null;
+    branch?: string | null;
+    upiId?: string | null;
+    /**
+     * Optional guidance shown for this payment purpose.
+     */
+    instructions?: string | null;
+    id?: string | null;
+  }[];
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  contentAlignment: 'left' | 'center';
+  /**
+   * Choose the contextual content rendered beside the bank-information panel.
+   */
+  displayMode?: ('text' | 'scanner') | null;
+  /**
+   * Desktop only. The contextual panel remains first on smaller screens.
+   */
+  panelPosition?: ('left' | 'right') | null;
+  tabStyle?: ('underline' | 'pills' | 'boxed') | null;
+  /**
+   * Centered Auto Width stays centered when it fits and scrolls from the start when it overflows.
+   */
+  tabWidth?: ('content' | 'centered' | 'equal') | null;
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bankDetails';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "NumberedStepsBlock".
  */
 export interface NumberedStepsBlock {
@@ -8042,6 +8183,7 @@ export interface PagesSelect<T extends boolean = true> {
         tabsContent?: T | TabsContentBlockSelect<T>;
         feeStructure?: T | FeeStructureBlockSelect<T>;
         pgFeeStructure?: T | PGFeeStructureBlockSelect<T>;
+        bankDetails?: T | BankDetailsBlockSelect<T>;
         numberedSteps?: T | NumberedStepsBlockSelect<T>;
         bentoGrid?: T | BentoGridBlockSelect<T>;
         testimonialGrid?: T | TestimonialGridBlockSelect<T>;
@@ -11662,6 +11804,96 @@ export interface PGFeeStructureBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BankDetailsBlock_select".
+ */
+export interface BankDetailsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
+  officialAccountLabel?: T;
+  panelTitle?: T;
+  panelDescription?: T;
+  ledgerText?:
+    | T
+    | {
+        purposeSuffix?: T;
+        ledgerTitle?: T;
+        verifiedLabel?: T;
+        accountHolderLabel?: T;
+        accountNumberLabel?: T;
+        bankNameLabel?: T;
+        ifscCodeLabel?: T;
+        branchLabel?: T;
+        upiIdLabel?: T;
+        copyAllLabel?: T;
+      };
+  accounts?:
+    | T
+    | {
+        purpose?: T;
+        accountHolder?: T;
+        accountNumber?: T;
+        ifscCode?: T;
+        bankName?: T;
+        branch?: T;
+        upiId?: T;
+        instructions?: T;
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  displayMode?: T;
+  panelPosition?: T;
+  tabStyle?: T;
+  tabWidth?: T;
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "NumberedStepsBlock_select".
  */
 export interface NumberedStepsBlockSelect<T extends boolean = true> {
@@ -12149,6 +12381,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         tabsContent?: T | TabsContentBlockSelect<T>;
         feeStructure?: T | FeeStructureBlockSelect<T>;
         pgFeeStructure?: T | PGFeeStructureBlockSelect<T>;
+        bankDetails?: T | BankDetailsBlockSelect<T>;
         numberedSteps?: T | NumberedStepsBlockSelect<T>;
         bentoGrid?: T | BentoGridBlockSelect<T>;
         testimonialGrid?: T | TestimonialGridBlockSelect<T>;
@@ -13151,6 +13384,7 @@ export interface NewsEventsDetailTemplate {
         | TabsContentBlock
         | FeeStructureBlock
         | PGFeeStructureBlock
+        | BankDetailsBlock
         | NumberedStepsBlock
         | BentoGridBlock
         | TestimonialGridBlock
@@ -13435,6 +13669,7 @@ export interface NewsEventsDetailTemplateSelect<T extends boolean = true> {
         tabsContent?: T | TabsContentBlockSelect<T>;
         feeStructure?: T | FeeStructureBlockSelect<T>;
         pgFeeStructure?: T | PGFeeStructureBlockSelect<T>;
+        bankDetails?: T | BankDetailsBlockSelect<T>;
         numberedSteps?: T | NumberedStepsBlockSelect<T>;
         bentoGrid?: T | BentoGridBlockSelect<T>;
         testimonialGrid?: T | TestimonialGridBlockSelect<T>;

@@ -62,6 +62,7 @@ import type { Form, Media, RichTextBlock } from '@/payload-types'
 import { AboutSectionBlockComponent } from '@/blocks/AboutSection/Component'
 import { AccreditationCardsBlockComponent } from '@/blocks/AccreditationCards/Component'
 import { AwardsListBlockComponent } from '@/blocks/AwardsList/Component'
+import { BankDetailsBlockComponent } from '@/blocks/BankDetails/Component'
 import { BentoGridBlockComponent } from '@/blocks/BentoGrid/Component'
 import { DownloadListBlockComponent } from '@/blocks/DownloadList/Component'
 import { FeeStructureBlockComponent } from '@/blocks/FeeStructure/Component'
@@ -2407,6 +2408,29 @@ export const blockThumbnailFixtures = {
       size="compact"
       tabWidth="centered"
       title="PG Fee Structure"
+    />
+  ),
+  bankDetails: (
+    <BankDetailsBlockComponent
+      accounts={[
+        {
+          purpose: 'Admissions',
+          accountHolder: 'Shree Narayan Medical Institute & Hospital',
+          accountNumber: '38472910482',
+          ifscCode: 'SBIN0000174',
+          bankName: 'State Bank of India',
+          branch: 'Saharsa Main (Current)',
+          instructions: 'Confirm the Account Holder name before initiating a transfer.',
+          upiId: 'snmih.saharsa@sbi',
+        },
+      ]}
+      appearance={{ background: 'subtle', border: 'topAndBottom' }}
+      displayMode="text"
+      officialAccountLabel="Official college account"
+      panelDescription="Use the account information for admissions and official student fee payments."
+      panelPosition="right"
+      panelTitle="Bank transfer details"
+      size="compact"
     />
   ),
   iconGrid: (

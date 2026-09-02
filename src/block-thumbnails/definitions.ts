@@ -334,6 +334,13 @@ export const blockThumbnailDefinitions = [
     stageAlignment: 'top',
   }),
   defineThumbnail({
+    alt: 'Bank Details block preview',
+    filename: 'bank-details.jpg',
+    label: 'Bank Details',
+    slug: 'bankDetails',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Icon Grid block preview',
     filename: 'icon-grid.jpg',
     label: 'Icon Grid',

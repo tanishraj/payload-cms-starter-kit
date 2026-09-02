@@ -72,6 +72,18 @@ describe('block thumbnail fixtures', () => {
     expect(html).toContain('Download')
   })
 
+  it('renders the Bank Details institutional payment panel fixture', () => {
+    const html = renderToStaticMarkup(getBlockThumbnailFixture('bankDetails'))
+
+    expect(html).toContain('data-bank-details="true"')
+    expect(html).toContain('data-bank-details-context="true"')
+    expect(html).toContain('data-panel-position="right"')
+    expect(html).toContain('lg:grid-cols-[minmax(0,16fr)_minmax(0,9fr)]')
+    expect(html).toContain('Official college account')
+    expect(html).toContain('Admissions')
+    expect(html).toContain('snmih.saharsa@sbi')
+  })
+
   it('uses repository-local media assets only', () => {
     for (const assetPath of blockThumbnailAssetPaths) {
       expect(assetPath).toMatch(/^\/block-thumbnail-assets\//)

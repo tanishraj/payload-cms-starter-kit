@@ -2,7 +2,7 @@
 
 ## Registries
 
-[blockCatalog.ts](../../../../src/blocks/blockCatalog.ts) is the server-only canonical Payload schema catalog for Page-compatible blocks. It assigns native Admin groups in this order: Start, Explain, Explore, Prove, Convert, and Advanced Library. The first five groups contain the client-approved 20-block vocabulary; all remaining Page-compatible blocks stay registered under Advanced Library. Pages expose 56 blocks and Reusable Sections expose the 55 non-recursive choices.
+[blockCatalog.ts](../../../../src/blocks/blockCatalog.ts) is the server-only canonical Payload schema catalog for Page-compatible blocks. It assigns native Admin groups in this order: Start, Explain, Explore, Prove, Convert, and Advanced Library. The first five groups contain the client-approved 20-block vocabulary; all remaining Page-compatible blocks stay registered under Advanced Library. Pages expose 57 blocks and Reusable Sections expose the 56 non-recursive choices.
 
 Calendar is an Explore block backed only by selected active Event-behavior News & Events classifications. Editors choose one to five ordered classifications, while each classification centrally owns its semantic Calendar color. The complete toolbar, month/timeline panel, and Upcoming panel inherit the selected section surface; framed Tabs and Select controls share a true 44px height, and adjacent-month dates can be muted or hidden. The server renders the configured `Asia/Kolkata`-first current month and stable next-four Upcoming snapshot; visitor times remain timezone-correct but omit technical GMT/UTC suffixes. Desktop starts with a Sunday-first six-week grid, phones receive Timeline-first output, and `/api/calendar-events` supplies validated public or authenticated-draft month projections. Multi-day/all-day ranges are inclusive, day cells cap at two links before `+N more`, filtering never changes Upcoming, and production/live preview share the same serializable presentation contract. Editors may configure one sidebar action targeting a Page, Custom URL, or File and choose Button or Link presentation, while the existing document label remains the panel heading. Upcoming, its legend, and the action share one semantic sidebar; the rail matches the desktop calendar height and pins the action region to its bottom, while compact layouts keep natural source order and height. The sidebar action remains outside the month snapshot and cache identity.
 
@@ -317,6 +317,30 @@ page-level horizontal scrolling. Multiple categories reuse Contained, Pill, and 
 the same width behavior as Fee Structure and switch the complete frame. PG Fee Structure
 intentionally has no alternate layout selector, calculated totals, department relationship, public
 filtering, payment-account fields, or migration.
+
+Bank Details independently models one to six ordered official payment accounts, each owned by one
+unique visitor-facing payment purpose. Purpose, account holder, account number, and IFSC code are
+required; bank name, Branch & Type, UPI ID, and instructions are optional. Normalization trims only
+outer whitespace, preserves internal banking characters, removes rows missing a core field, and keeps
+the first valid case-insensitive purpose in source order. One account renders directly. Multiple
+accounts reuse the shared Contained, Pill, and Underline tab rail with Content Width, Centered Auto
+Width, or Equal Full Width. Theme Settings owns Text/Scanner mode and the reversible desktop panel
+side; no visitor mode switch is rendered. Mirrored `9fr/16fr` and `16fr/9fr` desktop tracks keep the
+Primary context at 36% and the white ledger at 64% on either side. Compact layouts always stack
+contextual content before the ledger, without an internal scroller, and retain explicit space before
+the Text notice. Content owns one optional `ledgerText` group for the persistent purpose suffix,
+ledger title, verification text, credential labels, and Copy all label. Runtime resolves every
+missing, malformed, or whitespace-only nested value independently to its code-owned default, so
+historical records require no migration; transient clipboard and QR messages remain code-owned. The
+context title is upright display type, the ledger title is upright sans, and shared surface-aware
+green accents own the eyebrow and credential-label contrast. The fixed-white ledger keeps the
+light-overlay foreground contract in every color scheme, and compact Copy controls retain touch-sized
+targets while Copy all uses smaller type. Every visible credential uses
+`navigator.clipboard.writeText`; Copy all and QR consume one optional-line-aware credentials payload
+that excludes Payment Purpose and instructions. Success clears after two seconds or account change,
+clipboard failure leaves selectable values in place with an accessible manual-copy message, and QR
+generation makes no external request. The block has no fee calculations, masking, payment
+processing, migration, or fallback clipboard mutation.
 
 Event Gallery renders selected Gallery Albums in their resolved manual or latest-event-date order.
 Each selected album contributes its first valid image as one cover tile, while the accessible card

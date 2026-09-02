@@ -91,6 +91,7 @@ The setting follows the selected presentation. Content Highlights applies it to 
 | Download List            | Files and document libraries                 | Stacked or responsive 40/60 split introduction, four document layouts, one shared 1–8 Columns setting, optional file icons, controlled file-type labels, and up to two ordered per-document Download, View, or Custom actions                                                                                                                        |
 | Fee Structure            | Programme fee schedule                       | Default responsive table/cards or a 50/50 Programme Cost Atlas, one to four category tabs, fee-only notes, and a file-locked Link or Button download                                                                                                                                                                                                 |
 | PG Fee Structure         | Department-based postgraduate fees           | A responsive 50/50 Primary/Card department atlas with category-owned departments, shared or department-varying fee columns, category notes, and an official file Link or Button download                                                                                                                                                             |
+| Bank Details             | Official payment account information         | One to six purpose-specific accounts in an admin-selected Text or locally generated Scanner presentation, with mirrored 36/64 panels, editable ledger labels, adaptive tabs, and exact-value copy controls                                                                                                 |
 | Numbered Steps           | Ordered process                              | Backgrounds apply to numbered Cards, not connected/alternating layouts                                                                                                                                                                                                                                                                               |
 | Bento Grid               | Mixed-size feature cards                     | Grid layout and semantic background controls                                                                                                                                                                                                                                                                                                         |
 | Testimonial Grid         | Curated testimonials                         | Backgrounds apply to Grid and Featured cards                                                                                                                                                                                                                                                                                                         |
@@ -209,6 +210,38 @@ when the column count is odd. Large layouts retain the adaptive fee grid. One ca
 directly; multiple categories use the shared Underline, Pills, or Boxed tabs with Content Width,
 Centered Auto Width, or Equal Full Width and switch the complete atlas. The block exposes no
 alternate layout selector, calculated-total fields, or payment-account fields.
+
+Bank Details is the dedicated home for official transfer information. Editors add one to six bank
+accounts in visitor order and give each account a unique payment purpose, account holder, account
+number, and IFSC code. Bank name, Branch & Type, UPI ID, and account-owned instructions are optional
+and disappear completely when blank. Banking values are stored as text and displayed exactly as
+authored after outer whitespace is removed, so leading zeroes, internal spaces, and punctuation
+remain intact. Rows missing a core field are omitted, and duplicate purpose labels keep the first
+valid row in authored order.
+
+One valid account renders directly. Multiple accounts use the shared Underline, Pills, or Boxed tab
+rail with Content Width, Centered Auto Width, or Equal Full Width. Editors choose Text or Scanner
+mode and place the contextual panel on the desktop left or right under **Theme Settings**; visitors
+never receive a mode switch. The contextual Primary panel remains the 36% track on either side, and
+the white ledger remains 64%. Compact screens always stack contextual content before the ledger
+without an internal scroller. Text mode shows optional contextual copy and the active account notice,
+with a guaranteed compact-screen gap between the description and notice. Scanner mode generates a
+local SVG QR from the same normalized credentials-only payload used by Copy all, without an upload or
+third-party request. Payment Purpose and instructions remain visible page context but are excluded
+from Copy all and QR.
+
+Under **Content**, the optional **Ledger Text** group customizes the purpose suffix, ledger title,
+verification text, credential labels, and Copy all label. Each blank, missing, or malformed nested
+value independently falls back to its English default, so existing blocks need no migration. The
+context label, context title, context description, account values, and account instructions retain
+their existing fields; operational success, clipboard error, and QR messages remain system-owned.
+The contextual title uses the upright display family; the ledger title uses the upright sans family;
+shared surface-aware green accents distinguish its eyebrows and credential labels. The fixed-white
+ledger uses the light-overlay foreground contract in every website color scheme. Every visible
+credential can be copied individually through controls with compact-screen touch targets. Copy all
+uses smaller text without shrinking that target. Copy feedback is announced politely, clears after
+two seconds or an account change, and gives a manual-selection recovery message when clipboard access
+is unavailable.
 
 Event Gallery uses the first valid image from every selected Gallery Album as the album cover and
 can open the complete album in its full-screen viewer. Disable **Enable Album Slideshow** to retain

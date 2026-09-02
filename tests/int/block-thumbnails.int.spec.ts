@@ -146,6 +146,14 @@ describe('block thumbnail metadata', () => {
       slug: 'feeStructure',
       stageAlignment: 'top',
     })
+    expect(getBlockThumbnailDefinition('bankDetails')).toMatchObject({
+      alt: 'Bank Details block preview',
+      filename: 'bank-details.jpg',
+      label: 'Bank Details',
+      slug: 'bankDetails',
+      stageAlignment: 'top',
+      url: '/block-thumbnails/bank-details.jpg',
+    })
     expect(getBlockThumbnailDefinition('profileCarousel')).toMatchObject({
       filename: 'profile-carousel.jpg',
       label: 'Profile Carousel',
