@@ -200,7 +200,8 @@ or convert currencies. Large screens use a 50/50 Primary/Card department atlas. 
 contains programme, academic session, active admission category, department count, shared charges,
 category notes, and the optional official Media Link or Button panel. The Card statement renders one
 complete chapter per department and repeats shared values so every chapter remains self-contained.
-With up to four departments, the atlas keeps its natural height. From the fifth department onward,
+Its heading repeats the active category label exactly, without generated suffix text. With up to four
+departments, the atlas keeps its natural height. From the fifth department onward,
 large screens use a 676px frame: the Primary summary and statement header remain visible while the
 department chapter list scrolls. Compact layouts always keep every chapter in normal page flow.
 Compact layouts stack summary then statement, and fee grids reflow without page-level horizontal
