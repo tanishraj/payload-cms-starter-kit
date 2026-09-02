@@ -15,6 +15,7 @@ export type BankDetailsLedgerTextValue = {
   copyAllLabel?: string | null
   ifscCodeLabel?: string | null
   ledgerTitle?: string | null
+  purposeSuffix?: string | null
   upiIdLabel?: string | null
   verifiedLabel?: string | null
 }

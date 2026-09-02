@@ -211,8 +211,8 @@ describe('BankDetailsBlock schema', () => {
       type: 'group',
     })
     expect(findOwningTabLabel(BankDetailsBlock.fields, 'ledgerText')).toBe('Content')
-    expect(findNamedField(BankDetailsBlock.fields, 'purposeSuffix')).toBeUndefined()
     const ledgerTextDefaults = {
+      purposeSuffix: 'account',
       ledgerTitle: 'Bank Account Information',
       verifiedLabel: 'Verified',
       accountHolderLabel: 'Account Holder',
@@ -357,7 +357,6 @@ describe('BankDetailsBlockComponent', () => {
     expect(ledgerTitle?.getAttribute('class')).not.toContain('italic')
     expect(officialLabel?.getAttribute('data-section-eyebrow-surface')).toBe('brand')
     expect(purposeLabel?.getAttribute('data-section-eyebrow-surface')).toBe('lightOverlay')
-    expect(purposeLabel?.textContent).toBe('Admissions')
     expect(detailLabel.getAttribute('data-section-eyebrow-surface')).toBeNull()
     expect(detailLabel.getAttribute('class')).toContain('text-light-overlay-foreground/65')
     expect(detailRow?.getAttribute('class')).toContain('border-light-overlay-foreground/15')
@@ -409,14 +408,14 @@ describe('BankDetailsBlockComponent', () => {
           copyAllLabel: 'Copy credentials',
           ifscCodeLabel: 'Routing code',
           ledgerTitle: 'Transfer Account',
+          purposeSuffix: 'payment details',
           upiIdLabel: 'UPI address',
           verifiedLabel: 'Published',
         }}
       />,
     )
 
-    expect(screen.getByText('Admissions')).toBeTruthy()
-    expect(screen.queryByText('Admissions payment details')).toBeNull()
+    expect(screen.getByText('Admissions payment details')).toBeTruthy()
     expect(screen.getByText('Transfer Account')).toBeTruthy()
     expect(screen.getByText('Published')).toBeTruthy()
     expect(screen.getByText('Holder name')).toBeTruthy()

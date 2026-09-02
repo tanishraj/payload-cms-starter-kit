@@ -92,11 +92,9 @@ valid occurrence of a case-insensitive purpose. One account renders directly; mu
 the shared themed and width-aware tab rail. Theme Settings owns Text/Scanner mode and the reversible
 desktop panel side. The active account uses mirrored desktop tracks so the Primary context remains
 36% and the white ledger remains 64% on either side at `lg`; compact layouts always stack contextual
-content before the ledger and preserve space before the Text notice. Payment Purpose supplies both
-the account tab and white-ledger eyebrow without additional suffix text. The optional Content-owned
-Ledger Text group customizes the remaining persistent ledger copy, with independent code-owned
-defaults for every missing, malformed, or whitespace-only nested value and no migration for
-historical blocks.
+content before the ledger and preserve space before the Text notice. The optional Content-owned
+Ledger Text group customizes persistent ledger copy, with independent code-owned defaults for every
+missing, malformed, or whitespace-only nested value and no migration for historical blocks.
 The Primary context uses an upright display title; the operational ledger uses an upright sans title;
 shared surface-aware green accents distinguish eyebrow and credential metadata. The fixed-white
 ledger keeps dark light-overlay foregrounds across color schemes, and its compact Copy controls keep
