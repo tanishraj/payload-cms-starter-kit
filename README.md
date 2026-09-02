@@ -210,5 +210,3 @@ Use an isolated MongoDB database for tests. E2E helpers seed and delete known te
 - Treat provider configuration as runtime configuration, not content-model logic.
 - Keep the starter contract explicit. If a deployment path is not safe, document it and reject it early.
 - Add new blocks only after the CMS foundation, guardrails, and operational seams are stable.
-
-### Happy Coding
