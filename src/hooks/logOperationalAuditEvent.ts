@@ -1,20 +1,20 @@
-import type {
-  CollectionAfterChangeHook,
-  GlobalAfterChangeHook,
-} from 'payload'
+import type { CollectionAfterChangeHook, GlobalAfterChangeHook } from 'payload'
 
+import type { AdminFeatureKey } from '@/access/adminFeatures'
 import { recordOperationalAuditEvent } from '@/lib/operationalAudit'
 
 type AuditDoc = {
   [key: string]: unknown
   id: number | string
+  _status?: string | null
+  moderationStatus?: string | null
   siteMode?: string | null
   title?: string | null
-  workflowState?: string | null
 }
 
 type HookConfig = {
   entityType: string
+  feature: AdminFeatureKey
   getSummary: (args: { doc: AuditDoc; previousDoc?: Partial<AuditDoc> | null }) => string
   titleField: string
 }
@@ -33,6 +33,7 @@ export const createCollectionAuditHook = (config: HookConfig): CollectionAfterCh
       entityId: String(doc.id ?? ''),
       entityTitle: String(doc[config.titleField] ?? `#${doc.id}`),
       entityType: config.entityType,
+      feature: config.feature,
       req,
       summary: config.getSummary({ doc, previousDoc }),
     })
@@ -56,6 +57,7 @@ export const createGlobalAuditHook = (
       entityId: config.entityType,
       entityTitle: config.title,
       entityType: config.entityType,
+      feature: config.feature,
       req,
       summary: config.getSummary({ doc, previousDoc }),
     })

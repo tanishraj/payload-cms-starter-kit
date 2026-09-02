@@ -76,9 +76,7 @@ export const buildCalendarMonthWhere = ({
   startISO: string
 }): Where => ({
   and: [
-    ...(published
-      ? [{ _status: { equals: 'published' } }, { workflowState: { equals: 'published' } }]
-      : []),
+    ...(published ? [{ _status: { equals: 'published' } }] : []),
     { classification: { in: classificationIDs } },
     { eventStart: { less_than_equal: endISO } },
     {
@@ -107,9 +105,7 @@ export const buildCalendarPeriodWhere = ({
   startISO: string
 }): Where => ({
   and: [
-    ...(published
-      ? [{ _status: { equals: 'published' } }, { workflowState: { equals: 'published' } }]
-      : []),
+    ...(published ? [{ _status: { equals: 'published' } }] : []),
     { classification: { in: classificationIDs } },
     { eventStart: { greater_than_equal: startISO } },
     { eventStart: { less_than_equal: endISO } },
@@ -324,9 +320,7 @@ export async function fetchCalendarUpcoming(
     sort: ['eventStart', 'id'],
     where: {
       and: [
-        ...(mode.overrideAccess
-          ? [{ _status: { equals: 'published' } }, { workflowState: { equals: 'published' } }]
-          : []),
+        ...(mode.overrideAccess ? [{ _status: { equals: 'published' } }] : []),
         { classification: { in: classifications.map(({ id }) => id) } },
         {
           or: [

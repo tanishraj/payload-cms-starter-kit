@@ -30,7 +30,7 @@ Create an `Admissions Overview` page for North Valley Medical College:
 5. Set the slug to `admissions`.
 6. Review the public URL preview.
 7. Add SEO details that describe the admissions page.
-8. Move the workflow to the correct state and publish when ready.
+8. Save as a draft or publish when ready.
 
 Expected website result:
 

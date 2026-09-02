@@ -1,61 +1,121 @@
-# Editorial Governance
+# Users, Features, and Publication Governance
 
 ## Roles
 
-| Role | Default operating model |
-| --- | --- |
-| Admin | All capabilities, user/recovery control, and no required editorial workflow |
-| Site Manager | Content, structure, forms, settings, publishing, queue, and audit capabilities; workflow not required by default |
-| Content Manager | Pages, Articles, News & Events, Reviews, and Media; publishing capabilities are present but governed workflow is required |
+The CMS has exactly two roles:
 
-Capabilities are stored independently from the role preset, allowing deliberate per-user overrides. Changing a non-Admin user's role reapplies that role's default capability map; the first user is promoted to Admin. Legacy role values normalize to the current three-role model.
+| Role         | Access model                                                                                     |
+| ------------ | ------------------------------------------------------------------------------------------------ |
+| Admin        | Implicit access to every feature, Users administration, account recovery, and permanent deletion |
+| Site Manager | Denied by default; receives only the features selected by an Admin                               |
 
-## Governed Collections
+An Admin may create any number of Admins and Site Managers. New Site Managers begin with no feature
+grants. Changing a role or feature grant clears that user's active sessions so revocation takes effect
+immediately. The last active Admin cannot be demoted, trashed, or permanently deleted.
 
-Pages, Articles, News & Events, Reviews, and System Pages support:
+## Site Manager Features
 
-- `draft`
-- `in_review`
-- `scheduled`
-- `published`
-- `reverted`
+Each checkbox corresponds to one Payload Admin destination. A grant controls both navigation and
+server-side access through Admin, REST, GraphQL, preview, and user-scoped Local API calls.
 
-Payload `_status` and the editorial state work together. Public News & Events additionally requires both to be published. Publication stamps the responsible user and time; review movement stamps reviewer data.
+| Admin group    | Feature               | Included Site Manager actions                                               |
+| -------------- | --------------------- | --------------------------------------------------------------------------- |
+| Content        | Pages                 | Create, read, edit, preview, publish/unpublish, version, trash, and restore |
+| Content        | Articles              | Create, read, edit, preview, publish/unpublish, version, trash, and restore |
+| Content        | Reviews               | Manage staff Reviews and approve/reject public review submissions           |
+| Content        | Reusable Sections     | Create, edit, version, trash, and restore                                   |
+| News & Events  | News & Events         | Create, edit, preview, publish/unpublish, version, trash, and restore       |
+| News & Events  | Classifications       | Create, edit, and archive; deletion remains Admin-only                      |
+| News & Events  | Detail Page Template  | Edit, preview, version, and publish the shared detail layout                |
+| Taxonomy       | Topics                | Create, edit, archive, trash, restore, and select                           |
+| Taxonomy       | Tags                  | Create, edit, archive, trash, restore, and select                           |
+| Navigation     | Navigation Links      | Create, edit, publish, version, trash, and restore                          |
+| Navigation     | Redirects             | Create, edit, enable/disable, version, trash, and restore                   |
+| Site Structure | Headers               | Create, edit, preview, publish, version, trash, and restore                 |
+| Site Structure | Footers               | Create, edit, preview, publish, version, trash, and restore                 |
+| Site Structure | Office Locations      | Create, edit, version, trash, and restore                                   |
+| Site Structure | System Pages          | Create, edit, preview, publish/unpublish, version, trash, and restore       |
+| Media          | Media                 | Upload, edit, replace, version, trash, and restore                          |
+| Media          | Gallery Albums        | Create, edit, reorder, version, trash, and restore                          |
+| Forms          | Forms                 | Create, edit, configure, version, trash, and restore                        |
+| Forms          | Form Submissions      | Read submissions and update assignment, status, and internal notes          |
+| Administration | Action Queue          | Operate generated tasks only for other features the user also holds         |
+| Administration | Audit Log             | Read events only for other features the user also holds                     |
+| Settings       | Site Identity         | Edit branding, contact, address, legal, and social settings                 |
+| Settings       | Appearance            | Edit theme and color-mode settings                                          |
+| Settings       | SEO & Metadata        | Edit global metadata, robots, and verification settings                     |
+| Settings       | Analytics & Tracking  | Edit GTM or GA4 settings                                                    |
+| Settings       | Cookie Consent Banner | Edit consent visibility, copy, links, and presentation                      |
+| Configuration  | Layout Defaults       | Select homepage/Header/Footer and edit the announcement                     |
+| Configuration  | Search Settings       | Edit suggested-search configuration                                         |
+| Configuration  | Maintenance & Modes   | Configure normal, maintenance, and coming-soon behavior                     |
 
-`scheduled` requires a scheduled time and creates high-priority oversight work, but the repository does not include an automatic timed publisher. An operator must complete publication.
+Dashboard and My Account are available to every authenticated user. Users, role assignment, feature
+assignment, unlocking accounts, and permanent deletion are never grantable.
 
-## Action Queue Semantics
+## Dependency Reads
 
-Hooks generate and synchronize queue work from editorial review/schedules, review moderation, Form Submission follow-up, draft shell/navigation changes, redirect work, and Media issues. Conditions use a stable dedupe key, reopen resolved work when a condition returns, and auto-resolve when the source condition closes.
+Editing a granted feature can require relationship options from another destination. The access layer
+allows bounded read/select access for those dependencies while keeping their sidebar destinations and
+all mutation operations unavailable. Examples include Media for Articles, Topics and Tags for Reviews,
+Pages and Media for Headers, and Pages/Headers/Footers for Layout Defaults.
 
-Publishing checks queue work for the same source record:
+Form Submission and Action Queue assignment controls may resolve other users to an opaque `User #ID`
+label. Another user's email, role, grants, sessions, and credentials are not returned to a Site Manager.
 
-- `open` or `blocked` items of type `approval` or `publish_issue` prevent publication
-- `in_progress`, `resolved`, and `canceled` items do not prevent publication
-- queue records cannot be manually created or deleted
+## Publication
 
-Resolve the source condition first, then allow synchronization to update the queue.
+Pages, Articles, News & Events, Reviews, and System Pages use Payload's native `_status` as the only
+draft/publication state. The former generic Workflow tab and its in-review/scheduled states no longer
+exist. Publishing requires the owning feature, stamps `publishedAt` and `publishedBy`, and is rejected
+while an open or blocked approval/publish-issue queue item exists for that record.
 
-## Audit Coverage
+Site Managers may trash and restore records in granted Trash-enabled features. Only Admins may
+permanently delete them.
 
-The Audit Log records selected high-value actions for governed editorial collections, Reusable Sections, Layout Defaults, Maintenance & Modes, Action Queue operator changes, and Media deletion/storage transitions. It is not an immutable record of every field change, user change, or delete across the database.
+## Public Review Moderation
 
-## High-Risk Surfaces
+A valid public review form submission creates a linked Review with `_status: draft` and
+`moderationStatus: pending`. The source submission is immutable.
 
-- Layout Defaults: homepage/Header/Footer and global announcement
-- Maintenance & Modes: 404 and temporary route overrides
-- Headers/Footers/Navigation/Redirects: site-wide access and route behavior
-- SEO & Metadata: site-wide indexability
-- Analytics & Tracking and Cookie Consent: visitor data collection
-- Media critical assets and storage health
-- Users, roles, and capability overrides
-- permanent deletion from Trash
+- `approved` publishes the Review and stamps moderator and publication metadata;
+- `rejected` retains it as a draft and stamps the moderator decision; and
+- direct publication while pending or rejected is denied.
 
-## Recovery Path
+Only an Admin or a Site Manager with Reviews can approve or reject. Public Review reads additionally
+require either a staff-authored Review or an approved submitted Review, providing a defensive boundary
+against inconsistent legacy data.
 
-1. Stop making unrelated changes.
-2. Inspect the source record, Action Queue, and Audit Log.
-3. Restore a prior Payload version or Trash record where appropriate.
-4. Verify relationships, publication state, route, redirects, caches, and storage health.
-5. Record the resolution on the queue item when operational context is useful.
-6. Take a database export before bulk repair or migration work.
+## Action Queue and Audit Log
+
+Action Queue items are system-created and non-deletable. Site Managers need Action Queue plus the
+item's source feature. System-owned source and deduplication fields are write-protected; operators may
+change only triage fields such as status, assignment, priority, due date, notes, and resolution.
+
+Audit Log is read-only. Site Managers need Audit Log plus the event's source feature. Unmapped legacy
+events and user lifecycle events remain visible only to Admins. Permanent deletion of a grantable
+collection record is logged with its feature and record ID without copying deleted content into the
+audit entry.
+
+## Migration and Rollout
+
+The reversible migration `20260902_000000_two_role_feature_permissions` maps legacy roles and
+capabilities, migrates current content and relevant versions, initializes review moderation, assigns
+queue ownership, and resolves retired generic workflow items. Conflicting legacy manage/publish flags
+remain ungranted and are reported for Admin review.
+
+Run a read-only report only against an explicit target. For local Docker:
+
+```bash
+pnpm report:permissions-migration -- --database-uri "mongodb://127.0.0.1:27017/payload-cms-starter-kit"
+```
+
+Before any shared or production migration:
+
+1. take a fresh database backup;
+2. run and inspect the dry-run report;
+3. review every conflict, unknown role, demoted contradictory publication, and unmapped queue item;
+4. obtain separate approval for that exact database; and
+5. run the registered Payload migration through the normal deployment process.
+
+Do not use a production URI merely to test the reporter or migration.

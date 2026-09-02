@@ -1,14 +1,15 @@
 import { type CollectionConfig } from 'payload'
 
 import {
-  allowDraftPublishedReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+  allowPublishedReadOrFeature,
+  deleteFeatureOrAdmin,
+  hideUnlessFeature,
+  requireFeature,
+} from '@/access/featureAccess'
 import { Footer56Block } from '@/blocks/Footer56/config'
 import { FooterMinimalBlock } from '@/blocks/FooterMinimal/config'
 import { projectSlugField } from '@/fields/projectSlugField'
-import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
+import { createDraftPublishQueueHook } from '@/hooks/syncDraftPublishToWorkQueue'
 import { revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 
 export const Footers: CollectionConfig = {
@@ -19,18 +20,18 @@ export const Footers: CollectionConfig = {
   },
   admin: {
     group: 'Site Structure',
-    hidden: hideFromUsersWithoutCapability('manage_footers'),
+    hidden: hideUnlessFeature('footers'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'updatedAt'],
     description: 'Reusable site footer presets powered by footer layout blocks.',
     listSearchableFields: ['title', 'slug'],
   },
   access: {
-    create: requireCapability('manage_footers'),
-    delete: requireCapability('manage_footers'),
-    read: allowDraftPublishedReadOrCapability('manage_footers'),
-    readVersions: requireCapability('manage_footers'),
-    update: requireCapability('manage_footers'),
+    create: requireFeature('footers'),
+    delete: deleteFeatureOrAdmin('footers'),
+    read: allowPublishedReadOrFeature('footers'),
+    readVersions: requireFeature('footers'),
+    update: requireFeature('footers'),
   },
   hooks: {
     afterChange: [

@@ -363,7 +363,6 @@ describe('News & Events public data helpers', () => {
         where: {
           and: expect.arrayContaining([
             { _status: { equals: 'published' } },
-            { workflowState: { equals: 'published' } },
             { classification: { equals: storyClassification.id } },
           ]),
         },

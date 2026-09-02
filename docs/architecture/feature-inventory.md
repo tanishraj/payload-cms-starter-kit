@@ -17,29 +17,29 @@ This is the maintained technical map of the starter. It records what is register
 
 ## Payload Collections
 
-| Group          | Collection                             | Responsibilities                                                                                                       |
-| -------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Content        | Pages                                  | Hierarchical routes, 57-block layouts, drafts, workflow, SEO, live preview, page-owned links, path-change redirects    |
-| Content        | Articles                               | Long-form Lexical content, topics/tags, related content, SEO, workflow, live preview                                   |
-| News & Events  | News & Events                          | Single-choice classifications, event validation/registration, taxonomy, block/detail/feed data, workflow, live preview |
-| News & Events  | Classifications                        | Public labels, Story/Event behavior, and Calendar colors used by entries, badges, tabs, dates, and validation          |
-| Content        | Reviews                                | Moderated ratings and testimonials, source-submission linkage, taxonomy, SEO, workflow, live preview                   |
-| Content        | Reusable Sections                      | Shared versioned block stacks with recursion and high-complexity block restrictions                                    |
-| Taxonomy       | Topics (`categories`)                  | Hierarchical editorial topics with SEO data                                                                            |
-| Taxonomy       | Tags                                   | Flat editorial keywords with SEO data                                                                                  |
-| Navigation     | Navigation Links                       | Page/custom destinations, including records synchronized from Pages                                                    |
-| Navigation     | Redirects                              | Normalized unique incoming paths, page/custom targets, 301/302 choice, enable state                                    |
-| Site Structure | Headers                                | Versioned Header Navbar presets                                                                                        |
-| Site Structure | Footers                                | Versioned Footer 56 presets                                                                                            |
-| Site Structure | Office Locations                       | Versioned map/contact records used by Regional Offices                                                                 |
-| Site Structure | System Pages                           | Governed 404, maintenance, and coming-soon presets with matching block validation                                      |
-| Media          | Media                                  | Uploads, classification, alt validation, usage detection, deletion guards, storage health, operational sync            |
-| Media          | Gallery Albums                         | Versioned ordered image albums used by Event Gallery's count-aware rectangular quilt and full-screen viewer            |
-| Forms          | Forms                                  | Versioned general, lead, and review-intent field schemas plus email configuration                                      |
-| Forms          | Form Submissions                       | Stored immutable payload/metadata, operational status/assignment/activity, optional review promotion                   |
-| Administration | Action Queue (`work-queue`)            | Deduplicated CMS-generated approval, moderation, follow-up, publishing, media, and system work                         |
-| Administration | Audit Log (`operational-audit-events`) | Immutable selected operational events and actor metadata                                                               |
-| Administration | Users                                  | Payload authentication, roles, capability presets and overrides                                                        |
+| Group          | Collection                             | Responsibilities                                                                                                     |
+| -------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Content        | Pages                                  | Hierarchical routes, 57-block layouts, native drafts, SEO, live preview, page-owned links, path-change redirects     |
+| Content        | Articles                               | Long-form Lexical content, topics/tags, related content, SEO, native drafts, live preview                            |
+| News & Events  | News & Events                          | Single-choice classifications, event validation/registration, taxonomy, block/detail/feed data, drafts, live preview |
+| News & Events  | Classifications                        | Public labels, Story/Event behavior, and Calendar colors used by entries, badges, tabs, dates, and validation        |
+| Content        | Reviews                                | Moderated ratings and testimonials, source-submission linkage, taxonomy, SEO, native drafts, live preview            |
+| Content        | Reusable Sections                      | Shared versioned block stacks with recursion and high-complexity block restrictions                                  |
+| Taxonomy       | Topics (`categories`)                  | Hierarchical editorial topics with SEO data                                                                          |
+| Taxonomy       | Tags                                   | Flat editorial keywords with SEO data                                                                                |
+| Navigation     | Navigation Links                       | Page/custom destinations, including records synchronized from Pages                                                  |
+| Navigation     | Redirects                              | Normalized unique incoming paths, page/custom targets, 301/302 choice, enable state                                  |
+| Site Structure | Headers                                | Versioned Header Navbar presets                                                                                      |
+| Site Structure | Footers                                | Versioned Footer 56 presets                                                                                          |
+| Site Structure | Office Locations                       | Versioned map/contact records used by Regional Offices                                                               |
+| Site Structure | System Pages                           | Governed 404, maintenance, and coming-soon presets with matching block validation                                    |
+| Media          | Media                                  | Uploads, classification, alt validation, usage detection, deletion guards, storage health, operational sync          |
+| Media          | Gallery Albums                         | Versioned ordered image albums used by Event Gallery's count-aware rectangular quilt and full-screen viewer          |
+| Forms          | Forms                                  | Versioned general, lead, and review-intent field schemas plus email configuration                                    |
+| Forms          | Form Submissions                       | Stored immutable payload/metadata, operational status/assignment/activity, optional review promotion                 |
+| Administration | Action Queue (`work-queue`)            | Deduplicated CMS-generated approval, moderation, follow-up, publishing, media, and system work                       |
+| Administration | Audit Log (`operational-audit-events`) | Immutable selected operational events and actor metadata                                                             |
+| Administration | Users                                  | Payload authentication, Admin/Site Manager roles, and Site Manager feature grants                                    |
 
 All collections use timestamps and Trash. Draft/version support is enabled where the individual config declares it; operational records and users are not public content.
 
@@ -59,16 +59,19 @@ All collections use timestamps and Trash. Draft/version support is enabled where
 
 Globals with versions retain history. Relevant changes invalidate cached frontend data; selected higher-risk changes are written to the Audit Log.
 
-## Roles, Capabilities, And Editorial Governance
+## Roles, Features, And Publication Governance
 
-- Roles are Admin, Site Manager, and Content Manager. Legacy role values normalize to a current role.
-- The first user is promoted to Admin. Admin has all capabilities; other roles receive defaults that can be overridden.
-- Capabilities separately control collection visibility/management, publishing for each governed editorial collection, settings, queue/audit access, and whether editorial workflow is required.
-- Pages, Articles, News & Events, Reviews, and System Pages use `draft`, `in_review`, `scheduled`, `published`, and `reverted` workflow states.
-- `scheduled` validates and records a target time but does not run an automatic publisher.
-- Publishing stamps user/time metadata. Open or blocked approval/publish-issue Action Queue items prevent publishing; `in_progress` items do not.
-- Queue hooks create, reopen, deduplicate, and auto-resolve work from editorial, form, header/footer, link, redirect, review, and media conditions.
-- Audit coverage is selective rather than a complete database history: governed editorial transitions, Reusable Sections, selected configuration globals, queue operator changes, and media deletion/storage events are covered.
+- The only roles are Admin and Site Manager. The first user is promoted to Admin, and the last active Admin cannot be demoted or deleted.
+- Admins implicitly hold every feature and may create additional Admins or Site Managers. New Site Managers receive no features until an Admin grants them.
+- The registry exposes 29 features corresponding to Admin destinations. Each grant controls sidebar visibility and server access; missing grants fail closed.
+- Pages, Articles, News & Events, Reviews, and System Pages use Payload's native `_status` as their only draft/publication state. Publishing stamps user/time metadata.
+- Review submissions remain draft and pending until an Admin or Reviews-granted Site Manager approves or rejects them. Only approved submitted Reviews may be public.
+- Action Queue and Audit Log access is intersected with the user's source-feature grants; records from ungranted or unmapped features remain hidden.
+- Open or blocked approval/publish-issue Action Queue items prevent publishing; `in_progress` items do not.
+- Queue hooks create, reopen, deduplicate, and auto-resolve work from form, header/footer, link, redirect, review, media, and publication conditions.
+- Audit coverage is selective rather than a complete database history: governed publication events, Reusable Sections, selected configuration globals, queue operator changes, and media deletion/storage events are covered.
+
+See [Users, Features, and Publication Governance](../operations/editorial-governance.md) for the complete feature catalog, dependency-read behavior, migration procedure, and security boundaries.
 
 ## Page And Shell Block Systems
 
@@ -207,7 +210,7 @@ The redirect proxy excludes Next.js internals, APIs, Admin, and common static/me
 - Required, email, select-option, and checkbox-acceptance validation derive from the Form schema.
 - Source, campaign, and landing-page metadata are captured when supplied.
 - General/lead Forms can notify internal recipients and optionally send a submitter confirmation. Contact email lookup prefers `submitterEmail`, then `reviewerEmail`, then `email`.
-- Review-intent Forms can create or update a draft Review in `in_review` and record its relationship or promotion error.
+- Review-intent Forms can create or update a pending draft Review and record its relationship or promotion error.
 - Notification, confirmation, downstream-event, and promotion failures are logged without changing the visitor's successful submission response after storage succeeds.
 
 ## SEO, Search, Feeds, And Caching

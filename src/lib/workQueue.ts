@@ -1,19 +1,12 @@
 import type { PayloadRequest } from 'payload'
 
-import {
-  isWorkQueueSyncContext,
-  withWorkQueueSyncContext,
-} from '@/hooks/syncWorkQueueItem'
+import { getFeatureForResource, type AdminFeatureKey } from '@/access/adminFeatures'
+import { isWorkQueueSyncContext, withWorkQueueSyncContext } from '@/hooks/syncWorkQueueItem'
 
 export type WorkQueueStatus = 'open' | 'in_progress' | 'blocked' | 'resolved' | 'canceled'
 export type WorkQueuePriority = 'low' | 'normal' | 'high' | 'urgent'
 export type WorkQueueType =
-  | 'approval'
-  | 'moderation'
-  | 'follow_up'
-  | 'publish_issue'
-  | 'media_issue'
-  | 'system_issue'
+  'approval' | 'moderation' | 'follow_up' | 'publish_issue' | 'media_issue' | 'system_issue'
 
 export type WorkQueueRecord = {
   id: number | string
@@ -22,6 +15,7 @@ export type WorkQueueRecord = {
   details?: string | null
   dueDate?: string | null
   firstOpenedAt?: string | null
+  feature?: AdminFeatureKey | null
   lastSyncedAt?: string | null
   operatorNotes?: string | null
   priority?: WorkQueuePriority | null
@@ -187,9 +181,16 @@ export const upsertWorkQueueItem = async ({
     req,
   })
   const now = new Date().toISOString()
+  const sourceFeature = getFeatureForResource({ kind: 'collection', slug: sourceCollection })
+
+  if (!sourceFeature) {
+    throw new Error(`Cannot create a work queue item for unregistered source ${sourceCollection}.`)
+  }
+
   const baseData = {
     autoResolved: false,
     details,
+    feature: sourceFeature,
     lastSyncedAt: now,
     priority,
     queueType,

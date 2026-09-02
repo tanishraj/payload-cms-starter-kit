@@ -4,7 +4,7 @@ Use this ownership map before adding schema so client-specific changes land in t
 
 ## Content
 
-`pages` owns hierarchical public CMS routes, block layouts, workflow, live preview, route SEO, synchronized Page links, and automatic redirects when a published path changes.
+`pages` owns hierarchical public CMS routes, block layouts, native draft/publication state, live preview, route SEO, synchronized Page links, and automatic redirects when a published path changes.
 
 `reusable-sections` owns shared block groups referenced from Pages. It uses a restricted block set and cannot reference itself.
 
@@ -30,7 +30,7 @@ Use this ownership map before adding schema so client-specific changes land in t
 
 `office-locations` owns reusable map/contact records consumed by the Regional Offices Page block. Both map URLs must be HTTPS.
 
-`system-pages` owns one matching 404, maintenance, or coming-soon block per preset, plus SEO and editorial workflow. `system-mode-settings` selects and activates these presets.
+`system-pages` owns one matching 404, maintenance, or coming-soon block per preset, plus SEO and native draft/publication state. `system-mode-settings` selects and activates these presets.
 
 ## Media
 
@@ -50,7 +50,9 @@ Use this ownership map before adding schema so client-specific changes land in t
 
 `operational-audit-events`, labeled `Audit Log`, owns immutable selected operational history. It is not a complete record of every database change.
 
-`users` owns Payload authentication, Admin/Site Manager/Content Manager roles, capability presets, and per-user overrides.
+`users` owns Payload authentication, the Admin and Site Manager roles, and the 29 feature grants that Admins assign to Site Managers. Admin access is implicit and Users administration is never grantable.
+
+`work-queue` and `operational-audit-events` carry their source feature. A Site Manager can see those records only when granted both the Action Queue or Audit Log feature and the record's source feature.
 
 All collections receive Payload Trash through the project plugin, subject to their normal access rules.
 

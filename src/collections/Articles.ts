@@ -1,19 +1,18 @@
 import { type CollectionConfig } from 'payload'
 
 import {
-  allowPublishedReadOrCapability,
-  canShowEditorialWorkflow,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+  allowPublishedReadOrFeature,
+  deleteFeatureOrAdmin,
+  hideUnlessFeature,
+  requireFeature,
+} from '@/access/featureAccess'
 import { buildSEOFields } from '@/fields/buildSEOFields'
+import { publicationMetadataFields } from '@/fields/publicationMetadataFields'
 import { projectSlugField } from '@/fields/projectSlugField'
-import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
+import { enforcePublicationPolicy } from '@/hooks/enforcePublicationPolicy'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
-import { createWorkflowQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { syncPrimaryCategoryMembership } from '@/hooks/syncPrimaryCategoryMembership'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
-import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 import {
   revalidateArticlesCache,
   revalidateDeletedArticleCache,
@@ -49,9 +48,9 @@ export const Articles: CollectionConfig = {
   },
   admin: {
     group: 'Content',
-    hidden: hideFromUsersWithoutCapability('manage_articles'),
+    hidden: hideUnlessFeature('articles'),
     useAsTitle: 'title',
-    defaultColumns: ['title', 'primaryCategory', '_status', 'workflowState', 'updatedAt'],
+    defaultColumns: ['title', 'primaryCategory', '_status', 'updatedAt'],
     description: 'Editorial long-form content with writing-first authoring and SEO controls.',
     listSearchableFields: ['title', 'slug', 'authorName'],
     livePreview: {
@@ -68,39 +67,20 @@ export const Articles: CollectionConfig = {
     },
   },
   access: {
-    create: requireCapability('manage_articles'),
-    delete: requireCapability('manage_articles'),
-    read: allowPublishedReadOrCapability('manage_articles'),
-    readVersions: requireCapability('manage_articles'),
-    update: requireCapability('manage_articles'),
+    create: requireFeature('articles'),
+    delete: deleteFeatureOrAdmin('articles'),
+    read: allowPublishedReadOrFeature('articles'),
+    readVersions: requireFeature('articles'),
+    update: requireFeature('articles'),
   },
   hooks: {
     afterChange: [
       revalidateArticlesCache,
-      createWorkflowQueueHook({
-        sourceAdminPathPrefix: '/admin/collections/articles',
-        sourceCollection: 'articles',
-        states: [
-          {
-            queueType: 'approval',
-            reasonCode: 'article-review-required',
-            summary: (_doc, title) => `${title} is awaiting editorial approval.`,
-            workflowState: 'in_review',
-          },
-          {
-            priority: () => 'high',
-            queueType: 'approval',
-            reasonCode: 'article-scheduled-publication',
-            summary: (_doc, title) => `${title} is scheduled and requires publication oversight.`,
-            workflowState: 'scheduled',
-          },
-        ],
-        titleField: 'title',
-      }),
       createCollectionAuditHook({
         entityType: 'article',
+        feature: 'articles',
         getSummary: ({ doc, previousDoc }) =>
-          `Workflow moved from ${previousDoc?.workflowState ?? 'draft'} to ${doc.workflowState}.`,
+          `Publication status changed from ${previousDoc?._status ?? 'draft'} to ${doc._status ?? 'draft'}.`,
         titleField: 'title',
       }),
     ],
@@ -108,7 +88,7 @@ export const Articles: CollectionConfig = {
     beforeChange: [
       syncPrimaryCategoryMembership,
       validateSEOContract(),
-      enforceEditorialWorkflow('publish_articles', 'articles'),
+      enforcePublicationPolicy('articles', 'articles'),
     ],
   },
   versions: {
@@ -199,7 +179,7 @@ export const Articles: CollectionConfig = {
                   type: 'date',
                   admin: {
                     description:
-                      'Optional. Override the visible publication date without changing workflow metadata.',
+                      'Optional. Override the visible publication date without changing publication metadata.',
                     width: '50%',
                   },
                 },
@@ -220,79 +200,8 @@ export const Articles: CollectionConfig = {
           label: 'SEO',
           fields: [...buildSEOFields()],
         },
-        {
-          label: 'Workflow',
-          fields: [
-            {
-              name: 'workflowState',
-              type: 'select',
-              defaultValue: 'draft',
-              options: [...editorialWorkflowStateOptions],
-              required: true,
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-              },
-            },
-            {
-              name: 'scheduledPublishAt',
-              type: 'date',
-              admin: {
-                condition: (_data, siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never) &&
-                  siblingData?.workflowState === 'scheduled',
-              },
-            },
-            {
-              name: 'changeSummary',
-              type: 'textarea',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                description: 'Short operator-facing note explaining why this change exists.',
-              },
-            },
-            {
-              name: 'lastReviewedAt',
-              type: 'date',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-            {
-              name: 'lastReviewedBy',
-              type: 'relationship',
-              relationTo: 'users',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-            {
-              name: 'publishedAt',
-              type: 'date',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-            {
-              name: 'publishedBy',
-              type: 'relationship',
-              relationTo: 'users',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-          ],
-        },
       ],
     },
+    ...publicationMetadataFields('articles'),
   ],
 }

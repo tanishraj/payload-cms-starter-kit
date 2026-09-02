@@ -28,7 +28,7 @@ export async function GET() {
       },
       sort: '-publishedAt',
       where: {
-        and: [{ _status: { equals: 'published' } }, { workflowState: { equals: 'published' } }],
+        _status: { equals: 'published' },
       },
     }),
     payload.findGlobal({ slug: 'site-settings', depth: 1 }),

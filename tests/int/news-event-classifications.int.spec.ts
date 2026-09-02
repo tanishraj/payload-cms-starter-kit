@@ -182,16 +182,16 @@ describe('news and event classifications', () => {
   it('allows public and relevant authenticated reads while gating mutations', async () => {
     const publicReq = { user: null } as unknown as PayloadRequest
     const managerReq = {
-      user: { capabilities: { manage_news_events: true }, role: 'content_manager' },
+      user: { features: { newsEventClassifications: true }, role: 'siteManager' },
     } as unknown as PayloadRequest
     const deniedReq = {
-      user: { capabilities: { manage_news_events: false }, role: 'content_manager' },
+      user: { features: {}, role: 'siteManager' },
     } as unknown as PayloadRequest
     const pageManagerReq = {
-      user: { capabilities: { manage_pages: true }, role: 'content_manager' },
+      user: { features: { pages: true }, role: 'siteManager' },
     } as unknown as PayloadRequest
     const settingsManagerReq = {
-      user: { capabilities: { manage_page_settings: true }, role: 'content_manager' },
+      user: { features: { layoutDefaults: true }, role: 'siteManager' },
     } as unknown as PayloadRequest
 
     expect(await NewsEventClassifications.access?.read?.({ req: publicReq } as never)).toBe(true)
@@ -204,7 +204,7 @@ describe('news and event classifications', () => {
     ).toBe(true)
     expect(await NewsEventClassifications.access?.read?.({ req: deniedReq } as never)).toBe(false)
 
-    for (const operation of ['create', 'delete', 'update'] as const) {
+    for (const operation of ['create', 'update'] as const) {
       expect(
         await NewsEventClassifications.access?.[operation]?.({ req: managerReq } as never),
       ).toBe(true)
@@ -212,6 +212,14 @@ describe('news and event classifications', () => {
         await NewsEventClassifications.access?.[operation]?.({ req: deniedReq } as never),
       ).toBe(false)
     }
+    expect(await NewsEventClassifications.access?.delete?.({ req: managerReq } as never)).toBe(
+      false,
+    )
+    expect(
+      await NewsEventClassifications.access?.delete?.({
+        req: { user: { role: 'admin' } } as PayloadRequest,
+      } as never),
+    ).toBe(true)
   })
 
   it('defines the seven compatibility defaults', () => {

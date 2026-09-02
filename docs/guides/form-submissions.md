@@ -49,7 +49,7 @@ Expected website result:
 
 - the public form continues working normally
 - internal staff can see clear progress on the submission
-- related `Work Queue` items open or resolve automatically based on the workflow state
+- related `Action Queue` items open or resolve automatically based on submission status
 
 ## Best Practices
 

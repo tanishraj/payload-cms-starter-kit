@@ -45,6 +45,7 @@ describe('SNMIH legal Pages migration', () => {
       '20260829_000000_rename_snmih_theme_values',
       '20260831_000000_provision_legal_pages',
       '20260831_010000_nest_department_profiles',
+      '20260902_000000_two_role_feature_permissions',
     ])
   })
 
@@ -128,9 +129,9 @@ describe('SNMIH legal Pages migration', () => {
               }),
             ],
             metaDescription: expect.any(String),
+            publishedAt: expect.any(String),
             slug,
             title,
-            workflowState: 'published',
           }),
           depth: 0,
           draft: false,

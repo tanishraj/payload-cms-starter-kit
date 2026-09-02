@@ -4,10 +4,7 @@ import { WorkQueue } from '@/collections/WorkQueue'
 import { syncFormSubmissionToWorkQueue } from '@/hooks/syncFormSubmissionToWorkQueue'
 import { syncMediaToWorkQueue } from '@/hooks/syncMediaToWorkQueue'
 import { syncReviewToWorkQueue } from '@/hooks/syncReviewToWorkQueue'
-import {
-  createDraftPublishQueueHook,
-  createWorkflowQueueHook,
-} from '@/hooks/syncWorkflowStateToWorkQueue'
+import { createDraftPublishQueueHook } from '@/hooks/syncDraftPublishToWorkQueue'
 import {
   buildWorkQueueDedupeKey,
   findBlockingPublishQueueItems,
@@ -23,7 +20,7 @@ type TestReq = {
     find: ReturnType<typeof vi.fn>
     update: ReturnType<typeof vi.fn>
   }
-  user?: { capabilities?: Record<string, boolean>; role?: string }
+  user?: { features?: Record<string, boolean>; role?: string }
 }
 
 const createReq = ({
@@ -33,7 +30,7 @@ const createReq = ({
 }: {
   context?: Record<string, unknown>
   docs?: Array<Record<string, unknown>>
-  user?: { capabilities?: Record<string, boolean>; role?: string }
+  user?: { features?: Record<string, boolean>; role?: string }
 } = {}) => {
   const create = vi.fn(async () => ({}))
   const find = vi.fn(async () => ({
@@ -82,15 +79,56 @@ describe('work queue collection', () => {
     expect(tabNames).toEqual(['Details', 'Source', 'System'])
   })
 
+  it('keeps operator resolution metadata synchronized with terminal status changes', async () => {
+    const beforeChange = WorkQueue.hooks?.beforeChange?.[0]
+    if (!beforeChange) throw new Error('Expected Work Queue beforeChange hook.')
+
+    const resolved = await beforeChange({
+      data: { status: 'resolved' },
+      operation: 'update',
+      originalDoc: { status: 'open' },
+      req: { context: {} },
+    } as never)
+    expect(resolved).toMatchObject({ autoResolved: false, status: 'resolved' })
+    expect(resolved?.resolvedAt).toEqual(expect.any(String))
+
+    const reopened = await beforeChange({
+      data: { status: 'open' },
+      operation: 'update',
+      originalDoc: { resolvedAt: '2026-09-01T00:00:00.000Z', status: 'resolved' },
+      req: { context: {} },
+    } as never)
+    expect(reopened).toMatchObject({ autoResolved: false, resolvedAt: null, status: 'open' })
+  })
+
+  it('scopes queue access to both Action Queue and the source feature', async () => {
+    const access = WorkQueue.access?.read
+    if (!access) throw new Error('Expected Work Queue read access.')
+
+    expect(await access({ req: { user: { role: 'admin' } } } as never)).toBe(true)
+    expect(
+      await access({
+        req: { user: { features: { actionQueue: true }, role: 'siteManager' } },
+      } as never),
+    ).toBe(false)
+    expect(
+      await access({
+        req: {
+          user: { features: { actionQueue: true, pages: true }, role: 'siteManager' },
+        },
+      } as never),
+    ).toEqual({ feature: { in: ['pages'] } })
+  })
+
   it('builds stable dedupe keys per source condition', () => {
     expect(
       buildWorkQueueDedupeKey({
         sourceCollection: 'pages',
         sourceID: 12,
         queueType: 'approval',
-        reasonCode: 'workflow-action-required',
+        reasonCode: 'publish-checklist-required',
       }),
-    ).toBe('pages:12:approval:workflow-action-required')
+    ).toBe('pages:12:approval:publish-checklist-required')
   })
 
   it('finds blocking publish queue items by source identity, status, and queue type', async () => {
@@ -179,28 +217,29 @@ describe('work queue collection', () => {
     const req = createReq()
 
     await upsertWorkQueueItem({
-      dedupeKey: 'pages:12:approval:workflow-action-required',
+      dedupeKey: 'pages:12:approval:publish-checklist-required',
       queueType: 'approval',
-      reasonCode: 'workflow-action-required',
+      reasonCode: 'publish-checklist-required',
       req: req as never,
       sourceCollection: 'pages',
       sourceID: 12,
       sourceTitle: 'About',
-      summary: 'About requires workflow action.',
+      summary: 'About requires a publication checklist.',
     })
 
     expect(req.payload.create).toHaveBeenCalledWith(
       expect.objectContaining({
         collection: 'work-queue',
         data: expect.objectContaining({
-          dedupeKey: 'pages:12:approval:workflow-action-required',
+          dedupeKey: 'pages:12:approval:publish-checklist-required',
+          feature: 'pages',
           queueType: 'approval',
-          reasonCode: 'workflow-action-required',
+          reasonCode: 'publish-checklist-required',
           sourceCollection: 'pages',
           sourceID: '12',
           sourceTitle: 'About',
           status: 'open',
-          summary: 'About requires workflow action.',
+          summary: 'About requires a publication checklist.',
         }),
         overrideAccess: true,
       }),
@@ -218,14 +257,14 @@ describe('work queue collection', () => {
     })
 
     await upsertWorkQueueItem({
-      dedupeKey: 'pages:12:approval:workflow-action-required',
+      dedupeKey: 'pages:12:approval:publish-checklist-required',
       queueType: 'approval',
-      reasonCode: 'workflow-action-required',
+      reasonCode: 'publish-checklist-required',
       req: req as never,
       sourceCollection: 'pages',
       sourceID: 12,
       sourceTitle: 'About',
-      summary: 'About requires workflow action.',
+      summary: 'About requires a publication checklist.',
     })
 
     expect(req.payload.update).toHaveBeenCalledWith(
@@ -237,7 +276,7 @@ describe('work queue collection', () => {
           resolvedAt: null,
           sourceTitle: 'About',
           status: 'open',
-          summary: 'About requires workflow action.',
+          summary: 'About requires a publication checklist.',
         }),
         overrideAccess: true,
       }),
@@ -255,7 +294,7 @@ describe('work queue collection', () => {
     })
 
     await resolveWorkQueueItem({
-      dedupeKey: 'pages:12:approval:workflow-action-required',
+      dedupeKey: 'pages:12:approval:publish-checklist-required',
       req: req as never,
       resolutionSummary: 'The page was published.',
     })
@@ -272,103 +311,6 @@ describe('work queue collection', () => {
         overrideAccess: true,
       }),
     )
-  })
-
-  it('creates an approval queue item when a workflow collection enters in_review', async () => {
-    const req = createReq({
-      user: {
-        role: 'contentManager',
-        capabilities: {
-          require_editorial_workflow: true,
-        },
-      },
-    })
-    const hook = createWorkflowQueueHook({
-      sourceAdminPathPrefix: '/admin/collections/pages',
-      sourceCollection: 'pages',
-      states: [
-        {
-          queueType: 'approval',
-          reasonCode: 'page-review-required',
-          summary: (_doc, title) => `${title} is awaiting editorial approval.`,
-          workflowState: 'in_review',
-        },
-      ],
-      titleField: 'title',
-    })
-
-    await hook({
-      doc: {
-        id: 12,
-        title: 'About',
-        workflowState: 'in_review',
-      },
-      req: req as never,
-    } as never)
-
-    expect(req.payload.create).toHaveBeenCalledWith(
-      expect.objectContaining({
-        collection: 'work-queue',
-        data: expect.objectContaining({
-          queueType: 'approval',
-          reasonCode: 'page-review-required',
-          sourceCollection: 'pages',
-          sourceID: '12',
-        }),
-      }),
-    )
-  })
-
-  it('resolves workflow queue items instead of creating new ones for direct-publish users', async () => {
-    const req = createReq({
-      docs: [
-        {
-          id: 44,
-          status: 'open',
-        },
-      ],
-      user: {
-        role: 'siteManager',
-        capabilities: {
-          publish_pages: true,
-        },
-      },
-    })
-    const hook = createWorkflowQueueHook({
-      sourceAdminPathPrefix: '/admin/collections/pages',
-      sourceCollection: 'pages',
-      states: [
-        {
-          queueType: 'approval',
-          reasonCode: 'page-review-required',
-          summary: (_doc, title) => `${title} is awaiting editorial approval.`,
-          workflowState: 'in_review',
-        },
-      ],
-      titleField: 'title',
-    })
-
-    await hook({
-      doc: {
-        id: 12,
-        title: 'About',
-        workflowState: 'published',
-      },
-      req: req as never,
-    } as never)
-
-    expect(req.payload.update).toHaveBeenCalledWith(
-      expect.objectContaining({
-        collection: 'work-queue',
-        id: 44,
-        data: expect.objectContaining({
-          autoResolved: true,
-          status: 'resolved',
-        }),
-        overrideAccess: true,
-      }),
-    )
-    expect(req.payload.create).not.toHaveBeenCalled()
   })
 
   it('creates a publish queue item for draft-only collections', async () => {
@@ -426,14 +368,15 @@ describe('work queue collection', () => {
     )
   })
 
-  it('creates a moderation queue item for in-review reviews', async () => {
+  it('creates a moderation queue item for a pending submitted Review', async () => {
     const req = createReq()
 
     await syncReviewToWorkQueue({
       doc: {
         id: 31,
+        moderationStatus: 'pending',
+        sourceSubmission: 'submission-9',
         title: 'Review Title',
-        workflowState: 'in_review',
       },
       req: req as never,
     } as never)

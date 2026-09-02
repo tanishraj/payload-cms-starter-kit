@@ -2,14 +2,7 @@ import configPromise from '@payload-config'
 import { headers as getHeaders } from 'next/headers'
 import { getPayload } from 'payload'
 
-import { hasAdminCapability } from '@/access/adminCapabilities'
-import { DashboardWorkflowCard } from '@/components/admin/DashboardWorkflowCard'
-import {
-  buildInReviewAdminURL,
-  buildScheduledAdminURL,
-  settleDashboardCount,
-  type DashboardAttentionItem,
-} from '@/components/admin/dashboardAttention'
+import { hasFeature } from '@/access/featureAccess'
 import type { User } from '@/payload-types'
 
 // ── Shared style helpers ───────────────────────────────────────────────────────
@@ -33,14 +26,15 @@ const card: React.CSSProperties = {
 
 type AttentionCardProps = {
   label: string
-  value: number
+  value: number | null
   href: string
   accent: string
   alert?: boolean
 }
 
 function AttentionCard({ label, value, href, accent, alert = false }: AttentionCardProps) {
-  const active = alert && value > 0
+  const unavailable = value === null
+  const active = alert && !unavailable && value > 0
   return (
     <a
       href={href}
@@ -56,16 +50,20 @@ function AttentionCard({ label, value, href, accent, alert = false }: AttentionC
       }}
     >
       <span style={{ fontSize: '28px', fontWeight: 700, color: accent, lineHeight: 1 }}>
-        {value}
+        {unavailable ? '—' : value}
       </span>
       <span style={{ fontSize: '13px', color: 'var(--theme-elevation-600)', fontWeight: 500 }}>
         {label}
       </span>
-      {active && (
+      {unavailable ? (
+        <span style={{ fontSize: '11px', color: 'var(--theme-elevation-600)', marginTop: '2px' }}>
+          Count unavailable
+        </span>
+      ) : active ? (
         <span style={{ fontSize: '11px', color: accent, fontWeight: 600, marginTop: '2px' }}>
           Needs attention →
         </span>
-      )}
+      ) : null}
     </a>
   )
 }
@@ -116,8 +114,6 @@ const TYPE_COLORS: Record<string, string> = {
 const STATUS_STYLES: Record<string, { bg: string; color: string; label: string }> = {
   published: { bg: '#d1fae5', color: '#065f46', label: 'Published' },
   draft: { bg: '#f3f4f6', color: '#374151', label: 'Draft' },
-  in_review: { bg: '#fef3c7', color: '#92400e', label: 'In Review' },
-  scheduled: { bg: '#dbeafe', color: '#1e40af', label: 'Scheduled' },
 }
 
 function formatRelativeTime(iso: string): string {
@@ -242,32 +238,26 @@ export async function DashboardOverview() {
   if (!user) return null
 
   const visibility = {
-    articles: hasAdminCapability(user, 'manage_articles'),
-    formSubmissions: hasAdminCapability(user, 'manage_form_submissions'),
-    media: hasAdminCapability(user, 'manage_media'),
-    newsEvents: hasAdminCapability(user, 'manage_news_events'),
-    pages: hasAdminCapability(user, 'manage_pages'),
-    reviews: hasAdminCapability(user, 'manage_reviews'),
-    workQueue: hasAdminCapability(user, 'manage_work_queue'),
+    articles: hasFeature(user, 'articles'),
+    formSubmissions: hasFeature(user, 'formSubmissions'),
+    media: hasFeature(user, 'media'),
+    newsEvents: hasFeature(user, 'newsEvents'),
+    pages: hasFeature(user, 'pages'),
+    reusableSections: hasFeature(user, 'reusableSections'),
+    reviews: hasFeature(user, 'reviews'),
+    workQueue: hasFeature(user, 'actionQueue'),
   }
   const secureQuery = { overrideAccess: false as const, user }
   const zeroCount = () => Promise.resolve({ totalDocs: 0 })
+  const unavailableCount = () => Promise.resolve({ totalDocs: null })
   const emptyDocs = () => Promise.resolve({ docs: [] })
-  const emptyWorkflowCount = Promise.resolve({ status: 'available' as const, value: 0 })
-  const now = new Date().toISOString()
 
   const [
     pagesTotal,
     articlesTotal,
     newsTotal,
     reviewsTotal,
-    inReviewPages,
-    inReviewArticles,
-    inReviewNews,
-    inReviewReviews,
-    scheduledPages,
-    scheduledArticles,
-    scheduledNews,
+    pendingReviews,
     openSubmissions,
     actionQueue,
     recentPages,
@@ -288,86 +278,21 @@ export async function DashboardOverview() {
     visibility.reviews
       ? payload.count({ collection: 'reviews', ...secureQuery }).catch(zeroCount)
       : zeroCount(),
-    // In review
-    visibility.pages
-      ? settleDashboardCount(
-          payload.count({
-            collection: 'pages',
-            ...secureQuery,
-            where: { workflowState: { equals: 'in_review' } },
-          }),
-        )
-      : emptyWorkflowCount,
-    visibility.articles
-      ? settleDashboardCount(
-          payload.count({
-            collection: 'articles',
-            ...secureQuery,
-            where: { workflowState: { equals: 'in_review' } },
-          }),
-        )
-      : emptyWorkflowCount,
-    visibility.newsEvents
-      ? settleDashboardCount(
-          payload.count({
-            collection: 'news-events',
-            ...secureQuery,
-            where: { workflowState: { equals: 'in_review' } },
-          }),
-        )
-      : emptyWorkflowCount,
+    // Public reviews waiting for moderation
     visibility.reviews
-      ? settleDashboardCount(
-          payload.count({
+      ? payload
+          .count({
             collection: 'reviews',
             ...secureQuery,
-            where: { workflowState: { equals: 'in_review' } },
-          }),
-        )
-      : emptyWorkflowCount,
-    // Scheduled
-    visibility.pages
-      ? settleDashboardCount(
-          payload.count({
-            collection: 'pages',
-            ...secureQuery,
             where: {
               and: [
-                { scheduledPublishAt: { exists: true } },
-                { scheduledPublishAt: { greater_than: now } },
+                { sourceSubmission: { exists: true } },
+                { moderationStatus: { equals: 'pending' } },
               ],
             },
-          }),
-        )
-      : emptyWorkflowCount,
-    visibility.articles
-      ? settleDashboardCount(
-          payload.count({
-            collection: 'articles',
-            ...secureQuery,
-            where: {
-              and: [
-                { scheduledPublishAt: { exists: true } },
-                { scheduledPublishAt: { greater_than: now } },
-              ],
-            },
-          }),
-        )
-      : emptyWorkflowCount,
-    visibility.newsEvents
-      ? settleDashboardCount(
-          payload.count({
-            collection: 'news-events',
-            ...secureQuery,
-            where: {
-              and: [
-                { scheduledPublishAt: { exists: true } },
-                { scheduledPublishAt: { greater_than: now } },
-              ],
-            },
-          }),
-        )
-      : emptyWorkflowCount,
+          })
+          .catch(unavailableCount)
+      : zeroCount(),
     // Lead / ops
     visibility.formSubmissions
       ? payload
@@ -376,16 +301,16 @@ export async function DashboardOverview() {
             ...secureQuery,
             where: { status: { in: ['new', 'in_review'] } },
           })
-          .catch(zeroCount)
+          .catch(unavailableCount)
       : zeroCount(),
     visibility.workQueue
       ? payload
           .count({
             collection: 'work-queue',
             ...secureQuery,
-            where: { resolvedAt: { exists: false } },
+            where: { status: { in: ['open', 'in_progress', 'blocked'] } },
           })
-          .catch(zeroCount)
+          .catch(unavailableCount)
       : zeroCount(),
     // Recently edited
     visibility.pages
@@ -423,45 +348,6 @@ export async function DashboardOverview() {
       : emptyDocs(),
   ])
 
-  const inReviewItems: DashboardAttentionItem[] = [
-    visibility.pages
-      ? { href: buildInReviewAdminURL('pages'), label: 'Pages', result: inReviewPages }
-      : null,
-    visibility.articles
-      ? { href: buildInReviewAdminURL('articles'), label: 'Articles', result: inReviewArticles }
-      : null,
-    visibility.newsEvents
-      ? {
-          href: buildInReviewAdminURL('news-events'),
-          label: 'News & Events',
-          result: inReviewNews,
-        }
-      : null,
-    visibility.reviews
-      ? { href: buildInReviewAdminURL('reviews'), label: 'Reviews', result: inReviewReviews }
-      : null,
-  ].filter((item): item is DashboardAttentionItem => item !== null)
-
-  const scheduledItems: DashboardAttentionItem[] = [
-    visibility.pages
-      ? { href: buildScheduledAdminURL('pages', now), label: 'Pages', result: scheduledPages }
-      : null,
-    visibility.articles
-      ? {
-          href: buildScheduledAdminURL('articles', now),
-          label: 'Articles',
-          result: scheduledArticles,
-        }
-      : null,
-    visibility.newsEvents
-      ? {
-          href: buildScheduledAdminURL('news-events', now),
-          label: 'News & Events',
-          result: scheduledNews,
-        }
-      : null,
-  ].filter((item): item is DashboardAttentionItem => item !== null)
-
   const recentEdits: RecentItem[] = [
     ...recentPages.docs.map((d) => ({
       id: String(d.id),
@@ -492,10 +378,9 @@ export async function DashboardOverview() {
     .slice(0, 6)
 
   const recentSubmissions = recentSubmissionsResult.docs
-  const hasWorkflowContent =
+  const hasContent =
     visibility.pages || visibility.articles || visibility.newsEvents || visibility.reviews
-  const hasScheduledContent = visibility.pages || visibility.articles || visibility.newsEvents
-  const hasAttention = hasWorkflowContent || visibility.formSubmissions || visibility.workQueue
+  const hasAttention = visibility.reviews || visibility.formSubmissions || visibility.workQueue
   const quickActions = [
     { enabled: visibility.pages, href: '/admin/collections/pages/create', label: '+ New Page' },
     {
@@ -509,7 +394,7 @@ export async function DashboardOverview() {
       label: '+ New News / Event',
     },
     {
-      enabled: visibility.pages,
+      enabled: visibility.reusableSections,
       href: '/admin/collections/reusable-sections/create',
       label: '+ New Reusable Section',
     },
@@ -519,9 +404,27 @@ export async function DashboardOverview() {
       label: '+ Upload Media',
     },
   ].filter(({ enabled }) => enabled)
+  const hasAssignedWorkspace = hasContent || hasAttention || quickActions.length > 0
 
   return (
     <div style={{ padding: '0 0 48px' }}>
+      {!hasAssignedWorkspace ? (
+        <div style={{ ...card, maxWidth: '620px', padding: '24px' }}>
+          <p style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>No features assigned yet</p>
+          <p
+            style={{
+              color: 'var(--theme-elevation-600)',
+              fontSize: '13px',
+              lineHeight: 1.5,
+              margin: '8px 0 0',
+            }}
+          >
+            Your account is active, but an Admin has not assigned a website feature to it. Contact
+            an Admin when you need access.
+          </p>
+        </div>
+      ) : null}
+
       {/* ── Needs Attention ───────────────────────────────────────────────── */}
       {hasAttention ? (
         <>
@@ -534,11 +437,14 @@ export async function DashboardOverview() {
               marginBottom: '32px',
             }}
           >
-            {hasWorkflowContent ? (
-              <DashboardWorkflowCard items={inReviewItems} label="In Review" />
-            ) : null}
-            {hasScheduledContent ? (
-              <DashboardWorkflowCard items={scheduledItems} label="Scheduled" />
+            {visibility.reviews ? (
+              <AttentionCard
+                label="Reviews awaiting moderation"
+                value={pendingReviews.totalDocs}
+                href="/admin/collections/reviews?where[and][0][sourceSubmission][exists]=true&where[and][1][moderationStatus][equals]=pending"
+                accent="#0f766e"
+                alert
+              />
             ) : null}
             {visibility.formSubmissions ? (
               <AttentionCard
@@ -563,7 +469,7 @@ export async function DashboardOverview() {
       ) : null}
 
       {/* ── Content Overview ──────────────────────────────────────────────── */}
-      {hasWorkflowContent ? (
+      {hasContent ? (
         <>
           <p style={sectionLabel}>Content Overview</p>
           <div

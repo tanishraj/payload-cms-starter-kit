@@ -1,13 +1,14 @@
 import { type CollectionConfig } from 'payload'
 
 import {
-  allowDraftPublishedReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+  allowPublishedReadOrFeature,
+  deleteFeatureOrAdmin,
+  hideUnlessFeature,
+  requireFeature,
+} from '@/access/featureAccess'
 import { HeaderNavbar12Block } from '@/blocks/HeaderNavbar12/config'
 import { projectSlugField } from '@/fields/projectSlugField'
-import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
+import { createDraftPublishQueueHook } from '@/hooks/syncDraftPublishToWorkQueue'
 import { revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 
 export const Headers: CollectionConfig = {
@@ -18,18 +19,18 @@ export const Headers: CollectionConfig = {
   },
   admin: {
     group: 'Site Structure',
-    hidden: hideFromUsersWithoutCapability('manage_headers'),
+    hidden: hideUnlessFeature('headers'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'updatedAt'],
     description: 'Reusable site header presets powered by header layout blocks.',
     listSearchableFields: ['title', 'slug'],
   },
   access: {
-    create: requireCapability('manage_headers'),
-    delete: requireCapability('manage_headers'),
-    read: allowDraftPublishedReadOrCapability('manage_headers'),
-    readVersions: requireCapability('manage_headers'),
-    update: requireCapability('manage_headers'),
+    create: requireFeature('headers'),
+    delete: deleteFeatureOrAdmin('headers'),
+    read: allowPublishedReadOrFeature('headers'),
+    readVersions: requireFeature('headers'),
+    update: requireFeature('headers'),
   },
   hooks: {
     afterChange: [

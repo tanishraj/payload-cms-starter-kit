@@ -1,6 +1,6 @@
 # Payload CMS Marketing Starter
 
-This repository is an editorial-first marketing CMS starter built to be copied for one client website at a time. It includes governed pages, articles, news and events, reviews, forms, media, navigation, system pages, SEO, analytics consent, operational queues, and capability-based admin access.
+This repository is an editorial-first marketing CMS starter built to be copied for one client website at a time. It includes governed pages, articles, news and events, reviews, forms, media, navigation, system pages, SEO, analytics consent, operational queues, and feature-based admin access.
 
 ## Supported Starter Contract
 
@@ -30,7 +30,7 @@ Production containers require a durable external MongoDB database and `MEDIA_PRO
 
 **Content and structure**
 
-- hierarchical pages with live preview, draft/publish workflow, and managed homepage selection
+- hierarchical pages with live preview, native drafts and publishing guardrails, and managed homepage selection
 - reusable section templates — shared block groups that sync across all pages that reference them
 - navigation links, headers, footers, and CMS-managed system pages (404, maintenance, coming soon)
 - articles with lexical rich text, taxonomies (categories + tags), SEO fields, and live preview
@@ -93,13 +93,14 @@ Production containers require a durable external MongoDB database and `MEDIA_PRO
 - editorial governance, publish guardrails, and operational audit history
 - custom admin dashboard with content counts, recent submissions, and quick-action links
 - live preview for articles and news-events via `useLivePreview` + `RefreshRouteOnSave`
-- role-based capability model: Admin, Site Manager, Content Manager
+- two-role access model: Admin and Site Manager, with 29 individually grantable Admin features
 
 ## Role Model
 
-- `Admin`: full access, user management, and recovery control
-- `Site Manager`: trusted website operator with structural and system-level controls
-- `Content Manager`: non-technical publisher for normal website content
+- `Admin`: full access to every feature, user and grant management, and recovery controls
+- `Site Manager`: access only to the features explicitly granted by an Admin; multiple Site Managers may have different grant sets
+
+The first account is always an Admin. Admins may create additional Admins or Site Managers. The last active Admin cannot be demoted or deleted. See [Editorial governance](docs/operations/editorial-governance.md) for the complete feature catalog and dependency rules.
 
 ## Content Ownership
 
@@ -115,9 +116,10 @@ The CMS separates content, taxonomy, structure, media, intake, administration, a
 
 ## Admin Information Architecture
 
-The operator-facing admin is organized into nine groups:
+The operator-facing admin is organized into ten groups:
 
 - `Content`
+- `News & Events`
 - `Taxonomy`
 - `Navigation`
 - `Site Structure`

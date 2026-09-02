@@ -13,7 +13,7 @@ const MEDIA_INTERNAL_FIELDS = new Set([
   'notes',
   'tags',
   'thumbnailURL',
-  'title',     // internal admin label, not the public alt text
+  'title', // internal admin label, not the public alt text
   '_status',
   'updatedAt',
   'createdAt',
@@ -49,9 +49,8 @@ function isMediaDocument(obj: Record<string, unknown>): boolean {
 }
 
 function isPageDocument(obj: Record<string, unknown>): boolean {
-  // Headers and Footers also have `slug` + `layout` — use `workflowState` as the
-  // page-only discriminator so their layout is never stripped.
-  return typeof obj.slug === 'string' && 'layout' in obj && 'workflowState' in obj
+  // Headers and Footers also have `slug` + `layout`; only Pages own a parent chain.
+  return typeof obj.slug === 'string' && 'layout' in obj && 'parent' in obj
 }
 
 /**

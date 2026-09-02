@@ -16,20 +16,17 @@ vi.mock('payload', () => ({ getPayload: mocks.getPayload }))
 import { DashboardOverview } from '@/components/admin/DashboardOverview'
 
 const articleManager = {
-  capabilities: { manage_articles: true },
+  features: { articles: true },
   id: 'article-manager',
-  role: 'contentManager',
+  role: 'siteManager',
 }
 
-const workflowManager = {
-  capabilities: {
-    manage_articles: true,
-    manage_news_events: true,
-    manage_pages: true,
-    manage_reviews: true,
+const reviewManager = {
+  features: {
+    reviews: true,
   },
-  id: 'workflow-manager',
-  role: 'contentManager',
+  id: 'review-manager',
+  role: 'siteManager',
 }
 
 describe('dashboard capability filtering', () => {
@@ -116,6 +113,20 @@ describe('dashboard capability filtering', () => {
     expect(html).not.toContain('Recent Submissions')
   })
 
+  it('gives a zero-grant Site Manager a non-leaking empty state', async () => {
+    mocks.auth.mockResolvedValue({
+      user: { features: {}, id: 'new-manager', role: 'siteManager' },
+    })
+
+    const html = renderToStaticMarkup(await DashboardOverview())
+
+    expect(html).toContain('No features assigned yet')
+    expect(html).not.toContain('Content Overview')
+    expect(html).not.toContain('Needs Attention')
+    expect(mocks.count).not.toHaveBeenCalled()
+    expect(mocks.find).not.toHaveBeenCalled()
+  })
+
   it('preserves all quick actions for an administrator', async () => {
     mocks.auth.mockResolvedValue({ user: { id: 'admin', role: 'admin' } })
 
@@ -132,72 +143,39 @@ describe('dashboard capability filtering', () => {
     }
   })
 
-  it('links every non-zero workflow count to its exact collection', async () => {
-    mocks.auth.mockResolvedValue({ user: workflowManager })
-    mocks.count.mockImplementation(async ({ collection, where }) => {
-      if (!where) return { totalDocs: 10 }
-      if ('workflowState' in where) {
-        const inReviewCounts: Record<string, number> = {
-          articles: 3,
-          'news-events': 0,
-          pages: 2,
-          reviews: 1,
-        }
-        return {
-          totalDocs: inReviewCounts[String(collection)] ?? 0,
-        }
-      }
-      const scheduledCounts: Record<string, number> = {
-        articles: 0,
-        'news-events': 2,
-        pages: 1,
-      }
-      return { totalDocs: scheduledCounts[String(collection)] ?? 0 }
-    })
+  it('shows only pending public reviews as moderation work', async () => {
+    mocks.auth.mockResolvedValue({ user: reviewManager })
+    mocks.count.mockResolvedValue({ totalDocs: 3 })
 
     const html = renderToStaticMarkup(await DashboardOverview())
 
-    expect(html).toContain('>6<')
-    expect(html).toContain(
-      'href="/admin/collections/pages?where[workflowState][equals]=in_review"',
+    expect(mocks.count).toHaveBeenCalledWith(
+      expect.objectContaining({
+        collection: 'reviews',
+        overrideAccess: false,
+        user: reviewManager,
+        where: {
+          and: [
+            { sourceSubmission: { exists: true } },
+            { moderationStatus: { equals: 'pending' } },
+          ],
+        },
+      }),
     )
-    expect(html).toContain(
-      'href="/admin/collections/articles?where[workflowState][equals]=in_review"',
-    )
-    expect(html).toContain(
-      'href="/admin/collections/reviews?where[workflowState][equals]=in_review"',
-    )
-    expect(html).not.toContain(
-      'href="/admin/collections/news-events?where[workflowState][equals]=in_review"',
-    )
-    expect(html.indexOf('Pages')).toBeLessThan(html.indexOf('Articles'))
-    expect(html.indexOf('Articles')).toBeLessThan(html.indexOf('Reviews'))
-    expect(html).toMatch(/where\[and\]\[0\]\[scheduledPublishAt\]\[exists\]=true/)
-    expect(html).toMatch(/where\[and\]\[1\]\[scheduledPublishAt\]\[greater_than\]=/)
+    expect(html).toContain('Reviews awaiting moderation')
+    expect(html).toContain('moderationStatus')
+    expect(html).not.toContain('In Review')
+    expect(html).not.toContain('Scheduled')
   })
 
-  it('shows an unavailable row without hiding successful sibling counts', async () => {
-    mocks.auth.mockResolvedValue({ user: workflowManager })
-    mocks.count.mockImplementation(async ({ collection, where }) => {
-      if (!where) return { totalDocs: 10 }
-      if ('workflowState' in where && collection === 'articles') {
-        throw new Error('article count unavailable')
-      }
-      if ('workflowState' in where) return { totalDocs: collection === 'pages' ? 2 : 0 }
-      return { totalDocs: 0 }
-    })
+  it('keeps an authorized dashboard usable when moderation counts fail', async () => {
+    mocks.auth.mockResolvedValue({ user: reviewManager })
+    mocks.count.mockRejectedValue(new Error('review count unavailable'))
 
     const html = renderToStaticMarkup(await DashboardOverview())
 
-    expect(html).toContain('2+')
-    expect(html).toContain('Partial count')
+    expect(html).toContain('Reviews awaiting moderation')
     expect(html).toContain('Count unavailable')
-    expect(html).toContain(
-      'href="/admin/collections/pages?where[workflowState][equals]=in_review"',
-    )
-    expect(html).not.toContain(
-      'href="/admin/collections/articles?where[workflowState][equals]=in_review"',
-    )
   })
 
   it('isolates an authorized query failure', async () => {

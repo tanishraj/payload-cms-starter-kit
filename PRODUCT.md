@@ -17,8 +17,8 @@ information. Authorized editors compose and maintain the site through Payload CM
 This project is a reusable, one-client-per-deployment institutional website builder. It gives each
 client a governed editorial system for composing branded public pages, publishing structured content,
 and surfacing operational information such as programmes, news, events, offices, and calendars.
-Success means visitors can find trustworthy information quickly while editors can publish consistent
-pages without needing frontend code changes.
+Success means visitors can find trustworthy information quickly while authorized Admins and
+feature-granted Site Managers can maintain consistent pages without needing frontend code changes.
 
 ## Positioning
 
@@ -47,6 +47,10 @@ timezone, with `Asia/Kolkata` as the default.
   preview, keyboard use, responsive layouts, and reduced-motion preferences.
 - Event content remains collection-owned; block configuration scopes and presents it but does not
   duplicate event records.
+- Administration has exactly two roles. Admins have full access and grant any of the 29 registered
+  Admin features to Site Managers; a missing grant fails closed in navigation and server access.
+- Trusted review submissions enter moderation as drafts. Only an Admin or a Site Manager with the
+  Reviews feature may approve or reject them; only approved reviews may be public.
 
 ## Brand Commitments
 

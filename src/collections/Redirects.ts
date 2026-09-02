@@ -1,11 +1,12 @@
 import type { CollectionBeforeValidateHook, CollectionConfig, Field } from 'payload'
 
 import {
-  allowDraftPublishedReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
-import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
+  allowPublishedReadOrFeature,
+  deleteFeatureOrAdmin,
+  hideUnlessFeature,
+  requireFeature,
+} from '@/access/featureAccess'
+import { createDraftPublishQueueHook } from '@/hooks/syncDraftPublishToWorkQueue'
 import {
   revalidateDeletedRedirectCache,
   revalidateRedirectsCache,
@@ -13,7 +14,10 @@ import {
 
 const validateRequiredDestinationField =
   (destinationType: 'page' | 'custom', message: string) =>
-  (value: unknown, { siblingData }: { siblingData?: { destinationType?: 'page' | 'custom' | null } }) => {
+  (
+    value: unknown,
+    { siblingData }: { siblingData?: { destinationType?: 'page' | 'custom' | null } },
+  ) => {
     if (siblingData?.destinationType === destinationType && !value) {
       return message
     }
@@ -54,7 +58,8 @@ const fields: Field[] = [
     unique: true,
     index: true,
     admin: {
-      description: 'The old incoming path to redirect, for example /old-page or /services/web-design.html.',
+      description:
+        'The old incoming path to redirect, for example /old-page or /services/web-design.html.',
       placeholder: '/old-path',
     },
     validate: (value: unknown) => {
@@ -129,7 +134,8 @@ const fields: Field[] = [
       },
     ],
     admin: {
-      description: 'Use 301 for permanent site migrations. Use 302 only for temporary routing changes.',
+      description:
+        'Use 301 for permanent site migrations. Use 302 only for temporary routing changes.',
       position: 'sidebar',
     },
   },
@@ -151,7 +157,7 @@ export const Redirects: CollectionConfig = {
   },
   admin: {
     group: 'Navigation',
-    hidden: hideFromUsersWithoutCapability('manage_redirects'),
+    hidden: hideUnlessFeature('redirects'),
     useAsTitle: 'fromPath',
     defaultColumns: ['fromPath', 'destinationType', 'statusCode', 'enabled', 'updatedAt'],
     listSearchableFields: ['fromPath', 'url'],
@@ -159,11 +165,11 @@ export const Redirects: CollectionConfig = {
       'URL redirects managed from the CMS — changes go live within 60 seconds, no rebuild needed. Auto-generated when a published page URL changes.',
   },
   access: {
-    create: requireCapability('manage_redirects'),
-    delete: requireCapability('manage_redirects'),
-    read: allowDraftPublishedReadOrCapability('manage_redirects'),
-    readVersions: requireCapability('manage_redirects'),
-    update: requireCapability('manage_redirects'),
+    create: requireFeature('redirects'),
+    delete: deleteFeatureOrAdmin('redirects'),
+    read: allowPublishedReadOrFeature('redirects'),
+    readVersions: requireFeature('redirects'),
+    update: requireFeature('redirects'),
   },
   hooks: {
     afterChange: [

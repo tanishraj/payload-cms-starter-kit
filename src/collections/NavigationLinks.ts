@@ -1,11 +1,12 @@
 import type { CollectionConfig, Field } from 'payload'
 
 import {
-  allowDraftPublishedReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
-import { createDraftPublishQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
+  allowPublishedReadOrFeature,
+  deleteFeatureOrAdmin,
+  hideUnlessFeature,
+  requireFeature,
+} from '@/access/featureAccess'
+import { createDraftPublishQueueHook } from '@/hooks/syncDraftPublishToWorkQueue'
 
 const validateRequiredLinkField =
   (linkType: 'page' | 'custom', message: string) =>
@@ -114,18 +115,18 @@ export const NavigationLinks: CollectionConfig = {
   },
   admin: {
     group: 'Navigation',
-    hidden: hideFromUsersWithoutCapability('manage_navigation'),
+    hidden: hideUnlessFeature('navigationLinks'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'linkType', 'sourceType', 'updatedAt'],
     listSearchableFields: ['title', 'url'],
     description: 'Reusable destinations for menus, CTAs, legal links, and utility links.',
   },
   access: {
-    create: requireCapability('manage_navigation'),
-    delete: requireCapability('manage_navigation'),
-    read: allowDraftPublishedReadOrCapability('manage_navigation'),
-    readVersions: requireCapability('manage_navigation'),
-    update: requireCapability('manage_navigation'),
+    create: requireFeature('navigationLinks'),
+    delete: deleteFeatureOrAdmin('navigationLinks'),
+    read: allowPublishedReadOrFeature('navigationLinks'),
+    readVersions: requireFeature('navigationLinks'),
+    update: requireFeature('navigationLinks'),
   },
   hooks: {
     afterChange: [

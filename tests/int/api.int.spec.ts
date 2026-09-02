@@ -21,6 +21,7 @@ describe('API', () => {
     const { default: config } = await import('@/payload.config')
     const payloadConfig = await config
     payload = await getPayload({ config: payloadConfig })
+    await Promise.all(Object.values(payload.db.collections).map((model) => model.init()))
   }, 120000)
 
   afterAll(async () => {
@@ -66,5 +67,151 @@ describe('API', () => {
     expect(Array.isArray(categories.docs)).toBe(true)
     expect(articles).toBeDefined()
     expect(Array.isArray(articles.docs)).toBe(true)
+  })
+
+  it('enforces two-role feature permissions through the Payload Local API', async () => {
+    await payload.create({
+      collection: 'operational-audit-events',
+      data: {
+        action: 'test_initialized',
+        entityId: 'api-test',
+        entityTitle: 'API test',
+        entityType: 'test',
+        occurredAt: new Date().toISOString(),
+        summary: 'Initialized the isolated audit collection.',
+      },
+      draft: false,
+      overrideAccess: true,
+    })
+
+    const firstAdmin = await payload.create({
+      collection: 'users',
+      data: {
+        email: 'first-admin@example.test',
+        password: 'test-password',
+        role: 'admin',
+      },
+      draft: false,
+    })
+
+    expect(firstAdmin.role).toBe('admin')
+
+    const siteManager = await payload.create({
+      collection: 'users',
+      data: {
+        email: 'site-manager@example.test',
+        features: { pages: true },
+        password: 'test-password',
+        role: 'siteManager',
+      },
+      draft: false,
+      overrideAccess: false,
+      user: firstAdmin,
+    })
+    const secondAdmin = await payload.create({
+      collection: 'users',
+      data: {
+        email: 'second-admin@example.test',
+        password: 'test-password',
+        role: 'admin',
+      },
+      draft: false,
+      overrideAccess: false,
+      user: firstAdmin,
+    })
+
+    expect(siteManager.role).toBe('siteManager')
+    expect(siteManager.features?.pages).toBe(true)
+    expect(secondAdmin.role).toBe('admin')
+    await expect(
+      payload.find({
+        collection: 'pages',
+        overrideAccess: false,
+        user: siteManager,
+      }),
+    ).resolves.toBeDefined()
+    await expect(
+      payload.find({
+        collection: 'articles',
+        overrideAccess: false,
+        user: siteManager,
+      }),
+    ).rejects.toThrow()
+    await expect(
+      payload.create({
+        collection: 'users',
+        data: {
+          email: 'forbidden-user@example.test',
+          password: 'test-password',
+          role: 'siteManager',
+        },
+        draft: false,
+        overrideAccess: false,
+        user: siteManager,
+      }),
+    ).rejects.toThrow()
+
+    const topic = await payload.create({
+      collection: 'categories',
+      data: { slug: 'temporary-topic', title: 'Temporary topic' },
+      draft: false,
+      overrideAccess: false,
+      user: firstAdmin,
+    })
+    await payload.delete({
+      collection: 'categories',
+      id: topic.id,
+      overrideAccess: false,
+      user: firstAdmin,
+    })
+
+    const deletionAudit = await payload.find({
+      collection: 'operational-audit-events',
+      overrideAccess: true,
+      where: {
+        and: [
+          { action: { equals: 'permanently_deleted' } },
+          { entityId: { equals: String(topic.id) } },
+          { feature: { equals: 'topics' } },
+        ],
+      },
+    })
+    expect(deletionAudit.totalDocs).toBe(1)
+    expect(deletionAudit.docs[0]?.entityTitle).toBe(`Topics #${topic.id}`)
+
+    await payload.update({
+      collection: 'users',
+      id: siteManager.id,
+      data: { deletedAt: new Date().toISOString() },
+      overrideAccess: false,
+      user: firstAdmin,
+    })
+    await payload.update({
+      collection: 'users',
+      id: siteManager.id,
+      data: { deletedAt: null },
+      overrideAccess: false,
+      trash: true,
+      user: firstAdmin,
+    })
+    await payload.delete({
+      collection: 'users',
+      id: siteManager.id,
+      overrideAccess: false,
+      user: firstAdmin,
+    })
+
+    const userLifecycleAudit = await payload.find({
+      collection: 'operational-audit-events',
+      overrideAccess: true,
+      where: {
+        action: {
+          in: ['user_trashed', 'user_restored', 'user_permanently_deleted'],
+        },
+      },
+    })
+    expect(userLifecycleAudit.docs.map(({ action }) => action)).toEqual(
+      expect.arrayContaining(['user_trashed', 'user_restored', 'user_permanently_deleted']),
+    )
   })
 })

@@ -271,6 +271,27 @@ describe('media governance resolver', () => {
     expect(Media.hooks?.beforeDelete).toBeDefined()
   })
 
+  it('does not add internal usage data for public or dependency-only Media reads', async () => {
+    const afterRead = Media.hooks?.afterRead?.[0]
+    if (!afterRead) throw new Error('Expected Media afterRead hook.')
+    const find = vi.fn()
+
+    const publicResult = await afterRead({
+      doc: { id: 7 },
+      findMany: false,
+      req: { payload: { find }, user: null },
+    } as never)
+    const dependencyResult = await afterRead({
+      doc: { id: 7 },
+      findMany: false,
+      req: { payload: { find }, user: { features: { pages: true }, role: 'siteManager' } },
+    } as never)
+
+    expect(publicResult).toEqual({ id: 7 })
+    expect(dependencyResult).toEqual({ id: 7 })
+    expect(find).not.toHaveBeenCalled()
+  })
+
   it('requires alt text for images but allows documents without alt text', async () => {
     const beforeValidate = Media.hooks?.beforeValidate?.[0]
 

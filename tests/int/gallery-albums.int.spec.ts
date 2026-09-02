@@ -4,7 +4,7 @@ import { GalleryAlbums } from '@/collections/GalleryAlbums'
 import config from '@/payload.config'
 
 describe('gallery albums collection', () => {
-  it('defines ordered published albums managed through Media capability', async () => {
+  it('defines ordered published albums managed through the Gallery Albums feature', async () => {
     const resolvedConfig = await config
     const tabs = GalleryAlbums.fields[0] as {
       tabs: Array<{ fields: Array<Record<string, unknown>>; label: string }>

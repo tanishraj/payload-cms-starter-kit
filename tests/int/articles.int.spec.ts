@@ -39,7 +39,7 @@ describe('articles collection', () => {
     })
   })
 
-  it('defines a writing-first body field and article workflow controls', () => {
+  it('defines a writing-first body field and publication metadata', () => {
     const tabsField = Articles.fields.find((field) => field.type === 'tabs')
 
     expect(tabsField).toBeDefined()
@@ -54,7 +54,8 @@ describe('articles collection', () => {
     expect(JSON.stringify(tabsField)).toContain('"name":"metaTitle"')
     expect(JSON.stringify(tabsField)).toContain('"name":"robotsMode"')
     expect(JSON.stringify(tabsField)).toContain('"name":"includeInSitemap"')
-    expect(JSON.stringify(tabsField)).toContain('"name":"workflowState"')
+    expect(JSON.stringify(Articles.fields)).toContain('"name":"publishedAt"')
+    expect(JSON.stringify(Articles.fields)).not.toContain('"name":"workflowState"')
   })
 
   it('queries only published articles by slug', async () => {

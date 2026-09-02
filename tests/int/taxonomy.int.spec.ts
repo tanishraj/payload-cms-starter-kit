@@ -17,7 +17,9 @@ describe('taxonomy collections', () => {
       throw new Error('Expected Categories admin hidden handler to exist.')
     }
 
-    expect(categoriesHidden({ user: { role: 'editor' } as never })).toBe(true)
+    expect(
+      categoriesHidden({ user: { role: 'siteManager', features: { articles: true } } as never }),
+    ).toBe(true)
     expect(categoriesHidden({ user: { role: 'admin' } as never })).toBe(false)
 
     const categoriesReadAccess = Categories.access?.read
@@ -33,9 +35,9 @@ describe('taxonomy collections', () => {
       categoriesReadAccess({
         req: {
           user: {
-            role: 'editor',
-            capabilities: {
-              manage_articles: true,
+            role: 'siteManager',
+            features: {
+              articles: true,
             },
           },
         },
@@ -45,9 +47,9 @@ describe('taxonomy collections', () => {
       tagsReadAccess({
         req: {
           user: {
-            role: 'publisher',
-            capabilities: {
-              publish_reviews: true,
+            role: 'siteManager',
+            features: {
+              reviews: true,
             },
           },
         },
@@ -57,9 +59,9 @@ describe('taxonomy collections', () => {
       categoriesReadAccess({
         req: {
           user: {
-            role: 'editor',
-            capabilities: {
-              manage_pages: true,
+            role: 'siteManager',
+            features: {
+              pages: true,
             },
           },
         },

@@ -113,6 +113,7 @@ describe('reconcileMediaStorage', () => {
         data: expect.objectContaining({
           action: 'media_storage_missing',
           entityId: '1',
+          feature: 'media',
         }),
       }),
     )

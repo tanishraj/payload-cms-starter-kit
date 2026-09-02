@@ -1,9 +1,12 @@
 import type { CollectionConfig } from 'payload'
 
+import { ADMIN_FEATURE_KEYS, ADMIN_FEATURES } from '@/access/adminFeatures'
 import {
-  canViewOperationalAudit,
-  hideFromUsersWithoutCapability,
-} from '@/access/adminCapabilities'
+  getGrantedFeatureKeys,
+  hasFeature,
+  hideUnlessFeature,
+  isAdmin,
+} from '@/access/featureAccess'
 
 export const OperationalAuditEvents: CollectionConfig = {
   slug: 'operational-audit-events',
@@ -12,19 +15,38 @@ export const OperationalAuditEvents: CollectionConfig = {
     plural: 'Audit Log',
   },
   admin: {
-    description: 'Read-only record of selected governed content, settings, queue, and media operations.',
+    description:
+      'Read-only record of selected governed content, settings, queue, and media operations.',
     group: 'Administration',
-    hidden: hideFromUsersWithoutCapability('view_operational_audit'),
+    hidden: hideUnlessFeature('auditLog'),
     useAsTitle: 'summary',
     defaultColumns: ['occurredAt', 'entityType', 'entityTitle', 'actorEmail', 'action'],
   },
   access: {
     create: () => false,
     delete: () => false,
-    read: ({ req }) => canViewOperationalAudit(req.user as never),
+    read: ({ req }) => {
+      if (isAdmin(req.user)) return true
+      if (!hasFeature(req.user, 'auditLog')) return false
+      const features = getGrantedFeatureKeys(req.user).filter((key) => key !== 'auditLog')
+      return features.length > 0 ? { feature: { in: features } } : false
+    },
     update: () => false,
   },
   fields: [
+    {
+      name: 'feature',
+      type: 'select',
+      options: ADMIN_FEATURE_KEYS.map((value) => ({
+        label: ADMIN_FEATURES[value].label,
+        value,
+      })),
+      index: true,
+      admin: {
+        description: 'Feature associated with this event. Unmapped legacy events are Admin-only.',
+        readOnly: true,
+      },
+    },
     {
       name: 'entityType',
       type: 'text',
@@ -61,6 +83,13 @@ export const OperationalAuditEvents: CollectionConfig = {
       name: 'summary',
       type: 'textarea',
       required: true,
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'actorId',
+      type: 'text',
       admin: {
         readOnly: true,
       },

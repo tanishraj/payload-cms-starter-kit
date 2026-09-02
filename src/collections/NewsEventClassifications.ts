@@ -1,10 +1,11 @@
 import type { CollectionConfig } from 'payload'
 
 import {
-  allowPublicReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+  adminOnlyAccess,
+  allowPublicReadOrFeature,
+  hideUnlessFeature,
+  requireFeature,
+} from '@/access/featureAccess'
 import { projectSlugField } from '@/fields/projectSlugField'
 import { protectNewsEventClassificationSystemFields } from '@/hooks/protectNewsEventClassificationSystemFields'
 import { preventReferencedNewsEventClassificationDelete } from '@/hooks/preventReferencedNewsEventClassificationDelete'
@@ -25,7 +26,7 @@ export const NewsEventClassifications: CollectionConfig = {
   },
   admin: {
     group: 'News & Events',
-    hidden: hideFromUsersWithoutCapability('manage_news_events'),
+    hidden: hideUnlessFeature('newsEventClassifications'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'badgeLabel', 'behavior', 'active', 'updatedAt'],
     description:
@@ -33,14 +34,10 @@ export const NewsEventClassifications: CollectionConfig = {
     listSearchableFields: ['title', 'badgeLabel', 'slug'],
   },
   access: {
-    create: requireCapability('manage_news_events'),
-    delete: requireCapability('manage_news_events'),
-    read: allowPublicReadOrCapability([
-      'manage_news_events',
-      'manage_pages',
-      'manage_page_settings',
-    ]),
-    update: requireCapability('manage_news_events'),
+    create: requireFeature('newsEventClassifications'),
+    delete: adminOnlyAccess,
+    read: allowPublicReadOrFeature('newsEventClassifications'),
+    update: requireFeature('newsEventClassifications'),
   },
   hooks: {
     afterChange: [revalidateNewsEventClassificationsCache],

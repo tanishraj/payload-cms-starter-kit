@@ -1,12 +1,29 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionAfterReadHook, CollectionConfig } from 'payload'
 
 import {
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+  adminOnlyAccess,
+  canReadFeature,
+  hasFeature,
+  hideUnlessFeature,
+  requireFeature,
+} from '@/access/featureAccess'
 import { syncFormSubmissionToWorkQueue } from '@/hooks/syncFormSubmissionToWorkQueue'
 import { updateFormSubmissionActivity } from '@/hooks/updateFormSubmissionActivity'
 import { formSubmissionIntentOptions } from '@/lib/forms'
+
+const immutableSubmissionFieldAccess = {
+  update: () => false,
+}
+
+const sanitizeSubmissionDependencyRead: CollectionAfterReadHook = ({ doc, req }) => {
+  if (hasFeature(req.user, 'formSubmissions')) return doc
+  if (!hasFeature(req.user, 'reviews')) return doc
+
+  return {
+    id: doc.id,
+    submitterEmail: `Submission #${doc.id}`,
+  }
+}
 
 export const FormSubmissions: CollectionConfig = {
   slug: 'form-submissions',
@@ -16,7 +33,7 @@ export const FormSubmissions: CollectionConfig = {
   },
   admin: {
     group: 'Forms',
-    hidden: hideFromUsersWithoutCapability('manage_form_submissions'),
+    hidden: hideUnlessFeature('formSubmissions'),
     useAsTitle: 'submitterEmail',
     defaultColumns: [
       'status',
@@ -28,17 +45,18 @@ export const FormSubmissions: CollectionConfig = {
       'lastActionAt',
     ],
     description:
-      'Stored form submissions. Submission payload fields stay read-only after creation, while operators can update workflow status.',
+      'Stored form submissions. Submission payload fields stay read-only after creation, while operators can update operational status.',
     listSearchableFields: ['email', 'submitterEmail', 'submitterName', 'campaign', 'source'],
   },
   access: {
     create: () => false,
-    delete: requireCapability('manage_form_submissions'),
-    read: requireCapability('manage_form_submissions'),
-    update: requireCapability('manage_form_submissions'),
+    delete: adminOnlyAccess,
+    read: ({ req }) => canReadFeature(req.user, 'formSubmissions'),
+    update: requireFeature('formSubmissions'),
   },
   hooks: {
     afterChange: [syncFormSubmissionToWorkQueue],
+    afterRead: [sanitizeSubmissionDependencyRead],
     beforeChange: [updateFormSubmissionActivity],
   },
   timestamps: true,
@@ -46,6 +64,7 @@ export const FormSubmissions: CollectionConfig = {
     {
       name: 'form',
       type: 'relationship',
+      access: immutableSubmissionFieldAccess,
       relationTo: 'forms',
       required: true,
       admin: {
@@ -95,6 +114,7 @@ export const FormSubmissions: CollectionConfig = {
     {
       name: 'submissionIntent',
       type: 'select',
+      access: immutableSubmissionFieldAccess,
       defaultValue: 'general',
       options: [...formSubmissionIntentOptions],
       required: true,
@@ -105,6 +125,7 @@ export const FormSubmissions: CollectionConfig = {
     {
       name: 'source',
       type: 'text',
+      access: immutableSubmissionFieldAccess,
       admin: {
         readOnly: true,
       },
@@ -112,6 +133,7 @@ export const FormSubmissions: CollectionConfig = {
     {
       name: 'campaign',
       type: 'text',
+      access: immutableSubmissionFieldAccess,
       admin: {
         readOnly: true,
       },
@@ -119,6 +141,7 @@ export const FormSubmissions: CollectionConfig = {
     {
       name: 'landingPage',
       type: 'text',
+      access: immutableSubmissionFieldAccess,
       admin: {
         readOnly: true,
       },
@@ -126,6 +149,7 @@ export const FormSubmissions: CollectionConfig = {
     {
       name: 'submitterName',
       type: 'text',
+      access: immutableSubmissionFieldAccess,
       admin: {
         readOnly: true,
       },
@@ -133,6 +157,7 @@ export const FormSubmissions: CollectionConfig = {
     {
       name: 'submitterEmail',
       type: 'email',
+      access: immutableSubmissionFieldAccess,
       admin: {
         readOnly: true,
       },
@@ -140,6 +165,7 @@ export const FormSubmissions: CollectionConfig = {
     {
       name: 'email',
       type: 'email',
+      access: immutableSubmissionFieldAccess,
       admin: {
         readOnly: true,
       },
@@ -147,6 +173,7 @@ export const FormSubmissions: CollectionConfig = {
     {
       name: 'linkedReview',
       type: 'relationship',
+      access: immutableSubmissionFieldAccess,
       relationTo: 'reviews',
       admin: {
         readOnly: true,
@@ -155,6 +182,7 @@ export const FormSubmissions: CollectionConfig = {
     {
       name: 'promotionError',
       type: 'textarea',
+      access: immutableSubmissionFieldAccess,
       admin: {
         readOnly: true,
       },
@@ -162,6 +190,7 @@ export const FormSubmissions: CollectionConfig = {
     {
       name: 'submittedAt',
       type: 'date',
+      access: immutableSubmissionFieldAccess,
       required: true,
       admin: {
         readOnly: true,
@@ -170,6 +199,7 @@ export const FormSubmissions: CollectionConfig = {
     {
       name: 'lastActionAt',
       type: 'date',
+      access: immutableSubmissionFieldAccess,
       admin: {
         readOnly: true,
       },
@@ -178,6 +208,7 @@ export const FormSubmissions: CollectionConfig = {
       name: 'data',
       label: 'Submitted Data',
       type: 'json',
+      access: immutableSubmissionFieldAccess,
       required: true,
       admin: {
         readOnly: true,

@@ -1,23 +1,22 @@
 import { type CollectionConfig } from 'payload'
 
 import {
-  allowPublishedReadOrCapability,
-  canShowEditorialWorkflow,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+  allowPublishedReadOrFeature,
+  deleteFeatureOrAdmin,
+  hideUnlessFeature,
+  requireFeature,
+} from '@/access/featureAccess'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import { projectEditor } from '@/fields/bodyEditorConfig'
 import { buildSEOFields } from '@/fields/buildSEOFields'
+import { publicationMetadataFields } from '@/fields/publicationMetadataFields'
 import { projectSlugField } from '@/fields/projectSlugField'
-import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
+import { enforcePublicationPolicy } from '@/hooks/enforcePublicationPolicy'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
 import { normalizeNewsEventFields } from '@/hooks/normalizeNewsEventFields'
 import { resolveNewsEventClassification } from '@/hooks/resolveNewsEventClassification'
 import { syncPrimaryCategoryMembership } from '@/hooks/syncPrimaryCategoryMembership'
-import { createWorkflowQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
-import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 import { NEWS_EVENT_CLASSIFICATIONS } from '@/lib/newsEventClassifications'
 import {
   revalidateDeletedNewsEventCache,
@@ -38,9 +37,9 @@ export const NewsEvents: CollectionConfig = {
   },
   admin: {
     group: 'News & Events',
-    hidden: hideFromUsersWithoutCapability('manage_news_events'),
+    hidden: hideUnlessFeature('newsEvents'),
     useAsTitle: 'title',
-    defaultColumns: ['title', 'classification', '_status', 'workflowState', 'updatedAt'],
+    defaultColumns: ['title', 'classification', '_status', 'updatedAt'],
     description: 'Published news stories and scheduled events for the public website.',
     listSearchableFields: ['title', 'slug', 'eventLocation'],
     livePreview: {
@@ -57,39 +56,20 @@ export const NewsEvents: CollectionConfig = {
     },
   },
   access: {
-    create: requireCapability('manage_news_events'),
-    delete: requireCapability('manage_news_events'),
-    read: allowPublishedReadOrCapability('manage_news_events'),
-    readVersions: requireCapability('manage_news_events'),
-    update: requireCapability('manage_news_events'),
+    create: requireFeature('newsEvents'),
+    delete: deleteFeatureOrAdmin('newsEvents'),
+    read: allowPublishedReadOrFeature('newsEvents'),
+    readVersions: requireFeature('newsEvents'),
+    update: requireFeature('newsEvents'),
   },
   hooks: {
     afterChange: [
       revalidateNewsEventsCache,
-      createWorkflowQueueHook({
-        sourceAdminPathPrefix: '/admin/collections/news-events',
-        sourceCollection: 'news-events',
-        states: [
-          {
-            queueType: 'approval',
-            reasonCode: 'news-event-review-required',
-            summary: (_doc, title) => `${title} is awaiting editorial approval.`,
-            workflowState: 'in_review',
-          },
-          {
-            priority: () => 'high',
-            queueType: 'approval',
-            reasonCode: 'news-event-scheduled-publication',
-            summary: (_doc, title) => `${title} is scheduled and requires publication oversight.`,
-            workflowState: 'scheduled',
-          },
-        ],
-        titleField: 'title',
-      }),
       createCollectionAuditHook({
         entityType: 'news_event',
+        feature: 'newsEvents',
         getSummary: ({ doc, previousDoc }) =>
-          `Workflow moved from ${previousDoc?.workflowState ?? 'draft'} to ${doc.workflowState}.`,
+          `Publication status changed from ${previousDoc?._status ?? 'draft'} to ${doc._status ?? 'draft'}.`,
         titleField: 'title',
       }),
     ],
@@ -98,7 +78,7 @@ export const NewsEvents: CollectionConfig = {
       normalizeNewsEventFields,
       syncPrimaryCategoryMembership,
       validateSEOContract(),
-      enforceEditorialWorkflow('publish_news_events', 'news-events'),
+      enforcePublicationPolicy('newsEvents', 'news-events'),
     ],
     beforeValidate: [resolveNewsEventClassification],
   },
@@ -303,79 +283,8 @@ export const NewsEvents: CollectionConfig = {
           label: 'SEO',
           fields: [...buildSEOFields()],
         },
-        {
-          label: 'Workflow',
-          fields: [
-            {
-              name: 'workflowState',
-              type: 'select',
-              defaultValue: 'draft',
-              options: [...editorialWorkflowStateOptions],
-              required: true,
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-              },
-            },
-            {
-              name: 'scheduledPublishAt',
-              type: 'date',
-              admin: {
-                condition: (_data, siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never) &&
-                  siblingData?.workflowState === 'scheduled',
-              },
-            },
-            {
-              name: 'changeSummary',
-              type: 'textarea',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                description: 'Short operator-facing note explaining why this change exists.',
-              },
-            },
-            {
-              name: 'lastReviewedAt',
-              type: 'date',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-            {
-              name: 'lastReviewedBy',
-              type: 'relationship',
-              relationTo: 'users',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-            {
-              name: 'publishedAt',
-              type: 'date',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-            {
-              name: 'publishedBy',
-              type: 'relationship',
-              relationTo: 'users',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-          ],
-        },
       ],
     },
+    ...publicationMetadataFields('newsEvents'),
   ],
 }

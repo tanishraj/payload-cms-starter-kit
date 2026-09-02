@@ -1,10 +1,11 @@
 import type { CollectionConfig } from 'payload'
 
 import {
-  allowDraftPublishedReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+  allowPublishedReadOrFeature,
+  deleteFeatureOrAdmin,
+  hideUnlessFeature,
+  requireFeature,
+} from '@/access/featureAccess'
 import { revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 import { validateHttpsUrl } from '@/lib/siteOfficesShared'
 
@@ -16,18 +17,19 @@ export const OfficeLocations: CollectionConfig = {
   },
   admin: {
     group: 'Site Structure',
-    hidden: hideFromUsersWithoutCapability('manage_site_settings'),
+    hidden: hideUnlessFeature('officeLocations'),
     useAsTitle: 'city',
     defaultColumns: ['city', 'region', '_status', 'updatedAt'],
-    description: 'Office locations used by Regional Offices (Contact24) blocks. Each entry can be placed on any page independently.',
+    description:
+      'Office locations used by Regional Offices (Contact24) blocks. Each entry can be placed on any page independently.',
     listSearchableFields: ['city', 'region'],
   },
   access: {
-    create: requireCapability('manage_site_settings'),
-    delete: requireCapability('manage_site_settings'),
-    read: allowDraftPublishedReadOrCapability('manage_site_settings'),
-    readVersions: requireCapability('manage_site_settings'),
-    update: requireCapability('manage_site_settings'),
+    create: requireFeature('officeLocations'),
+    delete: deleteFeatureOrAdmin('officeLocations'),
+    read: allowPublishedReadOrFeature('officeLocations'),
+    readVersions: requireFeature('officeLocations'),
+    update: requireFeature('officeLocations'),
   },
   hooks: {
     afterChange: [revalidateGlobalsCache],
@@ -56,7 +58,8 @@ export const OfficeLocations: CollectionConfig = {
       type: 'checkbox',
       defaultValue: true,
       admin: {
-        description: 'When unchecked only the interactive map is shown — address, phone and email are hidden.',
+        description:
+          'When unchecked only the interactive map is shown — address, phone and email are hidden.',
       },
     },
     {
@@ -105,7 +108,8 @@ export const OfficeLocations: CollectionConfig = {
       label: 'Accessible Map Title',
       type: 'text',
       admin: {
-        description: 'Screen-reader title for the map iframe, e.g. "Interactive map for the Dubai office".',
+        description:
+          'Screen-reader title for the map iframe, e.g. "Interactive map for the Dubai office".',
         condition: (_, siblingData) => siblingData?.showAddressDetails !== false,
       },
     },

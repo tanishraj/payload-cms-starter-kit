@@ -1,10 +1,11 @@
 import { type CollectionConfig } from 'payload'
 
 import {
-  allowDraftPublishedReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+  allowPublishedReadOrFeature,
+  deleteFeatureOrAdmin,
+  hideUnlessFeature,
+  requireFeature,
+} from '@/access/featureAccess'
 import { projectSlugField } from '@/fields/projectSlugField'
 
 export const GalleryAlbums: CollectionConfig = {
@@ -15,17 +16,17 @@ export const GalleryAlbums: CollectionConfig = {
   },
   admin: {
     group: 'Media',
-    hidden: hideFromUsersWithoutCapability('manage_media'),
+    hidden: hideUnlessFeature('galleryAlbums'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'eventDate', 'createdAt', 'updatedAt'],
     description: 'Ordered image albums displayed by the Event Gallery block.',
   },
   access: {
-    create: requireCapability('manage_media'),
-    delete: requireCapability('manage_media'),
-    read: allowDraftPublishedReadOrCapability('manage_media'),
-    readVersions: requireCapability('manage_media'),
-    update: requireCapability('manage_media'),
+    create: requireFeature('galleryAlbums'),
+    delete: deleteFeatureOrAdmin('galleryAlbums'),
+    read: allowPublishedReadOrFeature('galleryAlbums'),
+    readVersions: requireFeature('galleryAlbums'),
+    update: requireFeature('galleryAlbums'),
   },
   versions: {
     drafts: true,

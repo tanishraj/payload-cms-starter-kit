@@ -34,7 +34,7 @@ export async function generateStaticParams() {
     pagination: false,
     select: { slug: true },
     where: {
-      and: [{ _status: { equals: 'published' } }, { workflowState: { equals: 'published' } }],
+      _status: { equals: 'published' },
     },
   })
   return result.docs.map((entry) => ({ slug: entry.slug }))

@@ -17,7 +17,11 @@ const createUser = (id: string): User => ({
   collection: 'users',
   createdAt: '2026-08-23T00:00:00.000Z',
   email: `editor-${id}@example.com`,
-  role: 'contentManager',
+  features: {
+    articles: true,
+    newsEvents: true,
+  },
+  role: 'siteManager',
   updatedAt: '2026-08-23T00:00:00.000Z',
 })
 

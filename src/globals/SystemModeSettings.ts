@@ -1,10 +1,6 @@
 import type { GlobalConfig, RelationshipFieldSingleValidation } from 'payload'
 
-import {
-  allowPublicReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+import { allowPublicReadOrFeature, hideUnlessFeature, requireFeature } from '@/access/featureAccess'
 import { createGlobalAuditHook } from '@/hooks/logOperationalAuditEvent'
 import type { SystemPageType } from '@/lib/systemPageTypes'
 
@@ -75,12 +71,12 @@ export const SystemModeSettings: GlobalConfig = {
   label: 'Maintenance & Modes',
   admin: {
     group: 'Configuration',
-    hidden: hideFromUsersWithoutCapability('manage_system_modes'),
+    hidden: hideUnlessFeature('maintenanceModes'),
   },
   access: {
-    read: allowPublicReadOrCapability('manage_system_modes'),
-    readVersions: requireCapability('manage_system_modes'),
-    update: requireCapability('manage_system_modes'),
+    read: allowPublicReadOrFeature('maintenanceModes'),
+    readVersions: requireFeature('maintenanceModes'),
+    update: requireFeature('maintenanceModes'),
   },
   versions: {
     drafts: true,
@@ -89,6 +85,7 @@ export const SystemModeSettings: GlobalConfig = {
     afterChange: [
       createGlobalAuditHook({
         entityType: 'system_mode_settings',
+        feature: 'maintenanceModes',
         getSummary: ({ doc, previousDoc }) =>
           `Site mode changed from ${previousDoc?.siteMode ?? 'off'} to ${doc.siteMode}.`,
         title: 'Website Modes',

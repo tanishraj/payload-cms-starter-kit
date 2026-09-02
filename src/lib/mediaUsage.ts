@@ -1,6 +1,6 @@
 import type { Field } from 'payload'
 
-import { authenticatedFieldReadAccess } from '@/access/adminCapabilities'
+import { featureFieldReadAccess } from '@/access/featureAccess'
 
 type RelationshipValue = number | string | { id?: number | string | null } | null | undefined
 
@@ -603,7 +603,7 @@ export const mediaUsageAdminFieldConfig: Field[] = [
     type: 'text',
     virtual: true,
     access: {
-      read: authenticatedFieldReadAccess,
+      read: featureFieldReadAccess('media'),
     },
     admin: {
       description: 'Read-only usage overview derived from supported media relationship fields.',
@@ -615,7 +615,7 @@ export const mediaUsageAdminFieldConfig: Field[] = [
     type: 'json',
     virtual: true,
     access: {
-      read: authenticatedFieldReadAccess,
+      read: featureFieldReadAccess('media'),
     },
     admin: {
       description: 'Read-only structured list of supported collection and global usage locations.',

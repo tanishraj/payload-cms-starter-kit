@@ -1,16 +1,17 @@
 import type {
   CollectionAfterReadHook,
-  CollectionAfterDeleteHook,
   CollectionBeforeValidateHook,
   CollectionConfig,
 } from 'payload'
 
 import {
-  allowDraftPublishedReadOrCapability,
-  authenticatedFieldReadAccess,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+  allowPublishedReadOrFeature,
+  deleteFeatureOrAdmin,
+  featureFieldReadAccess,
+  hasFeature,
+  hideUnlessFeature,
+  requireFeature,
+} from '@/access/featureAccess'
 import {
   buildMediaUsageSummary,
   findMediaUsage,
@@ -19,20 +20,6 @@ import {
 } from '@/lib/mediaUsage'
 import { preventMediaDeletionWhileInUse } from '@/hooks/preventMediaDeletionWhileInUse'
 import { syncMediaToWorkQueue } from '@/hooks/syncMediaToWorkQueue'
-import { recordOperationalAuditEvent } from '@/lib/operationalAudit'
-
-const recordMediaDeletionAudit: CollectionAfterDeleteHook = async ({ doc, req }) => {
-  await recordOperationalAuditEvent({
-    action: 'media_deleted',
-    entityId: String(doc.id),
-    entityTitle: doc.title?.trim() || doc.filename?.trim() || `Media ${doc.id}`,
-    entityType: 'media',
-    req,
-    summary: `Media asset ${doc.title?.trim() || doc.filename?.trim() || doc.id} was deleted through the CMS.`,
-  })
-
-  return doc
-}
 
 const mediaAssetTypeOptions = [
   {
@@ -97,8 +84,12 @@ type MediaWithUsage = {
   usageSummary?: string
 }
 
-const populateMediaUsage: CollectionAfterReadHook<MediaWithUsage> = async ({ doc, findMany, req }) => {
-  if (findMany || doc.id == null) {
+const populateMediaUsage: CollectionAfterReadHook<MediaWithUsage> = async ({
+  doc,
+  findMany,
+  req,
+}) => {
+  if (findMany || doc.id == null || !hasFeature(req.user, 'media')) {
     return doc
   }
 
@@ -117,21 +108,20 @@ export const Media: CollectionConfig = {
   slug: 'media',
   admin: {
     group: 'Media',
-    hidden: hideFromUsersWithoutCapability('manage_media'),
+    hidden: hideUnlessFeature('media'),
     useAsTitle: 'title',
     defaultColumns: ['filename', 'alt', 'assetType', 'updatedAt'],
     listSearchableFields: ['title', 'alt', 'filename'],
   },
   access: {
-    create: requireCapability('manage_media'),
-    delete: requireCapability('manage_media'),
-    read: allowDraftPublishedReadOrCapability('manage_media'),
-    readVersions: requireCapability('manage_media'),
-    update: requireCapability('manage_media'),
+    create: requireFeature('media'),
+    delete: deleteFeatureOrAdmin('media'),
+    read: allowPublishedReadOrFeature('media'),
+    readVersions: requireFeature('media'),
+    update: requireFeature('media'),
   },
   hooks: {
     afterChange: [syncMediaToWorkQueue],
-    afterDelete: [recordMediaDeletionAudit],
     afterRead: [populateMediaUsage],
     beforeDelete: [preventMediaDeletionWhileInUse],
     beforeValidate: [beforeValidate],
@@ -145,7 +135,7 @@ export const Media: CollectionConfig = {
       label: 'Storage Status',
       type: 'select',
       access: {
-        read: authenticatedFieldReadAccess,
+        read: featureFieldReadAccess('media'),
       },
       defaultValue: 'unchecked',
       options: [
@@ -171,8 +161,7 @@ export const Media: CollectionConfig = {
         },
       ],
       admin: {
-        description:
-          'Read-only storage health set by the media reconciliation process.',
+        description: 'Read-only storage health set by the media reconciliation process.',
         position: 'sidebar',
         readOnly: true,
       },
@@ -182,7 +171,7 @@ export const Media: CollectionConfig = {
       label: 'Storage Checked At',
       type: 'date',
       access: {
-        read: authenticatedFieldReadAccess,
+        read: featureFieldReadAccess('media'),
       },
       admin: {
         description: 'Most recent storage verification time.',
@@ -195,7 +184,7 @@ export const Media: CollectionConfig = {
       label: 'Missing Since',
       type: 'date',
       access: {
-        read: authenticatedFieldReadAccess,
+        read: featureFieldReadAccess('media'),
       },
       admin: {
         description: 'When this asset was first detected missing from object storage.',
@@ -208,7 +197,7 @@ export const Media: CollectionConfig = {
       label: 'Storage Issue',
       type: 'textarea',
       access: {
-        read: authenticatedFieldReadAccess,
+        read: featureFieldReadAccess('media'),
       },
       admin: {
         description: 'Read-only diagnostic detail from the last storage verification.',
@@ -220,7 +209,7 @@ export const Media: CollectionConfig = {
       name: 'title',
       type: 'text',
       access: {
-        read: authenticatedFieldReadAccess,
+        read: featureFieldReadAccess('media'),
       },
       admin: {
         description: 'Internal asset name used in the admin panel.',
@@ -231,7 +220,7 @@ export const Media: CollectionConfig = {
       label: 'Asset Type',
       type: 'select',
       access: {
-        read: authenticatedFieldReadAccess,
+        read: featureFieldReadAccess('media'),
       },
       defaultValue: 'general',
       options: [...mediaAssetTypeOptions],
@@ -252,7 +241,7 @@ export const Media: CollectionConfig = {
       name: 'tags',
       type: 'array',
       access: {
-        read: authenticatedFieldReadAccess,
+        read: featureFieldReadAccess('media'),
       },
       labels: {
         singular: 'Tag',
@@ -275,7 +264,7 @@ export const Media: CollectionConfig = {
       name: 'notes',
       type: 'textarea',
       access: {
-        read: authenticatedFieldReadAccess,
+        read: featureFieldReadAccess('media'),
       },
       admin: {
         description:
@@ -286,7 +275,7 @@ export const Media: CollectionConfig = {
       name: 'isCriticalAsset',
       type: 'checkbox',
       access: {
-        read: authenticatedFieldReadAccess,
+        read: featureFieldReadAccess('media'),
       },
       defaultValue: false,
       admin: {
@@ -298,7 +287,7 @@ export const Media: CollectionConfig = {
       name: 'replacementNotes',
       type: 'textarea',
       access: {
-        read: authenticatedFieldReadAccess,
+        read: featureFieldReadAccess('media'),
       },
       admin: {
         description:

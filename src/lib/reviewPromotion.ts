@@ -1,6 +1,7 @@
 import type { Payload } from 'payload'
 
 import type { RequiredReviewSubmissionValues } from '@/lib/reviews'
+import { TRUSTED_REVIEW_PROMOTION_CONTEXT } from '@/hooks/enforceReviewModeration'
 
 const normalizeRelationshipID = (value: unknown): string | number | null => {
   if (typeof value === 'number' && Number.isFinite(value)) {
@@ -41,6 +42,7 @@ export const upsertReviewFromSubmission = async ({
   const reviewData = {
     _status: 'draft' as const,
     isGenuineExperience: values.isGenuineExperience,
+    moderationStatus: 'pending' as const,
     rating: values.rating,
     reviewBody: values.reviewBody,
     reviewerEmail: values.reviewerEmail || undefined,
@@ -49,12 +51,13 @@ export const upsertReviewFromSubmission = async ({
     sourceSubmission: String(sourceSubmissionID),
     subjectLabel: values.subjectLabel || undefined,
     title: values.reviewTitle,
-    workflowState: 'in_review' as const,
   }
+  const context = { trustedReviewPromotion: TRUSTED_REVIEW_PROMOTION_CONTEXT }
 
   if (existingReviewID) {
     const updatedReview = await payload.update({
       collection: 'reviews',
+      context,
       data: reviewData,
       id: existingReviewID,
       overrideAccess: true,
@@ -65,6 +68,7 @@ export const upsertReviewFromSubmission = async ({
 
   const createdReview = await payload.create({
     collection: 'reviews',
+    context,
     data: reviewData,
     draft: true,
     overrideAccess: true,

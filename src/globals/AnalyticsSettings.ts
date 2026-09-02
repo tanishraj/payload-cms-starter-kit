@@ -1,10 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
-import {
-  allowPublicReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+import { allowPublicReadOrFeature, hideUnlessFeature, requireFeature } from '@/access/featureAccess'
 import { revalidateGlobalsCacheForGlobal } from '@/hooks/revalidateCmsContent'
 
 export const AnalyticsSettings: GlobalConfig = {
@@ -12,13 +8,13 @@ export const AnalyticsSettings: GlobalConfig = {
   label: 'Analytics & Tracking',
   admin: {
     group: 'Settings',
-    hidden: hideFromUsersWithoutCapability('manage_site_settings'),
+    hidden: hideUnlessFeature('analyticsTracking'),
     description: 'Configure Google Tag Manager and GA4 tracking for the site.',
   },
   access: {
-    read: allowPublicReadOrCapability('manage_site_settings'),
-    readVersions: requireCapability('manage_site_settings'),
-    update: requireCapability('manage_site_settings'),
+    read: allowPublicReadOrFeature('analyticsTracking'),
+    readVersions: requireFeature('analyticsTracking'),
+    update: requireFeature('analyticsTracking'),
   },
   versions: {
     drafts: true,

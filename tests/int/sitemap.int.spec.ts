@@ -150,7 +150,6 @@ describe('sitemap route', () => {
                 { id: 303, slug: 'hidden-event', title: 'Hidden Event' },
               ],
               updatedAt: '2026-07-09T00:00:00.000Z',
-              workflowState: 'published',
             },
             {
               categories: [],
@@ -161,7 +160,6 @@ describe('sitemap route', () => {
               slug: 'internal-event',
               tags: [{ id: 302, slug: 'internal', title: 'Internal' }],
               updatedAt: '2026-07-09T00:00:00.000Z',
-              workflowState: 'published',
             },
           ],
           totalPages: 1,

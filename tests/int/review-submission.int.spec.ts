@@ -159,7 +159,7 @@ describe('review submission promotion', () => {
     )
   })
 
-  it('creates a submission and links it to a draft in-review review document', async () => {
+  it('creates a submission and links it to a pending draft Review', async () => {
     payloadMocks.find.mockResolvedValue({
       docs: [
         {
@@ -291,9 +291,9 @@ describe('review submission promotion', () => {
         collection: 'reviews',
         data: expect.objectContaining({
           _status: 'draft',
+          moderationStatus: 'pending',
           sourceSubmission: '33',
           subjectLabel: 'academics',
-          workflowState: 'in_review',
           title: 'Everything worked exactly as expected.',
           reviewTitle: 'Everything worked exactly as expected.',
           reviewerEmail: undefined,

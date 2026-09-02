@@ -26,7 +26,7 @@ content that belongs in article topic and tag archives.
 
 ## Required Content And Validation
 
-Every entry requires a title, slug, excerpt, rich-text body, featured image, image position, SEO-safe publication state, and workflow data. An Event additionally requires:
+Every entry requires a title, slug, excerpt, rich-text body, featured image, image position, and SEO-safe publication state. An Event additionally requires:
 
 - `Event Start`
 - `Event Location`
@@ -34,7 +34,7 @@ Every entry requires a title, slug, excerpt, rich-text body, featured image, ima
 - an optional `All-day Event` setting that omits time and treats the end date as inclusive
 - an optional registration action
 
-The primary topic is automatically included in additional topics. Tags are optional. Only entries whose Payload status and editorial workflow are both published are exposed publicly.
+The primary topic is automatically included in additional topics. Tags are optional. Only entries whose Payload status is published are exposed publicly.
 
 ## How It Connects To The Website
 
@@ -113,7 +113,7 @@ The sitemap includes the published `/news-events` Page through the normal Page r
 3. In `Content`, write the card excerpt, choose the featured image and image position, add optional Topics & Tags, and complete the body.
 4. In `Event Details`, set the start, optional inclusive end, all-day state, venue, and registration action.
 5. Complete the SEO fields and use live preview at all three breakpoints.
-6. Move the item through the required editorial workflow. Resolve any blocking `Action Queue` item before publishing.
+6. Resolve any blocking `Action Queue` item, then publish the entry.
 7. Verify the detail page, feed, and the Highlights or Tabs block that should feature it on the manually composed Page.
 8. When changing the shared detail presentation, open `News & Events > Detail Page Template`,
    arrange the standard Page blocks, and configure the single `News & Events Content` block before
@@ -132,16 +132,16 @@ The sitemap includes the published `/news-events` Page through the normal Page r
   Events entry, Calendar, Annual Calendar, Highlights, or Tabs reference before permanently deleting an unused
   classification
 - leave Robots at `Default` to inherit the global SEO & Metadata crawler policy; choose `Index` or `No index` only for an intentional entry-level override
-- do not expect the `scheduled` workflow state to publish automatically; it records and queues the intended schedule for operator oversight
+- use a draft when an entry is not ready to publish
 
 ## Common Mistakes And Recovery
 
 - selecting News for an item that needs event dates and Event JSON-LD
 - setting an end time before the start time
-- publishing in Payload while leaving the workflow state unpublished
+- overlooking an open or blocked approval/publish-issue queue item
 - expecting past events to remain in the Highlights block
 
-If an entry is missing publicly, check both publication states, its slug, and whether an open or blocked approval/publish-issue item remains in `Action Queue`. If `/news-events` itself is missing, confirm the root Page is published with the exact slug `news-events`.
+If an entry is missing publicly, check its publication status, slug, and whether an open or blocked approval/publish-issue item remains in `Action Queue`. If `/news-events` itself is missing, confirm the root Page is published with the exact slug `news-events`.
 
 ## Related Guides
 

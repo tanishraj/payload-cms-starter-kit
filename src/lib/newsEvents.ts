@@ -71,10 +71,7 @@ const cardSelect = {
   updatedAt: true,
 } as const
 
-const publishedWhere: Where[] = [
-  { _status: { equals: 'published' } },
-  { workflowState: { equals: 'published' } },
-]
+const publishedWhere: Where[] = [{ _status: { equals: 'published' } }]
 
 const normalizeGroupLimit = (value: number): number =>
   Number.isInteger(value) ? Math.min(12, Math.max(1, value)) : 6
