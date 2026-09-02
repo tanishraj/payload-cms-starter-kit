@@ -1,10 +1,11 @@
 import { type CollectionConfig } from 'payload'
 
 import {
-  allowPublicReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+  allowPublicReadOrFeature,
+  deleteFeatureOrAdmin,
+  hideUnlessFeature,
+  requireFeature,
+} from '@/access/featureAccess'
 import { buildSEOFields } from '@/fields/buildSEOFields'
 import { projectSlugField } from '@/fields/projectSlugField'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
@@ -17,7 +18,7 @@ export const Categories: CollectionConfig = {
   },
   admin: {
     group: 'Taxonomy',
-    hidden: hideFromUsersWithoutCapability('manage_taxonomy'),
+    hidden: hideUnlessFeature('topics'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],
     description:
@@ -25,18 +26,10 @@ export const Categories: CollectionConfig = {
     listSearchableFields: ['title', 'slug'],
   },
   access: {
-    create: requireCapability('manage_taxonomy'),
-    delete: requireCapability('manage_taxonomy'),
-    read: allowPublicReadOrCapability([
-      'manage_taxonomy',
-      'manage_articles',
-      'publish_articles',
-      'manage_news_events',
-      'publish_news_events',
-      'manage_reviews',
-      'publish_reviews',
-    ]),
-    update: requireCapability('manage_taxonomy'),
+    create: requireFeature('topics'),
+    delete: deleteFeatureOrAdmin('topics'),
+    read: allowPublicReadOrFeature('topics'),
+    update: requireFeature('topics'),
   },
   hooks: {
     beforeChange: [validateSEOContract()],

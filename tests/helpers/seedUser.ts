@@ -12,10 +12,11 @@ export const testUser = {
  */
 export async function seedTestUser(): Promise<void> {
   const payload = await getPayload({ config })
-
-  // Delete existing test user if any
-  await payload.delete({
+  const existing = await payload.find({
     collection: 'users',
+    depth: 0,
+    limit: 1,
+    overrideAccess: true,
     where: {
       email: {
         equals: testUser.email,
@@ -23,15 +24,24 @@ export async function seedTestUser(): Promise<void> {
     },
   })
 
-  // Create fresh test user
-  await payload.create({
-    collection: 'users',
-    data: testUser,
-  })
+  if (existing.docs[0]) {
+    await payload.update({
+      collection: 'users',
+      id: existing.docs[0].id,
+      data: testUser,
+      overrideAccess: true,
+    })
+  } else {
+    await payload.create({
+      collection: 'users',
+      data: testUser,
+      overrideAccess: true,
+    })
+  }
 }
 
 export async function getTestUserDocument(): Promise<{
-  capabilities?: unknown
+  features?: unknown
   email: string
   id: number | string
   role: string
@@ -56,7 +66,7 @@ export async function getTestUserDocument(): Promise<{
   }
 
   return {
-    capabilities: user.capabilities,
+    features: user.features,
     email: user.email ?? testUser.email,
     id: user.id,
     role: user.role ?? 'admin',
@@ -68,13 +78,35 @@ export async function getTestUserDocument(): Promise<{
  */
 export async function cleanupTestUser(): Promise<void> {
   const payload = await getPayload({ config })
+  const existing = await payload.find({
+    collection: 'users',
+    depth: 0,
+    limit: 1,
+    overrideAccess: true,
+    where: { email: { equals: testUser.email } },
+  })
+  const user = existing.docs[0]
+  if (!user) return
+
+  if (user.role === 'admin') {
+    const otherAdmins = await payload.count({
+      collection: 'users',
+      overrideAccess: true,
+      trash: true,
+      where: {
+        and: [
+          { id: { not_equals: user.id } },
+          { role: { equals: 'admin' } },
+          { or: [{ deletedAt: { exists: false } }, { deletedAt: { equals: null } }] },
+        ],
+      },
+    })
+    if (otherAdmins.totalDocs === 0) return
+  }
 
   await payload.delete({
     collection: 'users',
-    where: {
-      email: {
-        equals: testUser.email,
-      },
-    },
+    id: user.id,
+    overrideAccess: true,
   })
 }

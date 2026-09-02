@@ -1,16 +1,20 @@
 import type { PayloadRequest } from 'payload'
 
+import type { AdminFeatureKey } from '@/access/adminFeatures'
+
 export type RecordOperationalAuditEventArgs = {
   action: string
   entityId: string
   entityTitle: string
   entityType: string
+  feature?: AdminFeatureKey | null
   req: PayloadRequest
   summary: string
 }
 
 export type RecordWorkQueueAuditEventArgs = {
   action: string
+  feature: AdminFeatureKey | null
   req: PayloadRequest
   summary: string
   workQueueID: string
@@ -47,6 +51,7 @@ export const recordOperationalAuditEvent = async ({
   entityId,
   entityTitle,
   entityType,
+  feature,
   req,
   summary,
 }: RecordOperationalAuditEventArgs): Promise<void> => {
@@ -54,11 +59,16 @@ export const recordOperationalAuditEvent = async ({
     collection: 'operational-audit-events',
     data: {
       action,
+      actorId:
+        typeof req.user?.id === 'string' || typeof req.user?.id === 'number'
+          ? String(req.user.id)
+          : undefined,
       actorEmail: typeof req.user?.email === 'string' ? req.user.email : undefined,
       actorRole: typeof req.user?.role === 'string' ? req.user.role : undefined,
       entityId,
       entityTitle,
       entityType,
+      feature: feature ?? undefined,
       occurredAt: new Date().toISOString(),
       summary,
     },
@@ -69,6 +79,7 @@ export const recordOperationalAuditEvent = async ({
 
 export const recordWorkQueueAuditEvent = async ({
   action,
+  feature,
   req,
   summary,
   workQueueID,
@@ -78,6 +89,7 @@ export const recordWorkQueueAuditEvent = async ({
     entityId: workQueueID,
     entityTitle: 'Work Queue Item',
     entityType: 'work_queue',
+    feature,
     req,
     summary,
   })

@@ -78,7 +78,6 @@ describe('News & Events editorial model', () => {
       'Content',
       'Event Details',
       'SEO',
-      'Workflow',
     ])
   })
 
@@ -111,7 +110,6 @@ describe('News & Events editorial model', () => {
       'title',
       'classification',
       '_status',
-      'workflowState',
       'updatedAt',
     ])
   })

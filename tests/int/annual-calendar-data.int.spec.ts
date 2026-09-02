@@ -144,7 +144,6 @@ describe('Annual Calendar data contract', () => {
     ).toEqual({
       and: [
         { _status: { equals: 'published' } },
-        { workflowState: { equals: 'published' } },
         { classification: { in: ['academic', 'exam'] } },
         { eventStart: { greater_than_equal: '2026-06-30T18:30:00.000Z' } },
         { eventStart: { less_than_equal: '2027-06-30T18:29:59.999Z' } },
@@ -219,7 +218,6 @@ describe('Annual Calendar data contract', () => {
         where: {
           and: [
             { _status: { equals: 'published' } },
-            { workflowState: { equals: 'published' } },
             { classification: { in: ['academic', 'exam'] } },
             { eventStart: { greater_than_equal: '2026-06-30T18:30:00.000Z' } },
             { eventStart: { less_than_equal: '2027-06-30T18:29:59.999Z' } },

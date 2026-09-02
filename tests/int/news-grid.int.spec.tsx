@@ -197,7 +197,6 @@ describe('News Grid', () => {
         where: {
           and: expect.arrayContaining([
             { _status: { equals: 'published' } },
-            { workflowState: { equals: 'published' } },
             {
               or: [
                 {

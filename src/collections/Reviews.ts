@@ -1,24 +1,23 @@
-import { type CollectionConfig } from 'payload'
+import { type Access, type CollectionConfig, type Where } from 'payload'
 
 import {
-  allowPublishedReadOrCapability,
-  canShowEditorialWorkflow,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+  canReadFeature,
+  deleteFeatureOrAdmin,
+  featureFieldReadAccess,
+  hideUnlessFeature,
+  requireFeature,
+} from '@/access/featureAccess'
 import { buildSEOFields } from '@/fields/buildSEOFields'
+import { publicationMetadataFields } from '@/fields/publicationMetadataFields'
 import { projectSlugField } from '@/fields/projectSlugField'
-import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
+import { enforcePublicationPolicy } from '@/hooks/enforcePublicationPolicy'
+import { enforceReviewModeration } from '@/hooks/enforceReviewModeration'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
 import { syncReviewToWorkQueue } from '@/hooks/syncReviewToWorkQueue'
 import { syncPrimaryCategoryMembership } from '@/hooks/syncPrimaryCategoryMembership'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
-import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 import { reviewRatingOptions } from '@/lib/reviews'
-import {
-  revalidateDeletedReviewCache,
-  revalidateReviewsCache,
-} from '@/hooks/revalidateCmsContent'
+import { revalidateDeletedReviewCache, revalidateReviewsCache } from '@/hooks/revalidateCmsContent'
 
 const previewBreakpoints = [
   {
@@ -41,6 +40,25 @@ const previewBreakpoints = [
   },
 ] as const
 
+const readReviews: Access = ({ req }) => {
+  if (req.user) return canReadFeature(req.user, 'reviews')
+
+  const publicReviewWhere: Where = {
+    and: [
+      { _status: { equals: 'published' } },
+      {
+        or: [
+          { sourceSubmission: { exists: false } },
+          { sourceSubmission: { equals: null } },
+          { moderationStatus: { equals: 'approved' } },
+        ],
+      },
+    ],
+  }
+
+  return publicReviewWhere
+}
+
 export const Reviews: CollectionConfig = {
   slug: 'reviews',
   labels: {
@@ -49,10 +67,17 @@ export const Reviews: CollectionConfig = {
   },
   admin: {
     group: 'Content',
-    hidden: hideFromUsersWithoutCapability('manage_reviews'),
+    hidden: hideUnlessFeature('reviews'),
     useAsTitle: 'title',
-    defaultColumns: ['title', 'primaryCategory', 'rating', '_status', 'workflowState', 'updatedAt'],
-    description: 'Moderated public reviews with structured rating, reviewer, taxonomy, SEO, and workflow fields.',
+    defaultColumns: [
+      'title',
+      'primaryCategory',
+      'rating',
+      'moderationStatus',
+      '_status',
+      'updatedAt',
+    ],
+    description: 'Staff-authored reviews and moderated public review submissions.',
     listSearchableFields: ['title', 'reviewTitle', 'reviewerName', 'subjectLabel'],
     livePreview: {
       breakpoints: [...previewBreakpoints],
@@ -68,11 +93,11 @@ export const Reviews: CollectionConfig = {
     },
   },
   access: {
-    create: requireCapability('manage_reviews'),
-    delete: requireCapability('manage_reviews'),
-    read: allowPublishedReadOrCapability('manage_reviews'),
-    readVersions: requireCapability('manage_reviews'),
-    update: requireCapability('manage_reviews'),
+    create: requireFeature('reviews'),
+    delete: deleteFeatureOrAdmin('reviews'),
+    read: readReviews,
+    readVersions: requireFeature('reviews'),
+    update: requireFeature('reviews'),
   },
   hooks: {
     afterChange: [
@@ -80,8 +105,9 @@ export const Reviews: CollectionConfig = {
       syncReviewToWorkQueue,
       createCollectionAuditHook({
         entityType: 'review',
+        feature: 'reviews',
         getSummary: ({ doc, previousDoc }) =>
-          `Workflow moved from ${previousDoc?.workflowState ?? 'draft'} to ${doc.workflowState}.`,
+          `Review moderation/publication changed from ${previousDoc?.moderationStatus ?? 'staff'}/${previousDoc?._status ?? 'draft'} to ${doc.moderationStatus ?? 'staff'}/${doc._status ?? 'draft'}.`,
         titleField: 'title',
       }),
     ],
@@ -89,7 +115,8 @@ export const Reviews: CollectionConfig = {
     beforeChange: [
       syncPrimaryCategoryMembership,
       validateSEOContract(),
-      enforceEditorialWorkflow('publish_reviews', 'reviews'),
+      enforceReviewModeration,
+      enforcePublicationPolicy('reviews', 'reviews'),
     ],
   },
   versions: {
@@ -132,8 +159,7 @@ export const Reviews: CollectionConfig = {
                   relationTo: 'tags',
                   hasMany: true,
                   admin: {
-                    description:
-                      'Keyword tags for related-content matching and cross-linking.',
+                    description: 'Keyword tags for related-content matching and cross-linking.',
                     width: '50%',
                   },
                 },
@@ -196,6 +222,9 @@ export const Reviews: CollectionConfig = {
                 {
                   name: 'reviewerEmail',
                   type: 'email',
+                  access: {
+                    read: featureFieldReadAccess('reviews'),
+                  },
                   admin: {
                     description: 'Optional contact email used only for moderation follow-up.',
                     width: '50%',
@@ -238,105 +267,87 @@ export const Reviews: CollectionConfig = {
                 },
               },
             },
-            {
-              name: 'internalModerationNotes',
-              type: 'textarea',
-              admin: {
-                description:
-                  'Internal notes for moderation, rewriting decisions, or publication checks.',
-              },
-            },
           ],
         },
         {
           label: 'SEO',
           fields: [...buildSEOFields()],
         },
+      ],
+    },
+    {
+      type: 'collapsible',
+      label: 'Moderation',
+      admin: {
+        condition: (data) => Boolean(data?.sourceSubmission),
+        initCollapsed: false,
+        position: 'sidebar',
+      },
+      fields: [
         {
-          label: 'Workflow',
-          fields: [
-            {
-              name: 'workflowState',
-              type: 'select',
-              defaultValue: 'draft',
-              options: [...editorialWorkflowStateOptions],
-              required: true,
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-              },
-            },
-            {
-              name: 'scheduledPublishAt',
-              type: 'date',
-              admin: {
-                condition: (_data, siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never) &&
-                  siblingData?.workflowState === 'scheduled',
-              },
-            },
-            {
-              name: 'changeSummary',
-              type: 'textarea',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                description: 'Short operator-facing note explaining why this change exists.',
-              },
-            },
-            {
-              name: 'sourceSubmission',
-              type: 'relationship',
-              relationTo: 'form-submissions',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                description:
-                  'Immutable link back to the public intake submission that generated this review.',
-                readOnly: true,
-              },
-            },
-            {
-              name: 'lastReviewedAt',
-              type: 'date',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-            {
-              name: 'lastReviewedBy',
-              type: 'relationship',
-              relationTo: 'users',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-            {
-              name: 'publishedAt',
-              type: 'date',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-            {
-              name: 'publishedBy',
-              type: 'relationship',
-              relationTo: 'users',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
+          name: 'moderationStatus',
+          type: 'select',
+          access: {
+            read: featureFieldReadAccess('reviews'),
+          },
+          defaultValue: 'pending',
+          options: [
+            { label: 'Pending', value: 'pending' },
+            { label: 'Approved', value: 'approved' },
+            { label: 'Rejected', value: 'rejected' },
           ],
+          admin: {
+            description: 'Approving publishes the Review. Rejecting keeps it as a draft.',
+          },
+        },
+        {
+          name: 'sourceSubmission',
+          type: 'relationship',
+          relationTo: 'form-submissions',
+          access: {
+            create: () => false,
+            read: featureFieldReadAccess('reviews'),
+            update: () => false,
+          },
+          admin: {
+            description: 'Immutable public submission that created this Review.',
+            readOnly: true,
+          },
+        },
+        {
+          name: 'internalModerationNotes',
+          label: 'Moderation Note',
+          type: 'textarea',
+          access: {
+            read: featureFieldReadAccess('reviews'),
+          },
+          admin: {
+            description: 'Internal context for the moderation decision.',
+          },
+        },
+        {
+          name: 'moderatedAt',
+          type: 'date',
+          access: {
+            create: () => false,
+            read: featureFieldReadAccess('reviews'),
+            update: () => false,
+          },
+          admin: { readOnly: true },
+        },
+        {
+          name: 'moderatedBy',
+          type: 'relationship',
+          relationTo: 'users',
+          access: {
+            create: () => false,
+            read: featureFieldReadAccess('reviews'),
+            update: () => false,
+          },
+          admin: { readOnly: true },
         },
       ],
     },
+    ...publicationMetadataFields('reviews'),
   ],
 }

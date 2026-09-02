@@ -1,10 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
-import {
-  allowPublicReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+import { allowPublicReadOrFeature, hideUnlessFeature, requireFeature } from '@/access/featureAccess'
 import { revalidateSiteSettingsCache } from '@/hooks/revalidateCmsContent'
 import { DEFAULT_SITE_TIME_ZONE, SUPPORTED_SITE_TIME_ZONES } from '@/lib/siteTimeZone'
 
@@ -31,12 +27,12 @@ export const SiteSettings: GlobalConfig = {
   label: 'Site Identity',
   admin: {
     group: 'Settings',
-    hidden: hideFromUsersWithoutCapability('manage_site_settings'),
+    hidden: hideUnlessFeature('siteIdentity'),
   },
   access: {
-    read: allowPublicReadOrCapability('manage_site_settings'),
-    readVersions: requireCapability('manage_site_settings'),
-    update: requireCapability('manage_site_settings'),
+    read: allowPublicReadOrFeature('siteIdentity'),
+    readVersions: requireFeature('siteIdentity'),
+    update: requireFeature('siteIdentity'),
   },
   versions: {
     drafts: true,

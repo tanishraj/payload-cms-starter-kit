@@ -1,10 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
-import {
-  allowPublicReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+import { allowPublicReadOrFeature, hideUnlessFeature, requireFeature } from '@/access/featureAccess'
 import { robotsFieldOptions } from '@/lib/seo'
 import { revalidateGlobalsCacheForGlobal } from '@/hooks/revalidateCmsContent'
 
@@ -15,12 +11,12 @@ export const SEOSettings: GlobalConfig = {
     group: 'Settings',
     description:
       'Default SEO values inherited by public routes when local SEO fields stay on Default or empty.',
-    hidden: hideFromUsersWithoutCapability('manage_seo_settings'),
+    hidden: hideUnlessFeature('seoMetadata'),
   },
   access: {
-    read: allowPublicReadOrCapability('manage_seo_settings'),
-    readVersions: requireCapability('manage_seo_settings'),
-    update: requireCapability('manage_seo_settings'),
+    read: allowPublicReadOrFeature('seoMetadata'),
+    readVersions: requireFeature('seoMetadata'),
+    update: requireFeature('seoMetadata'),
   },
   versions: {
     drafts: true,

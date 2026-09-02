@@ -52,12 +52,12 @@ const getRequestLike = ({
   payload: Payload
   req?: PayloadRequest
 }): PayloadRequest =>
-  (req ??
-    ({
-      context: {},
-      payload,
-      user: null,
-    } as PayloadRequest))
+  req ??
+  ({
+    context: {},
+    payload,
+    user: null,
+  } as PayloadRequest)
 
 const getMediaTitle = (media: MediaStorageDoc): string =>
   media.title?.trim() || media.filename?.trim() || `Media ${media.id ?? 'asset'}`
@@ -166,10 +166,10 @@ export const reconcileMediaStorage = async ({
 
       if (
         doc.id == null ||
-        doc.storageStatus === 'local_only' &&
+        (doc.storageStatus === 'local_only' &&
           !doc.storageIssue &&
           doc.storageCheckedAt &&
-          !doc.storageMissingSince
+          !doc.storageMissingSince)
       ) {
         continue
       }
@@ -220,7 +220,10 @@ export const reconcileMediaStorage = async ({
     if (!objectKey) {
       result.checkFailed += 1
 
-      if (doc.storageStatus === 'check_failed' && doc.storageIssue?.includes('storage object key')) {
+      if (
+        doc.storageStatus === 'check_failed' &&
+        doc.storageIssue?.includes('storage object key')
+      ) {
         continue
       }
 
@@ -304,6 +307,7 @@ export const reconcileMediaStorage = async ({
         entityId: String(doc.id),
         entityTitle: title,
         entityType: 'media',
+        feature: 'media',
         req: requestLike,
         summary: `${title} is missing from object storage. The expected object key "${objectKey}" was not found.`,
       })
@@ -315,6 +319,7 @@ export const reconcileMediaStorage = async ({
         entityId: String(doc.id),
         entityTitle: title,
         entityType: 'media',
+        feature: 'media',
         req: requestLike,
         summary: `${title} is available in object storage again.`,
       })

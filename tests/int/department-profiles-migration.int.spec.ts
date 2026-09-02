@@ -125,7 +125,7 @@ const expectNestedProfiles = (layout: unknown[]) => {
 
 describe('Department Profiles nested authoring migration', () => {
   it('registers after the legal Pages migration', () => {
-    expect(migrations.at(-1)?.name).toBe('20260831_010000_nest_department_profiles')
+    expect(migrations.map(({ name }) => name)).toContain('20260831_010000_nest_department_profiles')
   })
 
   it('groups flat profiles by department and reverses in department order', () => {

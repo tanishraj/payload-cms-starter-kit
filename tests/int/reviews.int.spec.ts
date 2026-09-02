@@ -56,7 +56,9 @@ describe('reviews collection', () => {
     expect(serializedFields).toContain('"name":"robotsMode"')
     expect(serializedFields).toContain('"name":"includeInSitemap"')
     expect(serializedFields).toContain('"name":"sourceSubmission"')
-    expect(serializedFields).toContain('"name":"workflowState"')
+    expect(serializedFields).toContain('"name":"moderationStatus"')
+    expect(serializedFields).toContain('"name":"publishedAt"')
+    expect(serializedFields).not.toContain('"name":"workflowState"')
   })
 
   it('queries only published reviews by slug', async () => {

@@ -4,10 +4,7 @@ import { ImageResponse } from 'next/og'
 
 import { getOpenGraphMediaImage } from '@/lib/media'
 import { resolveNewsEventClassificationRecord } from '@/lib/newsEventClassifications'
-import {
-  createOpenGraphFallbackResponse,
-  loadOpenGraphRemoteImage,
-} from '@/lib/openGraphImages'
+import { createOpenGraphFallbackResponse, loadOpenGraphRemoteImage } from '@/lib/openGraphImages'
 
 export const alt = 'News & Events preview'
 export const contentType = 'image/png'
@@ -31,11 +28,7 @@ export default async function NewsEventOgImage({ params }: Props) {
         title: true,
       },
       where: {
-        and: [
-          { slug: { equals: slug } },
-          { _status: { equals: 'published' } },
-          { workflowState: { equals: 'published' } },
-        ],
+        and: [{ slug: { equals: slug } }, { _status: { equals: 'published' } }],
       },
     }),
     payload.findGlobal({ slug: 'site-settings', depth: 1 }),

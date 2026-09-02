@@ -278,15 +278,13 @@ export interface Page {
    * Use this for nested page hierarchies like /services/web-development.
    */
   parent?: (string | null) | Page;
-  workflowState?: ('draft' | 'in_review' | 'scheduled' | 'published' | 'reverted') | null;
-  scheduledPublishAt?: string | null;
   /**
-   * Short operator-facing note explaining why this change exists.
+   * Set automatically when this document is published.
    */
-  changeSummary?: string | null;
-  lastReviewedAt?: string | null;
-  lastReviewedBy?: (string | null) | User;
   publishedAt?: string | null;
+  /**
+   * Account that most recently published this document.
+   */
   publishedBy?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
@@ -6837,117 +6835,129 @@ export interface AwardsListBlock {
 export interface User {
   id: string;
   /**
-   * Choose the base access preset for this user. Saving a changed non-admin role reapplies that role default.
+   * Admins have full access. Site Managers receive only selected features.
    */
-  role?: ('admin' | 'siteManager' | 'contentManager') | null;
+  role: 'admin' | 'siteManager';
   /**
-   * Role presets define the default access bundle for non-admin users. After saving the role, adjust these checkboxes only for explicit exceptions.
+   * Choose the Admin destinations this Site Manager may use. New Site Managers start with no access.
    */
-  capabilities?: {
+  features?: {
     /**
-     * Allow access to Pages.
+     * Create, edit, preview, publish, version, trash, and restore Pages.
      */
-    manage_pages?: boolean | null;
+    pages?: boolean | null;
     /**
-     * Allow access to Articles.
+     * Create, edit, preview, publish, version, trash, and restore Articles.
      */
-    manage_articles?: boolean | null;
+    articles?: boolean | null;
     /**
-     * Allow access to News & Events.
+     * Manage Reviews and moderate public review submissions.
      */
-    manage_news_events?: boolean | null;
+    reviews?: boolean | null;
     /**
-     * Allow access to Reviews.
+     * Create, edit, version, trash, and restore Reusable Sections.
      */
-    manage_reviews?: boolean | null;
+    reusableSections?: boolean | null;
     /**
-     * Allow access to Media.
+     * Create, edit, preview, publish, version, trash, and restore News & Events.
      */
-    manage_media?: boolean | null;
+    newsEvents?: boolean | null;
     /**
-     * Allow access to Taxonomy.
+     * Create, edit, and archive News & Event classifications.
      */
-    manage_taxonomy?: boolean | null;
+    newsEventClassifications?: boolean | null;
     /**
-     * Allow access to Navigation Links.
+     * Edit, preview, and publish the shared News & Events detail layout.
      */
-    manage_navigation?: boolean | null;
+    newsEventsDetailTemplate?: boolean | null;
     /**
-     * Allow access to Redirects.
+     * Create, edit, archive, trash, restore, and select Topics.
      */
-    manage_redirects?: boolean | null;
+    topics?: boolean | null;
     /**
-     * Allow access to Headers.
+     * Create, edit, archive, trash, restore, and select Tags.
      */
-    manage_headers?: boolean | null;
+    tags?: boolean | null;
     /**
-     * Allow access to Footers.
+     * Create, edit, publish, version, trash, and restore Navigation Links.
      */
-    manage_footers?: boolean | null;
+    navigationLinks?: boolean | null;
     /**
-     * Allow access to System Pages.
+     * Create, edit, enable, version, trash, and restore Redirects.
      */
-    manage_system_pages?: boolean | null;
+    redirects?: boolean | null;
     /**
-     * Allow access to Forms.
+     * Create, edit, preview, publish, version, trash, and restore Headers.
      */
-    manage_forms?: boolean | null;
+    headers?: boolean | null;
     /**
-     * Allow access to Form Submissions.
+     * Create, edit, preview, publish, version, trash, and restore Footers.
      */
-    manage_form_submissions?: boolean | null;
+    footers?: boolean | null;
     /**
-     * Allow access to Routing Defaults.
+     * Create, edit, version, trash, and restore Office Locations.
      */
-    manage_page_settings?: boolean | null;
+    officeLocations?: boolean | null;
     /**
-     * Allow access to Site Identity.
+     * Create, edit, preview, publish, version, trash, and restore System Pages.
      */
-    manage_site_settings?: boolean | null;
+    systemPages?: boolean | null;
     /**
-     * Allow access to Appearance.
+     * Upload, edit, replace, version, trash, and restore Media.
      */
-    manage_theme_settings?: boolean | null;
+    media?: boolean | null;
     /**
-     * Allow access to SEO & Metadata.
+     * Create, edit, reorder, version, trash, and restore Gallery Albums.
      */
-    manage_seo_settings?: boolean | null;
+    galleryAlbums?: boolean | null;
     /**
-     * Allow access to Site Modes.
+     * Create, edit, configure, version, trash, and restore Forms.
      */
-    manage_system_modes?: boolean | null;
+    forms?: boolean | null;
     /**
-     * Allow access to Action Queue.
+     * Read submissions and update assignment, status, and internal notes.
      */
-    manage_work_queue?: boolean | null;
+    formSubmissions?: boolean | null;
     /**
-     * Allow access to Audit Log.
+     * Read and operate generated tasks for otherwise authorized features.
      */
-    view_operational_audit?: boolean | null;
+    actionQueue?: boolean | null;
     /**
-     * Require this user to submit content through editorial workflow before publication.
+     * Read audit events for otherwise authorized features.
      */
-    require_editorial_workflow?: boolean | null;
+    auditLog?: boolean | null;
     /**
-     * Allow publishing access for Pages.
+     * Edit and publish identity, contact, address, legal, and social settings.
      */
-    publish_pages?: boolean | null;
+    siteIdentity?: boolean | null;
     /**
-     * Allow publishing access for Articles.
+     * Edit and publish theme and color-mode settings.
      */
-    publish_articles?: boolean | null;
+    appearance?: boolean | null;
     /**
-     * Allow publishing access for News & Events.
+     * Edit and publish site metadata, robots, and verification settings.
      */
-    publish_news_events?: boolean | null;
+    seoMetadata?: boolean | null;
     /**
-     * Allow publishing access for Reviews.
+     * Edit and publish GTM or GA4 settings.
      */
-    publish_reviews?: boolean | null;
+    analyticsTracking?: boolean | null;
     /**
-     * Allow publishing access for System Pages.
+     * Edit and publish consent visibility, copy, links, and presentation.
      */
-    publish_system_pages?: boolean | null;
+    cookieConsent?: boolean | null;
+    /**
+     * Select homepage, Header, Footer, and configure the announcement.
+     */
+    layoutDefaults?: boolean | null;
+    /**
+     * Edit and publish suggested-search settings.
+     */
+    searchSettings?: boolean | null;
+    /**
+     * Configure normal, maintenance, and coming-soon modes.
+     */
+    maintenanceModes?: boolean | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -6999,7 +7009,7 @@ export interface Article {
   featuredImage?: (string | null) | Media;
   authorName: string;
   /**
-   * Optional. Override the visible publication date without changing workflow metadata.
+   * Optional. Override the visible publication date without changing publication metadata.
    */
   publishedAtOverride?: string | null;
   /**
@@ -7037,15 +7047,13 @@ export interface Article {
   ogTitle?: string | null;
   ogImage?: (string | null) | Media;
   ogDescription?: string | null;
-  workflowState?: ('draft' | 'in_review' | 'scheduled' | 'published' | 'reverted') | null;
-  scheduledPublishAt?: string | null;
   /**
-   * Short operator-facing note explaining why this change exists.
+   * Set automatically when this document is published.
    */
-  changeSummary?: string | null;
-  lastReviewedAt?: string | null;
-  lastReviewedBy?: (string | null) | User;
   publishedAt?: string | null;
+  /**
+   * Account that most recently published this document.
+   */
   publishedBy?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
@@ -7256,15 +7264,13 @@ export interface NewsEvent {
   ogTitle?: string | null;
   ogImage?: (string | null) | Media;
   ogDescription?: string | null;
-  workflowState?: ('draft' | 'in_review' | 'scheduled' | 'published' | 'reverted') | null;
-  scheduledPublishAt?: string | null;
   /**
-   * Short operator-facing note explaining why this change exists.
+   * Set automatically when this document is published.
    */
-  changeSummary?: string | null;
-  lastReviewedAt?: string | null;
-  lastReviewedBy?: (string | null) | User;
   publishedAt?: string | null;
+  /**
+   * Account that most recently published this document.
+   */
   publishedBy?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
@@ -7272,7 +7278,7 @@ export interface NewsEvent {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Moderated public reviews with structured rating, reviewer, taxonomy, SEO, and workflow fields.
+ * Staff-authored reviews and moderated public review submissions.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "reviews".
@@ -7318,10 +7324,6 @@ export interface Review {
    */
   isGenuineExperience: boolean;
   featuredImage?: (string | null) | Media;
-  /**
-   * Internal notes for moderation, rewriting decisions, or publication checks.
-   */
-  internalModerationNotes?: string | null;
   metaTitle?: string | null;
   metaDescription?: string | null;
   /**
@@ -7339,19 +7341,27 @@ export interface Review {
   ogTitle?: string | null;
   ogImage?: (string | null) | Media;
   ogDescription?: string | null;
-  workflowState?: ('draft' | 'in_review' | 'scheduled' | 'published' | 'reverted') | null;
-  scheduledPublishAt?: string | null;
   /**
-   * Short operator-facing note explaining why this change exists.
+   * Approving publishes the Review. Rejecting keeps it as a draft.
    */
-  changeSummary?: string | null;
+  moderationStatus?: ('pending' | 'approved' | 'rejected') | null;
   /**
-   * Immutable link back to the public intake submission that generated this review.
+   * Immutable public submission that created this Review.
    */
   sourceSubmission?: (string | null) | FormSubmission;
-  lastReviewedAt?: string | null;
-  lastReviewedBy?: (string | null) | User;
+  /**
+   * Internal context for the moderation decision.
+   */
+  internalModerationNotes?: string | null;
+  moderatedAt?: string | null;
+  moderatedBy?: (string | null) | User;
+  /**
+   * Set automatically when this document is published.
+   */
   publishedAt?: string | null;
+  /**
+   * Account that most recently published this document.
+   */
   publishedBy?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
@@ -7359,7 +7369,7 @@ export interface Review {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Stored form submissions. Submission payload fields stay read-only after creation, while operators can update workflow status.
+ * Stored form submissions. Submission payload fields stay read-only after creation, while operators can update operational status.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-submissions".
@@ -7745,12 +7755,13 @@ export interface SystemPage {
   ogTitle?: string | null;
   ogImage?: (string | null) | Media;
   ogDescription?: string | null;
-  workflowState?: ('draft' | 'in_review' | 'scheduled' | 'published' | 'reverted') | null;
-  scheduledPublishAt?: string | null;
-  changeSummary?: string | null;
-  lastReviewedAt?: string | null;
-  lastReviewedBy?: (string | null) | User;
+  /**
+   * Set automatically when this document is published.
+   */
   publishedAt?: string | null;
+  /**
+   * Account that most recently published this document.
+   */
   publishedBy?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
@@ -7865,6 +7876,39 @@ export interface SystemComingSoonBlock {
 export interface WorkQueue {
   id: string;
   /**
+   * Feature that owns the source record and controls queue visibility.
+   */
+  feature:
+    | 'pages'
+    | 'articles'
+    | 'reviews'
+    | 'reusableSections'
+    | 'newsEvents'
+    | 'newsEventClassifications'
+    | 'newsEventsDetailTemplate'
+    | 'topics'
+    | 'tags'
+    | 'navigationLinks'
+    | 'redirects'
+    | 'headers'
+    | 'footers'
+    | 'officeLocations'
+    | 'systemPages'
+    | 'media'
+    | 'galleryAlbums'
+    | 'forms'
+    | 'formSubmissions'
+    | 'actionQueue'
+    | 'auditLog'
+    | 'siteIdentity'
+    | 'appearance'
+    | 'seoMetadata'
+    | 'analyticsTracking'
+    | 'cookieConsent'
+    | 'layoutDefaults'
+    | 'searchSettings'
+    | 'maintenanceModes';
+  /**
    * System-generated queue summary. This reflects the current source condition.
    */
   summary: string;
@@ -7957,11 +8001,48 @@ export interface WorkQueue {
  */
 export interface OperationalAuditEvent {
   id: string;
+  /**
+   * Feature associated with this event. Unmapped legacy events are Admin-only.
+   */
+  feature?:
+    | (
+        | 'pages'
+        | 'articles'
+        | 'reviews'
+        | 'reusableSections'
+        | 'newsEvents'
+        | 'newsEventClassifications'
+        | 'newsEventsDetailTemplate'
+        | 'topics'
+        | 'tags'
+        | 'navigationLinks'
+        | 'redirects'
+        | 'headers'
+        | 'footers'
+        | 'officeLocations'
+        | 'systemPages'
+        | 'media'
+        | 'galleryAlbums'
+        | 'forms'
+        | 'formSubmissions'
+        | 'actionQueue'
+        | 'auditLog'
+        | 'siteIdentity'
+        | 'appearance'
+        | 'seoMetadata'
+        | 'analyticsTracking'
+        | 'cookieConsent'
+        | 'layoutDefaults'
+        | 'searchSettings'
+        | 'maintenanceModes'
+      )
+    | null;
   entityType: string;
   entityId: string;
   entityTitle: string;
   action: string;
   summary: string;
+  actorId?: string | null;
   actorEmail?: string | null;
   actorRole?: string | null;
   occurredAt: string;
@@ -8198,11 +8279,6 @@ export interface PagesSelect<T extends boolean = true> {
   ogDescription?: T;
   publicUrlPreview?: T;
   parent?: T;
-  workflowState?: T;
-  scheduledPublishAt?: T;
-  changeSummary?: T;
-  lastReviewedAt?: T;
-  lastReviewedBy?: T;
   publishedAt?: T;
   publishedBy?: T;
   updatedAt?: T;
@@ -12188,11 +12264,6 @@ export interface ArticlesSelect<T extends boolean = true> {
   ogTitle?: T;
   ogImage?: T;
   ogDescription?: T;
-  workflowState?: T;
-  scheduledPublishAt?: T;
-  changeSummary?: T;
-  lastReviewedAt?: T;
-  lastReviewedBy?: T;
   publishedAt?: T;
   publishedBy?: T;
   updatedAt?: T;
@@ -12248,11 +12319,6 @@ export interface NewsEventsSelect<T extends boolean = true> {
   ogTitle?: T;
   ogImage?: T;
   ogDescription?: T;
-  workflowState?: T;
-  scheduledPublishAt?: T;
-  changeSummary?: T;
-  lastReviewedAt?: T;
-  lastReviewedBy?: T;
   publishedAt?: T;
   publishedBy?: T;
   updatedAt?: T;
@@ -12297,7 +12363,6 @@ export interface ReviewsSelect<T extends boolean = true> {
   displayName?: T;
   isGenuineExperience?: T;
   featuredImage?: T;
-  internalModerationNotes?: T;
   metaTitle?: T;
   metaDescription?: T;
   canonicalURL?: T;
@@ -12306,12 +12371,11 @@ export interface ReviewsSelect<T extends boolean = true> {
   ogTitle?: T;
   ogImage?: T;
   ogDescription?: T;
-  workflowState?: T;
-  scheduledPublishAt?: T;
-  changeSummary?: T;
+  moderationStatus?: T;
   sourceSubmission?: T;
-  lastReviewedAt?: T;
-  lastReviewedBy?: T;
+  internalModerationNotes?: T;
+  moderatedAt?: T;
+  moderatedBy?: T;
   publishedAt?: T;
   publishedBy?: T;
   updatedAt?: T;
@@ -12713,11 +12777,6 @@ export interface SystemPagesSelect<T extends boolean = true> {
   ogTitle?: T;
   ogImage?: T;
   ogDescription?: T;
-  workflowState?: T;
-  scheduledPublishAt?: T;
-  changeSummary?: T;
-  lastReviewedAt?: T;
-  lastReviewedBy?: T;
   publishedAt?: T;
   publishedBy?: T;
   updatedAt?: T;
@@ -12957,6 +13016,7 @@ export interface FormSubmissionsSelect<T extends boolean = true> {
  * via the `definition` "work-queue_select".
  */
 export interface WorkQueueSelect<T extends boolean = true> {
+  feature?: T;
   summary?: T;
   details?: T;
   queueType?: T;
@@ -12987,11 +13047,13 @@ export interface WorkQueueSelect<T extends boolean = true> {
  * via the `definition` "operational-audit-events_select".
  */
 export interface OperationalAuditEventsSelect<T extends boolean = true> {
+  feature?: T;
   entityType?: T;
   entityId?: T;
   entityTitle?: T;
   action?: T;
   summary?: T;
+  actorId?: T;
   actorEmail?: T;
   actorRole?: T;
   occurredAt?: T;
@@ -13005,35 +13067,38 @@ export interface OperationalAuditEventsSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   role?: T;
-  capabilities?:
+  features?:
     | T
     | {
-        manage_pages?: T;
-        manage_articles?: T;
-        manage_news_events?: T;
-        manage_reviews?: T;
-        manage_media?: T;
-        manage_taxonomy?: T;
-        manage_navigation?: T;
-        manage_redirects?: T;
-        manage_headers?: T;
-        manage_footers?: T;
-        manage_system_pages?: T;
-        manage_forms?: T;
-        manage_form_submissions?: T;
-        manage_page_settings?: T;
-        manage_site_settings?: T;
-        manage_theme_settings?: T;
-        manage_seo_settings?: T;
-        manage_system_modes?: T;
-        manage_work_queue?: T;
-        view_operational_audit?: T;
-        require_editorial_workflow?: T;
-        publish_pages?: T;
-        publish_articles?: T;
-        publish_news_events?: T;
-        publish_reviews?: T;
-        publish_system_pages?: T;
+        pages?: T;
+        articles?: T;
+        reviews?: T;
+        reusableSections?: T;
+        newsEvents?: T;
+        newsEventClassifications?: T;
+        newsEventsDetailTemplate?: T;
+        topics?: T;
+        tags?: T;
+        navigationLinks?: T;
+        redirects?: T;
+        headers?: T;
+        footers?: T;
+        officeLocations?: T;
+        systemPages?: T;
+        media?: T;
+        galleryAlbums?: T;
+        forms?: T;
+        formSubmissions?: T;
+        actionQueue?: T;
+        auditLog?: T;
+        siteIdentity?: T;
+        appearance?: T;
+        seoMetadata?: T;
+        analyticsTracking?: T;
+        cookieConsent?: T;
+        layoutDefaults?: T;
+        searchSettings?: T;
+        maintenanceModes?: T;
       };
   updatedAt?: T;
   createdAt?: T;

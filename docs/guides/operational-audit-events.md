@@ -4,14 +4,14 @@
 
 `Audit Log` is a read-only history of selected governed CMS operations. It records the actor, action, entity, and a short operator-facing summary; it is not a complete database audit trail.
 
-In North Valley Medical College, this is the section to check when you need to understand who moved an article to review, who updated a homepage-related default, or who changed a work-queue item during an operational incident.
+In North Valley Medical College, this is the section to check when you need to understand who published an article, who updated a homepage-related default, or who changed a work-queue item during an operational incident.
 
 ## When To Use It
 
 Use `Audit Log` when you need to:
 
 - understand who changed an important record
-- review workflow movement on pages, articles, reviews, or system pages
+- review publication and moderation decisions on pages, articles, reviews, or system pages
 - inspect changes to site-wide defaults or system modes
 - understand queue activity after assignment or status changes
 
@@ -32,7 +32,9 @@ The current implementation captures selected events for:
 - `Layout Defaults`
 - `Maintenance & Modes`
 - `Action Queue` updates such as status, assignee, priority, due date, notes, and resolution changes
-- Media deletion and missing/restored storage transitions
+- permanent deletion across grantable collections
+- user creation, access changes, trash, restore, and permanent deletion (Admin-only events)
+- Media missing/restored storage transitions
 
 This section matters when a live site changed unexpectedly and the team needs a fast, operator-friendly explanation of what happened.
 
@@ -41,7 +43,7 @@ This section matters when a live site changed unexpectedly and the team needs a 
 Investigate why a homepage-related publishing decision changed at North Valley Medical College:
 
 1. Open `Audit Log` in `Administration`.
-2. Search by a useful summary keyword such as `homepage`, `article`, or `workflow`.
+2. Search by a useful summary keyword such as `homepage`, `article`, or `publication`.
 3. Review the latest events at the top of the list.
 4. Check `entityType` to understand whether the event came from a page, article, review, system page, or work queue.
 5. Review `actorEmail` and `actorRole` to see who made the change.
@@ -58,6 +60,7 @@ Expected website result:
 - search by summary and entity type rather than scrolling blindly
 - pair audit review with the relevant source collection before making more changes
 - treat audit summaries as operational clues, not as a replacement for content review
+- expect deletion events to identify records by feature and ID without copying deleted content or personal data
 
 ## Common Mistakes And Recovery
 

@@ -1,391 +1,128 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
+import { Articles } from '@/collections/Articles'
+import { NewsEvents } from '@/collections/NewsEvents'
+import { Pages } from '@/collections/Pages'
+import { Reviews } from '@/collections/Reviews'
+import { SystemPages } from '@/collections/SystemPages'
+import {
+  enforcePublicationPolicy,
+  PERMISSIONS_MIGRATION_CONTEXT,
+} from '@/hooks/enforcePublicationPolicy'
 
-const createReq = (
-  user?: {
-    id?: number
-    role?: string
-    capabilities?: Record<string, boolean>
+const createReq = (user: unknown, blockers: unknown[] = []) => ({
+  payload: {
+    find: vi.fn(async () => ({ docs: blockers })),
   },
-  payload?: {
-    find?: (...args: unknown[]) => Promise<{ docs: Array<{ summary?: string | null }> }>
-  },
-) =>
-  ({
-    payload,
-    user,
-  }) as never
+  user,
+})
 
-describe('editorial workflow guardrails', () => {
-  it('lets admins publish directly without manually moving workflow state', async () => {
-    const find = vi.fn(async () => ({
-      docs: [
-        {
-          summary: 'Homepage is awaiting editorial approval.',
-        },
-      ],
-    }))
-    const hook = enforceEditorialWorkflow('publish_pages', 'pages')
+const runPolicy = async ({
+  blockers = [],
+  context,
+  data,
+  originalDoc = { _status: 'draft', id: 11 },
+  user,
+}: {
+  blockers?: unknown[]
+  context?: Record<string, unknown>
+  data: Record<string, unknown>
+  originalDoc?: Record<string, unknown>
+  user: unknown
+}) =>
+  enforcePublicationPolicy(
+    'pages',
+    'pages',
+  )({
+    context,
+    data,
+    originalDoc,
+    operation: 'update',
+    req: createReq(user, blockers),
+  } as never)
 
-    await expect(
-      hook({
-        data: {
-          _status: 'published',
-          id: 7,
-          workflowState: 'draft',
-        },
-        operation: 'update',
-        originalDoc: {
-          id: 7,
-          _status: 'draft',
-          workflowState: 'in_review',
-        },
-        req: createReq(
-          {
-            id: 1,
-            role: 'admin',
-          },
-          {
-            find,
-          },
-        ),
-      } as never),
-    ).resolves.toEqual(
-      expect.objectContaining({
-        _status: 'published',
-        workflowState: 'published',
-        publishedBy: 1,
-      }),
-    )
-
-    expect(find).not.toHaveBeenCalled()
-  })
-
-  it('lets non-workflow users publish directly when they have publish capability', async () => {
-    const find = vi.fn(async () => ({
-      docs: [
-        {
-          summary: 'Homepage is awaiting editorial approval.',
-        },
-      ],
-    }))
-    const hook = enforceEditorialWorkflow('publish_pages', 'pages')
-
-    await expect(
-      hook({
-        data: {
-          _status: 'published',
-          id: 7,
-          workflowState: 'draft',
-        },
-        operation: 'update',
-        originalDoc: {
-          id: 7,
-          _status: 'draft',
-          workflowState: 'in_review',
-        },
-        req: createReq(
-          {
-            id: 2,
-            role: 'siteManager',
-            capabilities: {
-              publish_pages: true,
-            },
-          },
-          {
-            find,
-          },
-        ),
-      } as never),
-    ).resolves.toEqual(
-      expect.objectContaining({
-        _status: 'published',
-        workflowState: 'published',
-        publishedBy: 2,
-      }),
-    )
-
-    expect(find).not.toHaveBeenCalled()
-  })
-
-  it('prevents editors from publishing directly', async () => {
-    const hook = enforceEditorialWorkflow('publish_pages')
-
-    await expect(
-      hook({
-        data: {
-          workflowState: 'published',
-        },
-        operation: 'update',
-        originalDoc: {
-          _status: 'draft',
-          workflowState: 'draft',
-        },
-        req: createReq({
-          id: 11,
-          role: 'contentManager',
-          capabilities: {
-            manage_pages: true,
-            require_editorial_workflow: true,
-          },
-        }),
-      } as never),
-    ).rejects.toThrow('Only publishers and admins can move content to published.')
-  })
-
-  it('allows editors to send content to review', async () => {
-    const hook = enforceEditorialWorkflow('publish_pages')
-
-    await expect(
-      hook({
-        data: {
-          workflowState: 'in_review',
-        },
-        operation: 'update',
-        originalDoc: {
-          _status: 'draft',
-          workflowState: 'draft',
-        },
-        req: createReq({
-          id: 11,
-          role: 'contentManager',
-          capabilities: {
-            manage_pages: true,
-            require_editorial_workflow: true,
-          },
-        }),
-      } as never),
-    ).resolves.toEqual(
-      expect.objectContaining({
-        _status: 'draft',
-        workflowState: 'in_review',
-        lastReviewedAt: expect.any(String),
-        lastReviewedBy: 11,
-      }),
-    )
-  })
-
-  it('requires a schedule date for scheduled content', async () => {
-    const hook = enforceEditorialWorkflow('publish_pages')
-
-    await expect(
-      hook({
-        data: {
-          workflowState: 'scheduled',
-        },
-        operation: 'update',
-        originalDoc: {
-          _status: 'draft',
-          workflowState: 'in_review',
-        },
-        req: createReq({
-          id: 2,
-          role: 'siteManager',
-          capabilities: {
-            publish_pages: true,
-            require_editorial_workflow: true,
-          },
-        }),
-      } as never),
-    ).rejects.toThrow('Scheduled content requires scheduledPublishAt.')
-  })
-
-  it('allows scheduling even when blocking queue items exist', async () => {
-    const find = vi.fn(async () => ({
-      docs: [
-        {
-          summary: 'Homepage is awaiting editorial approval.',
-        },
-      ],
-    }))
-    const hook = enforceEditorialWorkflow('publish_pages', 'pages')
-
-    await expect(
-      hook({
-        data: {
-          id: 7,
-          workflowState: 'scheduled',
-          scheduledPublishAt: '2026-07-10T08:00:00.000Z',
-        },
-        operation: 'update',
-        originalDoc: {
-          id: 7,
-          _status: 'draft',
-          workflowState: 'in_review',
-        },
-        req: createReq(
-          {
-            id: 2,
-            role: 'siteManager',
-            capabilities: {
-              publish_pages: true,
-              require_editorial_workflow: true,
-            },
-          },
-          {
-            find,
-          },
-        ),
-      } as never),
-    ).resolves.toEqual(
-      expect.objectContaining({
-        _status: 'draft',
-        workflowState: 'scheduled',
-        scheduledPublishAt: '2026-07-10T08:00:00.000Z',
-      }),
-    )
-
-    expect(find).not.toHaveBeenCalled()
-  })
-
-  it('blocks publish when a blocking queue item exists', async () => {
-    const find = vi.fn(async () => ({
-      docs: [
-        {
-          summary: 'Homepage is awaiting editorial approval.',
-        },
-      ],
-    }))
-    const hook = enforceEditorialWorkflow('publish_pages', 'pages')
-
-    await expect(
-      hook({
-        data: {
-          id: 7,
-          workflowState: 'published',
-        },
-        operation: 'update',
-        originalDoc: {
-          id: 7,
-          _status: 'draft',
-          workflowState: 'in_review',
-        },
-        req: createReq(
-          {
-            id: 2,
-            role: 'siteManager',
-            capabilities: {
-              publish_pages: true,
-              require_editorial_workflow: true,
-            },
-          },
-          {
-            find,
-          },
-        ),
-      } as never),
-    ).rejects.toThrow('Cannot publish because Work Queue still has a blocking item')
-  })
-
-  it('records publish metadata for publishers', async () => {
-    const find = vi.fn(async () => ({
-      docs: [],
-    }))
-    const hook = enforceEditorialWorkflow('publish_pages', 'pages')
-
-    await expect(
-      hook({
-        data: {
-          id: 7,
-          workflowState: 'published',
-          changeSummary: 'Approved for launch.',
-        },
-        operation: 'update',
-        originalDoc: {
-          id: 7,
-          _status: 'draft',
-          workflowState: 'in_review',
-        },
-        req: createReq(
-          {
-            id: 2,
-            role: 'siteManager',
-            capabilities: {
-              publish_pages: true,
-              require_editorial_workflow: true,
-            },
-          },
-          {
-            find,
-          },
-        ),
-      } as never),
-    ).resolves.toEqual(
-      expect.objectContaining({
-        _status: 'published',
-        workflowState: 'published',
-        publishedAt: expect.any(String),
-        publishedBy: 2,
-      }),
-    )
-
-    expect(find).toHaveBeenCalledTimes(1)
-  })
-
-  it('allows an already-normalized published Page only for the exact legal migration context', async () => {
-    const find = vi.fn(async () => ({ docs: [] }))
-    const hook = enforceEditorialWorkflow('publish_pages', 'pages')
-
-    await expect(
-      hook({
-        context: {
-          systemProvisioning: 'legal-pages-migration',
-        },
-        data: {
-          _status: 'published',
-          changeSummary: 'Provisioned the website Privacy Policy.',
-          publishedAt: '2026-08-31T00:00:00.000Z',
-          workflowState: 'published',
-        },
-        operation: 'create',
-        req: createReq(undefined, { find }),
-      } as never),
-    ).resolves.toEqual({
-      _status: 'published',
-      changeSummary: 'Provisioned the website Privacy Policy.',
-      publishedAt: '2026-08-31T00:00:00.000Z',
-      workflowState: 'published',
+describe('feature-owned publication policy', () => {
+  it('lets an Admin publish and stamps publication metadata', async () => {
+    const result = await runPolicy({
+      data: { _status: 'published' },
+      user: { id: 7, role: 'admin' },
     })
 
-    expect(find).not.toHaveBeenCalled()
+    expect(result).toMatchObject({ _status: 'published', publishedBy: 7 })
+    expect(result.publishedAt).toEqual(expect.any(String))
   })
 
-  it.each([
-    ['missing context', undefined],
-    ['boolean context', { systemProvisioning: true }],
-    ['different context', { systemProvisioning: 'another-migration' }],
-  ])('keeps ordinary publish enforcement for %s', async (_label, context) => {
-    const hook = enforceEditorialWorkflow('publish_pages', 'pages')
+  it('lets a Site Manager publish only with the owning feature', async () => {
+    await expect(
+      runPolicy({
+        data: { _status: 'published' },
+        user: { features: { pages: true }, id: 'manager-1', role: 'siteManager' },
+      }),
+    ).resolves.toMatchObject({ _status: 'published', publishedBy: 'manager-1' })
 
     await expect(
-      hook({
-        context,
-        data: {
-          _status: 'published',
-          workflowState: 'published',
-        },
-        operation: 'create',
-        req: createReq(),
-      } as never),
-    ).rejects.toThrow('Only publishers and admins can move content to published.')
+      runPolicy({
+        data: { _status: 'published' },
+        user: { features: { articles: true }, id: 'manager-2', role: 'siteManager' },
+      }),
+    ).rejects.toMatchObject({ status: 403 })
   })
 
-  it('does not bypass workflow for a mismatched legal migration payload', async () => {
-    const hook = enforceEditorialWorkflow('publish_pages', 'pages')
+  it('blocks publication while an unresolved publish issue exists', async () => {
+    await expect(
+      runPolicy({
+        blockers: [{ summary: 'Fix missing metadata' }],
+        data: { _status: 'published' },
+        user: { features: { pages: true }, id: 'manager-1', role: 'siteManager' },
+      }),
+    ).rejects.toThrow('Fix missing metadata')
+  })
+
+  it('does not require a publish check for drafts or already-published updates', async () => {
+    await expect(runPolicy({ data: { _status: 'draft' }, user: null })).resolves.toEqual({
+      _status: 'draft',
+    })
+    await expect(
+      runPolicy({
+        data: { title: 'Updated title' },
+        originalDoc: { _status: 'published', id: 11 },
+        user: { features: { pages: true }, role: 'siteManager' },
+      }),
+    ).resolves.toEqual({ title: 'Updated title' })
+  })
+
+  it('accepts only the named migration bypass for trusted data conversion', async () => {
+    await expect(
+      runPolicy({
+        context: { permissionsMigration: PERMISSIONS_MIGRATION_CONTEXT },
+        data: { _status: 'published' },
+        user: null,
+      }),
+    ).resolves.toMatchObject({ _status: 'published' })
 
     await expect(
-      hook({
-        context: {
-          systemProvisioning: 'legal-pages-migration',
-        },
-        data: {
-          _status: 'published',
-          workflowState: 'draft',
-        },
-        operation: 'create',
-        req: createReq(),
-      } as never),
-    ).rejects.toThrow('Only publishers and admins can move content to published.')
+      runPolicy({
+        context: { permissionsMigration: 'lookalike' },
+        data: { _status: 'published' },
+        user: null,
+      }),
+    ).rejects.toMatchObject({ status: 403 })
+  })
+
+  it('removes the generic workflow fields from every governed collection', () => {
+    for (const collection of [Pages, Articles, NewsEvents, Reviews, SystemPages]) {
+      const fields = JSON.stringify(collection.fields)
+      for (const retired of [
+        'workflowState',
+        'scheduledPublishAt',
+        'changeSummary',
+        'lastReviewedAt',
+        'lastReviewedBy',
+      ]) {
+        expect(fields).not.toContain(`\"name\":\"${retired}\"`)
+      }
+      expect(fields).toContain('"name":"publishedAt"')
+      expect(fields).toContain('"name":"publishedBy"')
+    }
   })
 })

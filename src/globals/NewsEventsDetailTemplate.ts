@@ -1,14 +1,8 @@
 import type { BlocksFieldValidation, GlobalConfig } from 'payload'
 
-import {
-  allowPublicReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+import { allowPublicReadOrFeature, hideUnlessFeature, requireFeature } from '@/access/featureAccess'
 import { newsEventsDetailBuilderBlocks } from '@/blocks/blockCatalog'
 import { revalidateGlobalsCacheForGlobal } from '@/hooks/revalidateCmsContent'
-
-const capabilities = ['manage_news_events', 'manage_page_settings'] as const
 
 type LayoutBlock = { blockType?: string | null }
 
@@ -29,12 +23,12 @@ export const NewsEventsDetailTemplate: GlobalConfig = {
   admin: {
     group: 'News & Events',
     description: 'Build the shared page used by every News & Events detail entry.',
-    hidden: hideFromUsersWithoutCapability([...capabilities]),
+    hidden: hideUnlessFeature('newsEventsDetailTemplate'),
   },
   access: {
-    read: allowPublicReadOrCapability([...capabilities]),
-    readVersions: requireCapability([...capabilities]),
-    update: requireCapability([...capabilities]),
+    read: allowPublicReadOrFeature('newsEventsDetailTemplate'),
+    readVersions: requireFeature('newsEventsDetailTemplate'),
+    update: requireFeature('newsEventsDetailTemplate'),
   },
   versions: { drafts: true },
   hooks: { afterChange: [revalidateGlobalsCacheForGlobal] },

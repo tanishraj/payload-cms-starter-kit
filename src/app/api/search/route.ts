@@ -68,10 +68,7 @@ export async function GET(request: Request) {
 
   const payload = await getPayload({ config: configPromise })
   const textLike = { like: query }
-  const publishedFilter: Where[] = [
-    { _status: { equals: 'published' } },
-    { workflowState: { equals: 'published' } },
-  ]
+  const publishedFilter: Where[] = [{ _status: { equals: 'published' } }]
 
   const [pagesResult, articlesResult, newsEventsResult, reviewsResult] = await Promise.allSettled([
     payload.find({

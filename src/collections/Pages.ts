@@ -3,19 +3,18 @@ import { type CollectionConfig, type RelationshipFieldSingleValidation } from 'p
 import { pageBuilderBlocks } from '@/blocks/blockCatalog'
 import type { Page } from '@/payload-types'
 import {
-  allowPublishedReadOrCapability,
-  canShowEditorialWorkflow,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+  allowPublishedReadOrFeature,
+  deleteFeatureOrAdmin,
+  hideUnlessFeature,
+  requireFeature,
+} from '@/access/featureAccess'
 import { buildSEOFields } from '@/fields/buildSEOFields'
+import { publicationMetadataFields } from '@/fields/publicationMetadataFields'
 import { createPageFromRecipeEndpoint } from '@/endpoints/createPageFromRecipe'
 import { projectSlugField } from '@/fields/projectSlugField'
-import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
+import { enforcePublicationPolicy } from '@/hooks/enforcePublicationPolicy'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
-import { createWorkflowQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
-import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 
 import { createRedirectsForChangedPagePath } from '../hooks/createRedirectsForChangedPagePath'
 import { populatePageUrlPreview } from '../hooks/populatePageUrlPreview'
@@ -24,10 +23,7 @@ import {
   syncNavigationLinkAfterChange,
   syncNavigationLinkAfterDelete,
 } from '../hooks/syncNavigationLinkForPage'
-import {
-  revalidateDeletedPageCache,
-  revalidatePagesCache,
-} from '../hooks/revalidateCmsContent'
+import { revalidateDeletedPageCache, revalidatePagesCache } from '../hooks/revalidateCmsContent'
 
 const extractPageID = (
   value: string | number | Page | null | undefined,
@@ -120,9 +116,9 @@ export const Pages: CollectionConfig = {
       },
     },
     group: 'Content',
-    hidden: hideFromUsersWithoutCapability('manage_pages'),
+    hidden: hideUnlessFeature('pages'),
     useAsTitle: 'title',
-    defaultColumns: ['title', 'slug', '_status', 'workflowState', 'updatedAt'],
+    defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
     description:
       'Flexible website pages with reusable layout blocks, SEO controls, and publishing settings.',
     listSearchableFields: ['title', 'slug'],
@@ -140,11 +136,11 @@ export const Pages: CollectionConfig = {
     },
   },
   access: {
-    create: requireCapability('manage_pages'),
-    delete: requireCapability('manage_pages'),
-    read: allowPublishedReadOrCapability('manage_pages'),
-    readVersions: requireCapability('manage_pages'),
-    update: requireCapability('manage_pages'),
+    create: requireFeature('pages'),
+    delete: deleteFeatureOrAdmin('pages'),
+    read: allowPublishedReadOrFeature('pages'),
+    readVersions: requireFeature('pages'),
+    update: requireFeature('pages'),
   },
   endpoints: [createPageFromRecipeEndpoint],
   hooks: {
@@ -153,37 +149,18 @@ export const Pages: CollectionConfig = {
       revalidatePagesCache,
       syncNavigationLinkAfterChange,
       createRedirectsForChangedPagePath,
-      createWorkflowQueueHook({
-        sourceAdminPathPrefix: '/admin/collections/pages',
-        sourceCollection: 'pages',
-        states: [
-          {
-            queueType: 'approval',
-            reasonCode: 'page-review-required',
-            summary: (_doc, title) => `${title} is awaiting editorial approval.`,
-            workflowState: 'in_review',
-          },
-          {
-            priority: () => 'high',
-            queueType: 'approval',
-            reasonCode: 'page-scheduled-publication',
-            summary: (_doc, title) => `${title} is scheduled and requires publication oversight.`,
-            workflowState: 'scheduled',
-          },
-        ],
-        titleField: 'title',
-      }),
       createCollectionAuditHook({
         entityType: 'page',
+        feature: 'pages',
         getSummary: ({ doc, previousDoc }) =>
-          `Workflow moved from ${previousDoc?.workflowState ?? 'draft'} to ${doc.workflowState}.`,
+          `Publication status changed from ${previousDoc?._status ?? 'draft'} to ${doc._status ?? 'draft'}.`,
         titleField: 'title',
       }),
     ],
     afterDelete: [syncNavigationLinkAfterDelete, revalidateDeletedPageCache],
     beforeChange: [
       validateSEOContract(),
-      enforceEditorialWorkflow('publish_pages', 'pages'),
+      enforcePublicationPolicy('pages', 'pages'),
       preventReferencedPageUnpublish,
     ],
   },
@@ -258,79 +235,8 @@ export const Pages: CollectionConfig = {
             },
           ],
         },
-        {
-          label: 'Workflow',
-          fields: [
-            {
-              name: 'workflowState',
-              type: 'select',
-              defaultValue: 'draft',
-              options: [...editorialWorkflowStateOptions],
-              required: true,
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-              },
-            },
-            {
-              name: 'scheduledPublishAt',
-              type: 'date',
-              admin: {
-                condition: (_data, siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never) &&
-                  siblingData?.workflowState === 'scheduled',
-              },
-            },
-            {
-              name: 'changeSummary',
-              type: 'textarea',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                description: 'Short operator-facing note explaining why this change exists.',
-              },
-            },
-            {
-              name: 'lastReviewedAt',
-              type: 'date',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-            {
-              name: 'lastReviewedBy',
-              type: 'relationship',
-              relationTo: 'users',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-            {
-              name: 'publishedAt',
-              type: 'date',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-            {
-              name: 'publishedBy',
-              type: 'relationship',
-              relationTo: 'users',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-          ],
-        },
       ],
     },
+    ...publicationMetadataFields('pages'),
   ],
 }

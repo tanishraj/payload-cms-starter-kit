@@ -1,10 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
-import {
-  allowPublicReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+import { allowPublicReadOrFeature, hideUnlessFeature, requireFeature } from '@/access/featureAccess'
 import { defaultWebsiteTheme, websiteThemeOptions } from '@/lib/themes/websiteThemes'
 import { revalidateGlobalsCacheForGlobal } from '@/hooks/revalidateCmsContent'
 
@@ -14,12 +10,12 @@ export const ThemeSettings: GlobalConfig = {
   admin: {
     group: 'Settings',
     description: 'Control the frontend theme preset and light or dark mode behavior.',
-    hidden: hideFromUsersWithoutCapability('manage_theme_settings'),
+    hidden: hideUnlessFeature('appearance'),
   },
   access: {
-    read: allowPublicReadOrCapability('manage_theme_settings'),
-    readVersions: requireCapability('manage_theme_settings'),
-    update: requireCapability('manage_theme_settings'),
+    read: allowPublicReadOrFeature('appearance'),
+    readVersions: requireFeature('appearance'),
+    update: requireFeature('appearance'),
   },
   versions: {
     drafts: true,

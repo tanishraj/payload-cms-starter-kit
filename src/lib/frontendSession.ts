@@ -27,8 +27,6 @@ export const formatCMSRoleLabel = (role?: string | null): string => {
       return 'Admin'
     case 'siteManager':
       return 'Site Manager'
-    case 'contentManager':
-      return 'Content Manager'
     default:
       return 'CMS User'
   }

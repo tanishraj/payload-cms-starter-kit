@@ -1,7 +1,7 @@
 import type { Endpoint, PayloadRequest } from 'payload'
 import { formatAdminURL } from 'payload/shared'
 
-import { hasAdminCapability } from '@/access/adminCapabilities'
+import { hasFeature } from '@/access/featureAccess'
 import { createPageRecipeLayout, isPageRecipeID } from '@/page-recipes/pageRecipes'
 import type { User } from '@/payload-types'
 
@@ -30,7 +30,7 @@ export const createPageFromRecipeEndpoint: Endpoint = {
     const user = req.user as User | null
 
     if (!user) return jsonMessage('Authentication is required.', 401)
-    if (!hasAdminCapability(user, 'manage_pages')) {
+    if (!hasFeature(user, 'pages')) {
       return jsonMessage('You do not have permission to create Pages.', 403)
     }
 
@@ -47,7 +47,6 @@ export const createPageFromRecipeEndpoint: Endpoint = {
         data: {
           layout: createPageRecipeLayout(body.recipe, title),
           title,
-          workflowState: 'draft',
         },
         draft: true,
         overrideAccess: false,

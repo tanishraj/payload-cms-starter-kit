@@ -162,7 +162,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     payload.find({
       collection: 'news-events',
       where: {
-        and: [{ _status: { equals: 'published' } }, { workflowState: { equals: 'published' } }],
+        _status: { equals: 'published' },
       },
       depth: 1,
       limit: 500,
@@ -217,7 +217,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         pathname: `/reviews/category/${category.slug}`,
       })
     }
-
   }
 
   for (const tag of allTags) {
@@ -228,7 +227,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if (usedTagIDs.has(tag.id)) {
       addEntry({ entries, lastModified: tag.updatedAt, pathname: `/articles/tag/${tag.slug}` })
     }
-
   }
 
   return [...entries.values()]

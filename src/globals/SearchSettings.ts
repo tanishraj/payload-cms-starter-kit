@@ -1,14 +1,7 @@
 import type { ArrayField, GlobalConfig } from 'payload'
 
-import {
-  allowPublicReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
-import {
-  MAX_SEARCH_SUGGESTIONS,
-  validateSuggestedSearchTerms,
-} from '@/lib/searchSuggestions'
+import { allowPublicReadOrFeature, hideUnlessFeature, requireFeature } from '@/access/featureAccess'
+import { MAX_SEARCH_SUGGESTIONS, validateSuggestedSearchTerms } from '@/lib/searchSuggestions'
 
 export const SearchSettings: GlobalConfig = {
   slug: 'search-settings',
@@ -16,12 +9,12 @@ export const SearchSettings: GlobalConfig = {
   admin: {
     group: 'Configuration',
     description: 'Suggested search terms displayed on the search page.',
-    hidden: hideFromUsersWithoutCapability('manage_site_settings'),
+    hidden: hideUnlessFeature('searchSettings'),
   },
   access: {
-    read: allowPublicReadOrCapability('manage_site_settings'),
-    readVersions: requireCapability('manage_site_settings'),
-    update: requireCapability('manage_site_settings'),
+    read: allowPublicReadOrFeature('searchSettings'),
+    readVersions: requireFeature('searchSettings'),
+    update: requireFeature('searchSettings'),
   },
   versions: {
     drafts: true,

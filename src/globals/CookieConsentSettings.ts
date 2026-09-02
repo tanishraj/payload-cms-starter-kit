@@ -1,10 +1,6 @@
 import type { GlobalConfig, SelectField, TextField } from 'payload'
 
-import {
-  allowPublicReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+import { allowPublicReadOrFeature, hideUnlessFeature, requireFeature } from '@/access/featureAccess'
 import { revalidateGlobalsCacheForGlobal } from '@/hooks/revalidateCmsContent'
 
 export const CookieConsentSettings: GlobalConfig = {
@@ -12,13 +8,13 @@ export const CookieConsentSettings: GlobalConfig = {
   label: 'Cookie Consent Banner',
   admin: {
     group: 'Settings',
-    hidden: hideFromUsersWithoutCapability('manage_site_settings'),
+    hidden: hideUnlessFeature('cookieConsent'),
     description: 'Configure the cookie consent banner shown to first-time visitors.',
   },
   access: {
-    read: allowPublicReadOrCapability('manage_site_settings'),
-    readVersions: requireCapability('manage_site_settings'),
-    update: requireCapability('manage_site_settings'),
+    read: allowPublicReadOrFeature('cookieConsent'),
+    readVersions: requireFeature('cookieConsent'),
+    update: requireFeature('cookieConsent'),
   },
   versions: {
     drafts: true,

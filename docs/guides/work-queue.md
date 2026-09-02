@@ -4,7 +4,7 @@
 
 `Action Queue` is the CMS operations inbox for work that still needs attention. It is not a separate ticketing system that staff must fill manually. The queue is created automatically from important CMS conditions and gives operators one place to triage, assign, and resolve ongoing work.
 
-In North Valley Medical College, this is where staff would see items such as an admissions submission needing follow-up, an article awaiting approval, a scheduled review that needs publication oversight, or a media asset missing governance details.
+In North Valley Medical College, this is where staff would see items such as an admissions submission needing follow-up, a submitted review awaiting moderation, unpublished structural changes, or a media asset missing governance details.
 
 ## When To Use It
 
@@ -24,8 +24,7 @@ The queue does not appear on the public website, but it is tightly connected to 
 
 The current system automatically creates or updates queue items from conditions such as:
 
-- `Pages`, `Articles`, `News & Events`, and `System Pages` entering `In Review` or `Scheduled`
-- `Reviews` needing moderation or scheduled publication oversight
+- submitted `Reviews` awaiting moderation
 - `Form Submissions` that are `New` or `In Review`
 - `Headers`, `Footers`, `Navigation Links`, and `Redirects` having unpublished draft changes
 - `Media` items with missing storage objects, missing titles, or incomplete critical replacement guidance

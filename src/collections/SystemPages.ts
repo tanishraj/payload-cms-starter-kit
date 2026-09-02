@@ -1,18 +1,17 @@
 import { type CollectionConfig } from 'payload'
 
 import {
-  allowPublishedReadOrCapability,
-  canShowEditorialWorkflow,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+  allowPublishedReadOrFeature,
+  deleteFeatureOrAdmin,
+  hideUnlessFeature,
+  requireFeature,
+} from '@/access/featureAccess'
 import { buildSEOFields } from '@/fields/buildSEOFields'
+import { publicationMetadataFields } from '@/fields/publicationMetadataFields'
 import { projectSlugField } from '@/fields/projectSlugField'
-import { enforceEditorialWorkflow } from '@/hooks/enforceEditorialWorkflow'
+import { enforcePublicationPolicy } from '@/hooks/enforcePublicationPolicy'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
-import { createWorkflowQueueHook } from '@/hooks/syncWorkflowStateToWorkQueue'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
-import { editorialWorkflowStateOptions } from '@/lib/editorialWorkflow'
 import { systemPageTypeOptions, type SystemPageType } from '@/lib/systemPageTypes'
 
 import { System404Block } from '../blocks/System404/config'
@@ -21,12 +20,14 @@ import { SystemMaintenanceBlock } from '../blocks/SystemMaintenance/config'
 import { migrateLegacySystemPageLinksBeforeChange } from '../hooks/migrateLegacyReusableLinks'
 import { preventReferencedSystemPageInvalidation } from '../hooks/preventReferencedSystemPageInvalidation'
 
-const blockTypeBySystemPageType: Record<SystemPageType, 'system404' | 'systemMaintenance' | 'systemComingSoon'> =
-  {
-    '404': 'system404',
-    maintenance: 'systemMaintenance',
-    comingSoon: 'systemComingSoon',
-  }
+const blockTypeBySystemPageType: Record<
+  SystemPageType,
+  'system404' | 'systemMaintenance' | 'systemComingSoon'
+> = {
+  '404': 'system404',
+  maintenance: 'systemMaintenance',
+  comingSoon: 'systemComingSoon',
+}
 
 const validateSystemLayout = (
   value: unknown,
@@ -63,52 +64,34 @@ export const SystemPages: CollectionConfig = {
     plural: 'System Pages',
   },
   admin: {
-    description: 'The 404, maintenance, and coming soon pages — activated from Site Modes in Configuration.',
+    description:
+      'The 404, maintenance, and coming soon pages — activated from Site Modes in Configuration.',
     group: 'Site Structure',
-    hidden: hideFromUsersWithoutCapability('manage_system_pages'),
+    hidden: hideUnlessFeature('systemPages'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'type', 'updatedAt'],
     listSearchableFields: ['title', 'slug'],
   },
   access: {
-    create: requireCapability('manage_system_pages'),
-    delete: requireCapability('manage_system_pages'),
-    read: allowPublishedReadOrCapability('manage_system_pages'),
-    readVersions: requireCapability('manage_system_pages'),
-    update: requireCapability('manage_system_pages'),
+    create: requireFeature('systemPages'),
+    delete: deleteFeatureOrAdmin('systemPages'),
+    read: allowPublishedReadOrFeature('systemPages'),
+    readVersions: requireFeature('systemPages'),
+    update: requireFeature('systemPages'),
   },
   hooks: {
     afterChange: [
-      createWorkflowQueueHook({
-        sourceAdminPathPrefix: '/admin/collections/system-pages',
-        sourceCollection: 'system-pages',
-        states: [
-          {
-            queueType: 'approval',
-            reasonCode: 'system-page-review-required',
-            summary: (_doc, title) => `${title} is awaiting editorial approval.`,
-            workflowState: 'in_review',
-          },
-          {
-            priority: () => 'high',
-            queueType: 'approval',
-            reasonCode: 'system-page-scheduled-publication',
-            summary: (_doc, title) => `${title} is scheduled and requires publication oversight.`,
-            workflowState: 'scheduled',
-          },
-        ],
-        titleField: 'title',
-      }),
       createCollectionAuditHook({
         entityType: 'system_page',
+        feature: 'systemPages',
         getSummary: ({ doc, previousDoc }) =>
-          `Workflow moved from ${previousDoc?.workflowState ?? 'draft'} to ${doc.workflowState}.`,
+          `Publication status changed from ${previousDoc?._status ?? 'draft'} to ${doc._status ?? 'draft'}.`,
         titleField: 'title',
       }),
     ],
     beforeChange: [
       validateSEOContract(),
-      enforceEditorialWorkflow('publish_system_pages', 'system-pages'),
+      enforcePublicationPolicy('systemPages', 'system-pages'),
       preventReferencedSystemPageInvalidation,
       migrateLegacySystemPageLinksBeforeChange,
     ],
@@ -164,78 +147,8 @@ export const SystemPages: CollectionConfig = {
           label: 'SEO',
           fields: [...buildSEOFields()],
         },
-        {
-          label: 'Workflow',
-          fields: [
-            {
-              name: 'workflowState',
-              type: 'select',
-              defaultValue: 'draft',
-              options: [...editorialWorkflowStateOptions],
-              required: true,
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-              },
-            },
-            {
-              name: 'scheduledPublishAt',
-              type: 'date',
-              admin: {
-                condition: (_data, siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never) &&
-                  siblingData?.workflowState === 'scheduled',
-              },
-            },
-            {
-              name: 'changeSummary',
-              type: 'textarea',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-              },
-            },
-            {
-              name: 'lastReviewedAt',
-              type: 'date',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-            {
-              name: 'lastReviewedBy',
-              type: 'relationship',
-              relationTo: 'users',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-            {
-              name: 'publishedAt',
-              type: 'date',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-            {
-              name: 'publishedBy',
-              type: 'relationship',
-              relationTo: 'users',
-              admin: {
-                condition: (_data, _siblingData, { user }) =>
-                  canShowEditorialWorkflow(user as never),
-                readOnly: true,
-              },
-            },
-          ],
-        },
       ],
     },
+    ...publicationMetadataFields('systemPages'),
   ],
 }

@@ -39,7 +39,6 @@ describe('Calendar data boundary', () => {
     ).toEqual({
       and: [
         { _status: { equals: 'published' } },
-        { workflowState: { equals: 'published' } },
         { classification: { in: ['academic', 'exam'] } },
         { eventStart: { less_than_equal: '2026-08-31T18:29:59.999Z' } },
         {

@@ -8,9 +8,9 @@ const create = vi.fn()
 const loggerError = vi.fn()
 
 const pageManager = {
-  capabilities: ['manage_pages'],
+  features: { pages: true },
   id: 'manager-1',
-  role: 'contentManager',
+  role: 'siteManager',
 }
 
 const makeRequest = ({
@@ -20,7 +20,7 @@ const makeRequest = ({
 }: {
   body?: unknown
   jsonError?: Error
-  user?: null | typeof pageManager | { id: string; role: 'contentManager' }
+  user?: null | typeof pageManager | { id: string; role: 'siteManager' }
 } = {}) =>
   ({
     json: jsonError ? vi.fn().mockRejectedValue(jsonError) : vi.fn().mockResolvedValue(body),
@@ -59,7 +59,6 @@ describe('create Page from recipe endpoint', () => {
           expect.objectContaining({ blockType: 'breadcrumb' }),
         ],
         title: 'Admissions',
-        workflowState: 'draft',
       },
       draft: true,
       overrideAccess: false,
@@ -81,7 +80,7 @@ describe('create Page from recipe endpoint', () => {
 
   it.each([
     ['anonymous', makeRequest({ user: null }), 401],
-    ['unauthorized', makeRequest({ user: { id: 'writer-1', role: 'contentManager' } }), 403],
+    ['unauthorized', makeRequest({ user: { id: 'writer-1', role: 'siteManager' } }), 403],
     ['malformed JSON', makeRequest({ jsonError: new Error('bad JSON') }), 400],
     ['empty title', makeRequest({ body: { recipe: 'blank', title: '   ' } }), 400],
     ['unknown recipe', makeRequest({ body: { recipe: 'service', title: 'Services' } }), 400],

@@ -1,7 +1,7 @@
 import type { MigrateDownArgs, MigrateUpArgs } from '@payloadcms/db-mongodb'
 import type { RequiredDataFromCollectionSlug } from 'payload'
 
-import { LEGAL_PAGES_MIGRATION_CONTEXT } from '@/hooks/enforceEditorialWorkflow'
+import { LEGAL_PAGES_MIGRATION_CONTEXT } from '@/hooks/enforcePublicationPolicy'
 import { SKIP_CACHE_REVALIDATION_CONTEXT } from '@/hooks/revalidateCmsContent'
 import type { RichTextBlock } from '@/payload-types'
 
@@ -262,7 +262,6 @@ const buildLegalPageData = (
   publishedAt: string,
 ): RequiredDataFromCollectionSlug<'pages'> => ({
   _status: 'published',
-  changeSummary: `Provisioned the website ${seed.title}.`,
   generateSlug: false,
   includeInSitemap: 'include',
   layout: [
@@ -294,7 +293,6 @@ const buildLegalPageData = (
   robotsMode: 'index',
   slug: seed.slug,
   title: seed.title,
-  workflowState: 'published',
 })
 
 export async function up({ payload, req, session }: MigrateUpArgs): Promise<void> {

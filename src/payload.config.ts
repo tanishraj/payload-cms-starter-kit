@@ -38,6 +38,7 @@ import { AnalyticsSettings } from './globals/AnalyticsSettings'
 import { CookieConsentSettings } from './globals/CookieConsentSettings'
 import { SearchSettings } from './globals/SearchSettings'
 import { ReusableSections } from './collections/ReusableSections'
+import { withFeatureDeletionAudit } from './plugins/withFeatureDeletionAudit'
 import { withTrash } from './plugins/withTrash'
 
 const filename = fileURLToPath(import.meta.url)
@@ -122,5 +123,6 @@ export default buildConfig({
     withTrash({
       exclude: [NewsEventClassifications.slug],
     }),
+    withFeatureDeletionAudit(),
   ],
 })

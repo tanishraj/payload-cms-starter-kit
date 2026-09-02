@@ -1,11 +1,12 @@
 import { type CollectionConfig } from 'payload'
 
 import {
-  allowDraftPublishedReadOrCapability,
-  authenticatedFieldReadAccess,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+  allowPublishedReadOrFeature,
+  deleteFeatureOrAdmin,
+  featureFieldReadAccess,
+  hideUnlessFeature,
+  requireFeature,
+} from '@/access/featureAccess'
 import { projectSlugField } from '@/fields/projectSlugField'
 import {
   formFieldTypeOptions,
@@ -23,18 +24,18 @@ export const Forms: CollectionConfig = {
   },
   admin: {
     group: 'Forms',
-    hidden: hideFromUsersWithoutCapability('manage_forms'),
+    hidden: hideUnlessFeature('forms'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],
     description: 'Reusable form definitions that can be placed on pages.',
     listSearchableFields: ['title', 'slug'],
   },
   access: {
-    create: requireCapability('manage_forms'),
-    delete: requireCapability('manage_forms'),
-    read: allowDraftPublishedReadOrCapability('manage_forms'),
-    readVersions: requireCapability('manage_forms'),
-    update: requireCapability('manage_forms'),
+    create: requireFeature('forms'),
+    delete: deleteFeatureOrAdmin('forms'),
+    read: allowPublishedReadOrFeature('forms'),
+    readVersions: requireFeature('forms'),
+    update: requireFeature('forms'),
   },
   versions: {
     drafts: true,
@@ -54,7 +55,7 @@ export const Forms: CollectionConfig = {
       label: 'Internal Notes',
       type: 'textarea',
       access: {
-        read: authenticatedFieldReadAccess,
+        read: featureFieldReadAccess('forms'),
       },
       admin: {
         description: 'Optional notes for editors. This is not shown on the website.',
@@ -99,7 +100,7 @@ export const Forms: CollectionConfig = {
       label: 'Notification Recipients',
       type: 'array',
       access: {
-        read: authenticatedFieldReadAccess,
+        read: featureFieldReadAccess('forms'),
       },
       labels: {
         singular: 'Recipient',

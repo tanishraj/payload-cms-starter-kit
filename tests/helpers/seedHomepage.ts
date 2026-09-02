@@ -48,7 +48,6 @@ const homepagePageData = {
   metaTitle: 'E2E Homepage',
   slug: homepageSlug,
   title: 'E2E Homepage',
-  workflowState: 'published' as const,
 }
 
 export async function seedHomepage(): Promise<void> {

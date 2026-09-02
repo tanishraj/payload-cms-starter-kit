@@ -30,7 +30,7 @@ Use this checklist when copying the starter into a new client repository. The go
 - Review `analytics-settings` and `cookie-consent-settings` with the client's privacy owner.
 - Create and publish the root `news-events` Page, configure its Page SEO and appearance, and add the required News & Events listing blocks.
 - Create and publish Office Locations and Gallery Albums required by data-backed Page blocks.
-- Review admin users and editor capabilities before handing the project to a client team.
+- Review Admin users and grant only the required features to each Site Manager before handoff.
 
 ## Verify Content And Intake Workflows
 

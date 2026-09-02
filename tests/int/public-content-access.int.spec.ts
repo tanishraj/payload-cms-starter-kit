@@ -58,17 +58,25 @@ const expectAnonymousFieldReadDenied = (collection: CollectionConfig, fieldName:
 }
 
 describe('public content access', () => {
-  it('requires both publication states for governed editorial records', () => {
-    const expected = {
-      and: [
-        { _status: { equals: 'published' } },
-        { workflowState: { equals: 'published' } },
-      ],
-    }
+  it('uses Payload publication as the public boundary for governed content', () => {
+    const expected = { _status: { equals: 'published' } }
 
-    for (const collection of [Pages, Articles, Reviews, SystemPages]) {
+    for (const collection of [Pages, Articles, SystemPages]) {
       expect(readAccess(collection), collection.slug).toEqual(expected)
     }
+
+    expect(readAccess(Reviews)).toEqual({
+      and: [
+        { _status: { equals: 'published' } },
+        {
+          or: [
+            { sourceSubmission: { exists: false } },
+            { sourceSubmission: { equals: null } },
+            { moderationStatus: { equals: 'approved' } },
+          ],
+        },
+      ],
+    })
   })
 
   it('requires Payload publication for draft-only public records', () => {

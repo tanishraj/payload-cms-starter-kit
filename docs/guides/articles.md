@@ -2,7 +2,7 @@
 
 ## What This Section Is
 
-`Articles` is the writing-first section for long-form editorial content. It uses a rich text editor, structured taxonomy, featured images, workflow states, and SEO controls to publish content like explainers, announcements, and guidance pieces for North Valley Medical College.
+`Articles` is the writing-first section for long-form editorial content. It uses a rich text editor, structured taxonomy, featured images, native drafts, and SEO controls to publish content like explainers, announcements, and guidance pieces for North Valley Medical College.
 
 ## When To Use It
 
@@ -34,7 +34,7 @@ Publish an article titled `How To Apply For MBBS Admission` for North Valley Med
 9. Enter the author name.
 10. Write the article body in the Lexical editor.
 11. Add SEO metadata for search and sharing.
-12. Set the workflow state and publish when ready.
+12. Save as a draft or publish when ready.
 
 Expected website result:
 
@@ -48,8 +48,7 @@ Expected website result:
 - always choose a strong primary category
 - keep excerpts short and specific
 - use the rich text body for narrative content, not page-builder structure
-- review scheduled publication dates carefully if using the scheduled workflow state
-- remember that Scheduled records operator intent and queue work; it does not auto-publish on a timer
+- resolve any open or blocked approval/publish-issue Action Queue item before publishing
 
 ## Common Mistakes And Recovery
 

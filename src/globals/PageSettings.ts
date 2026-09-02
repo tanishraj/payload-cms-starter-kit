@@ -1,10 +1,6 @@
 import type { GlobalConfig, RelationshipFieldSingleValidation } from 'payload'
 
-import {
-  allowPublicReadOrCapability,
-  hideFromUsersWithoutCapability,
-  requireCapability,
-} from '@/access/adminCapabilities'
+import { allowPublicReadOrFeature, hideUnlessFeature, requireFeature } from '@/access/featureAccess'
 import { createBlockAppearanceFields } from '@/blocks/shared/blockAppearanceFields'
 import { createGlobalAuditHook } from '@/hooks/logOperationalAuditEvent'
 import { describeAuditValue } from '@/lib/operationalAudit'
@@ -144,13 +140,14 @@ export const PageSettings: GlobalConfig = {
   label: 'Layout Defaults',
   admin: {
     group: 'Configuration',
-    description: 'Set the active header, footer, and homepage, and configure the site-wide announcement bar.',
-    hidden: hideFromUsersWithoutCapability(['manage_page_settings', 'manage_site_settings']),
+    description:
+      'Set the active header, footer, and homepage, and configure the site-wide announcement bar.',
+    hidden: hideUnlessFeature('layoutDefaults'),
   },
   access: {
-    read: allowPublicReadOrCapability(['manage_page_settings', 'manage_site_settings']),
-    readVersions: requireCapability(['manage_page_settings', 'manage_site_settings']),
-    update: requireCapability(['manage_page_settings', 'manage_site_settings']),
+    read: allowPublicReadOrFeature('layoutDefaults'),
+    readVersions: requireFeature('layoutDefaults'),
+    update: requireFeature('layoutDefaults'),
   },
   versions: {
     drafts: true,
@@ -160,6 +157,7 @@ export const PageSettings: GlobalConfig = {
       revalidateGlobalsCacheForGlobal,
       createGlobalAuditHook({
         entityType: 'page_settings',
+        feature: 'layoutDefaults',
         getSummary: ({ doc, previousDoc }) =>
           `Homepage reference changed from ${describeAuditValue(previousDoc?.homepage)} to ${describeAuditValue(doc.homepage)}.`,
         title: 'Layout Defaults',

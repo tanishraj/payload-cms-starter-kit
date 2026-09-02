@@ -12,9 +12,8 @@ That shared example shows how pages, content, structure, forms, settings, and op
 
 ## Who This Manual Is For
 
-- `Content Manager`: publishes and updates normal website content
-- `Site Manager`: manages content, structure, settings, and higher-impact website controls
-- `Admin`: manages the full system, including users and recovery controls
+- `Site Manager`: operates only the Admin features explicitly granted by an Admin
+- `Admin`: manages the full system, including users, Site Manager grants, and recovery controls
 - technical implementers onboarding to the CMS
 - non-technical operators who need practical step-by-step instructions
 

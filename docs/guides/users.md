@@ -2,80 +2,49 @@
 
 ## What This Section Is
 
-`Users` is where administrators manage who can sign in to the CMS and what level of access each person receives. This project uses a role-first model with capability checkboxes for non-admin exceptions.
+`Users` is the Admin-only destination for creating CMS accounts and deciding which parts of the Admin
+panel each person can operate. The two roles are Admin and Site Manager.
 
-The current roles are:
+- Admins have complete access and may create multiple Admin or Site Manager accounts.
+- Site Managers begin with no access and receive explicit feature checkboxes.
+- Site Managers cannot open Users or view/change their own role and grants.
 
-- `Admin`
-- `Site Manager`
-- `Content Manager`
+## Create a Site Manager
 
-In North Valley Medical College, this is how you would decide who can manage site structure, who can publish content, and who should only work in approved editorial areas.
+1. Open **Administration → Users**.
+2. Create the login and choose **Site Manager**.
+3. In **Feature Access**, enable only the destinations required for that person's responsibilities.
+4. Save and ask the user to sign in again.
+5. Verify both the sidebar and a direct URL for one granted and one ungranted feature.
 
-## When To Use It
+Feature changes clear the affected user's sessions, so an already signed-in user must authenticate
+again. New Site Managers have all 29 features disabled unless the creating Admin selects them.
 
-Use `Users` when you need to:
+## Create Another Admin
 
-- create a new CMS login
-- assign a base role to a staff member
-- adjust capability checkboxes for a trusted non-admin user
-- review whether someone should have publishing or operations access
+Choose **Admin** as the role. Admin access is implicit, so no feature checklist is shown. The CMS
+allows multiple Admins but prevents demoting, trashing, or permanently deleting the last active Admin.
 
-Only `Admin` users can open and manage this section.
+## Choosing Features
 
-Do not use this section for day-to-day content editing decisions. Use it only when access boundaries themselves need to change.
+Each feature is one visible Admin destination and includes its documented action bundle. Do not grant
+Action Queue or Audit Log alone: their rows are also filtered by the source feature. For example, a
+review moderator commonly needs Reviews and optionally Action Queue; a form operator needs Form
+Submissions and optionally Action Queue.
 
-## How It Connects To The Website
-
-Users do not appear publicly on the website, but their access model controls who is allowed to change live website content and settings.
-
-The current role model works like this:
-
-- `Admin` always receives full access
-- `Site Manager` receives the broader trusted operator preset, including site structure, settings, forms, queue, and audit access
-- `Content Manager` receives the focused editorial preset for pages, articles, reviews, media, and related publishing
-
-For non-admin users, the `Capabilities` checkboxes are visible and can be adjusted after the role default is applied. This lets an administrator keep the base role simple while allowing explicit exceptions.
-
-## Step-By-Step Medical College Example
-
-Create a trusted non-admin site operator for North Valley Medical College:
-
-1. Open `Users`.
-2. Click `Create New`.
-3. Enter the user email and required authentication details.
-4. Set the role to `Site Manager`.
-5. Save the user once so the role default capabilities are applied.
-6. Review the `Capabilities` group.
-7. Keep the defaults if this user should manage structure, settings, forms, queue work, and publishing.
-8. Adjust individual checkboxes only if this person needs a specific exception.
-9. Save the updated user.
-
-Expected website result:
-
-- the new operator can sign in and access the intended admin sections
-- they can manage only the CMS areas allowed by their role and capabilities
+See the complete 29-feature action table in
+[Users, Features, and Publication Governance](../operations/editorial-governance.md).
 
 ## Best Practices
 
-- keep `Admin` reserved for the smallest possible set of trusted technical owners
-- use `Site Manager` for the broader website operator who needs structure and system access
-- use `Content Manager` for editorial users focused on content production and publishing
-- change individual capabilities only for clear, documented exceptions
-- review access whenever responsibilities change
-
-## Common Mistakes And Recovery
-
-- giving `Admin` when `Site Manager` would be enough
-- changing capability checkboxes without understanding the role default underneath
-- expecting a non-admin user to see admin-only sections such as user management
-- forgetting that changing the role resets the non-admin capability preset to that role default
-
-If someone cannot access an expected area, confirm the role first, then review the capability checkboxes for that user. If access expanded too far, remove the extra capability rather than promoting the user to `Admin`.
+- keep Admin membership small and maintain at least two active Admins;
+- grant the minimum destinations needed for current responsibilities;
+- review grants whenever staff responsibilities change;
+- test direct URLs and API access, not just sidebar visibility; and
+- take a database backup before bulk user or migration work.
 
 ## Related Guides
 
 - [Audit Log](./operational-audit-events.md)
-- [Work Queue](./work-queue.md)
-- [Forms](./forms.md)
-- [Layout Defaults](./site-defaults.md)
+- [Action Queue](./work-queue.md)
+- [Form Submissions](./form-submissions.md)
