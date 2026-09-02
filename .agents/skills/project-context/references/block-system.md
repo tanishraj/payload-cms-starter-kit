@@ -271,7 +271,8 @@ editorial composition at large breakpoints and a single stacked flow below them.
 shows programme/session/category facts, up to four additional authored programme details, the first
 normalized Total row as Annual totals, category notes, and a required category-owned Complete
 programme expense entered exactly as published. Its right statement renders every remaining fee head
-once with all authored period values; additional Total rows remain on the right. Atlas performs no
+once with all authored period values; additional Total rows remain on the right. The statement header
+preserves the authored category label verbatim beneath the fixed `Statement breakdown` eyebrow. Atlas performs no
 calculation, parsing, grouping, currency conversion, or value inference. It uses standard sans-serif
 titles, left-aligned period labels and values, and semantic Primary/Card colors. Right-side fee-head
 chapters use the shared compact content-item and metadata rhythm while left-side Annual totals retain

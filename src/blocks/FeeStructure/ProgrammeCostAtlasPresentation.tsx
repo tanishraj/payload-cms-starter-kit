@@ -200,7 +200,7 @@ export function ProgrammeCostAtlasPresentation({
             className="mt-3 font-sans text-lg font-semibold tracking-tight text-card-foreground"
             data-fee-atlas-title="true"
           >
-            {category.label} fee heads
+            {category.label}
           </h3>
           {category.caption ? (
             <p className="mt-3 max-w-prose text-sm leading-6 text-muted-foreground">

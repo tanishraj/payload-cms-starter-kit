@@ -172,7 +172,8 @@ screens and stacks it on smaller screens. Its left summary contains programme de
 authored Total row as Annual totals, category notes, a required category-owned Complete programme
 expense, and the file download. Complete programme expense is manually authored and required for
 every Atlas category; it is never calculated from Annual totals. The right statement shows each remaining fee head once with all of
-its authored period values; later Total rows remain there. Atlas does not calculate or reorganize
+its authored period values; later Total rows remain there. The statement heading displays the
+authored category label verbatim beneath the **Statement breakdown** eyebrow. Atlas does not calculate or reorganize
 values beyond moving that first authored Total row. Atlas uses standard sans-serif titles,
 left-aligned period labels and values, matched two-half spacing, and semantic Primary/Card colors.
 New blocks start Additional Programme Details with an editable **Programme Duration** / **4.5 Years**

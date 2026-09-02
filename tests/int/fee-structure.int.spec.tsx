@@ -477,6 +477,9 @@ describe('FeeStructureBlockComponent', () => {
     const summary = container.querySelector('[data-fee-atlas-summary="true"]')
     const summaryHTML = summary?.innerHTML ?? ''
     const atlasTitles = Array.from(container.querySelectorAll('[data-fee-atlas-title="true"]'))
+    const statementTitle = container.querySelector(
+      '[data-fee-atlas-statement-header="true"] [data-fee-atlas-title="true"]',
+    )
     const periodLabels = Array.from(container.querySelectorAll('[data-fee-atlas-period="true"] dt'))
     const periodValues = Array.from(
       container.querySelectorAll('[data-fee-atlas-period="true"] [data-fee-value="true"]'),
@@ -520,6 +523,8 @@ describe('FeeStructureBlockComponent', () => {
     expect(summary?.querySelector('[data-fee-document="true"]')).toBeTruthy()
     expect(container.querySelectorAll('[data-fee-atlas-fee-chapter="true"]')).toHaveLength(3)
     expect(atlasTitles.length).toBeGreaterThan(0)
+    expect(statementTitle?.textContent).toBe('General')
+    expect(statementTitle?.textContent).not.toContain('fee heads')
     expect(atlasTitles.every((element) => element.className.includes('font-sans'))).toBe(true)
     expect(atlasTitles.every((element) => !element.className.includes('font-serif'))).toBe(true)
     expect(
