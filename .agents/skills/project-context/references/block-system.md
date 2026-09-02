@@ -328,10 +328,11 @@ Width, or Equal Full Width. Theme Settings owns Text/Scanner mode and the revers
 side; no visitor mode switch is rendered. Mirrored `9fr/16fr` and `16fr/9fr` desktop tracks keep the
 Primary context at 36% and the white ledger at 64% on either side. Compact layouts always stack
 contextual content before the ledger, without an internal scroller, and retain explicit space before
-the Text notice. Content owns one optional `ledgerText` group for the persistent purpose suffix,
-ledger title, verification text, credential labels, and Copy all label. Runtime resolves every
-missing, malformed, or whitespace-only nested value independently to its code-owned default, so
-historical records require no migration; transient clipboard and QR messages remain code-owned. The
+the Text notice. Payment Purpose supplies both the account tab and the white-ledger eyebrow without
+additional suffix text. Content owns one optional `ledgerText` group for the ledger title,
+verification text, credential labels, and Copy all label. Runtime resolves every missing, malformed,
+or whitespace-only nested value independently to its code-owned default, so historical records
+require no migration; transient clipboard and QR messages remain code-owned. The
 context title is upright display type, the ledger title is upright sans, and shared surface-aware
 green accents own the eyebrow and credential-label contrast. The fixed-white ledger keeps the
 light-overlay foreground contract in every color scheme, and compact Copy controls retain touch-sized

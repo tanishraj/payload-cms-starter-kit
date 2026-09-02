@@ -6330,7 +6330,6 @@ export interface BankDetailsBlock {
    * Customize persistent labels on the white account-information panel.
    */
   ledgerText?: {
-    purposeSuffix?: string | null;
     ledgerTitle?: string | null;
     verifiedLabel?: string | null;
     accountHolderLabel?: string | null;
@@ -11835,7 +11834,6 @@ export interface BankDetailsBlockSelect<T extends boolean = true> {
   ledgerText?:
     | T
     | {
-        purposeSuffix?: T;
         ledgerTitle?: T;
         verifiedLabel?: T;
         accountHolderLabel?: T;

@@ -178,12 +178,6 @@ export const BankDetailsBlock: Block = {
               },
               fields: [
                 {
-                  name: 'purposeSuffix',
-                  label: 'Purpose Suffix',
-                  type: 'text',
-                  defaultValue: 'account',
-                },
-                {
                   name: 'ledgerTitle',
                   label: 'Ledger Title',
                   type: 'text',
