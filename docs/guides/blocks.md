@@ -228,10 +228,11 @@ without an internal scroller. Text mode shows optional contextual copy and the a
 with a guaranteed compact-screen gap between the description and notice. Scanner mode generates a
 local SVG QR from the same normalized credentials-only payload used by Copy all, without an upload or
 third-party request. Payment Purpose and instructions remain visible page context but are excluded
-from Copy all and QR.
+from Copy all and QR. Payment Purpose is reused unchanged for the account tab and white-ledger
+eyebrow.
 
-Under **Content**, the optional **Ledger Text** group customizes the purpose suffix, ledger title,
-verification text, credential labels, and Copy all label. Each blank, missing, or malformed nested
+Under **Content**, the optional **Ledger Text** group customizes the ledger title, verification text,
+credential labels, and Copy all label. Each blank, missing, or malformed nested
 value independently falls back to its English default, so existing blocks need no migration. The
 context label, context title, context description, account values, and account instructions retain
 their existing fields; operational success, clipboard error, and QR messages remain system-owned.

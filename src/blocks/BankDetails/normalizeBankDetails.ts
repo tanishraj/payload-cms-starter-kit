@@ -15,7 +15,6 @@ export const bankDetailsLedgerTextDefaults: ResolvedBankDetailsLedgerText = {
   copyAllLabel: 'Copy all details',
   ifscCodeLabel: 'IFSC Code',
   ledgerTitle: 'Bank Account Information',
-  purposeSuffix: 'account',
   upiIdLabel: 'UPI ID',
   verifiedLabel: 'Verified',
 }
@@ -36,8 +35,6 @@ export function normalizeBankDetailsLedgerText(value?: unknown): ResolvedBankDet
     ifscCodeLabel:
       normalizeText(source.ifscCodeLabel) || bankDetailsLedgerTextDefaults.ifscCodeLabel,
     ledgerTitle: normalizeText(source.ledgerTitle) || bankDetailsLedgerTextDefaults.ledgerTitle,
-    purposeSuffix:
-      normalizeText(source.purposeSuffix) || bankDetailsLedgerTextDefaults.purposeSuffix,
     upiIdLabel: normalizeText(source.upiIdLabel) || bankDetailsLedgerTextDefaults.upiIdLabel,
     verifiedLabel:
       normalizeText(source.verifiedLabel) || bankDetailsLedgerTextDefaults.verifiedLabel,

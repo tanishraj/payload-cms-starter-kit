@@ -281,7 +281,7 @@ function BankDetailsLedger({
             data-bank-details-purpose-label="true"
             surface="lightOverlay"
           >
-            {account.purpose} {ledgerText.purposeSuffix}
+            {account.purpose}
           </SectionEyebrow>
           <h3
             className="mt-2 font-[family-name:var(--font-text)] text-2xl font-bold tracking-[-0.025em] text-balance sm:text-3xl"
