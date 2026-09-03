@@ -41,6 +41,7 @@ anyone who knows the object URL.
   mismatched, and unsupported files without exposing bytes in errors.
 - `tests/int/media.int.spec.ts` proves create and replacement validation occurs before Payload file
   handling while metadata-only updates remain allowed.
-- `tests/int/media-storage.int.spec.ts`, `tests/int/provider-selection.int.spec.ts`, and
-  `tests/int/runtime-config.int.spec.ts` cover direct public-origin URLs, R2/S3 provider policy, and
-  the prohibition on browser uploads.
+- `tests/int/provider-selection.int.spec.ts` and `tests/int/runtime-config.int.spec.ts` cover direct
+  public-origin URLs, R2/S3 provider policy, and the prohibition on browser uploads.
+- `tests/int/media-storage.int.spec.ts` separately covers object-key derivation and storage
+  reconciliation; it does not enforce the public-origin or browser-upload trust policy.
