@@ -30,7 +30,6 @@ export type RuntimeConfig = {
         provider: 's3'
         acl: 'private' | 'public-read' | null
         bucket: string
-        clientUploads: boolean
         endpoint: string
         forcePathStyle: boolean
         publicURL: string | null
@@ -131,6 +130,7 @@ const parseFirstAdminEmail = (value: string | undefined): string | null => {
 
 export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeConfig => {
   const mediaProvider = getMediaProvider(env)
+  const s3ClientUploads = parseBooleanEnv(env.S3_CLIENT_UPLOADS, false, 'S3_CLIENT_UPLOADS')
   const isProduction = env.NODE_ENV === 'production'
   const isVercel = Boolean(env.VERCEL)
   const mongodbURI = env.MONGODB_URI?.trim() || ''
@@ -149,6 +149,10 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
   )
   const overrideRecipientAddress = env.RESEND_OVERRIDE_TO_EMAIL?.trim() || null
   const mediaReconcileToken = env.MEDIA_RECONCILE_TOKEN?.trim() || null
+
+  if (s3ClientUploads) {
+    throw new Error('S3 client uploads are not supported. Use server-side media uploads.')
+  }
 
   if (isProduction && allowFirstAdminCreation && !firstAdminEmail) {
     throw new Error('Production first-Admin creation requires FIRST_ADMIN_EMAIL.')
@@ -204,7 +208,6 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
           const accessKeyId = env.S3_ACCESS_KEY_ID?.trim() || ''
           const secretAccessKey = env.S3_SECRET_ACCESS_KEY?.trim() || ''
           const rawACL = env.S3_ACL?.trim() || 'none'
-
           if (!bucket || !endpoint || !region || !accessKeyId || !secretAccessKey) {
             throw new Error(
               'Incomplete S3 media configuration. Set S3_BUCKET, S3_ENDPOINT, S3_REGION, S3_ACCESS_KEY_ID, and S3_SECRET_ACCESS_KEY.',
@@ -226,7 +229,6 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
             acl,
             accessKeyId,
             bucket,
-            clientUploads: parseBooleanEnv(env.S3_CLIENT_UPLOADS, false, 'S3_CLIENT_UPLOADS'),
             endpoint,
             forcePathStyle: parseBooleanEnv(env.S3_FORCE_PATH_STYLE, true, 'S3_FORCE_PATH_STYLE'),
             publicURL: normalizeMediaPublicURL(env.S3_PUBLIC_URL),

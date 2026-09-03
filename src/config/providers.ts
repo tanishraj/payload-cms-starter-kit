@@ -33,7 +33,6 @@ export const createStoragePlugins = (config: Pick<RuntimeConfig, 'media'>): Plug
   const publicURL = config.media.publicURL
   const storageOptions: Parameters<typeof s3Storage>[0] = {
     bucket: config.media.bucket,
-    clientUploads: config.media.clientUploads,
     collections: {
       media: publicURL
         ? {

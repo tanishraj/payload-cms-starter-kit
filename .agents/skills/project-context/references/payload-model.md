@@ -39,7 +39,7 @@ Nine globals are registered:
 - ReusableSections own shared block stacks. Direct recursive selection is excluded; renderers stop nesting after depth 10.
 - NavigationLinks provide reusable destinations and page-synchronized records. Headers and Footers provide versioned shell presets.
 - SystemPages pair one type with its matching block and are referenced from system modes.
-- Media owns public marketing-asset uploads, extension/MIME/signature format validation, alt requirements, usage detection, deletion guards, storage health, queue sync, and audit events. Format validation is not malware scanning; private or arbitrary document intake requires a separate collection and private bucket path with external scanning and quarantine. GalleryAlbums own ordered reusable image sets.
+- Media owns server-side public marketing-asset uploads, extension/MIME/signature format validation before Payload file generation or replacement cleanup, alt requirements, usage detection, deletion guards, storage health, queue sync, and audit events. Format validation is not malware scanning; private or arbitrary document intake requires a separate collection and private bucket path with external scanning and quarantine. GalleryAlbums own ordered reusable image sets.
 - Forms define general, lead, and review-intent inputs and notifications. FormSubmissions own immutable submitted data plus operational state, activity, assignment, and optional Review promotion.
 - WorkQueue stores deduplicated actionable conditions. OperationalAuditEvents stores selected immutable operational history. Both record their source feature for Site Manager row filtering. Users own authentication, Admin/Site Manager roles, and feature grants.
 

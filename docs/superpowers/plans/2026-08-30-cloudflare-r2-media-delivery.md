@@ -269,7 +269,6 @@ Document these non-secret values while keeping credentials as placeholders:
 # S3_PUBLIC_URL=https://assets.snmih.tanish.im
 # S3_ACL=none
 # S3_FORCE_PATH_STYLE=true
-# S3_CLIENT_UPLOADS=false
 ```
 
 - [x] **Step 2: Update README and the runtime runbook**

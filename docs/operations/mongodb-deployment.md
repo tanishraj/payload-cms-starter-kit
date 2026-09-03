@@ -45,7 +45,10 @@ during dump and restore workflows. Atlas snapshots from the `test` database must
 - Keep preview and production on separate databases unless your workflow explicitly requires shared content.
 - Do not deploy this starter to Vercel with `MEDIA_PROVIDER=localDisk` if editors will upload assets.
 - Use `MEDIA_PROVIDER=s3` for IDrive e2 or another S3-compatible provider before enabling production uploads.
-- If you expect uploads larger than Vercel's server upload limit, set `S3_CLIENT_UPLOADS=true` and allow `PUT` CORS for your site origin on the bucket.
+- Media uploads remain server-side so format policy runs before persistence. Vercel's upstream
+  request-body limit can therefore be lower than the application's 10 MiB upload cap and will win;
+  use a deployment path that supports the required server request size rather than browser-to-bucket
+  PUTs.
 
 ## Verification
 

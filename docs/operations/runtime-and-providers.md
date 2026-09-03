@@ -39,7 +39,6 @@ external consumers before changing an already deployed application's API contrac
 | `S3_PUBLIC_URL`                   | no                 | HTTPS origin for direct public/CDN delivery                                                   |
 | `S3_ACL`                          | no                 | `none` default, `public-read`, or `private`                                                   |
 | `S3_FORCE_PATH_STYLE`             | no                 | Boolean, defaults to `true`                                                                   |
-| `S3_CLIENT_UPLOADS`               | no                 | Boolean, defaults to `false`; requires bucket CORS for browser PUT                            |
 | `MEDIA_RECONCILE_TOKEN`           | for reconciliation | Secret accepted as Bearer or `x-media-reconcile-token`                                        |
 | `SHADCNBLOCKS_API_KEY`            | optional tooling   | Used only by external Shadcn Blocks tooling, not the CMS runtime                              |
 
@@ -108,8 +107,13 @@ delivery bypasses Payload file access checks: every object in that bucket is pub
 knows its URL, even when the corresponding Payload document is a draft. Never place private or
 restricted documents in a public-delivery bucket.
 
-Enable client uploads only after adding a narrowly scoped PUT CORS rule for every approved Admin
-origin. Keep `S3_CLIENT_UPLOADS=false` during the initial provider cutover.
+Media uploads are server-only so extension, MIME, and signature validation runs before Payload
+generates file data, deletes a replaced local file, writes database state, or invokes storage
+adapters. `S3_CLIENT_UPLOADS=true` is rejected during runtime configuration and the S3 plugin never
+enables browser PUTs. Payload retains its aborting 10 MiB application limit, with 12 MiB reserved for
+server-action multipart overhead. On Vercel, an upstream request-body limit may be lower and rejects
+the request before this application cap; deployments needing larger uploads must use an application
+hosting path that supports the required server request size, not direct-to-bucket uploads.
 
 Run storage reconciliation after migrations, restores, or suspected bucket drift. See [Media](../guides/media.md).
 
@@ -126,7 +130,6 @@ S3_REGION=auto
 S3_PUBLIC_URL=https://assets.snmih.tanish.im
 S3_ACL=none
 S3_FORCE_PATH_STYLE=true
-S3_CLIENT_UPLOADS=false
 ```
 
 Set `S3_ACCESS_KEY_ID` and `S3_SECRET_ACCESS_KEY` only in `.env` or the deployment environment.

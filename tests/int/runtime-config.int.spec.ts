@@ -282,7 +282,8 @@ describe('runtime config', () => {
     })
   })
 
-  it('reads s3-compatible media configuration for hosted uploads', () => {
+  it('rejects direct S3 client uploads without reflecting configuration values', () => {
+    const forbiddenValue = 'true'
     process.env = {
       ...ORIGINAL_ENV,
       MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
@@ -294,25 +295,27 @@ describe('runtime config', () => {
       S3_ACCESS_KEY_ID: 'access-key',
       S3_ACL: 'public-read',
       S3_SECRET_ACCESS_KEY: 'secret-key',
-      S3_CLIENT_UPLOADS: 'true',
+      S3_CLIENT_UPLOADS: forbiddenValue,
       S3_FORCE_PATH_STYLE: 'true',
       S3_PUBLIC_URL: '',
     }
 
-    const config = getRuntimeConfig(process.env)
+    expect(() => getRuntimeConfig(process.env)).toThrow(
+      'S3 client uploads are not supported. Use server-side media uploads.',
+    )
 
-    expect(config.media).toEqual({
-      provider: 's3',
-      acl: 'public-read',
-      accessKeyId: 'access-key',
-      bucket: 'payload-media',
-      clientUploads: true,
-      endpoint: 'https://s3.ap-southeast-1.idrivee2.com',
-      forcePathStyle: true,
-      publicURL: null,
-      region: 'ap-southeast-1',
-      secretAccessKey: 'secret-key',
-    })
+    try {
+      getRuntimeConfig(process.env)
+    } catch (error) {
+      expect(String(error)).not.toContain(`S3_CLIENT_UPLOADS=${forbiddenValue}`)
+    }
+
+    expect(() =>
+      getRuntimeConfig({
+        ...process.env,
+        MEDIA_PROVIDER: 'localDisk',
+      }),
+    ).toThrow('S3 client uploads are not supported. Use server-side media uploads.')
   })
 
   it('reads R2 public delivery configuration without sending an ACL', () => {
@@ -339,7 +342,6 @@ describe('runtime config', () => {
       acl: null,
       accessKeyId: 'access-key',
       bucket: 'snmih-media',
-      clientUploads: false,
       endpoint: 'https://account-id.r2.cloudflarestorage.com',
       forcePathStyle: true,
       publicURL: 'https://assets.snmih.tanish.im',

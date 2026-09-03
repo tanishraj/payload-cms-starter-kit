@@ -61,7 +61,7 @@ describe('provider selection', () => {
     expect(adapter).toMatchObject({ kind: 'mongo' })
   })
 
-  it('creates an s3 storage plugin for the media collection', async () => {
+  it('cannot enable direct client uploads in the s3 storage plugin', async () => {
     const { createStoragePlugins } = await import('@/config/providers')
 
     const plugins = createStoragePlugins({
@@ -77,12 +77,11 @@ describe('provider selection', () => {
         region: 'ap-southeast-1',
         secretAccessKey: 'secret-key',
       },
-    })
+    } as never)
 
     expect(adapterMocks.s3Storage).toHaveBeenCalledWith({
       acl: 'public-read',
       bucket: 'payload-media',
-      clientUploads: true,
       collections: {
         media: true,
       },
@@ -96,6 +95,7 @@ describe('provider selection', () => {
         region: 'ap-southeast-1',
       },
     })
+    expect(adapterMocks.s3Storage.mock.calls.at(-1)?.[0]).not.toHaveProperty('clientUploads')
     expect(plugins).toHaveLength(1)
     expect(plugins[0]).toMatchObject({ kind: 's3-plugin' })
   })
@@ -109,7 +109,6 @@ describe('provider selection', () => {
         acl: null,
         accessKeyId: 'r2-access-key',
         bucket: 'snmih-media',
-        clientUploads: false,
         endpoint: 'https://account-id.r2.cloudflarestorage.com',
         forcePathStyle: true,
         publicURL: 'https://assets.snmih.tanish.im',
@@ -124,7 +123,6 @@ describe('provider selection', () => {
     expect(storageOptions).not.toHaveProperty('acl')
     expect(storageOptions).toMatchObject({
       bucket: 'snmih-media',
-      clientUploads: false,
       config: {
         credentials: {
           accessKeyId: 'r2-access-key',

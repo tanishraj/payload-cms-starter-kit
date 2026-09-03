@@ -1,6 +1,7 @@
 import {
   APIError,
   type CollectionAfterReadHook,
+  type CollectionBeforeOperationHook,
   type CollectionBeforeValidateHook,
   type CollectionConfig,
 } from 'payload'
@@ -55,20 +56,21 @@ const imageOnlyAssetTypes = new Set(['hero', 'logo', 'seo'])
 const isImageMimeType = (value: unknown): value is string =>
   typeof value === 'string' && value.startsWith('image/')
 
-const beforeValidate: CollectionBeforeValidateHook = async ({
-  data,
-  operation,
-  originalDoc,
-  req,
-}) => {
-  if (!data || (operation !== 'create' && operation !== 'update')) {
-    return data
+const validateUploadBeforeOperation: CollectionBeforeOperationHook = async ({ operation, req }) => {
+  if (operation !== 'create' && operation !== 'update') {
+    return
   }
 
-  if (req?.file) {
+  if (req.file) {
     await validateUploadedMedia(req.file)
-  } else if (req && operation === 'create') {
+  } else if (operation === 'create') {
     throw new APIError('A media file is required when creating an asset.', 400)
+  }
+}
+
+const beforeValidate: CollectionBeforeValidateHook = async ({ data, operation, originalDoc }) => {
+  if (!data || (operation !== 'create' && operation !== 'update')) {
+    return data
   }
 
   const assetType = typeof data.assetType === 'string' ? data.assetType : originalDoc?.assetType
@@ -138,6 +140,7 @@ export const Media: CollectionConfig = {
     afterChange: [syncMediaToWorkQueue],
     afterRead: [populateMediaUsage],
     beforeDelete: [preventMediaDeletionWhileInUse],
+    beforeOperation: [validateUploadBeforeOperation],
     beforeValidate: [beforeValidate],
   },
   versions: {

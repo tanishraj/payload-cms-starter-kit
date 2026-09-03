@@ -111,7 +111,6 @@ describe('starter contract', () => {
         acl: 'public-read',
         accessKeyId: 'access-key',
         bucket: 'payload-media',
-        clientUploads: true,
         endpoint: 'https://s3.ap-southeast-1.idrivee2.com',
         forcePathStyle: true,
         publicURL: null,

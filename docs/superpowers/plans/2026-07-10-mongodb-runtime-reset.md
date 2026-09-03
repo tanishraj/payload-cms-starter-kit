@@ -189,7 +189,6 @@ export type RuntimeConfig = {
         provider: 's3'
         acl: 'private' | 'public-read'
         bucket: string
-        clientUploads: boolean
         endpoint: string
         forcePathStyle: boolean
         region: string
@@ -474,7 +473,6 @@ MEDIA_PROVIDER=localDisk
 # S3_SECRET_ACCESS_KEY=your_secret_key
 # S3_ACL=public-read
 # S3_FORCE_PATH_STYLE=true
-# S3_CLIENT_UPLOADS=false
 ```
 
 Update `docker-compose.yml` comments so Mongo is the primary documented database and remove the commented Postgres guidance.
