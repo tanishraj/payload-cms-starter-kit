@@ -46,9 +46,14 @@ describe('published review rating summary', () => {
 
     expect(count).toHaveBeenCalledTimes(5)
     expect(count.mock.calls.map(([request]) => request.where)).toEqual(
-      ['1', '2', '3', '4', '5'].map((rating) => ({
-        and: [{ _status: { equals: 'published' } }, { rating: { equals: rating } }],
-      })),
+      ['1', '2', '3', '4', '5'].map((rating) => ({ rating: { equals: rating } })),
+    )
+    expect(count).toHaveBeenCalledWith(
+      expect.objectContaining({
+        collection: 'reviews',
+        draft: false,
+        overrideAccess: false,
+      }),
     )
 
     ;[1, 2, 3, 4, 10].forEach((totalDocs, index) => resolvers[index]?.({ totalDocs }))

@@ -2528,6 +2528,8 @@
       "src/config/runtime.ts",
       "src/config/starterContract.ts",
       "src/config/uploadLimits.ts",
+      "src/domains/reviews/publicReviewAccess.ts",
+      "src/domains/reviews/publicReviewQueries.ts",
       "src/endpoints/createPageFromRecipe.ts",
       "src/fields/bodyEditorConfig.ts",
       "src/fields/buildSEOFields.ts",
@@ -2794,6 +2796,7 @@
       "tests/int/provider-selection.int.spec.ts",
       "tests/int/proxy.int.spec.ts",
       "tests/int/public-content-access.int.spec.ts",
+      "tests/int/public-review-access.int.spec.ts",
       "tests/int/qa-accordion.int.spec.ts",
       "tests/int/rating-spotlight.int.spec.ts",
       "tests/int/redirects.int.spec.ts",
@@ -2817,6 +2820,8 @@
       "tests/int/search-hierarchical-routes.int.spec.tsx",
       "tests/int/search-page-design.int.spec.ts",
       "tests/int/search-page-paths.int.spec.ts",
+      "tests/int/search-page.int.spec.tsx",
+      "tests/int/search-route.int.spec.ts",
       "tests/int/search-settings-access.int.spec.ts",
       "tests/int/search-suggestions.int.spec.ts",
       "tests/int/section-eyebrow.int.spec.tsx",
@@ -2846,7 +2851,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "e5189577b652deb82030db24993799a281e0df310df4b6f0ef8b3299a4e281f5"
+    "sha256": "1a71ea60ed7ab37e10e976e290195b2c6140cd7d04d05a92d74af6a5f124554b"
   },
   "surfaces": {
     "access": [
@@ -3137,6 +3142,7 @@
       "tests/int/provider-selection.int.spec.ts",
       "tests/int/proxy.int.spec.ts",
       "tests/int/public-content-access.int.spec.ts",
+      "tests/int/public-review-access.int.spec.ts",
       "tests/int/qa-accordion.int.spec.ts",
       "tests/int/rating-spotlight.int.spec.ts",
       "tests/int/redirects.int.spec.ts",
@@ -3160,6 +3166,8 @@
       "tests/int/search-hierarchical-routes.int.spec.tsx",
       "tests/int/search-page-design.int.spec.ts",
       "tests/int/search-page-paths.int.spec.ts",
+      "tests/int/search-page.int.spec.tsx",
+      "tests/int/search-route.int.spec.ts",
       "tests/int/search-settings-access.int.spec.ts",
       "tests/int/search-suggestions.int.spec.ts",
       "tests/int/section-eyebrow.int.spec.tsx",

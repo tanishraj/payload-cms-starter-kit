@@ -2,6 +2,7 @@ import configPromise from '@payload-config'
 import { NextResponse } from 'next/server'
 import { getPayload, type Where } from 'payload'
 
+import { findPublicReviews } from '@/domains/reviews/publicReviewQueries'
 import { resolveNewsEventClassificationRecord } from '@/lib/newsEventClassifications'
 import { resolveSearchPageHrefs } from '@/lib/searchPagePaths'
 
@@ -112,16 +113,12 @@ export async function GET(request: Request) {
         ],
       },
     }),
-    payload.find({
-      collection: 'reviews',
+    findPublicReviews(payload, {
       depth: 0,
       limit: PER_TYPE_LIMIT,
       select: { id: true, title: true, slug: true, reviewTitle: true, reviewerName: true },
       where: {
-        and: [
-          ...publishedFilter,
-          { or: [{ title: textLike }, { reviewTitle: textLike }, { reviewerName: textLike }] },
-        ],
+        and: [{ or: [{ title: textLike }, { reviewTitle: textLike }, { reviewerName: textLike }] }],
       },
     }),
   ])

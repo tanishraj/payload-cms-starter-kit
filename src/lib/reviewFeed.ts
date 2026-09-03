@@ -4,6 +4,7 @@ import configPromise from '@payload-config'
 import { getPayload, type Payload } from 'payload'
 import { cache } from 'react'
 
+import { findPublicReviews } from '@/domains/reviews/publicReviewQueries'
 import {
   REVIEW_FEED_DEFAULT_PAGE_SIZE,
   REVIEW_FEED_MAX_PAGE_SIZE,
@@ -136,10 +137,8 @@ export async function fetchPublishedReviewFeedPage(
   payload: Pick<ReviewFeedPayload, 'find'>,
   { limit, page }: { limit: number; page: number },
 ): Promise<PublicReviewFeedPage> {
-  const result = await payload.find({
-    collection: 'reviews',
+  const result = await findPublicReviews(payload, {
     limit,
-    overrideAccess: true,
     page,
     select: {
       displayName: true,
@@ -153,11 +152,6 @@ export async function fetchPublishedReviewFeedPage(
       updatedAt: true,
     },
     sort: ['-publishedAt', '-id'],
-    where: {
-      _status: {
-        equals: 'published',
-      },
-    },
   })
 
   return {

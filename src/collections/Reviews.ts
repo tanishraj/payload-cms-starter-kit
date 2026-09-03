@@ -1,12 +1,12 @@
-import { type Access, type CollectionConfig, type Where } from 'payload'
+import { type CollectionConfig } from 'payload'
 
 import {
-  canReadFeature,
   deleteFeatureOrAdmin,
   featureFieldReadAccess,
   hideUnlessFeature,
   requireFeature,
 } from '@/access/featureAccess'
+import { publicReviewReadAccess } from '@/domains/reviews/publicReviewAccess'
 import { buildSEOFields } from '@/fields/buildSEOFields'
 import { publicationMetadataFields } from '@/fields/publicationMetadataFields'
 import { projectSlugField } from '@/fields/projectSlugField'
@@ -39,25 +39,6 @@ const previewBreakpoints = [
     height: 844,
   },
 ] as const
-
-const readReviews: Access = ({ req }) => {
-  if (req.user) return canReadFeature(req.user, 'reviews')
-
-  const publicReviewWhere: Where = {
-    and: [
-      { _status: { equals: 'published' } },
-      {
-        or: [
-          { sourceSubmission: { exists: false } },
-          { sourceSubmission: { equals: null } },
-          { moderationStatus: { equals: 'approved' } },
-        ],
-      },
-    ],
-  }
-
-  return publicReviewWhere
-}
 
 export const Reviews: CollectionConfig = {
   slug: 'reviews',
@@ -95,7 +76,7 @@ export const Reviews: CollectionConfig = {
   access: {
     create: requireFeature('reviews'),
     delete: deleteFeatureOrAdmin('reviews'),
-    read: readReviews,
+    read: publicReviewReadAccess,
     readVersions: requireFeature('reviews'),
     update: requireFeature('reviews'),
   },

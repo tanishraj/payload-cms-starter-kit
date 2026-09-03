@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { CalendarDays, FileText, Newspaper, Star, type LucideIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+import { findPublicReviews } from '@/domains/reviews/publicReviewQueries'
 import { resolveNewsEventClassificationRecord } from '@/lib/newsEventClassifications'
 import { resolveSearchPageHrefs } from '@/lib/searchPagePaths'
 import { normalizeSuggestedSearchTerms } from '@/lib/searchSuggestions'
@@ -98,16 +99,12 @@ async function runSearch(query: string): Promise<SearchGroup[]> {
         ],
       },
     }),
-    payload.find({
-      collection: 'reviews',
+    findPublicReviews(payload, {
       depth: 0,
       limit: PER_TYPE_LIMIT,
       select: { id: true, title: true, slug: true, reviewTitle: true, reviewerName: true },
       where: {
-        and: [
-          ...publishedFilter,
-          { or: [{ title: textLike }, { reviewTitle: textLike }, { reviewerName: textLike }] },
-        ],
+        and: [{ or: [{ title: textLike }, { reviewTitle: textLike }, { reviewerName: textLike }] }],
       },
     }),
   ])

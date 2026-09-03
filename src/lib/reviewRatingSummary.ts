@@ -4,6 +4,7 @@ import configPromise from '@payload-config'
 import { getPayload, type Payload } from 'payload'
 import { cache } from 'react'
 
+import { countPublicReviews } from '@/domains/reviews/publicReviewQueries'
 import {
   calculatePublishedReviewRatingDistribution,
   type PublishedReviewRatingDistribution,
@@ -27,11 +28,9 @@ export async function fetchPublishedReviewRatingDistribution(
   try {
     const buckets = await Promise.all(
       ratingValues.map((rating) =>
-        payload.count({
-          collection: 'reviews',
-          overrideAccess: true,
+        countPublicReviews(payload, {
           where: {
-            and: [{ _status: { equals: 'published' } }, { rating: { equals: rating } }],
+            rating: { equals: rating },
           },
         }),
       ),

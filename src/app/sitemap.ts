@@ -2,6 +2,7 @@ import configPromise from '@payload-config'
 import type { MetadataRoute } from 'next'
 import { getPayload } from 'payload'
 
+import { findPublicReviews } from '@/domains/reviews/publicReviewQueries'
 import { getPageHrefFromSourceWithResolver, getPageID } from '@/lib/pagePaths'
 import { resolveRobotsMode, resolveSitemapInclusion, type RobotsFieldValue } from '@/lib/seo'
 import { getTaxonomyRelationshipIDs, getTaxonomyTerm } from '@/lib/taxonomy'
@@ -142,9 +143,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // ─── Reviews ───────────────────────────────────────────────────────────────
   const reviews = await fetchAllDocs((page) =>
-    payload.find({
-      collection: 'reviews',
-      where: { _status: { equals: 'published' } },
+    findPublicReviews(payload, {
       depth: 1,
       limit: 500,
       page,

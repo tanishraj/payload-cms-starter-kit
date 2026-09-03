@@ -1,11 +1,15 @@
 // @vitest-environment node
 
+import { readFileSync } from 'node:fs'
+
 import { ImageResponse } from 'next/og'
 import sharp from 'sharp'
 import { describe, expect, it, vi } from 'vitest'
 
 import { loadOpenGraphRemoteImage } from '@/lib/openGraphImages'
 import type { OpenGraphMediaImage } from '@/lib/media'
+
+const source = readFileSync('src/app/(frontend)/reviews/[slug]/opengraph-image.tsx', 'utf8')
 
 const remoteImage: OpenGraphMediaImage = {
   height: 8,
@@ -14,6 +18,10 @@ const remoteImage: OpenGraphMediaImage = {
 }
 
 describe('Open Graph image renderer compatibility', () => {
+  it('routes Review reads through anonymous collection access', () => {
+    expect(source).toContain('@/domains/reviews/publicReviewQueries')
+    expect(source).not.toMatch(/collection:\s*['"]reviews['"]/)
+  })
   it('renders a fetched AVIF logo through the real ImageResponse renderer', async () => {
     const avif = await sharp({
       create: {
