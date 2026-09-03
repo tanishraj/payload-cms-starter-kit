@@ -7,7 +7,7 @@ import {
   requireFeature,
 } from '@/access/featureAccess'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
-import { runtimeConfig } from '@/config/runtime'
+import { runtimeConfig } from '@/config/runtime.server'
 import { projectEditor } from '@/fields/bodyEditorConfig'
 import { buildSEOFields } from '@/fields/buildSEOFields'
 import { publicationMetadataFields } from '@/fields/publicationMetadataFields'

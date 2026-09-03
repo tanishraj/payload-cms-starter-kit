@@ -67,8 +67,10 @@ export const adminOrFirstUserAccess =
     const { totalDocs } = await req.payload.count({
       collection: 'users',
       overrideAccess: true,
+      req,
       trash: true,
-      where: {},
+      // Keep this logically unfiltered while forcing transaction-safe countDocuments in MongoDB.
+      where: { id: { exists: true } },
     })
 
     return totalDocs === 0

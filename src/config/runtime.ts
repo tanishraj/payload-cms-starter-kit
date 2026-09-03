@@ -1,4 +1,5 @@
 import { normalizeMediaPublicURL } from './mediaPublicURL'
+import { parseApplicationOrigin } from './applicationOrigin'
 
 export type RuntimeConfig = {
   application: {
@@ -45,8 +46,6 @@ export type RuntimeConfig = {
   }
 }
 
-const fallbackApplicationOrigin = 'http://localhost:3000'
-
 const isMongoConnectionString = (value: string): boolean =>
   value.startsWith('mongodb://') || value.startsWith('mongodb+srv://')
 
@@ -70,38 +69,6 @@ const parseBooleanEnv = (
   }
 
   throw new Error(`Invalid boolean value for ${variableName}. Use true/false.`)
-}
-
-const loopbackHostnames = new Set(['127.0.0.1', '[::1]', 'localhost'])
-
-const parseApplicationOrigin = (env: NodeJS.ProcessEnv, isProduction: boolean): string => {
-  const configuredOrigin = env.NEXT_PUBLIC_SERVER_URL?.trim() || fallbackApplicationOrigin
-  let url: URL
-
-  try {
-    url = new URL(configuredOrigin)
-  } catch {
-    throw new Error('Invalid NEXT_PUBLIC_SERVER_URL. Use an absolute HTTPS origin.')
-  }
-
-  if (url.username || url.password) {
-    throw new Error('Invalid NEXT_PUBLIC_SERVER_URL. Credentials are not allowed.')
-  }
-
-  if (isProduction && url.protocol !== 'https:') {
-    throw new Error('Invalid production NEXT_PUBLIC_SERVER_URL. Use an HTTPS origin.')
-  }
-
-  const isDevelopmentLoopbackHTTP =
-    !isProduction && url.protocol === 'http:' && loopbackHostnames.has(url.hostname)
-
-  if (url.protocol !== 'https:' && !isDevelopmentLoopbackHTTP) {
-    throw new Error(
-      'Invalid NEXT_PUBLIC_SERVER_URL. Use HTTPS, or loopback HTTP outside production.',
-    )
-  }
-
-  return url.origin
 }
 
 const getMediaProvider = (env: NodeJS.ProcessEnv): 'localDisk' | 's3' => {
@@ -135,7 +102,7 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
   const isVercel = Boolean(env.VERCEL)
   const mongodbURI = env.MONGODB_URI?.trim() || ''
   const payloadSecret = env.PAYLOAD_SECRET?.trim() || ''
-  const applicationOrigin = parseApplicationOrigin(env, isProduction)
+  const applicationOrigin = parseApplicationOrigin(env.NEXT_PUBLIC_SERVER_URL, isProduction)
   const allowFirstAdminCreation = parseBooleanEnv(
     env.ALLOW_FIRST_ADMIN_CREATION,
     !isProduction,
@@ -271,5 +238,3 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
     },
   }
 }
-
-export const runtimeConfig = getRuntimeConfig()

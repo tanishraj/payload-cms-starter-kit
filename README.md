@@ -192,7 +192,7 @@ Optional tooling:
 
 ## Tooling
 
-- `Node.js`: `^18.20.2 || >=20.9.0`
+- `Node.js`: `>=22.0.0`
 - `pnpm`: `^9 || ^10 || ^11`
 
 ## Testing

@@ -2,7 +2,7 @@ import { HeadObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import type { Payload, PayloadRequest } from 'payload'
 
 import type { RuntimeConfig } from '@/config/runtime'
-import { getRuntimeConfig } from '@/config/runtime'
+import { runtimeConfig } from '@/config/runtime.server'
 import { recordOperationalAuditEvent } from '@/lib/operationalAudit'
 
 export type MediaStorageStatus = 'unchecked' | 'healthy' | 'missing' | 'check_failed' | 'local_only'
@@ -133,7 +133,6 @@ export const reconcileMediaStorage = async ({
   payload,
   req,
 }: ReconcileMediaStorageArgs): Promise<ReconcileMediaStorageResult> => {
-  const runtimeConfig = getRuntimeConfig()
   const requestLike = getRequestLike({
     payload,
     req,

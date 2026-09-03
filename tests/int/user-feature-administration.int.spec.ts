@@ -50,7 +50,7 @@ describe('two-role user administration', () => {
 
     expect(first?.role).toBe('admin')
     expect(firstRequest.payload.count).toHaveBeenCalledWith(
-      expect.objectContaining({ trash: true }),
+      expect.objectContaining({ req: firstRequest, trash: true }),
     )
     expect(later?.role).toBe('siteManager')
     expect(later?.features).toEqual(normalizeFeatureGrants(null))
@@ -98,7 +98,7 @@ describe('two-role user administration', () => {
       } as never),
     ).resolves.toBe(true)
     expect(matchingRequest.payload.count).toHaveBeenCalledWith(
-      expect.objectContaining({ trash: true }),
+      expect.objectContaining({ req: matchingRequest, trash: true }),
     )
     await expect(
       denyBootstrap({ data: { email: 'local@example.test' }, req: reqWithCount(0, null) } as never),

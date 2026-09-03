@@ -2523,8 +2523,11 @@
       "src/components/ui/textarea.tsx",
       "src/components/ui/toggle-group.tsx",
       "src/components/ui/toggle.tsx",
+      "src/config/applicationOrigin.ts",
       "src/config/mediaPublicURL.ts",
       "src/config/providers.ts",
+      "src/config/publicOrigin.ts",
+      "src/config/runtime.server.ts",
       "src/config/runtime.ts",
       "src/config/starterContract.ts",
       "src/config/uploadLimits.ts",
@@ -2824,6 +2827,7 @@
       "tests/int/rich-text-presentation.int.spec.tsx",
       "tests/int/rotating-announcement.int.spec.ts",
       "tests/int/runtime-config.int.spec.ts",
+      "tests/int/runtime-import-boundary.int.spec.ts",
       "tests/int/scrollable-content-tab-rail.int.spec.tsx",
       "tests/int/search-dialog-design.int.spec.ts",
       "tests/int/search-hierarchical-routes.int.spec.tsx",
@@ -2861,7 +2865,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "986d64270b569a9362e8b6316eaf1ded09a1fa3f9f78ba8189aa5e5317056215"
+    "sha256": "ddec44b39cab4147a2ce1c04374bb83bc8d1e541845314d43f1f48ac4cc68696"
   },
   "surfaces": {
     "access": [
@@ -2869,8 +2873,11 @@
       "src/access/featureAccess.ts"
     ],
     "config": [
+      "src/config/applicationOrigin.ts",
       "src/config/mediaPublicURL.ts",
       "src/config/providers.ts",
+      "src/config/publicOrigin.ts",
+      "src/config/runtime.server.ts",
       "src/config/runtime.ts",
       "src/config/starterContract.ts",
       "src/config/uploadLimits.ts"
@@ -3176,6 +3183,7 @@
       "tests/int/rich-text-presentation.int.spec.tsx",
       "tests/int/rotating-announcement.int.spec.ts",
       "tests/int/runtime-config.int.spec.ts",
+      "tests/int/runtime-import-boundary.int.spec.ts",
       "tests/int/scrollable-content-tab-rail.int.spec.tsx",
       "tests/int/search-dialog-design.int.spec.ts",
       "tests/int/search-hierarchical-routes.int.spec.tsx",

@@ -9,7 +9,7 @@ import {
   requireFeature,
 } from '@/access/featureAccess'
 import { buildSEOFields } from '@/fields/buildSEOFields'
-import { runtimeConfig } from '@/config/runtime'
+import { runtimeConfig } from '@/config/runtime.server'
 import { publicationMetadataFields } from '@/fields/publicationMetadataFields'
 import { createPageFromRecipeEndpoint } from '@/endpoints/createPageFromRecipe'
 import { projectSlugField } from '@/fields/projectSlugField'

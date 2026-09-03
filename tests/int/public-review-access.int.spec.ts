@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 
 import { getPayload, type Payload } from 'payload'
-import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
+import { afterAll, beforeAll, describe, expect, expectTypeOf, it, vi } from 'vitest'
 
 vi.mock('next/cache', async (importOriginal) => {
   const actual = await importOriginal<typeof import('next/cache')>()
@@ -22,6 +22,7 @@ import { fetchPublishedReviewRatingSummary } from '@/lib/reviewRatingSummary'
 import { createTestMongoServer } from '../helpers/mongoMemoryServer'
 
 let payload: Payload
+let adminUser: Awaited<ReturnType<Payload['create']>>
 let stopMongoServer: (() => Promise<void>) | null = null
 
 const publicReviewConsumers = [
@@ -63,6 +64,7 @@ describe('public Review access boundary', () => {
       },
       draft: false,
     })
+    adminUser = admin
     const category = await payload.create({
       collection: 'categories',
       data: { slug: 'public-review-boundary', title: 'Public Review Boundary' },
@@ -225,7 +227,38 @@ describe('public Review access boundary', () => {
         overrideAccess: false,
       }),
     )
+
+    type FindPublicReviewArgs = Parameters<typeof findPublicReviews>[1]
+    type CountPublicReviewArgs = Parameters<typeof countPublicReviews>[1]
+
+    expectTypeOf<FindPublicReviewArgs>().not.toHaveProperty('req')
+    expectTypeOf<FindPublicReviewArgs>().not.toHaveProperty('user')
+    expectTypeOf<CountPublicReviewArgs>().not.toHaveProperty('req')
+    expectTypeOf<CountPublicReviewArgs>().not.toHaveProperty('user')
   })
+
+  it.each([
+    ['req', () => ({ req: { user: adminUser } })],
+    ['user', () => ({ user: adminUser })],
+  ] as const)(
+    'strips a hostile authenticated %s from public find and count calls',
+    async (_source, buildHostileAuth) => {
+      const hostileAuth = buildHostileAuth()
+      const result = await findPublicReviews(payload, {
+        ...hostileAuth,
+        depth: 0,
+        limit: 20,
+        sort: 'slug',
+      } as never)
+      const count = await countPublicReviews(payload, hostileAuth as never)
+
+      expect(result.docs.map(({ slug }) => slug)).toEqual([
+        'approved-submission',
+        'staff-published',
+      ])
+      expect(count.totalDocs).toBe(2)
+    },
+  )
 
   it('routes every public Review consumer through the domain boundary', () => {
     for (const file of publicReviewConsumers) {

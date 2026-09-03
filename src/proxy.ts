@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server'
 
 import type { RedirectEntry, RedirectsResponse } from './app/api/redirects/route'
-import { runtimeConfig } from './config/runtime'
+import { runtimeConfig } from './config/runtime.server'
 import { getApplicationOrigin } from './lib/siteUrl'
 
 // In-process cache: keyed by base URL so a multi-origin deployment is safe.

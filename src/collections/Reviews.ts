@@ -7,7 +7,7 @@ import {
   requireFeature,
 } from '@/access/featureAccess'
 import { publicReviewReadAccess } from '@/domains/reviews/publicReviewAccess'
-import { runtimeConfig } from '@/config/runtime'
+import { runtimeConfig } from '@/config/runtime.server'
 import { buildSEOFields } from '@/fields/buildSEOFields'
 import { publicationMetadataFields } from '@/fields/publicationMetadataFields'
 import { projectSlugField } from '@/fields/projectSlugField'

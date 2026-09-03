@@ -26,7 +26,7 @@ import {
   isAdmin,
 } from '@/access/featureAccess'
 import { recordOperationalAuditEvent } from '@/lib/operationalAudit'
-import { runtimeConfig } from '@/config/runtime'
+import { runtimeConfig } from '@/config/runtime.server'
 
 type UserAccessDocument = {
   deletedAt?: string | null
@@ -183,8 +183,10 @@ export const normalizeUserAccessFields: CollectionBeforeChangeHook = async ({
     const { totalDocs } = await req.payload.count({
       collection: 'users',
       overrideAccess: true,
+      req,
       trash: true,
-      where: {},
+      // Keep this logically unfiltered while forcing transaction-safe countDocuments in MongoDB.
+      where: { id: { exists: true } },
     })
 
     if (totalDocs === 0) {

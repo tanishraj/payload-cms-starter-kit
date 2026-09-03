@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 
 import { reconcileMediaStorage } from '@/lib/mediaStorage'
-import { runtimeConfig } from '@/config/runtime'
+import { runtimeConfig } from '@/config/runtime.server'
 
 const isAuthorized = (request: Request): boolean => {
   const configuredToken = runtimeConfig.operations.mediaReconcileToken

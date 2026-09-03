@@ -44,10 +44,15 @@ external consumers before changing an already deployed application's API contrac
 
 Boolean variables accept `true/false`, `1/0`, `yes/no`, or `on/off` case-insensitively.
 
-`NEXT_PUBLIC_SERVER_URL` is parsed once into a canonical origin. Production accepts HTTPS only.
-Outside production, HTTPS remains valid and HTTP is accepted only for `localhost`, `127.0.0.1`, or
-`::1`. Payload uses this one origin for `serverURL`, CORS, CSRF, live-preview links, and redirect-map
-loading; an incoming request Host is never used as a server-side fetch target.
+`src/config/runtime.server.ts` is the server-only, read-once owner of secret-bearing runtime state;
+`src/config/runtime.ts` contains only the pure parser and types so validation can be tested without
+eager environment reads. Browser-capable URL helpers consume only the canonical public origin from
+`src/config/publicOrigin.ts`, which reads no application configuration other than
+`NEXT_PUBLIC_SERVER_URL`. Both paths use the same pure origin validator and normalization rules.
+Production accepts HTTPS only. Outside production, HTTPS remains valid and HTTP is accepted only for
+`localhost`, `127.0.0.1`, or `::1`. Payload uses this one origin for `serverURL`, CORS, CSRF,
+live-preview links, and redirect-map loading; an incoming request Host is never used as a server-side
+fetch target.
 
 ## Local Development
 
