@@ -37,7 +37,9 @@ describe('starter productization', () => {
   it('keeps the documented local defaults in .env.example', () => {
     const envExample = readFileSync('.env.example', 'utf8')
 
-    expect(envExample).toContain('MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit')
+    expect(envExample).toContain(
+      'MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit?replicaSet=rs0&directConnection=true',
+    )
     expect(envExample).not.toContain('DATABASE_PROVIDER=sqlite')
     expect(envExample).toContain('EMAIL_PROVIDER=none')
     expect(envExample).toContain('MEDIA_PROVIDER=localDisk')

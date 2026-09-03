@@ -25,7 +25,9 @@
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:project-context": "vitest run --config ./vitest.config.mts tests/int/project-context-lib.int.spec.ts tests/int/project-context-repository.int.spec.ts",
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --conditions=react-server --import=tsx/esm\" playwright test --config=playwright.config.ts",
-    "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
+    "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
+    "verify:docker-image": "tsx scripts/verify-production-image.ts",
+    "verify:docker-local": "tsx scripts/verify-local-compose.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.916.0",

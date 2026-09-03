@@ -15,6 +15,8 @@
 | `pnpm test:int`                                             | Run Vitest integration/component tests                           |
 | `pnpm test:e2e`                                             | Run Playwright Admin/frontend journeys                           |
 | `pnpm test`                                                 | Run integration tests, then E2E tests                            |
+| `pnpm verify:docker-local`                                  | Verify the isolated local replica and Payload transactions       |
+| `pnpm verify:docker-image`                                  | Verify the production image and build-secret boundary            |
 | `pnpm report:permissions-migration -- --database-uri <uri>` | Preview the two-role migration without writing data              |
 
 Run type and import-map generation after changing collections, globals, fields, blocks, or custom Admin components.
@@ -36,8 +38,24 @@ validated `TEST_MONGODB_URI` to the application's `MONGODB_URI`. Do not add cred
 Playwright:
 
 ```bash
-TEST_MONGODB_URI='mongodb://127.0.0.1:27017/my-project_test?replicaSet=rs0' pnpm test:e2e
+TEST_MONGODB_URI='mongodb://127.0.0.1:27017/my-project_test?replicaSet=rs0&directConnection=true' pnpm test:e2e
 ```
+
+The opt-in Compose transaction test is skipped by ordinary `pnpm test:int`. Run it only through
+`pnpm verify:docker-local`, which supplies the enable flag and a fixed loopback `_test` URI. The
+verifier fails closed if that explicit URI is absent or unsafe. Both Docker verifiers reserve only
+the project `payload_hardening_verify` and network `payload_hardening_verify_default`; the image
+verifier additionally reserves `payload-cms-starter-kit:hardening-verify`. A collision is a hard
+stop. Both scripts set `MONGO_HOST_PORT=0`, leaving the normal `127.0.0.1:27017` default and any
+existing listener untouched. The local verifier accepts only the strictly parsed ephemeral
+`127.0.0.1:<port>` binding for its test URI. Both disable Compose's automatic `.env` loading and
+start only MongoDB. The scripts never use the default project or developer volume and clean only
+current-run resources. Image verification reserves and preflights the fixed
+`payload_hardening_verify_builder` Buildx identity and its derived container/state volume, attaches
+that current-run builder only to the verifier network, and removes it before network cleanup. Its
+sole entitlement is `network.host`; in this docker-container driver that build namespace is the
+isolated builder container network, not the developer host/default network. It never changes or
+removes the user's default/current builders.
 
 Install a browser before the first E2E run:
 
@@ -107,7 +125,7 @@ source feature to Action Queue records. It stores hidden rollback data and is id
 Always preview the proposed role, grant, content, and queue changes against a backup or local clone:
 
 ```bash
-pnpm report:permissions-migration -- --database-uri 'mongodb://127.0.0.1:27017/payload-cms-starter-kit'
+pnpm report:permissions-migration -- --database-uri 'mongodb://127.0.0.1:27017/payload-cms-starter-kit?replicaSet=rs0&directConnection=true'
 ```
 
 The reporter is read-only and masks credentials in its output. Review all conservative grant

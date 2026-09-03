@@ -1,42 +1,49 @@
-version: '3'
-
 services:
   payload:
-    image: node:22-alpine
+    image: node:22.17.0-alpine
     ports:
       - '3000:3000'
     volumes:
       - .:/home/node/app
       - node_modules:/home/node/app/node_modules
     working_dir: /home/node/app/
-    command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm dev"
+    command: sh -c "corepack enable && corepack prepare pnpm@11.17.0 --activate && pnpm install --frozen-lockfile && pnpm dev"
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     env_file:
       - .env
     environment:
-      MONGODB_URI: mongodb://mongo:27017/payload-cms-starter-kit
+      MONGODB_URI: mongodb://mongo:27017/payload-cms-starter-kit?replicaSet=rs0&directConnection=true
 
-  # Use MONGODB_URI=mongodb://mongo:27017/payload-cms-starter-kit when the app runs in Docker.
+  # Use the container URI above when the app runs in Docker.
   mongo:
     image: mongo:8.0.29
     ports:
-      - '27017:27017'
+      - '127.0.0.1:${MONGO_HOST_PORT:-27017}:27017'
     command:
       - --storageEngine=wiredTiger
+      - --replSet
+      - rs0
+      - --bind_ip_all
+    healthcheck:
+      test:
+        - CMD
+        - mongosh
+        - --quiet
+        - --host
+        - mongo:27017
+        - --eval
+        - >-
+          let ok = false; try { ok = rs.status().myState === 1 } catch (error) { if (error.codeName === 'NotYetInitialized') { rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'mongo:27017' }] }) } }; try { ok = rs.status().myState === 1 } catch (_) { ok = false }; quit(ok ? 0 : 1)
+      interval: 2s
+      timeout: 5s
+      retries: 45
+      start_period: 5s
     volumes:
       - mongo_data_8_0:/data/db
     logging:
       driver: none
-
-  # Uncomment the following to use postgres
-  # postgres:
-  #   restart: always
-  #   image: postgres:latest
-  #   volumes:
-  #     - pgdata:/var/lib/postgresql/data
-  #   ports:
-  #     - "5432:5432"
 
 volumes:
   mongo_data_8_0:

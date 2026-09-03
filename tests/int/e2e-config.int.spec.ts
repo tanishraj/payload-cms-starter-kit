@@ -22,7 +22,8 @@ vi.mock('../../src/payload.config.js', () => {
 })
 
 const ORIGINAL_ENV = { ...process.env }
-const safeTestDatabaseURI = 'mongodb://127.0.0.1:27017/config-contract_test?replicaSet=rs0'
+const safeTestDatabaseURI =
+  'mongodb://127.0.0.1:27017/config-contract_test?replicaSet=rs0&directConnection=true'
 
 afterEach(() => {
   process.env = { ...ORIGINAL_ENV }
@@ -39,7 +40,8 @@ describe('Playwright database isolation', () => {
 
     expect(config.webServer).toMatchObject({
       env: expect.objectContaining({
-        MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit_test?replicaSet=rs0',
+        MONGODB_URI:
+          'mongodb://127.0.0.1:27017/payload-cms-starter-kit_test?replicaSet=rs0&directConnection=true',
         PAYLOAD_SECRET: 'e2e-only-payload-secret-32-characters',
       }),
     })

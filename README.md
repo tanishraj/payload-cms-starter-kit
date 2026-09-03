@@ -14,7 +14,8 @@ The repo fails fast if you try to boot a Vercel production profile with the defa
 ## First Boot
 
 1. Copy `.env.example` to `.env`.
-2. Start MongoDB locally with `docker compose up -d mongo`, or point `MONGODB_URI` at an existing MongoDB instance.
+2. Start the transaction-capable local MongoDB with `docker compose up -d --wait mongo`, or point
+   `MONGODB_URI` at an existing replica set.
 3. Set `PAYLOAD_SECRET`.
 4. Run `pnpm install`.
 5. Run `pnpm dev`.
@@ -22,7 +23,11 @@ The repo fails fast if you try to boot a Vercel production profile with the defa
 
 ## Production Docker Image
 
-The supplied `Dockerfile` builds the Next.js standalone production server. Build it with `docker build -t payload-cms-starter-kit .` and run it with the environment variables described below.
+The supplied `Dockerfile` builds the Next.js standalone production server with Node `22.17.0` and
+pnpm `11.17.0`. Its dependency install is frozen. The only public build argument is
+`NEXT_PUBLIC_SERVER_URL`; all server-only build configuration must be supplied through the required
+BuildKit secret `payload_build_env`. See [Runtime and Providers](docs/operations/runtime-and-providers.md)
+for the fixture format and exact build command.
 
 Production containers require a durable external MongoDB database and `MEDIA_PROVIDER=s3` with a durable S3-compatible bucket. The image intentionally does not provide persistent local-disk uploads. `docker-compose.yml` remains the local-development workflow and is not a production stack.
 
@@ -157,7 +162,7 @@ See [docs/architecture/content-model-map.md](docs/architecture/content-model-map
 
 Local development defaults:
 
-- `MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit`
+- `MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit?replicaSet=rs0&directConnection=true`
 - `PAYLOAD_SECRET`
 - `EMAIL_PROVIDER=none`
 - `MEDIA_PROVIDER=localDisk`
@@ -200,6 +205,8 @@ Optional tooling:
 - `pnpm test:int`
 - `pnpm test:e2e`
 - `pnpm test`
+- `pnpm verify:docker-local` for the isolated local replica and real Payload transaction contract
+- `pnpm verify:docker-image` for the Node 22 production image and BuildKit-secret boundary
 
 Use an isolated MongoDB database for tests. E2E helpers seed and delete known test users and homepage content. See [Developer Workflows](docs/operations/developer-workflows.md) for browser installation, generation, backup, migration, and reconciliation commands.
 

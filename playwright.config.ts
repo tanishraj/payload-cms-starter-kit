@@ -41,9 +41,9 @@ export default defineConfig({
   webServer: {
     command: 'pnpm dev',
     env: {
-      ...process.env,
       MONGODB_URI: testDatabaseURI,
       PAYLOAD_SECRET: process.env.PAYLOAD_SECRET ?? 'e2e-only-payload-secret-32-characters',
+      TEST_MONGODB_URI: testDatabaseURI,
       EMAIL_PROVIDER: 'none',
       MEDIA_PROVIDER: 'localDisk',
     },

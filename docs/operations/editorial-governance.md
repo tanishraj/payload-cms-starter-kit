@@ -107,7 +107,7 @@ remain ungranted and are reported for Admin review.
 Run a read-only report only against an explicit target. For local Docker:
 
 ```bash
-pnpm report:permissions-migration -- --database-uri "mongodb://127.0.0.1:27017/payload-cms-starter-kit"
+pnpm report:permissions-migration -- --database-uri "mongodb://127.0.0.1:27017/payload-cms-starter-kit?replicaSet=rs0&directConnection=true"
 ```
 
 Before any shared or production migration:

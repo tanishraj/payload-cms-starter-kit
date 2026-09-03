@@ -60,7 +60,15 @@ fetch target.
 
 ## Local Development
 
-Use `MEDIA_PROVIDER=localDisk` and either `docker compose up -d mongo` or another reachable MongoDB. Do not leave the placeholder S3 credentials active in a copied `.env`.
+Use `MEDIA_PROVIDER=localDisk` and start the pinned replica with
+`docker compose up -d --wait mongo`, or use another reachable MongoDB replica set. A host process
+uses `mongodb://127.0.0.1:27017/payload-cms-starter-kit?replicaSet=rs0&directConnection=true`.
+The Compose Payload service instead uses
+`mongodb://mongo:27017/payload-cms-starter-kit?replicaSet=rs0&directConnection=true`, because the
+replica advertises `mongo:27017` inside the Compose network. Compose's
+`depends_on`/`service_healthy` condition covers initial startup ordering only; the application must
+still handle a later MongoDB outage. Do not leave placeholder S3 credentials active in a copied
+`.env`.
 
 ### First Admin Bootstrap
 
@@ -87,13 +95,51 @@ creation after a user exists, but immediate removal keeps the production policy 
 
 ## Production Docker Image
 
-`next.config.ts` enables standalone output, and the supplied Dockerfile packages that traced server as a non-root production image. Build it with:
+`next.config.ts` enables standalone output, and the supplied Dockerfile packages that traced server
+as a non-root production image. Every stage uses Node `22.17.0`; Corepack activates pnpm `11.17.0`,
+and dependency installation uses the frozen lockfile. The dependency stage copies
+`pnpm-workspace.yaml` so pnpm applies the repository's explicit lifecycle-build allowlist during the
+non-interactive install.
+
+Create a temporary owner-readable-only dotenv file outside the build context. It must contain the
+server-only values needed while Next.js builds, for example:
+
+```dotenv
+MONGODB_URI='mongodb://mongo-or-host:27017/build_test?replicaSet=rs0&directConnection=true'
+PAYLOAD_SECRET='replace-with-a-unique-build-only-secret-of-at-least-32-characters'
+ALLOW_FIRST_ADMIN_CREATION=false
+EMAIL_PROVIDER=none
+MEDIA_PROVIDER=localDisk
+```
+
+Do not use `.env` as this fixture, commit it, or reuse its build-only secret at runtime. BuildKit
+mounts it for the build instruction only; it is not copied into an image layer. Build with:
 
 ```bash
-docker build -t payload-cms-starter-kit .
+DOCKER_BUILDKIT=1 docker build \
+  --secret id=payload_build_env,src=/absolute/path/to/payload-build.env \
+  --build-arg NEXT_PUBLIC_SERVER_URL=https://www.example.com \
+  -t payload-cms-starter-kit .
 ```
 
 Run the image with a durable MongoDB connection and `MEDIA_PROVIDER=s3` plus the required S3-compatible provider variables. The image intentionally has no persistent local-media volume. `docker-compose.yml` remains a local-development workflow; it is not a production deployment stack.
+
+For repository verification, run `pnpm verify:docker-local` and then
+`pnpm verify:docker-image`. Both refuse a pre-existing Compose project named
+`payload_hardening_verify` or network named `payload_hardening_verify_default`; image verification
+also refuses the pre-existing tag `payload-cms-starter-kit:hardening-verify`. They use only dedicated
+`_test` databases, never the default Compose project, `.env`, Atlas, or the developer
+`mongo_data_8_0` volume. Normal local use publishes `127.0.0.1:27017`; the verifiers set
+`MONGO_HOST_PORT=0` internally so Docker allocates an ephemeral loopback port and an existing local
+Mongo listener is never touched. The transaction verifier strictly accepts the discovered binding
+only as `127.0.0.1:<port>`. Both disable Compose's automatic default `.env` loading and start only
+the Mongo service. Image verification also reserves the Buildx builder
+`payload_hardening_verify_builder`, refuses its derived container or state volume if already present,
+and connects that current-run builder to the fixed Compose network so the build resolves
+`mongo:27017`. The builder grants only `network.host`, and the matching build request uses that
+namespace; for this fixed docker-container builder, “host” is its isolated container network, not the
+developer host or default Docker network. Cleanup is limited to resources created by the current run,
+including removal of that builder before its network.
 
 ## S3-Compatible Storage
 
@@ -205,6 +251,8 @@ redeploy. DNS may remain on Cloudflare while the media provider configuration is
 ```bash
 pnpm test:int
 pnpm build
+pnpm verify:docker-local
+pnpm verify:docker-image
 ```
 
 Then sign in, upload an image, publish a Page, submit a Form, and inspect the public route in the target environment.
