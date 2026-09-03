@@ -2815,6 +2815,7 @@
       "tests/int/public-content-access.int.spec.ts",
       "tests/int/public-review-access.int.spec.ts",
       "tests/int/qa-accordion.int.spec.ts",
+      "tests/int/quality-workflow.int.spec.ts",
       "tests/int/rating-spotlight.int.spec.ts",
       "tests/int/redirects.int.spec.ts",
       "tests/int/regular-block-spacing.int.spec.tsx",
@@ -2872,7 +2873,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "517046d6157ea80f34e8c85cb7694c9ab860d155f5a8425c332804021d5c090c"
+    "sha256": "4d3ff84d0a22949eaf0f6a4471b56b1266801c0cdbda51317c94559a63b6e72d"
   },
   "surfaces": {
     "access": [
@@ -3175,6 +3176,7 @@
       "tests/int/public-content-access.int.spec.ts",
       "tests/int/public-review-access.int.spec.ts",
       "tests/int/qa-accordion.int.spec.ts",
+      "tests/int/quality-workflow.int.spec.ts",
       "tests/int/rating-spotlight.int.spec.ts",
       "tests/int/redirects.int.spec.ts",
       "tests/int/regular-block-spacing.int.spec.tsx",

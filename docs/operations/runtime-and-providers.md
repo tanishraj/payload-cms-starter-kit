@@ -194,8 +194,11 @@ redeploy. DNS may remain on Cloudflare while the media provider configuration is
 - keep `ALLOW_PRODUCTION_EMAIL_OVERRIDE=false` unless a controlled production delivery test is active
 - never expose reconciliation or provider secrets to client-side variables
 - keep database archives in approved encrypted external storage, never in Git or Docker contexts
-- GitHub Actions verifies project context, generated types, TypeScript, lint, integration tests,
-  and the production build
+- GitHub Actions uses a frozen dependency installation, requires `pnpm audit:prod` to report zero
+  unexcepted high or critical production advisories, and verifies generated Payload type drift,
+  TypeScript, lint, integration tests, and the production build
+- `pnpm project-context:update` and `pnpm project-context:check` remain local repository-maintenance
+  checks and do not run in GitHub Actions
 
 ## Verification
 

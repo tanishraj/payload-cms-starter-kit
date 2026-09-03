@@ -265,7 +265,9 @@ The redirect proxy excludes Next.js internals, APIs, Admin, and common static/me
 - `pnpm export:db` uses `mongodump` to create a compressed archive under `backups/`.
 - `pnpm migrate:offices` migrates legacy office data.
 - Vitest covers schema, hooks, helpers, route behavior, rendering, providers, and documentation vocabulary; Playwright covers core Admin and frontend journeys.
-- GitHub Actions verifies project context, generated Payload types, TypeScript, lint, integration
-  tests, and the production build. Mongo-backed tests use a single-node replica set. The supplied
-  Dockerfile builds a non-root Next.js standalone production image; production containers require
-  durable MongoDB and S3-compatible media storage.
+- GitHub Actions uses a frozen dependency installation, requires `pnpm audit:prod` to report zero
+  unexcepted high or critical production advisories, and verifies generated Payload type drift,
+  TypeScript, lint, integration tests, and the production build. Project-context update/check remains
+  a local repository-maintenance loop and does not run in GitHub Actions. Mongo-backed tests use a
+  single-node replica set. The supplied Dockerfile builds a non-root Next.js standalone production
+  image; production containers require durable MongoDB and S3-compatible media storage.
