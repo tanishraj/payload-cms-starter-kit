@@ -60,7 +60,7 @@ MongoDB is published only on `127.0.0.1:27017`; it is not exposed on external ho
 - Use a durable hosted MongoDB cluster for preview and production.
 - Keep preview and production on separate databases unless your workflow explicitly requires shared content.
 - Do not deploy this starter to Vercel with `MEDIA_PROVIDER=localDisk` if editors will upload assets.
-- Use `MEDIA_PROVIDER=s3` for IDrive e2 or another S3-compatible provider before enabling production uploads.
+- Use `MEDIA_PROVIDER=s3` with a durable S3-compatible provider before enabling production uploads.
 - Media uploads remain server-side so format policy runs before persistence. Vercel's upstream
   request-body limit can therefore be lower than the application's 10 MiB upload cap and will win;
   use a deployment path that supports the required server request size rather than browser-to-bucket

@@ -256,6 +256,11 @@ The redirect proxy excludes Next.js internals, APIs, Admin, and common static/me
 
 ## Developer And Operational Tooling
 
+- The supported toolchain is Node.js `22.17.0` within `>=22.13.0 <23` and pnpm `11.17.0`.
+  The Next.js compatibility group (`next`, `@next/third-parties`, and `eslint-config-next`) is exact
+  `16.3.4`; the complete direct Payload family is exact `3.88.0`; direct Sharp and PostCSS are exact
+  `0.35.4` and `8.5.26` respectively. Payload CLI and generator scripts keep the `react-server`
+  condition, and generated Payload types and the Admin import map are checked for drift.
 - Playwright and every mutating E2E helper accept only a dedicated loopback MongoDB database named
   with a `_test` or `-test` suffix; they never inherit the application's general database URI. See
   [ADR 0002](../adr/0002-test-database-isolation.md).
@@ -264,6 +269,9 @@ The redirect proxy excludes Next.js internals, APIs, Admin, and common static/me
 - `pnpm generate:block-thumbnails` captures admin block-picker previews.
 - `pnpm export:db` uses `mongodump` to create a compressed archive under `backups/`.
 - `pnpm migrate:offices` migrates legacy office data.
+- `pnpm audit:prod` is the exception-aware production dependency gate. It blocks unexcepted high or
+  critical findings; raw `pnpm audit --prod --json` is advisory evidence only. The maintained
+  exception ledger is empty.
 - Vitest covers schema, hooks, helpers, route behavior, rendering, providers, and documentation vocabulary; Playwright covers core Admin and frontend journeys.
 - GitHub Actions uses a frozen dependency installation, requires `pnpm audit:prod` to report zero
   unexcepted high or critical production advisories, and verifies generated Payload type drift,
@@ -271,3 +279,7 @@ The redirect proxy excludes Next.js internals, APIs, Admin, and common static/me
   a local repository-maintenance loop and does not run in GitHub Actions. Mongo-backed tests use a
   single-node replica set. The supplied Dockerfile builds a non-root Next.js standalone production
   image; production containers require durable MongoDB and S3-compatible media storage.
+- Local Compose pins MongoDB `8.0.29`, initializes a writable one-member `rs0`, and publishes its
+  normal developer port on loopback only. The repository Docker verifiers use isolated `_test`
+  databases and ownership-checked temporary resources; image verification scans runner environment
+  and filesystem layers for persisted build secrets before bounded cleanup.

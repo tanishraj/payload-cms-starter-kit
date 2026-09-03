@@ -7,7 +7,7 @@ This repository is an editorial-first marketing CMS starter built to be copied f
 - local development: `MongoDB` plus local-disk uploads
 - email: `none` or `resend`
 - hosted database target: `MongoDB`
-- Vercel media target: `S3-compatible` object storage such as `IDrive e2`
+- Vercel media target: durable `S3-compatible` object storage
 
 The repo fails fast if you try to boot a Vercel production profile with the default local-disk `media` behavior. Use `MEDIA_PROVIDER=s3` with a durable bucket before allowing editor-managed uploads in hosted environments.
 
@@ -144,6 +144,7 @@ See [docs/architecture/content-model-map.md](docs/architecture/content-model-map
 - [Complete feature inventory](docs/architecture/feature-inventory.md)
 - [Editorial governance](docs/operations/editorial-governance.md)
 - [MongoDB deployment](docs/operations/mongodb-deployment.md)
+- [Dependency management](docs/operations/dependency-management.md)
 - [Runtime and providers](docs/operations/runtime-and-providers.md)
 - [Developer workflows](docs/operations/developer-workflows.md)
 

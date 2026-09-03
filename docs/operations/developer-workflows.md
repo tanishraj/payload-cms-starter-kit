@@ -9,6 +9,7 @@
 | `pnpm build`                                                | Create the production Next.js build                              |
 | `pnpm start`                                                | Serve an existing production build                               |
 | `pnpm lint`                                                 | Run ESLint across the repository                                 |
+| `pnpm audit:prod`                                           | Enforce the production dependency-audit policy                   |
 | `pnpm payload`                                              | Run the Payload CLI                                              |
 | `pnpm generate:types`                                       | Regenerate `src/payload-types.ts` after schema changes           |
 | `pnpm generate:importmap`                                   | Regenerate the Payload admin import map                          |
@@ -17,9 +18,21 @@
 | `pnpm test`                                                 | Run integration tests, then E2E tests                            |
 | `pnpm verify:docker-local`                                  | Verify the isolated local replica and Payload transactions       |
 | `pnpm verify:docker-image`                                  | Verify the production image and build-secret boundary            |
+| `pnpm project-context:update`                               | Refresh generated repository context                             |
+| `pnpm project-context:check`                                | Check maintained project context locally                         |
 | `pnpm report:permissions-migration -- --database-uri <uri>` | Preview the two-role migration without writing data              |
 
-Run type and import-map generation after changing collections, globals, fields, blocks, or custom Admin components.
+Run type and import-map generation after changing collections, globals, fields, blocks, or custom
+Admin components. Payload CLI, type generation, and import-map generation include the
+`react-server` condition because configuration imports server-only runtime modules. Run
+`pnpm project-context:update` and `pnpm project-context:check` after every implementation; these are
+local maintenance commands and are intentionally absent from GitHub Actions.
+
+The accepted dependency/runtime baseline, rollback boundary, and complete verification matrix are
+recorded in [ADR 0004](../adr/0004-dependency-and-runtime-baseline.md). Use
+[Dependency Management](dependency-management.md) for the audit exception workflow and narrow
+lockfile refresh procedure. Raw `pnpm audit --prod --json` is advisory evidence only;
+`pnpm audit:prod` is the sole exception-aware pass/fail gate.
 
 ## Test Safety
 
@@ -74,7 +87,7 @@ pnpm exec playwright install chromium
 
 ## Security Boundary Decisions
 
-Three accepted decisions define the boundaries that contributors must preserve:
+Four accepted decisions define the boundaries that contributors must preserve:
 
 - [ADR 0001](../adr/0001-public-payload-read-boundary.md): anonymous Review Local API reads use
   the public domain wrappers with access enforcement; Payload Local API bypasses access by default.
@@ -82,6 +95,9 @@ Three accepted decisions define the boundaries that contributors must preserve:
   loopback test database and a fresh Playwright-managed server.
 - [ADR 0003](../adr/0003-public-media-trust-boundary.md): Media and direct R2 objects are public
   marketing assets; upload signature validation is not malware scanning.
+- [ADR 0004](../adr/0004-dependency-and-runtime-baseline.md): dependency compatibility groups,
+  audit policy, transaction-ready local MongoDB, and the production image secret boundary move as
+  one reviewed runtime baseline.
 
 When any of these surfaces change, run their exact verification suites from the corresponding ADR,
 then run the full integration suite and production build.
