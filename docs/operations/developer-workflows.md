@@ -21,6 +21,9 @@ Run type and import-map generation after changing collections, globals, fields, 
 
 ## Test Safety
 
+The accepted isolation policy and rejected alternatives are recorded in
+[ADR 0002](../adr/0002-test-database-isolation.md).
+
 E2E loads only the committed, non-secret `test.env` defaults plus explicitly exported process
 variables. It refuses Atlas, non-loopback hosts, reserved databases, and database names that do not
 end in `_test` or `-test`. The default requires a local MongoDB replica set named `rs0`; MongoDB
@@ -41,6 +44,20 @@ Install a browser before the first E2E run:
 ```bash
 pnpm exec playwright install chromium
 ```
+
+## Security Boundary Decisions
+
+Three accepted decisions define the boundaries that contributors must preserve:
+
+- [ADR 0001](../adr/0001-public-payload-read-boundary.md): anonymous Review Local API reads use
+  the public domain wrappers with access enforcement; Payload Local API bypasses access by default.
+- [ADR 0002](../adr/0002-test-database-isolation.md): E2E mutation is restricted to an explicit
+  loopback test database and a fresh Playwright-managed server.
+- [ADR 0003](../adr/0003-public-media-trust-boundary.md): Media and direct R2 objects are public
+  marketing assets; upload signature validation is not malware scanning.
+
+When any of these surfaces change, run their exact verification suites from the corresponding ADR,
+then run the full integration suite and production build.
 
 ## Database Export
 

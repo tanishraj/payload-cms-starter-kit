@@ -66,6 +66,9 @@ Globals with versions retain history. Relevant changes invalidate cached fronten
 - The registry exposes 29 features corresponding to Admin destinations. Each grant controls sidebar visibility and server access; missing grants fail closed.
 - Pages, Articles, News & Events, Reviews, and System Pages use Payload's native `_status` as their only draft/publication state. Publishing stamps user/time metadata.
 - Review submissions remain draft and pending until an Admin or Reviews-granted Site Manager approves or rejects them. Only approved submitted Reviews may be public.
+- Anonymous Review loaders use one domain boundary that always disables drafts and Payload Local API
+  access override. The collection access rule admits published staff Reviews and only approved,
+  published submitted Reviews; see [ADR 0001](../adr/0001-public-payload-read-boundary.md).
 - Action Queue and Audit Log access is intersected with the user's source-feature grants; records from ungranted or unmapped features remain hidden.
 - Open or blocked approval/publish-issue Action Queue items prevent publishing; `in_progress` items do not.
 - Queue hooks create, reopen, deduplicate, and auto-resolve work from form, header/footer, link, redirect, review, media, and publication conditions.
@@ -229,6 +232,11 @@ The redirect proxy excludes Next.js internals, APIs, Admin, and common static/me
 
 ## Media Governance
 
+- Media is a public-marketing-asset trust class. Server-side create and replacement uploads accept
+  only AVIF, GIF, JPEG, PNG, WebP, and PDF, and validate that extension, declared MIME type, and
+  detected signature agree before Payload file handling. This is format validation, not malware
+  scanning; private or arbitrary documents need a separate private path with external scanning and
+  quarantine. See [ADR 0003](../adr/0003-public-media-trust-boundary.md).
 - Images require alt text. Logo, Hero, and SEO asset types require image MIME types.
 - Media detail views calculate references from governed collections and globals. Referenced assets cannot be deleted.
 - Storage status is `unchecked`, `healthy`, `missing`, `check_failed`, or `local_only`.
@@ -248,6 +256,9 @@ The redirect proxy excludes Next.js internals, APIs, Admin, and common static/me
 
 ## Developer And Operational Tooling
 
+- Playwright and every mutating E2E helper accept only a dedicated loopback MongoDB database named
+  with a `_test` or `-test` suffix; they never inherit the application's general database URI. See
+  [ADR 0002](../adr/0002-test-database-isolation.md).
 - `pnpm dev`, `devsafe`, `build`, and `start` run the Next.js application.
 - Payload commands generate types/import maps or expose the Payload CLI.
 - `pnpm generate:block-thumbnails` captures admin block-picker previews.
