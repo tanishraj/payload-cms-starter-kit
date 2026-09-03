@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
 const composeSource = readFileSync('docker-compose.yml', 'utf8')
@@ -7,6 +7,9 @@ const packageJSON = JSON.parse(readFileSync('package.json', 'utf8')) as {
 }
 const localVerifierSource = readFileSync('scripts/verify-local-compose.ts', 'utf8')
 const imageVerifierSource = readFileSync('scripts/verify-production-image.ts', 'utf8')
+const safetySource = existsSync('scripts/docker-verifier-safety.ts')
+  ? readFileSync('scripts/docker-verifier-safety.ts', 'utf8')
+  : ''
 
 describe('local Docker Compose contract', () => {
   it('pins exact supported toolchain images and a frozen pnpm install', () => {
@@ -39,6 +42,14 @@ describe('local Docker Compose contract', () => {
     )
     expect(composeSource).toMatch(/mongo:\s*\n\s*condition: service_healthy/)
   })
+
+  it('allows a verifier-owned env file and labels every created resource', () => {
+    expect(composeSource).toContain('${PAYLOAD_ENV_FILE:-.env}')
+    expect(composeSource).toContain('${PAYLOAD_VERIFY_OWNER:-developer}')
+    expect(
+      composeSource.match(/com\.payloadcms\.hardening\.owner/g)?.length,
+    ).toBeGreaterThanOrEqual(4)
+  })
 })
 
 describe('isolated Docker verifiers', () => {
@@ -48,21 +59,28 @@ describe('isolated Docker verifiers', () => {
       'tsx scripts/verify-production-image.ts',
     )
 
+    expect(safetySource).toContain("VERIFY_PROJECT = 'payload_hardening_verify'")
     for (const source of [localVerifierSource, imageVerifierSource]) {
-      expect(source).toContain("const VERIFY_PROJECT = 'payload_hardening_verify'")
+      expect(source).toContain('VERIFY_PROJECT,')
       expect(source).toContain('shell: false')
       expect(source).toContain('timeout')
       expect(source).not.toMatch(/\bexecSync\b|shell:\s*true/)
       expect(source).not.toContain('docker compose down')
+      expect(source).not.toContain('...process.env')
+      expect(source).toContain('composeCommandArgs(')
+      expect(source).toContain('createSafeComposeEnvironmentFile(')
+      expect(source).toContain('acquireVerifierLock(')
+      expect(source).toContain('releaseVerifierLock(')
     }
   })
 
   it('pins the verification identities and refuses collisions before mutation', () => {
-    expect(localVerifierSource).toContain(
-      "const VERIFY_NETWORK = 'payload_hardening_verify_default'",
+    expect(safetySource).toContain("VERIFY_NETWORK = 'payload_hardening_verify_default'")
+    expect(safetySource).toContain(
+      "VERIFY_MONGO_VOLUME = 'payload_hardening_verify_mongo_data_8_0'",
     )
-    expect(imageVerifierSource).toContain(
-      "const VERIFY_NETWORK = 'payload_hardening_verify_default'",
+    expect(safetySource).toContain(
+      "VERIFY_NODE_MODULES_VOLUME = 'payload_hardening_verify_node_modules'",
     )
     expect(imageVerifierSource).toContain(
       "const VERIFY_IMAGE = 'payload-cms-starter-kit:hardening-verify'",
@@ -86,6 +104,47 @@ describe('isolated Docker verifiers', () => {
     expect(imageVerifierSource).toContain("MONGO_HOST_PORT: '0'")
     expect(localVerifierSource).toContain("COMPOSE_DISABLE_ENV_FILE: '1'")
     expect(imageVerifierSource).toContain("COMPOSE_DISABLE_ENV_FILE: '1'")
+    expect(localVerifierSource).toContain('PAYLOAD_ENV_FILE: composeEnvironmentPath')
+    expect(imageVerifierSource).toContain('PAYLOAD_ENV_FILE: composeEnvironmentPath')
+    expect(localVerifierSource).toContain('DOTENV_CONFIG_PATH: composeEnvironmentPath')
+    expect(imageVerifierSource).toContain("'--label'")
+    expect(imageVerifierSource).toContain('`${VERIFY_OWNER_LABEL}=${runToken}`')
+    expect(localVerifierSource).toContain('assertComposeResourcesOwned')
+    expect(imageVerifierSource).toContain('assertComposeResourcesOwned')
+    expect(imageVerifierSource).toContain('assertImageOwned')
+
+    const builderCreateEnd = imageVerifierSource.indexOf("'Isolated BuildKit builder creation'")
+    expect(builderCreateEnd).toBeGreaterThan(0)
+    expect(imageVerifierSource.slice(0, builderCreateEnd)).not.toContain("'--bootstrap'")
+    expect(
+      imageVerifierSource.indexOf('builderCreatedByThisRun = true', builderCreateEnd),
+    ).toBeGreaterThan(builderCreateEnd)
+    expect(imageVerifierSource).toContain("['buildx', 'inspect', '--bootstrap', VERIFY_BUILDER]")
+  })
+
+  it('pins Compose to this repository and strips ambient Compose controls', () => {
+    expect(safetySource).toContain("new URL('../docker-compose.yml', import.meta.url)")
+    expect(safetySource).toContain("'-f',")
+    expect(safetySource).toContain("'--project-directory',")
+    expect(safetySource).toContain("'-p',")
+    expect(safetySource).toContain("'COMPOSE_DISABLE_ENV_FILE'")
+    expect(safetySource).not.toContain('...process.env')
+
+    for (const forbiddenName of [
+      'COMPOSE_FILE',
+      'COMPOSE_PATH_SEPARATOR',
+      'COMPOSE_PROJECT_NAME',
+      'COMPOSE_PROFILES',
+    ]) {
+      expect(safetySource).toContain(forbiddenName)
+    }
+  })
+
+  it('serializes verifiers with one owner-checked atomic OS-temp lock', () => {
+    expect(safetySource).toContain("'payload-hardening-docker-verifier.lock'")
+    expect(safetySource).toContain("openSync(lockPath, 'wx', 0o600)")
+    expect(safetySource).toContain('assertVerifierLockOwned')
+    expect(safetySource).toContain('Refusing to replace or remove')
   })
 
   it('uses only isolated test database URIs', () => {
@@ -97,7 +156,9 @@ describe('isolated Docker verifiers', () => {
     expect(imageVerifierSource).toContain(
       'mongodb://mongo:27017/payload-hardening-build_test?replicaSet=rs0&directConnection=true',
     )
-    expect(localVerifierSource).not.toContain('mongo_data_8_0')
-    expect(imageVerifierSource).not.toContain('mongo_data_8_0')
+    for (const source of [localVerifierSource, imageVerifierSource]) {
+      expect(source).toContain('VERIFY_MONGO_VOLUME')
+      expect(source).toContain('VERIFY_NODE_MODULES_VOLUME')
+    }
   })
 })

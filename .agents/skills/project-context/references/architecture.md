@@ -76,7 +76,9 @@ MongoDB is the supported database. Local Docker Compose pins MongoDB 8.0.29 and 
 initializes one `rs0` member advertising `mongo:27017`, reports healthy only as writable PRIMARY,
 publishes the normal developer endpoint only on loopback, and makes host clients use
 `directConnection=true`. The fixed Docker verifiers use only ephemeral loopback test bindings and
-current-run Compose, image, and BuildKit-builder resources; they prove a request-threaded Payload
+current-run Compose, image, and BuildKit-builder resources. They share one atomic owner-token lock,
+pin Compose to absolute repository paths with an allowlisted environment, use an owner-only empty env
+fixture, and require matching ownership markers before cleanup. They prove a request-threaded Payload
 transaction and inspect the Node 22 standalone image for persisted build secrets. Local development
 may use local-disk media. Vercel production must use durable S3-compatible storage. Email is either disabled or delivered through Resend; a production recipient override requires an explicit allow flag. Production requires a canonical HTTPS origin, a non-placeholder Payload secret of at least 32 characters, and disables GraphQL completely. Anonymous first-Admin creation also requires the Users collection to be literally empty, including trashed records, and the environment-specific bootstrap flag to be enabled; production additionally pins the request to one normalized configured email, with Payload's unique email index selecting the atomic winner under a same-address race. Non-production ignores any configured first-Admin email and remains flag-only. Payload caps global relationship depth at 10 to preserve the existing Page preview depth-8 and redirect-hook depth-10 consumers. It uses session authentication with five-attempt/ten-minute lockout, two-hour tokens, token-free auth responses, and secure SameSite=Lax cookies in production. Upload limits live in [uploadLimits.ts](../../../../src/config/uploadLimits.ts).
 
@@ -120,9 +122,10 @@ so moving that Page beneath a parent does not leave consent UI pointing at its l
   audit output is diagnostic and must not be used as an independent pass/fail result. The exception
   schema, approval workflow, and narrow lock refresh procedure live in
   [dependency-management.md](../../../../docs/operations/dependency-management.md).
-- Run `pnpm test:e2e` for affected Admin or browser journeys. Playwright loads its isolated
-  `test.env`, accepts only explicit loopback MongoDB database names ending in `_test` or `-test`,
-  copies that validated URI into the application environment, and starts a fresh development server.
+- Run `pnpm test:e2e` for affected Admin or browser journeys. Playwright loads its committed
+  isolated `test.env` with override enabled, accepts only an explicit loopback MongoDB database name
+  ending in `_test` or `-test`, replaces every runtime-sensitive child value, and starts a fresh
+  development server.
 - Run `pnpm generate:types` after schema changes.
 - Run `pnpm generate:importmap` after custom Admin component changes.
 - Run `pnpm lint`, `pnpm exec tsc --noEmit`, and `pnpm build` in proportion to risk.

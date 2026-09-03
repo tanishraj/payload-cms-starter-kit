@@ -46,6 +46,7 @@ describe.skipIf(!enabled)('Compose-backed Payload transactions', () => {
     for (const slug of createdSlugs) {
       await payload.delete({
         collection: 'tags',
+        disableTransaction: true,
         where: { slug: { equals: slug } },
         overrideAccess: true,
       })
@@ -58,8 +59,24 @@ describe.skipIf(!enabled)('Compose-backed Payload transactions', () => {
     if (!payload) throw new Error('Payload did not initialize for the transaction test.')
 
     const suffix = randomUUID()
+    const warmupSlug = `compose-warmup-${suffix}`
     const rolledBackSlug = `compose-rollback-${suffix}`
     const committedSlug = `compose-commit-${suffix}`
+
+    createdSlugs.add(warmupSlug)
+    await payload.create({
+      collection: 'tags',
+      data: { slug: warmupSlug, title: 'Compose collection warm-up' },
+      depth: 0,
+      disableTransaction: true,
+    })
+    await payload.delete({
+      collection: 'tags',
+      disableTransaction: true,
+      where: { slug: { equals: warmupSlug } },
+      overrideAccess: true,
+    })
+    createdSlugs.delete(warmupSlug)
 
     const rollbackID = await payload.db.beginTransaction()
     if (rollbackID == null) throw new Error('MongoDB did not provide a transaction identifier.')
@@ -73,6 +90,7 @@ describe.skipIf(!enabled)('Compose-backed Payload transactions', () => {
       depth: 0,
     })
     expect(afterRollback.totalDocs).toBe(0)
+    createdSlugs.delete(rolledBackSlug)
 
     const commitID = await payload.db.beginTransaction()
     if (commitID == null) throw new Error('MongoDB did not provide a transaction identifier.')

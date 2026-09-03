@@ -132,14 +132,23 @@ also refuses the pre-existing tag `payload-cms-starter-kit:hardening-verify`. Th
 `mongo_data_8_0` volume. Normal local use publishes `127.0.0.1:27017`; the verifiers set
 `MONGO_HOST_PORT=0` internally so Docker allocates an ephemeral loopback port and an existing local
 Mongo listener is never touched. The transaction verifier strictly accepts the discovered binding
-only as `127.0.0.1:<port>`. Both disable Compose's automatic default `.env` loading and start only
-the Mongo service. Image verification also reserves the Buildx builder
+only as `127.0.0.1:<port>`. Normal Compose resolves `PAYLOAD_ENV_FILE` to `.env`; the verifiers
+instead use an owner-only empty temporary file, disable automatic `.env` loading, and give that same
+safe path to the transaction child's dotenv loader. Every verifier Compose call uses this
+repository's absolute Compose file and project directory under an allowlisted child environment, so
+ambient Compose file, project, profile, or path-separator controls cannot redirect it. Both start
+only the Mongo service and preflight the two exact derived Compose volume names. Image verification
+also reserves the Buildx builder
 `payload_hardening_verify_builder`, refuses its derived container or state volume if already present,
 and connects that current-run builder to the fixed Compose network so the build resolves
 `mongo:27017`. The builder grants only `network.host`, and the matching build request uses that
 namespace; for this fixed docker-container builder, “host” is its isolated container network, not the
-developer host or default Docker network. Cleanup is limited to resources created by the current run,
-including removal of that builder before its network.
+developer host or default Docker network. Both commands share one atomic OS-temporary lock; an
+existing or stale lock fails closed. Compose resources and the fixed image carry a random current-run
+ownership marker that must still match before cleanup. Cleanup is limited to verified current-run
+resources, including removal of that builder before its network. For stale-lock recovery, first prove
+no verifier is running and all fixed Docker identities are absent, then remove only the exact lock
+path named by the error.
 
 ## S3-Compatible Storage
 

@@ -208,7 +208,11 @@ Optional tooling:
 - `pnpm verify:docker-local` for the isolated local replica and real Payload transaction contract
 - `pnpm verify:docker-image` for the Node 22 production image and BuildKit-secret boundary
 
-Use an isolated MongoDB database for tests. E2E helpers seed and delete known test users and homepage content. See [Developer Workflows](docs/operations/developer-workflows.md) for browser installation, generation, backup, migration, and reconciliation commands.
+Use an isolated MongoDB database for tests. E2E uses the committed `test.env` values instead of
+ambient application configuration. Docker verifiers serialize through one fixed OS-temporary lock,
+pin Compose to this repository, and use their own empty environment file. See
+[Developer Workflows](docs/operations/developer-workflows.md) for safe lock recovery, browser
+installation, generation, backup, migration, and reconciliation commands.
 
 ## Starter Conventions
 

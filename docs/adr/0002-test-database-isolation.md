@@ -16,10 +16,12 @@ Browser tests and their mutating helpers use only `TEST_MONGODB_URI`. The URI mu
 name exactly one non-reserved database, and end that database name in `_test` or `-test`. Validation
 errors describe the failed rule without echoing credentials, query parameters, or the full URI.
 
-Playwright loads the committed non-secret `test.env` without overriding explicitly exported values,
-validates the test URI during configuration, copies only that validated value into the application's
-`MONGODB_URI`, and starts a fresh server with `reuseExistingServer: false`. Each helper that mutates
-through Payload repeats the guard before dynamically importing Payload configuration.
+Playwright loads the committed non-secret `test.env` with override enabled, validates that test URI
+during configuration, and starts a fresh server with `reuseExistingServer: false`. Its web-server
+environment explicitly replaces every runtime-sensitive database, Payload, origin, deployment,
+bootstrap, email, token, and storage input, so hostile parent-process values cannot configure the
+test application. Each helper that mutates through Payload repeats the database guard before
+dynamically importing Payload configuration.
 
 Rejected alternatives were inheriting `MONGODB_URI`, allowing Atlas or non-loopback test-named
 databases, relying only on a database-name suffix, and reusing an already-running application
@@ -42,10 +44,10 @@ replica set.
 
 - `tests/int/test-database-safety.int.spec.ts` covers accepted and rejected URI classes and verifies
   sanitized errors.
-- `tests/int/e2e-config.int.spec.ts` proves Playwright copies only a validated test URI, refuses
-  unsafe configuration before startup, starts a fresh server, and statically checks each mutating
-  helper for the guard-before-import contract.
-- `TEST_MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit_test?replicaSet=rs0&directConnection=true pnpm exec playwright test --list`
-  verifies configuration evaluation without connecting to or mutating application data.
+- `tests/int/e2e-config.int.spec.ts` proves Playwright overrides hostile parent configuration with
+  the committed isolated values, starts a fresh server, and statically checks each mutating helper
+  for the guard-before-import contract.
+- `pnpm exec playwright test --list` verifies configuration evaluation without connecting to or
+  mutating application data.
 - `pnpm verify:docker-local` reserves the fixed isolated Compose identity, verifies PRIMARY health,
   runs the request-threaded transaction proof, and cleans only resources created by that invocation.

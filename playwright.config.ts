@@ -8,7 +8,7 @@ import { getRequiredTestDatabaseURI } from './tests/helpers/testDatabaseSafety'
 
 const testEnvPath = fileURLToPath(new URL('./test.env', import.meta.url))
 if (existsSync(testEnvPath)) {
-  loadEnv({ override: false, path: testEnvPath })
+  loadEnv({ override: true, path: testEnvPath })
 }
 
 const testDatabaseURI = getRequiredTestDatabaseURI()
@@ -41,11 +41,31 @@ export default defineConfig({
   webServer: {
     command: 'pnpm dev',
     env: {
+      ALLOW_FIRST_ADMIN_CREATION: 'false',
+      ALLOW_PRODUCTION_EMAIL_OVERRIDE: 'false',
       MONGODB_URI: testDatabaseURI,
-      PAYLOAD_SECRET: process.env.PAYLOAD_SECRET ?? 'e2e-only-payload-secret-32-characters',
-      TEST_MONGODB_URI: testDatabaseURI,
+      FIRST_ADMIN_EMAIL: '',
       EMAIL_PROVIDER: 'none',
+      MEDIA_RECONCILE_TOKEN: '',
       MEDIA_PROVIDER: 'localDisk',
+      NEXT_PUBLIC_SERVER_URL: 'http://127.0.0.1:3000',
+      NODE_ENV: 'development',
+      PAYLOAD_SECRET: 'e2e-only-payload-secret-32-characters',
+      RESEND_API_KEY: '',
+      RESEND_FROM_EMAIL: '',
+      RESEND_FROM_NAME: '',
+      RESEND_OVERRIDE_TO_EMAIL: '',
+      S3_ACCESS_KEY_ID: '',
+      S3_ACL: '',
+      S3_BUCKET: '',
+      S3_CLIENT_UPLOADS: '',
+      S3_ENDPOINT: '',
+      S3_FORCE_PATH_STYLE: '',
+      S3_PUBLIC_URL: '',
+      S3_REGION: '',
+      S3_SECRET_ACCESS_KEY: '',
+      TEST_MONGODB_URI: testDatabaseURI,
+      VERCEL: '',
     },
     reuseExistingServer: false,
     url: 'http://127.0.0.1:3000/admin',

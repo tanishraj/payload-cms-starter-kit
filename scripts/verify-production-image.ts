@@ -4,17 +4,33 @@ import { createReadStream, chmodSync, mkdtempSync, rmSync, writeFileSync } from 
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
-const VERIFY_PROJECT = 'payload_hardening_verify'
-const VERIFY_NETWORK = 'payload_hardening_verify_default'
+import {
+  acquireVerifierLock,
+  assertVerifierLockOwned,
+  composeCommandArgs,
+  createSafeComposeEnvironmentFile,
+  minimalCommandEnvironment,
+  releaseVerifierLock,
+  VERIFY_MONGO_VOLUME,
+  VERIFY_NETWORK,
+  VERIFY_NODE_MODULES_VOLUME,
+  VERIFY_OWNER_LABEL,
+  VERIFY_PROJECT,
+  VERIFY_PROJECT_DIRECTORY,
+  type VerifierLock,
+} from './docker-verifier-safety'
+
 const VERIFY_IMAGE = 'payload-cms-starter-kit:hardening-verify'
 const VERIFY_BUILDER = 'payload_hardening_verify_builder'
 const VERIFY_BUILDER_CONTAINER = 'buildx_buildkit_payload_hardening_verify_builder0'
 const VERIFY_BUILDER_VOLUME = 'buildx_buildkit_payload_hardening_verify_builder0_state'
+const BUILDER_OWNER_ENVIRONMENT = 'PAYLOAD_HARDENING_OWNER'
 const BUILD_DATABASE_URI =
   'mongodb://mongo:27017/payload-hardening-build_test?replicaSet=rs0&directConnection=true'
 const PUBLIC_ORIGIN = 'https://hardening-verify.invalid'
 
 type RunOptions = {
+  cwd?: string
   env?: NodeJS.ProcessEnv
   timeout?: number
 }
@@ -25,8 +41,9 @@ function run(
   options: RunOptions = {},
 ): SpawnSyncReturns<string> {
   return spawnSync(command, args, {
+    cwd: options.cwd,
     encoding: 'utf8',
-    env: options.env ?? process.env,
+    env: options.env ?? minimalCommandEnvironment(),
     maxBuffer: 1024 * 1024,
     shell: false,
     stdio: 'pipe',
@@ -44,6 +61,25 @@ function requireSuccess(result: SpawnSyncReturns<string>, label: string): string
 
 function docker(args: readonly string[], label: string, options?: RunOptions): string {
   return requireSuccess(run('docker', args, options), label)
+}
+
+function compose(
+  args: readonly string[],
+  label: string,
+  environment: NodeJS.ProcessEnv,
+  timeout?: number,
+): string {
+  return docker(composeCommandArgs(...args), label, { env: environment, timeout })
+}
+
+function assertAbsent(kind: 'network' | 'volume', name: string): void {
+  const inspection = run('docker', [kind, 'inspect', name])
+  if (inspection.status === 0) {
+    throw new Error(`Refusing to use the pre-existing verification ${kind} ${name}.`)
+  }
+  if (inspection.error || inspection.signal) {
+    throw new Error(`Exact ${kind} preflight failed without forwarding command output.`)
+  }
 }
 
 function assertProjectIsUnused(): void {
@@ -94,17 +130,84 @@ function assertProjectIsUnused(): void {
     }
   }
 
-  const exactNetwork = run('docker', ['network', 'inspect', VERIFY_NETWORK])
-  if (exactNetwork.status === 0) {
-    throw new Error(`Refusing to use the pre-existing ${VERIFY_NETWORK} network.`)
-  }
-  if (exactNetwork.error || exactNetwork.signal) {
-    throw new Error('Exact network preflight failed without forwarding command output.')
-  }
+  assertAbsent('network', VERIFY_NETWORK)
+  assertAbsent('volume', VERIFY_MONGO_VOLUME)
+  assertAbsent('volume', VERIFY_NODE_MODULES_VOLUME)
 }
 
-function composeEnvironment(): NodeJS.ProcessEnv {
-  return { ...process.env, COMPOSE_DISABLE_ENV_FILE: '1', MONGO_HOST_PORT: '0' }
+function composeEnvironment(composeEnvironmentPath: string, runToken: string): NodeJS.ProcessEnv {
+  return minimalCommandEnvironment({
+    COMPOSE_DISABLE_ENV_FILE: '1',
+    MONGO_HOST_PORT: '0',
+    PAYLOAD_ENV_FILE: composeEnvironmentPath,
+    PAYLOAD_VERIFY_OWNER: runToken,
+  })
+}
+
+function listProjectResources(kind: 'container' | 'network' | 'volume'): string[] {
+  const args =
+    kind === 'container'
+      ? [
+          'container',
+          'ls',
+          '--all',
+          '--filter',
+          `label=com.docker.compose.project=${VERIFY_PROJECT}`,
+          '--format',
+          '{{.ID}}',
+        ]
+      : [
+          kind,
+          'ls',
+          '--filter',
+          `label=com.docker.compose.project=${VERIFY_PROJECT}`,
+          '--format',
+          kind === 'volume' ? '{{.Name}}' : '{{.ID}}',
+        ]
+  const output = docker(args, `Current-run ${kind} ownership listing`)
+  return output ? output.split('\n') : []
+}
+
+function inspectOwner(kind: 'container' | 'network' | 'volume', name: string): string {
+  const labelPath =
+    kind === 'container'
+      ? `{{ index .Config.Labels "${VERIFY_OWNER_LABEL}" }}`
+      : `{{ index .Labels "${VERIFY_OWNER_LABEL}" }}`
+  return docker([kind, 'inspect', '--format', labelPath, name], `${kind} ownership inspection`)
+}
+
+function existingExactResources(kind: 'network' | 'volume', names: readonly string[]): string[] {
+  return names.filter((name) => run('docker', [kind, 'inspect', name]).status === 0)
+}
+
+function composeResourcesExist(): boolean {
+  return (
+    listProjectResources('container').length > 0 ||
+    listProjectResources('network').length > 0 ||
+    listProjectResources('volume').length > 0 ||
+    existingExactResources('network', [VERIFY_NETWORK]).length > 0 ||
+    existingExactResources('volume', [VERIFY_MONGO_VOLUME, VERIFY_NODE_MODULES_VOLUME]).length > 0
+  )
+}
+
+function assertComposeResourcesOwned(runToken: string): void {
+  const resources = [
+    ...listProjectResources('container').map((name) => ['container', name] as const),
+    ...listProjectResources('network').map((name) => ['network', name] as const),
+    ...listProjectResources('volume').map((name) => ['volume', name] as const),
+    ...existingExactResources('network', [VERIFY_NETWORK]).map(
+      (name) => ['network', name] as const,
+    ),
+    ...existingExactResources('volume', [VERIFY_MONGO_VOLUME, VERIFY_NODE_MODULES_VOLUME]).map(
+      (name) => ['volume', name] as const,
+    ),
+  ]
+
+  for (const [kind, name] of resources) {
+    if (inspectOwner(kind, name) !== runToken) {
+      throw new Error(`Refusing cleanup because verification ${kind} ownership changed.`)
+    }
+  }
 }
 
 function assertImageTagIsUnused(): void {
@@ -118,6 +221,22 @@ function assertImageTagIsUnused(): void {
   }
   if (inspection.error || inspection.signal) {
     throw new Error('Fixed image preflight failed without forwarding command output.')
+  }
+}
+
+function assertImageOwned(runToken: string): void {
+  const owner = docker(
+    [
+      'image',
+      'inspect',
+      '--format',
+      `{{ index .Config.Labels "${VERIFY_OWNER_LABEL}" }}`,
+      VERIFY_IMAGE,
+    ],
+    'Verification image ownership inspection',
+  )
+  if (owner !== runToken) {
+    throw new Error('Refusing cleanup because verification image ownership changed.')
   }
 }
 
@@ -143,6 +262,43 @@ function assertBuilderIsUnused(): void {
         `Verification builder ${kind} preflight failed without forwarding command output.`,
       )
     }
+  }
+}
+
+function assertBuilderOwned(runToken: string, bootstrapped: boolean): void {
+  const builderInspection = run('docker', ['buildx', 'inspect', VERIFY_BUILDER])
+  if (builderInspection.error || builderInspection.signal || builderInspection.status !== 0) {
+    throw new Error('Refusing cleanup because the verification builder identity changed.')
+  }
+  const containerInspection = run('docker', ['container', 'inspect', VERIFY_BUILDER_CONTAINER])
+  if (containerInspection.error || containerInspection.signal) {
+    throw new Error('Verification builder container ownership inspection failed.')
+  }
+
+  if (containerInspection.status === 0) {
+    const rawEnvironment = docker(
+      ['container', 'inspect', '--format', '{{json .Config.Env}}', VERIFY_BUILDER_CONTAINER],
+      'Verification builder ownership inspection',
+    )
+    let environment: string[]
+    try {
+      environment = JSON.parse(rawEnvironment) as string[]
+    } catch {
+      throw new Error('Refusing cleanup because builder ownership inspection was invalid.')
+    }
+    if (!environment.includes(`${BUILDER_OWNER_ENVIRONMENT}=${runToken}`)) {
+      throw new Error('Refusing cleanup because verification builder ownership changed.')
+    }
+  } else if (bootstrapped) {
+    throw new Error('Refusing cleanup because the verification builder container changed.')
+  }
+
+  const stateInspection = run('docker', ['volume', 'inspect', VERIFY_BUILDER_VOLUME])
+  if (stateInspection.error || stateInspection.signal) {
+    throw new Error('Verification builder state ownership inspection failed.')
+  }
+  if (bootstrapped && stateInspection.status !== 0) {
+    throw new Error('Refusing cleanup because the verification builder state changed.')
   }
 }
 
@@ -174,7 +330,10 @@ function inspectImageEnvironment(secretValues: string[]): void {
   const forbiddenName =
     /^(MONGODB_URI|PAYLOAD_SECRET|RESEND_API_KEY|S3_ACCESS_KEY_ID|S3_SECRET_ACCESS_KEY|MEDIA_RECONCILE_TOKEN)$/
   if (
-    entries.some((entry) => forbiddenName.test(entry.slice(0, Math.max(0, entry.indexOf('='))))) ||
+    entries.some((entry) => {
+      const separator = entry.indexOf('=')
+      return forbiddenName.test(separator === -1 ? entry : entry.slice(0, separator))
+    }) ||
     secretValues.some((secret) => entries.some((entry) => entry.includes(secret)))
   ) {
     throw new Error('The production image environment contains server-only build configuration.')
@@ -198,46 +357,55 @@ function sanitizedBuildFailure(result: SpawnSyncReturns<string>, secretValues: s
 }
 
 async function main(): Promise<void> {
-  assertProjectIsUnused()
-  assertImageTagIsUnused()
-  assertBuilderIsUnused()
-
-  const temporaryDirectory = mkdtempSync(join(tmpdir(), 'payload-hardening-image-'))
-  const buildEnvironmentPath = join(temporaryDirectory, 'payload-build.env')
-  const exportedFilesystemPath = join(temporaryDirectory, 'runner.tar')
-  const payloadSecret = `hardening-${randomBytes(32).toString('hex')}`
-  const buildEnvironment = [
-    `MONGODB_URI='${BUILD_DATABASE_URI}'`,
-    `PAYLOAD_SECRET='${payloadSecret}'`,
-    'ALLOW_FIRST_ADMIN_CREATION=false',
-    'EMAIL_PROVIDER=none',
-    'MEDIA_PROVIDER=localDisk',
-    '',
-  ].join('\n')
-  writeFileSync(buildEnvironmentPath, buildEnvironment, { flag: 'wx', mode: 0o600 })
-  chmodSync(buildEnvironmentPath, 0o600)
-
+  const runToken = randomBytes(32).toString('hex')
+  let lock: VerifierLock | undefined
+  let temporaryDirectory: string | undefined
+  let composeEnvironmentPath: string | undefined
+  let buildEnvironmentPath: string | undefined
+  let exportedFilesystemPath: string | undefined
+  let buildEnvironment = ''
+  let payloadSecret = ''
   let projectCreatedByThisRun = false
   let imageCreatedByThisRun = false
   let builderCreatedByThisRun = false
+  let builderBootstrappedByThisRun = false
   let temporaryContainerID: string | undefined
   let verificationError: Error | undefined
+  let cleanupError: Error | undefined
 
   try {
-    projectCreatedByThisRun = true
-    docker(
-      ['compose', '-p', VERIFY_PROJECT, 'up', '-d', '--wait', '--wait-timeout', '90', 'mongo'],
+    lock = acquireVerifierLock(runToken)
+    temporaryDirectory = mkdtempSync(join(tmpdir(), 'payload-hardening-image-'))
+    composeEnvironmentPath = createSafeComposeEnvironmentFile(temporaryDirectory)
+    buildEnvironmentPath = join(temporaryDirectory, 'payload-build.env')
+    exportedFilesystemPath = join(temporaryDirectory, 'runner.tar')
+    payloadSecret = `hardening-${randomBytes(32).toString('hex')}`
+    buildEnvironment = [
+      `MONGODB_URI='${BUILD_DATABASE_URI}'`,
+      `PAYLOAD_SECRET='${payloadSecret}'`,
+      'ALLOW_FIRST_ADMIN_CREATION=false',
+      'EMAIL_PROVIDER=none',
+      'MEDIA_PROVIDER=localDisk',
+      '',
+    ].join('\n')
+    writeFileSync(buildEnvironmentPath, buildEnvironment, { flag: 'wx', mode: 0o600 })
+    chmodSync(buildEnvironmentPath, 0o600)
+    const environment = composeEnvironment(composeEnvironmentPath, runToken)
+
+    assertProjectIsUnused()
+    assertImageTagIsUnused()
+    assertBuilderIsUnused()
+
+    compose(
+      ['up', '-d', '--wait', '--wait-timeout', '90', 'mongo'],
       'Isolated MongoDB startup',
-      { env: composeEnvironment(), timeout: 120_000 },
+      environment,
+      120_000,
     )
-    docker(['compose', '-p', VERIFY_PROJECT, 'ps'], 'Compose status check', {
-      env: composeEnvironment(),
-    })
-    docker(
+    projectCreatedByThisRun = true
+    compose(['ps'], 'Compose status check', environment)
+    compose(
       [
-        'compose',
-        '-p',
-        VERIFY_PROJECT,
         'exec',
         '-T',
         'mongo',
@@ -249,10 +417,9 @@ async function main(): Promise<void> {
         'const ok = db.adminCommand({ ping: 1 }).ok === 1 && rs.status().myState === 1; quit(ok ? 0 : 1)',
       ],
       'MongoDB ping and PRIMARY check',
-      { env: composeEnvironment() },
+      environment,
     )
 
-    builderCreatedByThisRun = true
     docker(
       [
         'buildx',
@@ -263,15 +430,22 @@ async function main(): Promise<void> {
         'docker-container',
         '--driver-opt',
         `network=${VERIFY_NETWORK}`,
+        '--driver-opt',
+        `env.${BUILDER_OWNER_ENVIRONMENT}=${runToken}`,
         '--buildkitd-flags',
         '--allow-insecure-entitlement network.host',
-        '--bootstrap',
       ],
       'Isolated BuildKit builder creation',
       { timeout: 120_000 },
     )
+    builderCreatedByThisRun = true
+    docker(
+      ['buildx', 'inspect', '--bootstrap', VERIFY_BUILDER],
+      'Isolated BuildKit builder bootstrap',
+      { timeout: 120_000 },
+    )
+    builderBootstrappedByThisRun = true
 
-    imageCreatedByThisRun = true
     const buildResult = run(
       'docker',
       [
@@ -288,21 +462,28 @@ async function main(): Promise<void> {
         `id=payload_build_env,src=${buildEnvironmentPath}`,
         '--build-arg',
         `NEXT_PUBLIC_SERVER_URL=${PUBLIC_ORIGIN}`,
+        '--label',
+        `${VERIFY_OWNER_LABEL}=${runToken}`,
         '--tag',
         VERIFY_IMAGE,
-        '.',
+        VERIFY_PROJECT_DIRECTORY,
       ],
-      { env: { ...process.env, DOCKER_BUILDKIT: '1' }, timeout: 900_000 },
+      {
+        env: minimalCommandEnvironment({ DOCKER_BUILDKIT: '1' }),
+        timeout: 900_000,
+      },
     )
     if (buildResult.error || buildResult.signal || buildResult.status !== 0) {
       throw new Error(
         `Node 22 production image build failed. Sanitized diagnostics:\n${sanitizedBuildFailure(
           buildResult,
-          [BUILD_DATABASE_URI, payloadSecret, buildEnvironment, buildEnvironmentPath],
+          [BUILD_DATABASE_URI, payloadSecret, buildEnvironment, buildEnvironmentPath, runToken],
         )}`,
       )
     }
+    imageCreatedByThisRun = true
 
+    assertImageOwned(runToken)
     inspectImageEnvironment([BUILD_DATABASE_URI, payloadSecret, buildEnvironment])
     temporaryContainerID = docker(['create', VERIFY_IMAGE], 'Temporary runner container creation')
     docker(
@@ -325,53 +506,79 @@ async function main(): Promise<void> {
   } finally {
     const cleanupFailures: string[] = []
 
-    if (temporaryContainerID) {
-      try {
-        docker(['container', 'rm', '--force', temporaryContainerID], 'Temporary container cleanup')
-      } catch {
-        cleanupFailures.push('temporary container')
+    if (lock) {
+      const ownedLock = lock
+      const attemptCleanup = (label: string, cleanup: () => void): void => {
+        try {
+          assertVerifierLockOwned(ownedLock)
+          cleanup()
+        } catch {
+          cleanupFailures.push(label)
+        }
       }
-    }
 
-    if (imageCreatedByThisRun && run('docker', ['image', 'inspect', VERIFY_IMAGE]).status === 0) {
-      try {
-        docker(['image', 'rm', VERIFY_IMAGE], 'Verification image cleanup', { timeout: 120_000 })
-      } catch {
-        cleanupFailures.push('verification image')
-      }
-    }
-
-    if (
-      builderCreatedByThisRun &&
-      run('docker', ['buildx', 'inspect', VERIFY_BUILDER]).status === 0
-    ) {
-      try {
-        docker(['buildx', 'rm', VERIFY_BUILDER], 'Verification BuildKit builder cleanup', {
-          timeout: 120_000,
+      if (temporaryContainerID) {
+        const ownedContainerID = temporaryContainerID
+        attemptCleanup('temporary container', () => {
+          const owner = inspectOwner('container', ownedContainerID)
+          if (owner !== runToken) {
+            throw new Error('Refusing cleanup because temporary container ownership changed.')
+          }
+          docker(['container', 'rm', '--force', ownedContainerID], 'Temporary container cleanup')
         })
-      } catch {
-        cleanupFailures.push('verification BuildKit builder')
       }
+
+      if (imageCreatedByThisRun && run('docker', ['image', 'inspect', VERIFY_IMAGE]).status === 0) {
+        attemptCleanup('verification image', () => {
+          assertImageOwned(runToken)
+          docker(['image', 'rm', VERIFY_IMAGE], 'Verification image cleanup', { timeout: 120_000 })
+        })
+      }
+
+      if (
+        builderCreatedByThisRun &&
+        run('docker', ['buildx', 'inspect', VERIFY_BUILDER]).status === 0
+      ) {
+        attemptCleanup('verification BuildKit builder', () => {
+          assertBuilderOwned(runToken, builderBootstrappedByThisRun)
+          docker(['buildx', 'rm', VERIFY_BUILDER], 'Verification BuildKit builder cleanup', {
+            timeout: 120_000,
+          })
+        })
+      }
+
+      attemptCleanup('isolated Compose project', () => {
+        if (!projectCreatedByThisRun && composeResourcesExist()) {
+          assertComposeResourcesOwned(runToken)
+          projectCreatedByThisRun = true
+        }
+        if (projectCreatedByThisRun && composeEnvironmentPath) {
+          assertComposeResourcesOwned(runToken)
+          compose(
+            ['down', '--volumes', '--remove-orphans'],
+            'Isolated Compose cleanup',
+            composeEnvironment(composeEnvironmentPath, runToken),
+            90_000,
+          )
+        }
+      })
     }
 
-    if (projectCreatedByThisRun) {
+    if (temporaryDirectory) rmSync(temporaryDirectory, { force: true, recursive: true })
+    if (lock) {
       try {
-        docker(
-          ['compose', '-p', VERIFY_PROJECT, 'down', '--volumes', '--remove-orphans'],
-          'Isolated Compose cleanup',
-          { env: composeEnvironment(), timeout: 90_000 },
-        )
-      } catch {
-        cleanupFailures.push('isolated Compose project')
+        releaseVerifierLock(lock)
+      } catch (error) {
+        cleanupError ??=
+          error instanceof Error ? error : new Error('Docker verifier lock release failed.')
       }
     }
-
-    rmSync(temporaryDirectory, { force: true, recursive: true })
     if (cleanupFailures.length > 0) {
-      throw new Error(`Verification cleanup failed for: ${cleanupFailures.join(', ')}.`)
+      cleanupError ??= new Error(`Verification cleanup failed for: ${cleanupFailures.join(', ')}.`)
     }
   }
 
+  if (cleanupError) throw cleanupError
   if (verificationError) throw verificationError
   console.log('Node 22 production image and build-secret verification passed.')
 }

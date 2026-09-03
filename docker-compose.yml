@@ -12,7 +12,9 @@ services:
       mongo:
         condition: service_healthy
     env_file:
-      - .env
+      - ${PAYLOAD_ENV_FILE:-.env}
+    labels:
+      com.payloadcms.hardening.owner: ${PAYLOAD_VERIFY_OWNER:-developer}
     environment:
       MONGODB_URI: mongodb://mongo:27017/payload-cms-starter-kit?replicaSet=rs0&directConnection=true
 
@@ -44,7 +46,18 @@ services:
       - mongo_data_8_0:/data/db
     logging:
       driver: none
+    labels:
+      com.payloadcms.hardening.owner: ${PAYLOAD_VERIFY_OWNER:-developer}
 
 volumes:
   mongo_data_8_0:
+    labels:
+      com.payloadcms.hardening.owner: ${PAYLOAD_VERIFY_OWNER:-developer}
   node_modules:
+    labels:
+      com.payloadcms.hardening.owner: ${PAYLOAD_VERIFY_OWNER:-developer}
+
+networks:
+  default:
+    labels:
+      com.payloadcms.hardening.owner: ${PAYLOAD_VERIFY_OWNER:-developer}

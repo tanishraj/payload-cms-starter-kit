@@ -26,20 +26,17 @@ Run type and import-map generation after changing collections, globals, fields, 
 The accepted isolation policy and rejected alternatives are recorded in
 [ADR 0002](../adr/0002-test-database-isolation.md).
 
-E2E loads only the committed, non-secret `test.env` defaults plus explicitly exported process
-variables. It refuses Atlas, non-loopback hosts, reserved databases, and database names that do not
-end in `_test` or `-test`. The default requires a local MongoDB replica set named `rs0`; MongoDB
-transactions require replica-set support. E2E starts its own development server and never reuses an
-arbitrary server already listening on port 3000.
+E2E loads the committed, non-secret `test.env` with override enabled, validates its loopback `_test`
+URI, and supplies an explicit safe value for every runtime-sensitive input to its development-server
+child. Ambient database, Payload secret, origin, production/Vercel, bootstrap, email, token, and S3
+values cannot configure that child. The default requires a local MongoDB replica set named `rs0`;
+MongoDB transactions require replica-set support. E2E starts its own development server and never
+reuses an arbitrary server already listening on port 3000.
 
 The E2E helpers seed and delete known test users and homepage content only after copying the
-validated `TEST_MONGODB_URI` to the application's `MONGODB_URI`. Do not add credentials to
-`test.env`. To use a different test database, export an explicit loopback test URI before invoking
-Playwright:
-
-```bash
-TEST_MONGODB_URI='mongodb://127.0.0.1:27017/my-project_test?replicaSet=rs0&directConnection=true' pnpm test:e2e
-```
+validated committed `TEST_MONGODB_URI` to the application's `MONGODB_URI`. Do not add credentials to
+`test.env`. Change that committed non-secret fixture deliberately when the maintained E2E database
+contract changes; a parent-process export does not override it.
 
 The opt-in Compose transaction test is skipped by ordinary `pnpm test:int`. Run it only through
 `pnpm verify:docker-local`, which supplies the enable flag and a fixed loopback `_test` URI. The
@@ -48,14 +45,26 @@ the project `payload_hardening_verify` and network `payload_hardening_verify_def
 verifier additionally reserves `payload-cms-starter-kit:hardening-verify`. A collision is a hard
 stop. Both scripts set `MONGO_HOST_PORT=0`, leaving the normal `127.0.0.1:27017` default and any
 existing listener untouched. The local verifier accepts only the strictly parsed ephemeral
-`127.0.0.1:<port>` binding for its test URI. Both disable Compose's automatic `.env` loading and
-start only MongoDB. The scripts never use the default project or developer volume and clean only
-current-run resources. Image verification reserves and preflights the fixed
+`127.0.0.1:<port>` binding for its test URI. Both pin `-f` and `--project-directory` to absolute paths
+in this repository, remove ambient Compose controls through an allowlisted child environment,
+disable automatic `.env` loading, point `PAYLOAD_ENV_FILE` and the transaction child's
+`DOTENV_CONFIG_PATH` at an owner-only empty temporary fixture, and start only MongoDB. They preflight
+the exact `payload_hardening_verify_mongo_data_8_0` and
+`payload_hardening_verify_node_modules` volumes in addition to project labels. The scripts never use
+the default project or developer volume and clean only resources whose random ownership token still
+matches the current run. Image verification reserves and preflights the fixed
 `payload_hardening_verify_builder` Buildx identity and its derived container/state volume, attaches
 that current-run builder only to the verifier network, and removes it before network cleanup. Its
 sole entitlement is `network.host`; in this docker-container driver that build namespace is the
 isolated builder container network, not the developer host/default network. It never changes or
 removes the user's default/current builders.
+
+The two verifier commands share the atomic owner-only lock reported by an existing-lock error (on
+this platform it is under the OS temporary directory as `payload-hardening-docker-verifier.lock`).
+They never reclaim a stale lock automatically. If a process was interrupted, first confirm neither
+verifier is running and every fixed project, image, builder, derived container, and derived volume is
+absent; only then remove the exact lock path printed by the verifier. Never delete a broader
+temporary directory or use generic Docker cleanup.
 
 Install a browser before the first E2E run:
 
