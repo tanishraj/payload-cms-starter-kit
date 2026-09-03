@@ -35,4 +35,22 @@ describe('search route Review visibility', () => {
       }),
     )
   })
+
+  it('includes Retry-After when the request limit is exceeded', async () => {
+    vi.stubEnv('VERCEL', '1')
+
+    let response: Response | undefined
+    for (let attempt = 0; attempt < 21; attempt += 1) {
+      response = await GET(
+        new Request('http://localhost/api/search?q=x', {
+          headers: { 'x-forwarded-for': 'rate-limit-test, 192.0.2.2' },
+        }),
+      )
+    }
+
+    expect(response?.status).toBe(429)
+    expect(response?.headers.get('Retry-After')).toMatch(/^[1-9]\d*$/)
+
+    vi.unstubAllEnvs()
+  })
 })

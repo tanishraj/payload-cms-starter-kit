@@ -3,6 +3,11 @@ import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 
 import {
+  PUBLIC_JSON_BODY_MAX_BYTES,
+  RequestBodyError,
+  readBoundedJSON,
+} from '@/domains/forms/requestLimits'
+import {
   getClientIPAddress,
   isRateLimited,
   isSpamHoneypotTriggered,
@@ -16,9 +21,10 @@ import {
 import { emitFormSubmissionEvent } from '@/lib/formSubmissionEvents'
 import {
   getSubmissionContactMetadata,
+  isFormSubmissionValues,
   isReviewFormSubmissionIntent,
   normalizeFormSubmissionIntent,
-  normalizeFormSubmissionMetadata,
+  validateFormSubmissionMetadata,
   validateFormSubmission,
   type FormSubmissionValues,
   type SimpleFormField,
@@ -82,21 +88,32 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
   let payloadBody: { metadata?: unknown; values?: FormSubmissionValues } | null = null
 
   try {
-    payloadBody = (await request.json()) as { values?: FormSubmissionValues }
-  } catch {
+    payloadBody = await readBoundedJSON(request, {
+      maxBytes: PUBLIC_JSON_BODY_MAX_BYTES,
+    })
+  } catch (error) {
+    const status =
+      error instanceof RequestBodyError
+        ? {
+            body_too_large: 413,
+            invalid_json: 400,
+            unsupported_media_type: 415,
+          }[error.code]
+        : 400
+
     return NextResponse.json(
       {
         message: 'Invalid form submission payload.',
       },
-      { status: 400 },
+      { status },
     )
   }
 
-  const submissionValues =
-    payloadBody?.values && typeof payloadBody.values === 'object' ? payloadBody.values : {}
-  const submissionMetadata = normalizeFormSubmissionMetadata(payloadBody?.metadata)
+  const submissionValues = payloadBody?.values ?? {}
+  const { errors: metadataErrors, normalizedMetadata: submissionMetadata } =
+    validateFormSubmissionMetadata(payloadBody?.metadata)
 
-  if (isSpamHoneypotTriggered(submissionValues)) {
+  if (isFormSubmissionValues(submissionValues) && isSpamHoneypotTriggered(submissionValues)) {
     return NextResponse.json({
       message: form.successMessage,
     })
@@ -104,12 +121,19 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
 
   const ipAddress = getClientIPAddress(request)
 
-  if (isRateLimited({ formSlug: slug, ipAddress })) {
+  const rateLimitDecision = isRateLimited({ formSlug: slug, ipAddress })
+
+  if (rateLimitDecision.limited) {
     return NextResponse.json(
       {
         message: 'Too many submissions from this device. Please wait a few minutes and try again.',
       },
-      { status: 429 },
+      {
+        headers: {
+          'Retry-After': String(rateLimitDecision.retryAfterSeconds),
+        },
+        status: 429,
+      },
     )
   }
 
@@ -145,9 +169,13 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
   const combinedErrors = reviewValidation
     ? {
         ...errors,
+        ...metadataErrors,
         ...reviewValidation.errors,
       }
-    : errors
+    : {
+        ...errors,
+        ...metadataErrors,
+      }
 
   if (Object.keys(combinedErrors).length > 0) {
     return NextResponse.json(

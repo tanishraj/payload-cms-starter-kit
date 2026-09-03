@@ -186,27 +186,32 @@ Maintenance and coming-soon overrides are applied to the homepage and catch-all 
 
 ## APIs And Middleware
 
-| Surface                                        | Contract                                                                                                                     |
-| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `/admin`                                       | Payload admin UI with dashboard and session bar integration                                                                  |
-| `GET /api/frontend-session`                    | Private no-store email/role projection used by the deferred public editor toolbar                                            |
-| `/api/[...slug]`                               | Payload REST API                                                                                                             |
-| `/api/graphql` and `/api/graphql-playground`   | Generated route files remain, but Payload disables GraphQL and the Playground                                                |
-| `POST /api/forms/[slug]/submit`                | Published-form validation, honeypot, best-effort in-memory throttling, storage, email, events, and optional review promotion |
-| `GET /api/search`                              | Debounced dialog search; six results/type; 20 requests/IP/10 seconds in memory                                               |
-| `GET /api/review-feed`                         | Validated paginated published Review data for load-more behavior                                                             |
-| `GET /api/calendar-events`                     | Validated published or authenticated-draft Calendar month projection for one to five Event classifications                   |
-| `GET /api/redirects`                           | Cached enabled redirect map consumed by the request proxy                                                                    |
-| `POST /api/operations/media/reconcile-storage` | Token-protected local/S3 media health reconciliation                                                                         |
-| `/my-route`                                    | Public example custom route returning a static JSON message; replace or remove before client handoff                         |
+| Surface                                        | Contract                                                                                                                         |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `/admin`                                       | Payload admin UI with dashboard and session bar integration                                                                      |
+| `GET /api/frontend-session`                    | Private no-store email/role projection used by the deferred public editor toolbar                                                |
+| `/api/[...slug]`                               | Payload REST API                                                                                                                 |
+| `/api/graphql` and `/api/graphql-playground`   | Generated route files remain, but Payload disables GraphQL and the Playground                                                    |
+| `POST /api/forms/[slug]/submit`                | Bounded JSON and field validation, honeypot, best-effort local throttling, storage, email, events, and optional Review promotion |
+| `GET /api/search`                              | Debounced dialog search; six results/type; best-effort local limit of 20 requests/IP/10 seconds                                  |
+| `GET /api/review-feed`                         | Validated paginated published Review data for load-more behavior                                                                 |
+| `GET /api/calendar-events`                     | Validated published or authenticated-draft Calendar month projection for one to five Event classifications                       |
+| `GET /api/redirects`                           | Cached enabled redirect map consumed by the request proxy                                                                        |
+| `POST /api/operations/media/reconcile-storage` | Token-protected local/S3 media health reconciliation                                                                             |
+| `/my-route`                                    | Public example custom route returning a static JSON message; replace or remove before client handoff                             |
 
 The redirect proxy excludes Next.js internals, APIs, Admin, and common static/metadata routes. It loads the map only from the validated canonical application origin, keeps it in process for 60 seconds, rejects unsupported destination schemes and self-loops, and safely falls back to its previous map on API failure.
 
 ## Forms, Notifications, And Review Promotion
 
 - Public submission only loads published Forms.
+- Public submissions require JSON media type, permit JSON Content-Type parameters, and cap the UTF-8 request body at 256 KiB before parsing.
+- Submission values must be an object with at most 100 own keys. Email, text, and textarea values are limited to 320, 500, and 10,000 characters respectively; public errors use the configured field label.
+- Campaign and source metadata are limited to 500 characters, landing-page metadata to 2,048, and unknown metadata keys are discarded.
 - The hidden honeypot key is `website`; suspected bots receive a neutral success response.
-- The built-in limiter allows five attempts per IP and form slug per ten minutes. It is per process, in memory, and is not a durable distributed rate limiter.
+- The shared bounded in-memory limiter allows five attempts per IP and form slug per ten minutes and 20 search requests per IP per ten seconds. It prunes periodically and returns `Retry-After`, but operates only within one application instance and is defense in depth rather than coordinated distributed enforcement.
+- Forwarded client-address headers are trusted only in the documented Vercel deployment. The first address is normalized and length-capped before use as a limiter key.
+- Production rate-limit policy should cover `/api/search`, `/api/forms/*/submit`, `/api/review-feed`, `/api/news-events-tabs`, `/api/calendar-events`, Payload login, and Payload password endpoints through Vercel WAF or a durable shared store.
 - Required, email, select-option, and checkbox-acceptance validation derive from the Form schema.
 - Source, campaign, and landing-page metadata are captured when supplied.
 - General/lead Forms can notify internal recipients and optionally send a submitter confirmation. Contact email lookup prefers `submitterEmail`, then `reviewerEmail`, then `email`.

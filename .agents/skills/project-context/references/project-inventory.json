@@ -2528,6 +2528,8 @@
       "src/config/runtime.ts",
       "src/config/starterContract.ts",
       "src/config/uploadLimits.ts",
+      "src/domains/forms/rateLimiter.ts",
+      "src/domains/forms/requestLimits.ts",
       "src/domains/reviews/publicReviewAccess.ts",
       "src/domains/reviews/publicReviewQueries.ts",
       "src/endpoints/createPageFromRecipe.ts",
@@ -2805,6 +2807,7 @@
       "tests/int/redirects.int.spec.ts",
       "tests/int/regular-block-spacing.int.spec.tsx",
       "tests/int/repository-hygiene.int.spec.ts",
+      "tests/int/request-limits.int.spec.ts",
       "tests/int/review-feed-data.int.spec.ts",
       "tests/int/review-feed-route.int.spec.ts",
       "tests/int/review-feed.int.spec.tsx",
@@ -2855,7 +2858,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "f51280cfdb2b36b1fb6308508a118315513b61e76230a61d562a72213af60ec4"
+    "sha256": "10849f522efc9a3229fd95a1290f26f857f6fe87339b9a55ac89356103e206e7"
   },
   "surfaces": {
     "access": [
@@ -3154,6 +3157,7 @@
       "tests/int/redirects.int.spec.ts",
       "tests/int/regular-block-spacing.int.spec.tsx",
       "tests/int/repository-hygiene.int.spec.ts",
+      "tests/int/request-limits.int.spec.ts",
       "tests/int/review-feed-data.int.spec.ts",
       "tests/int/review-feed-route.int.spec.ts",
       "tests/int/review-feed.int.spec.tsx",

@@ -111,14 +111,9 @@ describe('form submission model', () => {
 
     expect(statusField.type).toBe('select')
     expect(statusField.defaultValue).toBe('new')
-    expect(statusField.options?.map((option) => (typeof option === 'string' ? option : option.value))).toEqual([
-      'new',
-      'in_review',
-      'qualified',
-      'won',
-      'rejected',
-      'archived',
-    ])
+    expect(
+      statusField.options?.map((option) => (typeof option === 'string' ? option : option.value)),
+    ).toEqual(['new', 'in_review', 'qualified', 'won', 'rejected', 'archived'])
     expect(submissionIntentField.type).toBe('select')
     expect(submissionIntentField.defaultValue).toBe('general')
     expect(submissionIntentField.admin?.readOnly).toBe(true)
@@ -249,6 +244,94 @@ describe('form submission model', () => {
     })
     expect(payloadMocks.sendEmail).not.toHaveBeenCalled()
     expect(payloadMocks.update).not.toHaveBeenCalled()
+  })
+
+  it('returns 415 when the JSON Content-Type is missing', async () => {
+    payloadMocks.find.mockResolvedValue({
+      docs: [
+        {
+          fields: [],
+          id: 42,
+          notificationRecipients: [],
+          slug: 'contact',
+          submissionIntent: 'general',
+          successMessage: 'Thanks.',
+          title: 'Contact',
+        },
+      ],
+    })
+
+    const { POST } = await loadRouteModule()
+    const response = await POST(
+      new Request('http://localhost/api/forms/contact/submit', {
+        body: '{}',
+        method: 'POST',
+      }),
+      { params: Promise.resolve({ slug: 'contact' }) },
+    )
+
+    expect(response.status).toBe(415)
+  })
+
+  it('returns 413 before parsing a UTF-8 body above 256 KiB', async () => {
+    payloadMocks.find.mockResolvedValue({
+      docs: [
+        {
+          fields: [],
+          id: 42,
+          notificationRecipients: [],
+          slug: 'contact',
+          submissionIntent: 'general',
+          successMessage: 'Thanks.',
+          title: 'Contact',
+        },
+      ],
+    })
+
+    const { POST } = await loadRouteModule()
+    const response = await POST(
+      new Request('http://localhost/api/forms/contact/submit', {
+        body: 'é'.repeat(131_073),
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+      }),
+      { params: Promise.resolve({ slug: 'contact' }) },
+    )
+
+    expect(response.status).toBe(413)
+  })
+
+  it('includes Retry-After when a submission is rate limited', async () => {
+    payloadMocks.find.mockResolvedValue({
+      docs: [
+        {
+          fields: [],
+          id: 42,
+          notificationRecipients: [],
+          slug: 'contact',
+          submissionIntent: 'general',
+          successMessage: 'Thanks.',
+          title: 'Contact',
+        },
+      ],
+    })
+    spamProtectionMocks.isRateLimited.mockReturnValue({
+      limited: true,
+      retryAfterSeconds: 17,
+    })
+
+    const { POST } = await loadRouteModule()
+    const response = await POST(
+      new Request('http://localhost/api/forms/contact/submit', {
+        body: '{"values":{}}',
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+      }),
+      { params: Promise.resolve({ slug: 'contact' }) },
+    )
+
+    expect(response.status).toBe(429)
+    expect(response.headers.get('Retry-After')).toBe('17')
   })
 
   it('stamps lastActionAt when operators change status, owner, or notes', async () => {

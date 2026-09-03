@@ -63,6 +63,11 @@ export type FormSubmissionMetadata = {
 }
 
 export const FORM_HONEYPOT_FIELD_NAME = 'website'
+export const FORM_MAX_EMAIL_LENGTH = 320
+export const FORM_MAX_FIELDS = 100
+export const FORM_MAX_METADATA_URL_LENGTH = 2_048
+export const FORM_MAX_SINGLE_LINE_LENGTH = 500
+export const FORM_MAX_TEXTAREA_LENGTH = 10_000
 export const FORM_RATE_LIMIT_MAX_SUBMISSIONS = 5
 export const FORM_RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000
 
@@ -96,9 +101,7 @@ export const isValidFormFieldName = (value: string): boolean => {
   return /^[A-Za-z][A-Za-z0-9_]*$/.test(value)
 }
 
-export const validateFormFieldDefinitions = (
-  value: unknown,
-): true | string => {
+export const validateFormFieldDefinitions = (value: unknown): true | string => {
   if (!Array.isArray(value) || value.length === 0) {
     return 'Add at least one field.'
   }
@@ -162,18 +165,60 @@ const normalizeTextValue = (value: unknown): string => {
   return typeof value === 'string' ? value.trim() : ''
 }
 
+const getFieldValueMaxLength = (type: FormFieldType): number | null => {
+  if (type === 'email') {
+    return FORM_MAX_EMAIL_LENGTH
+  }
+
+  if (type === 'text') {
+    return FORM_MAX_SINGLE_LINE_LENGTH
+  }
+
+  if (type === 'textarea') {
+    return FORM_MAX_TEXTAREA_LENGTH
+  }
+
+  return null
+}
+
+const formatCharacterLimit = (value: number): string => {
+  return value.toLocaleString('en-US')
+}
+
+export const isFormSubmissionValues = (value: unknown): value is FormSubmissionValues => {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
+}
+
 export const validateFormSubmission = ({
   fields,
   values,
 }: {
   fields: SimpleFormField[]
-  values: FormSubmissionValues
+  values: unknown
 }): {
   errors: FormSubmissionErrors
   normalizedData: Record<string, boolean | string>
 } => {
   const errors: FormSubmissionErrors = {}
   const normalizedData: Record<string, boolean | string> = {}
+
+  if (!isFormSubmissionValues(values)) {
+    return {
+      errors: {
+        values: 'Submitted values must be an object.',
+      },
+      normalizedData,
+    }
+  }
+
+  if (Object.keys(values).length > FORM_MAX_FIELDS) {
+    return {
+      errors: {
+        values: `Submit no more than ${FORM_MAX_FIELDS} fields.`,
+      },
+      normalizedData,
+    }
+  }
 
   for (const field of fields) {
     const rawValue = values[field.name]
@@ -191,6 +236,14 @@ export const validateFormSubmission = ({
 
     const normalizedValue = normalizeTextValue(rawValue)
     normalizedData[field.name] = normalizedValue
+
+    const maxLength = getFieldValueMaxLength(field.type)
+
+    if (maxLength !== null && normalizedValue.length > maxLength) {
+      errors[field.name] =
+        `${field.label} must be ${formatCharacterLimit(maxLength)} characters or fewer.`
+      continue
+    }
 
     if (field.required && !normalizedValue) {
       errors[field.name] = `${field.label} is required.`
@@ -279,5 +332,38 @@ export const normalizeFormSubmissionMetadata = (value: unknown): FormSubmissionM
     campaign: normalizeOptionalMetadataValue(metadata.campaign),
     landingPage: normalizeOptionalMetadataValue(metadata.landingPage),
     source: normalizeOptionalMetadataValue(metadata.source),
+  }
+}
+
+export const validateFormSubmissionMetadata = (
+  value: unknown,
+): {
+  errors: FormSubmissionErrors
+  normalizedMetadata: FormSubmissionMetadata
+} => {
+  const normalizedMetadata = normalizeFormSubmissionMetadata(value)
+  const errors: FormSubmissionErrors = {}
+
+  if (
+    normalizedMetadata.campaign &&
+    normalizedMetadata.campaign.length > FORM_MAX_SINGLE_LINE_LENGTH
+  ) {
+    errors.campaign = `Campaign must be ${formatCharacterLimit(FORM_MAX_SINGLE_LINE_LENGTH)} characters or fewer.`
+  }
+
+  if (normalizedMetadata.source && normalizedMetadata.source.length > FORM_MAX_SINGLE_LINE_LENGTH) {
+    errors.source = `Source must be ${formatCharacterLimit(FORM_MAX_SINGLE_LINE_LENGTH)} characters or fewer.`
+  }
+
+  if (
+    normalizedMetadata.landingPage &&
+    normalizedMetadata.landingPage.length > FORM_MAX_METADATA_URL_LENGTH
+  ) {
+    errors.landingPage = `Landing page must be ${formatCharacterLimit(FORM_MAX_METADATA_URL_LENGTH)} characters or fewer.`
+  }
+
+  return {
+    errors,
+    normalizedMetadata,
   }
 }
