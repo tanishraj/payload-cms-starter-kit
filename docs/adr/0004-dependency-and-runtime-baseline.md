@@ -92,6 +92,9 @@ version or its version-specific volume.
 ## Verification
 
 Use only the explicit safe `_test` configuration below. Do not load a developer environment file.
+`pnpm verify:docker-image` is the production-build gate: it performs the build in the isolated Node
+22 Docker verifier and inspects the resulting image secret boundary. A host `pnpm build` is not an
+authoritative hardening check because Next.js can auto-detect repository environment files.
 
 ```bash
 pnpm install --frozen-lockfile
@@ -103,7 +106,6 @@ pnpm lint
 pnpm test:int
 pnpm audit:prod
 docker compose config --quiet --no-interpolate --no-env-resolution
-env MONGODB_URI='mongodb://127.0.0.1:27017/payload-cms-starter-kit_build_test?replicaSet=rs0&directConnection=true' PAYLOAD_SECRET='build-only-payload-secret-32-characters' NEXT_PUBLIC_SERVER_URL='https://example.test' EMAIL_PROVIDER=none RESEND_OVERRIDE_TO_EMAIL= ALLOW_FIRST_ADMIN_CREATION=false FIRST_ADMIN_EMAIL= ALLOW_PRODUCTION_EMAIL_OVERRIDE=false MEDIA_RECONCILE_TOKEN= MEDIA_PROVIDER=localDisk VERCEL= pnpm build
 pnpm verify:docker-image
 pnpm project-context:update
 pnpm project-context:check

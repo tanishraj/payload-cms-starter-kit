@@ -73,15 +73,19 @@ describe('Playwright database isolation', () => {
     process.env.S3_ACL = 'public-read'
     process.env.S3_FORCE_PATH_STYLE = 'true'
     process.env.S3_CLIENT_UPLOADS = 'true'
+    process.env.NODE_OPTIONS = '--inspect'
 
     const { default: config } = await import('../../playwright.config')
 
+    expect(process.env.NODE_OPTIONS).toBe(
+      '--no-deprecation --no-experimental-strip-types --conditions=react-server --import=tsx/esm',
+    )
     expect(config.use).toMatchObject({
       baseURL: 'http://127.0.0.1:3000',
       trace: 'on-first-retry',
     })
     expect(config.webServer).toMatchObject({
-      command: 'pnpm dev',
+      command: 'pnpm exec next dev',
       env: {
         ALLOW_FIRST_ADMIN_CREATION: 'false',
         ALLOW_PRODUCTION_EMAIL_OVERRIDE: 'false',
@@ -93,6 +97,8 @@ describe('Playwright database isolation', () => {
           'mongodb://127.0.0.1:27017/payload-cms-starter-kit_test?replicaSet=rs0&directConnection=true',
         NEXT_PUBLIC_SERVER_URL: 'http://127.0.0.1:3000',
         NODE_ENV: 'development',
+        NODE_OPTIONS:
+          '--no-deprecation --no-experimental-strip-types --conditions=react-server --import=tsx/esm',
         PAYLOAD_SECRET: 'e2e-only-payload-secret-32-characters',
         RESEND_API_KEY: '',
         RESEND_FROM_EMAIL: '',

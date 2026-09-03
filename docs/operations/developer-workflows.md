@@ -46,6 +46,12 @@ values cannot configure that child. The default requires a local MongoDB replica
 MongoDB transactions require replica-set support. E2E starts its own development server and never
 reuses an arbitrary server already listening on port 3000.
 
+After loading the fixture, Playwright replaces ambient `NODE_OPTIONS` with the fixed
+`react-server` condition and `tsx/esm` import hook required by real workers, and passes the same
+options to a direct Next.js development-server launch. The focused
+`playwright.runtime-import.config.ts` probe runs a real worker/helper Payload-config import without
+starting the server or connecting to MongoDB.
+
 The E2E helpers seed and delete known test users and homepage content only after copying the
 validated committed `TEST_MONGODB_URI` to the application's `MONGODB_URI`. Do not add credentials to
 `test.env`. Change that committed non-secret fixture deliberately when the maintained E2E database

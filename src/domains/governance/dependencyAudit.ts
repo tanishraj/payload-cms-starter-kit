@@ -271,6 +271,10 @@ export const evaluateDependencyAudit = ({
       errors.push(`Exception ${identity} must use valid YYYY-MM-DD calendar dates.`)
       return
     }
+    if (entry.createdAt > currentDate) {
+      errors.push(`Exception ${identity} is created in the future.`)
+      return
+    }
     if (expiresAt < createdAt) {
       errors.push(`Exception ${identity} expires before it is created.`)
       return

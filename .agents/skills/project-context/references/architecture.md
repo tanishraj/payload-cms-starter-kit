@@ -124,8 +124,10 @@ so moving that Page beneath a parent does not leave consent UI pointing at its l
   [dependency-management.md](../../../../docs/operations/dependency-management.md).
 - Run `pnpm test:e2e` for affected Admin or browser journeys. Playwright loads its committed
   isolated `test.env` with override enabled, accepts only an explicit loopback MongoDB database name
-  ending in `_test` or `-test`, replaces every runtime-sensitive child value, and starts a fresh
-  development server.
+  ending in `_test` or `-test`, replaces every runtime-sensitive child value and ambient Node
+  option with the fixed Payload/TypeScript import flags, and starts a fresh development server.
+  The focused runtime-import config proves that boundary in a real worker without a server or
+  database connection.
 - Run `pnpm generate:types` after schema changes.
 - Run `pnpm generate:importmap` after custom Admin component changes.
 - Run `pnpm lint`, `pnpm exec tsc --noEmit`, and `pnpm build` in proportion to risk.

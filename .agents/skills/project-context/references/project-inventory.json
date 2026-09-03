@@ -2652,6 +2652,7 @@
       "src/styles/globals.css",
       "src/styles/themes/theme-snmih-blue.css",
       "src/styles/themes/theme-snmih-green.css",
+      "tests/e2e-runtime/payload-config-import.e2e.spec.ts",
       "tests/e2e/admin.e2e.spec.ts",
       "tests/e2e/calendar.e2e.spec.ts",
       "tests/e2e/frontend.e2e.spec.ts",
@@ -2659,6 +2660,7 @@
       "tests/helpers/mongoMemoryServer.ts",
       "tests/helpers/oklchContrast.ts",
       "tests/helpers/pageRecipeDraft.ts",
+      "tests/helpers/payloadConfigImport.ts",
       "tests/helpers/seedHomepage.ts",
       "tests/helpers/seedUser.ts",
       "tests/helpers/server-only.ts",
@@ -2878,7 +2880,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "2aaa1fe38f8937695508b1c802f26dee41fab3e903559b46bc565188b6e33201"
+    "sha256": "771d282e6e290d0231b14d2d3cc07a85d14aac21472f8c9f726d55be63fac65e"
   },
   "surfaces": {
     "access": [
@@ -3025,6 +3027,7 @@
       "src/app/sitemap.ts"
     ],
     "tests": [
+      "tests/e2e-runtime/payload-config-import.e2e.spec.ts",
       "tests/e2e/admin.e2e.spec.ts",
       "tests/e2e/calendar.e2e.spec.ts",
       "tests/e2e/frontend.e2e.spec.ts",

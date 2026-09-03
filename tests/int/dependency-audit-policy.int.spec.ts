@@ -366,6 +366,20 @@ describe('exception document validation', () => {
     expect(result.ok).toBe(false)
     expect(result.errors.length).toBeGreaterThan(0)
   })
+
+  it('rejects a future-created exception before it can suppress a matching advisory', () => {
+    const result = evaluate({
+      audit: command(auditReport(advisory()), { status: 1 }),
+      exceptions: {
+        schemaVersion: 1,
+        exceptions: [validException({ createdAt: '2099-01-01', expiresAt: '2099-01-31' })],
+      },
+    })
+
+    expect(result.ok).toBe(false)
+    expect(result.usedExceptionIdentities).toEqual([])
+    expect(result.errors).toContain('Exception 1158521:fast-uri is created in the future.')
+  })
 })
 
 describe('sanitized policy output', () => {

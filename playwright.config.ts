@@ -6,10 +6,14 @@ import { config as loadEnv } from 'dotenv'
 
 import { getRequiredTestDatabaseURI } from './tests/helpers/testDatabaseSafety'
 
+export const e2eNodeOptions =
+  '--no-deprecation --no-experimental-strip-types --conditions=react-server --import=tsx/esm'
+
 const testEnvPath = fileURLToPath(new URL('./test.env', import.meta.url))
 if (existsSync(testEnvPath)) {
   loadEnv({ override: true, path: testEnvPath })
 }
+process.env.NODE_OPTIONS = e2eNodeOptions
 
 const testDatabaseURI = getRequiredTestDatabaseURI()
 
@@ -39,7 +43,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'pnpm dev',
+    command: 'pnpm exec next dev',
     env: {
       ALLOW_FIRST_ADMIN_CREATION: 'false',
       ALLOW_PRODUCTION_EMAIL_OVERRIDE: 'false',
@@ -50,6 +54,7 @@ export default defineConfig({
       MEDIA_PROVIDER: 'localDisk',
       NEXT_PUBLIC_SERVER_URL: 'http://127.0.0.1:3000',
       NODE_ENV: 'development',
+      NODE_OPTIONS: e2eNodeOptions,
       PAYLOAD_SECRET: 'e2e-only-payload-secret-32-characters',
       RESEND_API_KEY: '',
       RESEND_FROM_EMAIL: '',
