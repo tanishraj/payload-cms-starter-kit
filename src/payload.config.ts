@@ -111,7 +111,8 @@ export default buildConfig({
   },
   cors: [runtimeConfig.application.origin],
   csrf: [runtimeConfig.application.origin],
-  maxDepth: 3,
+  // Existing Page previews request depth 8 and the page-path redirect hook requests depth 10.
+  maxDepth: 10,
   serverURL: runtimeConfig.application.origin,
   secret: runtimeConfig.payload.secret,
   upload: payloadUploadConfig,

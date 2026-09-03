@@ -10,6 +10,7 @@ describe('starter contract', () => {
       },
       auth: {
         allowFirstAdminCreation: true,
+        firstAdminEmail: null,
       },
       database: {
         url: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
@@ -50,6 +51,7 @@ describe('starter contract', () => {
       },
       auth: {
         allowFirstAdminCreation: false,
+        firstAdminEmail: null,
       },
       database: {
         url: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
@@ -88,6 +90,7 @@ describe('starter contract', () => {
       },
       auth: {
         allowFirstAdminCreation: false,
+        firstAdminEmail: null,
       },
       database: {
         url: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',

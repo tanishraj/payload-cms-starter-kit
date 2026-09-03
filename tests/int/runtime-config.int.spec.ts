@@ -34,6 +34,7 @@ describe('runtime config', () => {
     })
     expect(config.application.origin).toBe('http://localhost:3000')
     expect(config.auth.allowFirstAdminCreation).toBe(true)
+    expect(config.auth.firstAdminEmail).toBeNull()
     expect(config.email.provider).toBe('none')
     expect(config.email.overrideRecipientAddress).toBeNull()
     expect(config.media).toEqual({
@@ -147,6 +148,43 @@ describe('runtime config', () => {
     expect(() => getRuntimeConfig({ ...baseEnv, ALLOW_FIRST_ADMIN_CREATION: 'sometimes' })).toThrow(
       'Invalid boolean value',
     )
+  })
+
+  it('requires and normalizes the configured first-admin email for production bootstrap', () => {
+    const productionEnv: NodeJS.ProcessEnv = {
+      ...ORIGINAL_ENV,
+      ALLOW_FIRST_ADMIN_CREATION: 'true',
+      EMAIL_PROVIDER: 'none',
+      FIRST_ADMIN_EMAIL: '',
+      MEDIA_PROVIDER: 'localDisk',
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      NEXT_PUBLIC_SERVER_URL: 'https://www.example.test',
+      NODE_ENV: 'production',
+      PAYLOAD_SECRET: '4f3a8db96b7240b4a6fbd84585f9bb21',
+      RESEND_OVERRIDE_TO_EMAIL: '',
+      VERCEL: '',
+    }
+
+    expect(() => getRuntimeConfig(productionEnv)).toThrow(
+      'Production first-Admin creation requires FIRST_ADMIN_EMAIL.',
+    )
+
+    const invalidEmail = 'private-invalid-bootstrap-address'
+    expect(() => getRuntimeConfig({ ...productionEnv, FIRST_ADMIN_EMAIL: invalidEmail })).toThrow(
+      'Invalid FIRST_ADMIN_EMAIL. Use a valid email address.',
+    )
+
+    try {
+      getRuntimeConfig({ ...productionEnv, FIRST_ADMIN_EMAIL: invalidEmail })
+    } catch (error) {
+      expect(String(error)).not.toContain(invalidEmail)
+    }
+
+    const config = getRuntimeConfig({
+      ...productionEnv,
+      FIRST_ADMIN_EMAIL: '  First.Admin@Example.Test  ',
+    })
+    expect(config.auth.firstAdminEmail).toBe('first.admin@example.test')
   })
 
   it('parses the media reconciliation token without including it in errors', () => {

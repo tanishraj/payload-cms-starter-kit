@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 const ORIGINAL_ENV = { ...process.env }
@@ -26,9 +28,10 @@ describe('Payload security configuration', () => {
     const { default: configPromise } = await import('@/payload.config')
     const config = await configPromise
     const users = config.collections.find(({ slug }) => slug === 'users')
+    const emailField = users?.fields.find((field) => 'name' in field && field.name === 'email')
 
     expect(config.graphQL?.disable).toBe(true)
-    expect(config.maxDepth).toBe(3)
+    expect(config.maxDepth).toBe(10)
     expect(config.serverURL).toBe('https://canonical.example.test')
     expect(config.cors).toEqual(['https://canonical.example.test'])
     expect(new Set(config.csrf)).toEqual(new Set(['https://canonical.example.test']))
@@ -43,5 +46,19 @@ describe('Payload security configuration', () => {
       tokenExpiration: 2 * 60 * 60,
       useSessions: true,
     })
+    expect(emailField && 'unique' in emailField ? emailField.unique : false).toBe(true)
+  })
+
+  it('keeps the explicit global depth compatible with existing Page consumers', () => {
+    expect(readFileSync('src/payload.config.ts', 'utf8')).toContain('maxDepth: 10')
+    expect(readFileSync('src/app/(frontend)/preview/page/[id]/page.tsx', 'utf8')).toContain(
+      'depth: 8',
+    )
+    expect(readFileSync('src/components/live-preview/PageLivePreview.tsx', 'utf8')).toContain(
+      'depth: 8',
+    )
+    expect(readFileSync('src/hooks/createRedirectsForChangedPagePath.ts', 'utf8')).toContain(
+      'depth: 10',
+    )
   })
 })

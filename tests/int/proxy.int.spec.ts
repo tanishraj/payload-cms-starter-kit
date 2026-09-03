@@ -39,6 +39,11 @@ describe('redirect proxy', () => {
           redirects: [
             { from: '/unsafe', permanent: false, to: 'javascript:alert(1)' },
             { from: '/loop', permanent: true, to: '/loop?again=true' },
+            {
+              from: '/alias-loop',
+              permanent: true,
+              to: 'https://hostile.example/alias-loop',
+            },
           ],
         }),
       ),
@@ -47,9 +52,11 @@ describe('redirect proxy', () => {
 
     const unsafeResponse = await proxy(new NextRequest('https://hostile.example/unsafe'))
     const loopResponse = await proxy(new NextRequest('https://hostile.example/loop'))
+    const aliasLoopResponse = await proxy(new NextRequest('https://hostile.example/alias-loop'))
 
     expect(unsafeResponse.headers.get('location')).toBeNull()
     expect(loopResponse.headers.get('location')).toBeNull()
+    expect(aliasLoopResponse.headers.get('location')).toBeNull()
   })
 
   it('retains the public-path matcher exclusions', async () => {

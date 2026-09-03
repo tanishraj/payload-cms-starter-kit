@@ -43,9 +43,12 @@ export async function proxy(request: NextRequest) {
       const destination = new URL(entry.to, `${baseUrl}/`)
       const isSupportedScheme =
         destination.protocol === 'http:' || destination.protocol === 'https:'
-      const isSelfLoop = destination.origin === baseUrl && destination.pathname === pathname
+      const isCanonicalSelfLoop =
+        destination.origin === baseUrl && destination.pathname === pathname
+      // The request URL is untrusted and is used only to fail closed on an alias-host loop.
+      const isExactRequestSelfLoop = destination.href === request.nextUrl.href
 
-      if (isSupportedScheme && !isSelfLoop) {
+      if (isSupportedScheme && !isCanonicalSelfLoop && !isExactRequestSelfLoop) {
         return NextResponse.redirect(destination, {
           status: entry.permanent ? 301 : 302,
         })

@@ -22,6 +22,7 @@ external consumers before changing an already deployed application's API contrac
 | `PAYLOAD_SECRET`                  | yes                | Unique authentication/encryption secret; production requires 32+ non-placeholder characters   |
 | `NEXT_PUBLIC_SERVER_URL`          | production         | Canonical HTTPS application origin; local development defaults to `http://localhost:3000`     |
 | `ALLOW_FIRST_ADMIN_CREATION`      | no                 | Strict boolean; defaults off in production and on outside production                          |
+| `FIRST_ADMIN_EMAIL`               | prod. bootstrap    | Normalized email permitted for the one-time anonymous production bootstrap                    |
 | `EMAIL_PROVIDER`                  | no                 | `none` by default, or `resend`                                                                |
 | `RESEND_API_KEY`                  | with Resend        | Resend API key                                                                                |
 | `RESEND_FROM_EMAIL`               | with Resend        | Default sender address                                                                        |
@@ -54,16 +55,21 @@ Use `MEDIA_PROVIDER=localDisk` and either `docker compose up -d mongo` or anothe
 
 ### First Admin Bootstrap
 
-Anonymous user creation is permitted only when the Users collection is empty and
-`ALLOW_FIRST_ADMIN_CREATION=true`. The runtime default is `true` outside production and `false` in
-production, while `.env.example` chooses the safer explicit `false` value.
+Anonymous user creation is permitted only when the Users collection is literally empty, including
+trashed records, and `ALLOW_FIRST_ADMIN_CREATION=true`. The runtime default is `true` outside
+production and `false` in production, while `.env.example` chooses the safer explicit `false`
+value. Production additionally requires `FIRST_ADMIN_EMAIL`; the submitted address must match it
+after trimming and case normalization. Payload's unique email index allows only one of two raced
+requests for that pinned address to win.
 
 For a new environment:
 
 1. Confirm that the target Users collection is empty and that the database is the intended environment.
-2. Set `ALLOW_FIRST_ADMIN_CREATION=true` and deploy or restart the application.
+2. Set `ALLOW_FIRST_ADMIN_CREATION=true`; in production, also set `FIRST_ADMIN_EMAIL` to the exact
+   account address. Deploy or restart the application.
 3. Create the first account through Payload Admin; it is normalized to the Admin role.
-4. Immediately remove the variable or set it to `false`, then deploy or restart again.
+4. Immediately remove `FIRST_ADMIN_EMAIL`, remove the allow flag or set it to `false`, then deploy
+   or restart again.
 5. Sign in as that Admin and create all later Admin or Site Manager accounts while authenticated.
 
 Never leave the bootstrap flag enabled as an operational convenience. It does not permit anonymous
@@ -163,7 +169,7 @@ redeploy. DNS may remain on Cloudflare while the media provider configuration is
   placeholder, and shorter-than-32-character values
 - use durable MongoDB and object storage for hosted production
 - set `NEXT_PUBLIC_SERVER_URL` to the externally reachable HTTPS origin
-- keep `ALLOW_FIRST_ADMIN_CREATION` unset or `false` after the one-time Admin bootstrap
+- keep `ALLOW_FIRST_ADMIN_CREATION` unset or `false` and remove `FIRST_ADMIN_EMAIL` after bootstrap
 - keep `ALLOW_PRODUCTION_EMAIL_OVERRIDE=false` unless a controlled production delivery test is active
 - never expose reconciliation or provider secrets to client-side variables
 - keep database archives in approved encrypted external storage, never in Git or Docker contexts

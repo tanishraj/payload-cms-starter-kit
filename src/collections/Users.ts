@@ -183,6 +183,7 @@ export const normalizeUserAccessFields: CollectionBeforeChangeHook = async ({
     const { totalDocs } = await req.payload.count({
       collection: 'users',
       overrideAccess: true,
+      trash: true,
       where: {},
     })
 
@@ -312,7 +313,7 @@ export const Users: CollectionConfig = {
     useSessions: true,
   },
   access: {
-    create: adminOrFirstUserAccess(runtimeConfig.auth.allowFirstAdminCreation),
+    create: adminOrFirstUserAccess(runtimeConfig.auth),
     delete: adminOnlyAccess,
     read: adminSelfOrAssignmentRead,
     readVersions: adminOnlyAccess,

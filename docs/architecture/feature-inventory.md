@@ -61,7 +61,7 @@ Globals with versions retain history. Relevant changes invalidate cached fronten
 
 ## Roles, Features, And Publication Governance
 
-- The only roles are Admin and Site Manager. Anonymous first-user creation requires an empty Users collection and the explicit bootstrap policy; an accepted first user is promoted to Admin, and the last active Admin cannot be demoted or deleted.
+- The only roles are Admin and Site Manager. Anonymous first-user creation requires a literally empty Users collection, including trashed records, and the explicit bootstrap policy. Production also pins bootstrap to one normalized configured email, whose unique index closes concurrent same-address creation. An accepted first user is promoted to Admin, and the last active Admin cannot be demoted or deleted.
 - Admins implicitly hold every feature and may create additional Admins or Site Managers. New Site Managers receive no features until an Admin grants them.
 - The registry exposes 29 features corresponding to Admin destinations. Each grant controls sidebar visibility and server access; missing grants fail closed.
 - Pages, Articles, News & Events, Reviews, and System Pages use Payload's native `_status` as their only draft/publication state. Publishing stamps user/time metadata.

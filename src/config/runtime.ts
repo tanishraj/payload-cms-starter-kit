@@ -6,6 +6,7 @@ export type RuntimeConfig = {
   }
   auth: {
     allowFirstAdminCreation: boolean
+    firstAdminEmail: string | null
   }
   database: {
     url: string
@@ -116,6 +117,18 @@ const getMediaProvider = (env: NodeJS.ProcessEnv): 'localDisk' | 's3' => {
   throw new Error('Unsupported MEDIA_PROVIDER. Use "localDisk" or "s3".')
 }
 
+const parseFirstAdminEmail = (value: string | undefined): string | null => {
+  const normalized = value?.trim().toLowerCase() || ''
+
+  if (!normalized) return null
+
+  if (normalized.length > 320 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized)) {
+    throw new Error('Invalid FIRST_ADMIN_EMAIL. Use a valid email address.')
+  }
+
+  return normalized
+}
+
 export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeConfig => {
   const mediaProvider = getMediaProvider(env)
   const isProduction = env.NODE_ENV === 'production'
@@ -128,6 +141,7 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
     !isProduction,
     'ALLOW_FIRST_ADMIN_CREATION',
   )
+  const firstAdminEmail = parseFirstAdminEmail(env.FIRST_ADMIN_EMAIL)
   const allowProductionEmailOverride = parseBooleanEnv(
     env.ALLOW_PRODUCTION_EMAIL_OVERRIDE,
     false,
@@ -135,6 +149,10 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
   )
   const overrideRecipientAddress = env.RESEND_OVERRIDE_TO_EMAIL?.trim() || null
   const mediaReconcileToken = env.MEDIA_RECONCILE_TOKEN?.trim() || null
+
+  if (isProduction && allowFirstAdminCreation && !firstAdminEmail) {
+    throw new Error('Production first-Admin creation requires FIRST_ADMIN_EMAIL.')
+  }
 
   if (!payloadSecret) {
     throw new Error('Missing PAYLOAD_SECRET. Set a unique secret for this environment.')
@@ -226,6 +244,7 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
     },
     auth: {
       allowFirstAdminCreation,
+      firstAdminEmail,
     },
     database: {
       url: mongodbURI,

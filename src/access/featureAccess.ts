@@ -47,15 +47,27 @@ export const canReadFeature = (user: unknown, key: AdminFeatureKey): boolean =>
 
 export const adminOnlyAccess: Access = ({ req }) => isAdmin(req.user)
 
+type FirstAdminBootstrapPolicy = {
+  allowFirstAdminCreation: boolean
+  firstAdminEmail: string | null
+}
+
 export const adminOrFirstUserAccess =
-  (allowFirstAdminCreation: boolean): Access =>
-  async ({ req }) => {
+  ({ allowFirstAdminCreation, firstAdminEmail }: FirstAdminBootstrapPolicy): Access =>
+  async ({ data, req }) => {
     if (isAdmin(req.user)) return true
     if (!allowFirstAdminCreation) return false
+
+    if (firstAdminEmail) {
+      const candidateEmail = typeof data?.email === 'string' ? data.email.trim().toLowerCase() : ''
+
+      if (candidateEmail !== firstAdminEmail) return false
+    }
 
     const { totalDocs } = await req.payload.count({
       collection: 'users',
       overrideAccess: true,
+      trash: true,
       where: {},
     })
 

@@ -45,7 +45,7 @@ Nine globals are registered:
 
 ## Feature and Publication Governance
 
-The only roles are Admin and Site Manager. Anonymous first-Admin creation requires both an empty Users collection and the explicit runtime bootstrap policy; production defaults that policy off. Admins implicitly hold every registered feature and may grant any subset of the 29 Admin destinations to Site Managers. A missing grant fails closed in the sidebar and at the Payload access layer. Relationship dependencies receive bounded read access without exposing the destination or permitting mutation.
+The only roles are Admin and Site Manager. Anonymous first-Admin creation requires both a literally empty Users collection, including trashed records, and the explicit runtime bootstrap policy; production defaults that policy off and additionally pins bootstrap to one normalized configured email. Payload's unique email index selects the atomic winner if same-address bootstrap requests race. Admins implicitly hold every registered feature and may grant any subset of the 29 Admin destinations to Site Managers. A missing grant fails closed in the sidebar and at the Payload access layer. Relationship dependencies receive bounded read access without exposing the destination or permitting mutation.
 
 Governed content uses Payload's native `_status` as its only draft/publication state. Open or blocked approval/publish-issue queue items prevent publishing; in-progress items do not. Publishing stamps actor and time metadata. Public review submissions additionally remain draft and pending until an Admin or Reviews-granted Site Manager approves or rejects them.
 
